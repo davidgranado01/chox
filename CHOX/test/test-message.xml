@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chox>
+    <rental>
+        <first-contact>2008-06-30T09:00:00</first-contact>
+        <notes>
+            <note>Blah blah</note>
+        </notes>
+        <supplier>
+            <supplier-name>Drive Assist UK Ltd.</supplier-name>
+            <supplier-reference>REF00001</supplier-reference>
+        </supplier>
+        <invoice>
+            <net>1000.00</net>
+            <vat>175.00</vat>
+            <gross>1175.00</gross>
+            <vehicles>
+                <net>1000.00</net>
+                <vat>175.00</vat>
+                <gross>1175.00</gross>
+            </vehicles>
+            <extras>
+                <extra>
+                    <name>Baby Seat</name>
+                    <quantity>1</quantity>
+                    <item-cost>90.00</item-cost>
+                </extra>
+            </extras>
+            <repair>
+                <net>100.00</net>
+                <vat>17.50</vat>
+                <gross>117.50</gross>
+            </repair>
+            <storage-recovery>
+                <net>100.00</net>
+                <vat>17.50</vat>
+                <gross>117.50</gross>
+            </storage-recovery>
+            <engineer-fee>
+                <net>100.00</net>
+                <vat>17.50</vat>
+                <gross>117.50</gross>
+            </engineer-fee>
+            <claim-handling-fee>
+                <net>100.00</net>
+                <vat>0.00</vat>
+                <gross>100.00</gross>
+            </claim-handling-fee>
+        </invoice>
+        <rental-status>InProgress</rental-status>
+        <rental-vehicles>
+            <rental-vehicle>
+                <vehicle-registration>G360YBC</vehicle-registration>
+                <vehicle-manufacturer>Fiat</vehicle-manufacturer>
+                <vehicle-model>Panda</vehicle-model>
+                <vehicle-class>S1</vehicle-class>
+                <rental-start>2008-07-20T10:00:00</rental-start>
+                <rental-end></rental-end>
+                <rental-days></rental-days>
+                <extras>
+                    <extra>Baby Seat</extra>
+                </extras>
+            </rental-vehicle>
+        </rental-vehicles>
+        <drivers>
+            <driver>
+                <title>Mr</title>
+                <firstnames>Stuart Ian Nicholas</firstnames>
+                <lastname>Coates</lastname>
+                <address1>27 Primula Way</address1>
+                <address2>Chelmsford</address2>
+                <address3>Essex</address3>
+                <address4></address4>
+                <address5></address5>
+                <postcode>CM1 6QT</postcode>
+                <telephone-day>03333401970</telephone-day>
+                <telephone-evening></telephone-evening>
+                <email>stu@stucoates.com</email>
+                <primary-driver>Yes</primary-driver>
+            </driver>
+        </drivers>
+        <claim>
+            <customer>
+                
+                <insurer>
+                    <name>RSA</name>
+                    <policy-number></policy-number>
+                    <claim-reference></claim-reference>
+                    <comprehensive></comprehensive>
+                </insurer>
+                <vehicle>
+                    <vehicle-registration>G360YBC</vehicle-registration>
+                    <vehicle-manufacturer>Fiat</vehicle-manufacturer>
+                    <vehicle-model>Panda</vehicle-model>
+                    <vehicle-class>S1</vehicle-class>
+                    <vehicle-location>Somewhere!</vehicle-location>
+                    <usable>y</usable>
+                    <damage-description>It's all broken!</damage-description>
+                </vehicle>
+            </customer>
+            <replacement-vehicle>
+                <vehicle-class>S1</vehicle-class>
+            </replacement-vehicle>
+            <third-party>
+                <insurer>
+                    <name>RSA</name>
+                    <policy-number></policy-number>
+                    <claim-reference></claim-reference>
+                </insurer>
+                <vehicle>
+                    <vehicle-registration>G360YBC</vehicle-registration>
+                    <vehicle-manufacturer>Fiat</vehicle-manufacturer>
+                    <vehicle-model>Panda</vehicle-model>
+                    <vehicle-class>S1</vehicle-class>
+                </vehicle>
+                <driver>
+                    <title>Mr</title>
+                    <firstnames>Stuart Ian Nicholas</firstnames>
+                    <lastname>Coates</lastname>
+                    <address1>27 Primula Way</address1>
+                    <address2>Chelmsford</address2>
+                    <address3>Essex</address3>
+                    <address4></address4>
+                    <address5></address5>
+                    <postcode>CM1 6QT</postcode>
+                    <telephone-day>03333401970</telephone-day>
+                    <telephone-evening></telephone-evening>
+                    <email>stu@stucoates.com</email>
+                </driver>
+            </third-party>
+            <incident>
+                <date>2008-07-10T10:00:00</date>
+                <location>Chelmsford</location>
+                <police-involved>N</police-involved>
+                <description>Shunted from the rear</description>
+                <witnesses>
+                    <witness>
+                        <name>Kellyanne Coates</name>
+                        <address1>27 Primula Way</address1>
+                        <address2>Chelmsford</address2>
+                        <address3>Essex</address3>
+                        <address4></address4>
+                        <address5></address5>
+                        <postcode>CM1 6QT</postcode>
+                        <telephone-day>03333401970</telephone-day>
+                        <telephone-evening></telephone-evening>
+                        <email>stu@stucoates.com</email>
+                    </witness>
+                </witnesses>
+                <injuries>
+                    <injury>
+                        <name>Kellyanne Coates</name>
+                        <address1>27 Primula Way</address1>
+                        <address2>Chelmsford</address2>
+                        <address3>Essex</address3>
+                        <address4></address4>
+                        <address5></address5>
+                        <postcode>CM1 6QT</postcode>
+                        <telephone-day>03333401970</telephone-day>
+                        <telephone-evening></telephone-evening>
+                        <email>stu@stucoates.com</email>
+                        <solicitor>
+                            <name>Grab Pocket and Run</name>
+                            <address1>27 Primula Way</address1>
+                            <address2>Chelmsford</address2>
+                            <address3>Essex</address3>
+                            <address4></address4>
+                            <address5></address5>
+                            <postcode>CM1 6QT</postcode>
+                            <telephone>03333401970</telephone>
+                            <email>stu@stu-solicitors.com</email>
+                        </solicitor>
+                    </injury>
+                </injuries>
+            </incident>
+        </claim>
+        <repair>
+            <engineer-report>
+                <labour-amount>100</labour-amount>
+                <total-amount>900</total-amount>
+                <days>7</days>
+                <usable>n</usable>
+                <name>Bob Engineer</name>
+                <company>Honest Bobs Garages</company>
+            </engineer-report>
+        </repair>
+    </rental>
+</chox>

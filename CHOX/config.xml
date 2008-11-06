@@ -1,0 +1,32 @@
+<?xml version='1.0'?>
+<config>
+	<database>
+		<driver>org.postgresql.Driver</driver>
+		<url>jdbc:postgresql://127.0.0.1:5432/chox</url>
+		<user>idas</user>
+		<password>idas</password>
+	</database>
+
+	<email>
+		<smtp-server>smtp.gmail.com</smtp-server>
+		<smtp-port>465</smtp-port>
+		<smtp-username>idas@idasnetwork.com</smtp-username>
+		<smtp-password>dent42</smtp-password>
+		<smtp-useSSL>y</smtp-useSSL>
+		<smtp-authenticate>y</smtp-authenticate>
+	</email>
+
+	<alerts>
+		<twitter>
+			<username>iDASNetwork</username>
+			<password>myiDAS</password>
+			<url>http://twitter.com/statuses/update.xml</url>
+		</twitter>
+	</alerts>
+
+	<document-templates>
+		<location>/Users/stu/Projects/CHOX/FormTemplates</location>
+	</document-templates>
+
+</config>
+
