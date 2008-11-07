@@ -5,7 +5,7 @@
 
 package chox.services;
 
-import chox.models.Claim;
+import chox.model.Claim;
 import java.util.List;
 
 /**
@@ -16,6 +16,7 @@ public class ClaimServiceImpl implements ClaimService {
     
     public List<Claim> getAllClaims()
     {
+        
         return null;
     }    
     

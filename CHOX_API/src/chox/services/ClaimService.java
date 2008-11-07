@@ -5,7 +5,7 @@
 
 package chox.services;
 
-import chox.models.Claim;
+import chox.model.Claim;
 import java.util.List;
 
 /**
