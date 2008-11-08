@@ -5,7 +5,7 @@
 
 package chox.web.action;
 
-import chox.web.action.Claim.ListAllClaimsAction;
+import chox.web.actions.ListAllClaimsAction;
 import chox.model.Claim;
 import chox.services.ClaimService;
 import java.util.ArrayList;
