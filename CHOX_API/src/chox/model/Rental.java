@@ -26,6 +26,15 @@ public class Rental {
     private Timestamp firstContact = new Timestamp(System.currentTimeMillis());
     private Timestamp created = new Timestamp(System.currentTimeMillis());
     private Supplier supplier;
+    private Invoice invoice;
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
 
     public Supplier getSupplier() {
         return supplier;
