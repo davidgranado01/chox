@@ -1,5 +1,6 @@
-package chox.web.action;
+package chox.web.action.Claim;
 
+import chox.web.action.*;
 import chox.model.Claim;
 import chox.services.ClaimService;
 import java.util.List;
