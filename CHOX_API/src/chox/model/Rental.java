@@ -25,7 +25,16 @@ public class Rental {
     private String rentalStatus = "In Progress";
     private Timestamp firstContact = new Timestamp(System.currentTimeMillis());
     private Timestamp created = new Timestamp(System.currentTimeMillis());
+    private Supplier supplier;
 
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+    
     public long getID() {
         return ID;
     }
@@ -81,6 +90,5 @@ public class Rental {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
-    
     
 }

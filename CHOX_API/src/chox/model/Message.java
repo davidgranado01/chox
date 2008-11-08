@@ -7,10 +7,6 @@ package chox.model;
 
 import java.sql.Timestamp;
 
-/**
- *
- * @author Carlson
- */
 public class Message {
 
     private long ID = -1;
