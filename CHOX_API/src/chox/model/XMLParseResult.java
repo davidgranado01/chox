@@ -3,12 +3,32 @@ package chox.model;
 public class XMLParseResult {
     private long ID = -1;
     private long SupplierId = -1;
-    private Boolean isSchemaValid = false;
-    private Boolean isDataValid = false;
-    private String SchemaValidationRemark;
-    private String DataValidationRemark;
+    private Boolean isSchemaValid = true;
+    private Boolean isDataValid = true;
+    private String SchemaValidationRemark = "";
+    private String DataValidationRemark = "";
     private Rental rental;
     private String UploadType;
+    
+    // USE WHEN RUNING THE VALIDATION
+    private Boolean isCurrentScheValid = true;
+    private Boolean isCurrentDataValid = true;
+
+    public Boolean getIsCurrentDataValid() {
+        return isCurrentDataValid;
+    }
+
+    public void setIsCurrentDataValid(Boolean isCurrentDataValid) {
+        this.isCurrentDataValid = isCurrentDataValid;
+    }
+
+    public Boolean getIsCurrentScheValid() {
+        return isCurrentScheValid;
+    }
+
+    public void setIsCurrentScheValid(Boolean isCurrentScheValid) {
+        this.isCurrentScheValid = isCurrentScheValid;
+    }
 
     public String getDataValidationRemark() {
         return DataValidationRemark;
