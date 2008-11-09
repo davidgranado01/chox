@@ -170,6 +170,7 @@ public class XmlProcessController {
             rental.setFirstContact(tFirstContactDateTime);
             xmlParseResult.setRental(rental);
         }
+        
         return xmlParseResult;
     } 
     
@@ -818,6 +819,8 @@ public class XmlProcessController {
         
         if(xmlParseResult.getIsCurrentScheValid()){
             
+            ArrayList<RentalExtra> rentalExtras = new ArrayList<RentalExtra>();
+            
             for (Element ee : extraElements) {
 
                 xmlParseResult.setIsCurrentDataValid(true);
@@ -828,9 +831,16 @@ public class XmlProcessController {
                 xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "item-cost", XmlHelper.isMAN_Invoice_Extras_Item_Cost, XmlHelper.REG_BIGDECIMAL, parentNodeName);
 
                 if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
-
+                    RentalExtra rentalExtra = new RentalExtra();
+                    rentalExtra.setItemAmount(new BigDecimal(XmlHelper.getNodeValue(ee, "item-cost")));
+                    rentalExtra.setQuantity(new BigDecimal(XmlHelper.getNodeValue(ee, "quantity")));
+                    rentalExtra.setRentalID(xmlParseResult.getRental().getID());
+                    rentalExtras.add(rentalExtra);
                 }
             }
+            
+            System.out.println ("$$$ INVOICE DETAIL EXTRA : " + rentalExtras.size());
+            
         }
         return xmlParseResult;
     }
@@ -883,7 +893,22 @@ public class XmlProcessController {
         xmlParseResult = xmlNodeValidation(xmlParseResult, mainElement, "rental-start", XmlHelper.isMAN_RentalVehicles_Rental_Start, XmlHelper.REG_TIMESTAMP, parentNodePath);
         xmlParseResult = xmlNodeValidation(xmlParseResult, mainElement, "rental-end", XmlHelper.isMAN_RentalVehicles_Rental_End, XmlHelper.REG_TIMESTAMP, parentNodePath);
         xmlParseResult = xmlNodeValidation(xmlParseResult, mainElement, "rental-days", XmlHelper.isMAN_RentalVehicles_Rental_Days, XmlHelper.REG_INTEGER, parentNodePath);
-
+        
+        if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
+            
+            RentalVehicle rentalvehicle = new RentalVehicle();
+            rentalvehicle.setDays(new BigDecimal(XmlHelper.getNodeValue(mainElement, "rental-days")));
+            rentalvehicle.setRentalEnd(XmlHelper.parseDate(XmlHelper.getNodeValue(mainElement, "rental-end")));
+            rentalvehicle.setRentalStart(XmlHelper.parseDate(XmlHelper.getNodeValue(mainElement, "rental-start")));
+            //rentalvehicle.setVehicleClassID(Long.parseLong(XmlHelper.getNodeValue(mainElement, "vehicle-class")));
+            rentalvehicle.setVehicleManufacturer(XmlHelper.getNodeValue(mainElement, "vehicle-manufacturer"));
+            rentalvehicle.setVehicleModel(XmlHelper.getNodeValue(mainElement, "vehicle-model"));
+            rentalvehicle.setVehicleRegistration(XmlHelper.getNodeValue(mainElement, "vehicle-registration"));
+            
+            //rentalvehicle.setRentalID(XmlHelper.getNodeValue(mainElement, "rental-days");
+            //rentalvehicle.setUuid(XmlHelper.getNodeValue(mainElement, "rental-days");
+        }
+        
         // PART 2 : EXTRA SECTION
         String nodeName1 = "extras";
         String nodeName2 = "extra";        
