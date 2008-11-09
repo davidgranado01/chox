@@ -65,8 +65,10 @@ public class XmlProcessController {
         }
     }
     
-    public static void XMLValidationProcess(Document doc, String sUpdateType, Boolean isAllowPartialUpload) {
+    public static ArrayList<XMLParseResult> XMLValidationProcess(Document doc, String sUpdateType, Boolean isAllowPartialUpload) {
     
+        ArrayList<XMLParseResult> xmlParseResults = new ArrayList<XMLParseResult>();
+        
         try {
             
             doc.getDocumentElement().normalize ();
@@ -74,7 +76,6 @@ public class XmlProcessController {
             
             if (root != null && root.getTagName().equals("chox")) {
             
-                ArrayList<XMLParseResult> xmlParseResults = new ArrayList<XMLParseResult>();
                 ArrayList<Element> rentalElements = XMLUtils.getElements(doc, root, "rental");
 
                 int count = 0;
@@ -91,8 +92,6 @@ public class XmlProcessController {
                         throw e;
                     }
                 }
-                
-                System.out.println ("** SIZE ::: " + xmlParseResults.size());
             }
         
         }catch (SAXParseException err) {
@@ -104,6 +103,8 @@ public class XmlProcessController {
         }catch (Throwable t) {
             t.printStackTrace ();
         }
+        
+        return xmlParseResults;
     }
     
     private static XMLParseResult xmlSchemaValidateProcess(
