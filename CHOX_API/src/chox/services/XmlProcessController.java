@@ -117,9 +117,17 @@ public class XmlProcessController {
         // DO NOT CHANGE THE SEQUENCE
         xmlParseResult = RentalStatusSchemaValidation(xmlParseResult, root, doc);       // DONE
         xmlParseResult = RentalFirstContactSchemaValidation(xmlParseResult, root, doc); // DONE
-        xmlParseResult = RentalSupplierSchemaValidation(xmlParseResult, root, doc);     // 
-        xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);
+        xmlParseResult = RentalSupplierSchemaValidation(xmlParseResult, root, doc);     // DONE
+        
+            System.out.println (" ** RentalStatusSchemaValidation:"+xmlParseResult.getRental().getRentalStatus());
+            System.out.println (" ** RentalFirstContactSchemaValidation:"+xmlParseResult.getRental().getFirstContact());
+            System.out.println (" ** RentalSupplierSchemaValidation:"+xmlParseResult.getRental().getSupplierReference());
+            System.out.println (" ** RentalSupplierSchemaValidation:"+xmlParseResult.getRental().getSupplier().getName());
+        
         xmlParseResult = RentalClaimSchemaValidation(xmlParseResult, root, doc);
+        
+            
+        xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);
         xmlParseResult = RentalRepairSchemaValidation(xmlParseResult, root, doc);
         
         if(!sUploadType.equalsIgnoreCase("C")){
@@ -127,12 +135,11 @@ public class XmlProcessController {
             xmlParseResult = RentalInvoiceSchemaValidation(xmlParseResult, root, doc);
         }
         
-        System.out.println (" ** getIsSchemaValid: " + xmlParseResult.getIsSchemaValid());
-        System.out.println (" ** getSchemaValidationRemark: " + xmlParseResult.getSchemaValidationRemark());
-        System.out.println (" ** getIsDataValid: " + xmlParseResult.getIsDataValid());
-        System.out.println (" ** getDataValidationRemark: " + xmlParseResult.getDataValidationRemark());
-                
-        System.out.println ("********************************************");
+            System.out.println (" ** getIsSchemaValid: " + xmlParseResult.getIsSchemaValid());
+            System.out.println (" ** getSchemaValidationRemark: " + xmlParseResult.getSchemaValidationRemark());
+            System.out.println (" ** getIsDataValid: " + xmlParseResult.getIsDataValid());
+            System.out.println (" ** getDataValidationRemark: " + xmlParseResult.getDataValidationRemark());
+            System.out.println ("********************************************");
         
         return xmlParseResult;
     }
@@ -200,18 +207,24 @@ public class XmlProcessController {
                 
                 Rental rental = new Rental();
                 
-                
                 if(isRentalExist(strSupplierReference)){
                     // rental = ;
-                    rental.setFirstContact(xmlParseResult.getRental().getFirstContact());
-                    rental.setRentalStatus(xmlParseResult.getRental().getRentalStatus());
+                    
+                    // RETRIEVE THE DATA SET TO RENTAL OBJECT BEFORE AND 
+                    // rental.setFirstContact(xmlParseResult.getRental().getFirstContact());
+                    // rental.setRentalStatus(xmlParseResult.getRental().getRentalStatus());
+                    
                 }else{
-                    rental = xmlParseResult.getRental();
+                    
+                    // SET SUPPLIER OBJECT
                     Supplier supplier = new Supplier();
+                    supplier.setName(strSupplierName);
+                    
+                    rental = xmlParseResult.getRental();
                     rental.setSupplier(supplier);
+                    rental.setSupplierReference(strSupplierReference);
                 }
                 
-                rental.setSupplierReference(strSupplierReference);
                 xmlParseResult.setRental(rental);
             }
         }
@@ -344,24 +357,25 @@ public class XmlProcessController {
         xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName1, clidNodeLabel1);
         xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName2, clidNodeLabel2);
         
-         if(xmlParseResult.getIsCurrentScheValid()){
-            
+        if(xmlParseResult.getIsCurrentScheValid()){
+
             Element thisElement = XMLUtils.getElement(mainElement, mainNodeName);
-            
+
             // INSURER
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "name", XmlHelper.isMAN_Claim_Customer_Insurer_name, "", clidNodeLabel1);
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "policy-number", XmlHelper.isMAN_Claim_Customer_Insurer_policyNumber, "", clidNodeLabel1);
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "claim-reference", XmlHelper.isMAN_Claim_Customer_Insurer_claimReference, "", clidNodeLabel1);
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "comprehensive", XmlHelper.isMAN_Claim_Customer_Insurer_comprehensive, "", clidNodeLabel1);
-            
+
             // VEHICLE
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-registration", XmlHelper.isMAN_Claim_Customer_Vehicle_Registration, "", clidNodeLabel2);
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-manufacturer", XmlHelper.isMAN_Claim_Customer_Vehicle_Manufacturer, "", clidNodeLabel2);
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-model", XmlHelper.isMAN_Claim_Customer_Vehicle_Model, "", clidNodeLabel2);
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-class", XmlHelper.isMAN_Claim_Customer_Vehicle_Class, "", clidNodeLabel2);
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "usable", XmlHelper.isMAN_Claim_Customer_Vehicle_Usable, "", clidNodeLabel2);            
-            
-         }
+
+        }
+        
         return xmlParseResult;
     }
     
