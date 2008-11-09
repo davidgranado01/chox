@@ -883,7 +883,7 @@ public class XmlProcessController {
         xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "rental-start", XmlHelper.isMAN_RentalVehicles_Rental_Start, XmlHelper.REG_TIMESTAMP, parentNodePath);
         xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "rental-end", XmlHelper.isMAN_RentalVehicles_Rental_End, XmlHelper.REG_TIMESTAMP, parentNodePath);
         xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "rental-days", XmlHelper.isMAN_RentalVehicles_Rental_Days, XmlHelper.REG_INTEGER, parentNodePath);
-                
+
         String ExtraNodeName = "extras";
         Element extraElement = XMLUtils.getElement(thisElement, ExtraNodeName);
         
