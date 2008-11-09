@@ -5,8 +5,11 @@
 
 package chox.services;
 
+import chox.data.HibernateUtil;
 import chox.model.Claim;
+import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Session;
 
 /**
  *
@@ -16,8 +19,35 @@ public class ClaimServiceImpl implements ClaimService {
     
     public List<Claim> getAllClaims()
     {
-        
+        Session currentSession = HibernateUtil.currentSession();
+      
         return null;
-    }    
+    }   
+    
+    public void InsertDummyClaims()
+    {
+        Claim c4 = new Claim();
+        c4.setTpClaimReference("C4");
+        c4.setRentalId(1000000);
+        c4.setPolicyHolderName("AhKeong");
+        c4.setVehicleRegistration("C48793FG");
+        c4.setVehicleManufacturer("Hinda");
+        c4.setVehicleModel("Civil 1.8 RX");
+        c4.setVehicleClassId(1000000);
+        c4.setUsable("y");
+        c4.setInsurerCountryId(1000);
+        c4.setIncidentDate(java.util.Calendar.getInstance().getTime());
+        c4.setPoliceInvolved("y");
+        c4.setClaimStatus("Awaiting Authorization");       
+        c4.setTpInsurerCountryId(1000);
+        c4.setTpVehicleClassId(1000000);
+        c4.setProposedRentalClassId(1000000);        
+        
+        Session currentSession = HibernateUtil.currentSession();
+        currentSession.beginTransaction();
+        currentSession.save(c4);
+        currentSession.getTransaction().commit();
+    }
+
     
 }
