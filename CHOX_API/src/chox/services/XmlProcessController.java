@@ -869,36 +869,50 @@ public class XmlProcessController {
     
     private static XMLParseResult RentalVehiclesDetailSchemaValidation(
             XMLParseResult xmlParseResult, 
-            Element thisElement,
+            Element mainElement,
             Document doc,
             String parentNodePath) throws Exception {
         
         xmlParseResult.setIsCurrentDataValid(true);
         xmlParseResult.setIsCurrentScheValid(true);
 
-        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-registration", XmlHelper.isMAN_RentalVehicles_Vehicle_Registration, "", parentNodePath);
-        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-manufacturer", XmlHelper.isMAN_RentalVehicles_Vehicle_Manufacturer, "", parentNodePath);
-        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-model", XmlHelper.isMAN_RentalVehicles_Vehicle_Model, "", parentNodePath);
-        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-class", XmlHelper.isMAN_RentalVehicles_Vehicle_Class, "", parentNodePath);
-        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "rental-start", XmlHelper.isMAN_RentalVehicles_Rental_Start, XmlHelper.REG_TIMESTAMP, parentNodePath);
-        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "rental-end", XmlHelper.isMAN_RentalVehicles_Rental_End, XmlHelper.REG_TIMESTAMP, parentNodePath);
-        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "rental-days", XmlHelper.isMAN_RentalVehicles_Rental_Days, XmlHelper.REG_INTEGER, parentNodePath);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, mainElement, "vehicle-registration", XmlHelper.isMAN_RentalVehicles_Vehicle_Registration, "", parentNodePath);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, mainElement, "vehicle-manufacturer", XmlHelper.isMAN_RentalVehicles_Vehicle_Manufacturer, "", parentNodePath);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, mainElement, "vehicle-model", XmlHelper.isMAN_RentalVehicles_Vehicle_Model, "", parentNodePath);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, mainElement, "vehicle-class", XmlHelper.isMAN_RentalVehicles_Vehicle_Class, "", parentNodePath);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, mainElement, "rental-start", XmlHelper.isMAN_RentalVehicles_Rental_Start, XmlHelper.REG_TIMESTAMP, parentNodePath);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, mainElement, "rental-end", XmlHelper.isMAN_RentalVehicles_Rental_End, XmlHelper.REG_TIMESTAMP, parentNodePath);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, mainElement, "rental-days", XmlHelper.isMAN_RentalVehicles_Rental_Days, XmlHelper.REG_INTEGER, parentNodePath);
 
-        String ExtraNodeName = "extras";
-        Element extraElement = XMLUtils.getElement(thisElement, ExtraNodeName);
+        // PART 2 : EXTRA SECTION
+        String nodeName1 = "extras";
+        String nodeName2 = "extra";        
         
-        // MAIN EXTRA ELEMENT
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, thisElement, ExtraNodeName, "Extras");
-
-        // MAIN EXTRA DETAIL ELEMENT
-        ArrayList<Element> extraElements = XMLUtils.getElements(doc, extraElement, "extra");
+        String childNodeLabel1 = XmlHelper.contructureErrorMessagePath(parentNodePath, nodeName1);
+        String childNodeLabel2 = XmlHelper.contructureErrorMessagePath(childNodeLabel1, nodeName2);
         
-        for (Element ee : extraElements) {
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "extra", XmlHelper.isMAN_RentalVehicles_Extras_Extra, "", "Extras:Extra");
-        }
+        xmlParseResult.setIsCurrentDataValid(true);
+        xmlParseResult.setIsCurrentScheValid(true);
         
-        if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
-            //TODO:
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName1, parentNodePath);
+        
+        if(xmlParseResult.getIsCurrentScheValid()){
+            
+            xmlParseResult.setIsCurrentScheValid(true);
+            Element thisElement = XMLUtils.getElement(mainElement, nodeName1);
+            xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, thisElement, nodeName2, childNodeLabel1);
+            
+            if(xmlParseResult.getIsCurrentScheValid()){
+                
+                ArrayList<Element> extraElements = XMLUtils.getElements(doc, thisElement, nodeName2);
+                xmlParseResult = xmlSchemaNodeListValidation(xmlParseResult, extraElements, nodeName2, childNodeLabel1);
+                
+                if(xmlParseResult.getIsCurrentScheValid()){
+                    for (Element ee : extraElements) {
+                        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, nodeName2, XmlHelper.isMAN_RentalVehicles_Extras_Extra, "", childNodeLabel2);
+                    }
+                }
+            }
         }
         
         return xmlParseResult;
