@@ -5,7 +5,6 @@
 
 package chox.services;
 
-import chox.model.Claim;
 import java.util.List;
 
 /**
@@ -14,6 +13,6 @@ import java.util.List;
  */
 public interface ClaimService {
     
-    public List<Claim> getAllClaims();
+    public List getAllClaims();
 
 }

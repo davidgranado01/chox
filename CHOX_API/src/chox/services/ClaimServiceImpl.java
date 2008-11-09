@@ -7,8 +7,8 @@ package chox.services;
 
 import chox.data.HibernateUtil;
 import chox.model.Claim;
-import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 
 /**
@@ -17,11 +17,11 @@ import org.hibernate.Session;
  */
 public class ClaimServiceImpl implements ClaimService {
     
-    public List<Claim> getAllClaims()
+    public List getAllClaims()
     {
-        Session currentSession = HibernateUtil.currentSession();
-      
-        return null;
+       Session currentSession = HibernateUtil.currentSession();
+       Criteria criteria = currentSession.createCriteria(Claim.class);       
+       return criteria.list();
     }   
     
     public void InsertDummyClaims()

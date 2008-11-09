@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Date;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-
+ 
 /**
  * This file is generated from a template that you can modify if you want different behaviour.
  *
  */
 public class HibernateUtil {
-
+   
     private static final SessionFactory sessionFactory;
     private static final ThreadLocal session = new ThreadLocal();
 
@@ -24,7 +24,7 @@ public class HibernateUtil {
             throw new ExceptionInInitializerError(ex);
         }
     }
-
+ 
     public static Session currentSession() throws HibernateException {
         Session s = (Session) session.get();
         if (s == null) {
