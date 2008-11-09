@@ -47,6 +47,8 @@ public class ClaimServiceImpl implements ClaimService {
         currentSession.beginTransaction();
         currentSession.save(c4);
         currentSession.getTransaction().commit();
+        
+        
     }
 
     

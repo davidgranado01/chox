@@ -127,10 +127,10 @@ public class XmlProcessController {
         xmlParseResult = RentalClaimSchemaValidation(xmlParseResult, root, doc);
         
             
-        xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);
-        xmlParseResult = RentalRepairSchemaValidation(xmlParseResult, root, doc);
+        xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);      // DONE
         
         if(!sUploadType.equalsIgnoreCase("C")){
+            xmlParseResult = RentalRepairSchemaValidation(xmlParseResult, root, doc);
             xmlParseResult = RentalVehiclesSchemaValidation(xmlParseResult, root, doc);
             xmlParseResult = RentalInvoiceSchemaValidation(xmlParseResult, root, doc);
         }
@@ -153,13 +153,13 @@ public class XmlProcessController {
         String mainNodeName = "rental";
         String nodeName1 = "first-contact";
         
-        String clidNodeLabelMain = XmlHelper.contructureErrorMessagePath(mainNodeName, "");
+        String childNodeLabelMain = XmlHelper.contructureErrorMessagePath(mainNodeName, "");
  
         xmlParseResult.setIsCurrentDataValid(true);
         xmlParseResult.setIsCurrentScheValid(true);
         
         // CHECK MAIN ELEMENT
-        xmlParseResult = xmlNodeValidation(xmlParseResult, root, nodeName1, XmlHelper.isMAN_First_Contact, XmlHelper.REG_TIMESTAMP ,clidNodeLabelMain);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, root, nodeName1, XmlHelper.isMAN_First_Contact, XmlHelper.REG_TIMESTAMP ,childNodeLabelMain);
 
         if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
             
@@ -184,11 +184,11 @@ public class XmlProcessController {
         String nodeName1 = "supplier-name";
         String nodeName2 = "supplier-reference";
         
-        String clidNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, "");
-        String clidNodeLabel1 = XmlHelper.contructureErrorMessagePath(clidNodeLabelMain, mainNodeName);
+        String childNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, "");
+        String childNodeLabel1 = XmlHelper.contructureErrorMessagePath(childNodeLabelMain, mainNodeName);
         
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, mainNodeName, clidNodeLabelMain);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, mainNodeName, childNodeLabelMain);
         
         if(xmlParseResult.getIsCurrentScheValid()){
             
@@ -197,8 +197,8 @@ public class XmlProcessController {
             xmlParseResult.setIsCurrentDataValid(true);
             xmlParseResult.setIsCurrentScheValid(true);
 
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, nodeName1, XmlHelper.isMAN_Supplier_Name, "", clidNodeLabel1);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, nodeName2, XmlHelper.isMAN_Supplier_Reference, "", clidNodeLabel1);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, nodeName1, XmlHelper.isMAN_Supplier_Name, "", childNodeLabel1);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, nodeName2, XmlHelper.isMAN_Supplier_Reference, "", childNodeLabel1);
             
             if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
                 
@@ -241,13 +241,13 @@ public class XmlProcessController {
         String mainNodeName = "rental";
         String nodeName1 = "rental-status";
         
-        String clidNodeLabelMain = XmlHelper.contructureErrorMessagePath(mainNodeName, "");
+        String childNodeLabelMain = XmlHelper.contructureErrorMessagePath(mainNodeName, "");
         
         xmlParseResult.setIsCurrentDataValid(true);
         xmlParseResult.setIsCurrentScheValid(true);
         
         // CHECK MAIN ELEMENT
-        xmlParseResult = xmlNodeValidation(xmlParseResult, root, nodeName1, XmlHelper.isMAN_Status, XmlHelper.REG_WORD, clidNodeLabelMain);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, root, nodeName1, XmlHelper.isMAN_Status, XmlHelper.REG_WORD, childNodeLabelMain);
         
         if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
             
@@ -270,12 +270,12 @@ public class XmlProcessController {
         String mainNodeName = "drivers";
         String nodeName1 = "driver";
         
-        String clidNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, "");
-        String clidNodeLabel1 = XmlHelper.contructureErrorMessagePath(clidNodeLabelMain, mainNodeName);
-        String clidNodeLabel2 = XmlHelper.contructureErrorMessagePath(clidNodeLabel1, nodeName1);
+        String childNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, "");
+        String childNodeLabel1 = XmlHelper.contructureErrorMessagePath(childNodeLabelMain, mainNodeName);
+        String childNodeLabel2 = XmlHelper.contructureErrorMessagePath(childNodeLabel1, nodeName1);
         
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, mainNodeName, clidNodeLabelMain);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, mainNodeName, childNodeLabelMain);
         
         if(xmlParseResult.getIsCurrentScheValid()){
             
@@ -285,31 +285,61 @@ public class XmlProcessController {
             ArrayList<Element> driverElements = XMLUtils.getElements(doc, thisElement, nodeName1);
             
             xmlParseResult.setIsCurrentScheValid(true);
-            xmlParseResult = xmlSchemaNodeListValidation(xmlParseResult, driverElements, nodeName1, clidNodeLabel1);
+            xmlParseResult = xmlSchemaNodeListValidation(xmlParseResult, driverElements, nodeName1, childNodeLabel1);
             
             if(xmlParseResult.getIsCurrentScheValid()){
+                
+                ArrayList<Driver> drivers = new ArrayList<Driver>();
+                
                 for (Element ee : driverElements) {
 
                     xmlParseResult.setIsCurrentDataValid(true);
                     xmlParseResult.setIsCurrentScheValid(true);
 
-                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "title", XmlHelper.isMAN_Driver_Title, "", clidNodeLabel2);
-                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "firstnames", XmlHelper.isMAN_Driver_Firstnames, "", clidNodeLabel2);
-                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "lastname", XmlHelper.isMAN_Driver_Lastname, "", clidNodeLabel2);
-                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "address1", XmlHelper.isMAN_Driver_Address1, "", clidNodeLabel2);
-                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "address2", XmlHelper.isMAN_Driver_Address2, "", clidNodeLabel2);
-                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "address3", XmlHelper.isMAN_Driver_Address3, "", clidNodeLabel2);
-                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "address4", XmlHelper.isMAN_Driver_Address4, "", clidNodeLabel2);
-                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "address5", XmlHelper.isMAN_Driver_Address5, "", clidNodeLabel2);
-                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "postcode", XmlHelper.isMAN_Driver_Postcode, "", clidNodeLabel2);
-                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "telephone-day", XmlHelper.isMAN_Driver_Telephone_day, XmlHelper.REG_PHONE, clidNodeLabel2);
-                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "telephone-evening", XmlHelper.isMAN_Driver_Telephone_Evening, XmlHelper.REG_PHONE, clidNodeLabel2);
-                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "email", XmlHelper.isMAN_Driver_Email, XmlHelper.REG_EMAIL, clidNodeLabel2);
-                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "primary-driver", XmlHelper.isMAN_Driver_Primary_Driver, "", clidNodeLabel2);
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "title", XmlHelper.isMAN_Driver_Title, "", childNodeLabel2);
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "firstnames", XmlHelper.isMAN_Driver_Firstnames, "", childNodeLabel2);
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "lastname", XmlHelper.isMAN_Driver_Lastname, "", childNodeLabel2);
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "address1", XmlHelper.isMAN_Driver_Address1, "", childNodeLabel2);
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "address2", XmlHelper.isMAN_Driver_Address2, "", childNodeLabel2);
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "address3", XmlHelper.isMAN_Driver_Address3, "", childNodeLabel2);
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "address4", XmlHelper.isMAN_Driver_Address4, "", childNodeLabel2);
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "address5", XmlHelper.isMAN_Driver_Address5, "", childNodeLabel2);
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "postcode", XmlHelper.isMAN_Driver_Postcode, "", childNodeLabel2);
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "telephone-day", XmlHelper.isMAN_Driver_Telephone_day, XmlHelper.REG_PHONE, childNodeLabel2);
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "telephone-evening", XmlHelper.isMAN_Driver_Telephone_Evening, XmlHelper.REG_PHONE, childNodeLabel2);
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "email", XmlHelper.isMAN_Driver_Email, XmlHelper.REG_EMAIL, childNodeLabel2);
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "primary-driver", XmlHelper.isMAN_Driver_Primary_Driver, "", childNodeLabel2);
+                    
+                    if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
+                        
+                        Driver d = new Driver();
+                        d.setRentalID(xmlParseResult.getRental().getID());
+                        d.setTitle(XmlHelper.getNodeValue(ee, "title"));
+                        d.setFirstnames(XmlHelper.getNodeValue(ee, "firstnames"));
+                        d.setLastname(XmlHelper.getNodeValue(ee, "lastname"));
+                        d.setAddress1(XmlHelper.getNodeValue(ee, "address1"));
+                        d.setAddress2(XmlHelper.getNodeValue(ee, "address2"));
+                        d.setAddress3(XmlHelper.getNodeValue(ee, "address3"));
+                        d.setAddress4(XmlHelper.getNodeValue(ee, "address4"));
+                        d.setAddress5(XmlHelper.getNodeValue(ee, "address5"));
+                        d.setPostcode(XmlHelper.getNodeValue(ee, "postcode"));
+                        d.setTelephoneDay(XmlHelper.getNodeValue(ee, "telephone-day"));
+                        d.setTelephoneEvening(XmlHelper.getNodeValue(ee, "telephone-evening"));
+                        d.setEmail(XmlHelper.getNodeValue(ee, "email"));
+
+                        String isPrimary = XmlHelper.getNodeValue(ee, "primary-driver");
+                        if (isPrimary == null || isPrimary.trim().length() == 0) {
+                            isPrimary = "n";
+                        }
+                        isPrimary = new String(isPrimary.toLowerCase().substring(0, 1));
+                        d.setPrimaryDriver(isPrimary);
+                        
+                        drivers.add(d);
+                    }
                 }
-            }                
+                System.out.println ("$$$ DRIVER LIST : " + drivers.size());
+            }
         }
-        
         return xmlParseResult;
     }  
     
@@ -322,17 +352,17 @@ public class XmlProcessController {
         String parentNodeName = "rental";
         String nodeName = "claim";
         
-        String clidNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, nodeName);
+        String childNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, nodeName);
         
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, root, nodeName, clidNodeLabelMain);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, root, nodeName, childNodeLabelMain);
         
         if(xmlParseResult.getIsCurrentScheValid()){
             Element claimNodeElement = XMLUtils.getElement(root, nodeName);
-            xmlParseResult = ClaimDetail_CustomerSchemaValidation(xmlParseResult, claimNodeElement, doc, clidNodeLabelMain);
-            xmlParseResult = ClaimDetail_ReplacementVehicleSchemaValidation(xmlParseResult, claimNodeElement, doc, clidNodeLabelMain);
-            xmlParseResult = ClaimDetail_ThirdPartySchemaValidation(xmlParseResult, claimNodeElement, doc, clidNodeLabelMain);
-            xmlParseResult = ClaimDetail_IncidentSchemaValidation(xmlParseResult, claimNodeElement, doc, clidNodeLabelMain);
+            xmlParseResult = ClaimDetail_CustomerSchemaValidation(xmlParseResult, claimNodeElement, doc, childNodeLabelMain);
+            xmlParseResult = ClaimDetail_ReplacementVehicleSchemaValidation(xmlParseResult, claimNodeElement, doc, childNodeLabelMain);
+            xmlParseResult = ClaimDetail_ThirdPartySchemaValidation(xmlParseResult, claimNodeElement, doc, childNodeLabelMain);
+            xmlParseResult = ClaimDetail_IncidentSchemaValidation(xmlParseResult, claimNodeElement, doc, childNodeLabelMain);
         }
         
         return xmlParseResult;
@@ -348,31 +378,31 @@ public class XmlProcessController {
         String nodeName1 = "insurer";
         String nodeName2 = "vehicle";
         
-        String clidNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, mainNodeName);
-        String clidNodeLabel1 = XmlHelper.contructureErrorMessagePath(clidNodeLabelMain, nodeName1);
-        String clidNodeLabel2 = XmlHelper.contructureErrorMessagePath(clidNodeLabelMain, nodeName2);
+        String childNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, mainNodeName);
+        String childNodeLabel1 = XmlHelper.contructureErrorMessagePath(childNodeLabelMain, nodeName1);
+        String childNodeLabel2 = XmlHelper.contructureErrorMessagePath(childNodeLabelMain, nodeName2);
         
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, mainNodeName, clidNodeLabelMain);
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName1, clidNodeLabel1);
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName2, clidNodeLabel2);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, mainNodeName, childNodeLabelMain);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName1, childNodeLabel1);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName2, childNodeLabel2);
         
         if(xmlParseResult.getIsCurrentScheValid()){
 
             Element thisElement = XMLUtils.getElement(mainElement, mainNodeName);
 
             // INSURER
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "name", XmlHelper.isMAN_Claim_Customer_Insurer_name, "", clidNodeLabel1);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "policy-number", XmlHelper.isMAN_Claim_Customer_Insurer_policyNumber, "", clidNodeLabel1);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "claim-reference", XmlHelper.isMAN_Claim_Customer_Insurer_claimReference, "", clidNodeLabel1);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "comprehensive", XmlHelper.isMAN_Claim_Customer_Insurer_comprehensive, "", clidNodeLabel1);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "name", XmlHelper.isMAN_Claim_Customer_Insurer_name, "", childNodeLabel1);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "policy-number", XmlHelper.isMAN_Claim_Customer_Insurer_policyNumber, "", childNodeLabel1);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "claim-reference", XmlHelper.isMAN_Claim_Customer_Insurer_claimReference, "", childNodeLabel1);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "comprehensive", XmlHelper.isMAN_Claim_Customer_Insurer_comprehensive, "", childNodeLabel1);
 
             // VEHICLE
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-registration", XmlHelper.isMAN_Claim_Customer_Vehicle_Registration, "", clidNodeLabel2);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-manufacturer", XmlHelper.isMAN_Claim_Customer_Vehicle_Manufacturer, "", clidNodeLabel2);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-model", XmlHelper.isMAN_Claim_Customer_Vehicle_Model, "", clidNodeLabel2);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-class", XmlHelper.isMAN_Claim_Customer_Vehicle_Class, "", clidNodeLabel2);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "usable", XmlHelper.isMAN_Claim_Customer_Vehicle_Usable, "", clidNodeLabel2);            
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-registration", XmlHelper.isMAN_Claim_Customer_Vehicle_Registration, "", childNodeLabel2);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-manufacturer", XmlHelper.isMAN_Claim_Customer_Vehicle_Manufacturer, "", childNodeLabel2);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-model", XmlHelper.isMAN_Claim_Customer_Vehicle_Model, "", childNodeLabel2);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-class", XmlHelper.isMAN_Claim_Customer_Vehicle_Class, "", childNodeLabel2);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "usable", XmlHelper.isMAN_Claim_Customer_Vehicle_Usable, "", childNodeLabel2);            
 
         }
         
@@ -388,15 +418,15 @@ public class XmlProcessController {
         String mainNodeName = "replacement-vehicle";
         String nodeName1 = "vehicle-class";
         
-        String clidNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, mainNodeName);
-        String clidNodeLabel1 = XmlHelper.contructureErrorMessagePath(clidNodeLabelMain, nodeName1);
+        String childNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, mainNodeName);
+        String childNodeLabel1 = XmlHelper.contructureErrorMessagePath(childNodeLabelMain, nodeName1);
         
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, mainNodeName, clidNodeLabelMain);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, mainNodeName, childNodeLabelMain);
         
         if(xmlParseResult.getIsCurrentScheValid()){
             Element thisElement = XMLUtils.getElement(mainElement, mainNodeName);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, nodeName1, XmlHelper.isMAN_Claim_ReplacementVehicle_VehicleClass, "", clidNodeLabel1);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, nodeName1, XmlHelper.isMAN_Claim_ReplacementVehicle_VehicleClass, "", childNodeLabel1);
         }
         return xmlParseResult;
     }
@@ -412,45 +442,45 @@ public class XmlProcessController {
         String nodeName2 = "vehicle";
         String nodeName3 = "driver";
         
-        String clidNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, mainNodeName);
-        String clidNodeLabel1 = XmlHelper.contructureErrorMessagePath(clidNodeLabelMain, nodeName1);
-        String clidNodeLabel2 = XmlHelper.contructureErrorMessagePath(clidNodeLabelMain, nodeName2);
-        String clidNodeLabel3 = XmlHelper.contructureErrorMessagePath(clidNodeLabelMain, nodeName3);
+        String childNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, mainNodeName);
+        String childNodeLabel1 = XmlHelper.contructureErrorMessagePath(childNodeLabelMain, nodeName1);
+        String childNodeLabel2 = XmlHelper.contructureErrorMessagePath(childNodeLabelMain, nodeName2);
+        String childNodeLabel3 = XmlHelper.contructureErrorMessagePath(childNodeLabelMain, nodeName3);
         
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, mainNodeName, clidNodeLabelMain);
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName1, clidNodeLabel1);
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName2, clidNodeLabel2);
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName3, clidNodeLabel3);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, mainNodeName, childNodeLabelMain);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName1, childNodeLabel1);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName2, childNodeLabel2);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName3, childNodeLabel3);
         
         if(xmlParseResult.getIsCurrentScheValid()){
             
             Element thisElement = XMLUtils.getElement(mainElement, mainNodeName);
             
             // INSURER
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "name", XmlHelper.isMAN_Claim_ThirdParty_Insurer_Name, "", clidNodeLabel1);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "policy-number", XmlHelper.isMAN_Claim_ThirdParty_Insurer_PolicyNumber, "", clidNodeLabel1);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "claim-reference", XmlHelper.isMAN_Claim_ThirdParty_Insurer_ClaimReference, "", clidNodeLabel1);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "name", XmlHelper.isMAN_Claim_ThirdParty_Insurer_Name, "", childNodeLabel1);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "policy-number", XmlHelper.isMAN_Claim_ThirdParty_Insurer_PolicyNumber, "", childNodeLabel1);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "claim-reference", XmlHelper.isMAN_Claim_ThirdParty_Insurer_ClaimReference, "", childNodeLabel1);
             
             // VEHICLE
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-registration", XmlHelper.isMAN_Claim_ThirdParty_Vehicle_Registration, "", clidNodeLabel2);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-manufacturer", XmlHelper.isMAN_Claim_ThirdParty_Vehicle_manufacturer, "", clidNodeLabel2);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-model", XmlHelper.isMAN_Claim_ThirdParty_Vehicle_model, "", clidNodeLabel2);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-class", XmlHelper.isMAN_Claim_ThirdParty_Vehicle_class, "", clidNodeLabel2);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-registration", XmlHelper.isMAN_Claim_ThirdParty_Vehicle_Registration, "", childNodeLabel2);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-manufacturer", XmlHelper.isMAN_Claim_ThirdParty_Vehicle_manufacturer, "", childNodeLabel2);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-model", XmlHelper.isMAN_Claim_ThirdParty_Vehicle_model, "", childNodeLabel2);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-class", XmlHelper.isMAN_Claim_ThirdParty_Vehicle_class, "", childNodeLabel2);
             
             // DRIVER
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "title", XmlHelper.isMAN_Claim_ThirdParty_Driver_Title, "", clidNodeLabel3);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "firstnames", XmlHelper.isMAN_Claim_ThirdParty_Driver_Firstnames, "", clidNodeLabel3);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "lastname", XmlHelper.isMAN_Claim_ThirdParty_Driver_Lastname, "", clidNodeLabel3);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "address1", XmlHelper.isMAN_Claim_ThirdParty_Driver_Address1, "", clidNodeLabel3);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "address2", XmlHelper.isMAN_Claim_ThirdParty_Driver_Address2, "", clidNodeLabel3);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "address3", XmlHelper.isMAN_Claim_ThirdParty_Driver_Address3, "", clidNodeLabel3);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "address4", XmlHelper.isMAN_Claim_ThirdParty_Driver_Address4, "", clidNodeLabel3);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "address5", XmlHelper.isMAN_Claim_ThirdParty_Driver_Address5, "", clidNodeLabel3);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "postcode", XmlHelper.isMAN_Claim_ThirdParty_Driver_Postcode, "", clidNodeLabel3);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "telephone-day", XmlHelper.isMAN_Claim_ThirdParty_Driver_TelephoneDay, "", clidNodeLabel3);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "telephone-evening", XmlHelper.isMAN_Claim_ThirdParty_Driver_TelephoneEvening, "", clidNodeLabel3);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "email", XmlHelper.isMAN_Claim_ThirdParty_Driver_Email, "", clidNodeLabel3);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "title", XmlHelper.isMAN_Claim_ThirdParty_Driver_Title, "", childNodeLabel3);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "firstnames", XmlHelper.isMAN_Claim_ThirdParty_Driver_Firstnames, "", childNodeLabel3);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "lastname", XmlHelper.isMAN_Claim_ThirdParty_Driver_Lastname, "", childNodeLabel3);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "address1", XmlHelper.isMAN_Claim_ThirdParty_Driver_Address1, "", childNodeLabel3);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "address2", XmlHelper.isMAN_Claim_ThirdParty_Driver_Address2, "", childNodeLabel3);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "address3", XmlHelper.isMAN_Claim_ThirdParty_Driver_Address3, "", childNodeLabel3);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "address4", XmlHelper.isMAN_Claim_ThirdParty_Driver_Address4, "", childNodeLabel3);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "address5", XmlHelper.isMAN_Claim_ThirdParty_Driver_Address5, "", childNodeLabel3);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "postcode", XmlHelper.isMAN_Claim_ThirdParty_Driver_Postcode, "", childNodeLabel3);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "telephone-day", XmlHelper.isMAN_Claim_ThirdParty_Driver_TelephoneDay, "", childNodeLabel3);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "telephone-evening", XmlHelper.isMAN_Claim_ThirdParty_Driver_TelephoneEvening, "", childNodeLabel3);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "email", XmlHelper.isMAN_Claim_ThirdParty_Driver_Email, "", childNodeLabel3);
         }        
         return xmlParseResult;
     }    
@@ -463,49 +493,85 @@ public class XmlProcessController {
 
         String mainNodeName = "incident";
         
-        String clidNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, mainNodeName);
+        String childNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, mainNodeName);
         
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, mainNodeName, clidNodeLabelMain);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, mainNodeName, childNodeLabelMain);
 
         if(xmlParseResult.getIsCurrentScheValid()){
             Element thisElement = XMLUtils.getElement(mainElement, mainNodeName);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "date", XmlHelper.isMAN_Claim_Incident_Date, XmlHelper.REG_TIMESTAMP, clidNodeLabelMain);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "location", XmlHelper.isMAN_Claim_Incident_Location, "", clidNodeLabelMain);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "police-involved", XmlHelper.isMAN_Claim_Incident_PoliceInvolved, "", clidNodeLabelMain);
-            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "description", XmlHelper.isMAN_Claim_Incident_Description, "", clidNodeLabelMain);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "date", XmlHelper.isMAN_Claim_Incident_Date, XmlHelper.REG_TIMESTAMP, childNodeLabelMain);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "location", XmlHelper.isMAN_Claim_Incident_Location, "", childNodeLabelMain);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "police-involved", XmlHelper.isMAN_Claim_Incident_PoliceInvolved, "", childNodeLabelMain);
+            xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "description", XmlHelper.isMAN_Claim_Incident_Description, "", childNodeLabelMain);
         }
         return xmlParseResult;
     }   
     
-    // VALIDATE CLAIM SECTION 
+    // VALIDATE REPAIR SECTION 
     private static XMLParseResult RentalRepairSchemaValidation(
             XMLParseResult xmlParseResult, 
-            Element root,
+            Element mainElement,
             Document doc) throws Exception {
         
-        String nodeName = "repair";
-        String subNodeName = "engineer-report";
-        String strPath = "Repair:Engineer Report";
+        String parentNodeName = "rental";
+        String nodeName1 = "repair";
+        String nodeName2 = "engineer-report";
+        
+        String childNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, "");
+        String childNodeLabel1 = XmlHelper.contructureErrorMessagePath(childNodeLabelMain, nodeName1);
+        String childNodeLabel2 = XmlHelper.contructureErrorMessagePath(childNodeLabel1, nodeName2);
         
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, root, nodeName, "Repair");
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, root, subNodeName, "Engineer Report");
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName1, childNodeLabelMain);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName2, childNodeLabel1);
         
         if(xmlParseResult.getIsCurrentScheValid()){
-
-            ArrayList<Element> repairElements = XMLUtils.getElements(doc, root, subNodeName);
             
-            for (Element ee : repairElements) {
+            ArrayList<Element> engineerReportElements = XMLUtils.getElements(doc, mainElement, nodeName2);
+            xmlParseResult = xmlSchemaNodeListValidation(xmlParseResult, engineerReportElements, nodeName2, childNodeLabel1);
             
-                xmlParseResult.setIsCurrentDataValid(true);
-                xmlParseResult.setIsCurrentScheValid(true);
+            if(xmlParseResult.getIsCurrentScheValid()){
                 
-                xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "labour-amount", XmlHelper.isMAN_Driver_Title, XmlHelper.REG_BIGDECIMAL, strPath);
-                xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "total-amount", XmlHelper.isMAN_Driver_Firstnames, XmlHelper.REG_BIGDECIMAL, strPath);
-                xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "days", XmlHelper.isMAN_Driver_Lastname, XmlHelper.REG_INTEGER, strPath);
+                ArrayList<EngineerReport> engineerReports = new ArrayList<EngineerReport>();
+                
+                for (Element ee : engineerReportElements) {
+
+                    xmlParseResult.setIsCurrentDataValid(true);
+                    xmlParseResult.setIsCurrentScheValid(true);
+
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "labour-amount", XmlHelper.isMAN_Driver_Title, XmlHelper.REG_BIGDECIMAL, childNodeLabel2);
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "total-amount", XmlHelper.isMAN_Driver_Firstnames, XmlHelper.REG_BIGDECIMAL, childNodeLabel2);
+                    xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "days", XmlHelper.isMAN_Driver_Lastname, XmlHelper.REG_INTEGER, childNodeLabel2);                
+                    
+                    if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
+                        
+                        EngineerReport engineerReport = new EngineerReport();
+                        // engineerReport.setClaimID(xmlParseResult.getID());
+                        engineerReport.setDays(new BigDecimal(XmlHelper.getNodeValue(ee, "days")));
+                        engineerReport.setLabourAmount(new BigDecimal(XmlHelper.getNodeValue(ee, "labour-amount")));
+                        engineerReport.setTotalAmount(new BigDecimal(XmlHelper.getNodeValue(ee, "total-amount")));
+                        
+                        /*
+                        engineerReport.setName();
+                        engineerReport.setAddress1(address1);
+                        engineerReport.setAddress2(address2);
+                        engineerReport.setAddress3(address3);
+                        engineerReport.setAddress4(address4);
+                        engineerReport.setAddress5(address5);
+                        engineerReport.setPostcode(postcode);
+                        engineerReport.setTelephone(telephone);
+                        engineerReport.setEmail(email);
+                        engineerReport.setUsable(usable);
+                        */
+                        
+                        engineerReports.add(engineerReport);
+                    }
+                }
+                System.out.println ("$$$ ENGINEER REPORT : " + engineerReports.size());
             }
         }
+
         return xmlParseResult;
     }  
     
@@ -518,17 +584,15 @@ public class XmlProcessController {
         String parentNodeName = "rental";
         String nodeName1 = "invoice";
         
-        Boolean bFlag = false;
-        
-        String clidNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, "");
-        String clidNodeLabel1 = XmlHelper.contructureErrorMessagePath(clidNodeLabelMain, nodeName1);
+        String childNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, "");
+        String childNodeLabel1 = XmlHelper.contructureErrorMessagePath(childNodeLabelMain, nodeName1);
         
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName1, clidNodeLabelMain);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName1, childNodeLabelMain);
         
         if(xmlParseResult.getIsCurrentScheValid()){
             Element thisElement = XMLUtils.getElement(mainElement, nodeName1);
-            xmlParseResult = RentalInvoiceDetailSchemaValidation(xmlParseResult, thisElement, doc, clidNodeLabel1);
+            xmlParseResult = RentalInvoiceDetailSchemaValidation(xmlParseResult, thisElement, doc, childNodeLabel1);
         }
         return xmlParseResult;
     }
@@ -563,12 +627,12 @@ public class XmlProcessController {
         
         if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
  
-            String clidNodeLabel0 = XmlHelper.contructureErrorMessagePath(parentNodeName, subNodeName0);
-            String clidNodeLabel1 = XmlHelper.contructureErrorMessagePath(parentNodeName, subNodeName1);
-            String clidNodeLabel2 = XmlHelper.contructureErrorMessagePath(parentNodeName, subNodeName2);
-            String clidNodeLabel3 = XmlHelper.contructureErrorMessagePath(parentNodeName, subNodeName3);
-            String clidNodeLabel4 = XmlHelper.contructureErrorMessagePath(parentNodeName, subNodeName4);
-            String clidNodeLabel5 = XmlHelper.contructureErrorMessagePath(parentNodeName, subNodeName5);
+            String childNodeLabel0 = XmlHelper.contructureErrorMessagePath(parentNodeName, subNodeName0);
+            String childNodeLabel1 = XmlHelper.contructureErrorMessagePath(parentNodeName, subNodeName1);
+            String childNodeLabel2 = XmlHelper.contructureErrorMessagePath(parentNodeName, subNodeName2);
+            String childNodeLabel3 = XmlHelper.contructureErrorMessagePath(parentNodeName, subNodeName3);
+            String childNodeLabel4 = XmlHelper.contructureErrorMessagePath(parentNodeName, subNodeName4);
+            String childNodeLabel5 = XmlHelper.contructureErrorMessagePath(parentNodeName, subNodeName5);
             
             /*
             BigDecimal bNet = new BigDecimal(XmlHelper.getNodeValue(thisElement, "net"));
@@ -587,22 +651,22 @@ public class XmlProcessController {
             */
             
             // VEHICLES
-            xmlParseResult = InvoiceDetail_VehiclesValidSchemaValidation(xmlParseResult, thisElement, clidNodeLabel0, subNodeName0);
+            xmlParseResult = InvoiceDetail_VehiclesValidSchemaValidation(xmlParseResult, thisElement, childNodeLabel0, subNodeName0);
             
             // EXTRAS
-            xmlParseResult = InvoiceDetail_ExtrasValidSchemaValidation(xmlParseResult, thisElement, doc, clidNodeLabel1, subNodeName1);
+            xmlParseResult = InvoiceDetail_ExtrasValidSchemaValidation(xmlParseResult, thisElement, doc, childNodeLabel1, subNodeName1);
             
             // REPAIR
-            xmlParseResult = InvoiceDetail_RepairValidSchemaValidation(xmlParseResult, thisElement, clidNodeLabel2, subNodeName2);
+            xmlParseResult = InvoiceDetail_RepairValidSchemaValidation(xmlParseResult, thisElement, childNodeLabel2, subNodeName2);
             
             // storage-recovery
-            xmlParseResult = InvoiceDetail_StorageRecoveryValidSchemaValidation(xmlParseResult, thisElement, clidNodeLabel3, subNodeName3);
+            xmlParseResult = InvoiceDetail_StorageRecoveryValidSchemaValidation(xmlParseResult, thisElement, childNodeLabel3, subNodeName3);
             
             // engineer-fee
-            xmlParseResult = InvoiceDetail_EngineerFeeValidSchemaValidation(xmlParseResult, thisElement, clidNodeLabel4, subNodeName4);
+            xmlParseResult = InvoiceDetail_EngineerFeeValidSchemaValidation(xmlParseResult, thisElement, childNodeLabel4, subNodeName4);
             
             // claim-handling-fee
-            //xmlParseResult = InvoiceDetail_ClaimHandlingFeeValidSchemaValidation(xmlParseResult, thisElement, clidNodeLabel5, subNodeName5);
+            //xmlParseResult = InvoiceDetail_ClaimHandlingFeeValidSchemaValidation(xmlParseResult, thisElement, childNodeLabel5, subNodeName5);
 
         }
         
@@ -774,46 +838,51 @@ public class XmlProcessController {
     // VALIDATE INVOICE SECTION 
     private static XMLParseResult RentalVehiclesSchemaValidation(
             XMLParseResult xmlParseResult, 
-            Element root,
+            Element mainElement,
             Document doc) throws Exception {
         
-        String nodeName = "rental-vehicles";
-        
-        xmlParseResult.setIsCurrentDataValid(true);
+        String parentNodeName = "rental";
+        String mainNodeName = "rental-vehicles";
+        String childNodeName = "rental-vehicle";
+
+        String childNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, "");
+        String childNodeLabel1 = XmlHelper.contructureErrorMessagePath(childNodeLabelMain, mainNodeName);
+        String childNodeLabel2 = XmlHelper.contructureErrorMessagePath(childNodeLabel1, childNodeName);
+
         xmlParseResult.setIsCurrentScheValid(true);
-        
-        // CHECK MAIN ELEMENT
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, root, nodeName, "Rental Vehicles");
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, mainNodeName, childNodeLabelMain);
 
         if(xmlParseResult.getIsCurrentScheValid()){
-        
-               Element thisElement = XMLUtils.getElement(root, nodeName);
-               ArrayList<Element> rentalVehicleElements = XMLUtils.getElements(doc, thisElement, "rental-vehicle");
-               
-               for (Element ee : rentalVehicleElements) {
-                    xmlParseResult = RentalVehiclesDetailSchemaValidation(xmlParseResult, ee, doc);
+            
+            Element thisElement = XMLUtils.getElement(mainElement, mainNodeName);
+            ArrayList<Element> rentalVehicleElements = XMLUtils.getElements(doc, thisElement, childNodeName);
+            xmlParseResult = xmlSchemaNodeListValidation(xmlParseResult, rentalVehicleElements, childNodeName, childNodeLabel1);
+            
+            if(xmlParseResult.getIsCurrentScheValid()){
+                for (Element ee : rentalVehicleElements) {
+                    xmlParseResult = RentalVehiclesDetailSchemaValidation(xmlParseResult, ee, doc, childNodeLabel2);
                }
+            }
         }
-        
         return xmlParseResult;
     } 
     
     private static XMLParseResult RentalVehiclesDetailSchemaValidation(
             XMLParseResult xmlParseResult, 
             Element thisElement,
-            Document doc) throws Exception {
-        String strPath = "Rental Vehicle";
+            Document doc,
+            String parentNodePath) throws Exception {
         
         xmlParseResult.setIsCurrentDataValid(true);
         xmlParseResult.setIsCurrentScheValid(true);
 
-        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-registration", XmlHelper.isMAN_RentalVehicles_Vehicle_Registration, "", strPath);
-        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-manufacturer", XmlHelper.isMAN_RentalVehicles_Vehicle_Manufacturer, "", strPath);
-        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-model", XmlHelper.isMAN_RentalVehicles_Vehicle_Model, "", strPath);
-        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-class", XmlHelper.isMAN_RentalVehicles_Vehicle_Class, "", strPath);
-        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "rental-start", XmlHelper.isMAN_RentalVehicles_Rental_Start, XmlHelper.REG_TIMESTAMP, strPath);
-        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "rental-end", XmlHelper.isMAN_RentalVehicles_Rental_End, XmlHelper.REG_TIMESTAMP, strPath);
-        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "rental-days", XmlHelper.isMAN_RentalVehicles_Rental_Days, XmlHelper.REG_INTEGER, strPath);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-registration", XmlHelper.isMAN_RentalVehicles_Vehicle_Registration, "", parentNodePath);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-manufacturer", XmlHelper.isMAN_RentalVehicles_Vehicle_Manufacturer, "", parentNodePath);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-model", XmlHelper.isMAN_RentalVehicles_Vehicle_Model, "", parentNodePath);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-class", XmlHelper.isMAN_RentalVehicles_Vehicle_Class, "", parentNodePath);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "rental-start", XmlHelper.isMAN_RentalVehicles_Rental_Start, XmlHelper.REG_TIMESTAMP, parentNodePath);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "rental-end", XmlHelper.isMAN_RentalVehicles_Rental_End, XmlHelper.REG_TIMESTAMP, parentNodePath);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "rental-days", XmlHelper.isMAN_RentalVehicles_Rental_Days, XmlHelper.REG_INTEGER, parentNodePath);
                 
         String ExtraNodeName = "extras";
         Element extraElement = XMLUtils.getElement(thisElement, ExtraNodeName);

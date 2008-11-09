@@ -54,7 +54,7 @@ public class XmlHelper {
     public static final Boolean isMAN_RentalVehicles_Vehicle_Registration = true;    
     public static final Boolean isMAN_RentalVehicles_Vehicle_Manufacturer = true;
     public static final Boolean isMAN_RentalVehicles_Vehicle_Model = true;
-    public static final Boolean isMAN_RentalVehicles_Vehicle_Class = true;
+    public static final Boolean isMAN_RentalVehicles_Vehicle_Class = false;
     public static final Boolean isMAN_RentalVehicles_Rental_Start = true;
     public static final Boolean isMAN_RentalVehicles_Rental_End = true;
     public static final Boolean isMAN_RentalVehicles_Rental_Days = true;
@@ -83,10 +83,10 @@ public class XmlHelper {
     public static final Boolean isMAN_Claim_Customer_Vehicle_Registration = true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Manufacturer = true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Model = true;
-    public static final Boolean isMAN_Claim_Customer_Vehicle_Class = true;
+    public static final Boolean isMAN_Claim_Customer_Vehicle_Class = false;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Usable = true;
     
-    public static final Boolean isMAN_Claim_ReplacementVehicle_VehicleClass = true;
+    public static final Boolean isMAN_Claim_ReplacementVehicle_VehicleClass = false;
     public static final Boolean isMAN_Claim_ThirdParty_Insurer_Name = true;
     public static final Boolean isMAN_Claim_ThirdParty_Insurer_PolicyNumber = false;
     public static final Boolean isMAN_Claim_ThirdParty_Insurer_ClaimReference = false;
