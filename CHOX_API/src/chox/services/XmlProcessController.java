@@ -77,10 +77,15 @@ public class XmlProcessController {
         Boolean bInvoiceFlag = false;
         Boolean bFlag = false;
         
-        xmlParseResult = isFirstContactSchemaExist(xmlParseResult, root);
-        xmlParseResult = isSupplierSchemaExist(xmlParseResult, root);
-        xmlParseResult = isRentalStatusSchemaExist(xmlParseResult, root);
+        xmlParseResult = isFirstContactSchemaExist(xmlParseResult, root, doc);
+        xmlParseResult = isSupplierSchemaExist(xmlParseResult, root, doc);
         xmlParseResult = isInvoiceSchemaExist(xmlParseResult, root, doc);
+        xmlParseResult = isRentalStatusSchemaExist(xmlParseResult, root, doc);
+        xmlParseResult = isRentalVehiclesSchemaExist(xmlParseResult, root, doc);
+        // xmlParseResult = isDriversSchemaExist(xmlParseResult, root, doc);
+        // xmlParseResult = isClaimSchemaExist(xmlParseResult, root, doc);
+        // xmlParseResult = isRepairSchemaExist(xmlParseResult, root, doc);
+        
         /*
         if(isFirstContactSchemaExist(root) 
             && isSupplierSchemaExist(root) 
@@ -118,7 +123,10 @@ public class XmlProcessController {
     }
 
     // VALIDATE RENTAL CONTACT SECTION 
-    private static XMLParseResult isFirstContactSchemaExist(XMLParseResult xmlParseResult, Element root) throws Exception {
+    private static XMLParseResult isFirstContactSchemaExist(
+            XMLParseResult xmlParseResult, 
+            Element root,
+            Document doc) throws Exception {
         
         String nodeName = "first-contact";
         Boolean isMandatory = true;
@@ -126,11 +134,9 @@ public class XmlProcessController {
         xmlParseResult.setIsCurrentDataValid(true);
         xmlParseResult.setIsCurrentScheValid(true);
         
-        String regEx = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
-        
         // CHECK MAIN ELEMENT
         xmlParseResult = isSchemaNodeExist(xmlParseResult, root, nodeName);
-        xmlParseResult = isSchemaValueValid(xmlParseResult, root, nodeName, isMandatory, regEx);
+        xmlParseResult = isSchemaValueValid(xmlParseResult, root, nodeName, XmlHelper.isMAN_First_Contact, XmlHelper.REG_TIMESTAMP);
 
         if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
             Rental rental = xmlParseResult.getRental();
@@ -143,7 +149,10 @@ public class XmlProcessController {
     } 
     
     // VALIDATE SUPPLIER SECTION
-    private static XMLParseResult isSupplierSchemaExist(XMLParseResult xmlParseResult, Element root) throws Exception {
+    private static XMLParseResult isSupplierSchemaExist(
+            XMLParseResult xmlParseResult, 
+            Element root,
+            Document doc) throws Exception {
         
         String nodeName = "supplier";
         
@@ -164,9 +173,9 @@ public class XmlProcessController {
         xmlParseResult.setIsCurrentScheValid(true);
         
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "supplier-name");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "supplier-name", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "supplier-name", XmlHelper.isMAN_Supplier_Name, "");
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "supplier-reference");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "supplier-reference", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "supplier-reference", XmlHelper.isMAN_Supplier_Reference, "");
         
         if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
             
@@ -189,11 +198,14 @@ public class XmlProcessController {
     }    
 
     // VALIDATE RENTAL STATUS SECTION 
-    private static XMLParseResult isRentalStatusSchemaExist(XMLParseResult xmlParseResult, Element root) throws Exception {
+    private static XMLParseResult isRentalStatusSchemaExist(
+            XMLParseResult xmlParseResult, 
+            Element root,
+            Document doc) throws Exception {
         
         String nodeName = "rental-status";
         String dataType = "String";
-        Boolean isMandatory = false;
+
         Boolean bFlag = false;
         
         xmlParseResult.setIsCurrentDataValid(true);
@@ -201,7 +213,7 @@ public class XmlProcessController {
         
         // CHECK MAIN ELEMENT
         xmlParseResult = isSchemaNodeExist(xmlParseResult, root, nodeName);
-        xmlParseResult = isSchemaValueValid(xmlParseResult, root, nodeName, isMandatory, "^[a-zA-Z]+$");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, root, nodeName, XmlHelper.isMAN_Status, XmlHelper.REG_WORD);
         
         if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
             Rental rental = xmlParseResult.getRental();
@@ -275,16 +287,16 @@ public class XmlProcessController {
         xmlParseResult.setIsCurrentScheValid(true);
         
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisNodeElement, "net");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisNodeElement, "net", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisNodeElement, "net", XmlHelper.isMAN_Invoice_Net, XmlHelper.REG_BIGDECIMAL);
         
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisNodeElement, "vat");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisNodeElement, "vat", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisNodeElement, "vat", XmlHelper.isMAN_Invoice_Vat, XmlHelper.REG_BIGDECIMAL);
         
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisNodeElement, "gross");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisNodeElement, "gross", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisNodeElement, "gross", XmlHelper.isMAN_Invoice_Gross, XmlHelper.REG_BIGDECIMAL);
         
         if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
-                       
+ 
             BigDecimal bNet = new BigDecimal(getNodeValue(thisNodeElement, "net"));
             BigDecimal bVat = new BigDecimal(getNodeValue(thisNodeElement, "vat"));
             BigDecimal bGross = new BigDecimal(getNodeValue(thisNodeElement, "gross"));
@@ -332,11 +344,13 @@ public class XmlProcessController {
         xmlParseResult.setIsCurrentScheValid(true);
         
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "net");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "net", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "net", XmlHelper.isMAN_Invoice_Vehicles_Net, XmlHelper.REG_BIGDECIMAL);
+        
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "vat");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "vat", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "vat", XmlHelper.isMAN_Invoice_Vehicles_Vat, XmlHelper.REG_BIGDECIMAL);
+        
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "gross");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "gross", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "gross", XmlHelper.isMAN_Invoice_Vehicles_Gross, XmlHelper.REG_BIGDECIMAL);
         
         if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
             BigDecimal bNet = new BigDecimal(getNodeValue(thisElement, "net"));
@@ -358,11 +372,11 @@ public class XmlProcessController {
         xmlParseResult.setIsCurrentScheValid(true);
         
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "net");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "net", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "net", XmlHelper.isMAN_Invoice_Repair_Net, XmlHelper.REG_BIGDECIMAL);
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "vat");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "vat", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "vat", XmlHelper.isMAN_Invoice_Repair_Vat, XmlHelper.REG_BIGDECIMAL);
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "gross");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "gross", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "gross", XmlHelper.isMAN_Invoice_Repair_Gross, XmlHelper.REG_BIGDECIMAL);
         
         if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
 
@@ -385,14 +399,13 @@ public class XmlProcessController {
         xmlParseResult.setIsCurrentScheValid(true);
         
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "net");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "net", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "net", XmlHelper.isMAN_Invoice_Claim_Handling_Fee_Net, XmlHelper.REG_BIGDECIMAL);
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "vat");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "vat", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "vat", XmlHelper.isMAN_Invoice_Claim_Handling_Fee_Vat, XmlHelper.REG_BIGDECIMAL);
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "gross");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "gross", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "gross", XmlHelper.isMAN_Invoice_Claim_Handling_Fee_Gross, XmlHelper.REG_BIGDECIMAL);
         
         if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
-
             BigDecimal bNet = new BigDecimal(getNodeValue(thisElement, "net"));
             BigDecimal bVat = new BigDecimal(getNodeValue(thisElement, "vat"));
             BigDecimal bGross = new BigDecimal(getNodeValue(thisElement, "gross"));
@@ -412,11 +425,11 @@ public class XmlProcessController {
         xmlParseResult.setIsCurrentScheValid(true);
         
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "net");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "net", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "net", XmlHelper.isMAN_Invoice_Engineer_Fee_Net, XmlHelper.REG_BIGDECIMAL);
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "vat");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "vat", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "vat", XmlHelper.isMAN_Invoice_Engineer_Fee_Vat, XmlHelper.REG_BIGDECIMAL);
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "gross");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "gross", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "gross", XmlHelper.isMAN_Invoice_Engineer_Fee_Gross, XmlHelper.REG_BIGDECIMAL);
         
         if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
             BigDecimal bNet = new BigDecimal(getNodeValue(thisElement, "net"));
@@ -438,11 +451,11 @@ public class XmlProcessController {
         xmlParseResult.setIsCurrentScheValid(true);
         
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "net");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "net", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "net", XmlHelper.isMAN_Invoice_Storage_Recovery_Net, XmlHelper.REG_BIGDECIMAL);
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "vat");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "vat", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "vat", XmlHelper.isMAN_Invoice_Storage_Recovery_Vat, XmlHelper.REG_BIGDECIMAL);
         xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "gross");
-        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "gross", true, "");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "gross", XmlHelper.isMAN_Invoice_Storage_Recovery_Gross, XmlHelper.REG_BIGDECIMAL);
         
         if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
             BigDecimal bNet = new BigDecimal(getNodeValue(thisElement, "net"));
@@ -470,13 +483,13 @@ public class XmlProcessController {
             xmlParseResult.setIsCurrentScheValid(true);
         
             xmlParseResult = isSchemaNodeExist(xmlParseResult, ee, "name");
-            xmlParseResult = isSchemaValueValid(xmlParseResult, ee, "name", true, "");
+            xmlParseResult = isSchemaValueValid(xmlParseResult, ee, "name", XmlHelper.isMAN_Invoice_Extras_Name, "");
             
             xmlParseResult = isSchemaNodeExist(xmlParseResult, ee, "quantity");
-            xmlParseResult = isSchemaValueValid(xmlParseResult, ee, "quantity", true, "");
+            xmlParseResult = isSchemaValueValid(xmlParseResult, ee, "quantity", XmlHelper.isMAN_Invoice_Extras_Quantity, XmlHelper.REG_INTEGER);
             
             xmlParseResult = isSchemaNodeExist(xmlParseResult, ee, "item-cost");
-            xmlParseResult = isSchemaValueValid(xmlParseResult, ee, "item-cost", true, "");
+            xmlParseResult = isSchemaValueValid(xmlParseResult, ee, "item-cost", XmlHelper.isMAN_Invoice_Extras_Item_Cost, XmlHelper.REG_BIGDECIMAL);
             
             if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
                 BigDecimal thisExtraItemCost = new BigDecimal(getNodeValue(thisElement, "item-cost"));
@@ -489,24 +502,89 @@ public class XmlProcessController {
     }
     
     // VALIDATE INVOICE SECTION 
-    private static Boolean isRentalVehiclesSchemaExist(XMLParseResult xmlParseResult, Element root) throws Exception {
+    private static XMLParseResult isRentalVehiclesSchemaExist(
+            XMLParseResult xmlParseResult, 
+            Element root,
+            Document doc) throws Exception {
         
         String nodeName = "rental-vehicles";
         
-        Boolean bFlag = false;
+        xmlParseResult.setIsCurrentDataValid(true);
+        xmlParseResult.setIsCurrentScheValid(true);
         
+        // CHECK MAIN ELEMENT
         xmlParseResult = isSchemaNodeExist(xmlParseResult, root, nodeName);
+
+        if(xmlParseResult.getIsCurrentScheValid()){
         
-        return bFlag;
+               Element thisElement = XMLUtils.getElement(root, nodeName);
+               ArrayList<Element> rentalVehicleElements = XMLUtils.getElements(doc, thisElement, "rental-vehicle");
+               
+               for (Element ee : rentalVehicleElements) {
+                    xmlParseResult = isRentalVehiclesDetailExist(xmlParseResult, ee, doc);
+               }
+        }
+        
+        return xmlParseResult;
     } 
     
+    private static XMLParseResult isRentalVehiclesDetailExist(
+            XMLParseResult xmlParseResult, 
+            Element thisElement,
+            Document doc) throws Exception {
+        
+        xmlParseResult.setIsCurrentDataValid(true);
+        xmlParseResult.setIsCurrentScheValid(true);
+        
+        xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "vehicle-registration");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "vehicle-registration", XmlHelper.isMAN_RentalVehicles_Vehicle_Registration, "");
+        
+        xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "vehicle-manufacturer");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "vehicle-manufacturer", XmlHelper.isMAN_RentalVehicles_Vehicle_Manufacturer, "");
+        
+        xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "vehicle-model");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "vehicle-model", XmlHelper.isMAN_RentalVehicles_Vehicle_Model, "");
+        
+        xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "vehicle-class");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "vehicle-class", XmlHelper.isMAN_RentalVehicles_Vehicle_Class, "");
+        
+        xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "rental-start");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "rental-start", XmlHelper.isMAN_RentalVehicles_Rental_Start, XmlHelper.REG_TIMESTAMP);
+        
+        xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "rental-end");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "rental-end", XmlHelper.isMAN_RentalVehicles_Rental_End, XmlHelper.REG_TIMESTAMP);        
+
+        xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "rental-days");
+        xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "rental-days", XmlHelper.isMAN_RentalVehicles_Rental_Days, XmlHelper.REG_INTEGER); 
+
+        Element extraElement = XMLUtils.getElement(thisElement, "extras");
+        
+        // MAIN EXTRA ELEMENT
+        xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "extras");
+        
+        // MAIN EXTRA DETAIL ELEMENT
+        ArrayList<Element> extraElements = XMLUtils.getElements(doc, thisElement, "extra");
+        for (Element ee : extraElements) {
+            xmlParseResult = isSchemaNodeExist(xmlParseResult, thisElement, "extra");
+            xmlParseResult = isSchemaValueValid(xmlParseResult, thisElement, "extra", XmlHelper.isMAN_RentalVehicles_Extras_Extra, ""); 
+        }
+        
+        if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
+            
+            // TODO
+        }
+        
+        
+        return xmlParseResult;
+    }
+
     private static String getNodeValue(Element root, String nodeName){
         return XMLUtils.getElementValue(root, nodeName);
     }
     
     // VALIDATE THE ELEMENT
     private static XMLParseResult isSchemaNodeExist(XMLParseResult xmlParseResult, Element root, String nodeName){
-        
+
         Boolean bFlag = true;
         String SchemaValidationRemark = xmlParseResult.getSchemaValidationRemark();
         
@@ -522,7 +600,7 @@ public class XmlProcessController {
             xmlParseResult.setIsSchemaValid(bFlag);
             xmlParseResult.setIsCurrentScheValid(bFlag);
         }
-   
+
         return xmlParseResult;
     }
     
