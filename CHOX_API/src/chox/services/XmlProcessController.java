@@ -10,7 +10,7 @@ import org.xml.sax.SAXParseException;
 import com.filesystemsoftware.utils.XMLUtils;
 import com.filesystemsoftware.utils.Logger;
 import java.math.BigDecimal;
-
+import java.sql.Timestamp;
 import chox.model.*;
 
 public class XmlProcessController {
@@ -50,8 +50,6 @@ public class XmlProcessController {
                         throw e;
                     }
                 }
-                
-                System.out.println ("** SIZE ::: " + xmlParseResults.size());
             }
         
         }catch (SAXParseException err) {
@@ -116,43 +114,18 @@ public class XmlProcessController {
         Rental rental = new Rental();
         xmlParseResult.setRental(rental);
         
-        Boolean bClaimFlag__ = false;
-        Boolean bInvoiceFlag = false;
-        Boolean bFlag = false;
-        
-        xmlParseResult = RentalFirstContactSchemaValidation(xmlParseResult, root, doc);
-        xmlParseResult = RentalSupplierSchemaValidation(xmlParseResult, root, doc);
-        xmlParseResult = RentalInvoiceSchemaValidation(xmlParseResult, root, doc);
-        xmlParseResult = RentalStatusSchemaValidation(xmlParseResult, root, doc);
-        xmlParseResult = RentalVehiclesSchemaValidation(xmlParseResult, root, doc);
+        // DO NOT CHANGE THE SEQUENCE
+        xmlParseResult = RentalStatusSchemaValidation(xmlParseResult, root, doc);       // DONE
+        xmlParseResult = RentalFirstContactSchemaValidation(xmlParseResult, root, doc); // DONE
+        xmlParseResult = RentalSupplierSchemaValidation(xmlParseResult, root, doc);     // 
         xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);
         xmlParseResult = RentalClaimSchemaValidation(xmlParseResult, root, doc);
         xmlParseResult = RentalRepairSchemaValidation(xmlParseResult, root, doc);
         
-        /*
-        if(isFirstContactSchemaExist(root) 
-            && isSupplierSchemaExist(root) 
-            && isRentalStatusSchemaExist(root)
-            && isDriversSchemaExist(root)
-            && isClaimSchemaExist(root)){
-            bClaimFlag__ = true;
+        if(!sUploadType.equalsIgnoreCase("C")){
+            xmlParseResult = RentalVehiclesSchemaValidation(xmlParseResult, root, doc);
+            xmlParseResult = RentalInvoiceSchemaValidation(xmlParseResult, root, doc);
         }
-        
-        if(isRepairSchemaExist(root) 
-            && isInvoiceSchemaExist(root)
-            && isRentalVehiclesSchemaExist(root)){
-            bInvoiceFlag = true;
-        }
-        */
-        /*
-        if(bClaimFlag__){
-            
-            bFlag = true;=
-            if(sUploadType=="I" && bInvoiceFlag){
-                bFlag = false;
-            }
-        }
-        */
         
         System.out.println (" ** getIsSchemaValid: " + xmlParseResult.getIsSchemaValid());
         System.out.println (" ** getSchemaValidationRemark: " + xmlParseResult.getSchemaValidationRemark());
@@ -160,7 +133,6 @@ public class XmlProcessController {
         System.out.println (" ** getDataValidationRemark: " + xmlParseResult.getDataValidationRemark());
                 
         System.out.println ("********************************************");
-        
         
         return xmlParseResult;
     }
@@ -184,6 +156,12 @@ public class XmlProcessController {
 
         if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
             
+            String strFirstContactDateTime = XmlHelper.getNodeValue(root, nodeName1);
+            Timestamp tFirstContactDateTime = XmlHelper.parseDate(strFirstContactDateTime);
+            
+            Rental rental = xmlParseResult.getRental();
+            rental.setFirstContact(tFirstContactDateTime);
+            xmlParseResult.setRental(rental);
         }
         return xmlParseResult;
     } 
@@ -192,7 +170,7 @@ public class XmlProcessController {
     private static XMLParseResult RentalSupplierSchemaValidation(
             XMLParseResult xmlParseResult, 
             Element mainElement,
-            Document doc){
+            Document doc) throws Exception {
 
         String parentNodeName = "rental";
         String mainNodeName = "supplier";
@@ -211,11 +189,30 @@ public class XmlProcessController {
             
             xmlParseResult.setIsCurrentDataValid(true);
             xmlParseResult.setIsCurrentScheValid(true);
-        
+
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, nodeName1, XmlHelper.isMAN_Supplier_Name, "", clidNodeLabel1);
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, nodeName2, XmlHelper.isMAN_Supplier_Reference, "", clidNodeLabel1);
             
             if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
+                
+                String strSupplierName = XmlHelper.getNodeValue(thisElement, nodeName1);
+                String strSupplierReference = XmlHelper.getNodeValue(thisElement, nodeName2);
+                
+                Rental rental = new Rental();
+                
+                
+                if(isRentalExist(strSupplierReference)){
+                    // rental = ;
+                    rental.setFirstContact(xmlParseResult.getRental().getFirstContact());
+                    rental.setRentalStatus(xmlParseResult.getRental().getRentalStatus());
+                }else{
+                    rental = xmlParseResult.getRental();
+                    Supplier supplier = new Supplier();
+                    rental.setSupplier(supplier);
+                }
+                
+                rental.setSupplierReference(strSupplierReference);
+                xmlParseResult.setRental(rental);
             }
         }
         
@@ -240,6 +237,11 @@ public class XmlProcessController {
         xmlParseResult = xmlNodeValidation(xmlParseResult, root, nodeName1, XmlHelper.isMAN_Status, XmlHelper.REG_WORD, clidNodeLabelMain);
         
         if(xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()){
+            
+            String rentalStatus = XmlHelper.getNodeValue(root, nodeName1);
+            Rental rental = xmlParseResult.getRental();
+            rental.setRentalStatus(rentalStatus);
+            xmlParseResult.setRental(rental);
         }
         
         return xmlParseResult;        
@@ -921,5 +923,10 @@ public class XmlProcessController {
         }
         
         return xmlParseResult;
-    }    
+    }
+    
+    private static Boolean isRentalExist(String supplierReferenceNumber){
+        return false;
+    }
+    
 }

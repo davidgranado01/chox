@@ -155,4 +155,18 @@ public class XmlHelper {
         }
         return returnStr;
     }
+    
+    public static Timestamp parseDate(String t)
+    {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.MILLISECOND, 0);
+        c.set(Calendar.YEAR, Integer.parseInt(t.substring(0, 4)));
+        c.set(Calendar.MONTH, Integer.parseInt(t.substring(5, 7)) - 1);
+        c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(t.substring(8, 10)));
+        c.set(Calendar.HOUR, Integer.parseInt(t.substring(11, 13)));
+        c.set(Calendar.MINUTE, Integer.parseInt(t.substring(14, 16)));
+        c.set(Calendar.SECOND, Integer.parseInt(t.substring(17)));
+
+        return new Timestamp(c.getTimeInMillis());
+    }    
 }
