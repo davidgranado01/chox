@@ -125,8 +125,6 @@ public class XmlProcessController {
             System.out.println (" ** RentalSupplierSchemaValidation:"+xmlParseResult.getRental().getSupplier().getName());
         
         xmlParseResult = RentalClaimSchemaValidation(xmlParseResult, root, doc);
-        
-            
         xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);      // DONE
         
         if(!sUploadType.equalsIgnoreCase("C")){
@@ -1050,5 +1048,4 @@ public class XmlProcessController {
     private static Boolean isRentalExist(String supplierReferenceNumber){
         return false;
     }
-    
 }
