@@ -3,6 +3,8 @@ package chox.services;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.regex.*;
+import org.w3c.dom.*;
+import com.filesystemsoftware.utils.XMLUtils;
 
 public class XmlHelper {
     
@@ -130,16 +132,20 @@ public class XmlHelper {
         return bFlag;
     }
     
+    public static String getNodeValue(Element root, String nodeName){
+        return XMLUtils.getElementValue(root, nodeName);
+    }
+    
     public static String contructureDataMandatoryErrorMessage(String strPath, String nodeName){
-        return "|Cannot find or invalid value <"+strPath+":"+nodeName+">";
+        return ("|Cannot find or invalid value <"+strPath+":"+nodeName+">").toUpperCase();
     }
     
     public static String contructureIncorrectTypeErrorMessage(String strPath, String nodeName){
-        return "|Invalid Data Format for <"+strPath+":"+nodeName+">";
+        return ("|Invalid Data Format for <"+strPath+":"+nodeName+">").toUpperCase();
     }
     
     public static String contructureSchemaErrorMessage(String strPath, String nodeName){
-        return "|Incorrect XML Schema for <"+strPath+":"+nodeName+"> element";
+        return ("|Incorrect XML Schema for <"+strPath+":"+nodeName+"> element").toUpperCase();
     }
     
     public static String contructureErrorMessagePath(String strPath, String nodeName){
