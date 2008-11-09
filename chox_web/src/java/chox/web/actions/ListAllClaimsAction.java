@@ -1,6 +1,5 @@
 package chox.web.actions;
 
-import chox.model.Claim;
 import chox.services.ClaimService;
 import java.util.List;
 /**
@@ -10,7 +9,7 @@ import java.util.List;
 public class ListAllClaimsAction extends BaseAction {
     
     private int number;
-    private List<Claim> results;
+    private List results;
     private ClaimService service;
     
     public ListAllClaimsAction() {
@@ -24,7 +23,7 @@ public class ListAllClaimsAction extends BaseAction {
         this.number = number;
     }
 
-    public List<Claim> getResults() {
+    public List getResults() {
         return results;
     }
 
