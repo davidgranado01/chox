@@ -14,8 +14,7 @@ public class ListAllClaimsAction extends BaseAction {
     private ClaimService service;
     
     public ListAllClaimsAction() {
-    }
-    
+    }    
 
     public void setClaimService(ClaimService service) {
         this.service = service;

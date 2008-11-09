@@ -550,9 +550,35 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
         <copy-ear-war file="${file.reference.struts2-spring-plugin-2.0.12.jar}" propname="included.lib.file.reference.struts2-spring-plugin-2.0.12.jar.X"/>
         <basename file="${file.reference.spring.jar}" property="included.lib.file.reference.spring.jar"/>
         <copy-ear-war file="${file.reference.spring.jar}" propname="included.lib.file.reference.spring.jar.X"/>
+        <basename file="${file.reference.hibernate3.jar}" property="included.lib.file.reference.hibernate3.jar"/>
+        <copy-ear-war file="${file.reference.hibernate3.jar}" propname="included.lib.file.reference.hibernate3.jar.X"/>
+        <basename file="${libs.hibernate-support.classpath.libfile.12}" property="included.lib.libs.hibernate-support.classpath.12"/>
+        <basename file="${libs.hibernate-support.classpath.libfile.11}" property="included.lib.libs.hibernate-support.classpath.11"/>
+        <basename file="${libs.hibernate-support.classpath.libfile.10}" property="included.lib.libs.hibernate-support.classpath.10"/>
+        <basename file="${libs.hibernate-support.classpath.libfile.9}" property="included.lib.libs.hibernate-support.classpath.9"/>
+        <basename file="${libs.hibernate-support.classpath.libfile.8}" property="included.lib.libs.hibernate-support.classpath.8"/>
+        <basename file="${libs.hibernate-support.classpath.libfile.7}" property="included.lib.libs.hibernate-support.classpath.7"/>
+        <basename file="${libs.hibernate-support.classpath.libfile.6}" property="included.lib.libs.hibernate-support.classpath.6"/>
+        <basename file="${libs.hibernate-support.classpath.libfile.5}" property="included.lib.libs.hibernate-support.classpath.5"/>
+        <basename file="${libs.hibernate-support.classpath.libfile.4}" property="included.lib.libs.hibernate-support.classpath.4"/>
+        <basename file="${libs.hibernate-support.classpath.libfile.3}" property="included.lib.libs.hibernate-support.classpath.3"/>
+        <basename file="${libs.hibernate-support.classpath.libfile.2}" property="included.lib.libs.hibernate-support.classpath.2"/>
+        <basename file="${libs.hibernate-support.classpath.libfile.1}" property="included.lib.libs.hibernate-support.classpath.1"/>
+        <copy-ear-war file="${libs.hibernate-support.classpath.libfile.12}" propname="included.lib.libs.hibernate-support.classpath.12.X"/>
+        <copy-ear-war file="${libs.hibernate-support.classpath.libfile.11}" propname="included.lib.libs.hibernate-support.classpath.11.X"/>
+        <copy-ear-war file="${libs.hibernate-support.classpath.libfile.10}" propname="included.lib.libs.hibernate-support.classpath.10.X"/>
+        <copy-ear-war file="${libs.hibernate-support.classpath.libfile.9}" propname="included.lib.libs.hibernate-support.classpath.9.X"/>
+        <copy-ear-war file="${libs.hibernate-support.classpath.libfile.8}" propname="included.lib.libs.hibernate-support.classpath.8.X"/>
+        <copy-ear-war file="${libs.hibernate-support.classpath.libfile.7}" propname="included.lib.libs.hibernate-support.classpath.7.X"/>
+        <copy-ear-war file="${libs.hibernate-support.classpath.libfile.6}" propname="included.lib.libs.hibernate-support.classpath.6.X"/>
+        <copy-ear-war file="${libs.hibernate-support.classpath.libfile.5}" propname="included.lib.libs.hibernate-support.classpath.5.X"/>
+        <copy-ear-war file="${libs.hibernate-support.classpath.libfile.4}" propname="included.lib.libs.hibernate-support.classpath.4.X"/>
+        <copy-ear-war file="${libs.hibernate-support.classpath.libfile.3}" propname="included.lib.libs.hibernate-support.classpath.3.X"/>
+        <copy-ear-war file="${libs.hibernate-support.classpath.libfile.2}" propname="included.lib.libs.hibernate-support.classpath.2.X"/>
+        <copy-ear-war file="${libs.hibernate-support.classpath.libfile.1}" propname="included.lib.libs.hibernate-support.classpath.1.X"/>
         <mkdir dir="${build.web.dir}/META-INF"/>
         <manifest file="${build.web.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${included.lib.libs.struts2lib-2-0-11-basic.classpath.1.X} ${included.lib.libs.struts2lib-2-0-11-basic.classpath.2.X} ${included.lib.libs.struts2lib-2-0-11-basic.classpath.3.X} ${included.lib.libs.struts2lib-2-0-11-basic.classpath.4.X} ${included.lib.libs.struts2lib-2-0-11-basic.classpath.5.X} ${included.lib.libs.struts2lib-2-0-11-basic.classpath.6.X} ${included.lib.reference.CHOX_API.jar} ${included.lib.file.reference.struts2-spring-plugin-2.0.12.jar} ${included.lib.file.reference.spring.jar} "/>
+            <attribute name="Class-Path" value="${included.lib.libs.struts2lib-2-0-11-basic.classpath.1.X} ${included.lib.libs.struts2lib-2-0-11-basic.classpath.2.X} ${included.lib.libs.struts2lib-2-0-11-basic.classpath.3.X} ${included.lib.libs.struts2lib-2-0-11-basic.classpath.4.X} ${included.lib.libs.struts2lib-2-0-11-basic.classpath.5.X} ${included.lib.libs.struts2lib-2-0-11-basic.classpath.6.X} ${included.lib.reference.CHOX_API.jar} ${included.lib.file.reference.struts2-spring-plugin-2.0.12.jar} ${included.lib.file.reference.spring.jar} ${included.lib.file.reference.hibernate3.jar} ${included.lib.libs.hibernate-support.classpath.1.X} ${included.lib.libs.hibernate-support.classpath.2.X} ${included.lib.libs.hibernate-support.classpath.3.X} ${included.lib.libs.hibernate-support.classpath.4.X} ${included.lib.libs.hibernate-support.classpath.5.X} ${included.lib.libs.hibernate-support.classpath.6.X} ${included.lib.libs.hibernate-support.classpath.7.X} ${included.lib.libs.hibernate-support.classpath.8.X} ${included.lib.libs.hibernate-support.classpath.9.X} ${included.lib.libs.hibernate-support.classpath.10.X} ${included.lib.libs.hibernate-support.classpath.11.X} ${included.lib.libs.hibernate-support.classpath.12.X} "/>
         </manifest>
         <delete dir="${dist.ear.dir}/temp"/>
     </target>
@@ -566,6 +592,19 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
         <copy file="${reference.CHOX_API.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copy file="${file.reference.struts2-spring-plugin-2.0.12.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copy file="${file.reference.spring.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${file.reference.hibernate3.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${libs.hibernate-support.classpath.libfile.12}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${libs.hibernate-support.classpath.libfile.11}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${libs.hibernate-support.classpath.libfile.10}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${libs.hibernate-support.classpath.libfile.9}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${libs.hibernate-support.classpath.libfile.8}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${libs.hibernate-support.classpath.libfile.7}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${libs.hibernate-support.classpath.libfile.6}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${libs.hibernate-support.classpath.libfile.5}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${libs.hibernate-support.classpath.libfile.4}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${libs.hibernate-support.classpath.libfile.3}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${libs.hibernate-support.classpath.libfile.2}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copy file="${libs.hibernate-support.classpath.libfile.1}" todir="${build.web.dir}/WEB-INF/lib"/>
     </target>
     <target depends="init,compile,compile-jsps,-pre-dist,library-inclusion-in-manifest" name="do-ear-dist">
         <dirname file="${dist.ear.war}" property="dist.jar.dir"/>
