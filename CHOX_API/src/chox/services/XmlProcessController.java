@@ -62,7 +62,7 @@ public class XmlProcessController {
             t.printStackTrace();
         }
     }
-
+/*
     public static ArrayList<XMLParseResult> XMLValidationProcess(File claimXMLFile, String sUpdateType, Boolean isAllowPartialUpload) {
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -84,13 +84,17 @@ public class XmlProcessController {
 
         return null;
     }
-
-    public static ArrayList<XMLParseResult> XMLValidationProcess(Document doc, String sUpdateType, Boolean isAllowPartialUpload) {
+*/
+    
+    public static ArrayList<XMLParseResult> XMLValidationProcess(File claimXMLFile, String sUpdateType, Boolean isAllowPartialUpload) {
 
         ArrayList<XMLParseResult> xmlParseResults = new ArrayList<XMLParseResult>();
 
         try {
 
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse(claimXMLFile);
             doc.getDocumentElement().normalize();
             Element root = doc.getDocumentElement();
 
@@ -126,7 +130,7 @@ public class XmlProcessController {
 
         return xmlParseResults;
     }
-
+    
     private static XMLParseResult xmlSchemaValidateProcess(
             XMLParseResult xmlParseResult,
             Document doc,
