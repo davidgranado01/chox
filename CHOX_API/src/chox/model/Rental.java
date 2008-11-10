@@ -6,6 +6,11 @@ import java.util.UUID;
 
 public class Rental implements Serializable
 {
+        public static final String PENDING = "Pending";
+        public static final String IN_PROGRESS = "InProgress";
+        public static final String COMPLETE = "Complete";
+        public static final String CANCELLED = "Cancelled";
+    
 	/** 
 	 * This attribute maps to the column id in the rental table.
 	 */
