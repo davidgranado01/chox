@@ -9,5 +9,8 @@
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.current_session_context_class">thread</property>
     <mapping resource="claim.hbm.xml"/>
+    <mapping resource="rental.hbm.xml"/>
+    <mapping resource="Country.hbm.xml"/>
+    <mapping resource="Supplier.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

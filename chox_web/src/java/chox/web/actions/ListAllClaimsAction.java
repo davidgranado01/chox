@@ -29,7 +29,7 @@ public class ListAllClaimsAction extends BaseAction {
 
     @Override
     public String execute() throws Exception {
-        results = this.service.getAllClaims();
+        results = this.service.listAllClaims();
         return SUCCESS;
     }
 }

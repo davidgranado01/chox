@@ -7,13 +7,12 @@
       
         <div class='main' id='main'>
             
-            <h1>Welcome to CHOX</h1>            
+            <h1>Welcome to CHOX</h1>  
             
-            <div>
-                <s:action name="ListAllClaims" executeResult="true" />                
-            </div>         
-
-
+            Upload Your Claims? <a href="jsp/UploadClaims.jsp">click here</a>
+            
+            Goto My Inbox <a href="jsp/inbox.jsp">click here</a>            
+           
         </div>        
 
     </body>
