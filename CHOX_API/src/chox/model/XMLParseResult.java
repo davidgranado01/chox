@@ -94,6 +94,32 @@ public class XMLParseResult {
         this.rental = rental;
     }
     
+    public String getSupplierReference()
+    {
+        if(rental != null)
+        {
+            return rental.getSupplierReference();
+        }
+        else
+        {
+            return "N/A";
+        }
+    }
+            
+    public String getStatus()
+    {
+        return (this.isDataValid && this.isSchemaValid) ? "Ok" : "Error";
+    }
+    
+    public String[] getDataValidationRemarkInList()
+    {
+        return DataValidationRemark.split("\\|");
+    }
+    
+    public String[] getSchemaValidationRemarkInList()
+    {
+        return SchemaValidationRemark.split("\\|");
+    }
     
     
 }
