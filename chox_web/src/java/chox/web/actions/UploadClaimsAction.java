@@ -7,7 +7,7 @@ package chox.web.actions;
 import chox.model.XMLParseResult;
 import chox.services.ClaimService;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,7 +19,9 @@ public class UploadClaimsAction extends BaseAction {
     private String contentType;
     private String filename;
     private ClaimService service;
-   
+    private List<XMLParseResult> result;
+    private String uploadType;
+
     public void setUpload(File file) {
         this.file = file;
     }
@@ -36,6 +38,18 @@ public class UploadClaimsAction extends BaseAction {
         this.filename = filename;
     }
 
+    public List<XMLParseResult> getResults() {
+        return this.result;
+    }
+
+    public String getUploadType() {
+        return uploadType;
+    }
+
+    public void setUploadType(String uploadType) {
+        this.uploadType = uploadType;
+    }
+
     private static String getExtention(String fileName) {
         int pos = fileName.lastIndexOf(".");
         return fileName.substring(pos);
@@ -45,15 +59,17 @@ public class UploadClaimsAction extends BaseAction {
     public String execute() {
 
         String extention = getExtention(this.filename).toLowerCase();
-        
-        if(extention.matches("\\.xml"))
-        {
-            ArrayList<XMLParseResult> result = this.service.processClaimXMLFile(this.file, "A", true);
-            return SUCCESS;
-        }
-        else
-        {
+
+        if (extention.matches("\\.xml")) {
+            List<XMLParseResult> parseResult = this.service.processClaimXMLFile(this.file, uploadType , true);
+            if (parseResult == null) {
+                return ERROR;
+            } else {
+                this.result = parseResult;
+                return SUCCESS;
+            }
+        } else {
             return ERROR;
-        }                
+        }
     }
 }

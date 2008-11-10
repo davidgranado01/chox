@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib uri="/struts-tags" prefix="s" %>
 
 <html>
     <head>
@@ -20,9 +21,35 @@
                 <s:text name="text.noClaims" />
             </s:if>
             <s:else>
-                <s:iterator id="next" value="Results">
-                    <h3><s:property value="#next.TpClaimReference" /></h3>
+                <table class="statusTable">
+                    <tr>
+                        <td>Id</td><td>Supplier Reference</td>
+                    </tr>
+                <s:iterator id="next" value="results" status="stat">
+                    <tr>
+                        <td><s:property value="#stat.index" /></td>
+                        <td><s:property value="#next.SupplierReference" /></td> 
+                        <td><s:property value="#next.Status" /></td>  
+                        <td>
+                                <ul>
+                                    <s:iterator id="remark" value="#next.DataValidationRemarkInList">                                        
+                                        <s:if test="#remark.length() > 0">
+                                            <li><s:property value="#remark" /></li>
+                                        </s:if>
+                                    </s:iterator>
+                                </ul>                              
+               
+                                <ul>
+                                    <s:iterator id="remark" value="#next.SchemaValidationRemarkInList">
+                                        <s:if test="#remark.length() > 0">
+                                            <li><s:property value="#remark" /></li>
+                                        </s:if>
+                                    </s:iterator>
+                                </ul> 
+                        </td>
+                    </tr>                   
                 </s:iterator>
+                </table>
             </s:else>       
         </div>      
     </body>

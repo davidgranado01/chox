@@ -11,10 +11,32 @@
     <title>Upload Claims</title >
 </head>
 <body >
-    <s:text>uploadclaims.title</s:text>
     <s:form action ="UploadClaims" method ="POST" enctype="multipart/form-data">
-        <s:file name ="upload" label ="Claim XML File" size="55"/>     
-        <s:submit />
+        <table>
+            <tr>
+                <td>
+                    <s:file name ="upload" label ="Claim XML File" size="55"/>   
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <s:select
+                        label="Upload Type"
+                        name="uploadType"
+                        list="#{'c':'Claim Only','a':'All'}"
+                        headerKey="-1"
+                        headerValue="--- Please Select ---"
+                        emptyOption="false"
+                        value="c" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <s:submit />
+                </td>
+            </tr>
+        </table>     
+                
     </s:form>
 </body>
 </html> 

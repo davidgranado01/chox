@@ -9,9 +9,11 @@
             
             <h1>Welcome to CHOX</h1>  
             
-            Upload Your Claims? <a href="jsp/UploadClaims.jsp">click here</a>
-            
-            Goto My Inbox <a href="jsp/inbox.jsp">click here</a>            
+            <ul>
+                <li>Upload Your Claims? <a href="jsp/UploadClaims.jsp">click here</a></li>
+                <li>Goto My Inbox <a href="jsp/inbox.jsp">click here</a>  </li>
+            </ul>
+                    
            
         </div>        
 
