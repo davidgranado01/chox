@@ -11,8 +11,8 @@ public class XmlHelper {
     // REGULAR EXPRESSION
     public static final String REG_WORD = "^[0-9a-zA-Z]+$";
     public static final String REG_PHONE = "^[0-9, ,+,-]+$";
-    //public static final String REG_BIGDECIMAL = "^[1-9]{1}([0-9]*)*?\\.[0-9]{1,2}$";
-    public static final String REG_BIGDECIMAL = "";
+    public static final String REG_BIGDECIMAL = "^[1-9]{1}([0-9]*)*?\\.[0-9]{1,2}$";
+    //public static final String REG_BIGDECIMAL = "";
     public static final String REG_EMAIL = "^([0-9a-zA-Z]+([_.-]?[0-9a-zA-Z]+)*@[0-9a-zA-Z]+[0-9,a-z,A-Z,.,-]*(.){1}[a-zA-Z]{2,4})+$";
     public static final String REG_INTEGER = "^[0-9]+$";
     public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
