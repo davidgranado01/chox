@@ -70,3 +70,10 @@ table.UploadStatusTable th
     padding: 0px;
     border-color: #999999;    
 }
+
+.UploadStatusTable tr.ErrorRow
+{    
+    background-color: red;
+}
+
+

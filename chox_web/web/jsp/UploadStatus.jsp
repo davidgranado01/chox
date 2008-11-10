@@ -29,7 +29,12 @@
                         <th>Remark</th>
                     </tr>
                 <s:iterator id="next" value="results" status="stat">
+                    <s:if test="%{#next.Status=='Error'}">
+                    <tr class="ErrorRow">
+                    </s:if>
+                    <s:else>
                     <tr>
+                    </s:else>
                         <td><s:property value="{#stat.index + 1}" /></td>
                         <td><s:property value="#next.SupplierReference" /></td> 
                         <td><s:property value="#next.Status" /></td>  
