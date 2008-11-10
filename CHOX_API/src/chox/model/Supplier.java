@@ -1,113 +1,292 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chox.model;
 
+import java.util.Set;
+import java.util.HashSet;
+import java.io.Serializable;
 
-public class Supplier {
+public class Supplier implements Serializable
+{
+	/** 
+	 * This attribute maps to the column id in the supplier table.
+	 */
+	protected int id;
 
-    private long ID = -1;
-    private String name = "";
-    private String address1 = "";
-    private String address2 = "";
-    private String address3;
-    private String address4;
-    private String address5;
-    private String postcode = "";
-    private long countryID = -1;
-    private String vatNo = "";
-    private String companyNo = "";
+	/** 
+	 * This attribute maps to the column name in the supplier table.
+	 */
+	protected String name;
 
-    public long getID() {
-        return ID;
-    }
+	/** 
+	 * This attribute maps to the column address1 in the supplier table.
+	 */
+	protected String address1;
 
-    public void setID(long ID) {
-        this.ID = ID;
-    }
+	/** 
+	 * This attribute maps to the column address2 in the supplier table.
+	 */
+	protected String address2;
 
-    public String getAddress1() {
-        return address1;
-    }
+	/** 
+	 * This attribute maps to the column address3 in the supplier table.
+	 */
+	protected String address3;
 
-    public void setAddress1(String address1) {
-        this.address1 = address1;
-    }
+	/** 
+	 * This attribute maps to the column address4 in the supplier table.
+	 */
+	protected String address4;
 
-    public String getAddress2() {
-        return address2;
-    }
+	/** 
+	 * This attribute maps to the column address5 in the supplier table.
+	 */
+	protected String address5;
 
-    public void setAddress2(String address2) {
-        this.address2 = address2;
-    }
+	/** 
+	 * This attribute maps to the column postcode in the supplier table.
+	 */
+	protected String postcode;
 
-    public String getAddress3() {
-        return address3;
-    }
+	/** 
+	 * This attribute maps to the column vat_no in the supplier table.
+	 */
+	protected String vatNo;
 
-    public void setAddress3(String address3) {
-        this.address3 = address3;
-    }
+	/** 
+	 * This attribute maps to the column company_no in the supplier table.
+	 */
+	protected String companyNo;
 
-    public String getAddress4() {
-        return address4;
-    }
+	/** 
+	 * This attribute represents the foreign key relationship to the country table.
+	 */
+	protected Country country;
 
-    public void setAddress4(String address4) {
-        this.address4 = address4;
-    }
+	/**
+	 * Method 'Supplier'
+	 * 
+	 */
+	public Supplier()
+	{
+	}
 
-    public String getAddress5() {
-        return address5;
-    }
+	/**
+	 * Method 'getId'
+	 * 
+	 * @return int
+	 */
+	public int getId()
+	{
+		return id;
+	}
 
-    public void setAddress5(String address5) {
-        this.address5 = address5;
-    }
+	/**
+	 * Method 'setId'
+	 * 
+	 * @param id
+	 */
+	public void setId(int id)
+	{
+		this.id = id;
+	}
 
-    public String getCompanyNo() {
-        return companyNo;
-    }
+	/**
+	 * Method 'getName'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getName()
+	{
+		return name;
+	}
 
-    public void setCompanyNo(String companyNo) {
-        this.companyNo = companyNo;
-    }
+	/**
+	 * Method 'setName'
+	 * 
+	 * @param name
+	 */
+	public void setName(java.lang.String name)
+	{
+		this.name = name;
+	}
 
-    public long getCountryID() {
-        return countryID;
-    }
+	/**
+	 * Method 'getAddress1'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getAddress1()
+	{
+		return address1;
+	}
 
-    public void setCountryID(long countryID) {
-        this.countryID = countryID;
-    }
+	/**
+	 * Method 'setAddress1'
+	 * 
+	 * @param address1
+	 */
+	public void setAddress1(java.lang.String address1)
+	{
+		this.address1 = address1;
+	}
 
-    public String getName() {
-        return name;
-    }
+	/**
+	 * Method 'getAddress2'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getAddress2()
+	{
+		return address2;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	/**
+	 * Method 'setAddress2'
+	 * 
+	 * @param address2
+	 */
+	public void setAddress2(java.lang.String address2)
+	{
+		this.address2 = address2;
+	}
 
-    public String getPostcode() {
-        return postcode;
-    }
+	/**
+	 * Method 'getAddress3'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getAddress3()
+	{
+		return address3;
+	}
 
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
-    }
+	/**
+	 * Method 'setAddress3'
+	 * 
+	 * @param address3
+	 */
+	public void setAddress3(java.lang.String address3)
+	{
+		this.address3 = address3;
+	}
 
-    public String getVatNo() {
-        return vatNo;
-    }
+	/**
+	 * Method 'getAddress4'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getAddress4()
+	{
+		return address4;
+	}
 
-    public void setVatNo(String vatNo) {
-        this.vatNo = vatNo;
-    }
-    
-    
-    
+	/**
+	 * Method 'setAddress4'
+	 * 
+	 * @param address4
+	 */
+	public void setAddress4(java.lang.String address4)
+	{
+		this.address4 = address4;
+	}
+
+	/**
+	 * Method 'getAddress5'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getAddress5()
+	{
+		return address5;
+	}
+
+	/**
+	 * Method 'setAddress5'
+	 * 
+	 * @param address5
+	 */
+	public void setAddress5(java.lang.String address5)
+	{
+		this.address5 = address5;
+	}
+
+	/**
+	 * Method 'getPostcode'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getPostcode()
+	{
+		return postcode;
+	}
+
+	/**
+	 * Method 'setPostcode'
+	 * 
+	 * @param postcode
+	 */
+	public void setPostcode(java.lang.String postcode)
+	{
+		this.postcode = postcode;
+	}
+
+	/**
+	 * Method 'getVatNo'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getVatNo()
+	{
+		return vatNo;
+	}
+
+	/**
+	 * Method 'setVatNo'
+	 * 
+	 * @param vatNo
+	 */
+	public void setVatNo(java.lang.String vatNo)
+	{
+		this.vatNo = vatNo;
+	}
+
+	/**
+	 * Method 'getCompanyNo'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getCompanyNo()
+	{
+		return companyNo;
+	}
+
+	/**
+	 * Method 'setCompanyNo'
+	 * 
+	 * @param companyNo
+	 */
+	public void setCompanyNo(java.lang.String companyNo)
+	{
+		this.companyNo = companyNo;
+	}
+
+	/**
+	 * Method 'getCountry'
+	 * 
+	 * @return Country
+	 */
+	public Country getCountry()
+	{
+		return country;
+	}
+
+	/**
+	 * Method 'setCountry'
+	 * 
+	 * @param country
+	 */
+	public void setCountry(Country country)
+	{
+		this.country = country;
+	}
+
 }

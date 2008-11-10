@@ -5,6 +5,9 @@
 
 package chox.services;
 
+import chox.model.XMLParseResult;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +16,8 @@ import java.util.List;
  */
 public interface ClaimService {
     
-    public List getAllClaims();
+    public List listAllClaims();
+
+    public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, String sUpdateType, Boolean isAllowPartialUpload);
 
 }

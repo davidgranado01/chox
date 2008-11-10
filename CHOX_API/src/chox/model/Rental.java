@@ -1,103 +1,192 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chox.model;
 
-import com.filesystemsoftware.utils.StringEncoder;
-import java.sql.Timestamp;
-/**
- *
- * @author Carlson
- */
-public class Rental {
+import java.io.Serializable;
+import java.util.Date;
+import java.util.UUID;
 
-    public static final String PENDING="Pending";
-    public static final String IN_PROGRESS="InProgress";
-    public static final String COMPLETE="Complete";
-    public static final String CANCELLED="Cancelled";
-    
-    private long ID = -1;
-    private String uuid = StringEncoder.getRandomString(64);
-    private long supplierID = -1;
-    private String supplierReference;
-    private String rentalStatus = "In Progress";
-    private Timestamp firstContact = new Timestamp(System.currentTimeMillis());
-    private Timestamp created = new Timestamp(System.currentTimeMillis());
-    private Supplier supplier;
-    private Invoice invoice;
+public class Rental implements Serializable
+{
+	/** 
+	 * This attribute maps to the column id in the rental table.
+	 */
+	protected int id;
 
-    public Invoice getInvoice() {
-        return invoice;
-    }
+	/** 
+	 * This attribute maps to the column uuid in the rental table.
+	 */
+	protected String uuid = UUID.randomUUID().toString();
 
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
-    }
+	/** 
+	 * This attribute maps to the column supplier_reference in the rental table.
+	 */
+	protected String supplierReference;
 
-    public Supplier getSupplier() {
-        return supplier;
-    }
+	/** 
+	 * This attribute maps to the column rental_status in the rental table.
+	 */
+	protected String rentalStatus;
 
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
-    }
-    
-    public long getID() {
-        return ID;
-    }
+	/** 
+	 * This attribute maps to the column first_contact in the rental table.
+	 */
+	protected Date firstContact;
 
-    public void setID(long ID) {
-        this.ID = ID;
-    }
+	/** 
+	 * This attribute maps to the column created in the rental table.
+	 */
+	protected Date created;
 
-    public Timestamp getCreated() {
-        return created;
-    }
+	/** 
+	 * This attribute represents the foreign key relationship to the supplier table.
+	 */
+	protected Supplier supplier;
 
-    public void setCreated(Timestamp created) {
-        this.created = created;
-    }
+	/**
+	 * Method 'Rental'
+	 * 
+	 */
+	public Rental()
+	{
+	}
 
-    public Timestamp getFirstContact() {
-        return firstContact;
-    }
+	/**
+	 * Method 'getId'
+	 * 
+	 * @return int
+	 */
+	public int getId()
+	{
+		return id;
+	}
 
-    public void setFirstContact(Timestamp firstContact) {
-        this.firstContact = firstContact;
-    }
+	/**
+	 * Method 'setId'
+	 * 
+	 * @param id
+	 */
+	public void setId(int id)
+	{
+		this.id = id;
+	}
 
-    public String getRentalStatus() {
-        return rentalStatus;
-    }
+	/**
+	 * Method 'getUuid'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getUuid()
+	{
+		return uuid;
+	}
 
-    public void setRentalStatus(String rentalStatus) {
-        this.rentalStatus = rentalStatus;
-    }
+	/**
+	 * Method 'setUuid'
+	 * 
+	 * @param uuid
+	 */
+	public void setUuid(java.lang.String uuid)
+	{
+		this.uuid = uuid;
+	}
 
-    public long getSupplierID() {
-        return supplierID;
-    }
+	/**
+	 * Method 'getSupplierReference'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getSupplierReference()
+	{
+		return supplierReference;
+	}
 
-    public void setSupplierID(long supplierID) {
-        this.supplierID = supplierID;
-    }
+	/**
+	 * Method 'setSupplierReference'
+	 * 
+	 * @param supplierReference
+	 */
+	public void setSupplierReference(java.lang.String supplierReference)
+	{
+		this.supplierReference = supplierReference;
+	}
 
-    public String getSupplierReference() {
-        return supplierReference;
-    }
+	/**
+	 * Method 'getRentalStatus'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getRentalStatus()
+	{
+		return rentalStatus;
+	}
 
-    public void setSupplierReference(String supplierReference) {
-        this.supplierReference = supplierReference;
-    }
+	/**
+	 * Method 'setRentalStatus'
+	 * 
+	 * @param rentalStatus
+	 */
+	public void setRentalStatus(java.lang.String rentalStatus)
+	{
+		this.rentalStatus = rentalStatus;
+	}
 
-    public String getUuid() {
-        return uuid;
-    }
+	/**
+	 * Method 'getFirstContact'
+	 * 
+	 * @return java.util.Date
+	 */
+	public java.util.Date getFirstContact()
+	{
+		return firstContact;
+	}
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-    
+	/**
+	 * Method 'setFirstContact'
+	 * 
+	 * @param firstContact
+	 */
+	public void setFirstContact(java.util.Date firstContact)
+	{
+		this.firstContact = firstContact;
+	}
+
+	/**
+	 * Method 'getCreated'
+	 * 
+	 * @return java.util.Date
+	 */
+	public java.util.Date getCreated()
+	{
+		return created;
+	}
+
+	/**
+	 * Method 'setCreated'
+	 * 
+	 * @param created
+	 */
+	public void setCreated(java.util.Date created)
+	{
+		this.created = created;
+	}
+
+	/**
+	 * Method 'getSupplier'
+	 * 
+	 * @return Supplier
+	 */
+	public Supplier getSupplier()
+	{
+		return supplier;
+	}
+
+	/**
+	 * Method 'setSupplier'
+	 * 
+	 * @param supplier
+	 */
+	public void setSupplier(Supplier supplier)
+	{
+		this.supplier = supplier;
+	}
+
 }
