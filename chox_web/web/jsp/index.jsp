@@ -10,8 +10,8 @@
             <h1>Welcome to CHOX</h1>  
             
             <ul>
-                <li>Upload Your Claims? <a href="jsp/UploadClaims.jsp">click here</a></li>
-                <li>Goto My Inbox <a href="jsp/inbox.jsp">click here</a>  </li>
+                <li>Upload Your Claims? <a href="<s:url value="UploadClaims.action"/>">click here</a></li>
+                <li>Goto My Inbox <a href="#">click here</a>  </li>
             </ul>
                     
            

@@ -5,8 +5,6 @@
     <constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
     <constant name="struts.devMode" value="true" />
     <constant name="struts.multipart.maxSize" value="1000000" />
-
-
     <include file="struts-default.xml"/>
 
     <!-- Configuration for the default package. -->
@@ -17,9 +15,14 @@
         <action name="ListAllClaims" class="chox.web.actions.ListAllClaimsAction">
             <result>/jsp/listClaims-partial.jsp</result>
         </action>
-         <action name ="UploadClaims" class ="chox.web.actions.UploadClaimsAction">
-            <result name ="success">/jsp/UploadStatus.jsp </result>
-            <result name ="error">/jsp/Uploadfailed.jsp </result>
+        <action name ="ProcessClaimsAction" class ="chox.web.actions.ProcessClaimsAction">
+            <result name ="success">/jsp/UploadStatus.jsp
+            </result>
+            <result name ="error">/jsp/Uploadfailed.jsp
+            </result>
+        </action>
+        <action name="UploadClaims" class="chox.web.actions.UploadClaimsAction">
+            <result>/jsp/UploadClaims.jsp</result>
         </action>
     </package>
 </struts>

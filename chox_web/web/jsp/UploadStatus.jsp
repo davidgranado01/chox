@@ -21,13 +21,16 @@
                 <s:text name="text.noClaims" />
             </s:if>
             <s:else>
-                <table class="statusTable">
+                <table class="UploadStatusTable">
                     <tr>
-                        <td>Id</td><td>Supplier Reference</td>
+                        <th width="40px"></th>
+                        <th width="40px">Supplier Reference</th>
+                        <th>Status</th>
+                        <th>Remark</th>
                     </tr>
                 <s:iterator id="next" value="results" status="stat">
                     <tr>
-                        <td><s:property value="#stat.index" /></td>
+                        <td><s:property value="{#stat.index + 1}" /></td>
                         <td><s:property value="#next.SupplierReference" /></td> 
                         <td><s:property value="#next.Status" /></td>  
                         <td>

@@ -5,5 +5,6 @@
 --%>
 
     <body>
-  
+        <img alt="choxLogo" src="images/header-logo-black.png">
+         
     </body>

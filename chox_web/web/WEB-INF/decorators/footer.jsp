@@ -4,10 +4,4 @@
     Author     : Emmanuel
 --%>
 
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h2>Footer</h2>
-    </body>
+<span class="tm">All Content &copy; Copyright 2008 Greenfinch Technology</span>

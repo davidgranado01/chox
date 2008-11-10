@@ -10,7 +10,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <title><decorator:title default="Struts Starter"/></title>
-        <link href="<s:url value='/styles/main.css'/>" rel="stylesheet" type="text/css" media="all"/>
+        <link href="<s:url value='styles/main.css'/>" rel="stylesheet" type="text/css" media="all"/>
         <decorator:head/>
     </head>
     <body> 
