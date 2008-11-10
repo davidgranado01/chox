@@ -11,12 +11,12 @@ public class XmlHelper {
     // REGULAR EXPRESSION
     public static final String REG_WORD = "^[0-9a-zA-Z]+$";
     public static final String REG_PHONE = "^[0-9, ,+,-]+$";
-    public static final String REG_BIGDECIMAL = "^[1-9]{1}([0-9]*)*?\\.[0-9]{1,2}$";
-    //public static final String REG_BIGDECIMAL = "";
+    public static final String REG_BIGDECIMAL = "^(\\d+)*\\.?\\d*$";
     public static final String REG_EMAIL = "^([0-9a-zA-Z]+([_.-]?[0-9a-zA-Z]+)*@[0-9a-zA-Z]+[0-9,a-z,A-Z,.,-]*(.){1}[a-zA-Z]{2,4})+$";
     public static final String REG_INTEGER = "^[0-9]+$";
     public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
     public static final String REG_DATE = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])$";
+    //public static final String REG_POSTCODE = "^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$";
     
     // XML FILE MANDATORY FIELD - RENTAL
     public static final Boolean isMAN_Status = true;
@@ -54,7 +54,7 @@ public class XmlHelper {
     public static final Boolean isMAN_RentalVehicles_Vehicle_Registration = true;    
     public static final Boolean isMAN_RentalVehicles_Vehicle_Manufacturer = true;
     public static final Boolean isMAN_RentalVehicles_Vehicle_Model = true;
-    public static final Boolean isMAN_RentalVehicles_Vehicle_Class = false;
+    public static final Boolean isMAN_RentalVehicles_Vehicle_Class = true;
     public static final Boolean isMAN_RentalVehicles_Rental_Start = true;
     public static final Boolean isMAN_RentalVehicles_Rental_End = true;
     public static final Boolean isMAN_RentalVehicles_Rental_Days = true;
@@ -64,16 +64,16 @@ public class XmlHelper {
     public static final Boolean isMAN_Driver_Title = true;
     public static final Boolean isMAN_Driver_Firstnames = true;
     public static final Boolean isMAN_Driver_Lastname = true;
-    public static final Boolean isMAN_Driver_Address1 = false;
+    public static final Boolean isMAN_Driver_Address1 = true;
     public static final Boolean isMAN_Driver_Address2 = false;
     public static final Boolean isMAN_Driver_Address3 = false;
     public static final Boolean isMAN_Driver_Address4 = false;
     public static final Boolean isMAN_Driver_Address5 = false;
-    public static final Boolean isMAN_Driver_Postcode = false;
-    public static final Boolean isMAN_Driver_Telephone_day = false;
+    public static final Boolean isMAN_Driver_Postcode = true;
+    public static final Boolean isMAN_Driver_Telephone_day = true;
     public static final Boolean isMAN_Driver_Telephone_Evening = false;
     public static final Boolean isMAN_Driver_Email = false;
-    public static final Boolean isMAN_Driver_Primary_Driver = false;
+    public static final Boolean isMAN_Driver_Primary_Driver = true;
         
     // XML FILE MANDATORY FIELD - CLAIM
     public static final Boolean isMAN_Claim_Customer_Insurer_name = true;
@@ -83,38 +83,83 @@ public class XmlHelper {
     public static final Boolean isMAN_Claim_Customer_Vehicle_Registration = true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Manufacturer = true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Model = true;
-    public static final Boolean isMAN_Claim_Customer_Vehicle_Class = false;
+    public static final Boolean isMAN_Claim_Customer_Vehicle_Class = true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Usable = true;
     
-    public static final Boolean isMAN_Claim_ReplacementVehicle_VehicleClass = false;
+    public static final Boolean isMAN_Claim_ReplacementVehicle_VehicleClass = true;
     public static final Boolean isMAN_Claim_ThirdParty_Insurer_Name = true;
-    public static final Boolean isMAN_Claim_ThirdParty_Insurer_PolicyNumber = false;
+    public static final Boolean isMAN_Claim_ThirdParty_Insurer_PolicyNumber = true;
     public static final Boolean isMAN_Claim_ThirdParty_Insurer_ClaimReference = false;
-    public static final Boolean isMAN_Claim_ThirdParty_Vehicle_Registration = false;
+    public static final Boolean isMAN_Claim_ThirdParty_Vehicle_Registration = true;
     public static final Boolean isMAN_Claim_ThirdParty_Vehicle_manufacturer = false;
     public static final Boolean isMAN_Claim_ThirdParty_Vehicle_model = false;
-    public static final Boolean isMAN_Claim_ThirdParty_Vehicle_class = false;
-    public static final Boolean isMAN_Claim_ThirdParty_Driver_Title = false;
-    public static final Boolean isMAN_Claim_ThirdParty_Driver_Firstnames = false;
-    public static final Boolean isMAN_Claim_ThirdParty_Driver_Lastname = false;
-    public static final Boolean isMAN_Claim_ThirdParty_Driver_Address1 = false;
+    public static final Boolean isMAN_Claim_ThirdParty_Vehicle_class = true;
+    public static final Boolean isMAN_Claim_ThirdParty_Driver_Title = true;
+    public static final Boolean isMAN_Claim_ThirdParty_Driver_Firstnames = true;
+    public static final Boolean isMAN_Claim_ThirdParty_Driver_Lastname = true;
+    public static final Boolean isMAN_Claim_ThirdParty_Driver_Address1 = true;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_Address2 = false;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_Address3 = false;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_Address4 = false;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_Address5 = false;
-    public static final Boolean isMAN_Claim_ThirdParty_Driver_Postcode = false;
-    public static final Boolean isMAN_Claim_ThirdParty_Driver_TelephoneDay = false;
+    public static final Boolean isMAN_Claim_ThirdParty_Driver_Postcode = true;
+    public static final Boolean isMAN_Claim_ThirdParty_Driver_TelephoneDay = true;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_TelephoneEvening = false;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_Email = false;
     public static final Boolean isMAN_Claim_Incident_Date = true;
     public static final Boolean isMAN_Claim_Incident_Location = true;
-    public static final Boolean isMAN_Claim_Incident_PoliceInvolved = true;
+    public static final Boolean isMAN_Claim_Incident_PoliceInvolved = false;
     public static final Boolean isMAN_Claim_Incident_Description = true;    
     
+    public static final Boolean isMAN_Claim_Incident_Witness_name = false;
+    public static final Boolean isMAN_Claim_Incident_Witness_address1 = false;
+    public static final Boolean isMAN_Claim_Incident_Witness_address2 = false;
+    public static final Boolean isMAN_Claim_Incident_Witness_address3 = false;
+    public static final Boolean isMAN_Claim_Incident_Witness_address4 = false;
+    public static final Boolean isMAN_Claim_Incident_Witness_address5 = false;
+    public static final Boolean isMAN_Claim_Incident_Witness_postcode = false;
+    public static final Boolean isMAN_Claim_Incident_Witness_telephoneDay = false;
+    public static final Boolean isMAN_Claim_Incident_Witness_telephoneEvening = false;
+    public static final Boolean isMAN_Claim_Incident_Witness_email = false;
+    
+    public static final Boolean isMAN_Claim_Incident_Injury_name = false;
+    public static final Boolean isMAN_Claim_Incident_Injury_address1 = false;
+    public static final Boolean isMAN_Claim_Incident_Injury_address2 = false;
+    public static final Boolean isMAN_Claim_Incident_Injury_address3 = false;
+    public static final Boolean isMAN_Claim_Incident_Injury_address4 = false;
+    public static final Boolean isMAN_Claim_Incident_Injury_address5 = false;
+    public static final Boolean isMAN_Claim_Incident_Injury_postcode = false;
+    public static final Boolean isMAN_Claim_Incident_Injury_telephoneDay = false;
+    public static final Boolean isMAN_Claim_Incident_Injury_telephoneEvening = false;
+    public static final Boolean isMAN_Claim_Incident_Injury_email = false;
+    
+    public static final Boolean isMAN_Claim_Incident_Solicitor_name = false;
+    public static final Boolean isMAN_Claim_Incident_Solicitor_address1 = false;
+    public static final Boolean isMAN_Claim_Incident_Solicitor_address2 = false;
+    public static final Boolean isMAN_Claim_Incident_Solicitor_address3 = false;
+    public static final Boolean isMAN_Claim_Incident_Solicitor_address4 = false;
+    public static final Boolean isMAN_Claim_Incident_Solicitor_address5 = false;
+    public static final Boolean isMAN_Claim_Incident_Solicitor_postcode = false;
+    public static final Boolean isMAN_Claim_Incident_Solicitor_telephone = false;
+    public static final Boolean isMAN_Claim_Incident_Solicitor_email = false;
+    
     // XML FILE MANDATORY FIELD - REPAIR
-    public static final Boolean isMAN_Repair_engineerReport_labour_Amount = true;
-    public static final Boolean isMAN_Repair_engineerReport_total_Amount = true;
-    public static final Boolean isMAN_Repair_engineerReport_days = true;
+    public static final Boolean isMAN_Repair_engineerReport_labour_Amount = false;
+    public static final Boolean isMAN_Repair_engineerReport_total_Amount = false;
+    public static final Boolean isMAN_Repair_engineerReport_days = false;
+    public static final Boolean isMAN_Repair_engineerReport_usable = false;
+    public static final Boolean isMAN_Repair_engineerReport_name = false;
+    public static final Boolean isMAN_Repair_engineerReport_company = false;
+    public static final Boolean isMAN_Repair_engineerReport_address1 = false;
+    public static final Boolean isMAN_Repair_engineerReport_address2 = false;
+    public static final Boolean isMAN_Repair_engineerReport_address3 = false;
+    public static final Boolean isMAN_Repair_engineerReport_address4 = false;
+    public static final Boolean isMAN_Repair_engineerReport_address5 = false;
+    public static final Boolean isMAN_Repair_engineerReport_postcode = false;
+    public static final Boolean isMAN_Repair_engineerReport_telephone = false;
+    public static final Boolean isMAN_Repair_engineerReport_email = false;
+    
+    
 
     public static Boolean isValidDataType(String dataValue, String regExpression){
         Boolean bFlag = true;
@@ -137,7 +182,7 @@ public class XmlHelper {
     }
     
     public static String contructureDataMandatoryErrorMessage(String strPath, String nodeName){
-        return ("|Cannot find or invalid value <"+strPath+":"+nodeName+">").toUpperCase();
+        return ("|Cannot be Empty <"+strPath+":"+nodeName+">").toUpperCase();
     }
     
     public static String contructureIncorrectTypeErrorMessage(String strPath, String nodeName){
