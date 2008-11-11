@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="chox.model.HandlingFee" table="handling_fee">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <property column="net_fee" name="netFee" not-null="true"/>
+    <property column="fee_vat" name="feeVat" not-null="true"/>
+    <property column="gross_fee" name="grossFee" not-null="true"/>
+    <many-to-one class="chox.model.Rental" column="rental_id" name="rental"/>
+  </class>
+</hibernate-mapping>

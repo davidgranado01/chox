@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class dynamic-insert="false" dynamic-update="false" mutable="true" name="chox.model.Claim" optimistic-lock="version" polymorphism="implicit" select-before-update="false">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <property column="uuid" name="uuid" not-null="true"/>
+    <property column="rental_id" name="rentalId" not-null="true"/>
+    <property column="insurer_country_id" name="insurerCountryId"/>
+    <property column="policy_number" name="policyNumber"/>
+    <property column="claim_reference" name="claimReference"/>
+    <property column="comprehensive" name="comprehensive"/>
+    <property column="policy_holder_name" name="policyHolderName" not-null="true"/>
+    <property column="vehicle_registration" name="vehicleRegistration" not-null="true"/>
+    <property column="vehicle_manufacturer" name="vehicleManufacturer" not-null="true"/>
+    <property column="vehicle_model" name="vehicleModel" not-null="true"/>
+    <property column="vehicle_class_id" name="vehicleClassId" not-null="true"/>
+    <property column="usable" name="usable" not-null="true"/>
+    <property column="damage_description" name="damageDescription"/>
+    <property column="tp_insurer_country_id" name="tpInsurerCountryId" not-null="true"/>
+    <property column="tp_policy_number" name="tpPolicyNumber"/>
+    <property column="tp_claim_reference" name="tpClaimReference"/>
+    <property column="tp_vehicle_registration" name="tpVehicleRegistration"/>
+    <property column="tp_vehicle_manufacturer" name="tpVehicleManufacturer"/>
+    <property column="tp_vehicle_model" name="tpVehicleModel"/>
+    <property column="tp_vehicle_class_id" name="tpVehicleClassId"/>
+    <property column="tp_name" name="tpName"/>
+    <property column="tp_address1" name="tpAddress1"/>
+    <property column="tp_address2" name="tpAddress2"/>
+    <property column="tp_address3" name="tpAddress3"/>
+    <property column="tp_address4" name="tpAddress4"/>
+    <property column="tp_address5" name="tpAddress5"/>
+    <property column="tp_postcode" name="tpPostcode"/>
+    <property column="tp_telephone_day" name="tpTelephoneDay"/>
+    <property column="tp_telephone_evening" name="tpTelephoneEvening"/>
+    <property column="tp_email" name="tpEmail"/>
+    <property column="incident_date" name="incidentDate" not-null="true"/>
+    <property column="location" name="location"/>
+    <property column="police_involved" name="policeInvolved" not-null="true"/>
+    <property column="incident_description" name="incidentDescription"/>
+    <property column="vehicle_location" name="vehicleLocation"/>
+    <property column="proposed_rental_class_id" name="proposedRentalClassId"/>
+    <property column="claim_status" name="claimStatus" not-null="true"/>
+  </class>
+</hibernate-mapping>
