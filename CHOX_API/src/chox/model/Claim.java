@@ -1,8 +1,9 @@
 package chox.model;
 
+import java.util.Set;
+import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
 
 public class Claim implements Serializable
 {
@@ -14,12 +15,7 @@ public class Claim implements Serializable
 	/** 
 	 * This attribute maps to the column uuid in the claim table.
 	 */
-	protected String uuid = UUID.randomUUID().toString();
-
-	/** 
-	 * This attribute maps to the column rental_id in the claim table.
-	 */
-	protected int rentalId;
+	protected String uuid;
 
 	/** 
 	 * This attribute maps to the column insurer_country_id in the claim table.
@@ -67,11 +63,6 @@ public class Claim implements Serializable
 	protected String vehicleModel;
 
 	/** 
-	 * This attribute maps to the column vehicle_class_id in the claim table.
-	 */
-	protected int vehicleClassId;
-
-	/** 
 	 * This attribute maps to the column usable in the claim table.
 	 */
 	protected String usable;
@@ -110,16 +101,6 @@ public class Claim implements Serializable
 	 * This attribute maps to the column tp_vehicle_model in the claim table.
 	 */
 	protected String tpVehicleModel;
-
-	/** 
-	 * This attribute maps to the column tp_vehicle_class_id in the claim table.
-	 */
-	protected int tpVehicleClassId;
-
-	/** 
-	 * This attribute represents whether the primitive attribute tpVehicleClassId is null.
-	 */
-	protected boolean tpVehicleClassIdNull = true;
 
 	/** 
 	 * This attribute maps to the column tp_name in the claim table.
@@ -197,19 +178,14 @@ public class Claim implements Serializable
 	protected String vehicleLocation;
 
 	/** 
-	 * This attribute maps to the column proposed_rental_class_id in the claim table.
-	 */
-	protected int proposedRentalClassId;
-
-	/** 
-	 * This attribute represents whether the primitive attribute proposedRentalClassId is null.
-	 */
-	protected boolean proposedRentalClassIdNull = true;
-
-	/** 
 	 * This attribute maps to the column claim_status in the claim table.
 	 */
 	protected String claimStatus;
+
+	/** 
+	 * This attribute represents the foreign key relationship to the rental table.
+	 */
+	protected Rental rental;
 
 	/**
 	 * Method 'Claim'
@@ -257,26 +233,6 @@ public class Claim implements Serializable
 	public void setUuid(java.lang.String uuid)
 	{
 		this.uuid = uuid;
-	}
-
-	/**
-	 * Method 'getRentalId'
-	 * 
-	 * @return int
-	 */
-	public int getRentalId()
-	{
-		return rentalId;
-	}
-
-	/**
-	 * Method 'setRentalId'
-	 * 
-	 * @param rentalId
-	 */
-	public void setRentalId(int rentalId)
-	{
-		this.rentalId = rentalId;
 	}
 
 	/**
@@ -457,26 +413,6 @@ public class Claim implements Serializable
 	}
 
 	/**
-	 * Method 'getVehicleClassId'
-	 * 
-	 * @return int
-	 */
-	public int getVehicleClassId()
-	{
-		return vehicleClassId;
-	}
-
-	/**
-	 * Method 'setVehicleClassId'
-	 * 
-	 * @param vehicleClassId
-	 */
-	public void setVehicleClassId(int vehicleClassId)
-	{
-		this.vehicleClassId = vehicleClassId;
-	}
-
-	/**
 	 * Method 'getUsable'
 	 * 
 	 * @return java.lang.String
@@ -634,43 +570,6 @@ public class Claim implements Serializable
 	public void setTpVehicleModel(java.lang.String tpVehicleModel)
 	{
 		this.tpVehicleModel = tpVehicleModel;
-	}
-
-	/**
-	 * Method 'getTpVehicleClassId'
-	 * 
-	 * @return int
-	 */
-	public int getTpVehicleClassId()
-	{
-		return tpVehicleClassId;
-	}
-
-	/**
-	 * Method 'setTpVehicleClassId'
-	 * 
-	 * @param tpVehicleClassId
-	 */
-	public void setTpVehicleClassId(int tpVehicleClassId)
-	{
-		this.tpVehicleClassId = tpVehicleClassId;
-		this.tpVehicleClassIdNull = false;
-	}
-
-	/** 
-	 * Sets the value of tpVehicleClassIdNull
-	 */
-	public void setTpVehicleClassIdNull(boolean tpVehicleClassIdNull)
-	{
-		this.tpVehicleClassIdNull = tpVehicleClassIdNull;
-	}
-
-	/** 
-	 * Gets the value of tpVehicleClassIdNull
-	 */
-	public boolean isTpVehicleClassIdNull()
-	{
-		return tpVehicleClassIdNull;
 	}
 
 	/**
@@ -974,43 +873,6 @@ public class Claim implements Serializable
 	}
 
 	/**
-	 * Method 'getProposedRentalClassId'
-	 * 
-	 * @return int
-	 */
-	public int getProposedRentalClassId()
-	{
-		return proposedRentalClassId;
-	}
-
-	/**
-	 * Method 'setProposedRentalClassId'
-	 * 
-	 * @param proposedRentalClassId
-	 */
-	public void setProposedRentalClassId(int proposedRentalClassId)
-	{
-		this.proposedRentalClassId = proposedRentalClassId;
-		this.proposedRentalClassIdNull = false;
-	}
-
-	/** 
-	 * Sets the value of proposedRentalClassIdNull
-	 */
-	public void setProposedRentalClassIdNull(boolean proposedRentalClassIdNull)
-	{
-		this.proposedRentalClassIdNull = proposedRentalClassIdNull;
-	}
-
-	/** 
-	 * Gets the value of proposedRentalClassIdNull
-	 */
-	public boolean isProposedRentalClassIdNull()
-	{
-		return proposedRentalClassIdNull;
-	}
-
-	/**
 	 * Method 'getClaimStatus'
 	 * 
 	 * @return java.lang.String
@@ -1028,6 +890,26 @@ public class Claim implements Serializable
 	public void setClaimStatus(java.lang.String claimStatus)
 	{
 		this.claimStatus = claimStatus;
+	}
+
+	/**
+	 * Method 'getRental'
+	 * 
+	 * @return Rental
+	 */
+	public Rental getRental()
+	{
+		return rental;
+	}
+
+	/**
+	 * Method 'setRental'
+	 * 
+	 * @param rental
+	 */
+	public void setRental(Rental rental)
+	{
+		this.rental = rental;
 	}
 
 }

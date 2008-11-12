@@ -178,7 +178,7 @@ public class Rental implements Serializable
 	 * Method 'getSupplier'
 	 * 
 	 * @return Supplier
-	 */
+	 
 	public Supplier getSupplier()
 	{
 		return supplier;
@@ -188,10 +188,10 @@ public class Rental implements Serializable
 	 * Method 'setSupplier'
 	 * 
 	 * @param supplier
-	 */
+	 
 	public void setSupplier(Supplier supplier)
 	{
 		this.supplier = supplier;
-	}
+	}*/
 
 }

@@ -160,7 +160,7 @@ public class XmlProcessController {
         System.out.println(" ** RentalStatusSchemaValidation:" + xmlParseResult.getRental().getRentalStatus());
         System.out.println(" ** RentalFirstContactSchemaValidation:" + xmlParseResult.getRental().getFirstContact());
         System.out.println(" ** RentalSupplierSchemaValidation:" + xmlParseResult.getRental().getSupplierReference());
-        System.out.println(" ** RentalSupplierSchemaValidation:" + xmlParseResult.getRental().getSupplier().getName());
+        //System.out.println(" ** RentalSupplierSchemaValidation:" + xmlParseResult.getRental().getSupplier().getName());
 
         xmlParseResult = RentalClaimSchemaValidation(xmlParseResult, root, doc);
         xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);      // DONE
@@ -281,7 +281,7 @@ public class XmlProcessController {
                     Supplier supplier = new Supplier();
                     supplier.setName(strSupplierName);
 
-                    xmlParseResult.getRental().setSupplier(supplier);
+                    //xmlParseResult.getRental().setSupplier(supplier);
                     xmlParseResult.getRental().setSupplierReference(strSupplierReference);
                     xmlParseResult.getRental().setCreated(new Timestamp(System.currentTimeMillis()));
                     xmlParseResult.getRental().setFirstContact(xmlParseResult.getRental().getFirstContact());

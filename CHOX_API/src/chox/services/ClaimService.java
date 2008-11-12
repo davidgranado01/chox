@@ -17,6 +17,7 @@ import java.util.List;
 public interface ClaimService {
     
     public List listAllClaims();
+    public List listClaimsByStatus(String status);
 
     public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, String sUpdateType, Boolean isAllowPartialUpload);
 
