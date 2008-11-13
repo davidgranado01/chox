@@ -6,6 +6,8 @@ package chox.services;
 
 import chox.data.HibernateUtil;
 import chox.model.Claim;
+import chox.model.Rental;
+import chox.model.Supplier;
 import chox.model.XMLParseResult;
 import java.io.File;
 import java.util.ArrayList;
@@ -30,6 +32,26 @@ public class ClaimServiceImpl implements ClaimService {
         Session currentSession = HibernateUtil.currentSession();
         Criteria criteria = currentSession.createCriteria(Claim.class)
                 .add(Restrictions.eq("claimStatus", status));
+        
+        Supplier s = (Supplier)currentSession.load(Supplier.class, 999);
+        Rental r = new Rental();
+        r.setSupplierReference("ABC123q");
+        r.setRentalStatus("Completed");
+        r.setSupplier(s);
+        
+        try
+        {
+        currentSession.beginTransaction();
+        currentSession.saveOrUpdate(r);
+        currentSession.getTransaction().commit();
+        }
+        catch(Exception ex)
+        {
+            currentSession.getTransaction().rollback();
+        }
+        
+        Rental r2 = (Rental)currentSession.load(Rental.class, r.getId());
+        
     
         return criteria.list();
     }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="chox.model.Injured" table="injured">
+    <id name="id" column="id">
+      <generator class="increment" />
+    </id>
+    <property name="uuid" column="uuid" not-null="true" />
+    <property name="name" column="name" />
+    <property name="address1" column="address1" />
+    <property name="address2" column="address2" />
+    <property name="address3" column="address3" />
+    <property name="address4" column="address4" />
+    <property name="address5" column="address5" />
+    <property name="postcode" column="postcode" />
+    <property name="telephoneDay" column="telephone_day" />
+    <property name="telephoneEvening" column="telephone_evening" />
+    <property name="email" column="email" />
+    <property name="solicitorAppointed" column="solicitor_appointed" not-null="true" />
+    <property name="solicitorName" column="solicitor_name" />
+    <property name="solicitorAddress1" column="solicitor_address1" />
+    <property name="solicitorAddress2" column="solicitor_address2" />
+    <property name="solicitorAddress3" column="solicitor_address3" />
+    <property name="solicitorAddress4" column="solicitor_address4" />
+    <property name="solicitorAddress5" column="solicitor_address5" />
+    <property name="solicitorPostcode" column="solicitor_postcode" />
+    <property name="solicitorTelephone" column="solicitor_telephone" />
+    <property name="solicitorEmail" column="solicitor_email" />
+    <many-to-one name="claim" class="chox.model.Claim" column="claim_id" />
+  </class>
+</hibernate-mapping>
+

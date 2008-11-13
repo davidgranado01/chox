@@ -174,24 +174,24 @@ public class Rental implements Serializable
 		this.created = created;
 	}
 
-	/**
+	/*
 	 * Method 'getSupplier'
 	 * 
 	 * @return Supplier
-	 
+	*/
 	public Supplier getSupplier()
 	{
 		return supplier;
 	}
 
-	/**
+	/*
 	 * Method 'setSupplier'
 	 * 
 	 * @param supplier
-	 
+	*/ 
 	public void setSupplier(Supplier supplier)
 	{
 		this.supplier = supplier;
-	}*/
+	}
 
 }

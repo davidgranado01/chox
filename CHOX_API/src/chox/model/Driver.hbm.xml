@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="chox.model.Driver" table="driver">
+    <id name="id" column="id">
+      <generator class="increment" />
+    </id>
+    <property name="uuid" column="uuid" not-null="true" />
+    <property name="title" column="title" not-null="true" />
+    <property name="firstnames" column="firstnames" not-null="true" />
+    <property name="lastname" column="lastname" not-null="true" />
+    <property name="address1" column="address1" />
+    <property name="address2" column="address2" />
+    <property name="address3" column="address3" />
+    <property name="address4" column="address4" />
+    <property name="address5" column="address5" />
+    <property name="postcode" column="postcode" />
+    <property name="telephoneDay" column="telephone_day" />
+    <property name="telephoneEvening" column="telephone_evening" />
+    <property name="email" column="email" />
+    <property name="primaryDriver" column="primary_driver" not-null="true" />
+    <many-to-one name="rental" class="chox.model.Rental" column="rental_id" />
+  </class>
+</hibernate-mapping>
+
