@@ -31,27 +31,7 @@ public class ClaimServiceImpl implements ClaimService {
     public List listClaimsByStatus(String status) {
         Session currentSession = HibernateUtil.currentSession();
         Criteria criteria = currentSession.createCriteria(Claim.class)
-                .add(Restrictions.eq("claimStatus", status));
-        
-        Supplier s = (Supplier)currentSession.load(Supplier.class, 999);
-        Rental r = new Rental();
-        r.setSupplierReference("ABC123q");
-        r.setRentalStatus("Completed");
-        r.setSupplier(s);
-        
-        try
-        {
-        currentSession.beginTransaction();
-        currentSession.saveOrUpdate(r);
-        currentSession.getTransaction().commit();
-        }
-        catch(Exception ex)
-        {
-            currentSession.getTransaction().rollback();
-        }
-        
-        Rental r2 = (Rental)currentSession.load(Rental.class, r.getId());
-        
+                .add(Restrictions.eq("claimStatus", status));          
     
         return criteria.list();
     }

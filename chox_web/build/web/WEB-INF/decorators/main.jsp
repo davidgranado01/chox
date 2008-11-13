@@ -9,27 +9,32 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
-        <title><decorator:title default="Struts Starter"/></title>
-        <link href="<s:url value='css/main.css'/>" rel="stylesheet" type="text/css" media="all"/>
+        <title><decorator:title default="Struts Starter"/> - CHOX v0.1 build 2008-11-12 </title>
+        <link href="<s:url value='styles/main.css'/>" rel="stylesheet" type="text/css" media="all"/>
+        <link href="<s:url value='css/ext-all.css'/>" rel="stylesheet" type="text/css" media="all"/>
+        <link href="<s:url value='css/xtheme-gray.css'/>" rel="stylesheet" type="text/css" media="all"/>
+        <script src="<s:url value='scripts/ext-base.js'/>" type="text/javascript"></script>
+        <script src="<s:url value='scripts/ext-all.js'/>" type="text/javascript"></script> 
+        <script src="<s:url value='scripts/Application.js'/>" type="text/javascript"></script> 
         <decorator:head/>
     </head>
-    <body> 
-        <table id="page-container" cellpadding="0" cellspacing="0"> 
-            <tr> 
-                <td colspan="2" id="page-header"> 
-                    <%@ include file="header.jsp"%> 
-                </td> 
-            </tr><tr> 
-                <td id="nav-container"> 
-                    <%@ include file="navigation.jsp" %> 
-                </td> 
-                <td id="content-container"> 
+    <body>
+        <div id="container">
+            <div id="header">
+                <%@ include file="header.jsp" %> 
+            </div>
+            <div id="navigation">
+                <%@ include file="navigation.jsp" %> 
+            </div>
+            <div id="content">
+                <div id="include">
                     <decorator:body/> 
-                </td> 
-            </tr><tr> 
-                <td colspan="2" id="page-footer"> 
-                    <%@ include file="footer.jsp" %> 
-                </td> 
-        </tr></table> 
-    </body> 
+                </div>
+            </div>
+            <div id="footer">
+                <%@ include file="footer.jsp" %>
+            </div>
+        </div>
+    </body>
+    
 </html>
