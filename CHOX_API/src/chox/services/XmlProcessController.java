@@ -12,6 +12,8 @@ import com.filesystemsoftware.utils.Logger;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import chox.model.*;
+import org.hibernate.Session;
+import chox.data.HibernateUtil;
 
 public class XmlProcessController {
 
@@ -44,7 +46,7 @@ public class XmlProcessController {
                     try {
                         count++;
                         XMLParseResult xmlParseResult = new XMLParseResult();
-                        xmlParseResult = xmlSchemaValidateProcess(xmlParseResult, doc, re, sUpdateType);
+                        xmlParseResult = xmlSchemaValidateProcess(xmlParseResult, doc, re, sUpdateType, isAllowPartialUpload);
                         xmlParseResults.add(xmlParseResult);
 
                     } catch (Exception e) {
@@ -74,10 +76,12 @@ public class XmlProcessController {
 
                     try {
                         count++;
+                        
                         XMLParseResult xmlParseResult = new XMLParseResult();
-                        xmlParseResult = xmlSchemaValidateProcess(xmlParseResult, doc, re, sUpdateType);
+                        xmlParseResult = xmlSchemaValidateProcess(xmlParseResult, doc, re, sUpdateType, isAllowPartialUpload);
                         xmlParseResults.add(xmlParseResult);
-
+                        
+        
                     } catch (Exception e) {
                         Logger.err.println("Error loading record " + count);
                         throw e;
@@ -118,7 +122,7 @@ public class XmlProcessController {
                     try {
                         count++;
                         XMLParseResult xmlParseResult = new XMLParseResult();
-                        xmlParseResult = xmlSchemaValidateProcess(xmlParseResult, doc, re, sUpdateType);
+                        xmlParseResult = xmlSchemaValidateProcess(xmlParseResult, doc, re, sUpdateType, isAllowPartialUpload);
                         xmlParseResults.add(xmlParseResult);
 
                     } catch (Exception e) {
@@ -145,30 +149,35 @@ public class XmlProcessController {
             XMLParseResult xmlParseResult,
             Document doc,
             Element root,
-            String sUploadType) throws Exception {
-
+            String sUploadType,
+            Boolean isAllowPartialUpload) throws Exception {
+            
+        Session currentSession = HibernateUtil.currentSession();
+                
         //Rental rental = new Rental();
         //xmlParseResult.setRental(rental);
 
         // DO NOT CHANGE THE SEQUENCE
-        xmlParseResult = RentalStatusSchemaValidation(xmlParseResult, root, doc);       // DONE
-        xmlParseResult = RentalFirstContactSchemaValidation(xmlParseResult, root, doc); // DONE
-        xmlParseResult = RentalManagingRepairSchemaValidation(xmlParseResult, root, doc); // DONE
-        xmlParseResult = RentalSupplierSchemaValidation(xmlParseResult, root, doc);     // DONE
+        // xmlParseResult = RentalStatusSchemaValidation(currentSession, xmlParseResult, root, doc);       // DONE
+        // xmlParseResult = RentalFirstContactSchemaValidation(currentSession, xmlParseResult, root, doc); // DONE
+        // xmlParseResult = RentalManagingRepairSchemaValidation(currentSession, xmlParseResult, root, doc); // DONE
+        
+        xmlParseResult = CHOoganisationSchemaValidation(currentSession, xmlParseResult, root, doc);     // DONE
 
+        
         //System.out.println(" ** RentalStatusSchemaValidation:" + xmlParseResult.getRental().getSupplierReference());
         //System.out.println(" ** RentalStatusSchemaValidation:" + xmlParseResult.getRental().getRentalStatus());
         //System.out.println(" ** RentalFirstContactSchemaValidation:" + xmlParseResult.getRental().getFirstContact());
         //System.out.println(" ** RentalSupplierSchemaValidation:" + xmlParseResult.getRental().getSupplierReference());
         //System.out.println(" ** RentalSupplierSchemaValidation:" + xmlParseResult.getRental().getSupplier().getName());
 
-        xmlParseResult = RentalClaimSchemaValidation(xmlParseResult, root, doc);
-        xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);      // DONE
+        xmlParseResult = RentalClaimSchemaValidation(currentSession, xmlParseResult, root, doc);
+        xmlParseResult = RentalDriversSchemaValidation(currentSession, xmlParseResult, root, doc);      // DONE
 
         if (!(sUploadType.toUpperCase()).equalsIgnoreCase("C")) {
-            xmlParseResult = RentalRepairSchemaValidation(xmlParseResult, root, doc);
-            xmlParseResult = RentalVehiclesSchemaValidation(xmlParseResult, root, doc);
-            xmlParseResult = RentalInvoiceSchemaValidation(xmlParseResult, root, doc);
+            xmlParseResult = RentalRepairSchemaValidation(currentSession, xmlParseResult, root, doc);
+            xmlParseResult = RentalVehiclesSchemaValidation(currentSession, xmlParseResult, root, doc);
+            xmlParseResult = RentalInvoiceSchemaValidation(currentSession, xmlParseResult, root, doc);
         }
 
         System.out.println(" ** getIsSchemaValid: " + xmlParseResult.getIsSchemaValid());
@@ -176,12 +185,19 @@ public class XmlProcessController {
         System.out.println(" ** getIsDataValid: " + xmlParseResult.getIsDataValid());
         System.out.println(" ** getDataValidationRemark: " + xmlParseResult.getDataValidationRemark());
         System.out.println("********************************************");
-
+        
+            if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid() && isAllowPartialUpload){
+                currentSession.getTransaction().commit();
+            }else{
+                currentSession.getTransaction().rollback();
+            }
+        
         return xmlParseResult;
     }
-
+/*
     // VALIDATE RENTAL CONTACT SECTION 
     private static XMLParseResult RentalFirstContactSchemaValidation(
+            Session currentSession,
             XMLParseResult xmlParseResult,
             Element root,
             Document doc) throws Exception {
@@ -201,18 +217,17 @@ public class XmlProcessController {
 
             String strFirstContactDateTime = XmlHelper.getNodeValue(root, nodeName1);
             Timestamp tFirstContactDateTime = XmlHelper.parseDate(strFirstContactDateTime);
-/*
-            Rental rental = xmlParseResult.getRental();
-            rental.setFirstContact(tFirstContactDateTime);
-            xmlParseResult.setRental(rental);
- */ 
+
         }
 
         return xmlParseResult;
     }
+    */
     
+    /*
     // VALIDATE MANGING REPAIR SECTION 
     private static XMLParseResult RentalManagingRepairSchemaValidation(
+            Session currentSession,
             XMLParseResult xmlParseResult,
             Element root,
             Document doc) throws Exception {
@@ -235,26 +250,36 @@ public class XmlProcessController {
 
         return xmlParseResult;
     }
-    
+    */
     
     // VALIDATE SUPPLIER DETAIL SECTION
-    private static XMLParseResult RentalSupplierSchemaValidation(
+    private static XMLParseResult CHOoganisationSchemaValidation(
+            Session currentSession,
             XMLParseResult xmlParseResult,
             Element mainElement,
             Document doc) throws Exception {
 
-        String parentNodeName = "rental";
+        String parentNodeName = "Claim Header";
         String mainNodeName = "supplier";
         String nodeName1 = "supplier-name";
         String nodeName2 = "supplier-reference";
 
+        
         String childNodeLabelMain = XmlHelper.contructureErrorMessagePath(parentNodeName, "");
         String childNodeLabel1 = XmlHelper.contructureErrorMessagePath(childNodeLabelMain, mainNodeName);
-
+        
         xmlParseResult.setIsCurrentScheValid(true);
+        xmlParseResult.setIsCurrentDataValid(true);
+        
+        // CLAIM HEADER SECTION
+        xmlParseResult = xmlNodeValidation(xmlParseResult, mainElement, "rental-status", XmlHelper.isMAN_Status, "", childNodeLabelMain);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, mainElement, "managing-repair", XmlHelper.isMAN_Managing_Repair, "", childNodeLabelMain);
+        xmlParseResult = xmlNodeValidation(xmlParseResult, mainElement, "first-contact", XmlHelper.isMAN_First_Contact, XmlHelper.REG_TIMESTAMP, childNodeLabelMain);
+        
+        // CHO ORGANISATION SECTION
         xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, mainElement, mainNodeName, childNodeLabelMain);
-
-        if (xmlParseResult.getIsCurrentScheValid()) {
+        
+        if (xmlParseResult.getIsCurrentScheValid() && xmlParseResult.getIsCurrentDataValid()) {
 
             Element thisElement = XMLUtils.getElement(mainElement, mainNodeName);
 
@@ -293,9 +318,11 @@ public class XmlProcessController {
 
         return xmlParseResult;
     }
-
+    
+    /*
     // VALIDATE RENTAL STATUS SECTION 
     private static XMLParseResult RentalStatusSchemaValidation(
+            Session currentSession,
             XMLParseResult xmlParseResult,
             Element root,
             Document doc) throws Exception {
@@ -321,8 +348,11 @@ public class XmlProcessController {
 
         return xmlParseResult;
     }
+    */
+    
     // VALIDATE DRIVER SECTION 
     private static XMLParseResult RentalDriversSchemaValidation(
+            Session currentSession,
             XMLParseResult xmlParseResult,
             Element mainElement,
             Document doc) throws Exception {
@@ -406,6 +436,7 @@ public class XmlProcessController {
     }
     // VALIDATE CLAIM SECTION 
     private static XMLParseResult RentalClaimSchemaValidation(
+            Session currentSession,
             XMLParseResult xmlParseResult,
             Element root,
             Document doc) throws Exception {
@@ -753,6 +784,7 @@ public class XmlProcessController {
     
     // VALIDATE REPAIR SECTION 
     private static XMLParseResult RentalRepairSchemaValidation(
+            Session currentSession,
             XMLParseResult xmlParseResult,
             Element mainElement,
             Document doc) throws Exception {
@@ -839,6 +871,7 @@ public class XmlProcessController {
     }
     // VALIDATE INVOICE SECTION 
     private static XMLParseResult RentalInvoiceSchemaValidation(
+            Session currentSession,
             XMLParseResult xmlParseResult,
             Element mainElement,
             Document doc) throws Exception {
@@ -1108,6 +1141,7 @@ public class XmlProcessController {
     }
     // VALIDATE INVOICE SECTION 
     private static XMLParseResult RentalVehiclesSchemaValidation(
+            Session currentSession,
             XMLParseResult xmlParseResult,
             Element mainElement,
             Document doc) throws Exception {
