@@ -15,7 +15,12 @@ public class Claim implements Serializable
 	/** 
 	 * This attribute maps to the column managingRepair in the Claim table.
 	 */
-	protected boolean managingRepair;
+	protected short managingRepair;
+
+	/** 
+	 * This attribute represents whether the primitive attribute managingRepair is null.
+	 */
+	protected boolean managingRepairNull = true;
 
 	/** 
 	 * This attribute maps to the column policyHolderContactDate in the Claim table.
@@ -31,11 +36,6 @@ public class Claim implements Serializable
 	 * This attribute maps to the column status in the Claim table.
 	 */
 	protected String status;
-
-	/** 
-	 * This attribute maps to the column incidentId in the Claim table.
-	 */
-	protected int incidentId;
 
 	/** 
 	 * This attribute maps to the column createdBy in the Claim table.
@@ -146,6 +146,43 @@ public class Claim implements Serializable
 	}
 
 	/**
+	 * Method 'getManagingRepair'
+	 * 
+	 * @return short
+	 */
+	public short getManagingRepair()
+	{
+		return managingRepair;
+	}
+
+	/**
+	 * Method 'setManagingRepair'
+	 * 
+	 * @param managingRepair
+	 */
+	public void setManagingRepair(short managingRepair)
+	{
+		this.managingRepair = managingRepair;
+		this.managingRepairNull = false;
+	}
+
+	/** 
+	 * Sets the value of managingRepairNull
+	 */
+	public void setManagingRepairNull(boolean managingRepairNull)
+	{
+		this.managingRepairNull = managingRepairNull;
+	}
+
+	/** 
+	 * Gets the value of managingRepairNull
+	 */
+	public boolean isManagingRepairNull()
+	{
+		return managingRepairNull;
+	}
+
+	/**
 	 * Method 'getPolicyHolderContactDate'
 	 * 
 	 * @return java.util.Date
@@ -203,26 +240,6 @@ public class Claim implements Serializable
 	public void setStatus(java.lang.String status)
 	{
 		this.status = status;
-	}
-
-	/**
-	 * Method 'getIncidentId'
-	 * 
-	 * @return int
-	 */
-	public int getIncidentId()
-	{
-		return incidentId;
-	}
-
-	/**
-	 * Method 'setIncidentId'
-	 * 
-	 * @param incidentId
-	 */
-	public void setIncidentId(int incidentId)
-	{
-		this.incidentId = incidentId;
 	}
 
 	/**
@@ -538,13 +555,5 @@ public class Claim implements Serializable
 	{
 		this.vehicleHire = vehicleHire;
 	}
-
-    public boolean isManagingRepair() {
-        return managingRepair;
-    }
-
-    public void setManagingRepair(boolean managingRepair) {
-        this.managingRepair = managingRepair;
-    }
 
 }
