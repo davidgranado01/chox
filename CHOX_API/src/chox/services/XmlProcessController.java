@@ -147,8 +147,8 @@ public class XmlProcessController {
             Element root,
             String sUploadType) throws Exception {
 
-        Rental rental = new Rental();
-        xmlParseResult.setRental(rental);
+        //Rental rental = new Rental();
+        //xmlParseResult.setRental(rental);
 
         // DO NOT CHANGE THE SEQUENCE
         xmlParseResult = RentalStatusSchemaValidation(xmlParseResult, root, doc);       // DONE
@@ -156,11 +156,11 @@ public class XmlProcessController {
         xmlParseResult = RentalManagingRepairSchemaValidation(xmlParseResult, root, doc); // DONE
         xmlParseResult = RentalSupplierSchemaValidation(xmlParseResult, root, doc);     // DONE
 
-        System.out.println(" ** RentalStatusSchemaValidation:" + xmlParseResult.getRental().getSupplierReference());
-        System.out.println(" ** RentalStatusSchemaValidation:" + xmlParseResult.getRental().getRentalStatus());
-        System.out.println(" ** RentalFirstContactSchemaValidation:" + xmlParseResult.getRental().getFirstContact());
-        System.out.println(" ** RentalSupplierSchemaValidation:" + xmlParseResult.getRental().getSupplierReference());
-        System.out.println(" ** RentalSupplierSchemaValidation:" + xmlParseResult.getRental().getSupplier().getName());
+        //System.out.println(" ** RentalStatusSchemaValidation:" + xmlParseResult.getRental().getSupplierReference());
+        //System.out.println(" ** RentalStatusSchemaValidation:" + xmlParseResult.getRental().getRentalStatus());
+        //System.out.println(" ** RentalFirstContactSchemaValidation:" + xmlParseResult.getRental().getFirstContact());
+        //System.out.println(" ** RentalSupplierSchemaValidation:" + xmlParseResult.getRental().getSupplierReference());
+        //System.out.println(" ** RentalSupplierSchemaValidation:" + xmlParseResult.getRental().getSupplier().getName());
 
         xmlParseResult = RentalClaimSchemaValidation(xmlParseResult, root, doc);
         xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);      // DONE
@@ -201,10 +201,11 @@ public class XmlProcessController {
 
             String strFirstContactDateTime = XmlHelper.getNodeValue(root, nodeName1);
             Timestamp tFirstContactDateTime = XmlHelper.parseDate(strFirstContactDateTime);
-
+/*
             Rental rental = xmlParseResult.getRental();
             rental.setFirstContact(tFirstContactDateTime);
             xmlParseResult.setRental(rental);
+ */ 
         }
 
         return xmlParseResult;
@@ -268,7 +269,7 @@ public class XmlProcessController {
                 String strSupplierName = XmlHelper.getNodeValue(thisElement, nodeName1);
                 String strSupplierReference = XmlHelper.getNodeValue(thisElement, nodeName2);
 
-                Rental rental = new Rental();
+                //Rental rental = new Rental();
 
                 if (isRentalExist(strSupplierReference)) {
                     // rental = ;
@@ -278,13 +279,14 @@ public class XmlProcessController {
                 } else {
 
                     // SET SUPPLIER OBJECT
-                    Supplier supplier = new Supplier();
-                    supplier.setName(strSupplierName);
-
+                    //Supplier supplier = new Supplier();
+                    //supplier.setName(strSupplierName);
+/*
                     xmlParseResult.getRental().setSupplier(supplier);
                     xmlParseResult.getRental().setSupplierReference(strSupplierReference);
                     xmlParseResult.getRental().setCreated(new Timestamp(System.currentTimeMillis()));
                     xmlParseResult.getRental().setFirstContact(xmlParseResult.getRental().getFirstContact());
+ */ 
                 }
             }
         }
@@ -312,9 +314,9 @@ public class XmlProcessController {
         if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
 
             String rentalStatus = XmlHelper.getNodeValue(root, nodeName1);
-            Rental rental = xmlParseResult.getRental();
-            rental.setRentalStatus(rentalStatus);
-            xmlParseResult.setRental(rental);
+            //Rental rental = xmlParseResult.getRental();
+            //rental.setRentalStatus(rentalStatus);
+            //xmlParseResult.setRental(rental);
         }
 
         return xmlParseResult;
@@ -348,7 +350,7 @@ public class XmlProcessController {
 
             if (xmlParseResult.getIsCurrentScheValid()) {
 
-                ArrayList<Driver> drivers = new ArrayList<Driver>();
+                //ArrayList<Driver> drivers = new ArrayList<Driver>();
 
                 for (Element ee : driverElements) {
 
@@ -370,7 +372,7 @@ public class XmlProcessController {
                     xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "primary-driver", XmlHelper.isMAN_Driver_Primary_Driver, "", childNodeLabel2);
 
                     if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
-
+                        /*
                         Driver d = new Driver();
                         d.setRentalID(xmlParseResult.getRental().getId());
                         d.setTitle(XmlHelper.getNodeValue(ee, "title"));
@@ -394,9 +396,10 @@ public class XmlProcessController {
                         d.setPrimaryDriver(isPrimary);
 
                         drivers.add(d);
+                         */ 
                     }
                 }
-                System.out.println("$$$ DRIVER LIST : " + drivers.size());
+                //System.out.println("$$$ DRIVER LIST : " + drivers.size());
             }
         }
         return xmlParseResult;
@@ -499,9 +502,9 @@ public class XmlProcessController {
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "policy-number", XmlHelper.isMAN_Claim_ThirdParty_Insurer_PolicyNumber, "", childNodeLabel1);
             
             Boolean isClaimReferenceNumberMandatory = false;
-            if((xmlParseResult.getRental().getRentalStatus().equalsIgnoreCase(Rental.IN_PROGRESS))){
+            //if((xmlParseResult.getRental().getRentalStatus().equalsIgnoreCase(Rental.IN_PROGRESS))){
                 isClaimReferenceNumberMandatory = XmlHelper.isMAN_Claim_ThirdParty_Insurer_ClaimReference;
-            }
+            //}
             
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "claim-reference", isClaimReferenceNumberMandatory, "", childNodeLabel1);
 
@@ -594,7 +597,7 @@ public class XmlProcessController {
 
                     if (xmlParseResult.getIsCurrentScheValid()) {
 
-                        ArrayList<Withness> witnesses = new ArrayList<Withness>();
+                       // ArrayList<Withness> witnesses = new ArrayList<Withness>();
 
                         for (Element ee : witnessElements) {
 
@@ -613,12 +616,12 @@ public class XmlProcessController {
                             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "email", XmlHelper.isMAN_Claim_Incident_Witness_email, "", childNodeLabel2);
 
                             if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
-                                Withness witness = new Withness();
+                               // Withness witness = new Withness();
 
                                 // witness.setID(ID);
                                 // witness.setUuid(nodeName2);
                                 // witness.setClaimID(claimID);
-
+/*
                                 witness.setAddress1(XmlHelper.getNodeValue(ee, "address1"));
                                 witness.setAddress2(XmlHelper.getNodeValue(ee, "address2"));
                                 witness.setAddress3(XmlHelper.getNodeValue(ee, "address3"));
@@ -631,9 +634,10 @@ public class XmlProcessController {
                                 witness.setTelephoneEvening(XmlHelper.getNodeValue(ee, "telephone-evening"));
 
                                 witnesses.add(witness);
+ **/ 
                             }
                         }
-                        System.out.println("$$$ WITNESS LIST : " + witnesses.size());
+                        //System.out.println("$$$ WITNESS LIST : " + witnesses.size());
                     }
                 }
            }        
@@ -672,7 +676,7 @@ public class XmlProcessController {
 
                 if (xmlParseResult.getIsCurrentScheValid()) {
 
-                    ArrayList<Injured> injuries = new ArrayList<Injured>();
+                    //ArrayList<Injured> injuries = new ArrayList<Injured>();
 
                     for (Element ee : witnessElements) {
 
@@ -706,7 +710,8 @@ public class XmlProcessController {
                         xmlParseResult = xmlNodeValidation(xmlParseResult, thisSubElement, "email", XmlHelper.isMAN_Claim_Incident_Solicitor_email, "", childNodeLabel3);
 
                         if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
-
+                            
+                            /*
                             Injured injury = new Injured();
 
                             // INJURY
@@ -733,10 +738,11 @@ public class XmlProcessController {
                             injury.setSolicitorEmail(XmlHelper.getEmailAddressFromNode(ee, "email"));
 
                             injuries.add(injury);
+                             */ 
                         }
                     }
 
-                    System.out.println("$$$ INJURY LIST : " + injuries.size());
+                    //System.out.println("$$$ INJURY LIST : " + injuries.size());
 
                 }
             }
@@ -801,9 +807,9 @@ public class XmlProcessController {
                         if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
 
                             EngineerReport engineerReport = new EngineerReport();
-                            engineerReport.setDays(XmlHelper.getBigDecimalFromNode(ee, "days"));
-                            engineerReport.setLabourAmount(XmlHelper.getBigDecimalFromNode(ee, "labour-amount"));
-                            engineerReport.setTotalAmount(XmlHelper.getBigDecimalFromNode(ee, "total-amount"));
+                            //engineerReport.setDays(XmlHelper.getBigDecimalFromNode(ee, "days"));
+                            //engineerReport.setLabourAmount(XmlHelper.getBigDecimalFromNode(ee, "labour-amount"));
+                            //engineerReport.setTotalAmount(XmlHelper.getBigDecimalFromNode(ee, "total-amount"));
                             engineerReport.setName(XmlHelper.getNodeValue(ee, "name"));
                             engineerReport.setCompany(XmlHelper.getNodeValue(ee, "company"));
                             engineerReport.setAddress1(XmlHelper.getNodeValue(ee, "address1"));
@@ -820,7 +826,7 @@ public class XmlProcessController {
                                 usable = "n";
                             }
                             usable = new String(usable.toLowerCase().substring(0, 1));
-                            engineerReport.setUsable(usable);                        
+                            //engineerReport.setUsable(usable);                        
 
                             engineerReports.add(engineerReport);
                         }
@@ -896,12 +902,13 @@ public class XmlProcessController {
             BigDecimal bVat = XmlHelper.getBigDecimalFromNode(thisElement, "vat");
             BigDecimal bGross = XmlHelper.getBigDecimalFromNode(thisElement, "gross");
             
+            /*
             // SET SUPPLIER INFORMATION
             Invoice invoice = new Invoice();
             invoice.setNet(bNet);
             invoice.setGross(bGross);
             invoice.setVAT(bVat);
-            
+            */
             
             // VEHICLES
             xmlParseResult = InvoiceDetail_VehiclesValidSchemaValidation(xmlParseResult, thisElement, childNodeLabel0, subNodeName0);
@@ -1072,7 +1079,7 @@ public class XmlProcessController {
 
         if (xmlParseResult.getIsCurrentScheValid()) {
 
-            ArrayList<RentalExtra> rentalExtras = new ArrayList<RentalExtra>();
+            //ArrayList<RentalExtra> rentalExtras = new ArrayList<RentalExtra>();
 
             for (Element ee : extraElements) {
 
@@ -1094,7 +1101,7 @@ public class XmlProcessController {
                 }
             }
 
-            System.out.println("$$$ INVOICE DETAIL EXTRA : " + rentalExtras.size());
+            //System.out.println("$$$ INVOICE DETAIL EXTRA : " + rentalExtras.size());
 
         }
         return xmlParseResult;
@@ -1151,6 +1158,7 @@ public class XmlProcessController {
 
         if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
 
+            /*
             RentalVehicle rentalvehicle = new RentalVehicle();
             rentalvehicle.setDays(XmlHelper.getBigDecimalFromNode(mainElement, "rental-days"));
             rentalvehicle.setRentalEnd(XmlHelper.parseDate(XmlHelper.getNodeValue(mainElement, "rental-end")));
@@ -1159,7 +1167,7 @@ public class XmlProcessController {
             rentalvehicle.setVehicleManufacturer(XmlHelper.getNodeValue(mainElement, "vehicle-manufacturer"));
             rentalvehicle.setVehicleModel(XmlHelper.getNodeValue(mainElement, "vehicle-model"));
             rentalvehicle.setVehicleRegistration(XmlHelper.getNodeValue(mainElement, "vehicle-registration"));
-
+            */
         //rentalvehicle.setRentalID(XmlHelper.getNodeValue(mainElement, "rental-days");
         //rentalvehicle.setUuid(XmlHelper.getNodeValue(mainElement, "rental-days");
         }
