@@ -6,8 +6,6 @@ package chox.services;
 
 import chox.data.HibernateUtil;
 import chox.model.Claim;
-import chox.model.Rental;
-import chox.model.Supplier;
 import chox.model.XMLParseResult;
 import java.io.File;
 import java.util.ArrayList;
