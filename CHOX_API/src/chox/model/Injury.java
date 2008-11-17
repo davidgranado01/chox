@@ -93,25 +93,14 @@ public class Injury implements Serializable
 	protected Date lastModifiedDate;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the CHOrganisation table.
+	 * This attribute represents the foreign key relationship to the Incident table.
 	 */
-	protected Chorganisation chorganisation;
+	protected Incident incident;
 
 	/**
 	 * Method 'Injury'
 	 * 
 	 */
-        
-        protected Incident incident;
-
-    public Incident getIncident() {
-        return incident;
-    }
-
-    public void setIncident(Incident incident) {
-        this.incident = incident;
-    }
-        
 	public Injury()
 	{
 	}
@@ -451,23 +440,23 @@ public class Injury implements Serializable
 	}
 
 	/**
-	 * Method 'getChorganisation'
+	 * Method 'getIncident'
 	 * 
-	 * @return Chorganisation
+	 * @return Incident
 	 */
-	public Chorganisation getChorganisation()
+	public Incident getIncident()
 	{
-		return chorganisation;
+		return incident;
 	}
 
 	/**
-	 * Method 'setChorganisation'
+	 * Method 'setIncident'
 	 * 
-	 * @param chorganisation
+	 * @param incident
 	 */
-	public void setChorganisation(Chorganisation chorganisation)
+	public void setIncident(Incident incident)
 	{
-		this.chorganisation = chorganisation;
+		this.incident = incident;
 	}
 
 }

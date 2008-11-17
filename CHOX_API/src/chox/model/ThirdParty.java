@@ -48,9 +48,8 @@ public class ThirdParty implements Serializable
 	protected boolean vehicleClassIdNull = true;
 
 	/** 
-	 * This attribute maps to the column name in the ThirdParty table.
+	 * This attribute maps to the column address1 in the ThirdParty table.
 	 */
-
 	protected String address1;
 
 	/** 
@@ -124,6 +123,21 @@ public class ThirdParty implements Serializable
 	protected Date lastModifiedDate;
 
 	/** 
+	 * This attribute maps to the column firstNames in the ThirdParty table.
+	 */
+	protected String firstNames;
+
+	/** 
+	 * This attribute maps to the column lastName in the ThirdParty table.
+	 */
+	protected String lastName;
+
+	/** 
+	 * This attribute maps to the column title in the ThirdParty table.
+	 */
+	protected String title;
+
+	/** 
 	 * This attribute represents the foreign key relationship to the Insurer table.
 	 */
 	protected Insurer insurer;
@@ -132,37 +146,6 @@ public class ThirdParty implements Serializable
 	 * Method 'ThirdParty'
 	 * 
 	 */
-        
-        protected String title;
-        protected String firstNames;
-        protected String lastName;
-
-    public String getFirstNames() {
-        return firstNames;
-    }
-
-    public void setFirstNames(String firstNames) {
-        this.firstNames = firstNames;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-        
 	public ThirdParty()
 	{
 	}
@@ -323,7 +306,6 @@ public class ThirdParty implements Serializable
 	{
 		return vehicleClassIdNull;
 	}
-
 
 	/**
 	 * Method 'getAddress1'
@@ -617,6 +599,66 @@ public class ThirdParty implements Serializable
 	public void setLastModifiedDate(java.util.Date lastModifiedDate)
 	{
 		this.lastModifiedDate = lastModifiedDate;
+	}
+
+	/**
+	 * Method 'getFirstNames'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getFirstNames()
+	{
+		return firstNames;
+	}
+
+	/**
+	 * Method 'setFirstNames'
+	 * 
+	 * @param firstNames
+	 */
+	public void setFirstNames(java.lang.String firstNames)
+	{
+		this.firstNames = firstNames;
+	}
+
+	/**
+	 * Method 'getLastName'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getLastName()
+	{
+		return lastName;
+	}
+
+	/**
+	 * Method 'setLastName'
+	 * 
+	 * @param lastName
+	 */
+	public void setLastName(java.lang.String lastName)
+	{
+		this.lastName = lastName;
+	}
+
+	/**
+	 * Method 'getTitle'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getTitle()
+	{
+		return title;
+	}
+
+	/**
+	 * Method 'setTitle'
+	 * 
+	 * @param title
+	 */
+	public void setTitle(java.lang.String title)
+	{
+		this.title = title;
 	}
 
 	/**
