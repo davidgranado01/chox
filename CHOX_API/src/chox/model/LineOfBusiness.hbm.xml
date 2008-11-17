@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="chox.model.hibernate.LineOfBusiness" table="LineOfBusiness">
+    <id name="id" column="id">
+      <generator class="increment" />
+    </id>
+    <property name="name" column="name" not-null="true" />
+    <property name="adminHandlingCharge" column="adminHandlingCharge" />
+    <property name="address1" column="address1" not-null="true" />
+    <property name="address2" column="address2" />
+    <property name="address3" column="address3" />
+    <property name="address4" column="address4" />
+    <property name="address5" column="address5" />
+    <property name="postcode" column="postcode" not-null="true" />
+    <property name="createdBy" column="createdBy" />
+    <property name="createdDate" column="createdDate" />
+    <property name="lastModifiedBy" column="lastModifiedBy" />
+    <property name="lastModifiedDate" column="lastModifiedDate" />
+    <many-to-one name="insurer" class="chox.model.hibernate.Insurer" column="insurerId" />
+  </class>
+</hibernate-mapping>
+

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="chox.model.hibernate.Invoice" table="Invoice">
+    <id name="id" column="id">
+      <generator class="increment" />
+    </id>
+    <property name="dateInvoiced" column="dateInvoiced" not-null="true" />
+    <property name="hireNet" column="hireNet" not-null="true" />
+    <property name="hireVat" column="hireVat" not-null="true" />
+    <property name="hireGross" column="hireGross" not-null="true" />
+    <property name="repairNet" column="repairNet" not-null="true" />
+    <property name="repairVat" column="repairVat" not-null="true" />
+    <property name="repairGross" column="repairGross" not-null="true" />
+    <property name="engineerFeeNet" column="engineerFeeNet" not-null="true" />
+    <property name="engineerFeeVat" column="engineerFeeVat" not-null="true" />
+    <property name="engineerFeeGross" column="engineerFeeGross" not-null="true" />
+    <property name="storageRecoveryNet" column="storageRecoveryNet" not-null="true" />
+    <property name="storageRecoveryVat" column="storageRecoveryVat" not-null="true" />
+    <property name="storageRecoveryGross" column="storageRecoveryGross" not-null="true" />
+    <property name="totalNet" column="totalNet" not-null="true" />
+    <property name="totalVat" column="totalVat" not-null="true" />
+    <property name="totalGross" column="totalGross" not-null="true" />
+    <property name="claimsHandlingInvoiceAmount" column="claimsHandlingInvoiceAmount" not-null="true" />
+    <property name="deductionForClaimsHandlingFee" column="deductionForClaimsHandlingFee" not-null="true" />
+    <property name="discount" column="discount" not-null="true" />
+    <property name="totaltoPay" column="totaltoPay" not-null="true" />
+    <property name="handlingInvoiceNo" column="handlingInvoiceNo" />
+    <property name="claimInvoiceNo" column="claimInvoiceNo" />
+    <property name="cdwFee" column="cdwFee" />
+    <property name="cdwQty" column="cdwQty" />
+    <property name="automaticFee" column="automaticFee" />
+    <property name="automaticQty" column="automaticQty" />
+    <property name="satNavFee" column="satNavFee" />
+    <property name="satNavQty" column="satNavQty" />
+    <property name="estateFee" column="estateFee" />
+    <property name="estateQty" column="estateQty" />
+    <property name="babySeatFee" column="babySeatFee" />
+    <property name="babySeatQty" column="babySeatQty" />
+    <property name="towBarsFee" column="towBarsFee" />
+    <property name="towBarsQty" column="towBarsQty" />
+    <property name="nonStandardInsurancePremiumFee" column="nonStandardInsurancePremiumFee" />
+    <property name="nonStandardInsurancePremiumQty" column="nonStandardInsurancePremiumQty" />
+    <property name="adminFee" column="adminFee" />
+    <property name="adminQty" column="adminQty" />
+    <property name="roofRackFee" column="roofRackFee" />
+    <property name="roofRackQty" column="roofRackQty" />
+    <property name="dualControlFee" column="dualControlFee" />
+    <property name="dualControlQty" column="dualControlQty" />
+    <property name="deliveryCollectionFee" column="deliveryCollectionFee" />
+    <property name="deliveryCollectionQty" column="deliveryCollectionQty" />
+    <property name="createdBy" column="createdBy" />
+    <property name="createdDate" column="createdDate" />
+    <property name="lastModifiedBy" column="lastModifiedBy" />
+    <property name="lastModifiedDate" column="lastModifiedDate" />
+  </class>
+</hibernate-mapping>
+

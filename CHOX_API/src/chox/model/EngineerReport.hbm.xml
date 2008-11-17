@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="chox.model.hibernate.EngineerReport" table="EngineerReport">
+    <id name="id" column="id">
+      <generator class="increment" />
+    </id>
+    <property name="labourAmount" column="labourAmount" not-null="true" />
+    <property name="totalAmount" column="totalAmount" not-null="true" />
+    <property name="days" column="days" not-null="true" />
+    <property name="name" column="name" />
+    <property name="company" column="company" />
+    <property name="address1" column="address1" />
+    <property name="address2" column="address2" />
+    <property name="address3" column="address3" />
+    <property name="address4" column="address4" />
+    <property name="address5" column="address5" />
+    <property name="postcode" column="postcode" />
+    <property name="telephone" column="telephone" />
+    <property name="email" column="email" />
+    <property name="createdBy" column="createdBy" />
+    <property name="createdDate" column="createdDate" />
+    <property name="lastModifiedBy" column="lastModifiedBy" />
+    <property name="lastModifiedDate" column="lastModifiedDate" />
+    <property name="isUsable" column="isUsable" not-null="true" />
+  </class>
+</hibernate-mapping>
+
