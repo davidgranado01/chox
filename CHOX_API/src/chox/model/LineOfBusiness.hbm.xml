@@ -18,6 +18,7 @@
     <property name="createdDate" column="createdDate" />
     <property name="lastModifiedBy" column="lastModifiedBy" />
     <property name="lastModifiedDate" column="lastModifiedDate" />
+    <property name="isActive" column="isActive" not-null="true" />
     <many-to-one name="insurer" class="chox.model.Insurer" column="insurerId" />
   </class>
 </hibernate-mapping>

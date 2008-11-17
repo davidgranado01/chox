@@ -18,6 +18,7 @@
     <many-to-one name="chorganisation" class="chox.model.Chorganisation" column="cHOrganisationId" />
     <many-to-one name="customer" class="chox.model.Customer" column="customerId" />
     <many-to-one name="engineerReport" class="chox.model.EngineerReport" column="engineerReportId" />
+    <many-to-one name="hireMonitoringDetail" class="chox.model.HireMonitoringDetail" column="hireMonitoringDetailId" />
     <many-to-one name="incident" class="chox.model.Incident" column="engineerReportId" />
     <many-to-one name="insurer" class="chox.model.Insurer" column="insurerId" />
     <many-to-one name="invoice" class="chox.model.Invoice" column="invoiceId" />

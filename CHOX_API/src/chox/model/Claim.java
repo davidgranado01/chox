@@ -88,6 +88,11 @@ public class Claim implements Serializable
 	protected EngineerReport engineerReport;
 
 	/** 
+	 * This attribute represents the foreign key relationship to the HireMonitoringDetail table.
+	 */
+	protected HireMonitoringDetail hireMonitoringDetail;
+
+	/** 
 	 * This attribute represents the foreign key relationship to the Incident table.
 	 */
 	protected Incident incident;
@@ -434,6 +439,26 @@ public class Claim implements Serializable
 	public void setEngineerReport(EngineerReport engineerReport)
 	{
 		this.engineerReport = engineerReport;
+	}
+
+	/**
+	 * Method 'getHireMonitoringDetail'
+	 * 
+	 * @return HireMonitoringDetail
+	 */
+	public HireMonitoringDetail getHireMonitoringDetail()
+	{
+		return hireMonitoringDetail;
+	}
+
+	/**
+	 * Method 'setHireMonitoringDetail'
+	 * 
+	 * @param hireMonitoringDetail
+	 */
+	public void setHireMonitoringDetail(HireMonitoringDetail hireMonitoringDetail)
+	{
+		this.hireMonitoringDetail = hireMonitoringDetail;
 	}
 
 	/**

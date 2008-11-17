@@ -14,6 +14,7 @@
     <mapping resource="Customer.hbm.xml" />
     <mapping resource="EngineerReport.hbm.xml" />
     <mapping resource="GlobalConfiguration.hbm.xml" />
+    <mapping resource="HireMonitoringDetail.hbm.xml" />
     <mapping resource="History.hbm.xml" />
     <mapping resource="Incident.hbm.xml" />
     <mapping resource="Injury.hbm.xml" />

@@ -163,6 +163,11 @@ public class Customer implements Serializable
 	protected short isUsable;
 
 	/** 
+	 * This attribute maps to the column isActive in the Customer table.
+	 */
+	protected short isActive;
+
+	/** 
 	 * This attribute represents the foreign key relationship to the VehicleClass table.
 	 */
 	protected VehicleClass vehicleClass;
@@ -787,6 +792,26 @@ public class Customer implements Serializable
 	public void setIsUsable(short isUsable)
 	{
 		this.isUsable = isUsable;
+	}
+
+	/**
+	 * Method 'getIsActive'
+	 * 
+	 * @return short
+	 */
+	public short getIsActive()
+	{
+		return isActive;
+	}
+
+	/**
+	 * Method 'setIsActive'
+	 * 
+	 * @param isActive
+	 */
+	public void setIsActive(short isActive)
+	{
+		this.isActive = isActive;
 	}
 
 	/**

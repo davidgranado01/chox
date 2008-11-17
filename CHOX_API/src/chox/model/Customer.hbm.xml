@@ -34,6 +34,7 @@
     <property name="lastModifiedDate" column="lastModifiedDate" />
     <property name="isPrimaryDriver" column="isPrimaryDriver" not-null="true" />
     <property name="isUsable" column="isUsable" not-null="true" />
+    <property name="isActive" column="isActive" not-null="true" />
     <many-to-one name="vehicleClass" class="chox.model.VehicleClass" column="vehicleClassId" />
   </class>
 </hibernate-mapping>

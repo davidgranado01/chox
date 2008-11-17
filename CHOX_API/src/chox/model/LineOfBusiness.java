@@ -88,6 +88,11 @@ public class LineOfBusiness implements Serializable
 	protected Date lastModifiedDate;
 
 	/** 
+	 * This attribute maps to the column isActive in the LineOfBusiness table.
+	 */
+	protected short isActive;
+
+	/** 
 	 * This attribute represents the foreign key relationship to the Insurer table.
 	 */
 	protected Insurer insurer;
@@ -409,6 +414,26 @@ public class LineOfBusiness implements Serializable
 	public void setLastModifiedDate(java.util.Date lastModifiedDate)
 	{
 		this.lastModifiedDate = lastModifiedDate;
+	}
+
+	/**
+	 * Method 'getIsActive'
+	 * 
+	 * @return short
+	 */
+	public short getIsActive()
+	{
+		return isActive;
+	}
+
+	/**
+	 * Method 'setIsActive'
+	 * 
+	 * @param isActive
+	 */
+	public void setIsActive(short isActive)
+	{
+		this.isActive = isActive;
 	}
 
 	/**
