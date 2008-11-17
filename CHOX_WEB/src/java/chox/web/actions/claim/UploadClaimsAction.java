@@ -3,7 +3,9 @@
  * and open the template in the editor.
  */
 
-package chox.web.actions;
+package chox.web.actions.claim;
+
+import chox.web.actions.*;
 
 /**
  *

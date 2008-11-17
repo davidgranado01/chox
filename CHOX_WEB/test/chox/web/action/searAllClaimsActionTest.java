@@ -6,7 +6,7 @@
 package chox.web.action;
 
 import chox.data.HibernateUtil;
-import chox.web.actions.ListAllClaimsAction;
+import chox.web.actions.claim.ListAllClaimsAction;
 import chox.model.*;
 import chox.services.ClaimService;
 import java.util.ArrayList;

@@ -1,5 +1,6 @@
-package chox.web.actions;
+package chox.web.actions.claim;
 
+import chox.web.actions.*;
 import chox.services.ClaimService;
 import java.util.List;
 import net.sf.json.JSONArray;

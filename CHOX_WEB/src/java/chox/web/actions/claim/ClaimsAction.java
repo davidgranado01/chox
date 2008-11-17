@@ -3,8 +3,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package chox.web.actions;
+package chox.web.actions.claim;
 
+import chox.web.actions.*;
 import chox.model.Claim;
 import chox.services.ClaimService;
 import chox.web.viewdata.claimGridViewData;

@@ -2,36 +2,65 @@
 "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
+    <constant name="struts.codebehind.defaultPackage" value="base-package" />
+    <constant name="struts.codebehind.pathPrefix" value="/WEB-INF/jsp/"/>
+    
     <constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
     <constant name="struts.devMode" value="true" />
     <constant name="struts.multipart.maxSize" value="1000000" />
-    <include file="struts-default.xml"/>
+    
+    <package name="home-package" extends="struts-default" namespace="/">
+        <interceptors>
+            <interceptor name="acegi" class="chox.web.security.AcegiInterceptor" />
+            <interceptor-stack name="authenticated">
+                <interceptor-ref name="acegi"/>
+                <interceptor-ref name="paramsPrepareParamsStack"/>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="acegi" />
+        <action name="index" class="chox.web.actions.IndexAction" >
+            <result name="success">/jsp/index.jsp</result>
+        </action>
+        <action name="login" class="chox.web.actions.BaseAction" >
+            <result name="success">/jsp/login.jsp?login_error=${login_error}
+            </result>
+        </action>
+    </package>
+    <package name="base-package" extends="home-package" >
+        <default-interceptor-ref name="paramsPrepareParamsStack" />
+
+        <!--<global-results>-->
+            <!--<result name="unknownError">/WEB-INF/jsp/error.jsp</result>-->
+        <!--</global-results>-->
+        <!--<global-exception-mappings>-->
+            <!--<exception-mapping exception="org.hibernate.exception.ConstraintViolationException" result="dupPK" />-->
+            <!--<exception-mapping exception="java.lang.Exception" result="unknownError" />-->
+        <!--</global-exception-mappings>-->
+    </package>
 
     <!-- Configuration for the default package. -->
-    <package name="default" extends="struts-default">
-        <action name="index" class="chox.web.actions.IndexAction">
-            <result>/jsp/index.jsp</result>
+    <package name="claim" namespace="/claim" extends="base-package">        
+        <action name="ListAllClaims" class="chox.web.actions.claim.ListAllClaimsAction">
+            <result>/jsp/claim/listClaims-partial.jsp</result>
         </action>
-        <action name="ListAllClaims" class="chox.web.actions.ListAllClaimsAction">
-            <result>/jsp/listClaims-partial.jsp</result>
-        </action>
-        <action name ="ProcessClaimsAction" class ="chox.web.actions.ProcessClaimsAction">
-            <result name ="success">/jsp/UploadStatus.jsp
+        <action name ="ProcessClaimsAction" class ="chox.web.actions.claim.ProcessClaimsAction">
+            <result name ="success">/jsp/claim/UploadStatus.jsp
             </result>
-            <result name ="error">/jsp/Uploadfailed.jsp
+            <result name ="error">/jsp/claim/Uploadfailed.jsp
             </result>
         </action>
-        <action name="UploadClaims" class="chox.web.actions.UploadClaimsAction">
-            <result>/jsp/UploadClaims.jsp</result>
+        <action name="UploadClaims" class="chox.web.actions.claim.UploadClaimsAction">
+            <result>/jsp/claim/UploadClaims.jsp</result>
         </action>
-        <action name="Inbox" class="chox.web.actions.InboxAction">
-            <result>/jsp/Inbox.jsp</result>
+        <action name="Inbox" class="chox.web.actions.claim.InboxAction">
+            <result>/jsp/claim/Inbox.jsp</result>
         </action>
-        <action name="getClaimsbyStatus" class="chox.web.actions.ClaimsAction" method="getClaimsbyStatus">
-            <param name="status">status</param>
+        <action name="getClaimsbyStatus" class="chox.web.actions.claim.ClaimsAction" method="getClaimsbyStatus">
+            <param name="status">status
+            </param>
             <result name="success">/jsp/JsonData.jsp</result>
         </action>
-
-
     </package>
+    
+    <include file="config-browser.xml"/>
 </struts>

@@ -10,9 +10,9 @@
         <tr> 
             <td> 
                 <ui>
-                    <li><a href="<s:url value="index.action"/>">Home</a></li>
-                    <li><a href="<s:url value="UploadClaims.action"/>">Upload Claims</a></li>
-                    <li><a href="<s:url value="Inbox.action"/>">Claims (?)</a></li>
+                    <li><a href="<s:url action="index" namespace="/"/>">Home</a></li>
+                    <li><a href="<s:url action="UploadClaims" namespace="claim"/>">Upload Claims</a></li>
+                    <li><a href="<s:url action="Inbox" namespace="claim"/>">Claims (?)</a></li>
                     <li><a href="#">Invoice (?)</a></li>                  
                 </ui>
             </td> 

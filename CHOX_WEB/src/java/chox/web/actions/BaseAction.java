@@ -1,16 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chox.web.actions;
 
+import chox.web.security.AcegiPrincipal;
 import com.opensymphony.xwork2.ActionSupport;
-
+import chox.web.security.PermissionedUser;
 /**
- *
- * @author Emmanuel
+ * @author Ian Roughley
+ * @version $Id$
  */
 public class BaseAction extends ActionSupport {
 
+    private PermissionedUser user;
+
+    @AcegiPrincipal
+    public void setAuthenticatedUser(PermissionedUser user) {
+        this.user = user;
+    }
+
+    public PermissionedUser getAuthenticatedUser() {
+        return user;
+    }
 }

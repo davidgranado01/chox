@@ -27,14 +27,14 @@ public class claimGridViewData {
     public claimGridViewData(Claim claim)
     {        
         this.id = claim.getId();
-        this.supplierReference = claim.getRental().getSupplierReference();
+        this.supplierReference = claim.getChoReference();
         this.invoiceAmount = BigDecimal.ZERO; //TODO : assign  invoice amount 
-        this.vehicleRegistration = claim.getVehicleRegistration();
+        this.vehicleRegistration = claim.getVehicleHire().getVehicleRegistration();
         this.lineOfBusiness = "";//TODO : assign lineOfBusiness
-        this.created = claim.getRental().getCreated();
-        this.status = claim.getClaimStatus();
-        this.cho = claim.getRental().getSupplier().getName();
-        this.insurer = "";//TODO : assign insurer
+        this.created = claim.getCreatedDate();
+        this.status = claim.getStatus();
+        this.cho = claim.getChorganisation().getName();
+        this.insurer = claim.getInsurer().getName();//TODO : assign insurer
             
     }
 
