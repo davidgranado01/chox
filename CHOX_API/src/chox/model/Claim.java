@@ -15,7 +15,7 @@ public class Claim implements Serializable
 	/** 
 	 * This attribute maps to the column managingRepair in the Claim table.
 	 */
-	protected short managingRepair;
+	protected boolean managingRepair;
 
 	/** 
 	 * This attribute represents whether the primitive attribute managingRepair is null.
@@ -145,26 +145,15 @@ public class Claim implements Serializable
 		this.id = id;
 	}
 
-	/**
-	 * Method 'getManagingRepair'
-	 * 
-	 * @return short
-	 */
-	public short getManagingRepair()
-	{
-		return managingRepair;
-	}
+    public boolean isManagingRepair() {
+        return managingRepair;
+    }
 
-	/**
-	 * Method 'setManagingRepair'
-	 * 
-	 * @param managingRepair
-	 */
-	public void setManagingRepair(short managingRepair)
-	{
-		this.managingRepair = managingRepair;
-		this.managingRepairNull = false;
-	}
+    public void setManagingRepair(boolean managingRepair) {
+        this.managingRepair = managingRepair;
+    }
+
+
 
 	/** 
 	 * Sets the value of managingRepairNull

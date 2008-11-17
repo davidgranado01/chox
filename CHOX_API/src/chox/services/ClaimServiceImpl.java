@@ -41,23 +41,25 @@ public class ClaimServiceImpl implements ClaimService {
     public static Boolean isClaimExist(String CHOClaimId){
         Boolean isExist = false;
         
+        /*
         Session currentSession = HibernateUtil.currentSession();
         Criteria criteria = currentSession.createCriteria(Claim.class).add(Restrictions.eq("choReference", CHOClaimId));
         
         if(criteria.list().size()>0){
             isExist = true;
         }
-        
+        */
         return isExist;
     }
     
     public static Claim getClaimByCHOReferenceNumber(String CHOClaimId){
         Claim claim = new Claim();
         
+        /*
         Session currentSession = HibernateUtil.currentSession();
         Criteria criteria = currentSession.createCriteria(Claim.class).add(Restrictions.eq("choReference", CHOClaimId));
         
-        
+        */
         return claim;
     }
     

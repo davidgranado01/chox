@@ -184,9 +184,9 @@ public class XmlProcessController {
         System.out.println("********************************************");
         
             if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid() && isAllowPartialUpload){
-                currentSession.getTransaction().commit();
+                //currentSession.getTransaction().commit();
             }else{
-                currentSession.getTransaction().rollback();
+                //currentSession.getTransaction().rollback();
             }
         
         return xmlParseResult;
@@ -337,6 +337,11 @@ public class XmlProcessController {
                         
                         System.out.println(" $$$ PART 2 : SET CUSTOMER INFORMATION");
                         
+                        /*
+                        if(xmlParseResult.getClaim().getCustomer()==null){
+                            xmlParseResult.getClaim().setCustomer(new Customer());
+                        }
+                        
                         Customer customer = xmlParseResult.getClaim().getCustomer();
                         
                         customer.setTitle(XmlHelper.getNodeValue(ee, "title"));
@@ -354,6 +359,7 @@ public class XmlProcessController {
                         customer.setIsPrimaryDriver(true);
 
                         xmlParseResult.getClaim().setCustomer(customer);
+                         */ 
                     }
                 }
             }
@@ -430,7 +436,7 @@ public class XmlProcessController {
             if (xmlParseResult.getIsCurrentScheValid() && xmlParseResult.getIsCurrentDataValid()) {
                 
                 System.out.println(" $$$ PART 3.1 : SET CLAIM - CUSTOMER INFORMATION");
-                
+                /*
                 Customer customer = xmlParseResult.getClaim().getCustomer();
                 
                 customer.setPolicyNumber(XmlHelper.getNodeValue(thisElement, "policy-number"));
@@ -452,6 +458,7 @@ public class XmlProcessController {
                 customer.setInitialEcd(XmlHelper.getTimeStampFromNode(thisElement, "initial-ecd"));
                 
                 xmlParseResult.getClaim().setCustomer(customer);
+                 */ 
             }
         }
 
@@ -488,13 +495,15 @@ public class XmlProcessController {
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "name", XmlHelper.isMAN_Claim_ThirdParty_Insurer_Name, "", childNodeLabel1);
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "policy-number", XmlHelper.isMAN_Claim_ThirdParty_Insurer_PolicyNumber, "", childNodeLabel1);
             
+            /*
             Boolean isClaimReferenceNumberMandatory = false;
             if((xmlParseResult.getClaim().getStatus().equalsIgnoreCase(XMLParseResult.IN_PROGRESS))){
                 isClaimReferenceNumberMandatory = XmlHelper.isMAN_Claim_ThirdParty_Insurer_ClaimReference;
             }
             
+            
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "claim-reference", isClaimReferenceNumberMandatory, "", childNodeLabel1);
-
+*/
             // VEHICLE
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-registration", XmlHelper.isMAN_Claim_ThirdParty_Vehicle_Registration, XmlHelper.REG_VEHICLE_REG, childNodeLabel2);
             xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "vehicle-manufacturer", XmlHelper.isMAN_Claim_ThirdParty_Vehicle_manufacturer, "", childNodeLabel2);
@@ -518,7 +527,7 @@ public class XmlProcessController {
             if (xmlParseResult.getIsCurrentScheValid() && xmlParseResult.getIsCurrentDataValid()) {
                 
                 System.out.println(" $$$ PART 3.2 : SET CLAIM - THIRD PARTY INFORMATION");
-                
+                /*
                 ThirdParty thirdparty = xmlParseResult.getClaim().getThirdParty();
                 
                 // GET INSURER INFORMATION
@@ -550,6 +559,7 @@ public class XmlProcessController {
                 thirdparty.setTitle(XmlHelper.getNodeValue(thisElement, "title"));
                 
                 xmlParseResult.getClaim().setThirdParty(thirdparty);
+                 */ 
             }
         }
         return xmlParseResult;
@@ -579,6 +589,7 @@ public class XmlProcessController {
             
             if (xmlParseResult.getIsCurrentScheValid() && xmlParseResult.getIsCurrentDataValid()) {
                 
+                /*
                 Incident incident = xmlParseResult.getClaim().getIncident();
                 
                 incident.setDate(XmlHelper.getTimeStampFromNode(thisElement, "date"));
@@ -591,10 +602,9 @@ public class XmlProcessController {
                 // witnesses
                 xmlParseResult = ClaimDetail_IncidentWitnessSchemaValidation(xmlParseResult, thisElement, doc, childNodeLabelMain);
                 xmlParseResult = ClaimDetail_IncidentInjuriesSchemaValidation(xmlParseResult, thisElement, doc, childNodeLabelMain);
-                
+                */
                 
             }
-
         }
         return xmlParseResult;
     }

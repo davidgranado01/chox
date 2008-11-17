@@ -226,7 +226,7 @@ public class XmlHelper {
         Boolean returnBoolean = false;
         String thisNodeValue = XMLUtils.getElementValue(thisElement, thisNodeName);
         
-        if(thisNodeValue.equalsIgnoreCase("y")){
+        if(thisNodeValue!=null && thisNodeValue.equalsIgnoreCase("y")){
             returnBoolean = true;
         }
         
@@ -239,7 +239,7 @@ public class XmlHelper {
         
         Timestamp returnTimeStamp = null;
         
-        if(!thisNodeValue.equalsIgnoreCase("")){
+        if(thisNodeValue!= null && !thisNodeValue.equalsIgnoreCase("")){
             returnTimeStamp = parseDate(thisNodeValue);
         }
         
