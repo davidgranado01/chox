@@ -271,7 +271,7 @@ public class XmlProcessController {
                     // SET CLAIM HEADER INFORMATION
                     claim.setManagingRepair(bManagingRepair);
                     claim.setPolicyHolderContactDate(tFirstContactDate);
-                    claim.setStatus(Claim.NEW_CLAIM);
+                    claim.setStatus(ClaimServiceImpl.NEW_CLAIM);
                     
                     // SET CHO ORGANISATION OR SUPPLIER INFORMATION
                     Chorganisation chorganisation = new Chorganisation();
