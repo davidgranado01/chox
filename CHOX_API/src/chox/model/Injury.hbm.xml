@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="chox.model.hibernate.Injury" table="Injury">
+  <class name="chox.model.Injury" table="Injury">
     <id name="id" column="id">
       <generator class="increment" />
     </id>
@@ -20,7 +20,7 @@
     <property name="createdDate" column="createdDate" />
     <property name="lastModifiedBy" column="lastModifiedBy" />
     <property name="lastModifiedDate" column="lastModifiedDate" />
-    <many-to-one name="chorganisation" class="chox.model.hibernate.Chorganisation" column="incidentId" />
+    <many-to-one name="chorganisation" class="chox.model.Chorganisation" column="incidentId" />
   </class>
 </hibernate-mapping>
 

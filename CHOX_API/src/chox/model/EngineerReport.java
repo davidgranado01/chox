@@ -1,4 +1,4 @@
-package chox.model.hibernate;
+package chox.model;
 
 import java.util.Set;
 import java.util.HashSet;
