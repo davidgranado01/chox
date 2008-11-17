@@ -7,831 +7,304 @@ import java.util.Date;
 
 public class Customer implements Serializable
 {
-	/** 
-	 * This attribute maps to the column id in the Customer table.
-	 */
 	protected int id;
-
-	/** 
-	 * This attribute maps to the column title in the Customer table.
-	 */
 	protected String title;
-
-	/** 
-	 * This attribute maps to the column firstnames in the Customer table.
-	 */
 	protected String firstnames;
-
-	/** 
-	 * This attribute maps to the column lastname in the Customer table.
-	 */
 	protected String lastname;
-
-	/** 
-	 * This attribute maps to the column address1 in the Customer table.
-	 */
 	protected String address1;
-
-	/** 
-	 * This attribute maps to the column address2 in the Customer table.
-	 */
 	protected String address2;
-
-	/** 
-	 * This attribute maps to the column address3 in the Customer table.
-	 */
 	protected String address3;
-
-	/** 
-	 * This attribute maps to the column address4 in the Customer table.
-	 */
 	protected String address4;
-
-	/** 
-	 * This attribute maps to the column address5 in the Customer table.
-	 */
 	protected String address5;
-
-	/** 
-	 * This attribute maps to the column postcode in the Customer table.
-	 */
 	protected String postcode;
-
-	/** 
-	 * This attribute maps to the column telephoneDay in the Customer table.
-	 */
 	protected String telephoneDay;
-
-	/** 
-	 * This attribute maps to the column telephoneEvening in the Customer table.
-	 */
 	protected String telephoneEvening;
-
-	/** 
-	 * This attribute maps to the column email in the Customer table.
-	 */
 	protected String email;
-
-	/** 
-	 * This attribute maps to the column vehicleRegistration in the Customer table.
-	 */
 	protected String vehicleRegistration;
-
-	/** 
-	 * This attribute maps to the column vehicleManufacturer in the Customer table.
-	 */
 	protected String vehicleManufacturer;
-
-	/** 
-	 * This attribute maps to the column vehicleModel in the Customer table.
-	 */
 	protected String vehicleModel;
-
-	/** 
-	 * This attribute maps to the column location in the Customer table.
-	 */
 	protected String location;
-
-	/** 
-	 * This attribute maps to the column damage in the Customer table.
-	 */
 	protected String damage;
-
-	/** 
-	 * This attribute maps to the column initialEcd in the Customer table.
-	 */
 	protected Date initialEcd;
-
-	/** 
-	 * This attribute maps to the column name in the Customer table.
-	 */
-	protected String name;
-
-	/** 
-	 * This attribute maps to the column policyNumber in the Customer table.
-	 */
+	protected String insurerName;
 	protected String policyNumber;
-
-	/** 
-	 * This attribute maps to the column claimReference in the Customer table.
-	 */
 	protected String claimReference;
-
-	/** 
-	 * This attribute maps to the column comprehensive in the Customer table.
-	 */
-	protected String comprehensive;
-
-	/** 
-	 * This attribute maps to the column createdBy in the Customer table.
-	 */
+	protected Boolean comprehensive;
 	protected int createdBy;
-
-	/** 
-	 * This attribute represents whether the primitive attribute createdBy is null.
-	 */
 	protected boolean createdByNull = true;
-
-	/** 
-	 * This attribute maps to the column createdDate in the Customer table.
-	 */
 	protected Date createdDate;
-
-	/** 
-	 * This attribute maps to the column lastModifiedBy in the Customer table.
-	 */
 	protected int lastModifiedBy;
-
-	/** 
-	 * This attribute represents whether the primitive attribute lastModifiedBy is null.
-	 */
 	protected boolean lastModifiedByNull = true;
-
-	/** 
-	 * This attribute maps to the column lastModifiedDate in the Customer table.
-	 */
 	protected Date lastModifiedDate;
-
-	/** 
-	 * This attribute maps to the column isPrimaryDriver in the Customer table.
-	 */
-	protected short isPrimaryDriver;
-
-	/** 
-	 * This attribute maps to the column isUsable in the Customer table.
-	 */
-	protected short isUsable;
-
-	/** 
-	 * This attribute maps to the column isActive in the Customer table.
-	 */
-	protected short isActive;
-
-	/** 
-	 * This attribute represents the foreign key relationship to the VehicleClass table.
-	 */
+	protected Boolean isPrimaryDriver;
+	protected boolean isUsable;
+	protected Boolean isActive;
 	protected VehicleClass vehicleClass;
 
-	/**
-	 * Method 'Customer'
-	 * 
-	 */
-	public Customer()
-	{
-	}
-
-	/**
-	 * Method 'getId'
-	 * 
-	 * @return int
-	 */
-	public int getId()
-	{
-		return id;
-	}
-
-	/**
-	 * Method 'setId'
-	 * 
-	 * @param id
-	 */
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	/**
-	 * Method 'getTitle'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getTitle()
-	{
-		return title;
-	}
-
-	/**
-	 * Method 'setTitle'
-	 * 
-	 * @param title
-	 */
-	public void setTitle(java.lang.String title)
-	{
-		this.title = title;
-	}
-
-	/**
-	 * Method 'getFirstnames'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getFirstnames()
-	{
-		return firstnames;
-	}
-
-	/**
-	 * Method 'setFirstnames'
-	 * 
-	 * @param firstnames
-	 */
-	public void setFirstnames(java.lang.String firstnames)
-	{
-		this.firstnames = firstnames;
-	}
-
-	/**
-	 * Method 'getLastname'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getLastname()
-	{
-		return lastname;
-	}
-
-	/**
-	 * Method 'setLastname'
-	 * 
-	 * @param lastname
-	 */
-	public void setLastname(java.lang.String lastname)
-	{
-		this.lastname = lastname;
-	}
-
-	/**
-	 * Method 'getAddress1'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getAddress1()
-	{
-		return address1;
-	}
-
-	/**
-	 * Method 'setAddress1'
-	 * 
-	 * @param address1
-	 */
-	public void setAddress1(java.lang.String address1)
-	{
-		this.address1 = address1;
-	}
-
-	/**
-	 * Method 'getAddress2'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getAddress2()
-	{
-		return address2;
-	}
-
-	/**
-	 * Method 'setAddress2'
-	 * 
-	 * @param address2
-	 */
-	public void setAddress2(java.lang.String address2)
-	{
-		this.address2 = address2;
-	}
-
-	/**
-	 * Method 'getAddress3'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getAddress3()
-	{
-		return address3;
-	}
-
-	/**
-	 * Method 'setAddress3'
-	 * 
-	 * @param address3
-	 */
-	public void setAddress3(java.lang.String address3)
-	{
-		this.address3 = address3;
-	}
-
-	/**
-	 * Method 'getAddress4'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getAddress4()
-	{
-		return address4;
-	}
-
-	/**
-	 * Method 'setAddress4'
-	 * 
-	 * @param address4
-	 */
-	public void setAddress4(java.lang.String address4)
-	{
-		this.address4 = address4;
-	}
-
-	/**
-	 * Method 'getAddress5'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getAddress5()
-	{
-		return address5;
-	}
-
-	/**
-	 * Method 'setAddress5'
-	 * 
-	 * @param address5
-	 */
-	public void setAddress5(java.lang.String address5)
-	{
-		this.address5 = address5;
-	}
-
-	/**
-	 * Method 'getPostcode'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getPostcode()
-	{
-		return postcode;
-	}
-
-	/**
-	 * Method 'setPostcode'
-	 * 
-	 * @param postcode
-	 */
-	public void setPostcode(java.lang.String postcode)
-	{
-		this.postcode = postcode;
-	}
-
-	/**
-	 * Method 'getTelephoneDay'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getTelephoneDay()
-	{
-		return telephoneDay;
-	}
-
-	/**
-	 * Method 'setTelephoneDay'
-	 * 
-	 * @param telephoneDay
-	 */
-	public void setTelephoneDay(java.lang.String telephoneDay)
-	{
-		this.telephoneDay = telephoneDay;
-	}
-
-	/**
-	 * Method 'getTelephoneEvening'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getTelephoneEvening()
-	{
-		return telephoneEvening;
-	}
-
-	/**
-	 * Method 'setTelephoneEvening'
-	 * 
-	 * @param telephoneEvening
-	 */
-	public void setTelephoneEvening(java.lang.String telephoneEvening)
-	{
-		this.telephoneEvening = telephoneEvening;
-	}
-
-	/**
-	 * Method 'getEmail'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getEmail()
-	{
-		return email;
-	}
-
-	/**
-	 * Method 'setEmail'
-	 * 
-	 * @param email
-	 */
-	public void setEmail(java.lang.String email)
-	{
-		this.email = email;
-	}
-
-	/**
-	 * Method 'getVehicleRegistration'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getVehicleRegistration()
-	{
-		return vehicleRegistration;
-	}
-
-	/**
-	 * Method 'setVehicleRegistration'
-	 * 
-	 * @param vehicleRegistration
-	 */
-	public void setVehicleRegistration(java.lang.String vehicleRegistration)
-	{
-		this.vehicleRegistration = vehicleRegistration;
-	}
-
-	/**
-	 * Method 'getVehicleManufacturer'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getVehicleManufacturer()
-	{
-		return vehicleManufacturer;
-	}
-
-	/**
-	 * Method 'setVehicleManufacturer'
-	 * 
-	 * @param vehicleManufacturer
-	 */
-	public void setVehicleManufacturer(java.lang.String vehicleManufacturer)
-	{
-		this.vehicleManufacturer = vehicleManufacturer;
-	}
-
-	/**
-	 * Method 'getVehicleModel'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getVehicleModel()
-	{
-		return vehicleModel;
-	}
-
-	/**
-	 * Method 'setVehicleModel'
-	 * 
-	 * @param vehicleModel
-	 */
-	public void setVehicleModel(java.lang.String vehicleModel)
-	{
-		this.vehicleModel = vehicleModel;
-	}
-
-	/**
-	 * Method 'getLocation'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getLocation()
-	{
-		return location;
-	}
-
-	/**
-	 * Method 'setLocation'
-	 * 
-	 * @param location
-	 */
-	public void setLocation(java.lang.String location)
-	{
-		this.location = location;
-	}
-
-	/**
-	 * Method 'getDamage'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getDamage()
-	{
-		return damage;
-	}
-
-	/**
-	 * Method 'setDamage'
-	 * 
-	 * @param damage
-	 */
-	public void setDamage(java.lang.String damage)
-	{
-		this.damage = damage;
-	}
-
-	/**
-	 * Method 'getInitialEcd'
-	 * 
-	 * @return java.util.Date
-	 */
-	public java.util.Date getInitialEcd()
-	{
-		return initialEcd;
-	}
-
-	/**
-	 * Method 'setInitialEcd'
-	 * 
-	 * @param initialEcd
-	 */
-	public void setInitialEcd(java.util.Date initialEcd)
-	{
-		this.initialEcd = initialEcd;
-	}
-
-	/**
-	 * Method 'getName'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getName()
-	{
-		return name;
-	}
-
-	/**
-	 * Method 'setName'
-	 * 
-	 * @param name
-	 */
-	public void setName(java.lang.String name)
-	{
-		this.name = name;
-	}
-
-	/**
-	 * Method 'getPolicyNumber'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getPolicyNumber()
-	{
-		return policyNumber;
-	}
-
-	/**
-	 * Method 'setPolicyNumber'
-	 * 
-	 * @param policyNumber
-	 */
-	public void setPolicyNumber(java.lang.String policyNumber)
-	{
-		this.policyNumber = policyNumber;
-	}
-
-	/**
-	 * Method 'getClaimReference'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getClaimReference()
-	{
-		return claimReference;
-	}
-
-	/**
-	 * Method 'setClaimReference'
-	 * 
-	 * @param claimReference
-	 */
-	public void setClaimReference(java.lang.String claimReference)
-	{
-		this.claimReference = claimReference;
-	}
-
-	/**
-	 * Method 'getComprehensive'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getComprehensive()
-	{
-		return comprehensive;
-	}
-
-	/**
-	 * Method 'setComprehensive'
-	 * 
-	 * @param comprehensive
-	 */
-	public void setComprehensive(java.lang.String comprehensive)
-	{
-		this.comprehensive = comprehensive;
-	}
-
-	/**
-	 * Method 'getCreatedBy'
-	 * 
-	 * @return int
-	 */
-	public int getCreatedBy()
-	{
-		return createdBy;
-	}
-
-	/**
-	 * Method 'setCreatedBy'
-	 * 
-	 * @param createdBy
-	 */
-	public void setCreatedBy(int createdBy)
-	{
-		this.createdBy = createdBy;
-		this.createdByNull = false;
-	}
-
-	/** 
-	 * Sets the value of createdByNull
-	 */
-	public void setCreatedByNull(boolean createdByNull)
-	{
-		this.createdByNull = createdByNull;
-	}
-
-	/** 
-	 * Gets the value of createdByNull
-	 */
-	public boolean isCreatedByNull()
-	{
-		return createdByNull;
-	}
-
-	/**
-	 * Method 'getCreatedDate'
-	 * 
-	 * @return java.util.Date
-	 */
-	public java.util.Date getCreatedDate()
-	{
-		return createdDate;
-	}
-
-	/**
-	 * Method 'setCreatedDate'
-	 * 
-	 * @param createdDate
-	 */
-	public void setCreatedDate(java.util.Date createdDate)
-	{
-		this.createdDate = createdDate;
-	}
-
-	/**
-	 * Method 'getLastModifiedBy'
-	 * 
-	 * @return int
-	 */
-	public int getLastModifiedBy()
-	{
-		return lastModifiedBy;
-	}
-
-	/**
-	 * Method 'setLastModifiedBy'
-	 * 
-	 * @param lastModifiedBy
-	 */
-	public void setLastModifiedBy(int lastModifiedBy)
-	{
-		this.lastModifiedBy = lastModifiedBy;
-		this.lastModifiedByNull = false;
-	}
-
-	/** 
-	 * Sets the value of lastModifiedByNull
-	 */
-	public void setLastModifiedByNull(boolean lastModifiedByNull)
-	{
-		this.lastModifiedByNull = lastModifiedByNull;
-	}
-
-	/** 
-	 * Gets the value of lastModifiedByNull
-	 */
-	public boolean isLastModifiedByNull()
-	{
-		return lastModifiedByNull;
-	}
-
-	/**
-	 * Method 'getLastModifiedDate'
-	 * 
-	 * @return java.util.Date
-	 */
-	public java.util.Date getLastModifiedDate()
-	{
-		return lastModifiedDate;
-	}
-
-	/**
-	 * Method 'setLastModifiedDate'
-	 * 
-	 * @param lastModifiedDate
-	 */
-	public void setLastModifiedDate(java.util.Date lastModifiedDate)
-	{
-		this.lastModifiedDate = lastModifiedDate;
-	}
-
-	/**
-	 * Method 'getIsPrimaryDriver'
-	 * 
-	 * @return short
-	 */
-	public short getIsPrimaryDriver()
-	{
-		return isPrimaryDriver;
-	}
-
-	/**
-	 * Method 'setIsPrimaryDriver'
-	 * 
-	 * @param isPrimaryDriver
-	 */
-	public void setIsPrimaryDriver(short isPrimaryDriver)
-	{
-		this.isPrimaryDriver = isPrimaryDriver;
-	}
-
-	/**
-	 * Method 'getIsUsable'
-	 * 
-	 * @return short
-	 */
-	public short getIsUsable()
-	{
-		return isUsable;
-	}
-
-	/**
-	 * Method 'setIsUsable'
-	 * 
-	 * @param isUsable
-	 */
-	public void setIsUsable(short isUsable)
-	{
-		this.isUsable = isUsable;
-	}
-
-	/**
-	 * Method 'getIsActive'
-	 * 
-	 * @return short
-	 */
-	public short getIsActive()
-	{
-		return isActive;
-	}
-
-	/**
-	 * Method 'setIsActive'
-	 * 
-	 * @param isActive
-	 */
-	public void setIsActive(short isActive)
-	{
-		this.isActive = isActive;
-	}
-
-	/**
-	 * Method 'getVehicleClass'
-	 * 
-	 * @return VehicleClass
-	 */
-	public VehicleClass getVehicleClass()
-	{
-		return vehicleClass;
-	}
-
-	/**
-	 * Method 'setVehicleClass'
-	 * 
-	 * @param vehicleClass
-	 */
-	public void setVehicleClass(VehicleClass vehicleClass)
-	{
-		this.vehicleClass = vehicleClass;
-	}
+        public String getAddress1() {
+            return address1;
+        }
+
+        public void setAddress1(String address1) {
+            this.address1 = address1;
+        }
+
+        public String getAddress2() {
+            return address2;
+        }
+
+        public void setAddress2(String address2) {
+            this.address2 = address2;
+        }
+
+        public String getAddress3() {
+            return address3;
+        }
+
+        public void setAddress3(String address3) {
+            this.address3 = address3;
+        }
+
+        public String getAddress4() {
+            return address4;
+        }
+
+        public void setAddress4(String address4) {
+            this.address4 = address4;
+        }
+
+        public String getAddress5() {
+            return address5;
+        }
+
+        public void setAddress5(String address5) {
+            this.address5 = address5;
+        }
+
+        public String getClaimReference() {
+            return claimReference;
+        }
+
+        public void setClaimReference(String claimReference) {
+            this.claimReference = claimReference;
+        }
+
+        public Boolean getComprehensive() {
+            return comprehensive;
+        }
+
+        public void setComprehensive(Boolean comprehensive) {
+            this.comprehensive = comprehensive;
+        }
+
+        public int getCreatedBy() {
+            return createdBy;
+        }
+
+        public void setCreatedBy(int createdBy) {
+            this.createdBy = createdBy;
+        }
+
+        public boolean isCreatedByNull() {
+            return createdByNull;
+        }
+
+        public void setCreatedByNull(boolean createdByNull) {
+            this.createdByNull = createdByNull;
+        }
+
+        public Date getCreatedDate() {
+            return createdDate;
+        }
+
+        public void setCreatedDate(Date createdDate) {
+            this.createdDate = createdDate;
+        }
+
+        public String getDamage() {
+            return damage;
+        }
+
+        public void setDamage(String damage) {
+            this.damage = damage;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getFirstnames() {
+            return firstnames;
+        }
+
+        public void setFirstnames(String firstnames) {
+            this.firstnames = firstnames;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public Date getInitialEcd() {
+            return initialEcd;
+        }
+
+        public void setInitialEcd(Date initialEcd) {
+            this.initialEcd = initialEcd;
+        }
+
+        public String getInsurerName() {
+            return insurerName;
+        }
+
+        public void setInsurerName(String insurerName) {
+            this.insurerName = insurerName;
+        }
+
+        public Boolean getIsActive() {
+            return isActive;
+        }
+
+        public void setIsActive(Boolean isActive) {
+            this.isActive = isActive;
+        }
+
+        public Boolean getIsPrimaryDriver() {
+            return isPrimaryDriver;
+        }
+
+        public void setIsPrimaryDriver(Boolean isPrimaryDriver) {
+            this.isPrimaryDriver = isPrimaryDriver;
+        }
+
+        public boolean isIsUsable() {
+            return isUsable;
+        }
+
+        public void setIsUsable(boolean isUsable) {
+            this.isUsable = isUsable;
+        }
+
+        public int getLastModifiedBy() {
+            return lastModifiedBy;
+        }
+
+        public void setLastModifiedBy(int lastModifiedBy) {
+            this.lastModifiedBy = lastModifiedBy;
+        }
+
+        public boolean isLastModifiedByNull() {
+            return lastModifiedByNull;
+        }
+
+        public void setLastModifiedByNull(boolean lastModifiedByNull) {
+            this.lastModifiedByNull = lastModifiedByNull;
+        }
+
+        public Date getLastModifiedDate() {
+            return lastModifiedDate;
+        }
+
+        public void setLastModifiedDate(Date lastModifiedDate) {
+            this.lastModifiedDate = lastModifiedDate;
+        }
+
+        public String getLastname() {
+            return lastname;
+        }
+
+        public void setLastname(String lastname) {
+            this.lastname = lastname;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
+
+        public String getPolicyNumber() {
+            return policyNumber;
+        }
+
+        public void setPolicyNumber(String policyNumber) {
+            this.policyNumber = policyNumber;
+        }
+
+        public String getPostcode() {
+            return postcode;
+        }
+
+        public void setPostcode(String postcode) {
+            this.postcode = postcode;
+        }
+
+        public String getTelephoneDay() {
+            return telephoneDay;
+        }
+
+        public void setTelephoneDay(String telephoneDay) {
+            this.telephoneDay = telephoneDay;
+        }
+
+        public String getTelephoneEvening() {
+            return telephoneEvening;
+        }
+
+        public void setTelephoneEvening(String telephoneEvening) {
+            this.telephoneEvening = telephoneEvening;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public VehicleClass getVehicleClass() {
+            return vehicleClass;
+        }
+
+        public void setVehicleClass(VehicleClass vehicleClass) {
+            this.vehicleClass = vehicleClass;
+        }
+
+        public String getVehicleManufacturer() {
+            return vehicleManufacturer;
+        }
+
+        public void setVehicleManufacturer(String vehicleManufacturer) {
+            this.vehicleManufacturer = vehicleManufacturer;
+        }
+
+        public String getVehicleModel() {
+            return vehicleModel;
+        }
+
+        public void setVehicleModel(String vehicleModel) {
+            this.vehicleModel = vehicleModel;
+        }
+
+        public String getVehicleRegistration() {
+            return vehicleRegistration;
+        }
+
+        public void setVehicleRegistration(String vehicleRegistration) {
+            this.vehicleRegistration = vehicleRegistration;
+        }
+
+	
 
 }

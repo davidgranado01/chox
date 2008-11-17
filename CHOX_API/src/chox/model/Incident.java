@@ -7,65 +7,19 @@ import java.util.Date;
 
 public class Incident implements Serializable
 {
-	/** 
-	 * This attribute maps to the column date in the Incident table.
-	 */
+
 	protected Date date;
-
-	/** 
-	 * This attribute maps to the column location in the Incident table.
-	 */
 	protected String location;
-
-	/** 
-	 * This attribute maps to the column incidentDescription in the Incident table.
-	 */
 	protected String incidentDescription;
-
-	/** 
-	 * This attribute maps to the column id in the Incident table.
-	 */
 	protected int id;
-
-	/** 
-	 * This attribute maps to the column createdBy in the Incident table.
-	 */
 	protected int createdBy;
-
-	/** 
-	 * This attribute represents whether the primitive attribute createdBy is null.
-	 */
 	protected boolean createdByNull = true;
-
-	/** 
-	 * This attribute maps to the column createdDate in the Incident table.
-	 */
 	protected Date createdDate;
-
-	/** 
-	 * This attribute maps to the column lastModifiedBy in the Incident table.
-	 */
 	protected int lastModifiedBy;
-
-	/** 
-	 * This attribute represents whether the primitive attribute lastModifiedBy is null.
-	 */
 	protected boolean lastModifiedByNull = true;
-
-	/** 
-	 * This attribute maps to the column lastModifiedDate in the Incident table.
-	 */
 	protected Date lastModifiedDate;
-
-	/** 
-	 * This attribute maps to the column isPoliceInvolved in the Incident table.
-	 */
-	protected short isPoliceInvolved;
-
-	/**
-	 * Method 'Incident'
-	 * 
-	 */
+	protected boolean isPoliceInvolved;
+        
 	public Incident()
 	{
 	}
@@ -269,7 +223,7 @@ public class Incident implements Serializable
 	 * 
 	 * @return short
 	 */
-	public short getIsPoliceInvolved()
+	public boolean getIsPoliceInvolved()
 	{
 		return isPoliceInvolved;
 	}
@@ -279,7 +233,7 @@ public class Incident implements Serializable
 	 * 
 	 * @param isPoliceInvolved
 	 */
-	public void setIsPoliceInvolved(short isPoliceInvolved)
+	public void setIsPoliceInvolved(boolean isPoliceInvolved)
 	{
 		this.isPoliceInvolved = isPoliceInvolved;
 	}

@@ -24,7 +24,7 @@
     <property name="location" column="location" />
     <property name="damage" column="damage" />
     <property name="initialEcd" column="initialEcd" not-null="true" />
-    <property name="name" column="name" />
+    <property name="insurerName" column="insurerName" />
     <property name="policyNumber" column="policyNumber" />
     <property name="claimReference" column="claimReference" />
     <property name="comprehensive" column="comprehensive" />

@@ -12,7 +12,8 @@
     <property name="vehicleManufacturer" column="vehicleManufacturer" />
     <property name="vehicleModel" column="vehicleModel" />
     <property name="vehicleClassId" column="vehicleClassId" />
-    <property name="name" column="name" />
+    <property name="firstNames" column="firstNames" />
+    <property name="title" column="title" />
     <property name="address1" column="address1" />
     <property name="address2" column="address2" />
     <property name="address3" column="address3" />

@@ -50,11 +50,7 @@ public class ThirdParty implements Serializable
 	/** 
 	 * This attribute maps to the column name in the ThirdParty table.
 	 */
-	protected String name;
 
-	/** 
-	 * This attribute maps to the column address1 in the ThirdParty table.
-	 */
 	protected String address1;
 
 	/** 
@@ -136,6 +132,37 @@ public class ThirdParty implements Serializable
 	 * Method 'ThirdParty'
 	 * 
 	 */
+        
+        protected String title;
+        protected String firstNames;
+        protected String lastName;
+
+    public String getFirstNames() {
+        return firstNames;
+    }
+
+    public void setFirstNames(String firstNames) {
+        this.firstNames = firstNames;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+        
 	public ThirdParty()
 	{
 	}
@@ -297,25 +324,6 @@ public class ThirdParty implements Serializable
 		return vehicleClassIdNull;
 	}
 
-	/**
-	 * Method 'getName'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getName()
-	{
-		return name;
-	}
-
-	/**
-	 * Method 'setName'
-	 * 
-	 * @param name
-	 */
-	public void setName(java.lang.String name)
-	{
-		this.name = name;
-	}
 
 	/**
 	 * Method 'getAddress1'

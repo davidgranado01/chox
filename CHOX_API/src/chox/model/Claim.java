@@ -7,185 +7,48 @@ import java.util.Date;
 
 public class Claim implements Serializable
 {
-	/** 
-	 * This attribute maps to the column id in the Claim table.
-	 */
+
+        public static final String NEW_CLAIM = "1st Notification";
+        
 	protected int id;
-
-	/** 
-	 * This attribute maps to the column managingRepair in the Claim table.
-	 */
-	protected short managingRepair;
-
-	/** 
-	 * This attribute represents whether the primitive attribute managingRepair is null.
-	 */
-	protected boolean managingRepairNull = true;
-
-	/** 
-	 * This attribute maps to the column policyHolderContactDate in the Claim table.
-	 */
+	protected boolean managingRepair;
 	protected Date policyHolderContactDate;
 
-	/** 
-	 * This attribute maps to the column choReference in the Claim table.
-	 */
 	protected String choReference;
-
-	/** 
-	 * This attribute maps to the column status in the Claim table.
-	 */
 	protected String status;
-
-	/** 
-	 * This attribute maps to the column incidentId in the Claim table.
-	 */
 	protected int incidentId;
-
-	/** 
-	 * This attribute maps to the column createdBy in the Claim table.
-	 */
 	protected int createdBy;
-
-	/** 
-	 * This attribute represents whether the primitive attribute createdBy is null.
-	 */
 	protected boolean createdByNull = true;
-
-	/** 
-	 * This attribute maps to the column createdDate in the Claim table.
-	 */
 	protected Date createdDate;
-
-	/** 
-	 * This attribute maps to the column lastModifiedBy in the Claim table.
-	 */
 	protected int lastModifiedBy;
-
-	/** 
-	 * This attribute represents whether the primitive attribute lastModifiedBy is null.
-	 */
 	protected boolean lastModifiedByNull = true;
-
-	/** 
-	 * This attribute maps to the column lastModifiedDate in the Claim table.
-	 */
 	protected Date lastModifiedDate;
-
-	/** 
-	 * This attribute represents the foreign key relationship to the CHOrganisation table.
-	 */
 	protected Chorganisation chorganisation;
-
-	/** 
-	 * This attribute represents the foreign key relationship to the Customer table.
-	 */
 	protected Customer customer;
-
-	/** 
-	 * This attribute represents the foreign key relationship to the EngineerReport table.
-	 */
 	protected EngineerReport engineerReport;
-
-	/** 
-	 * This attribute represents the foreign key relationship to the HireMonitoringDetail table.
-	 */
 	protected HireMonitoringDetail hireMonitoringDetail;
-
-	/** 
-	 * This attribute represents the foreign key relationship to the Incident table.
-	 */
 	protected Incident incident;
-
-	/** 
-	 * This attribute represents the foreign key relationship to the Insurer table.
-	 */
 	protected Insurer insurer;
-
-	/** 
-	 * This attribute represents the foreign key relationship to the Invoice table.
-	 */
 	protected Invoice invoice;
-
-	/** 
-	 * This attribute represents the foreign key relationship to the LineOfBusiness table.
-	 */
 	protected LineOfBusiness lineOfBusiness;
-
-	/** 
-	 * This attribute represents the foreign key relationship to the ThirdParty table.
-	 */
 	protected ThirdParty thirdParty;
-
-	/** 
-	 * This attribute represents the foreign key relationship to the VehicleHire table.
-	 */
 	protected VehicleHire vehicleHire;
 
-	/**
-	 * Method 'Claim'
-	 * 
-	 */
+
 	public Claim()
 	{
 	}
 
-	/**
-	 * Method 'getId'
-	 * 
-	 * @return int
-	 */
 	public int getId()
 	{
 		return id;
 	}
 
-	/**
-	 * Method 'setId'
-	 * 
-	 * @param id
-	 */
 	public void setId(int id)
 	{
 		this.id = id;
 	}
 
-	/**
-	 * Method 'getManagingRepair'
-	 * 
-	 * @return short
-	 */
-	public short getManagingRepair()
-	{
-		return managingRepair;
-	}
-
-	/**
-	 * Method 'setManagingRepair'
-	 * 
-	 * @param managingRepair
-	 */
-	public void setManagingRepair(short managingRepair)
-	{
-		this.managingRepair = managingRepair;
-		this.managingRepairNull = false;
-	}
-
-	/** 
-	 * Sets the value of managingRepairNull
-	 */
-	public void setManagingRepairNull(boolean managingRepairNull)
-	{
-		this.managingRepairNull = managingRepairNull;
-	}
-
-	/** 
-	 * Gets the value of managingRepairNull
-	 */
-	public boolean isManagingRepairNull()
-	{
-		return managingRepairNull;
-	}
 
 	/**
 	 * Method 'getPolicyHolderContactDate'
@@ -581,4 +444,11 @@ public class Claim implements Serializable
 		this.vehicleHire = vehicleHire;
 	}
 
+        public boolean isManagingRepair() {
+            return managingRepair;
+        }
+
+        public void setManagingRepair(boolean managingRepair) {
+            this.managingRepair = managingRepair;
+        }
 }

@@ -101,6 +101,17 @@ public class Injury implements Serializable
 	 * Method 'Injury'
 	 * 
 	 */
+        
+        protected Incident incident;
+
+    public Incident getIncident() {
+        return incident;
+    }
+
+    public void setIncident(Incident incident) {
+        this.incident = incident;
+    }
+        
 	public Injury()
 	{
 	}

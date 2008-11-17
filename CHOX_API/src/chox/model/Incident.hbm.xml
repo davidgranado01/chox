@@ -16,4 +16,3 @@
     <property name="isPoliceInvolved" column="isPoliceInvolved" not-null="true" />
   </class>
 </hibernate-mapping>
-
