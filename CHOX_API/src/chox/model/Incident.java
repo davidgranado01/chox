@@ -60,7 +60,7 @@ public class Incident implements Serializable
 	/** 
 	 * This attribute maps to the column isPoliceInvolved in the Incident table.
 	 */
-	protected short isPoliceInvolved;
+	protected boolean isPoliceInvolved;
 
 	/**
 	 * Method 'Incident'
@@ -264,24 +264,13 @@ public class Incident implements Serializable
 		this.lastModifiedDate = lastModifiedDate;
 	}
 
-	/**
-	 * Method 'getIsPoliceInvolved'
-	 * 
-	 * @return short
-	 */
-	public short getIsPoliceInvolved()
-	{
-		return isPoliceInvolved;
-	}
+    public boolean isIsPoliceInvolved() {
+        return isPoliceInvolved;
+    }
 
-	/**
-	 * Method 'setIsPoliceInvolved'
-	 * 
-	 * @param isPoliceInvolved
-	 */
-	public void setIsPoliceInvolved(short isPoliceInvolved)
-	{
-		this.isPoliceInvolved = isPoliceInvolved;
-	}
+    public void setIsPoliceInvolved(boolean isPoliceInvolved) {
+        this.isPoliceInvolved = isPoliceInvolved;
+    }
+
 
 }
