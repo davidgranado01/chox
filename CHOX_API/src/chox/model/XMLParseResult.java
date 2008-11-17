@@ -1,7 +1,5 @@
 package chox.model;
 
-import chox.model.*;
-
 public class XMLParseResult {
     private long ID = -1;
     private long SupplierId = -1;
@@ -21,7 +19,19 @@ public class XMLParseResult {
     private Customer customer;
     private EngineerReport engineerreport;
     private Incident incident;
-
+    private Injury injury;
+    private Insurer insurer;
+    private LineOfBusiness lineofbusiness;
+    private Solicitor solicitor;
+    private ThirdParty thirdparty;
+    private Witness witness;
+    
+    // SETUP DATA - INVOICE OBJECT
+    private VehicleHire vehiclehire;
+    private Invoice invoice;
+    
+    // ------------------------------------------------------------------------------
+    
     public String getDataValidationRemark() {
         return DataValidationRemark;
     }
@@ -197,15 +207,7 @@ public class XMLParseResult {
     public void setWitness(Witness witness) {
         this.witness = witness;
     }
-    private Injury injury;
-    private Insurer insurer;
-    private LineOfBusiness lineofbusiness;
-    private Solicitor solicitor;
-    private ThirdParty thirdparty;
-    private Witness witness;
-    
-    private VehicleHire vehiclehire;
-    private Invoice invoice;
+
     
     
     
