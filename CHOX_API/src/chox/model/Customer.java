@@ -165,7 +165,7 @@ public class Customer implements Serializable
 	/** 
 	 * This attribute maps to the column insurerName in the Customer table.
 	 */
-	protected String insurerName;
+	protected Insurer insurer;
 
 	/** 
 	 * This attribute represents the foreign key relationship to the VehicleClass table.
@@ -220,6 +220,26 @@ public class Customer implements Serializable
 		this.title = title;
 	}
 
+	/**
+	 * Method 'getInsurer'
+	 * 
+	 * @return Insurer
+	 */
+	public Insurer getInsurer()
+	{
+		return insurer;
+	}
+
+	/**
+	 * Method 'setInsurer'
+	 * 
+	 * @param insurer
+	 */
+	public void setInsurer(Insurer insurer)
+	{
+		this.insurer = insurer;
+	}
+        
 	/**
 	 * Method 'getFirstnames'
 	 * 
@@ -721,27 +741,6 @@ public class Customer implements Serializable
 	public void setLastModifiedDate(java.util.Date lastModifiedDate)
 	{
 		this.lastModifiedDate = lastModifiedDate;
-	}
-
-
-	/**
-	 * Method 'getInsurerName'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getInsurerName()
-	{
-		return insurerName;
-	}
-
-	/**
-	 * Method 'setInsurerName'
-	 * 
-	 * @param insurerName
-	 */
-	public void setInsurerName(java.lang.String insurerName)
-	{
-		this.insurerName = insurerName;
 	}
 
 	/**

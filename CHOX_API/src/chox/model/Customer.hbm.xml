@@ -34,7 +34,7 @@
     <property name="isPrimaryDriver" column="isPrimaryDriver" not-null="true" />
     <property name="isUsable" column="isUsable" not-null="true" />
     <property name="isActive" column="isActive" not-null="true" />
-    <property name="insurerName" column="insurerName" />
+    <many-to-one name="insurer" class="chox.model.Insurer" column="insurerId" />
     <many-to-one name="vehicleClass" class="chox.model.VehicleClass" column="vehicleClassId" />
   </class>
 </hibernate-mapping>
