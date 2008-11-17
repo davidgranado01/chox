@@ -221,6 +221,31 @@ public class XmlHelper {
         return bOutput;
     }
     
+    public static Boolean getBooleanFromNode(Element thisElement, String thisNodeName){ 
+        
+        Boolean returnBoolean = false;
+        String thisNodeValue = XMLUtils.getElementValue(thisElement, thisNodeName);
+        
+        if(thisNodeValue.equalsIgnoreCase("y")){
+            returnBoolean = true;
+        }
+        
+        return returnBoolean;
+        
+    }
+            
+    public static Timestamp getTimeStampFromNode(Element thisElement, String thisNodeName){ 
+        String thisNodeValue = XMLUtils.getElementValue(thisElement, thisNodeName);
+        
+        Timestamp returnTimeStamp = null;
+        
+        if(!thisNodeValue.equalsIgnoreCase("")){
+            returnTimeStamp = parseDate(thisNodeValue);
+        }
+        
+        return returnTimeStamp;
+    }
+    
     public static Timestamp parseDate(String t)
     {
         Calendar c = Calendar.getInstance();
