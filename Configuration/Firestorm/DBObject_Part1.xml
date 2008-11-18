@@ -9377,7 +9377,7 @@
           </column>
           <column>
             <java-name>days</java-name>
-            <java-type>java.math.BigDecimal</java-type>
+            <java-type>java.lang.Integer</java-type>
             <java-default-value />
             <sql-name>days</sql-name>
             <sql-type>numeric</sql-type>
@@ -10587,7 +10587,7 @@
     <provider name="hibernate">
       <property key="app-name" value="chox" />
       <property key="dao-strategy" value="jdbc" />
-      <property key="delete-files" value="false" />
+      <property key="delete-files" value="true" />
       <property key="dto-fields-public" value="false" />
       <property key="generate-dynamic-inserts" value="false" />
       <property key="generate-dynamic-updates" value="false" />
@@ -10598,7 +10598,7 @@
       <property key="logging" value="log4j" />
       <property key="output-dir" value="C:\Users\Carlson\Desktop\test\part1" />
       <property key="overwrite-resource-manager" value="true" />
-      <property key="package-name" value="chox.model;" />
+      <property key="package-name" value="chox.model" />
       <property key="prefix-schema-name" value="true" />
     </provider>
   </provider-options>
