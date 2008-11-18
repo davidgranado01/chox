@@ -11,7 +11,6 @@
     <property name="vehicleRegistration" column="vehicleRegistration" />
     <property name="vehicleManufacturer" column="vehicleManufacturer" />
     <property name="vehicleModel" column="vehicleModel" />
-    <property name="vehicleClassId" column="vehicleClassId" />
     <property name="address1" column="address1" />
     <property name="address2" column="address2" />
     <property name="address3" column="address3" />
@@ -29,6 +28,7 @@
     <property name="lastName" column="lastName" />
     <property name="title" column="title" />
     <many-to-one name="insurer" class="chox.model.Insurer" column="insurerId" />
+    <many-to-one name="vehicleClass" class="chox.model.VehicleClass" column="vehicleClassId" />
   </class>
 </hibernate-mapping>
 

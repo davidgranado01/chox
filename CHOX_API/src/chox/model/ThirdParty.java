@@ -40,7 +40,7 @@ public class ThirdParty implements Serializable
 	/** 
 	 * This attribute maps to the column vehicleClassId in the ThirdParty table.
 	 */
-	protected int vehicleClassId;
+	protected VehicleClass vehicleClass;
 
 	/** 
 	 * This attribute represents whether the primitive attribute vehicleClassId is null.
@@ -270,26 +270,15 @@ public class ThirdParty implements Serializable
 		this.vehicleModel = vehicleModel;
 	}
 
-	/**
-	 * Method 'getVehicleClassId'
-	 * 
-	 * @return int
-	 */
-	public int getVehicleClassId()
-	{
-		return vehicleClassId;
-	}
+    public VehicleClass getVehicleClass() {
+        return vehicleClass;
+    }
 
-	/**
-	 * Method 'setVehicleClassId'
-	 * 
-	 * @param vehicleClassId
-	 */
-	public void setVehicleClassId(int vehicleClassId)
-	{
-		this.vehicleClassId = vehicleClassId;
-		this.vehicleClassIdNull = false;
-	}
+    public void setVehicleClass(VehicleClass vehicleClass) {
+        this.vehicleClass = vehicleClass;
+    }
+
+
 
 	/** 
 	 * Sets the value of vehicleClassIdNull
