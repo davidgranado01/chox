@@ -10,12 +10,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <title><decorator:title default="Struts Starter"/> - CHOX v0.1 build 2008-11-12 </title>
-        <link href="/styles/main.css" rel="stylesheet" type="text/css" media="all"/>
-        <link href="/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
-        <link href="/css/xtheme-gray.css" rel="stylesheet" type="text/css" media="all"/>
-        <script src="/scripts/ext-base.js" type="text/javascript"></script>
-        <script src="/scripts/ext-all.js" type="text/javascript"></script> 
-        <script src="/scripts/Application.js" type="text/javascript"></script> 
+        <link href="<%= request.getContextPath() %>/styles/main.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="<%= request.getContextPath() %>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="<%= request.getContextPath() %>/css/xtheme-gray.css" rel="stylesheet" type="text/css" media="all"/>
+        <script src="<%= request.getContextPath() %>/scripts/ext-base.js" type="text/javascript"></script>
+        <script src="<%= request.getContextPath() %>/scripts/ext-all.js" type="text/javascript"></script> 
+        <script src="<%= request.getContextPath() %>/scripts/Application.js" type="text/javascript"></script> 
         <decorator:head/>
     </head>
     <body>

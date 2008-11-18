@@ -5,6 +5,6 @@
 --%>
 
     <body>
-        <img alt="choxLogo" src="images/header-logo-black.png">
+        <img alt="choxLogo" src="<%= request.getContextPath() %>/images/header-logo-black.png">
          
     </body>
