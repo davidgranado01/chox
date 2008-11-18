@@ -3,6 +3,7 @@ package chox.model;
 import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class LineOfBusiness implements Serializable
@@ -20,12 +21,7 @@ public class LineOfBusiness implements Serializable
 	/** 
 	 * This attribute maps to the column adminHandlingCharge in the LineOfBusiness table.
 	 */
-	protected long adminHandlingCharge;
-
-	/** 
-	 * This attribute represents whether the primitive attribute adminHandlingCharge is null.
-	 */
-	protected boolean adminHandlingChargeNull = true;
+	protected BigDecimal adminHandlingCharge;
 
 	/** 
 	 * This attribute maps to the column address1 in the LineOfBusiness table.
@@ -63,11 +59,6 @@ public class LineOfBusiness implements Serializable
 	protected int createdBy;
 
 	/** 
-	 * This attribute represents whether the primitive attribute createdBy is null.
-	 */
-	protected boolean createdByNull = true;
-
-	/** 
 	 * This attribute maps to the column createdDate in the LineOfBusiness table.
 	 */
 	protected Date createdDate;
@@ -78,11 +69,6 @@ public class LineOfBusiness implements Serializable
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute represents whether the primitive attribute lastModifiedBy is null.
-	 */
-	protected boolean lastModifiedByNull = true;
-
-	/** 
 	 * This attribute maps to the column lastModifiedDate in the LineOfBusiness table.
 	 */
 	protected Date lastModifiedDate;
@@ -90,7 +76,7 @@ public class LineOfBusiness implements Serializable
 	/** 
 	 * This attribute maps to the column isActive in the LineOfBusiness table.
 	 */
-	protected short isActive;
+	protected boolean isActive;
 
 	/** 
 	 * This attribute represents the foreign key relationship to the Insurer table.
@@ -148,9 +134,9 @@ public class LineOfBusiness implements Serializable
 	/**
 	 * Method 'getAdminHandlingCharge'
 	 * 
-	 * @return long
+	 * @return java.math.BigDecimal
 	 */
-	public long getAdminHandlingCharge()
+	public java.math.BigDecimal getAdminHandlingCharge()
 	{
 		return adminHandlingCharge;
 	}
@@ -160,26 +146,9 @@ public class LineOfBusiness implements Serializable
 	 * 
 	 * @param adminHandlingCharge
 	 */
-	public void setAdminHandlingCharge(long adminHandlingCharge)
+	public void setAdminHandlingCharge(java.math.BigDecimal adminHandlingCharge)
 	{
 		this.adminHandlingCharge = adminHandlingCharge;
-		this.adminHandlingChargeNull = false;
-	}
-
-	/** 
-	 * Sets the value of adminHandlingChargeNull
-	 */
-	public void setAdminHandlingChargeNull(boolean adminHandlingChargeNull)
-	{
-		this.adminHandlingChargeNull = adminHandlingChargeNull;
-	}
-
-	/** 
-	 * Gets the value of adminHandlingChargeNull
-	 */
-	public boolean isAdminHandlingChargeNull()
-	{
-		return adminHandlingChargeNull;
 	}
 
 	/**
@@ -320,23 +289,6 @@ public class LineOfBusiness implements Serializable
 	public void setCreatedBy(int createdBy)
 	{
 		this.createdBy = createdBy;
-		this.createdByNull = false;
-	}
-
-	/** 
-	 * Sets the value of createdByNull
-	 */
-	public void setCreatedByNull(boolean createdByNull)
-	{
-		this.createdByNull = createdByNull;
-	}
-
-	/** 
-	 * Gets the value of createdByNull
-	 */
-	public boolean isCreatedByNull()
-	{
-		return createdByNull;
 	}
 
 	/**
@@ -377,23 +329,6 @@ public class LineOfBusiness implements Serializable
 	public void setLastModifiedBy(int lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
-		this.lastModifiedByNull = false;
-	}
-
-	/** 
-	 * Sets the value of lastModifiedByNull
-	 */
-	public void setLastModifiedByNull(boolean lastModifiedByNull)
-	{
-		this.lastModifiedByNull = lastModifiedByNull;
-	}
-
-	/** 
-	 * Gets the value of lastModifiedByNull
-	 */
-	public boolean isLastModifiedByNull()
-	{
-		return lastModifiedByNull;
 	}
 
 	/**
@@ -417,11 +352,11 @@ public class LineOfBusiness implements Serializable
 	}
 
 	/**
-	 * Method 'getIsActive'
+	 * Method 'isIsActive'
 	 * 
-	 * @return short
+	 * @return boolean
 	 */
-	public short getIsActive()
+	public boolean isIsActive()
 	{
 		return isActive;
 	}
@@ -431,7 +366,7 @@ public class LineOfBusiness implements Serializable
 	 * 
 	 * @param isActive
 	 */
-	public void setIsActive(short isActive)
+	public void setIsActive(boolean isActive)
 	{
 		this.isActive = isActive;
 	}

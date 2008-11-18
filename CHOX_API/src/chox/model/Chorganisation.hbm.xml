@@ -16,10 +16,10 @@
     <property name="vatNo" column="vatNo" not-null="true" />
     <property name="companyNo" column="companyNo" not-null="true" />
     <property name="isDelegatedAuthority" column="isDelegatedAuthority" not-null="true" />
-    <property name="createdBy" column="createdBy" />
-    <property name="createdDate" column="createdDate" />
-    <property name="lastModifiedBy" column="lastModifiedBy" />
-    <property name="lastModifiedDate" column="lastModifiedDate" />
+    <property name="createdBy" column="createdBy" not-null="true" />
+    <property name="createdDate" column="createdDate" not-null="true" />
+    <property name="lastModifiedBy" column="lastModifiedBy" not-null="true" />
+    <property name="lastModifiedDate" column="lastModifiedDate" not-null="true" />
   </class>
 </hibernate-mapping>
 

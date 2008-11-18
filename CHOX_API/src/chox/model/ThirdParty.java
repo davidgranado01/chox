@@ -13,11 +13,6 @@ public class ThirdParty implements Serializable
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column insurerId in the ThirdParty table.
-	 */
-	protected int insurerId;
-
-	/** 
 	 * This attribute maps to the column policyNumber in the ThirdParty table.
 	 */
 	protected String policyNumber;
@@ -123,6 +118,11 @@ public class ThirdParty implements Serializable
 	protected String title;
 
 	/** 
+	 * This attribute represents the foreign key relationship to the Insurer table.
+	 */
+	protected Insurer insurer;
+
+	/** 
 	 * This attribute represents the foreign key relationship to the VehicleClass table.
 	 */
 	protected VehicleClass vehicleClass;
@@ -153,26 +153,6 @@ public class ThirdParty implements Serializable
 	public void setId(int id)
 	{
 		this.id = id;
-	}
-
-	/**
-	 * Method 'getInsurerId'
-	 * 
-	 * @return int
-	 */
-	public int getInsurerId()
-	{
-		return insurerId;
-	}
-
-	/**
-	 * Method 'setInsurerId'
-	 * 
-	 * @param insurerId
-	 */
-	public void setInsurerId(int insurerId)
-	{
-		this.insurerId = insurerId;
 	}
 
 	/**
@@ -593,6 +573,26 @@ public class ThirdParty implements Serializable
 	public void setTitle(java.lang.String title)
 	{
 		this.title = title;
+	}
+
+	/**
+	 * Method 'getInsurer'
+	 * 
+	 * @return Insurer
+	 */
+	public Insurer getInsurer()
+	{
+		return insurer;
+	}
+
+	/**
+	 * Method 'setInsurer'
+	 * 
+	 * @param insurer
+	 */
+	public void setInsurer(Insurer insurer)
+	{
+		this.insurer = insurer;
 	}
 
 	/**

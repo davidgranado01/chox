@@ -13,11 +13,6 @@ public class Witness implements Serializable
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column incidentId in the Witness table.
-	 */
-	protected int incidentId;
-
-	/** 
 	 * This attribute maps to the column name in the Witness table.
 	 */
 	protected String name;
@@ -87,6 +82,11 @@ public class Witness implements Serializable
 	 */
 	protected Date lastModifiedDate;
 
+	/** 
+	 * This attribute represents the foreign key relationship to the Incident table.
+	 */
+	protected Incident incident;
+
 	/**
 	 * Method 'Witness'
 	 * 
@@ -113,26 +113,6 @@ public class Witness implements Serializable
 	public void setId(int id)
 	{
 		this.id = id;
-	}
-
-	/**
-	 * Method 'getIncidentId'
-	 * 
-	 * @return int
-	 */
-	public int getIncidentId()
-	{
-		return incidentId;
-	}
-
-	/**
-	 * Method 'setIncidentId'
-	 * 
-	 * @param incidentId
-	 */
-	public void setIncidentId(int incidentId)
-	{
-		this.incidentId = incidentId;
 	}
 
 	/**
@@ -413,6 +393,26 @@ public class Witness implements Serializable
 	public void setLastModifiedDate(java.util.Date lastModifiedDate)
 	{
 		this.lastModifiedDate = lastModifiedDate;
+	}
+
+	/**
+	 * Method 'getIncident'
+	 * 
+	 * @return Incident
+	 */
+	public Incident getIncident()
+	{
+		return incident;
+	}
+
+	/**
+	 * Method 'setIncident'
+	 * 
+	 * @param incident
+	 */
+	public void setIncident(Incident incident)
+	{
+		this.incident = incident;
 	}
 
 }

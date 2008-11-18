@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
+import java.math.BigDecimal;
 
 public class EngineerReport implements Serializable
 {
@@ -11,16 +12,6 @@ public class EngineerReport implements Serializable
 	 * This attribute maps to the column id in the EngineerReport table.
 	 */
 	protected int id;
-
-	/** 
-	 * This attribute maps to the column labourAmount in the EngineerReport table.
-	 */
-	protected double labourAmount;
-
-	/** 
-	 * This attribute maps to the column totalAmount in the EngineerReport table.
-	 */
-	protected double totalAmount;
 
 	/** 
 	 * This attribute maps to the column days in the EngineerReport table.
@@ -83,11 +74,6 @@ public class EngineerReport implements Serializable
 	protected int createdBy;
 
 	/** 
-	 * This attribute represents whether the primitive attribute createdBy is null.
-	 */
-	protected boolean createdByNull = true;
-
-	/** 
 	 * This attribute maps to the column createdDate in the EngineerReport table.
 	 */
 	protected Date createdDate;
@@ -98,11 +84,6 @@ public class EngineerReport implements Serializable
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute represents whether the primitive attribute lastModifiedBy is null.
-	 */
-	protected boolean lastModifiedByNull = true;
-
-	/** 
 	 * This attribute maps to the column lastModifiedDate in the EngineerReport table.
 	 */
 	protected Date lastModifiedDate;
@@ -111,6 +92,16 @@ public class EngineerReport implements Serializable
 	 * This attribute maps to the column isUsable in the EngineerReport table.
 	 */
 	protected boolean isUsable;
+
+	/** 
+	 * This attribute maps to the column labourAmount in the EngineerReport table.
+	 */
+	protected BigDecimal labourAmount;
+
+	/** 
+	 * This attribute maps to the column totalAmount in the EngineerReport table.
+	 */
+	protected BigDecimal totalAmount;
 
 	/**
 	 * Method 'EngineerReport'
@@ -141,51 +132,11 @@ public class EngineerReport implements Serializable
 	}
 
 	/**
-	 * Method 'getLabourAmount'
-	 * 
-	 * @return long
-	 */
-	public double getLabourAmount()
-	{
-		return labourAmount;
-	}
-
-	/**
-	 * Method 'setLabourAmount'
-	 * 
-	 * @param labourAmount
-	 */
-	public void setLabourAmount(double labourAmount)
-	{
-		this.labourAmount = labourAmount;
-	}
-
-	/**
-	 * Method 'getTotalAmount'
-	 * 
-	 * @return long
-	 */
-	public double getTotalAmount()
-	{
-		return totalAmount;
-	}
-
-	/**
-	 * Method 'setTotalAmount'
-	 * 
-	 * @param totalAmount
-	 */
-	public void setTotalAmount(double totalAmount)
-	{
-		this.totalAmount = totalAmount;
-	}
-
-	/**
 	 * Method 'getDays'
 	 * 
-	 * @return long
+	 * @return java.lang.Integer
 	 */
-	public Integer getDays()
+	public java.lang.Integer getDays()
 	{
 		return days;
 	}
@@ -195,7 +146,7 @@ public class EngineerReport implements Serializable
 	 * 
 	 * @param days
 	 */
-	public void setDays(Integer days)
+	public void setDays(java.lang.Integer days)
 	{
 		this.days = days;
 	}
@@ -418,23 +369,6 @@ public class EngineerReport implements Serializable
 	public void setCreatedBy(int createdBy)
 	{
 		this.createdBy = createdBy;
-		this.createdByNull = false;
-	}
-
-	/** 
-	 * Sets the value of createdByNull
-	 */
-	public void setCreatedByNull(boolean createdByNull)
-	{
-		this.createdByNull = createdByNull;
-	}
-
-	/** 
-	 * Gets the value of createdByNull
-	 */
-	public boolean isCreatedByNull()
-	{
-		return createdByNull;
 	}
 
 	/**
@@ -475,23 +409,6 @@ public class EngineerReport implements Serializable
 	public void setLastModifiedBy(int lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
-		this.lastModifiedByNull = false;
-	}
-
-	/** 
-	 * Sets the value of lastModifiedByNull
-	 */
-	public void setLastModifiedByNull(boolean lastModifiedByNull)
-	{
-		this.lastModifiedByNull = lastModifiedByNull;
-	}
-
-	/** 
-	 * Gets the value of lastModifiedByNull
-	 */
-	public boolean isLastModifiedByNull()
-	{
-		return lastModifiedByNull;
 	}
 
 	/**
@@ -515,11 +432,11 @@ public class EngineerReport implements Serializable
 	}
 
 	/**
-	 * Method 'getIsUsable'
+	 * Method 'isIsUsable'
 	 * 
-	 * @return short
+	 * @return boolean
 	 */
-	public boolean getIsUsable()
+	public boolean isIsUsable()
 	{
 		return isUsable;
 	}
@@ -532,6 +449,46 @@ public class EngineerReport implements Serializable
 	public void setIsUsable(boolean isUsable)
 	{
 		this.isUsable = isUsable;
+	}
+
+	/**
+	 * Method 'getLabourAmount'
+	 * 
+	 * @return java.math.BigDecimal
+	 */
+	public java.math.BigDecimal getLabourAmount()
+	{
+		return labourAmount;
+	}
+
+	/**
+	 * Method 'setLabourAmount'
+	 * 
+	 * @param labourAmount
+	 */
+	public void setLabourAmount(java.math.BigDecimal labourAmount)
+	{
+		this.labourAmount = labourAmount;
+	}
+
+	/**
+	 * Method 'getTotalAmount'
+	 * 
+	 * @return java.math.BigDecimal
+	 */
+	public java.math.BigDecimal getTotalAmount()
+	{
+		return totalAmount;
+	}
+
+	/**
+	 * Method 'setTotalAmount'
+	 * 
+	 * @param totalAmount
+	 */
+	public void setTotalAmount(java.math.BigDecimal totalAmount)
+	{
+		this.totalAmount = totalAmount;
 	}
 
 }

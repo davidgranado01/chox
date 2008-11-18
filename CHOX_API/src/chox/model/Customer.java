@@ -113,19 +113,9 @@ public class Customer implements Serializable
 	protected String claimReference;
 
 	/** 
-	 * This attribute maps to the column comprehensive in the Customer table.
-	 */
-	protected boolean comprehensive;
-
-	/** 
 	 * This attribute maps to the column createdBy in the Customer table.
 	 */
 	protected int createdBy;
-
-	/** 
-	 * This attribute represents whether the primitive attribute createdBy is null.
-	 */
-	protected boolean createdByNull = true;
 
 	/** 
 	 * This attribute maps to the column createdDate in the Customer table.
@@ -136,11 +126,6 @@ public class Customer implements Serializable
 	 * This attribute maps to the column lastModifiedBy in the Customer table.
 	 */
 	protected int lastModifiedBy;
-
-	/** 
-	 * This attribute represents whether the primitive attribute lastModifiedBy is null.
-	 */
-	protected boolean lastModifiedByNull = true;
 
 	/** 
 	 * This attribute maps to the column lastModifiedDate in the Customer table.
@@ -163,9 +148,14 @@ public class Customer implements Serializable
 	protected boolean isActive;
 
 	/** 
-	 * This attribute maps to the column insurerName in the Customer table.
+	 * This attribute maps to the column comprehensive in the Customer table.
 	 */
-	protected Insurer insurer;
+	protected boolean comprehensive;
+
+	/** 
+	 * This attribute maps to the column insurerId in the Customer table.
+	 */
+	protected int insurerId;
 
 	/** 
 	 * This attribute represents the foreign key relationship to the VehicleClass table.
@@ -220,26 +210,6 @@ public class Customer implements Serializable
 		this.title = title;
 	}
 
-	/**
-	 * Method 'getInsurer'
-	 * 
-	 * @return Insurer
-	 */
-	public Insurer getInsurer()
-	{
-		return insurer;
-	}
-
-	/**
-	 * Method 'setInsurer'
-	 * 
-	 * @param insurer
-	 */
-	public void setInsurer(Insurer insurer)
-	{
-		this.insurer = insurer;
-	}
-        
 	/**
 	 * Method 'getFirstnames'
 	 * 
@@ -620,15 +590,6 @@ public class Customer implements Serializable
 		this.claimReference = claimReference;
 	}
 
-    public boolean isComprehensive() {
-        return comprehensive;
-    }
-
-    public void setComprehensive(boolean comprehensive) {
-        this.comprehensive = comprehensive;
-    }
-
-
 	/**
 	 * Method 'getCreatedBy'
 	 * 
@@ -647,23 +608,6 @@ public class Customer implements Serializable
 	public void setCreatedBy(int createdBy)
 	{
 		this.createdBy = createdBy;
-		this.createdByNull = false;
-	}
-
-	/** 
-	 * Sets the value of createdByNull
-	 */
-	public void setCreatedByNull(boolean createdByNull)
-	{
-		this.createdByNull = createdByNull;
-	}
-
-	/** 
-	 * Gets the value of createdByNull
-	 */
-	public boolean isCreatedByNull()
-	{
-		return createdByNull;
 	}
 
 	/**
@@ -704,23 +648,6 @@ public class Customer implements Serializable
 	public void setLastModifiedBy(int lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
-		this.lastModifiedByNull = false;
-	}
-
-	/** 
-	 * Sets the value of lastModifiedByNull
-	 */
-	public void setLastModifiedByNull(boolean lastModifiedByNull)
-	{
-		this.lastModifiedByNull = lastModifiedByNull;
-	}
-
-	/** 
-	 * Gets the value of lastModifiedByNull
-	 */
-	public boolean isLastModifiedByNull()
-	{
-		return lastModifiedByNull;
 	}
 
 	/**
@@ -744,6 +671,106 @@ public class Customer implements Serializable
 	}
 
 	/**
+	 * Method 'isIsPrimaryDriver'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isIsPrimaryDriver()
+	{
+		return isPrimaryDriver;
+	}
+
+	/**
+	 * Method 'setIsPrimaryDriver'
+	 * 
+	 * @param isPrimaryDriver
+	 */
+	public void setIsPrimaryDriver(boolean isPrimaryDriver)
+	{
+		this.isPrimaryDriver = isPrimaryDriver;
+	}
+
+	/**
+	 * Method 'isIsUsable'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isIsUsable()
+	{
+		return isUsable;
+	}
+
+	/**
+	 * Method 'setIsUsable'
+	 * 
+	 * @param isUsable
+	 */
+	public void setIsUsable(boolean isUsable)
+	{
+		this.isUsable = isUsable;
+	}
+
+	/**
+	 * Method 'isIsActive'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isIsActive()
+	{
+		return isActive;
+	}
+
+	/**
+	 * Method 'setIsActive'
+	 * 
+	 * @param isActive
+	 */
+	public void setIsActive(boolean isActive)
+	{
+		this.isActive = isActive;
+	}
+
+	/**
+	 * Method 'isComprehensive'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isComprehensive()
+	{
+		return comprehensive;
+	}
+
+	/**
+	 * Method 'setComprehensive'
+	 * 
+	 * @param comprehensive
+	 */
+	public void setComprehensive(boolean comprehensive)
+	{
+		this.comprehensive = comprehensive;
+	}
+
+	/**
+	 * Method 'getInsurerId'
+	 * 
+	 * @return int
+	 */
+	public int getInsurerId()
+	{
+		return insurerId;
+	}
+
+	/**
+	 * Method 'setInsurerId'
+	 * 
+	 * @param insurerId
+	 */
+	public void setInsurerId(int insurerId)
+	{
+		this.insurerId = insurerId;
+	}
+
+	/**
 	 * Method 'getVehicleClass'
 	 * 
 	 * @return VehicleClass
@@ -762,29 +789,5 @@ public class Customer implements Serializable
 	{
 		this.vehicleClass = vehicleClass;
 	}
-
-    public boolean isIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public boolean isIsPrimaryDriver() {
-        return isPrimaryDriver;
-    }
-
-    public void setIsPrimaryDriver(boolean isPrimaryDriver) {
-        this.isPrimaryDriver = isPrimaryDriver;
-    }
-
-    public boolean isIsUsable() {
-        return isUsable;
-    }
-
-    public void setIsUsable(boolean isUsable) {
-        this.isUsable = isUsable;
-    }
 
 }

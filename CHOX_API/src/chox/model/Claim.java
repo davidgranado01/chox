@@ -18,11 +18,6 @@ public class Claim implements Serializable
 	protected boolean managingRepair;
 
 	/** 
-	 * This attribute represents whether the primitive attribute managingRepair is null.
-	 */
-	protected boolean managingRepairNull = true;
-
-	/** 
 	 * This attribute maps to the column policyHolderContactDate in the Claim table.
 	 */
 	protected Date policyHolderContactDate;
@@ -43,11 +38,6 @@ public class Claim implements Serializable
 	protected int createdBy;
 
 	/** 
-	 * This attribute represents whether the primitive attribute createdBy is null.
-	 */
-	protected boolean createdByNull = true;
-
-	/** 
 	 * This attribute maps to the column createdDate in the Claim table.
 	 */
 	protected Date createdDate;
@@ -56,11 +46,6 @@ public class Claim implements Serializable
 	 * This attribute maps to the column lastModifiedBy in the Claim table.
 	 */
 	protected int lastModifiedBy;
-
-	/** 
-	 * This attribute represents whether the primitive attribute lastModifiedBy is null.
-	 */
-	protected boolean lastModifiedByNull = true;
 
 	/** 
 	 * This attribute maps to the column lastModifiedDate in the Claim table.
@@ -145,30 +130,24 @@ public class Claim implements Serializable
 		this.id = id;
 	}
 
-    public boolean isManagingRepair() {
-        return managingRepair;
-    }
-
-    public void setManagingRepair(boolean managingRepair) {
-        this.managingRepair = managingRepair;
-    }
-
-
-
-	/** 
-	 * Sets the value of managingRepairNull
+	/**
+	 * Method 'isManagingRepair'
+	 * 
+	 * @return boolean
 	 */
-	public void setManagingRepairNull(boolean managingRepairNull)
+	public boolean isManagingRepair()
 	{
-		this.managingRepairNull = managingRepairNull;
+		return managingRepair;
 	}
 
-	/** 
-	 * Gets the value of managingRepairNull
+	/**
+	 * Method 'setManagingRepair'
+	 * 
+	 * @param managingRepair
 	 */
-	public boolean isManagingRepairNull()
+	public void setManagingRepair(boolean managingRepair)
 	{
-		return managingRepairNull;
+		this.managingRepair = managingRepair;
 	}
 
 	/**
@@ -249,23 +228,6 @@ public class Claim implements Serializable
 	public void setCreatedBy(int createdBy)
 	{
 		this.createdBy = createdBy;
-		this.createdByNull = false;
-	}
-
-	/** 
-	 * Sets the value of createdByNull
-	 */
-	public void setCreatedByNull(boolean createdByNull)
-	{
-		this.createdByNull = createdByNull;
-	}
-
-	/** 
-	 * Gets the value of createdByNull
-	 */
-	public boolean isCreatedByNull()
-	{
-		return createdByNull;
 	}
 
 	/**
@@ -306,23 +268,6 @@ public class Claim implements Serializable
 	public void setLastModifiedBy(int lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
-		this.lastModifiedByNull = false;
-	}
-
-	/** 
-	 * Sets the value of lastModifiedByNull
-	 */
-	public void setLastModifiedByNull(boolean lastModifiedByNull)
-	{
-		this.lastModifiedByNull = lastModifiedByNull;
-	}
-
-	/** 
-	 * Gets the value of lastModifiedByNull
-	 */
-	public boolean isLastModifiedByNull()
-	{
-		return lastModifiedByNull;
 	}
 
 	/**

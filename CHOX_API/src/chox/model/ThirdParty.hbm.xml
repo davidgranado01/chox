@@ -6,7 +6,6 @@
     <id name="id" column="id">
       <generator class="increment" />
     </id>
-    <property name="insurerId" column="insurerId" not-null="true" />
     <property name="policyNumber" column="policyNumber" />
     <property name="claimReference" column="claimReference" />
     <property name="vehicleRegistration" column="vehicleRegistration" />
@@ -28,7 +27,8 @@
     <property name="lastModifiedDate" column="lastModifiedDate" not-null="true" />
     <property name="lastName" column="lastName" />
     <property name="title" column="title" />
-    <many-to-one name="vehicleClass" class="chox.model.hibernate.VehicleClass" column="vehicleClassId" />
+    <many-to-one name="insurer" class="chox.model;.hibernate.Insurer" column="insurerId" />
+    <many-to-one name="vehicleClass" class="chox.model;.hibernate.VehicleClass" column="vehicleClassId" />
   </class>
 </hibernate-mapping>
 

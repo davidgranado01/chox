@@ -60,17 +60,12 @@ public class Chorganisation implements Serializable
 	/** 
 	 * This attribute maps to the column isDelegatedAuthority in the CHOrganisation table.
 	 */
-	protected short isDelegatedAuthority;
+	protected boolean isDelegatedAuthority;
 
 	/** 
 	 * This attribute maps to the column createdBy in the CHOrganisation table.
 	 */
 	protected int createdBy;
-
-	/** 
-	 * This attribute represents whether the primitive attribute createdBy is null.
-	 */
-	protected boolean createdByNull = true;
 
 	/** 
 	 * This attribute maps to the column createdDate in the CHOrganisation table.
@@ -81,11 +76,6 @@ public class Chorganisation implements Serializable
 	 * This attribute maps to the column lastModifiedBy in the CHOrganisation table.
 	 */
 	protected int lastModifiedBy;
-
-	/** 
-	 * This attribute represents whether the primitive attribute lastModifiedBy is null.
-	 */
-	protected boolean lastModifiedByNull = true;
 
 	/** 
 	 * This attribute maps to the column lastModifiedDate in the CHOrganisation table.
@@ -301,11 +291,11 @@ public class Chorganisation implements Serializable
 	}
 
 	/**
-	 * Method 'getIsDelegatedAuthority'
+	 * Method 'isIsDelegatedAuthority'
 	 * 
-	 * @return short
+	 * @return boolean
 	 */
-	public short getIsDelegatedAuthority()
+	public boolean isIsDelegatedAuthority()
 	{
 		return isDelegatedAuthority;
 	}
@@ -315,7 +305,7 @@ public class Chorganisation implements Serializable
 	 * 
 	 * @param isDelegatedAuthority
 	 */
-	public void setIsDelegatedAuthority(short isDelegatedAuthority)
+	public void setIsDelegatedAuthority(boolean isDelegatedAuthority)
 	{
 		this.isDelegatedAuthority = isDelegatedAuthority;
 	}
@@ -338,23 +328,6 @@ public class Chorganisation implements Serializable
 	public void setCreatedBy(int createdBy)
 	{
 		this.createdBy = createdBy;
-		this.createdByNull = false;
-	}
-
-	/** 
-	 * Sets the value of createdByNull
-	 */
-	public void setCreatedByNull(boolean createdByNull)
-	{
-		this.createdByNull = createdByNull;
-	}
-
-	/** 
-	 * Gets the value of createdByNull
-	 */
-	public boolean isCreatedByNull()
-	{
-		return createdByNull;
 	}
 
 	/**
@@ -395,23 +368,6 @@ public class Chorganisation implements Serializable
 	public void setLastModifiedBy(int lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
-		this.lastModifiedByNull = false;
-	}
-
-	/** 
-	 * Sets the value of lastModifiedByNull
-	 */
-	public void setLastModifiedByNull(boolean lastModifiedByNull)
-	{
-		this.lastModifiedByNull = lastModifiedByNull;
-	}
-
-	/** 
-	 * Gets the value of lastModifiedByNull
-	 */
-	public boolean isLastModifiedByNull()
-	{
-		return lastModifiedByNull;
 	}
 
 	/**

@@ -15,12 +15,12 @@
     <property name="postcode" column="postcode" />
     <property name="telephone" column="telephone" />
     <property name="email" column="email" />
-    <property name="createdBy" column="createdBy" />
-    <property name="createdDate" column="createdDate" />
-    <property name="lastModifiedBy" column="lastModifiedBy" />
-    <property name="lastModifiedDate" column="lastModifiedDate" />
+    <property name="createdBy" column="createdBy" not-null="true" />
+    <property name="createdDate" column="createdDate" not-null="true" />
+    <property name="lastModifiedBy" column="lastModifiedBy" not-null="true" />
+    <property name="lastModifiedDate" column="lastModifiedDate" not-null="true" />
     <property name="isAppointed" column="isAppointed" not-null="true" />
-    <many-to-one name="injury" class="chox.model.Injury" column="injuryId" />
+    <many-to-one name="injury" class="chox.model;.hibernate.Injury" column="injuryId" />
   </class>
 </hibernate-mapping>
 

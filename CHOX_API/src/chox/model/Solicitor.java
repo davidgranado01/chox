@@ -63,11 +63,6 @@ public class Solicitor implements Serializable
 	protected int createdBy;
 
 	/** 
-	 * This attribute represents whether the primitive attribute createdBy is null.
-	 */
-	protected boolean createdByNull = true;
-
-	/** 
 	 * This attribute maps to the column createdDate in the Solicitor table.
 	 */
 	protected Date createdDate;
@@ -78,11 +73,6 @@ public class Solicitor implements Serializable
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute represents whether the primitive attribute lastModifiedBy is null.
-	 */
-	protected boolean lastModifiedByNull = true;
-
-	/** 
 	 * This attribute maps to the column lastModifiedDate in the Solicitor table.
 	 */
 	protected Date lastModifiedDate;
@@ -90,7 +80,7 @@ public class Solicitor implements Serializable
 	/** 
 	 * This attribute maps to the column isAppointed in the Solicitor table.
 	 */
-	protected short isAppointed;
+	protected boolean isAppointed;
 
 	/** 
 	 * This attribute represents the foreign key relationship to the Injury table.
@@ -323,23 +313,6 @@ public class Solicitor implements Serializable
 	public void setCreatedBy(int createdBy)
 	{
 		this.createdBy = createdBy;
-		this.createdByNull = false;
-	}
-
-	/** 
-	 * Sets the value of createdByNull
-	 */
-	public void setCreatedByNull(boolean createdByNull)
-	{
-		this.createdByNull = createdByNull;
-	}
-
-	/** 
-	 * Gets the value of createdByNull
-	 */
-	public boolean isCreatedByNull()
-	{
-		return createdByNull;
 	}
 
 	/**
@@ -380,23 +353,6 @@ public class Solicitor implements Serializable
 	public void setLastModifiedBy(int lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
-		this.lastModifiedByNull = false;
-	}
-
-	/** 
-	 * Sets the value of lastModifiedByNull
-	 */
-	public void setLastModifiedByNull(boolean lastModifiedByNull)
-	{
-		this.lastModifiedByNull = lastModifiedByNull;
-	}
-
-	/** 
-	 * Gets the value of lastModifiedByNull
-	 */
-	public boolean isLastModifiedByNull()
-	{
-		return lastModifiedByNull;
 	}
 
 	/**
@@ -420,11 +376,11 @@ public class Solicitor implements Serializable
 	}
 
 	/**
-	 * Method 'getIsAppointed'
+	 * Method 'isIsAppointed'
 	 * 
-	 * @return short
+	 * @return boolean
 	 */
-	public short getIsAppointed()
+	public boolean isIsAppointed()
 	{
 		return isAppointed;
 	}
@@ -434,7 +390,7 @@ public class Solicitor implements Serializable
 	 * 
 	 * @param isAppointed
 	 */
-	public void setIsAppointed(short isAppointed)
+	public void setIsAppointed(boolean isAppointed)
 	{
 		this.isAppointed = isAppointed;
 	}

@@ -26,16 +26,16 @@
     <property name="initialEcd" column="initialEcd" not-null="true" />
     <property name="policyNumber" column="policyNumber" />
     <property name="claimReference" column="claimReference" />
-    <property name="comprehensive" column="comprehensive" />
-    <property name="createdBy" column="createdBy" />
-    <property name="createdDate" column="createdDate" />
-    <property name="lastModifiedBy" column="lastModifiedBy" />
-    <property name="lastModifiedDate" column="lastModifiedDate" />
+    <property name="createdBy" column="createdBy" not-null="true" />
+    <property name="createdDate" column="createdDate" not-null="true" />
+    <property name="lastModifiedBy" column="lastModifiedBy" not-null="true" />
+    <property name="lastModifiedDate" column="lastModifiedDate" not-null="true" />
     <property name="isPrimaryDriver" column="isPrimaryDriver" not-null="true" />
     <property name="isUsable" column="isUsable" not-null="true" />
     <property name="isActive" column="isActive" not-null="true" />
-    <many-to-one name="insurer" class="chox.model.Insurer" column="insurerId" />
-    <many-to-one name="vehicleClass" class="chox.model.VehicleClass" column="vehicleClassId" />
+    <property name="comprehensive" column="comprehensive" not-null="true" />
+    <property name="insurerId" column="insurerId" not-null="true" />
+    <many-to-one name="vehicleClass" class="chox.model;.hibernate.VehicleClass" column="vehicleClassId" />
   </class>
 </hibernate-mapping>
 

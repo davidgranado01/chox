@@ -13,11 +13,6 @@ public class HireMonitoringDetail implements Serializable
 	protected int createdBy;
 
 	/** 
-	 * This attribute represents whether the primitive attribute createdBy is null.
-	 */
-	protected boolean createdByNull = true;
-
-	/** 
 	 * This attribute maps to the column createdDate in the HireMonitoringDetail table.
 	 */
 	protected Date createdDate;
@@ -26,11 +21,6 @@ public class HireMonitoringDetail implements Serializable
 	 * This attribute maps to the column lastModifiedBy in the HireMonitoringDetail table.
 	 */
 	protected int lastModifiedBy;
-
-	/** 
-	 * This attribute represents whether the primitive attribute lastModifiedBy is null.
-	 */
-	protected boolean lastModifiedByNull = true;
 
 	/** 
 	 * This attribute maps to the column lastModifiedDate in the HireMonitoringDetail table.
@@ -75,7 +65,7 @@ public class HireMonitoringDetail implements Serializable
 	/** 
 	 * This attribute maps to the column isTotalLostCheck in the HireMonitoringDetail table.
 	 */
-	protected short isTotalLostCheck;
+	protected boolean isTotalLostCheck;
 
 	/** 
 	 * This attribute maps to the column id in the HireMonitoringDetail table.
@@ -108,23 +98,6 @@ public class HireMonitoringDetail implements Serializable
 	public void setCreatedBy(int createdBy)
 	{
 		this.createdBy = createdBy;
-		this.createdByNull = false;
-	}
-
-	/** 
-	 * Sets the value of createdByNull
-	 */
-	public void setCreatedByNull(boolean createdByNull)
-	{
-		this.createdByNull = createdByNull;
-	}
-
-	/** 
-	 * Gets the value of createdByNull
-	 */
-	public boolean isCreatedByNull()
-	{
-		return createdByNull;
 	}
 
 	/**
@@ -165,23 +138,6 @@ public class HireMonitoringDetail implements Serializable
 	public void setLastModifiedBy(int lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
-		this.lastModifiedByNull = false;
-	}
-
-	/** 
-	 * Sets the value of lastModifiedByNull
-	 */
-	public void setLastModifiedByNull(boolean lastModifiedByNull)
-	{
-		this.lastModifiedByNull = lastModifiedByNull;
-	}
-
-	/** 
-	 * Gets the value of lastModifiedByNull
-	 */
-	public boolean isLastModifiedByNull()
-	{
-		return lastModifiedByNull;
 	}
 
 	/**
@@ -345,11 +301,11 @@ public class HireMonitoringDetail implements Serializable
 	}
 
 	/**
-	 * Method 'getIsTotalLostCheck'
+	 * Method 'isIsTotalLostCheck'
 	 * 
-	 * @return short
+	 * @return boolean
 	 */
-	public short getIsTotalLostCheck()
+	public boolean isIsTotalLostCheck()
 	{
 		return isTotalLostCheck;
 	}
@@ -359,7 +315,7 @@ public class HireMonitoringDetail implements Serializable
 	 * 
 	 * @param isTotalLostCheck
 	 */
-	public void setIsTotalLostCheck(short isTotalLostCheck)
+	public void setIsTotalLostCheck(boolean isTotalLostCheck)
 	{
 		this.isTotalLostCheck = isTotalLostCheck;
 	}
