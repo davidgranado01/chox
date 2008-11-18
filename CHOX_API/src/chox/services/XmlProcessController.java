@@ -161,17 +161,12 @@ public class XmlProcessController {
         
         xmlParseResult.setCurrentSession(currentSession);
         
+        // VALIDATE AND GET RECORD FOR CLAIM OBJECT
         xmlParseResult = CHOoganisationSchemaValidation(currentSession, xmlParseResult, root, doc);
-        
-        System.out.println(" ** CLAIM > Status: " + xmlParseResult.getClaim().getStatus());
-        System.out.println(" ** CLAIM > Supplier Reference: " + xmlParseResult.getClaim().getChoReference());
-        System.out.println(" ** CLAIM > Managing Repair: " + xmlParseResult.getClaim().isManagingRepair());
-        System.out.println(" ** CLAIM > First Contat: " + xmlParseResult.getClaim().getPolicyHolderContactDate());
-        
         xmlParseResult = RentalDriversSchemaValidation(currentSession, xmlParseResult, root, doc);
         xmlParseResult = RentalClaimSchemaValidation(currentSession, xmlParseResult, root, doc);
         
-        // SAVE OBJECT
+        // SAVE CLIAM OBJECT
         xmlParseResult = CustomerServiceImpl.saveCustomerForXMLUploader(currentSession, xmlParseResult);
         xmlParseResult = ThirdPartyServiceImpl.saveThirdPartyForXMLUploader(currentSession, xmlParseResult);
         xmlParseResult = IncidentServiceImpl.saveIncidentForXMLUploader(currentSession, xmlParseResult);
@@ -179,22 +174,15 @@ public class XmlProcessController {
         xmlParseResult = InjuryServiceImpl.saveInjuryForXMLUploader(currentSession, xmlParseResult);
         xmlParseResult = SolicitorServiceImpl.saveSolicitorForXMLUploader(currentSession, xmlParseResult);
         
-        
-        // System.out.println(" ** DRIVER - FIRST NAME: " + xmlParseResult.getClaim().getCustomer().getFirstnames());
-        // System.out.println(" ** DRIVER - TITLE: " + xmlParseResult.getClaim().getCustomer().getTitle());
-        // System.out.println(" ** DRIVER - LAST NAME: " + xmlParseResult.getClaim().getCustomer().getLastname());
-        // System.out.println(" ** DRIVER - ADDRESS 1: " + xmlParseResult.getClaim().getCustomer().getAddress1());
-        // System.out.println(" ** DRIVER - DAMAGE: " + xmlParseResult.getClaim().getCustomer().getDamage());
-        // System.out.println(" ** DRIVER - POLICY NUMBER: " + xmlParseResult.getClaim().getCustomer().getPolicyNumber());
-        // System.out.println(" ** DRIVER - MANUFACTURER: " + xmlParseResult.getClaim().getCustomer().getVehicleManufacturer());
-        // System.out.println(" ** THIRD PARTY - CLAIM REFERENCE: " + xmlParseResult.getClaim().getThirdParty().getClaimReference());
-        // System.out.println(" ** INCIDENT - DESCRIPTION: " + xmlParseResult.getClaim().getIncident().getIncidentDescription());
-        // System.out.println(" ** INCIDENT - LOCATION: " + xmlParseResult.getClaim().getIncident().getLocation());
-                
-        if (!(sUploadType.toUpperCase()).equalsIgnoreCase("C") && false) {
+        if (!(sUploadType.toUpperCase()).equalsIgnoreCase("C")) {
+            
+            // VALIDATE AND GET RECORD FOR INVOICE OBJECT
             xmlParseResult = RentalRepairSchemaValidation(currentSession, xmlParseResult, root, doc);
             xmlParseResult = RentalVehiclesSchemaValidation(currentSession, xmlParseResult, root, doc);
             xmlParseResult = RentalInvoiceSchemaValidation(currentSession, xmlParseResult, root, doc);
+            
+            // SAVE INVOICE OBJECT
+            xmlParseResult = EngineerReportServiceImpl.saveEngineerReportForXMLUploader(currentSession, xmlParseResult);
         }
         
         currentSession = xmlParseResult.getCurrentSession();
@@ -946,7 +934,23 @@ public class XmlProcessController {
                         xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "email", XmlHelper.isMAN_Repair_engineerReport_email, XmlHelper.REG_EMAIL, childNodeLabel2);
                         xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "usable", XmlHelper.isMAN_Repair_engineerReport_usable, "", childNodeLabel2);
 
-                        if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
+                        if (xmlParseResult.getIsCurrentDataValid() 
+                            && xmlParseResult.getIsCurrentScheValid()
+                            && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "labour-amount"))
+                            && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "total-amount"))
+                            && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "days"))
+                            && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "name"))
+                            && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "company"))
+                            && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "address1"))
+                            && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "address2"))
+                            && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "address3"))
+                            && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "address4"))
+                            && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "address5"))
+                            && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "postcode"))
+                            && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "telephone"))
+                            && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "email"))
+                            && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "usable"))
+                        ) {
                             
                             EngineerReport engineerReport = new EngineerReport();
                             engineerReport.setDays(XmlHelper.getIntegerFromNode(ee, "days"));
@@ -966,6 +970,10 @@ public class XmlProcessController {
                             
                             engineerReports.add(engineerReport);
                         }
+                    }
+                    
+                    if(engineerReports.size()>0){
+                        xmlParseResult.setEngineerReports(engineerReports);
                     }
                 }
             }
