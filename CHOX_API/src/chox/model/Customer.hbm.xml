@@ -35,7 +35,7 @@
     <property name="isActive" column="isActive" not-null="true" />
     <property name="comprehensive" column="comprehensive" not-null="true" />
     <property name="insurerId" column="insurerId" not-null="true" />
-    <many-to-one name="vehicleClass" class="chox.model;.hibernate.VehicleClass" column="vehicleClassId" />
+    <many-to-one name="vehicleClass" class="chox.model.VehicleClass" column="vehicleClassId" />
   </class>
 </hibernate-mapping>
 

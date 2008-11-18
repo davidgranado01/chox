@@ -27,8 +27,8 @@
     <property name="lastModifiedDate" column="lastModifiedDate" not-null="true" />
     <property name="lastName" column="lastName" />
     <property name="title" column="title" />
-    <many-to-one name="insurer" class="chox.model;.hibernate.Insurer" column="insurerId" />
-    <many-to-one name="vehicleClass" class="chox.model;.hibernate.VehicleClass" column="vehicleClassId" />
+    <many-to-one name="insurer" class="chox.model.Insurer" column="insurerId" />
+    <many-to-one name="vehicleClass" class="chox.model.VehicleClass" column="vehicleClassId" />
   </class>
 </hibernate-mapping>
 

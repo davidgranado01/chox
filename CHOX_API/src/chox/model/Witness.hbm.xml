@@ -20,7 +20,7 @@
     <property name="createdDate" column="createdDate" not-null="true" />
     <property name="lastModifiedBy" column="lastModifiedBy" not-null="true" />
     <property name="lastModifiedDate" column="lastModifiedDate" not-null="true" />
-    <many-to-one name="incident" class="chox.model;.hibernate.Incident" column="incidentId" />
+    <many-to-one name="incident" class="chox.model.Incident" column="incidentId" />
   </class>
 </hibernate-mapping>
 

@@ -14,16 +14,16 @@
     <property name="createdDate" column="createdDate" not-null="true" />
     <property name="lastModifiedBy" column="lastModifiedBy" not-null="true" />
     <property name="lastModifiedDate" column="lastModifiedDate" not-null="true" />
-    <many-to-one name="chorganisation" class="chox.model;.hibernate.Chorganisation" column="cHOrganisationId" />
-    <many-to-one name="customer" class="chox.model;.hibernate.Customer" column="customerId" />
-    <many-to-one name="engineerReport" class="chox.model;.hibernate.EngineerReport" column="engineerReportId" />
-    <many-to-one name="hireMonitoringDetail" class="chox.model;.hibernate.HireMonitoringDetail" column="hireMonitoringDetailId" />
-    <many-to-one name="incident" class="chox.model;.hibernate.Incident" column="incidentId" />
-    <many-to-one name="insurer" class="chox.model;.hibernate.Insurer" column="insurerId" />
-    <many-to-one name="invoice" class="chox.model;.hibernate.Invoice" column="invoiceId" />
-    <many-to-one name="lineOfBusiness" class="chox.model;.hibernate.LineOfBusiness" column="lineOfBusinessId" />
-    <many-to-one name="thirdParty" class="chox.model;.hibernate.ThirdParty" column="thirdPartyId" />
-    <many-to-one name="vehicleHire" class="chox.model;.hibernate.VehicleHire" column="vehicleHireId" />
+    <many-to-one name="chorganisation" class="chox.model.Chorganisation" column="cHOrganisationId" />
+    <many-to-one name="customer" class="chox.model.Customer" column="customerId" />
+    <many-to-one name="engineerReport" class="chox.model.EngineerReport" column="engineerReportId" />
+    <many-to-one name="hireMonitoringDetail" class="chox.model.HireMonitoringDetail" column="hireMonitoringDetailId" />
+    <many-to-one name="incident" class="chox.model.Incident" column="incidentId" />
+    <many-to-one name="insurer" class="chox.model.Insurer" column="insurerId" />
+    <many-to-one name="invoice" class="chox.model.Invoice" column="invoiceId" />
+    <many-to-one name="lineOfBusiness" class="chox.model.LineOfBusiness" column="lineOfBusinessId" />
+    <many-to-one name="thirdParty" class="chox.model.ThirdParty" column="thirdPartyId" />
+    <many-to-one name="vehicleHire" class="chox.model.VehicleHire" column="vehicleHireId" />
   </class>
 </hibernate-mapping>
 
