@@ -13,6 +13,11 @@ public class ThirdParty implements Serializable
 	protected int id;
 
 	/** 
+	 * This attribute maps to the column insurerId in the ThirdParty table.
+	 */
+	protected int insurerId;
+
+	/** 
 	 * This attribute maps to the column policyNumber in the ThirdParty table.
 	 */
 	protected String policyNumber;
@@ -38,14 +43,9 @@ public class ThirdParty implements Serializable
 	protected String vehicleModel;
 
 	/** 
-	 * This attribute maps to the column vehicleClassId in the ThirdParty table.
+	 * This attribute maps to the column firstNames in the ThirdParty table.
 	 */
-	protected VehicleClass vehicleClass;
-
-	/** 
-	 * This attribute represents whether the primitive attribute vehicleClassId is null.
-	 */
-	protected boolean vehicleClassIdNull = true;
+	protected String firstNames;
 
 	/** 
 	 * This attribute maps to the column address1 in the ThirdParty table.
@@ -98,11 +98,6 @@ public class ThirdParty implements Serializable
 	protected int createdBy;
 
 	/** 
-	 * This attribute represents whether the primitive attribute createdBy is null.
-	 */
-	protected boolean createdByNull = true;
-
-	/** 
 	 * This attribute maps to the column createdDate in the ThirdParty table.
 	 */
 	protected Date createdDate;
@@ -113,19 +108,9 @@ public class ThirdParty implements Serializable
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute represents whether the primitive attribute lastModifiedBy is null.
-	 */
-	protected boolean lastModifiedByNull = true;
-
-	/** 
 	 * This attribute maps to the column lastModifiedDate in the ThirdParty table.
 	 */
 	protected Date lastModifiedDate;
-
-	/** 
-	 * This attribute maps to the column firstNames in the ThirdParty table.
-	 */
-	protected String firstNames;
 
 	/** 
 	 * This attribute maps to the column lastName in the ThirdParty table.
@@ -138,9 +123,9 @@ public class ThirdParty implements Serializable
 	protected String title;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the Insurer table.
+	 * This attribute represents the foreign key relationship to the VehicleClass table.
 	 */
-	protected Insurer insurer;
+	protected VehicleClass vehicleClass;
 
 	/**
 	 * Method 'ThirdParty'
@@ -168,6 +153,26 @@ public class ThirdParty implements Serializable
 	public void setId(int id)
 	{
 		this.id = id;
+	}
+
+	/**
+	 * Method 'getInsurerId'
+	 * 
+	 * @return int
+	 */
+	public int getInsurerId()
+	{
+		return insurerId;
+	}
+
+	/**
+	 * Method 'setInsurerId'
+	 * 
+	 * @param insurerId
+	 */
+	public void setInsurerId(int insurerId)
+	{
+		this.insurerId = insurerId;
 	}
 
 	/**
@@ -270,30 +275,24 @@ public class ThirdParty implements Serializable
 		this.vehicleModel = vehicleModel;
 	}
 
-    public VehicleClass getVehicleClass() {
-        return vehicleClass;
-    }
-
-    public void setVehicleClass(VehicleClass vehicleClass) {
-        this.vehicleClass = vehicleClass;
-    }
-
-
-
-	/** 
-	 * Sets the value of vehicleClassIdNull
+	/**
+	 * Method 'getFirstNames'
+	 * 
+	 * @return java.lang.String
 	 */
-	public void setVehicleClassIdNull(boolean vehicleClassIdNull)
+	public java.lang.String getFirstNames()
 	{
-		this.vehicleClassIdNull = vehicleClassIdNull;
+		return firstNames;
 	}
 
-	/** 
-	 * Gets the value of vehicleClassIdNull
+	/**
+	 * Method 'setFirstNames'
+	 * 
+	 * @param firstNames
 	 */
-	public boolean isVehicleClassIdNull()
+	public void setFirstNames(java.lang.String firstNames)
 	{
-		return vehicleClassIdNull;
+		this.firstNames = firstNames;
 	}
 
 	/**
@@ -494,23 +493,6 @@ public class ThirdParty implements Serializable
 	public void setCreatedBy(int createdBy)
 	{
 		this.createdBy = createdBy;
-		this.createdByNull = false;
-	}
-
-	/** 
-	 * Sets the value of createdByNull
-	 */
-	public void setCreatedByNull(boolean createdByNull)
-	{
-		this.createdByNull = createdByNull;
-	}
-
-	/** 
-	 * Gets the value of createdByNull
-	 */
-	public boolean isCreatedByNull()
-	{
-		return createdByNull;
 	}
 
 	/**
@@ -551,23 +533,6 @@ public class ThirdParty implements Serializable
 	public void setLastModifiedBy(int lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
-		this.lastModifiedByNull = false;
-	}
-
-	/** 
-	 * Sets the value of lastModifiedByNull
-	 */
-	public void setLastModifiedByNull(boolean lastModifiedByNull)
-	{
-		this.lastModifiedByNull = lastModifiedByNull;
-	}
-
-	/** 
-	 * Gets the value of lastModifiedByNull
-	 */
-	public boolean isLastModifiedByNull()
-	{
-		return lastModifiedByNull;
 	}
 
 	/**
@@ -588,26 +553,6 @@ public class ThirdParty implements Serializable
 	public void setLastModifiedDate(java.util.Date lastModifiedDate)
 	{
 		this.lastModifiedDate = lastModifiedDate;
-	}
-
-	/**
-	 * Method 'getFirstNames'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getFirstNames()
-	{
-		return firstNames;
-	}
-
-	/**
-	 * Method 'setFirstNames'
-	 * 
-	 * @param firstNames
-	 */
-	public void setFirstNames(java.lang.String firstNames)
-	{
-		this.firstNames = firstNames;
 	}
 
 	/**
@@ -651,23 +596,23 @@ public class ThirdParty implements Serializable
 	}
 
 	/**
-	 * Method 'getInsurer'
+	 * Method 'getVehicleClass'
 	 * 
-	 * @return Insurer
+	 * @return VehicleClass
 	 */
-	public Insurer getInsurer()
+	public VehicleClass getVehicleClass()
 	{
-		return insurer;
+		return vehicleClass;
 	}
 
 	/**
-	 * Method 'setInsurer'
+	 * Method 'setVehicleClass'
 	 * 
-	 * @param insurer
+	 * @param vehicleClass
 	 */
-	public void setInsurer(Insurer insurer)
+	public void setVehicleClass(VehicleClass vehicleClass)
 	{
-		this.insurer = insurer;
+		this.vehicleClass = vehicleClass;
 	}
 
 }

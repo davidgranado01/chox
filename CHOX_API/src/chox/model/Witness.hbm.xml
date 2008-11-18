@@ -6,6 +6,7 @@
     <id name="id" column="id">
       <generator class="increment" />
     </id>
+    <property name="incidentId" column="incidentId" not-null="true" />
     <property name="name" column="name" />
     <property name="address1" column="address1" />
     <property name="address2" column="address2" />
@@ -16,11 +17,10 @@
     <property name="telephoneDay" column="telephoneDay" />
     <property name="telephoneEvening" column="telephoneEvening" />
     <property name="email" column="email" />
-    <property name="createdBy" column="createdBy" />
-    <property name="createdDate" column="createdDate" />
-    <property name="lastModifiedBy" column="lastModifiedBy" />
-    <property name="lastModifiedDate" column="lastModifiedDate" />
-    <many-to-one name="incident" class="chox.model.Incident" column="incidentId" />
+    <property name="createdBy" column="createdBy" not-null="true" />
+    <property name="createdDate" column="createdDate" not-null="true" />
+    <property name="lastModifiedBy" column="lastModifiedBy" not-null="true" />
+    <property name="lastModifiedDate" column="lastModifiedDate" not-null="true" />
   </class>
 </hibernate-mapping>
 

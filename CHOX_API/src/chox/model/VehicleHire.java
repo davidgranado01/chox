@@ -7,223 +7,612 @@ import java.util.Date;
 
 public class VehicleHire implements Serializable
 {
+	/** 
+	 * This attribute maps to the column id in the VehicleHire table.
+	 */
 	protected int id;
+
+	/** 
+	 * This attribute maps to the column vehicleRegistration in the VehicleHire table.
+	 */
 	protected String vehicleRegistration;
+
+	/** 
+	 * This attribute maps to the column vehicleManufacturer in the VehicleHire table.
+	 */
 	protected String vehicleManufacturer;
+
+	/** 
+	 * This attribute maps to the column vehicleModel in the VehicleHire table.
+	 */
 	protected String vehicleModel;
+
+	/** 
+	 * This attribute maps to the column rentalStart in the VehicleHire table.
+	 */
 	protected Date rentalStart;
+
+	/** 
+	 * This attribute maps to the column rentalEnd in the VehicleHire table.
+	 */
 	protected Date rentalEnd;
+
+	/** 
+	 * This attribute maps to the column collectionReason in the VehicleHire table.
+	 */
 	protected String collectionReason;
-	protected long days;
+
+	/** 
+	 * This attribute maps to the column days in the VehicleHire table.
+	 */
+	protected Integer days;
+
+	/** 
+	 * This attribute maps to the column cdwFee in the VehicleHire table.
+	 */
 	protected boolean cdwFee;
+
+	/** 
+	 * This attribute maps to the column automaticFee in the VehicleHire table.
+	 */
 	protected boolean automaticFee;
+
+	/** 
+	 * This attribute maps to the column satNavFee in the VehicleHire table.
+	 */
 	protected boolean satNavFee;
+
+	/** 
+	 * This attribute maps to the column estateFee in the VehicleHire table.
+	 */
 	protected boolean estateFee;
+
+	/** 
+	 * This attribute maps to the column babySeatFee in the VehicleHire table.
+	 */
 	protected boolean babySeatFee;
+
+	/** 
+	 * This attribute maps to the column towBarsFee in the VehicleHire table.
+	 */
 	protected boolean towBarsFee;
+
+	/** 
+	 * This attribute maps to the column nonStandardInsurancePremiumFee in the VehicleHire table.
+	 */
 	protected boolean nonStandardInsurancePremiumFee;
+
+	/** 
+	 * This attribute maps to the column adminFee in the VehicleHire table.
+	 */
 	protected boolean adminFee;
+
+	/** 
+	 * This attribute maps to the column roofRackFee in the VehicleHire table.
+	 */
 	protected boolean roofRackFee;
+
+	/** 
+	 * This attribute maps to the column dualControlFee in the VehicleHire table.
+	 */
 	protected boolean dualControlFee;
+
+	/** 
+	 * This attribute maps to the column deliveryCollectionFee in the VehicleHire table.
+	 */
 	protected boolean deliveryCollectionFee;
+
+	/** 
+	 * This attribute maps to the column createdBy in the VehicleHire table.
+	 */
 	protected int createdBy;
+
+	/** 
+	 * This attribute maps to the column createdDate in the VehicleHire table.
+	 */
 	protected Date createdDate;
+
+	/** 
+	 * This attribute maps to the column lastModifiedBy in the VehicleHire table.
+	 */
 	protected int lastModifiedBy;
+
+	/** 
+	 * This attribute maps to the column lastModifiedDate in the VehicleHire table.
+	 */
 	protected Date lastModifiedDate;
+
+	/** 
+	 * This attribute represents the foreign key relationship to the VehicleClass table.
+	 */
 	protected VehicleClass vehicleClass;
 
-    public boolean isAdminFee() {
-        return adminFee;
-    }
+	/**
+	 * Method 'VehicleHire'
+	 * 
+	 */
+	public VehicleHire()
+	{
+	}
 
-    public void setAdminFee(boolean adminFee) {
-        this.adminFee = adminFee;
-    }
+	/**
+	 * Method 'getId'
+	 * 
+	 * @return int
+	 */
+	public int getId()
+	{
+		return id;
+	}
 
-    public boolean isAutomaticFee() {
-        return automaticFee;
-    }
+	/**
+	 * Method 'setId'
+	 * 
+	 * @param id
+	 */
+	public void setId(int id)
+	{
+		this.id = id;
+	}
 
-    public void setAutomaticFee(boolean automaticFee) {
-        this.automaticFee = automaticFee;
-    }
+	/**
+	 * Method 'getVehicleRegistration'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getVehicleRegistration()
+	{
+		return vehicleRegistration;
+	}
 
-    public boolean isBabySeatFee() {
-        return babySeatFee;
-    }
+	/**
+	 * Method 'setVehicleRegistration'
+	 * 
+	 * @param vehicleRegistration
+	 */
+	public void setVehicleRegistration(java.lang.String vehicleRegistration)
+	{
+		this.vehicleRegistration = vehicleRegistration;
+	}
 
-    public void setBabySeatFee(boolean babySeatFee) {
-        this.babySeatFee = babySeatFee;
-    }
+	/**
+	 * Method 'getVehicleManufacturer'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getVehicleManufacturer()
+	{
+		return vehicleManufacturer;
+	}
 
-    public boolean isCdwFee() {
-        return cdwFee;
-    }
+	/**
+	 * Method 'setVehicleManufacturer'
+	 * 
+	 * @param vehicleManufacturer
+	 */
+	public void setVehicleManufacturer(java.lang.String vehicleManufacturer)
+	{
+		this.vehicleManufacturer = vehicleManufacturer;
+	}
 
-    public void setCdwFee(boolean cdwFee) {
-        this.cdwFee = cdwFee;
-    }
+	/**
+	 * Method 'getVehicleModel'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getVehicleModel()
+	{
+		return vehicleModel;
+	}
 
-    public String getCollectionReason() {
-        return collectionReason;
-    }
+	/**
+	 * Method 'setVehicleModel'
+	 * 
+	 * @param vehicleModel
+	 */
+	public void setVehicleModel(java.lang.String vehicleModel)
+	{
+		this.vehicleModel = vehicleModel;
+	}
 
-    public void setCollectionReason(String collectionReason) {
-        this.collectionReason = collectionReason;
-    }
+	/**
+	 * Method 'getRentalStart'
+	 * 
+	 * @return java.util.Date
+	 */
+	public java.util.Date getRentalStart()
+	{
+		return rentalStart;
+	}
 
-    public int getCreatedBy() {
-        return createdBy;
-    }
+	/**
+	 * Method 'setRentalStart'
+	 * 
+	 * @param rentalStart
+	 */
+	public void setRentalStart(java.util.Date rentalStart)
+	{
+		this.rentalStart = rentalStart;
+	}
 
-    public void setCreatedBy(int createdBy) {
-        this.createdBy = createdBy;
-    }
+	/**
+	 * Method 'getRentalEnd'
+	 * 
+	 * @return java.util.Date
+	 */
+	public java.util.Date getRentalEnd()
+	{
+		return rentalEnd;
+	}
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
+	/**
+	 * Method 'setRentalEnd'
+	 * 
+	 * @param rentalEnd
+	 */
+	public void setRentalEnd(java.util.Date rentalEnd)
+	{
+		this.rentalEnd = rentalEnd;
+	}
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
+	/**
+	 * Method 'getCollectionReason'
+	 * 
+	 * @return java.lang.String
+	 */
+	public java.lang.String getCollectionReason()
+	{
+		return collectionReason;
+	}
 
-    public long getDays() {
-        return days;
-    }
+	/**
+	 * Method 'setCollectionReason'
+	 * 
+	 * @param collectionReason
+	 */
+	public void setCollectionReason(java.lang.String collectionReason)
+	{
+		this.collectionReason = collectionReason;
+	}
 
-    public void setDays(long days) {
-        this.days = days;
-    }
+	/**
+	 * Method 'getDays'
+	 * 
+	 * @return java.lang.Integer
+	 */
+	public java.lang.Integer getDays()
+	{
+		return days;
+	}
 
-    public boolean isDeliveryCollectionFee() {
-        return deliveryCollectionFee;
-    }
+	/**
+	 * Method 'setDays'
+	 * 
+	 * @param days
+	 */
+	public void setDays(java.lang.Integer days)
+	{
+		this.days = days;
+	}
 
-    public void setDeliveryCollectionFee(boolean deliveryCollectionFee) {
-        this.deliveryCollectionFee = deliveryCollectionFee;
-    }
+	/**
+	 * Method 'isCdwFee'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isCdwFee()
+	{
+		return cdwFee;
+	}
 
-    public boolean isDualControlFee() {
-        return dualControlFee;
-    }
+	/**
+	 * Method 'setCdwFee'
+	 * 
+	 * @param cdwFee
+	 */
+	public void setCdwFee(boolean cdwFee)
+	{
+		this.cdwFee = cdwFee;
+	}
 
-    public void setDualControlFee(boolean dualControlFee) {
-        this.dualControlFee = dualControlFee;
-    }
+	/**
+	 * Method 'isAutomaticFee'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isAutomaticFee()
+	{
+		return automaticFee;
+	}
 
-    public boolean isEstateFee() {
-        return estateFee;
-    }
+	/**
+	 * Method 'setAutomaticFee'
+	 * 
+	 * @param automaticFee
+	 */
+	public void setAutomaticFee(boolean automaticFee)
+	{
+		this.automaticFee = automaticFee;
+	}
 
-    public void setEstateFee(boolean estateFee) {
-        this.estateFee = estateFee;
-    }
+	/**
+	 * Method 'isSatNavFee'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isSatNavFee()
+	{
+		return satNavFee;
+	}
 
-    public int getId() {
-        return id;
-    }
+	/**
+	 * Method 'setSatNavFee'
+	 * 
+	 * @param satNavFee
+	 */
+	public void setSatNavFee(boolean satNavFee)
+	{
+		this.satNavFee = satNavFee;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	/**
+	 * Method 'isEstateFee'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isEstateFee()
+	{
+		return estateFee;
+	}
 
-    public int getLastModifiedBy() {
-        return lastModifiedBy;
-    }
+	/**
+	 * Method 'setEstateFee'
+	 * 
+	 * @param estateFee
+	 */
+	public void setEstateFee(boolean estateFee)
+	{
+		this.estateFee = estateFee;
+	}
 
-    public void setLastModifiedBy(int lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
+	/**
+	 * Method 'isBabySeatFee'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isBabySeatFee()
+	{
+		return babySeatFee;
+	}
 
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
+	/**
+	 * Method 'setBabySeatFee'
+	 * 
+	 * @param babySeatFee
+	 */
+	public void setBabySeatFee(boolean babySeatFee)
+	{
+		this.babySeatFee = babySeatFee;
+	}
 
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
+	/**
+	 * Method 'isTowBarsFee'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isTowBarsFee()
+	{
+		return towBarsFee;
+	}
 
-    public boolean isNonStandardInsurancePremiumFee() {
-        return nonStandardInsurancePremiumFee;
-    }
+	/**
+	 * Method 'setTowBarsFee'
+	 * 
+	 * @param towBarsFee
+	 */
+	public void setTowBarsFee(boolean towBarsFee)
+	{
+		this.towBarsFee = towBarsFee;
+	}
 
-    public void setNonStandardInsurancePremiumFee(boolean nonStandardInsurancePremiumFee) {
-        this.nonStandardInsurancePremiumFee = nonStandardInsurancePremiumFee;
-    }
+	/**
+	 * Method 'isNonStandardInsurancePremiumFee'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isNonStandardInsurancePremiumFee()
+	{
+		return nonStandardInsurancePremiumFee;
+	}
 
-    public Date getRentalEnd() {
-        return rentalEnd;
-    }
+	/**
+	 * Method 'setNonStandardInsurancePremiumFee'
+	 * 
+	 * @param nonStandardInsurancePremiumFee
+	 */
+	public void setNonStandardInsurancePremiumFee(boolean nonStandardInsurancePremiumFee)
+	{
+		this.nonStandardInsurancePremiumFee = nonStandardInsurancePremiumFee;
+	}
 
-    public void setRentalEnd(Date rentalEnd) {
-        this.rentalEnd = rentalEnd;
-    }
+	/**
+	 * Method 'isAdminFee'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isAdminFee()
+	{
+		return adminFee;
+	}
 
-    public Date getRentalStart() {
-        return rentalStart;
-    }
+	/**
+	 * Method 'setAdminFee'
+	 * 
+	 * @param adminFee
+	 */
+	public void setAdminFee(boolean adminFee)
+	{
+		this.adminFee = adminFee;
+	}
 
-    public void setRentalStart(Date rentalStart) {
-        this.rentalStart = rentalStart;
-    }
+	/**
+	 * Method 'isRoofRackFee'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isRoofRackFee()
+	{
+		return roofRackFee;
+	}
 
-    public boolean isRoofRackFee() {
-        return roofRackFee;
-    }
+	/**
+	 * Method 'setRoofRackFee'
+	 * 
+	 * @param roofRackFee
+	 */
+	public void setRoofRackFee(boolean roofRackFee)
+	{
+		this.roofRackFee = roofRackFee;
+	}
 
-    public void setRoofRackFee(boolean roofRackFee) {
-        this.roofRackFee = roofRackFee;
-    }
+	/**
+	 * Method 'isDualControlFee'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isDualControlFee()
+	{
+		return dualControlFee;
+	}
 
-    public boolean isSatNavFee() {
-        return satNavFee;
-    }
+	/**
+	 * Method 'setDualControlFee'
+	 * 
+	 * @param dualControlFee
+	 */
+	public void setDualControlFee(boolean dualControlFee)
+	{
+		this.dualControlFee = dualControlFee;
+	}
 
-    public void setSatNavFee(boolean satNavFee) {
-        this.satNavFee = satNavFee;
-    }
+	/**
+	 * Method 'isDeliveryCollectionFee'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isDeliveryCollectionFee()
+	{
+		return deliveryCollectionFee;
+	}
 
-    public boolean isTowBarsFee() {
-        return towBarsFee;
-    }
+	/**
+	 * Method 'setDeliveryCollectionFee'
+	 * 
+	 * @param deliveryCollectionFee
+	 */
+	public void setDeliveryCollectionFee(boolean deliveryCollectionFee)
+	{
+		this.deliveryCollectionFee = deliveryCollectionFee;
+	}
 
-    public void setTowBarsFee(boolean towBarsFee) {
-        this.towBarsFee = towBarsFee;
-    }
+	/**
+	 * Method 'getCreatedBy'
+	 * 
+	 * @return int
+	 */
+	public int getCreatedBy()
+	{
+		return createdBy;
+	}
 
-    public VehicleClass getVehicleClass() {
-        return vehicleClass;
-    }
+	/**
+	 * Method 'setCreatedBy'
+	 * 
+	 * @param createdBy
+	 */
+	public void setCreatedBy(int createdBy)
+	{
+		this.createdBy = createdBy;
+	}
 
-    public void setVehicleClass(VehicleClass vehicleClass) {
-        this.vehicleClass = vehicleClass;
-    }
+	/**
+	 * Method 'getCreatedDate'
+	 * 
+	 * @return java.util.Date
+	 */
+	public java.util.Date getCreatedDate()
+	{
+		return createdDate;
+	}
 
-    public String getVehicleManufacturer() {
-        return vehicleManufacturer;
-    }
+	/**
+	 * Method 'setCreatedDate'
+	 * 
+	 * @param createdDate
+	 */
+	public void setCreatedDate(java.util.Date createdDate)
+	{
+		this.createdDate = createdDate;
+	}
 
-    public void setVehicleManufacturer(String vehicleManufacturer) {
-        this.vehicleManufacturer = vehicleManufacturer;
-    }
+	/**
+	 * Method 'getLastModifiedBy'
+	 * 
+	 * @return int
+	 */
+	public int getLastModifiedBy()
+	{
+		return lastModifiedBy;
+	}
 
-    public String getVehicleModel() {
-        return vehicleModel;
-    }
+	/**
+	 * Method 'setLastModifiedBy'
+	 * 
+	 * @param lastModifiedBy
+	 */
+	public void setLastModifiedBy(int lastModifiedBy)
+	{
+		this.lastModifiedBy = lastModifiedBy;
+	}
 
-    public void setVehicleModel(String vehicleModel) {
-        this.vehicleModel = vehicleModel;
-    }
+	/**
+	 * Method 'getLastModifiedDate'
+	 * 
+	 * @return java.util.Date
+	 */
+	public java.util.Date getLastModifiedDate()
+	{
+		return lastModifiedDate;
+	}
 
-    public String getVehicleRegistration() {
-        return vehicleRegistration;
-    }
+	/**
+	 * Method 'setLastModifiedDate'
+	 * 
+	 * @param lastModifiedDate
+	 */
+	public void setLastModifiedDate(java.util.Date lastModifiedDate)
+	{
+		this.lastModifiedDate = lastModifiedDate;
+	}
 
-    public void setVehicleRegistration(String vehicleRegistration) {
-        this.vehicleRegistration = vehicleRegistration;
-    }
+	/**
+	 * Method 'getVehicleClass'
+	 * 
+	 * @return VehicleClass
+	 */
+	public VehicleClass getVehicleClass()
+	{
+		return vehicleClass;
+	}
 
+	/**
+	 * Method 'setVehicleClass'
+	 * 
+	 * @param vehicleClass
+	 */
+	public void setVehicleClass(VehicleClass vehicleClass)
+	{
+		this.vehicleClass = vehicleClass;
+	}
 
-        
 }

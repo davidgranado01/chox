@@ -3,6 +3,7 @@ package chox.model;
 import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class VehicleClass implements Serializable
@@ -15,12 +16,7 @@ public class VehicleClass implements Serializable
 	/** 
 	 * This attribute maps to the column price in the VehicleClass table.
 	 */
-	protected long price;
-
-	/** 
-	 * This attribute represents whether the primitive attribute price is null.
-	 */
-	protected boolean priceNull = true;
+	protected BigDecimal price;
 
 	/** 
 	 * This attribute maps to the column name in the VehicleClass table.
@@ -33,11 +29,6 @@ public class VehicleClass implements Serializable
 	protected int createdBy;
 
 	/** 
-	 * This attribute represents whether the primitive attribute createdBy is null.
-	 */
-	protected boolean createdByNull = true;
-
-	/** 
 	 * This attribute maps to the column createdDate in the VehicleClass table.
 	 */
 	protected Date createdDate;
@@ -46,11 +37,6 @@ public class VehicleClass implements Serializable
 	 * This attribute maps to the column lastModifiedBy in the VehicleClass table.
 	 */
 	protected int lastModifiedBy;
-
-	/** 
-	 * This attribute represents whether the primitive attribute lastModifiedBy is null.
-	 */
-	protected boolean lastModifiedByNull = true;
 
 	/** 
 	 * This attribute maps to the column lastModifiedDate in the VehicleClass table.
@@ -88,9 +74,9 @@ public class VehicleClass implements Serializable
 	/**
 	 * Method 'getPrice'
 	 * 
-	 * @return long
+	 * @return java.math.BigDecimal
 	 */
-	public long getPrice()
+	public java.math.BigDecimal getPrice()
 	{
 		return price;
 	}
@@ -100,26 +86,9 @@ public class VehicleClass implements Serializable
 	 * 
 	 * @param price
 	 */
-	public void setPrice(long price)
+	public void setPrice(java.math.BigDecimal price)
 	{
 		this.price = price;
-		this.priceNull = false;
-	}
-
-	/** 
-	 * Sets the value of priceNull
-	 */
-	public void setPriceNull(boolean priceNull)
-	{
-		this.priceNull = priceNull;
-	}
-
-	/** 
-	 * Gets the value of priceNull
-	 */
-	public boolean isPriceNull()
-	{
-		return priceNull;
 	}
 
 	/**
@@ -160,23 +129,6 @@ public class VehicleClass implements Serializable
 	public void setCreatedBy(int createdBy)
 	{
 		this.createdBy = createdBy;
-		this.createdByNull = false;
-	}
-
-	/** 
-	 * Sets the value of createdByNull
-	 */
-	public void setCreatedByNull(boolean createdByNull)
-	{
-		this.createdByNull = createdByNull;
-	}
-
-	/** 
-	 * Gets the value of createdByNull
-	 */
-	public boolean isCreatedByNull()
-	{
-		return createdByNull;
 	}
 
 	/**
@@ -217,23 +169,6 @@ public class VehicleClass implements Serializable
 	public void setLastModifiedBy(int lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
-		this.lastModifiedByNull = false;
-	}
-
-	/** 
-	 * Sets the value of lastModifiedByNull
-	 */
-	public void setLastModifiedByNull(boolean lastModifiedByNull)
-	{
-		this.lastModifiedByNull = lastModifiedByNull;
-	}
-
-	/** 
-	 * Gets the value of lastModifiedByNull
-	 */
-	public boolean isLastModifiedByNull()
-	{
-		return lastModifiedByNull;
 	}
 
 	/**

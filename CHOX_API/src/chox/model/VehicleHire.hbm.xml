@@ -13,22 +13,22 @@
     <property name="rentalEnd" column="rentalEnd" />
     <property name="collectionReason" column="collectionReason" not-null="true" />
     <property name="days" column="days" />
-    <property name="cdwFee" column="cdwFee" />
-    <property name="automaticFee" column="automaticFee" />
-    <property name="satNavFee" column="satNavFee" />
-    <property name="estateFee" column="estateFee" />
-    <property name="babySeatFee" column="babySeatFee" />
-    <property name="towBarsFee" column="towBarsFee" />
-    <property name="nonStandardInsurancePremiumFee" column="nonStandardInsurancePremiumFee" />
-    <property name="adminFee" column="adminFee" />
-    <property name="roofRackFee" column="roofRackFee" />
-    <property name="dualControlFee" column="dualControlFee" />
-    <property name="deliveryCollectionFee" column="deliveryCollectionFee" />
-    <property name="createdBy" column="createdBy" />
-    <property name="createdDate" column="createdDate" />
-    <property name="lastModifiedBy" column="lastModifiedBy" />
-    <property name="lastModifiedDate" column="lastModifiedDate" />
-    <many-to-one name="vehicleClass" class="chox.model.VehicleClass" column="vehicleClassId" />
+    <property name="cdwFee" column="cdwFee" not-null="true" />
+    <property name="automaticFee" column="automaticFee" not-null="true" />
+    <property name="satNavFee" column="satNavFee" not-null="true" />
+    <property name="estateFee" column="estateFee" not-null="true" />
+    <property name="babySeatFee" column="babySeatFee" not-null="true" />
+    <property name="towBarsFee" column="towBarsFee" not-null="true" />
+    <property name="nonStandardInsurancePremiumFee" column="nonStandardInsurancePremiumFee" not-null="true" />
+    <property name="adminFee" column="adminFee" not-null="true" />
+    <property name="roofRackFee" column="roofRackFee" not-null="true" />
+    <property name="dualControlFee" column="dualControlFee" not-null="true" />
+    <property name="deliveryCollectionFee" column="deliveryCollectionFee" not-null="true" />
+    <property name="createdBy" column="createdBy" not-null="true" />
+    <property name="createdDate" column="createdDate" not-null="true" />
+    <property name="lastModifiedBy" column="lastModifiedBy" not-null="true" />
+    <property name="lastModifiedDate" column="lastModifiedDate" not-null="true" />
+    <many-to-one name="vehicleClass" class="chox.model.hibernate.VehicleClass" column="vehicleClassId" />
   </class>
 </hibernate-mapping>
 

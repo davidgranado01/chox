@@ -13,6 +13,11 @@ public class Witness implements Serializable
 	protected int id;
 
 	/** 
+	 * This attribute maps to the column incidentId in the Witness table.
+	 */
+	protected int incidentId;
+
+	/** 
 	 * This attribute maps to the column name in the Witness table.
 	 */
 	protected String name;
@@ -68,11 +73,6 @@ public class Witness implements Serializable
 	protected int createdBy;
 
 	/** 
-	 * This attribute represents whether the primitive attribute createdBy is null.
-	 */
-	protected boolean createdByNull = true;
-
-	/** 
 	 * This attribute maps to the column createdDate in the Witness table.
 	 */
 	protected Date createdDate;
@@ -83,19 +83,9 @@ public class Witness implements Serializable
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute represents whether the primitive attribute lastModifiedBy is null.
-	 */
-	protected boolean lastModifiedByNull = true;
-
-	/** 
 	 * This attribute maps to the column lastModifiedDate in the Witness table.
 	 */
 	protected Date lastModifiedDate;
-
-	/** 
-	 * This attribute represents the foreign key relationship to the Incident table.
-	 */
-	protected Incident incident;
 
 	/**
 	 * Method 'Witness'
@@ -123,6 +113,26 @@ public class Witness implements Serializable
 	public void setId(int id)
 	{
 		this.id = id;
+	}
+
+	/**
+	 * Method 'getIncidentId'
+	 * 
+	 * @return int
+	 */
+	public int getIncidentId()
+	{
+		return incidentId;
+	}
+
+	/**
+	 * Method 'setIncidentId'
+	 * 
+	 * @param incidentId
+	 */
+	public void setIncidentId(int incidentId)
+	{
+		this.incidentId = incidentId;
 	}
 
 	/**
@@ -343,23 +353,6 @@ public class Witness implements Serializable
 	public void setCreatedBy(int createdBy)
 	{
 		this.createdBy = createdBy;
-		this.createdByNull = false;
-	}
-
-	/** 
-	 * Sets the value of createdByNull
-	 */
-	public void setCreatedByNull(boolean createdByNull)
-	{
-		this.createdByNull = createdByNull;
-	}
-
-	/** 
-	 * Gets the value of createdByNull
-	 */
-	public boolean isCreatedByNull()
-	{
-		return createdByNull;
 	}
 
 	/**
@@ -400,23 +393,6 @@ public class Witness implements Serializable
 	public void setLastModifiedBy(int lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
-		this.lastModifiedByNull = false;
-	}
-
-	/** 
-	 * Sets the value of lastModifiedByNull
-	 */
-	public void setLastModifiedByNull(boolean lastModifiedByNull)
-	{
-		this.lastModifiedByNull = lastModifiedByNull;
-	}
-
-	/** 
-	 * Gets the value of lastModifiedByNull
-	 */
-	public boolean isLastModifiedByNull()
-	{
-		return lastModifiedByNull;
 	}
 
 	/**
@@ -437,26 +413,6 @@ public class Witness implements Serializable
 	public void setLastModifiedDate(java.util.Date lastModifiedDate)
 	{
 		this.lastModifiedDate = lastModifiedDate;
-	}
-
-	/**
-	 * Method 'getIncident'
-	 * 
-	 * @return Incident
-	 */
-	public Incident getIncident()
-	{
-		return incident;
-	}
-
-	/**
-	 * Method 'setIncident'
-	 * 
-	 * @param incident
-	 */
-	public void setIncident(Incident incident)
-	{
-		this.incident = incident;
 	}
 
 }
