@@ -14,6 +14,8 @@ import java.sql.Timestamp;
 import chox.model.*;
 import org.hibernate.Session;
 import chox.data.HibernateUtil;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 public class XmlProcessController {
 
@@ -153,8 +155,11 @@ public class XmlProcessController {
             Boolean isAllowPartialUpload) throws Exception {
 
         Session currentSession = HibernateUtil.currentSession();
-
+        currentSession.beginTransaction();
+        
         xmlParseResult = CHOoganisationSchemaValidation(currentSession, xmlParseResult, root, doc);
+        
+        
         
         System.out.println(" ** CLAIM > Status: " + xmlParseResult.getClaim().getStatus());
         System.out.println(" ** CLAIM > Supplier Reference: " + xmlParseResult.getClaim().getChoReference());
@@ -284,7 +289,17 @@ public class XmlProcessController {
                     // SET CHO ORGANISATION OR SUPPLIER INFORMATION
                     Chorganisation chorganisation = new Chorganisation();
                     chorganisation.setName(strCHOName);
+                    chorganisation.setAddress1("Address 1");
+                    chorganisation.setAddress2("Address 2");
+                    chorganisation.setAddress3("Address 3");
+                    chorganisation.setPostcode("1234");
+                    chorganisation.setVatNo("123");
+                    chorganisation.setCompanyNo("Company NUmber");
+                    
                     claim.setChorganisation(chorganisation);
+                    
+                    currentSession.saveOrUpdate(chorganisation);
+                    currentSession.getTransaction().commit();
                 }
                 
                 xmlParseResult.setClaim(claim);

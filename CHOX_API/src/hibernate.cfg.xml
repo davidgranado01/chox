@@ -9,23 +9,23 @@
     <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
     <property name="show_sql">true</property>
     <property name="current_session_context_class">thread</property>
-    <mapping resource="chox/model/Chorganisation.hbm.xml" />
-    <mapping resource="chox/model/Claim.hbm.xml" />
-    <mapping resource="chox/model/Customer.hbm.xml" />
-    <mapping resource="chox/model/EngineerReport.hbm.xml" />
-    <mapping resource="chox/model/GlobalConfiguration.hbm.xml" />
-    <mapping resource="chox/model/HireMonitoringDetail.hbm.xml" />
-    <mapping resource="chox/model/History.hbm.xml" />
-    <mapping resource="chox/model/Incident.hbm.xml" />
-    <mapping resource="chox/model/Injury.hbm.xml" />
-    <mapping resource="chox/model/Insurer.hbm.xml" />
-    <mapping resource="chox/model/Invoice.hbm.xml" />
-    <mapping resource="chox/model/LineOfBusiness.hbm.xml" />
-    <mapping resource="chox/model/Solicitor.hbm.xml" />
-    <mapping resource="chox/model/ThirdParty.hbm.xml" />
-    <mapping resource="chox/model/VehicleClass.hbm.xml" />
-    <mapping resource="chox/model/VehicleHire.hbm.xml" />
-    <mapping resource="chox/model/Witness.hbm.xml" />
-    
+	<mapping resource="chox/model/Witness.hbm.xml" />
+	<mapping resource="chox/model/ThirdParty.hbm.xml" />
+	<mapping resource="chox/model/VehicleClass.hbm.xml" />
+	<mapping resource="chox/model/VehicleHire.hbm.xml" />
+	<mapping resource="chox/model/Chobandoperative.hbm.xml" />
+	<mapping resource="chox/model/Chorganisation.hbm.xml" />
+	<mapping resource="chox/model/Claim.hbm.xml" />
+	<mapping resource="chox/model/Customer.hbm.xml" />
+	<mapping resource="chox/model/EngineerReport.hbm.xml" />
+	<mapping resource="chox/model/GlobalConfiguration.hbm.xml" />
+	<mapping resource="chox/model/HireMonitoringDetail.hbm.xml" />
+	<mapping resource="chox/model/History.hbm.xml" />
+	<mapping resource="chox/model/Incident.hbm.xml" />
+	<mapping resource="chox/model/Injury.hbm.xml" />
+	<mapping resource="chox/model/Insurer.hbm.xml" />
+	<mapping resource="chox/model/Invoice.hbm.xml" />
+	<mapping resource="chox/model/LineOfBusiness.hbm.xml" />
+	<mapping resource="chox/model/Solicitor.hbm.xml" />
   </session-factory>
 </hibernate-configuration>
