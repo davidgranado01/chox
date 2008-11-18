@@ -84,7 +84,8 @@ public class XmlProcessController {
                         xmlParseResult = xmlSchemaValidateProcess(xmlParseResult, doc, re, sUpdateType, isAllowPartialUpload);
                         xmlParseResults.add(xmlParseResult);
                         
-        
+                        break;
+                        
                     } catch (Exception e) {
                         Logger.err.println("Error loading record " + count);
                         throw e;
@@ -174,6 +175,10 @@ public class XmlProcessController {
         xmlParseResult = CustomerServiceImpl.saveCustomerForXMLUploader(currentSession, xmlParseResult);
         xmlParseResult = ThirdPartyServiceImpl.saveThirdPartyForXMLUploader(currentSession, xmlParseResult);
         xmlParseResult = IncidentServiceImpl.saveIncidentForXMLUploader(currentSession, xmlParseResult);
+        xmlParseResult = WitnessServiceImpl.saveWitnessForXMLUploader(currentSession, xmlParseResult);
+        xmlParseResult = InjuryServiceImpl.saveInjuryForXMLUploader(currentSession, xmlParseResult);
+        xmlParseResult = SolicitorServiceImpl.saveSolicitorForXMLUploader(currentSession, xmlParseResult);
+        
         
         // System.out.println(" ** DRIVER - FIRST NAME: " + xmlParseResult.getClaim().getCustomer().getFirstnames());
         // System.out.println(" ** DRIVER - TITLE: " + xmlParseResult.getClaim().getCustomer().getTitle());
@@ -192,14 +197,14 @@ public class XmlProcessController {
             xmlParseResult = RentalInvoiceSchemaValidation(currentSession, xmlParseResult, root, doc);
         }
         
+        currentSession = xmlParseResult.getCurrentSession();
+        
         System.out.println("");
         System.out.println(" ** getIsSchemaValid: " + xmlParseResult.getIsSchemaValid());
         System.out.println(" ** getSchemaValidationRemark: " + xmlParseResult.getSchemaValidationRemark());
         System.out.println(" ** getIsDataValid: " + xmlParseResult.getIsDataValid());
         System.out.println(" ** getDataValidationRemark: " + xmlParseResult.getDataValidationRemark());
         System.out.println("********************************************");
-        
-        currentSession = xmlParseResult.getCurrentSession();
         
         if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid() && isAllowPartialUpload){
             currentSession.getTransaction().commit();
@@ -692,7 +697,7 @@ public class XmlProcessController {
                 if (xmlParseResult.getIsCurrentScheValid()) {
 
                    ArrayList<Witness> witnesses = new ArrayList<Witness>();
-                                      
+
                     for (Element ee : witnessElements) {
                         
                         xmlParseResult.setIsCurrentDataValid(true);
@@ -708,7 +713,7 @@ public class XmlProcessController {
                         xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "telephone-day", XmlHelper.isMAN_Claim_Incident_Witness_telephoneDay, "", childNodeLabel2);
                         xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "telephone-evening", XmlHelper.isMAN_Claim_Incident_Witness_telephoneEvening, "", childNodeLabel2);
                         xmlParseResult = xmlNodeValidation(xmlParseResult, ee, "email", XmlHelper.isMAN_Claim_Incident_Witness_email, "", childNodeLabel2);
-                        
+                                                
                         if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
                             
                             Witness witness = new Witness();
@@ -724,13 +729,14 @@ public class XmlProcessController {
                             witness.setPostcode(XmlHelper.getNodeValue(ee, "postcode"));
                             witness.setTelephoneDay(XmlHelper.getNodeValue(ee, "telephone-day"));
                             witness.setTelephoneEvening(XmlHelper.getNodeValue(ee, "telephone-evening"));
-
+                            
                             witnesses.add(witness);
+                            
                         }
                     }
                     
                     if(witnesses.size()>0){
-                        // TODO: SAVE TO DB
+                        xmlParseResult.setWitnesses(witnesses);
                     }
                 }
             }
@@ -796,8 +802,20 @@ public class XmlProcessController {
                         Injury injury = new Injury();
                         
                         // INJURY RECORD DATA ALL CORRECT
-                        if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
-                                
+                        if (xmlParseResult.getIsCurrentDataValid() 
+                                && xmlParseResult.getIsCurrentScheValid()
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "name"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "address1"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "address2"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "address3"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "address4"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "address5"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "postcode"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "telephone-day"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "telephone-evening"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "email"))
+                        ) {
+
                             // INJURY
                             injury.setIncident(xmlParseResult.getClaim().getIncident());
                             injury.setAddress1(XmlHelper.getNodeValue(ee, "address1"));
@@ -812,7 +830,7 @@ public class XmlProcessController {
                             injury.setTelephoneEvening(XmlHelper.getNodeValue(ee, "telephone-evening"));
                             
                             injuries.add(injury);
-                            // TODO:SAVE INTO INJURY OBJECT
+                            
                             
                             // CHECK SOLICITOR
                             Element thisSubElement = XMLUtils.getElement(thisElement, subNodeName);
@@ -832,26 +850,41 @@ public class XmlProcessController {
                             xmlParseResult = xmlNodeValidation(xmlParseResult, thisSubElement, "email", XmlHelper.isMAN_Claim_Incident_Solicitor_email, "", childNodeLabel3);
                             
                             // SOLICITOR RECORD DATA ALL CORRECT
-                            if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
-
-                                Solicitor solicitor = new Solicitor();
-
-                                // SOLICITOR
-                                solicitor.setInjury(injury);
-                                solicitor.setAddress1(XmlHelper.getNodeValue(thisSubElement, "address1"));
-                                solicitor.setAddress2(XmlHelper.getNodeValue(thisSubElement, "address2"));
-                                solicitor.setAddress3(XmlHelper.getNodeValue(thisSubElement, "address3"));
-                                solicitor.setAddress4(XmlHelper.getNodeValue(thisSubElement, "address4"));
-                                solicitor.setAddress5(XmlHelper.getNodeValue(thisSubElement, "address5"));
-                                solicitor.setEmail(XmlHelper.getEmailAddressFromNode(thisSubElement, "email"));
-                                solicitor.setName(XmlHelper.getNodeValue(thisSubElement, "name"));
-                                solicitor.setPostcode(XmlHelper.getNodeValue(thisSubElement, "postcode"));
-                                solicitor.setTelephone(XmlHelper.getNodeValue(thisSubElement, "telephone"));
-
-                                solicitors.add(solicitor);
-                                // TODO:SAVE INTO SOLICITOR OBJECT
+                            if( XmlHelper.isNotNull(XmlHelper.getNodeValue(thisSubElement, "address1"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(thisSubElement, "address2"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(thisSubElement, "address3"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(thisSubElement, "address4"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(thisSubElement, "address5"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(thisSubElement, "email"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(thisSubElement, "name"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(thisSubElement, "postcode"))
+                                && XmlHelper.isNotNull(XmlHelper.getNodeValue(thisSubElement, "telephone"))
+                                && xmlParseResult.getIsCurrentDataValid() 
+                                && xmlParseResult.getIsCurrentScheValid()
+                                ){
+                                    // SOLICITOR
+                                    Solicitor solicitor = new Solicitor();
+                                    solicitor.setInjury(injury);
+                                    solicitor.setAddress1(XmlHelper.getNodeValue(thisSubElement, "address1"));
+                                    solicitor.setAddress2(XmlHelper.getNodeValue(thisSubElement, "address2"));
+                                    solicitor.setAddress3(XmlHelper.getNodeValue(thisSubElement, "address3"));
+                                    solicitor.setAddress4(XmlHelper.getNodeValue(thisSubElement, "address4"));
+                                    solicitor.setAddress5(XmlHelper.getNodeValue(thisSubElement, "address5"));
+                                    solicitor.setEmail(XmlHelper.getEmailAddressFromNode(thisSubElement, "email"));
+                                    solicitor.setName(XmlHelper.getNodeValue(thisSubElement, "name"));
+                                    solicitor.setPostcode(XmlHelper.getNodeValue(thisSubElement, "postcode"));
+                                    solicitor.setTelephone(XmlHelper.getNodeValue(thisSubElement, "telephone"));
+                                    solicitors.add(solicitor);
                             }
                         }
+                    }
+                    
+                    if(injuries.size()>0){
+                        xmlParseResult.setInjuries(injuries);
+                    }
+                    
+                    if(solicitors.size()>0){
+                        xmlParseResult.setSolicitors(solicitors);
                     }
                 }
             }
