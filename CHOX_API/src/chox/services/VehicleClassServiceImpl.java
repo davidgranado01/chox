@@ -23,6 +23,7 @@ public class VehicleClassServiceImpl {
             //insurerId = "";
         }
         */
+        vehicleclass.setId(3);
         
         return vehicleclass;
     }

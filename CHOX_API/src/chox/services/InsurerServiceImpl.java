@@ -35,7 +35,7 @@ public class InsurerServiceImpl{
         // if(criteria.list().size()>0){
             //insurerId = "";
         //}
-        
+        insurer.setId(1);
         return insurer;
     }
     

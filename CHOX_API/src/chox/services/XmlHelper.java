@@ -7,6 +7,7 @@ import org.w3c.dom.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import com.filesystemsoftware.utils.XMLUtils;
+import chox.model.*;
 
 public class XmlHelper {
     
@@ -41,13 +42,13 @@ public class XmlHelper {
     public static final Boolean isMAN_Driver_Telephone_day= true;
     public static final Boolean isMAN_Driver_Telephone_Evening= false;
     public static final Boolean isMAN_Driver_Title= true;
-    public static final Boolean isMAN_Claim_Customer_Vehicle_Class= true;
+    public static final Boolean isMAN_Claim_Customer_Vehicle_Class=true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Location= true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Manufacturer= true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Model= true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Registration= true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Damage= true;
-    public static final Boolean isMAN_Claim_Customer_Vehicle_InitialEcd= false;
+    public static final Boolean isMAN_Claim_Customer_Vehicle_InitialEcd= true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Usable= true;
     public static final Boolean isMAN_Repair_engineerReport_address1= false;
     public static final Boolean isMAN_Repair_engineerReport_address2= false;
@@ -205,12 +206,12 @@ public class XmlHelper {
         return ("|Incorrect XML Schema for <"+strPath+":"+nodeName+"> element").toUpperCase();
     }
     
-    public static String contructureErrorMessagePath(String strPath, String nodeName){
+    public static String contructureErrorMessage(String strPath, String nodeName){
         String returnStr = strPath;
         if(!nodeName.equalsIgnoreCase("")){
             returnStr = returnStr + ":" + nodeName;
         }
-        return returnStr;
+        return returnStr.toUpperCase();
     }
     
     public static String getEmailAddressFromNode(Element thisElement, String thisNodeName){
@@ -289,6 +290,30 @@ public class XmlHelper {
         c.set(Calendar.SECOND, Integer.parseInt(t.substring(17)));
 
         return new Timestamp(c.getTimeInMillis());
+    }    
+    
+    public static XMLParseResult setErrorMessage(XMLParseResult xmlParseResult, String errorMessage, Boolean isSchemaError){
+        
+        String sOldMsg = "";
+        if(isSchemaError){
+            sOldMsg = xmlParseResult.getSchemaValidationRemark();
+        }else{
+            sOldMsg = xmlParseResult.getDataValidationRemark();
+        }
+        
+        String sNewMsg = sOldMsg + XmlHelper.contructureErrorMessage(sOldMsg, errorMessage);
+        
+        if(isSchemaError){
+            xmlParseResult.setSchemaValidationRemark(sNewMsg);
+            xmlParseResult.setIsSchemaValid(false);
+            xmlParseResult.setIsCurrentScheValid(false);
+        }else{
+            xmlParseResult.setDataValidationRemark(sNewMsg);
+            xmlParseResult.setIsDataValid(false);
+            xmlParseResult.setIsCurrentDataValid(false);
+        }
+        
+        return xmlParseResult;
     }    
 }
 
