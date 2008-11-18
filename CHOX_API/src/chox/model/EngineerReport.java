@@ -15,17 +15,17 @@ public class EngineerReport implements Serializable
 	/** 
 	 * This attribute maps to the column labourAmount in the EngineerReport table.
 	 */
-	protected long labourAmount;
+	protected double labourAmount;
 
 	/** 
 	 * This attribute maps to the column totalAmount in the EngineerReport table.
 	 */
-	protected long totalAmount;
+	protected double totalAmount;
 
 	/** 
 	 * This attribute maps to the column days in the EngineerReport table.
 	 */
-	protected long days;
+	protected Integer days;
 
 	/** 
 	 * This attribute maps to the column name in the EngineerReport table.
@@ -110,7 +110,7 @@ public class EngineerReport implements Serializable
 	/** 
 	 * This attribute maps to the column isUsable in the EngineerReport table.
 	 */
-	protected short isUsable;
+	protected boolean isUsable;
 
 	/**
 	 * Method 'EngineerReport'
@@ -145,7 +145,7 @@ public class EngineerReport implements Serializable
 	 * 
 	 * @return long
 	 */
-	public long getLabourAmount()
+	public double getLabourAmount()
 	{
 		return labourAmount;
 	}
@@ -155,7 +155,7 @@ public class EngineerReport implements Serializable
 	 * 
 	 * @param labourAmount
 	 */
-	public void setLabourAmount(long labourAmount)
+	public void setLabourAmount(double labourAmount)
 	{
 		this.labourAmount = labourAmount;
 	}
@@ -165,7 +165,7 @@ public class EngineerReport implements Serializable
 	 * 
 	 * @return long
 	 */
-	public long getTotalAmount()
+	public double getTotalAmount()
 	{
 		return totalAmount;
 	}
@@ -175,7 +175,7 @@ public class EngineerReport implements Serializable
 	 * 
 	 * @param totalAmount
 	 */
-	public void setTotalAmount(long totalAmount)
+	public void setTotalAmount(double totalAmount)
 	{
 		this.totalAmount = totalAmount;
 	}
@@ -185,7 +185,7 @@ public class EngineerReport implements Serializable
 	 * 
 	 * @return long
 	 */
-	public long getDays()
+	public Integer getDays()
 	{
 		return days;
 	}
@@ -195,7 +195,7 @@ public class EngineerReport implements Serializable
 	 * 
 	 * @param days
 	 */
-	public void setDays(long days)
+	public void setDays(Integer days)
 	{
 		this.days = days;
 	}
@@ -519,7 +519,7 @@ public class EngineerReport implements Serializable
 	 * 
 	 * @return short
 	 */
-	public short getIsUsable()
+	public boolean getIsUsable()
 	{
 		return isUsable;
 	}
@@ -529,7 +529,7 @@ public class EngineerReport implements Serializable
 	 * 
 	 * @param isUsable
 	 */
-	public void setIsUsable(short isUsable)
+	public void setIsUsable(boolean isUsable)
 	{
 		this.isUsable = isUsable;
 	}
