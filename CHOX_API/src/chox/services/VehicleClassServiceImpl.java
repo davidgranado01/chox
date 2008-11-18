@@ -15,12 +15,14 @@ public class VehicleClassServiceImpl {
     public static VehicleClass  getVehicleClassByName(String s){
         VehicleClass vehicleclass = new VehicleClass();
         
+        /*
         Session currentSession = HibernateUtil.currentSession();
         Criteria criteria = currentSession.createCriteria(VehicleClass.class).add(Restrictions.eq("name", s));
         
         if(criteria.list().size()>0){
             //insurerId = "";
         }
+        */
         
         return vehicleclass;
     }
