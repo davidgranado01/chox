@@ -12,7 +12,8 @@ public class XmlHelper {
     
     // REGULAR EXPRESSION
     public static final String REG_BIGDECIMAL = "^\\-?(\\d+)*\\.?\\d*$";
-    public static final String REG_EMAIL = "^([0-9a-zA-Z]+([_.-]?[0-9a-zA-Z]+)*@[0-9a-zA-Z]+[0-9,a-z,A-Z,.,-]*(.){1}[a-zA-Z]{2,4})+$";
+    //public static final String REG_EMAIL = "^([0-9a-zA-Z]+([_.-]?[0-9a-zA-Z]+)*@[0-9a-zA-Z]+[0-9,a-z,A-Z,.,-]*(.){1}[a-zA-Z]{2,4})+$";
+    public static final String REG_EMAIL = "";
     public static final String REG_INTEGER = "^[0-9]+$";
     public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
     public static final String REG_DATE = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])$";
@@ -176,8 +177,20 @@ public class XmlHelper {
         return bFlag;
     }
     
+    public static boolean isNotNull(String s){
+        Boolean bFlag = false;
+        if(s!=null && !s.equalsIgnoreCase("")){
+            bFlag = true;
+        }
+        return bFlag;
+    }
+    
     public static String getNodeValue(Element root, String nodeName){
-        return XMLUtils.getElementValue(root, nodeName);
+        String sOutput = "";
+        if(isNotNull(XMLUtils.getElementValue(root, nodeName))){
+            sOutput = XMLUtils.getElementValue(root, nodeName);
+        }
+        return sOutput;
     }
     
     public static String contructureDataMandatoryErrorMessage(String strPath, String nodeName){
@@ -212,11 +225,29 @@ public class XmlHelper {
         return outEmail.substring(0, iMaxEmailLenght);
     }
 
+    public static Integer getIntegerFromNode(Element thisElement, String thisNodeName){
+        Integer bOutput = 0;
+        String sOutput = XMLUtils.getElementValue(thisElement, thisNodeName);
+        if(sOutput!=null && !sOutput.equalsIgnoreCase("") && sOutput.length()>0){
+            bOutput = Integer.parseInt(sOutput);
+        }
+        return bOutput;
+    }
+        
     public static BigDecimal getBigDecimalFromNode(Element thisElement, String thisNodeName){
         BigDecimal bOutput = new BigDecimal("0.00");
         String sOutput = XMLUtils.getElementValue(thisElement, thisNodeName);
-        if(!sOutput.equalsIgnoreCase("") && sOutput.length()>0){
+        if(sOutput!=null && !sOutput.equalsIgnoreCase("") && sOutput.length()>0){
             bOutput = new BigDecimal(sOutput);
+        }
+        return bOutput;
+    }
+    
+    public static double getDoubleFromNode(Element thisElement, String thisNodeName){
+        double bOutput = 0.00;
+        String sOutput = XMLUtils.getElementValue(thisElement, thisNodeName);
+        if(sOutput!=null && !sOutput.equalsIgnoreCase("") && sOutput.length()>0){
+            bOutput = Double.parseDouble(sOutput);
         }
         return bOutput;
     }
