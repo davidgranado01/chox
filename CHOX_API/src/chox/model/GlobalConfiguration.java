@@ -8,37 +8,37 @@ import java.util.Date;
 public class GlobalConfiguration implements Serializable
 {
 	/** 
-	 * This attribute maps to the column parameter in the GlobalConfiguration table.
+	 * This attribute maps to the column parameter in the global_configuration table.
 	 */
 	protected String parameter;
 
 	/** 
-	 * This attribute maps to the column value in the GlobalConfiguration table.
+	 * This attribute maps to the column value in the global_configuration table.
 	 */
 	protected String value;
 
 	/** 
-	 * This attribute maps to the column id in the GlobalConfiguration table.
+	 * This attribute maps to the column id in the global_configuration table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column createdBy in the GlobalConfiguration table.
+	 * This attribute maps to the column created_by in the global_configuration table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the GlobalConfiguration table.
+	 * This attribute maps to the column created_date in the global_configuration table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the GlobalConfiguration table.
+	 * This attribute maps to the column last_modified_by in the global_configuration table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the GlobalConfiguration table.
+	 * This attribute maps to the column last_modified_date in the global_configuration table.
 	 */
 	protected Date lastModifiedDate;
 

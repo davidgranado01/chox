@@ -2,16 +2,16 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="chox.model.Chobandoperative" table="CHOBandOperative">
+  <class name="chox.model.ChoBandOperative" table="cho_band_operative">
     <composite-id>
       <key-property name="id" column="id" />
-      <key-property name="bandId" column="bandId" />
-      <key-property name="chorganisationid" column="CHOrganisationId" />
+      <key-property name="bandId" column="band_id" />
+      <key-property name="chorganisationId" column="chorganisation_id" />
     </composite-id>
-    <property name="createdBy" column="createdBy" not-null="true" />
-    <property name="createdDate" column="createdDate" not-null="true" />
-    <property name="lastModifiedBy" column="lastModifiedBy" not-null="true" />
-    <property name="lastModifiedDate" column="lastModifiedDate" not-null="true" />
+    <property name="createdBy" column="created_by" not-null="true" />
+    <property name="createdDate" column="created_date" not-null="true" />
+    <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
+    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
   </class>
 </hibernate-mapping>
 

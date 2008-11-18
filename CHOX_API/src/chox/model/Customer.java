@@ -8,157 +8,157 @@ import java.util.Date;
 public class Customer implements Serializable
 {
 	/** 
-	 * This attribute maps to the column id in the Customer table.
+	 * This attribute maps to the column id in the customer table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column title in the Customer table.
+	 * This attribute maps to the column title in the customer table.
 	 */
 	protected String title;
 
 	/** 
-	 * This attribute maps to the column firstnames in the Customer table.
+	 * This attribute maps to the column first_name in the customer table.
 	 */
-	protected String firstnames;
+	protected String firstName;
 
 	/** 
-	 * This attribute maps to the column lastname in the Customer table.
+	 * This attribute maps to the column last_name in the customer table.
 	 */
-	protected String lastname;
+	protected String lastName;
 
 	/** 
-	 * This attribute maps to the column address1 in the Customer table.
+	 * This attribute maps to the column address1 in the customer table.
 	 */
 	protected String address1;
 
 	/** 
-	 * This attribute maps to the column address2 in the Customer table.
+	 * This attribute maps to the column address2 in the customer table.
 	 */
 	protected String address2;
 
 	/** 
-	 * This attribute maps to the column address3 in the Customer table.
+	 * This attribute maps to the column address3 in the customer table.
 	 */
 	protected String address3;
 
 	/** 
-	 * This attribute maps to the column address4 in the Customer table.
+	 * This attribute maps to the column address4 in the customer table.
 	 */
 	protected String address4;
 
 	/** 
-	 * This attribute maps to the column address5 in the Customer table.
+	 * This attribute maps to the column address5 in the customer table.
 	 */
 	protected String address5;
 
 	/** 
-	 * This attribute maps to the column postcode in the Customer table.
+	 * This attribute maps to the column postcode in the customer table.
 	 */
 	protected String postcode;
 
 	/** 
-	 * This attribute maps to the column telephoneDay in the Customer table.
+	 * This attribute maps to the column telephone_day in the customer table.
 	 */
 	protected String telephoneDay;
 
 	/** 
-	 * This attribute maps to the column telephoneEvening in the Customer table.
+	 * This attribute maps to the column telephone_evening in the customer table.
 	 */
 	protected String telephoneEvening;
 
 	/** 
-	 * This attribute maps to the column email in the Customer table.
+	 * This attribute maps to the column email in the customer table.
 	 */
 	protected String email;
 
 	/** 
-	 * This attribute maps to the column vehicleRegistration in the Customer table.
+	 * This attribute maps to the column vehicle_registration in the customer table.
 	 */
 	protected String vehicleRegistration;
 
 	/** 
-	 * This attribute maps to the column vehicleManufacturer in the Customer table.
+	 * This attribute maps to the column vehicle_manufacturer in the customer table.
 	 */
 	protected String vehicleManufacturer;
 
 	/** 
-	 * This attribute maps to the column vehicleModel in the Customer table.
+	 * This attribute maps to the column vehicle_model in the customer table.
 	 */
 	protected String vehicleModel;
 
 	/** 
-	 * This attribute maps to the column location in the Customer table.
+	 * This attribute maps to the column location in the customer table.
 	 */
 	protected String location;
 
 	/** 
-	 * This attribute maps to the column damage in the Customer table.
+	 * This attribute maps to the column damage in the customer table.
 	 */
 	protected String damage;
 
 	/** 
-	 * This attribute maps to the column initialEcd in the Customer table.
+	 * This attribute maps to the column initial_ecd in the customer table.
 	 */
 	protected Date initialEcd;
 
 	/** 
-	 * This attribute maps to the column policyNumber in the Customer table.
+	 * This attribute maps to the column policy_number in the customer table.
 	 */
 	protected String policyNumber;
 
 	/** 
-	 * This attribute maps to the column claimReference in the Customer table.
+	 * This attribute maps to the column claim_reference in the customer table.
 	 */
 	protected String claimReference;
 
 	/** 
-	 * This attribute maps to the column createdBy in the Customer table.
+	 * This attribute maps to the column created_by in the customer table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the Customer table.
+	 * This attribute maps to the column created_date in the customer table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the Customer table.
+	 * This attribute maps to the column last_modified_by in the customer table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the Customer table.
+	 * This attribute maps to the column last_modified_date in the customer table.
 	 */
 	protected Date lastModifiedDate;
 
 	/** 
-	 * This attribute maps to the column isPrimaryDriver in the Customer table.
+	 * This attribute maps to the column is_primary_driver in the customer table.
 	 */
 	protected boolean isPrimaryDriver;
 
 	/** 
-	 * This attribute maps to the column isUsable in the Customer table.
+	 * This attribute maps to the column is_usable in the customer table.
 	 */
 	protected boolean isUsable;
 
 	/** 
-	 * This attribute maps to the column isActive in the Customer table.
+	 * This attribute maps to the column is_active in the customer table.
 	 */
 	protected boolean isActive;
 
 	/** 
-	 * This attribute maps to the column comprehensive in the Customer table.
+	 * This attribute maps to the column comprehensive in the customer table.
 	 */
 	protected boolean comprehensive;
 
 	/** 
-	 * This attribute maps to the column insurerId in the Customer table.
+	 * This attribute maps to the column insurer_id in the customer table.
 	 */
 	protected int insurerId;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the VehicleClass table.
+	 * This attribute represents the foreign key relationship to the vehicle_class table.
 	 */
 	protected VehicleClass vehicleClass;
 
@@ -211,43 +211,43 @@ public class Customer implements Serializable
 	}
 
 	/**
-	 * Method 'getFirstnames'
+	 * Method 'getFirstName'
 	 * 
 	 * @return java.lang.String
 	 */
-	public java.lang.String getFirstnames()
+	public java.lang.String getFirstName()
 	{
-		return firstnames;
+		return firstName;
 	}
 
 	/**
-	 * Method 'setFirstnames'
+	 * Method 'setFirstName'
 	 * 
-	 * @param firstnames
+	 * @param firstName
 	 */
-	public void setFirstnames(java.lang.String firstnames)
+	public void setFirstName(java.lang.String firstName)
 	{
-		this.firstnames = firstnames;
+		this.firstName = firstName;
 	}
 
 	/**
-	 * Method 'getLastname'
+	 * Method 'getLastName'
 	 * 
 	 * @return java.lang.String
 	 */
-	public java.lang.String getLastname()
+	public java.lang.String getLastName()
 	{
-		return lastname;
+		return lastName;
 	}
 
 	/**
-	 * Method 'setLastname'
+	 * Method 'setLastName'
 	 * 
-	 * @param lastname
+	 * @param lastName
 	 */
-	public void setLastname(java.lang.String lastname)
+	public void setLastName(java.lang.String lastName)
 	{
-		this.lastname = lastname;
+		this.lastName = lastName;
 	}
 
 	/**

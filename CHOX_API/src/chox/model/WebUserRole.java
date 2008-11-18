@@ -3,51 +3,45 @@ package chox.model;
 import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
-public class VehicleClass implements Serializable
+public class WebUserRole implements Serializable
 {
 	/** 
-	 * This attribute maps to the column id in the vehicle_class table.
+	 * This attribute maps to the column id in the web_user_role table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column price in the vehicle_class table.
-	 */
-	protected BigDecimal price;
-
-	/** 
-	 * This attribute maps to the column name in the vehicle_class table.
+	 * This attribute maps to the column name in the web_user_role table.
 	 */
 	protected String name;
 
 	/** 
-	 * This attribute maps to the column created_by in the vehicle_class table.
+	 * This attribute maps to the column created_by in the web_user_role table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column created_date in the vehicle_class table.
+	 * This attribute maps to the column created_date in the web_user_role table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column last_modified_by in the vehicle_class table.
+	 * This attribute maps to the column last_modified_by in the web_user_role table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column last_modified_date in the vehicle_class table.
+	 * This attribute maps to the column last_modified_date in the web_user_role table.
 	 */
 	protected Date lastModifiedDate;
 
 	/**
-	 * Method 'VehicleClass'
+	 * Method 'WebUserRole'
 	 * 
 	 */
-	public VehicleClass()
+	public WebUserRole()
 	{
 	}
 
@@ -69,26 +63,6 @@ public class VehicleClass implements Serializable
 	public void setId(int id)
 	{
 		this.id = id;
-	}
-
-	/**
-	 * Method 'getPrice'
-	 * 
-	 * @return java.math.BigDecimal
-	 */
-	public java.math.BigDecimal getPrice()
-	{
-		return price;
-	}
-
-	/**
-	 * Method 'setPrice'
-	 * 
-	 * @param price
-	 */
-	public void setPrice(java.math.BigDecimal price)
-	{
-		this.price = price;
 	}
 
 	/**

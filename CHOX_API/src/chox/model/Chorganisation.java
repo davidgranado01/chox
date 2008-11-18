@@ -8,77 +8,77 @@ import java.util.Date;
 public class Chorganisation implements Serializable
 {
 	/** 
-	 * This attribute maps to the column id in the CHOrganisation table.
+	 * This attribute maps to the column id in the chorganisation table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column name in the CHOrganisation table.
+	 * This attribute maps to the column name in the chorganisation table.
 	 */
 	protected String name;
 
 	/** 
-	 * This attribute maps to the column address1 in the CHOrganisation table.
+	 * This attribute maps to the column address1 in the chorganisation table.
 	 */
 	protected String address1;
 
 	/** 
-	 * This attribute maps to the column address2 in the CHOrganisation table.
+	 * This attribute maps to the column address2 in the chorganisation table.
 	 */
 	protected String address2;
 
 	/** 
-	 * This attribute maps to the column address3 in the CHOrganisation table.
+	 * This attribute maps to the column address3 in the chorganisation table.
 	 */
 	protected String address3;
 
 	/** 
-	 * This attribute maps to the column address4 in the CHOrganisation table.
+	 * This attribute maps to the column address4 in the chorganisation table.
 	 */
 	protected String address4;
 
 	/** 
-	 * This attribute maps to the column address5 in the CHOrganisation table.
+	 * This attribute maps to the column address5 in the chorganisation table.
 	 */
 	protected String address5;
 
 	/** 
-	 * This attribute maps to the column postcode in the CHOrganisation table.
+	 * This attribute maps to the column postcode in the chorganisation table.
 	 */
 	protected String postcode;
 
 	/** 
-	 * This attribute maps to the column vatNo in the CHOrganisation table.
+	 * This attribute maps to the column vat_no in the chorganisation table.
 	 */
 	protected String vatNo;
 
 	/** 
-	 * This attribute maps to the column companyNo in the CHOrganisation table.
+	 * This attribute maps to the column company_no in the chorganisation table.
 	 */
 	protected String companyNo;
 
 	/** 
-	 * This attribute maps to the column isDelegatedAuthority in the CHOrganisation table.
+	 * This attribute maps to the column is_delegated_authority in the chorganisation table.
 	 */
 	protected boolean isDelegatedAuthority;
 
 	/** 
-	 * This attribute maps to the column createdBy in the CHOrganisation table.
+	 * This attribute maps to the column created_by in the chorganisation table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the CHOrganisation table.
+	 * This attribute maps to the column created_date in the chorganisation table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the CHOrganisation table.
+	 * This attribute maps to the column last_modified_by in the chorganisation table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the CHOrganisation table.
+	 * This attribute maps to the column last_modified_date in the chorganisation table.
 	 */
 	protected Date lastModifiedDate;
 

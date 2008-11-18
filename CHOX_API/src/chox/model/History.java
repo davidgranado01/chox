@@ -8,27 +8,27 @@ import java.util.Date;
 public class History implements Serializable
 {
 	/** 
-	 * This attribute maps to the column id in the History table.
+	 * This attribute maps to the column id in the history table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column createdBy in the History table.
+	 * This attribute maps to the column created_by in the history table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the History table.
+	 * This attribute maps to the column created_date in the history table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the History table.
+	 * This attribute maps to the column last_modified_by in the history table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the History table.
+	 * This attribute maps to the column last_modified_date in the history table.
 	 */
 	protected Date lastModifiedDate;
 

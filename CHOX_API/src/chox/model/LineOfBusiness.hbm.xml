@@ -2,24 +2,24 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="chox.model.LineOfBusiness" table="LineOfBusiness">
+  <class name="chox.model.LineOfBusiness" table="line_of_business">
     <id name="id" column="id">
       <generator class="increment" />
     </id>
     <property name="name" column="name" not-null="true" />
-    <property name="adminHandlingCharge" column="adminHandlingCharge" />
+    <property name="adminHandlingCharge" column="admin_handling_charge" />
     <property name="address1" column="address1" not-null="true" />
     <property name="address2" column="address2" />
     <property name="address3" column="address3" />
     <property name="address4" column="address4" />
     <property name="address5" column="address5" />
     <property name="postcode" column="postcode" not-null="true" />
-    <property name="createdBy" column="createdBy" not-null="true" />
-    <property name="createdDate" column="createdDate" not-null="true" />
-    <property name="lastModifiedBy" column="lastModifiedBy" not-null="true" />
-    <property name="lastModifiedDate" column="lastModifiedDate" not-null="true" />
-    <property name="isActive" column="isActive" not-null="true" />
-    <many-to-one name="insurer" class="chox.model.Insurer" column="insurerId" />
+    <property name="createdBy" column="created_by" not-null="true" />
+    <property name="createdDate" column="created_date" not-null="true" />
+    <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
+    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
+    <property name="isActive" column="is_active" not-null="true" />
+    <many-to-one name="insurer" class="chox.model.Insurer" column="insurer_id" />
   </class>
 </hibernate-mapping>
 

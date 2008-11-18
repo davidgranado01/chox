@@ -8,67 +8,67 @@ import java.util.Date;
 public class HireMonitoringDetail implements Serializable
 {
 	/** 
-	 * This attribute maps to the column createdBy in the HireMonitoringDetail table.
+	 * This attribute maps to the column created_by in the hire_monitoring_detail table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the HireMonitoringDetail table.
+	 * This attribute maps to the column created_date in the hire_monitoring_detail table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the HireMonitoringDetail table.
+	 * This attribute maps to the column last_modified_by in the hire_monitoring_detail table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the HireMonitoringDetail table.
+	 * This attribute maps to the column last_modified_date in the hire_monitoring_detail table.
 	 */
 	protected Date lastModifiedDate;
 
 	/** 
-	 * This attribute maps to the column nameOfRepairer in the HireMonitoringDetail table.
+	 * This attribute maps to the column name_of_repairer in the hire_monitoring_detail table.
 	 */
 	protected String nameOfRepairer;
 
 	/** 
-	 * This attribute maps to the column repairBookInDate in the HireMonitoringDetail table.
+	 * This attribute maps to the column repair_book_in_date in the hire_monitoring_detail table.
 	 */
 	protected Date repairBookInDate;
 
 	/** 
-	 * This attribute maps to the column inspectionBookedDate in the HireMonitoringDetail table.
+	 * This attribute maps to the column inspection_booked_date in the hire_monitoring_detail table.
 	 */
 	protected Date inspectionBookedDate;
 
 	/** 
-	 * This attribute maps to the column inspectionDate in the HireMonitoringDetail table.
+	 * This attribute maps to the column inspection_date in the hire_monitoring_detail table.
 	 */
 	protected Date inspectionDate;
 
 	/** 
-	 * This attribute maps to the column nameOfIME in the HireMonitoringDetail table.
+	 * This attribute maps to the column name_Of_ime in the hire_monitoring_detail table.
 	 */
-	protected String nameOfIME;
+	protected String nameOfIme;
 
 	/** 
-	 * This attribute maps to the column repairCompletionDate in the HireMonitoringDetail table.
+	 * This attribute maps to the column repair_completion_date in the hire_monitoring_detail table.
 	 */
 	protected Date repairCompletionDate;
 
 	/** 
-	 * This attribute maps to the column totalLossInspectionReport in the HireMonitoringDetail table.
+	 * This attribute maps to the column total_loss_inspection_report in the hire_monitoring_detail table.
 	 */
 	protected String totalLossInspectionReport;
 
 	/** 
-	 * This attribute maps to the column isTotalLostCheck in the HireMonitoringDetail table.
+	 * This attribute maps to the column is_total_lost_check in the hire_monitoring_detail table.
 	 */
 	protected boolean isTotalLostCheck;
 
 	/** 
-	 * This attribute maps to the column id in the HireMonitoringDetail table.
+	 * This attribute maps to the column id in the hire_monitoring_detail table.
 	 */
 	protected int id;
 
@@ -241,23 +241,23 @@ public class HireMonitoringDetail implements Serializable
 	}
 
 	/**
-	 * Method 'getNameOfIME'
+	 * Method 'getNameOfIme'
 	 * 
 	 * @return java.lang.String
 	 */
-	public java.lang.String getNameOfIME()
+	public java.lang.String getNameOfIme()
 	{
-		return nameOfIME;
+		return nameOfIme;
 	}
 
 	/**
-	 * Method 'setNameOfIME'
+	 * Method 'setNameOfIme'
 	 * 
-	 * @param nameOfIME
+	 * @param nameOfIme
 	 */
-	public void setNameOfIME(java.lang.String nameOfIME)
+	public void setNameOfIme(java.lang.String nameOfIme)
 	{
-		this.nameOfIME = nameOfIME;
+		this.nameOfIme = nameOfIme;
 	}
 
 	/**

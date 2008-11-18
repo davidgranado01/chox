@@ -8,82 +8,82 @@ import java.util.Date;
 public class Solicitor implements Serializable
 {
 	/** 
-	 * This attribute maps to the column id in the Solicitor table.
+	 * This attribute maps to the column id in the solicitor table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column name in the Solicitor table.
+	 * This attribute maps to the column name in the solicitor table.
 	 */
 	protected String name;
 
 	/** 
-	 * This attribute maps to the column address1 in the Solicitor table.
+	 * This attribute maps to the column address1 in the solicitor table.
 	 */
 	protected String address1;
 
 	/** 
-	 * This attribute maps to the column address2 in the Solicitor table.
+	 * This attribute maps to the column address2 in the solicitor table.
 	 */
 	protected String address2;
 
 	/** 
-	 * This attribute maps to the column address3 in the Solicitor table.
+	 * This attribute maps to the column address3 in the solicitor table.
 	 */
 	protected String address3;
 
 	/** 
-	 * This attribute maps to the column address4 in the Solicitor table.
+	 * This attribute maps to the column address4 in the solicitor table.
 	 */
 	protected String address4;
 
 	/** 
-	 * This attribute maps to the column address5 in the Solicitor table.
+	 * This attribute maps to the column address5 in the solicitor table.
 	 */
 	protected String address5;
 
 	/** 
-	 * This attribute maps to the column postcode in the Solicitor table.
+	 * This attribute maps to the column postcode in the solicitor table.
 	 */
 	protected String postcode;
 
 	/** 
-	 * This attribute maps to the column telephone in the Solicitor table.
+	 * This attribute maps to the column telephone in the solicitor table.
 	 */
 	protected String telephone;
 
 	/** 
-	 * This attribute maps to the column email in the Solicitor table.
+	 * This attribute maps to the column email in the solicitor table.
 	 */
 	protected String email;
 
 	/** 
-	 * This attribute maps to the column createdBy in the Solicitor table.
+	 * This attribute maps to the column created_by in the solicitor table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the Solicitor table.
+	 * This attribute maps to the column created_date in the solicitor table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the Solicitor table.
+	 * This attribute maps to the column last_modified_by in the solicitor table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the Solicitor table.
+	 * This attribute maps to the column last_modified_date in the solicitor table.
 	 */
 	protected Date lastModifiedDate;
 
 	/** 
-	 * This attribute maps to the column isAppointed in the Solicitor table.
+	 * This attribute maps to the column is_appointed in the solicitor table.
 	 */
 	protected boolean isAppointed;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the Injury table.
+	 * This attribute represents the foreign key relationship to the injury table.
 	 */
 	protected Injury injury;
 

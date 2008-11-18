@@ -8,82 +8,82 @@ import java.util.Date;
 public class Witness implements Serializable
 {
 	/** 
-	 * This attribute maps to the column id in the Witness table.
+	 * This attribute maps to the column id in the witness table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column name in the Witness table.
+	 * This attribute maps to the column name in the witness table.
 	 */
 	protected String name;
 
 	/** 
-	 * This attribute maps to the column address1 in the Witness table.
+	 * This attribute maps to the column address1 in the witness table.
 	 */
 	protected String address1;
 
 	/** 
-	 * This attribute maps to the column address2 in the Witness table.
+	 * This attribute maps to the column address2 in the witness table.
 	 */
 	protected String address2;
 
 	/** 
-	 * This attribute maps to the column address3 in the Witness table.
+	 * This attribute maps to the column address3 in the witness table.
 	 */
 	protected String address3;
 
 	/** 
-	 * This attribute maps to the column address4 in the Witness table.
+	 * This attribute maps to the column address4 in the witness table.
 	 */
 	protected String address4;
 
 	/** 
-	 * This attribute maps to the column address5 in the Witness table.
+	 * This attribute maps to the column address5 in the witness table.
 	 */
 	protected String address5;
 
 	/** 
-	 * This attribute maps to the column postcode in the Witness table.
+	 * This attribute maps to the column postcode in the witness table.
 	 */
 	protected String postcode;
 
 	/** 
-	 * This attribute maps to the column telephoneDay in the Witness table.
+	 * This attribute maps to the column telephone_day in the witness table.
 	 */
 	protected String telephoneDay;
 
 	/** 
-	 * This attribute maps to the column telephoneEvening in the Witness table.
+	 * This attribute maps to the column telephone_evening in the witness table.
 	 */
 	protected String telephoneEvening;
 
 	/** 
-	 * This attribute maps to the column email in the Witness table.
+	 * This attribute maps to the column email in the witness table.
 	 */
 	protected String email;
 
 	/** 
-	 * This attribute maps to the column createdBy in the Witness table.
+	 * This attribute maps to the column created_by in the witness table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the Witness table.
+	 * This attribute maps to the column created_date in the witness table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the Witness table.
+	 * This attribute maps to the column last_modified_by in the witness table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the Witness table.
+	 * This attribute maps to the column last_modified_date in the witness table.
 	 */
 	protected Date lastModifiedDate;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the Incident table.
+	 * This attribute represents the foreign key relationship to the incident table.
 	 */
 	protected Incident incident;
 

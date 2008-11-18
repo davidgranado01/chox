@@ -8,122 +8,122 @@ import java.util.Date;
 public class ThirdParty implements Serializable
 {
 	/** 
-	 * This attribute maps to the column id in the ThirdParty table.
+	 * This attribute maps to the column id in the third_party table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column policyNumber in the ThirdParty table.
+	 * This attribute maps to the column policy_number in the third_party table.
 	 */
 	protected String policyNumber;
 
 	/** 
-	 * This attribute maps to the column claimReference in the ThirdParty table.
+	 * This attribute maps to the column claim_reference in the third_party table.
 	 */
 	protected String claimReference;
 
 	/** 
-	 * This attribute maps to the column vehicleRegistration in the ThirdParty table.
+	 * This attribute maps to the column vehicle_registration in the third_party table.
 	 */
 	protected String vehicleRegistration;
 
 	/** 
-	 * This attribute maps to the column vehicleManufacturer in the ThirdParty table.
+	 * This attribute maps to the column vehicle_manufacturer in the third_party table.
 	 */
 	protected String vehicleManufacturer;
 
 	/** 
-	 * This attribute maps to the column vehicleModel in the ThirdParty table.
+	 * This attribute maps to the column vehicle_model in the third_party table.
 	 */
 	protected String vehicleModel;
 
 	/** 
-	 * This attribute maps to the column firstNames in the ThirdParty table.
+	 * This attribute maps to the column first_name in the third_party table.
 	 */
-	protected String firstNames;
+	protected String firstName;
 
 	/** 
-	 * This attribute maps to the column address1 in the ThirdParty table.
+	 * This attribute maps to the column address1 in the third_party table.
 	 */
 	protected String address1;
 
 	/** 
-	 * This attribute maps to the column address2 in the ThirdParty table.
+	 * This attribute maps to the column address2 in the third_party table.
 	 */
 	protected String address2;
 
 	/** 
-	 * This attribute maps to the column address3 in the ThirdParty table.
+	 * This attribute maps to the column address3 in the third_party table.
 	 */
 	protected String address3;
 
 	/** 
-	 * This attribute maps to the column address4 in the ThirdParty table.
+	 * This attribute maps to the column address4 in the third_party table.
 	 */
 	protected String address4;
 
 	/** 
-	 * This attribute maps to the column address5 in the ThirdParty table.
+	 * This attribute maps to the column address5 in the third_party table.
 	 */
 	protected String address5;
 
 	/** 
-	 * This attribute maps to the column postcode in the ThirdParty table.
+	 * This attribute maps to the column postcode in the third_party table.
 	 */
 	protected String postcode;
 
 	/** 
-	 * This attribute maps to the column telephoneDay in the ThirdParty table.
+	 * This attribute maps to the column telephone_day in the third_party table.
 	 */
 	protected String telephoneDay;
 
 	/** 
-	 * This attribute maps to the column telephoneEvening in the ThirdParty table.
+	 * This attribute maps to the column telephone_evening in the third_party table.
 	 */
 	protected String telephoneEvening;
 
 	/** 
-	 * This attribute maps to the column email in the ThirdParty table.
+	 * This attribute maps to the column email in the third_party table.
 	 */
 	protected String email;
 
 	/** 
-	 * This attribute maps to the column createdBy in the ThirdParty table.
+	 * This attribute maps to the column created_by in the third_party table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the ThirdParty table.
+	 * This attribute maps to the column created_date in the third_party table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the ThirdParty table.
+	 * This attribute maps to the column last_modified_by in the third_party table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the ThirdParty table.
+	 * This attribute maps to the column last_modified_date in the third_party table.
 	 */
 	protected Date lastModifiedDate;
 
 	/** 
-	 * This attribute maps to the column lastName in the ThirdParty table.
+	 * This attribute maps to the column last_name in the third_party table.
 	 */
 	protected String lastName;
 
 	/** 
-	 * This attribute maps to the column title in the ThirdParty table.
+	 * This attribute maps to the column title in the third_party table.
 	 */
 	protected String title;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the Insurer table.
+	 * This attribute represents the foreign key relationship to the insurer table.
 	 */
 	protected Insurer insurer;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the VehicleClass table.
+	 * This attribute represents the foreign key relationship to the vehicle_class table.
 	 */
 	protected VehicleClass vehicleClass;
 
@@ -256,23 +256,23 @@ public class ThirdParty implements Serializable
 	}
 
 	/**
-	 * Method 'getFirstNames'
+	 * Method 'getFirstName'
 	 * 
 	 * @return java.lang.String
 	 */
-	public java.lang.String getFirstNames()
+	public java.lang.String getFirstName()
 	{
-		return firstNames;
+		return firstName;
 	}
 
 	/**
-	 * Method 'setFirstNames'
+	 * Method 'setFirstName'
 	 * 
-	 * @param firstNames
+	 * @param firstName
 	 */
-	public void setFirstNames(java.lang.String firstNames)
+	public void setFirstName(java.lang.String firstName)
 	{
-		this.firstNames = firstNames;
+		this.firstName = firstName;
 	}
 
 	/**

@@ -9,97 +9,97 @@ import java.math.BigDecimal;
 public class EngineerReport implements Serializable
 {
 	/** 
-	 * This attribute maps to the column id in the EngineerReport table.
+	 * This attribute maps to the column id in the engineer_report table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column days in the EngineerReport table.
+	 * This attribute maps to the column days in the engineer_report table.
 	 */
 	protected Integer days;
 
 	/** 
-	 * This attribute maps to the column name in the EngineerReport table.
+	 * This attribute maps to the column name in the engineer_report table.
 	 */
 	protected String name;
 
 	/** 
-	 * This attribute maps to the column company in the EngineerReport table.
+	 * This attribute maps to the column company in the engineer_report table.
 	 */
 	protected String company;
 
 	/** 
-	 * This attribute maps to the column address1 in the EngineerReport table.
+	 * This attribute maps to the column address1 in the engineer_report table.
 	 */
 	protected String address1;
 
 	/** 
-	 * This attribute maps to the column address2 in the EngineerReport table.
+	 * This attribute maps to the column address2 in the engineer_report table.
 	 */
 	protected String address2;
 
 	/** 
-	 * This attribute maps to the column address3 in the EngineerReport table.
+	 * This attribute maps to the column address3 in the engineer_report table.
 	 */
 	protected String address3;
 
 	/** 
-	 * This attribute maps to the column address4 in the EngineerReport table.
+	 * This attribute maps to the column address4 in the engineer_report table.
 	 */
 	protected String address4;
 
 	/** 
-	 * This attribute maps to the column address5 in the EngineerReport table.
+	 * This attribute maps to the column address5 in the engineer_report table.
 	 */
 	protected String address5;
 
 	/** 
-	 * This attribute maps to the column postcode in the EngineerReport table.
+	 * This attribute maps to the column postcode in the engineer_report table.
 	 */
 	protected String postcode;
 
 	/** 
-	 * This attribute maps to the column telephone in the EngineerReport table.
+	 * This attribute maps to the column telephone in the engineer_report table.
 	 */
 	protected String telephone;
 
 	/** 
-	 * This attribute maps to the column email in the EngineerReport table.
+	 * This attribute maps to the column email in the engineer_report table.
 	 */
 	protected String email;
 
 	/** 
-	 * This attribute maps to the column createdBy in the EngineerReport table.
+	 * This attribute maps to the column created_by in the engineer_report table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the EngineerReport table.
+	 * This attribute maps to the column created_date in the engineer_report table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the EngineerReport table.
+	 * This attribute maps to the column last_modified_by in the engineer_report table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the EngineerReport table.
+	 * This attribute maps to the column last_modified_date in the engineer_report table.
 	 */
 	protected Date lastModifiedDate;
 
 	/** 
-	 * This attribute maps to the column isUsable in the EngineerReport table.
+	 * This attribute maps to the column is_usable in the engineer_report table.
 	 */
 	protected boolean isUsable;
 
 	/** 
-	 * This attribute maps to the column labourAmount in the EngineerReport table.
+	 * This attribute maps to the column labour_amount in the engineer_report table.
 	 */
 	protected BigDecimal labourAmount;
 
 	/** 
-	 * This attribute maps to the column totalAmount in the EngineerReport table.
+	 * This attribute maps to the column total_amount in the engineer_report table.
 	 */
 	protected BigDecimal totalAmount;
 

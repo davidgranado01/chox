@@ -2,33 +2,33 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="chox.model.VehicleHire" table="VehicleHire">
+  <class name="chox.model.VehicleHire" table="vehicle_hire">
     <id name="id" column="id">
       <generator class="increment" />
     </id>
-    <property name="vehicleRegistration" column="vehicleRegistration" not-null="true" />
-    <property name="vehicleManufacturer" column="vehicleManufacturer" not-null="true" />
-    <property name="vehicleModel" column="vehicleModel" not-null="true" />
-    <property name="rentalStart" column="rentalStart" not-null="true" />
-    <property name="rentalEnd" column="rentalEnd" />
-    <property name="collectionReason" column="collectionReason" not-null="true" />
+    <property name="vehicleRegistration" column="vehicle_registration" not-null="true" />
+    <property name="vehicleManufacturer" column="vehicle_manufacturer" not-null="true" />
+    <property name="vehicleModel" column="vehicle_model" not-null="true" />
+    <property name="rentalStart" column="rental_start" not-null="true" />
+    <property name="rentalEnd" column="rental_end" />
+    <property name="collectionReason" column="collection_reason" not-null="true" />
     <property name="days" column="days" />
-    <property name="cdwFee" column="cdwFee" not-null="true" />
-    <property name="automaticFee" column="automaticFee" not-null="true" />
-    <property name="satNavFee" column="satNavFee" not-null="true" />
-    <property name="estateFee" column="estateFee" not-null="true" />
-    <property name="babySeatFee" column="babySeatFee" not-null="true" />
-    <property name="towBarsFee" column="towBarsFee" not-null="true" />
-    <property name="nonStandardInsurancePremiumFee" column="nonStandardInsurancePremiumFee" not-null="true" />
-    <property name="adminFee" column="adminFee" not-null="true" />
-    <property name="roofRackFee" column="roofRackFee" not-null="true" />
-    <property name="dualControlFee" column="dualControlFee" not-null="true" />
-    <property name="deliveryCollectionFee" column="deliveryCollectionFee" not-null="true" />
-    <property name="createdBy" column="createdBy" not-null="true" />
-    <property name="createdDate" column="createdDate" not-null="true" />
-    <property name="lastModifiedBy" column="lastModifiedBy" not-null="true" />
-    <property name="lastModifiedDate" column="lastModifiedDate" not-null="true" />
-    <many-to-one name="vehicleClass" class="chox.model.VehicleClass" column="vehicleClassId" />
+    <property name="cdwFee" column="cdw_fee" not-null="true" />
+    <property name="automaticFee" column="automatic_fee" not-null="true" />
+    <property name="satNavFee" column="sat_nav_fee" not-null="true" />
+    <property name="estateFee" column="estate_fee" not-null="true" />
+    <property name="babySeatFee" column="baby_seat_fee" not-null="true" />
+    <property name="towBarsFee" column="tow_bars_fee" not-null="true" />
+    <property name="nonStandardInsurancePremiumFee" column="non_standard_insurance_premium_fee" not-null="true" />
+    <property name="adminFee" column="admin_fee" not-null="true" />
+    <property name="roofRackFee" column="roof_rack_fee" not-null="true" />
+    <property name="dualControlFee" column="dual_control_fee" not-null="true" />
+    <property name="deliveryCollectionFee" column="delivery_collection_fee" not-null="true" />
+    <property name="createdBy" column="created_by" not-null="true" />
+    <property name="createdDate" column="created_date" not-null="true" />
+    <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
+    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
+    <many-to-one name="vehicleClass" class="chox.model.VehicleClass" column="vehicle_class_id" />
   </class>
 </hibernate-mapping>
 

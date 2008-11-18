@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="chox.model.Chorganisation" table="CHOrganisation">
+  <class name="chox.model.Chorganisation" table="chorganisation">
     <id name="id" column="id">
       <generator class="increment" />
     </id>
@@ -13,13 +13,13 @@
     <property name="address4" column="address4" />
     <property name="address5" column="address5" />
     <property name="postcode" column="postcode" not-null="true" />
-    <property name="vatNo" column="vatNo" not-null="true" />
-    <property name="companyNo" column="companyNo" not-null="true" />
-    <property name="isDelegatedAuthority" column="isDelegatedAuthority" not-null="true" />
-    <property name="createdBy" column="createdBy" not-null="true" />
-    <property name="createdDate" column="createdDate" not-null="true" />
-    <property name="lastModifiedBy" column="lastModifiedBy" not-null="true" />
-    <property name="lastModifiedDate" column="lastModifiedDate" not-null="true" />
+    <property name="vatNo" column="vat_no" not-null="true" />
+    <property name="companyNo" column="company_no" not-null="true" />
+    <property name="isDelegatedAuthority" column="is_delegated_authority" not-null="true" />
+    <property name="createdBy" column="created_by" not-null="true" />
+    <property name="createdDate" column="created_date" not-null="true" />
+    <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
+    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
   </class>
 </hibernate-mapping>
 

@@ -8,97 +8,97 @@ import java.util.Date;
 public class Claim implements Serializable
 {
 	/** 
-	 * This attribute maps to the column id in the Claim table.
+	 * This attribute maps to the column id in the claim table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column managingRepair in the Claim table.
+	 * This attribute maps to the column managing_repair in the claim table.
 	 */
 	protected boolean managingRepair;
 
 	/** 
-	 * This attribute maps to the column policyHolderContactDate in the Claim table.
+	 * This attribute maps to the column policy_holder_contact_date in the claim table.
 	 */
 	protected Date policyHolderContactDate;
 
 	/** 
-	 * This attribute maps to the column choReference in the Claim table.
+	 * This attribute maps to the column cho_reference in the claim table.
 	 */
 	protected String choReference;
 
 	/** 
-	 * This attribute maps to the column status in the Claim table.
+	 * This attribute maps to the column status in the claim table.
 	 */
 	protected String status;
 
 	/** 
-	 * This attribute maps to the column createdBy in the Claim table.
+	 * This attribute maps to the column created_by in the claim table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the Claim table.
+	 * This attribute maps to the column created_date in the claim table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the Claim table.
+	 * This attribute maps to the column last_modified_by in the claim table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the Claim table.
+	 * This attribute maps to the column last_modified_date in the claim table.
 	 */
 	protected Date lastModifiedDate;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the CHOrganisation table.
+	 * This attribute represents the foreign key relationship to the chorganisation table.
 	 */
 	protected Chorganisation chorganisation;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the Customer table.
+	 * This attribute represents the foreign key relationship to the customer table.
 	 */
 	protected Customer customer;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the EngineerReport table.
+	 * This attribute represents the foreign key relationship to the engineer_report table.
 	 */
 	protected EngineerReport engineerReport;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the HireMonitoringDetail table.
+	 * This attribute represents the foreign key relationship to the hire_monitoring_detail table.
 	 */
 	protected HireMonitoringDetail hireMonitoringDetail;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the Incident table.
+	 * This attribute represents the foreign key relationship to the incident table.
 	 */
 	protected Incident incident;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the Insurer table.
+	 * This attribute represents the foreign key relationship to the insurer table.
 	 */
 	protected Insurer insurer;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the Invoice table.
+	 * This attribute represents the foreign key relationship to the invoice table.
 	 */
 	protected Invoice invoice;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the LineOfBusiness table.
+	 * This attribute represents the foreign key relationship to the line_of_business table.
 	 */
 	protected LineOfBusiness lineOfBusiness;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the ThirdParty table.
+	 * This attribute represents the foreign key relationship to the third_party table.
 	 */
 	protected ThirdParty thirdParty;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the VehicleHire table.
+	 * This attribute represents the foreign key relationship to the vehicle_hire table.
 	 */
 	protected VehicleHire vehicleHire;
 

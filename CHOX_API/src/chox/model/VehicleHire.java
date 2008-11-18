@@ -4,126 +4,127 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
+import java.math.BigDecimal;
 
 public class VehicleHire implements Serializable
 {
 	/** 
-	 * This attribute maps to the column id in the VehicleHire table.
+	 * This attribute maps to the column id in the vehicle_hire table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column vehicleRegistration in the VehicleHire table.
+	 * This attribute maps to the column vehicle_registration in the vehicle_hire table.
 	 */
 	protected String vehicleRegistration;
 
 	/** 
-	 * This attribute maps to the column vehicleManufacturer in the VehicleHire table.
+	 * This attribute maps to the column vehicle_manufacturer in the vehicle_hire table.
 	 */
 	protected String vehicleManufacturer;
 
 	/** 
-	 * This attribute maps to the column vehicleModel in the VehicleHire table.
+	 * This attribute maps to the column vehicle_model in the vehicle_hire table.
 	 */
 	protected String vehicleModel;
 
 	/** 
-	 * This attribute maps to the column rentalStart in the VehicleHire table.
+	 * This attribute maps to the column rental_start in the vehicle_hire table.
 	 */
 	protected Date rentalStart;
 
 	/** 
-	 * This attribute maps to the column rentalEnd in the VehicleHire table.
+	 * This attribute maps to the column rental_end in the vehicle_hire table.
 	 */
 	protected Date rentalEnd;
 
 	/** 
-	 * This attribute maps to the column collectionReason in the VehicleHire table.
+	 * This attribute maps to the column collection_reason in the vehicle_hire table.
 	 */
 	protected String collectionReason;
 
 	/** 
-	 * This attribute maps to the column days in the VehicleHire table.
+	 * This attribute maps to the column days in the vehicle_hire table.
 	 */
-	protected Integer days;
+	protected BigDecimal days;
 
 	/** 
-	 * This attribute maps to the column cdwFee in the VehicleHire table.
+	 * This attribute maps to the column cdw_fee in the vehicle_hire table.
 	 */
 	protected boolean cdwFee;
 
 	/** 
-	 * This attribute maps to the column automaticFee in the VehicleHire table.
+	 * This attribute maps to the column automatic_fee in the vehicle_hire table.
 	 */
 	protected boolean automaticFee;
 
 	/** 
-	 * This attribute maps to the column satNavFee in the VehicleHire table.
+	 * This attribute maps to the column sat_nav_fee in the vehicle_hire table.
 	 */
 	protected boolean satNavFee;
 
 	/** 
-	 * This attribute maps to the column estateFee in the VehicleHire table.
+	 * This attribute maps to the column estate_fee in the vehicle_hire table.
 	 */
 	protected boolean estateFee;
 
 	/** 
-	 * This attribute maps to the column babySeatFee in the VehicleHire table.
+	 * This attribute maps to the column baby_seat_fee in the vehicle_hire table.
 	 */
 	protected boolean babySeatFee;
 
 	/** 
-	 * This attribute maps to the column towBarsFee in the VehicleHire table.
+	 * This attribute maps to the column tow_bars_fee in the vehicle_hire table.
 	 */
 	protected boolean towBarsFee;
 
 	/** 
-	 * This attribute maps to the column nonStandardInsurancePremiumFee in the VehicleHire table.
+	 * This attribute maps to the column non_standard_insurance_premium_fee in the vehicle_hire table.
 	 */
 	protected boolean nonStandardInsurancePremiumFee;
 
 	/** 
-	 * This attribute maps to the column adminFee in the VehicleHire table.
+	 * This attribute maps to the column admin_fee in the vehicle_hire table.
 	 */
 	protected boolean adminFee;
 
 	/** 
-	 * This attribute maps to the column roofRackFee in the VehicleHire table.
+	 * This attribute maps to the column roof_rack_fee in the vehicle_hire table.
 	 */
 	protected boolean roofRackFee;
 
 	/** 
-	 * This attribute maps to the column dualControlFee in the VehicleHire table.
+	 * This attribute maps to the column dual_control_fee in the vehicle_hire table.
 	 */
 	protected boolean dualControlFee;
 
 	/** 
-	 * This attribute maps to the column deliveryCollectionFee in the VehicleHire table.
+	 * This attribute maps to the column delivery_collection_fee in the vehicle_hire table.
 	 */
 	protected boolean deliveryCollectionFee;
 
 	/** 
-	 * This attribute maps to the column createdBy in the VehicleHire table.
+	 * This attribute maps to the column created_by in the vehicle_hire table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the VehicleHire table.
+	 * This attribute maps to the column created_date in the vehicle_hire table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the VehicleHire table.
+	 * This attribute maps to the column last_modified_by in the vehicle_hire table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the VehicleHire table.
+	 * This attribute maps to the column last_modified_date in the vehicle_hire table.
 	 */
 	protected Date lastModifiedDate;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the VehicleClass table.
+	 * This attribute represents the foreign key relationship to the vehicle_class table.
 	 */
 	protected VehicleClass vehicleClass;
 
@@ -278,9 +279,9 @@ public class VehicleHire implements Serializable
 	/**
 	 * Method 'getDays'
 	 * 
-	 * @return java.lang.Integer
+	 * @return java.math.BigDecimal
 	 */
-	public java.lang.Integer getDays()
+	public java.math.BigDecimal getDays()
 	{
 		return days;
 	}
@@ -290,7 +291,7 @@ public class VehicleHire implements Serializable
 	 * 
 	 * @param days
 	 */
-	public void setDays(java.lang.Integer days)
+	public void setDays(java.math.BigDecimal days)
 	{
 		this.days = days;
 	}

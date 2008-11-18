@@ -9,77 +9,77 @@ import java.util.Date;
 public class LineOfBusiness implements Serializable
 {
 	/** 
-	 * This attribute maps to the column id in the LineOfBusiness table.
+	 * This attribute maps to the column id in the line_of_business table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column name in the LineOfBusiness table.
+	 * This attribute maps to the column name in the line_of_business table.
 	 */
 	protected String name;
 
 	/** 
-	 * This attribute maps to the column adminHandlingCharge in the LineOfBusiness table.
+	 * This attribute maps to the column admin_handling_charge in the line_of_business table.
 	 */
 	protected BigDecimal adminHandlingCharge;
 
 	/** 
-	 * This attribute maps to the column address1 in the LineOfBusiness table.
+	 * This attribute maps to the column address1 in the line_of_business table.
 	 */
 	protected String address1;
 
 	/** 
-	 * This attribute maps to the column address2 in the LineOfBusiness table.
+	 * This attribute maps to the column address2 in the line_of_business table.
 	 */
 	protected String address2;
 
 	/** 
-	 * This attribute maps to the column address3 in the LineOfBusiness table.
+	 * This attribute maps to the column address3 in the line_of_business table.
 	 */
 	protected String address3;
 
 	/** 
-	 * This attribute maps to the column address4 in the LineOfBusiness table.
+	 * This attribute maps to the column address4 in the line_of_business table.
 	 */
 	protected String address4;
 
 	/** 
-	 * This attribute maps to the column address5 in the LineOfBusiness table.
+	 * This attribute maps to the column address5 in the line_of_business table.
 	 */
 	protected String address5;
 
 	/** 
-	 * This attribute maps to the column postcode in the LineOfBusiness table.
+	 * This attribute maps to the column postcode in the line_of_business table.
 	 */
 	protected String postcode;
 
 	/** 
-	 * This attribute maps to the column createdBy in the LineOfBusiness table.
+	 * This attribute maps to the column created_by in the line_of_business table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the LineOfBusiness table.
+	 * This attribute maps to the column created_date in the line_of_business table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the LineOfBusiness table.
+	 * This attribute maps to the column last_modified_by in the line_of_business table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the LineOfBusiness table.
+	 * This attribute maps to the column last_modified_date in the line_of_business table.
 	 */
 	protected Date lastModifiedDate;
 
 	/** 
-	 * This attribute maps to the column isActive in the LineOfBusiness table.
+	 * This attribute maps to the column is_active in the line_of_business table.
 	 */
 	protected boolean isActive;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the Insurer table.
+	 * This attribute represents the foreign key relationship to the insurer table.
 	 */
 	protected Insurer insurer;
 

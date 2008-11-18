@@ -9,247 +9,247 @@ import java.math.BigDecimal;
 public class Invoice implements Serializable
 {
 	/** 
-	 * This attribute maps to the column id in the Invoice table.
+	 * This attribute maps to the column id in the invoice table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column dateInvoiced in the Invoice table.
+	 * This attribute maps to the column date_invoiced in the invoice table.
 	 */
 	protected Date dateInvoiced;
 
 	/** 
-	 * This attribute maps to the column hireNet in the Invoice table.
+	 * This attribute maps to the column hire_net in the invoice table.
 	 */
 	protected BigDecimal hireNet;
 
 	/** 
-	 * This attribute maps to the column hireVat in the Invoice table.
+	 * This attribute maps to the column hire_vat in the invoice table.
 	 */
 	protected BigDecimal hireVat;
 
 	/** 
-	 * This attribute maps to the column hireGross in the Invoice table.
+	 * This attribute maps to the column hire_gross in the invoice table.
 	 */
 	protected BigDecimal hireGross;
 
 	/** 
-	 * This attribute maps to the column repairNet in the Invoice table.
+	 * This attribute maps to the column repair_net in the invoice table.
 	 */
 	protected BigDecimal repairNet;
 
 	/** 
-	 * This attribute maps to the column repairVat in the Invoice table.
+	 * This attribute maps to the column repair_vat in the invoice table.
 	 */
 	protected BigDecimal repairVat;
 
 	/** 
-	 * This attribute maps to the column repairGross in the Invoice table.
+	 * This attribute maps to the column repair_gross in the invoice table.
 	 */
 	protected BigDecimal repairGross;
 
 	/** 
-	 * This attribute maps to the column engineerFeeNet in the Invoice table.
+	 * This attribute maps to the column engineer_fee_net in the invoice table.
 	 */
 	protected BigDecimal engineerFeeNet;
 
 	/** 
-	 * This attribute maps to the column engineerFeeVat in the Invoice table.
+	 * This attribute maps to the column engineer_fee_vat in the invoice table.
 	 */
 	protected BigDecimal engineerFeeVat;
 
 	/** 
-	 * This attribute maps to the column engineerFeeGross in the Invoice table.
+	 * This attribute maps to the column engineer_fee_gross in the invoice table.
 	 */
 	protected BigDecimal engineerFeeGross;
 
 	/** 
-	 * This attribute maps to the column storageRecoveryNet in the Invoice table.
+	 * This attribute maps to the column storage_recovery_net in the invoice table.
 	 */
 	protected BigDecimal storageRecoveryNet;
 
 	/** 
-	 * This attribute maps to the column storageRecoveryVat in the Invoice table.
+	 * This attribute maps to the column storage_recovery_vat in the invoice table.
 	 */
 	protected BigDecimal storageRecoveryVat;
 
 	/** 
-	 * This attribute maps to the column storageRecoveryGross in the Invoice table.
+	 * This attribute maps to the column storage_recovery_gross in the invoice table.
 	 */
 	protected BigDecimal storageRecoveryGross;
 
 	/** 
-	 * This attribute maps to the column totalNet in the Invoice table.
+	 * This attribute maps to the column total_net in the invoice table.
 	 */
 	protected BigDecimal totalNet;
 
 	/** 
-	 * This attribute maps to the column totalVat in the Invoice table.
+	 * This attribute maps to the column total_vat in the invoice table.
 	 */
 	protected BigDecimal totalVat;
 
 	/** 
-	 * This attribute maps to the column totalGross in the Invoice table.
+	 * This attribute maps to the column total_gross in the invoice table.
 	 */
 	protected BigDecimal totalGross;
 
 	/** 
-	 * This attribute maps to the column claimsHandlingInvoiceAmount in the Invoice table.
+	 * This attribute maps to the column claims_handling_invoice_amount in the invoice table.
 	 */
 	protected BigDecimal claimsHandlingInvoiceAmount;
 
 	/** 
-	 * This attribute maps to the column deductionForClaimsHandlingFee in the Invoice table.
+	 * This attribute maps to the column deduction_for_claims_handling_fee in the invoice table.
 	 */
 	protected BigDecimal deductionForClaimsHandlingFee;
 
 	/** 
-	 * This attribute maps to the column discount in the Invoice table.
+	 * This attribute maps to the column discount in the invoice table.
 	 */
 	protected BigDecimal discount;
 
 	/** 
-	 * This attribute maps to the column totaltoPay in the Invoice table.
+	 * This attribute maps to the column total_to_pay in the invoice table.
 	 */
-	protected BigDecimal totaltoPay;
+	protected BigDecimal totalToPay;
 
 	/** 
-	 * This attribute maps to the column handlingInvoiceNo in the Invoice table.
+	 * This attribute maps to the column handling_invoice_no in the invoice table.
 	 */
 	protected String handlingInvoiceNo;
 
 	/** 
-	 * This attribute maps to the column claimInvoiceNo in the Invoice table.
+	 * This attribute maps to the column claim_invoice_no in the invoice table.
 	 */
 	protected String claimInvoiceNo;
 
 	/** 
-	 * This attribute maps to the column cdwFee in the Invoice table.
+	 * This attribute maps to the column cdw_fee in the invoice table.
 	 */
 	protected BigDecimal cdwFee;
 
 	/** 
-	 * This attribute maps to the column cdwQty in the Invoice table.
+	 * This attribute maps to the column cdw_qty in the invoice table.
 	 */
 	protected Integer cdwQty;
 
 	/** 
-	 * This attribute maps to the column automaticFee in the Invoice table.
+	 * This attribute maps to the column automatic_fee in the invoice table.
 	 */
 	protected BigDecimal automaticFee;
 
 	/** 
-	 * This attribute maps to the column automaticQty in the Invoice table.
+	 * This attribute maps to the column automatic_qty in the invoice table.
 	 */
 	protected Integer automaticQty;
 
 	/** 
-	 * This attribute maps to the column satNavFee in the Invoice table.
+	 * This attribute maps to the column sat_nav_fee in the invoice table.
 	 */
 	protected BigDecimal satNavFee;
 
 	/** 
-	 * This attribute maps to the column satNavQty in the Invoice table.
+	 * This attribute maps to the column sat_nav_qty in the invoice table.
 	 */
 	protected Integer satNavQty;
 
 	/** 
-	 * This attribute maps to the column estateFee in the Invoice table.
+	 * This attribute maps to the column estate_fee in the invoice table.
 	 */
 	protected BigDecimal estateFee;
 
 	/** 
-	 * This attribute maps to the column estateQty in the Invoice table.
+	 * This attribute maps to the column estate_qty in the invoice table.
 	 */
 	protected Integer estateQty;
 
 	/** 
-	 * This attribute maps to the column babySeatFee in the Invoice table.
+	 * This attribute maps to the column baby_seat_fee in the invoice table.
 	 */
 	protected BigDecimal babySeatFee;
 
 	/** 
-	 * This attribute maps to the column babySeatQty in the Invoice table.
+	 * This attribute maps to the column baby_seat_qty in the invoice table.
 	 */
 	protected Integer babySeatQty;
 
 	/** 
-	 * This attribute maps to the column towBarsFee in the Invoice table.
+	 * This attribute maps to the column tow_bars_fee in the invoice table.
 	 */
 	protected BigDecimal towBarsFee;
 
 	/** 
-	 * This attribute maps to the column towBarsQty in the Invoice table.
+	 * This attribute maps to the column tow_bars_qty in the invoice table.
 	 */
 	protected Integer towBarsQty;
 
 	/** 
-	 * This attribute maps to the column nonStandardInsurancePremiumFee in the Invoice table.
+	 * This attribute maps to the column non_standard_insurance_premium_fee in the invoice table.
 	 */
 	protected BigDecimal nonStandardInsurancePremiumFee;
 
 	/** 
-	 * This attribute maps to the column nonStandardInsurancePremiumQty in the Invoice table.
+	 * This attribute maps to the column non_standard_insurance_premium_qty in the invoice table.
 	 */
 	protected Integer nonStandardInsurancePremiumQty;
 
 	/** 
-	 * This attribute maps to the column adminFee in the Invoice table.
+	 * This attribute maps to the column admin_fee in the invoice table.
 	 */
 	protected BigDecimal adminFee;
 
 	/** 
-	 * This attribute maps to the column adminQty in the Invoice table.
+	 * This attribute maps to the column admin_qty in the invoice table.
 	 */
 	protected Integer adminQty;
 
 	/** 
-	 * This attribute maps to the column roofRackFee in the Invoice table.
+	 * This attribute maps to the column roof_rack_fee in the invoice table.
 	 */
 	protected BigDecimal roofRackFee;
 
 	/** 
-	 * This attribute maps to the column roofRackQty in the Invoice table.
+	 * This attribute maps to the column roof_rack_qty in the invoice table.
 	 */
 	protected Integer roofRackQty;
 
 	/** 
-	 * This attribute maps to the column dualControlFee in the Invoice table.
+	 * This attribute maps to the column dual_control_fee in the invoice table.
 	 */
 	protected BigDecimal dualControlFee;
 
 	/** 
-	 * This attribute maps to the column dualControlQty in the Invoice table.
+	 * This attribute maps to the column dual_control_qty in the invoice table.
 	 */
 	protected Integer dualControlQty;
 
 	/** 
-	 * This attribute maps to the column deliveryCollectionFee in the Invoice table.
+	 * This attribute maps to the column delivery_collection_fee in the invoice table.
 	 */
 	protected BigDecimal deliveryCollectionFee;
 
 	/** 
-	 * This attribute maps to the column deliveryCollectionQty in the Invoice table.
+	 * This attribute maps to the column delivery_collection_qty in the invoice table.
 	 */
 	protected Integer deliveryCollectionQty;
 
 	/** 
-	 * This attribute maps to the column createdBy in the Invoice table.
+	 * This attribute maps to the column created_by in the invoice table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the Invoice table.
+	 * This attribute maps to the column created_date in the invoice table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the Invoice table.
+	 * This attribute maps to the column last_nodified_by in the invoice table.
 	 */
-	protected int lastModifiedBy;
+	protected int lastNodifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the Invoice table.
+	 * This attribute maps to the column last_modified_date in the invoice table.
 	 */
 	protected Date lastModifiedDate;
 
@@ -662,23 +662,23 @@ public class Invoice implements Serializable
 	}
 
 	/**
-	 * Method 'getTotaltoPay'
+	 * Method 'getTotalToPay'
 	 * 
 	 * @return java.math.BigDecimal
 	 */
-	public java.math.BigDecimal getTotaltoPay()
+	public java.math.BigDecimal getTotalToPay()
 	{
-		return totaltoPay;
+		return totalToPay;
 	}
 
 	/**
-	 * Method 'setTotaltoPay'
+	 * Method 'setTotalToPay'
 	 * 
-	 * @param totaltoPay
+	 * @param totalToPay
 	 */
-	public void setTotaltoPay(java.math.BigDecimal totaltoPay)
+	public void setTotalToPay(java.math.BigDecimal totalToPay)
 	{
-		this.totaltoPay = totaltoPay;
+		this.totalToPay = totalToPay;
 	}
 
 	/**
@@ -1202,23 +1202,23 @@ public class Invoice implements Serializable
 	}
 
 	/**
-	 * Method 'getLastModifiedBy'
+	 * Method 'getLastNodifiedBy'
 	 * 
 	 * @return int
 	 */
-	public int getLastModifiedBy()
+	public int getLastNodifiedBy()
 	{
-		return lastModifiedBy;
+		return lastNodifiedBy;
 	}
 
 	/**
-	 * Method 'setLastModifiedBy'
+	 * Method 'setLastNodifiedBy'
 	 * 
-	 * @param lastModifiedBy
+	 * @param lastNodifiedBy
 	 */
-	public void setLastModifiedBy(int lastModifiedBy)
+	public void setLastNodifiedBy(int lastNodifiedBy)
 	{
-		this.lastModifiedBy = lastModifiedBy;
+		this.lastNodifiedBy = lastNodifiedBy;
 	}
 
 	/**

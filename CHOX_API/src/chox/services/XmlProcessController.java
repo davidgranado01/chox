@@ -470,7 +470,7 @@ public class XmlProcessController {
                     Insurer insurer = InsurerServiceImpl.getInsurerByName(XmlHelper.getNodeValue(thisElement, "name"));
                     
                     if(insurer!=null){
-                        customer.setInsurer(insurer);
+                        customer.setInsurerId(insurer.getId());
                     }
                 }
                 
@@ -927,8 +927,8 @@ public class XmlProcessController {
                             
                             EngineerReport engineerReport = new EngineerReport();
                             engineerReport.setDays(XmlHelper.getIntegerFromNode(ee, "days"));
-                            engineerReport.setLabourAmount(XmlHelper.getDoubleFromNode(ee, "labour-amount"));
-                            engineerReport.setTotalAmount(XmlHelper.getDoubleFromNode(ee, "total-amount"));
+                            engineerReport.setLabourAmount(XmlHelper.getBigDecimalFromNode(ee, "labour-amount"));
+                            engineerReport.setTotalAmount(XmlHelper.getBigDecimalFromNode(ee, "total-amount"));
                             engineerReport.setName(XmlHelper.getNodeValue(ee, "name"));
                             engineerReport.setCompany(XmlHelper.getNodeValue(ee, "company"));
                             engineerReport.setAddress1(XmlHelper.getNodeValue(ee, "address1"));
@@ -1017,12 +1017,12 @@ public class XmlProcessController {
             
             // SET SUPPLIER INFORMATION
             Invoice invoice = new Invoice();
-            invoice.setTotalGross(XmlHelper.getDoubleFromNode(thisElement, "net"));
-            invoice.setTotalNet(XmlHelper.getDoubleFromNode(thisElement, "gross"));
-            invoice.setTotalVat(XmlHelper.getDoubleFromNode(thisElement, "vat"));
-            invoice.setTotaltoPay(XmlHelper.getDoubleFromNode(thisElement, "total-to-pay"));
-            invoice.setDiscount(XmlHelper.getDoubleFromNode(thisElement, "less-discount"));
-            invoice.setDeductionForClaimsHandlingFee(XmlHelper.getDoubleFromNode(thisElement, "less-handling-fee"));
+            invoice.setTotalGross(XmlHelper.getBigDecimalFromNode(thisElement, "net"));
+            invoice.setTotalNet(XmlHelper.getBigDecimalFromNode(thisElement, "gross"));
+            invoice.setTotalVat(XmlHelper.getBigDecimalFromNode(thisElement, "vat"));
+            invoice.setTotaltoPay(XmlHelper.getBigDecimalFromNode(thisElement, "total-to-pay"));
+            invoice.setDiscount(XmlHelper.getBigDecimalFromNode(thisElement, "less-discount"));
+            invoice.setDeductionForClaimsHandlingFee(XmlHelper.getBigDecimalFromNode(thisElement, "less-handling-fee"));
             invoice.setDateInvoiced(XmlHelper.getTimeStampFromNode(thisElement, "date-invoiced"));
             
             xmlParseResult.getClaim().setInvoice(invoice);
@@ -1068,9 +1068,9 @@ public class XmlProcessController {
         if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
             
             
-            Double bNet = XmlHelper.getDoubleFromNode(thisElement, "net");
-            Double bVat = XmlHelper.getDoubleFromNode(thisElement, "vat");
-            Double bGross = XmlHelper.getDoubleFromNode(thisElement, "gross");
+            BigDecimal bNet = XmlHelper.getBigDecimalFromNode(thisElement, "net");
+            BigDecimal bVat = XmlHelper.getBigDecimalFromNode(thisElement, "vat");
+            BigDecimal bGross = XmlHelper.getBigDecimalFromNode(thisElement, "gross");
             
             xmlParseResult.getClaim().getInvoice().setHireGross(bGross);
             xmlParseResult.getClaim().getInvoice().setHireNet(bNet);
@@ -1098,9 +1098,9 @@ public class XmlProcessController {
         xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "gross", XmlHelper.isMAN_Invoice_Repair_Gross, XmlHelper.REG_BIGDECIMAL, parentNodeName);
 
         if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {            
-            double bNet = XmlHelper.getDoubleFromNode(thisElement, "net");
-            double bVat = XmlHelper.getDoubleFromNode(thisElement, "vat");
-            double bGross = XmlHelper.getDoubleFromNode(thisElement, "gross");
+            BigDecimal bNet = XmlHelper.getBigDecimalFromNode(thisElement, "net");
+            BigDecimal bVat = XmlHelper.getBigDecimalFromNode(thisElement, "vat");
+            BigDecimal bGross = XmlHelper.getBigDecimalFromNode(thisElement, "gross");
             
             xmlParseResult.getClaim().getInvoice().setRepairGross(bGross);
             xmlParseResult.getClaim().getInvoice().setRepairNet(bNet);
@@ -1129,7 +1129,7 @@ public class XmlProcessController {
 
         if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
             String sHandlingInvoiceAmount = XmlHelper.getNodeValue(thisElement, "handling-invoice-no");
-            double dHandlingInvoiceAmount = XmlHelper.getDoubleFromNode(thisElement, "handling-invoice-amount");
+            BigDecimal dHandlingInvoiceAmount = XmlHelper.getBigDecimalFromNode(thisElement, "handling-invoice-amount");
             String sClaimInvouceNumber = XmlHelper.getNodeValue(thisElement, "claim-invoice-no");
             
             xmlParseResult.getClaim().getInvoice().setHandlingInvoiceNo(sHandlingInvoiceAmount);
@@ -1157,9 +1157,9 @@ public class XmlProcessController {
         xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "gross", XmlHelper.isMAN_Invoice_Engineer_Fee_Gross, XmlHelper.REG_BIGDECIMAL, parentNodeName);
 
         if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
-            double bNet = XmlHelper.getDoubleFromNode(thisElement, "net");
-            double bVat = XmlHelper.getDoubleFromNode(thisElement, "vat");
-            double bGross = XmlHelper.getDoubleFromNode(thisElement, "gross");
+            BigDecimal bNet = XmlHelper.getBigDecimalFromNode(thisElement, "net");
+            BigDecimal bVat = XmlHelper.getBigDecimalFromNode(thisElement, "vat");
+            BigDecimal bGross = XmlHelper.getBigDecimalFromNode(thisElement, "gross");
             
             xmlParseResult.getClaim().getInvoice().setEngineerFeeGross(bGross);
             xmlParseResult.getClaim().getInvoice().setEngineerFeeNet(bNet);
@@ -1186,9 +1186,9 @@ public class XmlProcessController {
         xmlParseResult = xmlNodeValidation(xmlParseResult, thisElement, "gross", XmlHelper.isMAN_Invoice_Storage_Recovery_Gross, XmlHelper.REG_BIGDECIMAL, parentNodeName);
 
         if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
-            double bNet = XmlHelper.getDoubleFromNode(thisElement, "net");
-            double bVat = XmlHelper.getDoubleFromNode(thisElement, "vat");
-            double bGross = XmlHelper.getDoubleFromNode(thisElement, "gross");
+            BigDecimal bNet = XmlHelper.getBigDecimalFromNode(thisElement, "net");
+            BigDecimal bVat = XmlHelper.getBigDecimalFromNode(thisElement, "vat");
+            BigDecimal bGross = XmlHelper.getBigDecimalFromNode(thisElement, "gross");
             
             xmlParseResult.getClaim().getInvoice().setStorageRecoveryGross(bGross);
             xmlParseResult.getClaim().getInvoice().setStorageRecoveryNet(bNet);
@@ -1234,10 +1234,10 @@ public class XmlProcessController {
                     
                     String selectedExtra = XmlHelper.getNodeValue(ee, "name");
                     Integer iQuantity = 0;
-                    Double dIntemCost = 0.00;
+                    BigDecimal dIntemCost = new BigDecimal("0.00");
                     
                     if(XmlHelper.getDoubleFromNode(ee, "item-cost")>0){
-                        dIntemCost = XmlHelper.getDoubleFromNode(ee, "item-cost");
+                        dIntemCost = XmlHelper.getBigDecimalFromNode(ee, "item-cost");
                     }
                     
                     if(XmlHelper.getIntegerFromNode(ee, "quantity")>0){

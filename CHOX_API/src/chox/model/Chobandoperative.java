@@ -5,48 +5,48 @@ import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Chobandoperative implements Serializable
+public class ChoBandOperative implements Serializable
 {
 	/** 
-	 * This attribute maps to the column id in the CHOBandOperative table.
+	 * This attribute maps to the column id in the cho_band_operative table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column bandId in the CHOBandOperative table.
+	 * This attribute maps to the column band_id in the cho_band_operative table.
 	 */
 	protected int bandId;
 
 	/** 
-	 * This attribute maps to the column CHOrganisationId in the CHOBandOperative table.
+	 * This attribute maps to the column chorganisation_id in the cho_band_operative table.
 	 */
-	protected int chorganisationid;
+	protected int chorganisationId;
 
 	/** 
-	 * This attribute maps to the column createdBy in the CHOBandOperative table.
+	 * This attribute maps to the column created_by in the cho_band_operative table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the CHOBandOperative table.
+	 * This attribute maps to the column created_date in the cho_band_operative table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the CHOBandOperative table.
+	 * This attribute maps to the column last_modified_by in the cho_band_operative table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the CHOBandOperative table.
+	 * This attribute maps to the column last_modified_date in the cho_band_operative table.
 	 */
 	protected Date lastModifiedDate;
 
 	/**
-	 * Method 'Chobandoperative'
+	 * Method 'ChoBandOperative'
 	 * 
 	 */
-	public Chobandoperative()
+	public ChoBandOperative()
 	{
 	}
 
@@ -91,23 +91,23 @@ public class Chobandoperative implements Serializable
 	}
 
 	/**
-	 * Method 'getChorganisationid'
+	 * Method 'getChorganisationId'
 	 * 
 	 * @return int
 	 */
-	public int getChorganisationid()
+	public int getChorganisationId()
 	{
-		return chorganisationid;
+		return chorganisationId;
 	}
 
 	/**
-	 * Method 'setChorganisationid'
+	 * Method 'setChorganisationId'
 	 * 
-	 * @param chorganisationid
+	 * @param chorganisationId
 	 */
-	public void setChorganisationid(int chorganisationid)
+	public void setChorganisationId(int chorganisationId)
 	{
-		this.chorganisationid = chorganisationid;
+		this.chorganisationId = chorganisationId;
 	}
 
 	/**

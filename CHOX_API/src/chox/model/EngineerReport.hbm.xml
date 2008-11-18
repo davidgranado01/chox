@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="chox.model.EngineerReport" table="EngineerReport">
+  <class name="chox.model.EngineerReport" table="engineer_report">
     <id name="id" column="id">
       <generator class="increment" />
     </id>
@@ -17,13 +17,13 @@
     <property name="postcode" column="postcode" />
     <property name="telephone" column="telephone" />
     <property name="email" column="email" />
-    <property name="createdBy" column="createdBy" not-null="true" />
-    <property name="createdDate" column="createdDate" not-null="true" />
-    <property name="lastModifiedBy" column="lastModifiedBy" not-null="true" />
-    <property name="lastModifiedDate" column="lastModifiedDate" not-null="true" />
-    <property name="isUsable" column="isUsable" not-null="true" />
-    <property name="labourAmount" column="labourAmount" />
-    <property name="totalAmount" column="totalAmount" />
+    <property name="createdBy" column="created_by" not-null="true" />
+    <property name="createdDate" column="created_date" not-null="true" />
+    <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
+    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
+    <property name="isUsable" column="is_usable" not-null="true" />
+    <property name="labourAmount" column="labour_amount" />
+    <property name="totalAmount" column="total_amount" />
   </class>
 </hibernate-mapping>
 

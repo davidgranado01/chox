@@ -8,82 +8,82 @@ import java.util.Date;
 public class Injury implements Serializable
 {
 	/** 
-	 * This attribute maps to the column id in the Injury table.
+	 * This attribute maps to the column id in the injury table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column name in the Injury table.
+	 * This attribute maps to the column name in the injury table.
 	 */
 	protected String name;
 
 	/** 
-	 * This attribute maps to the column address1 in the Injury table.
+	 * This attribute maps to the column address1 in the injury table.
 	 */
 	protected String address1;
 
 	/** 
-	 * This attribute maps to the column address2 in the Injury table.
+	 * This attribute maps to the column address2 in the injury table.
 	 */
 	protected String address2;
 
 	/** 
-	 * This attribute maps to the column address3 in the Injury table.
+	 * This attribute maps to the column address3 in the injury table.
 	 */
 	protected String address3;
 
 	/** 
-	 * This attribute maps to the column address4 in the Injury table.
+	 * This attribute maps to the column address4 in the injury table.
 	 */
 	protected String address4;
 
 	/** 
-	 * This attribute maps to the column address5 in the Injury table.
+	 * This attribute maps to the column address5 in the injury table.
 	 */
 	protected String address5;
 
 	/** 
-	 * This attribute maps to the column postcode in the Injury table.
+	 * This attribute maps to the column postcode in the injury table.
 	 */
 	protected String postcode;
 
 	/** 
-	 * This attribute maps to the column telephoneDay in the Injury table.
+	 * This attribute maps to the column telephone_day in the injury table.
 	 */
 	protected String telephoneDay;
 
 	/** 
-	 * This attribute maps to the column telephoneEvening in the Injury table.
+	 * This attribute maps to the column telephone_evening in the injury table.
 	 */
 	protected String telephoneEvening;
 
 	/** 
-	 * This attribute maps to the column email in the Injury table.
+	 * This attribute maps to the column email in the injury table.
 	 */
 	protected String email;
 
 	/** 
-	 * This attribute maps to the column createdBy in the Injury table.
+	 * This attribute maps to the column created_by in the injury table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the Injury table.
+	 * This attribute maps to the column created_date in the injury table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the Injury table.
+	 * This attribute maps to the column last_modified_by in the injury table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the Injury table.
+	 * This attribute maps to the column last_modified_date in the injury table.
 	 */
 	protected Date lastModifiedDate;
 
 	/** 
-	 * This attribute represents the foreign key relationship to the Incident table.
+	 * This attribute represents the foreign key relationship to the incident table.
 	 */
 	protected Incident incident;
 

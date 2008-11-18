@@ -2,14 +2,20 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="chox.model.History" table="history">
+  <class name="chox.model.WebUser" table="web_user">
     <id name="id" column="id">
       <generator class="increment" />
     </id>
+    <property name="email" column="email" not-null="true" />
+    <property name="firstName" column="first_name" not-null="true" />
+    <property name="lastName" column="last_name" not-null="true" />
+    <property name="password" column="password" not-null="true" />
+    <property name="status" column="status" not-null="true" />
     <property name="createdBy" column="created_by" not-null="true" />
     <property name="createdDate" column="created_date" not-null="true" />
     <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
     <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
+    <many-to-one name="webUserRole" class="chox.model.WebUserRole" column="role_id" />
   </class>
 </hibernate-mapping>
 

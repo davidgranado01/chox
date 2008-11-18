@@ -8,47 +8,47 @@ import java.util.Date;
 public class Incident implements Serializable
 {
 	/** 
-	 * This attribute maps to the column date in the Incident table.
+	 * This attribute maps to the column date in the incident table.
 	 */
 	protected Date date;
 
 	/** 
-	 * This attribute maps to the column location in the Incident table.
+	 * This attribute maps to the column location in the incident table.
 	 */
 	protected String location;
 
 	/** 
-	 * This attribute maps to the column incidentDescription in the Incident table.
+	 * This attribute maps to the column incident_description in the incident table.
 	 */
 	protected String incidentDescription;
 
 	/** 
-	 * This attribute maps to the column id in the Incident table.
+	 * This attribute maps to the column id in the incident table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column createdBy in the Incident table.
+	 * This attribute maps to the column created_by in the incident table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column createdDate in the Incident table.
+	 * This attribute maps to the column created_date in the incident table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column lastModifiedBy in the Incident table.
+	 * This attribute maps to the column last_modified_by in the incident table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column lastModifiedDate in the Incident table.
+	 * This attribute maps to the column last_modified_date in the incident table.
 	 */
 	protected Date lastModifiedDate;
 
 	/** 
-	 * This attribute maps to the column isPoliceInvolved in the Incident table.
+	 * This attribute maps to the column is_police_involved in the incident table.
 	 */
 	protected boolean isPoliceInvolved;
 
