@@ -1,5 +1,7 @@
 package chox.model;
 
+import org.hibernate.Session;
+
 public class XMLParseResult {
 
     public static final String PENDING = "Pending";
@@ -13,6 +15,7 @@ public class XMLParseResult {
     private String SchemaValidationRemark = "";
     private String DataValidationRemark = "";
     private String UploadType;
+    private Session currentSession;
     
     // USE WHEN RUNING THE VALIDATION
     private Boolean isCurrentScheValid = true;
@@ -83,6 +86,14 @@ public class XMLParseResult {
 
     public void setIsSchemaValid(Boolean isSchemaValid) {
         this.isSchemaValid = isSchemaValid;
+    }
+
+    public Session getCurrentSession() {
+        return currentSession;
+    }
+
+    public void setCurrentSession(Session currentSession) {
+        this.currentSession = currentSession;
     }
     
     
