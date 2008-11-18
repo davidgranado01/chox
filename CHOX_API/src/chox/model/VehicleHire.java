@@ -46,7 +46,7 @@ public class VehicleHire implements Serializable
 	/** 
 	 * This attribute maps to the column days in the vehicle_hire table.
 	 */
-	protected BigDecimal days;
+	protected Integer days;
 
 	/** 
 	 * This attribute maps to the column cdw_fee in the vehicle_hire table.
@@ -281,7 +281,7 @@ public class VehicleHire implements Serializable
 	 * 
 	 * @return java.math.BigDecimal
 	 */
-	public java.math.BigDecimal getDays()
+	public Integer getDays()
 	{
 		return days;
 	}
@@ -291,7 +291,7 @@ public class VehicleHire implements Serializable
 	 * 
 	 * @param days
 	 */
-	public void setDays(java.math.BigDecimal days)
+	public void setDays(Integer days)
 	{
 		this.days = days;
 	}

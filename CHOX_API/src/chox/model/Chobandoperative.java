@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ChoBandOperative implements Serializable
+public class Chobandoperative implements Serializable
 {
 	/** 
 	 * This attribute maps to the column id in the cho_band_operative table.
@@ -46,7 +46,7 @@ public class ChoBandOperative implements Serializable
 	 * Method 'ChoBandOperative'
 	 * 
 	 */
-	public ChoBandOperative()
+	public Chobandoperative()
 	{
 	}
 

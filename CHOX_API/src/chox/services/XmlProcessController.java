@@ -17,6 +17,7 @@ import chox.data.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
+
 public class XmlProcessController {
 
     public static void main(String[] args) {
@@ -289,12 +290,16 @@ public class XmlProcessController {
                     // SET CHO ORGANISATION OR SUPPLIER INFORMATION
                     Chorganisation chorganisation = new Chorganisation();
                     chorganisation.setName(strCHOName);
-                    chorganisation.setAddress1("Address 1");
+                    chorganisation.setAddress1("AASD");
                     chorganisation.setAddress2("Address 2");
                     chorganisation.setAddress3("Address 3");
                     chorganisation.setPostcode("1234");
                     chorganisation.setVatNo("123");
                     chorganisation.setCompanyNo("Company NUmber");
+                    chorganisation.setCreatedBy(WebUserServiceImpl.getCurrentUser());
+                    chorganisation.setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
+                    chorganisation.setLastModifiedBy(WebUserServiceImpl.getCurrentUser());
+                    chorganisation.setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
                     
                     claim.setChorganisation(chorganisation);
                     
@@ -368,8 +373,8 @@ public class XmlProcessController {
                         }
                         
                         customer.setTitle(XmlHelper.getNodeValue(ee, "title"));
-                        customer.setFirstnames(XmlHelper.getNodeValue(ee, "firstnames"));
-                        customer.setLastname(XmlHelper.getNodeValue(ee, "lastname"));
+                        customer.setFirstName(XmlHelper.getNodeValue(ee, "firstnames"));
+                        customer.setLastName(XmlHelper.getNodeValue(ee, "lastname"));
                         customer.setAddress1(XmlHelper.getNodeValue(ee, "address1"));
                         customer.setAddress2(XmlHelper.getNodeValue(ee, "address2"));
                         customer.setAddress3(XmlHelper.getNodeValue(ee, "address3"));
@@ -613,7 +618,7 @@ public class XmlProcessController {
                 thirdparty.setTelephoneEvening(XmlHelper.getNodeValue(thisElement, "telephone-day"));
                 thirdparty.setTelephoneDay(XmlHelper.getNodeValue(thisElement, "telephone-evening"));
                 thirdparty.setEmail(XmlHelper.getEmailAddressFromNode(thisElement, "email"));
-                thirdparty.setFirstNames(XmlHelper.getNodeValue(thisElement, "firstnames"));
+                thirdparty.setFirstName(XmlHelper.getNodeValue(thisElement, "firstnames"));
                 thirdparty.setLastName(XmlHelper.getNodeValue(thisElement, "lastname"));
                 thirdparty.setTitle(XmlHelper.getNodeValue(thisElement, "title"));
                 
@@ -1020,7 +1025,7 @@ public class XmlProcessController {
             invoice.setTotalGross(XmlHelper.getBigDecimalFromNode(thisElement, "net"));
             invoice.setTotalNet(XmlHelper.getBigDecimalFromNode(thisElement, "gross"));
             invoice.setTotalVat(XmlHelper.getBigDecimalFromNode(thisElement, "vat"));
-            invoice.setTotaltoPay(XmlHelper.getBigDecimalFromNode(thisElement, "total-to-pay"));
+            invoice.setTotalToPay(XmlHelper.getBigDecimalFromNode(thisElement, "total-to-pay"));
             invoice.setDiscount(XmlHelper.getBigDecimalFromNode(thisElement, "less-discount"));
             invoice.setDeductionForClaimsHandlingFee(XmlHelper.getBigDecimalFromNode(thisElement, "less-handling-fee"));
             invoice.setDateInvoiced(XmlHelper.getTimeStampFromNode(thisElement, "date-invoiced"));
