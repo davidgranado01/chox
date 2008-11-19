@@ -8,6 +8,8 @@ import chox.model.*;
 public class ChorganisationServiceImpl {
 
     public static Chorganisation getCurrentCHOrganisation() {
-        return new Chorganisation();
+        Chorganisation chorg = new Chorganisation();
+        chorg.setId(1006);
+        return chorg;
     }
 }

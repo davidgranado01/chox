@@ -12,7 +12,7 @@ public class EngineerReportServiceImpl {
         
         if((xmlParseResult.getEngineerReports())!=null){
             
-            for(Integer i=0; i<(xmlParseResult.getSolicitors()).size(); i++){
+            for(Integer i=0; i<(xmlParseResult.getEngineerReports()).size(); i++){
                 
                 ((xmlParseResult.getEngineerReports()).get(i)).setCreatedBy(WebUserServiceImpl.getCurrentUser());
                 ((xmlParseResult.getEngineerReports()).get(i)).setCreatedDate(generalServiceImpl.getCurrentTimeStamp());

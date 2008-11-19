@@ -162,13 +162,11 @@ public class XmlHelper {
             if(!m.find()){
                 bFlag = false;
             }
-            // && (dataValue.trim()).length()>8
+            
             if(nodeName.equalsIgnoreCase("vehicle-registration")){
                 
-                String vehicleReg = dataValue.replace(" ", "");
-                // System.out.println("dataValue: " + vehicleReg);
-                // System.out.println("dataValue.lenght " + (vehicleReg.trim()).length());
-            
+                String vehicleReg = trimString(dataValue);
+
                 if((vehicleReg.trim()).length()>8){
                     bFlag = false;
                 }
@@ -176,6 +174,18 @@ public class XmlHelper {
         }
         
         return bFlag;
+    }
+    
+    public static String trimString(String iStr){
+        String oStr = "";
+        
+        for(Integer i=0; i<iStr.length();i++){
+            if(iStr.charAt(i)!=' '){
+                oStr = (oStr + iStr.charAt(i)).trim();
+            }
+        }
+
+        return oStr;
     }
     
     public static boolean isNotNull(String s){

@@ -32,8 +32,7 @@ public class InsurerServiceImpl{
         Session currentSession = HibernateUtil.currentSession();
         Criteria criteria = currentSession.createCriteria(Insurer.class).add(Restrictions.eq("name", s));
         
-        
-        insurer.setId(1);
+        insurer.setId(3);
         return insurer;
     }
     

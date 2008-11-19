@@ -19,8 +19,6 @@ public class WitnessServiceImpl {
             for(Integer i = 0; i<witnesses.size(); i++){
 
                 Witness witness = witnesses.get(i);
-                
-                System.out.println("1:" + witness.getName());
 
                 witness.setCreatedBy(WebUserServiceImpl.getCurrentUser());
                 witness.setCreatedDate(generalServiceImpl.getCurrentTimeStamp());

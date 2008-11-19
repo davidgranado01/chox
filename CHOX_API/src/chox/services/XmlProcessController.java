@@ -170,8 +170,7 @@ public class XmlProcessController {
         xmlParseResult = WitnessServiceImpl.saveWitnessForXMLUploader(currentSession, xmlParseResult);
         xmlParseResult = InjuryServiceImpl.saveInjuryForXMLUploader(currentSession, xmlParseResult);
         xmlParseResult = SolicitorServiceImpl.saveSolicitorForXMLUploader(currentSession, xmlParseResult);
-        // xmlParseResult = EngineerReportServiceImpl.saveEngineerReportForXMLUploader(currentSession, xmlParseResult);
-        xmlParseResult = ClaimServiceImpl.saveClaimForXMLUploader(currentSession, xmlParseResult); 
+        xmlParseResult = EngineerReportServiceImpl.saveEngineerReportForXMLUploader(currentSession, xmlParseResult);
         
         if (!(sUploadType.toUpperCase()).equalsIgnoreCase("C")) {
             
@@ -180,10 +179,12 @@ public class XmlProcessController {
             xmlParseResult = RentalInvoiceSchemaValidation(currentSession, xmlParseResult, root, doc);
             
             // SAVE INVOICE OBJECT
-            // xmlParseResult = EngineerReportServiceImpl.saveEngineerReportForXMLUploader(currentSession, xmlParseResult);
-            // xmlParseResult = InvoiceServiceImpl.saveInvoiceForXMLUploader(currentSession, xmlParseResult);
+            xmlParseResult = EngineerReportServiceImpl.saveEngineerReportForXMLUploader(currentSession, xmlParseResult);
+            xmlParseResult = InvoiceServiceImpl.saveInvoiceForXMLUploader(currentSession, xmlParseResult);
         }
-
+        
+        xmlParseResult = ClaimServiceImpl.saveClaimForXMLUploader(currentSession, xmlParseResult); 
+        
         currentSession = xmlParseResult.getCurrentSession();
         
         /*
@@ -462,6 +463,7 @@ public class XmlProcessController {
                 // GET INSURER INFORMATION
                 Insurer insurer = getInsurerByNodeName(thisElement, "name");
                 if(insurer!=null){
+                    xmlParseResult.getClaim().setInsurer(insurer);
                     customer.setInsurerId(insurer.getId());
                 }
                 
@@ -961,11 +963,12 @@ public class XmlProcessController {
                             || XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "usable"))
                             )
                         ) {
-                            
+
                             EngineerReport engineerReport = new EngineerReport();
                             engineerReport.setDays(XmlHelper.getIntegerFromNode(ee, "days"));
                             engineerReport.setLabourAmount(XmlHelper.getBigDecimalFromNode(ee, "labour-amount"));
                             engineerReport.setTotalAmount(XmlHelper.getBigDecimalFromNode(ee, "total-amount"));
+                            
                             engineerReport.setName(XmlHelper.getNodeValue(ee, "name"));
                             engineerReport.setCompany(XmlHelper.getNodeValue(ee, "company"));
                             engineerReport.setAddress1(XmlHelper.getNodeValue(ee, "address1"));
@@ -977,7 +980,9 @@ public class XmlProcessController {
                             engineerReport.setTelephone(XmlHelper.getNodeValue(ee, "telephone"));
                             engineerReport.setEmail(XmlHelper.getEmailAddressFromNode(ee, "email"));
                             engineerReport.setIsUsable(XmlHelper.getBooleanFromNode(ee, "usable"));
+                            
                             engineerReports.add(engineerReport);
+ 
                         }
                     }
                     
@@ -1242,6 +1247,29 @@ public class XmlProcessController {
         xmlParseResult = xmlSchemaNodeListValidation(xmlParseResult, extraElements, subNodeName, parentNodeName);
 
         if (xmlParseResult.getIsCurrentScheValid()) {
+            
+            xmlParseResult.getClaim().getInvoice().setCdwFee(new BigDecimal("0.00"));
+            xmlParseResult.getClaim().getInvoice().setCdwQty(0);
+            xmlParseResult.getClaim().getInvoice().setAdminFee(new BigDecimal("0.00"));
+            xmlParseResult.getClaim().getInvoice().setAdminQty(0);
+            xmlParseResult.getClaim().getInvoice().setAutomaticFee(new BigDecimal("0.00"));
+            xmlParseResult.getClaim().getInvoice().setAutomaticQty(0);   
+            xmlParseResult.getClaim().getInvoice().setBabySeatFee(new BigDecimal("0.00"));
+            xmlParseResult.getClaim().getInvoice().setBabySeatQty(0); 
+            xmlParseResult.getClaim().getInvoice().setDeliveryCollectionFee(new BigDecimal("0.00"));
+            xmlParseResult.getClaim().getInvoice().setDeliveryCollectionQty(0); 
+            xmlParseResult.getClaim().getInvoice().setDualControlFee(new BigDecimal("0.00"));
+            xmlParseResult.getClaim().getInvoice().setDualControlQty(0);    
+            xmlParseResult.getClaim().getInvoice().setEstateFee(new BigDecimal("0.00"));
+            xmlParseResult.getClaim().getInvoice().setEstateQty(0);  
+            xmlParseResult.getClaim().getInvoice().setNonStandardInsurancePremiumFee(new BigDecimal("0.00"));
+            xmlParseResult.getClaim().getInvoice().setNonStandardInsurancePremiumQty(0);  
+            xmlParseResult.getClaim().getInvoice().setRoofRackFee(new BigDecimal("0.00"));
+            xmlParseResult.getClaim().getInvoice().setRoofRackQty(0);  
+            xmlParseResult.getClaim().getInvoice().setSatNavFee(new BigDecimal("0.00"));
+            xmlParseResult.getClaim().getInvoice().setSatNavQty(0);  
+            xmlParseResult.getClaim().getInvoice().setTowBarsFee(new BigDecimal("0.00"));
+            xmlParseResult.getClaim().getInvoice().setTowBarsQty(0);  
 
             for (Element ee : extraElements) {
 
