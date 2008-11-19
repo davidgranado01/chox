@@ -1201,41 +1201,21 @@ public class Invoice implements Serializable
 		this.createdDate = createdDate;
 	}
 
-	/**
-	 * Method 'getLastNodifiedBy'
-	 * 
-	 * @return int
-	 */
 	public int getLastNodifiedBy()
 	{
 		return lastNodifiedBy;
 	}
 
-	/**
-	 * Method 'setLastNodifiedBy'
-	 * 
-	 * @param lastNodifiedBy
-	 */
 	public void setLastNodifiedBy(int lastNodifiedBy)
 	{
 		this.lastNodifiedBy = lastNodifiedBy;
 	}
 
-	/**
-	 * Method 'getLastModifiedDate'
-	 * 
-	 * @return java.util.Date
-	 */
 	public java.util.Date getLastModifiedDate()
 	{
 		return lastModifiedDate;
 	}
 
-	/**
-	 * Method 'setLastModifiedDate'
-	 * 
-	 * @param lastModifiedDate
-	 */
 	public void setLastModifiedDate(java.util.Date lastModifiedDate)
 	{
 		this.lastModifiedDate = lastModifiedDate;

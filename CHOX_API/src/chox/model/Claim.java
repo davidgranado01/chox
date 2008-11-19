@@ -90,6 +90,7 @@ public class Claim implements Serializable
 	/** 
 	 * This attribute represents the foreign key relationship to the line_of_business table.
 	 */
+        
 	protected LineOfBusiness lineOfBusiness;
 
 	/** 
