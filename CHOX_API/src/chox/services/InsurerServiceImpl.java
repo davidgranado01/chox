@@ -29,12 +29,10 @@ public class InsurerServiceImpl{
         
         Insurer insurer = new Insurer();
         
-        // Session currentSession = HibernateUtil.currentSession();
-        // Criteria criteria = currentSession.createCriteria(Insurer.class).add(Restrictions.eq("name", s));
+        Session currentSession = HibernateUtil.currentSession();
+        Criteria criteria = currentSession.createCriteria(Insurer.class).add(Restrictions.eq("name", s));
         
-        // if(criteria.list().size()>0){
-            //insurerId = "";
-        //}
+        
         insurer.setId(1);
         return insurer;
     }
