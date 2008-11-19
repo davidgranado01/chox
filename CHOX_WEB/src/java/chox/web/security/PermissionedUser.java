@@ -1,6 +1,7 @@
 package chox.web.security;
 
-import chox.model.User;
+import chox.model.WebUser;
+import chox.model.WebUserRole;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
@@ -11,13 +12,13 @@ import org.acegisecurity.GrantedAuthorityImpl;
  */
 public class PermissionedUser implements UserDetails {
 
-    private User user;
+    private WebUser user;
 
-    public PermissionedUser( User user ) {
+    public PermissionedUser( WebUser user ) {
         this.user = user;
     }
 
-    public User getUser() {
+    public WebUser getUser() {
         return user;
     }
 
@@ -25,8 +26,10 @@ public class PermissionedUser implements UserDetails {
         return user==null ? "" : user.getPassword();
     }
 
-    public GrantedAuthority[] getAuthorities() {
-        return new GrantedAuthority[] { new GrantedAuthorityImpl("ROLE_USER") };
+    public GrantedAuthority[] getAuthorities() 
+    {
+        WebUserRole role = user.getWebUserRole();
+        return new GrantedAuthority[] { new GrantedAuthorityImpl(role.getName()) };
     }
 
     public String getUsername() {

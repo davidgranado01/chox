@@ -9,11 +9,6 @@
 
 <head>
     <title><decorator:title default="Struts Starter"/></title>
-    <link href="<s:url value='styles/main.css'/>" rel="stylesheet" type="text/css" media="all"/>
-    <link href="<s:url value='css/ext-all.css'/>" rel="stylesheet" type="text/css" media="all"/>
-    <link href="<s:url value='css/xtheme-gray.css'/>" rel="stylesheet" type="text/css" media="all"/>
-    <script src="<s:url value='scripts/ext-base.js'/>" type="text/javascript"></script>
-    <script src="<s:url value='scripts/ext-all.js'/>" type="text/javascript"></script>    
     <decorator:head/>
 </head>
 

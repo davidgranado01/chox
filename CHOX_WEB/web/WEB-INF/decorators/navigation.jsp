@@ -11,8 +11,8 @@
             <td> 
                 <ui>
                     <li><a href="<s:url action="index" namespace="/"/>">Home</a></li>
-                    <li><a href="<s:url action="UploadClaims" namespace="claim"/>">Upload Claims</a></li>
-                    <li><a href="<s:url action="Inbox" namespace="claim"/>">Claims (?)</a></li>
+                    <li><a href="<s:url action="uploadClaims" namespace="claim"/>">Upload Claims</a></li>
+                    <li><a href="<s:url action="inbox" namespace="claim"/>">Claims (?)</a></li>
                     <li><a href="#">Invoice (?)</a></li>                  
                 </ui>
             </td> 

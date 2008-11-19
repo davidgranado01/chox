@@ -14,7 +14,7 @@
         <title>Upload Claims</title >
     </head>
     <body >
-        <s:form action ="ProcessClaimsAction" method ="POST" enctype="multipart/form-data">
+        <s:form action ="processClaimsAction" method ="POST" enctype="multipart/form-data">
             <table>
                 <tr>
                     <td>

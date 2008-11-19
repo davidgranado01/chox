@@ -1,30 +1,38 @@
 package chox.web.security;
 
-import chox.model.User;
+import chox.model.WebUser;
 
+import chox.services.UserService;
+import chox.services.UserServiceImpl;
 import org.acegisecurity.userdetails.UserDetailsService;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.springframework.dao.DataAccessException;
 
 public class WebUserService implements UserDetailsService {
-
+    
+    private UserService service;
+    
     public WebUserService() {
+        setUserService(new UserServiceImpl());
+    }
+    
+    public void setUserService(UserService service) {
+        this.service = service;
+    }
+    
+
+    public WebUser findByEmail(String email) {       
+        return this.service.findByEmail(email);
     }
 
-    public User findByEmail(String email) {
-        User u = new User();
-        u.setEmail(email);
-        u.setPassword("123");
-        return u;
-    }
-
-    public void persist(User user, String emailId) {
+    public void persist(WebUser user, String emailId) {
+        this.service.persist(user, emailId);
     }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException, DataAccessException {
-        User u = findByEmail(s);
+        WebUser u = findByEmail(s);
         if (s == null || "".equals(s.trim()) || u == null) {
             throw new UsernameNotFoundException(s);
         }

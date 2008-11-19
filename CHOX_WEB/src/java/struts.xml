@@ -40,19 +40,19 @@
 
     <!-- Configuration for the default package. -->
     <package name="claim" namespace="/claim" extends="base-package">        
-        <action name="ListAllClaims" class="chox.web.actions.claim.ListAllClaimsAction">
+        <action name="listAllClaims" class="chox.web.actions.claim.ListAllClaimsAction">
             <result>/jsp/claim/listClaims-partial.jsp</result>
         </action>
-        <action name ="ProcessClaimsAction" class ="chox.web.actions.claim.ProcessClaimsAction">
+        <action name ="processClaimsAction" class ="chox.web.actions.claim.ProcessClaimsAction">
             <result name ="success">/jsp/claim/UploadStatus.jsp
             </result>
             <result name ="error">/jsp/claim/Uploadfailed.jsp
             </result>
         </action>
-        <action name="UploadClaims" class="chox.web.actions.claim.UploadClaimsAction">
+        <action name="uploadClaims" class="chox.web.actions.claim.UploadClaimsAction">
             <result>/jsp/claim/UploadClaims.jsp</result>
         </action>
-        <action name="Inbox" class="chox.web.actions.claim.InboxAction">
+        <action name="inbox" class="chox.web.actions.claim.InboxAction">
             <result>/jsp/claim/Inbox.jsp</result>
         </action>
         <action name="getClaimsbyStatus" class="chox.web.actions.claim.ClaimsAction" method="getClaimsbyStatus">
