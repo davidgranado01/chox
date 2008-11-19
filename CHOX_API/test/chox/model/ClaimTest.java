@@ -20,8 +20,6 @@ import static org.junit.Assert.*;
  * @author Emmanuel
  */
 public class ClaimTest {
-
-    private Session currentSession;
     
     public ClaimTest() {
     }
@@ -49,18 +47,7 @@ public class ClaimTest {
     public void testLoad() throws Exception{
        
         Session currentSession = HibernateUtil.currentSession();
-        Supplier s = (Supplier)currentSession.load(Supplier.class, 999);
-        Rental r = new Rental();
-        r.setSupplierReference("ABC123q");
-        r.setRentalStatus("Completed");
-        r.setSupplier(s);
-        
-        currentSession.beginTransaction();
-        currentSession.saveOrUpdate(r);
-        currentSession.getTransaction().commit();
-        
-        Rental r2 = (Rental)currentSession.load(Rental.class, r.getId());
-        assertNotNull(r2);       
+       
 
     }
 
