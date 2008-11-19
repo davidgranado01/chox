@@ -2,13 +2,10 @@
 "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
-    <constant name="struts.codebehind.defaultPackage" value="base-package" />
-    <constant name="struts.codebehind.pathPrefix" value="/WEB-INF/jsp/"/>
-    
+
     <constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
     <constant name="struts.devMode" value="true" />
     <constant name="struts.multipart.maxSize" value="1000000" />
-    
     <package name="home-package" extends="struts-default" namespace="/">
         <interceptors>
             <interceptor name="acegi" class="chox.web.security.AcegiInterceptor" />
@@ -19,48 +16,39 @@
         </interceptors>
         <default-interceptor-ref name="acegi" />
         <action name="index" class="chox.web.actions.IndexAction" >
-            <result name="success">/jsp/index.jsp</result>
+            <result name="success">/jsp/index.jsp
+            </result>
         </action>
         <action name="login" class="chox.web.actions.BaseAction" >
             <result name="success">/jsp/login.jsp?login_error=${login_error}
             </result>
         </action>
-    </package>
-    <package name="base-package" extends="home-package" >
-        <default-interceptor-ref name="paramsPrepareParamsStack" />
-
-        <!--<global-results>-->
-            <!--<result name="unknownError">/WEB-INF/jsp/error.jsp</result>-->
-        <!--</global-results>-->
-        <!--<global-exception-mappings>-->
-            <!--<exception-mapping exception="org.hibernate.exception.ConstraintViolationException" result="dupPK" />-->
-            <!--<exception-mapping exception="java.lang.Exception" result="unknownError" />-->
-        <!--</global-exception-mappings>-->
-    </package>
-
-    <!-- Configuration for the default package. -->
-    <package name="claim" namespace="/claim" extends="base-package">        
-        <action name="listAllClaims" class="chox.web.actions.claim.ListAllClaimsAction">
-            <result>/jsp/claim/listClaims-partial.jsp</result>
+        <action name="route" class="chox.web.actions.RouteAction" >
+            <result name="ins">/jsp/ins/Inbox.jsp</result>
+            <result name="cho">/jsp/cho/Inbox.jsp</result>
+            <result name="error">/jsp/index.jsp</result>
         </action>
-        <action name ="processClaimsAction" class ="chox.web.actions.claim.ProcessClaimsAction">
-            <result name ="success">/jsp/claim/UploadStatus.jsp
+    </package>
+    <package name="cho" namespace="/cho" extends="home-package">
+        <action name ="processClaimsAction" class ="chox.web.actions.cho.ProcessClaimsAction">
+            <result name ="success">/jsp/cho/UploadStatus.jsp
             </result>
-            <result name ="error">/jsp/claim/Uploadfailed.jsp
+            <result name ="error">/jsp/cho/Uploadfailed.jsp
             </result>
         </action>
-        <action name="uploadClaims" class="chox.web.actions.claim.UploadClaimsAction">
-            <result>/jsp/claim/UploadClaims.jsp</result>
-        </action>
-        <action name="inbox" class="chox.web.actions.claim.InboxAction">
-            <result>/jsp/claim/Inbox.jsp</result>
-        </action>
-        <action name="getClaimsbyStatus" class="chox.web.actions.claim.ClaimsAction" method="getClaimsbyStatus">
-            <param name="status">status
-            </param>
-            <result name="success">/jsp/JsonData.jsp</result>
+        <action name="uploadClaims" class="chox.web.actions.cho.UploadClaimsAction">
+            <result>/jsp/cho/UploadClaims.jsp</result>
         </action>
     </package>
     
+    <package name="ins" namespace="/ins" extends="home-package">
+        <action name="inbox" class="chox.web.actions.ins.InboxAction">
+            <result>/jsp/ins/Inbox.jsp</result>
+        </action>
+        <action name="getClaimsbyStatus" class="chox.web.actions.ins.ClaimsAction" method="getClaimsbyStatus">
+            <param name="status">status</param>
+            <result name="success">/jsp/JsonData.jsp</result>
+        </action>
+    </package>
     <include file="config-browser.xml"/>
 </struts>

@@ -8,7 +8,7 @@ import org.acegisecurity.context.SecurityContextHolder;
 import java.lang.reflect.Method;
 
 /**
- * @author Ian Roughley
+ * @author Emmanuel Kong
  * @version $Id$
  */
 public class AcegiInterceptor extends AbstractInterceptor {

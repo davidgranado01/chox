@@ -2,8 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
-package chox.web.actions.claim;
+package chox.web.actions.ins;
 
 import chox.web.actions.*;
 
@@ -11,12 +10,12 @@ import chox.web.actions.*;
  *
  * @author Emmanuel
  */
+public class InboxAction extends BaseAction {
 
-public class UploadClaimsAction extends BaseAction {
-
-    public UploadClaimsAction() {
+    public InboxAction() {
     }
 
+    @Override
     public String execute() throws Exception {
         return SUCCESS;
     }

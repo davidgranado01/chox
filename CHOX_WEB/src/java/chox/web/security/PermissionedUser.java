@@ -14,7 +14,7 @@ public class PermissionedUser implements UserDetails {
 
     private WebUser user;
 
-    public PermissionedUser( WebUser user ) {
+    public PermissionedUser(WebUser user) {
         this.user = user;
     }
 
@@ -23,17 +23,44 @@ public class PermissionedUser implements UserDetails {
     }
 
     public String getPassword() {
-        return user==null ? "" : user.getPassword();
+        return user == null ? "" : user.getPassword();
     }
 
-    public GrantedAuthority[] getAuthorities() 
-    {
+    //we currently support single user single role only
+    public GrantedAuthority[] getAuthorities() {
         WebUserRole role = user.getWebUserRole();
-        return new GrantedAuthority[] { new GrantedAuthorityImpl(role.getName()) };
+        return new GrantedAuthority[]{new GrantedAuthorityImpl(role.getName())};
     }
 
     public String getUsername() {
-        return user==null ? "" : user.getEmail();
+        return user == null ? "" : user.getEmail();
+    }
+
+    public boolean getIsCHO() {
+        if (user == null) {
+            return false;
+        } else {
+            WebUserRole role = user.getWebUserRole();
+            return role.getName().startsWith("ROLE_CHO");
+        }
+    }
+
+    public boolean getIsINS() {
+        if (user == null) {
+            return false;
+        } else {
+            WebUserRole role = user.getWebUserRole();
+            return role.getName().startsWith("ROLE_INS");
+        }
+    }
+
+    public boolean getIsCHOXAdmin() {
+        if (user == null) {
+            return false;
+        } else {
+            WebUserRole role = user.getWebUserRole();
+            return role.getName().equals("ROLE_CHO_ADMIN");
+        }
     }
 
     public boolean isAccountNonExpired() {
@@ -51,5 +78,4 @@ public class PermissionedUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

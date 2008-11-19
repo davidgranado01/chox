@@ -90,7 +90,7 @@
             <value>/login.action?login_error=1</value>
         </property>
         <property name="defaultTargetUrl">
-            <value>/claim/inbox.action</value>
+            <value>/route.action</value>
         </property>
         <property name="filterProcessesUrl">
             <value>/j_acegi_security_check</value>
@@ -125,26 +125,15 @@ Accordingly, you should place MOST SPECIFIC (ie a/b/c/d.*) expressions first, wi
         <property name="accessDecisionManager">
             <ref local="httpRequestAccessDecisionManager"/>
         </property>
+        <!-- Asssign folder access for each role
+            (Warning : Please keep the role setting for each folder in single line) -->
         <property name="objectDefinitionSource">
             <value>
                 CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
                 PATTERN_TYPE_APACHE_ANT
-                /claim/**=ROLE_CHO_ADMIN
-                    ,ROLE_CHO_ADMIN
-                    ,ROLE_INS_MANAGER
-                    ,ROLE_CHO_MANAGER
-                    ,ROLE_SP_CLAIMS_REC
-                    ,ROLE_CLAIM_HANDLER
-                    ,ROLE_PAYMENT_CLERK
-                    ,ROLE_CHO_OPERATIVE
-                /**=ROLE_ANONYMOUS
-                    ,ROLE_CHO_ADMIN
-                    ,ROLE_INS_MANAGER
-                    ,ROLE_CHO_MANAGER
-                    ,ROLE_SP_CLAIMS_REC
-                    ,ROLE_CLAIM_HANDLER
-                    ,ROLE_PAYMENT_CLERK
-                    ,ROLE_CHO_OPERATIVE
+                /ins/**=ROLE_ANONYMOUS,ROLE_CHOX_ADMIN,ROLE_INS_MNG,ROLE_INS_SCR,ROLE_INS_CR,ROLE_INS_PR,ROLE_INS_CH                        
+                /cho/**=ROLE_ANONYMOUS,ROLE_CHOX_ADMIN,ROLE_CHO_MNG,ROLE_CHO_OPR
+                /**=ROLE_ANONYMOUS,ROLE_CHOX_ADMIN,ROLE_INS_MNG,ROLE_INS_SCR,ROLE_INS_CR,ROLE_INS_PR,ROLE_INS_CH,ROLE_CHO_MNG,ROLE_CHO_OPR
             </value>
         </property>
     </bean>

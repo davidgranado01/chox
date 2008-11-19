@@ -126,6 +126,7 @@
         });    
     }    
 </script>
+INS
 <div id="claimPanel">      
     
     <dir id="tabPanel"></dir> 

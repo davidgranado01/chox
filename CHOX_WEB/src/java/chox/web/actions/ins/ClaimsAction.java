@@ -3,7 +3,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package chox.web.actions.claim;
+package chox.web.actions.ins;
 
 import chox.web.actions.*;
 import chox.model.Claim;
