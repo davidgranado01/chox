@@ -8,7 +8,7 @@ import chox.model.*;
 
 public class EngineerReportServiceImpl {
 
-        public static XMLParseResult saveEngineerReportForXMLUploader(Session currentSession, XMLParseResult xmlParseResult){
+    public static XMLParseResult saveEngineerReportForXMLUploader(Session currentSession, XMLParseResult xmlParseResult){
         
         if((xmlParseResult.getEngineerReports())!=null){
             

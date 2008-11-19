@@ -14,10 +14,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-/**
- *
- * @author Emmanuel
- */
 public class ClaimServiceImpl implements ClaimService {
 
     public static final String PENDING="Pending";
@@ -66,4 +62,24 @@ public class ClaimServiceImpl implements ClaimService {
     public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, String sUpdateType, Boolean isAllowPartialUpload) {
         return XmlProcessController.XMLValidationProcess(claimXMLFile, sUpdateType, isAllowPartialUpload);
     }
+    
+    public static XMLParseResult saveClaimForXMLUploader(Session currentSession, XMLParseResult xmlParseResult){
+        
+        Claim claim = xmlParseResult.getClaim();
+        
+        
+        return xmlParseResult;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
