@@ -9,7 +9,7 @@ import chox.model.*;
 
 public class IncidentServiceImpl {
 
-    public static XMLParseResult saveIncidentForXMLUploader(Session currentSession, XMLParseResult xmlParseResult){
+    public static XMLParseResult saveIncidentForXMLUploader(XMLParseResult xmlParseResult){
         
         Incident incident = xmlParseResult.getClaim().getIncident();
         
@@ -23,7 +23,7 @@ public class IncidentServiceImpl {
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
                 try{
-                    currentSession.saveOrUpdate(incident);
+                    xmlParseResult.getCurrentSession().saveOrUpdate(incident);
                 } catch (Exception e) {
                     xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
                 }

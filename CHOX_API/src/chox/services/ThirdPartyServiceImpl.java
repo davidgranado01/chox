@@ -8,30 +8,26 @@ import chox.model.*;
 
 public class ThirdPartyServiceImpl {
 
-    public static XMLParseResult saveThirdPartyForXMLUploader(Session currentSession, XMLParseResult xmlParseResult){
+    public static XMLParseResult saveThirdPartyForXMLUploader(XMLParseResult xmlParseResult){
         
         
         ThirdParty thirdparty = xmlParseResult.getClaim().getThirdParty();
         
         if(thirdparty!=null){
         
-            thirdparty.setCreatedBy(WebUserServiceImpl.getCurrentUser());
-            thirdparty.setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
-            thirdparty.setLastModifiedBy(WebUserServiceImpl.getCurrentUser());
-            thirdparty.setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
+            xmlParseResult.getClaim().getThirdParty().setCreatedBy(WebUserServiceImpl.getCurrentUser());
+            xmlParseResult.getClaim().getThirdParty().setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
+            xmlParseResult.getClaim().getThirdParty().setLastModifiedBy(WebUserServiceImpl.getCurrentUser());
+            xmlParseResult.getClaim().getThirdParty().setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
 
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
                 try{
-                    currentSession.saveOrUpdate(thirdparty);
+                    xmlParseResult.getCurrentSession().saveOrUpdate(xmlParseResult.getClaim().getThirdParty());
                 } catch (Exception e) {
                     xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
                 }
-
-                xmlParseResult.getClaim().setThirdParty(thirdparty);
-
             }
-            
         }
         
         return xmlParseResult;

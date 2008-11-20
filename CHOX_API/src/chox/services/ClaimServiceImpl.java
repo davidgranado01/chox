@@ -75,31 +75,30 @@ public class ClaimServiceImpl implements ClaimService {
         return XmlProcessController.XMLValidationProcess(claimXMLFile, sUpdateType, isAllowPartialUpload);
     }
     
-    public static XMLParseResult saveClaimForXMLUploader(Session currentSession, XMLParseResult xmlParseResult){
-        
-        Claim claim = xmlParseResult.getClaim();
+    public static XMLParseResult saveClaimForXMLUploader(XMLParseResult xmlParseResult){
         
         xmlParseResult.getClaim().setCreatedBy(WebUserServiceImpl.getCurrentUser());
         xmlParseResult.getClaim().setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
         xmlParseResult.getClaim().setLastModifiedBy(WebUserServiceImpl.getCurrentUser());
         xmlParseResult.getClaim().setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
-
-        xmlParseResult.getClaim().setInsurer(xmlParseResult.getClaim().getInsurer());
-        xmlParseResult.getClaim().setChorganisation(xmlParseResult.getClaim().getChorganisation());
-        xmlParseResult.getClaim().setLineOfBusiness(xmlParseResult.getClaim().getLineOfBusiness());
-        xmlParseResult.getClaim().setCustomer(xmlParseResult.getClaim().getCustomer());
-        xmlParseResult.getClaim().setIncident(xmlParseResult.getClaim().getIncident());
-        xmlParseResult.getClaim().setInvoice(xmlParseResult.getClaim().getInvoice());
-        xmlParseResult.getClaim().setThirdParty(xmlParseResult.getClaim().getThirdParty());
-        //xmlParseResult.getClaim().setVehicleHire(xmlParseResult.getVehiclehires().get(0));
         
+        if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
+            xmlParseResult.getClaim().setCustomer(xmlParseResult.getClaim().getCustomer());
+            xmlParseResult.getClaim().setThirdParty(xmlParseResult.getClaim().getThirdParty());
+            xmlParseResult.getClaim().setInsurer(xmlParseResult.getClaim().getInsurer());
+            xmlParseResult.getClaim().setChorganisation(xmlParseResult.getClaim().getChorganisation());
+            xmlParseResult.getClaim().setLineOfBusiness(xmlParseResult.getClaim().getLineOfBusiness());
+            xmlParseResult.getClaim().setIncident(xmlParseResult.getClaim().getIncident());
+            xmlParseResult.getClaim().setInvoice(xmlParseResult.getClaim().getInvoice());
+            xmlParseResult.getClaim().setEngineerReport(xmlParseResult.getClaim().getEngineerReport());
+            xmlParseResult.getClaim().setVehicleHire(xmlParseResult.getClaim().getVehicleHire());
 
-        try{
-            currentSession.saveOrUpdate(xmlParseResult.getClaim());
-        } catch (Exception e) {
-            xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
+            try{
+                xmlParseResult.getCurrentSession().saveOrUpdate(xmlParseResult.getClaim());
+            } catch (Exception e) {
+                xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
+            }
         }
-        
         return xmlParseResult;
     }
 }

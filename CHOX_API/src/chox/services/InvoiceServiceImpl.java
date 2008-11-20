@@ -8,7 +8,7 @@ import chox.model.*;
 
 public class InvoiceServiceImpl {
 
-    public static XMLParseResult saveInvoiceForXMLUploader(Session currentSession, XMLParseResult xmlParseResult){
+    public static XMLParseResult saveInvoiceForXMLUploader(XMLParseResult xmlParseResult){
         
         if((xmlParseResult.getClaim().getInvoice())!=null){
             
@@ -21,7 +21,7 @@ public class InvoiceServiceImpl {
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
                     try{
-                        currentSession.saveOrUpdate((xmlParseResult.getClaim().getInvoice()));
+                        xmlParseResult.getCurrentSession().saveOrUpdate((xmlParseResult.getClaim().getInvoice()));
                     } catch (Exception e) {
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
                     }

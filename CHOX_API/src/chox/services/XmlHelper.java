@@ -1,5 +1,6 @@
 package chox.services;
 
+import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.regex.*;
@@ -324,5 +325,106 @@ public class XmlHelper {
         }
         
         return xmlParseResult;
-    }    
+    }
+    
+    public static XMLParseResult xmlNodeValidation(
+            XMLParseResult xmlParseResult,
+            Element root,
+            String nodeName,
+            Boolean isMandatory,
+            String regExpression,
+            String strPath) {
+        
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, root, nodeName, strPath);
+
+        if (xmlParseResult.getIsCurrentScheValid()) {
+            xmlParseResult = xmlSchemaValueValidation(xmlParseResult, root, nodeName, isMandatory, regExpression, strPath);
+        }
+
+        return xmlParseResult;
+    }
+    
+    // VALIDATE THE ELEMENT
+    public static XMLParseResult xmlSchemaNodeValidation(
+        XMLParseResult xmlParseResult, 
+        Element root, 
+        String nodeName,
+        String strPath) {
+
+        Boolean bFlag = true;
+        String SchemaValidationRemark = xmlParseResult.getSchemaValidationRemark();
+
+        Element thisElement = XMLUtils.getElement(root, nodeName);
+
+        if (thisElement == null) {
+
+            SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strPath, nodeName);
+            bFlag = false;
+        }
+
+        if (!bFlag) {
+            xmlParseResult.setSchemaValidationRemark(SchemaValidationRemark);
+            xmlParseResult.setIsSchemaValid(bFlag);
+            xmlParseResult.setIsCurrentScheValid(bFlag);
+        }
+
+        return xmlParseResult;
+    }
+
+    public static XMLParseResult xmlSchemaNodeListValidation(
+            XMLParseResult xmlParseResult,
+            ArrayList<Element> thisElements,
+            String nodeName,
+            String strPath) {
+
+        String SchemaValidationRemark = xmlParseResult.getSchemaValidationRemark();
+
+        if (thisElements.size() <= 0) {
+            SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strPath, nodeName);
+            xmlParseResult.setSchemaValidationRemark(SchemaValidationRemark);
+            xmlParseResult.setIsSchemaValid(false);
+            xmlParseResult.setIsCurrentScheValid(false);
+        }
+
+        return xmlParseResult;
+    }
+
+    public static XMLParseResult xmlSchemaValueValidation(
+            XMLParseResult xmlParseResult,
+            Element root,
+            String nodeName,
+            Boolean isMandatory,
+            String regExpression,
+            String strPath) {
+
+        Boolean bFlag = true;
+
+        String DataValidationRemark = xmlParseResult.getDataValidationRemark();
+
+        Element thisElement = XMLUtils.getElement(root, nodeName);
+
+        if (thisElement != null) {
+
+            String thisElementValue = XMLUtils.getElementValue(root, nodeName);
+
+            if (thisElementValue == null || thisElementValue.trim().length() == 0) {
+                if (isMandatory) {
+                    DataValidationRemark = DataValidationRemark + XmlHelper.contructureDataMandatoryErrorMessage(strPath, nodeName);
+                    bFlag = false;
+                }
+            } else {
+                if (!XmlHelper.isValidDataType(thisElementValue, regExpression, nodeName)) {
+                    DataValidationRemark = DataValidationRemark + XmlHelper.contructureIncorrectTypeErrorMessage(strPath, nodeName);
+                    bFlag = false;
+                }
+            }
+            
+            if (!bFlag) {
+                xmlParseResult.setDataValidationRemark(DataValidationRemark);
+                xmlParseResult.setIsDataValid(bFlag);
+                xmlParseResult.setIsCurrentDataValid(bFlag);
+            }
+        }
+        return xmlParseResult;
+    }       
 }

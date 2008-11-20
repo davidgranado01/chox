@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class WitnessServiceImpl {
 
-    public static XMLParseResult saveWitnessForXMLUploader(Session currentSession, XMLParseResult xmlParseResult){
+    public static XMLParseResult saveWitnessForXMLUploader(XMLParseResult xmlParseResult){
         
         ArrayList<Witness> witnesses = xmlParseResult.getWitnesses();
         
@@ -28,7 +28,7 @@ public class WitnessServiceImpl {
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
                     try{
-                        currentSession.saveOrUpdate(witness);
+                        xmlParseResult.getCurrentSession().saveOrUpdate(witness);
                     } catch (Exception e) {
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
                     }

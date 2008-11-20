@@ -8,7 +8,7 @@ import chox.model.*;
 
 public class SolicitorServiceImpl {
 
-    public static XMLParseResult saveSolicitorForXMLUploader(Session currentSession, XMLParseResult xmlParseResult){
+    public static XMLParseResult saveSolicitorForXMLUploader(XMLParseResult xmlParseResult){
         
         if((xmlParseResult.getSolicitors())!=null){
             
@@ -22,7 +22,7 @@ public class SolicitorServiceImpl {
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
                     try{
-                        currentSession.saveOrUpdate(((xmlParseResult.getSolicitors()).get(i)));
+                        xmlParseResult.getCurrentSession().saveOrUpdate(((xmlParseResult.getSolicitors()).get(i)));
                     } catch (Exception e) {
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
                     }

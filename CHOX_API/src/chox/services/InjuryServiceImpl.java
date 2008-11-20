@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class InjuryServiceImpl {
 
-    public static XMLParseResult saveInjuryForXMLUploader(Session currentSession, XMLParseResult xmlParseResult){
+    public static XMLParseResult saveInjuryForXMLUploader(XMLParseResult xmlParseResult){
         
         if((xmlParseResult.getInjuries())!=null){
             
@@ -23,7 +23,7 @@ public class InjuryServiceImpl {
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
                     try{
-                        currentSession.saveOrUpdate(((xmlParseResult.getInjuries()).get(i)));
+                        xmlParseResult.getCurrentSession().saveOrUpdate(((xmlParseResult.getInjuries()).get(i)));
                     } catch (Exception e) {
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
                     }

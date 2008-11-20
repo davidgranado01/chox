@@ -8,27 +8,25 @@ import chox.model.*;
 
 public class VehicleHireServiceImpl {
 
-    public static XMLParseResult saveVehicleHireForXMLUploader(Session currentSession, XMLParseResult xmlParseResult){
+    public static XMLParseResult saveVehicleHireForXMLUploader(XMLParseResult xmlParseResult){
         
-        if((xmlParseResult.getVehiclehires())!=null){
+        if((xmlParseResult.getClaim().getVehicleHire())!=null){
             
-            for(Integer i=0; i<(xmlParseResult.getVehiclehires()).size(); i++){
-                
-                ((xmlParseResult.getVehiclehires()).get(i)).setCreatedBy(WebUserServiceImpl.getCurrentUser());
-                ((xmlParseResult.getVehiclehires()).get(i)).setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
-                ((xmlParseResult.getVehiclehires()).get(i)).setLastModifiedBy(WebUserServiceImpl.getCurrentUser());
-                ((xmlParseResult.getVehiclehires()).get(i)).setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
+            (xmlParseResult.getClaim().getVehicleHire()).setCreatedBy(WebUserServiceImpl.getCurrentUser());
+            (xmlParseResult.getClaim().getVehicleHire()).setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
+            (xmlParseResult.getClaim().getVehicleHire()).setLastModifiedBy(WebUserServiceImpl.getCurrentUser());
+            (xmlParseResult.getClaim().getVehicleHire()).setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
 
-                if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
+            if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
-                    try{
-                        currentSession.saveOrUpdate(((xmlParseResult.getVehiclehires()).get(i)));
-                    } catch (Exception e) {
-                        xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
-                    }
+                try{
+                    xmlParseResult.getCurrentSession().saveOrUpdate(xmlParseResult.getClaim().getVehicleHire());
+                } catch (Exception e) {
+                    xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
                 }
             }
         }
+        
         
         return xmlParseResult;
     }      
