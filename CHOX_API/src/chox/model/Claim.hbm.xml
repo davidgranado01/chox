@@ -1,29 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-
 <hibernate-mapping>
-  <class name="chox.model.Claim" table="claim">
-    <id name="id" column="id">
-      <generator class="increment" />
-    </id>
-    <property name="managingRepair" column="managing_repair" not-null="true"/>
-    <property name="policyHolderContactDate" column="policy_holder_contact_date" />
-    <property name="choReference" column="cho_reference" />
-    <property name="status" column="status" not-null="true" />
-    <property name="createdBy" column="created_by" not-null="true" />
-    <property name="createdDate" column="created_date" not-null="true" />
-    <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
-    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
-    <many-to-one name="chorganisation" class="chox.model.Chorganisation" column="chorganisation_id" lazy="false"  />
-    <many-to-one name="customer" class="chox.model.Customer" column="customer_id" />
-    <many-to-one name="engineerReport" class="chox.model.EngineerReport" column="engineer_report_id" />
-    <many-to-one name="hireMonitoringDetail" class="chox.model.HireMonitoringDetail" column="hire_monitoring_detail_id" />
-    <many-to-one name="incident" class="chox.model.Incident" column="incident_id" />
-    <many-to-one name="insurer" class="chox.model.Insurer" column="insurer_id" lazy="false" />
-    <many-to-one name="invoice" class="chox.model.Invoice" column="invoice_id" />
-    <many-to-one name="lineOfBusiness" class="chox.model.LineOfBusiness" column="line_of_business_id" />
-    <many-to-one name="thirdParty" class="chox.model.ThirdParty" column="third_party_id" />
-    <many-to-one name="vehicleHire" class="chox.model.VehicleHire" column="vehicle_hire_id" lazy="false"  />
-  </class>
+        
+    <class name="chox.model.Claim" table="claim">
+        <id name="id" column="id">
+            <generator class="increment" />
+        </id>
+        <property name="managingRepair" column="managing_repair" not-null="true"/>
+        <property name="policyHolderContactDate" column="policy_holder_contact_date" />
+        <property name="choReference" column="cho_reference" />
+        <property name="status" column="status" not-null="true" />
+        <property name="createdBy" column="created_by" not-null="true" />
+        <property name="createdDate" column="created_date" not-null="true" />
+        <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
+        <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
+        <many-to-one name="chorganisation" class="chox.model.Chorganisation" column="chorganisation_id" lazy="false"  />
+        <many-to-one name="customer" class="chox.model.Customer" column="customer_id" />
+        <many-to-one name="engineerReport" class="chox.model.EngineerReport" column="engineer_report_id" />
+        <many-to-one name="hireMonitoringDetail" class="chox.model.HireMonitoringDetail" column="hire_monitoring_detail_id" />
+        <many-to-one name="incident" class="chox.model.Incident" column="incident_id" />
+        <many-to-one name="insurer" class="chox.model.Insurer" column="insurer_id" lazy="false" />
+        <many-to-one name="invoice" class="chox.model.Invoice" column="invoice_id" />
+        <many-to-one name="lineOfBusiness" class="chox.model.LineOfBusiness" column="line_of_business_id" />
+        <many-to-one name="thirdParty" class="chox.model.ThirdParty" column="third_party_id" />
+        <many-to-one name="vehicleHire" class="chox.model.VehicleHire" column="vehicle_hire_id" lazy="false" />
+        
+        <filter name="CHOFilter" condition=":chorganisationId = chorganisation_id" />
+        <filter name="InsurerFilter" condition=":insurerId = insurer_id" />
+
+    </class>
+    
+    <filter-def name="CHOFilter">
+        <filter-param name="chorganisationId" type="integer" />
+    </filter-def>
+    <filter-def name="InsurerFilter">
+        <filter-param name="insurerId" type="integer" />
+    </filter-def>
 </hibernate-mapping>
 

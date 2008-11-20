@@ -15,7 +15,9 @@
     <property name="createdDate" column="created_date" not-null="true" />
     <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
     <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
-    <many-to-one name="webUserRole" class="chox.model.WebUserRole" column="role_id" />
+    <many-to-one name="chorganisation" class="chox.model.Chorganisation" column="chorganisation_id" />
+    <many-to-one name="insurer" class="chox.model.Insurer" column="insurer_id" lazy="false" />
+    <many-to-one name="webUserRole" class="chox.model.WebUserRole" column="role_id" lazy="false"/>
   </class>
 </hibernate-mapping>
 

@@ -58,6 +58,16 @@ public class WebUser implements Serializable
 	protected Date lastModifiedDate;
 
 	/** 
+	 * This attribute represents the foreign key relationship to the chorganisation table.
+	 */
+	protected Chorganisation chorganisation;
+
+	/** 
+	 * This attribute represents the foreign key relationship to the insurer table.
+	 */
+	protected Insurer insurer;
+
+	/** 
 	 * This attribute represents the foreign key relationship to the web_user_role table.
 	 */
 	protected WebUserRole webUserRole;
@@ -268,6 +278,46 @@ public class WebUser implements Serializable
 	public void setLastModifiedDate(java.util.Date lastModifiedDate)
 	{
 		this.lastModifiedDate = lastModifiedDate;
+	}
+
+	/**
+	 * Method 'getChorganisation'
+	 * 
+	 * @return Chorganisation
+	 */
+	public Chorganisation getChorganisation()
+	{
+		return chorganisation;
+	}
+
+	/**
+	 * Method 'setChorganisation'
+	 * 
+	 * @param chorganisation
+	 */
+	public void setChorganisation(Chorganisation chorganisation)
+	{
+		this.chorganisation = chorganisation;
+	}
+
+	/**
+	 * Method 'getInsurer'
+	 * 
+	 * @return Insurer
+	 */
+	public Insurer getInsurer()
+	{
+		return insurer;
+	}
+
+	/**
+	 * Method 'setInsurer'
+	 * 
+	 * @param insurer
+	 */
+	public void setInsurer(Insurer insurer)
+	{
+		this.insurer = insurer;
 	}
 
 	/**
