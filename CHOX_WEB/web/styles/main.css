@@ -1,3 +1,9 @@
+body
+{    
+  font-family: arial,tahoma,helvetica,sans-serif;  
+  font-size: 12px;
+}
+
 #page-container { 
     width: 785px; 
     border: 2px solid black; 
@@ -106,4 +112,5 @@ ul.filterlist li{
     padding: 3px 10px 3px 10px;
     margin: 5px;
     border: 1px solid #CCC;
+    width: 250px;
 }

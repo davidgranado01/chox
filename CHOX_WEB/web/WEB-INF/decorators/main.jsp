@@ -23,9 +23,6 @@
             <div id="header">
                 <%@ include file="header.jsp" %> 
             </div>
-            <div id="navigation">
-                <%@ include file="navigation.jsp" %> 
-            </div>
             <div id="content">
                 <div id="include">
                     <decorator:body/> 

@@ -51,7 +51,7 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>hibernateFilter</filter-name>
-        <url-pattern>*.do</url-pattern>
+        <url-pattern>*.action</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>sitemesh</filter-name>

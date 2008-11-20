@@ -28,8 +28,8 @@ public class PermissionedUser implements UserDetails {
 
     //we currently support single user single role only
     public GrantedAuthority[] getAuthorities() {
-        WebUserRole role = user.getWebUserRole();
-        return new GrantedAuthority[]{new GrantedAuthorityImpl(role.getName())};
+        String securityRole = getIsCHOXAdmin() ? "ROLE_ADMIN" : "ROLE_USER";
+        return new GrantedAuthority[]{new GrantedAuthorityImpl(securityRole)};
     }
 
     public String getUsername() {

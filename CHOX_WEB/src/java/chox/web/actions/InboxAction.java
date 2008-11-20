@@ -2,11 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package chox.web.actions.ins;
+package chox.web.actions;
 
 import chox.model.ClaimStatus;
 import chox.services.ClaimService;
-import chox.web.actions.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;

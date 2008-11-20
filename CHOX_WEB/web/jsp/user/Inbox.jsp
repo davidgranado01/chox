@@ -31,7 +31,7 @@
         
     var ds = new Ext.data.Store({
         proxy: new Ext.data.HttpProxy
-        ({url: 'ins/getClaimsbyStatus.action',method:'POST'}),
+        ({url: 'user/getClaimsbyStatus.action',method:'POST'}),
         reader:rd        
     });
 
@@ -106,7 +106,7 @@
         });    
     }    
 </script>
-INS
+
 <div id="claimPanel">      
     
     <dir id="tabPanel"></dir> 

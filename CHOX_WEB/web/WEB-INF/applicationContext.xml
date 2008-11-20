@@ -2,5 +2,6 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-autowire="autodetect">
     <bean id="claimService" class="chox.services.ClaimServiceImpl" singleton="false"/>
+    <bean id="filterProvider" class="chox.web.data.FilterProviderImpl" singleton="false"/>
 </beans>
 

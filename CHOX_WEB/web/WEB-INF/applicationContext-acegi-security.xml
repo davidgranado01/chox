@@ -90,7 +90,7 @@
             <value>/login.action?login_error=1</value>
         </property>
         <property name="defaultTargetUrl">
-            <value>/route.action</value>
+            <value>/user/inbox.action</value>
         </property>
         <property name="filterProcessesUrl">
             <value>/j_acegi_security_check</value>
@@ -98,7 +98,7 @@
     </bean>
     <bean id="authenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
         <property name="loginFormUrl">
-            <value>/login.action</value>
+            <value>/login.action?login_error=1</value>
         </property>
         <property name="forceHttps">
             <value>false</value>
@@ -131,9 +131,9 @@ Accordingly, you should place MOST SPECIFIC (ie a/b/c/d.*) expressions first, wi
             <value>
                 CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
                 PATTERN_TYPE_APACHE_ANT
-                /ins/**=ROLE_ANONYMOUS,ROLE_CHOX_ADMIN,ROLE_INS_MNG,ROLE_INS_SCR,ROLE_INS_CR,ROLE_INS_PR,ROLE_INS_CH                        
-                /cho/**=ROLE_ANONYMOUS,ROLE_CHOX_ADMIN,ROLE_CHO_MNG,ROLE_CHO_OPR
-                /**=ROLE_ANONYMOUS,ROLE_CHOX_ADMIN,ROLE_INS_MNG,ROLE_INS_SCR,ROLE_INS_CR,ROLE_INS_PR,ROLE_INS_CH,ROLE_CHO_MNG,ROLE_CHO_OPR
+                /user/**=ROLE_USER,ROLE_ADMIN                        
+                /admin/**=ROLE_ADMIN 
+                /**=ROLE_ANONYMOUS,ROLE_USER,ROLE_ADMIN
             </value>
         </property>
     </bean>

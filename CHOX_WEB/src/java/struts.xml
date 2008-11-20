@@ -9,13 +9,16 @@
     <package name="home-package" extends="struts-default" namespace="/">
         <interceptors>
             <interceptor name="acegi" class="chox.web.security.AcegiInterceptor" />
+            <interceptor name="hibernateUserDataFilter" class="chox.web.data.HibernateUserDataFilterInterceptor" />
             <interceptor-stack name="authenticated">
                 <interceptor-ref name="acegi"/>
-                <interceptor-ref name="paramsPrepareParamsStack"/>
-            </interceptor-stack>
+                <interceptor-ref name="hibernateUserDataFilter"/>
+                <interceptor-ref name="paramsPrepareParamsStack"/>       
+            </interceptor-stack>            
         </interceptors>
+                
+       <default-interceptor-ref name="authenticated" />
         
-        <default-interceptor-ref name="acegi" />
         <action name="index" class="chox.web.actions.IndexAction" >
             <result name="success">/jsp/index.jsp
             </result>
@@ -24,44 +27,25 @@
             <result name="success">/jsp/login.jsp?login_error=${login_error}
             </result>
         </action>
-        <action name="route" class="chox.web.actions.RouteAction" >
-            <result name="ins" type="redirect-action">
-                <param name="actionName">inbox.action</param>
-                <param name="namespace">ins</param>
-            </result>
-           <result name="cho" type="redirect-action">
-                <param name="actionName">inbox.action</param>
-                <param name="namespace">cho</param>
-            </result>
-            <result name="error" type="redirect-action">
-                <param name="actionName">index.action</param>
-            </result>
-        </action>
     </package>
-    <package name="cho" namespace="/cho" extends="home-package">
-        <default-interceptor-ref name="paramsPrepareParamsStack"/>
-
-        <action name ="processClaimsAction" class ="chox.web.actions.cho.ProcessClaimsAction">
-            <result name ="success">/jsp/cho/UploadStatus.jsp
+    <package name="user" namespace="/user" extends="home-package">
+        <action name ="processClaimsAction" class ="chox.web.actions.ProcessClaimsAction">
+            <result name ="success">/jsp/user/UploadStatus.jsp
             </result>
-            <result name ="error">/jsp/cho/Uploadfailed.jsp
+            <result name ="error">/jsp/user/Uploadfailed.jsp
             </result>
         </action>
-        <action name="uploadClaims" class="chox.web.actions.cho.UploadClaimsAction">
-            <result>/jsp/cho/UploadClaims.jsp</result>
+        <action name="uploadClaims" class="chox.web.actions.UploadClaimsAction">
+            <result>/jsp/user/UploadClaims.jsp</result>
         </action>
-    </package>
-    
-    <package name="ins" namespace="/ins" extends="home-package">
-        <default-interceptor-ref name="paramsPrepareParamsStack"/>
-
-        <action name="inbox" class="chox.web.actions.ins.InboxAction">
-            <result>/jsp/ins/Inbox.jsp</result>
+        <action name="inbox" class="chox.web.actions.InboxAction">
+            <result>/jsp/user/Inbox.jsp</result>
         </action>
-        <action name="getClaimsbyStatus" class="chox.web.actions.ins.ClaimsAction" method="getClaimsbyStatus">
+        <action name="getClaimsbyStatus" class="chox.web.actions.ClaimsAction" method="getClaimsbyStatus">
             <param name="status">status</param>
             <result name="success">/jsp/JsonData.jsp</result>
         </action>
     </package>
+
     <include file="config-browser.xml"/>
 </struts>
