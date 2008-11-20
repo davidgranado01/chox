@@ -18,7 +18,7 @@ public interface ClaimService {
     
     public List listAllClaims();
     public List listClaimsByStatus(String status);
-
+    public Long getCountByStatus(String status);
     public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, String sUpdateType, Boolean isAllowPartialUpload);
 
 }

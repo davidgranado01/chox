@@ -25,13 +25,25 @@ public class ClaimServiceImpl implements ClaimService {
     public List listAllClaims() {
         Session currentSession = HibernateUtil.currentSession();
         Criteria criteria = currentSession.createCriteria(Claim.class);
-        return criteria.list();
+        List claims =  criteria.list();
+        
+        return claims;
     }
 
     public List listClaimsByStatus(String status) {
         Session currentSession = HibernateUtil.currentSession();
-        Criteria criteria = currentSession.createCriteria(Claim.class).add(Restrictions.eq("claimStatus", status));
-        return criteria.list();
+        Criteria criteria = currentSession.createCriteria(Claim.class).add(Restrictions.eq("status", status));
+        List claims =  criteria.list();
+          
+        return claims;
+    }
+    
+    public Long getCountByStatus(String status)
+    {
+        Session currentSession = HibernateUtil.currentSession();
+        Long count = (Long)currentSession.createQuery("select count(*) from Claim where status = '" + status +"'").uniqueResult();
+       
+        return count;
     }
     
     public static Boolean isClaimExist(String CHOClaimId){
