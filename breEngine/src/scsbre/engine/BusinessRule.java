@@ -4,5 +4,5 @@ import scsbre.model.IClaimInfo;
 
 public interface BusinessRule {
 
-    RuleEvaluationResult run(IClaimInfo claim);
+    RuleEvaluationResult run(IClaimInfo claim); 
 }
