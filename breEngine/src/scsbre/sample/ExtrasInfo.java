@@ -340,30 +340,6 @@ public class ExtrasInfo implements IExtrasInfo {
         this.deliveryCollectionQty = deliveryCollectionQty;
     }
 
-    /*-------------- non-standard methods ----------------------------*/
-    /* (non-Javadoc)
-     * @see scsbre.model.IExtrasInfo#getTotalExtras()
-     */
-    public BigDecimal getTotalExtras() {
 
 
-        BigDecimal total =BigDecimal.ZERO;
-
-
-        total = total.add(cdwFee);
-        total = total.add(automaticFee);
-        total = total.add(satNavFee);
-        total = total.add(estateFee);
-        total = total.add(babySeatFee);
-        total = total.add(towBarsFee);
-        total = total.add(nonStandardInsurancePremiumFee);
-        total = total.add(adminFee);
-        total = total.add(roofRackFee);
-        total = total.add(dualControlFee);
-        total = total.add(deliveryCollectionFee);
-
-        return total;
-
-
-    }
 }

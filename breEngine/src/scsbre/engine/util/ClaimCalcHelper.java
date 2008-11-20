@@ -1,6 +1,5 @@
 package scsbre.engine.util;
 
-import scsbre.engine.util.CalcHelper;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -10,6 +9,7 @@ public class ClaimCalcHelper {
 	
 	
 	private IClaimInfo claim;
+        private ExtrasCalcHelper exCalcHelper;
 	
 	private ClaimCalcHelper(){
 		
@@ -20,6 +20,7 @@ public class ClaimCalcHelper {
 	{
 		ClaimCalcHelper cc = new ClaimCalcHelper();
 		cc.claim = c;
+                cc.exCalcHelper = ExtrasCalcHelper.Create(c.getClaimExtras());
 		return cc;		
 	}
 	
@@ -36,7 +37,7 @@ public class ClaimCalcHelper {
 
 	public BigDecimal getDailyHireRateCharged()
 	{
-		BigDecimal hireNetMinusExtras = claim.getClaimInvoice().getHireNet().subtract(claim.getClaimExtras().getTotalExtras());
+		BigDecimal hireNetMinusExtras = claim.getClaimInvoice().getHireNet().subtract(exCalcHelper.getTotalExtras());
 		return hireNetMinusExtras.divide(new BigDecimal(claim.getClaimHireDetail().getNumberOfHireDays()));
 	}
 

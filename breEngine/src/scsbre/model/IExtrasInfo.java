@@ -94,5 +94,5 @@ public interface IExtrasInfo {
 
     public void setDeliveryCollectionQty(BigDecimal deliveryCollectionQty);
 
-    public BigDecimal getTotalExtras();
+    //public BigDecimal getTotalExtras();
 }
