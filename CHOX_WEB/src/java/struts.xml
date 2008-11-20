@@ -17,7 +17,7 @@
             </interceptor-stack>            
         </interceptors>
                 
-       <default-interceptor-ref name="authenticated" />
+       <default-interceptor-ref name="acegi" />
         
         <action name="index" class="chox.web.actions.IndexAction" >
             <result name="success">/jsp/index.jsp
@@ -29,6 +29,8 @@
         </action>
     </package>
     <package name="user" namespace="/user" extends="home-package">
+        <default-interceptor-ref name="authenticated" />
+        
         <action name ="processClaimsAction" class ="chox.web.actions.ProcessClaimsAction">
             <result name ="success">/jsp/user/UploadStatus.jsp
             </result>
