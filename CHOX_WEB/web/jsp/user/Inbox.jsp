@@ -31,45 +31,23 @@
         
     var ds = new Ext.data.Store({
         proxy: new Ext.data.HttpProxy
-        ({url: 'cho/getClaimsbyStatus.action',method:'POST'}),
+        ({url: 'ins/getClaimsbyStatus.action',method:'POST'}),
         reader:rd        
     });
 
     Ext.onReady(setupGrid);
     
-    function showAllClaim()
+    function showClaimByStatus(status)
     {
+    
         ds.load(
         {
             params:
                 {
-                status: 'All'
+                status: status
             }
         });
-    }
-     
-    function showAuthorizedClaim()
-    {
-        ds.load(
-        {
-            params:
-                {
-                status: 'Authorized'
-            }
-        });
-
-    }     
-     
-    function showAwaitingAuthorizationClaim()
-    {       
-        ds.load(
-        {
-            params:
-                {
-                status: 'Awaiting Authorization'
-            }
-        });
-    }     
+    }      
     
     function setupGrid(){
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
@@ -86,8 +64,10 @@
         var grid = new Ext.grid.GridPanel({
             ds: ds,
             columns: [
-                {id:'Id',header: "Supplier Reference No.", width: 150, sortable: true, dataIndex: 'supplierReference'},
-                {header: "Claim Number", width: 250, sortable: true, dataIndex: 'id'},
+                {id:'Id',header: "Claim Number", width: 250, sortable: true, dataIndex: 'id', 
+                    renderer:function(value){
+                        return '<a href="index.action">' + value + '</a>'}},
+                {header: "Supplier Reference No.", width: 150, sortable: true, dataIndex: 'supplierReference'},                
                 {header: "VRN", width: 250, sortable: true, dataIndex: 'vehicleRegistration'},
                 {header: "Invoice Amount", width: 250, sortable: true, dataIndex: 'invoiceAmount'},
                 {header: "Date Uploaded", width: 250, sortable: true, 
@@ -112,7 +92,7 @@
 
             activeTab: 0,
             items:[
-                {contentEl:'filterPanelTab', title:'Filter'},
+                {contentEl:'filterPanelTab',height: 35, title:'Filter'},
                 {contentEl:'searchPanelTab', title:'Search'}
             ]
         });  
@@ -126,18 +106,25 @@
         });    
     }    
 </script>
-CHO
+INS
 <div id="claimPanel">      
     
     <dir id="tabPanel"></dir> 
     
     <div id="gridPanel"></div>
     
-    <div id="filterPanelTab">
-        <ul>
-            <li><a href="javascript:showAllClaim();">All claims (?)</a></li>
-            <li><a href="javascript:showAuthorizedClaim();">Acknowledged claims (?)</a></li>
-            <li><a href="javascript:showAwaitingAuthorizationClaim();">Unacknowledged claims (?)</a></li>
+    <div id="filterPanelTab" class="filterPanelTab">
+        <ul class="filterlist">
+            <li><a href="javascript:showClaimByStatus('ClaimUnacknowledged');" >Claims Awaiting Acknowledgement (<s:property value="unacknowledgedClaimCount" />)</a></li> 
+            <li><a href="javascript:showClaimByStatus('ClaimAcknowledged');" >Acknowledged Claims (<s:property value="acknowledgedClaimCount" />)</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >Rejected Claims</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >Accepted Rejected Claims</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >Claims Awaiting Claims Handling Payment</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >DA Payment Logged</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >Claims Awaiting Invoice Payment</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >Accepted Rejected Invoices</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >Approved Invoices Ready For payment</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >Invoice Payment Logged</a></li>
         </ul>
     </div>
     <div id="searchPanelTab" class="x-hide-display">
