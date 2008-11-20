@@ -31,45 +31,23 @@
         
     var ds = new Ext.data.Store({
         proxy: new Ext.data.HttpProxy
-        ({url: 'getClaimsbyStatus.action',method:'POST'}),
+        ({url: 'ins/getClaimsbyStatus.action',method:'POST'}),
         reader:rd        
     });
 
     Ext.onReady(setupGrid);
     
-    function showAllClaim()
+    function showClaimByStatus(status)
     {
+    
         ds.load(
         {
             params:
                 {
-                status: 'All'
+                status: status
             }
         });
-    }
-     
-    function showAuthorizedClaim()
-    {
-        ds.load(
-        {
-            params:
-                {
-                status: 'Authorized'
-            }
-        });
-
-    }     
-     
-    function showAwaitingAuthorizationClaim()
-    {       
-        ds.load(
-        {
-            params:
-                {
-                status: 'Awaiting Authorization'
-            }
-        });
-    }     
+    }      
     
     function setupGrid(){
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
@@ -133,11 +111,18 @@ INS
     
     <div id="gridPanel"></div>
     
-    <div id="filterPanelTab">
-        <ul>
-            <li><a href="javascript:showAllClaim();">All claims (?)</a></li>
-            <li><a href="javascript:showAuthorizedClaim();">Acknowledged claims (?)</a></li>
-            <li><a href="javascript:showAwaitingAuthorizationClaim();">Unacknowledged claims (?)</a></li>
+    <div id="filterPanelTab" class="filterPanelTab">
+        <ul class="filterlist">
+            <li><a href="javascript:showClaimByStatus('ClaimUnacknowledged');" >Claims Awaiting Acknowledgement (<s:property value="unacknowledgedClaimCount" />)</a></li> 
+            <li><a href="javascript:showClaimByStatus('ClaimAcknowledged');" >Acknowledged Claims (<s:property value="acknowledgedClaimCount" />)</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >Rejected Claims</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >Accepted Rejected Claims (closed)</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >Claims Awaiting Claims Handling Payment</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >DA Payment Logged</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >Claims Awaiting Invoice Payment with no action</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >Accepted Rejected Invoices (closed)</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >Approved Invoices Ready For payment</a></li>
+            <li><a href="javascript:showClaimByStatus('');" >Invoice Payment Logged</a></li>
         </ul>
     </div>
     <div id="searchPanelTab" class="x-hide-display">

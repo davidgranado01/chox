@@ -14,6 +14,7 @@
                 <interceptor-ref name="paramsPrepareParamsStack"/>
             </interceptor-stack>
         </interceptors>
+        
         <default-interceptor-ref name="acegi" />
         <action name="index" class="chox.web.actions.IndexAction" >
             <result name="success">/jsp/index.jsp
@@ -24,12 +25,22 @@
             </result>
         </action>
         <action name="route" class="chox.web.actions.RouteAction" >
-            <result name="ins">/jsp/ins/Inbox.jsp</result>
-            <result name="cho">/jsp/cho/Inbox.jsp</result>
-            <result name="error">/jsp/index.jsp</result>
+            <result name="ins" type="redirect-action">
+                <param name="actionName">inbox.action</param>
+                <param name="namespace">ins</param>
+            </result>
+           <result name="cho" type="redirect-action">
+                <param name="actionName">inbox.action</param>
+                <param name="namespace">cho</param>
+            </result>
+            <result name="error" type="redirect-action">
+                <param name="actionName">index.action</param>
+            </result>
         </action>
     </package>
     <package name="cho" namespace="/cho" extends="home-package">
+        <default-interceptor-ref name="paramsPrepareParamsStack"/>
+
         <action name ="processClaimsAction" class ="chox.web.actions.cho.ProcessClaimsAction">
             <result name ="success">/jsp/cho/UploadStatus.jsp
             </result>
@@ -42,6 +53,8 @@
     </package>
     
     <package name="ins" namespace="/ins" extends="home-package">
+        <default-interceptor-ref name="paramsPrepareParamsStack"/>
+
         <action name="inbox" class="chox.web.actions.ins.InboxAction">
             <result>/jsp/ins/Inbox.jsp</result>
         </action>

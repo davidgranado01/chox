@@ -5,7 +5,10 @@
 
 package chox.web.viewdata;
 
+import chox.model.Chorganisation;
 import chox.model.Claim;
+import chox.model.Insurer;
+import chox.model.VehicleHire;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -26,15 +29,20 @@ public class claimGridViewData {
     
     public claimGridViewData(Claim claim)
     {        
+        VehicleHire v = claim.getVehicleHire();
+        Chorganisation c = claim.getChorganisation();
+        Insurer i = claim.getInsurer();
+        
         this.id = claim.getId();
         this.supplierReference = claim.getChoReference();
         this.invoiceAmount = BigDecimal.ZERO; //TODO : assign  invoice amount 
-        this.vehicleRegistration = claim.getVehicleHire().getVehicleRegistration();
+        
+        this.vehicleRegistration = v == null ? "" : v.getVehicleRegistration();
         this.lineOfBusiness = "";//TODO : assign lineOfBusiness
         this.created = claim.getCreatedDate();
         this.status = claim.getStatus();
-        this.cho = claim.getChorganisation().getName();
-        this.insurer = claim.getInsurer().getName();//TODO : assign insurer
+        this.cho = c == null ? "" : c.getName();
+        this.insurer = i == null ? "" : i.getName();//TODO : assign insurer
             
     }
 

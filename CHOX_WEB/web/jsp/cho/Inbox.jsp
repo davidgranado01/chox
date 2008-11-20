@@ -31,7 +31,7 @@
         
     var ds = new Ext.data.Store({
         proxy: new Ext.data.HttpProxy
-        ({url: 'getClaimsbyStatus.action',method:'POST'}),
+        ({url: 'cho/getClaimsbyStatus.action',method:'POST'}),
         reader:rd        
     });
 
