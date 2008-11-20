@@ -26,7 +26,7 @@ public class ClaimServiceImpl implements ClaimService {
         Session currentSession = HibernateUtil.currentSession();
         Criteria criteria = currentSession.createCriteria(Claim.class);
         List claims =  criteria.list();
-        
+        HibernateUtil.closeSession();
         return claims;
     }
 
@@ -34,7 +34,7 @@ public class ClaimServiceImpl implements ClaimService {
         Session currentSession = HibernateUtil.currentSession();
         Criteria criteria = currentSession.createCriteria(Claim.class).add(Restrictions.eq("status", status));
         List claims =  criteria.list();
-          
+        HibernateUtil.closeSession();  
         return claims;
     }
     
@@ -42,7 +42,7 @@ public class ClaimServiceImpl implements ClaimService {
     {
         Session currentSession = HibernateUtil.currentSession();
         Long count = (Long)currentSession.createQuery("select count(*) from Claim where status = '" + status +"'").uniqueResult();
-       
+        HibernateUtil.closeSession();
         return count;
     }
     
