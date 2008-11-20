@@ -102,7 +102,8 @@ public class RulesEngine {
         if (eReport.getEstimatedTotalRepairAmount().compareTo(BigDecimal.ZERO) > 0) {
             return invoice.getRepairGross().compareTo(eReport.getEstimatedTotalRepairAmount()) <= 0;
         } else {
-            return invoice.getRepairGross().compareTo(BigDecimal.ZERO) == 0;
+            return CalcHelper.EqualTo(invoice.getRepairGross(), BigDecimal.ZERO);
+            //return invoice.getRepairGross().compareTo(BigDecimal.ZERO) == 0;
         }
     }
 
@@ -148,12 +149,14 @@ public class RulesEngine {
     }
 
     //rule 16.
-    public boolean claimHandlingAmountAndDeductionBothEqualZeroForDA() throws InvalidTestException {
+    public boolean handlingAmountAndDeductionBothEqualZeroForDA() throws InvalidTestException {
         if (claim.getClaimCHOrganisation().getIsDelegatedAuthority()) {
             throw new InvalidTestException("Not a valid test for DA CHO's");
         }
-        boolean result = invoice.getClaimsHandlingInvoiceAmount().compareTo(BigDecimal.ZERO) == 0;
-        return result && (invoice.getDeductionForClaimsHandlingFee().compareTo(BigDecimal.ZERO) == 0);
+        
+        boolean result = CalcHelper.EqualTo(invoice.getClaimsHandlingInvoiceAmount(), BigDecimal.ZERO);
+        return result && CalcHelper.EqualTo(invoice.getDeductionForClaimsHandlingFee(), BigDecimal.ZERO);
+      
     }
 
     //rule 17.
@@ -162,13 +165,15 @@ public class RulesEngine {
 
             throw new InvalidTestException("Invalid Test. CHO is NOT a DA.");
         }
-        return this.invoice.getDiscount().compareTo(BigDecimal.ZERO) == 0;
+        return CalcHelper.EqualTo(invoice.getDiscount(), BigDecimal.ZERO);
+        //return this.invoice.getDiscount().compareTo(BigDecimal.ZERO) == 0;
     }
     //rule 18.
-    public boolean claimsHandlingInvoiceAmountAddedToDeductionForClaimsHandlingFeeEqualsZero() {
+    public boolean handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero() {
 
         BigDecimal sum = invoice.getClaimsHandlingInvoiceAmount().add(invoice.getDeductionForClaimsHandlingFee());
-        return sum.compareTo(BigDecimal.ZERO) == 0;
+        return CalcHelper.EqualTo(sum, BigDecimal.ZERO);
+        //return sum.compareTo(BigDecimal.ZERO) == 0;
     }
 
     //rule 19.
