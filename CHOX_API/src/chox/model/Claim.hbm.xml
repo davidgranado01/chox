@@ -15,8 +15,8 @@
     <property name="createdDate" column="created_date" not-null="true" />
     <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
     <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
-    <many-to-one name="chorganisation" class="chox.model.Chorganisation" column="chorganisation_id" lazy="false"  />
-    <many-to-one name="customer" class="chox.model.Customer" column="customer_id" />
+    <many-to-one name="chorganisation" class="chox.model.Chorganisation" column="chorganisation_id"/>
+    <many-to-one name="customer" class="chox.model.Customer" column="customer_id" lazy="false"/>
     <many-to-one name="engineerReport" class="chox.model.EngineerReport" column="engineer_report_id" />
     <many-to-one name="hireMonitoringDetail" class="chox.model.HireMonitoringDetail" column="hire_monitoring_detail_id" />
     <many-to-one name="incident" class="chox.model.Incident" column="incident_id" />
@@ -24,6 +24,6 @@
     <many-to-one name="invoice" class="chox.model.Invoice" column="invoice_id" />
     <many-to-one name="lineOfBusiness" class="chox.model.LineOfBusiness" column="line_of_business_id" />
     <many-to-one name="thirdParty" class="chox.model.ThirdParty" column="third_party_id" />
-    <many-to-one name="vehicleHire" class="chox.model.VehicleHire" column="vehicle_hire_id" lazy="false"  />
+    <many-to-one name="vehicleHire" class="chox.model.VehicleHire" column="vehicle_hire_id"/>
   </class>
 </hibernate-mapping>

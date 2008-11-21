@@ -143,6 +143,7 @@ public class XmlProcessController {
         xmlParseResult = RentalVehiclesSchemaValidation(currentSession, xmlParseResult, root, doc);
         xmlParseResult = RentalInvoiceSchemaValidation(currentSession, xmlParseResult, root, doc);
         
+        
         if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
             xmlParseResult = saveXMLRecord(xmlParseResult, sUploadType);
         }
@@ -167,7 +168,7 @@ public class XmlProcessController {
     }
     
     private  XMLParseResult saveXMLRecord(XMLParseResult xmlParseResult, String sUploadType){
-        
+
         EngineerReportService erService = new EngineerReportServiceImpl();
         IncidentService icService = new IncidentServiceImpl();
         InjuryService ijService = new InjuryServiceImpl();
@@ -181,6 +182,7 @@ public class XmlProcessController {
         
         //if(sUploadType.equalsIgnoreCase("C")){
             xmlParseResult = ctService.saveCustomerForXMLUploader(xmlParseResult);
+            
             xmlParseResult = tpService.saveThirdPartyForXMLUploader(xmlParseResult);
             xmlParseResult = icService.saveIncidentForXMLUploader(xmlParseResult);
             xmlParseResult = wnService.saveWitnessForXMLUploader(xmlParseResult);
@@ -208,7 +210,7 @@ public class XmlProcessController {
         String supplierNodeName = "supplier";
         String supplierNode_Name = "supplier-name";
         String supplierNode__Ref = "supplier-reference";
-            
+
         // CONSTRUCT ERROR MESSAGE FORMAT
         String childNodeLabelMain = XmlHelper.contructureErrorMessage(claimHeaderNodeName, "");
         String childNodeLabel1 = XmlHelper.contructureErrorMessage(childNodeLabelMain, supplierNodeName);
@@ -244,39 +246,18 @@ public class XmlProcessController {
                 Timestamp tFirstContactDate = XmlHelper.getTimeStampFromNode(mainElement, claimHeaderNode_FirstCOntact);
                 
                 // CHO INFORMATION
-                // String strCHOName = XmlHelper.getNodeValue(thisElement, supplierNode_Name);
                 String strCHOReference = XmlHelper.getNodeValue(thisElement, supplierNode__Ref);
 
                 Claim claim = new Claim();
                 
-                ClaimServiceImpl thisCtrl = new ClaimServiceImpl();
-                if(thisCtrl.isClaimExist(strCHOReference)){
+                ClaimService thisCtrl = new ClaimServiceImpl();
+                
+                if(thisCtrl.isClaimReferenceNumberExist(strCHOReference)){
                     
-                    // CLAIM ALREADY EXISTS
-                    /*
-                     * PENDING FOR DERMOT'S BUSINESS LOGIC VALIDATION
-                     * 
-                    if(strStatus.equalsIgnoreCase(XMLParseResult.IN_PROGRESS)){
-                        
-                    }else if(strStatus.equalsIgnoreCase(XMLParseResult.CANCELLED)){
-                    
-                    }else if(strStatus.equalsIgnoreCase(XMLParseResult.COMPLETE)){
-                        
-                    }else if(strStatus.equalsIgnoreCase(XMLParseResult.COMPLETE)){
-                        
-                    }else if(strStatus.equalsIgnoreCase(XMLParseResult.PENDING)){
-                        
-                    }
-                     * 
-                     * 
-                     * 
-                     * 
-                     * 
-                     */
-                    /*
-                    ClaimServiceImpl thisCtrl = new ClaimServiceImpl()
-                    claim = thisCtrl.getClaimByCHOReferenceNumber(strCHOReference);
-                    */
+                    System.out.println("");
+                    ClaimService claimService = new ClaimServiceImpl();
+                    claim = claimService.getClaimByCHOReferenceNumber(strCHOReference);
+
                 }else{
                     
                     if(!strStatus.equalsIgnoreCase(XMLParseResult.IN_PROGRESS)){
@@ -286,12 +267,13 @@ public class XmlProcessController {
                     // SET CLAIM HEADER INFORMATION
                     claim.setManagingRepair(bManagingRepair);
                     claim.setPolicyHolderContactDate(tFirstContactDate);
-                    claim.setStatus(ClaimServiceImpl.NEW_CLAIM);
+                    claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED);
                     claim.setChoReference(strCHOReference);
                     
-                    ChorganisationServiceImpl thisC = new ChorganisationServiceImpl();
-                    claim.setChorganisation(thisC.getCurrentCHOrganisation());
+                    ChorganisationService chorgService = new ChorganisationServiceImpl();
+                    claim.setChorganisation(chorgService.getCurrentCHOrganisation());
                 }
+                
                 xmlParseResult.setClaim(claim);
             }
         }

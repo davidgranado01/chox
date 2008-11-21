@@ -4,12 +4,13 @@
  */
 package chox.services;
 
-import chox.data.HibernateUtil;
+
 import chox.model.Claim;
 import chox.model.XMLParseResult;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import chox.data.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -46,28 +47,61 @@ public class ClaimServiceImpl implements ClaimService {
         return count;
     }
     
-    public Boolean isClaimExist(String CHOClaimId){
+    public Boolean isClaimReferenceNumberExist(String sClaimReferenceNumber){
+        
         Boolean isExist = false;
         
-        /*
-        Session currentSession = HibernateUtil.currentSession();
-        Criteria criteria = currentSession.createCriteria(Claim.class).add(Restrictions.eq("choReference", CHOClaimId));
+        Session currentSession = HibernateUtil.currentSession();      
         
-        if(criteria.list().size()>0){
-            isExist = true;
+        try {
+            
+            Criteria criteria = currentSession.createCriteria(Claim.class);
+            criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
+            
+            if((criteria.list()).size()>0){
+                isExist = true;
+            }
+    
+        } catch (Throwable e) {
+           e.printStackTrace();
         }
-        */
+        
+        currentSession.clear();
+        currentSession.disconnect();
+
         return isExist;
     }
     
-    public Claim getClaimByCHOReferenceNumber(String CHOClaimId){
+    public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber){
+        
+        Session currentSession = HibernateUtil.currentSession();      
         Claim claim = new Claim();
         
-        /*
-        Session currentSession = HibernateUtil.currentSession();
-        Criteria criteria = currentSession.createCriteria(Claim.class).add(Restrictions.eq("choReference", CHOClaimId));
+        try {
+            
+            Criteria criteria = currentSession.createCriteria(Claim.class);
+            criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
+            claim = (Claim) criteria.uniqueResult();
+            
+            /*
+            if(claim!=null){
+                
+                // GET CUSTOMER INFORMATION
+                CustomerService custService = new CustomerServiceImpl();
+                claim.setCustomer(custService.getCustomerById(1));
+                
+                
+                // GET CHOBAND INFORMATION
+                
+            }
+            */
+            
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
         
-        */
+        currentSession.clear();
+        currentSession.disconnect();
         return claim;
     }
     

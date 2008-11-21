@@ -6,8 +6,10 @@
 package chox.services;
 
 import chox.model.XMLParseResult;
+import chox.model.Customer;
 
 public interface CustomerService {
     XMLParseResult saveCustomerForXMLUploader(XMLParseResult xmlParseResult);
+    public Customer getCustomerById(int id);
 
 }

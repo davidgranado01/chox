@@ -1,6 +1,11 @@
 package chox.services;
 
-import chox.model.*;
+import chox.model.EngineerReport;
+import chox.model.XMLParseResult;
+import chox.data.HibernateUtil;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 public class EngineerReportServiceImpl implements EngineerReportService{
 
@@ -25,4 +30,26 @@ public class EngineerReportServiceImpl implements EngineerReportService{
         
         return xmlParseResult;
     }  
+    
+    public EngineerReport getClaimByCHOReferenceNumber(String sClaimReferenceNumber){
+        
+        Session currentSession = HibernateUtil.currentSession();      
+        EngineerReport engineerreport = new EngineerReport();
+        
+        try {
+            
+            Criteria criteria = currentSession.createCriteria(EngineerReport.class);
+            criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
+            engineerreport = (EngineerReport) criteria.uniqueResult();
+            
+ 
+            
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
+        
+        currentSession.clear();
+        currentSession.disconnect();
+        return engineerreport;
+    }
 }

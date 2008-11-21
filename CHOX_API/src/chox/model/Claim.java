@@ -10,11 +10,10 @@ import scsbre.model.IEngineerReportInfo;
 import scsbre.model.IExtrasInfo;
 import scsbre.model.IHireInfo;
 import scsbre.model.IVehicleClassInfo;
-import chox.services.ChoBandService;
+import chox.services.*;
 
 public class Claim implements Serializable, IClaimInfo
 {
-        private ChoBandService service;
 	/** 
 	 * This attribute maps to the column id in the claim table.
 	 */
@@ -532,6 +531,7 @@ public class Claim implements Serializable, IClaimInfo
         
         // getCHOBand From 
         public ICHOBandInfo getChoBand() {   
-            return service.getChoBandByChorganisationId(this.chorganisation.id);
+            ChoBandService band = new ChoBandServiceImpl();
+            return band.getChoBandByChorganisationId(this.chorganisation.id);
         }
 }

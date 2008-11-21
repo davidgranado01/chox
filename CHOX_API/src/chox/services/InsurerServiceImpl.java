@@ -9,21 +9,6 @@ import org.w3c.dom.Element;
 
 public class InsurerServiceImpl implements InsurerService {
     
-    /*
-    public Boolean isInsurerExistByName(String s){
-        Boolean isExist = false;
-        
-        Session currentSession = HibernateUtil.currentSession();
-        Criteria criteria = currentSession.createCriteria(Insurer.class).add(Restrictions.eq("name", s));
-        
-        if(criteria.list().size()>0){
-            isExist = true;
-        }
-        
-        return isExist;
-    }
-    */
-    
     public Insurer getInsurerByName(String s){
         
         Session currentSession = HibernateUtil.currentSession();      
@@ -45,7 +30,7 @@ public class InsurerServiceImpl implements InsurerService {
         
         
         return insurer;
-}
+    }
     
     public Insurer getInsurerByNodeName(Element thisElement, String nodeName) {
         Insurer insurer = new Insurer();

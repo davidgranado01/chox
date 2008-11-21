@@ -2,7 +2,7 @@ package chox.services;
 
 import chox.model.*;
 
-public class ChorganisationServiceImpl {
+public class ChorganisationServiceImpl implements ChorganisationService{
 
     public Chorganisation getCurrentCHOrganisation() {
         
