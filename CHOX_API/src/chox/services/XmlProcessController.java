@@ -17,6 +17,9 @@ import chox.data.HibernateUtil;
 
 public class XmlProcessController {
 
+    private EngineerReportService engineerreportservice;
+    private ChorganisationService chorganisationService;
+    
     public static void main(String[] args) {
 
         try {
@@ -32,29 +35,6 @@ public class XmlProcessController {
 
             doc.getDocumentElement().normalize();
             Element root = doc.getDocumentElement();
-            
-            /*
-            if (root != null && root.getTagName().equals("chox")) {
-
-                ArrayList<XMLParseResult> xmlParseResults = new ArrayList<XMLParseResult>();
-                ArrayList<Element> rentalElements = XMLUtils.getElements(doc, root, "rental");
-
-                int count = 0;
-                for (Element re : rentalElements) {
-
-                    try {
-                        count++;
-                        XMLParseResult xmlParseResult = new XMLParseResult();
-                        xmlParseResult = xmlSchemaValidateProcess(xmlParseResult, doc, re, sUpdateType, isAllowPartialUpload);
-                        xmlParseResults.add(xmlParseResult);
-
-                    } catch (Exception e) {
-                        Logger.err.println("Error loading record " + count);
-                        throw e;
-                    }
-                }
-            }
-            */
             
             // TEST INVOICE            
             //String sXMLPath2 = "C:/Project Workplace/Greefinch/choxida/CHOX_STAGE_2_SUBMISSION.xml";
@@ -76,8 +56,10 @@ public class XmlProcessController {
                     try {
                         count++;
                         
+                        XmlProcessController thisCtrl = new XmlProcessController();
+                                
                         XMLParseResult xmlParseResult = new XMLParseResult();
-                        xmlParseResult = xmlSchemaValidateProcess(xmlParseResult, doc, re, sUpdateType, isAllowPartialUpload);
+                        xmlParseResult = thisCtrl.xmlSchemaValidateProcess(xmlParseResult, doc, re, sUpdateType, isAllowPartialUpload);
                         xmlParseResults.add(xmlParseResult);
 
                     } catch (Exception e) {
@@ -98,7 +80,7 @@ public class XmlProcessController {
         }
     }
     
-    public static ArrayList<XMLParseResult> XMLValidationProcess(File claimXMLFile, String sUpdateType, Boolean isAllowPartialUpload) {
+    public ArrayList<XMLParseResult> XMLValidationProcess(File claimXMLFile, String sUpdateType, Boolean isAllowPartialUpload) {
 
         ArrayList<XMLParseResult> xmlParseResults = new ArrayList<XMLParseResult>();
 
@@ -144,7 +126,7 @@ public class XmlProcessController {
         return xmlParseResults;
     }
     
-    private static XMLParseResult xmlSchemaValidateProcess(
+    public  XMLParseResult xmlSchemaValidateProcess(
             XMLParseResult xmlParseResult,
             Document doc,
             Element root,
@@ -185,7 +167,9 @@ public class XmlProcessController {
         return xmlParseResult;
     }
     
-    private static XMLParseResult saveXMLRecord(XMLParseResult xmlParseResult, String sUploadType){
+    private  XMLParseResult saveXMLRecord(XMLParseResult xmlParseResult, String sUploadType){
+        
+        EngineerReportServiceImpl this1 = new EngineerReportServiceImpl();
         
         // SAVE CLIAM OBJECT
         xmlParseResult = CustomerServiceImpl.saveCustomerForXMLUploader(xmlParseResult);
@@ -194,7 +178,7 @@ public class XmlProcessController {
         xmlParseResult = WitnessServiceImpl.saveWitnessForXMLUploader(xmlParseResult);
         xmlParseResult = InjuryServiceImpl.saveInjuryForXMLUploader(xmlParseResult);
         xmlParseResult = SolicitorServiceImpl.saveSolicitorForXMLUploader(xmlParseResult);
-        xmlParseResult = EngineerReportServiceImpl.saveEngineerReportForXMLUploader(xmlParseResult);
+        xmlParseResult = this1.saveEngineerReportForXMLUploader(xmlParseResult);
         xmlParseResult = InvoiceServiceImpl.saveInvoiceForXMLUploader(xmlParseResult);
         xmlParseResult = VehicleHireServiceImpl.saveVehicleHireForXMLUploader(xmlParseResult);
         xmlParseResult = ClaimServiceImpl.saveClaimForXMLUploader(xmlParseResult); 
@@ -203,7 +187,7 @@ public class XmlProcessController {
     }
     
     // VALIDATE SUPPLIER OR CHOORGANISATION DETAIL SECTION
-    private static XMLParseResult CHOoganisationSchemaValidation(
+    private  XMLParseResult CHOoganisationSchemaValidation(
             XMLParseResult xmlParseResult,
             Element mainElement) throws Exception {
 
@@ -292,16 +276,19 @@ public class XmlProcessController {
                     claim.setPolicyHolderContactDate(tFirstContactDate);
                     claim.setStatus(ClaimServiceImpl.NEW_CLAIM);
                     claim.setChoReference(strCHOReference);
-                    claim.setChorganisation(ChorganisationServiceImpl.getCurrentCHOrganisation());
+                    
+                    ChorganisationServiceImpl thisC = new ChorganisationServiceImpl();
+                    claim.setChorganisation(thisC.getCurrentCHOrganisation());
                 }
                 xmlParseResult.setClaim(claim);
             }
         }
+        
         return xmlParseResult;
     }
     
     // VALIDATE DRIVER SECTION 
-    private static XMLParseResult RentalDriversSchemaValidation(
+    private  XMLParseResult RentalDriversSchemaValidation(
             XMLParseResult xmlParseResult,
             Element mainElement,
             Document doc) throws Exception {
@@ -384,7 +371,7 @@ public class XmlProcessController {
     }
     
     // VALIDATE CLAIM SECTION 
-    private static XMLParseResult RentalClaimSchemaValidation(
+    private  XMLParseResult RentalClaimSchemaValidation(
             Session currentSession,
             XMLParseResult xmlParseResult,
             Element root,
@@ -411,7 +398,7 @@ public class XmlProcessController {
         return xmlParseResult;
     }
 
-    private static XMLParseResult ClaimDetail_CustomerSchemaValidation(
+    private  XMLParseResult ClaimDetail_CustomerSchemaValidation(
             XMLParseResult xmlParseResult,
             Element mainElement,
             String parentNodeName) throws Exception {
@@ -487,7 +474,7 @@ public class XmlProcessController {
                 customer.setIsUsable(XmlHelper.getBooleanFromNode(thisElement, "usable"));
                 customer.setLocation(XmlHelper.getNodeValue(thisElement, "location"));
                 customer.setDamage(XmlHelper.getNodeValue(thisElement, "damage"));
-                customer.setInitialEcd(XmlHelper.getTimeStampFromNode(thisElement, "initial-ecd"));
+                customer.setInitialECD(XmlHelper.getTimeStampFromNode(thisElement, "initial-ecd"));
                 
                 xmlParseResult.getClaim().setCustomer(customer);
             }
@@ -496,7 +483,7 @@ public class XmlProcessController {
         return xmlParseResult;
     }
 
-    private static XMLParseResult ClaimDetail_ThirdPartySchemaValidation(
+    private  XMLParseResult ClaimDetail_ThirdPartySchemaValidation(
             XMLParseResult xmlParseResult,
             Element mainElement,
             String parentNodeName) throws Exception {
@@ -606,7 +593,7 @@ public class XmlProcessController {
         return xmlParseResult;
     }
 
-    private static XMLParseResult ClaimDetail_IncidentSchemaValidation(
+    private  XMLParseResult ClaimDetail_IncidentSchemaValidation(
         XMLParseResult xmlParseResult,
         Element mainElement,
         Document doc,
@@ -653,7 +640,7 @@ public class XmlProcessController {
         return xmlParseResult;
     }
     
-    private static XMLParseResult ClaimDetail_IncidentWitnessSchemaValidation(
+    private  XMLParseResult ClaimDetail_IncidentWitnessSchemaValidation(
         XMLParseResult xmlParseResult,
         Element mainElement,
         Document doc,
@@ -751,7 +738,7 @@ public class XmlProcessController {
         return xmlParseResult;
     }
     
-    private static XMLParseResult ClaimDetail_IncidentInjuriesSchemaValidation(
+    private  XMLParseResult ClaimDetail_IncidentInjuriesSchemaValidation(
         XMLParseResult xmlParseResult,
         Element mainElement,
         Document doc,
@@ -902,7 +889,7 @@ public class XmlProcessController {
     }
     
     // VALIDATE REPAIR SECTION 
-    private static XMLParseResult RentalRepairSchemaValidation(
+    private  XMLParseResult RentalRepairSchemaValidation(
         Session currentSession,
         XMLParseResult xmlParseResult,
         Element mainElement,
@@ -1012,7 +999,7 @@ public class XmlProcessController {
     }
     
     // VALIDATE INVOICE SECTION 
-    private static XMLParseResult RentalInvoiceSchemaValidation(
+    private  XMLParseResult RentalInvoiceSchemaValidation(
             Session currentSession,
             XMLParseResult xmlParseResult,
             Element mainElement,
@@ -1039,7 +1026,7 @@ public class XmlProcessController {
     }
     
     // VALIDATE INVOICE DETAIL SECTION
-    private static XMLParseResult RentalInvoiceDetailSchemaValidation(
+    private  XMLParseResult RentalInvoiceDetailSchemaValidation(
             XMLParseResult xmlParseResult,
             Element thisElement,
             Document doc,
@@ -1113,7 +1100,7 @@ public class XmlProcessController {
     }
     
     // VALIDATE INVOICE DETAIL - Vehicles SECTION
-    private static XMLParseResult InvoiceDetail_VehiclesValidSchemaValidation(
+    private  XMLParseResult InvoiceDetail_VehiclesValidSchemaValidation(
             XMLParseResult xmlParseResult,
             Element mainElement,
             String parentNodeName,
@@ -1140,7 +1127,7 @@ public class XmlProcessController {
     }
 
     // VALIDATE INVOICE DETAIL - repair SECTION
-    private static XMLParseResult InvoiceDetail_RepairValidSchemaValidation(
+    private  XMLParseResult InvoiceDetail_RepairValidSchemaValidation(
             XMLParseResult xmlParseResult,
             Element mainElement,
             String parentNodeName,
@@ -1166,7 +1153,7 @@ public class XmlProcessController {
     }
 
     // VALIDATE INVOICE DETAIL - Supplier SECTION
-    private static XMLParseResult InvoiceDetail_SupplierValidSchemaValidation(
+    private  XMLParseResult InvoiceDetail_SupplierValidSchemaValidation(
             XMLParseResult xmlParseResult,
             Element mainElement,
             String parentNodeName,
@@ -1191,7 +1178,7 @@ public class XmlProcessController {
     }
     
     // VALIDATE INVOICE DETAIL - Engineer Fee SECTION
-    private static XMLParseResult InvoiceDetail_EngineerFeeValidSchemaValidation(
+    private  XMLParseResult InvoiceDetail_EngineerFeeValidSchemaValidation(
             XMLParseResult xmlParseResult,
             Element mainElement,
             String parentNodeName,
@@ -1216,7 +1203,7 @@ public class XmlProcessController {
     }
 
     // VALIDATE INVOICE DETAIL - Storage Recovery SECTION
-    private static XMLParseResult InvoiceDetail_StorageRecoveryValidSchemaValidation(
+    private  XMLParseResult InvoiceDetail_StorageRecoveryValidSchemaValidation(
             XMLParseResult xmlParseResult,
             Element mainElement,
             String parentNodeName,
@@ -1241,7 +1228,7 @@ public class XmlProcessController {
     }
     
     // VALIDATE INVOICE DETAIL - Storage Recovery SECTION
-    private static XMLParseResult InvoiceDetail_ExtrasValidSchemaValidation(
+    private  XMLParseResult InvoiceDetail_ExtrasValidSchemaValidation(
             XMLParseResult xmlParseResult,
             Element mainElement,
             Document doc,
@@ -1341,7 +1328,7 @@ public class XmlProcessController {
     }
     
     // VALIDATE INVOICE SECTION 
-    private static XMLParseResult RentalVehiclesSchemaValidation(
+    private  XMLParseResult RentalVehiclesSchemaValidation(
             Session currentSession,
             XMLParseResult xmlParseResult,
             Element mainElement,
@@ -1381,7 +1368,7 @@ public class XmlProcessController {
         return xmlParseResult;
     }
 
-    private static XMLParseResult RentalVehiclesDetailSchemaValidation(
+    private  XMLParseResult RentalVehiclesDetailSchemaValidation(
             XMLParseResult xmlParseResult,
             Element mainElement,
             Document doc,
@@ -1458,7 +1445,6 @@ public class XmlProcessController {
                     xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, extraElements, nodeName2, childNodeLabel1);
 
                     if (xmlParseResult.getIsCurrentScheValid()) {
-                        Integer iCount=0;
                         
                         for (Element ee : extraElements) {
                             

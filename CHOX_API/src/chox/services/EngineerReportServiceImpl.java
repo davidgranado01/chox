@@ -1,14 +1,10 @@
 package chox.services;
 
-import chox.data.HibernateUtil;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import chox.model.*;
 
 public class EngineerReportServiceImpl {
 
-    public static XMLParseResult saveEngineerReportForXMLUploader(XMLParseResult xmlParseResult){
+    public XMLParseResult saveEngineerReportForXMLUploader(XMLParseResult xmlParseResult){
         
         if((xmlParseResult.getClaim().getEngineerReport())!=null){
                 

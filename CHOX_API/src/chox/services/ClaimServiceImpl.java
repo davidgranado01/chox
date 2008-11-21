@@ -72,7 +72,8 @@ public class ClaimServiceImpl implements ClaimService {
     }
     
     public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, String sUpdateType, Boolean isAllowPartialUpload) {
-        return XmlProcessController.XMLValidationProcess(claimXMLFile, sUpdateType, isAllowPartialUpload);
+        XmlProcessController thisCtrl = new XmlProcessController();
+        return thisCtrl.XMLValidationProcess(claimXMLFile, sUpdateType, isAllowPartialUpload);
     }
     
     public static XMLParseResult saveClaimForXMLUploader(XMLParseResult xmlParseResult){
