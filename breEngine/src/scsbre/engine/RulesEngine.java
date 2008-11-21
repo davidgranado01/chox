@@ -141,7 +141,7 @@ public class RulesEngine {
 
     //rule 15.
     public boolean hasCorrectDiscountForNonDA() throws InvalidTestException {
-        if (claim.getCHOrganisation().getIsDelegatedAuthority()) {
+        if (claim.getCHOrg().getIsDelegatedAuthority()) {
             throw new InvalidTestException("Not a valid test for DA CHO's");
         }
         return CalcHelper.EqualTo(invoice.getDiscount(),
@@ -150,7 +150,7 @@ public class RulesEngine {
 
     //rule 16.
     public boolean handlingAmountAndDeductionBothEqualZeroForDA() throws InvalidTestException {
-        if (claim.getCHOrganisation().getIsDelegatedAuthority()) {
+        if (claim.getCHOrg().getIsDelegatedAuthority()) {
             throw new InvalidTestException("Not a valid test for DA CHO's");
         }
         
@@ -161,7 +161,7 @@ public class RulesEngine {
 
     //rule 17.
     public boolean claimHasZeroDiscountForNonDA() throws InvalidTestException {
-        if (!claim.getCHOrganisation().getIsDelegatedAuthority()) {
+        if (!claim.getCHOrg().getIsDelegatedAuthority()) {
 
             throw new InvalidTestException("Invalid Test. CHO is NOT a DA.");
         }

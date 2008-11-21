@@ -45,7 +45,7 @@ public class ClaimInfo implements IClaimInfo {
      * @see scsbre.model.IClaimInfo#getClaimCHOrganisation()
      */
 
-    public ICHOrganisationInfo getCHOrganisation() {
+    public ICHOrganisationInfo getCHOrg() {
         return claimCHOrganisation;
     }
     /* (non-Javadoc)
