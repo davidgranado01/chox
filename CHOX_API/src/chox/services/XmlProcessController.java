@@ -17,9 +17,6 @@ import chox.data.HibernateUtil;
 
 public class XmlProcessController {
 
-    private EngineerReportService engineerreportservice;
-    private ChorganisationService chorganisationService;
-    
     public static void main(String[] args) {
 
         try {
@@ -126,13 +123,13 @@ public class XmlProcessController {
         return xmlParseResults;
     }
     
-    public  XMLParseResult xmlSchemaValidateProcess(
+    public XMLParseResult xmlSchemaValidateProcess(
             XMLParseResult xmlParseResult,
             Document doc,
             Element root,
             String sUploadType,
             Boolean isAllowPartialUpload) throws Exception {
-
+                
         Session currentSession = HibernateUtil.currentSession();
         currentSession.beginTransaction();
         
@@ -146,7 +143,9 @@ public class XmlProcessController {
         xmlParseResult = RentalVehiclesSchemaValidation(currentSession, xmlParseResult, root, doc);
         xmlParseResult = RentalInvoiceSchemaValidation(currentSession, xmlParseResult, root, doc);
         
-        xmlParseResult = saveXMLRecord(xmlParseResult, sUploadType);
+        if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
+            xmlParseResult = saveXMLRecord(xmlParseResult, sUploadType);
+        }
 
         currentSession = xmlParseResult.getCurrentSession();
         
@@ -158,7 +157,7 @@ public class XmlProcessController {
         System.out.println(" ** getDataValidationRemark: " + xmlParseResult.getDataValidationRemark());
         System.out.println("********************************************");
         
-        if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid() /*&& isAllowPartialUpload*/){
+        if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
             currentSession.getTransaction().commit();
         }else{
             currentSession.getTransaction().rollback();
@@ -169,19 +168,30 @@ public class XmlProcessController {
     
     private  XMLParseResult saveXMLRecord(XMLParseResult xmlParseResult, String sUploadType){
         
-        EngineerReportServiceImpl this1 = new EngineerReportServiceImpl();
+        EngineerReportService erService = new EngineerReportServiceImpl();
+        IncidentService icService = new IncidentServiceImpl();
+        InjuryService ijService = new InjuryServiceImpl();
+        CustomerService ctService = new CustomerServiceImpl();
+        InvoiceService ivService = new InvoiceServiceImpl();
+        ClaimService csService = new ClaimServiceImpl();
+        WitnessService wnService = new WitnessServiceImpl();
+        ThirdPartyService tpService = new ThirdPartyServiceImpl();
+        VehicleHireService vhService = new VehicleHireServiceImpl();
+        SolicitorService slService = new SolicitorServiceImpl();
         
-        // SAVE CLIAM OBJECT
-        xmlParseResult = CustomerServiceImpl.saveCustomerForXMLUploader(xmlParseResult);
-        xmlParseResult = ThirdPartyServiceImpl.saveThirdPartyForXMLUploader(xmlParseResult);
-        xmlParseResult = IncidentServiceImpl.saveIncidentForXMLUploader(xmlParseResult);
-        xmlParseResult = WitnessServiceImpl.saveWitnessForXMLUploader(xmlParseResult);
-        xmlParseResult = InjuryServiceImpl.saveInjuryForXMLUploader(xmlParseResult);
-        xmlParseResult = SolicitorServiceImpl.saveSolicitorForXMLUploader(xmlParseResult);
-        xmlParseResult = this1.saveEngineerReportForXMLUploader(xmlParseResult);
-        xmlParseResult = InvoiceServiceImpl.saveInvoiceForXMLUploader(xmlParseResult);
-        xmlParseResult = VehicleHireServiceImpl.saveVehicleHireForXMLUploader(xmlParseResult);
-        xmlParseResult = ClaimServiceImpl.saveClaimForXMLUploader(xmlParseResult); 
+        //if(sUploadType.equalsIgnoreCase("C")){
+            xmlParseResult = ctService.saveCustomerForXMLUploader(xmlParseResult);
+            xmlParseResult = tpService.saveThirdPartyForXMLUploader(xmlParseResult);
+            xmlParseResult = icService.saveIncidentForXMLUploader(xmlParseResult);
+            xmlParseResult = wnService.saveWitnessForXMLUploader(xmlParseResult);
+            xmlParseResult = ijService.saveInjuryForXMLUploader(xmlParseResult);
+            xmlParseResult = slService.saveSolicitorForXMLUploader(xmlParseResult);        
+        //}
+        
+        xmlParseResult = erService.saveEngineerReportForXMLUploader(xmlParseResult);
+        xmlParseResult = ivService.saveInvoiceForXMLUploader(xmlParseResult);
+        xmlParseResult = vhService.saveVehicleHireForXMLUploader(xmlParseResult);
+        xmlParseResult = csService.saveClaimForXMLUploader(xmlParseResult); 
         
         return xmlParseResult;
     }
@@ -239,7 +249,8 @@ public class XmlProcessController {
 
                 Claim claim = new Claim();
                 
-                if(ClaimServiceImpl.isClaimExist(strCHOReference)){
+                ClaimServiceImpl thisCtrl = new ClaimServiceImpl();
+                if(thisCtrl.isClaimExist(strCHOReference)){
                     
                     // CLAIM ALREADY EXISTS
                     /*
@@ -262,9 +273,10 @@ public class XmlProcessController {
                      * 
                      * 
                      */
-                    
-                    claim = ClaimServiceImpl.getClaimByCHOReferenceNumber(strCHOReference);
-                    
+                    /*
+                    ClaimServiceImpl thisCtrl = new ClaimServiceImpl()
+                    claim = thisCtrl.getClaimByCHOReferenceNumber(strCHOReference);
+                    */
                 }else{
                     
                     if(!strStatus.equalsIgnoreCase(XMLParseResult.IN_PROGRESS)){
@@ -445,7 +457,9 @@ public class XmlProcessController {
                 }
                 
                 // GET INSURER INFORMATION
-                Insurer insurer = InsurerServiceImpl.getInsurerByNodeName(thisElement, "name");
+                InsurerService thisISCtrl = new InsurerServiceImpl();
+                Insurer insurer = thisISCtrl.getInsurerByNodeName(thisElement, "name");
+                
                 if(insurer!=null){
                     xmlParseResult.getClaim().setInsurer(insurer);
                     customer.setInsurerId(insurer.getId());
@@ -549,7 +563,8 @@ public class XmlProcessController {
                 }
                 
                 // GET INSURER INFORMATION
-                Insurer insurer = InsurerServiceImpl.getInsurerByNodeName(thisElement, "name");
+                InsurerServiceImpl thisISCtrl = new InsurerServiceImpl();
+                Insurer insurer = thisISCtrl.getInsurerByNodeName(thisElement, "name");
                 if(insurer!=null){
                     thirdparty.setInsurer(insurer);
                 }else{

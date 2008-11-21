@@ -46,7 +46,7 @@ public class ClaimServiceImpl implements ClaimService {
         return count;
     }
     
-    public static Boolean isClaimExist(String CHOClaimId){
+    public Boolean isClaimExist(String CHOClaimId){
         Boolean isExist = false;
         
         /*
@@ -60,7 +60,7 @@ public class ClaimServiceImpl implements ClaimService {
         return isExist;
     }
     
-    public static Claim getClaimByCHOReferenceNumber(String CHOClaimId){
+    public Claim getClaimByCHOReferenceNumber(String CHOClaimId){
         Claim claim = new Claim();
         
         /*
@@ -76,7 +76,7 @@ public class ClaimServiceImpl implements ClaimService {
         return thisCtrl.XMLValidationProcess(claimXMLFile, sUpdateType, isAllowPartialUpload);
     }
     
-    public static XMLParseResult saveClaimForXMLUploader(XMLParseResult xmlParseResult){
+    public XMLParseResult saveClaimForXMLUploader(XMLParseResult xmlParseResult){
         
         xmlParseResult.getClaim().setCreatedBy(WebUserServiceImpl.getCurrentUser());
         xmlParseResult.getClaim().setCreatedDate(generalServiceImpl.getCurrentTimeStamp());

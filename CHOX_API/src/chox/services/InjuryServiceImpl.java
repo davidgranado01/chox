@@ -7,9 +7,9 @@ import org.hibernate.criterion.Restrictions;
 import chox.model.*;
 import java.util.ArrayList;
 
-public class InjuryServiceImpl {
+public class InjuryServiceImpl implements InjuryService{
 
-    public static XMLParseResult saveInjuryForXMLUploader(XMLParseResult xmlParseResult){
+    public XMLParseResult saveInjuryForXMLUploader(XMLParseResult xmlParseResult){
         
         if((xmlParseResult.getInjuries())!=null){
             

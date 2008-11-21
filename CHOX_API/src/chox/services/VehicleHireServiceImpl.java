@@ -6,9 +6,9 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import chox.model.*;
 
-public class VehicleHireServiceImpl {
+public class VehicleHireServiceImpl implements VehicleHireService{
 
-    public static XMLParseResult saveVehicleHireForXMLUploader(XMLParseResult xmlParseResult){
+    public XMLParseResult saveVehicleHireForXMLUploader(XMLParseResult xmlParseResult){
         
         if((xmlParseResult.getClaim().getVehicleHire())!=null){
             

@@ -2,22 +2,14 @@ package chox.services;
 
 import chox.data.HibernateUtil;
 import chox.model.VehicleClass;
-import chox.model.XMLParseResult;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Expression;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.w3c.dom.*;
 import org.hibernate.Session;
-import java.util.Iterator;
 
 public class VehicleClassServiceImpl {
 
-    public static VehicleClass  getVehicleClassByName(String s){
+    public static VehicleClass getVehicleClassByName(String s){
 
         Session currentSession = HibernateUtil.currentSession();      
         VehicleClass vehicleclass = new VehicleClass();

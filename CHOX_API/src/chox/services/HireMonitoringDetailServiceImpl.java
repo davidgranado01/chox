@@ -10,9 +10,7 @@ import chox.model.HireMonitoringDetail;
 public class HireMonitoringDetailServiceImpl {
 
     public HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int vehiclehireId){
-        
         HireMonitoringDetail hiremonitoringdetail = new HireMonitoringDetail();
-        
         return hiremonitoringdetail;
     }
 }

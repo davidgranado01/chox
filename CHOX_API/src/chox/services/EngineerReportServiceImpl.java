@@ -2,7 +2,7 @@ package chox.services;
 
 import chox.model.*;
 
-public class EngineerReportServiceImpl {
+public class EngineerReportServiceImpl implements EngineerReportService{
 
     public XMLParseResult saveEngineerReportForXMLUploader(XMLParseResult xmlParseResult){
         

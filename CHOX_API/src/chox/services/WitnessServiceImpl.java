@@ -7,9 +7,9 @@ import org.hibernate.criterion.Restrictions;
 import chox.model.*;
 import java.util.ArrayList;
 
-public class WitnessServiceImpl {
+public class WitnessServiceImpl implements WitnessService{
 
-    public static XMLParseResult saveWitnessForXMLUploader(XMLParseResult xmlParseResult){
+    public XMLParseResult saveWitnessForXMLUploader(XMLParseResult xmlParseResult){
         
         ArrayList<Witness> witnesses = xmlParseResult.getWitnesses();
         

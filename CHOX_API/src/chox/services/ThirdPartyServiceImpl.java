@@ -6,9 +6,9 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import chox.model.*;
 
-public class ThirdPartyServiceImpl {
+public class ThirdPartyServiceImpl implements ThirdPartyService{
 
-    public static XMLParseResult saveThirdPartyForXMLUploader(XMLParseResult xmlParseResult){
+    public XMLParseResult saveThirdPartyForXMLUploader(XMLParseResult xmlParseResult){
         
         
         ThirdParty thirdparty = xmlParseResult.getClaim().getThirdParty();

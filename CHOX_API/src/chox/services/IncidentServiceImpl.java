@@ -7,9 +7,9 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import chox.model.*;
 
-public class IncidentServiceImpl {
+public class IncidentServiceImpl implements IncidentService{
 
-    public static XMLParseResult saveIncidentForXMLUploader(XMLParseResult xmlParseResult){
+    public XMLParseResult saveIncidentForXMLUploader(XMLParseResult xmlParseResult){
         
         Incident incident = xmlParseResult.getClaim().getIncident();
         

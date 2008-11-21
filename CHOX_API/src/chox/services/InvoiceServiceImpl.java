@@ -6,9 +6,9 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import chox.model.*;
 
-public class InvoiceServiceImpl {
+public class InvoiceServiceImpl implements InvoiceService{
 
-    public static XMLParseResult saveInvoiceForXMLUploader(XMLParseResult xmlParseResult){
+    public XMLParseResult saveInvoiceForXMLUploader(XMLParseResult xmlParseResult){
         
         if((xmlParseResult.getClaim().getInvoice())!=null){
             

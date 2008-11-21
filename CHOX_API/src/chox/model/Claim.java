@@ -499,7 +499,7 @@ public class Claim implements Serializable, IClaimInfo
 		this.vehicleHire = vehicleHire;
 	}
 
-        public ICHOrganisationInfo getCHOrganisation() {
+        public ICHOrganisationInfo getCHOrg() {
             return this.chorganisation;
         }
         

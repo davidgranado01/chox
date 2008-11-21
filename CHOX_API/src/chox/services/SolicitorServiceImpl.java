@@ -6,9 +6,9 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import chox.model.*;
 
-public class SolicitorServiceImpl {
+public class SolicitorServiceImpl implements SolicitorService{
 
-    public static XMLParseResult saveSolicitorForXMLUploader(XMLParseResult xmlParseResult){
+    public XMLParseResult saveSolicitorForXMLUploader(XMLParseResult xmlParseResult){
         
         if((xmlParseResult.getSolicitors())!=null){
             

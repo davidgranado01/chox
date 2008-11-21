@@ -2,18 +2,15 @@ package chox.services;
 
 import chox.data.HibernateUtil;
 import chox.model.Insurer;
-import chox.model.XMLParseResult;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.w3c.dom.*;
+import org.w3c.dom.Element;
 
-public class InsurerServiceImpl{
-
-    public static Boolean isInsurerExistByName(String s){
+public class InsurerServiceImpl implements InsurerService {
+    
+    /*
+    public Boolean isInsurerExistByName(String s){
         Boolean isExist = false;
         
         Session currentSession = HibernateUtil.currentSession();
@@ -25,8 +22,9 @@ public class InsurerServiceImpl{
         
         return isExist;
     }
+    */
     
-    public static Insurer getInsurerByName(String s){
+    public Insurer getInsurerByName(String s){
         
         Session currentSession = HibernateUtil.currentSession();      
         Insurer insurer = new Insurer();
@@ -49,11 +47,11 @@ public class InsurerServiceImpl{
         return insurer;
 }
     
-    public static Insurer getInsurerByNodeName(Element thisElement, String nodeName) {
+    public Insurer getInsurerByNodeName(Element thisElement, String nodeName) {
         Insurer insurer = new Insurer();
         
         if(XmlHelper.isNotNull(XmlHelper.getNodeValue(thisElement, nodeName))){
-            insurer = InsurerServiceImpl.getInsurerByName(XmlHelper.getNodeValue(thisElement, nodeName));
+            insurer = getInsurerByName(XmlHelper.getNodeValue(thisElement, nodeName));
         }
         
         return insurer;
