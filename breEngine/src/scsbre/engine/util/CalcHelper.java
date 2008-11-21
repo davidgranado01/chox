@@ -15,4 +15,6 @@ public class CalcHelper {
         int days = (int) Math.floor(diff / MILISECONDS_PER_DAY);
         return Math.abs(days); //add an extra day to factor "part thereof" rule
     }
+    
+    public static final BigDecimal VAT_RATE = new BigDecimal(17.5);
 }

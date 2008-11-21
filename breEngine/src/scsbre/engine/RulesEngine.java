@@ -1,5 +1,6 @@
 package scsbre.engine;
 
+import scsbre.engine.rules.IBusinessRule;
 import scsbre.engine.util.ClaimCalcHelper;
 import scsbre.engine.util.CHOBandCalcHelper;
 import scsbre.engine.util.CalcHelper;
@@ -31,16 +32,27 @@ public class RulesEngine {
     private IVehicleClassInfo hireVClass;
     private BigDecimal vatRate;
 
-    public static RulesEngine Create(IClaimInfo c, BigDecimal vatRate) {
+    public static RulesEngine getInstance(IClaimInfo c, BigDecimal vatRate) {
 
-        RulesEngine engine = new RulesEngine(c, vatRate);
+        RulesEngine engine = new RulesEngine(c);
         return engine;
     }
 
-    private RulesEngine(IClaimInfo c, BigDecimal vatRate) {
+    
+    
+    private RuleEvaluationResult execute(IBusinessRule rule){
+
+        RuleEvaluationResult result = new RuleEvaluationResult();   
+        boolean success = rule.run(claim);
+        result.setMessage (success ? "" : rule.getErrorMessage());
+        result.setIsVisibleToCHO(rule.isVisibleToCHO());
+        return result;
+    }
+
+    private RulesEngine(IClaimInfo c) {
 
         claim = c;
-        this.vatRate = vatRate;
+        this.vatRate = CalcHelper.VAT_RATE;
 
         invoice = c.getInvoice();
         hireDetail = c.getHireDetail();
@@ -57,6 +69,9 @@ public class RulesEngine {
     }
 
     public RulesEngineResponse ResolveStatus() {
+        
+        
+        
 
         return new RulesEngineResponse();
     }
