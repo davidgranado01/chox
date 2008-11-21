@@ -5,8 +5,9 @@ import java.util.HashSet;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import scsbre.model.IVehicleClassInfo;
 
-public class VehicleClass implements Serializable
+public class VehicleClass implements Serializable, IVehicleClassInfo
 {
 	/** 
 	 * This attribute maps to the column id in the vehicle_class table.
@@ -190,5 +191,13 @@ public class VehicleClass implements Serializable
 	{
 		this.lastModifiedDate = lastModifiedDate;
 	}
+
+        public String getCode() {
+            return this.name;
+        }
+
+        public void setCode(String code) {
+            this.name = code;
+        }
 
 }

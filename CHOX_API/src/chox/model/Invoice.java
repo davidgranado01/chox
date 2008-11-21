@@ -1,12 +1,12 @@
 package chox.model;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
 import java.math.BigDecimal;
+import scsbre.model.IExtrasInfo;
+import scsbre.model.IInvoiceInfo;
 
-public class Invoice implements Serializable
+public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo
 {
 	/** 
 	 * This attribute maps to the column id in the invoice table.
@@ -746,9 +746,9 @@ public class Invoice implements Serializable
 	 * 
 	 * @return java.lang.Integer
 	 */
-	public java.lang.Integer getCdwQty()
+	public int getCdwQty()
 	{
-		return cdwQty;
+            return cdwQty;
 	}
 
 	/**
@@ -786,7 +786,7 @@ public class Invoice implements Serializable
 	 * 
 	 * @return java.lang.Integer
 	 */
-	public java.lang.Integer getAutomaticQty()
+	public int getAutomaticQty()
 	{
 		return automaticQty;
 	}
@@ -826,7 +826,7 @@ public class Invoice implements Serializable
 	 * 
 	 * @return java.lang.Integer
 	 */
-	public java.lang.Integer getSatNavQty()
+	public int getSatNavQty()
 	{
 		return satNavQty;
 	}
@@ -866,7 +866,7 @@ public class Invoice implements Serializable
 	 * 
 	 * @return java.lang.Integer
 	 */
-	public java.lang.Integer getEstateQty()
+	public int getEstateQty()
 	{
 		return estateQty;
 	}
@@ -906,7 +906,7 @@ public class Invoice implements Serializable
 	 * 
 	 * @return java.lang.Integer
 	 */
-	public java.lang.Integer getBabySeatQty()
+	public int getBabySeatQty()
 	{
 		return babySeatQty;
 	}
@@ -946,7 +946,7 @@ public class Invoice implements Serializable
 	 * 
 	 * @return java.lang.Integer
 	 */
-	public java.lang.Integer getTowBarsQty()
+	public int getTowBarsQty()
 	{
 		return towBarsQty;
 	}
@@ -986,7 +986,7 @@ public class Invoice implements Serializable
 	 * 
 	 * @return java.lang.Integer
 	 */
-	public java.lang.Integer getNonStandardInsurancePremiumQty()
+	public int getNonStandardInsurancePremiumQty()
 	{
 		return nonStandardInsurancePremiumQty;
 	}
@@ -1026,7 +1026,7 @@ public class Invoice implements Serializable
 	 * 
 	 * @return java.lang.Integer
 	 */
-	public java.lang.Integer getAdminQty()
+	public int getAdminQty()
 	{
 		return adminQty;
 	}
@@ -1066,7 +1066,7 @@ public class Invoice implements Serializable
 	 * 
 	 * @return java.lang.Integer
 	 */
-	public java.lang.Integer getRoofRackQty()
+	public int getRoofRackQty()
 	{
 		return roofRackQty;
 	}
@@ -1106,7 +1106,7 @@ public class Invoice implements Serializable
 	 * 
 	 * @return java.lang.Integer
 	 */
-	public java.lang.Integer getDualControlQty()
+	public int getDualControlQty()
 	{
 		return dualControlQty;
 	}
@@ -1146,7 +1146,7 @@ public class Invoice implements Serializable
 	 * 
 	 * @return java.lang.Integer
 	 */
-	public java.lang.Integer getDeliveryCollectionQty()
+	public int getDeliveryCollectionQty()
 	{
 		return deliveryCollectionQty;
 	}

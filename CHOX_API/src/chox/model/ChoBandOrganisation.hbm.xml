@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-  <class name="chox.model.Insurer" table="insurer">
-    <id column="id" name="id">
-      <generator class="increment"/>
-    </id>
-    <property column="name" name="name"/>
-    <property column="admin_handling_charge" name="adminHandlingCharge"/>
+  <class name="chox.model.ChoBandOrganisation" table="cho_band_organisation">
+    <composite-id>
+      <key-property column="id" name="id"/>
+      <key-property column="band_id" name="bandId"/>
+      <key-property column="chorganisation_id" name="chorganisationId"/>
+    </composite-id>
     <property column="created_by" name="createdBy" not-null="true"/>
     <property column="created_date" name="createdDate" not-null="true"/>
     <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>

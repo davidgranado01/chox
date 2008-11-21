@@ -5,8 +5,9 @@ import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
 import java.math.BigDecimal;
+import scsbre.model.IEngineerReportInfo;
 
-public class EngineerReport implements Serializable
+public class EngineerReport implements Serializable, IEngineerReportInfo
 {
 	/** 
 	 * This attribute maps to the column id in the engineer_report table.
@@ -478,7 +479,7 @@ public class EngineerReport implements Serializable
 	 */
 	public java.math.BigDecimal getTotalAmount()
 	{
-		return totalAmount;
+		return this.totalAmount;
 	}
 
 	/**
@@ -490,5 +491,29 @@ public class EngineerReport implements Serializable
 	{
 		this.totalAmount = totalAmount;
 	}
+
+        public BigDecimal getEstimatedLabourAmount() {
+            return this.labourAmount;
+        }
+
+        public void setEstimatedLabourAmount(BigDecimal estimatedLabourAmount) {
+            this.labourAmount = estimatedLabourAmount;
+        }
+
+        public BigDecimal getEstimatedTotalRepairAmount() {
+            return this.totalAmount;
+        }
+
+        public void setEstimatedTotalRepairAmount(BigDecimal estimatedTotalRepairAmount) {
+            this.totalAmount = estimatedTotalRepairAmount;
+        }
+
+        public int getEstimatedDaysUnderRepair() {
+            return this.days;
+        }
+
+        public void setEstimatedDaysUnderRepair(int estimatedDaysUnderRepair) {
+            this.days = estimatedDaysUnderRepair;
+        }
 
 }

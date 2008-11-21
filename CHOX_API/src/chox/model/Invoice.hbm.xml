@@ -1,59 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-
 <hibernate-mapping>
   <class name="chox.model.Invoice" table="invoice">
-    <id name="id" column="id">
-      <generator class="increment" />
+    <id column="id" name="id">
+      <generator class="increment"/>
     </id>
-    <property name="dateInvoiced" column="date_invoiced" not-null="true" />
-    <property name="hireNet" column="hire_net" not-null="true" />
-    <property name="hireVat" column="hire_vat" not-null="true" />
-    <property name="hireGross" column="hire_gross" not-null="true" />
-    <property name="repairNet" column="repair_net" not-null="true" />
-    <property name="repairVat" column="repair_vat" not-null="true" />
-    <property name="repairGross" column="repair_gross" not-null="true" />
-    <property name="engineerFeeNet" column="engineer_fee_net" not-null="true" />
-    <property name="engineerFeeVat" column="engineer_fee_vat" not-null="true" />
-    <property name="engineerFeeGross" column="engineer_fee_gross" not-null="true" />
-    <property name="storageRecoveryNet" column="storage_recovery_net" not-null="true" />
-    <property name="storageRecoveryVat" column="storage_recovery_vat" not-null="true" />
-    <property name="storageRecoveryGross" column="storage_recovery_gross" not-null="true" />
-    <property name="totalNet" column="total_net" not-null="true" />
-    <property name="totalVat" column="total_vat" not-null="true" />
-    <property name="totalGross" column="total_gross" not-null="true" />
-    <property name="claimsHandlingInvoiceAmount" column="claims_handling_invoice_amount" not-null="true" />
-    <property name="deductionForClaimsHandlingFee" column="deduction_for_claims_handling_fee" not-null="true" />
-    <property name="discount" column="discount" not-null="true" />
-    <property name="totalToPay" column="total_to_pay" not-null="true" />
-    <property name="handlingInvoiceNo" column="handling_invoice_no" />
-    <property name="claimInvoiceNo" column="claim_invoice_no" />
-    <property name="cdwFee" column="cdw_fee" />
-    <property name="cdwQty" column="cdw_qty" />
-    <property name="automaticFee" column="automatic_fee" />
-    <property name="automaticQty" column="automatic_qty" />
-    <property name="satNavFee" column="sat_nav_fee" />
-    <property name="satNavQty" column="sat_nav_qty" />
-    <property name="estateFee" column="estate_fee" />
-    <property name="estateQty" column="estate_qty" />
-    <property name="babySeatFee" column="baby_seat_fee" />
-    <property name="babySeatQty" column="baby_seat_qty" />
-    <property name="towBarsFee" column="tow_bars_fee" />
-    <property name="towBarsQty" column="tow_bars_qty" />
-    <property name="nonStandardInsurancePremiumFee" column="non_standard_insurance_premium_fee" />
-    <property name="nonStandardInsurancePremiumQty" column="non_standard_insurance_premium_qty" />
-    <property name="adminFee" column="admin_fee" />
-    <property name="adminQty" column="admin_qty" />
-    <property name="roofRackFee" column="roof_rack_fee" />
-    <property name="roofRackQty" column="roof_rack_qty" />
-    <property name="dualControlFee" column="dual_control_fee" />
-    <property name="dualControlQty" column="dual_control_qty" />
-    <property name="deliveryCollectionFee" column="delivery_collection_fee" />
-    <property name="deliveryCollectionQty" column="delivery_collection_qty" />
-    <property name="createdBy" column="created_by" not-null="true" />
-    <property name="createdDate" column="created_date" not-null="true" />
-    <property name="lastNodifiedBy" column="last_nodified_by" not-null="true" />
-    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
+    <property column="date_invoiced" name="dateInvoiced" not-null="true"/>
+    <property column="hire_net" name="hireNet" not-null="true"/>
+    <property column="hire_vat" name="hireVat" not-null="true"/>
+    <property column="hire_gross" name="hireGross" not-null="true"/>
+    <property column="repair_net" name="repairNet" not-null="true"/>
+    <property column="repair_vat" name="repairVat" not-null="true"/>
+    <property column="repair_gross" name="repairGross" not-null="true"/>
+    <property column="engineer_fee_net" name="engineerFeeNet" not-null="true"/>
+    <property column="engineer_fee_vat" name="engineerFeeVat" not-null="true"/>
+    <property column="engineer_fee_gross" name="engineerFeeGross" not-null="true"/>
+    <property column="storage_recovery_net" name="storageRecoveryNet" not-null="true"/>
+    <property column="storage_recovery_vat" name="storageRecoveryVat" not-null="true"/>
+    <property column="storage_recovery_gross" name="storageRecoveryGross" not-null="true"/>
+    <property column="total_net" name="totalNet" not-null="true"/>
+    <property column="total_vat" name="totalVat" not-null="true"/>
+    <property column="total_gross" name="totalGross" not-null="true"/>
+    <property column="claims_handling_invoice_amount" name="claimsHandlingInvoiceAmount" not-null="true"/>
+    <property column="deduction_for_claims_handling_fee" name="deductionForClaimsHandlingFee" not-null="true"/>
+    <property column="discount" name="discount" not-null="true"/>
+    <property column="total_to_pay" name="totalToPay" not-null="true"/>
+    <property column="handling_invoice_no" name="handlingInvoiceNo"/>
+    <property column="claim_invoice_no" name="claimInvoiceNo"/>
+    <property column="cdw_fee" name="cdwFee"/>
+    <property column="cdw_qty" name="cdwQty"/>
+    <property column="automatic_fee" name="automaticFee"/>
+    <property column="automatic_qty" name="automaticQty"/>
+    <property column="sat_nav_fee" name="satNavFee"/>
+    <property column="sat_nav_qty" name="satNavQty"/>
+    <property column="estate_fee" name="estateFee"/>
+    <property column="estate_qty" name="estateQty"/>
+    <property column="baby_seat_fee" name="babySeatFee"/>
+    <property column="baby_seat_qty" name="babySeatQty"/>
+    <property column="tow_bars_fee" name="towBarsFee"/>
+    <property column="tow_bars_qty" name="towBarsQty"/>
+    <property column="non_standard_insurance_premium_fee" name="nonStandardInsurancePremiumFee"/>
+    <property column="non_standard_insurance_premium_qty" name="nonStandardInsurancePremiumQty"/>
+    <property column="admin_fee" name="adminFee"/>
+    <property column="admin_qty" name="adminQty"/>
+    <property column="roof_rack_fee" name="roofRackFee"/>
+    <property column="roof_rack_qty" name="roofRackQty"/>
+    <property column="dual_control_fee" name="dualControlFee"/>
+    <property column="dual_control_qty" name="dualControlQty"/>
+    <property column="delivery_collection_fee" name="deliveryCollectionFee"/>
+    <property column="delivery_collection_qty" name="deliveryCollectionQty"/>
+    <property column="created_by" name="createdBy" not-null="true"/>
+    <property column="created_date" name="createdDate" not-null="true"/>
+    <property column="last_nodified_by" name="lastNodifiedBy" not-null="true"/>
+    <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
   </class>
 </hibernate-mapping>
-

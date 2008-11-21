@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-
 <hibernate-mapping>
   <class name="chox.model.GlobalConfiguration" table="global_configuration">
-    <id name="id" column="id">
-      <generator class="increment" />
+    <id column="id" name="id">
+      <generator class="increment"/>
     </id>
-    <property name="parameter" column="parameter" />
-    <property name="value" column="value" />
-    <property name="createdBy" column="created_by" not-null="true" />
-    <property name="createdDate" column="created_date" not-null="true" />
-    <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
-    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
+    <property column="parameter" name="parameter"/>
+    <property column="value" name="value"/>
+    <property column="created_by" name="createdBy" not-null="true"/>
+    <property column="created_date" name="createdDate" not-null="true"/>
+    <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
+    <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
   </class>
 </hibernate-mapping>
-

@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-
 <hibernate-mapping>
   <class name="chox.model.EngineerReport" table="engineer_report">
-    <id name="id" column="id">
-      <generator class="increment" />
+    <id column="id" name="id">
+      <generator class="increment"/>
     </id>
-    <property name="days" column="days" not-null="true" />
-    <property name="name" column="name" />
-    <property name="company" column="company" />
-    <property name="address1" column="address1" />
-    <property name="address2" column="address2" />
-    <property name="address3" column="address3" />
-    <property name="address4" column="address4" />
-    <property name="address5" column="address5" />
-    <property name="postcode" column="postcode" />
-    <property name="telephone" column="telephone" />
-    <property name="email" column="email" />
-    <property name="createdBy" column="created_by" not-null="true" />
-    <property name="createdDate" column="created_date" not-null="true" />
-    <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
-    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
-    <property name="isUsable" column="is_usable" not-null="true" />
-    <property name="labourAmount" column="labour_amount" />
-    <property name="totalAmount" column="total_amount" />
+    <property column="days" name="days" not-null="true"/>
+    <property column="name" name="name"/>
+    <property column="company" name="company"/>
+    <property column="address1" name="address1"/>
+    <property column="address2" name="address2"/>
+    <property column="address3" name="address3"/>
+    <property column="address4" name="address4"/>
+    <property column="address5" name="address5"/>
+    <property column="postcode" name="postcode"/>
+    <property column="telephone" name="telephone"/>
+    <property column="email" name="email"/>
+    <property column="created_by" name="createdBy" not-null="true"/>
+    <property column="created_date" name="createdDate" not-null="true"/>
+    <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
+    <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
+    <property column="is_usable" name="isUsable" not-null="true"/>
+    <property column="labour_amount" name="labourAmount"/>
+    <property column="total_amount" name="totalAmount"/>
   </class>
 </hibernate-mapping>
-

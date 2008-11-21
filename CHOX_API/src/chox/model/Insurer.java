@@ -3,9 +3,11 @@ package chox.model;
 import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import scsbre.model.IInsurerInfo;
 
-public class Insurer implements Serializable
+public class Insurer implements Serializable, IInsurerInfo
 {
 	/** 
 	 * This attribute maps to the column id in the insurer table.
@@ -22,6 +24,12 @@ public class Insurer implements Serializable
 	 */
 	protected int createdBy;
 
+        /** 
+	 * This attribute maps to the column admin_handling_charge in the line_of_business table.
+	 */
+	protected BigDecimal adminHandlingCharge;
+
+        
 	/** 
 	 * This attribute maps to the column created_date in the insurer table.
 	 */
@@ -44,6 +52,14 @@ public class Insurer implements Serializable
 	public Insurer()
 	{
 	}
+
+        public BigDecimal getAdminHandlingCharge() {
+            return adminHandlingCharge;
+        }
+
+        public void setAdminHandlingCharge(BigDecimal adminHandlingCharge) {
+            this.adminHandlingCharge = adminHandlingCharge;
+        }
 
 	/**
 	 * Method 'getId'

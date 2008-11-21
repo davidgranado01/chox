@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="chox.model.ChoBand" table="cho_band">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <property column="insurer_id" name="insurerId" not-null="true"/>
+    <property column="created_by" name="createdBy" not-null="true"/>
+    <property column="created_date" name="createdDate" not-null="true"/>
+    <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
+    <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
+    <property column="is_active" name="isActive" not-null="true"/>
+    <property column="take_vehicle_to_garage_days_mobile" name="takeVehicleToGarageDaysMobile" not-null="true"/>
+    <property column="take_vehicle_to_garage_days_non_mobile" name="takeVehicleToGarageDaysNonMobile" not-null="true"/>
+    <property column="weekend_buffer_days" name="weekendBufferDays" not-null="true"/>
+    <property column="take_vehicle_out_days" name="takeVehicleOutDays" not-null="true"/>
+    <property column="engineer_inspection_delay_days" name="engineerInspectionDelayDays" not-null="true"/>
+    <property column="is_mobile_day_allowance" name="isMobileDayAllowance" not-null="true"/>
+    <property column="offer_made_days" name="offerMadeDays" not-null="true"/>
+    <property column="receipt_of_final_statement_cheque_days" name="receiptOfFinalStatementChequeDays" not-null="true"/>
+    <property column="inspection_delay_days" name="inspectionDelayDays" not-null="true"/>
+    <property column="hire_rate_charge_tolerance" name="hireRateChargeTolerance" not-null="true"/>
+    <property column="hire_net_ceiling" name="hireNetCeiling" not-null="true"/>
+    <property column="hire_day_ceiling" name="hireDayCeiling" not-null="true"/>
+    <property column="max_repair_value" name="maxRepairValue" not-null="true"/>
+    <property column="is_not_mobile_day_allowance" name="isNotMobileDayAllowance" not-null="true"/>
+  </class>
+</hibernate-mapping>

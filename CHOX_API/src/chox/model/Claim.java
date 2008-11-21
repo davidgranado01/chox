@@ -1,12 +1,20 @@
 package chox.model;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
+import scsbre.model.ICHOBandInfo;
+import scsbre.model.ICHOrganisationInfo;
+import scsbre.model.IClaimInfo;
+import scsbre.model.ICustomerVehicleDamageInfo;
+import scsbre.model.IEngineerReportInfo;
+import scsbre.model.IExtrasInfo;
+import scsbre.model.IHireInfo;
+import scsbre.model.IVehicleClassInfo;
+import chox.services.ChoBandService;
 
-public class Claim implements Serializable
+public class Claim implements Serializable, IClaimInfo
 {
+        private ChoBandService service;
 	/** 
 	 * This attribute maps to the column id in the claim table.
 	 */
@@ -491,4 +499,39 @@ public class Claim implements Serializable
 		this.vehicleHire = vehicleHire;
 	}
 
+        public ICHOrganisationInfo getCHOrganisation() {
+            return this.chorganisation;
+        }
+        
+        public IHireInfo getHireDetail() {
+            return this.vehicleHire;
+        }
+
+        public IEngineerReportInfo getEngineeringReport() {
+            return this.engineerReport;
+        }
+
+        public boolean getManagingRepair() {
+            return this.managingRepair;
+        }
+        
+        // NO VEHICLE CLASS DIRECT ASSIGN TO CLAIM, ONLY TO VEHICLE
+        public IVehicleClassInfo getVClass() {
+            return this.customer.vehicleClass;
+        }
+        
+        // ICustomerVehicleDamageInfo IS PART OF CUSTOMER DETAIL
+        public ICustomerVehicleDamageInfo getCustomerVehicleDamage() {
+            return this.customer;
+        }
+        
+        // getExtras IS PART OF INVOICE DETAIL
+        public IExtrasInfo getExtras() {
+            return this.invoice;
+        }
+        
+        // getCHOBand From 
+        public ICHOBandInfo getChoBand() {   
+            return service.getChoBandByChorganisationId(this.chorganisation.id);
+        }
 }

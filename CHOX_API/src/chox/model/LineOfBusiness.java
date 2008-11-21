@@ -18,10 +18,6 @@ public class LineOfBusiness implements Serializable
 	 */
 	protected String name;
 
-	/** 
-	 * This attribute maps to the column admin_handling_charge in the line_of_business table.
-	 */
-	protected BigDecimal adminHandlingCharge;
 
 	/** 
 	 * This attribute maps to the column address1 in the line_of_business table.
@@ -130,27 +126,7 @@ public class LineOfBusiness implements Serializable
 	{
 		this.name = name;
 	}
-
-	/**
-	 * Method 'getAdminHandlingCharge'
-	 * 
-	 * @return java.math.BigDecimal
-	 */
-	public java.math.BigDecimal getAdminHandlingCharge()
-	{
-		return adminHandlingCharge;
-	}
-
-	/**
-	 * Method 'setAdminHandlingCharge'
-	 * 
-	 * @param adminHandlingCharge
-	 */
-	public void setAdminHandlingCharge(java.math.BigDecimal adminHandlingCharge)
-	{
-		this.adminHandlingCharge = adminHandlingCharge;
-	}
-
+        
 	/**
 	 * Method 'getAddress1'
 	 * 

@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-
 <hibernate-mapping>
   <class name="chox.model.LineOfBusiness" table="line_of_business">
-    <id name="id" column="id">
-      <generator class="increment" />
+    <id column="id" name="id">
+      <generator class="increment"/>
     </id>
-    <property name="name" column="name" not-null="true" />
-    <property name="adminHandlingCharge" column="admin_handling_charge" />
-    <property name="address1" column="address1" not-null="true" />
-    <property name="address2" column="address2" />
-    <property name="address3" column="address3" />
-    <property name="address4" column="address4" />
-    <property name="address5" column="address5" />
-    <property name="postcode" column="postcode" not-null="true" />
-    <property name="createdBy" column="created_by" not-null="true" />
-    <property name="createdDate" column="created_date" not-null="true" />
-    <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
-    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
-    <property name="isActive" column="is_active" not-null="true" />
-    <many-to-one name="insurer" class="chox.model.Insurer" column="insurer_id" />
+    <property column="name" name="name" not-null="true"/>
+    <property column="address1" name="address1" not-null="true"/>
+    <property column="address2" name="address2"/>
+    <property column="address3" name="address3"/>
+    <property column="address4" name="address4"/>
+    <property column="address5" name="address5"/>
+    <property column="postcode" name="postcode" not-null="true"/>
+    <property column="created_by" name="createdBy" not-null="true"/>
+    <property column="created_date" name="createdDate" not-null="true"/>
+    <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
+    <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
+    <property column="is_active" name="isActive" not-null="true"/>
+    <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer"/>
   </class>
 </hibernate-mapping>
-

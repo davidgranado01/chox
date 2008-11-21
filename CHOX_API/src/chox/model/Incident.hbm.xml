@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-
 <hibernate-mapping>
   <class name="chox.model.Incident" table="incident">
-    <id name="id" column="id">
-      <generator class="increment" />
+    <id column="id" name="id">
+      <generator class="increment"/>
     </id>
-    <property name="date" column="date" not-null="true" />
-    <property name="location" column="location" />
-    <property name="incidentDescription" column="incident_description" />
-    <property name="createdBy" column="created_by" not-null="true" />
-    <property name="createdDate" column="created_date" not-null="true" />
-    <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
-    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
-    <property name="isPoliceInvolved" column="is_police_involved" not-null="true" />
+    <property column="date" name="date" not-null="true"/>
+    <property column="location" name="location"/>
+    <property column="incident_description" name="incidentDescription"/>
+    <property column="created_by" name="createdBy" not-null="true"/>
+    <property column="created_date" name="createdDate" not-null="true"/>
+    <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
+    <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
+    <property column="is_police_involved" name="isPoliceInvolved" not-null="true"/>
   </class>
 </hibernate-mapping>
-

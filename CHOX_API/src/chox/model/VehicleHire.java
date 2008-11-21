@@ -1,14 +1,17 @@
 package chox.model;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
-import java.math.BigDecimal;
+import scsbre.model.IHireInfo;
+import scsbre.model.IVehicleClassInfo;
+import chox.services.HireMonitoringDetailService;
 
-public class VehicleHire implements Serializable
+public class VehicleHire implements Serializable, IHireInfo
 {
-	/** 
+
+        private HireMonitoringDetailService service;
+        
+        /** 
 	 * This attribute maps to the column id in the vehicle_hire table.
 	 */
 	protected int id;
@@ -616,4 +619,37 @@ public class VehicleHire implements Serializable
 		this.vehicleClass = vehicleClass;
 	}
 
+        public Date getHireStart() {
+            return this.rentalStart;
+        }
+
+        public void setHireStart(Date hireStart) {
+            this.rentalStart = hireStart;
+        }
+
+        public Date getHireEnd() {
+            return this.rentalEnd;
+        }
+
+        public void setHireEnd(Date hireEnd) {
+            this.rentalEnd = hireEnd;
+        }
+
+        public int getNumberOfHireDays() {
+            return this.days;
+        }
+
+        public void setNumberOfHireDays(int numberOfHireDays) {
+            this.days = numberOfHireDays;
+        }
+
+        public IVehicleClassInfo getVClass() {
+            return this.vehicleClass;
+        }
+        
+        // ##### NOT FROM HERE #############
+        public boolean getIsTotalLoss() {
+            return service.getHireMonitoringDetailByVehicleHireId(this.id).isTotalLostCheck;
+        }
+      
 }

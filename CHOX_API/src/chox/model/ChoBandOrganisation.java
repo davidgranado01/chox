@@ -5,48 +5,48 @@ import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Chobandoperative implements Serializable
+public class ChoBandOrganisation implements Serializable
 {
 	/** 
-	 * This attribute maps to the column id in the cho_band_operative table.
+	 * This attribute maps to the column id in the cho_band_organisation table.
 	 */
 	protected int id;
 
 	/** 
-	 * This attribute maps to the column band_id in the cho_band_operative table.
+	 * This attribute maps to the column band_id in the cho_band_organisation table.
 	 */
 	protected int bandId;
 
 	/** 
-	 * This attribute maps to the column chorganisation_id in the cho_band_operative table.
+	 * This attribute maps to the column chorganisation_id in the cho_band_organisation table.
 	 */
 	protected int chorganisationId;
 
 	/** 
-	 * This attribute maps to the column created_by in the cho_band_operative table.
+	 * This attribute maps to the column created_by in the cho_band_organisation table.
 	 */
 	protected int createdBy;
 
 	/** 
-	 * This attribute maps to the column created_date in the cho_band_operative table.
+	 * This attribute maps to the column created_date in the cho_band_organisation table.
 	 */
 	protected Date createdDate;
 
 	/** 
-	 * This attribute maps to the column last_modified_by in the cho_band_operative table.
+	 * This attribute maps to the column last_modified_by in the cho_band_organisation table.
 	 */
 	protected int lastModifiedBy;
 
 	/** 
-	 * This attribute maps to the column last_modified_date in the cho_band_operative table.
+	 * This attribute maps to the column last_modified_date in the cho_band_organisation table.
 	 */
 	protected Date lastModifiedDate;
 
 	/**
-	 * Method 'ChoBandOperative'
+	 * Method 'ChoBandOrganisation'
 	 * 
 	 */
-	public Chobandoperative()
+	public ChoBandOrganisation()
 	{
 	}
 

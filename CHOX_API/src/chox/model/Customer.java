@@ -4,8 +4,9 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
+import scsbre.model.ICustomerVehicleDamageInfo;
 
-public class Customer implements Serializable
+public class Customer implements Serializable, ICustomerVehicleDamageInfo
 {
 	/** 
 	 * This attribute maps to the column id in the customer table.
@@ -100,7 +101,7 @@ public class Customer implements Serializable
 	/** 
 	 * This attribute maps to the column initial_ecd in the customer table.
 	 */
-	protected Date initialEcd;
+	protected Date initialECD;
 
 	/** 
 	 * This attribute maps to the column policy_number in the customer table.
@@ -535,9 +536,9 @@ public class Customer implements Serializable
 	 * 
 	 * @return java.util.Date
 	 */
-	public java.util.Date getInitialEcd()
+	public Date getInitialECD()
 	{
-		return initialEcd;
+		return initialECD;
 	}
 
 	/**
@@ -545,9 +546,9 @@ public class Customer implements Serializable
 	 * 
 	 * @param initialEcd
 	 */
-	public void setInitialEcd(java.util.Date initialEcd)
+	public void setInitialECD(Date initialEcd)
 	{
-		this.initialEcd = initialEcd;
+		this.initialECD = initialEcd;
 	}
 
 	/**
@@ -695,7 +696,7 @@ public class Customer implements Serializable
 	 * 
 	 * @return boolean
 	 */
-	public boolean isIsUsable()
+	public boolean getIsUsable()
 	{
 		return isUsable;
 	}
@@ -789,5 +790,4 @@ public class Customer implements Serializable
 	{
 		this.vehicleClass = vehicleClass;
 	}
-
 }

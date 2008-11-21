@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-
 <hibernate-mapping>
   <class name="chox.model.ThirdParty" table="third_party">
-    <id name="id" column="id">
-      <generator class="increment" />
+    <id column="id" name="id">
+      <generator class="increment"/>
     </id>
-    <property name="policyNumber" column="policy_number" />
-    <property name="claimReference" column="claim_reference" />
-    <property name="vehicleRegistration" column="vehicle_registration" />
-    <property name="vehicleManufacturer" column="vehicle_manufacturer" />
-    <property name="vehicleModel" column="vehicle_model" />
-    <property name="firstName" column="first_name" />
-    <property name="address1" column="address1" />
-    <property name="address2" column="address2" />
-    <property name="address3" column="address3" />
-    <property name="address4" column="address4" />
-    <property name="address5" column="address5" />
-    <property name="postcode" column="postcode" />
-    <property name="telephoneDay" column="telephone_day" />
-    <property name="telephoneEvening" column="telephone_evening" />
-    <property name="email" column="email" />
-    <property name="createdBy" column="created_by" not-null="true" />
-    <property name="createdDate" column="created_date" not-null="true" />
-    <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
-    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
-    <property name="lastName" column="last_name" />
-    <property name="title" column="title" />
-    <many-to-one name="insurer" class="chox.model.Insurer" column="insurer_id" />
-    <many-to-one name="vehicleClass" class="chox.model.VehicleClass" column="vehicle_class_id" />
+    <property column="policy_number" name="policyNumber"/>
+    <property column="claim_reference" name="claimReference"/>
+    <property column="vehicle_registration" name="vehicleRegistration"/>
+    <property column="vehicle_manufacturer" name="vehicleManufacturer"/>
+    <property column="vehicle_model" name="vehicleModel"/>
+    <property column="first_name" name="firstName"/>
+    <property column="address1" name="address1"/>
+    <property column="address2" name="address2"/>
+    <property column="address3" name="address3"/>
+    <property column="address4" name="address4"/>
+    <property column="address5" name="address5"/>
+    <property column="postcode" name="postcode"/>
+    <property column="telephone_day" name="telephoneDay"/>
+    <property column="telephone_evening" name="telephoneEvening"/>
+    <property column="email" name="email"/>
+    <property column="created_by" name="createdBy" not-null="true"/>
+    <property column="created_date" name="createdDate" not-null="true"/>
+    <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
+    <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
+    <property column="last_name" name="lastName"/>
+    <property column="title" name="title"/>
+    <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer"/>
+    <many-to-one class="chox.model.VehicleClass" column="vehicle_class_id" name="vehicleClass"/>
   </class>
 </hibernate-mapping>
-

@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-
 <hibernate-mapping>
   <class name="chox.model.Witness" table="witness">
-    <id name="id" column="id">
-      <generator class="increment" />
+    <id column="id" name="id">
+      <generator class="increment"/>
     </id>
-    <property name="name" column="name" />
-    <property name="address1" column="address1" />
-    <property name="address2" column="address2" />
-    <property name="address3" column="address3" />
-    <property name="address4" column="address4" />
-    <property name="address5" column="address5" />
-    <property name="postcode" column="postcode" />
-    <property name="telephoneDay" column="telephone_day" />
-    <property name="telephoneEvening" column="telephone_evening" />
-    <property name="email" column="email" />
-    <property name="createdBy" column="created_by" not-null="true" />
-    <property name="createdDate" column="created_date" not-null="true" />
-    <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
-    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
-    <many-to-one name="incident" class="chox.model.Incident" column="incident_id" />
+    <property column="name" name="name"/>
+    <property column="address1" name="address1"/>
+    <property column="address2" name="address2"/>
+    <property column="address3" name="address3"/>
+    <property column="address4" name="address4"/>
+    <property column="address5" name="address5"/>
+    <property column="postcode" name="postcode"/>
+    <property column="telephone_day" name="telephoneDay"/>
+    <property column="telephone_evening" name="telephoneEvening"/>
+    <property column="email" name="email"/>
+    <property column="created_by" name="createdBy" not-null="true"/>
+    <property column="created_date" name="createdDate" not-null="true"/>
+    <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
+    <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
+    <many-to-one class="chox.model.Incident" column="incident_id" name="incident"/>
   </class>
 </hibernate-mapping>
-

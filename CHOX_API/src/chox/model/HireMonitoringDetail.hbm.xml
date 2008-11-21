@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-
 <hibernate-mapping>
   <class name="chox.model.HireMonitoringDetail" table="hire_monitoring_detail">
-    <id name="id" column="id">
-      <generator class="increment" />
+    <id column="id" name="id">
+      <generator class="increment"/>
     </id>
-    <property name="createdBy" column="created_by" not-null="true" />
-    <property name="createdDate" column="created_date" not-null="true" />
-    <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
-    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
-    <property name="nameOfRepairer" column="name_of_repairer" />
-    <property name="repairBookInDate" column="repair_book_in_date" />
-    <property name="inspectionBookedDate" column="inspection_booked_date" />
-    <property name="inspectionDate" column="inspection_date" />
-    <property name="nameOfIme" column="name_Of_ime" />
-    <property name="repairCompletionDate" column="repair_completion_date" />
-    <property name="totalLossInspectionReport" column="total_loss_inspection_report" />
-    <property name="isTotalLostCheck" column="is_total_lost_check" not-null="true" />
+    <property column="created_by" name="createdBy" not-null="true"/>
+    <property column="created_date" name="createdDate" not-null="true"/>
+    <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
+    <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
+    <property column="name_of_repairer" name="nameOfRepairer"/>
+    <property column="repair_book_in_date" name="repairBookInDate"/>
+    <property column="inspection_booked_date" name="inspectionBookedDate"/>
+    <property column="inspection_date" name="inspectionDate"/>
+    <property column="name_Of_ime" name="nameOfIme"/>
+    <property column="repair_completion_date" name="repairCompletionDate"/>
+    <property column="total_loss_inspection_report" name="totalLossInspectionReport"/>
+    <property column="is_total_lost_check" name="isTotalLostCheck" not-null="true"/>
   </class>
 </hibernate-mapping>
-

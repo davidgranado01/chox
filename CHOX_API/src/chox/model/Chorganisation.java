@@ -4,8 +4,9 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
+import scsbre.model.ICHOrganisationInfo;
 
-public class Chorganisation implements Serializable
+public class Chorganisation implements Serializable, ICHOrganisationInfo
 {
 	/** 
 	 * This attribute maps to the column id in the chorganisation table.
@@ -390,4 +391,7 @@ public class Chorganisation implements Serializable
 		this.lastModifiedDate = lastModifiedDate;
 	}
 
+        public boolean getIsDelegatedAuthority() {
+            return this.isDelegatedAuthority;
+        }
 }
