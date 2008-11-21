@@ -27,7 +27,7 @@ public class ExtrasInfo implements IExtrasInfo {
     private BigDecimal dualControlFee;
     private int dualControlQty;
     private BigDecimal deliveryCollectionFee;
-    private BigDecimal deliveryCollectionQty;
+    private int deliveryCollectionQty;
 
     /* standard accessors */
     /* (non-Javadoc)
@@ -329,14 +329,14 @@ public class ExtrasInfo implements IExtrasInfo {
      * @see scsbre.model.IExtrasInfo#getDeliveryCollectionQty()
      */
 
-    public BigDecimal getDeliveryCollectionQty() {
+    public int getDeliveryCollectionQty() {
         return deliveryCollectionQty;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IExtrasInfo#setDeliveryCollectionQty(java.math.BigDecimal)
      */
 
-    public void setDeliveryCollectionQty(BigDecimal deliveryCollectionQty) {
+    public void setDeliveryCollectionQty(int deliveryCollectionQty) {
         this.deliveryCollectionQty = deliveryCollectionQty;
     }
 

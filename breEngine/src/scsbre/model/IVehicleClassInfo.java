@@ -6,9 +6,9 @@ public interface IVehicleClassInfo {
 
     public String getCode();
 
-    public void setCode(String code);
+//    public void setCode(String code);
 
     public BigDecimal getPrice();
 
-    public void setPrice(BigDecimal price);
+//    public void setPrice(BigDecimal price);
 }
