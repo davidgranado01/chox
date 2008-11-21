@@ -1,12 +1,7 @@
 
 package chox.services;
 
-import chox.data.HibernateUtil;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import chox.model.*;
-import org.hibernate.Transaction;
 
 public class CustomerServiceImpl {
     
