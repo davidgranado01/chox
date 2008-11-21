@@ -16,6 +16,9 @@ import scsbre.model.IInsurerInfo;
 import scsbre.model.IInvoiceInfo;
 import scsbre.model.IVehicleClassInfo;
 
+
+import scsbre.engine.rules.*;
+
 public class RulesEngine {
 
     private IClaimInfo claim;
@@ -35,6 +38,9 @@ public class RulesEngine {
     public static RulesEngine getInstance(IClaimInfo c, BigDecimal vatRate) {
 
         RulesEngine engine = new RulesEngine(c);
+        
+ 
+        
         return engine;
     }
 
@@ -70,10 +76,11 @@ public class RulesEngine {
 
     public RulesEngineResponse ResolveStatus() {
         
-        
-        
+        RulesEngineResponse response = new RulesEngineResponse();
+        RuleEvaluationResult resRule1 = execute(new HasAllowedVehicleClass());
+        response.addRuleEvaulation(resRule1);
 
-        return new RulesEngineResponse();
+        return response;
     }
 
     /*--------------- business rules on Claim ----------------------------------*/    //rule 1.
