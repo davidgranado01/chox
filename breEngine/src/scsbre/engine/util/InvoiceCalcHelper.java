@@ -15,7 +15,7 @@ public class InvoiceCalcHelper {
         this.vatRate = vatRate;
     }
 
-    public static InvoiceCalcHelper Create(IInvoiceInfo i, BigDecimal vatRate) {
+    public static InvoiceCalcHelper getInstance(IInvoiceInfo i, BigDecimal vatRate) {
         InvoiceCalcHelper calc = new InvoiceCalcHelper(i, vatRate);
         return calc;
     }
@@ -38,6 +38,7 @@ public class InvoiceCalcHelper {
     }
 
     public BigDecimal getCalculatedTotalNet() {
+        
         BigDecimal totalNet = BigDecimal.ZERO;
 
         totalNet = totalNet.add(invoice.getHireNet());

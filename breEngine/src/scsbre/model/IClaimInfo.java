@@ -4,39 +4,39 @@ import java.util.Date;
 
 public interface IClaimInfo {
 
-    public ICHOBandInfo getClaimChoBand();
+    public ICHOBandInfo getChoBand();
 
-    public void setClaimChoBand(ICHOBandInfo claimChoBand);
+    public void setChoBand(ICHOBandInfo claimChoBand);
 
-    public ICHOrganisationInfo getClaimCHOrganisation();
+    public ICHOrganisationInfo getCHOrganisation();
 
-    public void setClaimCHOrganisation(ICHOrganisationInfo claimCHOrganisation);
+    public void setCHOrganisation(ICHOrganisationInfo chOrg);
 
-    public IInvoiceInfo getClaimInvoice();
+    public IInvoiceInfo getInvoice();
 
-    public void setClaimInvoice(IInvoiceInfo claimInvoice);
+    public void setInvoice(IInvoiceInfo claimInvoice);
 
-    public IExtrasInfo getClaimExtras();
+    public IExtrasInfo getExtras();
 
-    public void setClaimExtras(IExtrasInfo claimExtras);
+    public void setExtras(IExtrasInfo extras);
 
-    public IHireInfo getClaimHireDetail();
+    public IHireInfo getHireDetail();
 
-    public void setClaimHireDetail(IHireInfo claimHireDetail);
+    public void setHireDetail(IHireInfo hireDetail);
 
-    public ICustomerVehicleDamageInfo getClaimCustomerVehicleDamage();
+    public ICustomerVehicleDamageInfo getCustomerVehicleDamage();
 
-    public void setClaimCustomerVehicleDamage(
+    public void setCustomerVehicleDamage(
             ICustomerVehicleDamageInfo claimCustomerVehicleDamage);
 
-    public IInsurerInfo getClaimInsurer();
+    public IInsurerInfo getInsurer();
 
-    public void setClaimInsurer(IInsurerInfo claimInsurer);
+    public void setInsurer(IInsurerInfo insurer);
 
-    public IEngineerReportInfo getClaimEngineeringReport();
+    public IEngineerReportInfo getEngineeringReport();
 
     public void setClaimEngineeringReport(
-            IEngineerReportInfo claimEngineeringReport);
+            IEngineerReportInfo engineeringReport);
 
     public boolean getManagingRepair();
 

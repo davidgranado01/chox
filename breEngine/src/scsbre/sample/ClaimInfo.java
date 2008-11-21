@@ -31,84 +31,84 @@ public class ClaimInfo implements IClaimInfo {
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#getClaimChoBand()
      */
-    public ICHOBandInfo getClaimChoBand() {
+    public ICHOBandInfo getChoBand() {
         return claimChoBand;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#setClaimChoBand(scsbre.model.CHOBandInfo)
      */
 
-    public void setClaimChoBand(ICHOBandInfo claimChoBand) {
+    public void setChoBand(ICHOBandInfo claimChoBand) {
         this.claimChoBand = claimChoBand;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#getClaimCHOrganisation()
      */
 
-    public ICHOrganisationInfo getClaimCHOrganisation() {
+    public ICHOrganisationInfo getCHOrganisation() {
         return claimCHOrganisation;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#setClaimCHOrganisation(scsbre.model.CHOrganisationInfo)
      */
 
-    public void setClaimCHOrganisation(ICHOrganisationInfo claimCHOrganisation) {
+    public void setCHOrganisation(ICHOrganisationInfo claimCHOrganisation) {
         this.claimCHOrganisation = claimCHOrganisation;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#getClaimInvoice()
      */
 
-    public IInvoiceInfo getClaimInvoice() {
+    public IInvoiceInfo getInvoice() {
         return claimInvoice;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#setClaimInvoice(scsbre.model.InvoiceInfo)
      */
 
-    public void setClaimInvoice(IInvoiceInfo claimInvoice) {
+    public void setInvoice(IInvoiceInfo claimInvoice) {
         this.claimInvoice = claimInvoice;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#getClaimExtras()
      */
 
-    public IExtrasInfo getClaimExtras() {
+    public IExtrasInfo getExtras() {
         return claimExtras;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#setClaimExtras(scsbre.model.ExtrasInfo)
      */
 
-    public void setClaimExtras(IExtrasInfo claimExtras) {
+    public void setExtras(IExtrasInfo claimExtras) {
         this.claimExtras = claimExtras;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#getClaimHireDetail()
      */
 
-    public IHireInfo getClaimHireDetail() {
+    public IHireInfo getHireDetail() {
         return claimHireDetail;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#setClaimHireDetail(scsbre.model.HireInfo)
      */
 
-    public void setClaimHireDetail(IHireInfo claimHireDetail) {
+    public void setHireDetail(IHireInfo claimHireDetail) {
         this.claimHireDetail = claimHireDetail;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#getClaimCustomerVehicleDamage()
      */
 
-    public ICustomerVehicleDamageInfo getClaimCustomerVehicleDamage() {
+    public ICustomerVehicleDamageInfo getCustomerVehicleDamage() {
         return claimCustomerVehicleDamage;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#setClaimCustomerVehicleDamage(scsbre.model.CustomerVehicleDamageInfo)
      */
 
-    public void setClaimCustomerVehicleDamage(
+    public void setCustomerVehicleDamage(
             ICustomerVehicleDamageInfo claimCustomerVehicleDamage) {
         this.claimCustomerVehicleDamage = claimCustomerVehicleDamage;
     }
@@ -116,21 +116,21 @@ public class ClaimInfo implements IClaimInfo {
      * @see scsbre.model.IClaimInfo#getClaimInsurer()
      */
 
-    public IInsurerInfo getClaimInsurer() {
+    public IInsurerInfo getInsurer() {
         return claimInsurer;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#setClaimInsurer(scsbre.model.InsurerInfo)
      */
 
-    public void setClaimInsurer(IInsurerInfo claimInsurer) {
+    public void setInsurer(IInsurerInfo claimInsurer) {
         this.claimInsurer = claimInsurer;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#getClaimEngineeringReport()
      */
 
-    public IEngineerReportInfo getClaimEngineeringReport() {
+    public IEngineerReportInfo getEngineeringReport() {
         return claimEngineeringReport;
     }
     /* (non-Javadoc)

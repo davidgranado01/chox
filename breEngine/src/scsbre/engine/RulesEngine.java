@@ -42,18 +42,18 @@ public class RulesEngine {
         claim = c;
         this.vatRate = vatRate;
 
-        invoice = c.getClaimInvoice();
-        hireDetail = c.getClaimHireDetail();
-        choBand = c.getClaimChoBand();
-        insurer = c.getClaimInsurer();
-        cvdamage = c.getClaimCustomerVehicleDamage();
-        eReport = c.getClaimEngineeringReport();
+        invoice = c.getInvoice();
+        hireDetail = c.getHireDetail();
+        choBand = c.getChoBand();
+        insurer = c.getInsurer();
+        cvdamage = c.getCustomerVehicleDamage();
+        eReport = c.getEngineeringReport();
         customerVClass = c.getVClass();
         hireVClass = hireDetail.getVClass();
 
-        cCalc = ClaimCalcHelper.Create(claim);
-        iCalc = InvoiceCalcHelper.Create(invoice, vatRate);
-        bandCalc = CHOBandCalcHelper.Create(choBand);
+        cCalc = ClaimCalcHelper.getInstance(claim);
+        iCalc = InvoiceCalcHelper.getInstance(invoice, vatRate);
+        bandCalc = CHOBandCalcHelper.getInstance(choBand);
     }
 
     public RulesEngineResponse ResolveStatus() {
@@ -141,7 +141,7 @@ public class RulesEngine {
 
     //rule 15.
     public boolean hasCorrectDiscountForNonDA() throws InvalidTestException {
-        if (claim.getClaimCHOrganisation().getIsDelegatedAuthority()) {
+        if (claim.getCHOrganisation().getIsDelegatedAuthority()) {
             throw new InvalidTestException("Not a valid test for DA CHO's");
         }
         return CalcHelper.EqualTo(invoice.getDiscount(),
@@ -150,7 +150,7 @@ public class RulesEngine {
 
     //rule 16.
     public boolean handlingAmountAndDeductionBothEqualZeroForDA() throws InvalidTestException {
-        if (claim.getClaimCHOrganisation().getIsDelegatedAuthority()) {
+        if (claim.getCHOrganisation().getIsDelegatedAuthority()) {
             throw new InvalidTestException("Not a valid test for DA CHO's");
         }
         
@@ -161,7 +161,7 @@ public class RulesEngine {
 
     //rule 17.
     public boolean claimHasZeroDiscountForNonDA() throws InvalidTestException {
-        if (!claim.getClaimCHOrganisation().getIsDelegatedAuthority()) {
+        if (!claim.getCHOrganisation().getIsDelegatedAuthority()) {
 
             throw new InvalidTestException("Invalid Test. CHO is NOT a DA.");
         }
@@ -184,11 +184,11 @@ public class RulesEngine {
     //rule 20.
     public boolean estimatedRepairDaysPlusBandDaysDoNotExceedHireDays() throws InvalidTestException {
 
-        if (claim.getClaimHireDetail().getIsTotalLoss()) {
+        if (claim.getHireDetail().getIsTotalLoss()) {
             throw new InvalidTestException("Not a valid test for a Total Loss Claim");
         }
 
-        int hireDays = claim.getClaimHireDetail().getNumberOfHireDays();
+        int hireDays = claim.getHireDetail().getNumberOfHireDays();
         int takeVehicleToGarageDays = cvdamage.getIsUsable()
                 ? choBand.getTakeVehicleToGarageDaysMobile()
                 : choBand.getTakeVehicleToGarageDaysNonMobile();

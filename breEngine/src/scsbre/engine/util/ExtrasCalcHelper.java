@@ -21,7 +21,7 @@ public class ExtrasCalcHelper {
         extras = ex;
     }
     
-    public static ExtrasCalcHelper Create(IExtrasInfo ex){
+    public static ExtrasCalcHelper getInstance(IExtrasInfo ex){
         
         return new ExtrasCalcHelper(ex);
     }

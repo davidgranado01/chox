@@ -10,11 +10,13 @@ public class CHOBandCalcHelper {
         band = b;
     }
 
-    public static CHOBandCalcHelper Create(ICHOBandInfo b) {
+    public static CHOBandCalcHelper getInstance(ICHOBandInfo b) {
         return new CHOBandCalcHelper(b);
     }
 
     public int getTotalLossInspectionDays() {
-        return band.getOfferMadeDays() + band.getReceiptOfFinalStatementChequeDays() + band.getInspectionDelayDays();
+        return band.getOfferMadeDays() 
+                + band.getReceiptOfFinalStatementChequeDays() 
+                + band.getInspectionDelayDays();
     }
 }

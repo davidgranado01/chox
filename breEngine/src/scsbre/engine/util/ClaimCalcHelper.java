@@ -16,11 +16,11 @@ public class ClaimCalcHelper {
 		
 	}
 	
-	public static ClaimCalcHelper Create(IClaimInfo c)
+	public static ClaimCalcHelper getInstance(IClaimInfo c)
 	{
 		ClaimCalcHelper cc = new ClaimCalcHelper();
 		cc.claim = c;
-                cc.exCalcHelper = ExtrasCalcHelper.Create(c.getClaimExtras());
+                cc.exCalcHelper = ExtrasCalcHelper.getInstance(c.getExtras());
 		return cc;		
 	}
 	
@@ -30,20 +30,20 @@ public class ClaimCalcHelper {
 
 	public int getHireDuration()
 	{
-		Date hireStart = claim.getClaimHireDetail().getHireStart();
-		Date initialEcd = claim.getClaimCustomerVehicleDamage().getInitialECD();
+		Date hireStart = claim.getHireDetail().getHireStart();
+		Date initialEcd = claim.getCustomerVehicleDamage().getInitialECD();
 		return CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
 	}
 
 	public BigDecimal getDailyHireRateCharged()
 	{
-		BigDecimal hireNetMinusExtras = claim.getClaimInvoice().getHireNet().subtract(exCalcHelper.getTotalExtras());
-		return hireNetMinusExtras.divide(new BigDecimal(claim.getClaimHireDetail().getNumberOfHireDays()));
+		BigDecimal hireNetMinusExtras = claim.getInvoice().getHireNet().subtract(exCalcHelper.getTotalExtras());
+		return hireNetMinusExtras.divide(new BigDecimal(claim.getHireDetail().getNumberOfHireDays()));
 	}
 
 	public BigDecimal getDailyHireRateChargedWithToleranceDeduction()
 	{
-		BigDecimal tolerance = getDailyHireRateCharged().multiply(claim.getClaimChoBand().getHireRateChargeTolerance());
+		BigDecimal tolerance = getDailyHireRateCharged().multiply(claim.getChoBand().getHireRateChargeTolerance());
 		return getDailyHireRateCharged().subtract(tolerance);
 	}
 
@@ -51,33 +51,33 @@ public class ClaimCalcHelper {
 	{
 		int allowedDays = 0;
 
-		allowedDays += claim.getClaimChoBand().getWeekendBufferDays();
-		allowedDays += claim.getClaimChoBand().getTakeVehicleOutDays();
-		allowedDays += claim.getClaimChoBand().getEngineerInspectionDelayDays();
+		allowedDays += claim.getChoBand().getWeekendBufferDays();
+		allowedDays += claim.getChoBand().getTakeVehicleOutDays();
+		allowedDays += claim.getChoBand().getEngineerInspectionDelayDays();
 
-		if (claim.getClaimCustomerVehicleDamage().getInitialECD() == null) //no ecd
+		if (claim.getCustomerVehicleDamage().getInitialECD() == null) //no ecd
 		{
-			if (claim.getClaimCustomerVehicleDamage().getIsUsable())
+			if (claim.getCustomerVehicleDamage().getIsUsable())
 			{
-				allowedDays += claim.getClaimChoBand().getTakeVehicleToGarageDaysMobile();
-				allowedDays += claim.getClaimChoBand().getIsMobileDayAllowance();
+				allowedDays += claim.getChoBand().getTakeVehicleToGarageDaysMobile();
+				allowedDays += claim.getChoBand().getIsMobileDayAllowance();
 			}
 			else
 			{
-				allowedDays += claim.getClaimChoBand().getTakeVehicleToGarageDaysNonMobile();
-				allowedDays += claim.getClaimChoBand().getIsNotMobileDayAllowance();
+				allowedDays += claim.getChoBand().getTakeVehicleToGarageDaysNonMobile();
+				allowedDays += claim.getChoBand().getIsNotMobileDayAllowance();
 			}
 		}
 		else //we have an ecd
 		{
 			allowedDays += getHireDuration() + 1;
-			if (claim.getClaimCustomerVehicleDamage().getIsUsable())
+			if (claim.getCustomerVehicleDamage().getIsUsable())
 			{
-				allowedDays += claim.getClaimChoBand().getTakeVehicleToGarageDaysMobile();
+				allowedDays += claim.getChoBand().getTakeVehicleToGarageDaysMobile();
 			}
 			else
 			{
-				allowedDays += claim.getClaimChoBand().getTakeVehicleToGarageDaysNonMobile();
+				allowedDays += claim.getChoBand().getTakeVehicleToGarageDaysNonMobile();
 			}
 		}
 		return allowedDays;

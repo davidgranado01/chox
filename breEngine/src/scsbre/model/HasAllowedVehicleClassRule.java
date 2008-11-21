@@ -9,7 +9,7 @@ public class HasAllowedVehicleClassRule implements BusinessRule {
 
 
         RuleEvaluationResult result = new RuleEvaluationResult();
-        boolean success = claim.getClaimHireDetail().getVClass().getPrice().compareTo(claim.getVClass().getPrice()) <= 0;
+        boolean success = claim.getHireDetail().getVClass().getPrice().compareTo(claim.getVClass().getPrice()) <= 0;
         result.setWasPassed(success);
         String msg = success ? "" : "Invalid Vehicle Class";
         result.setMessage(msg);
