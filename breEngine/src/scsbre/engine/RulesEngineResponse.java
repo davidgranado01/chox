@@ -12,6 +12,11 @@ public class RulesEngineResponse {
     public void addRuleEvaulation(RuleEvaluationResult res) {
         results.add(res);
     }
+    
+    public List<RuleEvaluationResult> getResults(){
+        
+        return results;
+    }
 
     public ClaimStatus getStatus() {
         return status;
