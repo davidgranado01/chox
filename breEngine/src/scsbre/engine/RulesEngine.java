@@ -35,7 +35,7 @@ public class RulesEngine {
     private IVehicleClassInfo hireVClass;
     private BigDecimal vatRate;
 
-    public static RulesEngine getInstance(IClaimInfo c, BigDecimal vatRate) {
+    public static RulesEngine getInstance(IClaimInfo c) {
 
         RulesEngine engine = new RulesEngine(c);
         
