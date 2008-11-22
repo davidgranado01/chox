@@ -105,6 +105,7 @@
         });
 
         var grid = new Ext.grid.GridPanel({
+            loadMask: true,
             ds: ds,
             columns: [
                 {id:'Id',header: "Claim Number", width: 250, sortable: true, dataIndex: 'id', 
