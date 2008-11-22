@@ -40,6 +40,11 @@ public class InboxAction extends BaseAction {
     {
         return (Long)counterTable.get(ClaimStatus.CLAIM_ACKNOWLEDGED);
     }
+    
+    public Long getAwaitingPaymentPackCount()
+    {
+         return (Long)counterTable.get(ClaimStatus.AWAITING_PAYMENT_PACK);
+    }
 
     @Override
     public String execute() throws Exception {

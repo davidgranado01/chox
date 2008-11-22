@@ -100,7 +100,7 @@
         {
             params:
                 {
-                status: 'All'
+                status: ''
             }
         });
 
@@ -238,7 +238,7 @@
 
 <div id="claimPanel">      
     <s:if test="isCHO">
-        <a>Upload Your Claims? <a href="<s:url action="uploadClaims" namespace="user"/>">click here</a>
+        Upload Your Claims? <a href="<s:url action="uploadClaims" namespace="user"/>">click here</a>
         <br />
     </s:if>
     <dir id="tabPanel"></dir> 
@@ -253,7 +253,7 @@
             <li><a href="javascript:showClaimByStatus('');" >Accepted Rejected Claims</a></li>
             <li><a href="javascript:showClaimByStatus('');" >Claims Awaiting Claims Handling Payment</a></li>
             <li><a href="javascript:showClaimByStatus('');" >DA Payment Logged</a></li>
-            <li><a href="javascript:showClaimByStatus('');" >Claims Awaiting Invoice Payment</a></li>
+            <li><a href="javascript:showClaimByStatus('AwaitingPaymentPack');" >Claims Awaiting Invoice Payment (<s:property value="awaitingPaymentPackCount" />)</a></li>
             <li><a href="javascript:showClaimByStatus('');" >Accepted Rejected Invoices</a></li>
             <li><a href="javascript:showClaimByStatus('');" >Approved Invoices Ready For payment</a></li>
             <li><a href="javascript:showClaimByStatus('');" >Invoice Payment Logged</a></li>
