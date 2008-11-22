@@ -223,7 +223,6 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         
         System.out.println("END  ********************************************");
 
-        
         return xmlParseResult;
     }
     

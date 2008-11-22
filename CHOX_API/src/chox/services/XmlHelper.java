@@ -219,9 +219,15 @@ public class XmlHelper {
     
     public static String contructureErrorMessage(String strPath, String nodeName){
         String returnStr = strPath;
+        
         if(!nodeName.equalsIgnoreCase("")){
-            returnStr = returnStr + ":" + nodeName;
+            if(returnStr.length()>0){
+                returnStr = returnStr + ":" + nodeName;
+            }else{
+                returnStr = nodeName;
+            }
         }
+        
         return returnStr.toUpperCase();
     }
     
