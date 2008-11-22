@@ -10,5 +10,5 @@ import chox.model.ChoBand;
 public interface ChoBandService {
     
     ChoBand getChoBandByChorganisationId(int Id);
-    
+    ChoBand getChoBandByChorganisationIdAndInsurerId(int orgId, int insurerId);
 }

@@ -6,8 +6,11 @@
 package chox.services;
 
 import chox.model.XMLParseResult;
+import chox.model.Claim;
+import scsbre.engine.*;
 
 public interface InvoiceService {
     public XMLParseResult saveInvoiceForXMLUploader(XMLParseResult xmlParseResult);
+    public RulesEngineResponse XMLUploaderInvoiceValidation(Claim claim);
 
 }

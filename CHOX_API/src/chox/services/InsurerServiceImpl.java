@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.w3c.dom.Element;
 
-public class InsurerServiceImpl  extends DataService implements InsurerService {
+public class InsurerServiceImpl extends DataService implements InsurerService {
     
     public Insurer getInsurerByName(String s){
          

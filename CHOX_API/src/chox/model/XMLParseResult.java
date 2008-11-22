@@ -37,24 +37,6 @@ public class XMLParseResult {
     private ArrayList<Witness> witnesses;
     private ArrayList<Injury> injuries;
     private ArrayList<Solicitor> solicitors;
-    private ArrayList<EngineerReport> engineerReports;
-    private  ArrayList<VehicleHire> vehiclehires;
-
-    public ArrayList<VehicleHire> getVehiclehires() {
-        return vehiclehires;
-    }
-
-    public void setVehiclehires(ArrayList<VehicleHire> vehiclehires) {
-        this.vehiclehires = vehiclehires;
-    }
-    
-    public ArrayList<EngineerReport> getEngineerReports() {
-        return engineerReports;
-    }
-
-    public void setEngineerReports(ArrayList<EngineerReport> engineerReports) {
-        this.engineerReports = engineerReports;
-    }
     
     public ArrayList<Injury> getInjuries() {
         return injuries;

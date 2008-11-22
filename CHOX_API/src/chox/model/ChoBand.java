@@ -111,7 +111,6 @@ public class ChoBand implements Serializable, ICHOBandInfo
 	 * This attribute maps to the column is_not_mobile_day_allowance in the cho_band table.
 	 */
 	protected int isNotMobileDayAllowance;
-
 	/**
 	 * Method 'ChoBand'
 	 * 

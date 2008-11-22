@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
 <hibernate-mapping>
   <class name="chox.model.History" table="history">
-    <id column="id" name="id">
-      <generator class="increment"/>
+    <id name="id" column="id">
+      <generator class="increment" />
     </id>
-    <property column="created_by" name="createdBy" not-null="true"/>
-    <property column="created_date" name="createdDate" not-null="true"/>
-    <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
-    <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
+    <property name="createdBy" column="created_by" not-null="true" />
+    <property name="createdDate" column="created_date" not-null="true" />
+    <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
+    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
+    <property name="claimId" column="claim_id" not-null="true" />
+    <property name="narrative" column="narrative" />
+    <property name="processDate" column="process_date" />
+    <property name="isPublic" column="is_public" not-null="true" />
+    <property name="type" column="type" />
+    <property name="ruleId" column="rule_id" not-null="true" />
+    <property name="isSystem" column="is_system" not-null="true" />
   </class>
 </hibernate-mapping>
+

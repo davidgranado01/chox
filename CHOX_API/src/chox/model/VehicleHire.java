@@ -15,7 +15,11 @@ public class VehicleHire implements Serializable, IHireInfo
 	 * This attribute maps to the column id in the vehicle_hire table.
 	 */
 	protected int id;
+        protected boolean IsTotalLoss;
 
+    public void setIsTotalLoss(boolean IsTotalLoss) {
+        this.IsTotalLoss = IsTotalLoss;
+    }
 	/** 
 	 * This attribute maps to the column vehicle_registration in the vehicle_hire table.
 	 */
@@ -649,7 +653,6 @@ public class VehicleHire implements Serializable, IHireInfo
         
         // ##### NOT FROM HERE #############
         public boolean getIsTotalLoss() {
-            return service.getHireMonitoringDetailByVehicleHireId(this.id).isTotalLostCheck;
+            return this.IsTotalLoss;
         }
-      
 }

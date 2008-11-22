@@ -29,4 +29,23 @@ public class ChoBandServiceImpl extends DataService implements ChoBandService{
         currentSession.disconnect();
         return band;
     }
+    
+    public ChoBand getChoBandByChorganisationIdAndInsurerId(int orgId, int insurerId){
+        
+        ChoBand band = new ChoBand();
+        
+        try {
+            
+            Criteria criteria = currentSession.createCriteria(ChoBand.class);
+            criteria.add(Restrictions.eq("Id", orgId));
+            band = (ChoBand) criteria.uniqueResult();
+            
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
+        
+        currentSession.clear();
+        currentSession.disconnect();
+        return band;
+    }    
 }

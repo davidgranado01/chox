@@ -5,12 +5,12 @@ import chox.model.XMLParseResult;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
-public class EngineerReportServiceImpl  extends DataService implements EngineerReportService{
+public class EngineerReportServiceImpl extends DataService implements EngineerReportService{
 
     public XMLParseResult saveEngineerReportForXMLUploader(XMLParseResult xmlParseResult){
         
         if((xmlParseResult.getClaim().getEngineerReport())!=null){
-                
+
             (xmlParseResult.getClaim().getEngineerReport()).setCreatedBy(getCurrentUser().getId());
             (xmlParseResult.getClaim().getEngineerReport()).setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
             (xmlParseResult.getClaim().getEngineerReport()).setLastModifiedBy(getCurrentUser().getId());

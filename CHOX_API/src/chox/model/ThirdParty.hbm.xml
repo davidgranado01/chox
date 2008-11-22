@@ -27,6 +27,6 @@
     <property column="last_name" name="lastName"/>
     <property column="title" name="title"/>
     <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer"/>
-    <many-to-one class="chox.model.VehicleClass" column="vehicle_class_id" name="vehicleClass"/>
+    <many-to-one class="chox.model.VehicleClass" column="vehicle_class_id" name="vehicleClass" lazy="false"/>
   </class>
 </hibernate-mapping>

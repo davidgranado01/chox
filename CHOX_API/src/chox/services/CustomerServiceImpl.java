@@ -5,7 +5,7 @@ import chox.model.*;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
-public class CustomerServiceImpl  extends DataService implements CustomerService{
+public class CustomerServiceImpl extends DataService implements CustomerService{
     
     public Customer getCustomerById(int id){        
         

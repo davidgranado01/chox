@@ -4,6 +4,7 @@
  */
 package chox.services;
 
+import chox.model.ChoBand;
 import chox.model.Claim;
 import chox.model.XMLParseResult;
 import java.io.File;
@@ -75,19 +76,6 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
             criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
             claim = (Claim) criteria.uniqueResult();
 
-        /*
-        if(claim!=null){
-        
-        // GET CUSTOMER INFORMATION
-        CustomerService custService = new CustomerServiceImpl();
-        claim.setCustomer(custService.getCustomerById(1));
-        
-        
-        // GET CHOBAND INFORMATION
-        
-        }
-         */
-
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -99,7 +87,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
 
     public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, String sUpdateType, Boolean isAllowPartialUpload) {
         XmlProcessController thisCtrl = new XmlProcessController();
-        return thisCtrl.XMLValidationProcess(claimXMLFile, sUpdateType, isAllowPartialUpload);
+        return thisCtrl.XMLValidationProcess(claimXMLFile, isAllowPartialUpload);
     }
 
     public XMLParseResult saveClaimForXMLUploader(XMLParseResult xmlParseResult) {

@@ -13,7 +13,7 @@
     <property column="repair_book_in_date" name="repairBookInDate"/>
     <property column="inspection_booked_date" name="inspectionBookedDate"/>
     <property column="inspection_date" name="inspectionDate"/>
-    <property column="name_Of_ime" name="nameOfIme"/>
+    <property column="name_of_ime" name="nameOfIme"/>
     <property column="repair_completion_date" name="repairCompletionDate"/>
     <property column="total_loss_inspection_report" name="totalLossInspectionReport"/>
     <property column="is_total_lost_check" name="isTotalLostCheck" not-null="true"/>

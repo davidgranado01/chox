@@ -11,9 +11,12 @@ import scsbre.model.IExtrasInfo;
 import scsbre.model.IHireInfo;
 import scsbre.model.IVehicleClassInfo;
 import chox.services.*;
+import chox.model.ChoBand;
+import java.math.BigDecimal;
 
 public class Claim implements Serializable, IClaimInfo
 {
+        protected ChoBand choband;
 	/** 
 	 * This attribute maps to the column id in the claim table.
 	 */
@@ -506,7 +509,7 @@ public class Claim implements Serializable, IClaimInfo
             return this.vehicleHire;
         }
 
-        public IEngineerReportInfo getEngineeringReport() {
+        public IEngineerReportInfo getEngineeringReport() {            
             return this.engineerReport;
         }
 
@@ -528,10 +531,13 @@ public class Claim implements Serializable, IClaimInfo
         public IExtrasInfo getExtras() {
             return this.invoice;
         }
-        
-        // getCHOBand From 
-        public ICHOBandInfo getChoBand() {   
-            ChoBandService band = new ChoBandServiceImpl();
-            return band.getChoBandByChorganisationId(this.chorganisation.id);
+
+        public void setChoband(ChoBand choband) {
+            this.choband = choband;
         }
+
+        public ICHOBandInfo getChoBand() {
+            return choband;
+        }
+
 }
