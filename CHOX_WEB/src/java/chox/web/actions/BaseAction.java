@@ -19,4 +19,14 @@ public class BaseAction extends ActionSupport {
     public PermissionedUser getAuthenticatedUser() {
         return user;
     }
+    
+    public boolean getIsCHO()
+    {
+        return user.getIsCHO();
+    }
+    
+    public boolean getIsInsurer()
+    {
+        return user.getIsINS();
+    }
 }

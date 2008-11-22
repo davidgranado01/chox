@@ -2,9 +2,9 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
-    <property name="connection.url">jdbc:postgresql://10.0.0.2/choxidasV2</property>
-    <property name="connection.username">postgres</property>
-    <property name="connection.password">GreenF1nCH</property>
+    <property name="connection.url">jdbc:postgresql://localhost:5432/choxidasV2</property>
+    <property name="connection.username">sa</property>
+    <property name="connection.password">password</property>    
     <property name="connection.driver_class">org.postgresql.Driver</property>
     <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
     <property name="show_sql">true</property>
@@ -13,7 +13,7 @@
     <mapping resource="chox/model/History.hbm.xml" />
     <mapping resource="chox/model/WebUser.hbm.xml" />
     <mapping resource="chox/model/WebUserRole.hbm.xml" />
-    <mapping resource="chox/model/Chobandoperative.hbm.xml" />
+    <mapping resource="chox/model/ChoBandOrganisation.hbm.xml" />
     <mapping resource="chox/model/Chorganisation.hbm.xml" />
     <mapping resource="chox/model/Claim.hbm.xml" />
     <mapping resource="chox/model/Customer.hbm.xml" />
@@ -29,5 +29,6 @@
     <mapping resource="chox/model/VehicleClass.hbm.xml" />
     <mapping resource="chox/model/VehicleHire.hbm.xml" />
     <mapping resource="chox/model/Witness.hbm.xml" />
+    <mapping resource="chox/model/ChoBand.hbm.xml" />  
   </session-factory>
 </hibernate-configuration>

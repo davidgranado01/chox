@@ -8,11 +8,9 @@
     <constant name="struts.multipart.maxSize" value="1000000" />
     <package name="home-package" extends="struts-default" namespace="/">
         <interceptors>
-            <interceptor name="acegi" class="chox.web.security.AcegiInterceptor" />
-            <interceptor name="hibernateUserDataFilter" class="chox.web.data.HibernateUserDataFilterInterceptor" />
+            <interceptor name="acegi" class="chox.web.security.AcegiInterceptor" />            
             <interceptor-stack name="authenticated">
                 <interceptor-ref name="acegi"/>
-                <interceptor-ref name="hibernateUserDataFilter"/>
                 <interceptor-ref name="paramsPrepareParamsStack"/>       
             </interceptor-stack>            
         </interceptors>
@@ -46,6 +44,12 @@
         <action name="getClaimsbyStatus" class="chox.web.actions.ClaimsAction" method="getClaimsbyStatus">
             <param name="status">status</param>
             <result name="success">/jsp/JsonData.jsp</result>
+        </action>
+        <action name="searchClaim" class="chox.web.actions.SearchClaimAction">
+            <result name="success">/jsp/user/p_searchClaim.jsp</result>
+        </action>
+        <action name="doSearchClaim" class="chox.web.actions.SearchClaimAction" method="doSearchClaim">
+            <result name="success">/jsp/user/p_searchClaim.jsp</result>
         </action>
     </package>
 
