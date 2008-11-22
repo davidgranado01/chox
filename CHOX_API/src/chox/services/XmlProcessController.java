@@ -273,6 +273,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             }
         }
         
+        xmlParseResult.setDataValidationRemark(existingErrorMsg);
         return xmlParseResult;
     }
     
