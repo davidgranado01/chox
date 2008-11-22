@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 import scsbre.engine.util.InvoiceCalcHelper;
 import scsbre.model.IInvoiceInfo;
-import scsbre.sample.InvoiceInfo;
+import scsbre.tests.sample.InvoiceInfo;
 
 public class InvoiceCalcTest {
 
@@ -30,12 +30,12 @@ public class InvoiceCalcTest {
     public void TestIvoiceCalculatorWithZeroValues() {
 
         BigDecimal vatRate = new BigDecimal(17.5);
-        IInvoiceInfo inv = new InvoiceInfo();
+        
+        InvoiceInfo inv = new InvoiceInfo();
 
         inv.setHireNet(BigDecimal.ZERO);
         inv.setHireVat(BigDecimal.ZERO);
         inv.setHireGross(BigDecimal.ZERO);
-
 
         inv.setRepairNet(BigDecimal.ZERO);
         inv.setRepairVat(BigDecimal.ZERO);
@@ -58,7 +58,7 @@ public class InvoiceCalcTest {
         inv.setDiscount(BigDecimal.ZERO);
         inv.setTotalToPay(BigDecimal.ZERO);
 
-        InvoiceCalcHelper helper = InvoiceCalcHelper.getInstance(inv, vatRate);
+        InvoiceCalcHelper helper = InvoiceCalcHelper.getInstance(inv);
 
         assertTrue(helper.getCalculatedHireVat().compareTo(BigDecimal.ZERO) == 0);
         assertTrue(helper.getCalculatedHireGross().compareTo(BigDecimal.ZERO) == 0);
@@ -75,7 +75,7 @@ public class InvoiceCalcTest {
     public void TestIvoiceCalculator() {
 
         BigDecimal vatRate = new BigDecimal(.175);
-        IInvoiceInfo inv = new InvoiceInfo();
+        InvoiceInfo inv = new InvoiceInfo();
 
         inv.setHireNet(new BigDecimal(300));
         inv.setHireVat(BigDecimal.ZERO);
@@ -103,7 +103,7 @@ public class InvoiceCalcTest {
         inv.setDiscount(BigDecimal.ZERO);
         inv.setTotalToPay(BigDecimal.ZERO);
 
-        InvoiceCalcHelper helper = InvoiceCalcHelper.getInstance(inv, vatRate);
+        InvoiceCalcHelper helper = InvoiceCalcHelper.getInstance(inv);
 
         System.out.println(inv.getHireGross());
         System.out.println(inv.getHireNet());
@@ -130,7 +130,7 @@ public class InvoiceCalcTest {
         
 
         BigDecimal vatRate = new BigDecimal(.175);
-        IInvoiceInfo inv = new InvoiceInfo();
+        InvoiceInfo inv = new InvoiceInfo();
 
         inv.setHireNet(new BigDecimal(300));
         inv.setHireVat(BigDecimal.ZERO);
@@ -158,7 +158,7 @@ public class InvoiceCalcTest {
         inv.setDiscount(BigDecimal.ZERO);
         inv.setTotalToPay(BigDecimal.ZERO);
 
-        InvoiceCalcHelper helper = InvoiceCalcHelper.getInstance(inv, vatRate);
+        InvoiceCalcHelper helper = InvoiceCalcHelper.getInstance(inv);
 
         System.out.println(inv.getHireGross());
         System.out.println(inv.getHireNet());
@@ -180,12 +180,12 @@ public class InvoiceCalcTest {
     }  
     
     
-        @Test
+    @Test
     public void TestIvoiceCalculator2() {
         
 
         BigDecimal vatRate = new BigDecimal(.175);
-        IInvoiceInfo inv = new InvoiceInfo();
+        InvoiceInfo inv = new InvoiceInfo();
 
         inv.setHireNet(new BigDecimal(300));
         inv.setHireVat(BigDecimal.ZERO);
@@ -213,7 +213,7 @@ public class InvoiceCalcTest {
         inv.setDiscount(BigDecimal.ZERO);
         inv.setTotalToPay(BigDecimal.ZERO);
 
-        InvoiceCalcHelper helper = InvoiceCalcHelper.getInstance(inv, vatRate);
+        InvoiceCalcHelper helper = InvoiceCalcHelper.getInstance(inv);
 
         System.out.println(inv.getHireGross());
         System.out.println(inv.getHireNet());
