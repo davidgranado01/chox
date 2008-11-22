@@ -8,24 +8,27 @@ package scsbre.engine.rules;
 import scsbre.engine.IBusinessRule;
 import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
-import scsbre.model.IClaimInfo;
 import scsbre.engine.util.CalcHelper;
 import scsbre.engine.util.InvoiceCalcHelper;
 import scsbre.model.ClaimStatus;
-/**
- *
- * @author Derm
- * 
- * rule 5, order 5
- */
-public class HasCorrectHireGrossCalculation implements IBusinessRule {
+import scsbre.model.IClaimInfo;
+import scsbre.model.IInvoiceInfo;
 
+/**
+ * rule 9, order 3
+ * @author Derm
+ */
+public class HasCorrectHireVatCalculation implements IBusinessRule {
+
+
+    
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
         RuleEvaluation res = new RuleEvaluation();
         
-        InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
-        boolean success = CalcHelper.EqualTo(claim.getInvoice().getHireGross(), iCalc.getCalculatedHireGross());
+        IInvoiceInfo invoice = claim.getInvoice();
+        InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
+        boolean success = CalcHelper.EqualTo(invoice.getHireVat(), iCalc.getCalculatedHireVat());
         
         res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(true);
@@ -34,21 +37,26 @@ public class HasCorrectHireGrossCalculation implements IBusinessRule {
 
         return res;
 
-    }
-
+    }    
+    
     public String getFailureMessage() {
-        return "Hire Gross calculation is incorrect.";
+        return "Hire VAT calculation is incorrect.";
     }
 
+    public boolean isVisibleToCHO() {
+        return true;
+    }
+
+    public boolean appliesToClaim(IClaimInfo claim) {
+        return true;
+    }
 
     public String getRuleId() {
-       return "005";
+        return "009";
     }
     
     public ClaimStatus getStatusAfterFailure() {
         return ClaimStatus.AwaitingPaymentPack;
-    }
-
-
+    }    
 
 }

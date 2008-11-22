@@ -8,24 +8,23 @@ package scsbre.engine.rules;
 import scsbre.engine.IBusinessRule;
 import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
+import scsbre.engine.util.CHOBandCalcHelper;
 import scsbre.model.ClaimStatus;
 import scsbre.model.IClaimInfo;
+
 
 /**
  *
  * @author Derm
  * 
- * rule 4, order 14
- * 
+ * rule 7, order 16
  */
-public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRule{
+public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusinessRule {
 
-
-    
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
-
-        boolean success = claim.getHireDetail().getNumberOfHireDays() <= claim.getChoBand().getHireDayCeiling();
+        CHOBandCalcHelper bandCalc = CHOBandCalcHelper.getInstance(claim.getChoBand());
+        boolean success =  claim.getHireDetail().getNumberOfHireDays() <= bandCalc.getTotalLossInspectionDays();
         
         RuleEvaluation res = new RuleEvaluation();
         res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
@@ -33,21 +32,19 @@ public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRul
         res.setRelatedRule(this);
         
         return res;
-
-    }       
+    }
 
     public String getFailureMessage() {
-        return "Number of hire days billed exceeds the CHO's hire days ceiling.";
+        return "Number of hire days billed exceeds the allowable threshold (for total loss hires).";
+
     }
 
     public String getRuleId() {
-        return "004";
+        return "007";
     }
     
     public ClaimStatus getStatusAfterFailure() {
         return ClaimStatus.InvoiceEscalated;
     }
-    
-    
 
 }

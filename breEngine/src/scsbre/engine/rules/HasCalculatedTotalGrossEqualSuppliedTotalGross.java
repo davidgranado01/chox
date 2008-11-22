@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package scsbre.engine.rules;
 
@@ -12,43 +8,42 @@ import scsbre.model.IClaimInfo;
 import scsbre.engine.util.CalcHelper;
 import scsbre.engine.util.InvoiceCalcHelper;
 import scsbre.model.ClaimStatus;
+import scsbre.model.IInvoiceInfo;
+
 /**
  *
  * @author Derm
  * 
- * rule 5, order 5
+ * rule 14, order 7
  */
-public class HasCorrectHireGrossCalculation implements IBusinessRule {
+public class HasCalculatedTotalGrossEqualSuppliedTotalGross implements IBusinessRule {
 
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
-        
+
         RuleEvaluation res = new RuleEvaluation();
-        
+
+        IInvoiceInfo invoice = claim.getInvoice();
         InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
-        boolean success = CalcHelper.EqualTo(claim.getInvoice().getHireGross(), iCalc.getCalculatedHireGross());
-        
+        boolean success = CalcHelper.EqualTo(invoice.getTotalGross(), iCalc.getCalculatedTotalGross());
+
         res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
-        
 
         return res;
 
     }
 
     public String getFailureMessage() {
-        return "Hire Gross calculation is incorrect.";
+        return "Total Gross calculation is incorrect.";
     }
-
 
     public String getRuleId() {
-       return "005";
+        return "014";
     }
-    
+
     public ClaimStatus getStatusAfterFailure() {
         return ClaimStatus.AwaitingPaymentPack;
     }
-
-
-
 }
+

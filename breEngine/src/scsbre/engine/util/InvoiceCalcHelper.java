@@ -9,14 +9,14 @@ public class InvoiceCalcHelper {
     private IInvoiceInfo invoice;
     private BigDecimal vatRate;
 
-    private InvoiceCalcHelper(IInvoiceInfo i, BigDecimal vatRate) {
+    private InvoiceCalcHelper(IInvoiceInfo i) {
 
         invoice = i;
-        this.vatRate = vatRate;
+        this.vatRate = CalcHelper.VAT_RATE;
     }
 
-    public static InvoiceCalcHelper getInstance(IInvoiceInfo i, BigDecimal vatRate) {
-        InvoiceCalcHelper calc = new InvoiceCalcHelper(i, vatRate);
+    public static InvoiceCalcHelper getInstance(IInvoiceInfo i) {
+        InvoiceCalcHelper calc = new InvoiceCalcHelper(i);
         return calc;
     }
 

@@ -6,23 +6,46 @@ import scsbre.model.ClaimStatus;
 
 public class RulesEngineResponse {
 
-    private List<RuleEvaluationResult> results = new ArrayList<RuleEvaluationResult>();
-    private ClaimStatus status = null;
+    private List<RuleEvaluation> results = new ArrayList<RuleEvaluation>();
 
-    public void addRuleEvaulation(RuleEvaluationResult res) {
+    public void addRuleEvaulation(RuleEvaluation res) {
         results.add(res);
     }
     
-    public List<RuleEvaluationResult> getResults(){
+    public List<RuleEvaluation> getResults(){
         
         return results;
     }
 
     public ClaimStatus getStatus() {
-        return status;
-    }
-
-    public void setClaimStatus(ClaimStatus s) {
-        status = s;
+        
+        
+        boolean foundAwaitingPaymentPack = false;
+        boolean foundFailedRule = false;
+        for(int i = 0; i < results.size(); i++)
+        {
+            
+            RuleEvaluation rev = results.get(i);
+                
+            if(rev.getResult() == RuleEvaluationResult.RuleFailed){
+                
+                foundFailedRule = true;
+                foundAwaitingPaymentPack = rev.getRelatedRule().getStatusAfterFailure() == ClaimStatus.AwaitingPaymentPack;
+                
+                
+            }
+        }
+        
+        if(foundFailedRule){
+            
+            if(foundAwaitingPaymentPack){
+                return ClaimStatus.AwaitingPaymentPack;
+            }
+            else return ClaimStatus.InvoiceEscalated;
+        }
+        
+        return ClaimStatus.InvoiceApproved;
+        
+        
     }
 }

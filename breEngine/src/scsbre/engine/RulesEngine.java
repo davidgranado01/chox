@@ -1,6 +1,6 @@
 package scsbre.engine;
 
-import scsbre.engine.rules.IBusinessRule;
+import scsbre.engine.IBusinessRule;
 import scsbre.engine.util.ClaimCalcHelper;
 import scsbre.engine.util.CHOBandCalcHelper;
 import scsbre.engine.util.CalcHelper;
@@ -38,22 +38,12 @@ public class RulesEngine {
     public static RulesEngine getInstance(IClaimInfo c) {
 
         RulesEngine engine = new RulesEngine(c);
-        
- 
-        
         return engine;
     }
 
     
     
-    private RuleEvaluationResult execute(IBusinessRule rule){
 
-        RuleEvaluationResult result = new RuleEvaluationResult();   
-        boolean success = rule.run(claim);
-        result.setMessage (success ? "" : rule.getErrorMessage());
-        result.setIsVisibleToCHO(rule.isVisibleToCHO());
-        return result;
-    }
 
     private RulesEngine(IClaimInfo c) {
 
@@ -70,15 +60,31 @@ public class RulesEngine {
         hireVClass = hireDetail.getVClass();
 
         cCalc = ClaimCalcHelper.getInstance(claim);
-        iCalc = InvoiceCalcHelper.getInstance(invoice, vatRate);
+        iCalc = InvoiceCalcHelper.getInstance(invoice);
         bandCalc = CHOBandCalcHelper.getInstance(choBand);
     }
 
     public RulesEngineResponse ResolveStatus() {
         
         RulesEngineResponse response = new RulesEngineResponse();
-        RuleEvaluationResult resRule1 = execute(new HasAllowedVehicleClass());
-        response.addRuleEvaulation(resRule1);
+        
+        response.addRuleEvaulation(new HasAllowedVehicleClass().applyToClaim(claim));
+        response.addRuleEvaulation(new HasCalculatedCorrectDailyRate().applyToClaim(claim));
+        response.addRuleEvaulation(new HireNetDoesNotExceedBandHireNetCeiling().applyToClaim(claim));
+        response.addRuleEvaulation(new HireDayCountDoesNotExceedBandHireDayCeiling().applyToClaim(claim));
+        response.addRuleEvaulation(new HasCorrectHireGrossCalculation().applyToClaim(claim));
+        response.addRuleEvaulation(new ActualHireDaysDoesNotExceedAllowableHireDays().applyToClaim(claim));
+        response.addRuleEvaulation(new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim));
+        response.addRuleEvaulation(new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim));
+        response.addRuleEvaulation(new HasCorrectHireVatCalculation().applyToClaim(claim));
+        response.addRuleEvaulation(new HasCorrectRepairVatCalculation().applyToClaim(claim));
+        response.addRuleEvaulation(new HasCorrectRepairGrossCalculation().applyToClaim(claim));
+        response.addRuleEvaulation(new HasCorrectTotalNet().applyToClaim(claim));
+        response.addRuleEvaulation(new HasCorrectTotalVat().applyToClaim(claim));
+        response.addRuleEvaulation(new HasCalculatedTotalGrossEqualSuppliedTotalGross().applyToClaim(claim));        
+        response.addRuleEvaulation(new HasCorrectTotalVat().applyToClaim(claim));
+        response.addRuleEvaulation(new HasCalculatedTotalGrossEqualSuppliedTotalGross().applyToClaim(claim)); 
+        
 
         return response;
     }

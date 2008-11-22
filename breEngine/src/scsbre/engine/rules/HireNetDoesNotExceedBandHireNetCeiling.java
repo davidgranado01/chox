@@ -4,25 +4,47 @@
  */
 
 package scsbre.engine.rules;
+import scsbre.engine.IBusinessRule;
+import scsbre.engine.RuleEvaluation;
+import scsbre.engine.RuleEvaluationResult;
+import scsbre.model.ClaimStatus;
 import scsbre.model.IClaimInfo;
 
 /**
  *
  * @author Derm
+ * 
+ * rule 3, order 13
+ * 
  */
 public class HireNetDoesNotExceedBandHireNetCeiling implements IBusinessRule {
 
-    public boolean run(IClaimInfo claim) {
-        return claim.getHireDetail().getNumberOfHireDays() <= claim.getChoBand().getHireDayCeiling();
-    }
 
-    public String getErrorMessage() {
+    
+    public RuleEvaluation applyToClaim(IClaimInfo claim) {
+
+        boolean success = claim.getInvoice().getHireNet().compareTo(claim.getChoBand().getHireNetCeiling()) <= 0;
+        
+        RuleEvaluation res = new RuleEvaluation();
+        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RulePassed);
+        res.setIsVisibleToCHO(false);
+        res.setRelatedRule(this);
+        
+        return res;
+
+    }       
+
+    public String getFailureMessage() {
         return "Number of hire days billed exceeds the CHO's hire days ceiling.";
     }
 
-    public boolean isVisibleToCHO() {
-        return false;
+    public String getRuleId() {
+        return "003";
     }
+    
+    public ClaimStatus getStatusAfterFailure() {
+        return ClaimStatus.InvoiceEscalated;
+    }    
     
     
 

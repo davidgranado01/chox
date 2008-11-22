@@ -8,46 +8,51 @@ package scsbre.engine.rules;
 import scsbre.engine.IBusinessRule;
 import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
+import scsbre.engine.util.CalcHelper;
+import scsbre.engine.util.InvoiceCalcHelper;
 import scsbre.model.ClaimStatus;
 import scsbre.model.IClaimInfo;
+import scsbre.model.IInvoiceInfo;
 
 /**
  *
  * @author Derm
  * 
- * rule 4, order 14
- * 
+ * rule 10, order 18
  */
-public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRule{
+
+
+public class HasCorrectRepairVatCalculation implements IBusinessRule{
+
 
 
     
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
-
-        boolean success = claim.getHireDetail().getNumberOfHireDays() <= claim.getChoBand().getHireDayCeiling();
-        
         RuleEvaluation res = new RuleEvaluation();
+        
+        IInvoiceInfo invoice = claim.getInvoice();
+        InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
+        boolean success = CalcHelper.EqualTo(invoice.getRepairVat(), iCalc.getCalculatedRepairVat());
+        
         res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
-        res.setIsVisibleToCHO(false);
+        res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
         
         return res;
 
-    }       
-
+    }     
     public String getFailureMessage() {
-        return "Number of hire days billed exceeds the CHO's hire days ceiling.";
+        return "Repair VAT calculation is incorrect.";
     }
 
+
     public String getRuleId() {
-        return "004";
+        return "010";
     }
     
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.InvoiceEscalated;
-    }
-    
-    
+        return ClaimStatus.AwaitingPaymentPack;
+    }    
 
 }

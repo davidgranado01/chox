@@ -3,12 +3,12 @@
  * and open the template in the editor.
  */
 
-package scsbre.engine;
+package scsbre.engine.rules;
 
 /**
  *
  * @author Derm
  */
-public enum RuleEvaluationResult {
-    RulePassed, RuleFailed, RuleSkipped
+public class ClaimHasZeroDiscountForNonDA {
+
 }
