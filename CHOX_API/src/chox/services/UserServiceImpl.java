@@ -1,21 +1,20 @@
 package chox.services;
 
-import chox.data.HibernateUtil;
 import chox.model.WebUser;
 import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl  extends DataService implements UserService {
 
     public UserServiceImpl() {
     }
 
     public WebUser findByEmail(String email) {
 
-        Session currentSession = HibernateUtil.currentSession();
+        currentSession.beginTransaction();
         Criteria criteria = currentSession.createCriteria(WebUser.class).add(Restrictions.eq("email", email));
         WebUser result = (WebUser) criteria.uniqueResult();
+        currentSession.getTransaction().commit();
         return result;
     }
 

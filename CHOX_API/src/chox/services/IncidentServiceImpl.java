@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import chox.model.*;
 
-public class IncidentServiceImpl implements IncidentService{
+public class IncidentServiceImpl  extends DataService implements IncidentService{
 
     public XMLParseResult saveIncidentForXMLUploader(XMLParseResult xmlParseResult){
         
@@ -15,9 +15,9 @@ public class IncidentServiceImpl implements IncidentService{
         
         if(incident!=null){
         
-            incident.setCreatedBy(WebUserServiceImpl.getCurrentUser());
+            incident.setCreatedBy(getCurrentUser().getId());
             incident.setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
-            incident.setLastModifiedBy(WebUserServiceImpl.getCurrentUser());
+            incident.setLastModifiedBy(getCurrentUser().getId());
             incident.setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
 
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {

@@ -14,8 +14,16 @@ import java.sql.Timestamp;
 import chox.model.*;
 import org.hibernate.Session;
 import chox.data.HibernateUtil;
+import org.springframework.orm.hibernate3.SessionFactoryUtils;
 
 public class XmlProcessController {
+    
+    VehicleClassService vehicleClassService;
+    
+    public XmlProcessController()
+    {
+        vehicleClassService = new VehicleClassServiceImpl();
+    }
 
     public static void main(String[] args) {
 
@@ -130,7 +138,7 @@ public class XmlProcessController {
             String sUploadType,
             Boolean isAllowPartialUpload) throws Exception {
                 
-        Session currentSession = HibernateUtil.currentSession();
+        Session currentSession = SessionFactoryUtils.getSession(HibernateUtil.getSessionFactory(), true);
         currentSession.beginTransaction();
         
         xmlParseResult.setCurrentSession(currentSession);
@@ -148,7 +156,7 @@ public class XmlProcessController {
             xmlParseResult = saveXMLRecord(xmlParseResult, sUploadType);
         }
 
-        currentSession = xmlParseResult.getCurrentSession();
+        //currentSession = xmlParseResult.getCurrentSession();
         
         System.out.println("");
         System.out.println(" ** CHO Reference: " + xmlParseResult.getClaim().getChoReference());
@@ -452,7 +460,7 @@ public class XmlProcessController {
                 }
                 
                 // GET VEHICLE CLASS ID
-                VehicleClass vehicleclass = VehicleClassServiceImpl.getVehicleClassByNodeName(thisElement, "vehicle-class");
+                VehicleClass vehicleclass = vehicleClassService.getVehicleClassByNodeName(thisElement, "vehicle-class");
                 if(vehicleclass!=null){
                     customer.setVehicleClass(vehicleclass);
                 }else{
@@ -556,7 +564,7 @@ public class XmlProcessController {
                 }
                 
                  // GET VEHICLE CLASS ID
-                VehicleClass vehicleclass = VehicleClassServiceImpl.getVehicleClassByNodeName(thisElement, "vehicle-class");
+                VehicleClass vehicleclass = vehicleClassService.getVehicleClassByNodeName(thisElement, "vehicle-class");
                 if(vehicleclass!=null){
                     thirdparty.setVehicleClass(vehicleclass);
                 }else{
@@ -1398,7 +1406,7 @@ public class XmlProcessController {
             
             // GET VEHICLE CLASS ID
             if(XmlHelper.isNotNull(XmlHelper.getNodeValue(mainElement, "vehicle-class"))){
-                VehicleClass vehicleclass = VehicleClassServiceImpl.getVehicleClassByNodeName(mainElement, "vehicle-class");
+                VehicleClass vehicleclass = vehicleClassService.getVehicleClassByNodeName(mainElement, "vehicle-class");
 
                 if(vehicleclass!=null){
                     vehiclehire.setVehicleClass(vehicleclass);

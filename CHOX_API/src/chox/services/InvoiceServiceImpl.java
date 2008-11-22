@@ -6,16 +6,16 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import chox.model.*;
 
-public class InvoiceServiceImpl implements InvoiceService{
+public class InvoiceServiceImpl  extends DataService implements InvoiceService{
 
     public XMLParseResult saveInvoiceForXMLUploader(XMLParseResult xmlParseResult){
         
         if((xmlParseResult.getClaim().getInvoice())!=null){
             
 
-                (xmlParseResult.getClaim().getInvoice()).setCreatedBy(WebUserServiceImpl.getCurrentUser());
+                (xmlParseResult.getClaim().getInvoice()).setCreatedBy(getCurrentUser().getId());
                 (xmlParseResult.getClaim().getInvoice()).setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
-                (xmlParseResult.getClaim().getInvoice()).setLastNodifiedBy(WebUserServiceImpl.getCurrentUser());
+                (xmlParseResult.getClaim().getInvoice()).setLastNodifiedBy(getCurrentUser().getId());
                 (xmlParseResult.getClaim().getInvoice()).setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
 
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {

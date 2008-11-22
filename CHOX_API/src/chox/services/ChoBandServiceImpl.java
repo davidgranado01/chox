@@ -6,16 +6,13 @@
 package chox.services;
 
 import chox.model.ChoBand;
-import chox.data.HibernateUtil;
 import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-public class ChoBandServiceImpl implements ChoBandService{
+public class ChoBandServiceImpl extends DataService implements ChoBandService{
 
     public ChoBand getChoBandByChorganisationId(int orgId){
         
-        Session currentSession = HibernateUtil.currentSession();      
         ChoBand band = new ChoBand();
         
         try {

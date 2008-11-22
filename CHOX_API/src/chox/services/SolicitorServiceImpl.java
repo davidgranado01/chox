@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import chox.model.*;
 
-public class SolicitorServiceImpl implements SolicitorService{
+public class SolicitorServiceImpl  extends DataService implements SolicitorService{
 
     public XMLParseResult saveSolicitorForXMLUploader(XMLParseResult xmlParseResult){
         
@@ -14,9 +14,9 @@ public class SolicitorServiceImpl implements SolicitorService{
             
             for(Integer i=0; i<(xmlParseResult.getSolicitors()).size(); i++){
                 
-                ((xmlParseResult.getSolicitors()).get(i)).setCreatedBy(WebUserServiceImpl.getCurrentUser());
+                ((xmlParseResult.getSolicitors()).get(i)).setCreatedBy(getCurrentUser().getId());
                 ((xmlParseResult.getSolicitors()).get(i)).setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
-                ((xmlParseResult.getSolicitors()).get(i)).setLastModifiedBy(WebUserServiceImpl.getCurrentUser());
+                ((xmlParseResult.getSolicitors()).get(i)).setLastModifiedBy(getCurrentUser().getId());
                 ((xmlParseResult.getSolicitors()).get(i)).setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
 
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {

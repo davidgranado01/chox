@@ -6,15 +6,15 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import chox.model.*;
 
-public class VehicleHireServiceImpl implements VehicleHireService{
+public class VehicleHireServiceImpl  extends DataService implements VehicleHireService{
 
     public XMLParseResult saveVehicleHireForXMLUploader(XMLParseResult xmlParseResult){
         
         if((xmlParseResult.getClaim().getVehicleHire())!=null){
             
-            (xmlParseResult.getClaim().getVehicleHire()).setCreatedBy(WebUserServiceImpl.getCurrentUser());
+            (xmlParseResult.getClaim().getVehicleHire()).setCreatedBy(getCurrentUser().getId());
             (xmlParseResult.getClaim().getVehicleHire()).setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
-            (xmlParseResult.getClaim().getVehicleHire()).setLastModifiedBy(WebUserServiceImpl.getCurrentUser());
+            (xmlParseResult.getClaim().getVehicleHire()).setLastModifiedBy(getCurrentUser().getId());
             (xmlParseResult.getClaim().getVehicleHire()).setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
 
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {

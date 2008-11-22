@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import chox.model.*;
 
-public class ThirdPartyServiceImpl implements ThirdPartyService{
+public class ThirdPartyServiceImpl  extends DataService implements ThirdPartyService{
 
     public XMLParseResult saveThirdPartyForXMLUploader(XMLParseResult xmlParseResult){
         
@@ -15,9 +15,9 @@ public class ThirdPartyServiceImpl implements ThirdPartyService{
         
         if(thirdparty!=null){
         
-            xmlParseResult.getClaim().getThirdParty().setCreatedBy(WebUserServiceImpl.getCurrentUser());
+            xmlParseResult.getClaim().getThirdParty().setCreatedBy(getCurrentUser().getId());
             xmlParseResult.getClaim().getThirdParty().setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
-            xmlParseResult.getClaim().getThirdParty().setLastModifiedBy(WebUserServiceImpl.getCurrentUser());
+            xmlParseResult.getClaim().getThirdParty().setLastModifiedBy(getCurrentUser().getId());
             xmlParseResult.getClaim().getThirdParty().setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
 
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {

@@ -2,16 +2,13 @@
 package chox.services;
 
 import chox.model.*;
-import chox.data.HibernateUtil;
 import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-public class CustomerServiceImpl implements CustomerService{
+public class CustomerServiceImpl  extends DataService implements CustomerService{
     
-    public Customer getCustomerById(int id){
+    public Customer getCustomerById(int id){        
         
-        Session currentSession = HibernateUtil.currentSession();      
         Customer customer = new Customer();
         
         try {
@@ -34,9 +31,9 @@ public class CustomerServiceImpl implements CustomerService{
         
         if(customer!=null){
         
-            customer.setCreatedBy(WebUserServiceImpl.getCurrentUser());
+            customer.setCreatedBy(getCurrentUser().getId());
             customer.setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
-            customer.setLastModifiedBy(WebUserServiceImpl.getCurrentUser());
+            customer.setLastModifiedBy(getCurrentUser().getId());
             customer.setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
 
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {

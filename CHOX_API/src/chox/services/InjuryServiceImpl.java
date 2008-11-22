@@ -7,7 +7,7 @@ import org.hibernate.criterion.Restrictions;
 import chox.model.*;
 import java.util.ArrayList;
 
-public class InjuryServiceImpl implements InjuryService{
+public class InjuryServiceImpl extends DataService implements InjuryService{
 
     public XMLParseResult saveInjuryForXMLUploader(XMLParseResult xmlParseResult){
         
@@ -15,9 +15,9 @@ public class InjuryServiceImpl implements InjuryService{
             
             for(Integer i=0; i<(xmlParseResult.getInjuries()).size(); i++){
                 
-                ((xmlParseResult.getInjuries()).get(i)).setCreatedBy(WebUserServiceImpl.getCurrentUser());
+                ((xmlParseResult.getInjuries()).get(i)).setCreatedBy(getCurrentUser().getId());
                 ((xmlParseResult.getInjuries()).get(i)).setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
-                ((xmlParseResult.getInjuries()).get(i)).setLastModifiedBy(WebUserServiceImpl.getCurrentUser());
+                ((xmlParseResult.getInjuries()).get(i)).setLastModifiedBy(getCurrentUser().getId());
                 ((xmlParseResult.getInjuries()).get(i)).setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
 
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {

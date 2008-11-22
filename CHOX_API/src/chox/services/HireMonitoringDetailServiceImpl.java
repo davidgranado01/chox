@@ -7,7 +7,7 @@ package chox.services;
 
 import chox.model.HireMonitoringDetail;
         
-public class HireMonitoringDetailServiceImpl {
+public class HireMonitoringDetailServiceImpl  extends DataService{
 
     public HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int vehiclehireId){
         HireMonitoringDetail hiremonitoringdetail = new HireMonitoringDetail();
