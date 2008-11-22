@@ -19,6 +19,7 @@ import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
 import scsbre.engine.RulesEngine;
 import scsbre.engine.RulesEngineResponse;
+import scsbre.engine.util.InvoiceCalcHelper;
 import scsbre.model.*;
 import scsbre.tests.sample.*;
 import static org.junit.Assert.*;
@@ -27,9 +28,9 @@ import static org.junit.Assert.*;
  *
  * @author Derm
  */
-public class RulesTest3 {
+public class RulesTest4 {
 
-    public RulesTest3() {
+    public RulesTest4() {
     }
 
     @BeforeClass
@@ -69,29 +70,43 @@ public class RulesTest3 {
             
         }
         
+        
+                
+        InvoiceCalcHelper ic = InvoiceCalcHelper.getInstance(claim.getInvoice());
+        
+        
+        System.out.println(claim.getInvoice().getHireNet());
+        System.out.println(ic.getCalculatedHireGross());
+        System.out.println(ic.getCalculatedHireVat());
+
+              
+                
+        
         assertTrue(results.get(0).getResult() == RuleEvaluationResult.RulePassed);
-        assertTrue(results.get(1).getResult() == RuleEvaluationResult.RuleFailed);
-        assertTrue(results.get(2).getResult() == RuleEvaluationResult.RuleFailed);
-        assertTrue(results.get(3).getResult() == RuleEvaluationResult.RuleFailed);
-        assertTrue(results.get(4).getResult() == RuleEvaluationResult.RuleFailed);
+        assertTrue(results.get(1).getResult() == RuleEvaluationResult.RulePassed);
+        assertTrue(results.get(2).getResult() == RuleEvaluationResult.RulePassed);
+        assertTrue(results.get(3).getResult() == RuleEvaluationResult.RulePassed);
+        assertTrue(results.get(4).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(5).getResult() == RuleEvaluationResult.RuleSkipped);
         assertTrue(results.get(6).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(7).getResult() == RuleEvaluationResult.RulePassed);
-        assertTrue(results.get(8).getResult() == RuleEvaluationResult.RuleFailed);
+        assertTrue(results.get(8).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(9).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(10).getResult() == RuleEvaluationResult.RulePassed);
-        assertTrue(results.get(11).getResult() == RuleEvaluationResult.RuleFailed);
-        assertTrue(results.get(12).getResult() == RuleEvaluationResult.RuleFailed);
-        assertTrue(results.get(13).getResult() == RuleEvaluationResult.RuleFailed);
+        assertTrue(results.get(11).getResult() == RuleEvaluationResult.RulePassed);
+        assertTrue(results.get(12).getResult() == RuleEvaluationResult.RulePassed);
+        assertTrue(results.get(13).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(14).getResult() == RuleEvaluationResult.RuleSkipped);
         assertTrue(results.get(15).getResult() == RuleEvaluationResult.RuleSkipped);
         assertTrue(results.get(16).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(17).getResult() == RuleEvaluationResult.RulePassed);
-        assertTrue(results.get(18).getResult() == RuleEvaluationResult.RuleFailed);
+        assertTrue(results.get(18).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(19).getResult() == RuleEvaluationResult.RuleSkipped);
+
         
         
-        assertTrue(res.getStatus() == ClaimStatus.AwaitingPaymentPack);
+        
+        assertTrue(res.getStatus() == ClaimStatus.InvoiceApproved);
         
     }
     
@@ -136,9 +151,10 @@ public class RulesTest3 {
         
         InvoiceInfo inv = new InvoiceInfo();
         
-        inv.setHireNet(new BigDecimal(23456));
-        inv.setHireVat(BigDecimal.ZERO);
-        inv.setHireGross(BigDecimal.ZERO);
+        inv.setHireNet(new BigDecimal(869.40));
+        inv.setHireVat(new BigDecimal(152.15));
+        inv.setHireGross(new BigDecimal(1021.55));
+        
         inv.setRepairNet(BigDecimal.ZERO);
         inv.setRepairVat(BigDecimal.ZERO);
         inv.setRepairGross(BigDecimal.ZERO);
@@ -151,14 +167,14 @@ public class RulesTest3 {
         inv.setStorageRecoveryNet(BigDecimal.ZERO);
         inv.setStorageRecoveryVat(BigDecimal.ZERO);
 
-        inv.setTotalNet(BigDecimal.ZERO);
-        inv.setTotalVat(BigDecimal.ZERO);
-        inv.setTotalGross(BigDecimal.ZERO);
+        inv.setTotalNet(new BigDecimal(869.40));
+        inv.setTotalVat(new BigDecimal(152.15));
+        inv.setTotalGross(new BigDecimal(1021.55));
 
         inv.setClaimsHandlingInvoiceAmount(BigDecimal.ZERO);
         inv.setDeductionForClaimsHandlingFee(BigDecimal.ZERO);
         inv.setDiscount(BigDecimal.ZERO);
-        inv.setTotalToPay(BigDecimal.ZERO);
+        inv.setTotalToPay(new BigDecimal(1021.55));
 
         return inv;
     }
@@ -167,8 +183,8 @@ public class RulesTest3 {
         
         CHOBandInfo band = new CHOBandInfo();
 
-        band.setHireNetCeiling(new BigDecimal(100));
-        band.setHireDayCeiling(0);
+        band.setHireNetCeiling(new BigDecimal(1000));
+        band.setHireDayCeiling(30);
         band.setMaxRepairValue(BigDecimal.ZERO);
 
         band.setTakeVehicleToGarageDaysMobile(1);

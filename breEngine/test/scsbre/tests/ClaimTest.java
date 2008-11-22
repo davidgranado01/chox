@@ -5,6 +5,7 @@
 
 package scsbre.tests;
 
+import java.math.BigDecimal;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -28,6 +29,22 @@ public class ClaimTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
+    
+    @Test
+    public void TestStuff(){
+        
+           // BigDecimal hireNetMinusExtras = claim.getInvoice().getHireNet().subtract(exCalcHelper.getTotalExtras());
+                    //return hireNetMinusExtras.divide(new BigDecimal(claim.getHireDetail().getNumberOfHireDays()));
+        
+       BigDecimal x = new BigDecimal(1880);
+       BigDecimal i = new BigDecimal(6);
+       
+       BigDecimal y = x.divide(i,4,1);
+       
+       System.out.println(y.doubleValue());
+        
+    }
+    
 
     @Before
     public void setUp() {

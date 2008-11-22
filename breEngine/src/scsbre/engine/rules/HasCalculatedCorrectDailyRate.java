@@ -35,6 +35,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
             if(success)narrative = "";
         }
         else{
+            narrative = "Customer vehicle class is not specified.";
             res.setResult(RuleEvaluationResult.RuleSkipped);
         }
         res.setIsVisibleToCHO(false);
