@@ -496,24 +496,11 @@ public class EngineerReport implements Serializable, IEngineerReportInfo
             return this.labourAmount;
         }
 
-        public void setEstimatedLabourAmount(BigDecimal estimatedLabourAmount) {
-            this.labourAmount = estimatedLabourAmount;
-        }
-
         public BigDecimal getEstimatedTotalRepairAmount() {
             return this.totalAmount;
-        }
-
-        public void setEstimatedTotalRepairAmount(BigDecimal estimatedTotalRepairAmount) {
-            this.totalAmount = estimatedTotalRepairAmount;
         }
 
         public int getEstimatedDaysUnderRepair() {
             return this.days;
         }
-
-        public void setEstimatedDaysUnderRepair(int estimatedDaysUnderRepair) {
-            this.days = estimatedDaysUnderRepair;
-        }
-
 }

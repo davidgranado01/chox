@@ -10,7 +10,7 @@ public class EngineerReportServiceImpl extends DataService implements EngineerRe
     public XMLParseResult saveEngineerReportForXMLUploader(XMLParseResult xmlParseResult){
         
         if((xmlParseResult.getClaim().getEngineerReport())!=null){
-
+            
             (xmlParseResult.getClaim().getEngineerReport()).setCreatedBy(getCurrentUser().getId());
             (xmlParseResult.getClaim().getEngineerReport()).setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
             (xmlParseResult.getClaim().getEngineerReport()).setLastModifiedBy(getCurrentUser().getId());

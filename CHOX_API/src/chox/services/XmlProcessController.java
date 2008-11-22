@@ -145,6 +145,8 @@ public class XmlProcessController {
             Element root,
             Boolean isAllowPartialUpload) throws Exception {
             
+        System.out.println("START********************************************");
+        
         Session currentSession = SessionFactoryUtils.getSession(HibernateUtil.getSessionFactory(), true);
         currentSession.beginTransaction();
         
@@ -152,8 +154,8 @@ public class XmlProcessController {
          
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
-        
         System.out.println(" ** getIsSchemaValid: " + xmlParseResult.getClaim().getChoReference());
+        
         
         // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
         if(!xmlParseResult.getIsClaimExist()){
@@ -164,7 +166,7 @@ public class XmlProcessController {
         // ALWAYS GET LATEST ENGINEER REPORT AND VEHICLE HIRE INFORMATION FROM BORDEREUR (UPSERT MODE)
         xmlParseResult = RentalRepairSchemaValidation(currentSession, xmlParseResult, root, doc);
         xmlParseResult = RentalVehiclesSchemaValidation(currentSession, xmlParseResult, root, doc);
-
+        
         /*
          * ONLY PROCESS THE INVOICE WHERE
          * 1. CLAIM IS EXIST IN DB 
@@ -179,10 +181,23 @@ public class XmlProcessController {
             // EXECUTE BRE RULE
             if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
                 
+if(xmlParseResult.getClaim().getEngineerReport()==null){
+    System.out.println("0 @@@@@@@@@ NULL");
+}else{
+    System.out.println("0 @@@@@@@@@ NOT NULL");
+}
+                        
                 InvoiceService invoiceservice = new InvoiceServiceImpl();
                 RulesEngineResponse validationResult = invoiceservice.XMLUploaderInvoiceValidation(constructeClaimForInvoiceValidation(xmlParseResult.getClaim()));
-                xmlParseResult.getClaim().setStatus(validationResult.getStatus().toString());
+                String newClaimStatus = validationResult.getStatus().toString();
+                xmlParseResult.getClaim().setStatus(newClaimStatus);
 
+if(xmlParseResult.getClaim().getEngineerReport()==null){
+    System.out.println("1 @@@@@@@@@ NULL");
+}else{
+    System.out.println("1 @@@@@@@@@ NOT NULL");
+}
+                
                 if(validationResult.getResults().size()>0){
                     // LOG ERROR MESSAGE TO SCREEN
                     xmlParseResult = appendInvoiceValidationErrorMessage(xmlParseResult, validationResult.getResults());
@@ -198,13 +213,16 @@ public class XmlProcessController {
         System.out.println(" ** getSchemaValidationRemark: " + xmlParseResult.getSchemaValidationRemark());
         System.out.println(" ** getIsDataValid: " + xmlParseResult.getIsDataValid());
         System.out.println(" ** getDataValidationRemark: " + xmlParseResult.getDataValidationRemark());
-        System.out.println("********************************************");
+        
         
         if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
             currentSession.getTransaction().commit();
         }else{
             currentSession.getTransaction().rollback();
         }
+        
+        System.out.println("END  ********************************************");
+
         
         return xmlParseResult;
     }
@@ -221,9 +239,11 @@ public class XmlProcessController {
         // CONSTRUCTE DUMMY ENGINEERING REPORT WITH ALL VALUE IS ZERO WHEN ER NOT EXIST
         if(claim.getEngineerReport()==null){
             EngineerReport engineerreport = new EngineerReport();
-            engineerreport.setEstimatedDaysUnderRepair(0);
-            engineerreport.setEstimatedLabourAmount(new BigDecimal("0.00"));
-            engineerreport.setEstimatedTotalRepairAmount(new BigDecimal("0.00"));
+            
+            engineerreport.setDays(0);
+            engineerreport.setLabourAmount(new BigDecimal("0.00"));
+            engineerreport.setTotalAmount(new BigDecimal("0.00"));
+            
             claim.setEngineerReport(engineerreport);
         }
         
@@ -236,6 +256,7 @@ public class XmlProcessController {
         if(claim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")){
             claim.getCustomer().setVehicleClass(null);
         }
+        
         return claim;
     }
     
@@ -276,10 +297,10 @@ public class XmlProcessController {
             xmlParseResult = ijService.saveInjuryForXMLUploader(xmlParseResult);
             xmlParseResult = slService.saveSolicitorForXMLUploader(xmlParseResult);        
         }
-        
+
         xmlParseResult = erService.saveEngineerReportForXMLUploader(xmlParseResult);
-        xmlParseResult = ivService.saveInvoiceForXMLUploader(xmlParseResult);
         xmlParseResult = vhService.saveVehicleHireForXMLUploader(xmlParseResult);
+        xmlParseResult = ivService.saveInvoiceForXMLUploader(xmlParseResult);
         xmlParseResult = csService.saveClaimForXMLUploader(xmlParseResult); 
         
         return xmlParseResult;
@@ -349,7 +370,7 @@ public class XmlProcessController {
                     choband.setEngineerInspectionDelayDays(0);
                     choband.setHireDayCeiling(0);
                     choband.setHireNetCeiling(new BigDecimal("0.00"));
-                    choband.setHireRateChargeTolerance(new BigDecimal("1.00"));
+                    choband.setHireRateChargeTolerance(new BigDecimal("0.01"));
                     choband.setInspectionDelayDays(4);
                     choband.setIsMobileDayAllowance(2);
                     choband.setIsNotMobileDayAllowance(9);
