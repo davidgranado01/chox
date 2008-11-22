@@ -38,7 +38,7 @@ public class ClaimCalcHelper {
 	public BigDecimal getDailyHireRateCharged()
 	{
 		BigDecimal hireNetMinusExtras = claim.getInvoice().getHireNet().subtract(exCalcHelper.getTotalExtras());
-		return hireNetMinusExtras.divide(new BigDecimal(claim.getHireDetail().getNumberOfHireDays()));
+		return hireNetMinusExtras.divide(new BigDecimal(claim.getHireDetail().getNumberOfHireDays()),4,1);
 	}
 
 	public BigDecimal getDailyHireRateChargedWithToleranceDeduction()
