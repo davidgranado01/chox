@@ -47,7 +47,6 @@ public class InvoiceCalcHelper {
         totalNet = totalNet.add(invoice.getStorageRecoveryNet());
         totalNet = totalNet.add(invoice.getDeductionForClaimsHandlingFee());
 
-
         return totalNet;
     }
 
