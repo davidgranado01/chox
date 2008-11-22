@@ -10,7 +10,7 @@ public class XMLParseResult {
     public static final String COMPLETE = "Complete";
     public static final String CANCELLED = "Cancelled";
     public static final String DUPLICATE = "Duplicated";
-        
+
     private Boolean isSchemaValid = true;
     private Boolean isDataValid = true;
     private String SchemaValidationRemark = "";
@@ -21,6 +21,16 @@ public class XMLParseResult {
     // USE WHEN RUNING THE VALIDATION
     private Boolean isCurrentScheValid = true;
     private Boolean isCurrentDataValid = true;
+    
+    private Boolean isClaimExist = false;
+
+    public Boolean getIsClaimExist() {
+        return isClaimExist;
+    }
+
+    public void setIsClaimExist(Boolean isClaimExist) {
+        this.isClaimExist = isClaimExist;
+    }
     
     // SETUP DATA - CLAIM OBJECT
     private Claim claim;

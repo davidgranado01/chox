@@ -14,15 +14,15 @@
     <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
     <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
     <many-to-one class="chox.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>
-    <many-to-one class="chox.model.Customer" column="customer_id" name="customer"/>
-    <many-to-one class="chox.model.EngineerReport" column="engineer_report_id" name="engineerReport"/>
-    <many-to-one class="chox.model.HireMonitoringDetail" column="hire_monitoring_detail_id" name="hireMonitoringDetail"/>
-    <many-to-one class="chox.model.Incident" column="incident_id" name="incident"/>
-    <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer"/>
-    <many-to-one class="chox.model.Invoice" column="invoice_id" name="invoice"/>
-    <many-to-one class="chox.model.LineOfBusiness" column="line_of_business_id" name="lineOfBusiness"/>
-    <many-to-one class="chox.model.ThirdParty" column="third_party_id" name="thirdParty"/>
-    <many-to-one class="chox.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire"/>
+    <many-to-one class="chox.model.Customer" column="customer_id" name="customer" lazy="false"/>
+    <many-to-one class="chox.model.EngineerReport" column="engineer_report_id" name="engineerReport" lazy="false"/>
+    <many-to-one class="chox.model.HireMonitoringDetail" column="hire_monitoring_detail_id" name="hireMonitoringDetail" lazy="false"/>
+    <many-to-one class="chox.model.Incident" column="incident_id" name="incident" lazy="false"/>
+    <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer" lazy="false"/>
+    <many-to-one class="chox.model.Invoice" column="invoice_id" name="invoice" lazy="false"/>
+    <many-to-one class="chox.model.LineOfBusiness" column="line_of_business_id" name="lineOfBusiness" lazy="false"/>
+    <many-to-one class="chox.model.ThirdParty" column="third_party_id" name="thirdParty" lazy="false"/>
+    <many-to-one class="chox.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire" lazy="false"/>
     <filter condition=":chorganisationId = chorganisation_id" name="Claim_CHOFilter"/>
     <filter condition=":insurerId = insurer_id" name="Claim_InsurerFilter"/>
   </class>

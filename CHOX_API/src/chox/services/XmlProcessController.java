@@ -30,8 +30,8 @@ public class XmlProcessController {
         try {
             
             // TEST CLAIM
-            String sXMLPath1 = "C:/Users/Carlson/Desktop/TESTCASEFILE/TEST_CASE_CLAIM1.xml";
-            String sUpdateType = "C";
+            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/Bord Test 9.xml";
+            String sUpdateType = "A";
             Boolean isAllowPartialUpload = true;
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -41,11 +41,7 @@ public class XmlProcessController {
             doc.getDocumentElement().normalize();
             Element root = doc.getDocumentElement();
             
-            // TEST INVOICE            
-            //String sXMLPath2 = "C:/Project Workplace/Greefinch/choxida/CHOX_STAGE_2_SUBMISSION.xml";
-            String sXMLPath2 = "C:/Users/Carlson/Desktop/CHOX/Bord Test 9.xml";
-            sUpdateType = "A";
-            doc = docBuilder.parse(new File(sXMLPath2));
+            doc = docBuilder.parse(new File(sXMLPath1));
 
             doc.getDocumentElement().normalize();
             root = doc.getDocumentElement();
@@ -137,7 +133,7 @@ public class XmlProcessController {
             Element root,
             String sUploadType,
             Boolean isAllowPartialUpload) throws Exception {
-                
+            
         Session currentSession = SessionFactoryUtils.getSession(HibernateUtil.getSessionFactory(), true);
         currentSession.beginTransaction();
         
@@ -145,12 +141,18 @@ public class XmlProcessController {
         
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
-        xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);
-        xmlParseResult = RentalClaimSchemaValidation(currentSession, xmlParseResult, root, doc);
+        
+        if(!xmlParseResult.getIsClaimExist()){
+            xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);
+            xmlParseResult = RentalClaimSchemaValidation(currentSession, xmlParseResult, root, doc);
+        }
+        
         xmlParseResult = RentalRepairSchemaValidation(currentSession, xmlParseResult, root, doc);
         xmlParseResult = RentalVehiclesSchemaValidation(currentSession, xmlParseResult, root, doc);
         xmlParseResult = RentalInvoiceSchemaValidation(currentSession, xmlParseResult, root, doc);
         
+        
+        // VALIDATE BY BRE
         
         if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
             xmlParseResult = saveXMLRecord(xmlParseResult, sUploadType);
@@ -158,7 +160,7 @@ public class XmlProcessController {
 
         //currentSession = xmlParseResult.getCurrentSession();
         
-        System.out.println("");
+        
         System.out.println(" ** CHO Reference: " + xmlParseResult.getClaim().getChoReference());
         System.out.println(" ** getIsSchemaValid: " + xmlParseResult.getIsSchemaValid());
         System.out.println(" ** getSchemaValidationRemark: " + xmlParseResult.getSchemaValidationRemark());
@@ -188,15 +190,14 @@ public class XmlProcessController {
         VehicleHireService vhService = new VehicleHireServiceImpl();
         SolicitorService slService = new SolicitorServiceImpl();
         
-        //if(sUploadType.equalsIgnoreCase("C")){
+        if(!xmlParseResult.getIsClaimExist()){
             xmlParseResult = ctService.saveCustomerForXMLUploader(xmlParseResult);
-            
             xmlParseResult = tpService.saveThirdPartyForXMLUploader(xmlParseResult);
             xmlParseResult = icService.saveIncidentForXMLUploader(xmlParseResult);
             xmlParseResult = wnService.saveWitnessForXMLUploader(xmlParseResult);
             xmlParseResult = ijService.saveInjuryForXMLUploader(xmlParseResult);
             xmlParseResult = slService.saveSolicitorForXMLUploader(xmlParseResult);        
-        //}
+        }
         
         xmlParseResult = erService.saveEngineerReportForXMLUploader(xmlParseResult);
         xmlParseResult = ivService.saveInvoiceForXMLUploader(xmlParseResult);
@@ -262,10 +263,12 @@ public class XmlProcessController {
                 
                 if(thisCtrl.isClaimReferenceNumberExist(strCHOReference)){
                     
-                    System.out.println("");
+                    
                     ClaimService claimService = new ClaimServiceImpl();
                     claim = claimService.getClaimByCHOReferenceNumber(strCHOReference);
-
+                    
+                    xmlParseResult.setIsClaimExist(true);
+                    
                 }else{
                     
                     if(!strStatus.equalsIgnoreCase(XMLParseResult.IN_PROGRESS)){
@@ -929,8 +932,6 @@ public class XmlProcessController {
                 
                 if (xmlParseResult.getIsCurrentScheValid()) {
                     
-                    // ArrayList<EngineerReport> engineerReports = new ArrayList<EngineerReport>();
-
                     for (Element ee : engineerReportElements) {
                     
                         xmlParseResult.setIsCurrentDataValid(true);
@@ -968,8 +969,17 @@ public class XmlProcessController {
                             || XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "usable"))
                             )
                         ) {
-
+                            
                             EngineerReport engineerReport = new EngineerReport();
+                            
+                            System.out.println("*******************"+xmlParseResult.getClaim());
+                            
+                            if(xmlParseResult.getIsClaimExist()){
+                                if(xmlParseResult.getClaim().getEngineerReport()!=null){
+                                    engineerReport = xmlParseResult.getClaim().getEngineerReport();
+                                }
+                            }
+                            
                             engineerReport.setDays(XmlHelper.getIntegerFromNode(ee, "days"));
                             engineerReport.setLabourAmount(XmlHelper.getBigDecimalFromNode(ee, "labour-amount"));
                             engineerReport.setTotalAmount(XmlHelper.getBigDecimalFromNode(ee, "total-amount"));
@@ -988,15 +998,8 @@ public class XmlProcessController {
                             
                             xmlParseResult.getClaim().setEngineerReport(engineerReport);
                             break;
-                            // engineerReports.add(engineerReport);
- 
                         }
                     }
-                    /*
-                    if(engineerReports.size()>0){
-                        xmlParseResult.setEngineerReports(engineerReports);
-                    }
-                    */ 
                 }
             }
         }
@@ -1383,7 +1386,7 @@ public class XmlProcessController {
         
         xmlParseResult.setIsCurrentDataValid(true);
         xmlParseResult.setIsCurrentScheValid(true);
-
+        
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-registration", XmlHelper.isMAN_RentalVehicles_Vehicle_Registration, XmlHelper.REG_VEHICLE_REG, parentNodePath);
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-manufacturer", XmlHelper.isMAN_RentalVehicles_Vehicle_Manufacturer, "", parentNodePath);
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-model", XmlHelper.isMAN_RentalVehicles_Vehicle_Model, "", parentNodePath);

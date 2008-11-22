@@ -46,7 +46,7 @@ public class ClaimTest {
     @Test
     public void testLoad() throws Exception{
        
-        Session currentSession = HibernateUtil.currentSession();
+        //Session currentSession = HibernateUtil.currentSession();
        
 
     }
