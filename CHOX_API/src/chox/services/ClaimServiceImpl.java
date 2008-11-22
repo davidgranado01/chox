@@ -5,12 +5,14 @@
 package chox.services;
 
 import chox.model.ChoBand;
+import chox.data.ClaimSearchCriteria;
 import chox.model.Claim;
 import chox.model.XMLParseResult;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Restrictions;
 
 public class ClaimServiceImpl extends DataService implements ClaimService {
@@ -43,7 +45,47 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
         return count;
     }
 
-    public Boolean isClaimReferenceNumberExist(String sClaimReferenceNumber) {
+    public List searchClaims(ClaimSearchCriteria searchCriteria) {
+        Criteria criteria = currentSession.createCriteria(Claim.class);
+
+        if (!searchCriteria.getSupplierReference().isEmpty()) {
+            criteria.add(Restrictions.eq("choReference", searchCriteria.getSupplierReference()));
+        }
+        if (!searchCriteria.getStatus().isEmpty()) {
+            criteria.add(Restrictions.eq("status", searchCriteria.getStatus()));
+        }
+        if (searchCriteria.getInsurerId() > 0) {
+            criteria.add(Restrictions.eq("insurer.id", searchCriteria.getInsurerId()));
+        }
+        if (searchCriteria.getSupplierId() > 0) {
+            criteria.add(Restrictions.eq("chorganisation.id", searchCriteria.getSupplierId()));
+        }
+        if (!searchCriteria.getInvoiceNumber().isEmpty()) {
+            criteria.add(Restrictions.eq("invoice.id", searchCriteria.getInvoiceNumber()));
+        }
+        if (searchCriteria.getClaimNumber() > 0) {
+            criteria.add(Restrictions.eq("id", searchCriteria.getClaimNumber()));
+        }
+        if (!searchCriteria.getVrn().isEmpty()) {
+            
+            criteria.createCriteria("vehicleHire").add(Restrictions.eq("vehicleRegistration", searchCriteria.getVrn()));
+        }
+        if (searchCriteria.getClaimUploadDateFrom() != null && searchCriteria.getClaimUploadDateTo() != null) {
+            criteria.add(Expression.between("createdDate", searchCriteria.getClaimUploadDateFrom(), searchCriteria.getClaimUploadDateTo()));
+        }
+        if (searchCriteria.getInvoiceUploadDateFrom() != null && searchCriteria.getInvoiceUploadDateTo() != null) {
+            criteria.createCriteria("invoice").add(Expression.between("createdDate", searchCriteria.getInvoiceUploadDateFrom(), searchCriteria.getInvoiceUploadDateTo()));
+        }
+        //if (searchCriteria.getHireDateFrom() != null && searchCriteria.getHireDateTo() != null) {
+        //    criteria.add(Expression.between("createdDate", searchCriteria.getHireDateFrom(), searchCriteria.getHireDateTo()));
+        //}
+
+        List claims = criteria.list();
+        return claims;
+    }
+
+    public Boolean isClaimReferenceNumberExist(
+            String sClaimReferenceNumber) {
 
         Boolean isExist = false;
 
@@ -55,7 +97,6 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
             if ((criteria.list()).size() > 0) {
                 isExist = true;
             }
-
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -66,13 +107,15 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
         return isExist;
     }
 
-    public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber) {
+    public Claim getClaimByCHOReferenceNumber(
+            String sClaimReferenceNumber) {
 
         Claim claim = new Claim();
 
         try {
 
-            Criteria criteria = currentSession.createCriteria(Claim.class);
+            Criteria criteria = currentSession.createCriteria(
+                    Claim.class);
             criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
             claim = (Claim) criteria.uniqueResult();
 
@@ -90,7 +133,8 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
         return thisCtrl.XMLValidationProcess(claimXMLFile, isAllowPartialUpload);
     }
 
-    public XMLParseResult saveClaimForXMLUploader(XMLParseResult xmlParseResult) {
+    public XMLParseResult saveClaimForXMLUploader(
+            XMLParseResult xmlParseResult) {
 
         xmlParseResult.getClaim().setCreatedBy(getCurrentUser().getId());
         xmlParseResult.getClaim().setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
@@ -113,6 +157,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
             } catch (Exception e) {
                 xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
             }
+
         }
         return xmlParseResult;
     }

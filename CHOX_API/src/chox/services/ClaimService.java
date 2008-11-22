@@ -1,5 +1,6 @@
 package chox.services;
 
+import chox.data.ClaimSearchCriteria;
 import chox.model.XMLParseResult;
 import java.io.File;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public interface ClaimService {
     public List listAllClaims();
     public List listClaimsByStatus(String status);
     public Long getCountByStatus(String status);
+    public List searchClaims(ClaimSearchCriteria searchCriteria);
     public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, String sUpdateType, Boolean isAllowPartialUpload);
     public XMLParseResult saveClaimForXMLUploader(XMLParseResult xmlParseResult);
     

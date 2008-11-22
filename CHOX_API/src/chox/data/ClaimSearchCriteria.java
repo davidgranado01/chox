@@ -14,11 +14,13 @@ public interface ClaimSearchCriteria {
 
     public String getSupplierReference();
 
-    public String getSupplierName();
+    public int getSupplierId();
 
-    public String getClaimNumber();
+    public int getClaimNumber();
+    
+    public String getStatus();
 
-    public String getInsurerName();
+    public int getInsurerId();
 
     public String getVrn();
 
@@ -36,5 +38,5 @@ public interface ClaimSearchCriteria {
 
     public Date getHireDateFrom();
 
-    public Date getHireDateTom();
+    public Date getHireDateTo();
 }

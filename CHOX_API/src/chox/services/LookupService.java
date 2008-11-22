@@ -14,6 +14,8 @@ import java.util.List;
 public interface LookupService {
     
     public List getStatuses();
-    public List getLineOfBusinesses();    
+    public List getLineOfBusinesses();   
+    public List getSuppliers();
+    public List getInsurers();
 
 }
