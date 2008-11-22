@@ -36,7 +36,7 @@
                     <tr>
                     </s:else>
                         <td><s:property value="{#stat.index + 1}" /></td>
-                        <td><s:property value="#next.SupplierReference" /></td> 
+                        <td><s:property value="#next.claim.choReference" /></td> 
                         <td><s:property value="#next.Status" /></td>  
                         <td>
                                 <ul>
