@@ -10,18 +10,14 @@ public class XMLParseResult {
     public static final String COMPLETE = "Complete";
     public static final String CANCELLED = "Cancelled";
     public static final String DUPLICATE = "Duplicated";
-
     private Boolean isSchemaValid = true;
     private Boolean isDataValid = true;
     private String SchemaValidationRemark = "";
     private String DataValidationRemark = "";
     private String UploadType;
-    private Session currentSession;
-    
-    // USE WHEN RUNING THE VALIDATION
+    private Session currentSession;    // USE WHEN RUNING THE VALIDATION
     private Boolean isCurrentScheValid = true;
     private Boolean isCurrentDataValid = true;
-    
     private Boolean isClaimExist = false;
 
     public Boolean getIsClaimExist() {
@@ -30,14 +26,12 @@ public class XMLParseResult {
 
     public void setIsClaimExist(Boolean isClaimExist) {
         this.isClaimExist = isClaimExist;
-    }
-    
-    // SETUP DATA - CLAIM OBJECT
+    }    // SETUP DATA - CLAIM OBJECT
     private Claim claim;
     private ArrayList<Witness> witnesses;
     private ArrayList<Injury> injuries;
     private ArrayList<Solicitor> solicitors;
-    
+
     public ArrayList<Injury> getInjuries() {
         return injuries;
     }
@@ -62,7 +56,6 @@ public class XMLParseResult {
         this.witnesses = witnesses;
     }
 
-    
     public String getDataValidationRemark() {
         return DataValidationRemark;
     }
@@ -134,11 +127,16 @@ public class XMLParseResult {
     public void setCurrentSession(Session currentSession) {
         this.currentSession = currentSession;
     }
-    
-    
-    
-    
-    
-    
-    
+
+    public String getStatus() {
+        return (this.isDataValid && this.isSchemaValid) ? "Ok" : "Error";
+    }
+
+    public String[] getDataValidationRemarkInList() {
+        return DataValidationRemark.split("\\|");
+    }
+
+    public String[] getSchemaValidationRemarkInList() {
+        return SchemaValidationRemark.split("\\|");
+    }
 }
