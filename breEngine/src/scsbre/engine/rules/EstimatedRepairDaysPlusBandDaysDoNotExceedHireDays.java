@@ -33,6 +33,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
         
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
+        res.setRelatedRule(this);
         
         
         if ( (claim.getHireDetail().getIsTotalLoss()) || (eReport.getEstimatedDaysUnderRepair() < 1)) {

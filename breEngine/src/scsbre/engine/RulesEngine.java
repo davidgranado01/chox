@@ -32,7 +32,7 @@ public class RulesEngine {
         response.addRuleEvaulation(new HasCorrectHireGrossCalculation().applyToClaim(claim));
         response.addRuleEvaulation(new ActualHireDaysDoesNotExceedAllowableHireDays().applyToClaim(claim));
         response.addRuleEvaulation(new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim));
-        response.addRuleEvaulation(new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim));
+        response.addRuleEvaulation(new RepairGrossIsLessThanEstimatedTotalRepairAmount().applyToClaim(claim));
         response.addRuleEvaulation(new HasCorrectHireVatCalculation().applyToClaim(claim));
         response.addRuleEvaulation(new HasCorrectRepairVatCalculation().applyToClaim(claim));
         response.addRuleEvaulation(new HasCorrectRepairGrossCalculation().applyToClaim(claim));

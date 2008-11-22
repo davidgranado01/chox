@@ -26,7 +26,7 @@ public class HireNetDoesNotExceedBandHireNetCeiling implements IBusinessRule {
         boolean success = claim.getInvoice().getHireNet().compareTo(claim.getChoBand().getHireNetCeiling()) <= 0;
         
         RuleEvaluation res = new RuleEvaluation();
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RulePassed);
+        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         

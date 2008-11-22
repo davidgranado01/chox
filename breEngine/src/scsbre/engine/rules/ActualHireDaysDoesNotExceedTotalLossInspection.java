@@ -21,13 +21,24 @@ import scsbre.model.IClaimInfo;
  */
 public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusinessRule {
 
+    
+    String narrative = "Number of hire days billed exceeds the allowable threshold (for total loss hires).";
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
-        CHOBandCalcHelper bandCalc = CHOBandCalcHelper.getInstance(claim.getChoBand());
-        boolean success =  claim.getHireDetail().getNumberOfHireDays() <= bandCalc.getTotalLossInspectionDays();
-        
         RuleEvaluation res = new RuleEvaluation();
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+        if(claim.getHireDetail().getIsTotalLoss()){
+            
+            CHOBandCalcHelper bandCalc = CHOBandCalcHelper.getInstance(claim.getChoBand());
+            boolean success =  claim.getHireDetail().getNumberOfHireDays() <= bandCalc.getTotalLossInspectionDays(); 
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            if(success) narrative = "";
+        }
+        else{
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+            narrative = "Rule only applies when the clam is a total loss";
+        }
+
+
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         
@@ -35,7 +46,7 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
     }
 
     public String getNarrative() {
-        return "Number of hire days billed exceeds the allowable threshold (for total loss hires).";
+        return narrative;
 
     }
 
