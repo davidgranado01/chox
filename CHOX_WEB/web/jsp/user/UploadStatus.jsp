@@ -16,7 +16,7 @@
     </head>
     <body>
         <h2>Your Claims Uploaded</h2>
-        <div>
+        <div style="height:96%; overflow:auto; border:solid 1px black;">
             <s:if test="results.size()==0">
                 <s:text name="text.noClaims" />
             </s:if>
