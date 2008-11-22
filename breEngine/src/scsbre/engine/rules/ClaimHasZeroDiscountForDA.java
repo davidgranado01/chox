@@ -1,58 +1,54 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
 package scsbre.engine.rules;
 
+import java.math.BigDecimal;
 import scsbre.engine.IBusinessRule;
 import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
 import scsbre.engine.util.CalcHelper;
 import scsbre.model.ClaimStatus;
 import scsbre.model.IClaimInfo;
-import scsbre.model.IInsurerInfo;
-import scsbre.model.IInvoiceInfo;
 
 /**
- * rule 15, order 9
- * @author Derm
+ *
+ * @author Derm rule 17, order 10
  */
-public class HasCorrectDiscountForNonDA implements IBusinessRule {
+public class ClaimHasZeroDiscountForDA implements IBusinessRule{
 
-
-    String narrative = "Discount calculation is incorrect";
     
+    String narrative = "Entries against Claims Handling Invoice Amount and Less Claims Handling Fee do not equate to 0.";
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         RuleEvaluation res = new RuleEvaluation();
-        if(!claim.getCHOrg().getIsDelegatedAuthority()){
-            IInvoiceInfo invoice = claim.getInvoice();
-            IInsurerInfo insurer = claim.getInsurer();
-            boolean success = CalcHelper.EqualTo(invoice.getDiscount(),
-                (insurer.getAdminHandlingCharge()).multiply(CalcHelper.VAT_RATE).negate());
-            
+        if(claim.getCHOrg().getIsDelegatedAuthority()){
+            boolean success = CalcHelper.EqualTo(claim.getInvoice().getDiscount(), BigDecimal.ZERO);
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
             if(success) narrative = "";
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);    
         }
         else{
+            narrative = "Rule does not apply to CHOs not in the DA scheme";
             res.setResult(RuleEvaluationResult.RuleSkipped);
-            narrative = "Rule does not apply to CHOs in the DA scheme";
         }
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
         
         return res;
 
-    }    
-    
+    }
+
     public String getNarrative() {
         return narrative;
     }
 
-
     public String getRuleId() {
-        return "015";
+       return "017";
     }
-    
+
     public ClaimStatus getStatusAfterFailure() {
         return ClaimStatus.AwaitingPaymentPack;
-    }    
+    }
 
 }
-

@@ -34,7 +34,7 @@ public class HireNetDoesNotExceedBandHireNetCeiling implements IBusinessRule {
 
     }       
 
-    public String getFailureMessage() {
+    public String getNarrative() {
         return "Number of hire days billed exceeds the CHO's hire days ceiling.";
     }
 

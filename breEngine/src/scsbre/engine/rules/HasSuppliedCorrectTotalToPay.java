@@ -18,22 +18,18 @@ import scsbre.model.IInvoiceInfo;
  *
  * @author Derm
  * 
- * rule 10, order 18
+ * rule 19, order 8;
+ * 
  */
+public class HasSuppliedCorrectTotalToPay implements IBusinessRule {
 
-
-public class HasCorrectRepairVatCalculation implements IBusinessRule{
-
-
-
-    
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
         RuleEvaluation res = new RuleEvaluation();
         
         IInvoiceInfo invoice = claim.getInvoice();
         InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
-        boolean success = CalcHelper.EqualTo(invoice.getRepairVat(), iCalc.getCalculatedRepairVat());
+        boolean success = CalcHelper.EqualTo(iCalc.getCalculatedTotalToPay(), invoice.getTotalToPay());
         
         res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(true);
@@ -41,18 +37,20 @@ public class HasCorrectRepairVatCalculation implements IBusinessRule{
         
         return res;
 
-    }     
-    public String getNarrative() {
-        return "Repair VAT calculation is incorrect.";
     }
 
+    public String getNarrative() {
+        return "Total to Pay calculation is incorrect.";
+    }
 
     public String getRuleId() {
-        return "010";
+        return "019";
     }
-    
+
     public ClaimStatus getStatusAfterFailure() {
         return ClaimStatus.AwaitingPaymentPack;
-    }    
+    }
+    
+    
 
 }

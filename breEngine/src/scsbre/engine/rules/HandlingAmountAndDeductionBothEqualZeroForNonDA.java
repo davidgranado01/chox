@@ -20,22 +20,21 @@ import scsbre.model.IInvoiceInfo;
  * 
  * rule 16, order 10
  */
-public class HandlingAmountAndDeductionBothEqualZeroForDA implements IBusinessRule {
+public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusinessRule {
 
+    String narrative = "Either the claim handling amount is greater than 0 or the claim handling deduction is greater than 0.";
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
-        
         RuleEvaluation res = new RuleEvaluation();
-        
-        if(claim.getCHOrg().getIsDelegatedAuthority()){
+        if(!claim.getCHOrg().getIsDelegatedAuthority()){
             IInvoiceInfo invoice = claim.getInvoice();
-            
             boolean success = CalcHelper.EqualTo(invoice.getClaimsHandlingInvoiceAmount(), BigDecimal.ZERO);
             success = success && CalcHelper.EqualTo(invoice.getDeductionForClaimsHandlingFee(), BigDecimal.ZERO);  
-           
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);    
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed); 
+            if(success) narrative = "";
         }
         else{
             res.setResult(RuleEvaluationResult.RuleSkipped);
+            narrative = "Rule does not apply to CHOs in the DA scheme";
         }
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
@@ -44,8 +43,8 @@ public class HandlingAmountAndDeductionBothEqualZeroForDA implements IBusinessRu
 
     }  
 
-    public String getFailureMessage() {
-        return "CHO is on DA scheme.  Discount should be 0.";
+    public String getNarrative() {
+        return narrative;
     }
 
     public String getRuleId() {

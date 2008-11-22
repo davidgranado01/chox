@@ -34,7 +34,7 @@ public class HasCalculatedTotalGrossEqualSuppliedTotalGross implements IBusiness
 
     }
 
-    public String getFailureMessage() {
+    public String getNarrative() {
         return "Total Gross calculation is incorrect.";
     }
 

@@ -5,7 +5,7 @@ import scsbre.model.IClaimInfo;
 
 public interface IBusinessRule {
     RuleEvaluation applyToClaim(IClaimInfo claim); 
-    String getFailureMessage();
+    String getNarrative();
     String getRuleId();
     ClaimStatus getStatusAfterFailure();
 }

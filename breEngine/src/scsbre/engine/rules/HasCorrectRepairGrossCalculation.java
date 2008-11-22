@@ -40,7 +40,7 @@ public class HasCorrectRepairGrossCalculation implements IBusinessRule {
 
     }     
 
-    public String getFailureMessage() {
+    public String getNarrative() {
         return "Repair Gross calculation is incorrect.";
     }
 

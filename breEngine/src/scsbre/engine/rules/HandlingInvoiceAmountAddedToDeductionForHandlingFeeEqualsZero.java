@@ -5,11 +5,11 @@
 
 package scsbre.engine.rules;
 
+import java.math.BigDecimal;
 import scsbre.engine.IBusinessRule;
 import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
 import scsbre.engine.util.CalcHelper;
-import scsbre.engine.util.InvoiceCalcHelper;
 import scsbre.model.ClaimStatus;
 import scsbre.model.IClaimInfo;
 import scsbre.model.IInvoiceInfo;
@@ -18,22 +18,16 @@ import scsbre.model.IInvoiceInfo;
  *
  * @author Derm
  * 
- * rule 10, order 18
+ * rule 18, order 8
  */
+public class HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero implements IBusinessRule {
 
-
-public class HasCorrectRepairVatCalculation implements IBusinessRule{
-
-
-
-    
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
         RuleEvaluation res = new RuleEvaluation();
         
         IInvoiceInfo invoice = claim.getInvoice();
-        InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
-        boolean success = CalcHelper.EqualTo(invoice.getRepairVat(), iCalc.getCalculatedRepairVat());
+        boolean success = CalcHelper.EqualTo(invoice.getDiscount(), BigDecimal.ZERO);
         
         res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(true);
@@ -41,18 +35,18 @@ public class HasCorrectRepairVatCalculation implements IBusinessRule{
         
         return res;
 
-    }     
-    public String getNarrative() {
-        return "Repair VAT calculation is incorrect.";
-    }
+    } 
 
+    public String getNarrative() {
+        return "Total to Pay calculation is incorrect.";
+    }
 
     public String getRuleId() {
-        return "010";
+        return "018";
     }
-    
+
     public ClaimStatus getStatusAfterFailure() {
         return ClaimStatus.AwaitingPaymentPack;
-    }    
+    }
 
 }

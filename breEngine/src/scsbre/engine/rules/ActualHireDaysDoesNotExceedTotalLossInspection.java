@@ -34,7 +34,7 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
         return res;
     }
 
-    public String getFailureMessage() {
+    public String getNarrative() {
         return "Number of hire days billed exceeds the allowable threshold (for total loss hires).";
 
     }

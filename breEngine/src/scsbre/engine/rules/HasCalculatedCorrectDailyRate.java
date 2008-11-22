@@ -23,27 +23,27 @@ import scsbre.model.*;
  */
 public class HasCalculatedCorrectDailyRate implements IBusinessRule {
 
+    String narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
+    
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
-
         RuleEvaluation res = new RuleEvaluation();
-        
         if(claim.getVClass() != null){
             ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
             IVehicleClassInfo customerVClass = claim.getVClass();
             boolean success = cCalc.getDailyHireRateChargedWithToleranceDeduction().compareTo(customerVClass.getPrice()) <= 0;
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);    
+            if(success)narrative = "";
         }
         else{
             res.setResult(RuleEvaluationResult.RuleSkipped);
         }
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        
         return res;
     }
 
-    public String getFailureMessage() {
-        return "Daily rate billed for replacement vehicle class exceeds ABI rate.";
+    public String getNarrative() {
+        return narrative;
     }
 
     public String getRuleId() {

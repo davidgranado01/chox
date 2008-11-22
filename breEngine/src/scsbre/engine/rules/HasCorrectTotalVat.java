@@ -40,7 +40,7 @@ public class HasCorrectTotalVat implements IBusinessRule{
 
     }     
 
-    public String getFailureMessage() {
+    public String getNarrative() {
         return "Total VAT calculation is incorrect.";
     }
 

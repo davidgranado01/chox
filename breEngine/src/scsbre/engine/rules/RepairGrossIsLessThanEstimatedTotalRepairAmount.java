@@ -49,7 +49,7 @@ public class RepairGrossIsLessThanEstimatedTotalRepairAmount implements IBusines
 
     }     
 
-    public String getFailureMessage() {
+    public String getNarrative() {
         return "Repair Gross is higher than the Estimated Total Repair Amount.";
     }
 

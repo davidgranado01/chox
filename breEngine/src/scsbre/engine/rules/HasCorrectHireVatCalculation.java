@@ -39,7 +39,7 @@ public class HasCorrectHireVatCalculation implements IBusinessRule {
 
     }    
     
-    public String getFailureMessage() {
+    public String getNarrative() {
         return "Hire VAT calculation is incorrect.";
     }
 

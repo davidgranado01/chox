@@ -11,15 +11,18 @@ import scsbre.model.*;
 
 public class HasAllowedVehicleClass implements IBusinessRule {
 
+    String narrative = "Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.";
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
 
         RuleEvaluation res = new RuleEvaluation();
         
         if(claim.getVClass() != null){
             boolean success = claim.getHireDetail().getVClass().getPrice().compareTo(claim.getVClass().getPrice()) <= 0;
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);    
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);   
+            if(success) narrative = "";
         }
         else{
+            narrative = "Customer vehicle class is not specified.";
             res.setResult(RuleEvaluationResult.RuleSkipped);
         }
         res.setIsVisibleToCHO(false);
@@ -28,8 +31,8 @@ public class HasAllowedVehicleClass implements IBusinessRule {
         return res;
     }
 
-    public String getFailureMessage() {
-        return "Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.";
+    public String getNarrative() {
+        return narrative;
     }
 
     public String getRuleId() {

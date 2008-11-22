@@ -41,7 +41,7 @@ public class HasCorrectTotalNet implements IBusinessRule {
 
     }     
 
-    public String getFailureMessage() {
+    public String getNarrative() {
         return "Total Net calculation is incorrect.";
     }
 

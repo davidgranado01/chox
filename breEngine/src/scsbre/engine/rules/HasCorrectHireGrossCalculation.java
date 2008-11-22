@@ -36,7 +36,7 @@ public class HasCorrectHireGrossCalculation implements IBusinessRule {
 
     }
 
-    public String getFailureMessage() {
+    public String getNarrative() {
         return "Hire Gross calculation is incorrect.";
     }
 
