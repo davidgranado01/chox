@@ -122,7 +122,7 @@ ul.filterlist li{
 
 ul.searchForm{
     
-    width: 800px;
+    width: 100%;
 }
 
 ul.searchForm li{
@@ -132,7 +132,7 @@ ul.searchForm li{
     padding: 2px 80px 2px 10px;
     margin: 5px;
     border: 1px solid #CCC;
-    width: 400px;
+    width: 200px;
     height: 36px;
 }
 

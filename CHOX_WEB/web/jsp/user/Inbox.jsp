@@ -31,15 +31,16 @@
         
     var ds = new Ext.data.Store({
         proxy: new Ext.data.HttpProxy
-        ({url: 'user/getClaimsbyStatus.action',method:'POST'}),
+        ({url: 'user/doSearchClaim.action',method:'POST'}),
         reader:rd        
     });
+    
+    // var c = new Ext.DatePicker({renderTo: 'doSearchClaim_invoiceUploadDateFrom'});
 
     Ext.onReady(setupGrid);
     
     function showClaimByStatus(status)
-    {
-    
+    {    
         ds.load(
         {
             params:
@@ -47,8 +48,50 @@
                 status: status
             }
         });
-    }      
-    
+    }    
+
+    function searchClaim()
+    {
+        
+        var supplierReference = Ext.query('*[name$=supplierReference]')[0].value;
+                
+        var supplierId = Ext.query('*[name$=supplierId]').length > 0 ? Ext.query('*[name$=supplierId]')[0].value : -1;
+        var insurerId = Ext.query('*[name$=insurerId]').length > 0 ? Ext.query('*[name$=insurerId]')[0].value : -1;
+        
+        var invoiceNumber = Ext.query('*[name$=invoiceNumber]')[0].value;
+        var claimNumber = Ext.query('*[name$=claimNumber]')[0].value;
+        var vrn = Ext.query('*[name$=vrn]')[0].value;
+        var claimUploadDateFrom = Ext.query('*[name$=claimUploadDateFrom]')[0].value;
+        var claimUploadDateTo = Ext.query('*[name$=claimUploadDateTo]')[0].value;
+        var invoiceUploadDateFrom = Ext.query('*[name$=invoiceUploadDateFrom]')[0].value;
+        var invoiceUploadDateTo = Ext.query('*[name$=invoiceUploadDateTo]')[0].value;
+        var hireDateFrom = Ext.query('*[name$=hireDateFrom]')[0].value;
+        var hireDateTo = Ext.query('*[name$=hireDateTo]')[0].value;
+        var status = Ext.query('*[name$=status]')[0].value;
+        var lineOfBusiness = Ext.query('*[name$=lineOfBusiness]')[0].value;        
+        
+        ds.load(
+        {
+            params:
+                {
+                supplierReference : supplierReference,
+                supplierId : supplierId,
+                insurerId : insurerId,
+                invoiceNumber : invoiceNumber,
+                claimNumber : claimNumber,
+                vrn : vrn,
+                claimUploadDateFrom : claimUploadDateFrom,
+                claimUploadDateTo : claimUploadDateTo,
+                invoiceUploadDateFrom : invoiceUploadDateFrom,
+                invoiceUploadDateTo : invoiceUploadDateTo,                
+                hireDateFrom : hireDateFrom,
+                hireDateTo : hireDateTo,
+                status : status,
+                lineOfBusiness : lineOfBusiness
+            }
+        });
+    }
+
     function setupGrid(){
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
         Ext.QuickTips.init();  
@@ -83,7 +126,6 @@
             autoHeight:true,
             title:'Claims',viewConfig:{forceFit:true}  
         });               
-
         grid.render('gridPanel');
         grid.getSelectionModel().selectFirstRow();               
         
@@ -103,13 +145,99 @@
             items:[
                 tabs,grid
             ]
-        });    
-    }    
+        });   
+
+        <%-- var myForm = new Ext.form.FormPanel({
+            renderTo:"searchPanel",
+            title:"Basic Form",
+            width:600,
+            frame:true,
+            items: [
+                new Ext.form.TextField({
+                    id:"supplierReference",
+                    fieldLabel:"Supplier Reference",
+                    width:275
+                }),
+                new Ext.form.TextField({
+                    id:"supplierId",
+                    fieldLabel:"Supplier Name",
+                    width:275
+                }),
+                 new Ext.form.TextField({
+                    id:"supplierId",
+                    fieldLabel:"Insurer Name",
+                    width:275
+                }),
+                new Ext.form.TextField({
+                    id:"invoiceNumber",
+                    fieldLabel:"Invoice Numnber",
+                    width:275
+                }),
+                new Ext.form.TextField({
+                    id:"claimNumber",
+                    fieldLabel:"Claim Number",
+                    width:275
+                }),
+                new Ext.form.TextField({
+                    id:"vrn",
+                    fieldLabel:"VRN",
+                    width:275
+                }),
+                new Ext.form.TextField({
+                    id:"claimUploadDateFrom",
+                    fieldLabel:"Claim Upload Date From",
+                    width:275
+                }),
+                 new Ext.form.TextField({
+                    id:"claimUploadDateTo",
+                    fieldLabel:"Claim Upload Date To",
+                    width:275
+                }),
+                 new Ext.form.TextField({
+                    id:"invoiceUploadDateFrom",
+                    fieldLabel:"Invoice Upload Date From",
+                    width:275
+                }),
+                 new Ext.form.TextField({
+                    id:"invoiceUploadDateTo",
+                    fieldLabel:"Invoice Upload Date To",
+                    width:275
+                }),
+                 new Ext.form.TextField({
+                    id:"hireDateFrom",
+                    fieldLabel:"Hire Date From",
+                    width:275
+                }),
+                 new Ext.form.TextField({
+                    id:"hireDateTo",
+                    fieldLabel:"Hire Date To",
+                    width:275
+                }),
+                 new Ext.form.TextField({
+                    id:"status",
+                    fieldLabel:"Status",
+                    width:275
+                }),
+                 new Ext.form.TextField({
+                    id:"lineOfBusiness",
+                    fieldLabel:"Line of Business",
+                    width:275
+                }),
+                
+            ],
+            buttons: [
+                {text:"Cancel"},
+                {text:"Save"}
+            ]
+        }); --%>
+    } 
+
+
 </script>
 
 <div id="claimPanel">      
-    <s:if test="IsCHO">
-        Upload Your Claims? <a href="<s:url action="uploadClaims" namespace="user"/>">click here</a>
+    <s:if test="isCHO">
+        <a>Upload Your Claims? <a href="<s:url action="uploadClaims" namespace="user"/>">click here</a>
         <br />
     </s:if>
     <dir id="tabPanel"></dir> 
@@ -132,8 +260,10 @@
         
     </div>
     <div id="searchPanelTab" class="x-hide-display">
-        
-         <s:action name="searchClaim" namespace="/user" executeResult="true" />
+        <div id="searchPanel">
+            
+        </div>
+       <s:action name="searchClaim" namespace="/user" executeResult="true" /> 
         
     </div>    
     

@@ -2,21 +2,22 @@
 "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
-
     <constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
     <constant name="struts.devMode" value="true" />
     <constant name="struts.multipart.maxSize" value="1000000" />
     <package name="home-package" extends="struts-default" namespace="/">
         <interceptors>
-            <interceptor name="acegi" class="chox.web.security.AcegiInterceptor" />            
+            <interceptor name="acegi" class="chox.web.security.AcegiInterceptor" />
             <interceptor-stack name="authenticated">
                 <interceptor-ref name="acegi"/>
-                <interceptor-ref name="paramsPrepareParamsStack"/>       
-            </interceptor-stack>            
+                <interceptor-ref name="paramsPrepareParamsStack">
+                    <param name="excludeParams">
+                    _,d-\d+?-[sop]
+                    </param>
+                </interceptor-ref>
+            </interceptor-stack>
         </interceptors>
-                
-       <default-interceptor-ref name="acegi" />
-        
+        <default-interceptor-ref name="acegi" />
         <action name="index" class="chox.web.actions.IndexAction" >
             <result name="success">/jsp/index.jsp
             </result>
@@ -28,7 +29,6 @@
     </package>
     <package name="user" namespace="/user" extends="home-package">
         <default-interceptor-ref name="authenticated" />
-        
         <action name ="processClaimsAction" class ="chox.web.actions.ProcessClaimsAction">
             <result name ="success">/jsp/user/UploadStatus.jsp
             </result>
@@ -42,16 +42,33 @@
             <result>/jsp/user/Inbox.jsp</result>
         </action>
         <action name="getClaimsbyStatus" class="chox.web.actions.ClaimsAction" method="getClaimsbyStatus">
-            <param name="status">status</param>
-            <result name="success">/jsp/JsonData.jsp</result>
+            <param name="status">status
+            </param>
+            <result name="success">/jsp/JsonData.jsp
+            </result>
         </action>
         <action name="searchClaim" class="chox.web.actions.SearchClaimAction">
-            <result name="success">/jsp/user/p_searchClaim.jsp</result>
+            <result name="success">/jsp/user/p_searchClaim.jsp
+            </result>
         </action>
         <action name="doSearchClaim" class="chox.web.actions.SearchClaimAction" method="doSearchClaim">
-            <result name="success">/jsp/user/p_searchClaim.jsp</result>
+            <param name="supplierReference"/>
+            <param name="supplierId"/>
+            <param name="insurerId"/>
+            <param name="invoiceNumber"/>
+            <param name="claimNumber"/>
+            <param name="vrn"/>
+            <param name="claimUploadDateFrom"/>
+            <param name="claimUploadDateTo"/>
+            <param name="invoiceUploadDateFrom"/>
+            <param name="invoiceUploadDateTo"/>
+            <param name="hireDateFrom"/>
+            <param name="hireDateTo"/>
+            <param name="status"/>
+            <param name="lineOfBusiness"/>
+            <result name="success">/jsp/JsonData.jsp
+            </result>
         </action>
     </package>
-
     <include file="config-browser.xml"/>
 </struts>

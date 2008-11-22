@@ -8,6 +8,7 @@
         <pattern>/scripts/*</pattern>
         <pattern>/images/*</pattern>
         <pattern>/dojo/*</pattern>
+        <pattern>/css/*</pattern>
         <pattern>/struts/*</pattern>
         <pattern>/jsp/JsonData.jsp</pattern>
         <pattern>/jsp/user/p_*.jsp</pattern>
