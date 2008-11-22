@@ -48,10 +48,10 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
     public List searchClaims(ClaimSearchCriteria searchCriteria) {
         Criteria criteria = currentSession.createCriteria(Claim.class);
 
-        if (!searchCriteria.getSupplierReference().isEmpty()) {
+        if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
             criteria.add(Restrictions.eq("choReference", searchCriteria.getSupplierReference()));
         }
-        if (!searchCriteria.getStatus().isEmpty()) {
+        if (searchCriteria.getStatus() != null && !searchCriteria.getStatus().isEmpty()) {
             criteria.add(Restrictions.eq("status", searchCriteria.getStatus()));
         }
         if (searchCriteria.getInsurerId() > 0) {
@@ -60,13 +60,13 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
         if (searchCriteria.getSupplierId() > 0) {
             criteria.add(Restrictions.eq("chorganisation.id", searchCriteria.getSupplierId()));
         }
-        if (!searchCriteria.getInvoiceNumber().isEmpty()) {
+        if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {
             criteria.add(Restrictions.eq("invoice.id", searchCriteria.getInvoiceNumber()));
         }
         if (searchCriteria.getClaimNumber() > 0) {
             criteria.add(Restrictions.eq("id", searchCriteria.getClaimNumber()));
         }
-        if (!searchCriteria.getVrn().isEmpty()) {
+        if (searchCriteria.getVrn() != null && !searchCriteria.getVrn().isEmpty()) {
             
             criteria.createCriteria("vehicleHire").add(Restrictions.eq("vehicleRegistration", searchCriteria.getVrn()));
         }
