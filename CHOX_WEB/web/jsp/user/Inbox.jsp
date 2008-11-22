@@ -8,7 +8,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <head>
-    <title><decorator:title default="Struts Starter"/></title>
+    <title><decorator:title default="Inbox"/></title>
     <decorator:head/>
 </head>
 
@@ -89,7 +89,7 @@
         
         var tabs = new Ext.TabPanel({
             renderTo: 'tabPanel',
-
+            height:380,
             activeTab: 0,
             items:[
                 {contentEl:'filterPanelTab',height: 35, title:'Filter'},
@@ -108,7 +108,10 @@
 </script>
 
 <div id="claimPanel">      
-    
+    <s:if test="IsCHO">
+        Upload Your Claims? <a href="<s:url action="uploadClaims" namespace="user"/>">click here</a>
+        <br />
+    </s:if>
     <dir id="tabPanel"></dir> 
     
     <div id="gridPanel"></div>
@@ -126,9 +129,12 @@
             <li><a href="javascript:showClaimByStatus('');" >Approved Invoices Ready For payment</a></li>
             <li><a href="javascript:showClaimByStatus('');" >Invoice Payment Logged</a></li>
         </ul>
+        
     </div>
     <div id="searchPanelTab" class="x-hide-display">
-        Search
+        
+         <s:action name="searchClaim" namespace="/user" executeResult="true" />
+        
     </div>    
     
     

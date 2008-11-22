@@ -36,5 +36,10 @@
             </div>   
         </form>
         
+        <ul class="filterlist">
+            <li><b>User:</b> op@cho.com <br /><b>Password:</b> 1234 <br /><b>Role:</b> ROLE_CHO_OPR (CHO Operative)</li>
+            <li><b>User:</b> ch@ins.com <br /><b>Password:</b> 1234 <br /><b>Role:</b> ROLE_INS_CH (Claim Handler)</li>
+        </ul>
+        
     </body>
 </html>

@@ -20,11 +20,8 @@
                     <li>Goto My Inbox <a href="<s:url action="inbox" namespace="user"/>">click here</a></li>
                     <li><a href="<%=request.getContextPath()%>/j_acegi_logout">Log Off</a></li>
                 </ul>   
-            </authz:authorize>
-            
-           
-            
-            
+            </authz:authorize>    
+
         </div>        
         
     </body>
