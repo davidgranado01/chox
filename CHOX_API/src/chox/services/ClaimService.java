@@ -14,7 +14,7 @@ public interface ClaimService {
     public List listClaimsByStatus(String status);
     public Long getCountByStatus(String status);
     public List searchClaims(ClaimSearchCriteria searchCriteria);
-    public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, String sUpdateType, Boolean isAllowPartialUpload);
+    public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, Boolean isAllowPartialUpload);
     public XMLParseResult saveClaimForXMLUploader(XMLParseResult xmlParseResult);
     
     // CARLSON

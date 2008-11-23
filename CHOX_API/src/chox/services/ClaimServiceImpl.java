@@ -137,7 +137,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
         return claim;
     }
 
-    public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, String sUpdateType, Boolean isAllowPartialUpload) {
+    public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, Boolean isAllowPartialUpload) {
         XmlProcessController thisCtrl = new XmlProcessController();
         return thisCtrl.XMLValidationProcess(claimXMLFile, isAllowPartialUpload);
     }
