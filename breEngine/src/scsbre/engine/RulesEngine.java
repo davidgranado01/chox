@@ -11,7 +11,6 @@ public class RulesEngine {
     private IClaimInfo claim;
 
     public static RulesEngine getInstance(IClaimInfo c) {
-
         RulesEngine engine = new RulesEngine(c);
         return engine;
     }
@@ -22,9 +21,7 @@ public class RulesEngine {
     }
 
     public RulesEngineResponse ResolveStatus() {
-        
         RulesEngineResponse response = new RulesEngineResponse();
-        
         response.addRuleEvaulation(new HasAllowedVehicleClass().applyToClaim(claim));
         response.addRuleEvaulation(new HasCalculatedCorrectDailyRate().applyToClaim(claim));
         response.addRuleEvaulation(new HireNetDoesNotExceedBandHireNetCeiling().applyToClaim(claim));

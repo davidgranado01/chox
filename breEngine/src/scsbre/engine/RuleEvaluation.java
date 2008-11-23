@@ -33,9 +33,7 @@ public class RuleEvaluation {
     
     @Override
     public String toString(){
-        
         if(result != null && relatedRule != null){
-            
             String rtnVal = "Applying rule " + relatedRule.getRuleId() + " : ";
             if(result == RuleEvaluationResult.RuleFailed){
                 rtnVal+= "FAILED : " + relatedRule.getNarrative();
@@ -50,8 +48,6 @@ public class RuleEvaluation {
         }
         return "result is null";
     }
-
-
 }
 
 
