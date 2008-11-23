@@ -1,11 +1,7 @@
 package chox.services;
 
-import chox.data.HibernateUtil;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import chox.Util.DateHelper;
 import chox.model.*;
-import java.util.ArrayList;
 
 public class InjuryServiceImpl extends DataService implements InjuryService{
 
@@ -16,9 +12,9 @@ public class InjuryServiceImpl extends DataService implements InjuryService{
             for(Integer i=0; i<(xmlParseResult.getInjuries()).size(); i++){
                 
                 ((xmlParseResult.getInjuries()).get(i)).setCreatedBy(getCurrentUser().getId());
-                ((xmlParseResult.getInjuries()).get(i)).setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
+                ((xmlParseResult.getInjuries()).get(i)).setCreatedDate(DateHelper.getCurrentTimeStamp());
                 ((xmlParseResult.getInjuries()).get(i)).setLastModifiedBy(getCurrentUser().getId());
-                ((xmlParseResult.getInjuries()).get(i)).setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
+                ((xmlParseResult.getInjuries()).get(i)).setLastModifiedDate(DateHelper.getCurrentTimeStamp());
 
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 

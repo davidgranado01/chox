@@ -1,5 +1,6 @@
 package chox.services;
 
+import chox.Util.DateHelper;
 import chox.model.*;
 import java.util.ArrayList;
 
@@ -17,9 +18,9 @@ public class WitnessServiceImpl  extends DataService implements WitnessService{
                 Witness witness = witnesses.get(i);
 
                 witness.setCreatedBy(getCurrentUser().getId());
-                witness.setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
+                witness.setCreatedDate(DateHelper.getCurrentTimeStamp());
                 witness.setLastModifiedBy(getCurrentUser().getId());
-                witness.setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
+                witness.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
 
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 

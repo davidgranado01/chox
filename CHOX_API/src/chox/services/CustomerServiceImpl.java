@@ -1,6 +1,7 @@
 
 package chox.services;
 
+import chox.Util.DateHelper;
 import chox.model.*;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -32,9 +33,9 @@ public class CustomerServiceImpl extends DataService implements CustomerService{
         if(customer!=null){
         
             customer.setCreatedBy(getCurrentUser().getId());
-            customer.setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
+            customer.setCreatedDate(DateHelper.getCurrentTimeStamp());
             customer.setLastModifiedBy(getCurrentUser().getId());
-            customer.setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
+            customer.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
 
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 

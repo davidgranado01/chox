@@ -1,10 +1,7 @@
 
 package chox.services;
 
-import chox.data.HibernateUtil;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import chox.Util.DateHelper;
 import chox.model.*;
 
 public class IncidentServiceImpl  extends DataService implements IncidentService{
@@ -16,9 +13,9 @@ public class IncidentServiceImpl  extends DataService implements IncidentService
         if(incident!=null){
         
             incident.setCreatedBy(getCurrentUser().getId());
-            incident.setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
+            incident.setCreatedDate(DateHelper.getCurrentTimeStamp());
             incident.setLastModifiedBy(getCurrentUser().getId());
-            incident.setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
+            incident.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
 
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 

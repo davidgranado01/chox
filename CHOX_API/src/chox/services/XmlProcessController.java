@@ -31,9 +31,7 @@ public class XmlProcessController {
 
         try {
             
-            // TEST CLAIM
-            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/Bord Test 9.xml";
-            //String sUpdateType = "A";
+            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/20081123_TEST1.xml";
             Boolean isAllowPartialUpload = true;
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -64,8 +62,6 @@ public class XmlProcessController {
                         XMLParseResult xmlParseResult = new XMLParseResult();
                         xmlParseResult = thisCtrl.xmlSchemaValidateProcess(xmlParseResult, doc, re, isAllowPartialUpload);
                         xmlParseResults.add(xmlParseResult);
-                        
-                        //break;
                         
                     } catch (Exception e) {
                         Logger.err.println("Error loading record " + count);
@@ -155,8 +151,7 @@ public class XmlProcessController {
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
         System.out.println(" ** getIsSchemaValid: " + xmlParseResult.getClaim().getChoReference());
-        
-        
+                
         // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
         if(!xmlParseResult.getIsClaimExist()){
             xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);
@@ -167,6 +162,12 @@ public class XmlProcessController {
         xmlParseResult = RentalRepairSchemaValidation(currentSession, xmlParseResult, root, doc);
         xmlParseResult = RentalVehiclesSchemaValidation(currentSession, xmlParseResult, root, doc);
         
+        xmlParseResult.setSExistingClaimStatus(xmlParseResult.getClaim().getStatus());
+
+        if(xmlParseResult.getClaim().getInvoice()!=null){
+            xmlParseResult.setIsInvoiceExist(true);
+        }
+        
         /*
          * ONLY PROCESS THE INVOICE WHERE
          * 1. CLAIM IS EXIST IN DB 
@@ -174,30 +175,30 @@ public class XmlProcessController {
          */
         if(xmlParseResult.getIsClaimExist() 
             && xmlParseResult.getClaim().getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)
-            && xmlParseResult.getClaim().getInvoice()==null){
+            && !xmlParseResult.getIsInvoiceExist()){
             
             xmlParseResult = RentalInvoiceSchemaValidation(xmlParseResult, root, doc);
 
             // EXECUTE BRE RULE
             if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
-                
+/*                
 if(xmlParseResult.getClaim().getEngineerReport()==null){
     System.out.println("0 @@@@@@@@@ NULL");
 }else{
     System.out.println("0 @@@@@@@@@ NOT NULL");
 }
-                        
+*/                        
                 InvoiceService invoiceservice = new InvoiceServiceImpl();
                 RulesEngineResponse validationResult = invoiceservice.XMLUploaderInvoiceValidation(constructeClaimForInvoiceValidation(xmlParseResult.getClaim()));
                 String newClaimStatus = validationResult.getStatus().toString();
                 xmlParseResult.getClaim().setStatus(newClaimStatus);
-
+/*
 if(xmlParseResult.getClaim().getEngineerReport()==null){
     System.out.println("1 @@@@@@@@@ NULL");
 }else{
     System.out.println("1 @@@@@@@@@ NOT NULL");
 }
-                
+*/                
                 if(validationResult.getResults().size()>0){
                     // LOG ERROR MESSAGE TO SCREEN
                     xmlParseResult = appendInvoiceValidationErrorMessage(xmlParseResult, validationResult.getResults());
@@ -209,11 +210,14 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             xmlParseResult = saveXMLRecord(xmlParseResult);
         }
         
+        System.out.println(" ** FINAL STATUS: " + xmlParseResult.getStatus());
+        System.out.println(" ** CLAIM EXIST: " + xmlParseResult.getIsClaimExist());
+        System.out.println(" ** INVOICE EXIST: " + xmlParseResult.getIsInvoiceExist());
+        System.out.println(" ** CLAIM STATUS: " + xmlParseResult.getClaim().getStatus());
         System.out.println(" ** getIsSchemaValid: " + xmlParseResult.getIsSchemaValid());
         System.out.println(" ** getSchemaValidationRemark: " + xmlParseResult.getSchemaValidationRemark());
         System.out.println(" ** getIsDataValid: " + xmlParseResult.getIsDataValid());
         System.out.println(" ** getDataValidationRemark: " + xmlParseResult.getDataValidationRemark());
-        
         
         if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
             currentSession.getTransaction().commit();
@@ -362,10 +366,14 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                 
                 if(thisCtrl.isClaimReferenceNumberExist(strCHOReference)){
                     
-                    ClaimService claimService = new ClaimServiceImpl();
-                    claim = claimService.getClaimByCHOReferenceNumber(strCHOReference);
+                    // CLAIM EXIST
                     xmlParseResult.setIsClaimExist(true);
                     
+                    // GET EXISTING CLAIM INFORMATION
+                    ClaimService claimService = new ClaimServiceImpl();
+                    claim = claimService.getClaimByCHOReferenceNumber(strCHOReference);
+                    
+                    // HARDCODE CHO BAND INFORMATION
                     ChoBand choband = new ChoBand();
                     choband.setEngineerInspectionDelayDays(0);
                     choband.setHireDayCeiling(0);
@@ -385,9 +393,11 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                     
                 }else{
                     
+                    /*
                     if(!strStatus.equalsIgnoreCase(XMLParseResult.IN_PROGRESS)){
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Incorrect Status", false);
                     }
+                    */
                     
                     // SET CLAIM HEADER INFORMATION
                     claim.setManagingRepair(bManagingRepair);
@@ -1462,7 +1472,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
 
         if (xmlParseResult.getIsCurrentScheValid()) {
 
-            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "net", XmlHelper.isMAN_Invoice_Engineer_Fee_Net, XmlHelper.REG_BIGDECIMAL, parentNodeName);
+            //xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "net", XmlHelper.isMAN_Invoice_Engineer_Fee_Net, XmlHelper.REG_BIGDECIMAL, parentNodeName);
             
             Element thisElement = XMLUtils.getElement(mainElement, mainNodeName);
             ArrayList<Element> rentalVehicleElements = XMLUtils.getElements(doc, thisElement, childNodeName);

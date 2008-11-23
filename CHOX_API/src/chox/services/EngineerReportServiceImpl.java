@@ -1,5 +1,6 @@
 package chox.services;
 
+import chox.Util.DateHelper;
 import chox.model.EngineerReport;
 import chox.model.XMLParseResult;
 import org.hibernate.Criteria;
@@ -12,9 +13,9 @@ public class EngineerReportServiceImpl extends DataService implements EngineerRe
         if((xmlParseResult.getClaim().getEngineerReport())!=null){
             
             (xmlParseResult.getClaim().getEngineerReport()).setCreatedBy(getCurrentUser().getId());
-            (xmlParseResult.getClaim().getEngineerReport()).setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
+            (xmlParseResult.getClaim().getEngineerReport()).setCreatedDate(DateHelper.getCurrentTimeStamp());
             (xmlParseResult.getClaim().getEngineerReport()).setLastModifiedBy(getCurrentUser().getId());
-            (xmlParseResult.getClaim().getEngineerReport()).setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
+            (xmlParseResult.getClaim().getEngineerReport()).setLastModifiedDate(DateHelper.getCurrentTimeStamp());
 
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 

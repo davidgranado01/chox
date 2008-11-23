@@ -4,21 +4,46 @@ import java.util.ArrayList;
 import org.hibernate.Session;
 
 public class XMLParseResult {
-
+    
     public static final String PENDING = "Pending";
     public static final String IN_PROGRESS = "InProgress";
     public static final String COMPLETE = "Complete";
     public static final String CANCELLED = "Cancelled";
     public static final String DUPLICATE = "Duplicated";
+    
     private Boolean isSchemaValid = true;
     private Boolean isDataValid = true;
     private String SchemaValidationRemark = "";
     private String DataValidationRemark = "";
     private String UploadType;
-    private Session currentSession;    // USE WHEN RUNING THE VALIDATION
+    private Session currentSession;
     private Boolean isCurrentScheValid = true;
     private Boolean isCurrentDataValid = true;
     private Boolean isClaimExist = false;
+    private Boolean isInvoiceExist = false;
+    private String sExistingClaimStatus = "";
+    
+    // SETUP DATA - CLAIM OBJECT
+    private Claim claim;
+    private ArrayList<Witness> witnesses;
+    private ArrayList<Injury> injuries;
+    private ArrayList<Solicitor> solicitors;
+
+    public String getSExistingClaimStatus() {
+        return sExistingClaimStatus;
+    }
+
+    public void setSExistingClaimStatus(String sExistingClaimStatus) {
+        this.sExistingClaimStatus = sExistingClaimStatus;
+    }
+    
+    public Boolean getIsInvoiceExist() {
+        return isInvoiceExist;
+    }
+
+    public void setIsInvoiceExist(Boolean isInvoiceExist) {
+        this.isInvoiceExist = isInvoiceExist;
+    }
 
     public Boolean getIsClaimExist() {
         return isClaimExist;
@@ -26,12 +51,8 @@ public class XMLParseResult {
 
     public void setIsClaimExist(Boolean isClaimExist) {
         this.isClaimExist = isClaimExist;
-    }    // SETUP DATA - CLAIM OBJECT
-    private Claim claim;
-    private ArrayList<Witness> witnesses;
-    private ArrayList<Injury> injuries;
-    private ArrayList<Solicitor> solicitors;
-
+    }  
+    
     public ArrayList<Injury> getInjuries() {
         return injuries;
     }
@@ -127,9 +148,65 @@ public class XMLParseResult {
     public void setCurrentSession(Session currentSession) {
         this.currentSession = currentSession;
     }
-
+    
+    private Boolean getSchemaDataValidation(){
+        Boolean bFlag = false;
+        if(this.isDataValid && this.isSchemaValid){
+            bFlag = true;
+        }
+        return bFlag;
+    }
+    
     public String getStatus() {
-        return (this.isDataValid && this.isSchemaValid) ? "Ok" : "Error";
+        
+        String sStatus = "";
+        
+        if(!this.isClaimExist){
+            
+            // CLAIM NOT EXIST
+            if(getSchemaDataValidation()){
+                sStatus = "Claim Uploaded";
+            }else{
+                sStatus = "Upload Rejected";
+            }
+            
+        }else{
+            
+            // CLAIM EXIST
+            if(this.sExistingClaimStatus.equalsIgnoreCase("ClaimUnacknowledged")){
+                
+                sStatus = "Claim already exist";
+                
+            }else if(this.sExistingClaimStatus.equalsIgnoreCase("AwaitingInvoiceData")){
+                
+                if(this.isInvoiceExist){
+                    
+                    sStatus = "Invoice already exist";
+                    
+                }else{
+
+                    if(getSchemaDataValidation()){
+                        sStatus = "Invoice Uploaded";
+                    }else{
+                        sStatus = "Upload Rejected";
+                    }
+                }
+
+            }else{
+                if(this.isInvoiceExist){
+                    
+                    sStatus = "Invoice already exist";
+                    
+                }else{
+                    
+                    sStatus = "Unable to upload invoice - Incorrect Claim Status";
+                    
+                }
+            }
+        }
+        
+        return sStatus;
+        //return (this.isDataValid && this.isSchemaValid) ? "Ok" : "Error";
     }
 
     public String[] getDataValidationRemarkInList() {

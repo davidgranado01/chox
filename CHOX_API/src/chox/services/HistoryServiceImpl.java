@@ -5,10 +5,8 @@
 
 package chox.services;
 
+import chox.Util.DateHelper;
 import chox.model.History;
-import org.hibernate.Session;
-import chox.data.HibernateUtil;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import scsbre.engine.*;
 import java.util.List;
 
@@ -47,11 +45,11 @@ public class HistoryServiceImpl extends DataService implements HistoryService{
         
         currentSession.beginTransaction();
         
-        history.setProcessDate(generalServiceImpl.getCurrentTimeStamp());
+        history.setProcessDate(DateHelper.getCurrentTimeStamp());
         history.setCreatedBy(getCurrentUser().getId());
-        history.setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
+        history.setCreatedDate(DateHelper.getCurrentTimeStamp());
         history.setLastModifiedBy(getCurrentUser().getId());
-        history.setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
+        history.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
 
         try{
             currentSession.saveOrUpdate(history);

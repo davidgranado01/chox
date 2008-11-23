@@ -1,9 +1,6 @@
 package chox.services;
 
-import chox.data.HibernateUtil;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import chox.Util.DateHelper;
 import chox.model.*;
 
 public class SolicitorServiceImpl  extends DataService implements SolicitorService{
@@ -15,9 +12,9 @@ public class SolicitorServiceImpl  extends DataService implements SolicitorServi
             for(Integer i=0; i<(xmlParseResult.getSolicitors()).size(); i++){
                 
                 ((xmlParseResult.getSolicitors()).get(i)).setCreatedBy(getCurrentUser().getId());
-                ((xmlParseResult.getSolicitors()).get(i)).setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
+                ((xmlParseResult.getSolicitors()).get(i)).setCreatedDate(DateHelper.getCurrentTimeStamp());
                 ((xmlParseResult.getSolicitors()).get(i)).setLastModifiedBy(getCurrentUser().getId());
-                ((xmlParseResult.getSolicitors()).get(i)).setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
+                ((xmlParseResult.getSolicitors()).get(i)).setLastModifiedDate(DateHelper.getCurrentTimeStamp());
 
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 

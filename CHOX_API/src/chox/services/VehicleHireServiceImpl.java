@@ -1,9 +1,6 @@
 package chox.services;
 
-import chox.data.HibernateUtil;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import chox.Util.DateHelper;
 import chox.model.*;
 
 public class VehicleHireServiceImpl  extends DataService implements VehicleHireService{
@@ -13,9 +10,9 @@ public class VehicleHireServiceImpl  extends DataService implements VehicleHireS
         if((xmlParseResult.getClaim().getVehicleHire())!=null){
             
             (xmlParseResult.getClaim().getVehicleHire()).setCreatedBy(getCurrentUser().getId());
-            (xmlParseResult.getClaim().getVehicleHire()).setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
+            (xmlParseResult.getClaim().getVehicleHire()).setCreatedDate(DateHelper.getCurrentTimeStamp());
             (xmlParseResult.getClaim().getVehicleHire()).setLastModifiedBy(getCurrentUser().getId());
-            (xmlParseResult.getClaim().getVehicleHire()).setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
+            (xmlParseResult.getClaim().getVehicleHire()).setLastModifiedDate(DateHelper.getCurrentTimeStamp());
 
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 

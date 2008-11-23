@@ -1,12 +1,8 @@
 package chox.services;
 
-import chox.data.HibernateUtil;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import chox.Util.DateHelper;
 import chox.model.*;
 import scsbre.engine.*;
-import java.util.List;
 
 public class InvoiceServiceImpl  extends DataService implements InvoiceService{
     
@@ -27,9 +23,9 @@ public class InvoiceServiceImpl  extends DataService implements InvoiceService{
             
 
                 (xmlParseResult.getClaim().getInvoice()).setCreatedBy(getCurrentUser().getId());
-                (xmlParseResult.getClaim().getInvoice()).setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
+                (xmlParseResult.getClaim().getInvoice()).setCreatedDate(DateHelper.getCurrentTimeStamp());
                 (xmlParseResult.getClaim().getInvoice()).setLastNodifiedBy(getCurrentUser().getId());
-                (xmlParseResult.getClaim().getInvoice()).setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
+                (xmlParseResult.getClaim().getInvoice()).setLastModifiedDate(DateHelper.getCurrentTimeStamp());
 
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 

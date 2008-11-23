@@ -1,10 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package chox.services;
 
-import chox.model.ChoBand;
+import chox.Util.DateHelper;
 import chox.data.ClaimSearchCriteria;
 import chox.model.Claim;
 import chox.model.XMLParseResult;
@@ -150,9 +146,9 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
             XMLParseResult xmlParseResult) {
 
         xmlParseResult.getClaim().setCreatedBy(getCurrentUser().getId());
-        xmlParseResult.getClaim().setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
+        xmlParseResult.getClaim().setCreatedDate(DateHelper.getCurrentTimeStamp());
         xmlParseResult.getClaim().setLastModifiedBy(getCurrentUser().getId());
-        xmlParseResult.getClaim().setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
+        xmlParseResult.getClaim().setLastModifiedDate(DateHelper.getCurrentTimeStamp());
 
         if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
             xmlParseResult.getClaim().setCustomer(xmlParseResult.getClaim().getCustomer());

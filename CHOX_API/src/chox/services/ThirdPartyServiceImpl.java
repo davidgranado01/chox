@@ -1,9 +1,6 @@
 package chox.services;
 
-import chox.data.HibernateUtil;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import chox.Util.DateHelper;
 import chox.model.*;
 
 public class ThirdPartyServiceImpl  extends DataService implements ThirdPartyService{
@@ -16,9 +13,9 @@ public class ThirdPartyServiceImpl  extends DataService implements ThirdPartySer
         if(thirdparty!=null){
         
             xmlParseResult.getClaim().getThirdParty().setCreatedBy(getCurrentUser().getId());
-            xmlParseResult.getClaim().getThirdParty().setCreatedDate(generalServiceImpl.getCurrentTimeStamp());
+            xmlParseResult.getClaim().getThirdParty().setCreatedDate(DateHelper.getCurrentTimeStamp());
             xmlParseResult.getClaim().getThirdParty().setLastModifiedBy(getCurrentUser().getId());
-            xmlParseResult.getClaim().getThirdParty().setLastModifiedDate(generalServiceImpl.getCurrentTimeStamp());
+            xmlParseResult.getClaim().getThirdParty().setLastModifiedDate(DateHelper.getCurrentTimeStamp());
 
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
