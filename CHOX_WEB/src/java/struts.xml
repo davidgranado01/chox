@@ -55,6 +55,10 @@
             <result name="success">/jsp/JsonData.jsp
             </result>
         </action>
+        <action name="openClaimDetail" class="chox.web.actions.OpenClaimDetailAction">
+            <result name="success">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
     </package>
     <include file="config-browser.xml"/>
 </struts>

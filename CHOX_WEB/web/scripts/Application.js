@@ -23,9 +23,7 @@ function borderLayout(){
         layout:'border',
         items: [{
 	        region: 'north',
-	        height: 100,
-	        minSize: 240,
-	        maxSize: 240,
+	        height: 120,
 	        margins: '0 0 0 0',
 	        border: false,
 	        items: [{

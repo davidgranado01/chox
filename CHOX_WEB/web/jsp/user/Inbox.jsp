@@ -13,17 +13,20 @@
 </head>
 
 <script >
+    
+    
+
     var rd = new Ext.data.JsonReader({
         totalProperty: 'totalCount',   
         root: 'results', 
         fields:[
             {name:'id'},
-            {name:'claimStatus'},
+            {name:'status'},
             {name:'invoiceAmount'},
             {name:'vehicleRegistration'},
             {name:'policyNumber'},
             {name:'supplierReference'},
-            {name:'created'},
+            {name:'created', type: 'date', dateFormat: 'd/m/Y'},
             {name:'insurer'},
             {name:'cho'},
         ]
@@ -39,13 +42,19 @@
 
     Ext.onReady(setupGrid);
     
+    function renderMoney(n) {
+        v = (Math.round((v-0)*100))/100;
+        v = (v == Math.floor(v)) ? v + ".00" : ((v*10 == Math.floor(v*10)) ? v + "0" : v);
+        return (v + ' €').replace(/\./, ',');
+    } 
+    
     function showClaimByStatus(status)
     {            
         ds.load(
         {
             params:
                 {
-               status : status
+                status : status
             }
         });
     }    
@@ -111,14 +120,15 @@
             columns: [
                 {id:'Id',header: "Claim Number", width: 250, sortable: true, dataIndex: 'id', 
                     renderer:function(value){
-                        return '<a href="index.action">' + value + '</a>'}},
+                        return '<a href="user/openClaimDetail.action?id=' + value + '">' + value + '</a>'}},
                 {header: "Supplier Reference No.", width: 150, sortable: true, dataIndex: 'supplierReference'},                
                 {header: "VRN", width: 250, sortable: true, dataIndex: 'vehicleRegistration'},
-                {header: "Invoice Amount", width: 250, sortable: true, dataIndex: 'invoiceAmount'},
+                {header: "Invoice Amount", width: 250, sortable: true, 
+                    dataIndex: 'invoiceAmount' },
                 {header: "Date Uploaded", width: 250, sortable: true, 
                     renderer: Ext.util.Format.dateRenderer('d/m/Y'), 
                     dataIndex: 'created'},
-                {header: "Status", width: 250, sortable: true, dataIndex: 'claimStatus'},
+                {header: "Status", width: 250, sortable: true, dataIndex: 'status'},
                 {header: "LOB", width: 250, sortable: true, dataIndex: 'lineOfBusiness'},
                 {header: "CHO", width: 250, sortable: true, dataIndex: 'cho'},
                 {header: "Insurer", width: 150, sortable: true, dataIndex: 'insurer'}
@@ -209,10 +219,26 @@
 </script>
 
 <div id="claimPanel">      
-    <s:if test="isCHO">
-        Upload Your Claims? <a href="<s:url action="uploadClaims" namespace="user"/>">click here</a>
-        <br />
+    
+    
+    <s:if test="AuthenticatedUser !=null">  
+        <table width="100%">
+            <tr>
+                <td>
+                    <p>Welcome <b><s:property value="AuthenticatedUser.Username" /></b></p>
+                    <s:if test="isCHO=true">
+                        <div>
+                            Would you like to upload Your claims? <a href="<s:url action="uploadClaims" namespace="user"/>">click here</a>            
+                        </div>
+                    </s:if>
+                </td>
+                <td width="50px">
+                    <s:url id="logoff" action="logoff" namespace="/" /><s:a href="%{logoff}">Log Off</s:a>
+                </td>
+            </tr>
+        </table>
     </s:if>
+    
     <dir id="tabPanel"></dir> 
     
     <div id="gridPanel"></div>
@@ -224,7 +250,7 @@
             <li><a href="javascript:showClaimByStatus('ClaimUnrouted');" >Unrouted Claims (<s:property value="claimUnrountedCount" />)</a></li>
             <li><a href="javascript:showClaimByStatus('ClaimRejectionAccepted');" >Rejected Claims (<s:property value="claimRejectedCount" />)</a></li>
             <li><a href="javascript:showClaimByStatus('ClaimRejected');" >Accepted Rejected Claims (<s:property value="claimRejectedAcceptedCount" />)</a></li>
-            <li><a href="javascript:showClaimByStatus('AwaitingInvoiceData');" >Claims Awaiting Claims Handling Payment (<s:property value="awaitingPaymentPackCount" />)</a></li>
+            <li><a href="javascript:showClaimByStatus('AwaitingInvoiceData');" >Claims Awaiting Claims Handling Payment (<s:property value="awaitingInvoiceCount" />)</a></li>
             <li><a href="javascript:showClaimByStatus('?');" >DA Payment Logged (?)</a></li>
             <li><a href="javascript:showClaimByStatus('AwaitingPaymentPack');" >Claims Awaiting Invoice Payment (<s:property value="awaitingPaymentPackCount" />)</a></li>
             <li><a href="javascript:showClaimByStatus('InvoiceRejectionAccepted');" >Accepted Rejected Invoices (<s:property value="invoiceRejectedAcceptedCount" />)</a></li>

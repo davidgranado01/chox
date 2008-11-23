@@ -17,12 +17,12 @@
                             
                             <s:if test="isInsurer">
                                 <td><label>Supplier Name</label></td><td><s:select name="supplierId" list="suppliers" listKey="id" listValue="name" headerKey="-1"
-                                                                                       headerValue="--- Please Select ---"
+                                                                                       headerValue="--- ALL ---"
                                                                                    emptyOption="false"></s:select></td>
                             </s:if>                        
                             <s:if test="isCHO">
                                 <td><label>Insurer Name</label></td><td><s:select name="insurerId" list="insurers" listKey="id" listValue="name" headerKey="-1"
-                                                                                      headerValue="--- Please Select ---"
+                                                                                      headerValue="--- ALL ---"
                                                                                   emptyOption="false"></s:select>  </td>
                             </s:if>  
                         </tr>
@@ -47,10 +47,10 @@
                         </tr>                        
                         <tr>                            
                             <td><label>Status</label></td><td><s:select name="status" list="statuses" headerKey="" listKey="value" listValue="text"
-                                                                            headerValue="--- Please Select ---"
+                                                                            headerValue="--- ALL ---"
                                                                         emptyOption="false"></s:select> </td>
                             <td><label>Line of Business</label></td><td><s:select name="lineOfBusiness" list="lineOfBusinesses" listKey="id" listValue="name" headerKey="-1"
-                                                                                      headerValue="--- Please Select ---"
+                                                                                      headerValue="--- ALL ---"
                                                                                   emptyOption="false"></s:select></td>
                         </tr>
                     </table>

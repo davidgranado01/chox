@@ -22,6 +22,10 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
     public static final String COMPLETE = "Complete";
     public static final String CANCELLED = "Cancelled";
     public static final String NEW_CLAIM = "1st Notification";
+    
+     public Claim getClaim(int id) {
+        return (Claim)currentSession.get(Claim.class, id); 
+    }
 
     public List listAllClaims() {
 
@@ -170,6 +174,8 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
         }
         return xmlParseResult;
     }
+
+   
 }
 
 

@@ -8,9 +8,16 @@ package chox.web.viewdata;
 import chox.model.Chorganisation;
 import chox.model.Claim;
 import chox.model.Insurer;
+import chox.model.Invoice;
+import chox.model.LineOfBusiness;
 import chox.model.VehicleHire;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 /**
  *
@@ -19,9 +26,9 @@ import java.util.Date;
 public class claimGridViewData {
     private String supplierReference;
     private int id;
-    private BigDecimal invoiceAmount;
+    private String invoiceAmount;
     private String vehicleRegistration;
-    private Date created;
+    private String created;
     private String status;
     private String lineOfBusiness;
     private String cho;
@@ -29,17 +36,22 @@ public class claimGridViewData {
     
     public claimGridViewData(Claim claim)
     {        
+        Format dateFormat = new SimpleDateFormat("dd/MM/yyyy") ;
+        NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance();
+        
         VehicleHire v = claim.getVehicleHire();
         Chorganisation c = claim.getChorganisation();
         Insurer i = claim.getInsurer();
+        LineOfBusiness lob = claim.getLineOfBusiness();
+        Invoice ivc = claim.getInvoice();
         
         this.id = claim.getId();
         this.supplierReference = claim.getChoReference();
-        this.invoiceAmount = BigDecimal.ZERO; //TODO : assign  invoice amount 
-        
+        this.invoiceAmount = ivc == null ? "" : currentcyFormat.format(ivc.getTotalToPay());        
         this.vehicleRegistration = v == null ? "" : v.getVehicleRegistration();
-        this.lineOfBusiness = "";//TODO : assign lineOfBusiness
-        this.created = claim.getCreatedDate();
+        this.lineOfBusiness = lob == null ? "" : lob.getName();
+        
+        this.created = dateFormat.format(claim.getCreatedDate());
         this.status = claim.getStatus();
         this.cho = c == null ? "" : c.getName();
         this.insurer = i == null ? "" : i.getName();//TODO : assign insurer
@@ -54,7 +66,7 @@ public class claimGridViewData {
         return id;
     }
 
-    public BigDecimal getInvoiceAmount() {
+    public String getInvoiceAmount() {
         return invoiceAmount;
     }
 
@@ -62,7 +74,7 @@ public class claimGridViewData {
         return vehicleRegistration;
     }
 
-    public Date getCreated() {
+    public String getCreated() {
         return created;
     }
 

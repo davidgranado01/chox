@@ -9,6 +9,7 @@ import chox.model.Claim;
 
 public interface ClaimService {
     
+    public Claim getClaim(int id);
     public List listAllClaims();
     public List listClaimsByStatus(String status);
     public Long getCountByStatus(String status);
