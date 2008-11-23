@@ -23,7 +23,7 @@ function borderLayout(){
         layout:'border',
         items: [{
 	        region: 'north',
-	        height: 120,
+	        height: 100,
 	        margins: '0 0 0 0',
 	        border: false,
 	        items: [{

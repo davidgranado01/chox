@@ -9,7 +9,7 @@
         <filter-class>
       org.acegisecurity.util.FilterToBeanProxy
         </filter-class>
-        <init-param>
+        <init-param> 
             <param-name>targetClass</param-name>
             <param-value>
                 org.acegisecurity.util.FilterChainProxy

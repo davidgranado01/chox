@@ -9,5 +9,5 @@
     <bean id="claimService" class="chox.services.ClaimServiceImpl" singleton="false"/>
     <bean id="lookupService" class="chox.services.LookupServiceImpl" singleton="false"/>
      <bean id="securityInfoProvider" class="chox.web.data.WebSecurityInfoProvider" singleton="false"/>
-</beans>
+</beans> 
 

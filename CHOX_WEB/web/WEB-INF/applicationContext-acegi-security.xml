@@ -11,7 +11,7 @@
                 /**=httpSessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,basicProcessingFilter,securityContextHolderAwareRequestFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
             </value>
         </property>
-    </bean>
+    </bean> 
 
     <!-- ======================== AUTHENTICATION ======================= -->
     <bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">

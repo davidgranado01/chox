@@ -17,7 +17,7 @@
         <script src="<%= request.getContextPath() %>/scripts/ext-all.js" type="text/javascript"></script> 
         <script src="<%= request.getContextPath() %>/scripts/Application.js" type="text/javascript"></script> 
         <decorator:head/>
-    </head>
+    </head> 
     <body>
         <div id="container">
             <div id="header">

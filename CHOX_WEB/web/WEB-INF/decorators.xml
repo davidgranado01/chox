@@ -12,7 +12,7 @@
         <pattern>/struts/*</pattern>
         <pattern>/jsp/JsonData.jsp</pattern>
         <pattern>/jsp/user/p_*.jsp</pattern>
-    </excludes>
+    </excludes> 
 
     <decorator name="main" page="main.jsp">
         <pattern>/*</pattern>

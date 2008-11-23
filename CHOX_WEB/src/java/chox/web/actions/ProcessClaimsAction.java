@@ -16,7 +16,6 @@ import java.util.List;
 public class ProcessClaimsAction extends BaseAction {
 
     private File file;
-    private String contentType;
     private String filename;
     private ClaimService service;
     private List<XMLParseResult> result;
@@ -28,11 +27,7 @@ public class ProcessClaimsAction extends BaseAction {
 
     public void setClaimService(ClaimService service) {
         this.service = service;
-    }
-
-    public void setUploadContentType(String contentType) {
-        this.contentType = contentType;
-    }
+    }   
 
     public void setUploadFileName(String filename) {
         this.filename = filename;
@@ -61,7 +56,7 @@ public class ProcessClaimsAction extends BaseAction {
         String extention = getExtention(this.filename).toLowerCase();
 
         if (extention.matches("\\.xml")) {
-            List<XMLParseResult> parseResult = this.service.processClaimXMLFile(this.file, uploadType , true);
+            List<XMLParseResult> parseResult = this.service.processClaimXMLFile(this.file , true);
             if (parseResult == null) {
                 return ERROR;
             } else {

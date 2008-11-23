@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+"http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <html>
@@ -28,17 +28,17 @@
                         <th>Status</th>
                         <th>Remark</th>
                     </tr>
-                <s:iterator id="next" value="results" status="stat">
-                    <s:if test="%{#next.Status=='Error'}">
-                    <tr class="ErrorRow">
-                    </s:if>
-                    <s:else>
-                    <tr>
-                    </s:else>
-                        <td><s:property value="{#stat.index + 1}" /></td>
-                        <td><s:property value="#next.claim.choReference" /></td> 
-                        <td><s:property value="#next.Status" /></td>  
-                        <td>
+                    <s:iterator id="next" value="results" status="stat">
+                        <s:if test="%{#next.Status=='Upload Rejected'}">
+                            <tr class="ErrorRow">
+                        </s:if>
+                        <s:else>
+                            <tr>
+                            </s:else>
+                            <td><s:property value="{#stat.index + 1}" /></td>
+                            <td><s:property value="#next.claim.choReference" /></td> 
+                            <td><s:property value="#next.Status" /></td>  
+                            <td>
                                 <ul>
                                     <s:iterator id="remark" value="#next.DataValidationRemarkInList">                                        
                                         <s:if test="#remark.length() > 0">
@@ -46,7 +46,7 @@
                                         </s:if>
                                     </s:iterator>
                                 </ul>                              
-               
+                                
                                 <ul>
                                     <s:iterator id="remark" value="#next.SchemaValidationRemarkInList">
                                         <s:if test="#remark.length() > 0">
@@ -54,11 +54,18 @@
                                         </s:if>
                                     </s:iterator>
                                 </ul> 
-                        </td>
-                    </tr>                   
-                </s:iterator>
+                            </td>
+                        </tr>                   
+                    </s:iterator>
                 </table>
             </s:else>       
-        </div>      
+        </div>   
+        <br />
+        <s:url id="goBackToInbox" action="inbox" />
+        <s:url id="reUpload" action="uploadClaims" />
+        <s:a href="%{goBackToInbox}" >&#60;&#60; Go back to Inbox</s:a>
+        <br /> <br /> 
+        <s:a href="%{reUpload}" >&#60;&#60; Re-Upload</s:a>
+        
     </body>
 </html>
