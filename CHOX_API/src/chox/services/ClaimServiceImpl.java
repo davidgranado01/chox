@@ -63,8 +63,17 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {
             criteria.add(Restrictions.eq("invoice.id", searchCriteria.getInvoiceNumber()));
         }
-        if (searchCriteria.getClaimNumber() > 0) {
-            criteria.add(Restrictions.eq("id", searchCriteria.getClaimNumber()));
+        if (searchCriteria.getClaimNumber() != null && !searchCriteria.getClaimNumber().isEmpty()) {
+            try
+            {
+                Integer claimNumber = Integer.parseInt(searchCriteria.getClaimNumber());
+                criteria.add(Restrictions.eq("id", claimNumber));
+            }
+            catch(NumberFormatException ex)
+            {
+            
+            }
+            
         }
         if (searchCriteria.getVrn() != null && !searchCriteria.getVrn().isEmpty()) {
             

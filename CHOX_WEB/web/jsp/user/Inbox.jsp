@@ -40,12 +40,12 @@
     Ext.onReady(setupGrid);
     
     function showClaimByStatus(status)
-    {    
+    {            
         ds.load(
         {
             params:
                 {
-                status: status
+               status : status
             }
         });
     }    
@@ -68,8 +68,8 @@
         var hireDateFrom = Ext.query('*[name$=hireDateFrom]')[0].value;
         var hireDateTo = Ext.query('*[name$=hireDateTo]')[0].value;
         var status = Ext.query('*[name$=status]')[0].value;
-        var lineOfBusiness = Ext.query('*[name$=lineOfBusiness]')[0].value;        
-        
+        var lineOfBusiness = Ext.query('*[name$=lineOfBusiness]')[0].value;    
+
         ds.load(
         {
             params:
@@ -89,18 +89,19 @@
                 status : status,
                 lineOfBusiness : lineOfBusiness
             }
-        });
+        });        
+        
     }
 
     function setupGrid(){
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-        Ext.QuickTips.init();  
-        
+        Ext.QuickTips.init();         
+               
         ds.load(
         {
             params:
                 {
-                status: ''
+                status : ''
             }
         });
 
@@ -115,7 +116,7 @@
                 {header: "VRN", width: 250, sortable: true, dataIndex: 'vehicleRegistration'},
                 {header: "Invoice Amount", width: 250, sortable: true, dataIndex: 'invoiceAmount'},
                 {header: "Date Uploaded", width: 250, sortable: true, 
-                    renderer: Ext.util.Format.dateRenderer('Y/m/d'), 
+                    renderer: Ext.util.Format.dateRenderer('d/m/Y'), 
                     dataIndex: 'created'},
                 {header: "Status", width: 250, sortable: true, dataIndex: 'claimStatus'},
                 {header: "LOB", width: 250, sortable: true, dataIndex: 'lineOfBusiness'},
@@ -132,10 +133,10 @@
         
         var tabs = new Ext.TabPanel({
             renderTo: 'tabPanel',
-            height:380,
+            height:230,
             activeTab: 0,
             items:[
-                {contentEl:'filterPanelTab',height: 35, title:'Filter'},
+                {contentEl:'filterPanelTab', title:'Filter'},
                 {contentEl:'searchPanelTab', title:'Search'}
             ]
         });  
@@ -146,91 +147,62 @@
             items:[
                 tabs,grid
             ]
-        });   
-
-        <%-- var myForm = new Ext.form.FormPanel({
-            renderTo:"searchPanel",
-            title:"Basic Form",
-            width:600,
-            frame:true,
-            items: [
-                new Ext.form.TextField({
-                    id:"supplierReference",
-                    fieldLabel:"Supplier Reference",
-                    width:275
-                }),
-                new Ext.form.TextField({
-                    id:"supplierId",
-                    fieldLabel:"Supplier Name",
-                    width:275
-                }),
-                 new Ext.form.TextField({
-                    id:"supplierId",
-                    fieldLabel:"Insurer Name",
-                    width:275
-                }),
-                new Ext.form.TextField({
-                    id:"invoiceNumber",
-                    fieldLabel:"Invoice Numnber",
-                    width:275
-                }),
-                new Ext.form.TextField({
-                    id:"claimNumber",
-                    fieldLabel:"Claim Number",
-                    width:275
-                }),
-                new Ext.form.TextField({
-                    id:"vrn",
-                    fieldLabel:"VRN",
-                    width:275
-                }),
-                new Ext.form.TextField({
-                    id:"claimUploadDateFrom",
-                    fieldLabel:"Claim Upload Date From",
-                    width:275
-                }),
-                 new Ext.form.TextField({
-                    id:"claimUploadDateTo",
-                    fieldLabel:"Claim Upload Date To",
-                    width:275
-                }),
-                 new Ext.form.TextField({
-                    id:"invoiceUploadDateFrom",
-                    fieldLabel:"Invoice Upload Date From",
-                    width:275
-                }),
-                 new Ext.form.TextField({
-                    id:"invoiceUploadDateTo",
-                    fieldLabel:"Invoice Upload Date To",
-                    width:275
-                }),
-                 new Ext.form.TextField({
-                    id:"hireDateFrom",
-                    fieldLabel:"Hire Date From",
-                    width:275
-                }),
-                 new Ext.form.TextField({
-                    id:"hireDateTo",
-                    fieldLabel:"Hire Date To",
-                    width:275
-                }),
-                 new Ext.form.TextField({
-                    id:"status",
-                    fieldLabel:"Status",
-                    width:275
-                }),
-                 new Ext.form.TextField({
-                    id:"lineOfBusiness",
-                    fieldLabel:"Line of Business",
-                    width:275
-                }),
-                
-            ],
-            buttons: [
-                {text:"Cancel"},
-                {text:"Save"}
-            ]
-        }); --%>
+        }); 
+        
+        var claimUploadDateFromPicker = new Ext.form.DateField({
+            name: 'claimUploadDateFrom',
+            width: 185,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true
+        });
+        
+        var claimUploadDateToPicker = new Ext.form.DateField({
+            name: 'claimUploadDateTo',
+            width: 185,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true
+        });
+        
+        var invoiceUploadDateFromPicker = new Ext.form.DateField({
+            name: 'invoiceUploadDateFrom',
+            width: 185,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true
+        });
+        
+        var invoiceUploadDateToPicker = new Ext.form.DateField({
+            name: 'invoiceUploadDateTo',
+            width: 185,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true
+        });
+        
+        var hireDateFromPicker = new Ext.form.DateField({
+            name: 'hireDateFrom',
+            width: 185,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true
+        });
+        
+        var hireDateToPicker = new Ext.form.DateField({
+            name: 'hireDateTo',
+            width: 185,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true
+        });
+        
+        claimUploadDateFromPicker.render('claimUploadDateFromDiv');
+        claimUploadDateToPicker.render('claimUploadDateToDiv');
+        invoiceUploadDateFromPicker.render('invoiceUploadDateFromDiv');
+        invoiceUploadDateToPicker.render('invoiceUploadDateToDiv');
+        hireDateFromPicker.render('hireDateFromDiv');
+        hireDateToPicker.render('hireDateToDiv');
     } 
 
 
@@ -249,14 +221,15 @@
         <ul class="filterlist">
             <li><a href="javascript:showClaimByStatus('ClaimUnacknowledged');" >Claims Awaiting Acknowledgement (<s:property value="unacknowledgedClaimCount" />)</a></li> 
             <li><a href="javascript:showClaimByStatus('ClaimAcknowledged');" >Acknowledged Claims (<s:property value="acknowledgedClaimCount" />)</a></li>
-            <li><a href="javascript:showClaimByStatus('');" >Rejected Claims</a></li>
-            <li><a href="javascript:showClaimByStatus('');" >Accepted Rejected Claims</a></li>
-            <li><a href="javascript:showClaimByStatus('');" >Claims Awaiting Claims Handling Payment</a></li>
-            <li><a href="javascript:showClaimByStatus('');" >DA Payment Logged</a></li>
+            <li><a href="javascript:showClaimByStatus('ClaimUnrouted');" >Unrouted Claims (<s:property value="claimUnrountedCount" />)</a></li>
+            <li><a href="javascript:showClaimByStatus('ClaimRejectionAccepted');" >Rejected Claims (<s:property value="claimRejectedCount" />)</a></li>
+            <li><a href="javascript:showClaimByStatus('ClaimRejected');" >Accepted Rejected Claims (<s:property value="claimRejectedAcceptedCount" />)</a></li>
+            <li><a href="javascript:showClaimByStatus('AwaitingInvoiceData');" >Claims Awaiting Claims Handling Payment (<s:property value="awaitingPaymentPackCount" />)</a></li>
+            <li><a href="javascript:showClaimByStatus('?');" >DA Payment Logged (?)</a></li>
             <li><a href="javascript:showClaimByStatus('AwaitingPaymentPack');" >Claims Awaiting Invoice Payment (<s:property value="awaitingPaymentPackCount" />)</a></li>
-            <li><a href="javascript:showClaimByStatus('');" >Accepted Rejected Invoices</a></li>
-            <li><a href="javascript:showClaimByStatus('');" >Approved Invoices Ready For payment</a></li>
-            <li><a href="javascript:showClaimByStatus('');" >Invoice Payment Logged</a></li>
+            <li><a href="javascript:showClaimByStatus('InvoiceRejectionAccepted');" >Accepted Rejected Invoices (<s:property value="invoiceRejectedAcceptedCount" />)</a></li>
+            <li><a href="javascript:showClaimByStatus('InvoiceApproved');" >Approved Invoices Ready For payment (<s:property value="invoiceApprovedPackCount" />)</a></li>
+            <li><a href="javascript:showClaimByStatus('InvoicePaymentLogged');" >Invoice Payment Logged (<s:property value="invoicePaymentLoggedCount" />)</a></li>
         </ul>
         
     </div>
@@ -264,7 +237,7 @@
         <div id="searchPanel">
             
         </div>
-       <s:action name="searchClaim" namespace="/user" executeResult="true" /> 
+        <s:action name="searchClaim" namespace="/user" executeResult="true" /> 
         
     </div>    
     

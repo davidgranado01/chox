@@ -17,44 +17,69 @@ import java.util.List;
 public class InboxAction extends BaseAction {
 
     private ClaimService service;
-    private Hashtable counterTable = new Hashtable();
-    private List<String> availableStatus = new ArrayList<String>();
 
     public void setClaimService(ClaimService service) {
         this.service = service;
     }
 
-    public InboxAction() {
+    public Long getUnacknowledgedClaimCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED);
+    }
 
-        //init status table
-       availableStatus.add(ClaimStatus.CLAIM_ACKNOWLEDGED);
-       availableStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED);
+    public Long getAcknowledgedClaimCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.CLAIM_ACKNOWLEDGED);
     }
-    
-    public Long getUnacknowledgedClaimCount()
-    {
-        return (Long)counterTable.get(ClaimStatus.CLAIM_UNACKNOWLEDGED);
+
+    public Long getAwaitingPaymentPackCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.AWAITING_PAYMENT_PACK);
     }
-    
-    public Long getAcknowledgedClaimCount()
-    {
-        return (Long)counterTable.get(ClaimStatus.CLAIM_ACKNOWLEDGED);
+
+    public Long getAwaitingCarHireCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
     }
-    
-    public Long getAwaitingPaymentPackCount()
-    {
-         return (Long)counterTable.get(ClaimStatus.AWAITING_PAYMENT_PACK);
+
+    public Long getAwaitingInvoiceCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.AWAITING_INVOICE_DATA);
+    }
+
+    public Long getClaimRejectedCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.CLAIM_REJECTED);
+    }
+
+    public Long getClaimRejectedAcceptedCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.CLAIM_REJECTED_ACCEPTED);
+    }
+
+    public Long getDisputedInvoiceCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.DISPUTED_INVOICE);
+    }
+
+    public Long getInvoiceApprovedPackCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.INVOICE_APPROVED);
+    }
+
+    public Long getInvoiceEccalatedCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.INVOICE_ESCALATED);
+    }
+
+    public Long getInvoicePaymentLoggedCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
+    }
+
+    public Long getPaymentPackSuppliedCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.PAYMENT_PACK_SUPPLIED);
+    }
+
+    public Long getInvoiceRejectedAcceptedCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.INVOICE_REJECTED_ACCEPTED);
+    }
+
+    public Long getClaimUnrountedCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.CLAIM_UNROUNTED);
     }
 
     @Override
     public String execute() throws Exception {
-
-        counterTable.clear();
-       
-        for (String s : availableStatus) {
-            Long count = (Long)service.getCountByStatus(s);
-            counterTable.put(s, count);
-        }
 
         return SUCCESS;
     }

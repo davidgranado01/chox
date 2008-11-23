@@ -9,6 +9,7 @@ import chox.model.Claim;
 import chox.services.ClaimService;
 import chox.services.LookupService;
 import chox.web.viewdata.claimGridViewData;
+import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,8 +23,9 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
 
     private String supplierReference;
     private int supplierId;
-    private int claimNumber;
+    private String claimNumber;
     private int insurerId;
+    private int lineOfBusinessId;
     private String vrn;
     private String invoiceNumber;
     private String status;
@@ -58,11 +60,11 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
         this.supplierId = supplierId;
     }
 
-    public int getClaimNumber() {
+    public String getClaimNumber() {
         return claimNumber;
     }
 
-    public void setClaimNumber(int claimNumber) {
+    public void setClaimNumber(String claimNumber) {
         this.claimNumber = claimNumber;
     }
 
@@ -94,6 +96,7 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
         return claimUploadDateFrom;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public void setClaimUploadDateFrom(Date claimUploadDateFrom) {
         this.claimUploadDateFrom = claimUploadDateFrom;
     }
@@ -102,6 +105,7 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
         return claimUploadDateTo;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public void setClaimUploadDateTo(Date claimUploadDateTo) {
         this.claimUploadDateTo = claimUploadDateTo;
     }
@@ -110,6 +114,7 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
         return invoiceUploadDateFrom;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public void setInvoiceUploadDateFrom(Date invoiceUploadDateFrom) {
         this.invoiceUploadDateFrom = invoiceUploadDateFrom;
     }
@@ -118,6 +123,7 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
         return invoiceUploadDateTo;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public void setInvoiceUploadDateTo(Date invoiceUploadDateTo) {
         this.invoiceUploadDateTo = invoiceUploadDateTo;
     }
@@ -126,6 +132,7 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
         return hireDateFrom;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public void setHireDateFrom(Date hireDateFrom) {
         this.hireDateFrom = hireDateFrom;
     }
@@ -134,38 +141,35 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
         return hireDateTom;
     }
 
-    public void setHireDateTom(Date hireDateTom) {
-        this.hireDateTom = hireDateTom;
+    @TypeConversion(converter = "chox.web.data.DateConverter")
+    public void setHireDateTo(Date hireDateTo) {
+        this.hireDateTom = hireDateTo;
     }
 
     public List getStatuses() {
-        if(statuses == null)
-        {
+        if (statuses == null) {
             statuses = this.lookupService.getStatuses();
         }
         return statuses;
     }
 
     public List getLineOfBusinesses() {
-        
-        if(lineOfBusiness == null)
-        {
+
+        if (lineOfBusiness == null) {
             lineOfBusiness = this.lookupService.getLineOfBusinesses();
         }
         return lineOfBusiness;
     }
 
     public List getInsurers() {
-        if(insurers == null)
-        {
+        if (insurers == null) {
             insurers = this.lookupService.getInsurers();
         }
         return insurers;
     }
 
     public List getSuppliers() {
-        if(suppliers == null)
-        {
+        if (suppliers == null) {
             suppliers = this.lookupService.getSuppliers();
         }
         return suppliers;
@@ -199,7 +203,7 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
     }
 
     public String doSearchClaim() throws Exception {
-       
+
         results = this.claimService.searchClaims(this);
         totalCount = results.size();
         return SUCCESS;
@@ -208,7 +212,7 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
 
     @Override
     public String execute() throws Exception {
-      
+
         return SUCCESS;
     }
 
@@ -219,4 +223,13 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public int getLineOfBusinessId() {
+        return lineOfBusinessId;
+    }
+
+    public void setLineOfBusinessId(int lineOfBusinessId) {
+        this.lineOfBusinessId = lineOfBusinessId;
+    }
+
 }

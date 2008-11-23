@@ -16,7 +16,7 @@ public interface ClaimSearchCriteria {
 
     public int getSupplierId();
 
-    public int getClaimNumber();
+    public String getClaimNumber();
     
     public String getStatus();
 

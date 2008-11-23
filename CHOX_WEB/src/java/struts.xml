@@ -52,20 +52,6 @@
             </result>
         </action>
         <action name="doSearchClaim" class="chox.web.actions.SearchClaimAction" method="doSearchClaim">
-            <param name="supplierReference"/>
-            <param name="supplierId"/>
-            <param name="insurerId"/>
-            <param name="invoiceNumber"/>
-            <param name="claimNumber"/>
-            <param name="vrn"/>
-            <param name="claimUploadDateFrom"/>
-            <param name="claimUploadDateTo"/>
-            <param name="invoiceUploadDateFrom"/>
-            <param name="invoiceUploadDateTo"/>
-            <param name="hireDateFrom"/>
-            <param name="hireDateTo"/>
-            <param name="status"/>
-            <param name="lineOfBusiness"/>
             <result name="success">/jsp/JsonData.jsp
             </result>
         </action>
