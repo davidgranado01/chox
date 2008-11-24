@@ -2,6 +2,7 @@ package chox.model;
 
 import java.util.ArrayList;
 import org.hibernate.Session;
+import chox.Util.TextHelper;
 
 public class XMLParseResult {
     
@@ -159,58 +160,52 @@ public class XMLParseResult {
     
     public String getUploadStatus() {
 
-        String sStatus = "";
+        String sStatus;
         
         if(!this.isClaimExist){
-            
-            // CLAIM NOT EXIST
             if(getSchemaDataValidation()){
-                sStatus = "Claim Uploaded";
+                sStatus = UploadStatus.CLAIM_UPLOAD_SUCCESSFUL;
             }else{
-                sStatus = "Claim Upload Failed";
-                //this.claim.status = "-";
+                sStatus = UploadStatus.CLAIM_UPLOAD_FAILED;
             }
             
         }else{
             
             // CLAIM EXIST
-            if(this.sExistingClaimStatus.equalsIgnoreCase("ClaimUnrouted")){
+            if(this.sExistingClaimStatus.equalsIgnoreCase(ClaimStatus.CLAIM_UNROUNTED)){
                 
-                sStatus = "Claim already exist";
+                sStatus = UploadStatus.CLAIM_EXIST;
                 
-            }else if(this.sExistingClaimStatus.equalsIgnoreCase("AwaitingInvoiceData")){
+            }else if(this.sExistingClaimStatus.equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)){
                 
                 if(this.isInvoiceExist){
                     
-                    sStatus = "Invoice already exist";
+                    sStatus = UploadStatus.INVOICE_EXIST;
                     
                 }else{
 
                     if(getSchemaDataValidation()){
-                        
-                        //sStatus = ClaimStatus.getUploadStatus(this.claim.status);
-                        sStatus = "Invoice Uploaded Successful";
-                        
+                        sStatus = UploadStatus.INVOICE_UPLOAD_SUCCESSFUL;
                     }else{
-                        sStatus = "Invoice Upload Failed";
+                        sStatus = UploadStatus.INVOICE_UPLOAD_FAILED;
                     }
                 }
-
             }else{
                 if(this.isInvoiceExist){
-                    
-                    sStatus = "Invoice already exist";
-                    
+                    sStatus = UploadStatus.INVOICE_EXIST;
                 }else{
-                    
-                    sStatus = "Unable to upload invoice - Incorrect Claim Status";
-                    
+                    sStatus = UploadStatus.INCORRECT_CLAIM_STATUS;
                 }
             }
         }
         return sStatus;
     }
-
+    
+    public String getUploadStatusCode(){
+        return TextHelper.trimWhiteSpace(getUploadStatus()).toUpperCase();
+        
+    }
+    
     public String[] getDataValidationRemarkInList() {
         return DataValidationRemark.split("\\|");
     }
