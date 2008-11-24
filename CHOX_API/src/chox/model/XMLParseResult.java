@@ -188,7 +188,8 @@ public class XMLParseResult {
 
                     if(getSchemaDataValidation()){
                         
-                        sStatus = ClaimStatus.getUploadStatus(this.claim.status);
+                        //sStatus = ClaimStatus.getUploadStatus(this.claim.status);
+                        sStatus = "Invoice Uploaded Successful";
                         
                     }else{
                         sStatus = "Invoice Upload Failed";
