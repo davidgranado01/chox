@@ -33,7 +33,7 @@ public class XmlProcessController {
 
         try {
             
-            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/20081123_TEST2.xml";
+            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/20081124_TEST3.xml";
             Boolean isAllowPartialUpload = true;
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -163,8 +163,6 @@ public class XmlProcessController {
         // ALWAYS GET LATEST ENGINEER REPORT AND VEHICLE HIRE INFORMATION FROM BORDEREUR (UPSERT MODE)
         xmlParseResult = RentalRepairSchemaValidation(currentSession, xmlParseResult, root, doc);
         xmlParseResult = RentalVehiclesSchemaValidation(currentSession, xmlParseResult, root, doc);
-        
-        
 
         if(xmlParseResult.getClaim().getInvoice()!=null){
             xmlParseResult.setIsInvoiceExist(true);
@@ -208,7 +206,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             }
         }
         
-        if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
+        if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){            
             xmlParseResult = saveXMLRecord(xmlParseResult);
         }
         
@@ -409,7 +407,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                     // SET CLAIM HEADER INFORMATION
                     claim.setManagingRepair(bManagingRepair);
                     claim.setPolicyHolderContactDate(tFirstContactDate);
-                    //claim.setStatus(ClaimStatus.CLAIM_UNROUNTED);
+                    claim.setStatus(ClaimStatus.CLAIM_UNROUNTED);
                     claim.setChoReference(strCHOReference);
                     
                     ChorganisationService chorgService = new ChorganisationServiceImpl();
@@ -530,12 +528,6 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             xmlParseResult = ClaimDetail_CustomerSchemaValidation(xmlParseResult, claimNodeElement, childNodeLabelMain);
             xmlParseResult = ClaimDetail_ThirdPartySchemaValidation(xmlParseResult, claimNodeElement, childNodeLabelMain);
             xmlParseResult = ClaimDetail_IncidentSchemaValidation(xmlParseResult, claimNodeElement, doc, childNodeLabelMain);
-            
-            // SET CLAIM STATUS
-            if (xmlParseResult.getIsCurrentScheValid() && xmlParseResult.getIsCurrentDataValid()) {
-                xmlParseResult.getClaim().setStatus(ClaimStatus.CLAIM_UNROUNTED);
-                xmlParseResult.setSExistingClaimStatus(xmlParseResult.getClaim().getStatus());
-            }
         }
         return xmlParseResult;
     }
