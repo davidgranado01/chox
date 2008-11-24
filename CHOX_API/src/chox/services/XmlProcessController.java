@@ -33,7 +33,7 @@ public class XmlProcessController {
 
         try {
             
-            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/20081123_TEST1.xml";
+            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/20081123_TEST2.xml";
             Boolean isAllowPartialUpload = true;
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
