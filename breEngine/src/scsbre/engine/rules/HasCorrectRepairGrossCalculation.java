@@ -49,7 +49,7 @@ public class HasCorrectRepairGrossCalculation implements IBusinessRule {
     }
     
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.AwaitingPaymentPack;
+        return ClaimStatus.InvoiceDataCalculationIncorrect;
     }    
 
 }

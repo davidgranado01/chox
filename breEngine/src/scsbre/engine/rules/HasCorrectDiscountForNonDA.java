@@ -51,7 +51,7 @@ public class HasCorrectDiscountForNonDA implements IBusinessRule {
     }
     
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.AwaitingPaymentPack;
+        return ClaimStatus.InvoiceDataCalculationIncorrect;
     }    
 
 }

@@ -46,7 +46,7 @@ public class HasCorrectHireGrossCalculation implements IBusinessRule {
     }
     
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.AwaitingPaymentPack;
+        return ClaimStatus.InvoiceDataCalculationIncorrect;
     }
 
 

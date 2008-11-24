@@ -56,7 +56,7 @@ public class HasCorrectHireVatCalculation implements IBusinessRule {
     }
     
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.AwaitingPaymentPack;
+        return ClaimStatus.InvoiceDataCalculationIncorrect;
     }    
 
 }

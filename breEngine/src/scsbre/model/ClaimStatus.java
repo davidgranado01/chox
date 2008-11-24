@@ -4,5 +4,6 @@ public enum ClaimStatus {
 
     InvoiceEscalated,
     AwaitingPaymentPack,
-    InvoiceApproved
+    InvoiceApproved,
+    InvoiceDataCalculationIncorrect
 }

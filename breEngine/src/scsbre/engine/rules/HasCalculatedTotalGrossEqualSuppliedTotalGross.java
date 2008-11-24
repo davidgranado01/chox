@@ -43,7 +43,7 @@ public class HasCalculatedTotalGrossEqualSuppliedTotalGross implements IBusiness
     }
 
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.AwaitingPaymentPack;
+        return ClaimStatus.InvoiceDataCalculationIncorrect;
     }
 }
 

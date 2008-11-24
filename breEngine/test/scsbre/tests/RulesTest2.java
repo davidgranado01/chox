@@ -62,9 +62,13 @@ public class RulesTest2 {
         for(int i = 0; i <= results.size()-1; i++){
             
             
+            
+            String isVisible = results.get(i).getIsVisibleToCHO() ? "DISPLAY" : "DONT DISPLAY";
             RuleEvaluation res1 = results.get(i);
             
-            System.out.println(res1.toString());
+            String op = res1.toString() + "-"  + isVisible;
+            
+            System.out.println(op );
             
             
         }
