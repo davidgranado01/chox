@@ -2,6 +2,8 @@ package chox.web.security;
 
 import chox.model.WebUser;
 import chox.model.WebUserRole;
+import java.util.ArrayList;
+import java.util.Set;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
@@ -13,6 +15,7 @@ import org.acegisecurity.GrantedAuthorityImpl;
 public class PermissionedUser implements UserDetails {
 
     private WebUser user;
+    private String roles;
 
     public PermissionedUser(WebUser user) {
         this.user = user;
@@ -32,35 +35,36 @@ public class PermissionedUser implements UserDetails {
         return new GrantedAuthority[]{new GrantedAuthorityImpl(securityRole)};
     }
 
+    public boolean isInRoleOf(String role) {
+        if (roles == null || roles.isEmpty()) {
+            Set roleSet = user.getRoles();
+            for (Object r : roleSet) {
+                String roleName = ((WebUserRole) r).getName();
+                roles += roleName + "|";
+            }
+        }
+
+        return roles.lastIndexOf(role) > 0;
+    }
+
     public String getUsername() {
         return user == null ? "" : user.getEmail();
     }
 
     public boolean getIsCHO() {
-        if (user == null) {
-            return false;
-        } else {
-            WebUserRole role = user.getWebUserRole();
-            return role.getName().startsWith("ROLE_CHO");
-        }
+
+        return isInRoleOf("ROLE_CHO");
+
     }
 
     public boolean getIsINS() {
-        if (user == null) {
-            return false;
-        } else {
-            WebUserRole role = user.getWebUserRole();
-            return role.getName().startsWith("ROLE_INS");
-        }
+
+        return isInRoleOf("ROLE_INS");
+
     }
 
     public boolean getIsCHOXAdmin() {
-        if (user == null) {
-            return false;
-        } else {
-            WebUserRole role = user.getWebUserRole();
-            return role.getName().equals("ROLE_CHO_ADMIN");
-        }
+        return isInRoleOf("ROLE_CHOX_ADMIN");
     }
 
     public boolean isAccountNonExpired() {

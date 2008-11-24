@@ -32,7 +32,7 @@
         <action name ="processClaimsAction" class ="chox.web.actions.ProcessClaimsAction">
             <result name ="success">/jsp/user/UploadStatus.jsp
             </result>
-            <result name ="error">/jsp/user/Uploadfailed.jsp
+            <result name ="error">/jsp/user/UploadFailed.jsp
             </result>
         </action>
         <action name="uploadClaims" class="chox.web.actions.UploadClaimsAction">

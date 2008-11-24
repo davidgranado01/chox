@@ -6,7 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+"http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib uri="/struts-tags" prefix="s" %>
 
 <html>
     <head>
@@ -14,6 +15,15 @@
         <title>Upload Failed</title>
     </head>
     <body>
-        <h2>Your request to upload claims was failed, please try again.</h2>
+        <br /> 
+        <br /> 
+        <h2>Please select a valid xml file to upload into CHOX.
+            Or alternatively, No xml document selected for upload
+            file type not recognised, please ensure you are trying to upload an xml file.
+        </h2>
+        
+        <br /> 
+        <s:url id="reUpload" action="uploadClaims" />
+        <s:a href="%{reUpload}" >&#60;&#60; Re-Upload</s:a>
     </body>
 </html>

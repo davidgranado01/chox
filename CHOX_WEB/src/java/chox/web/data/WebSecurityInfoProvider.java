@@ -35,22 +35,19 @@ public class WebSecurityInfoProvider implements SecurityInfoProvider {
 
     public boolean getIsCHO() {
 
-        WebUserRole role = getCurrentUSer().getWebUserRole();
-        return role.getName().startsWith("ROLE_CHO");
+        return currentUser.getIsCHO();
 
     }
 
     public boolean getIsINS() {
 
-        WebUserRole role = getCurrentUSer().getWebUserRole();
-        return role.getName().startsWith("ROLE_INS");
+        return currentUser.getIsINS();
 
     }
 
     public boolean getIsCHOXAdmin() {
 
-        WebUserRole role = getCurrentUSer().getWebUserRole();
-        return role.getName().equals("ROLE_CHO_ADMIN");
+       return currentUser.getIsCHOXAdmin();
 
     }
 }

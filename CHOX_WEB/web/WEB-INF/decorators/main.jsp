@@ -9,7 +9,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
-        <title><decorator:title default="Struts Starter"/> - CHOX v0.2 build 2008-11-24 </title>
+        <title><decorator:title default="Struts Starter"/> - CHOX v2.1 build 2008-11-25 </title>
         <link href="<%= request.getContextPath() %>/styles/main.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="<%= request.getContextPath() %>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="<%= request.getContextPath() %>/css/xtheme-gray.css" rel="stylesheet" type="text/css" media="all"/>

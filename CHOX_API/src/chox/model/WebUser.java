@@ -71,6 +71,8 @@ public class WebUser implements Serializable
 	 * This attribute represents the foreign key relationship to the web_user_role table.
 	 */
 	protected WebUserRole webUserRole;
+        
+        protected Set roles;
 
 	/**
 	 * Method 'WebUser'
@@ -319,25 +321,16 @@ public class WebUser implements Serializable
 	{
 		this.insurer = insurer;
 	}
+        
+        public void setRoles(Set roles)
+        {
+            this.roles = roles;
+        }
+        
+        public Set getRoles()
+        {
+            return this.roles;
+        }
 
-	/**
-	 * Method 'getWebUserRole'
-	 * 
-	 * @return WebUserRole
-	 */
-	public WebUserRole getWebUserRole()
-	{
-		return webUserRole;
-	}
-
-	/**
-	 * Method 'setWebUserRole'
-	 * 
-	 * @param webUserRole
-	 */
-	public void setWebUserRole(WebUserRole webUserRole)
-	{
-		this.webUserRole = webUserRole;
-	}
 
 }

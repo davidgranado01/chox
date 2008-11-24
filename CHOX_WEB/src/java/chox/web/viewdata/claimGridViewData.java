@@ -7,16 +7,15 @@ package chox.web.viewdata;
 
 import chox.model.Chorganisation;
 import chox.model.Claim;
+import chox.model.Customer;
 import chox.model.Insurer;
 import chox.model.Invoice;
 import chox.model.LineOfBusiness;
 import chox.model.VehicleHire;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 /**
@@ -39,8 +38,8 @@ public class claimGridViewData {
     {        
         Format dateFormat = new SimpleDateFormat("dd/MM/yyyy") ;
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance();
-        
-        VehicleHire v = claim.getVehicleHire();
+               
+        Customer customer = claim.getCustomer();
         Chorganisation c = claim.getChorganisation();
         Insurer i = claim.getInsurer();
         LineOfBusiness lob = claim.getLineOfBusiness();
@@ -49,7 +48,7 @@ public class claimGridViewData {
         this.id = claim.getId();
         this.supplierReference = claim.getChoReference();
         this.invoiceAmount = ivc == null ? "" : currentcyFormat.format(ivc.getTotalToPay());        
-        this.vehicleRegistration = v == null ? "" : v.getVehicleRegistration();
+        this.vehicleRegistration = customer == null ? "" : customer.getVehicleRegistration();
         this.lineOfBusiness = lob == null ? "" : lob.getName();
         this.claimNumber = claim.getClaimNumber();
         this.created = dateFormat.format(claim.getCreatedDate());

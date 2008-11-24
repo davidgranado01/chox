@@ -30,12 +30,18 @@
                         <th>Remark</th>
                     </tr>
                     <s:iterator id="next" value="results" status="stat">
-                        <s:if test="%{#next.Status=='Claim Upload Failed'}">
+                        <s:if test="%{#next.UploadStatusCode=='CLAIMUPLOADFAILED'}">
                             <tr class="ErrorRow">
                         </s:if>
+                        <s:elseif test="%{#next.UploadStatusCode=='INVOICEUPLOADFAILED'}">
+                            <tr class="ErrorRow">
+                        </s:elseif>
+                        <s:elseif test="%{#next.UploadStatusCode=='INVOICEUPLOADEDSUCCESSFUL'}">
+                            <tr class="<s:property value="#next.claim.status"/>">
+                        </s:elseif>
                         <s:else>
                             <tr>
-                            </s:else>
+                        </s:else>               
                             <td><s:property value="{#stat.index + 1}" /></td>
                             <td><s:property value="#next.claim.choReference" /></td> 
                             <td><s:property value="#next.uploadStatus" /></td>  

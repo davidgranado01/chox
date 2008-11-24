@@ -4,7 +4,7 @@
   <description />
   <dbimport-config>
     <jdbc-datasource>Jupiter Postgres</jdbc-datasource>
-    <jdbc-catalog>choxidasV2</jdbc-catalog>
+    <jdbc-catalog>choxidasV3</jdbc-catalog>
     <jdbc-schema>public</jdbc-schema>
     <sql-import-file />
     <sql-vendor />
@@ -24,11 +24,12 @@
       <filter>insurer</filter>
       <filter>web_user</filter>
       <filter>web_user_role</filter>
+      <filter>web_user_user_role</filter>
     </filter-list>
   </dbimport-config>
   <database>
     <platform>PostgreSQL</platform>
-    <catalog-name>choxidasV2</catalog-name>
+    <catalog-name>choxidasV3</catalog-name>
     <schema-name>public</schema-name>
     <table-list>
       <table>
@@ -357,6 +358,104 @@
             <auto-increment>false</auto-increment>
             <sequence-name />
           </column>
+          <column>
+            <java-name>claimId</java-name>
+            <java-type>int</java-type>
+            <java-default-value />
+            <sql-name>claim_id</sql-name>
+            <sql-type>int4</sql-type>
+            <jdbc-type>INTEGER</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>narrative</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>narrative</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>2147483647</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>processDate</java-name>
+            <java-type>java.util.Date</java-type>
+            <java-default-value />
+            <sql-name>process_date</sql-name>
+            <sql-type>timestamp</sql-type>
+            <jdbc-type>TIMESTAMP</jdbc-type>
+            <jdbc-precision>29</jdbc-precision>
+            <jdbc-scale>6</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>isPublic</java-name>
+            <java-type>java.lang.Short</java-type>
+            <java-default-value />
+            <sql-name>is_public</sql-name>
+            <sql-type>bool</sql-type>
+            <jdbc-type>BIT</jdbc-type>
+            <jdbc-precision>1</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>type</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>type</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>ruleId</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>rule_id</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>2147483647</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>isSystem</java-name>
+            <java-type>java.lang.Short</java-type>
+            <java-default-value />
+            <sql-name>is_system</sql-name>
+            <sql-type>bool</sql-type>
+            <jdbc-type>BIT</jdbc-type>
+            <jdbc-precision>1</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
         </column-list>
         <finder-list>
           <finder>
@@ -463,6 +562,118 @@
               </parameter>
             </parameter-list>
           </finder>
+          <finder>
+            <name>findWhereClaimIdEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>claim_id = :claimId</where>
+            <order-by>claim_id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>claimId</java-name>
+                <java-type>int</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereNarrativeEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>narrative = :narrative</where>
+            <order-by>narrative</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>narrative</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>2147483647</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereProcessDateEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>process_date = :processDate</where>
+            <order-by>process_date</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>processDate</java-name>
+                <java-type>java.util.Date</java-type>
+                <jdbc-type>TIMESTAMP</jdbc-type>
+                <jdbc-precision>29</jdbc-precision>
+                <jdbc-scale>6</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereIsPublicEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>is_public = :isPublic</where>
+            <order-by>is_public</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>isPublic</java-name>
+                <java-type>java.lang.Short</java-type>
+                <jdbc-type>BIT</jdbc-type>
+                <jdbc-precision>1</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereTypeEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>type = :type</where>
+            <order-by>type</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>type</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereRuleIdEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>rule_id = :ruleId</where>
+            <order-by>rule_id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>ruleId</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>2147483647</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereIsSystemEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>is_system = :isSystem</where>
+            <order-by>is_system</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>isSystem</java-name>
+                <java-type>java.lang.Short</java-type>
+                <jdbc-type>BIT</jdbc-type>
+                <jdbc-precision>1</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
         </finder-list>
       </table>
       <table>
@@ -484,7 +695,7 @@
             <nav-to-child>false</nav-to-child>
             <column-list>
               <column>
-                <column-name>chorganosation_id</column-name>
+                <column-name>chorganisation_id</column-name>
                 <ref-column-name>id</ref-column-name>
               </column>
             </column-list>
@@ -500,21 +711,6 @@
             <column-list>
               <column>
                 <column-name>insurer_id</column-name>
-                <ref-column-name>id</ref-column-name>
-              </column>
-            </column-list>
-          </foreign-key>
-          <foreign-key>
-            <name>WebUser_WebUserRole_fkey</name>
-            <parent-table>web_user_role</parent-table>
-            <cardinality>1-many</cardinality>
-            <nav-to-parent-term>WebUserRole</nav-to-parent-term>
-            <nav-to-child-term>WebUser2</nav-to-child-term>
-            <nav-to-parent>true</nav-to-parent>
-            <nav-to-child>false</nav-to-child>
-            <column-list>
-              <column>
-                <column-name>role_id</column-name>
                 <ref-column-name>id</ref-column-name>
               </column>
             </column-list>
@@ -571,20 +767,6 @@
             <sql-type>varchar</sql-type>
             <jdbc-type>VARCHAR</jdbc-type>
             <jdbc-precision>256</jdbc-precision>
-            <jdbc-scale>0</jdbc-scale>
-            <nullable>false</nullable>
-            <unique>false</unique>
-            <auto-increment>false</auto-increment>
-            <sequence-name />
-          </column>
-          <column>
-            <java-name>roleId</java-name>
-            <java-type>int</java-type>
-            <java-default-value />
-            <sql-name>role_id</sql-name>
-            <sql-type>int4</sql-type>
-            <jdbc-type>INTEGER</jdbc-type>
-            <jdbc-precision>10</jdbc-precision>
             <jdbc-scale>0</jdbc-scale>
             <nullable>false</nullable>
             <unique>false</unique>
@@ -676,10 +858,10 @@
             <sequence-name />
           </column>
           <column>
-            <java-name>chorganosationId</java-name>
-            <java-type>java.lang.Integer</java-type>
+            <java-name>insurerId</java-name>
+            <java-type>int</java-type>
             <java-default-value />
-            <sql-name>chorganosation_id</sql-name>
+            <sql-name>insurer_id</sql-name>
             <sql-type>int4</sql-type>
             <jdbc-type>INTEGER</jdbc-type>
             <jdbc-precision>10</jdbc-precision>
@@ -690,10 +872,10 @@
             <sequence-name />
           </column>
           <column>
-            <java-name>insurerId</java-name>
-            <java-type>java.lang.Integer</java-type>
+            <java-name>chorganisationId</java-name>
+            <java-type>int</java-type>
             <java-default-value />
-            <sql-name>insurer_id</sql-name>
+            <sql-name>chorganisation_id</sql-name>
             <sql-type>int4</sql-type>
             <jdbc-type>INTEGER</jdbc-type>
             <jdbc-precision>10</jdbc-precision>
@@ -930,7 +1112,7 @@
             <parameter-list>
               <parameter>
                 <java-name>chorganosationId</java-name>
-                <java-type>java.lang.Integer</java-type>
+                <java-type>int</java-type>
                 <jdbc-type>INTEGER</jdbc-type>
                 <jdbc-precision>10</jdbc-precision>
                 <jdbc-scale>0</jdbc-scale>
@@ -946,7 +1128,7 @@
             <parameter-list>
               <parameter>
                 <java-name>insurerId</java-name>
-                <java-type>java.lang.Integer</java-type>
+                <java-type>int</java-type>
                 <jdbc-type>INTEGER</jdbc-type>
                 <jdbc-precision>10</jdbc-precision>
                 <jdbc-scale>0</jdbc-scale>
@@ -962,7 +1144,7 @@
             <parameter-list>
               <parameter>
                 <java-name>chorganosationId</java-name>
-                <java-type>java.lang.Integer</java-type>
+                <java-type>int</java-type>
                 <jdbc-type>INTEGER</jdbc-type>
                 <jdbc-precision>10</jdbc-precision>
                 <jdbc-scale>0</jdbc-scale>
@@ -978,7 +1160,23 @@
             <parameter-list>
               <parameter>
                 <java-name>insurerId</java-name>
-                <java-type>java.lang.Integer</java-type>
+                <java-type>int</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereChorganisationIdEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>chorganisation_id = :chorganisationId</where>
+            <order-by>chorganisation_id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>chorganisationId</java-name>
+                <java-type>int</java-type>
                 <jdbc-type>INTEGER</jdbc-type>
                 <jdbc-precision>10</jdbc-precision>
                 <jdbc-scale>0</jdbc-scale>
@@ -1215,7 +1413,7 @@
         <column-list>
           <column>
             <java-name>id</java-name>
-            <java-type>java.lang.Integer</java-type>
+            <java-type>int</java-type>
             <java-default-value />
             <sql-name>id</sql-name>
             <sql-type>int4</sql-type>
@@ -1369,7 +1567,7 @@
           </column>
           <column>
             <java-name>createdBy</java-name>
-            <java-type>java.lang.Integer</java-type>
+            <java-type>int</java-type>
             <java-default-value />
             <sql-name>created_by</sql-name>
             <sql-type>int4</sql-type>
@@ -1397,7 +1595,7 @@
           </column>
           <column>
             <java-name>lastModifiedBy</java-name>
-            <java-type>java.lang.Integer</java-type>
+            <java-type>int</java-type>
             <java-default-value />
             <sql-name>last_modified_by</sql-name>
             <sql-type>int4</sql-type>
@@ -1434,7 +1632,7 @@
             <parameter-list>
               <parameter>
                 <java-name>id</java-name>
-                <java-type>java.lang.Integer</java-type>
+                <java-type>int</java-type>
                 <jdbc-type>INTEGER</jdbc-type>
                 <jdbc-precision>10</jdbc-precision>
                 <jdbc-scale>0</jdbc-scale>
@@ -1458,7 +1656,7 @@
             <parameter-list>
               <parameter>
                 <java-name>id</java-name>
-                <java-type>java.lang.Integer</java-type>
+                <java-type>int</java-type>
                 <jdbc-type>INTEGER</jdbc-type>
                 <jdbc-precision>10</jdbc-precision>
                 <jdbc-scale>0</jdbc-scale>
@@ -1634,7 +1832,7 @@
             <parameter-list>
               <parameter>
                 <java-name>createdBy</java-name>
-                <java-type>java.lang.Integer</java-type>
+                <java-type>int</java-type>
                 <jdbc-type>INTEGER</jdbc-type>
                 <jdbc-precision>10</jdbc-precision>
                 <jdbc-scale>0</jdbc-scale>
@@ -1666,7 +1864,7 @@
             <parameter-list>
               <parameter>
                 <java-name>lastModifiedBy</java-name>
-                <java-type>java.lang.Integer</java-type>
+                <java-type>int</java-type>
                 <jdbc-type>INTEGER</jdbc-type>
                 <jdbc-precision>10</jdbc-precision>
                 <jdbc-scale>0</jdbc-scale>
@@ -1702,7 +1900,7 @@
         <column-list>
           <column>
             <java-name>id</java-name>
-            <java-type>java.lang.Integer</java-type>
+            <java-type>int</java-type>
             <java-default-value />
             <sql-name>id</sql-name>
             <sql-type>int4</sql-type>
@@ -1730,7 +1928,7 @@
           </column>
           <column>
             <java-name>createdBy</java-name>
-            <java-type>java.lang.Integer</java-type>
+            <java-type>int</java-type>
             <java-default-value />
             <sql-name>created_by</sql-name>
             <sql-type>int4</sql-type>
@@ -1758,7 +1956,7 @@
           </column>
           <column>
             <java-name>lastModifiedBy</java-name>
-            <java-type>java.lang.Integer</java-type>
+            <java-type>int</java-type>
             <java-default-value />
             <sql-name>last_modified_by</sql-name>
             <sql-type>int4</sql-type>
@@ -1784,6 +1982,20 @@
             <auto-increment>false</auto-increment>
             <sequence-name />
           </column>
+          <column>
+            <java-name>adminHandlingCharge</java-name>
+            <java-type>java.lang.Float</java-type>
+            <java-default-value />
+            <sql-name>admin_handling_charge</sql-name>
+            <sql-type>numeric</sql-type>
+            <jdbc-type>NUMERIC</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>2</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
         </column-list>
         <finder-list>
           <finder>
@@ -1795,7 +2007,7 @@
             <parameter-list>
               <parameter>
                 <java-name>id</java-name>
-                <java-type>java.lang.Integer</java-type>
+                <java-type>int</java-type>
                 <jdbc-type>INTEGER</jdbc-type>
                 <jdbc-precision>10</jdbc-precision>
                 <jdbc-scale>0</jdbc-scale>
@@ -1819,7 +2031,7 @@
             <parameter-list>
               <parameter>
                 <java-name>id</java-name>
-                <java-type>java.lang.Integer</java-type>
+                <java-type>int</java-type>
                 <jdbc-type>INTEGER</jdbc-type>
                 <jdbc-precision>10</jdbc-precision>
                 <jdbc-scale>0</jdbc-scale>
@@ -1851,7 +2063,7 @@
             <parameter-list>
               <parameter>
                 <java-name>createdBy</java-name>
-                <java-type>java.lang.Integer</java-type>
+                <java-type>int</java-type>
                 <jdbc-type>INTEGER</jdbc-type>
                 <jdbc-precision>10</jdbc-precision>
                 <jdbc-scale>0</jdbc-scale>
@@ -1883,7 +2095,7 @@
             <parameter-list>
               <parameter>
                 <java-name>lastModifiedBy</java-name>
-                <java-type>java.lang.Integer</java-type>
+                <java-type>int</java-type>
                 <jdbc-type>INTEGER</jdbc-type>
                 <jdbc-precision>10</jdbc-precision>
                 <jdbc-scale>0</jdbc-scale>
@@ -1903,6 +2115,363 @@
                 <jdbc-type>TIMESTAMP</jdbc-type>
                 <jdbc-precision>29</jdbc-precision>
                 <jdbc-scale>6</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereAdminHandlingChargeEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>admin_handling_charge = :adminHandlingCharge</where>
+            <order-by>admin_handling_charge</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>adminHandlingCharge</java-name>
+                <java-type>java.lang.Float</java-type>
+                <jdbc-type>NUMERIC</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>2</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+        </finder-list>
+      </table>
+      <table>
+        <sql-name>web_user_user_role</sql-name>
+        <java-name>WebUserUserRole</java-name>
+        <primary-key>
+          <column-list>
+            <column>id</column>
+          </column-list>
+        </primary-key>
+        <foreign-key-list>
+          <foreign-key>
+            <name>web_user_fkey</name>
+            <parent-table>web_user</parent-table>
+            <cardinality>1-many</cardinality>
+            <nav-to-parent-term>WebUser</nav-to-parent-term>
+            <nav-to-child-term>WebUserUserRole</nav-to-child-term>
+            <nav-to-parent>true</nav-to-parent>
+            <nav-to-child>false</nav-to-child>
+            <column-list>
+              <column>
+                <column-name>web_user_id</column-name>
+                <ref-column-name>id</ref-column-name>
+              </column>
+            </column-list>
+          </foreign-key>
+          <foreign-key>
+            <name>web_user_role_fkey</name>
+            <parent-table>web_user_role</parent-table>
+            <cardinality>1-many</cardinality>
+            <nav-to-parent-term>WebUserRole</nav-to-parent-term>
+            <nav-to-child-term>WebUserUserRole1</nav-to-child-term>
+            <nav-to-parent>true</nav-to-parent>
+            <nav-to-child>false</nav-to-child>
+            <column-list>
+              <column>
+                <column-name>wer_user_role_id</column-name>
+                <ref-column-name>id</ref-column-name>
+              </column>
+            </column-list>
+          </foreign-key>
+        </foreign-key-list>
+        <column-list>
+          <column>
+            <java-name>id</java-name>
+            <java-type>int</java-type>
+            <java-default-value />
+            <sql-name>id</sql-name>
+            <sql-type>int4</sql-type>
+            <jdbc-type>INTEGER</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>webUserId</java-name>
+            <java-type>int</java-type>
+            <java-default-value />
+            <sql-name>web_user_id</sql-name>
+            <sql-type>int4</sql-type>
+            <jdbc-type>INTEGER</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>werUserRoleId</java-name>
+            <java-type>int</java-type>
+            <java-default-value />
+            <sql-name>wer_user_role_id</sql-name>
+            <sql-type>int4</sql-type>
+            <jdbc-type>INTEGER</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>createdBy</java-name>
+            <java-type>int</java-type>
+            <java-default-value />
+            <sql-name>created_by</sql-name>
+            <sql-type>int4</sql-type>
+            <jdbc-type>INTEGER</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>createdDate</java-name>
+            <java-type>java.util.Date</java-type>
+            <java-default-value />
+            <sql-name>created_date</sql-name>
+            <sql-type>timestamp</sql-type>
+            <jdbc-type>TIMESTAMP</jdbc-type>
+            <jdbc-precision>29</jdbc-precision>
+            <jdbc-scale>6</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>lastModifiedBy</java-name>
+            <java-type>int</java-type>
+            <java-default-value />
+            <sql-name>last_modified_by</sql-name>
+            <sql-type>int4</sql-type>
+            <jdbc-type>INTEGER</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>lastModifiedDate</java-name>
+            <java-type>java.util.Date</java-type>
+            <java-default-value />
+            <sql-name>last_modified_date</sql-name>
+            <sql-type>timestamp</sql-type>
+            <jdbc-type>TIMESTAMP</jdbc-type>
+            <jdbc-precision>29</jdbc-precision>
+            <jdbc-scale>6</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>isActive</java-name>
+            <java-type>java.lang.Short</java-type>
+            <java-default-value />
+            <sql-name>is_active</sql-name>
+            <sql-type>bool</sql-type>
+            <jdbc-type>BIT</jdbc-type>
+            <jdbc-precision>1</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+        </column-list>
+        <finder-list>
+          <finder>
+            <name>findByPrimaryKey</name>
+            <multi-finder>false</multi-finder>
+            <where>id = :id</where>
+            <order-by />
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>id</java-name>
+                <java-type>int</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findAll</name>
+            <multi-finder>true</multi-finder>
+            <where />
+            <order-by>id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list />
+          </finder>
+          <finder>
+            <name>findByWebUser</name>
+            <multi-finder>true</multi-finder>
+            <where>web_user_id = :webUserId</where>
+            <order-by />
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>webUserId</java-name>
+                <java-type>int</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findByWebUserRole</name>
+            <multi-finder>true</multi-finder>
+            <where>wer_user_role_id = :werUserRoleId</where>
+            <order-by />
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>werUserRoleId</java-name>
+                <java-type>int</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereIdEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>id = :id</where>
+            <order-by>id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>id</java-name>
+                <java-type>int</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereWebUserIdEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>web_user_id = :webUserId</where>
+            <order-by>web_user_id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>webUserId</java-name>
+                <java-type>int</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereWerUserRoleIdEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>wer_user_role_id = :werUserRoleId</where>
+            <order-by>wer_user_role_id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>werUserRoleId</java-name>
+                <java-type>int</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereCreatedByEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>created_by = :createdBy</where>
+            <order-by>created_by</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>createdBy</java-name>
+                <java-type>int</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereCreatedDateEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>created_date = :createdDate</where>
+            <order-by>created_date</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>createdDate</java-name>
+                <java-type>java.util.Date</java-type>
+                <jdbc-type>TIMESTAMP</jdbc-type>
+                <jdbc-precision>29</jdbc-precision>
+                <jdbc-scale>6</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereLastModifiedByEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>last_modified_by = :lastModifiedBy</where>
+            <order-by>last_modified_by</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>lastModifiedBy</java-name>
+                <java-type>int</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereLastModifiedDateEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>last_modified_date = :lastModifiedDate</where>
+            <order-by>last_modified_date</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>lastModifiedDate</java-name>
+                <java-type>java.util.Date</java-type>
+                <jdbc-type>TIMESTAMP</jdbc-type>
+                <jdbc-precision>29</jdbc-precision>
+                <jdbc-scale>6</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereIsActiveEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>is_active = :isActive</where>
+            <order-by>is_active</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>isActive</java-name>
+                <java-type>java.lang.Short</java-type>
+                <jdbc-type>BIT</jdbc-type>
+                <jdbc-precision>1</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
               </parameter>
             </parameter-list>
           </finder>

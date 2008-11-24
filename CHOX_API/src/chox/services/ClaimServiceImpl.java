@@ -81,7 +81,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
         }
         if (searchCriteria.getVrn() != null && !searchCriteria.getVrn().isEmpty()) {
             String vrn = searchCriteria.getVrn().replaceAll(" ", "");
-            criteria.createCriteria("vehicleHire").add(Restrictions.like("vehicleRegistration", vrn).ignoreCase());
+            criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", vrn).ignoreCase());
         }
         if (searchCriteria.getClaimUploadDateFrom() != null && searchCriteria.getClaimUploadDateTo() != null) {
             criteria.add(Expression.between("createdDate", searchCriteria.getClaimUploadDateFrom(), searchCriteria.getClaimUploadDateTo()));

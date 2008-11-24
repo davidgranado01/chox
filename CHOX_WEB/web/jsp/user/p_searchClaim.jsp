@@ -28,7 +28,7 @@
                         </tr>
                         <tr>
                             <td><label>Claim Number</label></td><td><s:textfield name="claimNumber" /></td>
-                            <td><label>Invoice Numnber</label></td><td><s:textfield name="invoiceNumber"/></td>                            
+                            <td><label>Invoice Number</label></td><td><s:textfield name="invoiceNumber"/></td>                            
                         </tr>                        
                         <tr>
                             <td><label>VRN</label></td><td colspan="3"><s:textfield name="vrn" /></td>

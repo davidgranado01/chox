@@ -83,6 +83,27 @@ table.UploadStatusTable td
     background-color: red;
 }
 
+.UploadStatusTable tr.InvoiceApproved
+{
+    background-color: green;
+}
+
+.UploadStatusTable tr.InvoiceEscalated
+{
+    background-color: orange;
+}
+
+.UploadStatusTable tr.AwaitingPaymentPack
+{
+    background-color: orange;
+}
+
+.UploadStatusTable tr.InvoiceDataCalculationIncorrect
+{
+    background-color: orange;
+}
+
+
 #loginPanel
 {    
     border-style: solid;
@@ -160,3 +181,7 @@ table.searchForm label{
 {
     overflow:auto; 
 }
+
+
+
+
