@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-  <class name="chox.model.Claim" table="claim" lazy="false">
+  <class lazy="false" name="chox.model.Claim" table="claim">
     <id column="id" name="id">
       <generator class="increment"/>
     </id>
@@ -13,16 +13,16 @@
     <property column="created_date" name="createdDate" not-null="true"/>
     <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
     <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
-    <many-to-one class="chox.model.Chorganisation" column="chorganisation_id" name="chorganisation" lazy="false"/>
-    <many-to-one class="chox.model.Customer" column="customer_id" name="customer" lazy="false"/>
-    <many-to-one class="chox.model.EngineerReport" column="engineer_report_id" name="engineerReport" lazy="false"/>
-    <many-to-one class="chox.model.HireMonitoringDetail" column="hire_monitoring_detail_id" name="hireMonitoringDetail" lazy="false"/>
-    <many-to-one class="chox.model.Incident" column="incident_id" name="incident" lazy="false"/>
-    <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer" lazy="false"/>
-    <many-to-one class="chox.model.Invoice" column="invoice_id" name="invoice" lazy="false"/>
-    <many-to-one class="chox.model.LineOfBusiness" column="line_of_business_id" name="lineOfBusiness" lazy="false"/>
-    <many-to-one class="chox.model.ThirdParty" column="third_party_id" name="thirdParty" lazy="false"/>
-    <many-to-one class="chox.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire" lazy="false"/>
+    <many-to-one class="chox.model.Chorganisation" column="chorganisation_id" lazy="false" name="chorganisation"/>
+    <many-to-one class="chox.model.Customer" column="customer_id" lazy="false" name="customer"/>
+    <many-to-one class="chox.model.EngineerReport" column="engineer_report_id" lazy="false" name="engineerReport"/>
+    <many-to-one class="chox.model.HireMonitoringDetail" column="hire_monitoring_detail_id" lazy="false" name="hireMonitoringDetail"/>
+    <many-to-one class="chox.model.Incident" column="incident_id" lazy="false" name="incident"/>
+    <many-to-one class="chox.model.Insurer" column="insurer_id" lazy="false" name="insurer"/>
+    <many-to-one class="chox.model.Invoice" column="invoice_id" lazy="false" name="invoice"/>
+    <many-to-one class="chox.model.LineOfBusiness" column="line_of_business_id" lazy="false" name="lineOfBusiness"/>
+    <many-to-one class="chox.model.ThirdParty" column="third_party_id" lazy="false" name="thirdParty"/>
+    <many-to-one class="chox.model.VehicleHire" column="vehicle_hire_id" lazy="false" name="vehicleHire"/>
     <filter condition=":chorganisationId = chorganisation_id" name="Claim_CHOFilter"/>
     <filter condition=":insurerId = insurer_id" name="Claim_InsurerFilter"/>
   </class>

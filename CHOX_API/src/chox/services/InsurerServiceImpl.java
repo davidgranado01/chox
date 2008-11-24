@@ -1,5 +1,6 @@
 package chox.services;
 
+import chox.Util.XmlHelper;
 import chox.data.HibernateUtil;
 import chox.model.Insurer;
 import org.hibernate.Criteria;

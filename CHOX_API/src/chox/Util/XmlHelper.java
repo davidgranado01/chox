@@ -1,4 +1,4 @@
-package chox.services;
+package chox.Util;
 
 import java.util.ArrayList;
 import java.sql.Timestamp;
@@ -173,10 +173,10 @@ public class XmlHelper {
                 }
             }
         }
-        
         return bFlag;
     }
     
+    // TRIM THE STRING TO NO WHITESPACE
     public static String trimString(String iStr){
         String oStr = "";
         
@@ -189,6 +189,7 @@ public class XmlHelper {
         return oStr;
     }
     
+    // VALIDATION THE STRING PASSING IN IS NOT NULL AND EMPTY
     public static boolean isNotNull(String s){
         Boolean bFlag = false;
         if(s!=null && !s.equalsIgnoreCase("")){
@@ -206,15 +207,26 @@ public class XmlHelper {
     }
     
     public static String contructureDataMandatoryErrorMessage(String strPath, String nodeName){
-        return ("|Cannot be Empty <"+strPath+":"+nodeName+">").toUpperCase();
+        String sMsg = ("Cannot be Empty <"+strPath+":"+nodeName+">").toUpperCase();
+        return XMLResultDelimeterContructor("", sMsg);
     }
     
     public static String contructureIncorrectTypeErrorMessage(String strPath, String nodeName){
-        return ("|Invalid Data Format for <"+strPath+":"+nodeName+">").toUpperCase();
+        String sMsg = ("Invalid Data Format for <"+strPath+":"+nodeName+">").toUpperCase();
+        return XMLResultDelimeterContructor("", sMsg);
     }
     
     public static String contructureSchemaErrorMessage(String strPath, String nodeName){
-        return ("|Incorrect XML Schema for <"+strPath+":"+nodeName+"> element").toUpperCase();
+        String sMsg = ("Incorrect XML Schema for <"+strPath+":"+nodeName+"> element").toUpperCase();
+        return XMLResultDelimeterContructor("", sMsg);
+    }
+    
+    public static String XMLResultDelimeterContructor(String orgStr, String newStr){
+        String strReturn = "|" + newStr;
+        if(isNotNull(orgStr)){
+            strReturn = orgStr + strReturn;
+        }
+        return strReturn;
     }
     
     public static String contructureErrorMessage(String strPath, String nodeName){

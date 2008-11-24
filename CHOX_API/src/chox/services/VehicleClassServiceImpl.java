@@ -1,5 +1,6 @@
 package chox.services;
 
+import chox.Util.XmlHelper;
 import chox.model.VehicleClass;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;

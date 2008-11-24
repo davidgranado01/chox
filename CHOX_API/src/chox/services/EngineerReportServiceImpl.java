@@ -1,5 +1,6 @@
 package chox.services;
 
+import chox.Util.XmlHelper;
 import chox.Util.DateHelper;
 import chox.model.EngineerReport;
 import chox.model.XMLParseResult;

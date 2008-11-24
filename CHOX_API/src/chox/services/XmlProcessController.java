@@ -1,5 +1,6 @@
 package chox.services;
 
+import chox.Util.XmlHelper;
 import java.io.File;
 import org.w3c.dom.*;
 import java.util.ArrayList;
@@ -272,7 +273,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             RuleEvaluation rv = results.get(iCount);
             
             if(rv.getIsVisibleToCHO()){
-                existingErrorMsg = existingErrorMsg + "|" + rv.toString();
+                existingErrorMsg = XmlHelper.XMLResultDelimeterContructor(existingErrorMsg, rv.toString());
             }
         }
         
@@ -402,7 +403,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                     // SET CLAIM HEADER INFORMATION
                     claim.setManagingRepair(bManagingRepair);
                     claim.setPolicyHolderContactDate(tFirstContactDate);
-                    claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED);
+                    claim.setStatus(ClaimStatus.CLAIM_UNROUNTED);
                     claim.setChoReference(strCHOReference);
                     
                     ChorganisationService chorgService = new ChorganisationServiceImpl();
@@ -1471,8 +1472,6 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, mainNodeName, childNodeLabelMain);
 
         if (xmlParseResult.getIsCurrentScheValid()) {
-
-            //xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "net", XmlHelper.isMAN_Invoice_Engineer_Fee_Net, XmlHelper.REG_BIGDECIMAL, parentNodeName);
             
             Element thisElement = XMLUtils.getElement(mainElement, mainNodeName);
             ArrayList<Element> rentalVehicleElements = XMLUtils.getElements(doc, thisElement, childNodeName);

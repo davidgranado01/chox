@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-
 <hibernate-mapping>
   <class name="chox.model.History" table="history">
-    <id name="id" column="id">
-      <generator class="increment" />
+    <id column="id" name="id">
+      <generator class="increment"/>
     </id>
-    <property name="createdBy" column="created_by" not-null="true" />
-    <property name="createdDate" column="created_date" not-null="true" />
-    <property name="lastModifiedBy" column="last_modified_by" not-null="true" />
-    <property name="lastModifiedDate" column="last_modified_date" not-null="true" />
-    <property name="claimId" column="claim_id" not-null="true" />
-    <property name="narrative" column="narrative" />
-    <property name="processDate" column="process_date" />
-    <property name="isPublic" column="is_public" not-null="true" />
-    <property name="type" column="type" />
-    <property name="ruleId" column="rule_id" not-null="true" />
-    <property name="isSystem" column="is_system" not-null="true" />
+    <property column="created_by" name="createdBy" not-null="true"/>
+    <property column="created_date" name="createdDate" not-null="true"/>
+    <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
+    <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
+    <property column="claim_id" name="claimId" not-null="true"/>
+    <property column="narrative" name="narrative"/>
+    <property column="process_date" name="processDate"/>
+    <property column="is_public" name="isPublic" not-null="true"/>
+    <property column="type" name="type"/>
+    <property column="rule_id" name="ruleId" not-null="true"/>
+    <property column="is_system" name="isSystem" not-null="true"/>
   </class>
 </hibernate-mapping>
-

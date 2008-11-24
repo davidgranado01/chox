@@ -27,6 +27,9 @@ public class ClaimStatus {
     public static final String PAYMENT_PACK_SUPPLIED = "PaymentPackSupplied";
     public static final String INVOICE_REJECTED_ACCEPTED = "InvoiceRejectionAccepted";
     public static final String CLAIM_UNROUNTED = "ClaimUnrouted";
+    
+    // NEW STATUS
+    public static final String INVOICE_CALCULATION_INCORRECT = "InvoiceDataCalculationIncorrect";
 
     public static List<String> getStatus() {
         List<String> status = new ArrayList<String>();
@@ -46,4 +49,22 @@ public class ClaimStatus {
 
         return status;
     }
+    
+    public static String getUploadStatus(String sClaimStatus){
+        
+        String rStatus = "";
+        
+        if(sClaimStatus.equalsIgnoreCase(INVOICE_APPROVED)){
+            rStatus = "Invoice Approved";
+        }else if(sClaimStatus.equalsIgnoreCase(INVOICE_ESCALATED)){
+            rStatus = "Invoice Escalated";
+        }else if(sClaimStatus.equalsIgnoreCase(AWAITING_PAYMENT_PACK)){
+            rStatus = "Awaiting Payment Pack";
+        }else if(sClaimStatus.equalsIgnoreCase(INVOICE_CALCULATION_INCORRECT)){
+            rStatus = "Invoice Data Calculation Incorrect";
+        }
+        
+        return rStatus;
+    }
+    
 }

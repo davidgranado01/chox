@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-  <class name="chox.model.ThirdParty" table="third_party" lazy="false">
+  <class lazy="false" name="chox.model.ThirdParty" table="third_party">
     <id column="id" name="id">
       <generator class="increment"/>
     </id>
@@ -27,6 +27,6 @@
     <property column="last_name" name="lastName"/>
     <property column="title" name="title"/>
     <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer"/>
-    <many-to-one class="chox.model.VehicleClass" column="vehicle_class_id" name="vehicleClass" lazy="false"/>
+    <many-to-one class="chox.model.VehicleClass" column="vehicle_class_id" lazy="false" name="vehicleClass"/>
   </class>
 </hibernate-mapping>

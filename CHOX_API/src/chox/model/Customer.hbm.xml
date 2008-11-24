@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-  <class name="chox.model.Customer" table="customer" lazy="false">
+  <class lazy="false" name="chox.model.Customer" table="customer">
     <id column="id" name="id">
       <generator class="increment"/>
     </id>
@@ -34,6 +34,6 @@
     <property column="is_active" name="isActive" not-null="true"/>
     <property column="comprehensive" name="comprehensive" not-null="true"/>
     <property column="insurer_id" name="insurerId" not-null="true"/>
-    <many-to-one class="chox.model.VehicleClass" column="vehicle_class_id" name="vehicleClass" lazy="false"/>
+    <many-to-one class="chox.model.VehicleClass" column="vehicle_class_id" lazy="false" name="vehicleClass"/>
   </class>
 </hibernate-mapping>

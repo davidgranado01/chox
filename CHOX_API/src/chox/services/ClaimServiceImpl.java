@@ -1,5 +1,6 @@
 package chox.services;
 
+import chox.Util.XmlHelper;
 import chox.Util.DateHelper;
 import chox.data.ClaimSearchCriteria;
 import chox.model.Claim;

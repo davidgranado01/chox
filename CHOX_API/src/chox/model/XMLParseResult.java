@@ -168,6 +168,7 @@ public class XMLParseResult {
                 sStatus = "Claim Uploaded";
             }else{
                 sStatus = "Upload Rejected";
+                this.claim.status = "-";
             }
             
         }else{
@@ -186,7 +187,10 @@ public class XMLParseResult {
                 }else{
 
                     if(getSchemaDataValidation()){
-                        sStatus = "Invoice Uploaded";
+                        
+                        //sStatus = "Invoice Uploaded";
+                        sStatus = ClaimStatus.getUploadStatus(this.claim.status);
+                        
                     }else{
                         sStatus = "Upload Rejected";
                     }
