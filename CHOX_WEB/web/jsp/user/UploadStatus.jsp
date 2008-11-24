@@ -25,11 +25,12 @@
                     <tr>
                         <th width="40px"></th>
                         <th width="40px">Supplier Reference</th>
-                        <th>Status</th>
+                        <th>Upload Status</th>
+                         <th>Claim Status</th>
                         <th>Remark</th>
                     </tr>
                     <s:iterator id="next" value="results" status="stat">
-                        <s:if test="%{#next.Status=='Upload Rejected'}">
+                        <s:if test="%{#next.Status=='Claim Upload Failed'}">
                             <tr class="ErrorRow">
                         </s:if>
                         <s:else>
@@ -37,7 +38,8 @@
                             </s:else>
                             <td><s:property value="{#stat.index + 1}" /></td>
                             <td><s:property value="#next.claim.choReference" /></td> 
-                            <td><s:property value="#next.Status" /></td>  
+                            <td><s:property value="#next.uploadStatus" /></td>  
+                            <td><s:property value="#next.claim.status" /></td>
                             <td>
                                 <ul>
                                     <s:iterator id="remark" value="#next.DataValidationRemarkInList">                                        

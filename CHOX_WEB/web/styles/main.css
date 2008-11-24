@@ -61,6 +61,7 @@ body
     border-color: #999999;
     margin: 12px;
     padding: 8px;  
+    width: 90%;
 }
 
 table.UploadStatusTable th
@@ -153,4 +154,9 @@ table.searchForm label{
     margin: 0px 12px 12px 12px;
     padding: 4px 4px 4px 24px ;
     border: 1px solid #CCC;
+}
+
+#gridPanel
+{
+    overflow:auto; 
 }

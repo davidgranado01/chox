@@ -25,18 +25,15 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
     }
 
     public void updateClaim(Claim claim) {
-        
+
         currentSession.beginTransaction();
-        try
-        {
+        try {
             currentSession.update(claim);
             currentSession.getTransaction().commit();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             currentSession.getTransaction().rollback();
         }
-        
+
     }
 
     public List listAllClaims() {
@@ -65,7 +62,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
         Criteria criteria = currentSession.createCriteria(Claim.class);
 
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
-            criteria.add(Restrictions.eq("choReference", searchCriteria.getSupplierReference()));
+            criteria.add(Restrictions.like("choReference", searchCriteria.getSupplierReference()).ignoreCase());
         }
         if (searchCriteria.getStatus() != null && !searchCriteria.getStatus().isEmpty()) {
             criteria.add(Restrictions.eq("status", searchCriteria.getStatus()));
@@ -77,19 +74,14 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
             criteria.add(Restrictions.eq("chorganisation.id", searchCriteria.getSupplierId()));
         }
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {
-            criteria.add(Restrictions.eq("invoice.id", searchCriteria.getInvoiceNumber()));
+            criteria.add(Restrictions.like("invoice.id", searchCriteria.getInvoiceNumber()).ignoreCase());
         }
         if (searchCriteria.getClaimNumber() != null && !searchCriteria.getClaimNumber().isEmpty()) {
-            try {
-                Integer claimNumber = Integer.parseInt(searchCriteria.getClaimNumber());
-                criteria.add(Restrictions.eq("id", claimNumber));
-            } catch (NumberFormatException ex) {
-            }
-
+            criteria.add(Restrictions.like("ClaimNumber", searchCriteria.getClaimNumber()).ignoreCase());
         }
         if (searchCriteria.getVrn() != null && !searchCriteria.getVrn().isEmpty()) {
-
-            criteria.createCriteria("vehicleHire").add(Restrictions.eq("vehicleRegistration", searchCriteria.getVrn()));
+            String vrn = searchCriteria.getVrn().replaceAll(" ", "");
+            criteria.createCriteria("vehicleHire").add(Restrictions.like("vehicleRegistration", vrn).ignoreCase());
         }
         if (searchCriteria.getClaimUploadDateFrom() != null && searchCriteria.getClaimUploadDateTo() != null) {
             criteria.add(Expression.between("createdDate", searchCriteria.getClaimUploadDateFrom(), searchCriteria.getClaimUploadDateTo()));

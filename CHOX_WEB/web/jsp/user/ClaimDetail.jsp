@@ -13,8 +13,31 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h2>Claim Detail For <s:property value="id" /></h2>
+        <s:form action="UpdateClaimDetail"  >   
+            <table>
+                <tr>
+                    <td width="200px">System Id</td><td><s:textfield name="id" readonly="true"/></td>
+                </tr>
+                <tr>
+                    <td>CHO Ref</td><td><s:property value="model.choReference" /></td>
+                </tr>
+                <tr>
+                    <td>Claim Status</td>
+                    <td>
+                        
+                        <s:select name="status" value="model.status" list="statuses" listKey="value" listValue="text" emptyOption="false"></s:select>
+                        <s:submit value="Update" />
+                        
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <span style="color:green;">
+                <s:actionmessage />
+                <s:actionerror />
+                <b><s:property value="actionMessage" /></b>
+            </span>
+        </s:form>
         
-        <s:property value="model.choReference" />
     </body>
 </html>

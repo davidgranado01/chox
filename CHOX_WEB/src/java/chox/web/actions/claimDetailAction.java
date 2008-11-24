@@ -6,18 +6,23 @@ package chox.web.actions;
 
 import chox.model.Claim;
 import chox.services.ClaimService;
+import chox.services.LookupService;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import java.util.List;
 
 /**
  *
  * @author Emmanuel
  */
-public class OpenClaimDetailAction extends BaseAction implements ModelDriven<Claim>, Preparable {
+public class claimDetailAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
-    private Claim claim;
+    private Claim claim = new Claim();
     private int id = -1;
+    private List statuses;
     private ClaimService service;
+    private LookupService lookupService;
+    private String actionMessage;
 
     public int getId() {
         return id;
@@ -29,6 +34,10 @@ public class OpenClaimDetailAction extends BaseAction implements ModelDriven<Cla
 
     public void setClaimService(ClaimService service) {
         this.service = service;
+    }
+
+    public void setLookupService(LookupService service) {
+        this.lookupService = service;
     }
 
     @Override
@@ -43,8 +52,28 @@ public class OpenClaimDetailAction extends BaseAction implements ModelDriven<Cla
     public void prepare() throws Exception {
         if (id == -1) {
             claim = new Claim();
-        } else {
+        }
+        else
+        {           
             claim = service.getClaim(id);
         }
+    }
+
+    public List getStatuses() {
+        if (statuses == null) {
+            statuses = this.lookupService.getStatuses();
+        }
+        return statuses;
+    }    
+
+    public String getActionMessage() {
+        return actionMessage;
+    }
+    
+    public String updateClaimDetail()
+    {
+        this.service.updateClaim(claim);
+        this.actionMessage = "Claim Updated!";
+        return SUCCESS;
     }
 }

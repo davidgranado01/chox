@@ -14,530 +14,480 @@ import chox.services.*;
 import chox.model.ChoBand;
 import java.math.BigDecimal;
 
-public class Claim implements Serializable, IClaimInfo
-{
-        protected ChoBand choband;
-	/** 
-	 * This attribute maps to the column id in the claim table.
-	 */
-	protected int id;
+public class Claim implements Serializable, IClaimInfo {
 
-	/** 
-	 * This attribute maps to the column managing_repair in the claim table.
-	 */
-	protected boolean managingRepair;
+    protected ChoBand choband;
+    /** 
+     * This attribute maps to the column id in the claim table.
+     */
+    protected int id;
+    /** 
+     * This attribute maps to the column managing_repair in the claim table.
+     */
+    protected boolean managingRepair;
+    /** 
+     * This attribute maps to the column policy_holder_contact_date in the claim table.
+     */
+    protected Date policyHolderContactDate;
+    /** 
+     * This attribute maps to the column cho_reference in the claim table.
+     */
+    protected String choReference;
+    /** 
+     * This attribute maps to the column status in the claim table.
+     */
+    protected String status;
+    /** 
+     * This attribute maps to the column created_by in the claim table.
+     */
+    protected int createdBy;
+    /** 
+     * This attribute maps to the column created_date in the claim table.
+     */
+    protected Date createdDate;
+    /** 
+     * This attribute maps to the column last_modified_by in the claim table.
+     */
+    protected int lastModifiedBy;
+    /** 
+     * This attribute maps to the column last_modified_date in the claim table.
+     */
+    protected Date lastModifiedDate;
+    /** 
+     * This attribute represents the foreign key relationship to the chorganisation table.
+     */
+    protected Chorganisation chorganisation;
+    /** 
+     * This attribute represents the foreign key relationship to the customer table.
+     */
+    protected Customer customer;
+    /** 
+     * This attribute represents the foreign key relationship to the engineer_report table.
+     */
+    protected EngineerReport engineerReport;
+    /** 
+     * This attribute represents the foreign key relationship to the hire_monitoring_detail table.
+     */
+    protected HireMonitoringDetail hireMonitoringDetail;
+    /** 
+     * This attribute represents the foreign key relationship to the incident table.
+     */
+    protected Incident incident;
+    /** 
+     * This attribute represents the foreign key relationship to the insurer table.
+     */
+    protected Insurer insurer;
+    /** 
+     * This attribute represents the foreign key relationship to the invoice table.
+     */
+    protected Invoice invoice;
+    /** 
+     * This attribute represents the foreign key relationship to the line_of_business table.
+     */
+    protected LineOfBusiness lineOfBusiness;
+    /** 
+     * This attribute represents the foreign key relationship to the third_party table.
+     */
+    protected ThirdParty thirdParty;
+    /** 
+     * This attribute represents the foreign key relationship to the vehicle_hire table.
+     */
+    protected VehicleHire vehicleHire;
+    /** 
+     * This attribute maps to the column claim_number in the claim table.
+     */
+    private String claimNumber;
 
-	/** 
-	 * This attribute maps to the column policy_holder_contact_date in the claim table.
-	 */
-	protected Date policyHolderContactDate;
+    /**
+     * Method 'Claim'
+     * 
+     */
+    public Claim() {
+    }
 
-	/** 
-	 * This attribute maps to the column cho_reference in the claim table.
-	 */
-	protected String choReference;
+    /**
+     * Method 'getId'
+     * 
+     * @return int
+     */
+    public int getId() {
+        return id;
+    }
 
-	/** 
-	 * This attribute maps to the column status in the claim table.
-	 */
-	protected String status;
+    /**
+     * Method 'setId'
+     * 
+     * @param id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	/** 
-	 * This attribute maps to the column created_by in the claim table.
-	 */
-	protected int createdBy;
+    /**
+     * Method 'isManagingRepair'
+     * 
+     * @return boolean
+     */
+    public boolean isManagingRepair() {
+        return managingRepair;
+    }
 
-	/** 
-	 * This attribute maps to the column created_date in the claim table.
-	 */
-	protected Date createdDate;
+    /**
+     * Method 'setManagingRepair'
+     * 
+     * @param managingRepair
+     */
+    public void setManagingRepair(boolean managingRepair) {
+        this.managingRepair = managingRepair;
+    }
 
-	/** 
-	 * This attribute maps to the column last_modified_by in the claim table.
-	 */
-	protected int lastModifiedBy;
+    /**
+     * Method 'getPolicyHolderContactDate'
+     * 
+     * @return java.util.Date
+     */
+    public java.util.Date getPolicyHolderContactDate() {
+        return policyHolderContactDate;
+    }
 
-	/** 
-	 * This attribute maps to the column last_modified_date in the claim table.
-	 */
-	protected Date lastModifiedDate;
+    /**
+     * Method 'setPolicyHolderContactDate'
+     * 
+     * @param policyHolderContactDate
+     */
+    public void setPolicyHolderContactDate(java.util.Date policyHolderContactDate) {
+        this.policyHolderContactDate = policyHolderContactDate;
+    }
 
-	/** 
-	 * This attribute represents the foreign key relationship to the chorganisation table.
-	 */
-	protected Chorganisation chorganisation;
+    /**
+     * Method 'getChoReference'
+     * 
+     * @return java.lang.String
+     */
+    public java.lang.String getChoReference() {
+        return choReference;
+    }
 
-	/** 
-	 * This attribute represents the foreign key relationship to the customer table.
-	 */
-	protected Customer customer;
+    /**
+     * Method 'setChoReference'
+     * 
+     * @param choReference
+     */
+    public void setChoReference(java.lang.String choReference) {
+        this.choReference = choReference;
+    }
 
-	/** 
-	 * This attribute represents the foreign key relationship to the engineer_report table.
-	 */
-	protected EngineerReport engineerReport;
+    /**
+     * Method 'getStatus'
+     * 
+     * @return java.lang.String
+     */
+    public java.lang.String getStatus() {
+        return status;
+    }
 
-	/** 
-	 * This attribute represents the foreign key relationship to the hire_monitoring_detail table.
-	 */
-	protected HireMonitoringDetail hireMonitoringDetail;
+    /**
+     * Method 'setStatus'
+     * 
+     * @param status
+     */
+    public void setStatus(java.lang.String status) {
+        this.status = status;
+    }
 
-	/** 
-	 * This attribute represents the foreign key relationship to the incident table.
-	 */
-	protected Incident incident;
+    /**
+     * Method 'getCreatedBy'
+     * 
+     * @return int
+     */
+    public int getCreatedBy() {
+        return createdBy;
+    }
 
-	/** 
-	 * This attribute represents the foreign key relationship to the insurer table.
-	 */
-	protected Insurer insurer;
+    /**
+     * Method 'setCreatedBy'
+     * 
+     * @param createdBy
+     */
+    public void setCreatedBy(int createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	/** 
-	 * This attribute represents the foreign key relationship to the invoice table.
-	 */
-	protected Invoice invoice;
+    /**
+     * Method 'getCreatedDate'
+     * 
+     * @return java.util.Date
+     */
+    public java.util.Date getCreatedDate() {
+        return createdDate;
+    }
 
-	/** 
-	 * This attribute represents the foreign key relationship to the line_of_business table.
-	 */
-        
-	protected LineOfBusiness lineOfBusiness;
+    /**
+     * Method 'setCreatedDate'
+     * 
+     * @param createdDate
+     */
+    public void setCreatedDate(java.util.Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
-	/** 
-	 * This attribute represents the foreign key relationship to the third_party table.
-	 */
-	protected ThirdParty thirdParty;
+    /**
+     * Method 'getLastModifiedBy'
+     * 
+     * @return int
+     */
+    public int getLastModifiedBy() {
+        return lastModifiedBy;
+    }
 
-	/** 
-	 * This attribute represents the foreign key relationship to the vehicle_hire table.
-	 */
-	protected VehicleHire vehicleHire;
+    /**
+     * Method 'setLastModifiedBy'
+     * 
+     * @param lastModifiedBy
+     */
+    public void setLastModifiedBy(int lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
 
-	/**
-	 * Method 'Claim'
-	 * 
-	 */
-	public Claim()
-	{
-	}
+    /**
+     * Method 'getLastModifiedDate'
+     * 
+     * @return java.util.Date
+     */
+    public java.util.Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
 
-	/**
-	 * Method 'getId'
-	 * 
-	 * @return int
-	 */
-	public int getId()
-	{
-		return id;
-	}
+    /**
+     * Method 'setLastModifiedDate'
+     * 
+     * @param lastModifiedDate
+     */
+    public void setLastModifiedDate(java.util.Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
 
-	/**
-	 * Method 'setId'
-	 * 
-	 * @param id
-	 */
-	public void setId(int id)
-	{
-		this.id = id;
-	}
+    /**
+     * Method 'getChorganisation'
+     * 
+     * @return Chorganisation
+     */
+    public Chorganisation getChorganisation() {
+        return chorganisation;
+    }
 
-	/**
-	 * Method 'isManagingRepair'
-	 * 
-	 * @return boolean
-	 */
-	public boolean isManagingRepair()
-	{
-		return managingRepair;
-	}
+    /**
+     * Method 'setChorganisation'
+     * 
+     * @param chorganisation
+     */
+    public void setChorganisation(Chorganisation chorganisation) {
+        this.chorganisation = chorganisation;
+    }
 
-	/**
-	 * Method 'setManagingRepair'
-	 * 
-	 * @param managingRepair
-	 */
-	public void setManagingRepair(boolean managingRepair)
-	{
-		this.managingRepair = managingRepair;
-	}
+    /**
+     * Method 'getCustomer'
+     * 
+     * @return Customer
+     */
+    public Customer getCustomer() {
+        return customer;
+    }
 
-	/**
-	 * Method 'getPolicyHolderContactDate'
-	 * 
-	 * @return java.util.Date
-	 */
-	public java.util.Date getPolicyHolderContactDate()
-	{
-		return policyHolderContactDate;
-	}
+    /**
+     * Method 'setCustomer'
+     * 
+     * @param customer
+     */
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
-	/**
-	 * Method 'setPolicyHolderContactDate'
-	 * 
-	 * @param policyHolderContactDate
-	 */
-	public void setPolicyHolderContactDate(java.util.Date policyHolderContactDate)
-	{
-		this.policyHolderContactDate = policyHolderContactDate;
-	}
+    /**
+     * Method 'getEngineerReport'
+     * 
+     * @return EngineerReport
+     */
+    public EngineerReport getEngineerReport() {
+        return engineerReport;
+    }
 
-	/**
-	 * Method 'getChoReference'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getChoReference()
-	{
-		return choReference;
-	}
+    /**
+     * Method 'setEngineerReport'
+     * 
+     * @param engineerReport
+     */
+    public void setEngineerReport(EngineerReport engineerReport) {
+        this.engineerReport = engineerReport;
+    }
 
-	/**
-	 * Method 'setChoReference'
-	 * 
-	 * @param choReference
-	 */
-	public void setChoReference(java.lang.String choReference)
-	{
-		this.choReference = choReference;
-	}
+    /**
+     * Method 'getHireMonitoringDetail'
+     * 
+     * @return HireMonitoringDetail
+     */
+    public HireMonitoringDetail getHireMonitoringDetail() {
+        return hireMonitoringDetail;
+    }
 
-	/**
-	 * Method 'getStatus'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getStatus()
-	{
-		return status;
-	}
+    /**
+     * Method 'setHireMonitoringDetail'
+     * 
+     * @param hireMonitoringDetail
+     */
+    public void setHireMonitoringDetail(HireMonitoringDetail hireMonitoringDetail) {
+        this.hireMonitoringDetail = hireMonitoringDetail;
+    }
 
-	/**
-	 * Method 'setStatus'
-	 * 
-	 * @param status
-	 */
-	public void setStatus(java.lang.String status)
-	{
-		this.status = status;
-	}
+    /**
+     * Method 'getIncident'
+     * 
+     * @return Incident
+     */
+    public Incident getIncident() {
+        return incident;
+    }
 
-	/**
-	 * Method 'getCreatedBy'
-	 * 
-	 * @return int
-	 */
-	public int getCreatedBy()
-	{
-		return createdBy;
-	}
+    /**
+     * Method 'setIncident'
+     * 
+     * @param incident
+     */
+    public void setIncident(Incident incident) {
+        this.incident = incident;
+    }
 
-	/**
-	 * Method 'setCreatedBy'
-	 * 
-	 * @param createdBy
-	 */
-	public void setCreatedBy(int createdBy)
-	{
-		this.createdBy = createdBy;
-	}
+    /**
+     * Method 'getInsurer'
+     * 
+     * @return Insurer
+     */
+    public Insurer getInsurer() {
+        return insurer;
+    }
 
-	/**
-	 * Method 'getCreatedDate'
-	 * 
-	 * @return java.util.Date
-	 */
-	public java.util.Date getCreatedDate()
-	{
-		return createdDate;
-	}
+    /**
+     * Method 'setInsurer'
+     * 
+     * @param insurer
+     */
+    public void setInsurer(Insurer insurer) {
+        this.insurer = insurer;
+    }
 
-	/**
-	 * Method 'setCreatedDate'
-	 * 
-	 * @param createdDate
-	 */
-	public void setCreatedDate(java.util.Date createdDate)
-	{
-		this.createdDate = createdDate;
-	}
+    /**
+     * Method 'getInvoice'
+     * 
+     * @return Invoice
+     */
+    public Invoice getInvoice() {
+        return invoice;
+    }
 
-	/**
-	 * Method 'getLastModifiedBy'
-	 * 
-	 * @return int
-	 */
-	public int getLastModifiedBy()
-	{
-		return lastModifiedBy;
-	}
+    /**
+     * Method 'setInvoice'
+     * 
+     * @param invoice
+     */
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
 
-	/**
-	 * Method 'setLastModifiedBy'
-	 * 
-	 * @param lastModifiedBy
-	 */
-	public void setLastModifiedBy(int lastModifiedBy)
-	{
-		this.lastModifiedBy = lastModifiedBy;
-	}
+    /**
+     * Method 'getLineOfBusiness'
+     * 
+     * @return LineOfBusiness
+     */
+    public LineOfBusiness getLineOfBusiness() {
+        return lineOfBusiness;
+    }
 
-	/**
-	 * Method 'getLastModifiedDate'
-	 * 
-	 * @return java.util.Date
-	 */
-	public java.util.Date getLastModifiedDate()
-	{
-		return lastModifiedDate;
-	}
+    /**
+     * Method 'setLineOfBusiness'
+     * 
+     * @param lineOfBusiness
+     */
+    public void setLineOfBusiness(LineOfBusiness lineOfBusiness) {
+        this.lineOfBusiness = lineOfBusiness;
+    }
 
-	/**
-	 * Method 'setLastModifiedDate'
-	 * 
-	 * @param lastModifiedDate
-	 */
-	public void setLastModifiedDate(java.util.Date lastModifiedDate)
-	{
-		this.lastModifiedDate = lastModifiedDate;
-	}
+    /**
+     * Method 'getThirdParty'
+     * 
+     * @return ThirdParty
+     */
+    public ThirdParty getThirdParty() {
+        return thirdParty;
+    }
 
-	/**
-	 * Method 'getChorganisation'
-	 * 
-	 * @return Chorganisation
-	 */
-	public Chorganisation getChorganisation()
-	{
-		return chorganisation;
-	}
+    /**
+     * Method 'setThirdParty'
+     * 
+     * @param thirdParty
+     */
+    public void setThirdParty(ThirdParty thirdParty) {
+        this.thirdParty = thirdParty;
+    }
 
-	/**
-	 * Method 'setChorganisation'
-	 * 
-	 * @param chorganisation
-	 */
-	public void setChorganisation(Chorganisation chorganisation)
-	{
-		this.chorganisation = chorganisation;
-	}
+    /**
+     * Method 'getVehicleHire'
+     * 
+     * @return VehicleHire
+     */
+    public VehicleHire getVehicleHire() {
+        return vehicleHire;
+    }
 
-	/**
-	 * Method 'getCustomer'
-	 * 
-	 * @return Customer
-	 */
-	public Customer getCustomer()
-	{
-		return customer;
-	}
+    /**
+     * Method 'setVehicleHire'
+     * 
+     * @param vehicleHire
+     */
+    public void setVehicleHire(VehicleHire vehicleHire) {
+        this.vehicleHire = vehicleHire;
+    }
 
-	/**
-	 * Method 'setCustomer'
-	 * 
-	 * @param customer
-	 */
-	public void setCustomer(Customer customer)
-	{
-		this.customer = customer;
-	}
+    public ICHOrganisationInfo getCHOrg() {
+        return this.chorganisation;
+    }
 
-	/**
-	 * Method 'getEngineerReport'
-	 * 
-	 * @return EngineerReport
-	 */
-	public EngineerReport getEngineerReport()
-	{
-		return engineerReport;
-	}
+    public IHireInfo getHireDetail() {
+        return this.vehicleHire;
+    }
 
-	/**
-	 * Method 'setEngineerReport'
-	 * 
-	 * @param engineerReport
-	 */
-	public void setEngineerReport(EngineerReport engineerReport)
-	{
-		this.engineerReport = engineerReport;
-	}
+    public IEngineerReportInfo getEngineeringReport() {
+        return this.engineerReport;
+    }
 
-	/**
-	 * Method 'getHireMonitoringDetail'
-	 * 
-	 * @return HireMonitoringDetail
-	 */
-	public HireMonitoringDetail getHireMonitoringDetail()
-	{
-		return hireMonitoringDetail;
-	}
+    public boolean getManagingRepair() {
+        return this.managingRepair;
+    }
+    // NO VEHICLE CLASS DIRECT ASSIGN TO CLAIM, ONLY TO VEHICLE
+    public IVehicleClassInfo getVClass() {
+        return this.customer.vehicleClass;
+    }
+    // ICustomerVehicleDamageInfo IS PART OF CUSTOMER DETAIL
+    public ICustomerVehicleDamageInfo getCustomerVehicleDamage() {
+        return this.customer;
+    }
+    // getExtras IS PART OF INVOICE DETAIL
+    public IExtrasInfo getExtras() {
+        return this.invoice;
+    }
 
-	/**
-	 * Method 'setHireMonitoringDetail'
-	 * 
-	 * @param hireMonitoringDetail
-	 */
-	public void setHireMonitoringDetail(HireMonitoringDetail hireMonitoringDetail)
-	{
-		this.hireMonitoringDetail = hireMonitoringDetail;
-	}
+    public void setChoband(ChoBand choband) {
+        this.choband = choband;
+    }
 
-	/**
-	 * Method 'getIncident'
-	 * 
-	 * @return Incident
-	 */
-	public Incident getIncident()
-	{
-		return incident;
-	}
+    public ICHOBandInfo getChoBand() {
+        return choband;
+    }
 
-	/**
-	 * Method 'setIncident'
-	 * 
-	 * @param incident
-	 */
-	public void setIncident(Incident incident)
-	{
-		this.incident = incident;
-	}
+    public String getClaimNumber() {
+        return claimNumber;
+    }
 
-	/**
-	 * Method 'getInsurer'
-	 * 
-	 * @return Insurer
-	 */
-	public Insurer getInsurer()
-	{
-		return insurer;
-	}
-
-	/**
-	 * Method 'setInsurer'
-	 * 
-	 * @param insurer
-	 */
-	public void setInsurer(Insurer insurer)
-	{
-		this.insurer = insurer;
-	}
-
-	/**
-	 * Method 'getInvoice'
-	 * 
-	 * @return Invoice
-	 */
-	public Invoice getInvoice()
-	{
-		return invoice;
-	}
-
-	/**
-	 * Method 'setInvoice'
-	 * 
-	 * @param invoice
-	 */
-	public void setInvoice(Invoice invoice)
-	{
-		this.invoice = invoice;
-	}
-
-	/**
-	 * Method 'getLineOfBusiness'
-	 * 
-	 * @return LineOfBusiness
-	 */
-	public LineOfBusiness getLineOfBusiness()
-	{
-		return lineOfBusiness;
-	}
-
-	/**
-	 * Method 'setLineOfBusiness'
-	 * 
-	 * @param lineOfBusiness
-	 */
-	public void setLineOfBusiness(LineOfBusiness lineOfBusiness)
-	{
-		this.lineOfBusiness = lineOfBusiness;
-	}
-
-	/**
-	 * Method 'getThirdParty'
-	 * 
-	 * @return ThirdParty
-	 */
-	public ThirdParty getThirdParty()
-	{
-		return thirdParty;
-	}
-
-	/**
-	 * Method 'setThirdParty'
-	 * 
-	 * @param thirdParty
-	 */
-	public void setThirdParty(ThirdParty thirdParty)
-	{
-		this.thirdParty = thirdParty;
-	}
-
-	/**
-	 * Method 'getVehicleHire'
-	 * 
-	 * @return VehicleHire
-	 */
-	public VehicleHire getVehicleHire()
-	{
-		return vehicleHire;
-	}
-
-	/**
-	 * Method 'setVehicleHire'
-	 * 
-	 * @param vehicleHire
-	 */
-	public void setVehicleHire(VehicleHire vehicleHire)
-	{
-		this.vehicleHire = vehicleHire;
-	}
-
-        public ICHOrganisationInfo getCHOrg() {
-            return this.chorganisation;
-        }
-        
-        public IHireInfo getHireDetail() {
-            return this.vehicleHire;
-        }
-
-        public IEngineerReportInfo getEngineeringReport() {            
-            return this.engineerReport;
-        }
-
-        public boolean getManagingRepair() {
-            return this.managingRepair;
-        }
-        
-        // NO VEHICLE CLASS DIRECT ASSIGN TO CLAIM, ONLY TO VEHICLE
-        public IVehicleClassInfo getVClass() {
-            return this.customer.vehicleClass;
-        }
-        
-        // ICustomerVehicleDamageInfo IS PART OF CUSTOMER DETAIL
-        public ICustomerVehicleDamageInfo getCustomerVehicleDamage() {
-            return this.customer;
-        }
-        
-        // getExtras IS PART OF INVOICE DETAIL
-        public IExtrasInfo getExtras() {
-            return this.invoice;
-        }
-
-        public void setChoband(ChoBand choband) {
-            this.choband = choband;
-        }
-
-        public ICHOBandInfo getChoBand() {
-            return choband;
-        }
-
+    public void setClaimNumber(String claimNumber) {
+        this.claimNumber = claimNumber;
+    }
 }

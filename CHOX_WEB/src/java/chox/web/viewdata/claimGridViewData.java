@@ -26,6 +26,7 @@ import java.util.Date;
 public class claimGridViewData {
     private String supplierReference;
     private int id;
+    private String claimNumber;
     private String invoiceAmount;
     private String vehicleRegistration;
     private String created;
@@ -50,7 +51,7 @@ public class claimGridViewData {
         this.invoiceAmount = ivc == null ? "" : currentcyFormat.format(ivc.getTotalToPay());        
         this.vehicleRegistration = v == null ? "" : v.getVehicleRegistration();
         this.lineOfBusiness = lob == null ? "" : lob.getName();
-        
+        this.claimNumber = claim.getClaimNumber();
         this.created = dateFormat.format(claim.getCreatedDate());
         this.status = claim.getStatus();
         this.cho = c == null ? "" : c.getName();
@@ -92,6 +93,14 @@ public class claimGridViewData {
 
     public String getInsurer() {
         return insurer;
+    }
+
+    public String getClaimNumber() {
+        return claimNumber;
+    }
+
+    public void setClaimNumber(String claimNumber) {
+        this.claimNumber = claimNumber;
     }
     
 

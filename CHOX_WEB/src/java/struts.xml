@@ -55,9 +55,12 @@
             <result name="success">/jsp/JsonData.jsp
             </result>
         </action>
-        <action name="openClaimDetail" class="chox.web.actions.OpenClaimDetailAction">
+        <action name="openClaimDetail" class="chox.web.actions.claimDetailAction">
             <result name="success">/jsp/user/ClaimDetail.jsp
             </result>
+        </action>
+        <action name="UpdateClaimDetail" class="chox.web.actions.claimDetailAction" method="updateClaimDetail">
+            <result name="success" type="redirect">inbox.action</result>
         </action>
     </package>
     <include file="config-browser.xml"/>

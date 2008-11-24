@@ -26,6 +26,7 @@
             {name:'vehicleRegistration'},
             {name:'policyNumber'},
             {name:'supplierReference'},
+            {name:'claimNumber'},
             {name:'created', type: 'date', dateFormat: 'd/m/Y'},
             {name:'insurer'},
             {name:'cho'},
@@ -117,11 +118,12 @@
         var grid = new Ext.grid.GridPanel({
             loadMask: true,
             ds: ds,
+            width: 960,
             columns: [
-                {id:'Id',header: "Claim Number", width: 250, sortable: true, dataIndex: 'id', 
-                    renderer:function(value){
-                        return '<a href="user/openClaimDetail.action?id=' + value + '">' + value + '</a>'}},
-                {header: "Supplier Reference No.", width: 150, sortable: true, dataIndex: 'supplierReference'},                
+                {id:'Id', header: "Supplier Reference", width: 150, sortable: true, dataIndex: 'supplierReference', 
+                    renderer:function(value,p,r){
+                        return '<a href="openClaimDetail.action?id=' + r.data['id'] + '">' + value + '</a>'}},  
+                {header: "Claim Number", width: 250, sortable: true, dataIndex: 'claimNumber'},                
                 {header: "VRN", width: 250, sortable: true, dataIndex: 'vehicleRegistration'},
                 {header: "Invoice Amount", width: 250, sortable: true, 
                     dataIndex: 'invoiceAmount' },
@@ -228,12 +230,12 @@
                     <p>Welcome <b><s:property value="AuthenticatedUser.Username" /></b></p>
                     <s:if test="isCHO=true">
                         <div>
-                            Would you like to upload Your claims? <a href="<s:url action="uploadClaims" namespace="user"/>">click here</a>            
+                            Would you like to upload Your claims? <a href="<s:url action="uploadClaims"/>">click here</a>            
                         </div>
                     </s:if>
                 </td>
                 <td width="50px">
-                    <s:url id="logoff" action="logoff" namespace="/" /><s:a href="%{logoff}">Log Off</s:a>
+                    <a href="<%=request.getContextPath()%>/j_acegi_logout">Log Off</a>
                 </td>
             </tr>
         </table>

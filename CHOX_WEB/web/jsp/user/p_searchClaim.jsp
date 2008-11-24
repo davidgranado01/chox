@@ -48,7 +48,7 @@
                         <tr>                            
                             <td><label>Status</label></td><td><s:select name="status" list="statuses" headerKey="" listKey="value" listValue="text"
                                                                             headerValue="--- ALL ---"
-                                                                        emptyOption="false"></s:select> </td>
+                                                                        emptyOption="false"></s:select></td>
                             <td><label>Line of Business</label></td><td><s:select name="lineOfBusiness" list="lineOfBusinesses" listKey="id" listValue="name" headerKey="-1"
                                                                                       headerValue="--- ALL ---"
                                                                                   emptyOption="false"></s:select></td>
