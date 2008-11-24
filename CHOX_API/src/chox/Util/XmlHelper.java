@@ -21,6 +21,8 @@ public class XmlHelper {
     public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
     public static final String REG_DATE = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])$";
     public static final String REG_VEHICLE_REG = "^((([A-Za-z, ]+[ ]{0,1}[0-9, ]+)|([0-9, ]+[ ]{0,1}[A-Za-z, ]+)))*$";
+    public static final String REG_PHONE = "^[0-9]+$";
+    public static final String REG_BOOLEAN = "^[ynYN]";
     
     public static final Boolean isMAN_Driver_Primary_Driver = false;
     public static final Boolean isMAN_Supplier_Name= true;
