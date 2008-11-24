@@ -33,7 +33,7 @@ public class XmlProcessController {
 
         try {
             
-            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/20081124_TEST2.xml";
+            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/20081124_TEST1.xml";
             Boolean isAllowPartialUpload = true;
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -351,7 +351,9 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
 
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, supplierNode_Name, XmlHelper.isMAN_Supplier_Name, "", childNodeLabel1);
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, supplierNode__Ref, XmlHelper.isMAN_Supplier_Reference, "", childNodeLabel1);
-
+            
+            Claim claim = new Claim();
+            
             if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
                 
                 // RENTAL STATUS
@@ -362,8 +364,6 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                 // CHO INFORMATION
                 String strCHOReference = XmlHelper.getNodeValue(thisElement, supplierNode__Ref);
 
-                Claim claim = new Claim();
-                
                 ClaimService thisCtrl = new ClaimServiceImpl();
                 
                 if(thisCtrl.isClaimReferenceNumberExist(strCHOReference)){
@@ -413,9 +413,9 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                     ChorganisationService chorgService = new ChorganisationServiceImpl();
                     claim.setChorganisation(chorgService.getCurrentCHOrganisation());
                 }
-                
-                xmlParseResult.setClaim(claim);
             }
+            
+            xmlParseResult.setClaim(claim);
         }
         
         return xmlParseResult;
@@ -473,7 +473,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "email", XmlHelper.isMAN_Driver_Email, XmlHelper.REG_EMAIL, childNodeLabel2);
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "primary-driver", XmlHelper.isMAN_Driver_Primary_Driver, "", childNodeLabel2);
 
-                    if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
+                    if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid() /*&& XmlHelper.isNotNull(xmlParseResult.getClaim().getChoReference())*/ ) {
                         
                         Customer customer = new Customer();
                         
@@ -579,12 +579,19 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                 }
                 
                 // GET INSURER INFORMATION
+                /*
                 InsurerService thisISCtrl = new InsurerServiceImpl();
                 Insurer insurer = thisISCtrl.getInsurerByNodeName(thisElement, "name");
-                
-                if(insurer!=null){
-                    xmlParseResult.getClaim().setInsurer(insurer);
-                    customer.setInsurerId(insurer.getId());
+                */
+                String insurerAlliasName = XmlHelper.getNodeValue(thisElement, "name");
+                InsurerAlliasService thisISCtrl = new InsurerAlliasServiceImpl();
+                InsurerAllias insurerallias = thisISCtrl.getInsurerByAlliasName(insurerAlliasName);
+
+                if(insurerallias!=null){
+                    if(insurerallias.getInsurer()!=null){
+                        xmlParseResult.getClaim().setInsurer(insurerallias.getInsurer());
+                        customer.setInsurerId((insurerallias.getInsurer()).getId());
+                    }
                 }else{
                     if(XmlHelper.isMAN_Claim_Customer_Insurer_name){
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Invalid insurer", false);
@@ -684,7 +691,10 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                     thirdparty = xmlParseResult.getClaim().getThirdParty();
                 }
                 
+                
                 // GET INSURER INFORMATION
+                
+                /*
                 InsurerServiceImpl thisISCtrl = new InsurerServiceImpl();
                 Insurer insurer = thisISCtrl.getInsurerByNodeName(thisElement, "name");
                 if(insurer!=null){
@@ -694,7 +704,20 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Invalid insurer", false);
                     }
                 }
-                
+                */
+                String insurerAlliasName = XmlHelper.getNodeValue(thisElement, "name");
+                InsurerAlliasService thisISCtrl = new InsurerAlliasServiceImpl();
+                InsurerAllias insurerallias = thisISCtrl.getInsurerByAlliasName(insurerAlliasName);
+
+                if(insurerallias!=null){
+                    if(insurerallias.getInsurer()!=null){
+                        thirdparty.setInsurer(insurerallias.getInsurer());
+                    }                
+                }else{
+                    if(XmlHelper.isMAN_Claim_ThirdParty_Insurer_Name){
+                        xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Invalid insurer", false);
+                    }
+                }
                  // GET VEHICLE CLASS ID
                 VehicleClass vehicleclass = vehicleClassService.getVehicleClassByNodeName(thisElement, "vehicle-class");
                 if(vehicleclass!=null){
