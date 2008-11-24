@@ -152,7 +152,7 @@ public class XmlProcessController {
          
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
-        //System.out.println(" ** CHO REFERENCE: " + xmlParseResult.getClaim().getChoReference());
+        System.out.println(" ** CHO REFERENCE: " + xmlParseResult.getClaim().getChoReference());
 
         // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
         if(!xmlParseResult.getIsClaimExist()){
