@@ -1,7 +1,7 @@
 package chox.Util;
 
+
 import java.util.ArrayList;
-import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.regex.*;
 import org.w3c.dom.*;
@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import com.filesystemsoftware.utils.XMLUtils;
 import chox.model.*;
+import chox.Util.TextHelper;
 
 public class XmlHelper {
     
@@ -166,7 +167,7 @@ public class XmlHelper {
             
             if(nodeName.equalsIgnoreCase("vehicle-registration")){
                 
-                String vehicleReg = trimString(dataValue);
+                String vehicleReg = TextHelper.trimWhiteSpace(dataValue);
 
                 if((vehicleReg.trim()).length()>8){
                     bFlag = false;
@@ -174,19 +175,6 @@ public class XmlHelper {
             }
         }
         return bFlag;
-    }
-    
-    // TRIM THE STRING TO NO WHITESPACE
-    public static String trimString(String iStr){
-        String oStr = "";
-        
-        for(Integer i=0; i<iStr.length();i++){
-            if(iStr.charAt(i)!=' '){
-                oStr = (oStr + iStr.charAt(i)).trim();
-            }
-        }
-
-        return oStr;
     }
     
     // VALIDATION THE STRING PASSING IN IS NOT NULL AND EMPTY
