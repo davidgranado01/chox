@@ -19,9 +19,24 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
     public static final String COMPLETE = "Complete";
     public static final String CANCELLED = "Cancelled";
     public static final String NEW_CLAIM = "1st Notification";
-    
-     public Claim getClaim(int id) {
-        return (Claim)currentSession.get(Claim.class, id); 
+
+    public Claim getClaim(int id) {
+        return (Claim) currentSession.get(Claim.class, id);
+    }
+
+    public void updateClaim(Claim claim) {
+        
+        currentSession.beginTransaction();
+        try
+        {
+            currentSession.update(claim);
+            currentSession.getTransaction().commit();
+        }
+        catch(Exception ex)
+        {
+            currentSession.getTransaction().rollback();
+        }
+        
     }
 
     public List listAllClaims() {
@@ -65,19 +80,15 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
             criteria.add(Restrictions.eq("invoice.id", searchCriteria.getInvoiceNumber()));
         }
         if (searchCriteria.getClaimNumber() != null && !searchCriteria.getClaimNumber().isEmpty()) {
-            try
-            {
+            try {
                 Integer claimNumber = Integer.parseInt(searchCriteria.getClaimNumber());
                 criteria.add(Restrictions.eq("id", claimNumber));
+            } catch (NumberFormatException ex) {
             }
-            catch(NumberFormatException ex)
-            {
-            
-            }
-            
+
         }
         if (searchCriteria.getVrn() != null && !searchCriteria.getVrn().isEmpty()) {
-            
+
             criteria.createCriteria("vehicleHire").add(Restrictions.eq("vehicleRegistration", searchCriteria.getVrn()));
         }
         if (searchCriteria.getClaimUploadDateFrom() != null && searchCriteria.getClaimUploadDateTo() != null) {
@@ -171,8 +182,6 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
         }
         return xmlParseResult;
     }
-
-   
 }
 
 

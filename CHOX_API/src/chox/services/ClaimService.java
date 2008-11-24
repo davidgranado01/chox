@@ -16,7 +16,7 @@ public interface ClaimService {
     public List searchClaims(ClaimSearchCriteria searchCriteria);
     public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, Boolean isAllowPartialUpload);
     public XMLParseResult saveClaimForXMLUploader(XMLParseResult xmlParseResult);
-    
+    public void updateClaim(Claim claim);
     // CARLSON
     public Boolean isClaimReferenceNumberExist(String sClaimReferenceNumber);
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
