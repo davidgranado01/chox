@@ -18,6 +18,7 @@ import chox.data.HibernateUtil;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import scsbre.engine.*;
 import java.util.List;
+import chox.Util.TextHelper;
 
 public class XmlProcessController {
     
@@ -32,7 +33,7 @@ public class XmlProcessController {
 
         try {
             
-            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/20081123_TEST2.xml";
+            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/20081123_TEST1.xml";
             Boolean isAllowPartialUpload = true;
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -211,6 +212,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             xmlParseResult = saveXMLRecord(xmlParseResult);
         }
         
+        System.out.println(" ** FINAL STATUS CODE: " + xmlParseResult.getUploadStatusCode());
         System.out.println(" ** FINAL STATUS: " + xmlParseResult.getUploadStatus());
         System.out.println(" ** CLAIM EXIST: " + xmlParseResult.getIsClaimExist());
         System.out.println(" ** INVOICE EXIST: " + xmlParseResult.getIsInvoiceExist());
@@ -610,7 +612,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                 customer.setPolicyNumber(XmlHelper.getNodeValue(thisElement, "policy-number"));
                 customer.setClaimReference(XmlHelper.getNodeValue(thisElement, "claim-reference"));
                 customer.setComprehensive(XmlHelper.getBooleanFromNode(thisElement, "comprehensive"));
-                customer.setVehicleRegistration(XmlHelper.getNodeValue(thisElement, "vehicle-registration"));
+                customer.setVehicleRegistration(TextHelper.trimWhiteSpace(XmlHelper.getNodeValue(thisElement, "vehicle-registration")));
                 customer.setVehicleManufacturer(XmlHelper.getNodeValue(thisElement, "vehicle-manufacturer"));
                 customer.setVehicleModel(XmlHelper.getNodeValue(thisElement, "vehicle-model"));
                 customer.setIsUsable(XmlHelper.getBooleanFromNode(thisElement, "usable"));
@@ -714,7 +716,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                 // SET THIRD PARTY INFORMATION
                 thirdparty.setPolicyNumber(XmlHelper.getNodeValue(thisElement, "policy-number"));
                 thirdparty.setClaimReference(XmlHelper.getNodeValue(thisElement, "claim-reference"));
-                thirdparty.setVehicleRegistration(XmlHelper.getNodeValue(thisElement, "vehicle-registration"));
+                thirdparty.setVehicleRegistration(TextHelper.trimWhiteSpace(XmlHelper.getNodeValue(thisElement, "vehicle-registration")));
                 thirdparty.setVehicleManufacturer(XmlHelper.getNodeValue(thisElement, "vehicle-manufacturer"));
                 thirdparty.setVehicleModel(XmlHelper.getNodeValue(thisElement, "vehicle-model"));
                 thirdparty.setAddress1(XmlHelper.getNodeValue(thisElement, "address1"));
