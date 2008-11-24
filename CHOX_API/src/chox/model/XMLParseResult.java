@@ -167,6 +167,7 @@ public class XMLParseResult {
                 sStatus = UploadStatus.CLAIM_UPLOAD_SUCCESSFUL;
             }else{
                 sStatus = UploadStatus.CLAIM_UPLOAD_FAILED;
+                this.claim.status="";
             }
             
         }else{
