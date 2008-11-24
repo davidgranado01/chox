@@ -174,7 +174,7 @@ public class XMLParseResult {
         }else{
             
             // CLAIM EXIST
-            if(this.sExistingClaimStatus.equalsIgnoreCase("ClaimUnacknowledged")){
+            if(this.sExistingClaimStatus.equalsIgnoreCase("ClaimUnrouted")){
                 
                 sStatus = "Claim already exist";
                 
