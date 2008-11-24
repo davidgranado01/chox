@@ -32,7 +32,7 @@ public class XmlProcessController {
 
         try {
             
-            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/20081123_TEST1.xml";
+            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/20081123_TEST2.xml";
             Boolean isAllowPartialUpload = true;
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -151,8 +151,8 @@ public class XmlProcessController {
          
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
-        System.out.println(" ** getIsSchemaValid: " + xmlParseResult.getClaim().getChoReference());
-                
+        System.out.println(" ** CHO REFERENCE: " + xmlParseResult.getClaim().getChoReference());
+
         // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
         if(!xmlParseResult.getIsClaimExist()){
             xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);
@@ -163,7 +163,7 @@ public class XmlProcessController {
         xmlParseResult = RentalRepairSchemaValidation(currentSession, xmlParseResult, root, doc);
         xmlParseResult = RentalVehiclesSchemaValidation(currentSession, xmlParseResult, root, doc);
         
-        xmlParseResult.setSExistingClaimStatus(xmlParseResult.getClaim().getStatus());
+        
 
         if(xmlParseResult.getClaim().getInvoice()!=null){
             xmlParseResult.setIsInvoiceExist(true);
@@ -211,7 +211,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             xmlParseResult = saveXMLRecord(xmlParseResult);
         }
         
-        System.out.println(" ** FINAL STATUS: " + xmlParseResult.getStatus());
+        System.out.println(" ** FINAL STATUS: " + xmlParseResult.getUploadStatus());
         System.out.println(" ** CLAIM EXIST: " + xmlParseResult.getIsClaimExist());
         System.out.println(" ** INVOICE EXIST: " + xmlParseResult.getIsInvoiceExist());
         System.out.println(" ** CLAIM STATUS: " + xmlParseResult.getClaim().getStatus());
@@ -272,7 +272,8 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             
             RuleEvaluation rv = results.get(iCount);
             
-            if(rv.getIsVisibleToCHO()){
+            if(rv.getIsVisibleToCHO() && rv.getResult()==RuleEvaluationResult.RuleFailed){
+                
                 existingErrorMsg = XmlHelper.XMLResultDelimeterContructor(existingErrorMsg, rv.toString());
             }
         }
@@ -354,7 +355,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
                 
                 // RENTAL STATUS
-                String strStatus = XmlHelper.getNodeValue(mainElement, claimHeaderNode_RentalStatus);
+                //String strStatus = XmlHelper.getNodeValue(mainElement, claimHeaderNode_RentalStatus);
                 Boolean bManagingRepair = XmlHelper.getBooleanFromNode(mainElement, claimHeaderNode_ManagiRepair);
                 Timestamp tFirstContactDate = XmlHelper.getTimeStampFromNode(mainElement, claimHeaderNode_FirstCOntact);
                 
@@ -373,6 +374,9 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                     // GET EXISTING CLAIM INFORMATION
                     ClaimService claimService = new ClaimServiceImpl();
                     claim = claimService.getClaimByCHOReferenceNumber(strCHOReference);
+                    
+                    // LOG CLAIM CURRENT STATUS
+                    xmlParseResult.setSExistingClaimStatus(claim.getStatus());
                     
                     // HARDCODE CHO BAND INFORMATION
                     ChoBand choband = new ChoBand();
@@ -403,7 +407,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                     // SET CLAIM HEADER INFORMATION
                     claim.setManagingRepair(bManagingRepair);
                     claim.setPolicyHolderContactDate(tFirstContactDate);
-                    claim.setStatus(ClaimStatus.CLAIM_UNROUNTED);
+                    //claim.setStatus(ClaimStatus.CLAIM_UNROUNTED);
                     claim.setChoReference(strCHOReference);
                     
                     ChorganisationService chorgService = new ChorganisationServiceImpl();
@@ -519,12 +523,18 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         
         // VALIDATE CLAIM HEADER SECTION
         if (xmlParseResult.getIsCurrentScheValid()) {
+
             Element claimNodeElement = XMLUtils.getElement(root, nodeName);
             xmlParseResult = ClaimDetail_CustomerSchemaValidation(xmlParseResult, claimNodeElement, childNodeLabelMain);
             xmlParseResult = ClaimDetail_ThirdPartySchemaValidation(xmlParseResult, claimNodeElement, childNodeLabelMain);
             xmlParseResult = ClaimDetail_IncidentSchemaValidation(xmlParseResult, claimNodeElement, doc, childNodeLabelMain);
+            
+            // SET CLAIM STATUS
+            if (xmlParseResult.getIsCurrentScheValid() && xmlParseResult.getIsCurrentDataValid()) {
+                xmlParseResult.getClaim().setStatus(ClaimStatus.CLAIM_UNROUNTED);
+                xmlParseResult.setSExistingClaimStatus(xmlParseResult.getClaim().getStatus());
+            }
         }
-
         return xmlParseResult;
     }
 
@@ -646,7 +656,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             
             // ONLY SET TO MANDATORY WHEN IN STAGE 2
             Boolean isClaimReferenceNumberMandatory = false;
-            if(!(xmlParseResult.getClaim().getStatus().equalsIgnoreCase(XMLParseResult.IN_PROGRESS))){
+            if(xmlParseResult.getIsClaimExist()){
                 isClaimReferenceNumberMandatory = XmlHelper.isMAN_Claim_ThirdParty_Insurer_ClaimReference;
             }
             
