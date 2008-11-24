@@ -51,9 +51,7 @@ public class ClaimStatus {
     }
     
     public static String getUploadStatus(String sClaimStatus){
-        
         String rStatus = "";
-        
         if(sClaimStatus.equalsIgnoreCase(INVOICE_APPROVED)){
             rStatus = "Invoice Approved";
         }else if(sClaimStatus.equalsIgnoreCase(INVOICE_ESCALATED)){
@@ -63,7 +61,6 @@ public class ClaimStatus {
         }else if(sClaimStatus.equalsIgnoreCase(INVOICE_CALCULATION_INCORRECT)){
             rStatus = "Invoice Data Calculation Incorrect";
         }
-        
         return rStatus;
     }
     

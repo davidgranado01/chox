@@ -157,8 +157,8 @@ public class XMLParseResult {
         return bFlag;
     }
     
-    public String getStatus() {
-        
+    public String getUploadStatus() {
+
         String sStatus = "";
         
         if(!this.isClaimExist){
@@ -167,8 +167,8 @@ public class XMLParseResult {
             if(getSchemaDataValidation()){
                 sStatus = "Claim Uploaded";
             }else{
-                sStatus = "Upload Rejected";
-                this.claim.status = "-";
+                sStatus = "Claim Upload Failed";
+                //this.claim.status = "-";
             }
             
         }else{
@@ -188,11 +188,10 @@ public class XMLParseResult {
 
                     if(getSchemaDataValidation()){
                         
-                        //sStatus = "Invoice Uploaded";
                         sStatus = ClaimStatus.getUploadStatus(this.claim.status);
                         
                     }else{
-                        sStatus = "Upload Rejected";
+                        sStatus = "Invoice Upload Failed";
                     }
                 }
 
@@ -208,9 +207,7 @@ public class XMLParseResult {
                 }
             }
         }
-        
         return sStatus;
-        //return (this.isDataValid && this.isSchemaValid) ? "Ok" : "Error";
     }
 
     public String[] getDataValidationRemarkInList() {
