@@ -33,7 +33,7 @@ public class XmlProcessController {
 
         try {
             
-            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/20081124_TEST3.xml";
+            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/20081124_TEST2.xml";
             Boolean isAllowPartialUpload = true;
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -1540,7 +1540,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                 }
             }
             
-            vehiclehire.setVehicleRegistration(XmlHelper.getNodeValue(mainElement, "vehicle-registration"));
+            vehiclehire.setVehicleRegistration(TextHelper.trimWhiteSpace(XmlHelper.getNodeValue(mainElement, "vehicle-registration")));
             vehiclehire.setVehicleManufacturer(XmlHelper.getNodeValue(mainElement, "vehicle-manufacturer"));
             vehiclehire.setVehicleModel(XmlHelper.getNodeValue(mainElement, "vehicle-model"));
             vehiclehire.setRentalStart(XmlHelper.getTimeStampFromNode(mainElement, "rental-start"));
