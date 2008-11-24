@@ -91,7 +91,7 @@ public class RulesTest3 {
         assertTrue(results.get(19).getResult() == RuleEvaluationResult.RuleSkipped);
         
         
-        assertTrue(res.getStatus() == ClaimStatus.AwaitingPaymentPack);
+        assertTrue(res.getStatus() == ClaimStatus.InvoiceDataCalculationIncorrect);
         
     }
     

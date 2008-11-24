@@ -21,6 +21,7 @@ public class RulesEngine {
     }
 
     public RulesEngineResponse ResolveStatus() {
+        
         RulesEngineResponse response = new RulesEngineResponse();
         response.addRuleEvaulation(new HasAllowedVehicleClass().applyToClaim(claim));
         response.addRuleEvaulation(new HasCalculatedCorrectDailyRate().applyToClaim(claim));

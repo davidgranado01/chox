@@ -18,21 +18,29 @@ public class RulesEngineResponse {
     }
 
     public ClaimStatus getStatus() {
-
         if (status == null) {
+            boolean foundInvoiceDataCalculationIncorrect = false;
             boolean foundAwaitingPaymentPack = false;
             boolean foundFailedRule = false;
             for (int i = 0; i < results.size(); i++) {
                 RuleEvaluation rev = results.get(i);
                 if (rev.getResult() == RuleEvaluationResult.RuleFailed) {
                     foundFailedRule = true;
-                    if (rev.getRelatedRule().getStatusAfterFailure() == ClaimStatus.AwaitingPaymentPack) {
+                    if (rev.getRelatedRule().getStatusAfterFailure() 
+                            == ClaimStatus.InvoiceDataCalculationIncorrect) {
+                        foundInvoiceDataCalculationIncorrect = true;
+                    }         
+                    if (rev.getRelatedRule().getStatusAfterFailure() 
+                            == ClaimStatus.AwaitingPaymentPack) {
                         foundAwaitingPaymentPack = true;
                     }
                 }
             }
             if (foundFailedRule) {
-                if (foundAwaitingPaymentPack) {
+                if(foundInvoiceDataCalculationIncorrect){
+                    status = ClaimStatus.InvoiceDataCalculationIncorrect;
+                }
+                else if (foundAwaitingPaymentPack) {
                     status = ClaimStatus.AwaitingPaymentPack;
                 } else {
                     status =  ClaimStatus.InvoiceEscalated;
@@ -41,7 +49,6 @@ public class RulesEngineResponse {
             else{
                 status = ClaimStatus.InvoiceApproved;
             }
-
         }
         return status;
     }
