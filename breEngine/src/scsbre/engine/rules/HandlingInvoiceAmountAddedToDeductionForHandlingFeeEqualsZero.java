@@ -27,7 +27,10 @@ public class HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero imple
         RuleEvaluation res = new RuleEvaluation();
         
         IInvoiceInfo invoice = claim.getInvoice();
-        boolean success = CalcHelper.EqualTo(invoice.getDiscount(), BigDecimal.ZERO);
+       // boolean success = CalcHelper.EqualTo(invoice.getDiscount(), BigDecimal.ZERO);
+        
+        BigDecimal sum = invoice.getClaimsHandlingInvoiceAmount().add(invoice.getDeductionForClaimsHandlingFee());
+        boolean success = CalcHelper.EqualTo(sum, BigDecimal.ZERO);        
         
         res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(true);
@@ -38,7 +41,7 @@ public class HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero imple
     } 
 
     public String getNarrative() {
-        return "Total to Pay calculation is incorrect.";
+        return "The sum of Claims Handling Invoice Amount and Less Claims Handling Fee does not equate to 0.";
     }
 
     public String getRuleId() {
