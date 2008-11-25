@@ -53,5 +53,10 @@
     <property column="created_date" name="createdDate" not-null="true"/>
     <property column="last_nodified_by" name="lastNodifiedBy" not-null="true"/>
     <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
+    <property column="is_payment_mode" name="isPaymentMode"/>
+    <property column="is_engineer_decision_approved" name="isEngineerDecisionApproved"/>
+    <property column="engineer_invoice_review_notes" name="engineerInvoiceReviewNotes"/>
+    <property column="rejection_reason" name="rejectionReason"/>
+    
   </class>
 </hibernate-mapping>

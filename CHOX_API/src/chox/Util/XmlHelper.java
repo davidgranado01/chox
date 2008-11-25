@@ -21,15 +21,19 @@ public class XmlHelper {
     public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
     public static final String REG_DATE = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])$";
     public static final String REG_VEHICLE_REG = "^((([A-Za-z, ]+[ ]{0,1}[0-9, ]+)|([0-9, ]+[ ]{0,1}[A-Za-z, ]+)))*$";
-    public static final String REG_PHONE = "^[0-9 ]+$";
+    public static final String REG_PHONE = "";
     public static final String REG_BOOLEAN = "^[ynYN]";
     
+    // CLAIM HEADER
     public static final Boolean isMAN_Driver_Primary_Driver = false;
     public static final Boolean isMAN_Supplier_Name= true;
     public static final Boolean isMAN_First_Contact= true;
     public static final Boolean isMAN_Status = true;
     public static final Boolean isMAN_Managing_Repair= true;
     public static final Boolean isMAN_Supplier_Reference= true;
+    public static final Boolean isMAN_DateTimeCreditAgreementSigned = false;
+    public static final Boolean isMAN_GTANoticeDate = false;
+    
     public static final Boolean isMAN_Driver_Address1= true;
     public static final Boolean isMAN_Driver_Address2= false;
     public static final Boolean isMAN_Driver_Address3= false;
@@ -53,6 +57,7 @@ public class XmlHelper {
     public static final Boolean isMAN_Claim_Customer_Vehicle_Registration= true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Damage= true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_InitialEcd= false;
+    public static final Boolean isMAN_Claim_Customer_Vehicle_TotalLoss= true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Usable= true;
     public static final Boolean isMAN_Repair_engineerReport_address1= false;
     public static final Boolean isMAN_Repair_engineerReport_address2= false;
@@ -196,18 +201,21 @@ public class XmlHelper {
         return sOutput;
     }
     
-    public static String contructureDataMandatoryErrorMessage(String strPath, String nodeName){
-        String sMsg = ("Cannot be Empty <"+strPath+":"+nodeName+">").toUpperCase();
+    /*
+     * No <Field Name> supplied for <Bordereur Section>. Please resubmit with this information
+     */
+    public static String contructureDataMandatoryErrorMessage(String strSectionName, String strFieldName){
+        String sMsg = String.format("No %s supplied for %s. Please resubmit with this information.", strFieldName, strSectionName);
         return XMLResultDelimeterContructor("", sMsg);
     }
     
-    public static String contructureIncorrectTypeErrorMessage(String strPath, String nodeName){
-        String sMsg = ("Invalid Data Format for <"+strPath+":"+nodeName+">").toUpperCase();
+    public static String contructureIncorrectTypeErrorMessage(String strSectionName, String strFieldName){
+        String sMsg = String.format("Invalid or incorrect character in %s for %s", strFieldName, strSectionName);
         return XMLResultDelimeterContructor("", sMsg);
     }
     
-    public static String contructureSchemaErrorMessage(String strPath, String nodeName){
-        String sMsg = ("Incorrect XML Schema for <"+strPath+":"+nodeName+"> element").toUpperCase();
+    public static String contructureSchemaErrorMessage(String strSectionName){
+        String sMsg = String.format("Incorrect XML Schema for %s.", strSectionName);
         return XMLResultDelimeterContructor("", sMsg);
     }
     
@@ -218,21 +226,7 @@ public class XmlHelper {
         }
         return strReturn;
     }
-    
-    public static String contructureErrorMessage(String strPath, String nodeName){
-        String returnStr = strPath;
         
-        if(!nodeName.equalsIgnoreCase("")){
-            if(returnStr.length()>0){
-                returnStr = returnStr + ":" + nodeName;
-            }else{
-                returnStr = nodeName;
-            }
-        }
-        
-        return returnStr.toUpperCase();
-    }
-    
     public static String getEmailAddressFromNode(Element thisElement, String thisNodeName){
         int iMaxEmailLenght = 64;
         
@@ -320,7 +314,7 @@ public class XmlHelper {
             sOldMsg = xmlParseResult.getDataValidationRemark();
         }
         
-        String sNewMsg = sOldMsg + XmlHelper.contructureErrorMessage(sOldMsg, errorMessage);
+        String sNewMsg = sOldMsg + XmlHelper.XMLResultDelimeterContructor(sOldMsg, errorMessage);
         
         if(isSchemaError){
             xmlParseResult.setSchemaValidationRemark(sNewMsg);
@@ -341,12 +335,13 @@ public class XmlHelper {
             String nodeName,
             Boolean isMandatory,
             String regExpression,
-            String strPath) {
+            String strSectionName, 
+            String nodeNameDesc) {
         
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, root, nodeName, strPath);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, root, nodeName, strSectionName);
 
         if (xmlParseResult.getIsCurrentScheValid()) {
-            xmlParseResult = xmlSchemaValueValidation(xmlParseResult, root, nodeName, isMandatory, regExpression, strPath);
+            xmlParseResult = xmlSchemaValueValidation(xmlParseResult, root, nodeName, isMandatory, regExpression, strSectionName, nodeNameDesc);
         }
 
         return xmlParseResult;
@@ -357,7 +352,7 @@ public class XmlHelper {
         XMLParseResult xmlParseResult, 
         Element root, 
         String nodeName,
-        String strPath) {
+        String strSectionName) {
 
         Boolean bFlag = true;
         String SchemaValidationRemark = xmlParseResult.getSchemaValidationRemark();
@@ -366,7 +361,7 @@ public class XmlHelper {
 
         if (thisElement == null) {
 
-            SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strPath, nodeName);
+            SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strSectionName);
             bFlag = false;
         }
 
@@ -383,12 +378,12 @@ public class XmlHelper {
             XMLParseResult xmlParseResult,
             ArrayList<Element> thisElements,
             String nodeName,
-            String strPath) {
+            String strSectionName) {
 
         String SchemaValidationRemark = xmlParseResult.getSchemaValidationRemark();
 
         if (thisElements.size() <= 0) {
-            SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strPath, nodeName);
+            SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strSectionName);
             xmlParseResult.setSchemaValidationRemark(SchemaValidationRemark);
             xmlParseResult.setIsSchemaValid(false);
             xmlParseResult.setIsCurrentScheValid(false);
@@ -403,7 +398,8 @@ public class XmlHelper {
             String nodeName,
             Boolean isMandatory,
             String regExpression,
-            String strPath) {
+            String strSectionName,
+            String nodeNameDesc) {
 
         Boolean bFlag = true;
 
@@ -417,12 +413,12 @@ public class XmlHelper {
 
             if (thisElementValue == null || thisElementValue.trim().length() == 0) {
                 if (isMandatory) {
-                    DataValidationRemark = DataValidationRemark + XmlHelper.contructureDataMandatoryErrorMessage(strPath, nodeName);
+                    DataValidationRemark = DataValidationRemark + XmlHelper.contructureDataMandatoryErrorMessage(strSectionName, nodeNameDesc);
                     bFlag = false;
                 }
             } else {
                 if (!XmlHelper.isValidDataType(thisElementValue, regExpression, nodeName)) {
-                    DataValidationRemark = DataValidationRemark + XmlHelper.contructureIncorrectTypeErrorMessage(strPath, nodeName);
+                    DataValidationRemark = DataValidationRemark + XmlHelper.contructureIncorrectTypeErrorMessage(strSectionName, nodeNameDesc);
                     bFlag = false;
                 }
             }

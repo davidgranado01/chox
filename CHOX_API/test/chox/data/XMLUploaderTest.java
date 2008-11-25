@@ -5,13 +5,7 @@
 
 package chox.data;
 
-import org.hibernate.Session;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import java.io.File;
 import org.w3c.dom.*;
 import java.util.ArrayList;
@@ -21,11 +15,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import com.filesystemsoftware.utils.XMLUtils;
 import com.filesystemsoftware.utils.Logger;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import chox.model.*;
-import org.hibernate.Session;
-import chox.data.HibernateUtil;
 import chox.services.XmlProcessController;
 
 public class XMLUploaderTest {
@@ -69,12 +59,12 @@ public class XMLUploaderTest {
 
                     try {
                         count++;
-                        
+                        /*
                         XmlProcessController thisCtrl = new XmlProcessController();
                         XMLParseResult xmlParseResult = new XMLParseResult();
                         xmlParseResult = thisCtrl.xmlSchemaValidateProcess(xmlParseResult, doc, re, sUpdateType, isAllowPartialUpload);
                         xmlParseResults.add(xmlParseResult);
-
+                        */
                     } catch (Exception e) {
                         Logger.err.println("Error loading record " + count);
                         throw e;

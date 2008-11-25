@@ -97,6 +97,13 @@ public class Claim implements Serializable, IClaimInfo {
      * This attribute maps to the column claim_number in the claim table.
      */
     private String claimNumber;
+    protected Date creditAgreementDate;
+    protected Date gtaNoticeDate;
+    protected BigDecimal indemintyAmount;
+    protected BigDecimal percentageLiabilityAccepted;
+    protected boolean isQuantumDispute;
+    protected String engineerClaimReviewNotes;
+    protected boolean isInvoiceReviewRequired;
 
     /**
      * Method 'Claim'
@@ -490,4 +497,62 @@ public class Claim implements Serializable, IClaimInfo {
     public void setClaimNumber(String claimNumber) {
         this.claimNumber = claimNumber;
     }
+
+    public Date getCreditAgreementDate() {
+        return creditAgreementDate;
+    }
+
+    public void setCreditAgreementDate(Date creditAgreementDate) {
+        this.creditAgreementDate = creditAgreementDate;
+    }
+
+    public Date getGtaNoticeDate() {
+        return gtaNoticeDate;
+    }
+
+    public void setGtaNoticeDate(Date gtaNoticeDate) {
+        this.gtaNoticeDate = gtaNoticeDate;
+    }
+
+    public String getEngineerClaimReviewNotes() {
+        return engineerClaimReviewNotes;
+    }
+
+    public void setEngineerClaimReviewNotes(String engineerClaimReviewNotes) {
+        this.engineerClaimReviewNotes = engineerClaimReviewNotes;
+    }
+
+    public BigDecimal getIndemintyAmount() {
+        return indemintyAmount;
+    }
+
+    public void setIndemintyAmount(BigDecimal indemintyAmount) {
+        this.indemintyAmount = indemintyAmount;
+    }
+
+    public boolean isIsInvoiceReviewRequired() {
+        return isInvoiceReviewRequired;
+    }
+
+    public void setIsInvoiceReviewRequired(boolean isInvoiceReviewRequired) {
+        this.isInvoiceReviewRequired = isInvoiceReviewRequired;
+    }
+
+    public boolean isIsQuantumDispute() {
+        return isQuantumDispute;
+    }
+
+    public void setIsQuantumDispute(boolean isQuantumDispute) {
+        this.isQuantumDispute = isQuantumDispute;
+    }
+
+    public BigDecimal getPercentageLiabilityAccepted() {
+        return percentageLiabilityAccepted;
+    }
+
+    public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
+        this.percentageLiabilityAccepted = percentageLiabilityAccepted;
+    }
+    
+    
 }

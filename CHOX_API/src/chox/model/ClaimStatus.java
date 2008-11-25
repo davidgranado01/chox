@@ -26,7 +26,7 @@ public class ClaimStatus {
     public static final String AWAITING_PAYMENT_PACK = "AwaitingPaymentPack";
     public static final String PAYMENT_PACK_SUPPLIED = "PaymentPackSupplied";
     public static final String INVOICE_REJECTED_ACCEPTED = "InvoiceRejectionAccepted";
-    public static final String CLAIM_UNROUNTED = "ClaimUnrouted";
+    public static final String CLAIM_UNROUNTED = "ClaimUnacknowledgedUnrouted";
     
     // NEW STATUS
     public static final String INVOICE_CALCULATION_INCORRECT = "InvoiceDataCalculationIncorrect";

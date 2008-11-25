@@ -14,6 +14,13 @@
     <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
     <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
     <property column="claim_number" name="claimNumber"/>
+    <property column="gta_notice_date" name="gtaNoticeDate"/>
+    <property column="credit_agreement_date" name="creditAgreementDate"/>
+    <property column="indeminty_amount" name="indemintyAmount"/>
+    <property column="percentage_liability_accepted" name="percentageLiabilityAccepted"/>
+    <property column="is_quantum_dispute" name="isQuantumDispute"/>
+    <property column="engineer_claim_review_notes" name="engineerClaimReviewNotes"/>
+    <property column="is_invoice_review_required" name="isInvoiceReviewRequired"/>    
     <many-to-one class="chox.model.Chorganisation" column="chorganisation_id" lazy="false" name="chorganisation"/>
     <many-to-one class="chox.model.Customer" column="customer_id" lazy="false" name="customer"/>
     <many-to-one class="chox.model.EngineerReport" column="engineer_report_id" lazy="false" name="engineerReport"/>

@@ -162,6 +162,9 @@ public class Customer implements Serializable, ICustomerVehicleDamageInfo
 	 * This attribute represents the foreign key relationship to the vehicle_class table.
 	 */
 	protected VehicleClass vehicleClass;
+        
+        
+        protected Boolean isTotalLoss;
 
 	/**
 	 * Method 'Customer'
@@ -790,4 +793,14 @@ public class Customer implements Serializable, ICustomerVehicleDamageInfo
 	{
 		this.vehicleClass = vehicleClass;
 	}
+
+    public Boolean getIsTotalLoss() {
+        return isTotalLoss;
+    }
+
+    public void setIsTotalLoss(Boolean isTotalLoss) {
+        this.isTotalLoss = isTotalLoss;
+    }
+        
+        
 }

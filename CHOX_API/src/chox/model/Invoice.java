@@ -252,6 +252,10 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo
 	 * This attribute maps to the column last_modified_date in the invoice table.
 	 */
 	protected Date lastModifiedDate;
+        protected boolean isPaymentMode;
+        protected boolean isEngineerDecisionApproved;
+        protected String engineerInvoiceReviewNotes;
+        protected String rejectionReason;
 
 	/**
 	 * Method 'Invoice'
@@ -1221,4 +1225,36 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo
 		this.lastModifiedDate = lastModifiedDate;
 	}
 
+    public String getEngineerInvoiceReviewNotes() {
+        return engineerInvoiceReviewNotes;
+    }
+
+    public void setEngineerInvoiceReviewNotes(String engineerInvoiceReviewNotes) {
+        this.engineerInvoiceReviewNotes = engineerInvoiceReviewNotes;
+    }
+
+    public boolean isIsEngineerDecisionApproved() {
+        return isEngineerDecisionApproved;
+    }
+
+    public void setIsEngineerDecisionApproved(boolean isEngineerDecisionApproved) {
+        this.isEngineerDecisionApproved = isEngineerDecisionApproved;
+    }
+
+    public boolean isIsPaymentMode() {
+        return isPaymentMode;
+    }
+
+    public void setIsPaymentMode(boolean isPaymentMode) {
+        this.isPaymentMode = isPaymentMode;
+    }
+
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
+    }
+        
 }

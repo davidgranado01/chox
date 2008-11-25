@@ -1,5 +1,6 @@
 package chox.model;
 
+import chox.Util.UploadStatus;
 import java.util.ArrayList;
 import org.hibernate.Session;
 import chox.Util.TextHelper;
