@@ -1,0 +1,169 @@
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('S1','28.02',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('BI','30.79',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('S2','31.77',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('PV1','33.87',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('S3','33.9',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('B2','35.97',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('S4','36.33',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('S5','38.42',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('PV2','39.3',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('PV3','39.3',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('S6','40.95',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('T1','42.44',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('PV4','43.57',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('PV5','45.78',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('CP1','46.06',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('PV6','47.97',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('CV1','48.97',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('T5','49.68',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('CV2','50.26',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('B3','50.72',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('M1',' 51.75',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('T3','51.75',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('CP2','52.27',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('T14','53.82',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('CV3','52.83',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('CS1','54.08',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('T7','56.93',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('S7','57.44',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('CS2','57.84',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('T2','57.96',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('M2',' 59.00',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('CP3','59.51',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('CM1','59.91',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('B4','61.07',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('CS3','62.1',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('RV1','65.46',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('CS4','65.86',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('T4','68.31',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('CM2','69.31',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('M3',' 69.35',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('SP1','69.74',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('CS5','70.12',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('B5','70.38',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('T6','70.38',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('P1','72.45',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('B6','72.45',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('CV4','75.27',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('T8','77.63',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('CM3','78.5',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('P2','80.73',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('SP2','81.51',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('P3','85.91',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('F1','86.94',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('M4',' 87.98',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('RV2','90.51',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('SP3','91.08',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('F2','93.15',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('F3','100.4',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('P4','104.54',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('SP4','111.78',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('T10','113.85',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('SP5','122.13',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('F4','123.17',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('T12','129.38',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('P5','130.41',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('M5',' 131.96',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('P6','155.25',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('T9','155.25',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('F5','165.6',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('M6','167.15',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('SP6','170.78',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('P7','181.13',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('F6','186.3',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('SP7','191.48',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('P8','207',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('SP8','212.18',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('F7','217.35',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('T13','217.35',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('F8','232.88',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('SP9','232.88',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('P9','238.05',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('SP10','266.51',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('F9','284.63',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('P10','292.91',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('SP11','320.85',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('P11','411.41',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('SP12','421.76',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('SP13','615.83',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('P12','615.83',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('P12','615.83',999,999);
+INSERT INTO vehicle_class (name, price, created_by, last_modified_by) values ('Unattached','0.00',999,999);
+
+insert into insurer (name, created_by, last_modified_by) values ('RSA', 999, 999);
+insert into insurer (name, created_by, last_modified_by) values ('ROYAL & SUN ALLIANCE', 999, 999);
+insert into insurer (name, created_by, last_modified_by) values ('Diamond', 999, 999);
+insert into insurer (name, created_by, last_modified_by) values ('RBS', 999, 999);
+insert into insurer (name, created_by, last_modified_by) values ('Norwich Union', 999, 999);
+insert into insurer (name, created_by, last_modified_by) values ('Highway', 999, 999);
+insert into insurer (name, created_by, last_modified_by) values ('TOYOTA INSURANCE', 999, 999);
+insert into insurer (name, created_by, last_modified_by) values ('MORE THAN INSURANCE', 999, 999);
+insert into insurer (name, created_by, last_modified_by) values ('Direct Line', 999, 999);
+insert into insurer (name, created_by, last_modified_by) values ('Dimond', 999, 999);
+
+-- ############################################################################################
+-- START VERSION 2.1 - 2008-11-25
+-- ############################################################################################
+
+ALTER TABLE web_user DROP COLUMN role_id;
+
+-----------------------------------------------------------------------------------------------
+
+CREATE TABLE web_user_user_role
+(
+  id serial NOT NULL,
+  web_user_id integer,
+  wer_user_role_id integer,
+  created_by integer NOT NULL,
+  created_date timestamp without time zone NOT NULL DEFAULT now(),
+  last_modified_by integer NOT NULL,
+  last_modified_date timestamp without time zone NOT NULL DEFAULT now(),
+  is_active boolean NOT NULL DEFAULT true,
+  CONSTRAINT web_user_user_role_pkey PRIMARY KEY (id),
+  CONSTRAINT web_user_fkey FOREIGN KEY (web_user_id)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT web_user_role_fkey FOREIGN KEY (wer_user_role_id)
+      REFERENCES web_user_role (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (OIDS=FALSE);
+ALTER TABLE web_user_user_role OWNER TO postgres;
+
+-----------------------------------------------------------------------------------------------
+
+CREATE TABLE insurer_allias
+(
+  insurer_id integer NOT NULL,
+  allias_name character varying NOT NULL,
+  created_by integer NOT NULL,
+  created_date timestamp without time zone NOT NULL DEFAULT now(),
+  last_modified_by integer NOT NULL,
+  last_modified_date timestamp without time zone NOT NULL DEFAULT now(),
+  id serial NOT NULL
+)
+WITH (OIDS=FALSE);
+ALTER TABLE insurer_allias OWNER TO postgres;
+
+-----------------------------------------------------------------------------------------------
+
+delete from insurer_allias;
+insert into insurer_allias (insurer_id, allias_name, created_by, last_modified_by) values (3,'ROYAL & SUN ALLIANCE',999,999);
+insert into insurer_allias (insurer_id, allias_name, created_by, last_modified_by) values (3,'TOYOTA INSURANCE',999,999);
+insert into insurer_allias (insurer_id, allias_name, created_by, last_modified_by) values (3,'VOLVO INSURANCE',999,999);
+insert into insurer_allias (insurer_id, allias_name, created_by, last_modified_by) values (3,'ROYAL AND SUN ALLIANCE',999,999);
+insert into insurer_allias (insurer_id, allias_name, created_by, last_modified_by) values (3,'LANDROVER INSURANCE',999,999);
+insert into insurer_allias (insurer_id, allias_name, created_by, last_modified_by) values (3,'RSA Motobility',999,999);
+insert into insurer_allias (insurer_id, allias_name, created_by, last_modified_by) values (3,'ROYAL & SUN ALLIANCE MOTABILITY',999,999);
+insert into insurer_allias (insurer_id, allias_name, created_by, last_modified_by) values (3,'MORE THAN INSURANCE',999,999);
+
+
+-- ############################################################################################
+-- START VERSION 2.2 - 2008-11-26
+-- ############################################################################################
+
+-- NEW INSURER ALLIAS
+insert into insurer_allias (insurer_id, allias_name, created_by, last_modified_by) values (3,'RSA',999,999);
+
+-----------------------------------------------------------------------------------------------
+
