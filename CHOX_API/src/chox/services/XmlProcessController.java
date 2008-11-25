@@ -336,7 +336,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         Claim claim = new Claim();
         
         // CHO ORGANISATION SECTION
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "supplier", strSectionName);
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "supplier", strSectionName, "");
         
         if (xmlParseResult.getIsCurrentScheValid() && xmlParseResult.getIsCurrentDataValid()) {
             
@@ -424,7 +424,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
 
         // VALIDATE RENTAL SECTION
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "drivers", strSectionName);
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "drivers", strSectionName, "");
         
         if (xmlParseResult.getIsCurrentScheValid()) {
             
@@ -435,7 +435,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             ArrayList<Element> driverElements = XMLUtils.getElements(doc, thisElement, "driver");
             
             // VALIDATE DRIVERS LIST
-            xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, driverElements, "driver", strSectionName);
+            xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, driverElements, "driver", strSectionName, "");
             
             if (xmlParseResult.getIsCurrentScheValid()) {
                 
@@ -498,7 +498,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
 
         // RESET FLAG VALIDATION
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, root, "claim", "Claim Details");
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, root, "claim", "Claim Details", "");
         
         // VALIDATE CLAIM HEADER SECTION
         if (xmlParseResult.getIsCurrentScheValid()) {
@@ -524,9 +524,9 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         // String childNodeLabel2 = XmlHelper.contructureErrorMessage(childNodeLabelMain, nodeName2);
 
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "customer", strSectionName);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "insurer", strSectionName);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "vehicle", strSectionName);
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "customer", strSectionName, "");
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "insurer", strSectionName, "");
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "vehicle", strSectionName, "");
 
         if (xmlParseResult.getIsCurrentScheValid()) {
 
@@ -620,10 +620,10 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         */
         
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "third-party", strSectionName);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "insurer", strSectionName);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "vehicle", strSectionName);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "driver", strSectionName);
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "third-party", strSectionName, "");
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "insurer", strSectionName, "");
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "vehicle", strSectionName, "");
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "driver", strSectionName, "");
 
         if (xmlParseResult.getIsCurrentScheValid()) {
 
@@ -729,7 +729,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         // String childNodeLabelMain = XmlHelper.contructureErrorMessage(parentNodeName, mainNodeName);
 
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "incident", strSectionName);
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "incident", strSectionName, "");
 
         if (xmlParseResult.getIsCurrentScheValid()) {
             
@@ -782,7 +782,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         xmlParseResult.setIsCurrentScheValid(true);
         
         // VALIDATE WITNESSES MAIN NODE
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "witnesses", strSectionName);
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "witnesses", strSectionName, "");
 
         if (xmlParseResult.getIsCurrentScheValid()) {
             
@@ -792,13 +792,13 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             
             // GET WITNESS NODE AND VALIDATE
             Element thisElement = XMLUtils.getElement(mainElement, "witnesses");
-            xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "witness", strSectionName);
+            xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "witness", strSectionName, "");
             
             if (xmlParseResult.getIsCurrentScheValid()) {
                 
                 // GET WITNESS LIST
                 ArrayList<Element> witnessElements = XMLUtils.getElements(doc, thisElement, "witness");
-                xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, witnessElements, "witness", strSectionName);
+                xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, witnessElements, "witness", strSectionName, "");
 
                 if (xmlParseResult.getIsCurrentScheValid()) {
 
@@ -882,7 +882,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         xmlParseResult.setIsCurrentScheValid(true);
         
         // VALIDATE INJURIES NODE
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "injuries", strSectionName);
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "injuries", strSectionName, "");
         
         if (xmlParseResult.getIsCurrentScheValid()) {
             
@@ -892,13 +892,13 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             
             // GET AND VALIDATE INJURY NODE
             Element thisElement = XMLUtils.getElement(mainElement, "injuries");
-            xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "injury", strSectionName);
+            xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "injury", strSectionName, "");
             
             if (xmlParseResult.getIsCurrentScheValid()) {
                 
                 // GET AND VALIDATE INJURY LIST NODE
                 ArrayList<Element> injuriesElements = XMLUtils.getElements(doc, thisElement, "injury");
-                xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, injuriesElements, "injury", strSectionName);
+                xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, injuriesElements, "injury", strSectionName, "");
                 
                 if (xmlParseResult.getIsCurrentScheValid()) {
 
@@ -956,7 +956,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                             // CHECK SOLICITOR
                             String strSectionNameSolicitor = "Injury Solicitor";
                             Element thisSubElement = XMLUtils.getElement(thisElement, "solicitor");
-                            xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "solicitor", strSectionNameSolicitor);
+                            xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "solicitor", strSectionNameSolicitor, "");
                             
                             // RESET VALIDATION FLAG
                             xmlParseResult.setIsCurrentDataValid(true);
@@ -1042,14 +1042,14 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         if(repairElement!=null && eReportElement!=null){
             
             // VALIDATE REPAIR AND ENGINEER REPORT
-            xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "repair", strSectionName);
-            xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "engineer-report", strSectionName);
+            xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "repair", strSectionName, "");
+            xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "engineer-report", strSectionName, "");
         
             if (xmlParseResult.getIsCurrentScheValid()) {
                 
                 // GET AND VALIDATE ENGINEER REPROT
                 ArrayList<Element> engineerReportElements = XMLUtils.getElements(doc, mainElement, "engineer-report");
-                xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, engineerReportElements, "engineer-report", strSectionName);
+                xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, engineerReportElements, "engineer-report", strSectionName, "");
                 
                 if (xmlParseResult.getIsCurrentScheValid()) {
                     
@@ -1139,7 +1139,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         
         // RESET VALIDATION FLAG AND VALIDATE MAIN INVOICE NODE SECTION
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "invoice", strSectionName);
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "invoice", strSectionName, "");
         
         if (xmlParseResult.getIsCurrentScheValid()) {
             Element thisElement = XMLUtils.getElement(mainElement, "invoice");
@@ -1168,12 +1168,12 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         xmlParseResult.setIsCurrentScheValid(true);
         
         // VALIDATE INVOICE SUB SECTION
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "vehicles", strSectionName);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "extras", strSectionName);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "repair", strSectionName);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "storage-recovery", strSectionName);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "engineer-fee", strSectionName);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "supplier", strSectionName);
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "vehicles", strSectionName, "");
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "extras", strSectionName, "");
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "repair", strSectionName, "");
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "storage-recovery", strSectionName, "");
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "engineer-fee", strSectionName, "");
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, "supplier", strSectionName, "");
         
         // VALIDATE INVOICE MAIN NODE VALUE
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "net", XmlHelper.isMAN_Invoice_Net, XmlHelper.REG_BIGDECIMAL, strSectionName, "Total Net");
@@ -1354,7 +1354,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         xmlParseResult.setIsCurrentScheValid(true);
 
         ArrayList<Element> extraElements = XMLUtils.getElements(doc, thisElement, "extra");
-        xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, extraElements, "extra", strSectionName);
+        xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, extraElements, "extra", strSectionName, "");
 
         if (xmlParseResult.getIsCurrentScheValid()) {
             
@@ -1454,13 +1454,13 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         // String childNodeLabel2 = XmlHelper.contructureErrorMessage(childNodeLabel1, childNodeName);
         
         xmlParseResult.setIsCurrentScheValid(true);
-        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "rental-vehicles", "Hire Vehicle Details");
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "rental-vehicles", "Hire Vehicle Details", "");
 
         if (xmlParseResult.getIsCurrentScheValid()) {
             
             Element thisElement = XMLUtils.getElement(mainElement, "rental-vehicles");
             ArrayList<Element> rentalVehicleElements = XMLUtils.getElements(doc, thisElement, "rental-vehicle");
-            xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, rentalVehicleElements, "rental-vehicle", "Hire Vehicle Details");
+            xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, rentalVehicleElements, "rental-vehicle", "Hire Vehicle Details", "");
 
             if (xmlParseResult.getIsCurrentScheValid()) {
                 
@@ -1539,7 +1539,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             xmlParseResult.setIsCurrentDataValid(true);
             xmlParseResult.setIsCurrentScheValid(true);
 
-            xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName1, strSectionName);
+            xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, nodeName1, strSectionName, "");
 
             if (xmlParseResult.getIsCurrentScheValid()) {
 
@@ -1547,13 +1547,13 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                 
                 // GET <EXTRAS></EXTRAS> ELEMENT
                 Element thisElement = XMLUtils.getElement(mainElement, nodeName1);
-                xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, nodeName2, strSectionName);
+                xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, thisElement, nodeName2, strSectionName, "");
                 
                 if (xmlParseResult.getIsCurrentScheValid()) {
                     
                     // GET <EXTRA></EXTRA> ELEMENT
                     ArrayList<Element> extraElements = XMLUtils.getElements(doc, thisElement, nodeName2);
-                    xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, extraElements, nodeName2, strSectionName);
+                    xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, extraElements, nodeName2, strSectionName, "");
 
                     if (xmlParseResult.getIsCurrentScheValid()) {
                         

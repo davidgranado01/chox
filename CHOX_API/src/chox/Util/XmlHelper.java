@@ -210,12 +210,19 @@ public class XmlHelper {
     }
     
     public static String contructureIncorrectTypeErrorMessage(String strSectionName, String strFieldName){
-        String sMsg = String.format("Invalid or incorrect character in %s for %s", strFieldName, strSectionName);
+        String sMsg = String.format("Invalid or incorrect character in %s for %s", strSectionName, strFieldName);
         return XMLResultDelimeterContructor("", sMsg);
     }
     
-    public static String contructureSchemaErrorMessage(String strSectionName){
-        String sMsg = String.format("Incorrect XML Schema for %s.", strSectionName);
+    public static String contructureSchemaErrorMessage(String strSectionName, String nodeDesc){
+        
+        String sMsg = String.format("Incorrect XML Schema in %s for %s.", strSectionName, nodeDesc);
+        
+        if(nodeDesc.trim().length()<=0){
+            sMsg = String.format("Incorrect XML Schema in %s.", strSectionName);
+        }
+        
+        //String sMsg = String.format("Incorrect XML Schema in %s for %s.", strSectionName, nodeDesc, strSectionName);
         return XMLResultDelimeterContructor("", sMsg);
     }
     
@@ -338,7 +345,7 @@ public class XmlHelper {
             String strSectionName, 
             String nodeNameDesc) {
         
-        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, root, nodeName, strSectionName);
+        xmlParseResult = xmlSchemaNodeValidation(xmlParseResult, root, nodeName, strSectionName, nodeNameDesc);
 
         if (xmlParseResult.getIsCurrentScheValid()) {
             xmlParseResult = xmlSchemaValueValidation(xmlParseResult, root, nodeName, isMandatory, regExpression, strSectionName, nodeNameDesc);
@@ -352,7 +359,8 @@ public class XmlHelper {
         XMLParseResult xmlParseResult, 
         Element root, 
         String nodeName,
-        String strSectionName) {
+        String strSectionName, 
+        String strNodeDesc) {
 
         Boolean bFlag = true;
         String SchemaValidationRemark = xmlParseResult.getSchemaValidationRemark();
@@ -361,7 +369,7 @@ public class XmlHelper {
 
         if (thisElement == null) {
 
-            SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strSectionName);
+            SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strSectionName, strNodeDesc);
             bFlag = false;
         }
 
@@ -378,12 +386,13 @@ public class XmlHelper {
             XMLParseResult xmlParseResult,
             ArrayList<Element> thisElements,
             String nodeName,
-            String strSectionName) {
+            String strSectionName,
+            String strNodeDesc) {
 
         String SchemaValidationRemark = xmlParseResult.getSchemaValidationRemark();
 
         if (thisElements.size() <= 0) {
-            SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strSectionName);
+            SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strSectionName, strNodeDesc);
             xmlParseResult.setSchemaValidationRemark(SchemaValidationRemark);
             xmlParseResult.setIsSchemaValid(false);
             xmlParseResult.setIsCurrentScheValid(false);
