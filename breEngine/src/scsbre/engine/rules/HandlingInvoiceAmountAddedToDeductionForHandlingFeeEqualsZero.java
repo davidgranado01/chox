@@ -47,7 +47,7 @@ public class HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero imple
     }
 
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.AwaitingPaymentPack;
+        return ClaimStatus.InvoiceEscalated;
     }
 
 }

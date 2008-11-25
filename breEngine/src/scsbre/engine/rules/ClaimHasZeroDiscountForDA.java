@@ -48,7 +48,7 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule{
     }
 
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.AwaitingPaymentPack;
+        return ClaimStatus.InvoiceEscalated;
     }
 
 }

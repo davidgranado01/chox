@@ -40,6 +40,6 @@ public class HasAllowedVehicleClass implements IBusinessRule {
     }
 
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.AwaitingPaymentPack;
+        return ClaimStatus.InvoiceEscalated;
     }
 }

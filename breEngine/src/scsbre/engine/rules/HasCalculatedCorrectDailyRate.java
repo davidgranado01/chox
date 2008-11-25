@@ -52,7 +52,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
     }
     
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.AwaitingPaymentPack;
+        return ClaimStatus.InvoiceEscalated;
     }    
 
 

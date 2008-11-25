@@ -20,7 +20,6 @@ public class RulesEngineResponse {
     public ClaimStatus getStatus() {
         if (status == null) {
             boolean foundInvoiceDataCalculationIncorrect = false;
-            boolean foundAwaitingPaymentPack = false;
             boolean foundFailedRule = false;
             for (int i = 0; i < results.size(); i++) {
                 RuleEvaluation rev = results.get(i);
@@ -30,19 +29,13 @@ public class RulesEngineResponse {
                             == ClaimStatus.InvoiceDataCalculationIncorrect) {
                         foundInvoiceDataCalculationIncorrect = true;
                     }         
-                    if (rev.getRelatedRule().getStatusAfterFailure() 
-                            == ClaimStatus.AwaitingPaymentPack) {
-                        foundAwaitingPaymentPack = true;
-                    }
                 }
             }
             if (foundFailedRule) {
                 if(foundInvoiceDataCalculationIncorrect){
                     status = ClaimStatus.InvoiceDataCalculationIncorrect;
                 }
-                else if (foundAwaitingPaymentPack) {
-                    status = ClaimStatus.AwaitingPaymentPack;
-                } else {
+                else {
                     status =  ClaimStatus.InvoiceEscalated;
                 }
             }

@@ -52,7 +52,7 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
     }
 
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.AwaitingPaymentPack;
+        return ClaimStatus.InvoiceEscalated;
     }
 
 }
