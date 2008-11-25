@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<firestorm-project version="4.0">
+  <name>Chox</name>
+  <description />
+  <dbimport-config>
+    <jdbc-datasource>Postgres Datasource</jdbc-datasource>
+    <jdbc-catalog>choxidasV3</jdbc-catalog>
+    <jdbc-schema>public</jdbc-schema>
+    <sql-import-file />
+    <sql-vendor />
+    <import-tables>true</import-tables>
+    <import-views>true</import-views>
+    <import-procedures>true</import-procedures>
+    <prefer-objects>false</prefer-objects>
+    <sync-new>true</sync-new>
+    <sync-existing>false</sync-existing>
+    <sync-deleted>true</sync-deleted>
+    <map-large-integer-to-bigdecimal>true</map-large-integer-to-bigdecimal>
+    <verbose-logging>false</verbose-logging>
+    <filter-list>
+      <filter>history</filter>
+    </filter-list>
+  </dbimport-config>
+  <database>
+    <platform>PostgreSQL</platform>
+    <catalog-name>choxidasV3</catalog-name>
+    <schema-name>public</schema-name>
+    <table-list>
+      <table>
+        <sql-name>history</sql-name>
+        <java-name>History</java-name>
+        <primary-key>
+          <column-list>
+            <column>id</column>
+          </column-list>
+        </primary-key>
+        <column-list>
+          <column>
+            <java-name>id</java-name>
+            <java-type>int</java-type>
+            <java-default-value />
+            <sql-name>id</sql-name>
+            <sql-type>serial</sql-type>
+            <jdbc-type>INTEGER</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>createdBy</java-name>
+            <java-type>int</java-type>
+            <java-default-value />
+            <sql-name>created_by</sql-name>
+            <sql-type>int4</sql-type>
+            <jdbc-type>INTEGER</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>createdDate</java-name>
+            <java-type>java.util.Date</java-type>
+            <java-default-value />
+            <sql-name>created_date</sql-name>
+            <sql-type>timestamp</sql-type>
+            <jdbc-type>TIMESTAMP</jdbc-type>
+            <jdbc-precision>29</jdbc-precision>
+            <jdbc-scale>6</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>lastModifiedBy</java-name>
+            <java-type>int</java-type>
+            <java-default-value />
+            <sql-name>last_modified_by</sql-name>
+            <sql-type>int4</sql-type>
+            <jdbc-type>INTEGER</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>lastModifiedDate</java-name>
+            <java-type>java.util.Date</java-type>
+            <java-default-value />
+            <sql-name>last_modified_date</sql-name>
+            <sql-type>timestamp</sql-type>
+            <jdbc-type>TIMESTAMP</jdbc-type>
+            <jdbc-precision>29</jdbc-precision>
+            <jdbc-scale>6</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>claimId</java-name>
+            <java-type>int</java-type>
+            <java-default-value />
+            <sql-name>claim_id</sql-name>
+            <sql-type>int4</sql-type>
+            <jdbc-type>INTEGER</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>narrative</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>narrative</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>2147483647</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>processDate</java-name>
+            <java-type>java.util.Date</java-type>
+            <java-default-value />
+            <sql-name>process_date</sql-name>
+            <sql-type>timestamp</sql-type>
+            <jdbc-type>TIMESTAMP</jdbc-type>
+            <jdbc-precision>29</jdbc-precision>
+            <jdbc-scale>6</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>isPublic</java-name>
+            <java-type>short</java-type>
+            <java-default-value />
+            <sql-name>is_public</sql-name>
+            <sql-type>bool</sql-type>
+            <jdbc-type>BIT</jdbc-type>
+            <jdbc-precision>1</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>type</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>type</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+        </column-list>
+        <finder-list>
+          <finder>
+            <name>findByPrimaryKey</name>
+            <multi-finder>false</multi-finder>
+            <where>id = :id</where>
+            <order-by />
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>id</java-name>
+                <java-type>int</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findAll</name>
+            <multi-finder>true</multi-finder>
+            <where />
+            <order-by>id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list />
+          </finder>
+          <finder>
+            <name>findWhereIdEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>id = :id</where>
+            <order-by>id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>id</java-name>
+                <java-type>int</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereCreatedByEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>created_by = :createdBy</where>
+            <order-by>created_by</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>createdBy</java-name>
+                <java-type>int</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereCreatedDateEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>created_date = :createdDate</where>
+            <order-by>created_date</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>createdDate</java-name>
+                <java-type>java.util.Date</java-type>
+                <jdbc-type>TIMESTAMP</jdbc-type>
+                <jdbc-precision>29</jdbc-precision>
+                <jdbc-scale>6</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereLastModifiedByEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>last_modified_by = :lastModifiedBy</where>
+            <order-by>last_modified_by</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>lastModifiedBy</java-name>
+                <java-type>int</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereLastModifiedDateEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>last_modified_date = :lastModifiedDate</where>
+            <order-by>last_modified_date</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>lastModifiedDate</java-name>
+                <java-type>java.util.Date</java-type>
+                <jdbc-type>TIMESTAMP</jdbc-type>
+                <jdbc-precision>29</jdbc-precision>
+                <jdbc-scale>6</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereClaimIdEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>claim_id = :claimId</where>
+            <order-by>claim_id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>claimId</java-name>
+                <java-type>int</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereNarrativeEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>narrative = :narrative</where>
+            <order-by>narrative</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>narrative</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>2147483647</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereProcessDateEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>process_date = :processDate</where>
+            <order-by>process_date</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>processDate</java-name>
+                <java-type>java.util.Date</java-type>
+                <jdbc-type>TIMESTAMP</jdbc-type>
+                <jdbc-precision>29</jdbc-precision>
+                <jdbc-scale>6</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereIsPublicEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>is_public = :isPublic</where>
+            <order-by>is_public</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>isPublic</java-name>
+                <java-type>short</java-type>
+                <jdbc-type>BIT</jdbc-type>
+                <jdbc-precision>1</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereTypeEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>type = :type</where>
+            <order-by>type</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>type</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+        </finder-list>
+      </table>
+    </table-list>
+    <view-list />
+    <procedure-list />
+    <custom-sql-list />
+  </database>
+  <provider-options>
+    <default-codegen-provider>hibernate</default-codegen-provider>
+    <provider name="hibernate">
+      <property key="app-name" value="chox" />
+      <property key="dao-strategy" value="jdbc" />
+      <property key="delete-files" value="true" />
+      <property key="dto-fields-public" value="false" />
+      <property key="generate-dynamic-inserts" value="false" />
+      <property key="generate-dynamic-updates" value="false" />
+      <property key="jdbc-driver" value="" />
+      <property key="jdbc-pwd" value="" />
+      <property key="jdbc-url" value="" />
+      <property key="jdbc-user" value="" />
+      <property key="logging" value="log4j" />
+      <property key="output-dir" value="C:\Users\Carlson\Desktop\test\part3" />
+      <property key="overwrite-resource-manager" value="true" />
+      <property key="package-name" value="chox.model" />
+      <property key="prefix-schema-name" value="true" />
+    </provider>
+  </provider-options>
+</firestorm-project>
+
