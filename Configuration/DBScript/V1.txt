@@ -170,8 +170,11 @@ insert into insurer_allias (insurer_id, allias_name, created_by, last_modified_b
 -- ALTER CUSTOMER TABLE
 ALTER TABLE customer ADD COLUMN is_total_loss boolean;
 ALTER TABLE customer ALTER COLUMN is_total_loss SET STORAGE PLAIN;
+update customer set is_total_loss = false;
 ALTER TABLE customer ALTER COLUMN is_total_loss SET NOT NULL;
 ALTER TABLE customer ALTER COLUMN is_total_loss SET DEFAULT false;
+
+-----------------------------------------------------------------------------------------------
 
 -- ALTER CLAIM TABLE
 ALTER TABLE claim ADD COLUMN gta_notice_date time without time zone;
@@ -181,16 +184,19 @@ ALTER TABLE claim ALTER COLUMN credit_agreement_date SET STORAGE PLAIN;
 
 ALTER TABLE claim ADD COLUMN indeminty_amount numeric;
 ALTER TABLE claim ALTER COLUMN indeminty_amount SET STORAGE MAIN;
-ALTER TABLE claim ALTER COLUMN indeminty_amount SET NOT NULL;
 ALTER TABLE claim ALTER COLUMN indeminty_amount SET DEFAULT 0.00;
+update claim set indeminty_amount = 0.00;
+ALTER TABLE claim ALTER COLUMN indeminty_amount SET NOT NULL;
 
 ALTER TABLE claim ADD COLUMN percentage_liability_accepted numeric;
 ALTER TABLE claim ALTER COLUMN percentage_liability_accepted SET STORAGE MAIN;
+update claim set percentage_liability_accepted = 0.00;
 ALTER TABLE claim ALTER COLUMN percentage_liability_accepted SET NOT NULL;
 ALTER TABLE claim ALTER COLUMN percentage_liability_accepted SET DEFAULT 0.00;
 
 ALTER TABLE claim ADD COLUMN is_quantum_dispute boolean;
 ALTER TABLE claim ALTER COLUMN is_quantum_dispute SET STORAGE PLAIN;
+update claim set is_quantum_dispute = false;
 ALTER TABLE claim ALTER COLUMN is_quantum_dispute SET NOT NULL;
 ALTER TABLE claim ALTER COLUMN is_quantum_dispute SET DEFAULT false;
 
@@ -199,17 +205,22 @@ ALTER TABLE claim ALTER COLUMN engineer_claim_review_notes SET STORAGE EXTENDED;
 
 ALTER TABLE claim ADD COLUMN is_invoice_review_required boolean;
 ALTER TABLE claim ALTER COLUMN is_invoice_review_required SET STORAGE PLAIN;
+update claim set is_invoice_review_required = false;
 ALTER TABLE claim ALTER COLUMN is_invoice_review_required SET NOT NULL;
 ALTER TABLE claim ALTER COLUMN is_invoice_review_required SET DEFAULT false;
+
+-----------------------------------------------------------------------------------------------
 
 -- ALTER INVOICE TABLE
 ALTER TABLE invoice ADD COLUMN is_payment_mode boolean;
 ALTER TABLE invoice ALTER COLUMN is_payment_mode SET STORAGE PLAIN;
+update invoice set is_payment_mode = false;
 ALTER TABLE invoice ALTER COLUMN is_payment_mode SET NOT NULL;
 ALTER TABLE invoice ALTER COLUMN is_payment_mode SET DEFAULT false;
 
 ALTER TABLE invoice ADD COLUMN is_engineer_decision_approved boolean;
 ALTER TABLE invoice ALTER COLUMN is_engineer_decision_approved SET STORAGE PLAIN;
+update invoice set is_engineer_decision_approved = false;
 ALTER TABLE invoice ALTER COLUMN is_engineer_decision_approved SET NOT NULL;
 ALTER TABLE invoice ALTER COLUMN is_engineer_decision_approved SET DEFAULT false;
 
@@ -218,3 +229,9 @@ ALTER TABLE invoice ALTER COLUMN engineer_invoice_review_notes SET STORAGE EXTEN
 
 ALTER TABLE invoice ADD COLUMN rejection_reason character varying;
 ALTER TABLE invoice ALTER COLUMN rejection_reason SET STORAGE EXTENDED;
+
+
+
+-- ############################################################################################
+-- START VERSION 2.3 - 2008-11-27
+-- ############################################################################################
