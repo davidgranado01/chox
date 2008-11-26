@@ -40,5 +40,6 @@
         <mapping resource="chox/model/InsurerAllias.hbm.xml" />
         <mapping resource="chox/model/Accessibility.hbm.xml" />
         <mapping resource="chox/model/AccessibilityItem.hbm.xml" />
-		<mapping resource="chox/model/Comment.hbm.xml" />
+        <mapping resource="chox/model/Comment.hbm.xml" />
+    </session-factory>
 </hibernate-configuration>
