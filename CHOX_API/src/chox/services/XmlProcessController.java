@@ -398,7 +398,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                     // SET CLAIM HEADER INFORMATION
                     claim.setManagingRepair(bManagingRepair);
                     claim.setPolicyHolderContactDate(tFirstContactDate);
-                    claim.setStatus(ClaimStatus.CLAIM_UNROUNTED);
+                    claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
                     claim.setChoReference(strCHOReference);
                     claim.setCreditAgreementDate(tCreditAgreement);
                     claim.setGtaNoticeDate(tGtaNoticeDate);

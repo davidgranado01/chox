@@ -174,7 +174,7 @@ public class XMLParseResult {
         }else{
             
             // CLAIM EXIST
-            if(this.sExistingClaimStatus.equalsIgnoreCase(ClaimStatus.CLAIM_UNROUNTED)){
+            if(this.sExistingClaimStatus.equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)){
                 
                 sStatus = UploadStatus.CLAIM_EXIST;
                 
