@@ -10,11 +10,7 @@
             <interceptor name="acegi" class="chox.web.security.AcegiInterceptor" />
             <interceptor-stack name="authenticated">
                 <interceptor-ref name="acegi"/>
-                <interceptor-ref name="paramsPrepareParamsStack">
-                    <param name="excludeParams">
-                    _,d-\d+?-[sop]
-                    </param>
-                </interceptor-ref>
+                <interceptor-ref name="paramsPrepareParamsStack"/>
             </interceptor-stack>
         </interceptors>
         <default-interceptor-ref name="acegi" />
@@ -61,6 +57,14 @@
         </action>
         <action name="UpdateClaimDetail" class="chox.web.actions.claimDetailAction" method="updateClaimDetail">
             <result name="success" type="redirect">inbox.action</result>
+        </action>
+        
+        <action name="getIncident" class="chox.web.actions.IncidentAction">
+            <result name="success">/jsp/user/ClaimDetail.jsp</result>
+        </action>
+        
+        <action name="updateIncident" class="chox.web.actions.IncidentAction" method="updateIncident">
+            <result name="success">/jsp/actionResult.jsp</result>
         </action>
     </package>
     <include file="config-browser.xml"/>
