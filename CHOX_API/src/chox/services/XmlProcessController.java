@@ -402,6 +402,8 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                     claim.setChoReference(strCHOReference);
                     claim.setCreditAgreementDate(tCreditAgreement);
                     claim.setGtaNoticeDate(tGtaNoticeDate);
+                    claim.setIndemintyAmount(new BigDecimal("0.00"));
+                    claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
                     
                     ChorganisationService chorgService = new ChorganisationServiceImpl();
                     claim.setChorganisation(chorgService.getCurrentCHOrganisation());
@@ -547,7 +549,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "usable", XmlHelper.isMAN_Claim_Customer_Vehicle_Usable, "", "Customer Vehicle Damage", "Usable");
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "damage", XmlHelper.isMAN_Claim_Customer_Vehicle_Damage, "", "Customer Vehicle Damage", "Description");
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "initial-ecd", XmlHelper.isMAN_Claim_Customer_Vehicle_InitialEcd, XmlHelper.REG_TIMESTAMP, "Customer Vehicle Damage", "Initial ECD");
-            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "total-loss", XmlHelper.isMAN_Claim_Customer_Vehicle_TotalLoss, XmlHelper.REG_TIMESTAMP, "Customer Vehicle Damage", "Initial ECD");
+            //xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "total-loss", XmlHelper.isMAN_Claim_Customer_Vehicle_TotalLoss, XmlHelper.REG_TIMESTAMP, "Customer Vehicle Damage", "Initial ECD");
             
             if (xmlParseResult.getIsCurrentScheValid() && xmlParseResult.getIsCurrentDataValid()) {
                 

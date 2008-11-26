@@ -13,7 +13,7 @@ public class InvoiceServiceImpl  extends DataService implements InvoiceService{
         RulesEngineResponse reponse = r.ResolveStatus();     
         
         HistoryService historyService = new HistoryServiceImpl();
-        historyService.logInvoiceValidationErrorMsg(reponse, claim.getId());
+        historyService.logInvoiceValidationErrorMsg(reponse, claim);
         
         return reponse;
     }

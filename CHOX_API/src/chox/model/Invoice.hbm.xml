@@ -57,6 +57,5 @@
     <property column="is_engineer_decision_approved" name="isEngineerDecisionApproved"/>
     <property column="engineer_invoice_review_notes" name="engineerInvoiceReviewNotes"/>
     <property column="rejection_reason" name="rejectionReason"/>
-    
   </class>
 </hibernate-mapping>

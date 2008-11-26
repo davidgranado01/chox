@@ -10,8 +10,6 @@ import scsbre.model.IEngineerReportInfo;
 import scsbre.model.IExtrasInfo;
 import scsbre.model.IHireInfo;
 import scsbre.model.IVehicleClassInfo;
-import chox.services.*;
-import chox.model.ChoBand;
 import java.math.BigDecimal;
 
 public class Claim implements Serializable, IClaimInfo {
@@ -32,7 +30,7 @@ public class Claim implements Serializable, IClaimInfo {
     /** 
      * This attribute maps to the column cho_reference in the claim table.
      */
-    protected String choReference;
+    private String choReference;
     /** 
      * This attribute maps to the column status in the claim table.
      */
@@ -96,7 +94,7 @@ public class Claim implements Serializable, IClaimInfo {
     /** 
      * This attribute maps to the column claim_number in the claim table.
      */
-    private String claimNumber;
+    protected String claimNumber;
     protected Date creditAgreementDate;
     protected Date gtaNoticeDate;
     protected BigDecimal indemintyAmount;
@@ -171,7 +169,7 @@ public class Claim implements Serializable, IClaimInfo {
      * 
      * @return java.lang.String
      */
-    public java.lang.String getChoReference() {
+    public String getChoReference() {
         return choReference;
     }
 
@@ -180,7 +178,7 @@ public class Claim implements Serializable, IClaimInfo {
      * 
      * @param choReference
      */
-    public void setChoReference(java.lang.String choReference) {
+    public void setChoReference(String choReference) {
         this.choReference = choReference;
     }
 

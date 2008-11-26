@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
+import chox.model.Claim;
 
 public class History implements Serializable
 {
@@ -13,6 +14,8 @@ public class History implements Serializable
 	protected int id;
         protected String ruleId;
         protected boolean isSystem;
+        protected Claim claim;
+        
 	/** 
 	 * This attribute maps to the column created_by in the history table.
 	 */
@@ -32,11 +35,6 @@ public class History implements Serializable
 	 * This attribute maps to the column last_modified_date in the history table.
 	 */
 	protected Date lastModifiedDate;
-
-	/** 
-	 * This attribute maps to the column claim_id in the history table.
-	 */
-	protected int claimId;
 
 	/** 
 	 * This attribute maps to the column narrative in the history table.
@@ -167,26 +165,6 @@ public class History implements Serializable
 	}
 
 	/**
-	 * Method 'getClaimId'
-	 * 
-	 * @return int
-	 */
-	public int getClaimId()
-	{
-		return claimId;
-	}
-
-	/**
-	 * Method 'setClaimId'
-	 * 
-	 * @param claimId
-	 */
-	public void setClaimId(int claimId)
-	{
-		this.claimId = claimId;
-	}
-
-	/**
 	 * Method 'getNarrative'
 	 * 
 	 * @return java.lang.String
@@ -281,5 +259,13 @@ public class History implements Serializable
         public void setIsSystem(boolean isSystem) {
             this.isSystem = isSystem;
         }
+
+    public Claim getClaim() {
+        return claim;
+    }
+
+    public void setClaim(Claim claim) {
+        this.claim = claim;
+    }
 
 }

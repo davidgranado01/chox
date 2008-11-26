@@ -7,8 +7,11 @@ package chox.services;
 
 import chox.model.History;
 import scsbre.engine.*;
+import java.util.List;
+import chox.model.Claim;
 
 public interface HistoryService {
     public Boolean saveHistory(History history);
-    public void logInvoiceValidationErrorMsg(RulesEngineResponse reponse, int claimId);
+    public void logInvoiceValidationErrorMsg(RulesEngineResponse reponse, Claim claim);
+    public List<History> getHistoryByClaim(Claim claim);
 }
