@@ -3,7 +3,7 @@
   <name>Chox</name>
   <description />
   <dbimport-config>
-    <jdbc-datasource>Jupiter Postgres</jdbc-datasource>
+    <jdbc-datasource>Postgres Datasource</jdbc-datasource>
     <jdbc-catalog>choxidasV3</jdbc-catalog>
     <jdbc-schema>public</jdbc-schema>
     <sql-import-file />
@@ -14,17 +14,11 @@
     <prefer-objects>true</prefer-objects>
     <sync-new>true</sync-new>
     <sync-existing>false</sync-existing>
-    <sync-deleted>true</sync-deleted>
+    <sync-deleted>false</sync-deleted>
     <map-large-integer-to-bigdecimal>false</map-large-integer-to-bigdecimal>
     <verbose-logging>false</verbose-logging>
     <filter-list>
-      <filter>chorganisation</filter>
-      <filter>global_configuration</filter>
-      <filter>history</filter>
-      <filter>insurer</filter>
-      <filter>web_user</filter>
-      <filter>web_user_role</filter>
-      <filter>web_user_user_role</filter>
+      <filter>accessibility_item</filter>
     </filter-list>
   </dbimport-config>
   <database>
@@ -2471,6 +2465,260 @@
                 <java-type>java.lang.Short</java-type>
                 <jdbc-type>BIT</jdbc-type>
                 <jdbc-precision>1</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+        </finder-list>
+      </table>
+      <table>
+        <sql-name>accessibility</sql-name>
+        <java-name>Accessibility</java-name>
+        <primary-key>
+          <column-list>
+            <column>id</column>
+          </column-list>
+        </primary-key>
+        <column-list>
+          <column>
+            <java-name>id</java-name>
+            <java-type>java.lang.Integer</java-type>
+            <java-default-value />
+            <sql-name>id</sql-name>
+            <sql-type>int4</sql-type>
+            <jdbc-type>INTEGER</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>name</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>name</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>150</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+        </column-list>
+        <finder-list>
+          <finder>
+            <name>findByPrimaryKey</name>
+            <multi-finder>false</multi-finder>
+            <where>id = :id</where>
+            <order-by />
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>id</java-name>
+                <java-type>java.lang.Integer</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findAll</name>
+            <multi-finder>true</multi-finder>
+            <where />
+            <order-by>id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list />
+          </finder>
+          <finder>
+            <name>findWhereIdEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>id = :id</where>
+            <order-by>id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>id</java-name>
+                <java-type>java.lang.Integer</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereNameEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>name = :name</where>
+            <order-by>name</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>name</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>150</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+        </finder-list>
+      </table>
+      <table>
+        <sql-name>accessibility_item</sql-name>
+        <java-name>AccessibilityItem</java-name>
+        <primary-key>
+          <column-list>
+            <column>id</column>
+          </column-list>
+        </primary-key>
+        <column-list>
+          <column>
+            <java-name>role</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>role</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>150</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>right</java-name>
+            <java-type>java.lang.Short</java-type>
+            <java-default-value />
+            <sql-name>right</sql-name>
+            <sql-type>int2</sql-type>
+            <jdbc-type>SMALLINT</jdbc-type>
+            <jdbc-precision>5</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>accessibilityId</java-name>
+            <java-type>java.lang.Integer</java-type>
+            <java-default-value />
+            <sql-name>accessibility_id</sql-name>
+            <sql-type>int4</sql-type>
+            <jdbc-type>INTEGER</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>id</java-name>
+            <java-type>java.lang.Integer</java-type>
+            <java-default-value />
+            <sql-name>id</sql-name>
+            <sql-type>serial</sql-type>
+            <jdbc-type>INTEGER</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>false</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+        </column-list>
+        <finder-list>
+          <finder>
+            <name>findByPrimaryKey</name>
+            <multi-finder>false</multi-finder>
+            <where>id = :id</where>
+            <order-by />
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>id</java-name>
+                <java-type>java.lang.Integer</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findAll</name>
+            <multi-finder>true</multi-finder>
+            <where />
+            <order-by>id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list />
+          </finder>
+          <finder>
+            <name>findWhereRoleEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>role = :role</where>
+            <order-by>role</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>role</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>150</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereRightEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>right = :right</where>
+            <order-by>right</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>right</java-name>
+                <java-type>java.lang.Short</java-type>
+                <jdbc-type>SMALLINT</jdbc-type>
+                <jdbc-precision>5</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereAccessibilityIdEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>accessibility_id = :accessibilityId</where>
+            <order-by>accessibility_id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>accessibilityId</java-name>
+                <java-type>java.lang.Integer</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereIdEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>id = :id</where>
+            <order-by>id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>id</java-name>
+                <java-type>java.lang.Integer</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
                 <jdbc-scale>0</jdbc-scale>
               </parameter>
             </parameter-list>

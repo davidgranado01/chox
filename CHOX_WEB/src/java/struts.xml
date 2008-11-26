@@ -40,8 +40,7 @@
         <action name="getClaimsbyStatus" class="chox.web.actions.ClaimsAction" method="getClaimsbyStatus">
             <param name="status">status
             </param>
-            <result name="success">/jsp/JsonData.jsp
-            </result>
+            <result name="success">/jsp/JsonData.jsp</result>
         </action>
         <action name="searchClaim" class="chox.web.actions.SearchClaimAction">
             <result name="success">/jsp/user/p_searchClaim.jsp
@@ -60,7 +59,7 @@
         </action>
         
         <action name="getIncident" class="chox.web.actions.IncidentAction">
-            <result name="success">/jsp/user/ClaimDetail.jsp</result>
+            <result name="success">/jsp/JsonData.jsp</result>
         </action>
         
         <action name="updateIncident" class="chox.web.actions.IncidentAction" method="updateIncident">
