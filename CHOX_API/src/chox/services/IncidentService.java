@@ -5,8 +5,11 @@
 
 package chox.services;
 
+import chox.model.Incident;
 import chox.model.XMLParseResult;
 
 public interface IncidentService {
     XMLParseResult saveIncidentForXMLUploader(XMLParseResult xmlParseResult);
+    Incident getIncident(int id);
+    void updateIncident(Incident incident);
 }
