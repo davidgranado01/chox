@@ -39,6 +39,12 @@ function borderLayout(){
 	        margins: '5 5 5 5',
                 padding : '0,0,0,0',
 	        items: [center]
+	    }
+            ,{
+	        region: 'south',                
+	        margins: '0 5 5 5',
+                padding : '5,5,5,5',
+	         contentEl: 'footer'
 	    }]
     });
 	

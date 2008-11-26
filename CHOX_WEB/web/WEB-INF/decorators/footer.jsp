@@ -4,4 +4,4 @@
     Author     : Emmanuel
 --%>
 
-<span class="tm">CHOX</span> 
+<div style=" text-align:center; width:100%;">Copyright ©2008 Sherwood Compliance Services Ltd</div> 

@@ -2,7 +2,7 @@ package chox.web.security;
 
 import chox.model.WebUser;
 import chox.model.WebUserRole;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.GrantedAuthority;
@@ -16,6 +16,7 @@ public class PermissionedUser implements UserDetails {
 
     private WebUser user;
     private String roles;
+    private GrantedAuthority[] authorities;
 
     public PermissionedUser(WebUser user) {
         this.user = user;
@@ -31,20 +32,33 @@ public class PermissionedUser implements UserDetails {
 
     //we currently support single user single role only
     public GrantedAuthority[] getAuthorities() {
-        String securityRole = getIsCHOXAdmin() ? "ROLE_ADMIN" : "ROLE_USER";
-        return new GrantedAuthority[]{new GrantedAuthorityImpl(securityRole)};
+        //String securityRole = getIsCHOXAdmin() ? "ROLE_ADMIN" : "ROLE_USER";
+
+        if (authorities == null) {
+
+            Set roleSet = user.getRoles();
+            authorities = new GrantedAuthority[roleSet.size()];
+
+            int i = 0;
+            for (Object o : roleSet) {
+                String roleName = ((WebUserRole) o).getName();
+                authorities[i] = new GrantedAuthorityImpl(roleName);
+                i++;
+            }            
+        }
+        return authorities;
     }
 
     public boolean isInRoleOf(String role) {
-        if (roles == null || roles.isEmpty()) {
-            Set roleSet = user.getRoles();
-            for (Object r : roleSet) {
-                String roleName = ((WebUserRole) r).getName();
-                roles += roleName + "|";
+        
+        for(GrantedAuthority g : authorities)
+        {
+            if(g.getAuthority().equalsIgnoreCase(role))
+            {
+                return true;
             }
         }
-
-        return roles.lastIndexOf(role) > 0;
+        return false;
     }
 
     public String getUsername() {

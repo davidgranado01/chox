@@ -12,7 +12,7 @@ import org.acegisecurity.context.SecurityContextHolder;
 public class BaseAction extends ActionSupport {
 
     private PermissionedUser user;
-
+  
     @AcegiPrincipal
     public void setAuthenticatedUser(PermissionedUser user) {
         this.user = user;

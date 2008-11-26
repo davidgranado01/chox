@@ -29,7 +29,7 @@
             {name:'claimNumber'},
             {name:'created', type: 'date', dateFormat: 'd/m/Y'},
             {name:'insurer'},
-            {name:'cho'},
+            {name:'cho'}
         ]
     });
         
@@ -228,7 +228,7 @@
             <tr>
                 <td>
                     <p>Welcome <b><s:property value="AuthenticatedUser.Username" /></b></p>
-                    <s:if test="isCHO=true">
+                    <s:if test="isCHO">
                         <div>
                             Would you like to upload Your claims? <a href="<s:url action="uploadClaims"/>">click here</a>            
                         </div>

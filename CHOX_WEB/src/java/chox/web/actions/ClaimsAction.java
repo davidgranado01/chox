@@ -70,12 +70,5 @@ public class ClaimsAction extends BaseAction {
         totalCount = results.size();
         return SUCCESS;
     }
-    /*public JsonConfig getJsonCOnfig()
-    {
-    JsonConfig jsonConfig = new JsonConfig();  
-    
-    jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.NOPROP);
-    
-    return jsonConfig;
-    }*/
+
 }

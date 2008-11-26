@@ -22,60 +22,56 @@ public class InboxAction extends BaseAction {
         this.service = service;
     }
 
-    public Long getUnacknowledgedClaimCount() {
-        return (Long) service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED);
-    }
-
-    public Long getAcknowledgedClaimCount() {
-        return (Long) service.getCountByStatus(ClaimStatus.CLAIM_ACKNOWLEDGED);
-    }
-
-    public Long getAwaitingPaymentPackCount() {
-        return (Long) service.getCountByStatus(ClaimStatus.AWAITING_PAYMENT_PACK);
-    }
-
-    public Long getAwaitingCarHireCount() {
-        return (Long) service.getCountByStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
-    }
-
-    public Long getAwaitingInvoiceCount() {
-        return (Long) service.getCountByStatus(ClaimStatus.AWAITING_INVOICE_DATA);
-    }
-
-    public Long getClaimRejectedCount() {
+    public Long getRejectedClaimsCount() {
         return (Long) service.getCountByStatus(ClaimStatus.CLAIM_REJECTED);
     }
 
-    public Long getClaimRejectedAcceptedCount() {
-        return (Long) service.getCountByStatus(ClaimStatus.CLAIM_REJECTED_ACCEPTED);
+    public Long getIncorrectInvoiceDataCalculationsCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
     }
 
-    public Long getDisputedInvoiceCount() {
-        return (Long) service.getCountByStatus(ClaimStatus.DISPUTED_INVOICE);
+    public Long getContestedInvoicesReferredToCHOCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
     }
 
-    public Long getInvoiceApprovedPackCount() {
-        return (Long) service.getCountByStatus(ClaimStatus.INVOICE_APPROVED);
+    public Long getClaimsAwaitingAcknowledgementCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
     }
 
-    public Long getInvoiceEccalatedCount() {
+//    public Long getReSubmittedClaimsAwaitingAcknowledgementCount() {
+//        return (Long) service.getCountByStatus(ClaimStatus.);
+//    }
+
+//    public Long getHireUpdateAnomaliesCount() {
+//        return (Long) service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+//    }
+
+    public Long getNewClaimsToBeRoutedCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+    }
+
+//    public Long getClaimsAwaitingClaimsHandlingPaymentCount() {
+//        return (Long) service.getCountByStatus(ClaimStatus.);
+//    }
+
+    public Long getClaimsAwaitingInvoicePaymentCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.AWAITING_INVOICE_DATA);
+    }
+
+    public Long getApprovedInvoicesAwaitingPaymentCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+    }
+
+    public Long getEscalatedInvoicesCount() {
         return (Long) service.getCountByStatus(ClaimStatus.INVOICE_ESCALATED);
     }
 
-    public Long getInvoicePaymentLoggedCount() {
-        return (Long) service.getCountByStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
+    public Long getContestedInvoicesReferredToInsurerCount() {
+        return (Long) service.getCountByStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
     }
 
-    public Long getPaymentPackSuppliedCount() {
-        return (Long) service.getCountByStatus(ClaimStatus.PAYMENT_PACK_SUPPLIED);
-    }
-
-    public Long getInvoiceRejectedAcceptedCount() {
-        return (Long) service.getCountByStatus(ClaimStatus.INVOICE_REJECTED_ACCEPTED);
-    }
-
-    public Long getClaimUnrountedCount() {
-        return (Long) service.getCountByStatus(ClaimStatus.CLAIM_UNROUNTED);
+    public Long getInvoicesApprovedByBRECount() {
+        return (Long) service.getCountByStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
     }
 
     @Override

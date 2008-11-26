@@ -1,0 +1,139 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package chox.web.security;
+
+import chox.services.AccessibilityService;
+import java.util.HashMap;
+import java.util.Set;
+import org.acegisecurity.GrantedAuthority;
+
+/**
+ *
+ * @author Emmanuel
+ */
+public class ApplicationAccessibility {
+
+    public static final Short Declined = 0;
+    public static final Short ReadOnly = 1;
+    public static final Short Editable = 2;
+    
+    public static final String TAB_CLAIM_DETAIL = "ClaimDetail";
+    public static final String TAB_INVOICE_DETAIL = "InvoiceDetail";
+    public static final String TAB_HIRE_MONITORING = "HireMonitoring";
+    public static final String TAB_PAYMENT_PACK = "PaymentPack";
+    public static final String TAB_HISTORY = "History";
+    public static final String TAB_NOTES = "Notes";
+
+    public static final String FILTER_REJECTED_CLAIMS = "RejectedClaims";
+    public static final String FILTER_INCORRECT_INVOICE_DATA_COLC = "IncorrectInvoiceDataCalculations";
+    public static final String FILTER_CONTESTED_INVOICE_REF_CHO = "ContestedInvoicesReferredToCHO";
+    public static final String FILTER_CLAIM_AWAITING_HIRE_MONITORING_INFO = "ClaimsAwaitingHireMonitoringInformation";
+    public static final String FILTER_CLAIM_AWAITING_ACK = "ClaimsAwaitingAcknowledgement";
+    public static final String FILTER_RESUBMIT_CLAIM_AWAITING_ACK = "ReSubmittedClaimsAwaitingAcknowledgement";
+    public static final String FILTER_HIRE_UPDATE_ANOMALIES = "HireUpdateAnomalies";
+    public static final String FILTER_NEW_CLAIM_TO_BE_ROUTED = "NewClaimsToBerouted";
+    public static final String FILTER_CLAIM_AWAITING_CLAIM_HANDLING_PAYMENT = "ClaimsAwaitingClaimsHandlingPayment";
+    public static final String FILTER_APPROVED_INVOICE_AWAITING_PAYMENT = "ApprovedInvoicesAwaitingPayment";
+    public static final String FILTER_ESCALATED_INVOICE = "Escalated Invoices";
+    public static final String FILTER_CCONTESTED_INVOICE_REF_INS = "ContestedInvoicesReferredToInsurer";
+    public static final String FILTER_INVOICE_APPROVED_BY_BRE = "InvoicesApprovedByBRE";
+    
+    private HashMap accessibilityMap;
+    private AccessibilityService service;
+
+    public void setAccessibilityService(AccessibilityService accessibilityService) {
+        this.service = accessibilityService;
+    }
+
+    public ApplicationAccessibility() {
+
+    }
+
+    public Short checkTabAccessibility(String tabName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+
+        String accessibilityKey = getTabAccessibilityKey(tabName, claimStatus);
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            return checkAccebility(roleMap, grantedAuthorities);
+        }
+
+        return Declined;
+    }
+
+    private String getTabAccessibilityKey(String tabName, String claimStatus) {
+        return String.format("tab.%1$s.%2$s", tabName, claimStatus);
+    }
+
+    public Short checkActionAccessibility(String actionName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+
+        String accessibilityKey = getActionAccessibilityKey(actionName, claimStatus);
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            return checkAccebility(roleMap, grantedAuthorities);
+        }
+
+        return Declined;
+    }
+
+    private String getActionAccessibilityKey(String actionName,String claimStatus) {
+        return String.format("action.%1$s.%2$s", actionName,claimStatus);
+    }
+
+    public Short checkFilterAccessibility(String filterName, GrantedAuthority[] grantedAuthorities) {
+
+        String accessibilityKey = getFilterAccessibilityKey(filterName);
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            return checkAccebility(roleMap, grantedAuthorities);
+        }
+
+        return Declined;
+    }
+
+    private String getFilterAccessibilityKey(String filterName) {
+        return String.format("filter.%1$s", filterName);
+    }
+
+    private Short checkAccebility(HashMap roleMap, GrantedAuthority[] grantedAuthorities) {
+
+        //1. if rolemap did't defined, decline as request
+        if (roleMap == null) {
+            return Declined;
+        }
+
+        //2. return role accessibility if exist
+        for (GrantedAuthority g : grantedAuthorities) {
+            if (roleMap.containsKey(g.getAuthority())) {
+                return (Short) roleMap.get(g.getAuthority());
+            }
+        }
+
+        //3. return accessibility for all role if specified
+        if (roleMap.containsKey("ALL")) {
+            return (Short) roleMap.get("ALL");
+        }
+
+        //4 decline to all non-specified accessibility
+        return Declined;
+    }
+
+    public HashMap getAccessibilityMap() {
+        
+        if(accessibilityMap == null)
+        {
+             accessibilityMap = this.service.getAccessibilityMap();
+        }
+        return accessibilityMap;
+    }
+}
+
+
+
+
+
+
+
+
+

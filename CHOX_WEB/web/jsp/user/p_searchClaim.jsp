@@ -7,7 +7,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <div>
-    <s:form namespace="/user" action="doSearchClaim" method="POST" theme="simple">
+ 
         <table>
             <tr>
                 <td>
@@ -65,5 +65,5 @@
                 </td>
             </tr>
         </table> 
-    </s:form>    
+
 </div>
