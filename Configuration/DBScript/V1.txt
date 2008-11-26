@@ -231,7 +231,32 @@ ALTER TABLE invoice ADD COLUMN rejection_reason character varying;
 ALTER TABLE invoice ALTER COLUMN rejection_reason SET STORAGE EXTENDED;
 
 
-
 -- ############################################################################################
 -- START VERSION 2.3 - 2008-11-27
 -- ############################################################################################
+
+
+CREATE TABLE "comment"
+(
+  id serial NOT NULL,
+  claim_id integer NOT NULL,
+  "comment" character varying,
+  created_by integer NOT NULL,
+  created_date timestamp without time zone NOT NULL DEFAULT now(),
+  last_modified_by integer NOT NULL,
+  last_modified_date timestamp without time zone NOT NULL DEFAULT now(),
+  CONSTRAINT id_pkey PRIMARY KEY (id),
+  CONSTRAINT comment_claim_fkey FOREIGN KEY (claim_id)
+      REFERENCES claim (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "comment" OWNER TO postgres;
+
+-- Index: fki_comment_claim_fkey
+
+-- DROP INDEX fki_comment_claim_fkey;
+
+CREATE INDEX fki_comment_claim_fkey
+  ON "comment"
+  USING btree
