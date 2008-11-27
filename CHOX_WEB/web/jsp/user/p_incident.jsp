@@ -13,7 +13,7 @@
 
 
         <form id="formUpdateIncident" action="user/updateIncident.action" name="formUpdateIncident">
-            <input type="hidden" name="id" value='<s:property value="id"/>'>
+            <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>
             <fieldset class="x-fieldset">
                 <legend><input type="checkbox" class="jq-toggle-fieldset" checked="checked"/>Incident Details</legend>
                 <div>
@@ -28,7 +28,8 @@
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Police Involved?</label>
-                    <input type="checkbox" class="chox-tcb" id="IDPoliceInvolved" name="isPoliceInvolved" value="true" /></div>
+                    <s:checkbox name="isPoliceInvolved" />
+                    
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Description</label>

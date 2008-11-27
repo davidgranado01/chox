@@ -16,7 +16,7 @@
         <script language="JavaScript">
            
             function onIncidentUpdateStatus(responseText, statusText)  { 
-               $('#tempres').text(responseText);
+                $('#tempres').text(responseText);
             }
             
             
@@ -33,7 +33,7 @@
             });
             
             
-            */
+             */
            
            
             $(document).ready(function() { 
@@ -94,21 +94,23 @@
             }                 
            
         </script>
-
-
+        
+        
     </head>    
     
     <body>
         
-
         
         
         
-
         
         
-  
-        <s:action name="openIncident" executeResult="true"/>
+        
+        
+        
+        <s:action name="openIncident" executeResult="true">
+            <s:param name="incidentId"><s:property value="incident.id" /></s:param> 
+        </s:action>
         
         
         

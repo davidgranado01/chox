@@ -18,15 +18,15 @@ public class IncidentAction extends BaseAction implements ModelDriven<Incident>,
 
     private IncidentService service;
     private Incident model;
-    private int id = -1;
+    private int incidentId = -1;
     private String actionResult;
 
-    public int getId() {
-        return id;
+    public int getIncidentId() {
+        return incidentId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIncidentId(int id) {
+        this.incidentId = id;
     }
 
     public void setIncidentService(IncidentService service) {
@@ -38,10 +38,10 @@ public class IncidentAction extends BaseAction implements ModelDriven<Incident>,
     }
 
     public void prepare() throws Exception {
-        if (id == -1) {
+        if (incidentId == -1) {
             model = new Incident();
         } else {
-            model = service.getIncident(id);
+            model = service.getIncident(incidentId);
         }
     }
 
