@@ -51,9 +51,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim = new Claim();
         } else {
             claim = service.getClaim(id);
-        }
-        tabAccessibility = new TabAccessibility();
-
+        }   
     }
 
     public List getStatuses() {
@@ -80,6 +78,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public TabAccessibility getTabAccessibility() {
+        
+        if(tabAccessibility == null)
+        {
+            tabAccessibility = new TabAccessibility(getAuthenticatedUser().getAuthorities(),claim.getStatus());
+        }
         return tabAccessibility;
     }
 

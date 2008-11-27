@@ -12,34 +12,31 @@ import org.acegisecurity.GrantedAuthority;
  */
 public class TabAccessibility {
 
-    private ApplicationAccessibility accessibility = new ApplicationAccessibility();
-    private short claimDetailTabAccessibility =1 ;
-    private short invoiceDetailTabAccessibility = 1;
-    private short hireMonitoringTabAccessibility = 1;
-    private short historyTabAccessibility = 1;
-    private short notesTabAccessibility = 1;
-    private short paymentPackTabAccessibility = 1;
+    private short claimDetailTabAccessibility;
+    private short invoiceDetailTabAccessibility;
+    private short hireMonitoringTabAccessibility;
+    private short historyTabAccessibility;
+    private short notesTabAccessibility;
+    private short paymentPackTabAccessibility;
 
-    public void TabAccessibility(GrantedAuthority[] grantedAuthorities,String claimStatus) {
+    public TabAccessibility(GrantedAuthority[] grantedAuthorities,String claimStatus) {
         
-        claimDetailTabAccessibility = getAccessibility().checkTabAccessibility(ApplicationAccessibility.TAB_CLAIM_DETAIL,
+        ApplicationAccessibility accessibility = ApplicationAccessibility.getInstance();
+        
+        claimDetailTabAccessibility = accessibility.checkTabAccessibility(ApplicationAccessibility.TAB_CLAIM_DETAIL,
                 grantedAuthorities, claimStatus);
-        hireMonitoringTabAccessibility = getAccessibility().checkTabAccessibility(ApplicationAccessibility.TAB_HIRE_MONITORING,
+        hireMonitoringTabAccessibility = accessibility.checkTabAccessibility(ApplicationAccessibility.TAB_HIRE_MONITORING,
                 grantedAuthorities, claimStatus);
-        historyTabAccessibility = getAccessibility().checkTabAccessibility(ApplicationAccessibility.TAB_HISTORY,
+        historyTabAccessibility = accessibility.checkTabAccessibility(ApplicationAccessibility.TAB_HISTORY,
                 grantedAuthorities, claimStatus);
-        invoiceDetailTabAccessibility = getAccessibility().checkTabAccessibility(ApplicationAccessibility.TAB_INVOICE_DETAIL,
+        invoiceDetailTabAccessibility = accessibility.checkTabAccessibility(ApplicationAccessibility.TAB_INVOICE_DETAIL,
                 grantedAuthorities, claimStatus);
-        paymentPackTabAccessibility = getAccessibility().checkTabAccessibility(ApplicationAccessibility.TAB_PAYMENT_PACK,
+        paymentPackTabAccessibility = accessibility.checkTabAccessibility(ApplicationAccessibility.TAB_PAYMENT_PACK,
                 grantedAuthorities, claimStatus);
-        notesTabAccessibility = getAccessibility().checkTabAccessibility(ApplicationAccessibility.TAB_NOTES,
+        notesTabAccessibility = accessibility.checkTabAccessibility(ApplicationAccessibility.TAB_NOTES,
                 grantedAuthorities, claimStatus);
     }
-
-    public ApplicationAccessibility getAccessibility() {
-        return accessibility;
-    }
-
+   
     public short getClaimDetailTabAccessibility() {
         return claimDetailTabAccessibility;
     }

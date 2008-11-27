@@ -4,8 +4,8 @@
  */
 package chox.web.actions;
 
-import chox.model.Incident;
-import chox.services.IncidentService;
+import chox.model.Injury;
+import chox.services.InjuryService;
 import chox.web.security.ApplicationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
@@ -15,20 +15,20 @@ import net.sf.json.JSONObject;
  *
  * @author Emmanuel
  */
-public class IncidentAction extends AccessibilityControlAction implements ModelDriven<Incident>, Preparable {
+public class InjuryAction extends AccessibilityControlAction implements ModelDriven<Injury>, Preparable {
 
-    private IncidentService service;
-    private Incident model;
-    private int incidentId = -1;
+    private InjuryService service;
+    private Injury model;
+    private int injuryId = -1;
     private String claimStatus;
     private String actionResult;
 
-    public int getIncidentId() {
-        return incidentId;
+    public int getInjuryId() {
+        return injuryId;
     }
 
-    public void setIncidentId(int id) {
-        this.incidentId = id;
+    public void setInjuryId(int id) {
+        this.injuryId = id;
     }
     
     public void setClaimStatus(String claimStatus)
@@ -36,19 +36,19 @@ public class IncidentAction extends AccessibilityControlAction implements ModelD
         this.claimStatus = claimStatus;
     }
 
-    public void setIncidentService(IncidentService service) {
+    public void setInjuryService(InjuryService service) {
         this.service = service;
     }
 
-    public Incident getModel() {
+    public Injury getModel() {
         return model;
     }
 
     public void prepare() throws Exception {
-        if (incidentId == -1) {
-            model = new Incident();
+        if (injuryId == -1) {
+            model = new Injury();
         } else {
-            model = service.getIncident(incidentId);
+            model = service.getInjury(injuryId);
         }
     }
 
@@ -56,10 +56,10 @@ public class IncidentAction extends AccessibilityControlAction implements ModelD
         return actionResult;
     }
 
-    public String updateIncident() {
+    public String updateInjury() {
         try {
-            this.service.updateIncident(model);
-            this.actionResult = "1";
+            this.service.updateInjury(model);
+            this.actionResult = "";
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }

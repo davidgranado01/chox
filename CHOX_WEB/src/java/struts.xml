@@ -67,8 +67,19 @@
         <action name="openIncident" class="chox.web.actions.IncidentAction">
             <result name="r">/jsp/user/p_incident_r.jsp</result>
             <result name="w">/jsp/user/p_incident_w.jsp</result>
+            <result name="decline">/jsp/p_accessDeclined.jsp</result>
         </action>
         <action name="updateIncident" class="chox.web.actions.IncidentAction" method="updateIncident">
+            <result name="success">/jsp/actionResult.jsp</result>
+        </action>
+        <!-- End Incident Detail -->
+        <!-- Start Injury Detail -->
+        <action name="openInjury" class="chox.web.actions.InjuryAction">
+            <result name="r">/jsp/user/p_injury_r.jsp</result>
+            <result name="w">/jsp/user/p_injury_w.jsp</result>
+            <result name="decline">/jsp/p_accessDeclined.jsp</result>
+        </action>
+        <action name="updateInjury" class="chox.web.actions.InjuryAction" method="updateInjury">
             <result name="success">/jsp/actionResult.jsp</result>
         </action>
         <!-- End Incident Detail -->
