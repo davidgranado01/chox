@@ -13,14 +13,17 @@ import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import net.sf.json.JSONArray;
+import org.apache.struts2.interceptor.SessionAware;
 
 /**
  *
  * @author Emmanuel
  */
-public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria {
+public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria,SessionAware {
 
+    private Map session;    
     private String supplierReference;
     private int supplierId;
     private String claimNumber;
@@ -204,7 +207,10 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
 
     public String doSearchClaim() throws Exception {
 
-        results = this.claimService.searchClaims(this);
+        ClaimSearchCriteria c = this;
+        session.put("searchCriteria", c);
+        
+        results = this.claimService.searchClaims(c);
         totalCount = results.size();
         return SUCCESS;
 
@@ -230,6 +236,10 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
 
     public void setLineOfBusinessId(int lineOfBusinessId) {
         this.lineOfBusinessId = lineOfBusinessId;
+    }
+
+    public void setSession(Map session) {
+        session = session;
     }
 
 }
