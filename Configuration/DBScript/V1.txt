@@ -315,3 +315,12 @@ ALTER TABLE invoice ALTER COLUMN vat_amount_collected SET DEFAULT 0.00;
 -----------------------------------------------------------------------------------------------
 
 alter table customer alter column initial_ecd drop not null;
+
+ALTER TABLE claim DROP COLUMN credit_agreement_date;
+ALTER TABLE claim DROP COLUMN gta_notice_date;
+
+ALTER TABLE claim ADD COLUMN credit_agreement_date timestamp without time zone;
+ALTER TABLE claim ALTER COLUMN credit_agreement_date SET STORAGE PLAIN;
+
+ALTER TABLE claim ADD COLUMN gta_notice_date timestamp without time zone;
+ALTER TABLE claim ALTER COLUMN gta_notice_date SET STORAGE PLAIN;
