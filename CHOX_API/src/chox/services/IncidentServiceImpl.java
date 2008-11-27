@@ -33,4 +33,19 @@ public class IncidentServiceImpl  extends DataService implements IncidentService
         return xmlParseResult;
     }
     
+    public Incident getIncident(int id)
+    {
+        return (Incident)currentSession.get(Incident.class, id);
+    }
+    
+    public void updateIncident(Incident incident)
+    {        
+        try {
+            currentSession.update(incident);currentSession.beginTransaction();
+            currentSession.getTransaction().commit();
+        } catch (Exception ex) {
+            currentSession.getTransaction().rollback();
+        }
+    }
+    
 }
