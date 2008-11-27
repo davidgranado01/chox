@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import com.filesystemsoftware.utils.XMLUtils;
 import chox.model.*;
-import chox.Util.TextHelper;
 
 public class XmlHelper {
     
@@ -32,7 +31,7 @@ public class XmlHelper {
     public static final Boolean isMAN_Managing_Repair= true;
     public static final Boolean isMAN_Supplier_Reference= true;
     public static final Boolean isMAN_DateTimeCreditAgreementSigned = false;
-    public static final Boolean isMAN_GTANoticeDate = false;
+    //public static final Boolean isMAN_GTANoticeDate = false;
     
     public static final Boolean isMAN_Driver_Address1= true;
     public static final Boolean isMAN_Driver_Address2= false;
@@ -112,6 +111,7 @@ public class XmlHelper {
     public static final Boolean isMAN_Invoice_Engineer_Fee_Gross= true;
     public static final Boolean isMAN_Invoice_Engineer_Fee_Net= true;
     public static final Boolean isMAN_Invoice_Engineer_Fee_Vat= true;
+    public static final Boolean isMAN_Invoice_Vehicles_DayRate= true;
     public static final Boolean isMAN_Invoice_Vehicles_Gross= true;
     public static final Boolean isMAN_Invoice_Vehicles_Net= true;
     public static final Boolean isMAN_Invoice_Vehicles_Vat= true;
@@ -124,6 +124,10 @@ public class XmlHelper {
     public static final Boolean isMAN_Invoice_Storage_Recovery_Net= true;
     public static final Boolean isMAN_Invoice_Storage_Recovery_Vat= true;
     public static final Boolean isMAN_Invoice_Supplier_ClaimInvoiceNo= true;
+    
+    public static final Boolean isMAN_Invoice_Supplier_ExceedCollected= false;
+    public static final Boolean isMAN_Invoice_Supplier_VatCollected= false;
+    
     public static final Boolean isMAN_Invoice_Supplier_HandlingInvoiceNo= false;
     public static final Boolean isMAN_Invoice_Gross= true;
     public static final Boolean isMAN_Invoice_Net= true;

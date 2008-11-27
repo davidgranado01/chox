@@ -22,7 +22,7 @@
     <property column="vehicle_model" name="vehicleModel" not-null="true"/>
     <property column="location" name="location"/>
     <property column="damage" name="damage"/>
-    <property column="initial_ecd" name="initialECD" not-null="true"/>
+    <property column="initial_ecd" name="initialECD" not-null="false"/>
     <property column="policy_number" name="policyNumber"/>
     <property column="claim_reference" name="claimReference"/>
     <property column="created_by" name="createdBy" not-null="true"/>

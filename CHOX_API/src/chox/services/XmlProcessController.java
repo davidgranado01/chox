@@ -19,6 +19,7 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import scsbre.engine.*;
 import java.util.List;
 import chox.Util.TextHelper;
+import chox.Util.DateHelper;
 
 public class XmlProcessController {
     
@@ -28,7 +29,7 @@ public class XmlProcessController {
     {
         vehicleClassService = new VehicleClassServiceImpl();
     }
-
+    
     public static void main(String[] args) {
 
         try {
@@ -143,7 +144,7 @@ public class XmlProcessController {
             Element root,
             Boolean isAllowPartialUpload) throws Exception {
             
-        System.out.println("START********************************************");
+        //System.out.println("START********************************************");
         
         Session currentSession = SessionFactoryUtils.getSession(HibernateUtil.getSessionFactory(), true);
         currentSession.beginTransaction();
@@ -152,7 +153,7 @@ public class XmlProcessController {
          
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
-        System.out.println(" ** CHO REFERENCE: " + xmlParseResult.getClaim().getChoReference());
+        //System.out.println(" ** CHO REFERENCE: " + xmlParseResult.getClaim().getChoReference());
 
         // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
         if(!xmlParseResult.getIsClaimExist()){
@@ -181,24 +182,24 @@ public class XmlProcessController {
 
             // EXECUTE BRE RULE
             if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
-/*                
-if(xmlParseResult.getClaim().getEngineerReport()==null){
-    System.out.println("0 @@@@@@@@@ NULL");
-}else{
-    System.out.println("0 @@@@@@@@@ NOT NULL");
-}
-*/                        
+              
+                // CHECK INITIAL ENGINEERING REPORT
+                Boolean isEngReportExist = false;
+                if(xmlParseResult.getClaim().getEngineerReport()!=null){
+                    isEngReportExist = true;
+                }
+
                 InvoiceService invoiceservice = new InvoiceServiceImpl();
-                RulesEngineResponse validationResult = invoiceservice.XMLUploaderInvoiceValidation(constructeClaimForInvoiceValidation(xmlParseResult.getClaim()));
+                
+                Claim BREClaim = constructeClaimForInvoiceValidation(xmlParseResult.getClaim());
+                RulesEngineResponse validationResult = invoiceservice.XMLUploaderInvoiceValidation(BREClaim);
                 String newClaimStatus = validationResult.getStatus().toString();
                 xmlParseResult.getClaim().setStatus(newClaimStatus);
-/*
-if(xmlParseResult.getClaim().getEngineerReport()==null){
-    System.out.println("1 @@@@@@@@@ NULL");
-}else{
-    System.out.println("1 @@@@@@@@@ NOT NULL");
-}
-*/                
+                
+                if(!isEngReportExist){
+                    xmlParseResult.getClaim().setEngineerReport(null);
+                }
+
                 if(validationResult.getResults().size()>0){
                     // LOG ERROR MESSAGE TO SCREEN
                     xmlParseResult = appendInvoiceValidationErrorMessage(xmlParseResult, validationResult.getResults());
@@ -210,8 +211,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             xmlParseResult = saveXMLRecord(xmlParseResult);
         }
         
-        
-        
+        /*
         System.out.println(" ** FINAL STATUS CODE: " + xmlParseResult.getUploadStatusCode());
         System.out.println(" ** FINAL STATUS: " + xmlParseResult.getUploadStatus());
         System.out.println(" ** CLAIM EXIST: " + xmlParseResult.getIsClaimExist());
@@ -221,7 +221,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         System.out.println(" ** getSchemaValidationRemark: " + xmlParseResult.getSchemaValidationRemark());
         System.out.println(" ** getIsDataValid: " + xmlParseResult.getIsDataValid());
         System.out.println(" ** getDataValidationRemark: " + xmlParseResult.getDataValidationRemark());
-        
+        */
         
         if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
             currentSession.getTransaction().commit();
@@ -229,42 +229,42 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             currentSession.getTransaction().rollback();
         }
         
-        System.out.println("END  ********************************************");
+        //System.out.println("END  ********************************************");
 
         return xmlParseResult;
     }
     
     private Claim constructeClaimForInvoiceValidation(Claim claim){
         
+        Claim BREClaim = claim;
+        
         // INTERFACE MAPPING WITH BRE - WHERE HIRE MONITORING NOT EXIST
         Boolean isIsTotalLostCheck = false;
-        if(claim.getHireMonitoringDetail()!=null){
-            isIsTotalLostCheck = claim.getHireMonitoringDetail().isIsTotalLostCheck();
+        if(BREClaim.getHireMonitoringDetail()!=null){
+            isIsTotalLostCheck = BREClaim.getHireMonitoringDetail().isIsTotalLostCheck();
         }
-        claim.getVehicleHire().setIsTotalLoss(isIsTotalLostCheck);
+        BREClaim.getVehicleHire().setIsTotalLoss(isIsTotalLostCheck);
 
         // CONSTRUCTE DUMMY ENGINEERING REPORT WITH ALL VALUE IS ZERO WHEN ER NOT EXIST
-        if(claim.getEngineerReport()==null){
+        if(BREClaim.getEngineerReport()==null){
             EngineerReport engineerreport = new EngineerReport();
-            
             engineerreport.setDays(0);
             engineerreport.setLabourAmount(new BigDecimal("0.00"));
             engineerreport.setTotalAmount(new BigDecimal("0.00"));
-            
-            claim.setEngineerReport(engineerreport);
+            BREClaim.setEngineerReport(engineerreport);
         }
         
         // SET VEHICLE CLASS TO NULL WHEN 
-        if(claim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached")){
-            claim.getThirdParty().setVehicleClass(null);
+        if(BREClaim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached")){
+            BREClaim.getThirdParty().setVehicleClass(null);
         }
         
         // SET VEHICLE CLASS TO NULL WHEN 
-        if(claim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")){
-            claim.getCustomer().setVehicleClass(null);
+        if(BREClaim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")){
+            BREClaim.getCustomer().setVehicleClass(null);
         }
         
-        return claim;
+        return BREClaim;
     }
     
     private XMLParseResult appendInvoiceValidationErrorMessage(XMLParseResult xmlParseResult, List<RuleEvaluation> results){
@@ -331,7 +331,14 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "managing-repair", XmlHelper.isMAN_Managing_Repair, XmlHelper.REG_BOOLEAN, strSectionName, "Managing Repair");
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "first-contact", XmlHelper.isMAN_First_Contact, XmlHelper.REG_TIMESTAMP, strSectionName, "Policy Holder Contact");
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "agreement-signed", XmlHelper.isMAN_DateTimeCreditAgreementSigned, XmlHelper.REG_TIMESTAMP, strSectionName, "Credit Agreement Signed by Insurer");
-        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "gta-notice", XmlHelper.isMAN_GTANoticeDate, XmlHelper.REG_TIMESTAMP, strSectionName, "GTA 4.1 Notice Date");
+       
+        Boolean bGatNotice = false;
+        if(xmlParseResult.getIsClaimExist()){
+            bGatNotice = true;
+        }
+        
+        // MANDATORY ONLY IN SECOND STAGE
+        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "gta-notice", bGatNotice, XmlHelper.REG_TIMESTAMP, strSectionName, "GTA 4.1 Notice Date");
         
         Claim claim = new Claim();
         
@@ -356,7 +363,11 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
                 Boolean bManagingRepair = XmlHelper.getBooleanFromNode(mainElement, "managing-repair");
                 Timestamp tFirstContactDate = XmlHelper.getTimeStampFromNode(mainElement, "first-contact");
                 Timestamp tCreditAgreement = XmlHelper.getTimeStampFromNode(mainElement, "credit-agreement");
-                Timestamp tGtaNoticeDate = XmlHelper.getTimeStampFromNode(mainElement, "gta-notice-date");
+                
+                Timestamp tGtaNoticeDate = DateHelper.getCurrentTimeStamp();
+                if(!XmlHelper.getNodeValue(thisElement, "gta-notice").equalsIgnoreCase("")){
+                    tGtaNoticeDate = XmlHelper.getTimeStampFromNode(mainElement, "gta-notice-date");
+                }
                 
                 // CHO INFORMATION
                 String strCHOReference = XmlHelper.getNodeValue(thisElement, "supplier-reference");
@@ -518,13 +529,6 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             Element mainElement,
             String strSectionName) throws Exception {
 
-        // String mainNodeName = "customer";
-        // String nodeName1 = "insurer";
-        // String nodeName2 = "vehicle";
-        // String childNodeLabelMain = XmlHelper.contructureErrorMessage(parentNodeName, mainNodeName);
-        // String childNodeLabel1 = XmlHelper.contructureErrorMessage(childNodeLabelMain, nodeName1);
-        // String childNodeLabel2 = XmlHelper.contructureErrorMessage(childNodeLabelMain, nodeName2);
-
         xmlParseResult.setIsCurrentScheValid(true);
         xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "customer", strSectionName, "");
         xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "insurer", strSectionName, "");
@@ -549,7 +553,7 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "usable", XmlHelper.isMAN_Claim_Customer_Vehicle_Usable, "", "Customer Vehicle Damage", "Usable");
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "damage", XmlHelper.isMAN_Claim_Customer_Vehicle_Damage, "", "Customer Vehicle Damage", "Description");
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "initial-ecd", XmlHelper.isMAN_Claim_Customer_Vehicle_InitialEcd, XmlHelper.REG_TIMESTAMP, "Customer Vehicle Damage", "Initial ECD");
-            //xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "total-loss", XmlHelper.isMAN_Claim_Customer_Vehicle_TotalLoss, XmlHelper.REG_TIMESTAMP, "Customer Vehicle Damage", "Initial ECD");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "total-loss", XmlHelper.isMAN_Claim_Customer_Vehicle_TotalLoss, XmlHelper.REG_BOOLEAN, "Customer Vehicle Damage", "Total Loss");
             
             if (xmlParseResult.getIsCurrentScheValid() && xmlParseResult.getIsCurrentDataValid()) {
                 
@@ -608,18 +612,6 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
             XMLParseResult xmlParseResult,
             Element mainElement,
             String strSectionName) throws Exception {
-            
-        /*
-        String mainNodeName = "third-party";
-        String nodeName1 = "insurer";
-        String nodeName2 = "vehicle";
-        String nodeName3 = "driver";
-
-        String childNodeLabelMain = XmlHelper.contructureErrorMessage(parentNodeName, mainNodeName);
-        String childNodeLabel1 = XmlHelper.contructureErrorMessage(childNodeLabelMain, nodeName1);
-        String childNodeLabel2 = XmlHelper.contructureErrorMessage(childNodeLabelMain, nodeName2);
-        String childNodeLabel3 = XmlHelper.contructureErrorMessage(childNodeLabelMain, nodeName3);
-        */
         
         xmlParseResult.setIsCurrentScheValid(true);
         xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "third-party", strSectionName, "");
@@ -1235,11 +1227,13 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "net", XmlHelper.isMAN_Invoice_Vehicles_Net, XmlHelper.REG_BIGDECIMAL, strSectionName, "Hire Net");
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "vat", XmlHelper.isMAN_Invoice_Vehicles_Vat, XmlHelper.REG_BIGDECIMAL, strSectionName, "Hire VAT");
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "gross", XmlHelper.isMAN_Invoice_Vehicles_Gross, XmlHelper.REG_BIGDECIMAL, strSectionName, "Hire Gross");
+        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "day-rate", XmlHelper.isMAN_Invoice_Vehicles_DayRate, XmlHelper.REG_BIGDECIMAL, strSectionName, "Hire Rate Charged Per Day");
 
         if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
             xmlParseResult.getClaim().getInvoice().setHireGross(XmlHelper.getBigDecimalFromNode(thisElement, "gross"));
             xmlParseResult.getClaim().getInvoice().setHireNet(XmlHelper.getBigDecimalFromNode(thisElement, "net"));
             xmlParseResult.getClaim().getInvoice().setHireVat(XmlHelper.getBigDecimalFromNode(thisElement, "vat"));
+            xmlParseResult.getClaim().getInvoice().setHireRateChargedPerDay(XmlHelper.getBigDecimalFromNode(thisElement, "day-rate"));
         }
         
         return xmlParseResult;
@@ -1284,11 +1278,16 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "handling-invoice-no", XmlHelper.isMAN_Invoice_Supplier_HandlingInvoiceNo, "", strSectionName, "Supplier Claims Handling Invoice Number");
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "handling-invoice-amount", XmlHelper.isMAN_Invoice_Supplier_HandlingInvoiceAmount, XmlHelper.REG_BIGDECIMAL, strSectionName, "Claims Handling Invoice Amount");
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "claim-invoice-no", XmlHelper.isMAN_Invoice_Supplier_ClaimInvoiceNo, "", strSectionName, "Supplier Claim Invoice Number");
+        
+        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "excess-collected", XmlHelper.isMAN_Invoice_Supplier_ExceedCollected, "", strSectionName, "Excess Amount Collected From Policyholder");
+        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "vat-collected", XmlHelper.isMAN_Invoice_Supplier_VatCollected, "", strSectionName, "VAT Amount Collected From Policyholder");
 
         if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
             xmlParseResult.getClaim().getInvoice().setHandlingInvoiceNo(XmlHelper.getNodeValue(thisElement, "handling-invoice-no"));
             xmlParseResult.getClaim().getInvoice().setClaimsHandlingInvoiceAmount(XmlHelper.getBigDecimalFromNode(thisElement, "handling-invoice-amount"));
             xmlParseResult.getClaim().getInvoice().setClaimInvoiceNo(XmlHelper.getNodeValue(thisElement, "claim-invoice-no"));
+            xmlParseResult.getClaim().getInvoice().setExcessAmountCollected(XmlHelper.getBigDecimalFromNode(thisElement, "excess-collected"));
+            xmlParseResult.getClaim().getInvoice().setVatAmountCollected(XmlHelper.getBigDecimalFromNode(thisElement, "vat-collected"));
         }
         return xmlParseResult;
     }

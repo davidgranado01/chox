@@ -256,6 +256,9 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo
         protected boolean isEngineerDecisionApproved;
         protected String engineerInvoiceReviewNotes;
         protected String rejectionReason;
+        protected BigDecimal hireRateChargedPerDay;
+        protected BigDecimal excessAmountCollected;
+        protected BigDecimal vatAmountCollected;
 
 	/**
 	 * Method 'Invoice'
@@ -1256,5 +1259,30 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo
     public void setRejectionReason(String rejectionReason) {
         this.rejectionReason = rejectionReason;
     }
-        
+
+    public BigDecimal getHireRateChargedPerDay() {
+        return hireRateChargedPerDay;
+    }
+
+    public void setHireRateChargedPerDay(BigDecimal hireRateChargedPerDay) {
+        this.hireRateChargedPerDay = hireRateChargedPerDay;
+    }
+
+    public BigDecimal getExcessAmountCollected() {
+        return excessAmountCollected;
+    }
+
+    public void setExcessAmountCollected(BigDecimal excessAmountCollected) {
+        this.excessAmountCollected = excessAmountCollected;
+    }
+
+    public BigDecimal getVatAmountCollected() {
+        return vatAmountCollected;
+    }
+
+    public void setVatAmountCollected(BigDecimal vatAmountCollected) {
+        this.vatAmountCollected = vatAmountCollected;
+    }
+    
+    
 }
