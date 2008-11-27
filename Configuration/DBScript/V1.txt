@@ -253,10 +253,65 @@ CREATE TABLE "comment"
 WITH (OIDS=FALSE);
 ALTER TABLE "comment" OWNER TO postgres;
 
--- Index: fki_comment_claim_fkey
+-----------------------------------------------------------------------------------------------
 
--- DROP INDEX fki_comment_claim_fkey;
+CREATE SEQUENCE accessibility_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 13
+  CACHE 1;
 
-CREATE INDEX fki_comment_claim_fkey
-  ON "comment"
+CREATE TABLE accessibility
+(
+  id serial NOT NULL,
+  "name" character varying(150),
+  CONSTRAINT accessibility_pkey PRIMARY KEY (id)
+)
+WITH (OIDS=FALSE);
+
+CREATE SEQUENCE accessibility_item_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 13
+  CACHE 1;
+
+CREATE TABLE accessibility_item
+(
+  "role" character varying(150) NOT NULL,
+  access_right smallint,
+  accessibility_id integer NOT NULL,
+  id serial NOT NULL,
+  CONSTRAINT accessibility_item_pkey PRIMARY KEY (id)
+)
+WITH (OIDS=FALSE);
+
+CREATE INDEX fki_accessibility_item_fkey
+  ON accessibility_item
   USING btree
+  (accessibility_id);
+
+-----------------------------------------------------------------------------------------------
+
+ALTER TABLE invoice ADD COLUMN hire_rate_charged_per_day numeric;
+ALTER TABLE invoice ALTER COLUMN hire_rate_charged_per_day SET STORAGE MAIN;
+update invoice set hire_rate_charged_per_day = 0.00;
+ALTER TABLE invoice ALTER COLUMN hire_rate_charged_per_day SET NOT NULL;
+ALTER TABLE invoice ALTER COLUMN hire_rate_charged_per_day SET DEFAULT 0.00;
+
+ALTER TABLE invoice ADD COLUMN excess_amount_collected numeric;
+ALTER TABLE invoice ALTER COLUMN excess_amount_collected SET STORAGE MAIN;
+update invoice set excess_amount_collected = 0.00;
+ALTER TABLE invoice ALTER COLUMN excess_amount_collected SET NOT NULL;
+ALTER TABLE invoice ALTER COLUMN excess_amount_collected SET DEFAULT 0.00;
+
+ALTER TABLE invoice ADD COLUMN vat_amount_collected numeric;
+ALTER TABLE invoice ALTER COLUMN vat_amount_collected SET STORAGE MAIN;
+update invoice set vat_amount_collected = 0.00;
+ALTER TABLE invoice ALTER COLUMN vat_amount_collected SET NOT NULL;
+ALTER TABLE invoice ALTER COLUMN vat_amount_collected SET DEFAULT 0.00;
+
+-----------------------------------------------------------------------------------------------
+
+alter table customer alter column initial_ecd drop not null;
