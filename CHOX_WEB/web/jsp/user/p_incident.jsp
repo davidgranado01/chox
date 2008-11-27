@@ -5,16 +5,38 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+
+
+
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    </head>
-    <body>
 
-    </body>
-</html>
+        <form id="formUpdateIncident" action="user/updateIncident.action" name="formUpdateIncident">
+            <input type="hidden" name="id" value='<s:property value="id"/>'>
+            <fieldset class="x-fieldset">
+                <legend><input type="checkbox" class="jq-toggle-fieldset" checked="checked"/>Incident Details</legend>
+                <div>
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">
+                        Date / Time</label>
+                        <input type="text" class="chox-ttxt" id="IDDateTime" name="date" value='<s:property value="date" />'/></div>
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">
+                        Location</label>
+                    <input type="text" class="chox-ttxt" id="IDLocation" name="location" value='<s:property value="location" />'/></div>
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">
+                        Police Involved?</label>
+                    <input type="checkbox" class="chox-tcb" id="IDPoliceInvolved" name="isPoliceInvolved" value="true" /></div>
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">
+                        Description</label>
+                        <textarea class="chox-tta" id="IDDescription" cols="20" rows="5" name="incidentDescription"></textarea>
+                    </div>
+                    <div class="chox-form-button">
+                        <input type="submit" value="Save Changes" /><div id="results" id="tempres" class="chox-update-result"></div>
+                    </div>                        
+                </div>
+            </fieldset>
+        </form>    
