@@ -204,14 +204,14 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
     public void setClaimService(ClaimService service) {
         this.claimService = service;
     }
-
+    
     public String doSearchClaim() throws Exception {
-
+    
         ClaimSearchCriteria c = this;
         session.put("searchCriteria", c);
         
         results = this.claimService.searchClaims(c);
-        totalCount = results.size();
+        totalCount = results.size();    
         return SUCCESS;
 
     }

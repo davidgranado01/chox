@@ -16,8 +16,6 @@
 
 <script >
     
-    
-
     var rd = new Ext.data.JsonReader({
         totalProperty: 'totalCount',   
         root: 'results', 
@@ -61,15 +59,22 @@
             }
         });
     }    
-
+    
+    function doExportExcel(){
+       
+        var popwin = window.open("doExportExcel.action", "Excel", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
+        
+        //document.thisForm.action = "doExportExcel.action";
+        //document.thisForm.target = "_New";
+        //document.thisForm.submit();
+    }
+    
     function searchClaim()
     {
         
         var supplierReference = Ext.query('*[name$=supplierReference]')[0].value;
-                
         var supplierId = Ext.query('*[name$=supplierId]').length > 0 ? Ext.query('*[name$=supplierId]')[0].value : -1;
         var insurerId = Ext.query('*[name$=insurerId]').length > 0 ? Ext.query('*[name$=insurerId]')[0].value : -1;
-        
         var invoiceNumber = Ext.query('*[name$=invoiceNumber]')[0].value;
         var claimNumber = Ext.query('*[name$=claimNumber]')[0].value;
         var vrn = Ext.query('*[name$=vrn]')[0].value;
@@ -140,8 +145,8 @@
             stripeRows: true,
             layout:'fit',
             autoHeight:true,
-            title:'Claims',viewConfig:{forceFit:true}  
-        });               
+            title:'Claims', viewConfig:{forceFit:true}  
+        });
         grid.render('gridPanel');
         grid.getSelectionModel().selectFirstRow();               
         
@@ -222,9 +227,7 @@
 
 </script>
 
-<div id="claimPanel">      
-    
-    
+<div id="claimPanel">
     <s:if test="AuthenticatedUser !=null">  
         <table width="100%">
             <tr>
@@ -242,8 +245,7 @@
             </tr>
         </table>
     </s:if>
-    
-    <dir id="tabPanel"></dir> 
+    <dir id="tabPanel"></dir>
     
     <div id="gridPanel"></div>
     
@@ -261,17 +263,13 @@
             <li><a href="javascript:showClaimByStatus('InvoiceApproved');" >Approved Invoices Ready For payment (<s:property value="invoiceApprovedPackCount" />)</a></li>
             <li><a href="javascript:showClaimByStatus('InvoicePaymentLogged');" >Invoice Payment Logged (<s:property value="invoicePaymentLoggedCount" />)</a></li>
         </ul>
-        
     </div>
     <div id="searchPanelTab" class="x-hide-display">
         <div id="searchPanel">
-            
         </div>
         <s:action name="searchClaim" namespace="/user" executeResult="true" /> 
-        
-    </div>    
-    
-    
+    </div>
+    <div><form name="thisForm"><a href="javascript:doExportExcel();"><img src="<%= request.getContextPath()%>/images/icon_xls.png"/><b> Export To Excel</b></a></form></div>
 </div>
 
 

@@ -45,6 +45,15 @@
             <result name="success">/jsp/JsonData.jsp
             </result>
         </action>
+        <action name="doExportExcel" method="execute" class="chox.web.actions.ExcelGeneratorAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excelStream</param>
+                <param name="contentDisposition">filename="excel_report.xls"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="failed">/jsp/user/ExcelGenerationFailed.jsp</result>
+        </action>    
         <!-- Start Claim Detail -->
         <action name="openClaimDetail" class="chox.web.actions.ClaimAction">
             <result name="success">/jsp/user/ClaimDetail.jsp

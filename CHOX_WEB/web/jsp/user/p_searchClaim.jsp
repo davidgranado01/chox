@@ -60,7 +60,7 @@
                 <td>
                     <div class="buttonPanel">
                         <s:reset key="Reset" />
-                        <input type="button" onclick="javascript:searchClaim();" value="Search" />                        
+                        <input type="button" onclick="javascript:searchClaim();" value="Search" />
                     </div>
                 </td>
             </tr>
