@@ -62,7 +62,7 @@
             <result name="success">/jsp/JsonData.jsp</result>
         </action>
         
-        <action name="updateIncident" class="chox.web.actions.IncidentAction" method="updateIncident">
+        <action name="updateIncident" class="chox.web.actions.claimDetailAction" method="updateIncident">
             <result name="success">/jsp/actionResult.jsp</result>
         </action>
     </package>

@@ -13,7 +13,7 @@ import com.opensymphony.xwork2.Preparable;
 import java.util.List;
 
 /**
- *
+ *  
  * @author Emmanuel
  */
 public class claimDetailAction extends BaseAction implements ModelDriven<Claim>, Preparable {
@@ -23,7 +23,7 @@ public class claimDetailAction extends BaseAction implements ModelDriven<Claim>,
     private List statuses;
     private ClaimService service;
     private LookupService lookupService;
-    private String actionMessage;  
+    private String actionMessage;
     private TabAccessibility tabAccessibility;
 
     public int getId() {
@@ -51,9 +51,9 @@ public class claimDetailAction extends BaseAction implements ModelDriven<Claim>,
             claim = new Claim();
         } else {
             claim = service.getClaim(id);
-        } 
+        }
         tabAccessibility = new TabAccessibility();
-       
+
     }
 
     public List getStatuses() {
@@ -63,7 +63,7 @@ public class claimDetailAction extends BaseAction implements ModelDriven<Claim>,
         return statuses;
     }
 
-    public String getActionMessage() {
+    public String getActionResult() {
         return actionMessage;
     }
 
@@ -73,9 +73,15 @@ public class claimDetailAction extends BaseAction implements ModelDriven<Claim>,
         return SUCCESS;
     }
 
+    public String updateIncident() {
+        this.service.updateIncident(claim.getIncident());
+        this.actionMessage = "Incident Updated!";
+        return SUCCESS;
+    }
+
     public TabAccessibility getTabAccessibility() {
         return tabAccessibility;
-    }  
+    }
 
     @Override
     public String execute() throws Exception {
