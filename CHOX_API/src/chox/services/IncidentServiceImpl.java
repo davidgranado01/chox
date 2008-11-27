@@ -1,18 +1,17 @@
-
 package chox.services;
 
 import chox.Util.XmlHelper;
 import chox.Util.DateHelper;
 import chox.model.*;
 
-public class IncidentServiceImpl  extends DataService implements IncidentService{
+public class IncidentServiceImpl extends DataService implements IncidentService {
 
-    public XMLParseResult saveIncidentForXMLUploader(XMLParseResult xmlParseResult){
-        
+    public XMLParseResult saveIncidentForXMLUploader(XMLParseResult xmlParseResult) {
+
         Incident incident = xmlParseResult.getClaim().getIncident();
-        
-        if(incident!=null){
-        
+
+        if (incident != null) {
+
             incident.setCreatedBy(getCurrentUser().getId());
             incident.setCreatedDate(DateHelper.getCurrentTimeStamp());
             incident.setLastModifiedBy(getCurrentUser().getId());
@@ -20,7 +19,7 @@ public class IncidentServiceImpl  extends DataService implements IncidentService
 
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
-                try{
+                try {
                     xmlParseResult.getCurrentSession().saveOrUpdate(incident);
                 } catch (Exception e) {
                     xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
@@ -29,23 +28,18 @@ public class IncidentServiceImpl  extends DataService implements IncidentService
                 xmlParseResult.getClaim().setIncident(incident);
             }
         }
-        
+
         return xmlParseResult;
     }
-    
-    public Incident getIncident(int id)
-    {
-        return (Incident)currentSession.get(Incident.class, id);
+
+    public Incident getIncident(int id) {
+        return (Incident) currentSession.get(Incident.class, id);
     }
-    
-    public void updateIncident(Incident incident)
-    {        
-        try {
-            currentSession.update(incident);currentSession.beginTransaction();
-            currentSession.getTransaction().commit();
-        } catch (Exception ex) {
-            currentSession.getTransaction().rollback();
-        }
+
+    public void updateIncident(Incident incident) {        
+       
+        currentSession.beginTransaction();
+        currentSession.update(incident);
+        currentSession.getTransaction().commit();
     }
-    
 }

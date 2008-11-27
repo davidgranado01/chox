@@ -11,7 +11,11 @@ public interface ClaimService {
     public Claim getClaim(int id);
     public List listAllClaims();
     public List listClaimsByStatus(String status);
+    //Count
     public Long getCountByStatus(String status);
+    public Long getNonDEPaymentLogCount();
+    public Long getHireUpdateAnomaliesCount();
+    //
     public List searchClaims(ClaimSearchCriteria searchCriteria);
     public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, Boolean isAllowPartialUpload);
     public XMLParseResult saveClaimForXMLUploader(XMLParseResult xmlParseResult);

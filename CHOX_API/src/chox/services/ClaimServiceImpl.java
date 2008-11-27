@@ -28,12 +28,8 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
     public void updateClaim(Claim claim) {
 
         currentSession.beginTransaction();
-        try {
-            currentSession.update(claim);
-            currentSession.getTransaction().commit();
-        } catch (Exception ex) {
-            currentSession.getTransaction().rollback();
-        }
+        currentSession.update(claim);
+        currentSession.getTransaction().commit();
 
     }
 
@@ -57,6 +53,14 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
         Long count = (Long) currentSession.createQuery("select count(*) from Claim where status = '" + status + "'").uniqueResult();
 
         return count;
+    }
+
+    public Long getNonDEPaymentLogCount() {
+        return (long) 0;
+    }
+
+    public Long getHireUpdateAnomaliesCount() {
+        return (long) 0;
     }
 
     public List searchClaims(ClaimSearchCriteria searchCriteria) {
@@ -175,9 +179,8 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
         }
         return xmlParseResult;
     }
-    
-    public void updateIncident(Incident incident)
-    {
+
+    public void updateIncident(Incident incident) {
         currentSession.beginTransaction();
         try {
             currentSession.update(incident);

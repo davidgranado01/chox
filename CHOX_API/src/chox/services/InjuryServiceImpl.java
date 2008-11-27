@@ -4,14 +4,14 @@ import chox.Util.XmlHelper;
 import chox.Util.DateHelper;
 import chox.model.*;
 
-public class InjuryServiceImpl extends DataService implements InjuryService{
+public class InjuryServiceImpl extends DataService implements InjuryService {
 
-    public XMLParseResult saveInjuryForXMLUploader(XMLParseResult xmlParseResult){
-        
-        if((xmlParseResult.getInjuries())!=null){
-            
-            for(Integer i=0; i<(xmlParseResult.getInjuries()).size(); i++){
-                
+    public XMLParseResult saveInjuryForXMLUploader(XMLParseResult xmlParseResult) {
+
+        if ((xmlParseResult.getInjuries()) != null) {
+
+            for (Integer i = 0; i < (xmlParseResult.getInjuries()).size(); i++) {
+
                 ((xmlParseResult.getInjuries()).get(i)).setCreatedBy(getCurrentUser().getId());
                 ((xmlParseResult.getInjuries()).get(i)).setCreatedDate(DateHelper.getCurrentTimeStamp());
                 ((xmlParseResult.getInjuries()).get(i)).setLastModifiedBy(getCurrentUser().getId());
@@ -19,7 +19,7 @@ public class InjuryServiceImpl extends DataService implements InjuryService{
 
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
-                    try{
+                    try {
                         xmlParseResult.getCurrentSession().saveOrUpdate(((xmlParseResult.getInjuries()).get(i)));
                     } catch (Exception e) {
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
@@ -27,7 +27,18 @@ public class InjuryServiceImpl extends DataService implements InjuryService{
                 }
             }
         }
-        
+
         return xmlParseResult;
-    }  
+    }
+
+    public Injury getInjury(int id) {
+        return (Injury)currentSession.get(Injury.class, id);
+    }
+
+    public void updateInjury(Injury injury) {
+
+        currentSession.beginTransaction();
+        currentSession.update(injury);
+        currentSession.getTransaction().commit();
+    }
 }
