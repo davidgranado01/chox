@@ -362,11 +362,11 @@ public class XmlProcessController {
                 //String strStatus = XmlHelper.getNodeValue(mainElement, claimHeaderNode_RentalStatus);
                 Boolean bManagingRepair = XmlHelper.getBooleanFromNode(mainElement, "managing-repair");
                 Timestamp tFirstContactDate = XmlHelper.getTimeStampFromNode(mainElement, "first-contact");
-                Timestamp tCreditAgreement = XmlHelper.getTimeStampFromNode(mainElement, "credit-agreement");
+                Timestamp tCreditAgreement = XmlHelper.getTimeStampFromNode(mainElement, "agreement-signed");
                 
-                Timestamp tGtaNoticeDate = DateHelper.getCurrentTimeStamp();
-                if(!XmlHelper.getNodeValue(thisElement, "gta-notice").equalsIgnoreCase("")){
-                    tGtaNoticeDate = XmlHelper.getTimeStampFromNode(mainElement, "gta-notice-date");
+                Timestamp tGtaNoticeDate = XmlHelper.getTimeStampFromNode(mainElement, "gta-notice");
+                if(XmlHelper.getNodeValue(mainElement, "gta-notice").equalsIgnoreCase("")){
+                    tGtaNoticeDate = DateHelper.getCurrentTimeStamp();
                 }
                 
                 // CHO INFORMATION
