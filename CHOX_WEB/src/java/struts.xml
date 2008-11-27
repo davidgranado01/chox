@@ -50,16 +50,23 @@
             <result name="success">/jsp/JsonData.jsp
             </result>
         </action>
+        <!-- Start Claim Detail -->
         <action name="openClaimDetail" class="chox.web.actions.claimDetailAction">
             <result name="success">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
         <action name="UpdateClaimDetail" class="chox.web.actions.claimDetailAction" method="updateClaimDetail">
             <result name="success" type="redirect">inbox.action</result>
-        </action>        
-        <action name="updateIncident" class="chox.web.actions.claimDetailAction" method="updateIncident">
+        </action>  
+        <!-- End Claim Detail -->
+        <!-- Start Incident Detail -->
+        <action name="openIncident" class="chox.web.actions.IncidentAction">
+            <result name="success">/jsp/user/p_incident.jsp</result>
+        </action>
+        <action name="updateIncident" class="chox.web.actions.IncidentAction" method="updateIncident">
             <result name="success">/jsp/actionResult.jsp</result>
         </action>
+        <!-- End Incident Detail -->
     </package>
     <include file="config-browser.xml"/>
 </struts>
