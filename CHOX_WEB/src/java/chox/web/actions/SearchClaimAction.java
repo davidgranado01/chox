@@ -239,7 +239,7 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
     }
 
     public void setSession(Map session) {
-        session = session;
+        this.session = session;
     }
 
 }
