@@ -52,6 +52,8 @@ public class claimDetailAction extends BaseAction implements ModelDriven<Claim>,
         } else {
             claim = service.getClaim(id);
         } 
+        tabAccessibility = new TabAccessibility();
+       
     }
 
     public List getStatuses() {
@@ -71,7 +73,7 @@ public class claimDetailAction extends BaseAction implements ModelDriven<Claim>,
         return SUCCESS;
     }
 
-    public TabAccessibility getTabAccessible() {
+    public TabAccessibility getTabAccessibility() {
         return tabAccessibility;
     }  
 
