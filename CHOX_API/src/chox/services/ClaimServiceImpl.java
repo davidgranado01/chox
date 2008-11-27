@@ -4,6 +4,7 @@ import chox.Util.XmlHelper;
 import chox.Util.DateHelper;
 import chox.data.ClaimSearchCriteria;
 import chox.model.Claim;
+import chox.model.Incident;
 import chox.model.XMLParseResult;
 import java.io.File;
 import java.util.ArrayList;
@@ -173,6 +174,17 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
 
         }
         return xmlParseResult;
+    }
+    
+    public void updateIncident(Incident incident)
+    {
+        currentSession.beginTransaction();
+        try {
+            currentSession.update(incident);
+            currentSession.getTransaction().commit();
+        } catch (Exception ex) {
+            currentSession.getTransaction().rollback();
+        }
     }
 }
 
