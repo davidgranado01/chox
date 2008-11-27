@@ -16,7 +16,7 @@ import java.util.List;
  *  
  * @author Emmanuel
  */
-public class claimDetailAction extends BaseAction implements ModelDriven<Claim>, Preparable {
+public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
     private Claim claim = new Claim();
     private int id = -1;

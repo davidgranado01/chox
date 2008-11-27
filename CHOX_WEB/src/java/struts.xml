@@ -37,11 +37,6 @@
         <action name="inbox" class="chox.web.actions.InboxAction">
             <result>/jsp/user/Inbox.jsp</result>
         </action>
-        <action name="getClaimsbyStatus" class="chox.web.actions.ClaimsAction" method="getClaimsbyStatus">
-            <param name="status">status
-            </param>
-            <result name="success">/jsp/JsonData.jsp</result>
-        </action>
         <action name="searchClaim" class="chox.web.actions.SearchClaimAction">
             <result name="success">/jsp/user/p_searchClaim.jsp
             </result>
@@ -51,11 +46,11 @@
             </result>
         </action>
         <!-- Start Claim Detail -->
-        <action name="openClaimDetail" class="chox.web.actions.claimDetailAction">
+        <action name="openClaimDetail" class="chox.web.actions.ClaimAction">
             <result name="success">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
-        <action name="UpdateClaimDetail" class="chox.web.actions.claimDetailAction" method="updateClaimDetail">
+        <action name="UpdateClaimDetail" class="chox.web.actions.ClaimAction" method="updateClaimDetail">
             <result name="success" type="redirect">inbox.action</result>
         </action>  
         <!-- End Claim Detail -->
