@@ -5,6 +5,10 @@ borderLayout
 
 function borderLayout(){
     
+    
+    
+    /*
+    
     Ext.QuickTips.init();
     
     var center = new Ext.Panel({
@@ -47,5 +51,7 @@ function borderLayout(){
 	         contentEl: 'footer'
 	    }]
     });
+    
+    */
 	
 }

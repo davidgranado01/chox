@@ -10,6 +10,8 @@
 <head>
     <title><decorator:title default="Inbox"/></title>
     <decorator:head/>
+    
+  
 </head>
 
 <script >

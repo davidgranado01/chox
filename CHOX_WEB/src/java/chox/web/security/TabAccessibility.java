@@ -13,12 +13,12 @@ import org.acegisecurity.GrantedAuthority;
 public class TabAccessibility {
 
     private ApplicationAccessibility accessibility = new ApplicationAccessibility();
-    private short claimDetailTabAccessibility;
-    private short invoiceDetailTabAccessibility;
-    private short hireMonitoringTabAccessibility;
-    private short historyTabAccessibility;
-    private short notesTabAccessibility;
-    private short paymentPackTabAccessibility;
+    private short claimDetailTabAccessibility =1 ;
+    private short invoiceDetailTabAccessibility = 1;
+    private short hireMonitoringTabAccessibility = 1;
+    private short historyTabAccessibility = 1;
+    private short notesTabAccessibility = 1;
+    private short paymentPackTabAccessibility = 1;
 
     public void TabAccessibility(GrantedAuthority[] grantedAuthorities,String claimStatus) {
         
