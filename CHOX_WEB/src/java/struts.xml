@@ -56,7 +56,8 @@
         <!-- End Claim Detail -->
         <!-- Start Incident Detail -->
         <action name="openIncident" class="chox.web.actions.IncidentAction">
-            <result name="success">/jsp/user/p_incident.jsp</result>
+            <result name="r">/jsp/user/p_incident_r.jsp</result>
+            <result name="w">/jsp/user/p_incident_w.jsp</result>
         </action>
         <action name="updateIncident" class="chox.web.actions.IncidentAction" method="updateIncident">
             <result name="success">/jsp/actionResult.jsp</result>
