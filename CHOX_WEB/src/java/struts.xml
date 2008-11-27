@@ -56,12 +56,7 @@
         </action>
         <action name="UpdateClaimDetail" class="chox.web.actions.claimDetailAction" method="updateClaimDetail">
             <result name="success" type="redirect">inbox.action</result>
-        </action>
-        
-        <action name="getIncident" class="chox.web.actions.IncidentAction">
-            <result name="success">/jsp/JsonData.jsp</result>
-        </action>
-        
+        </action>        
         <action name="updateIncident" class="chox.web.actions.claimDetailAction" method="updateIncident">
             <result name="success">/jsp/actionResult.jsp</result>
         </action>
