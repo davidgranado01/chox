@@ -33,7 +33,7 @@ public class XmlProcessController {
 
         try {
             
-            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/20081125_TESTXML.xml";
+            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/BordTest10.xml";
             Boolean isAllowPartialUpload = true;
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -330,8 +330,8 @@ if(xmlParseResult.getClaim().getEngineerReport()==null){
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "rental-status", XmlHelper.isMAN_Status, "", strSectionName, "Hire State");
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "managing-repair", XmlHelper.isMAN_Managing_Repair, XmlHelper.REG_BOOLEAN, strSectionName, "Managing Repair");
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "first-contact", XmlHelper.isMAN_First_Contact, XmlHelper.REG_TIMESTAMP, strSectionName, "Policy Holder Contact");
-        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "credit-agreement", XmlHelper.isMAN_DateTimeCreditAgreementSigned, XmlHelper.REG_TIMESTAMP, strSectionName, "Credit Agreement Signed by Insurer");
-        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "gta-notice-date", XmlHelper.isMAN_GTANoticeDate, XmlHelper.REG_TIMESTAMP, strSectionName, "GTA 4.1 Notice Date");
+        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "agreement-signed", XmlHelper.isMAN_DateTimeCreditAgreementSigned, XmlHelper.REG_TIMESTAMP, strSectionName, "Credit Agreement Signed by Insurer");
+        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "gta-notice", XmlHelper.isMAN_GTANoticeDate, XmlHelper.REG_TIMESTAMP, strSectionName, "GTA 4.1 Notice Date");
         
         Claim claim = new Claim();
         
