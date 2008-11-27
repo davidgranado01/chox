@@ -195,6 +195,10 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library files="1">
+                    <file>${file.reference.jsf-api.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library files="1">
                     <file>${file.reference.jxls-core-0.9.6.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>

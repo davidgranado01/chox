@@ -42,7 +42,7 @@
             </result>
         </action>
         <action name="doSearchClaim" class="chox.web.actions.SearchClaimAction" method="doSearchClaim">
-            <result name="success">/jsp/JsonData.jsp
+            <result name="success">/jsp/p_jsonData.jsp
             </result>
         </action>
         <action name="doExportExcel" method="execute" class="chox.web.actions.ExcelGeneratorAction">
@@ -70,7 +70,7 @@
             <result name="decline">/jsp/p_accessDeclined.jsp</result>
         </action>
         <action name="updateIncident" class="chox.web.actions.IncidentAction" method="updateIncident">
-            <result name="success">/jsp/actionResult.jsp</result>
+            <result name="success">/jsp/p_response.jsp</result>
         </action>
         <!-- End Incident Detail -->
         <!-- Start Injury Detail -->
@@ -80,7 +80,7 @@
             <result name="decline">/jsp/p_accessDeclined.jsp</result>
         </action>
         <action name="updateInjury" class="chox.web.actions.InjuryAction" method="updateInjury">
-            <result name="success">/jsp/actionResult.jsp</result>
+            <result name="success">/jsp/p_response.jsp</result>
         </action>
         <!-- End Incident Detail -->
     </package>

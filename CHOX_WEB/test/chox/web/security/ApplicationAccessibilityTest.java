@@ -43,8 +43,7 @@ public class ApplicationAccessibilityTest {
 
     @Test
     public void testCheckTabAccessibility() {
-        ApplicationAccessibility instance = new ApplicationAccessibility();
-        instance.setAccessibilityService(new AccessibilityServiceImpl());
+        ApplicationAccessibility instance = ApplicationAccessibility.getInstance();
         System.out.println("checkTabAccessibility");
         String tabName = ApplicationAccessibility.TAB_CLAIM_DETAIL;
         GrantedAuthority[] grantedAuthorities = new GrantedAuthority[]{new GrantedAuthorityImpl("ROLE_CHO")};
@@ -88,7 +87,7 @@ public class ApplicationAccessibilityTest {
         System.out.println("checkFilterAccessibility");
         String filterName = "";
         GrantedAuthority[] grantedAuthorities = null;
-        ApplicationAccessibility instance = new ApplicationAccessibility();
+        ApplicationAccessibility instance = ApplicationAccessibility.getInstance();
         Short expResult = null;
         Short result = instance.checkFilterAccessibility(filterName, grantedAuthorities);
         assertEquals(expResult, result);
