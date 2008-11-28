@@ -50,23 +50,20 @@ public class rendarActionPanelAction extends BaseAction{
         
         GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
         List<String> actions = PanelAction.getPanelAction();
-        
-        String sActionName = DECLINE;
-        
-        for(int iCount = 0; iCount < actions.size(); iCount++){
-            String thisActionName = actions.get(iCount);
+               
+        for(String thisActionName : actions)
+        {
             String sActionKey = "action."+thisActionName;
             String sClaimStatus = getClaimStatus();
             
             short accessRight = ApplicationAccessibility.getInstance().checkActionAccessibility(sActionKey, grantedAuthorities, sClaimStatus);
             
             if(accessRight>0){
-                sActionName = thisActionName;
-                break;
+                return thisActionName;
             }
         }
 
-        return sActionName;
+        return DECLINE;
     }
     
     
