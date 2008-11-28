@@ -366,29 +366,29 @@
                     <tr>
                         <td>
                             <label class="chox-claim-header-label">
-                                Insurer</label><label class="chox-claim-header-text">Royal Sun Alliance</label></td>
+                        Insurer</label><label class="chox-claim-header-text"><s:property value="insurer.name" /></label></td>
                         <td>
                             <label class="chox-claim-header-label">
-                                Credit-hire Organsation</label><label class="chox-claim-header-text">Driveassist</label></td>
+                                Credit-hire Organsation</label><label class="chox-claim-header-text"><s:property value="chorganisation.name" /></label></td>
                         <td>
                             <label class="chox-claim-header-label">
-                                Created By</label><label class="chox-claim-header-text">John Peterson</label></td>
+                                Created By</label><label class="chox-claim-header-text"><s:property value="getCreatedBy" /></label></td>
                     </tr>
                     <tr>
                         <td>
                             <label class="chox-claim-header-label">
-                                Supplier Reference</label><label class="chox-claim-header-text">DA12332233</label></td>
+                                Supplier Reference</label><label class="chox-claim-header-text"><s:property value="choReference" /></label></td>
                         <td>
                             <label class="chox-claim-header-label">
-                                Insurer Claim Number</label><label class="chox-claim-header-text">RSA 232</label></td>
+                                Insurer Claim Number</label><label class="chox-claim-header-text"><s:property value="claimNumber" /></label></td>
                         <td>
                             <label class="chox-claim-header-label">
-                                Created On</label><label class="chox-claim-header-text">June 21, 2008</label></td>
+                        Created On</label><label class="chox-claim-header-text"><s:date name="createdDate" format="yyyy-MM-dd hh:mm"  /></label></td>
                     </tr>
                     <tr>
                         <td>
                             <label class="chox-claim-header-label">
-                                Current Status</label><label class="chox-claim-header-text"><span id="status">Unacknowledged</span></label><!--span id="statusTip"><img src="img/tip.gif" style="fixed:relative;top:-50" /></span--></td>
+                                Current Status</label><label class="chox-claim-header-text"><span id="status"><s:property value="status" /></span></label><!--span id="statusTip"><img src="img/tip.gif" style="fixed:relative;top:-50" /></span--></td>
                         <td colspan="2">
                             &nbsp;</td>
                     </tr>
@@ -403,9 +403,26 @@
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     
-    <h1 style="color:red">Action Placeholder --- Action ETA tomorrow some time...</h1>
-    
-    
+    <s:form action="UpdateClaimDetail" theme="css_xhtml">   
+            <table>                
+                <tr>
+                    <td align="right">Claim Status</td>
+                    <td>                        
+                        <s:select name="status" value="model.status" list="statuses" listKey="value" listValue="text" emptyOption="false"></s:select>                                           
+                    </td>                    
+                </tr>     
+                <tr>
+                    <td><s:submit value="Update" /></td><td></td>
+                </tr>
+                
+            </table>
+
+            <span style="color:green;">
+                <s:actionmessage />
+                <s:actionerror />
+                <b><s:property value="actionMessage" /></b>
+            </span>
+        </s:form>     
     
 </div>
 
