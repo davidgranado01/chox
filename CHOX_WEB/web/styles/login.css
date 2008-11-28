@@ -1,0 +1,200 @@
+body
+{
+    background-attachment: scroll;
+    background-color: #fff;
+    background-image: none;
+    background-repeat: repeat;
+    background-x-position: 0%;
+    background-y-position: 0%;
+    color: #222222;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 14px;
+    margin-bottom: 0pt;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0pt;
+    padding-bottom: 0pt;
+    padding-left: 0pt;
+    padding-right: 0pt;
+    padding-top: 0pt;
+    text-align: center;
+}
+html, body
+{
+    background-attachment: scroll;
+    background-color: #fff;
+    background-image: none;
+    background-repeat: repeat;
+    background-x-position: 0%;
+    background-y-position: 0%;
+}
+body.modal
+{
+}
+html, body
+{
+    background-attachment: scroll;
+    background-color: #fff;
+    background-image: none;
+    background-repeat: repeat;
+    background-x-position: 0%;
+    background-y-position: 0%;
+}
+.modal_container
+{
+    background-attachment: scroll;
+    background-color: #ffffff;
+    background-image: none;
+    background-repeat: repeat;
+    background-x-position: 0%;
+    background-y-position: 0%;
+    
+    
+
+    
+    border-bottom-color: #0093c8;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-left-color: #0093c8;
+    border-left-style: solid;
+    border-left-width: 2px;
+    border-right-color: #0093c8;
+    border-right-style: solid;
+    border-right-width: 2px;
+    border-top-color: #0093c8;
+    border-top-style: solid;
+    border-top-width: 2px;
+    
+    
+    
+    margin-bottom: 0pt;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0pt;
+    text-align: left;
+    width: 480px;	background-color:#fff;
+    
+}
+
+
+body.login .modal_container .inner
+{
+    padding-top: 8px;
+}
+body.login .modal_container div.content
+{
+    margin-left: 0;
+}
+body.login label
+{
+    display: block;
+    float: left;
+    width: 80px;
+}
+body.login div.checkbox_and_submit
+{
+    color: #666;
+    font-size: 10px;
+    margin-left: 80px;
+}
+body.login p
+{
+    font-size: 11px;
+    margin: 0 0 5px 0;
+}
+body.login div.checkbox_and_submit p
+{
+    margin: 10px 0 0 0;
+}
+body.login p label
+{
+    font-size: 14px;
+    padding-top: 3px;
+}
+body.login input#name
+{
+    width: 260px;
+}
+body.login p span.note
+{
+    color: #ccc;
+    font-size: 11px;
+    margin-left: 5px;
+}
+#login-error
+{
+    
+    color:#ff0000;
+    font-weight:bold;
+}
+
+body.login input#openid_url
+{
+    width: 260px;
+}
+body.login p.open_id_explanation
+{
+    color: #777;
+    font-size: 11px;
+}
+body.login p.open_id_explanation a, p.open_id_explanation a:visited, p.open_id_explanation a:hover
+{
+    color: #777;
+}
+body.login input#password
+{
+    width: 150px;
+}
+body.login div.checkbox_and_submit p label
+{
+    display: inline;
+    float: none;
+    font-size: 11px;
+    width: auto;
+}
+body.modal div.outer
+{
+    margin-bottom: 15px;
+    margin-left: 0pt;
+    margin-right: 0pt;
+    margin-top: 60px;
+    
+}
+
+.modal_container div.inner
+{
+
+    margin-right: 20px;
+    margin-bottom: 10px;
+    margin-left: 20px;	
+}
+
+body.login .modal_container .inner 
+{
+    padding-top: 8px;
+}
+
+a
+{
+    color:#0098cb;
+}
+
+body.login .modal_container .app_title
+{
+    color:#0098cb;
+    font-family:tahoma,arial,verdana,sans-serif;
+    font-size: 14px;
+    font-weight:bold;  
+    text-align:center;  
+    /*border-bottom:2px solid #0093c8;*/
+    padding-top:5px;
+    padding-bottom:5px;
+    background-color:#fff;
+    
+    
+}
+
+
+
+
+

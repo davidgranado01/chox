@@ -7,7 +7,7 @@
     <body>
         
         <div class='main' id='main'>
-            
+            asdasdasd
             <h1>Welcome to CHOX</h1>  
             
             <authz:authorize ifNotGranted="ROLE_USER">

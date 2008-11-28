@@ -8,9 +8,16 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    
     <head>
+        
+        
+        
         <title><decorator:title default="Struts Starter"/> - CHOX v2.2 build 2008-11-26 </title>
+        
+        
         <link href="<%= request.getContextPath() %>/styles/main.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="<%= request.getContextPath() %>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
         <link href="<%= request.getContextPath() %>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="<%= request.getContextPath() %>/css/xtheme-gray.css" rel="stylesheet" type="text/css" media="all"/>
         
@@ -22,8 +29,6 @@
 
         
         <script src="<%= request.getContextPath() %>/scripts/ext-base.js" type="text/javascript"></script>
-        
-        
         <script src="<%= request.getContextPath() %>/scripts/ext-all.js" type="text/javascript"></script> 
         <script src="<%= request.getContextPath() %>/scripts/Application.js" type="text/javascript"></script> 
         
@@ -35,6 +40,8 @@
         
         
         <decorator:head/>
+        
+
     </head> 
     <body>
         

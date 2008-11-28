@@ -7,39 +7,67 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     
     <head>
-        <title>Logon</title>              
-        
+        <title>IDAS CHOX Welcome Page</title>
+        <link href="<%= request.getContextPath()%>/styles/login.css" rel="stylesheet" type="text/css" media="all"/>  
     </head>
-    <body>
-        
-        <s:if test="#parameters.size()>0">
-            Error :  
-            <s:property value="#session['ACEGI_SECURITY_LAST_EXCEPTION'].message" /><br/>
-            <br/>
-        </s:if>
-        
-        <form action="<%=request.getContextPath()%>/j_acegi_security_check" method="POST" >
+    <body class="modal login">       
+         
+                    
+
             
-            <div id="loginPanel">
-                <table>
-                    <tr>
-                        <td align="right">User Name</td><td> <input type="text" name="j_username" /> </td>
-                    </tr>
-                   <tr>
-                        <td align="right">Password</td><td><input type="password" name="j_password" /></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align="right"><input type="submit" value="Logon" /></td>
-                    </tr>
-                </table>
             
-            </div>   
-        </form>
-        
-        <ul class="filterlist">
-            <li><b>User:</b>op@cho.com<br /><b>Password:</b>1234<br /><b>Role:</b> ROLE_CHO_OPR (CHO Operative)</li>
-            <li><b>User:</b>ch@ins.com<br /><b>Password:</b>1234<br /><b>Role:</b> ROLE_INS_CH (Claim Handler)</li>
-        </ul>
-        
-    </body>
+    <div class="outer">
+        <img alt="Logo" src="<%= request.getContextPath() %>/images/logo_login.jpg">
+    </div>
+    <div class="modal_container">
+        <div class="app_title"><img alt="Logo" src="<%= request.getContextPath() %>/images/chox_logo_small.jpg"></div>
+        <div class="inner">
+            <div class="content" id="loginPanel">
+               <form action="<%=request.getContextPath()%>/j_acegi_security_check" method="POST" >
+                    <div class="login_form">
+                        <p class="password_entry">
+                            <label for="name">
+                                Username:</label>
+                            <input type="text" name="j_username" />
+                        </p>
+                        <p class="password_entry">
+                            <label for="password">
+                                Password:</label>
+                           <input type="password" name="j_password" />
+                            <span class="note">(<a href="/amnesia/forgot_password">I forgot my password/username</a>)
+                            </span>
+                        </p>
+                        <p class="open_id_entry" style="display: none;">
+                            <label for="name">
+                                <img alt="Openid-icon" src="https://asset1.highrisehq.com/images/openid-icon.gif?1227775600"
+                                    style="margin-bottom: 4px;" align="absmiddle" height="16" width="16">
+                                OpenID:
+                            </label>
+                            <input class="identity_url" id="openid_url" name="openid_url" type="text">
+                            <span class="note">(<a href="/amnesia/trouble_with_openid">Can't login?</a>) </span>
+                        </p>
+                        <div class="checkbox_and_submit">
+                            <p>
+                                <label>
+                                    <input id="save_login" name="save_login" value="1" type="checkbox">
+                                    Remember me on this computer</label></p>
+                            <p>
+                                <input type="submit" value="Sign In" />        
+                                    <s:if test="#parameters.size()>0">
+                                        <span id="login-error">Error:&nbsp;<s:property value="#session['ACEGI_SECURITY_LAST_EXCEPTION'].message" /></span>
+                                    </s:if>   
+      
+                            </p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="below">
+        <span class="note">
+        <a href="#" onclick="return false;">Terms and Condidtions</a></span>
+
+    </div>
+</body>
 </html>
