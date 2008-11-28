@@ -80,12 +80,12 @@
         </action>
         <!-- ACTION PANEL VALIDATION By Carlson !-->
         <action name="rendarActionPanel" class="chox.web.actions.rendarActionPanelAction">
-            <result name="1">/jsp/user/p_claimUnacknowledgedUnrouted.jsp</result>
-            <result name="2">/jsp/user/p_claimUnacknowledgedRouted.jsp</result>
-            <result name="3">/jsp/user/p_claimAwaitingCarHireInfo.jsp</result>
-            <result name="4">/jsp/user/p_invoiceDataCalculationIncorrect.jsp</result>
-            <result name="4">/jsp/user/p_invoiceReferralToInsurer.jsp</result>
-            <result name="4">/jsp/user/p_invoiceReferralToCho.jsp</result>
+            <result name="updateclaimlineofbusiness.ClaimUnacknowledgedUnrouted">/jsp/user/p_claimUnacknowledgedUnrouted.jsp</result>
+            <result name="updateclaiminsurerdetail.ClaimUnacknowledgedRouted">/jsp/user/p_claimUnacknowledgedRouted.jsp</result>
+            <result name="updateclaimcarhiredetail.AwaitingCarHireInfo">/jsp/user/p_claimAwaitingCarHireInfo.jsp</result>
+            <result name="updateinvoicedtailbyinsurer.ContestedInvoiceReferredToInsurer">/jsp/user/p_invoiceDataCalculationIncorrect.jsp</result>
+            <result name="updateinvoicedtailbycho.ContestedInvoiceReferredToCHO">/jsp/user/p_invoiceReferralToInsurer.jsp</result>
+            <result name="updateinvoicedtailforcalculationincorrect.InvoiceDataCalculationIncorrect">/jsp/user/p_invoiceReferralToCho.jsp</result>
             <result name="decline">/jsp/p_accessDeclined.jsp</result>
         </action>
         <action name="updateIncident" class="chox.web.actions.IncidentAction" method="updateModel">
