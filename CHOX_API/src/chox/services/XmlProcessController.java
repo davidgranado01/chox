@@ -34,7 +34,7 @@ public class XmlProcessController {
 
         try {
             
-            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/BordTest10.xml";
+            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/new xml_v2.xml";
             Boolean isAllowPartialUpload = true;
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -211,7 +211,7 @@ public class XmlProcessController {
             xmlParseResult = saveXMLRecord(xmlParseResult);
         }
         
-        /*
+        
         System.out.println(" ** FINAL STATUS CODE: " + xmlParseResult.getUploadStatusCode());
         System.out.println(" ** FINAL STATUS: " + xmlParseResult.getUploadStatus());
         System.out.println(" ** CLAIM EXIST: " + xmlParseResult.getIsClaimExist());
@@ -221,7 +221,7 @@ public class XmlProcessController {
         System.out.println(" ** getSchemaValidationRemark: " + xmlParseResult.getSchemaValidationRemark());
         System.out.println(" ** getIsDataValid: " + xmlParseResult.getIsDataValid());
         System.out.println(" ** getDataValidationRemark: " + xmlParseResult.getDataValidationRemark());
-        */
+        
         
         if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
             currentSession.getTransaction().commit();
@@ -1555,15 +1555,17 @@ public class XmlProcessController {
                     // GET <EXTRA></EXTRA> ELEMENT
                     ArrayList<Element> extraElements = XMLUtils.getElements(doc, thisElement, nodeName2);
                     xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, extraElements, nodeName2, strSectionName, "");
-
+                                        
                     if (xmlParseResult.getIsCurrentScheValid()) {
                         
                         for (Element ee : extraElements) {
                             
                             String selectedExtra = ee.getTextContent();
                             
-                            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, nodeName2, XmlHelper.isMAN_RentalVehicles_Extras_Extra, "", strSectionName, selectedExtra);
-
+                            if(!selectedExtra.equalsIgnoreCase("")){
+                                xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, nodeName2, XmlHelper.isMAN_RentalVehicles_Extras_Extra, "", strSectionName, selectedExtra);
+                            }
+                            
                             if(selectedExtra.equalsIgnoreCase("CDW")){
                                 vehiclehire.setCdwFee(true);
                             }else if(selectedExtra.equalsIgnoreCase("Admin")){
