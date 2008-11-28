@@ -4,8 +4,8 @@
  */
 package chox.web.actions;
 
-import chox.model.Incident;
-import chox.services.IncidentService;
+import chox.model.Customer;
+import chox.services.CustomerService;
 import chox.web.security.ApplicationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
@@ -15,22 +15,22 @@ import net.sf.json.JSONObject;
  *
  * @author Emmanuel
  */
-public class IncidentAction extends BaseModelAction implements ModelDriven<Incident>, Preparable {
+public class CustomerAction extends BaseModelAction implements ModelDriven<Customer>, Preparable {
 
-    private IncidentService service;
-    private Incident model;
+    private CustomerService service;
+    private Customer model;
 
-    public void setIncidentService(IncidentService service) {
+    public void setCustomerService(CustomerService service) {
         this.service = service;
     }
 
-    public Incident getModel() {
+    public Customer getModel() {
         return model;
     }
 
     public void prepare() throws Exception {
         if (objectId == -1) {
-            model = new Incident();
+            model = new Customer();
         } else {
             model = service.getObject(objectId);
         }

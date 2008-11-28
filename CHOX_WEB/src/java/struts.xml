@@ -47,12 +47,17 @@
         </action>
         <action name="doExportExcel" method="execute" class="chox.web.actions.ExcelGeneratorAction">
             <result name="success" type="stream">
-                <param name="contentType">application/vnd.ms-excel</param>
-                <param name="inputName">excelStream</param>
-                <param name="contentDisposition">filename="excel_report.xls"</param>
-                <param name="bufferSize">1024</param>
+                <param name="contentType">application/vnd.ms-excel
+                </param>
+                <param name="inputName">excelStream
+                </param>
+                <param name="contentDisposition">filename="excel_report.xls"
+                </param>
+                <param name="bufferSize">1024
+                </param>
             </result>
-            <result name="failed">/jsp/user/ExcelGenerationFailed.jsp</result>
+            <result name="failed">/jsp/user/ExcelGenerationFailed.jsp
+            </result>
         </action>    
         <!-- Start Claim Detail -->
         <action name="openClaimDetail" class="chox.web.actions.ClaimAction">
@@ -60,29 +65,105 @@
             </result>
         </action>
         <action name="UpdateClaimDetail" class="chox.web.actions.ClaimAction" method="updateClaimDetail">
-            <result name="success" type="redirect">inbox.action</result>
+            <result name="success" type="redirect">inbox.action
+            </result>
         </action>  
         <!-- End Claim Detail -->
         <!-- Start Incident Detail -->
-        <action name="openIncident" class="chox.web.actions.IncidentAction">
-            <result name="r">/jsp/user/p_incident_r.jsp</result>
-            <result name="w">/jsp/user/p_incident_w.jsp</result>
-            <result name="decline">/jsp/p_accessDeclined.jsp</result>
+        <action name="getIncident" class="chox.web.actions.IncidentAction">
+            <result name="r">/jsp/user/p_incident_r.jsp
+            </result>
+            <result name="w">/jsp/user/p_incident_w.jsp
+            </result>
+            <result name="decline">/jsp/p_accessDeclined.jsp
+            </result>
         </action>
-        <action name="updateIncident" class="chox.web.actions.IncidentAction" method="updateIncident">
-            <result name="success">/jsp/p_response.jsp</result>
+        <action name="updateIncident" class="chox.web.actions.IncidentAction" method="updateModel">
+            <result name="success">/jsp/p_response.jsp
+            </result>
         </action>
         <!-- End Incident Detail -->
         <!-- Start Injury Detail -->
-        <action name="openInjury" class="chox.web.actions.InjuryAction">
-            <result name="r">/jsp/user/p_injury_r.jsp</result>
-            <result name="w">/jsp/user/p_injury_w.jsp</result>
+        <action name="getInjury" class="chox.web.actions.InjuryAction">
+            <result name="r">/jsp/user/p_injury_r.jsp
+            </result>
+            <result name="w">/jsp/user/p_injury_w.jsp
+            </result>
+            <result name="decline">/jsp/p_accessDeclined.jsp
+            </result>
+        </action>
+        <action name="updateInjury" class="chox.web.actions.InjuryAction" method="updateModel">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+        <!-- End Injury Detail -->
+        <!-- Start Invoice Detail -->
+        <action name="getInvoice" class="chox.web.actions.InvoiceAction">
+            <result name="r">/jsp/user/p_Invoice_r.jsp
+            </result>
+            <result name="w">/jsp/user/p_Invoice_w.jsp
+            </result>
+            <result name="decline">/jsp/p_accessDeclined.jsp
+            </result>
+        </action>
+        <action name="updateInvoice" class="chox.web.actions.InvoiceAction" method="updateModel">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+        <!-- End Invoice Detail -->
+        <!-- Start Extra Detail -->
+        <action name="getExtra" class="chox.web.actions.ExtraAction">
+            <result name="r">/jsp/user/p_Extra_r.jsp
+            </result>
+            <result name="w">/jsp/user/p_Extra_w.jsp
+            </result>
+            <result name="decline">/jsp/p_accessDeclined.jsp
+            </result>
+        </action>
+        <action name="updateExtra" class="chox.web.actions.ExtraAction" method="updateModel">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+        <!-- End Extra Detail -->
+        <!-- Start EngineerReport Detail -->
+        <action name="getEngineerReport" class="chox.web.actions.EngineerReportAction">
+            <result name="r">/jsp/user/p_EngineerReport_r.jsp</result>
+            <result name="w">/jsp/user/p_EngineerReport_w.jsp</result>
             <result name="decline">/jsp/p_accessDeclined.jsp</result>
         </action>
-        <action name="updateInjury" class="chox.web.actions.InjuryAction" method="updateInjury">
+        <action name="updateEngineerReport" class="chox.web.actions.EngineerReportAction" method="updateModel">
             <result name="success">/jsp/p_response.jsp</result>
         </action>
-        <!-- End Incident Detail -->
+        <!-- End EngineerReport Detail -->
+        <!-- Start VehicleHire Detail -->
+        <action name="getVehicleHire" class="chox.web.actions.VehicleHireAction">
+            <result name="r">/jsp/user/p_VehicleHire_r.jsp</result>
+            <result name="w">/jsp/user/p_VehicleHire_w.jsp</result>
+            <result name="decline">/jsp/p_accessDeclined.jsp</result>
+        </action>
+        <action name="updateVehicleHire" class="chox.web.actions.VehicleHireAction" method="updateModel">
+            <result name="success">/jsp/p_response.jsp</result>
+        </action>
+        <!-- End VehicleHire Detail -->
+        <!-- Start History Detail -->
+        <action name="getHistories" class="chox.web.actions.HistoryAction">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <!-- End History Detail -->
+        <!-- Start Comment Detail -->
+        <action name="getComment" class="chox.web.actions.GetCommentsAction">
+            <result name="r">/jsp/user/p_Comment_r.jsp</result>
+            <result name="w">/jsp/user/p_Comment_w.jsp</result>
+            <result name="decline">/jsp/p_accessDeclined.jsp</result>
+        </action>
+        <action name="getComments" class="chox.web.actions.GetCommentsAction" method="getClaims">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="createNewComment" class="chox.web.actions.CommentAction" method="createNewComment">
+            <result name="success">/jsp/p_response.jsp</result>
+        </action>
+        <!-- End Comment Detail -->
+        
     </package>
     <include file="config-browser.xml"/>
 </struts>

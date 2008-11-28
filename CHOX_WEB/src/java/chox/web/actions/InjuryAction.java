@@ -15,27 +15,11 @@ import net.sf.json.JSONObject;
  *
  * @author Emmanuel
  */
-public class InjuryAction extends AccessibilityControlAction implements ModelDriven<Injury>, Preparable {
+public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>, Preparable {
 
     private InjuryService service;
     private Injury model;
-    private int injuryId = -1;
-    private String claimStatus;
-    private String actionResult;
-
-    public int getInjuryId() {
-        return injuryId;
-    }
-
-    public void setInjuryId(int id) {
-        this.injuryId = id;
-    }
-    
-    public void setClaimStatus(String claimStatus)
-    {
-        this.claimStatus = claimStatus;
-    }
-
+  
     public void setInjuryService(InjuryService service) {
         this.service = service;
     }
@@ -45,20 +29,16 @@ public class InjuryAction extends AccessibilityControlAction implements ModelDri
     }
 
     public void prepare() throws Exception {
-        if (injuryId == -1) {
+        if (objectId == -1) {
             model = new Injury();
         } else {
-            model = service.getInjury(injuryId);
+            model = service.getObject(objectId);
         }
-    }
+    }   
 
-    public String getActionResult() {
-        return actionResult;
-    }
-
-    public String updateInjury() {
+    public String updateModel() {
         try {
-            this.service.updateInjury(model);
+            this.service.updateObject(model);
             this.actionResult = "";
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
@@ -74,12 +54,6 @@ public class InjuryAction extends AccessibilityControlAction implements ModelDri
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_CLAIM_DETAIL;
-    }
-
-    @Override
-    String getCaimStatus() {
-        return claimStatus;
-    }
-    
+    } 
     
 }
