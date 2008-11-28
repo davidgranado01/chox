@@ -63,7 +63,7 @@
     <bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
     </bean>
     <bean id="logoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
-        <constructor-arg value="/index.action"/> <!-- URL redirected to after logout -->
+        <constructor-arg value="/login.action"/> <!-- URL redirected to after logout -->
         <constructor-arg>
             <list>
                 <bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
