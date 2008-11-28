@@ -31,11 +31,11 @@ public class InjuryServiceImpl extends DataService implements InjuryService {
         return xmlParseResult;
     }
 
-    public Injury getInjury(int id) {
+    public Injury getObject(int id) {
         return (Injury)currentSession.get(Injury.class, id);
     }
 
-    public void updateInjury(Injury injury) {
+    public void updateObject(Injury injury) {
 
         currentSession.beginTransaction();
         currentSession.update(injury);

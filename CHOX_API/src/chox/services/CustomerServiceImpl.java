@@ -4,27 +4,18 @@ package chox.services;
 import chox.Util.XmlHelper;
 import chox.Util.DateHelper;
 import chox.model.*;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
 
 public class CustomerServiceImpl extends DataService implements CustomerService{
     
-    public Customer getCustomerById(int id){        
-        
-        Customer customer = new Customer();
-        
-        try {
-            Criteria criteria = currentSession.createCriteria(Customer.class);
-            criteria.add(Restrictions.eq("id", id));
-            customer = (Customer) criteria.uniqueResult();
-            
-        } catch (Throwable e) {
-           e.printStackTrace();
-        }
-        
-        currentSession.clear();
-        currentSession.disconnect();
-        return customer;
+    public Customer getObject(int id) {
+        return (Customer) currentSession.get(Customer.class, id);
+    }
+
+    public void updateObject(Customer customer) {
+
+        currentSession.beginTransaction();
+        currentSession.update(customer);
+        currentSession.getTransaction().commit();
     }
 
     public XMLParseResult saveCustomerForXMLUploader(XMLParseResult xmlParseResult){

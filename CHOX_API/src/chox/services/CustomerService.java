@@ -10,6 +10,7 @@ import chox.model.Customer;
 
 public interface CustomerService {
     XMLParseResult saveCustomerForXMLUploader(XMLParseResult xmlParseResult);
-    public Customer getCustomerById(int id);
+    public Customer getObject(int id);
+    public void updateObject(Customer customer);
 
 }

@@ -31,4 +31,15 @@ public class SolicitorServiceImpl  extends DataService implements SolicitorServi
         return xmlParseResult;
     }  
     
+        public Solicitor getObject(int id) {
+        return (Solicitor) currentSession.get(Solicitor.class, id);
+    }
+
+    public void updateObject(Solicitor solicitor) {
+
+        currentSession.beginTransaction();
+        currentSession.update(solicitor);
+        currentSession.getTransaction().commit();
+    }
+    
 }

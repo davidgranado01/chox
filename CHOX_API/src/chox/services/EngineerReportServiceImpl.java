@@ -7,12 +7,12 @@ import chox.model.XMLParseResult;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
-public class EngineerReportServiceImpl extends DataService implements EngineerReportService{
+public class EngineerReportServiceImpl extends DataService implements EngineerReportService {
 
-    public XMLParseResult saveEngineerReportForXMLUploader(XMLParseResult xmlParseResult){
-        
-        if((xmlParseResult.getClaim().getEngineerReport())!=null){
-            
+    public XMLParseResult saveEngineerReportForXMLUploader(XMLParseResult xmlParseResult) {
+
+        if ((xmlParseResult.getClaim().getEngineerReport()) != null) {
+
             (xmlParseResult.getClaim().getEngineerReport()).setCreatedBy(getCurrentUser().getId());
             (xmlParseResult.getClaim().getEngineerReport()).setCreatedDate(DateHelper.getCurrentTimeStamp());
             (xmlParseResult.getClaim().getEngineerReport()).setLastModifiedBy(getCurrentUser().getId());
@@ -20,33 +20,44 @@ public class EngineerReportServiceImpl extends DataService implements EngineerRe
 
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
-                try{
+                try {
                     xmlParseResult.getCurrentSession().saveOrUpdate(xmlParseResult.getClaim().getEngineerReport());
                 } catch (Exception e) {
                     xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
                 }
             }
         }
-        
+
         return xmlParseResult;
-    }  
-    
-    public EngineerReport getClaimByCHOReferenceNumber(String sClaimReferenceNumber){
-               
+    }
+
+    public EngineerReport getClaimByCHOReferenceNumber(String sClaimReferenceNumber) {
+
         EngineerReport engineerreport = new EngineerReport();
-        
+
         try {
-            
+
             Criteria criteria = currentSession.createCriteria(EngineerReport.class);
             criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
-            engineerreport = (EngineerReport) criteria.uniqueResult();   
-            
+            engineerreport = (EngineerReport) criteria.uniqueResult();
+
         } catch (Throwable e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
-        
+
         currentSession.clear();
         currentSession.disconnect();
         return engineerreport;
+    }
+
+    public EngineerReport getObject(int id) {
+        return (EngineerReport) currentSession.get(EngineerReport.class, id);
+    }
+
+    public void updateObject(EngineerReport engineerReport) {
+
+        currentSession.beginTransaction();
+        currentSession.update(engineerReport);
+        currentSession.getTransaction().commit();
     }
 }

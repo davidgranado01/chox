@@ -8,9 +8,11 @@ package chox.services;
 import chox.model.Comment;
 import java.util.List;
 import chox.model.Claim;
-import java.util.ArrayList;
 
 public interface CommentService {
     
     public List<Comment> getCommentByClaim(Claim claim);
+    public List<Comment> getCommentByClaim(int claimId);
+    Comment getObject(int id);
+    public void createNewObject(Comment comment);
 }

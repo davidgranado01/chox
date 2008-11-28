@@ -5,16 +5,27 @@ import chox.Util.DateHelper;
 import chox.model.*;
 import java.util.ArrayList;
 
-public class WitnessServiceImpl  extends DataService implements WitnessService{
+public class WitnessServiceImpl extends DataService implements WitnessService {
 
-    public XMLParseResult saveWitnessForXMLUploader(XMLParseResult xmlParseResult){
-        
+    public Witness getObject(int id) {
+        return (Witness) currentSession.get(Witness.class, id);
+    }
+
+    public void updateObject(Witness witness) {
+
+        currentSession.beginTransaction();
+        currentSession.update(witness);
+        currentSession.getTransaction().commit();
+    }
+
+    public XMLParseResult saveWitnessForXMLUploader(XMLParseResult xmlParseResult) {
+
         ArrayList<Witness> witnesses = xmlParseResult.getWitnesses();
-        
-        
-        if(witnesses!=null){
-            
-            for(Integer i = 0; i<witnesses.size(); i++){
+
+
+        if (witnesses != null) {
+
+            for (Integer i = 0; i < witnesses.size(); i++) {
 
                 Witness witness = witnesses.get(i);
 
@@ -25,12 +36,12 @@ public class WitnessServiceImpl  extends DataService implements WitnessService{
 
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
-                    try{
+                    try {
                         xmlParseResult.getCurrentSession().saveOrUpdate(witness);
                     } catch (Exception e) {
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
                     }
-                    //xmlParseResult.setWitnesses(witness);
+                //xmlParseResult.setWitnesses(witness);
                 }
             }
         }
