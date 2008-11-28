@@ -110,24 +110,16 @@
             <li>notesTabAccessibility : <s:property value="tabAccessibility.notesTabAccessibility" /></li>
             <li>paymentPackTabAccessibility : <s:property value="tabAccessibility.paymentPackTabAccessibility" /></li>
         </ul>  
-        
-        
-        
-        
-        
-        
+          
         <s:action name="openIncident" executeResult="true">
             <s:param name="incidentId"><s:property value="incident.id" /></s:param> 
             <s:param name="claimStatus"><s:property value="status" /></s:param> 
         </s:action>
         
-        
-        
-        
-        
-        
-        
-        
-        
+        <!-- ACTION PANEL VALIDATION By Carlson !-->
+        <s:action name="rendarActionPanel" executeResult="true">
+            <s:param name="claimStatus"><s:property value="status" /></s:param> 
+        </s:action>
+                
     </body>
 </html>
