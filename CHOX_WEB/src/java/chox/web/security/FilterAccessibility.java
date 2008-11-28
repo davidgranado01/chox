@@ -26,42 +26,42 @@ public class FilterAccessibility {
     private boolean contestedInvoicesReferredToInsurerAccessible;
     private boolean invoicesApprovedByBREAccessible;
 
-    public FilterAccessibility(GrantedAuthority[] grantedAuthorities, String claimStatus) {
+    public FilterAccessibility(GrantedAuthority[] grantedAuthorities) {
         ApplicationAccessibility accessibility = ApplicationAccessibility.getInstance();
 
-        rejectedClaimsAccessible = accessibility.checkTabAccessibility(ApplicationAccessibility.FILTER_REJECTED_CLAIMS,
-                grantedAuthorities, claimStatus) > 0;
-        incorrectInvoiceDataCalculationsAccessible = accessibility.checkTabAccessibility(ApplicationAccessibility.FILTER_INCORRECT_INVOICE_DATA_COLC,
-                grantedAuthorities, claimStatus) > 0;
-        contestedInvoicesReferredToCHOAccessible = accessibility.checkTabAccessibility(ApplicationAccessibility.FILTER_CONTESTED_INVOICE_REF_CHO,
-                grantedAuthorities, claimStatus) > 0;
-        claimsAwaitingHireMonitoringInformationAccessible = accessibility.checkTabAccessibility(ApplicationAccessibility.FILTER_CLAIM_AWAITING_HIRE_MONITORING_INFO,
-                grantedAuthorities, claimStatus) > 0;
-        claimsAwaitingAcknowledgementAccessible = accessibility.checkTabAccessibility(ApplicationAccessibility.FILTER_CLAIM_AWAITING_ACK,
-                grantedAuthorities, claimStatus) > 0;
-        reSubmittedClaimsAwaitingAcknowledgementAccessible = accessibility.checkTabAccessibility(ApplicationAccessibility.FILTER_RESUBMIT_CLAIM_AWAITING_ACK,
-                grantedAuthorities, claimStatus) > 0;
-        hireUpdateAnomaliesAccessible = accessibility.checkTabAccessibility(ApplicationAccessibility.FILTER_HIRE_UPDATE_ANOMALIES,
-                grantedAuthorities, claimStatus) > 0;
-        newClaimsToBeroutedAccessible = accessibility.checkTabAccessibility(ApplicationAccessibility.FILTER_NEW_CLAIM_TO_BE_ROUTED,
-                grantedAuthorities, claimStatus) > 0;
-        claimsAwaitingClaimsHandlingPaymentAccessible = accessibility.checkTabAccessibility(ApplicationAccessibility.FILTER_CLAIM_AWAITING_CLAIM_HANDLING_PAYMENT,
-                grantedAuthorities, claimStatus) > 0;
-        approvedInvoicesAwaitingPaymentAccessible = accessibility.checkTabAccessibility(ApplicationAccessibility.FILTER_APPROVED_INVOICE_AWAITING_PAYMENT,
-                grantedAuthorities, claimStatus) > 0;
-        escalatedInvoicesAccessible = accessibility.checkTabAccessibility(ApplicationAccessibility.FILTER_ESCALATED_INVOICE,
-                grantedAuthorities, claimStatus) > 0;
-        contestedInvoicesReferredToInsurerAccessible = accessibility.checkTabAccessibility(ApplicationAccessibility.FILTER_CONTESTED_INVOICE_REF_INS,
-                grantedAuthorities, claimStatus) > 0;
-        invoicesApprovedByBREAccessible = accessibility.checkTabAccessibility(ApplicationAccessibility.FILTER_INVOICE_APPROVED_BY_BRE,
-                grantedAuthorities, claimStatus) > 0;
+        rejectedClaimsAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_REJECTED_CLAIMS,
+                grantedAuthorities) > 0;
+        incorrectInvoiceDataCalculationsAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INCORRECT_INVOICE_DATA_COLC,
+                grantedAuthorities) > 0;
+        contestedInvoicesReferredToCHOAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CONTESTED_INVOICE_REF_CHO,
+                grantedAuthorities) > 0;
+        claimsAwaitingHireMonitoringInformationAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_AWAITING_HIRE_MONITORING_INFO,
+                grantedAuthorities) > 0;
+        claimsAwaitingAcknowledgementAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_AWAITING_ACK,
+                grantedAuthorities) > 0;
+        reSubmittedClaimsAwaitingAcknowledgementAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_RESUBMIT_CLAIM_AWAITING_ACK,
+                grantedAuthorities) > 0;
+        hireUpdateAnomaliesAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_HIRE_UPDATE_ANOMALIES,
+                grantedAuthorities) > 0;
+        newClaimsToBeroutedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_NEW_CLAIM_TO_BE_ROUTED,
+                grantedAuthorities) > 0;
+        claimsAwaitingClaimsHandlingPaymentAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_AWAITING_CLAIM_HANDLING_PAYMENT,
+                grantedAuthorities) > 0;
+        approvedInvoicesAwaitingPaymentAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_APPROVED_INVOICE_AWAITING_PAYMENT,
+                grantedAuthorities) > 0;
+        escalatedInvoicesAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_ESCALATED_INVOICE,
+                grantedAuthorities) > 0;
+        contestedInvoicesReferredToInsurerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CONTESTED_INVOICE_REF_INS,
+                grantedAuthorities) > 0;
+        invoicesApprovedByBREAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_APPROVED_BY_BRE,
+                grantedAuthorities) > 0;
     }
 
-    public boolean isRejectedClaimsAccessible() {
+    public boolean getIsRejectedClaimsAccessible() {
         return rejectedClaimsAccessible;
     }
 
-    public boolean isIncorrectInvoiceDataCalculationsAccessible() {
+    public boolean getIsIncorrectInvoiceDataCalculationsAccessible() {
         return incorrectInvoiceDataCalculationsAccessible;
     }
 
@@ -69,43 +69,43 @@ public class FilterAccessibility {
         return contestedInvoicesReferredToCHOAccessible;
     }
 
-    public boolean isClaimsAwaitingHireMonitoringInformationAccessible() {
+    public boolean getIsClaimsAwaitingHireMonitoringInformationAccessible() {
         return claimsAwaitingHireMonitoringInformationAccessible;
     }
 
-    public boolean isClaimsAwaitingAcknowledgementAccessible() {
+    public boolean getIsClaimsAwaitingAcknowledgementAccessible() {
         return claimsAwaitingAcknowledgementAccessible;
     }
 
-    public boolean isReSubmittedClaimsAwaitingAcknowledgementAccessible() {
+    public boolean getIsReSubmittedClaimsAwaitingAcknowledgementAccessible() {
         return reSubmittedClaimsAwaitingAcknowledgementAccessible;
     }
 
-    public boolean isHireUpdateAnomaliesAccessible() {
+    public boolean getIsHireUpdateAnomaliesAccessible() {
         return hireUpdateAnomaliesAccessible;
     }
 
-    public boolean isNewClaimsToBeroutedAccessible() {
+    public boolean getIsNewClaimsToBeroutedAccessible() {
         return newClaimsToBeroutedAccessible;
     }
 
-    public boolean isClaimsAwaitingClaimsHandlingPaymentAccessible() {
+    public boolean getIsClaimsAwaitingClaimsHandlingPaymentAccessible() {
         return claimsAwaitingClaimsHandlingPaymentAccessible;
     }
 
-    public boolean isApprovedInvoicesAwaitingPaymentAccessible() {
+    public boolean getIsApprovedInvoicesAwaitingPaymentAccessible() {
         return approvedInvoicesAwaitingPaymentAccessible;
     }
 
-    public boolean isEscalatedInvoicesAccessible() {
+    public boolean getIsEscalatedInvoicesAccessible() {
         return escalatedInvoicesAccessible;
     }
 
-    public boolean isContestedInvoicesReferredToInsurerAccessible() {
+    public boolean getIsContestedInvoicesReferredToInsurerAccessible() {
         return contestedInvoicesReferredToInsurerAccessible;
     }
 
-    public boolean isInvoicesApprovedByBREAccessible() {
+    public boolean getIsInvoicesApprovedByBREAccessible() {
         return invoicesApprovedByBREAccessible;
     }
 }

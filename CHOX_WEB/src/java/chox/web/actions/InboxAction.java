@@ -6,6 +6,7 @@ package chox.web.actions;
 
 import chox.services.ClaimService;
 import chox.web.data.FilterRecordCounter;
+import chox.web.security.FilterAccessibility;
 
 /**
  *
@@ -15,6 +16,7 @@ public class InboxAction extends BaseAction {
 
     private ClaimService service;
     private FilterRecordCounter filterRecordCounter;
+    private FilterAccessibility filterAccessibility;
 
     public void setClaimService(ClaimService service) {
         this.service = service;
@@ -34,5 +36,13 @@ public class InboxAction extends BaseAction {
         }
         
         return filterRecordCounter;
+    }
+
+    public FilterAccessibility getFilterAccessibility() {
+        if(filterAccessibility == null)
+        {
+            filterAccessibility = new FilterAccessibility(super.getAuthenticatedUser().getAuthorities());
+        }
+        return filterAccessibility;
     }
 }

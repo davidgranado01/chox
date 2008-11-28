@@ -251,20 +251,45 @@
     
     <div id="filterPanelTab" class="filterPanelTab">
         <ul class="filterlist">
-            <li><a href="javascript:showClaimByStatus('ClaimRejected');" >Rejected Claims (<s:property value="filterRecordCounter.rejectedClaimsCount" />)</a></li>
-            <li><a href="javascript:showClaimByStatus('InvoiceDataCalculationIncorrect');" >Incorrect Invoice Data Calculations (<s:property value="filterRecordCounter.incorrectInvoiceDataCalculationsCount" />)</a></li>
-            <li><a href="javascript:showClaimByStatus('ContestedInvoiceReferredToCHO');" >Contested Invoices Referred To CHO (<s:property value="filterRecordCounter.contestedInvoicesReferredToCHOCount" />)</a></li>
-            <li><a href="javascript:showClaimByStatus('AwaitingCarHireInfo');" >Claims Awaiting Hire Monitoring Information (<s:property value="filterRecordCounter.claimsAwaitingHireMonitoringInformationCount" />)</a></li>
-            <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedRouted');" >Claims Awaiting Acknowledgement (<s:property value="filterRecordCounter.claimsAwaitingAcknowledgementCount" />)</a></li>
-            <li><a href="javascript:showClaimByStatus('ClaimRejectionContested');" >Re-Submitted Claims Awaiting Acknowledgement (<s:property value="filterRecordCounter.reSubmittedClaimsAwaitingAcknowledgementCount" />)</a></li>
-            <li><a href="javascript:showClaimByStatus('HireUpdateAnomalies');" >Hire Update Anomalies (<s:property value="filterRecordCounter.hireUpdateAnomaliesCount" />)</a></li>
-            <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedUnrouted');" >New Claims to be routed (<s:property value="filterRecordCounter.newClaimsToBeroutedCount" />)</a></li>
-            <li><a href="javascript:showClaimByStatus('ClaimsAwaitingClaimsHandlingPayment');" >Claims Awaiting Claims Handling Payment (<s:property value="filterRecordCounter.claimsAwaitingClaimsHandlingPaymentCount" />)</a></li>
-            <li><a href="javascript:showClaimByStatus('AwaitingInvoicePayment');" >Approved Invoices Awaiting Payment (<s:property value="filterRecordCounter.approvedInvoicesAwaitingPaymentCount" />)</a></li>
-            <li><a href="javascript:showClaimByStatus('InvoiceEscalated');" >Escalated Invoices (<s:property value="filterRecordCounter.escalatedInvoicesCount" />)</a></li>
-            <li><a href="javascript:showClaimByStatus('ContestedInvoiceReferredToInsurer');" >Contested Invoices Referred To Insurer (<s:property value="filterRecordCounter.contestedInvoicesReferredToInsurerCount" />)</a></li>
-            <li><a href="javascript:showClaimByStatus('InvoiceApprovedByBRE');" >Invoices Approved By BRE (<s:property value="filterRecordCounter.invoicesApprovedByBRECount" />)</a></li>
-            
+            <s:if test="filterAccessibility.isRejectedClaimsAccessible">
+                <li><a href="javascript:showClaimByStatus('ClaimRejected');" >Rejected Claims (<s:property value="filterRecordCounter.rejectedClaimsCount" />)</a></li>
+            </s:if> 
+            <s:if test="filterAccessibility.isIncorrectInvoiceDataCalculationsAccessible">
+                <li><a href="javascript:showClaimByStatus('InvoiceDataCalculationIncorrect');" >Incorrect Invoice Data Calculations (<s:property value="filterRecordCounter.incorrectInvoiceDataCalculationsCount" />)</a></li>
+            </s:if> 
+            <s:if test="filterAccessibility.isContestedInvoicesReferredToCHOAccessible">
+                <li><a href="javascript:showClaimByStatus('ContestedInvoiceReferredToCHO');" >Contested Invoices Referred To CHO (<s:property value="filterRecordCounter.contestedInvoicesReferredToCHOCount" />)</a></li>
+            </s:if> 
+            <s:if test="filterAccessibility.isClaimsAwaitingHireMonitoringInformationAccessible">
+                <li><a href="javascript:showClaimByStatus('AwaitingCarHireInfo');" >Claims Awaiting Hire Monitoring Information (<s:property value="filterRecordCounter.claimsAwaitingHireMonitoringInformationCount" />)</a></li>
+            </s:if> 
+            <s:if test="filterAccessibility.isClaimsAwaitingAcknowledgementAccessible">
+                <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedRouted');" >Claims Awaiting Acknowledgement (<s:property value="filterRecordCounter.claimsAwaitingAcknowledgementCount" />)</a></li>
+            </s:if> 
+            <s:if test="filterAccessibility.isReSubmittedClaimsAwaitingAcknowledgementAccessible">
+                <li><a href="javascript:showClaimByStatus('ClaimRejectionContested');" >Re-Submitted Claims Awaiting Acknowledgement (<s:property value="filterRecordCounter.reSubmittedClaimsAwaitingAcknowledgementCount" />)</a></li>
+            </s:if>
+            <s:if test="filterAccessibility.isHireUpdateAnomaliesAccessible">
+                <li><a href="javascript:showClaimByStatus('HireUpdateAnomalies');" >Hire Update Anomalies (<s:property value="filterRecordCounter.hireUpdateAnomaliesCount" />)</a></li>
+            </s:if> 
+            <s:if test="filterAccessibility.isNewClaimsToBeroutedAccessible">
+                <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedUnrouted');" >New Claims to be routed (<s:property value="filterRecordCounter.newClaimsToBeroutedCount" />)</a></li>
+            </s:if> 
+            <s:if test="filterAccessibility.isClaimsAwaitingClaimsHandlingPaymentAccessible">
+                <li><a href="javascript:showClaimByStatus('ClaimsAwaitingClaimsHandlingPayment');" >Claims Awaiting Claims Handling Payment (<s:property value="filterRecordCounter.claimsAwaitingClaimsHandlingPaymentCount" />)</a></li>
+            </s:if> 
+            <s:if test="filterAccessibility.isApprovedInvoicesAwaitingPaymentAccessible">
+                <li><a href="javascript:showClaimByStatus('AwaitingInvoicePayment');" >Approved Invoices Awaiting Payment (<s:property value="filterRecordCounter.approvedInvoicesAwaitingPaymentCount" />)</a></li>
+            </s:if> 
+            <s:if test="filterAccessibility.isEscalatedInvoicesAccessible">
+                <li><a href="javascript:showClaimByStatus('InvoiceEscalated');" >Escalated Invoices (<s:property value="filterRecordCounter.escalatedInvoicesCount" />)</a></li>
+            </s:if> 
+            <s:if test="filterAccessibility.isContestedInvoicesReferredToInsurerAccessible">
+                <li><a href="javascript:showClaimByStatus('ContestedInvoiceReferredToInsurer');" >Contested Invoices Referred To Insurer (<s:property value="filterRecordCounter.contestedInvoicesReferredToInsurerCount" />)</a></li>
+            </s:if>
+            <s:if test="filterAccessibility.isInvoicesApprovedByBREAccessible">
+                <li><a href="javascript:showClaimByStatus('InvoiceApprovedByBRE');" >Invoices Approved By BRE (<s:property value="filterRecordCounter.invoicesApprovedByBRECount" />)</a></li>
+            </s:if> 
             
         </ul>
     </div>
