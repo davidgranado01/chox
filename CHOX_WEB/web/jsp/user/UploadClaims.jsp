@@ -12,22 +12,63 @@
 <html>
     <head >
         <title>Upload Claims</title >      
+        <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/> 
     </head>
     <body >
-        <s:form action ="processClaimsAction" method ="POST" enctype="multipart/form-data">
-            <table>
-                <tr>
-                    <td>
-                        <s:file id="fileUploader" name ="upload" label ="Claim XML File" size="55"/>   
-                    </td>
-                </tr>                
-                <tr>
-                    <td>
-                        <s:submit/>
-                    </td>
-                </tr>
-            </table>     
+        
+        <div class="outer">
             
-        </s:form>
+            <div class="inner">        
+                
+                
+                
+                
+                <div id="chox-menu">
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                        <tr valign="middle">
+                            <td>
+                                <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left" />
+                            </td>
+                            <td width="100%" align="right">
+                                <div class="top-menu">
+                                    <a href="<s:url action="inbox"/>">Home</a>&nbsp;|&nbsp;
+                                    <a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;|&nbsp; 
+                                    <a href="#">Help</a> &nbsp;|&nbsp;
+                                    <a href="#">Support</a>&nbsp;|&nbsp; 
+                                    <a href="#">About Chox</a>&nbsp;|&nbsp;
+                                    <a href="<%=request.getContextPath()%>/j_acegi_logout">Log Off</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>  
+                
+                
+                <div class="chox-claim-header x-panel-bwrap chox-form-container">
+                    
+                    <s:form action ="processClaimsAction" method ="POST" enctype="multipart/form-data">
+                        <table>
+                            <tr>
+                                <td>
+                                    <s:file id="fileUploader" name ="upload" label ="Claim XML File" size="55"/>   
+                                </td>
+                            </tr>                
+                            <tr>
+                                <td>
+                                    <s:submit/>
+                                </td>
+                            </tr>
+                        </table>     
+                        
+                    </s:form>
+                    
+                </div>
+                
+                
+                
+            </div>
+        </div>
+        
+        
     </body>
 </html> 
