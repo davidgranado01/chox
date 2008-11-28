@@ -5,18 +5,19 @@
 
 package chox.web.actions;
 
+import chox.web.security.ApplicationAccessibility;
 import chox.web.security.PermissionedUser;
 import org.acegisecurity.GrantedAuthority;
 import chox.model.WebUserRole;
+import java.util.List;
+import chox.web.data.PanelAction;
 
 public class rendarActionPanelAction extends BaseAction{
     
     //private int userRole;
     private String claimStatus;
     private PermissionedUser user;
-
-    
-    
+    public static final String DECLINE = "decline";
     
     public PermissionedUser getUser() {
         return user;
@@ -47,14 +48,25 @@ public class rendarActionPanelAction extends BaseAction{
     @Override
     public String execute() throws Exception {
         
-        // GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
-        // grantedAuthorities
+        GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
+        List<String> actions = PanelAction.getPanelAction();
         
-       PermissionedUser user = super.getAuthenticatedUser();
-                
-        //user.getAuthorities()
+        String sActionName = DECLINE;
         
-        return "";
+        for(int iCount = 0; iCount < actions.size(); iCount++){
+            String thisActionName = actions.get(iCount);
+            String sActionKey = "action."+thisActionName;
+            String sClaimStatus = getClaimStatus();
+            
+            short accessRight = ApplicationAccessibility.getInstance().checkActionAccessibility(sActionKey, grantedAuthorities, sClaimStatus);
+            
+            if(accessRight>0){
+                sActionName = thisActionName;
+                break;
+            }
+        }
+
+        return sActionName;
     }
     
     
