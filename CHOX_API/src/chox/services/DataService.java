@@ -23,11 +23,14 @@ public class DataService {
     public void setSecurityInfoProvider(SecurityInfoProvider provider) {
         this.securityInforProvider = provider;
 
-        if (this.getSecurityInfoProvider().getIsCHO()) {
-            currentSession.enableFilter("Claim_CHOFilter").setParameter("chorganisationId", this.getCurrentUser().getChorganisation().getId());
-        } else if (this.getSecurityInfoProvider().getIsINS()) {
-            currentSession.enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
+        if (!this.getSecurityInfoProvider().getIsCHOXAdmin()) {
+            if (this.getSecurityInfoProvider().getIsCHO()) {
+                currentSession.enableFilter("Claim_CHOFilter").setParameter("chorganisationId", this.getCurrentUser().getChorganisation().getId());
+            } else if (this.getSecurityInfoProvider().getIsINS()) {
+                currentSession.enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
+            }
         }
+
     }
 
     protected WebUser getCurrentUser() {
