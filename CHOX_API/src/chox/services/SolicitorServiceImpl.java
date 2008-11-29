@@ -2,10 +2,38 @@ package chox.services;
 
 import chox.Util.XmlHelper;
 import chox.Util.DateHelper;
-import chox.model.*;
+import chox.model.XMLParseResult;
+import chox.model.Injury;
+import chox.model.Solicitor;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SolicitorServiceImpl  extends DataService implements SolicitorService{
 
+    public Solicitor getSolicitorByInjury(Injury injury){
+         
+        List solicitors = new ArrayList<Solicitor>();
+        Solicitor solicitor = null;
+        
+        try {
+            Criteria criteria = currentSession.createCriteria(Solicitor.class).add(Restrictions.eq("injury", injury));
+            solicitors = criteria.list();
+            if(solicitors.size()>0){
+                solicitor = (Solicitor)solicitors.get(0);
+            }
+            
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
+        
+        currentSession.clear();
+        currentSession.disconnect();
+        
+        return solicitor;
+    }
+    
     public XMLParseResult saveSolicitorForXMLUploader(XMLParseResult xmlParseResult){
         
         if((xmlParseResult.getSolicitors())!=null){
