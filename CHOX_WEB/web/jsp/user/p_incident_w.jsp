@@ -1,21 +1,11 @@
-<%-- 
-    Document   : p_insident
-    Created on : 27-Nov-2008, 15:01:06
-    Author     : Emmanuel
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-
 
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 
-
-<form id="formUpdateIncident" action="user/updateIncident.action" name="formUpdateIncident">
-    <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>
+<form id="formUpdateIncident" action="user/updateIncident.action" name="user/updateIncident.action">
+    <input type="hidden" name="objectId" value='<s:property value="id"/>'>
     <fieldset class="x-fieldset">
-        <legend><input type="checkbox" class="jq-toggle-fieldset" checked="checked"/>Incident Details</legend>
+        <legend>Incident Details</legend>
         <div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">

@@ -1,13 +1,28 @@
-<%-- 
-    Document   : p_incident_r
-    Created on : 27-Nov-2008, 16:59:55
-    Author     : Emmanuel
---%>
+<%@ taglib uri="/struts-tags" prefix="s" %>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
 
-<html>
-    <h1>Read Only</h1>
-</html>
+
+<fieldset class="x-fieldset">
+    <legend><input type="checkbox" class="jq-toggle-fieldset" checked="checked"/>Incident Details</legend>
+    <div>
+        <div class="chox-form-item">
+            <label class="chox-form-std-label">
+            Date / Time</label>
+        <label class="chox-label-ro"><s:property value="date" /></label></div>
+        <div class="chox-form-item">
+            <label class="chox-form-std-label">
+            Location</label>
+        <label class="chox-label-ro"><s:property value="location" /></label></div>
+        <div class="chox-form-item">
+            <label class="chox-form-std-label">
+            Police Involved?</label>
+        <label class="chox-label-ro">todo: map prop to Yes / No</label></div>
+    <div class="chox-form-item">
+        <label class="chox-form-std-label">
+        Description</label>
+        <textarea class="chox-tta" id="IDDescription" cols="20" rows="5" name="incidentDescription"></textarea>
+        <s:property value="incidentDescription" />
+    </div>                       
+    </div>
+</fieldset>
+
