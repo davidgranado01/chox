@@ -1491,15 +1491,28 @@ public class XmlProcessController {
         xmlParseResult.setIsCurrentDataValid(true);
         xmlParseResult.setIsCurrentScheValid(true);
         
-        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-registration", XmlHelper.isMAN_RentalVehicles_Vehicle_Registration, XmlHelper.REG_VEHICLE_REG, strSectionName, "Registration");
-        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-manufacturer", XmlHelper.isMAN_RentalVehicles_Vehicle_Manufacturer, "", strSectionName, "Manufacturer");
-        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-model", XmlHelper.isMAN_RentalVehicles_Vehicle_Model, "", strSectionName, "Model");
-        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-class", XmlHelper.isMAN_RentalVehicles_Vehicle_Class, "", strSectionName, "Replacement Vehicle Class");
-        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "rental-start", XmlHelper.isMAN_RentalVehicles_Rental_Start, XmlHelper.REG_TIMESTAMP, strSectionName, "Hire Start");
-        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "rental-end", XmlHelper.isMAN_RentalVehicles_Rental_End, XmlHelper.REG_TIMESTAMP, strSectionName, "Hire End");
-        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "rental-days", XmlHelper.isMAN_RentalVehicles_Rental_Days, XmlHelper.REG_INTEGER, strSectionName, "Number Days Hire");
-        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "collection-reason", XmlHelper.isMAN_RentalVehicles_CollectionReason, "", strSectionName, "Reason For Collection");
-
+        if(xmlParseResult.getIsClaimExist() && xmlParseResult.getClaim().getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)){
+            // STAGE 2
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-registration", XmlHelper.isMAN_RentalVehicles_Vehicle_Registration, XmlHelper.REG_VEHICLE_REG, strSectionName, "Registration");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-manufacturer", XmlHelper.isMAN_RentalVehicles_Vehicle_Manufacturer, "", strSectionName, "Manufacturer");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-model", XmlHelper.isMAN_RentalVehicles_Vehicle_Model, "", strSectionName, "Model");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-class", XmlHelper.isMAN_RentalVehicles_Vehicle_Class, "", strSectionName, "Replacement Vehicle Class");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "rental-start", XmlHelper.isMAN_RentalVehicles_Rental_Start, XmlHelper.REG_TIMESTAMP, strSectionName, "Hire Start");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "rental-end", XmlHelper.isMAN_RentalVehicles_Rental_End, XmlHelper.REG_TIMESTAMP, strSectionName, "Hire End");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "rental-days", XmlHelper.isMAN_RentalVehicles_Rental_Days, XmlHelper.REG_INTEGER, strSectionName, "Number Days Hire");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "collection-reason", XmlHelper.isMAN_RentalVehicles_CollectionReason, "", strSectionName, "Reason For Collection");
+        }else{
+            // ANY STAGE EXCEPT STAGE 2
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-registration", false, XmlHelper.REG_VEHICLE_REG, strSectionName, "Registration");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-manufacturer", false, "", strSectionName, "Manufacturer");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-model", false, "", strSectionName, "Model");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-class", false, "", strSectionName, "Replacement Vehicle Class");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "rental-start", false, XmlHelper.REG_TIMESTAMP, strSectionName, "Hire Start");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "rental-end", false, XmlHelper.REG_TIMESTAMP, strSectionName, "Hire End");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "rental-days", false, XmlHelper.REG_INTEGER, strSectionName, "Number Days Hire");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "collection-reason", false, "", strSectionName, "Reason For Collection");            
+        }
+        
         if ((xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid())
         && (XmlHelper.isNotNull(XmlHelper.getNodeValue(mainElement, "vehicle-registration"))
             || XmlHelper.isNotNull(XmlHelper.getNodeValue(mainElement, "vehicle-manufacturer"))
