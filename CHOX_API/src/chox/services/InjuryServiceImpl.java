@@ -1,11 +1,39 @@
 package chox.services;
 
+import chox.model.XMLParseResult;
+import chox.model.Incident;
+import java.util.ArrayList;
+import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import chox.Util.XmlHelper;
 import chox.Util.DateHelper;
-import chox.model.*;
+import chox.model.Injury;
 
 public class InjuryServiceImpl extends DataService implements InjuryService {
 
+    public Injury getInjuryByIncident(Incident incident){
+         
+        List injuries = new ArrayList<Injury>();
+        Injury injury = null;
+        
+        try {
+            Criteria criteria = currentSession.createCriteria(Injury.class).add(Restrictions.eq("incident", incident));
+            injuries = criteria.list();
+            if(injuries.size()>0){
+                injury = (Injury)injuries.get(0);
+            }
+            
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
+        
+        currentSession.clear();
+        currentSession.disconnect();
+        
+        return injury;
+    }
+    
     public XMLParseResult saveInjuryForXMLUploader(XMLParseResult xmlParseResult) {
 
         if ((xmlParseResult.getInjuries()) != null) {
