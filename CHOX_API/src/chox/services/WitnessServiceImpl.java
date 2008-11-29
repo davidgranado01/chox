@@ -4,9 +4,35 @@ import chox.Util.XmlHelper;
 import chox.Util.DateHelper;
 import chox.model.*;
 import java.util.ArrayList;
+import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 public class WitnessServiceImpl extends DataService implements WitnessService {
 
+    public Witness getWitnessByIncident(Incident incident){
+        
+        List witnesses = new ArrayList<Witness>();
+        Witness witness = null;
+        
+        try {
+            Criteria criteria = currentSession.createCriteria(Witness.class).add(Restrictions.eq("incident", incident));
+            witnesses = criteria.list();
+            
+            if(witnesses.size()>0){
+                witness = (Witness)witnesses.get(0);
+            }
+            
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
+        
+        currentSession.clear();
+        currentSession.disconnect();
+        
+        return witness;
+    }
+    
     public Witness getObject(int id) {
         return (Witness) currentSession.get(Witness.class, id);
     }
