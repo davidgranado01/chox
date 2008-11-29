@@ -41,7 +41,7 @@ public class XmlHelper {
     public static final Boolean isMAN_Claim_Customer_Insurer_claimReference= false;
     public static final Boolean isMAN_Claim_Customer_Insurer_comprehensive= true;
     public static final Boolean isMAN_Driver_Email= false;
-    public static final Boolean isMAN_Driver_Firstnames= true;
+    public static final Boolean isMAN_Driver_Firstnames= false;
     public static final Boolean isMAN_Claim_Customer_Insurer_name= true;
     public static final Boolean isMAN_Claim_Customer_Insurer_policyNumber= true;
     public static final Boolean isMAN_Driver_Postcode= true;
@@ -133,25 +133,27 @@ public class XmlHelper {
     public static final Boolean isMAN_Invoice_Net= true;
     public static final Boolean isMAN_Invoice_TotalToPay= true;
     public static final Boolean isMAN_Invoice_Vat = true;
-    public static final Boolean isMAN_Claim_ThirdParty_Driver_Address1= true;
+    
+    public static final Boolean isMAN_Claim_ThirdParty_Driver_Address1= false;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_Address2= false;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_Address3= false;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_Address4= false;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_Address5= false;
-    public static final Boolean isMAN_Claim_ThirdParty_Insurer_ClaimReference= true;
+    public static final Boolean isMAN_Claim_ThirdParty_Insurer_ClaimReference= false;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_Email= false;
-    public static final Boolean isMAN_Claim_ThirdParty_Driver_Firstnames= true;
+    public static final Boolean isMAN_Claim_ThirdParty_Driver_Firstnames= false;
     public static final Boolean isMAN_Claim_ThirdParty_Insurer_Name= true;
     public static final Boolean isMAN_Claim_ThirdParty_Insurer_PolicyNumber= true;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_Postcode= false;
-    public static final Boolean isMAN_Claim_ThirdParty_Driver_Lastname= true;
+    public static final Boolean isMAN_Claim_ThirdParty_Driver_Lastname= false;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_TelephoneDay= false;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_TelephoneEvening= false;
-    public static final Boolean isMAN_Claim_ThirdParty_Driver_Title= true;
-    public static final Boolean isMAN_Claim_ThirdParty_Vehicle_class= true;
+    public static final Boolean isMAN_Claim_ThirdParty_Driver_Title= false;
+    public static final Boolean isMAN_Claim_ThirdParty_Vehicle_class= false;
     public static final Boolean isMAN_Claim_ThirdParty_Vehicle_manufacturer= false;
     public static final Boolean isMAN_Claim_ThirdParty_Vehicle_model= false;
-    public static final Boolean isMAN_Claim_ThirdParty_Vehicle_Registration= true;
+    public static final Boolean isMAN_Claim_ThirdParty_Vehicle_Registration= false;
+    
     public static final Boolean isMAN_Claim_Incident_Witness_address1= false;
     public static final Boolean isMAN_Claim_Incident_Witness_address2= false;
     public static final Boolean isMAN_Claim_Incident_Witness_address3= false;

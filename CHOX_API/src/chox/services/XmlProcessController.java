@@ -86,10 +86,11 @@ public class XmlProcessController {
     
     public ArrayList<XMLParseResult> XMLValidationProcess(File claimXMLFile, Boolean isAllowPartialUpload) {
 
+        
         ArrayList<XMLParseResult> xmlParseResults = new ArrayList<XMLParseResult>();
 
         try {
-
+            
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document doc = docBuilder.parse(claimXMLFile);
