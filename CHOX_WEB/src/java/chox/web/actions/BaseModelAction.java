@@ -48,10 +48,8 @@ public abstract class BaseModelAction extends BaseAction {
         String tabName = getTabName();
         String claimStatus = getCaimStatus();
         short accessRight = ApplicationAccessibility.getInstance().checkTabAccessibility(tabName, grantedAuthorities, claimStatus);
-
-        if (accessRight == 0) {
-            return DECLINE;
-        }
+    
+        
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
 
         return result;

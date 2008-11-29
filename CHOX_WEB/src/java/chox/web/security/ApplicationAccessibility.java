@@ -64,7 +64,7 @@ public class ApplicationAccessibility {
 
     public Short checkTabAccessibility(String tabName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
 
-        accessibilityMap = getAccessibilityMap();
+        //accessibilityMap = getAccessibilityMap();
         String accessibilityKey = getTabAccessibilityKey(tabName, claimStatus);
         if (accessibilityMap.containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
@@ -76,6 +76,7 @@ public class ApplicationAccessibility {
 
     public Short checkFilterAccessibility(String filterName, GrantedAuthority[] grantedAuthorities) {
 
+        //accessibilityMap = getAccessibilityMap();
         String accessibilityKey = getFilterAccessibilityKey(filterName);
         if (accessibilityMap.containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
@@ -87,6 +88,7 @@ public class ApplicationAccessibility {
 
     public Short checkActionAccessibility(String actionName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
 
+        //accessibilityMap = getAccessibilityMap();
         String accessibilityKey = getActionAccessibilityKey(actionName, claimStatus);
         if (accessibilityMap.containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
@@ -140,9 +142,9 @@ public class ApplicationAccessibility {
 
     private HashMap getAccessibilityMap() {
 
-        //if (accessibilityMap == null) {
+        if (accessibilityMap == null) {
             accessibilityMap = this.service.getAccessibilityMap();
-        //}
+        }
         return accessibilityMap;
     }
 }
