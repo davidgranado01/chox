@@ -42,12 +42,15 @@ public class ExcelGeneratorAction extends HttpServlet implements SessionAware{
         this.excelStream = excelStream;
     }
     
+    /*
      public static void main(String[] args)throws IOException {
             ClaimService cs = new ClaimServiceImpl();
             List<Claim> claims = cs.listAllClaims();
             ExcelGeneratorAction excelhelper = new ExcelGeneratorAction();
             ByteArrayOutputStream buf = excelhelper.generateXML(claims);
      }
+     */
+    
     public ByteArrayOutputStream doExportExcel()throws IOException{
 
         ClaimSearchCriteria c = null;
