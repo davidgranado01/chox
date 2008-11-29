@@ -18,7 +18,17 @@ import chox.model.Comment;
 import java.io.IOException;
 import org.apache.struts2.interceptor.SessionAware;
 import javax.servlet.http.HttpServlet;
-
+import chox.web.data.ExcelClaim;
+import chox.services.WitnessService;
+import chox.services.WitnessServiceImpl;
+import chox.services.InjuryService;
+import chox.services.InjuryServiceImpl;
+import chox.services.SolicitorService;
+import chox.services.SolicitorServiceImpl;
+import chox.model.Witness;
+import chox.model.Injury;
+import chox.model.Solicitor;
+        
 public class ExcelGeneratorAction extends HttpServlet implements SessionAware{
     
     private InputStream excelStream;
@@ -32,6 +42,12 @@ public class ExcelGeneratorAction extends HttpServlet implements SessionAware{
         this.excelStream = excelStream;
     }
     
+     public static void main(String[] args)throws IOException {
+            ClaimService cs = new ClaimServiceImpl();
+            List<Claim> claims = cs.listAllClaims();
+            ExcelGeneratorAction excelhelper = new ExcelGeneratorAction();
+            ByteArrayOutputStream buf = excelhelper.generateXML(claims);
+     }
     public ByteArrayOutputStream doExportExcel()throws IOException{
 
         ClaimSearchCriteria c = null;
@@ -61,27 +77,61 @@ public class ExcelGeneratorAction extends HttpServlet implements SessionAware{
         
         HistoryService historyService = new HistoryServiceImpl();
         CommentService commentService = new CommentServiceImpl();
+        WitnessService witnessService = new WitnessServiceImpl();
+        InjuryService injuryService = new InjuryServiceImpl();
+        SolicitorService solicitorService = new SolicitorServiceImpl();
         
         List histories = new ArrayList<History>();
         List comments = new ArrayList<Comment>();
         
-        for(Integer iCount=0; iCount<claims.size(); iCount++){
+        List<ExcelClaim> excelClaims = new ArrayList<ExcelClaim>();
+        
+        //for(Integer iCount=0; iCount<claims.size(); iCount++){
+        for(Claim claim : claims){
+            
+            ExcelClaim ec = new ExcelClaim();
+            ec.setClaim(claim);
+            
+            if(claim.getIncident()!=null){
+                // GET WITNESS
+                Witness witness = witnessService.getWitnessByIncident(claim.getIncident());
+                if(witness!=null){
+                    ec.setWitness(witness);
+                }
+                // GET INJURY
+                Injury injury = injuryService.getInjuryByIncident(claim.getIncident());
+                
+                if(injury!=null){
+                    
+                    Solicitor solicitor = solicitorService.getSolicitorByInjury(injury);
+                    
+                    if(solicitor!=null){
+                        ec.setSolicitor(solicitor);
+                    }
+                    
+                    ec.setInjury(injury);
+                }
+            }
+            
+            excelClaims.add(ec);
             
             // GET HISTORY BY CLAIM ID;
-            histories.addAll(historyService.getHistoryByClaim(claims.get(iCount)));
+            histories.addAll(historyService.getHistoryByClaim(claim));
             
             // GET COMMENT BY CLAIM ID;
-            comments.addAll(commentService.getCommentByClaim(claims.get(iCount)));
+            comments.addAll(commentService.getCommentByClaim(claim));
         }
         
         Map excelMap = new HashMap();
-        excelMap.put("claims", claims);
+        excelMap.put("excelclaims", excelClaims);
         excelMap.put("histories", histories);
         excelMap.put("comments", comments);
 
+        //String templateFileName = "C:\\Project Workplace\\Greefinch\\choxida\\trunk\\CHOX_WEB\\web\\excelTemplate\\claimTemplate.xls";
+        //String destFileName = "C:\\Users\\Carlson\\Desktop\\ExcelTest\\excel_report.xls";
+        
         XLSTransformer transformer = new XLSTransformer();
         // transformer.transformXLS(templateFileName, excelMap, destFileName);
-        
         transformer.transformXLS(templateIS, excelMap).write(out);
         excelMap.clear();
         return out;
