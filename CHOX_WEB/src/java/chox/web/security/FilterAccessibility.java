@@ -65,7 +65,7 @@ public class FilterAccessibility {
         return incorrectInvoiceDataCalculationsAccessible;
     }
 
-    public boolean isContestedInvoicesReferredToCHOAccessible() {
+    public boolean getIsContestedInvoicesReferredToCHOAccessible() {
         return contestedInvoicesReferredToCHOAccessible;
     }
 

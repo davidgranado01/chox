@@ -68,6 +68,10 @@
             <result name="success" type="redirect">inbox.action
             </result>
         </action>  
+        <action name="route" class="chox.web.actions.ClaimAction" method="route">
+            <result>/jsp/p_response.jsp
+            </result>
+        </action>  
         <!-- End Claim Detail -->
         <!-- Start Incident Detail -->
         <action name="getIncident" class="chox.web.actions.IncidentAction">
@@ -79,14 +83,14 @@
             </result>
         </action>
         <!-- ACTION PANEL VALIDATION By Carlson !-->
-        <action name="rendarActionPanel" class="chox.web.actions.rendarActionPanelAction">
-            <result name="updateclaimlineofbusiness.ClaimUnacknowledgedUnrouted">/jsp/user/p_claimUnacknowledgedUnrouted.jsp</result>
-            <result name="updateclaiminsurerdetail.ClaimUnacknowledgedRouted">/jsp/user/p_claimUnacknowledgedRouted.jsp</result>
-            <result name="updateclaimcarhiredetail.AwaitingCarHireInfo">/jsp/user/p_claimAwaitingCarHireInfo.jsp</result>
-            <result name="updateinvoicedtailbyinsurer.ContestedInvoiceReferredToInsurer">/jsp/user/p_invoiceDataCalculationIncorrect.jsp</result>
-            <result name="updateinvoicedtailbycho.ContestedInvoiceReferredToCHO">/jsp/user/p_invoiceReferralToInsurer.jsp</result>
-            <result name="updateinvoicedtailforcalculationincorrect.InvoiceDataCalculationIncorrect">/jsp/user/p_invoiceReferralToCho.jsp</result>
-            <result name="decline">/jsp/p_accessDeclined.jsp</result>
+        <action name="getActionPanel" class="chox.web.actions.ClaimAction" method="getActionPanel">
+            <result name="updateclaimlineofbusiness">/jsp/user/p_routeUnacknowledgedClaim.jsp</result>
+            <result name="updateclaiminsurerdetail">/jsp/user/p_acknowledgeClaim.jsp</result>
+            <result name="updateclaimcarhiredetail">/jsp/user/p_updateCarHireInfo.jsp</result>
+            <result name="updateinvoicedtailbyinsurer">/jsp/user/p_refInvoiceToCHO.jsp</result>
+            <result name="updateinvoicedtailbycho">/jsp/user/p_refInvoiceToInsurer.jsp</result>
+            <result name="updateinvoicedtailforcalculationincorrect">/jsp/user/p_resubmitInvoiceData.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp</result>
         </action>
         <action name="updateIncident" class="chox.web.actions.IncidentAction" method="updateModel">
             <result name="success">/jsp/p_response.jsp

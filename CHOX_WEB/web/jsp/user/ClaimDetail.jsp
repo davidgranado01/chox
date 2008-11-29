@@ -397,39 +397,9 @@
         </div>
         </div>
         
-        
-        
-
-
-<div class="chox-claim-header x-panel-bwrap chox-form-container">
-    
-    <s:form action="UpdateClaimDetail" theme="css_xhtml">   
-            <table>                
-                <tr>
-                    <td align="right">Claim Status</td>
-                    <td>                        
-                        <s:select name="status" value="model.status" list="statuses" listKey="value" listValue="text" emptyOption="false"></s:select>                                           
-                    </td>                    
-                </tr>     
-                <tr>
-                    <td><s:submit value="Update" /></td><td></td>
-                </tr>
-                
-            </table>
-
-            <span style="color:green;">
-                <s:actionmessage />
-                <s:actionerror />
-                <b><s:property value="actionMessage" /></b>
-            </span>
-        </s:form>     
-    
-</div>
-
-        
-    
-
- 
+    <div class="chox-claim-header x-panel-bwrap chox-form-container">    
+        <s:action name="getActionPanel" executeResult="true" />
+    </div>
     
     <div id="tabContainer">
     

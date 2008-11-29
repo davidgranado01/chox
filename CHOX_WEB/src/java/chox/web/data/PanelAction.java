@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PanelAction { 
-    public static final String ACTION_claimlineofbusiness = "updateclaimlineofbusiness.ClaimUnacknowledgedUnrouted";
-    public static final String ACTION_claiminsurerdetail = "updateclaiminsurerdetail.ClaimUnacknowledgedRouted";
-    public static final String ACTION_claimcarhiredetail = "updateclaimcarhiredetail.AwaitingCarHireInfo";
-    public static final String ACTION_invoicedtailbyinsurer = "updateinvoicedtailbyinsurer.ContestedInvoiceReferredToInsurer";
-    public static final String ACTION_invoicedtailbycho = "updateinvoicedtailbycho.ContestedInvoiceReferredToCHO";
-    public static final String ACTION_invoicedtailforcalculationincorrect = "updateinvoicedtailforcalculationincorrect.InvoiceDataCalculationIncorrect";
+    public static final String ACTION_claimlineofbusiness = "updateclaimlineofbusiness";
+    public static final String ACTION_claiminsurerdetail = "updateclaiminsurerdetail";
+    public static final String ACTION_claimcarhiredetail = "updateclaimcarhiredetail";
+    public static final String ACTION_invoicedtailbyinsurer = "updateinvoicedtailbyinsurer";
+    public static final String ACTION_invoicedtailbycho = "updateinvoicedtailbycho";
+    public static final String ACTION_invoicedtailforcalculationincorrect = "updateinvoicedtailforcalculationincorrect";
     
-    public static List<String> getPanelAction() {
+    public static List<String> getPanelActions() {
         List<String> action = new ArrayList<String>();
         action.add(ACTION_claimlineofbusiness);
         action.add(ACTION_claiminsurerdetail);

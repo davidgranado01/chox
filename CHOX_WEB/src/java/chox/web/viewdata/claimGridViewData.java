@@ -11,11 +11,11 @@ import chox.model.Customer;
 import chox.model.Insurer;
 import chox.model.Invoice;
 import chox.model.LineOfBusiness;
-import chox.model.VehicleHire;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 
 /**
@@ -37,7 +37,7 @@ public class claimGridViewData {
     public claimGridViewData(Claim claim)
     {        
         Format dateFormat = new SimpleDateFormat("dd/MM/yyyy") ;
-        NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance();
+        NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
                
         Customer customer = claim.getCustomer();
         Chorganisation c = claim.getChorganisation();
