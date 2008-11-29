@@ -29,7 +29,7 @@ public class AccessibilityServiceImpl extends DataService implements Accessibili
             for (Object item : a.getAccessibilityItem()) {
 
                 AccessibilityItem aItem = (AccessibilityItem) item;
-                roleMap.put(aItem.getRole(), aItem.getAccessRight());
+                roleMap.put(aItem.getRole().trim(), aItem.getAccessRight());
             }
 
             map.put(a.getName(), roleMap);
