@@ -5,44 +5,44 @@
     <legend>Injury</legend>
     <div style="display:none" class="form-container">
         <div class="chox-form-item">
-            <label class="chox-form-std-label">
+            <label class="std-label-ro">
             Name</label>  
-        <label class="chox-label-ro"><s:property value="title" /></label></div>
+        <label class="std-data-ro"><s:property value="title" /></label></div>
         <div class="chox-form-item">
-            <label class="chox-form-std-label">
+            <label class="std-label-ro">
             Address 1</label>
-        <label class="chox-label-ro"><s:property value="address1" /></label></div>
+        <label class="std-data-ro"><s:property value="address1" /></label></div>
         <div class="chox-form-item">
-            <label class="chox-form-std-label">
+            <label class="std-label-ro">
             Address 2</label>
-        <label class="chox-label-ro"><s:property value="address2" /></label></div>
+        <label class="std-data-ro"><s:property value="address2" /></label></div>
         <div class="chox-form-item">
-            <label class="chox-form-std-label">
+            <label class="std-label-ro">
             Address 3</label>
-        <label class="chox-label-ro"><s:property value="address3" /></label></div>
+        <label class="std-data-ro"><s:property value="address3" /></label></div>
         <div class="chox-form-item">
-            <label class="chox-form-std-label">
+            <label class="std-label-ro">
             Address 4</label>
-        <label class="chox-label-ro"><s:property value="address4" /></label></div>
+        <label class="std-data-ro"><s:property value="address4" /></label></div>
         <div class="chox-form-item">
-            <label class="chox-form-std-label">
+            <label class="std-label-ro">
             Address 5</label>
-        <label class="chox-label-ro"><s:property value="address5" /></label></div>
+        <label class="std-data-ro"><s:property value="address5" /></label></div>
         <div class="chox-form-item">
-            <label class="chox-form-std-label">
+            <label class="std-label-ro">
             Postcode</label>
-        <label class="chox-label-ro"><s:property value="postcode" /></label></div>
+        <label class="std-data-ro"><s:property value="postcode" /></label></div>
         <div class="chox-form-item">
-            <label class="chox-form-std-label">
+            <label class="std-label-ro">
             Telephone Day</label>
-        <label class="chox-label-ro"><s:property value="telephoneDay" /></label></div>
+        <label class="std-data-ro"><s:property value="telephoneDay" /></label></div>
         <div class="chox-form-item">
-            <label class="chox-form-std-label">
+            <label class="std-label-ro">
             Telephone Evening</label>
-        <label class="chox-label-ro"><s:property value="telephoneEvening" /></label></div>
+        <label class="std-data-ro"><s:property value="telephoneEvening" /></label></div>
         <div class="chox-form-item">
-            <label class="chox-form-std-label">
+            <label class="std-label-ro">
             Email</label>
-        <label class="chox-label-ro"><s:property value="email" /></label></div>
+        <label class="std-data-ro"><s:property value="email" /></label></div>
     </div>
 </fieldset>

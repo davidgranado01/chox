@@ -25,26 +25,40 @@
     </package>
     <package name="user" namespace="/user" extends="home-package">
         <default-interceptor-ref name="authenticated" />
+        
+        
         <action name ="processClaimsAction" class ="chox.web.actions.ProcessClaimsAction">
             <result name ="success">/jsp/user/UploadStatus.jsp
             </result>
             <result name ="error">/jsp/user/UploadFailed.jsp
             </result>
         </action>
+        
+        
         <action name="uploadClaims" class="chox.web.actions.UploadClaimsAction">
             <result>/jsp/user/UploadClaims.jsp</result>
         </action>
+        
+        
         <action name="inbox" class="chox.web.actions.InboxAction">
             <result>/jsp/user/Inbox.jsp</result>
         </action>
+        
+        
         <action name="searchClaim" class="chox.web.actions.SearchClaimAction">
             <result name="success">/jsp/user/p_searchClaim.jsp
             </result>
         </action>
+        
+        
         <action name="doSearchClaim" class="chox.web.actions.SearchClaimAction" method="doSearchClaim">
             <result name="success">/jsp/p_jsonData.jsp
             </result>
         </action>
+        
+        
+        
+        
         <action name="doExportExcel" method="execute" class="chox.web.actions.ExcelGeneratorAction">
             <result name="success" type="stream">
                 <param name="contentType">application/vnd.ms-excel
@@ -59,6 +73,28 @@
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp
             </result>
         </action>    
+        
+        
+        
+        
+        <!-- ACTION PANEL VALIDATION By Carlson !-->
+        <action name="getActionPanel" class="chox.web.actions.ClaimAction" method="getActionPanel">
+            <result name="updateclaimlineofbusiness">/jsp/user/p_routeUnacknowledgedClaim.jsp</result>
+            <result name="updateclaiminsurerdetail">/jsp/user/p_acknowledgeClaim.jsp</result>
+            <result name="updateclaimcarhiredetail">/jsp/user/p_updateCarHireInfo.jsp</result>
+            <result name="updateinvoicedtailbyinsurer">/jsp/user/p_refInvoiceToCHO.jsp</result>
+            <result name="updateinvoicedtailbycho">/jsp/user/p_refInvoiceToInsurer.jsp</result>
+            <result name="updateinvoicedtailforcalculationincorrect">/jsp/user/p_resubmitInvoiceData.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp</result>
+        </action>        
+        
+        
+        
+        
+        
+        
+        
+        
         <!-- Start Claim Detail -->
         <action name="openClaimDetail" class="chox.web.actions.ClaimAction">
             <result name="success">/jsp/user/ClaimDetail.jsp
@@ -73,30 +109,29 @@
             </result>
         </action>  
         <!-- End Claim Detail -->
-        <!-- Start Incident Detail -->
-        <action name="getIncident" class="chox.web.actions.IncidentAction">
-            <result name="r">/jsp/user/p_incident_r.jsp
+        
+        
+        
+        
+        <!-- Start Customer Detail -->
+        <action name="getCustomer" class="chox.web.actions.CustomerAction">
+            <result name="r">/jsp/user/p_customer_details_r.jsp
             </result>
-            <result name="w">/jsp/user/p_incident_w.jsp
+            <result name="w">/jsp/user/p_customer_details_w.jsp
             </result>
             <result name="decline">/jsp/p_accessDeclined.jsp
             </result>
-        </action>
-        <!-- ACTION PANEL VALIDATION By Carlson !-->
-        <action name="getActionPanel" class="chox.web.actions.ClaimAction" method="getActionPanel">
-            <result name="updateclaimlineofbusiness">/jsp/user/p_routeUnacknowledgedClaim.jsp</result>
-            <result name="updateclaiminsurerdetail">/jsp/user/p_acknowledgeClaim.jsp</result>
-            <result name="updateclaimcarhiredetail">/jsp/user/p_updateCarHireInfo.jsp</result>
-            <result name="updateinvoicedtailbyinsurer">/jsp/user/p_refInvoiceToCHO.jsp</result>
-            <result name="updateinvoicedtailbycho">/jsp/user/p_refInvoiceToInsurer.jsp</result>
-            <result name="updateinvoicedtailforcalculationincorrect">/jsp/user/p_resubmitInvoiceData.jsp</result>
-            <result name="empty">/jsp/p_blank.jsp</result>
-        </action>
-        <action name="updateIncident" class="chox.web.actions.IncidentAction" method="updateModel">
+        </action> 
+        
+        <action name="updateCustomer" class="chox.web.actions.CustomerAction" method="updateModel">
             <result name="success">/jsp/p_response.jsp
             </result>
-        </action>
-        <!-- End Incident Detail -->
+        </action>   
+        <!-- End Customer Detail --> 
+        
+        
+        
+        
         <!-- Start Injury Detail -->
         <action name="getInjury" class="chox.web.actions.InjuryAction">
             <result name="r">/jsp/user/p_injury_r.jsp
@@ -111,6 +146,88 @@
             </result>
         </action>
         <!-- End Injury Detail -->
+        
+        
+        
+        
+        
+        <!-- Start Incident Detail -->
+        <action name="getIncident" class="chox.web.actions.IncidentAction">
+            <result name="r">/jsp/user/p_incident_r.jsp
+            </result>
+            <result name="w">/jsp/user/p_incident_w.jsp
+            </result>
+            <result name="decline">/jsp/p_accessDeclined.jsp
+            </result>
+        </action>
+        <action name="updateIncident" class="chox.web.actions.IncidentAction" method="updateModel">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+        <!-- End Incident Detail -->
+        
+        
+        
+        
+        <!-- Start Solicitor Detail -->
+        <action name="getSolicitor" class="chox.web.actions.SolicitorAction">
+            <result name="r">/jsp/user/p_injury_solicitor_r.jsp
+            </result>
+            <result name="w">/jsp/user/p_injury_solicitor_w.jsp
+            </result>
+            <result name="decline">/jsp/p_accessDeclined.jsp
+            </result>
+        </action>
+        <action name="updateSolicitor" class="chox.web.actions.SolicitorAction" method="updateModel">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+        <!-- End Solicitor Detail -->        
+        
+        
+        
+        
+        
+        
+        
+        <!-- Start ThirdPary Detail -->
+        <action name="getThirdParty" class="chox.web.actions.ThirdPartyAction">
+            <result name="r">/jsp/user/p_third_party_r.jsp
+            </result>
+            <result name="w">/jsp/user/p_third_party_w.jsp
+            </result>
+            <result name="decline">/jsp/p_accessDeclined.jsp
+            </result>
+        </action>
+        <action name="updateThirdParty" class="chox.web.actions.ThirdPartyAction" method="updateModel">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+        <!-- End ThirdPary Detail -->        
+        
+        
+        
+        
+        <!-- Start ThirdPary Detail -->
+        <action name="getWitness" class="chox.web.actions.WitnessAction">
+            <result name="r">/jsp/user/p_witness_r.jsp
+            </result>
+            <result name="w">/jsp/user/p_witness_w.jsp
+            </result>
+            <result name="decline">/jsp/p_accessDeclined.jsp
+            </result>
+        </action>
+        <action name="updateThirdParty" class="chox.web.actions.WitnessAction" method="updateModel">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+        
+        <!-- End ThirdPary Detail -->                
+        
+        
+        
+        
+        
         <!-- Start Invoice Detail -->
         <action name="getInvoice" class="chox.web.actions.InvoiceAction">
             <result name="r">/jsp/user/p_Invoice_r.jsp
@@ -125,6 +242,8 @@
             </result>
         </action>
         <!-- End Invoice Detail -->
+        
+        
         <!-- Start Extra Detail -->
         <action name="getExtra" class="chox.web.actions.ExtraAction">
             <result name="r">/jsp/user/p_Extra_r.jsp
@@ -139,6 +258,8 @@
             </result>
         </action>
         <!-- End Extra Detail -->
+        
+        
         <!-- Start EngineerReport Detail -->
         <action name="getEngineerReport" class="chox.web.actions.EngineerReportAction">
             <result name="r">/jsp/user/p_EngineerReport_r.jsp</result>
@@ -149,6 +270,9 @@
             <result name="success">/jsp/p_response.jsp</result>
         </action>
         <!-- End EngineerReport Detail -->
+        
+        
+        
         <!-- Start VehicleHire Detail -->
         <action name="getVehicleHire" class="chox.web.actions.VehicleHireAction">
             <result name="r">/jsp/user/p_VehicleHire_r.jsp</result>
@@ -159,11 +283,19 @@
             <result name="success">/jsp/p_response.jsp</result>
         </action>
         <!-- End VehicleHire Detail -->
+        
+        
+        
+        
         <!-- Start History Detail -->
         <action name="getHistories" class="chox.web.actions.HistoryAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <!-- End History Detail -->
+        
+        
+        
+        
         <!-- Start Comment Detail -->
         <action name="getComment" class="chox.web.actions.GetCommentsAction">
             <result name="r">/jsp/user/p_Comment_r.jsp</result>
@@ -177,6 +309,14 @@
             <result name="success">/jsp/p_response.jsp</result>
         </action>
         <!-- End Comment Detail -->
+        
+        
+        
+        
+        
+        
+        
+        
         
         <action name="dummy" class="chox.web.actions.DummyAction">
             <result name="success">/jsp/p_blank.jsp</result>

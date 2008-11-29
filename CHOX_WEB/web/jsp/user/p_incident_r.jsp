@@ -3,26 +3,25 @@
 
 
 <fieldset class="x-fieldset">
-    <legend><input type="checkbox" class="jq-toggle-fieldset" checked="checked"/>Incident Details</legend>
-    <div>
+    <legend>Incident Details</legend>
+    <div style="display:none" class="form-container">  
         <div class="chox-form-item">
-            <label class="chox-form-std-label">
+            <label class="std-label-ro">
             Date / Time</label>
-        <label class="chox-label-ro"><s:property value="date" /></label></div>
+        <label class="std-data-ro"><s:property value="date" /></label></div>
         <div class="chox-form-item">
-            <label class="chox-form-std-label">
+            <label class="std-label-ro">
             Location</label>
-        <label class="chox-label-ro"><s:property value="location" /></label></div>
+        <label class="std-data-ro"><s:property value="location" /></label></div>
         <div class="chox-form-item">
-            <label class="chox-form-std-label">
+            <label class="std-label-ro">
             Police Involved?</label>
-        <label class="chox-label-ro">todo: map prop to Yes / No</label></div>
-    <div class="chox-form-item">
-        <label class="chox-form-std-label">
-        Description</label>
-        <textarea class="chox-tta" id="IDDescription" cols="20" rows="5" name="incidentDescription"></textarea>
-        <s:property value="incidentDescription" />
-    </div>                       
+        <label class="std-data-ro">todo: map prop to Yes / No</label></div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">
+            Description</label>
+            <div class="std-data-ro-big"><s:property value="incidentDescription" /></div>
+        </div>                       
     </div>
 </fieldset>
 

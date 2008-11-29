@@ -6,41 +6,37 @@
         <legend>Injury Solicitor</legend>
         <div style="display:none" class="form-container">
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Name</label>
-            <input type="text" class="chox-ttxt" id="ISOLName" name="name" /></div>
+                        <label class="std-data-ro"><s:property value="name" /></label></div>
             
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Address 1</label>
-            <input type="text" class="chox-ttxt" id="ISOLAddress1" name="address1" /></div>
+                        <label class="std-data-ro"><s:property value="address1" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Address 2</label>
-            <input type="text" class="chox-ttxt" id="ISOLAddress2" name="address2" /></div>
+                        <label class="std-data-ro"><s:property value="address2" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Address 3</label>
-            <input type="text" class="chox-ttxt" id="ISOLAddress3" name="address3" /></div>
+                        <label class="std-data-ro"><s:property value="address3" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Address 4</label>
-            <input type="text" class="chox-ttxt" id="ISOLAddress4" name="address4" /></div>
+                         <label class="std-data-ro"><s:property value="address4" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Address 5</label>
-            <input type="text" class="chox-ttxt" id="ISOLAddress5" name="address5" /></div>
+                        <label class="std-data-ro"><s:property value="address5" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Postcode</label>
-            <input type="text" class="chox-ttxt" id="ISOLPostcode" name="postcode" /></div>
+                        <label class="std-data-ro"><s:property value="postcode" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Telephone Day</label>
-            <input type="text" class="chox-ttxt" id="ISOLTelephone" name="telephone" /></div>
-            <div class="chox-form-button">
-                <input type="submit" value="Save Changes" />
-            </div>
-            <div class="chox-form-submit-result">&nbsp;</div>                                            
+                        <label class="std-data-ro"><s:property value="telephoneDay" /></label></div>                                      
         </div>
     </fieldset>
