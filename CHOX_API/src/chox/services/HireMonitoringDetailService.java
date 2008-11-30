@@ -9,4 +9,8 @@ import chox.model.HireMonitoringDetail;
 
 public interface HireMonitoringDetailService {
     HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int id);
+    
+    public HireMonitoringDetail getObject(int id);
+
+    public void updateObject(HireMonitoringDetail engineerReport);
 }

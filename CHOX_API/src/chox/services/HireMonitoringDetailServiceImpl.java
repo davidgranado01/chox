@@ -34,6 +34,17 @@ public class HireMonitoringDetailServiceImpl  extends DataService{
         return hiremonitoringdetail;
     }
     
+      public HireMonitoringDetail getObject(int id) {
+        return (HireMonitoringDetail) currentSession.get(HireMonitoringDetail.class, id);
+    }
+
+    public void updateObject(HireMonitoringDetail HireMonitoringDetail) {
+
+        currentSession.beginTransaction();
+        currentSession.update(HireMonitoringDetail);
+        currentSession.getTransaction().commit();
+    }
+    
     
     /*
      public Insurer getInsurerByName(String s){
