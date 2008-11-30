@@ -52,19 +52,30 @@ public class ProcessClaimsAction extends BaseAction {
 
     @Override
     public String execute() {
-
-        String extention = getExtention(this.filename).toLowerCase();
-
-        if (extention.matches("\\.xml")) {
-            List<XMLParseResult> parseResult = this.service.processClaimXMLFile(this.file , true);
-            if (parseResult == null) {
+            
+            if(this.file==null || this.filename==null){
                 return ERROR;
-            } else {
-                this.result = parseResult;
-                return SUCCESS;
             }
-        } else {
-            return ERROR;
-        }
+            
+            //int pos = this.filename.lastIndexOf(".");
+            if((this.filename.lastIndexOf("."))<=0){
+                return ERROR;
+            }
+            
+            String extention = getExtention(this.filename).toLowerCase();
+            
+            if (extention.matches("\\.xml")) {
+                
+                List<XMLParseResult> parseResult = this.service.processClaimXMLFile(this.file , true);
+                if (parseResult == null) {
+                    return ERROR;
+                } else {
+                    this.result = parseResult;
+                    return SUCCESS;
+                }
+            } else {
+                return ERROR;
+            }
+
     }
 }

@@ -34,7 +34,7 @@
                             <label for="password">
                                 Password:</label>
                            <input type="password" name="j_password" />
-                            <span class="note">(<a href="/amnesia/forgot_password">I forgot my password/username</a>)
+                            <span class="note">(<a href="/amnesia/forgot_password">Forgotten Username/Password</a>)
                             </span>
                         </p>
                         <p class="open_id_entry" style="display: none;">

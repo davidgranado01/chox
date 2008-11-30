@@ -8,12 +8,13 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <head>
+    <!--
     <title>
         
-        <!--decorator:title default="Inbox"/-->
-    
-    
+        <decorator:title default="Inbox"/>
+   
     </title>
+    -->
     <!--decorator:head/-->
     
 

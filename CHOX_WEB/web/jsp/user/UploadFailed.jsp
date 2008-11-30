@@ -17,9 +17,7 @@
     <body>
         <br /> 
         <br /> 
-        <h2>Please select a valid xml file to upload into CHOX.
-            Or alternatively, No xml document selected for upload
-            file type not recognised, please ensure you are trying to upload an xml file.
+        <h2>No Xml document selected for upload or file type not recognised. Please ensure you are trying to upload an xml file and resubmit
         </h2>
         
         <br /> 

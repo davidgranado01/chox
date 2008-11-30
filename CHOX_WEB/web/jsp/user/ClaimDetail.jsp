@@ -12,6 +12,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Claim Detail</title>
         
+        <s:action name="rendarActionPanel" namespace="/user" executeResult="true">
+            <param name="claimStatus" value="status">
+        </s:action>
         
         <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
         <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>

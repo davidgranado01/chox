@@ -9,6 +9,36 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
+<script type="text/javascript">
+    
+    function validateFile(){
+        
+        var uploadFile = document.form.upload.value;
+        
+        if(uploadFile==""){
+            alert("No xml document selected for upload");
+            return false;
+        }else{
+            
+            if((uploadFile.lastIndexOf("."))>0){
+                var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
+                var dot = filename.lastIndexOf("."); 
+                var extension = (filename.substr(dot, filename.length)).toUpperCase(); 
+            }else{
+                alert("Please select a valid xml file to upload into CHOX");
+                return false;
+            }
+
+            if(extension!=".XML") {
+               alert("Please select a valid xml file to upload into CHOX");
+               return false;
+            }
+            
+            return false;
+        }        
+    }
+    
+</script>
 <html>
     <head >
         <title>Upload Claims</title >      
@@ -46,7 +76,7 @@
                 
                 <div class="chox-claim-header x-panel-bwrap chox-form-container">
                     
-                    <s:form action ="processClaimsAction" method ="POST" enctype="multipart/form-data">
+                    <s:form action ="processClaimsAction" method ="POST" enctype="multipart/form-data" name="form">
                         <table>
                             <tr>
                                 <td>
@@ -55,7 +85,7 @@
                             </tr>                
                             <tr>
                                 <td>
-                                    <s:submit/>
+                                    <s:submit onclick="javascript:validateFile();"/>
                                 </td>
                             </tr>
                         </table>     
