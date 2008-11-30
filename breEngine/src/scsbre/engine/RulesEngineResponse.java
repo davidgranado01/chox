@@ -40,7 +40,7 @@ public class RulesEngineResponse {
                 }
             }
             else{
-                status = ClaimStatus.InvoiceApproved;
+                status = ClaimStatus.InvoiceApprovedByBRE;
             }
         }
         return status;
