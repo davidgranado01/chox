@@ -12,7 +12,7 @@ import org.hibernate.criterion.Restrictions;
 import org.w3c.dom.Element;
 import chox.data.HibernateUtil;
 
-public class HireMonitoringDetailServiceImpl  extends DataService{
+public class HireMonitoringDetailServiceImpl  extends DataService implements HireMonitoringDetailService{
 
     public HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int hiremonitoringdetailid){
         HireMonitoringDetail hiremonitoringdetail = new HireMonitoringDetail();

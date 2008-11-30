@@ -528,7 +528,7 @@ public class Claim implements Serializable, IClaimInfo {
         this.indemintyAmount = indemintyAmount;
     }
 
-    public boolean isIsInvoiceReviewRequired() {
+    public boolean getIsInvoiceReviewRequired() {
         return isInvoiceReviewRequired;
     }
 
@@ -536,7 +536,7 @@ public class Claim implements Serializable, IClaimInfo {
         this.isInvoiceReviewRequired = isInvoiceReviewRequired;
     }
 
-    public boolean isIsQuantumDispute() {
+    public boolean getIsQuantumDispute() {
         return isQuantumDispute;
     }
 
