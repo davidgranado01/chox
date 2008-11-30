@@ -12,9 +12,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Claim Detail</title>
         
-        <s:action name="rendarActionPanel" namespace="/user" executeResult="true">
-            <param name="claimStatus" value="status">
-        </s:action>
         
         <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
         <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
@@ -119,7 +116,7 @@
                     timeout: 3000,
                     error: onSubmitError
                 };                      
-                $('form').ajaxForm(options); //wrap all <form> elements with ajax submission config   
+                $('.entity-form').ajaxForm(options); //wrap all <form> elements with ajax submission config   
             });
 
             function onBeforeSubmit(formData, jqForm, options) { 
