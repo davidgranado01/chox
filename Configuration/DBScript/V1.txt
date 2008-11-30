@@ -232,7 +232,7 @@ ALTER TABLE invoice ALTER COLUMN rejection_reason SET STORAGE EXTENDED;
 
 
 -- ############################################################################################
--- START VERSION 2.3 - 2008-11-27
+-- START VERSION 2.3 - 2008-11-28
 -- ############################################################################################
 
 
@@ -324,3 +324,24 @@ ALTER TABLE claim ALTER COLUMN credit_agreement_date SET STORAGE PLAIN;
 
 ALTER TABLE claim ADD COLUMN gta_notice_date timestamp without time zone;
 ALTER TABLE claim ALTER COLUMN gta_notice_date SET STORAGE PLAIN;
+
+
+
+-- ############################################################################################
+-- START VERSION 2.4 - 2008-11-29
+-- ############################################################################################
+
+insert into accessibility (name) values ('action.updateclaimlineofbusiness.ClaimUnacknowledgedUnrouted');
+insert into accessibility (name) values ('action.updateclaiminsurerdetail.ClaimUnacknowledgedRouted');
+insert into accessibility (name) values ('action.updateclaimcarhiredetail.AwaitingCarHireInfo');
+insert into accessibility (name) values ('action.updateinvoicedtailbyinsurer.ContestedInvoiceReferredToInsurer');
+insert into accessibility (name) values ('action.updateinvoicedtailbycho.ContestedInvoiceReferredToCHO');
+insert into accessibility (name) values ('action.updateinvoicedtailforcalculationincorrect.InvoiceDataCalculationIncorrect');
+
+-----------------------------------------------------------------------------------------------
+
+insert into accessibility_item (role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name like 'action.%'
+
+insert into accessibility_item (role, access_right, accessibility_id)
+select a.name, 1, b.id from web_user_role a, accessibility b where b.name like 'action.%'
