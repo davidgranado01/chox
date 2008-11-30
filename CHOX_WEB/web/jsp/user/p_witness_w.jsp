@@ -3,7 +3,7 @@
 
 <form id="f7">
     <fieldset class="x-fieldset">
-        <legend><input type="checkbox" class="jq-toggle-fieldset" checked="checked"/>Witness Details</legend>
+        <legend>Witness Details</legend>
         <div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">

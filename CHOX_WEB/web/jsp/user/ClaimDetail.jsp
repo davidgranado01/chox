@@ -43,20 +43,14 @@
             var hasFormUnderSubmission = false;
             var elementToBlock;
 
-/*/
+
             var claimDetailsDisabled = claimDetailTabAccessibility == 0;
             var hireMonitoringDetailsDisabled = hireMonitoringTabAccessibility  == 0;
             var invoiceDetailsDisabled = invoiceDetailTabAccessibility == 0;
             var paymentPackDisabled = paymentPackTabAccessibility == 0;
             var historyDetailsDisabled = historyTabAccessibility == 0;
-            var commentsDisabled = notesTabAccessibility == 0;*/
-            
-            var claimDetailsDisabled = false;
-            var hireMonitoringDetailsDisabled = false;
-            var invoiceDetailsDisabled = false;
-            var paymentPackDisabled = false;
-            var historyDetailsDisabled = false;
-            var commentsDisabled = false;            
+            var commentsDisabled = notesTabAccessibility == 0;
+         
 
             var commentsJsonReader;
             var commentsDataStore;
@@ -446,9 +440,11 @@
                 
 
                 <div id="tabContainer">
+                    
+                    
                     <div id="claimDetails">         
 
-<s:if test="tabAccessibility.claimDetailTabAccessibility < 99">    
+<s:if test="tabAccessibility.claimDetailTabAccessibility != 0">    
                        
                         
                         <div class="x-panel-bwrap chox-form-container">
@@ -516,7 +512,7 @@
                     <div id="hireMonitoringDetails" class="x-hide-display">
                         
                         
-<s:if test="tabAccessibility.hireMonitoringTabAccessibility <  99">                        
+<s:if test="tabAccessibility.hireMonitoringTabAccessibility != 0">                        
                         
                         
                         <div class="x-panel-bwrap chox-form-container">
@@ -546,7 +542,7 @@
                     </div>
                     <div id="invoiceDetails" class="x-hide-display">    
   
-                      <s:if test="tabAccessibility.invoiceDetailTabAccessibility < 99">   
+                      <s:if test="tabAccessibility.invoiceDetailTabAccessibility != 0">   
 
   
                         <div class="x-panel-bwrap chox-form-container">
@@ -599,13 +595,13 @@
 </s:if>                         
                     </div>
                     <div id="paymentPack" class="x-hide-display">
-<s:if test="tabAccessibility.paymentPackTabAccessibility < 99">
+<s:if test="tabAccessibility.paymentPackTabAccessibility != 0">
     
 </s:if>
                     </div>
                     <div id="historyDetails" class="x-hide-display">
                         
-<s:if test="tabAccessibility.historyTabAccessibility < 99"> 
+<s:if test="tabAccessibility.historyTabAccessibility != 0"> 
 
 
 
@@ -622,7 +618,7 @@
 </s:if>                        
                     </div>
                     <div id="comments" class="x-hide-display">
-<s:if test="tabAccessibility.notesTabAccessibility < 99">                         
+<s:if test="tabAccessibility.notesTabAccessibility != 0">                         
                         
                         
                         <div class="comments  x-panel-bwrap chox-form-container">
