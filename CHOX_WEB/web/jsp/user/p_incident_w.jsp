@@ -2,7 +2,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 
-<form id="formUpdateIncident" action="user/updateIncident.action">
+<form id="formUpdateIncident" action="user/updateIncident.action" class="entity-form">
     <input type="hidden" name="objectId" value='<s:property value="id"/>'>
     <fieldset class="x-fieldset">
         <legend>Incident Details</legend>

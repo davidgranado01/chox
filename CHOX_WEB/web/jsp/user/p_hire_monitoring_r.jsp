@@ -1,19 +1,48 @@
-<%-- 
-    Document   : p_hire_monitoring_r
-    Created on : 27-Nov-2008, 17:15:04
-    Author     : Derm
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
-
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h2>Hello World!</h2>
-    </body>
-</html>
+                                        <form id="f8" action="dummyAction">
+                                            <fieldset class="x-fieldset">
+                                                <legend>Hire Monitoring</legend>
+                                                <div style="display:none" class="form-container">
+                                                    <div class="chox-form-item">
+                                                        <label class="chox-form-std-label">
+                                                        Original ECD</label>
+                                                    <input type="text" class="chox-ttxt" id="HMInitialECD" /></div>
+                                                    <div class="chox-form-item">
+                                                        <label class="chox-form-std-label">
+                                                            Name Of Repairer
+                                                        </label>
+                                                    <input type="text" class="chox-ttxt" id="HMNameOfRepairer" /></div>
+                                                    <div class="chox-form-item">
+                                                        <label class="chox-form-std-label">
+                                                        Repair Book In Date</label>
+                                                    <input type="text" class="chox-ttxt" id="HMRepairBookInDate" /></div>
+                                                    <div class="chox-form-item">
+                                                        <label class="chox-form-std-label">
+                                                        Inspection Booked Date</label><input type="text" class="chox-ttxt" id="HMInspectionBookedDate" />
+                                                    </div>
+                                                    <div class="chox-form-item">
+                                                        <label class="chox-form-std-label">
+                                                        Inspection Date</label>
+                                                    <input type="text" class="chox-ttxt" id="HMInspectionDate" /></div>
+                                                    <div class="chox-form-item">
+                                                        <label class="chox-form-std-label">
+                                                        Total Loss Check</label>
+                                                    <input type="checkbox" class="chox-tcb" id="HMTotalLossCheck" /></div>
+                                                    <div class="chox-form-item">
+                                                        <label class="chox-form-std-label">
+                                                        Total Loss Inspection Report</label>
+                                                    <input type="text" class="chox-ttxt" id="HMTotalLossInspectionReport" /></div>
+                                                    <div class="chox-form-item">
+                                                        <label class="chox-form-std-label">
+                                                        Repair Completion Date</label>
+                                                    <input type="text" class="chox-ttxt" id="HMRepairCompletionDate" /></div>
+                                                    <div class="chox-form-item">
+                                                        <label class="chox-form-std-label">
+                                                        Name of IME</label>
+                                                    <input type="text" class="chox-ttxt" id="HMNameofIME" /></div>
+                                                    <div class="chox-form-button">
+                                                        <input type="submit" value="Save Changes" />
+                                                    </div>
+                                                    <div class="chox-form-submit-result">&nbsp;</div>                                              
+                                                </div>
+                                            </fieldset>
+                                        </form>

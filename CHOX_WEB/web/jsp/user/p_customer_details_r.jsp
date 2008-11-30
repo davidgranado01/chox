@@ -64,11 +64,13 @@
             Email</label>
             <label class="std-data-ro"><s:property value="email" /></label>
             </div>
+            
+            <!--
         <div class="chox-form-item">
             <label class="std-label-ro">
             Insurer</label>
             <label class="std-data-ro">todo: get Insurer name</label>
-            </div>
+            </div>-->
         <div class="chox-form-item">
             <label class="std-label-ro">
             Policy Number</label>
@@ -83,7 +85,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
             Comprehensive</label>
-            <label class="std-data-ro">todo: map Comprehensive to Yes/ No value</label>
+            <label class="std-data-ro"><s:property value="isComprehensiveDesc" /></label>
             </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
@@ -93,7 +95,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
             Vehicle Class</label>
-            <label class="std-data-ro">todo: get Vehicle Class name</label>
+            <label class="std-data-ro"><s:property value="vehicleClass.Name" /></label>
             </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
