@@ -1,4 +1,4 @@
-<form id="f13" action="dummyAction">
+
     <fieldset class="x-fieldset">
         <legend>Engineer Report</legend>
         <div style="display:none" class="form-container">
@@ -57,11 +57,6 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Engineer Email</label>
-            <input type="text" class="chox-ttxt" id="ERPTEngineerEmail" /></div>
-            <div class="chox-form-button">
-                <input type="submit" value="Save Changes" />
-            </div>
-            <div class="chox-form-submit-result">&nbsp;</div>                                              
+            <input type="text" class="chox-ttxt" id="ERPTEngineerEmail" /></div>                                             
         </div>
     </fieldset>
-</form>
