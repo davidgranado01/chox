@@ -41,7 +41,7 @@
 </script>
 <html>
     <head >
-        <title>Upload Claims</title >      
+        <title>IDAS-CHOX</title >      
         <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/> 
     </head>
     <body >

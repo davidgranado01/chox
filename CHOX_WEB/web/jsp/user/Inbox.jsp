@@ -8,14 +8,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <head>
-    <!--
-    <title>
-        
-        <decorator:title default="Inbox"/>
-   
-    </title>
-    -->
-    <!--decorator:head/-->
+    <title>IDAS-CHOX</title>
     
 
     <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
@@ -169,7 +162,7 @@ var tabs = new Ext.TabPanel({
     autoheight:true,
     activeTab: 0,
     items:[
-        {contentEl:'filterPanelTab', title:'Filter'},
+        {contentEl:'filterPanelTab', title:'Inbox'},
         {contentEl:'searchPanelTab', title:'Search'}
     ]
 });  
