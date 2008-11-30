@@ -171,66 +171,195 @@
          
          
          
-
-            Ext.onReady(function(){
-                
+         
+    Ext.onReady(function(){
     
-                var tabs = new Ext.TabPanel({
-                    renderTo: 'tabContainer',
-                    width:960,
-                    activeTab: 0,
-                    frame:false,
-                    plain:true,
-                    defaults:{autoHeight: true},
-                    items:[
-                        {
-                            contentEl:'claimDetails', 
-                            title: 'Claim Details', 
-                            disabled: claimDetailsDisabled
-                        },
-                        {
-                            contentEl:'hireMonitoringDetails', 
-                            title: 'Hire Monitoring', 
-                            disabled: hireMonitoringDetailsDisabled
-                        },
-                        {
-                            contentEl:'invoiceDetails', 
-                            title: 'Invoice Details', 
-                            disabled: invoiceDetailsDisabled
-                        },
-                        {
-                            contentEl:'paymentPack', 
-                            title: 'Payment Pack', 
-                            disabled: paymentPackDisabled 
-                        },
-                        {
-                            contentEl:'historyDetails', 
-                            title: 'History', disabled: historyDetailsDisabled 
-                        },            
-                        {
-                            contentEl:'comments', 
-                            title: 'Notes', 
-                            disabled: commentsDisabled,
-                            listeners: {activate : loadComments}
-                        }            
-                    ]
-                }); 
+        var tabs = new Ext.TabPanel({
+            renderTo: 'tabContainer',
+            width:960,
+            activeTab: 0,
+            frame:false,
+            plain:true,
+            defaults:{autoHeight: true},
+            items:[
+                {
+                    contentEl:'claimDetails', 
+                    title: 'Claim Details', 
+                    disabled: claimDetailsDisabled
+                },
+                {
+                    contentEl:'hireMonitoringDetails', 
+                    title: 'Hire Monitoring', 
+                    disabled: hireMonitoringDetailsDisabled
+                },
+                {
+                    contentEl:'invoiceDetails', 
+                    title: 'Invoice Details', 
+                    disabled: invoiceDetailsDisabled
+                },
+                {
+                    contentEl:'paymentPack', 
+                    title: 'Payment Pack', 
+                    disabled: paymentPackDisabled 
+                },
+                {
+                    contentEl:'historyDetails', 
+                    title: 'History', disabled: historyDetailsDisabled 
+                },            
+                {
+                    contentEl:'comments', 
+                    title: 'Comments', 
+                    disabled: commentsDisabled,
+                    listeners: {activate : loadComments}
+                }            
+            ]
+        }); 
+
+        
+        
+        commentsJsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',   
+            root: 'comments', 
+            fields:
+            [
+                {name:'id'},
+                {name:'createdBy'},            
+                {name:'commentText'}
+            ]
+        });// {name:'created', type: 'date', dateFormat: 'd/m/Y'},
+        
+        
+            
+        commentsDataStore = new Ext.data.Store({
+            proxy: new Ext.data.HttpProxy
+            ({url: 'comments_dummy.js',method:'GET'}),
+            reader:commentsJsonReader        
+        });
+        
+        
+        
+        commentsGrid = new Ext.grid.GridPanel({
+            store: commentsDataStore,
+            loadMask: true,
+            columns: [
+                {header: "ID", width: 80, dataIndex: 'id', sortable: false, resizable: false},
+                {header: "Created", width: 110, dataIndex: 'createdBy', sortable: false, resizable: false},
+                {header: "Message", width: 760, dataIndex: 'commentText', sortable: false, resizable: false}
+            ],
+            renderTo:'commentsGrid',
+            width:960,
+            autoHeight:true,
+            enableHdMenu:false
+        });   
+
+
+
+        
+        historyJsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',   
+            root: 'comments', 
+            fields:
+            [
+                {name:'id'},
+                {name:'createdBy'},  
+                {name:'createdDate'},                 
+                {name:'narrative'}
+            ]
+        });// {name:'created', type: 'date', dateFormat: 'd/m/Y'},
+
+
+
+            
+            
+            var historyData = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy
+                ({url: 'user/getHistories.action',method:'GET'}),
+                reader:historyJsonReader        
+            });            
+
+
+            // create the grid
+            var grid = new Ext.grid.GridPanel({
+                store: historyData,
+                columns: [
+                    {header: "ID", width: 80, dataIndex: 'id', sortable: false, resizable: false},
+                    {header: "Created On", width: 110, dataIndex: 'createdDate', sortable: false, resizable: false},
+                    {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: false, resizable: false},
+                    {header: "Message Text", width: 650, dataIndex: 'narrative', sortable: false, resizable: false}
+                ],
+                renderTo:'historyGrid',
+                width:960,
+                height:500,
+                enableHdMenu:false
+            });
+
+            //historyData.load();
+
+            historyData.load(
+            {
+                params:
+                {
+                    claimId : <s:property value="id" />
+                }
+            });                
 
         
 
+        /*
+        
+        
+        
+        var commentsData = new Ext.data.Store({
+            // load using HTTP
+            url: 'history.xml',
+
+            // the return will be XML, so lets set up a reader
+            reader: new Ext.data.XmlReader({
+                   // records will have an "Item" tag
+                   record: 'Item',
+                   id: 'ASIN',
+                   totalRecords: '@total'
+               }, [
+                   // set up the fields mapping into the xml doc
+                   // The first needs mapping, the others are very basic
+                   {name: 'Author', mapping: 'ItemAttributes > Author'},
+                   'Title', 'Manufacturer', 'ProductGroup'
+               ])
+        });
+
+
+
+        // create the grid
+        var commentsGrid = new Ext.grid.GridPanel({
+            store: commentsData,
+            loadMask: true,
+            columns: [
+                {header: "ID", width: 80, dataIndex: 'Author', sortable: false, resizable: false},
+                {header: "Created", width: 110, dataIndex: 'Author', sortable: false, resizable: false},
+                {header: "Message", width: 760, dataIndex: 'Title', sortable: false, resizable: false}
+            ],
+            renderTo:'commentsGrid',
+            width:960,
+            height:500,
+            enableHdMenu:false
+        });  
+        
+        
+        */
+        
+
     
-            });
-    
+    });         
+
     
             var commentsLoaded = false;
     
             function loadComments(){
-                
-                /*
+               
                 if(!commentsLoaded){
                     commentsDataStore.load();
                     commentsLoaded = true;
-                }*/
+                }
             }   
     
     
@@ -476,7 +605,13 @@
                     </div>
                     <div id="historyDetails" class="x-hide-display">
                         
-<s:if test="tabAccessibility.historyTabAccessibility > 99"> 
+<s:if test="tabAccessibility.historyTabAccessibility < 99"> 
+
+
+
+
+
+
 
                         
                         <div id="historyGrid">
@@ -502,6 +637,8 @@
                         
                         <div id="commentsGrid">
                         </div>
+                        
+                        
                         
                         
                         
