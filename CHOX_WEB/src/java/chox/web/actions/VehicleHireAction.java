@@ -54,7 +54,7 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
 
     @Override
     String getTabName() {
-        return ApplicationAccessibility.TAB_HIRE_MONITORING;
+        return ApplicationAccessibility.TAB_INVOICE_DETAIL;
     }
    
     

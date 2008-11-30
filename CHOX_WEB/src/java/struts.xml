@@ -134,6 +134,7 @@
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
             </result>
+             <result name="error">/jsp/user/ClaimDetail.jsp</result>
         </action> 
         <!-- End Claim Detail -->
         

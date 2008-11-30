@@ -18,5 +18,5 @@
             <input type="submit" value="Submit " />
         </div>
         <div class="chox-form-submit-result">&nbsp;</div>
-    </form>
+    </form>    
 </div>

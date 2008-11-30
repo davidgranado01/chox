@@ -251,7 +251,7 @@
         
         historyJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
-            root: 'comments', 
+            root: 'results', 
             fields:
             [
                 {name:'id'},
@@ -433,6 +433,7 @@
                 
                 <div class="chox-claim-header x-panel-bwrap chox-form-container">    
                     <s:action name="getActionPanel" executeResult="true" />
+                    <s:property value="actionResult" />
                 </div>
                 
                 

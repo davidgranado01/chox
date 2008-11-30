@@ -6,7 +6,12 @@ package chox.web.actions;
 
 import chox.model.Claim;
 import chox.model.ClaimStatus;
+import chox.model.EngineerReport;
 import chox.services.ClaimService;
+import chox.services.InvoiceService;
+import chox.services.InvoiceServiceImpl;
+import chox.services.ChoBandService;
+import chox.services.ChoBandServiceImpl;
 import chox.services.LookupService;
 import chox.web.data.PanelAction;
 import chox.web.security.ApplicationAccessibility;
@@ -18,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.acegisecurity.GrantedAuthority;
+import scsbre.engine.RulesEngineResponse;
 
 /**
  *  
@@ -205,9 +211,70 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return SUCCESS;
     }
+
+    public String reSubmitRejectedClaim() {
+        claim = constructeClaimForInvoiceValidation(claim);
+        InvoiceService invoiceService = new InvoiceServiceImpl();
+        RulesEngineResponse rep = invoiceService.XMLUploaderInvoiceValidation(claim);
+        String repStatus = rep.getStatus().name();
+
+        if (!repStatus.equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
+            claim.setStatus(repStatus);
+            try {
+                this.service.updateClaim(claim);
+            } catch (Exception ex) {
+                this.actionResult = "ERROR : " + ex.getMessage();
+                return ERROR;
+            }
+            return SUCCESS;
+        }
+        else
+        {
+            this.actionResult = "ERROR : Invoice data calculation incorrect";
+            return ERROR;
+        }
+
+        
+    }  
     
-    public boolean validateHireMonitoringDetail()
-    {
+     private Claim constructeClaimForInvoiceValidation(Claim claim){
+        
+         Claim BREClaim = claim;
+         
+         // GET HARDCODDED CHOBAND
+         ChoBandService chobandservice = new ChoBandServiceImpl();
+         claim.setChoband(chobandservice.getDummyChoBand());
+        
+            // INTERFACE MAPPING WITH BRE - WHERE HIRE MONITORING NOT EXIST
+            Boolean isIsTotalLostCheck = false;
+            if(BREClaim.getHireMonitoringDetail()!=null){
+                isIsTotalLostCheck = BREClaim.getHireMonitoringDetail().isIsTotalLostCheck();
+            }
+            BREClaim.getVehicleHire().setIsTotalLoss(isIsTotalLostCheck);
+
+        // CONSTRUCTE DUMMY ENGINEERING REPORT WITH ALL VALUE IS ZERO WHEN ER NOT EXIST
+        if(BREClaim.getEngineerReport()==null){
+            EngineerReport engineerreport = new EngineerReport();
+            engineerreport.setDays(0);
+            engineerreport.setLabourAmount(new BigDecimal("0.00"));
+            engineerreport.setTotalAmount(new BigDecimal("0.00"));
+            BREClaim.setEngineerReport(engineerreport);
+        }
+        
+        // SET VEHICLE CLASS TO NULL WHEN 
+        if(BREClaim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached")){
+            BREClaim.getThirdParty().setVehicleClass(null);
+        }
+        
+        // SET VEHICLE CLASS TO NULL WHEN 
+        if(BREClaim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")){
+            BREClaim.getCustomer().setVehicleClass(null);
+        }
+        
+        return BREClaim;
+    }
+
+    public boolean validateHireMonitoringDetail() {
         //TODO : implement validateHireMonitoringDetail
         return true;
     }

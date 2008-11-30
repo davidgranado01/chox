@@ -35,7 +35,9 @@ public class HistoryAction extends BaseAction {
     
      public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.histories);
-        return jObject.toString();
+        
+        return "{totalCount:" + this.histories.size() + ",results:" + jObject.toString() + "}";
+
     }
 
      /*
