@@ -179,18 +179,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private boolean validateAcknowledgeClaimInfo() {
 
         String claimNumber = claim.getClaimNumber();
-        Date creditAgreementDate = claim.getCreditAgreementDate();
-        Date gtaNoticeDate = claim.getGtaNoticeDate();
         BigDecimal indemintyAmount = claim.getIndemintyAmount();
-        BigDecimal percentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();
-        boolean isQuantumDispute = claim.getIsQuantumDispute();
+        BigDecimal percentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();     
         String engineerClaimReviewNotes = claim.getEngineerClaimReviewNotes();
-        boolean isInvoiceReviewRequired = claim.getIsInvoiceReviewRequired();
 
         boolean result = true;
         result = result && (claimNumber != null && !claimNumber.isEmpty());
-        result = result && (creditAgreementDate != null);
-        result = result && (gtaNoticeDate != null);
         result = result && (percentageLiabilityAccepted != null);
         result = result && (engineerClaimReviewNotes != null);
 
