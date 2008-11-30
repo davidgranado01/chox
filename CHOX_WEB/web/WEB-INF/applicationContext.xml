@@ -15,7 +15,7 @@
     <bean id="commentService" class="chox.services.CommentServiceImpl" singleton="false"/>
     <bean id="customerService" class="chox.services.CustomerServiceImpl" singleton="false"/>
     <bean id="engineerReportService" class="chox.services.EngineerReportServiceImpl" singleton="false"/>
-    <bean id="hireMonitoringService" class="chox.services.HireMonitoringDetailServiceImpl" singleton="false"/>
+    <bean id="hireMonitoringDetailService" class="chox.services.HireMonitoringDetailServiceImpl" singleton="false"/>
     <bean id="historyService" class="chox.services.HistoryServiceImpl" singleton="false"/>
     <bean id="invoiceService" class="chox.services.InvoiceServiceImpl" singleton="false"/>
     <bean id="solicitorService" class="chox.services.SolicitorServiceImpl" singleton="false"/>
