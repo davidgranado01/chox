@@ -31,7 +31,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
 
         
         RuleEvaluation res = new RuleEvaluation();
-        res.setIsVisibleToCHO(true);
+        res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         
 
