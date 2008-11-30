@@ -21,7 +21,7 @@
             <div class="chox-form-item">
                 <label class="std-label-ro">
                 Automatic Fee</label>
-        <label class="std-data-ro"><s:property value="cdwQty" /></label></div>
+        <label class="std-data-ro"><s:property value="automaticFee" /></label></div>
             <div class="chox-form-item">
                 <label class="std-label-ro">
                 Automatic Quantity</label>
@@ -41,7 +41,7 @@
             <div class="chox-form-item">
                 <label class="std-label-ro">
                 Estate Quantity</label>
-        <label class="std-data-ro"><s:property value="estateFee" /></label></div>
+        <label class="std-data-ro"><s:property value="estateQty" /></label></div>
             <div class="chox-form-item">
                 <label class="std-label-ro">
                 Baby Seat Fee</label>

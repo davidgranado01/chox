@@ -1,10 +1,8 @@
        
 <%@ taglib uri="/struts-tags" prefix="s" %>
-
-
- <form id="f1" action="dummyAction" method="get" name="f1" class="entity-form">
-     
-         <input type="hidden" name="objectId" value='<s:property value="id"/>'>
+<form id="formUpdateIncident" action="user/updateCustomer.action" class="entity-form">
+    <input type="hidden" name="objectId" value='<s:property value="id"/>'>
+   
             <fieldset class="x-fieldset">
                 <legend>Customer Details</legend>
                 <div style="display:none" class="form-container">
@@ -86,8 +84,8 @@
                         Vehicle Location</label>
                     <input type="text" class="chox-ttxt" id="CCDVehicleLocation"  name="location" value='<s:property value="location" />' /></div>
                     <div class="chox-form-button">
-                        <input type="submit" value="Save Changes" /><div id="results" id="tempres" class="chox-update-result"></div>
-                    </div>  
+                        <input type="submit" value="Save Changes" /><div class="chox-form-submit-result"></div>
+                    </div>   
                 </div>
             </fieldset>
         </form>

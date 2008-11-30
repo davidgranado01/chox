@@ -4,7 +4,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>        
 
 
-<form id="f7" action="dummyAction">
+
             <fieldset class="x-fieldset">
                 <legend>Witness Details</legend>
         <div style="display:none" class="form-container">
@@ -47,4 +47,3 @@
                         <label class="std-data-ro"><s:property value="telephoneEvening" /></label></div>                          
         </div>
             </fieldset>
-        </form>

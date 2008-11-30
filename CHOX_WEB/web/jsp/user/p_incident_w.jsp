@@ -26,7 +26,7 @@
                 <textarea class="chox-tta" id="IDDescription" cols="20" rows="5" name="incidentDescription"></textarea>
             </div>
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes" /><div id="results" id="tempres" class="chox-update-result"></div>
+                <input type="submit" value="Save Changes" /><div class="chox-update-result"></div>
             </div>                        
         </div>
     </fieldset>
