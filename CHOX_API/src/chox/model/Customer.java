@@ -793,6 +793,20 @@ public class Customer implements Serializable, ICustomerVehicleDamageInfo
 	{
 		this.vehicleClass = vehicleClass;
 	}
+        
+        
+        
+        
+        //convenince wrapppers
+        
+        public String getIsComprehensiveDesc(){
+            
+             return this.isComprehensive() ? "Yes" : "No";
+        }
+        
+        
+        
+        
 
     public Boolean getIsTotalLoss() {
         return isTotalLoss;
