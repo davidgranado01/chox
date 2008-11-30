@@ -30,7 +30,9 @@ public class HistoryServiceImpl extends DataService implements HistoryService{
         List histories = new ArrayList<History>();
         
         try {
-            Criteria criteria = currentSession.createCriteria(History.class).add(Restrictions.eq("claim", claim));
+            Criteria criteria = currentSession.createCriteria(History.class);
+            
+             criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
                     
             if(!isShowAll){
                 criteria.add(Restrictions.eq("type", "ERROR"));
