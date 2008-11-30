@@ -146,16 +146,23 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String acknowledge() {
         //chack whether line of busineess if set 
-        if (this.claim.getClaimNumber() == null || this.claim.getClaimNumber().isEmpty()) {
-            this.actionResult = "ERROR : You need to provide claim number to acknowledge this claim.";
-        }
-        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-        try {
-            this.service.updateClaim(claim);
-        } catch (Exception ex) {
-            this.actionResult = "ERROR : " + ex.getMessage();
+        if (validateAcknowledgeClaimInfo()) {
+
+            claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
+            try {
+                this.service.updateClaim(claim);
+            } catch (Exception ex) {
+                this.actionResult = "ERROR : " + ex.getMessage();
+            }
+
+        } else {
+            this.actionResult = "ERROR : You need to correct detail to acknowledge this claim.";
         }
         return SUCCESS;
+    }
+
+    private boolean validateAcknowledgeClaimInfo() {
+        return true;
     }
 
     public int getLineOfBusinessId() {

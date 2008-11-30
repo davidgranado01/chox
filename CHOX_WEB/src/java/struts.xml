@@ -79,14 +79,21 @@
         
         <!-- ACTION PANEL VALIDATION By Carlson !-->
         <action name="getActionPanel" class="chox.web.actions.ClaimAction" method="getActionPanel">
-            <result name="updateclaimlineofbusiness">/jsp/user/p_routeUnacknowledgedClaim.jsp</result>
-            <result name="updateclaiminsurerdetail">/jsp/user/p_acknowledgeClaim.jsp</result>
-            <result name="updateclaimcarhiredetail">/jsp/user/p_updateCarHireInfo.jsp</result>
-            <result name="updateinvoicedtailbyinsurer">/jsp/user/p_refInvoiceToCHO.jsp</result>
-            <result name="updateinvoicedtailbycho">/jsp/user/p_refInvoiceToInsurer.jsp</result>
-            <result name="updateinvoicedtailforcalculationincorrect">/jsp/user/p_resubmitInvoiceData.jsp</result>
-            <result name="empty">/jsp/p_blank.jsp</result>
-        </action>        
+            <result name="updateclaimlineofbusiness">/jsp/user/actionPanel/p_routeUnacknowledgedClaim.jsp
+            </result>
+            <result name="updateclaiminsurerdetail">/jsp/user/actionPanel/p_acknowledgeClaim.jsp
+            </result>
+            <result name="updateclaimcarhiredetail">/jsp/user/actionPanel/p_updateCarHireInfo.jsp
+            </result>
+            <result name="updateinvoicedtailbyinsurer">/jsp/user/actionPanel/p_refInvoiceToCHO.jsp
+            </result>
+            <result name="updateinvoicedtailbycho">/jsp/user/actionPanel/p_refInvoiceToInsurer.jsp
+            </result>
+            <result name="updateinvoicedtailforcalculationincorrect">/jsp/user/actionPanel/p_resubmitInvoiceData.jsp
+            </result>
+            <result name="empty">/jsp/p_blank.jsp
+            </result>
+        </action>      
         
         
         

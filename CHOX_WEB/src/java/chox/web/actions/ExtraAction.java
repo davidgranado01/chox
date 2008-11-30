@@ -20,7 +20,7 @@ public class ExtraAction extends BaseModelAction implements ModelDriven<Invoice>
     private InvoiceService service;
     private Invoice model;    
 
-    public void setModelService(InvoiceService service) {
+    public void setInvoiceService(InvoiceService service) {
         this.service = service;
     }
 

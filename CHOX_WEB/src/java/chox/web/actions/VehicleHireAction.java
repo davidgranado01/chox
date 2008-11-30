@@ -21,7 +21,7 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
     private VehicleHireService service;
     private VehicleHire model;
 
-    public void setIncidentService(VehicleHireService service) {
+    public void setVehicleHireService(VehicleHireService service) {
         this.service = service;
     }
 

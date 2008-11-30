@@ -21,7 +21,7 @@ public class EngineerReportAction extends BaseModelAction implements ModelDriven
     private EngineerReportService service;
     private EngineerReport model;    
 
-    public void setModelService(EngineerReportService service) {
+    public void setEngineerReportService(EngineerReportService service) {
         this.service = service;
     }
 
