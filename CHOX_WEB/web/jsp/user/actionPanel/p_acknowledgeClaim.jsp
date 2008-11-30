@@ -19,7 +19,7 @@
                 
                 <div>
                     <table with="100%">
-                        <tr><td colspan="2">Please enter details of the claim review and decide whether to acknowledge or reject the claim.  Please use the 'Notes' tab in order to communicate detailed comments you may have for the CHO.</td></tr>
+                        <tr><td colspan="2"><b>Please enter details of the claim review and decide whether to acknowledge or reject the claim.  Please use the 'Notes' tab in order to communicate detailed comments you may have for the CHO.</b></td></tr>
                         <tr>
                             <td width="20%"><label class="chox-form-std-label">Indemnity (Decimal)</label></td>
                             <td><input type="text" class="chox-ttxt" name="indemintyAmount" /></td>
