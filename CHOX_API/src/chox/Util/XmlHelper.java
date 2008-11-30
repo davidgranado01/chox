@@ -211,7 +211,7 @@ public class XmlHelper {
      * No <Field Name> supplied for <Bordereur Section>. Please resubmit with this information
      */
     public static String contructureDataMandatoryErrorMessage(String strSectionName, String strFieldName){
-        String sMsg = String.format("No %s supplied for %s. Please resubmit with this information.", strFieldName, strSectionName);
+        String sMsg = String.format("No %s information supplied for %s. Please re-submit with this information.", strFieldName, strSectionName);
         return XMLResultDelimeterContructor("", sMsg);
     }
     
