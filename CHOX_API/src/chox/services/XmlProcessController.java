@@ -34,7 +34,7 @@ public class XmlProcessController {
 
         try {
             
-            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/new xml_v2.xml";
+            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/invoice.xml";
             Boolean isAllowPartialUpload = true;
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -1357,7 +1357,10 @@ public class XmlProcessController {
 
         ArrayList<Element> extraElements = XMLUtils.getElements(doc, thisElement, "extra");
         xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, extraElements, "extra", strSectionName, "");
-
+        
+        String strExtraNode = XMLUtils.getElement(thisElement, "extra").getTextContent();
+        //System.out.println("XXXXXXXXXXXXXXXX"+strExtraNode.length());
+        
         if (xmlParseResult.getIsCurrentScheValid()) {
             
             xmlParseResult.getClaim().getInvoice().setCdwFee(new BigDecimal("0.00"));
@@ -1383,58 +1386,60 @@ public class XmlProcessController {
             xmlParseResult.getClaim().getInvoice().setTowBarsFee(new BigDecimal("0.00"));
             xmlParseResult.getClaim().getInvoice().setTowBarsQty(0);  
 
-            for (Element ee : extraElements) {
+            if(strExtraNode.length()>0){
+                for (Element ee : extraElements) {
 
-                xmlParseResult.setIsCurrentDataValid(true);
-                xmlParseResult.setIsCurrentScheValid(true);
-                
-                String strExtraName = XmlHelper.getNodeValue(ee, "name");
-                String strExtraFee =  strExtraName+" Fee";
-                String strExtraQty =  strExtraName+" Quantity";
-                
-                xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "name", XmlHelper.isMAN_Invoice_Extras_Name, "", strSectionName, strExtraName);
-                xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "quantity", XmlHelper.isMAN_Invoice_Extras_Quantity, XmlHelper.REG_INTEGER, strSectionName, strExtraQty);
-                xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "item-cost", XmlHelper.isMAN_Invoice_Extras_Item_Cost, XmlHelper.REG_BIGDECIMAL, strSectionName, strExtraFee);
+                    xmlParseResult.setIsCurrentDataValid(true);
+                    xmlParseResult.setIsCurrentScheValid(true);
 
-                if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
-                    
-                    String selectedExtra = XmlHelper.getNodeValue(ee, "name");
-                    Integer iQuantity = XmlHelper.getIntegerFromNode(ee, "quantity");
-                    BigDecimal dIntemCost = XmlHelper.getBigDecimalFromNode(ee, "item-cost");
-                    
-                    if(selectedExtra.equalsIgnoreCase("CDW")){
-                        xmlParseResult.getClaim().getInvoice().setCdwFee(dIntemCost);
-                        xmlParseResult.getClaim().getInvoice().setCdwQty(iQuantity);                        
-                    }else if(selectedExtra.equalsIgnoreCase("Admin")){
-                        xmlParseResult.getClaim().getInvoice().setAdminFee(dIntemCost);
-                        xmlParseResult.getClaim().getInvoice().setAdminQty(iQuantity);
-                    }else if(selectedExtra.equalsIgnoreCase("Automatic")){
-                        xmlParseResult.getClaim().getInvoice().setAutomaticFee(dIntemCost);
-                        xmlParseResult.getClaim().getInvoice().setAutomaticQty(iQuantity);   
-                    }else if(selectedExtra.equalsIgnoreCase("Baby Seat")){
-                        xmlParseResult.getClaim().getInvoice().setBabySeatFee(dIntemCost);
-                        xmlParseResult.getClaim().getInvoice().setBabySeatQty(iQuantity);                         
-                    }else if(selectedExtra.equalsIgnoreCase("Delivery Collection")){
-                        xmlParseResult.getClaim().getInvoice().setDeliveryCollectionFee(dIntemCost);
-                        xmlParseResult.getClaim().getInvoice().setDeliveryCollectionQty(iQuantity);                         
-                    }else if(selectedExtra.equalsIgnoreCase("Dual Control")){
-                        xmlParseResult.getClaim().getInvoice().setDualControlFee(dIntemCost);
-                        xmlParseResult.getClaim().getInvoice().setDualControlQty(iQuantity);                            
-                    }else if(selectedExtra.equalsIgnoreCase("Estate")){
-                        xmlParseResult.getClaim().getInvoice().setEstateFee(dIntemCost);
-                        xmlParseResult.getClaim().getInvoice().setEstateQty(iQuantity);                          
-                    }else if(selectedExtra.equalsIgnoreCase("Non-standard Risk Insurance Premium")){
-                        xmlParseResult.getClaim().getInvoice().setNonStandardInsurancePremiumFee(dIntemCost);
-                        xmlParseResult.getClaim().getInvoice().setNonStandardInsurancePremiumQty(iQuantity);                          
-                    }else if(selectedExtra.equalsIgnoreCase("Roof Rack")){
-                        xmlParseResult.getClaim().getInvoice().setRoofRackFee(dIntemCost);
-                        xmlParseResult.getClaim().getInvoice().setRoofRackQty(iQuantity);                          
-                    }else if(selectedExtra.equalsIgnoreCase("Sat Nav")){
-                        xmlParseResult.getClaim().getInvoice().setSatNavFee(dIntemCost);
-                        xmlParseResult.getClaim().getInvoice().setSatNavQty(iQuantity);                          
-                    }else if(selectedExtra.equalsIgnoreCase("Tow Bars")){
-                        xmlParseResult.getClaim().getInvoice().setTowBarsFee(dIntemCost);
-                        xmlParseResult.getClaim().getInvoice().setTowBarsQty(iQuantity);                          
+                    String strExtraName = XmlHelper.getNodeValue(ee, "name");
+                    String strExtraFee =  strExtraName+" Fee";
+                    String strExtraQty =  strExtraName+" Quantity";
+
+                    xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "name", XmlHelper.isMAN_Invoice_Extras_Name, "", strSectionName, strExtraName);
+                    xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "quantity", XmlHelper.isMAN_Invoice_Extras_Quantity, XmlHelper.REG_INTEGER, strSectionName, strExtraQty);
+                    xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "item-cost", XmlHelper.isMAN_Invoice_Extras_Item_Cost, XmlHelper.REG_BIGDECIMAL, strSectionName, strExtraFee);
+
+                    if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
+
+                        String selectedExtra = XmlHelper.getNodeValue(ee, "name");
+                        Integer iQuantity = XmlHelper.getIntegerFromNode(ee, "quantity");
+                        BigDecimal dIntemCost = XmlHelper.getBigDecimalFromNode(ee, "item-cost");
+
+                        if(selectedExtra.equalsIgnoreCase("CDW")){
+                            xmlParseResult.getClaim().getInvoice().setCdwFee(dIntemCost);
+                            xmlParseResult.getClaim().getInvoice().setCdwQty(iQuantity);                        
+                        }else if(selectedExtra.equalsIgnoreCase("Admin")){
+                            xmlParseResult.getClaim().getInvoice().setAdminFee(dIntemCost);
+                            xmlParseResult.getClaim().getInvoice().setAdminQty(iQuantity);
+                        }else if(selectedExtra.equalsIgnoreCase("Automatic")){
+                            xmlParseResult.getClaim().getInvoice().setAutomaticFee(dIntemCost);
+                            xmlParseResult.getClaim().getInvoice().setAutomaticQty(iQuantity);   
+                        }else if(selectedExtra.equalsIgnoreCase("Baby Seat")){
+                            xmlParseResult.getClaim().getInvoice().setBabySeatFee(dIntemCost);
+                            xmlParseResult.getClaim().getInvoice().setBabySeatQty(iQuantity);                         
+                        }else if(selectedExtra.equalsIgnoreCase("Delivery Collection")){
+                            xmlParseResult.getClaim().getInvoice().setDeliveryCollectionFee(dIntemCost);
+                            xmlParseResult.getClaim().getInvoice().setDeliveryCollectionQty(iQuantity);                         
+                        }else if(selectedExtra.equalsIgnoreCase("Dual Control")){
+                            xmlParseResult.getClaim().getInvoice().setDualControlFee(dIntemCost);
+                            xmlParseResult.getClaim().getInvoice().setDualControlQty(iQuantity);                            
+                        }else if(selectedExtra.equalsIgnoreCase("Estate")){
+                            xmlParseResult.getClaim().getInvoice().setEstateFee(dIntemCost);
+                            xmlParseResult.getClaim().getInvoice().setEstateQty(iQuantity);                          
+                        }else if(selectedExtra.equalsIgnoreCase("Non-standard Risk Insurance Premium")){
+                            xmlParseResult.getClaim().getInvoice().setNonStandardInsurancePremiumFee(dIntemCost);
+                            xmlParseResult.getClaim().getInvoice().setNonStandardInsurancePremiumQty(iQuantity);                          
+                        }else if(selectedExtra.equalsIgnoreCase("Roof Rack")){
+                            xmlParseResult.getClaim().getInvoice().setRoofRackFee(dIntemCost);
+                            xmlParseResult.getClaim().getInvoice().setRoofRackQty(iQuantity);                          
+                        }else if(selectedExtra.equalsIgnoreCase("Sat Nav")){
+                            xmlParseResult.getClaim().getInvoice().setSatNavFee(dIntemCost);
+                            xmlParseResult.getClaim().getInvoice().setSatNavQty(iQuantity);                          
+                        }else if(selectedExtra.equalsIgnoreCase("Tow Bars")){
+                            xmlParseResult.getClaim().getInvoice().setTowBarsFee(dIntemCost);
+                            xmlParseResult.getClaim().getInvoice().setTowBarsQty(iQuantity);                          
+                        }
                     }
                 }
             }
