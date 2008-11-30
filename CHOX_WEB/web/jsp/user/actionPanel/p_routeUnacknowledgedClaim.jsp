@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<p>Please select the 'Line of Business' in order to route the claim to the relevant handling team.</p>
+<p><b>Please select the 'Line of Business' in order to route the claim to the relevant handling team.</b></p>
 
 <div class="form-container">
     <form onsubmit="return true;" action="user/route.action" method="post" id="route" name="route">

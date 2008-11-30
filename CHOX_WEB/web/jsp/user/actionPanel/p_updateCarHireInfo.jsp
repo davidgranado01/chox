@@ -9,7 +9,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
-<p>Please complete the 'Hire Monitoring' tab with required details regarding the hire of the vehicle.</p>
+<p><b>Please complete the 'Hire Monitoring' tab with required details regarding the hire of the vehicle.</b></p>
 
        <div class="form-container">
             <form onsubmit="return true;" action="user/submitHireMonitoringDetail.action" method="post" id="route" name="route">

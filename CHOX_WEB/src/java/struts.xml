@@ -67,7 +67,7 @@
                 </param>
                 <param name="contentDisposition">filename="excel_report.xls"
                 </param>
-                <param name="bufferSize">10240
+                <param name="bufferSize">102400
                 </param>
             </result>
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp
