@@ -34,11 +34,11 @@ public class BaseAction extends ActionSupport {
     
     public boolean getIsCHO()
     {
-        return user.getIsCHO();
+        return getAuthenticatedUser().getIsCHO();
     }
     
     public boolean getIsInsurer()
     {
-        return user.getIsINS();
+        return getAuthenticatedUser().getIsINS();
     }
 }

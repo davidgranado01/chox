@@ -50,8 +50,8 @@ public class HistoryAction extends BaseAction {
     @Override
     public String execute() {
     
-        Boolean isShowAll = false;
-        Boolean isPublic = false;
+        Boolean isShowAll = this.getIsInsurer();      
+        Boolean isPublic = this.getIsCHO();
 
         Claim claim = new Claim();
         claim.setId(claimId);
