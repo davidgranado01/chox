@@ -6,7 +6,6 @@ package chox.web.actions;
 
 import chox.model.Claim;
 import chox.model.ClaimStatus;
-import chox.model.LineOfBusiness;
 import chox.services.ClaimService;
 import chox.services.LookupService;
 import chox.web.data.PanelAction;
@@ -14,6 +13,9 @@ import chox.web.security.ApplicationAccessibility;
 import chox.web.security.TabAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.acegisecurity.GrantedAuthority;
 
@@ -23,6 +25,8 @@ import org.acegisecurity.GrantedAuthority;
  */
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
+    public static final String REJECT = "reject";
+    public static final String ACCEPT = "accept";
     public static final String EMPTY = "empty";
     private Claim claim = new Claim();
     private int id = -1;
@@ -33,6 +37,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String actionResult;
     private TabAccessibility tabAccessibility;
     private int lineOfBusinessId = -1;
+    private String actionName;
 
     public int getId() {
         return id;
@@ -148,7 +153,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         //chack whether line of busineess if set 
         if (validateAcknowledgeClaimInfo()) {
 
-            claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
+            if (this.actionName.equalsIgnoreCase(ACCEPT)) {
+                claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
+            } else {
+                claim.setStatus(ClaimStatus.CLAIM_REJECTED);
+            }
             try {
                 this.service.updateClaim(claim);
             } catch (Exception ex) {
@@ -156,12 +165,50 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
 
         } else {
-            this.actionResult = "ERROR : You need to correct detail to acknowledge this claim.";
+            this.actionResult = "ERROR : You need to provide correct detail to acknowledge this claim.";
         }
         return SUCCESS;
     }
 
     private boolean validateAcknowledgeClaimInfo() {
+
+        String claimNumber = claim.getClaimNumber();
+        Date creditAgreementDate = claim.getCreditAgreementDate();
+        Date gtaNoticeDate = claim.getGtaNoticeDate();
+        BigDecimal indemintyAmount = claim.getIndemintyAmount();
+        BigDecimal percentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();
+        boolean isQuantumDispute = claim.getIsQuantumDispute();
+        String engineerClaimReviewNotes = claim.getEngineerClaimReviewNotes();
+        boolean isInvoiceReviewRequired = claim.getIsInvoiceReviewRequired();
+
+        boolean result = true;
+        result = result && (claimNumber != null && !claimNumber.isEmpty());
+        result = result && (creditAgreementDate != null);
+        result = result && (gtaNoticeDate != null);
+        result = result && (percentageLiabilityAccepted != null);
+        result = result && (engineerClaimReviewNotes != null);
+
+        return result;
+    }
+
+    public String submitHireMonitoringDetail() {
+        if (validateHireMonitoringDetail()) {
+            claim.setStatus(ClaimStatus.AWAITING_INVOICE_DATA);
+            try {
+                this.service.updateClaim(claim);
+            } catch (Exception ex) {
+                this.actionResult = "ERROR : " + ex.getMessage();
+            }
+        } else {
+            this.actionResult = "ERROR : You need to provide correct hire monitoring detail detail to submit this claim.";
+        }
+
+        return SUCCESS;
+    }
+    
+    public boolean validateHireMonitoringDetail()
+    {
+        //TODO : implement validateHireMonitoringDetail
         return true;
     }
 
@@ -171,5 +218,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setLineOfBusinessId(int lineOfBusinessId) {
         this.lineOfBusinessId = lineOfBusinessId;
+    }
+
+    public String getActionName() {
+        return actionName;
+    }
+
+    public void setActionName(String actionName) {
+        this.actionName = actionName;
+    }
+
+    public List getActionNames() {
+        List<String> names = new ArrayList<String>();
+        names.add(ACCEPT);
+        names.add(REJECT);
+        return names;
+
     }
 }

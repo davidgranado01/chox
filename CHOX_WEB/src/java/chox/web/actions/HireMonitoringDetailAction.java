@@ -54,6 +54,6 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
 
     @Override
     String getTabName() {
-        return ApplicationAccessibility.TAB_INVOICE_DETAIL;
+        return ApplicationAccessibility.TAB_HIRE_MONITORING;
     }
 }

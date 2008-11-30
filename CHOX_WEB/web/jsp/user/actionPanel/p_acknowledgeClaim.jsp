@@ -10,12 +10,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
+
         <p>Please enter details of the claim review and decide whether to acknowledge or reject the claim.  Please use the 'Notes' tab in order to communicate detailed comments you may have for the CHO.</p>
         
         Plus buttons to either acknowledge or reject claim.
@@ -48,11 +43,15 @@
                     <label class="chox-form-std-label">Invoice Review Required</label>
                     <s:checkbox name="isInvoiceReviewRequired" />
                 </div>  
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">Action</label>
+                    <s:radio name="actionName" list="actionNames" />
+                </div>
+                
                 <div class="chox-form-button">
-                    <input type="submit" value="Acknowledge" />
+                    <input type="submit" value="Submit" />
                 </div>
                 <div class="chox-form-submit-result">&nbsp;</div>
             </form>
+            
         </div>
-    </body>
-</html>

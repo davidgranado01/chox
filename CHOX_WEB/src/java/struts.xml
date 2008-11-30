@@ -110,11 +110,31 @@
         <action name="UpdateClaimDetail" class="chox.web.actions.ClaimAction" method="updateClaimDetail">
             <result name="success" type="redirect">inbox.action
             </result>
-        </action>  
+        </action>
         <action name="route" class="chox.web.actions.ClaimAction" method="route">
-            <result>/jsp/p_response.jsp
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
             </result>
         </action>  
+        <action name="acknowledge" class="chox.web.actions.ClaimAction" method="acknowledge">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+            </result>
+        </action>  
+        <action name="submitHireMonitoringDetail" class="chox.web.actions.ClaimAction" method="submitHireMonitoringDetail">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+            </result>
+        </action> 
+         <action name="reSubmitRejectedClaim" class="chox.web.actions.ClaimAction" method="reSubmitRejectedClaim">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+            </result>
+        </action> 
         <!-- End Claim Detail -->
         
         
