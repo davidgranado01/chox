@@ -11,4 +11,5 @@ public interface ChoBandService {
     
     ChoBand getChoBandByChorganisationId(int Id);
     ChoBand getChoBandByChorganisationIdAndInsurerId(int orgId, int insurerId);
+    public ChoBand getDummyChoBand();
 }

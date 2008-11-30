@@ -538,5 +538,7 @@ public class ChoBand implements Serializable, ICHOBandInfo
 	{
 		this.isNotMobileDayAllowance = isNotMobileDayAllowance;
 	}
+        
+
 
 }

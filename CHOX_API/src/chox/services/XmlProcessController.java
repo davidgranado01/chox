@@ -386,9 +386,13 @@ public class XmlProcessController {
                     
                     // LOG CLAIM CURRENT STATUS
                     xmlParseResult.setSExistingClaimStatus(claim.getStatus());
-                    
+                        
+                    ChoBandService chobandservice = new ChoBandServiceImpl();
                         // HARDCODE CHO BAND INFORMATION
-                        ChoBand choband = new ChoBand();
+                        ChoBand choband = chobandservice.getDummyChoBand();
+                        claim.setChoband(choband);
+                        
+                        /*
                         choband.setEngineerInspectionDelayDays(2);
                         choband.setHireDayCeiling(22);
                         choband.setHireNetCeiling(new BigDecimal("1000.00"));
@@ -403,7 +407,8 @@ public class XmlProcessController {
                         choband.setTakeVehicleToGarageDaysMobile(1);
                         choband.setTakeVehicleToGarageDaysNonMobile(3);
                         choband.setWeekendBufferDays(2);
-                        claim.setChoband(choband);
+                        */
+                        
                     
                 }else{
                     
