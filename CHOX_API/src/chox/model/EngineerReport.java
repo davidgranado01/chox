@@ -503,4 +503,10 @@ public class EngineerReport implements Serializable, IEngineerReportInfo
         public int getEstimatedDaysUnderRepair() {
             return this.days;
         }
+        
+        
+        public String getIsUsableDesc(){
+            return this.isIsUsable() ? "Yes" : "No";
+
+        }
 }
