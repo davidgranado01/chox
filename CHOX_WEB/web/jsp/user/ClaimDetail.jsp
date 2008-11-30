@@ -211,55 +211,67 @@
 
         
         
-        commentsJsonReader = new Ext.data.JsonReader({
-            totalProperty: 'totalCount',   
-            root: 'comments', 
-            fields:
-            [
-                {name:'id'},
-                {name:'createdBy'},            
-                {name:'commentText'}
-            ]
-        });// {name:'created', type: 'date', dateFormat: 'd/m/Y'},
-        
-        
+        if(!commentsDisabled){
             
-        commentsDataStore = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy
-            ({url: 'comments_dummy.js',method:'GET'}),
-            reader:commentsJsonReader        
-        });
-        
-        
-        
-        commentsGrid = new Ext.grid.GridPanel({
-            store: commentsDataStore,
-            loadMask: true,
-            columns: [
-                {header: "ID", width: 80, dataIndex: 'id', sortable: false, resizable: false},
-                {header: "Created", width: 110, dataIndex: 'createdBy', sortable: false, resizable: false},
-                {header: "Message", width: 760, dataIndex: 'commentText', sortable: false, resizable: false}
-            ],
-            renderTo:'commentsGrid',
-            width:960,
-            autoHeight:true,
-            enableHdMenu:false
-        });   
+            
+            commentsJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',   
+                root: 'comments', 
+                fields:
+                [
+                    {name:'id'},
+                    {name:'createdBy'},            
+                    {name:'commentText'}
+                ]
+            });// {name:'created', type: 'date', dateFormat: 'd/m/Y'},
 
 
 
+            commentsDataStore = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy
+                ({url: 'comments_dummy.js',method:'GET'}),
+                reader:commentsJsonReader        
+            });
+
+
+
+            commentsGrid = new Ext.grid.GridPanel({
+                store: commentsDataStore,
+                loadMask: true,
+                columns: [
+                    {header: "ID", width: 80, dataIndex: 'id', sortable: false, resizable: false},
+                    {header: "Created", width: 110, dataIndex: 'createdBy', sortable: false, resizable: false},
+                    {header: "Message", width: 760, dataIndex: 'commentText', sortable: false, resizable: false}
+                ],
+                renderTo:'commentsGrid',
+                width:960,
+                autoHeight:true,
+                enableHdMenu:false
+            });               
+            
+        }
+            
         
-        historyJsonReader = new Ext.data.JsonReader({
-            totalProperty: 'totalCount',   
-            root: 'results', 
-            fields:
-            [
-                {name:'id'},
-                {name:'createdBy'},  
-                {name:'createdDate'},                 
-                {name:'narrative'}
-            ]
-        });// {name:'created', type: 'date', dateFormat: 'd/m/Y'},
+
+
+
+
+        
+        if(!historyDetailsDisabled){
+            
+            
+            
+            historyJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',   
+                root: 'results', 
+                fields:
+                [
+                    {name:'id'},
+                    {name:'createdBy'},  
+                    {name:'createdDate'},                 
+                    {name:'narrative'}
+                ]
+            });// {name:'created', type: 'date', dateFormat: 'd/m/Y'},
 
 
 
@@ -295,7 +307,12 @@
                 {
                     claimId : <s:property value="id" />
                 }
-            });                
+            });              
+            
+        }
+        
+        
+              
 
         
 
@@ -349,11 +366,14 @@
             var commentsLoaded = false;
     
             function loadComments(){
-               
-                if(!commentsLoaded){
-                    commentsDataStore.load();
-                    commentsLoaded = true;
+            
+                if(!commentsDisabled){
+                    if(!commentsLoaded){
+                        commentsDataStore.load();
+                        commentsLoaded = true;
+                    }       
                 }
+  
             }   
     
     
