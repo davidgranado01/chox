@@ -239,5 +239,11 @@ public class Incident implements Serializable
 	{
 		this.isPoliceInvolved = isPoliceInvolved;
 	}
+        
+        
+        public String isPoliceInvolvedDesc(){
+            
+            return isPoliceInvolved ? "Yes" : "No";
+        }
 
 }
