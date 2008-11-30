@@ -214,7 +214,7 @@ public class XmlHelper {
         String sMsg = String.format("No %s information supplied for %s. Please re-submit with this information.", strFieldName, strSectionName);
         return XMLResultDelimeterContructor("", sMsg);
     }
-    
+ 
     public static String contructureIncorrectTypeErrorMessage(String strSectionName, String strFieldName){
         String sMsg = String.format("Invalid or incorrect character in %s for %s", strSectionName, strFieldName);
         return XMLResultDelimeterContructor("", sMsg);
