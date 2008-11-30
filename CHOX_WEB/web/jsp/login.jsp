@@ -10,12 +10,7 @@
         <title>IDAS CHOX Welcome Page</title>
         <link href="<%= request.getContextPath()%>/styles/login.css" rel="stylesheet" type="text/css" media="all"/>  
     </head>
-    <body class="modal login">       
-         
-                    
-
-            
-            
+    <body class="modal login">
     <div class="outer">
         <img alt="Logo" src="<%= request.getContextPath() %>/images/logo_login.jpg">
     </div>
@@ -34,7 +29,7 @@
                             <label for="password">
                                 Password:</label>
                            <input type="password" name="j_password" />
-                            <span class="note">(<a href="/amnesia/forgot_password">Forgotten Username/Password</a>)
+                            <span class="note">(<a href="#">Forgotten Username/Password</a>)
                             </span>
                         </p>
                         <p class="open_id_entry" style="display: none;">
@@ -44,7 +39,7 @@
                                 OpenID:
                             </label>
                             <input class="identity_url" id="openid_url" name="openid_url" type="text">
-                            <span class="note">(<a href="/amnesia/trouble_with_openid">Can't login?</a>) </span>
+                            <span class="note">(<a href="#">Can't login?</a>) </span>
                         </p>
                         <div class="checkbox_and_submit">
                             <p>
@@ -66,8 +61,7 @@
     </div>
     <div class="below">
         <span class="note">
-        <a href="#" onclick="return false;">Terms and Condidtions</a></span>
-
+        <a href="#" onclick="return false;">Terms and Conditions</a></span>
     </div>
 </body>
 </html>

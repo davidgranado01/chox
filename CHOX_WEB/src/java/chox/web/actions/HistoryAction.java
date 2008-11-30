@@ -38,12 +38,22 @@ public class HistoryAction extends BaseAction {
         return jObject.toString();
     }
 
+     /*
+     * isShowAll : true > SHOW ALL RECORDS WITH TYPE IS ERROR AND INFO
+     * isShowAll : false > SHOW ALL RECORDS WITH TYPE IS ERROR ONLY
+     * isPublic : true > SHOW ALL RECORDS WITH IS_PUBLIC IS TRUE ONLY
+     * isPublic : false > SHOW ALL RECORDS REGARDLESS THE IS_PUBLIC
+     */ 
+     
     @Override
     public String execute() {
+    
+        Boolean isShowAll = false;
+        Boolean isPublic = false;
 
         Claim claim = new Claim();
         claim.setId(claimId);
-        histories = this.service.getHistoryByClaim(claim);
+        histories = this.service.getHistoryByClaim(claim, isShowAll, isPublic);
 
         return SUCCESS;
     }

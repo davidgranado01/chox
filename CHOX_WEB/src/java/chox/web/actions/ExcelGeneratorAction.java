@@ -42,14 +42,14 @@ public class ExcelGeneratorAction extends HttpServlet implements SessionAware{
         this.excelStream = excelStream;
     }
     
-    /*
+    
      public static void main(String[] args)throws IOException {
             ClaimService cs = new ClaimServiceImpl();
             List<Claim> claims = cs.listAllClaims();
             ExcelGeneratorAction excelhelper = new ExcelGeneratorAction();
             ByteArrayOutputStream buf = excelhelper.generateXML(claims);
      }
-     */
+    
     
     public ByteArrayOutputStream doExportExcel()throws IOException{
 
@@ -118,8 +118,11 @@ public class ExcelGeneratorAction extends HttpServlet implements SessionAware{
             
             excelClaims.add(ec);
             
+            Boolean isShowAll = false;
+            Boolean isPublic = false;
+            
             // GET HISTORY BY CLAIM ID;
-            histories.addAll(historyService.getHistoryByClaim(claim));
+            histories.addAll(historyService.getHistoryByClaim(claim, isShowAll, isPublic));
             
             // GET COMMENT BY CLAIM ID;
             comments.addAll(commentService.getCommentByClaim(claim));
@@ -134,8 +137,9 @@ public class ExcelGeneratorAction extends HttpServlet implements SessionAware{
         //String destFileName = "C:\\Users\\Carlson\\Desktop\\ExcelTest\\excel_report.xls";
         
         XLSTransformer transformer = new XLSTransformer();
-        // transformer.transformXLS(templateFileName, excelMap, destFileName);
+        //transformer.transformXLS(templateFileName, excelMap, destFileName);
         transformer.transformXLS(templateIS, excelMap).write(out);
+        
         excelMap.clear();
         return out;
     }
