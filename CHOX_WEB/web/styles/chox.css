@@ -304,11 +304,22 @@ div.std-data-ro-big
 div.status-info
 {
     background-color:white;
-    border:1px black solid;
-    padding:5px;
-    
+    border:2px orange solid;
+    padding:8px;
+    font-weight:normal;
+    font-size:14px;
+   
+
 }
 
+
+div.status-info-submit
+{
+    
+    text-align:right;
+    padding:4px;
+    padding-right:0px;
+}
 
 
 

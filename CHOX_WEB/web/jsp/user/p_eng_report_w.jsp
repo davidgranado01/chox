@@ -10,15 +10,15 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Estimated Labour Amount</label>
-             <input type="text" class="chox-ttxt" name="labourAmount" value='<s:property value="labourAmount" />'/></div>
+             <input type="text" class="chox-tnum" name="labourAmount" value='<s:property value="labourAmount" />'/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Estimated Total Repair Amount</label>
-            <input type="text" class="chox-ttxt" name="totalAmount" value='<s:property value="totalAmount" />'/></div>
+            <input type="text" class="chox-tnum" name="totalAmount" value='<s:property value="totalAmount" />'/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Estimated Days Under Repair</label>
-            <input type="text" class="chox-ttxt" name="days" value='<s:property value="days" />'/></div>      
+            <input type="text" class="chox-tnum" name="days" value='<s:property value="days" />'/></div>      
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Usable?</label><s:checkbox name="isUsable" />

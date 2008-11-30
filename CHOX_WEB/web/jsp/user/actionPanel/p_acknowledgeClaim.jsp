@@ -11,49 +11,61 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 
 
+
+
+
+<form onsubmit="return true;" action="user/acknowledge.action" method="post" id="route" name="route">
+    
+        <fieldset class="x-fieldset"><legend>Claim Acknowledgement - Action Required</legend>                
         
+        <div>
         
-        <div class="form-container">
-            <form onsubmit="return true;" action="user/acknowledge.action" method="post" id="route" name="route">
-                <s:hidden name="id" />
-                
-                <div>
-                    <table with="100%">
-                        <tr><td colspan="2"><b>Please enter details of the claim review and decide whether to acknowledge or reject the claim.  Please use the 'Notes' tab in order to communicate detailed comments you may have for the CHO.</b></td></tr>
-                        <tr>
-                            <td width="20%"><label class="chox-form-std-label">Indemnity (Decimal)</label></td>
-                            <td><input type="text" class="chox-ttxt" name="indemintyAmount" /></td>
-                        </tr>
-                        <tr>
-                            <td><label class="chox-form-std-label">% Liability Accepted</label></td>
-                            <td><input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" /></td>
-                        </tr>
-                        <tr>
-                            <td><label class="chox-form-std-label">Claim Number</label></td>
-                            <td><input type="text" class="chox-ttxt" name="claimNumber" /></td>
-                        </tr>
-                        <tr>
-                            <td><label class="chox-form-std-label">Quantum Dispute?</label></td>
-                            <td><s:checkbox name="isQuantumDispute" /></td>
-                        </tr>
-                        <tr>
-                            <td><label class="chox-form-std-label">Engineer’s Claim Review Notes</label></td>
-                            <td><textarea class="chox-tta" cols="20" rows="5" name="engineerClaimReviewNotes"></textarea></td>
-                        </tr>
-                        <tr>
-                            <td><label class="chox-form-std-label">Invoice Review Required</label></td>
-                            <td><s:checkbox name="isInvoiceReviewRequired" /></td>
-                        </tr>
-                        <tr>
-                            <td><label class="chox-form-std-label">Action</label></td>
-                            <td><s:radio name="actionName" list="actionNames" /></td>
-                        </tr>
-                        <tr>
-                            <td></td><td><input type="submit" value="Submit" /></td>
-                        </tr>                        
-                    </table>
+        <s:hidden name="id" />
+        
+        <div>
+            <table with="100%">
+                <tr><td colspan="2">
+                    
+                    <div class="status-info">
+                    
+                    Please enter details of the claim review and decide whether to acknowledge or reject the claim.  Please use the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
+                    
                 </div>
-<!--
+                    </td></tr>
+                <tr>
+                    <td width="20%"><label class="chox-form-std-label">Indemnity (Decimal)</label></td>
+                    <td><input type="text" class="chox-ttxt" name="indemintyAmount" /></td>
+                </tr>
+                <tr>
+                    <td><label class="chox-form-std-label">% Liability Accepted</label></td>
+                    <td><input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" /></td>
+                </tr>
+                <tr>
+                    <td><label class="chox-form-std-label">Claim Number</label></td>
+                    <td><input type="text" class="chox-ttxt" name="claimNumber" /></td>
+                </tr>
+                <tr>
+                    <td><label class="chox-form-std-label">Quantum Dispute?</label></td>
+                    <td><s:checkbox name="isQuantumDispute" /></td>
+                </tr>
+                <tr>
+                    <td><label class="chox-form-std-label">Engineer’s Claim Review Notes</label></td>
+                    <td><textarea class="chox-tta" cols="20" rows="5" name="engineerClaimReviewNotes"></textarea></td>
+                </tr>
+                <tr>
+                    <td><label class="chox-form-std-label">Invoice Review Required</label></td>
+                    <td><s:checkbox name="isInvoiceReviewRequired" /></td>
+                </tr>
+                <tr>
+                    <td><label class="chox-form-std-label">Action</label></td>
+                    <td><s:radio name="actionName" list="actionNames" /></td>
+                </tr>
+                <tr>
+                    <td></td><td><input type="submit" value="Submit" /></td>
+                </tr>                        
+            </table>
+        </div>
+        <!--
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Indemnity (Decimal)</label>
                     <input type="text" class="chox-ttxt" name="indemintyAmount" />
@@ -87,7 +99,10 @@
                     <input type="submit" value="Submit" />
                 </div>
                 <div class="chox-form-submit-result">&nbsp;</div>
--->                
-            </form>
-            
+        -->   
+        
         </div>
+    </fieldset>
+</form>
+
+

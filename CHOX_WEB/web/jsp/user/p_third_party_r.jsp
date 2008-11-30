@@ -81,7 +81,7 @@
             <div class="chox-form-item">
                 <label class="std-label-ro">
                 Vehicle Class</label>
-                        <label class="std-data-ro">todo: map vehicle class</label></div>
+                        <label class="std-data-ro"><s:property value="vehicleClass.Name" /></label></div>
 
             
         </div>

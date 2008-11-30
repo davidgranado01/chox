@@ -23,11 +23,12 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Description</label>
-                <textarea class="chox-tta" id="IDDescription" cols="20" rows="5" name="incidentDescription"></textarea>
+                <textarea class="chox-tta" id="IDDescription" cols="20" rows="5" name="incidentDescription"><s:property value="incidentDescription" /></textarea>
             </div>
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes" /><div class="chox-update-result"></div>
-            </div>                        
+                <input type="submit" value="Save Changes" />
+            </div>
+            <div class="chox-form-submit-result">&nbsp;</div>                  
         </div>
     </fieldset>
 </form>    

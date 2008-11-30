@@ -1,48 +1,72 @@
-                                        <form id="f8" action="dummyAction">
-                                            <fieldset class="x-fieldset">
-                                                <legend>Hire Monitoring</legend>
-                                                <div style="display:none" class="form-container">
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Original ECD</label>
-                                                    <input type="text" class="chox-ttxt" id="HMInitialECD" /></div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                            Name Of Repairer
-                                                        </label>
-                                                    <input type="text" class="chox-ttxt" id="HMNameOfRepairer" /></div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Repair Book In Date</label>
-                                                    <input type="text" class="chox-ttxt" id="HMRepairBookInDate" /></div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Inspection Booked Date</label><input type="text" class="chox-ttxt" id="HMInspectionBookedDate" />
-                                                    </div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Inspection Date</label>
-                                                    <input type="text" class="chox-ttxt" id="HMInspectionDate" /></div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Total Loss Check</label>
-                                                    <input type="checkbox" class="chox-tcb" id="HMTotalLossCheck" /></div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Total Loss Inspection Report</label>
-                                                    <input type="text" class="chox-ttxt" id="HMTotalLossInspectionReport" /></div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Repair Completion Date</label>
-                                                    <input type="text" class="chox-ttxt" id="HMRepairCompletionDate" /></div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Name of IME</label>
-                                                    <input type="text" class="chox-ttxt" id="HMNameofIME" /></div>
-                                                    <div class="chox-form-button">
-                                                        <input type="submit" value="Save Changes" />
-                                                    </div>
-                                                    <div class="chox-form-submit-result">&nbsp;</div>                                              
-                                                </div>
-                                            </fieldset>
-                                        </form>
+<%@ taglib uri="/struts-tags" prefix="s" %>
+<form id="formUpdateIncident" action="user/updateHireMonitorDetail.action" class="entity-form">
+    <input type="hidden" name="objectId" value='<s:property value="id"/>'>
+    <fieldset class="x-fieldset">
+        <legend>Hire Monitoring</legend>
+        <div style="display:none" class="form-container">
+            
+            
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                Original ECD</label><input type="text" class="chox-ttxt" name="nameOfRepairer" value='<s:property value="nameOfRepairer" />'/></div>
+            </div>
+            
+            
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                    Name Of Repairer
+                </label>
+            <input type="text" class="chox-ttxt" name="nameOfRepairer" value='<s:property value="nameOfRepairer" />'/></div>
+           
+           
+           <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                Repair Book In Date</label>
+            <input type="text" class="chox-ttxt" name="repairBookInDate" value='<s:property value="repairBookInDate" />'/></div>
+            
+            
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                Inspection Booked Date</label>
+            <input type="text" class="chox-ttxt" name="inspectionBookedDate" value='<s:property value="inspectionBookedDate" />'/></div>
+           
+           
+           <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                Inspection Date</label>
+            <input type="text" class="chox-ttxt" name="inspectionDate" value='<s:property value="inspectionDate" />'/></div>
+           
+           
+           <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                Is Total Loss?</label>
+            <s:checkbox name="isTotalLostCheck" /></div>
+           
+           
+           <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                Total Loss Inspection Report</label>
+           NONE</div>
+            
+            
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                Repair Completion Date</label>
+            <input type="text" class="chox-ttxt" name="repairCompletionDate" value='<s:property value="repairCompletionDate" />'/></div>
+            
+            
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                Name of IME</label>
+            <input type="text" class="chox-ttxt" name="nameOfIme" value='<s:property value="nameOfIme" />'/></div>
+            
+            
+            <div class="chox-form-button">
+                <input type="submit" value="Save Changes" />
+            </div>
+            <div class="chox-form-submit-result">&nbsp;</div>   
+            
+            
+        </div>
+    </fieldset>
+</form>

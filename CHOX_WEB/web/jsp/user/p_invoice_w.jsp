@@ -1,7 +1,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 
-<form id="formUpdateIncident" action="user/updateInvoice.action" class="entity-form">
+<form id="formUpdateInvoice" action="user/updateInvoice.action" class="entity-form">
     <input type="hidden" name="objectId" value='<s:property value="id"/>'>
     <fieldset class="x-fieldset">
         <legend>Invoice Detail</legend>
@@ -97,7 +97,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Total To Pay</label>
-            <input type="text" class="chox-tnum"  name="totalToPay" value='<s:property value="totalToPayA" />'/></div>
+            <input type="text" class="chox-tnum"  name="totalToPay" value='<s:property value="totalToPay" />'/></div>
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
             </div>

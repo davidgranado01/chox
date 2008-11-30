@@ -14,9 +14,9 @@
             Location</label>
         <label class="std-data-ro"><s:property value="location" /></label></div>
         <div class="chox-form-item">
-            <label class="std-label-ro">
+            <label class="std-label-ro">isPoliceInvolvedDesc
             Police Involved?</label>
-        <label class="std-data-ro">todo: map prop to Yes / No</label></div>
+        <label class="std-data-ro"><s:property value="isPoliceInvolvedDesc" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
             Description</label>
