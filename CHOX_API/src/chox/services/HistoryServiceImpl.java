@@ -14,15 +14,36 @@ import java.util.ArrayList;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Order;
 
 public class HistoryServiceImpl extends DataService implements HistoryService{
     
-    public List<History> getHistoryByClaim(Claim claim){
+    /*
+     * isShowAll : true > SHOW ALL RECORDS WITH TYPE IS ERROR AND INFO
+     * isShowAll : false > SHOW ALL RECORDS WITH TYPE IS ERROR ONLY
+     * isPublic : true > SHOW ALL RECORDS WITH IS_PUBLIC IS TRUE ONLY
+     * isPublic : false > SHOW ALL RECORDS REGARDLESS THE IS_PUBLIC
+     */
+    
+    public List<History> getHistoryByClaim(Claim claim, Boolean isShowAll, Boolean isPublic){
          
         List histories = new ArrayList<History>();
         
         try {
             Criteria criteria = currentSession.createCriteria(History.class).add(Restrictions.eq("claim", claim));
+                    
+            if(!isShowAll){
+                criteria.add(Restrictions.eq("type", "ERROR"));
+            }
+            
+            // SHOW TRUE RECORD ONLY IF IT IS NOT PUBLIC
+            if(isPublic){
+                criteria.add(Restrictions.eq("isPublic", true));
+            }
+            
+            criteria.addOrder(Order.asc("claim"));
+            criteria.addOrder(Order.asc("ruleId"));
+            
             histories = criteria.list();
             
         } catch (Throwable e) {
