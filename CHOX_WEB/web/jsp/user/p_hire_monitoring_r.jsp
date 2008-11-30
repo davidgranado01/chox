@@ -1,48 +1,46 @@
-                                        <form id="f8" action="dummyAction">
-                                            <fieldset class="x-fieldset">
-                                                <legend>Hire Monitoring</legend>
-                                                <div style="display:none" class="form-container">
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Original ECD</label>
-                                                    <input type="text" class="chox-ttxt" id="HMInitialECD" /></div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                            Name Of Repairer
-                                                        </label>
-                                                    <input type="text" class="chox-ttxt" id="HMNameOfRepairer" /></div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Repair Book In Date</label>
-                                                    <input type="text" class="chox-ttxt" id="HMRepairBookInDate" /></div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Inspection Booked Date</label><input type="text" class="chox-ttxt" id="HMInspectionBookedDate" />
-                                                    </div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Inspection Date</label>
-                                                    <input type="text" class="chox-ttxt" id="HMInspectionDate" /></div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Total Loss Check</label>
-                                                    <input type="checkbox" class="chox-tcb" id="HMTotalLossCheck" /></div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Total Loss Inspection Report</label>
-                                                    <input type="text" class="chox-ttxt" id="HMTotalLossInspectionReport" /></div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Repair Completion Date</label>
-                                                    <input type="text" class="chox-ttxt" id="HMRepairCompletionDate" /></div>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                        Name of IME</label>
-                                                    <input type="text" class="chox-ttxt" id="HMNameofIME" /></div>
-                                                    <div class="chox-form-button">
-                                                        <input type="submit" value="Save Changes" />
-                                                    </div>
-                                                    <div class="chox-form-submit-result">&nbsp;</div>                                              
-                                                </div>
-                                            </fieldset>
-                                        </form>
+<%@ taglib uri="/struts-tags" prefix="s" %>
+
+
+<fieldset class="x-fieldset">
+    <legend>Hire Monitoring</legend>
+    <div style="display:none" class="form-container">
+        <div class="chox-form-item">
+            <label class="std-label-ro">
+            Original ECD</label>
+        <label class="std-data-ro">NOT IMPLEMENTED</label></div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">
+                Name Of Repairer
+            </label>
+        <label class="std-data-ro"><s:property value="nameOfRepairer" /></label></div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">
+            Repair Book In Date</label>
+        <label class="std-data-ro"><s:property value="repairBookInDate" /></label></div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">
+            Inspection Booked Date</label>
+        <label class="std-data-ro"><s:property value="inspectionBookedDate" /></label></div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">
+            Inspection Date</label>
+        <label class="std-data-ro"><s:property value="inspectionDate" /></label></div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">
+            Total Loss Check</label>
+        NOT IMP...</div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">
+            Total Loss Inspection Report</label>
+        <label class="std-data-ro">NOT IMPLEMENTED</label></div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">
+            Repair Completion Date</label>
+        <label class="std-data-ro"><s:property value="repairCompletionDate" /></label></div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">
+            Name of IME</label>
+        <label class="std-data-ro"><s:property value="nameOfIme" /></label></div>
+        
+    </div>
+</fieldset>

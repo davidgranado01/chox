@@ -1,62 +1,66 @@
+<%@ taglib uri="/struts-tags" prefix="s" %>
+
 
     <fieldset class="x-fieldset">
         <legend>Engineer Report</legend>
         <div style="display:none" class="form-container">
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Estimated Labour Amount</label>
-            <input type="text" class="chox-ttnum" id="ERPTEstimatedLabourAmount" /></div>
+        <label class="std-data-ro"><s:property value="labourAmount" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Estimated Total Repair Amount</label>
-            <input type="text" class="chox-ttnum" id="ERPTEstimatedTotalRepairAmount " /></div>
+        <label class="std-data-ro"><s:property value="totalAmount" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Estimated Days Under Repair</label>
-            <input type="text" class="chox-ttnum" id="ERPTEstimatedDaysUnderRepair" /></div>
+        <label class="std-data-ro"><s:property value="days" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
-                Usable?</label><input type="checkbox" class="chox-tcb" id="ERPTUsable" />
-            </div>
+                <label class="std-label-ro">
+                Usable?</label>
+                
+        <label class="std-data-ro"><s:property value="isUsableDesc" /></label></div>
+         
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Name</label>
-            <input type="text" class="chox-ttxt" id="ERPTEngineerName" /></div>
+        <label class="std-data-ro"><s:property value="name" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Company</label>
-            <input type="text" class="chox-ttxt" id="ERPTEngineerCompany" /></div>
+        <label class="std-data-ro"><s:property value="company" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Engineer Address 1</label>
-            <input type="text" class="chox-ttxt" id="ERPTEngineerAddress1" /></div>
+        <label class="std-data-ro"><s:property value="address1" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Engineer Address 2</label>
-            <input type="text" class="chox-ttxt" id="ERPTEngineerAddress2" /></div>
+        <label class="std-data-ro"><s:property value="address2" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Engineer Address 3</label>
-            <input type="text" class="chox-ttxt" id="ERPTEngineerAddress3" /></div>
+        <label class="std-data-ro"><s:property value="address3" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Engineer Address 4</label>
-            <input type="text" class="chox-ttxt" id="ERPTEngineerAddress4" /></div>
+        <label class="std-data-ro"><s:property value="address4" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Engineer Address 5</label>
-            <input type="text" class="chox-ttxt" id="ERPTEngineerAddress5" /></div>
+        <label class="std-data-ro"><s:property value="address5" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Engineer Postcode</label>
-            <input type="text" class="chox-ttxt" id="ERPTEngineerPostcode" /></div>
+        <label class="std-data-ro"><s:property value="postcode" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Engineer Telephone</label>
-            <input type="text" class="chox-ttxt" id="ERPTEngineerTelephone" /></div>
+        <label class="std-data-ro"><s:property value="telephone" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="std-label-ro">
                 Engineer Email</label>
-            <input type="text" class="chox-ttxt" id="ERPTEngineerEmail" /></div>                                             
+        <label class="std-data-ro"><s:property value="email" /></label></div>                                            
         </div>
     </fieldset>

@@ -398,8 +398,8 @@
                                         
                                         
                                         
-                                        <s:action name="getIncident" executeResult="true">
-                                            <s:param name="objectId"><s:property value="incident.id" /></s:param> 
+                                        <s:action name="getHireMonitoringDetail" executeResult="true">
+                                            <s:param name="objectId"><s:property value="hireMonitoringDetail.id" /></s:param> 
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
                                         

@@ -1,4 +1,4 @@
-
+<%@ taglib uri="/struts-tags" prefix="s" %>
         <fieldset class="x-fieldset">
             <legend>Hire Vehicle Details</legend>
             <div style="display:none" class="form-container">
