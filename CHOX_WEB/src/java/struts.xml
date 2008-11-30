@@ -230,9 +230,9 @@
         
         <!-- Start Invoice Detail -->
         <action name="getInvoice" class="chox.web.actions.InvoiceAction">
-            <result name="r">/jsp/user/p_Invoice_r.jsp
+            <result name="r">/jsp/user/p_invoice_r.jsp
             </result>
-            <result name="w">/jsp/user/p_Invoice_w.jsp
+            <result name="w">/jsp/user/p_invoice_w.jsp
             </result>
             <result name="decline">/jsp/p_accessDeclined.jsp
             </result>
@@ -246,9 +246,9 @@
         
         <!-- Start Extra Detail -->
         <action name="getExtra" class="chox.web.actions.ExtraAction">
-            <result name="r">/jsp/user/p_Extra_r.jsp
+            <result name="r">/jsp/user/p_extras_r.jsp
             </result>
-            <result name="w">/jsp/user/p_Extra_w.jsp
+            <result name="w">/jsp/user/p_extras_w.jsp
             </result>
             <result name="decline">/jsp/p_accessDeclined.jsp
             </result>
@@ -262,8 +262,8 @@
         
         <!-- Start EngineerReport Detail -->
         <action name="getEngineerReport" class="chox.web.actions.EngineerReportAction">
-            <result name="r">/jsp/user/p_EngineerReport_r.jsp</result>
-            <result name="w">/jsp/user/p_EngineerReport_w.jsp</result>
+            <result name="r">/jsp/user/p_eng_report_r.jsp</result>
+            <result name="w">/jsp/user/p_eng_report_w.jsp</result>
             <result name="decline">/jsp/p_accessDeclined.jsp</result>
         </action>
         <action name="updateEngineerReport" class="chox.web.actions.EngineerReportAction" method="updateModel">
@@ -275,8 +275,8 @@
         
         <!-- Start VehicleHire Detail -->
         <action name="getVehicleHire" class="chox.web.actions.VehicleHireAction">
-            <result name="r">/jsp/user/p_VehicleHire_r.jsp</result>
-            <result name="w">/jsp/user/p_VehicleHire_w.jsp</result>
+            <result name="r">/jsp/user/p_hire_vehicle_r.jsp</result>
+            <result name="w">/jsp/user/p_hire_vehicle_w.jsp</result>
             <result name="decline">/jsp/p_accessDeclined.jsp</result>
         </action>
         <action name="updateVehicleHire" class="chox.web.actions.VehicleHireAction" method="updateModel">
