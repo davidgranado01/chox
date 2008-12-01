@@ -11,8 +11,7 @@ import chox.model.Claim;
 
 public interface CommentService {
     
-    public List<Comment> getCommentByClaim(Claim claim);
-    public List<Comment> getCommentByClaim(int claimId);
+    public List<Comment> getCommentByClaimId(int claimId);
     Comment getObject(int id);
     public void createNewObject(Comment comment);
 }

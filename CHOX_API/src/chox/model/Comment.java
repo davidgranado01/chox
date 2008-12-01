@@ -17,7 +17,7 @@ public class Comment implements Serializable{
     protected Date createdDate;
     protected int lastModifiedBy;
     protected Date lastModifiedDate;
-    protected Claim claim;
+    protected int claimId;
 
     public String getComment() {
         return comment;
@@ -67,12 +67,12 @@ public class Comment implements Serializable{
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    public Claim getClaim() {
-        return claim;
+    public int getClaimId() {
+        return claimId;
     }
 
-    public void setClaim(Claim claim) {
-        this.claim = claim;
+    public void setClaimId(int claimId) {
+        this.claimId = claimId;
     }
     
     
