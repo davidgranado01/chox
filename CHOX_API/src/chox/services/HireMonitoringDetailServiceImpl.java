@@ -2,71 +2,75 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package chox.services;
 
+import chox.Util.DateHelper;
 import chox.model.HireMonitoringDetail;
 import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.w3c.dom.Element;
-import chox.data.HibernateUtil;
 
-public class HireMonitoringDetailServiceImpl  extends DataService implements HireMonitoringDetailService{
+public class HireMonitoringDetailServiceImpl extends DataService implements HireMonitoringDetailService {
 
-    public HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int hiremonitoringdetailid){
+    public HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int hiremonitoringdetailid) {
         HireMonitoringDetail hiremonitoringdetail = new HireMonitoringDetail();
-        
+
         try {
-            
+
             Criteria criteria = currentSession.createCriteria(HireMonitoringDetail.class);
             criteria.add(Restrictions.eq("id", hiremonitoringdetailid));
-            
+
             hiremonitoringdetail = (HireMonitoringDetail) criteria.uniqueResult();
-            
+
         } catch (Throwable e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
-        
+
         currentSession.clear();
         currentSession.disconnect();
-        
+
         return hiremonitoringdetail;
     }
-    
-      public HireMonitoringDetail getObject(int id) {
+
+    public HireMonitoringDetail getObject(int id) {
         return (HireMonitoringDetail) currentSession.get(HireMonitoringDetail.class, id);
     }
 
-    public void updateObject(HireMonitoringDetail HireMonitoringDetail) {
+    public void updateObject(HireMonitoringDetail hireMonitoringDetail) {
 
+        if (hireMonitoringDetail.getId() <= 0) {
+            hireMonitoringDetail.setCreatedBy(getCurrentUser().getId());
+            hireMonitoringDetail.setCreatedDate(DateHelper.getCurrentTimeStamp());
+            hireMonitoringDetail.setLastModifiedBy(getCurrentUser().getId());
+            hireMonitoringDetail.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+
+        }
         currentSession.beginTransaction();
-        currentSession.update(HireMonitoringDetail);
+        currentSession.saveOrUpdate(hireMonitoringDetail);
         currentSession.getTransaction().commit();
+
+
+    }
+    /*
+    public Insurer getInsurerByName(String s){
+    
+    Insurer insurer = new Insurer();
+    
+    try {
+    
+    Criteria criteria = currentSession.createCriteria(Insurer.class);
+    criteria.add(Restrictions.eq("name", s));
+    
+    insurer = (Insurer) criteria.uniqueResult();
+    
+    } catch (Throwable e) {
+    e.printStackTrace();
     }
     
+    currentSession.clear();
+    currentSession.disconnect();
     
-    /*
-     public Insurer getInsurerByName(String s){
-         
-        Insurer insurer = new Insurer();
-        
-        try {
-            
-            Criteria criteria = currentSession.createCriteria(Insurer.class);
-            criteria.add(Restrictions.eq("name", s));
-            
-            insurer = (Insurer) criteria.uniqueResult();
-            
-        } catch (Throwable e) {
-           e.printStackTrace();
-        }
-        
-        currentSession.clear();
-        currentSession.disconnect();
-        
-        
-        return insurer;
+    
+    return insurer;
     }
      * */
 }
