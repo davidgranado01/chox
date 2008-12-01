@@ -219,9 +219,9 @@
                 root: 'results', 
                 fields:
                 [
-                    {name:'id'},
-                    {name:'createdBy'},            
-                    {name:'commentText'}
+                    {name:'createdBy'},                     
+                    {name:'createdDate', type: 'date', dateFormat: 'd/m/Y'},         
+                    {name:'comment'}
                 ]
             });// {name:'created', type: 'date', dateFormat: 'd/m/Y'},
 
@@ -239,9 +239,9 @@
                 store: commentsDataStore,
                 loadMask: true,
                 columns: [
-                    {header: "ID", width: 80, dataIndex: 'id', sortable: false, resizable: false},
-                    {header: "Created", width: 110, dataIndex: 'createdBy', sortable: false, resizable: false},
-                    {header: "Message", width: 760, dataIndex: 'commentText', sortable: false, resizable: false}
+                    {header: "Created", width: 110, dataIndex: 'createdDate', sortable: false, resizable: false, renderer: Ext.util.Format.dateRenderer('d/m/Y')}, 
+                    {header: "Created By", width: 130, dataIndex: 'createdBy', sortable: false, resizable: false},                   
+                    {header: "Message", width: 630, dataIndex: 'comment', sortable: false, resizable: false}
                 ],
                 renderTo:'commentsGrid',
                 width:960,
@@ -291,7 +291,7 @@
                     {header: "ID", width: 80, dataIndex: 'id', sortable: false, resizable: false},
                     {header: "Created On", width: 110, dataIndex: 'createdDate', sortable: false, resizable: false},
                     {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: false, resizable: false},
-                    {header: "Message Text", width: 650, dataIndex: 'narrative', sortable: false, resizable: false}
+                    {header: "Message Text", width: 650, dataIndex: 'comment', sortable: false, resizable: false}
                 ],
                 renderTo:'historyGrid',
                 width:960,
@@ -655,30 +655,36 @@
     <script language="JavaScript">
         
         
-        function addNote(){
-            
-            //var text
-            alert($("#commentBox").val());
-            return false;
-        }
+    
+
+    $(document).ready(function() { 
+            var options = { 
+                success:       showResponse  // post-submit callback 
+            }; 
+
+            // bind form using 'ajaxForm' 
+            $('#fComments').ajaxForm(options); 
+    });
+    
+    
+    function showResponse(responseText, statusText)  { 
         
+        commentsLoaded = false;
+        loadComments();
+    }    
+
         
-        
-        function commentsCallback(){
-            
-            
-            
-            
-        }
+     
         
     </script>
                         
                         
                         <div class="comments  x-panel-bwrap chox-form-container">
                             <form id="fComments" action="user/createNewComment.action" method="get">
+                                <input type="hidden" name="claimId" value='<s:property value="id" />'>
                                 <fieldset class="x-fieldset">
                                     <legend>Add a new note</legend>
-                                    <textarea id="commentBox" cols="70" rows="4" id="commentBox" name="narrative"></textarea><br/><input type="submit" id="bAddComment" value="Add Note" onclick='return addNote()'/>
+                                    <textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment"></textarea><br/><input type="submit" id="bAddComment" value="Add Note" onclick='return addNote()'/>
                                 </fieldset>
                             </form>
                         </div>
