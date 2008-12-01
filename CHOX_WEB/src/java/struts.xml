@@ -85,9 +85,9 @@
             </result>
             <result name="updateclaimcarhiredetail">/jsp/user/actionPanel/p_updateCarHireInfo.jsp
             </result>
-            <result name="updateinvoicedtailbyinsurer">/jsp/user/actionPanel/p_refInvoiceToCHO.jsp
+            <result name="updateinvoicedtailbyinsurer">/jsp/user/actionPanel/p_refInvoiceToInsurer.jsp
             </result>
-            <result name="updateinvoicedtailbycho">/jsp/user/actionPanel/p_refInvoiceToInsurer.jsp
+            <result name="updateinvoicedtailbycho">/jsp/user/actionPanel/p_refInvoiceToCHO.jsp
             </result>
             <result name="updateinvoicedtailforcalculationincorrect">/jsp/user/actionPanel/p_resubmitInvoiceData.jsp
             </result>
