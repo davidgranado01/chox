@@ -79,7 +79,7 @@
                                     <td><s:property value="#next.claim.status" /></td>
                                     <td>
                                         <ul>
-                                            <s:iterator id="remark" value="#next.DataValidationRemarkInList">                                        
+                                            <s:iterator id="remark" value="#next.DataValidationRemark">                                        
                                                 <s:if test="#remark.length() > 0">
                                                     <li><s:property value="#remark" /></li>
                                                 </s:if>
@@ -87,7 +87,7 @@
                                         </ul>                              
                                         
                                         <ul>
-                                            <s:iterator id="remark" value="#next.SchemaValidationRemarkInList">
+                                            <s:iterator id="remark" value="#next.SchemaValidationRemark">
                                                 <s:if test="#remark.length() > 0">
                                                     <li><s:property value="#remark" /></li>
                                                 </s:if>

@@ -17,8 +17,8 @@ import chox.model.Claim;
 import chox.model.Comment;
 import java.io.IOException;
 import org.apache.struts2.interceptor.SessionAware;
-import javax.servlet.http.HttpServlet;
 import chox.web.data.ExcelClaim;
+import chox.web.data.ExcelInvoice;
 import chox.services.WitnessService;
 import chox.services.WitnessServiceImpl;
 import chox.services.InjuryService;
@@ -28,8 +28,9 @@ import chox.services.SolicitorServiceImpl;
 import chox.model.Witness;
 import chox.model.Injury;
 import chox.model.Solicitor;
-        
-public class ExcelGeneratorAction extends HttpServlet implements SessionAware{
+import chox.model.Invoice;
+
+public class ExcelGeneratorAction extends BaseAction implements SessionAware{
     
     private InputStream excelStream;
     private Map session;
@@ -73,7 +74,7 @@ public class ExcelGeneratorAction extends HttpServlet implements SessionAware{
     }
 
     public ByteArrayOutputStream generateXML(List<Claim> claims) throws IOException{
-
+        //InputStream templateIS = Thread.currentThread().getContextClassLoader().getResourceAsStream("claimTemplate.xls");
         InputStream templateIS = ExcelGeneratorAction.class.getClassLoader().getResourceAsStream("claimTemplate.xls");
         
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -86,6 +87,7 @@ public class ExcelGeneratorAction extends HttpServlet implements SessionAware{
         
         List histories = new ArrayList<History>();
         List comments = new ArrayList<Comment>();
+        List<ExcelInvoice> invoices = new ArrayList<ExcelInvoice>();
         
         List<ExcelClaim> excelClaims = new ArrayList<ExcelClaim>();
         
@@ -93,9 +95,18 @@ public class ExcelGeneratorAction extends HttpServlet implements SessionAware{
         for(Claim claim : claims){
             
             ExcelClaim ec = new ExcelClaim();
+            ExcelInvoice ev = new ExcelInvoice();
             ec.setClaim(claim);
             
+            if(claim.getInvoice()!=null){
+                ev.setInvoice(claim.getInvoice());
+                ev.setChoReference(claim.getChoReference());
+                ev.setClaimStatus(claim.getStatus());
+                invoices.add(ev);
+            }
+            
             if(claim.getIncident()!=null){
+                
                 // GET WITNESS
                 Witness witness = witnessService.getWitnessByIncident(claim.getIncident());
                 if(witness!=null){
@@ -118,8 +129,8 @@ public class ExcelGeneratorAction extends HttpServlet implements SessionAware{
             
             excelClaims.add(ec);
             
-            Boolean isShowAll = false;
-            Boolean isPublic = false;
+            Boolean isShowAll = this.getIsInsurer();
+            Boolean isPublic = this.getIsCHO();
             
             // GET HISTORY BY CLAIM ID;
             histories.addAll(historyService.getHistoryByClaim(claim, isShowAll, isPublic));
@@ -128,8 +139,17 @@ public class ExcelGeneratorAction extends HttpServlet implements SessionAware{
             comments.addAll(commentService.getCommentByClaimId(claim.getId()));
         }
         
+        if(histories.size()<=0){
+            histories = new ArrayList<History>();
+        }
+        
+        if(comments.size()<=0){
+            comments = new ArrayList<Comment>();
+        }
+        
         Map excelMap = new HashMap();
         excelMap.put("excelclaims", excelClaims);
+        excelMap.put("excelinvoices", invoices);
         excelMap.put("histories", histories);
         excelMap.put("comments", comments);
 
@@ -140,6 +160,11 @@ public class ExcelGeneratorAction extends HttpServlet implements SessionAware{
         //transformer.transformXLS(templateFileName, excelMap, destFileName);
         transformer.transformXLS(templateIS, excelMap).write(out);
         
+        /*
+        XLSTransformer transformer = new XLSTransformer();
+        HSSFWorkbook results  = transformer.transformXLS(Thread.currentThread().getContextClassLoader().getResourceAsStream("daysToProvideInstructions.xls"), beans);
+         */
+
         excelMap.clear();
         return out;
     }
