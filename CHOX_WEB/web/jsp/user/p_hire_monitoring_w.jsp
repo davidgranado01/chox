@@ -1,6 +1,6 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <form id="formUpdateIncident" action="user/updateHireMonitorDetail.action" class="entity-form">
-    <input type="hidden" name="objectId" value='<s:property value="hireMonitoringDetail.id"/>'>
+    <input type="hidden" name="objectId" value='<s:property value="id"/>'>
     <fieldset class="x-fieldset">
         <legend>Hire Monitoring</legend>
         <div style="display:none" class="form-container">
@@ -8,7 +8,7 @@
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Original ECD</label><input type="text" class="chox-ttxt" name="nameOfRepairer" value='<s:property value="nameOfRepairer" />'/></div>
+                Original ECD</label>&nbsp;</div>
 
             
             
