@@ -1,5 +1,6 @@
 package chox.web.actions;
 
+
 import chox.data.ClaimSearchCriteria;
 import chox.services.HistoryService;
 import chox.services.HistoryServiceImpl;
