@@ -15,7 +15,28 @@ import org.hibernate.criterion.Order;
 
 public class CommentServiceImpl extends DataService implements CommentService {
 
-    public List<Comment> getCommentByClaimId(int claimId) {
+        public List<Comment> getCommentByClaimId(int claimId) {
+
+        List comments = new ArrayList<Comment>();
+
+        try {
+            //Criteria criteria = currentSession.createCriteria(Comment.class).add(Restrictions.eq("claim", claim));
+            Criteria criteria = currentSession.createCriteria(Comment.class);
+            criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+            //criteria.addOrder(Order.asc("claim.id"));           
+            comments = criteria.list();
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        currentSession.clear();
+        currentSession.disconnect();
+
+        return comments;
+    }
+        
+    public List<Comment> getCommentByClaim(Claim claim) {
 
         List comments = new ArrayList<Comment>();
 

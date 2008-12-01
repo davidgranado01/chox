@@ -4,26 +4,33 @@ import chox.Util.UploadStatus;
 import java.util.ArrayList;
 import org.hibernate.Session;
 import chox.Util.TextHelper;
+import java.util.List;
 
 public class XMLParseResult {
     
+    /*
     public static final String PENDING = "Pending";
     public static final String IN_PROGRESS = "InProgress";
     public static final String COMPLETE = "Complete";
     public static final String CANCELLED = "Cancelled";
     public static final String DUPLICATE = "Duplicated";
+    */
     
     private Boolean isSchemaValid = true;
     private Boolean isDataValid = true;
-    private String SchemaValidationRemark = "";
-    private String DataValidationRemark = "";
+    //private String SchemaValidationRemark = "";
+    //private String DataValidationRemark = "";
     private String UploadType;
     private Session currentSession;
     private Boolean isCurrentScheValid = true;
     private Boolean isCurrentDataValid = true;
+    
+    // PARAM TO CHECK
     private Boolean isClaimExist = false;
     private Boolean isInvoiceExist = false;
+    private Boolean isNewInvoiceExit = false;
     private String sExistingClaimStatus = "";
+    private String uploadStatus = "";
     
     // SETUP DATA - CLAIM OBJECT
     private Claim claim;
@@ -31,6 +38,9 @@ public class XMLParseResult {
     private ArrayList<Injury> injuries;
     private ArrayList<Solicitor> solicitors;
 
+    private List<String> SchemaValidationRemark = new ArrayList<String>();
+    private List<String> DataValidationRemark = new ArrayList<String>();
+    
     public String getSExistingClaimStatus() {
         return sExistingClaimStatus;
     }
@@ -78,7 +88,8 @@ public class XMLParseResult {
     public void setWitnesses(ArrayList<Witness> witnesses) {
         this.witnesses = witnesses;
     }
-
+    
+    /*
     public String getDataValidationRemark() {
         return DataValidationRemark;
     }
@@ -94,7 +105,8 @@ public class XMLParseResult {
     public void setSchemaValidationRemark(String SchemaValidationRemark) {
         this.SchemaValidationRemark = SchemaValidationRemark;
     }
-
+    */
+    
     public String getUploadType() {
         return UploadType;
     }
@@ -158,7 +170,26 @@ public class XMLParseResult {
         }
         return bFlag;
     }
+
+    public Boolean getIsNewInvoiceExit() {
+        return isNewInvoiceExit;
+    }
+
+    public void setIsNewInvoiceExit(Boolean isNewInvoiceExit) {
+        this.isNewInvoiceExit = isNewInvoiceExit;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
+    }
     
+    
+    
+    /*
     public String getUploadStatus() {
 
         String sStatus;
@@ -202,17 +233,37 @@ public class XMLParseResult {
         }
         return sStatus;
     }
+    */
     
     public String getUploadStatusCode(){
         return TextHelper.trimWhiteSpace(getUploadStatus()).toUpperCase();
         
     }
     
-    public String[] getDataValidationRemarkInList() {
+    
+    public List<String> getDataValidationRemark() {
+        return DataValidationRemark;
+    }
+
+    public void setDataValidationRemark(List<String> DataValidationRemark) {
+        this.DataValidationRemark = DataValidationRemark;
+    }
+
+    public List<String> getSchemaValidationRemark() {
+        return SchemaValidationRemark;
+    }
+
+    public void setSchemaValidationRemark(List<String> SchemaValidationRemark) {
+        this.SchemaValidationRemark = SchemaValidationRemark;
+    }
+    
+    /*
+    public List<String> getDataValidationRemarkInList() {
         return DataValidationRemark.split("\\|");
     }
 
     public String[] getSchemaValidationRemarkInList() {
-        return SchemaValidationRemark.split("\\|");
+        return t
     }
+    */
 }

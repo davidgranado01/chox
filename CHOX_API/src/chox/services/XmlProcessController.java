@@ -20,6 +20,7 @@ import scsbre.engine.*;
 import java.util.List;
 import chox.Util.TextHelper;
 import chox.Util.DateHelper;
+import chox.Util.UploadStatus;
 
 public class XmlProcessController {
     
@@ -34,7 +35,7 @@ public class XmlProcessController {
 
         try {
             
-            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX/invoice.xml";
+            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX.file/invoice.XML";
             Boolean isAllowPartialUpload = true;
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -154,7 +155,7 @@ public class XmlProcessController {
          
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
-        //System.out.println(" ** CHO REFERENCE: " + xmlParseResult.getClaim().getChoReference());
+        // System.out.println(" ** CHO REFERENCE: " + xmlParseResult.getClaim().getChoReference());
 
         // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
         if(!xmlParseResult.getIsClaimExist()){
@@ -212,8 +213,9 @@ public class XmlProcessController {
             xmlParseResult = saveXMLRecord(xmlParseResult);
         }
         
+        xmlParseResult = UploadStatus.getUploadStatus(xmlParseResult);
         
-        System.out.println(" ** FINAL STATUS CODE: " + xmlParseResult.getUploadStatusCode());
+        //System.out.println(" ** FINAL STATUS CODE: " + xmlParseResult.getUploadStatusCode());
         System.out.println(" ** FINAL STATUS: " + xmlParseResult.getUploadStatus());
         System.out.println(" ** CLAIM EXIST: " + xmlParseResult.getIsClaimExist());
         System.out.println(" ** INVOICE EXIST: " + xmlParseResult.getIsInvoiceExist());
@@ -270,19 +272,19 @@ public class XmlProcessController {
     
     private XMLParseResult appendInvoiceValidationErrorMessage(XMLParseResult xmlParseResult, List<RuleEvaluation> results){
         
-        String existingErrorMsg = xmlParseResult.getDataValidationRemark();
+        //String existingErrorMsg = xmlParseResult.getDataValidationRemark();
         
         for(int iCount=0; iCount<results.size(); iCount++){
             
             RuleEvaluation rv = results.get(iCount);
             
-            if(rv.getIsVisibleToCHO() && rv.getResult()==RuleEvaluationResult.RuleFailed){
-                
-                existingErrorMsg = XmlHelper.XMLResultDelimeterContructor(existingErrorMsg, rv.toString());
-            }
+            //if(rv.getIsVisibleToCHO() && rv.getResult()==RuleEvaluationResult.RuleFailed){
+                //existingErrorMsg = XmlHelper.XMLResultDelimeterContructor(existingErrorMsg, rv.toString());
+                xmlParseResult.getDataValidationRemark().add(rv.toString());
+            //}
         }
         
-        xmlParseResult.setDataValidationRemark(existingErrorMsg);
+        //xmlParseResult.setDataValidationRemark(existingErrorMsg);
         return xmlParseResult;
     }
     
@@ -360,12 +362,11 @@ public class XmlProcessController {
             if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
                 
                 // RENTAL STATUS
-                //String strStatus = XmlHelper.getNodeValue(mainElement, claimHeaderNode_RentalStatus);
                 Boolean bManagingRepair = XmlHelper.getBooleanFromNode(mainElement, "managing-repair");
                 Timestamp tFirstContactDate = XmlHelper.getTimeStampFromNode(mainElement, "first-contact");
                 Timestamp tCreditAgreement = XmlHelper.getTimeStampFromNode(mainElement, "agreement-signed");
-                
                 Timestamp tGtaNoticeDate = XmlHelper.getTimeStampFromNode(mainElement, "gta-notice");
+                
                 if(XmlHelper.getNodeValue(mainElement, "gta-notice").equalsIgnoreCase("")){
                     tGtaNoticeDate = DateHelper.getCurrentTimeStamp();
                 }
@@ -377,7 +378,7 @@ public class XmlProcessController {
                 
                 if(thisCtrl.isClaimReferenceNumberExist(strCHOReference)){
                     
-                    // CLAIM EXIST
+                    // CONFIGURATION TO CHECK XML UPLOAD STATUS
                     xmlParseResult.setIsClaimExist(true);
                     
                     // GET EXISTING CLAIM INFORMATION
@@ -386,29 +387,11 @@ public class XmlProcessController {
                     
                     // LOG CLAIM CURRENT STATUS
                     xmlParseResult.setSExistingClaimStatus(claim.getStatus());
-                        
+
+                    // HARDCODE CHO BAND INFORMATION
                     ChoBandService chobandservice = new ChoBandServiceImpl();
-                        // HARDCODE CHO BAND INFORMATION
-                        ChoBand choband = chobandservice.getDummyChoBand();
-                        claim.setChoband(choband);
-                        
-                        /*
-                        choband.setEngineerInspectionDelayDays(2);
-                        choband.setHireDayCeiling(22);
-                        choband.setHireNetCeiling(new BigDecimal("1000.00"));
-                        choband.setHireRateChargeTolerance(new BigDecimal("0.01"));
-                        choband.setInspectionDelayDays(4);
-                        choband.setIsMobileDayAllowance(2);
-                        choband.setIsNotMobileDayAllowance(9);
-                        choband.setMaxRepairValue(new BigDecimal("1000.00"));
-                        choband.setOfferMadeDays(7);
-                        choband.setReceiptOfFinalStatementChequeDays(10);
-                        choband.setTakeVehicleOutDays(1);
-                        choband.setTakeVehicleToGarageDaysMobile(1);
-                        choband.setTakeVehicleToGarageDaysNonMobile(3);
-                        choband.setWeekendBufferDays(2);
-                        */
-                        
+                    ChoBand choband = chobandservice.getDummyChoBand();
+                    claim.setChoband(choband);
                     
                 }else{
                     
@@ -868,15 +851,7 @@ public class XmlProcessController {
         Element mainElement,
         Document doc,
         String strSectionName) throws Exception {
-        
-        
-        // String nodeName1 = "injuries";
-        // String nodeName2 = "injury";
-        // String subNodeName = "solicitor";
-        // CONSTRUCT NODE ERROR MESSAGE
-        // String childNodeLabel1 = XmlHelper.contructureErrorMessage(parentNodeName, nodeName1);
-        // String childNodeLabel2 = XmlHelper.contructureErrorMessage(childNodeLabel1, nodeName2);
-        
+
         // RESET VALIDATION FLAG
         xmlParseResult.setIsCurrentDataValid(true);
         xmlParseResult.setIsCurrentScheValid(true);
@@ -1023,16 +998,6 @@ public class XmlProcessController {
 
         String strSectionName = "Engineer Report";
         
-        /*
-        String parentNodeName = "rental";
-        String nodeName1 = "repair";
-        String nodeName2 = "engineer-report";
-        // CONSTRUCT ERROR MESSAGE
-        String childNodeLabelMain = XmlHelper.contructureErrorMessage(parentNodeName, "");
-        String childNodeLabel1 = XmlHelper.contructureErrorMessage(childNodeLabelMain, nodeName1);
-        String childNodeLabel2 = XmlHelper.contructureErrorMessage(childNodeLabel1, nodeName2);
-        */
-        
         // RESET VALIDATION FLAG
         xmlParseResult.setIsCurrentScheValid(true);
         
@@ -1131,12 +1096,6 @@ public class XmlProcessController {
             
         String strSectionName = "Invoice";
         
-        // String parentNodeName = "rental";
-        // String nodeName1 = "invoice";
-        // CONSTRUCT NODE LOCATION ERROR MESSAGE
-        // String childNodeLabelMain = XmlHelper.contructureErrorMessage(parentNodeName, "");
-        // String childNodeLabel1 = XmlHelper.contructureErrorMessage(childNodeLabelMain, nodeName1);
-        
         // RESET VALIDATION FLAG AND VALIDATE MAIN INVOICE NODE SECTION
         xmlParseResult.setIsCurrentScheValid(true);
         xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "invoice", strSectionName, "");
@@ -1155,15 +1114,6 @@ public class XmlProcessController {
             Document doc,
             String strSectionName) throws Exception {
             
-        /*
-        String subNodeName0 = "vehicles";
-        String subNodeName1 = "extras";
-        String subNodeName2 = "repair";
-        String subNodeName3 = "storage-recovery";
-        String subNodeName4 = "engineer-fee";
-        String subNodeName5 = "supplier";
-        */
-        
         xmlParseResult.setIsCurrentDataValid(true);
         xmlParseResult.setIsCurrentScheValid(true);
         
@@ -1185,15 +1135,9 @@ public class XmlProcessController {
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "date-invoiced", XmlHelper.isMAN_Invoice_DateInvoiced, XmlHelper.REG_TIMESTAMP, strSectionName, "Date Invoiced");
         
         if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
-        
-            /*
-            String childNodeLabel0 = XmlHelper.contructureErrorMessage(strSectionName, subNodeName0);
-            String childNodeLabel1 = XmlHelper.contructureErrorMessage(strSectionName, subNodeName1);
-            String childNodeLabel2 = XmlHelper.contructureErrorMessage(strSectionName, subNodeName2);
-            String childNodeLabel3 = XmlHelper.contructureErrorMessage(strSectionName, subNodeName3);
-            String childNodeLabel4 = XmlHelper.contructureErrorMessage(strSectionName, subNodeName4);
-            String childNodeLabel5 = XmlHelper.contructureErrorMessage(strSectionName, subNodeName5);
-            */
+            
+            // CONFIGURATION TO CHECK XML UPLOAD STATUS
+            xmlParseResult.setIsNewInvoiceExit(true);
             
             Invoice invoice = new Invoice();
             invoice.setTotalGross(XmlHelper.getBigDecimalFromNode(thisElement, "gross"));

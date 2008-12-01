@@ -212,12 +212,12 @@ public class XmlHelper {
      */
     public static String contructureDataMandatoryErrorMessage(String strSectionName, String strFieldName){
         String sMsg = String.format("No %s information supplied for %s. Please re-submit with this information.", strFieldName, strSectionName);
-        return XMLResultDelimeterContructor("", sMsg);
+        return sMsg; //XMLResultDelimeterContructor("", sMsg);
     }
  
     public static String contructureIncorrectTypeErrorMessage(String strSectionName, String strFieldName){
         String sMsg = String.format("Invalid or incorrect character in %s for %s", strSectionName, strFieldName);
-        return XMLResultDelimeterContructor("", sMsg);
+        return sMsg; //XMLResultDelimeterContructor("", sMsg);
     }
     
     public static String contructureSchemaErrorMessage(String strSectionName, String nodeDesc){
@@ -229,7 +229,7 @@ public class XmlHelper {
         }
         
         //String sMsg = String.format("Incorrect XML Schema in %s for %s.", strSectionName, nodeDesc, strSectionName);
-        return XMLResultDelimeterContructor("", sMsg);
+        return sMsg; //XMLResultDelimeterContructor("", sMsg);
     }
     
     public static String XMLResultDelimeterContructor(String orgStr, String newStr){
@@ -320,21 +320,23 @@ public class XmlHelper {
     
     public static XMLParseResult setErrorMessage(XMLParseResult xmlParseResult, String errorMessage, Boolean isSchemaError){
         
+        /*
         String sOldMsg = "";
         if(isSchemaError){
             sOldMsg = xmlParseResult.getSchemaValidationRemark();
         }else{
             sOldMsg = xmlParseResult.getDataValidationRemark();
         }
+        */
         
-        String sNewMsg = sOldMsg + XmlHelper.XMLResultDelimeterContructor(sOldMsg, errorMessage);
+        //String sNewMsg = sOldMsg + XmlHelper.XMLResultDelimeterContructor(sOldMsg, errorMessage);
         
         if(isSchemaError){
-            xmlParseResult.setSchemaValidationRemark(sNewMsg);
+            xmlParseResult.getSchemaValidationRemark().add(errorMessage);
             xmlParseResult.setIsSchemaValid(false);
             xmlParseResult.setIsCurrentScheValid(false);
         }else{
-            xmlParseResult.setDataValidationRemark(sNewMsg);
+            xmlParseResult.getDataValidationRemark().add(errorMessage);
             xmlParseResult.setIsDataValid(false);
             xmlParseResult.setIsCurrentDataValid(false);
         }
@@ -369,18 +371,18 @@ public class XmlHelper {
         String strNodeDesc) {
 
         Boolean bFlag = true;
-        String SchemaValidationRemark = xmlParseResult.getSchemaValidationRemark();
+        //String SchemaValidationRemark = xmlParseResult.getSchemaValidationRemark();
 
         Element thisElement = XMLUtils.getElement(root, nodeName);
 
         if (thisElement == null) {
 
-            SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strSectionName, strNodeDesc);
+            //SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strSectionName, strNodeDesc);
             bFlag = false;
         }
 
         if (!bFlag) {
-            xmlParseResult.setSchemaValidationRemark(SchemaValidationRemark);
+            xmlParseResult.getSchemaValidationRemark().add(XmlHelper.contructureSchemaErrorMessage(strSectionName, strNodeDesc));
             xmlParseResult.setIsSchemaValid(bFlag);
             xmlParseResult.setIsCurrentScheValid(bFlag);
         }
@@ -395,11 +397,11 @@ public class XmlHelper {
             String strSectionName,
             String strNodeDesc) {
 
-        String SchemaValidationRemark = xmlParseResult.getSchemaValidationRemark();
+        //String SchemaValidationRemark = xmlParseResult.getSchemaValidationRemark();
 
         if (thisElements.size() <= 0) {
-            SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strSectionName, strNodeDesc);
-            xmlParseResult.setSchemaValidationRemark(SchemaValidationRemark);
+            //SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strSectionName, strNodeDesc);
+            xmlParseResult.getSchemaValidationRemark().add(XmlHelper.contructureSchemaErrorMessage(strSectionName, strNodeDesc));
             xmlParseResult.setIsSchemaValid(false);
             xmlParseResult.setIsCurrentScheValid(false);
         }
@@ -418,28 +420,31 @@ public class XmlHelper {
 
         Boolean bFlag = true;
 
-        String DataValidationRemark = xmlParseResult.getDataValidationRemark();
+        //String DataValidationRemark = xmlParseResult.getDataValidationRemark();
 
         Element thisElement = XMLUtils.getElement(root, nodeName);
 
         if (thisElement != null) {
 
             String thisElementValue = XMLUtils.getElementValue(root, nodeName);
-
+            String errorMsg = "";
+            
             if (thisElementValue == null || thisElementValue.trim().length() == 0) {
                 if (isMandatory) {
-                    DataValidationRemark = DataValidationRemark + XmlHelper.contructureDataMandatoryErrorMessage(strSectionName, nodeNameDesc);
+                    //DataValidationRemark = DataValidationRemark + XmlHelper.contructureDataMandatoryErrorMessage(strSectionName, nodeNameDesc);
+                    errorMsg = XmlHelper.contructureDataMandatoryErrorMessage(strSectionName, nodeNameDesc);
                     bFlag = false;
                 }
             } else {
                 if (!XmlHelper.isValidDataType(thisElementValue, regExpression, nodeName)) {
-                    DataValidationRemark = DataValidationRemark + XmlHelper.contructureIncorrectTypeErrorMessage(strSectionName, nodeNameDesc);
+                    //DataValidationRemark = DataValidationRemark + XmlHelper.contructureIncorrectTypeErrorMessage(strSectionName, nodeNameDesc);
+                    errorMsg = XmlHelper.contructureIncorrectTypeErrorMessage(strSectionName, nodeNameDesc);
                     bFlag = false;
                 }
             }
             
             if (!bFlag) {
-                xmlParseResult.setDataValidationRemark(DataValidationRemark);
+                xmlParseResult.getDataValidationRemark().add(errorMsg);
                 xmlParseResult.setIsDataValid(bFlag);
                 xmlParseResult.setIsCurrentDataValid(bFlag);
             }
