@@ -125,7 +125,7 @@ public class ExcelGeneratorAction extends HttpServlet implements SessionAware{
             histories.addAll(historyService.getHistoryByClaim(claim, isShowAll, isPublic));
             
             // GET COMMENT BY CLAIM ID;
-            comments.addAll(commentService.getCommentByClaim(claim));
+            comments.addAll(commentService.getCommentByClaimId(claim.getId()));
         }
         
         Map excelMap = new HashMap();

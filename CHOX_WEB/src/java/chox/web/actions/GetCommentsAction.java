@@ -45,7 +45,7 @@ public class GetCommentsAction extends BaseModelAction {
     
     public String getClaims()
     {        
-        comments = this.service.getCommentByClaim(claimId);
+        comments = this.service.getCommentByClaimId(claimId);
         return SUCCESS;
     }
 

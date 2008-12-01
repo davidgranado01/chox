@@ -5,6 +5,7 @@
 
 package chox.web.actions;
 
+import chox.model.Claim;
 import chox.model.Comment;
 import chox.services.CommentService;
 import chox.web.security.ApplicationAccessibility;
@@ -20,7 +21,7 @@ public class CommentAction extends BaseModelAction implements ModelDriven<Commen
 
     private CommentService service;
     private Comment model;
-  
+   
     public void setCommentService(CommentService service) {
         this.service = service;
     }
@@ -55,6 +56,6 @@ public class CommentAction extends BaseModelAction implements ModelDriven<Commen
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_NOTES;
-    } 
+    }
     
 }
