@@ -91,6 +91,10 @@
             </result>
             <result name="updateinvoicedtailforcalculationincorrect">/jsp/user/actionPanel/p_resubmitInvoiceData.jsp
             </result>
+             <result name="approveBREPassedClaim">/jsp/user/actionPanel/p_approveBREPassedClaim.jsp
+            </result>
+             <result name="approveEscalatedClaim">/jsp/user/actionPanel/p_approveEscalatedClaim.jsp
+            </result>
             <result name="empty">/jsp/p_blank.jsp
             </result>
         </action>      
@@ -130,6 +134,21 @@
             </result>
         </action> 
          <action name="reSubmitRejectedClaim" class="chox.web.actions.ClaimAction" method="reSubmitRejectedClaim">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+            </result>
+             <result name="error">/jsp/user/ClaimDetail.jsp</result>
+        </action> 
+        
+        <action name="approveBREPassedClaim" class="chox.web.actions.ClaimAction" method="approveBREPassedClaim">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+            </result>
+             <result name="error">/jsp/user/ClaimDetail.jsp</result>
+        </action> 
+        <action name="approveEscalatedClaim" class="chox.web.actions.ClaimAction" method="approveEscalatedClaim">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>

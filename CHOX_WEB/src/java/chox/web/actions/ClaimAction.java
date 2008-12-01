@@ -180,7 +180,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String claimNumber = claim.getClaimNumber();
         BigDecimal indemintyAmount = claim.getIndemintyAmount();
-        BigDecimal percentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();     
+        BigDecimal percentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();
         String engineerClaimReviewNotes = claim.getEngineerClaimReviewNotes();
 
         boolean result = true;
@@ -221,50 +221,82 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 return ERROR;
             }
             return SUCCESS;
-        }
-        else
-        {
+        } else {
             this.actionResult = "ERROR : Invoice data calculation incorrect";
             return ERROR;
         }
 
-        
-    }  
+
+    }
+
+    public String approveBREPassedClaim() {
+
+        if (this.actionName.equalsIgnoreCase(ACCEPT)) {
+            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+        } else {
+            claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
+        }
+        try {
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+
+
+        return SUCCESS;
+    }
     
-     private Claim constructeClaimForInvoiceValidation(Claim claim){
-        
-         Claim BREClaim = claim;
-         
-         // GET HARDCODDED CHOBAND
-         ChoBandService chobandservice = new ChoBandServiceImpl();
-         claim.setChoband(chobandservice.getDummyChoBand());
-        
-            // INTERFACE MAPPING WITH BRE - WHERE HIRE MONITORING NOT EXIST
-            Boolean isIsTotalLostCheck = false;
-            if(BREClaim.getHireMonitoringDetail()!=null){
-                isIsTotalLostCheck = BREClaim.getHireMonitoringDetail().isIsTotalLostCheck();
-            }
-            BREClaim.getVehicleHire().setIsTotalLoss(isIsTotalLostCheck);
+     public String approveEscalatedClaim() {
+
+        if (this.actionName.equalsIgnoreCase(ACCEPT)) {
+            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+        } else {
+            claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
+        }
+        try {
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+
+
+        return SUCCESS;
+    }
+
+    private Claim constructeClaimForInvoiceValidation(Claim claim) {
+
+        Claim BREClaim = claim;
+
+        // GET HARDCODDED CHOBAND
+        ChoBandService chobandservice = new ChoBandServiceImpl();
+        claim.setChoband(chobandservice.getDummyChoBand());
+
+        // INTERFACE MAPPING WITH BRE - WHERE HIRE MONITORING NOT EXIST
+        Boolean isIsTotalLostCheck = false;
+        if (BREClaim.getHireMonitoringDetail() != null) {
+            isIsTotalLostCheck = BREClaim.getHireMonitoringDetail().isIsTotalLostCheck();
+        }
+        BREClaim.getVehicleHire().setIsTotalLoss(isIsTotalLostCheck);
 
         // CONSTRUCTE DUMMY ENGINEERING REPORT WITH ALL VALUE IS ZERO WHEN ER NOT EXIST
-        if(BREClaim.getEngineerReport()==null){
+        if (BREClaim.getEngineerReport() == null) {
             EngineerReport engineerreport = new EngineerReport();
             engineerreport.setDays(0);
             engineerreport.setLabourAmount(new BigDecimal("0.00"));
             engineerreport.setTotalAmount(new BigDecimal("0.00"));
             BREClaim.setEngineerReport(engineerreport);
         }
-        
+
         // SET VEHICLE CLASS TO NULL WHEN 
-        if(BREClaim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached")){
+        if (BREClaim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached")) {
             BREClaim.getThirdParty().setVehicleClass(null);
         }
-        
+
         // SET VEHICLE CLASS TO NULL WHEN 
-        if(BREClaim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")){
+        if (BREClaim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")) {
             BREClaim.getCustomer().setVehicleClass(null);
         }
-        
+
         return BREClaim;
     }
 

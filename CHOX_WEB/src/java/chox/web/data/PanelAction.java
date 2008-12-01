@@ -10,6 +10,8 @@ public class PanelAction {
     public static final String ACTION_invoicedtailbyinsurer = "updateinvoicedtailbyinsurer";
     public static final String ACTION_invoicedtailbycho = "updateinvoicedtailbycho";
     public static final String ACTION_invoicedtailforcalculationincorrect = "updateinvoicedtailforcalculationincorrect";
+    public static final String ACTION_approveBREPassedClaim = "approveBREPassedClaim";
+    public static final String ACTION_approveEscalatedClaim = "approveEscalatedClaim";
     
     public static List<String> getPanelActions() {
         List<String> action = new ArrayList<String>();
@@ -19,6 +21,8 @@ public class PanelAction {
         action.add(ACTION_invoicedtailbyinsurer);
         action.add(ACTION_invoicedtailbycho);
         action.add(ACTION_invoicedtailforcalculationincorrect);
+        action.add(ACTION_approveBREPassedClaim);
+        action.add(ACTION_approveEscalatedClaim);
         return action;
     }
 }

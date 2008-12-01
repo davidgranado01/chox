@@ -9,7 +9,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
-<p><b>Please review the 'History' tab for details on the why the claim has been rejected, amend details accordingly and re-submit.</b></p>
+<div class="status-info">
+    Please review the 'History' tab for details on the why the claim has been rejected, amend details accordingly and re-submit.
+</div>
 
 <div class="form-container">
     <form onsubmit="return true;" action="user/reSubmitRejectedClaim.action" method="post" id="route" name="route">
