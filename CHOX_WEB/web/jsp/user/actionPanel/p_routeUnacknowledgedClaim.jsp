@@ -4,23 +4,38 @@
     Author     : Carlson
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<p><b>Please select the 'Line of Business' in order to route the claim to the relevant handling team.</b></p>
 
-<div class="form-container">
-    <form onsubmit="return true;" action="user/route.action" method="post" id="route" name="route">
-        <s:hidden name="id" />
-        <div class="chox-form-item">
-            <label class="chox-form-std-label">Line of Business</label>
-            <s:select name="lineOfBusiness.id" list="lineOfBusinesses" 
-                      headerKey="1" listKey="id" listValue="name"
-                      headerValue="-- Please Select --"></s:select>                                           
+
+
+<form onsubmit="return true;" action="user/route.action" method="post" id="route" name="route">
+    
+    
+    <fieldset class="x-fieldset"><legend>Claim Routing - Action Required</legend>  
+        
+        <div>
+            
+            <div class="status-info">
+                Please select the 'Line of Business' in order to route the claim to the relevant handling team.
+            </div>            
+            
+            
+            <s:hidden name="id" />
+            
+            
+
+            <div class="status-control-set">
+                <label>Line of Business</label>
+                    
+
+                <s:select name="lineOfBusiness.id" list="lineOfBusinesses" headerKey="1" listKey="id" listValue="name" headerValue="-- Please Select --"></s:select>
+                                                                           
+                <input type="submit" value="Assign Line of Business" />
+                
+                
+                </div>
         </div>
-        <div class="chox-form-button">
-            <input type="submit" value="Route" />
-        </div>
-        <div class="chox-form-submit-result">&nbsp;</div>
-    </form>
-</div>
+    </fieldset>
+</form>

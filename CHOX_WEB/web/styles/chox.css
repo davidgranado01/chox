@@ -322,6 +322,54 @@ div.status-info-submit
 }
 
 
+div.status-control-set
+{
+    padding:6px;
+    margin-top:5px;
+}
+
+div.status-control-set label
+{
+    margin-right:6px;
+    display:block;
+    float:left;
+    width:200px;
+    
+    
+}
+
+div.status-control-set input, select
+{
+    margin-right:6px;
+}
+
+div.no-format
+{
+
+    text-align:left;
+    
+}
+
+
+div.no-format label
+{
+    
+    margin-right:6px;
+    display:inline;
+    float:none;
+
+    
+}
+
+
+div.status-control-set-no-format
+{
+    padding:6px;
+    margin-top:5px;
+}
+
+
+
 
 
 

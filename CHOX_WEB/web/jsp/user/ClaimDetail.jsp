@@ -202,7 +202,7 @@
                 },            
                 {
                     contentEl:'comments', 
-                    title: 'Comments', 
+                    title: 'Notes', 
                     disabled: commentsDisabled,
                     listeners: {activate : loadComments}
                 }            
@@ -216,7 +216,7 @@
             
             commentsJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',   
-                root: 'comments', 
+                root: 'results', 
                 fields:
                 [
                     {name:'id'},
@@ -229,7 +229,7 @@
 
             commentsDataStore = new Ext.data.Store({
                 proxy: new Ext.data.HttpProxy
-                ({url: 'comments_dummy.js',method:'GET'}),
+                ({url: 'user/getComments.action',method:'GET'}),
                 reader:commentsJsonReader        
             });
 
@@ -369,7 +369,17 @@
             
                 if(!commentsDisabled){
                     if(!commentsLoaded){
-                        commentsDataStore.load();
+                        
+  
+                        commentsDataStore.load(
+                        {
+                            params:
+                            {
+                                claimId : <s:property value="id" />
+                            }
+                        });                          
+
+                        
                         commentsLoaded = true;
                     }       
                 }
@@ -541,7 +551,7 @@
                                 <tr valign="top">
                                     <td class="chox-form-left-col">
                                         
-                                        
+          
                                         
                                         
                                         <s:action name="getHireMonitoringDetail" executeResult="true">
@@ -639,14 +649,36 @@
 </s:if>                        
                     </div>
                     <div id="comments" class="x-hide-display">
-<s:if test="tabAccessibility.notesTabAccessibility != 0">                         
+<s:if test="tabAccessibility.notesTabAccessibility != 0">  
+
+
+    <script language="JavaScript">
+        
+        
+        function addNote(){
+            
+            //var text
+            alert($("#commentBox").val());
+            return false;
+        }
+        
+        
+        
+        function commentsCallback(){
+            
+            
+            
+            
+        }
+        
+    </script>
                         
                         
                         <div class="comments  x-panel-bwrap chox-form-container">
-                            <form id="fComments" action="WebForm1.aspx" method="get">
+                            <form id="fComments" action="user/createNewComment.action" method="get">
                                 <fieldset class="x-fieldset">
                                     <legend>Add a new note</legend>
-                                    <textarea id="commentBox" cols="70" rows="4" name="commentBox"></textarea><br/><input type="submit" id="bAddComment" value="Add Note"/>
+                                    <textarea id="commentBox" cols="70" rows="4" id="commentBox" name="narrative"></textarea><br/><input type="submit" id="bAddComment" value="Add Note" onclick='return addNote()'/>
                                 </fieldset>
                             </form>
                         </div>

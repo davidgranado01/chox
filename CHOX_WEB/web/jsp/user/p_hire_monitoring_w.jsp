@@ -1,5 +1,19 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<form id="formUpdateIncident" action="user/updateHireMonitorDetail.action" class="entity-form">
+<form id="formUpdateIncident" action="user/updateHireMonitorDetail.action" class="NNNentity-form">
+    
+    
+    <script language="JavaScript">
+        
+        
+        function doDummySave(){
+            
+            $("#ddummy").text("Your changes have been saved");
+            
+            return false;
+        }
+        
+        
+        </script>
     <input type="hidden" name="objectId" value='<s:property value="id"/>'>
     <fieldset class="x-fieldset">
         <legend>Hire Monitoring</legend>
@@ -62,9 +76,9 @@
             
             
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes" />
+                <input type="submit" value="Save Changes" onclick="return doDummySave()" />
             </div>
-            <div class="chox-form-submit-result">&nbsp;</div>   
+            <div class="chox-form-submit-result" id="ddummy">&nbsp;</div>   
             
             
         </div>
