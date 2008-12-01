@@ -99,6 +99,11 @@
             </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
+            Vehicle Registration Number</label>
+            <label class="std-data-ro"><s:property value="vehicleRegistration" /></label>
+            </div>            
+        <div class="chox-form-item">
+            <label class="std-label-ro">
             Vehicle Location</label>
             <label class="std-data-ro"><s:property value="location" /></label>
             </div>

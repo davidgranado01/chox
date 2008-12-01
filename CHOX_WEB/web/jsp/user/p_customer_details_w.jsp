@@ -79,6 +79,11 @@
                         <label class="chox-form-std-label">
                         Vehicle Class</label>
                     NOT IMPLEMENTED</div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">
+            Vehicle Registration Number</label>
+            <label class="std-data-ro"><s:property value="vehicleRegistration" /></label>
+            </div>                      
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Vehicle Location</label>
