@@ -2,6 +2,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <%@ taglib prefix="authz" uri="http://acegisecurity.org/authz" %>
 
+
 <html>
     
     <body>
