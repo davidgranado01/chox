@@ -25,10 +25,11 @@ public class GetCommentsAction extends BaseModelAction {
         this.service = service;
     }
        
-    public String getJsonData() {      
-        
+   public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.comments);
-        return jObject.toString();
+        
+        return "{totalCount:" + this.comments.size() + ",results:" + jObject.toString() + "}";
+
     }
 
     @Override
