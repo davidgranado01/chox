@@ -52,11 +52,11 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Engieer Fee Vat</label>
-            <input type="text" class="chox-tnum"  name="engineerFeeNet" value='<s:property value="engineerFeeNet" />'/></div>
+            <input type="text" class="chox-tnum"  name="engineerFeeVat" value='<s:property value="engineerFeeVat" />'/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Engineer Fee Gross</label>
-            <input type="text" class="chox-tnum"  name="engineerFeeVat" value='<s:property value="engineerFeeVat" />'/></div>
+            <input type="text" class="chox-tnum"  name="engineerFeeGross" value='<s:property value="engineerFeeGross" />'/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Storage Recovery Net

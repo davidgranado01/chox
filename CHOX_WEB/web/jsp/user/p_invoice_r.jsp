@@ -50,11 +50,11 @@
             <div class="chox-form-item">
                 <label class="std-label-ro">
                 Engieer Fee Vat</label>
-        <label class="std-data-ro"><s:property value="engineerFeeNet" /></label></div>
+        <label class="std-data-ro"><s:property value="engineerFeeVat" /></label></div>
             <div class="chox-form-item">
                 <label class="std-label-ro">
                 Engineer Fee Gross</label>
-        <label class="std-data-ro"><s:property value="engineerFeeVat" /></label></div>
+        <label class="std-data-ro"><s:property value="engineerFeeGross" /></label></div>
             <div class="chox-form-item">
                 <label class="std-label-ro">
                     Storage Recovery Net
