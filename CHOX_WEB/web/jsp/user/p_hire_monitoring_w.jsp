@@ -9,7 +9,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Original ECD</label><input type="text" class="chox-ttxt" name="nameOfRepairer" value='<s:property value="nameOfRepairer" />'/></div>
-            </div>
+
             
             
             <div class="chox-form-item">
