@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Order;
 
 public class CommentServiceImpl extends DataService implements CommentService {
 
@@ -19,8 +20,10 @@ public class CommentServiceImpl extends DataService implements CommentService {
         List comments = new ArrayList<Comment>();
 
         try {
-
-            Criteria criteria = currentSession.createCriteria(Comment.class).add(Restrictions.eq("claimId", claimId));
+            //Criteria criteria = currentSession.createCriteria(Comment.class).add(Restrictions.eq("claim", claim));
+            Criteria criteria = currentSession.createCriteria(Comment.class);//.add(Restrictions.eq("claimId", claim.getId()));
+            criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
+            criteria.addOrder(Order.asc("claim.id"));           
             comments = criteria.list();
 
         } catch (Throwable e) {
