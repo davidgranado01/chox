@@ -60,7 +60,7 @@ public class GetCommentsAction extends BaseModelAction {
         return SUCCESS;
     }
 
-    int getClaimId() {
+    public int getClaimId() {
         return claimId;
     }
 
