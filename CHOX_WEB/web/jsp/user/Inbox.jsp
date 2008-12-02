@@ -121,14 +121,16 @@ ds.load(
 function setupGrid(){
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 Ext.QuickTips.init();         
-               
+  
+  
+/*  
 ds.load(
 {
     params:
         {
         status : ''
     }
-});
+});*/
 
 var grid = new Ext.grid.GridPanel({
     loadMask: true,
@@ -249,7 +251,9 @@ hireDateToPicker.render('hireDateToDiv');
                         <td width="100%" align="right">
                             <div class="top-menu">
                                 <a href="<s:url action="inbox"/>">Home</a>&nbsp;|&nbsp;
-                                <a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;|&nbsp; 
+                                    <s:if test="isCHO">
+                                    <a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;|&nbsp;
+                                    </s:if> 
                                 <a href="#">Help</a> &nbsp;|&nbsp;
                                 <a href="#">Support</a>&nbsp;|&nbsp; 
                                 <a href="#">About Chox</a>&nbsp;|&nbsp;
