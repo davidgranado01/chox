@@ -59,7 +59,7 @@
             var paymentPackJsonReader;
             var paymentPackDataStore;
             var paymentPackGrid; 
-            
+
 
             // override these in your code to change the default behavior and style 
             $.blockUI.defaults = { 
@@ -196,7 +196,7 @@
                 },
                 {
                     contentEl:'paymentPack', 
-                    title: 'Payment Pack', 
+                    title: 'Attachments', 
                     disabled: paymentPackDisabled 
                 },
                 {
@@ -211,7 +211,6 @@
                 }            
             ]
         }); 
-            
         // ADDED BY CARLSON @ 2008-12-02
         if(!paymentPackDisabled){
             
@@ -221,10 +220,8 @@
                 fields:
                 [
                     {name:'fileName'},
-                    {name:'remarks'},
-                    {name:'category'},
-                    {name:'createdBy'},                     
-                    {name:'createdDate', type: 'date', dateFormat: 'd/m/Y'}
+                    {name:'category'},                     
+                    {name:'remarks' }
                 ]
             });
 
@@ -238,20 +235,17 @@
                 store: paymentPackDataStore,
                 loadMask: true,
                 columns: [
-                    {header: "fileName", width: 630, dataIndex: 'fileName', sortable: false, resizable: false},
-                    {header: "category", width: 630, dataIndex: 'category', sortable: false, resizable: false},
-                    {header: "remarks", width: 630, dataIndex: 'remarks', sortable: false, resizable: false},
-                    {header: "Created", width: 110, dataIndex: 'createdDate', sortable: false, resizable: false, renderer: Ext.util.Format.dateRenderer('d/m/Y')}, 
-                    {header: "Created By", width: 130, dataIndex: 'createdBy', sortable: false, resizable: false}
+                    {header: "File Name", width: 100, dataIndex: 'fileName', sortable: false, resizable: false},
+                    {header: "category", width: 100, dataIndex: 'category', sortable: false, resizable: false},
+                    {header: "Description", width: 130, dataIndex: 'remarks', sortable: false, resizable: false}
                 ],
                 renderTo:'paymentPackGrid',
                 width:960,
                 autoHeight:true,
                 enableHdMenu:false
-            });       
-
-            loadAttachments();
+            });
             
+            loadAttachments();
         }
         
         if(!commentsDisabled){
@@ -262,6 +256,7 @@
                 root: 'results', 
                 fields:
                 [
+                    {name:'id'}, 
                     {name:'createdBy'},                     
                     {name:'createdDate', type: 'date', dateFormat: 'd/m/Y'},         
                     {name:'comment'}
@@ -279,6 +274,9 @@
 
 
             commentsGrid = new Ext.grid.GridPanel({
+                
+                listeners:  {cellclick:loadComment },
+
                 store: commentsDataStore,
                 loadMask: true,
                 columns: [
@@ -290,12 +288,28 @@
                 width:960,
                 autoHeight:true,
                 enableHdMenu:false
-            });               
+                
+                
+            });
+            
+
             
         }
             
+
+        function loadComment(grid, rowIndex, columnIndex, e){
+            $("#comments").block({message: $("#commentTemplate")  });
+            var comment = commentsGrid.getStore().getAt(rowIndex);  // Get the Record
+            var commentText = comment.get("comment");
+            $("#commentMessage").text(commentText);
+        }
+
+
+
+
         
         if(!historyDetailsDisabled){
+            
             
             historyJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',   
@@ -309,11 +323,16 @@
                 ]
             });// {name:'created', type: 'date', dateFormat: 'd/m/Y'},
 
+
+
+            
+            
             var historyData = new Ext.data.Store({
                 proxy: new Ext.data.HttpProxy
                 ({url: 'user/getHistories.action',method:'GET'}),
                 reader:historyJsonReader        
             });            
+
 
             // create the grid
             var grid = new Ext.grid.GridPanel({
@@ -416,7 +435,6 @@
                 }
   
             }   
-            
             var paymentPackLoaded = false;
     
             function loadAttachments(){
@@ -456,7 +474,11 @@
                             <td width="100%" align="right">
                                 <div class="top-menu">
                                     <a href='<s:url action="inbox"/>'>Home</a>&nbsp;|&nbsp;
-                                    <a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;|&nbsp; 
+                                    
+                                    <s:if test="isCHO">
+                                    <a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;|&nbsp;
+                                    </s:if>
+                                    
                                     <a href="#">Help</a> &nbsp;|&nbsp;
                                     <a href="#">Support</a>&nbsp;|&nbsp; 
                                     <a href="#">About Chox</a>&nbsp;|&nbsp;
@@ -472,7 +494,7 @@
                 <div style="width:960px">
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">
                         <fieldset class="x-fieldset">
-                            <legend>Claim Header</legend>
+                            <legend>Claim Summary</legend>
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <tr>
                                     <td>
@@ -494,13 +516,16 @@
                                     Insurer Claim Number</label><label class="chox-claim-header-text"><s:property value="claimNumber" /></label></td>
                                     <td>
                                         <label class="chox-claim-header-label">
-                                    Created On</label><label class="chox-claim-header-text"><s:date name="createdDate" format="yyyy-MM-dd hh:mm"  /></label></td>
+                                    Created On</label><label class="chox-claim-header-text"><s:date name="createdDate" format="dd MMM yyyy hh:mm"  /></label></td>
                                 </tr>
                                 <tr>
+                                    <td><label class="chox-claim-header-label">Customer</label>
+                                    <label class="chox-claim-header-text"><span id="status"><s:property value="customer.formattedName" /></span></label>
+                                    </td>
                                     <td>
                                         <label class="chox-claim-header-label">
                                     Current Status</label><label class="chox-claim-header-text"><span id="status"><s:property value="status" /></span></label><!--span id="statusTip"><img src="img/tip.gif" style="fixed:relative;top:-50" /></span--></td>
-                                    <td colspan="2">
+                                    <td>
                                     &nbsp;</td>
                                 </tr>
                             </table>
@@ -672,8 +697,7 @@
                         
 </s:if>                         
                     </div>
-                    <div id="paymentPack" class="x-hide-display" with="100%">
-                     
+                    <div id="paymentPack" class="x-hide-display">
 <s:if test="tabAccessibility.paymentPackTabAccessibility != 0">
 <!-- START - CREATED BY CARL AttachmentAction -->
     <script language="JavaScript">
@@ -732,7 +756,7 @@
             </td>
         </tr> 
         <tr>
-            <td>Remark : </td>
+            <td>Description : </td>
             <td>
                 <s:textarea name="remark" label="Remark:"/>
             </td>
@@ -754,18 +778,9 @@
                         
 <s:if test="tabAccessibility.historyTabAccessibility != 0"> 
 
-
-
-
-
-
-
-                        
                         <div id="historyGrid">
-                            
-                            
-                        </div>
 
+                        </div>
 </s:if>                        
                     </div>
                     <div id="comments" class="x-hide-display">
@@ -777,21 +792,25 @@
         
     
 
-    $(document).ready(function() { 
-            var options = { 
-                success:       showResponse  // post-submit callback 
-            }; 
+        $(document).ready(function() { 
+                var options = { 
+                    success:       showResponse  // post-submit callback 
+                }; 
 
-            // bind form using 'ajaxForm' 
-            $('#fComments').ajaxForm(options); 
-    });
-    
-    
-    function showResponse(responseText, statusText)  { 
-        
-        commentsLoaded = false;
-        loadComments();
-    }    
+                // bind form using 'ajaxForm' 
+                $('#fComments').ajaxForm(options); 
+
+                //bind close comment button behaviour
+                $("#commentModalClose").click(function(){ $("#comments").unblock();});    
+
+
+        });
+
+
+        function showResponse(responseText, statusText)  { 
+            commentsLoaded = false;
+            loadComments();
+        }    
 
         
      
@@ -799,19 +818,27 @@
     </script>
                         
                         
-                        <div class="comments  x-panel-bwrap chox-form-container">
-                            <form id="fComments" action="user/createNewComment.action" method="get">
-                                <input type="hidden" name="claimId" value='<s:property value="id" />'>
-                                <fieldset class="x-fieldset">
-                                    <legend>Add a new note</legend>
-                                    <textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment"></textarea><br/><input type="submit" id="bAddComment" value="Add Note" onclick='return addNote()'/>
-                                </fieldset>
-                            </form>
-                        </div>
+    <div class="comments  x-panel-bwrap chox-form-container">
+        <form id="fComments" action="user/createNewComment.action" method="get">
+            <input type="hidden" name="claimId" value='<s:property value="id" />'>
+            <fieldset class="x-fieldset">
+                <legend>Add a new note</legend>
+                <textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment"></textarea><br/><input type="submit" id="bAddComment" value="Add Note" />
+            </fieldset>
+        </form>
+    </div>
                         
+  
+  
+    <!-- template for modal comment-->
+    <div style="display:none" id="commentTemplate">
+            <div id="commentMessage"></div><br/><br/>
+             <input type="button" value="Close" id="commentModalClose">
+    </div>                      
+
                         
-                        <div id="commentsGrid">
-                        </div>
+    <div id="commentsGrid">
+    </div>
                         
                         
                         
