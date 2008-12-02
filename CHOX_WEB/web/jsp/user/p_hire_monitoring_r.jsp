@@ -28,11 +28,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
             Total Loss Check</label>
-        NOT IMP...</div>
-        <div class="chox-form-item">
-            <label class="std-label-ro">
-            Total Loss Inspection Report</label>
-        <label class="std-data-ro">NOT IMPLEMENTED</label></div>
+        <label class="std-data-ro"><s:property value="isTotalLossDesc" /></label></div>            
         <div class="chox-form-item">
             <label class="std-label-ro">
             Repair Completion Date</label>
