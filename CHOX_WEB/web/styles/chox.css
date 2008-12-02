@@ -301,6 +301,12 @@ div.std-data-ro-big
 }
 
 
+
+
+
+
+
+
 div.status-info
 {
     background-color:white;
@@ -308,8 +314,9 @@ div.status-info
     padding:8px;
     font-weight:normal;
     font-size:14px;
-   
+    margin-bottom:4px;
 
+    
 }
 
 
@@ -317,23 +324,31 @@ div.status-info-submit
 {
     
     text-align:right;
-    padding:4px;
-    padding-right:0px;
+
 }
+
+
+
 
 
 div.status-control-set
 {
-    padding:6px;
+
     margin-top:5px;
 }
 
 div.status-control-set label
 {
+    
+    /*
+    
+    
     margin-right:6px;
     display:block;
     float:left;
     width:200px;
+    
+    */
     
     
 }
@@ -351,6 +366,7 @@ div.no-format
 }
 
 
+
 div.no-format label
 {
     
@@ -358,7 +374,6 @@ div.no-format label
     display:inline;
     float:none;
 
-    
 }
 
 
@@ -368,7 +383,30 @@ div.status-control-set-no-format
     margin-top:5px;
 }
 
+table.status-table
+{
+    
+    border-collapse:collapse;
+    
+}
 
+
+table.status-table td
+{
+
+    padding:4px;
+
+    
+}
+
+table.status-table .choice
+{
+   
+
+    font-size:13px;
+    
+    
+}
 
 
 
