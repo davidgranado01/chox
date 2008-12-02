@@ -429,7 +429,7 @@
         
         
         <!-- Start Comment Detail -->
-        <action name="getComment" class="chox.web.actions.GetCommentsAction">
+        <action name="getComment" class="chox.web.actions.CommentAction">
             <result name="r">/jsp/user/p_Comment_r.jsp
             </result>
             <result name="w">/jsp/user/p_Comment_w.jsp
