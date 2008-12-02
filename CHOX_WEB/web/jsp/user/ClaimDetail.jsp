@@ -56,7 +56,10 @@
             var commentsDataStore;
             var commentsGrid;  
 
-
+            var paymentPackJsonReader;
+            var paymentPackDataStore;
+            var paymentPackGrid; 
+            
 
             // override these in your code to change the default behavior and style 
             $.blockUI.defaults = { 
@@ -208,8 +211,48 @@
                 }            
             ]
         }); 
+            
+        // ADDED BY CARLSON @ 2008-12-02
+        if(!paymentPackDisabled){
+            
+            paymentPackJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',   
+                root: 'results', 
+                fields:
+                [
+                    {name:'fileName'},
+                    {name:'remarks'},
+                    {name:'category'},
+                    {name:'createdBy'},                     
+                    {name:'createdDate', type: 'date', dateFormat: 'd/m/Y'}
+                ]
+            });
 
-        
+            paymentPackDataStore = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy
+                ({url: 'user/getAttachments.action',method:'GET'}),
+                reader:paymentPackJsonReader        
+            });
+
+            paymentPackGrid = new Ext.grid.GridPanel({
+                store: paymentPackDataStore,
+                loadMask: true,
+                columns: [
+                    {header: "fileName", width: 630, dataIndex: 'fileName', sortable: false, resizable: false},
+                    {header: "category", width: 630, dataIndex: 'category', sortable: false, resizable: false},
+                    {header: "remarks", width: 630, dataIndex: 'remarks', sortable: false, resizable: false},
+                    {header: "Created", width: 110, dataIndex: 'createdDate', sortable: false, resizable: false, renderer: Ext.util.Format.dateRenderer('d/m/Y')}, 
+                    {header: "Created By", width: 130, dataIndex: 'createdBy', sortable: false, resizable: false}
+                ],
+                renderTo:'paymentPackGrid',
+                width:960,
+                autoHeight:true,
+                enableHdMenu:false
+            });       
+
+            loadAttachments();
+            
+        }
         
         if(!commentsDisabled){
             
@@ -252,14 +295,7 @@
         }
             
         
-
-
-
-
-        
         if(!historyDetailsDisabled){
-            
-            
             
             historyJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',   
@@ -273,16 +309,11 @@
                 ]
             });// {name:'created', type: 'date', dateFormat: 'd/m/Y'},
 
-
-
-            
-            
             var historyData = new Ext.data.Store({
                 proxy: new Ext.data.HttpProxy
                 ({url: 'user/getHistories.action',method:'GET'}),
                 reader:historyJsonReader        
             });            
-
 
             // create the grid
             var grid = new Ext.grid.GridPanel({
@@ -385,7 +416,23 @@
                 }
   
             }   
+            
+            var paymentPackLoaded = false;
     
+            function loadAttachments(){
+                if(!paymentPackDisabled){
+                    if(!paymentPackLoaded){
+                        paymentPackDataStore.load(
+                        {
+                            params:
+                            {
+                                claimId : <s:property value="id" />
+                            }
+                        });                          
+                        paymentPackLoaded = true;
+                    }       
+                }
+            }      
     
         </script>        
         
@@ -625,9 +672,82 @@
                         
 </s:if>                         
                     </div>
-                    <div id="paymentPack" class="x-hide-display">
+                    <div id="paymentPack" class="x-hide-display" with="100%">
+                     
 <s:if test="tabAccessibility.paymentPackTabAccessibility != 0">
+<!-- START - CREATED BY CARL AttachmentAction -->
+    <script language="JavaScript">
+    $(document).ready(function() { 
+            var options = { 
+                success: showResponse  // post-submit callback 
+            }; 
+
+            // bind form using 'ajaxForm' 
+            $('#fAttachment').ajaxForm(options); 
+    });
     
+    function showResponse(responseText, statusText)  { 
+        
+        paymentPackLoaded = false;
+        
+    } 
+    
+    function fileValidation(){
+        
+        var uploadFile = document.form.attachmentFile.value;
+        
+        if(uploadFile==""){
+            alert("No xml document selected for upload");
+            return false;
+        }
+        
+        if((uploadFile.lastIndexOf("."))>0){
+            var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
+        }
+        
+        document.form.uploadFileName.value = filename;
+        return true;
+    }
+    </script>
+<div>
+    <form id="fAttachment" action="user/createNewAttachment.action" method="POST" enctype="multipart/form-data" name="form">
+        <input type="hidden" name="claimId" value='<s:property value="id" />'>
+        <input type="hidden" name="uploadFileName">
+        <table class="x-panel-bwrap chox-form-container" with="100%">
+        <tr>
+            <td><label class="chox-form-std-label">File</label></td>
+            <td>
+            <s:file id="fileUploader" name ="attachmentFile" label ="Attachment" size="40"/>   
+            </td>
+        </tr>
+        <tr>
+            <td>Cagetogy : </td>
+            <td>
+            <s:select name="category" 
+            list="attachmentCategory" 
+            headerKey="" 
+            listKey="value" 
+            listValue="text" 
+            emptyOption="false"></s:select>
+            </td>
+        </tr> 
+        <tr>
+            <td>Remark : </td>
+            <td>
+                <s:textarea name="remark" label="Remark:"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+            <input type="submit" id="bAddAttachment" value="Add File" onclick="return fileValidation()"/>
+            </td>
+        </tr>
+        </table>             
+    </form>
+</div>
+<div id="paymentPackGrid"></div>
+    
+<!-- END - CREATED BY CARL -->    
 </s:if>
                     </div>
                     <div id="historyDetails" class="x-hide-display">

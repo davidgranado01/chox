@@ -46,7 +46,7 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
     private ClaimService claimService;
     private List results;
     private int totalCount;
-
+    
     public String getSupplierReference() {
         return supplierReference;
     }
@@ -163,7 +163,7 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
         }
         return lineOfBusiness;
     }
-
+    
     public List getInsurers() {
         if (insurers == null) {
             insurers = this.lookupService.getInsurers();
@@ -241,5 +241,6 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
     public void setSession(Map session) {
         this.session = session;
     }
-
+    
+    
 }

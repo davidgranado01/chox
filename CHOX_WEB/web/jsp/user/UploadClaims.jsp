@@ -34,7 +34,7 @@
                return false;
             }
             
-            return false;
+            return true;
         }        
     }
     
@@ -85,7 +85,7 @@
                             </tr>                
                             <tr>
                                 <td>
-                                    <s:submit onclick="javascript:validateFile();"/>
+                                    <input type="submit" id="bAddAttachment" value="Submit" onclick="return validateFile();"/>
                                 </td>
                             </tr>
                         </table>     

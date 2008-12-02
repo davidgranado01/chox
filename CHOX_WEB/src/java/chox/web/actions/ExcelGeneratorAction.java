@@ -44,7 +44,6 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware{
         this.excelStream = excelStream;
     }
     
-    
      public static void main(String[] args)throws IOException {
             ClaimService cs = new ClaimServiceImpl();
             List<Claim> claims = cs.listAllClaims();
@@ -75,7 +74,9 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware{
     }
 
     public ByteArrayOutputStream generateXML(List<Claim> claims) throws IOException{
+        
         //InputStream templateIS = Thread.currentThread().getContextClassLoader().getResourceAsStream("claimTemplate.xls");
+        
         InputStream templateIS = ExcelGeneratorAction.class.getClassLoader().getResourceAsStream("claimTemplate.xls");
         
         ByteArrayOutputStream out = new ByteArrayOutputStream();

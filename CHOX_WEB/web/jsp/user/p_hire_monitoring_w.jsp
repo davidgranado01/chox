@@ -12,50 +12,41 @@
             return false;
         }
         
-        
         </script>
     <input type="hidden" name="objectId" value='<s:property value="id"/>'>
     <fieldset class="x-fieldset">
         <legend>Hire Monitoring</legend>
         <div style="display:none" class="form-container">
             
-            
-            <div class="chox-form-item">
+           <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Original ECD</label>&nbsp;</div>
 
-            
-            
-            <div class="chox-form-item">
+           <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Name Of Repairer
                 </label>
-            <input type="text" class="chox-ttxt" name="nameOfRepairer" value='<s:property value="nameOfRepairer" />'/></div>
-           
+           <input type="text" class="chox-ttxt" name="nameOfRepairer" value='<s:property value="nameOfRepairer" />'/></div>
            
            <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Repair Book In Date</label>
             <input type="text" class="chox-ttxt" name="repairBookInDate" value='<s:property value="repairBookInDate" />'/></div>
             
-            
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Inspection Booked Date</label>
             <input type="text" class="chox-ttxt" name="inspectionBookedDate" value='<s:property value="inspectionBookedDate" />'/></div>
-           
            
            <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Inspection Date</label>
             <input type="text" class="chox-ttxt" name="inspectionDate" value='<s:property value="inspectionDate" />'/></div>
            
-           
            <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Is Total Loss?</label>
             <s:checkbox name="isTotalLostCheck" /></div>
-           
            
            <div class="chox-form-item">
                 <label class="chox-form-std-label">

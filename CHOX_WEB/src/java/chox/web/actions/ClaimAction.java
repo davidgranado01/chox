@@ -24,7 +24,8 @@ import java.util.List;
 import java.util.Map;
 import org.acegisecurity.GrantedAuthority;
 import scsbre.engine.RulesEngineResponse;
-
+import chox.data.AttachmentCategory;
+import chox.model.LookupItem;
 /**
  *  
  * @author Emmanuel
@@ -45,6 +46,23 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private int lineOfBusinessId = -1;
     private String actionName;
 
+    // ADDED BY CARLSON @ 2008-12-02 - START
+    private List attachmentCategory;
+    
+    public List getAttachmentCategory(){
+        List items = new ArrayList<LookupItem>();
+        for(String s : AttachmentCategory.getAttachmentCategory())
+        {
+            items.add(new LookupItem(s,s));
+        }
+        
+        attachmentCategory = items;
+        
+        return attachmentCategory;
+
+    }
+    // ADDED BY CARLSON @ 2008-12-02 - END
+    
     public int getId() {
         return id;
     }

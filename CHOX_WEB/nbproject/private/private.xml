@@ -3,10 +3,6 @@
     <data xmlns="http://www.netbeans.org/ns/profiler/1" version="0.4"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1">
         <file>
-            <url>src/java/struts.xml</url>
-            <line>75</line>
-        </file>
-        <file>
             <url>test/chox/web/security/ApplicationAccessibilityTest.java</url>
             <line>67</line>
         </file>

@@ -22,6 +22,7 @@
     <bean id="thirdPartyService" class="chox.services.ThirdPartyServiceImpl" singleton="false"/>
     <bean id="vehicleHireService" class="chox.services.VehicleHireServiceImpl" singleton="false"/>
     <bean id="witnessService" class="chox.services.WitnessServiceImpl" singleton="false"/>
+    <bean id="attachmentService" class="chox.services.AttachmentServiceImpl" singleton="false"/>
        
 </beans> 
 

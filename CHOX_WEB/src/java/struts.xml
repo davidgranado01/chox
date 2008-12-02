@@ -441,9 +441,15 @@
             <result name="success">/jsp/p_jsonData.jsp
             </result>
         </action>
+        <action name="getAttachments" class="chox.web.actions.GetAttachmentsAction" method="getAttachments">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
         <action name="createNewComment" class="chox.web.actions.CommentAction" method="createNewComment">
             <result name="success">/jsp/p_response.jsp
             </result>
+        </action>
+        <action name="createNewAttachment" class="chox.web.actions.AttachmentAction" method="createNewAttachment">
+            <result name="success">/jsp/p_response.jsp</result>
         </action>
         <!-- End Comment Detail -->
         <action name="dummy" class="chox.web.actions.DummyAction">
