@@ -24,6 +24,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import java.util.List;
 import net.sf.json.JSONObject;
+import java.util.ArrayList;
 
 public class AttachmentAction extends BaseModelAction implements ModelDriven<Attachment>, Preparable {
     

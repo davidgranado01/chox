@@ -26,6 +26,7 @@ import org.acegisecurity.GrantedAuthority;
 import scsbre.engine.RulesEngineResponse;
 import chox.data.AttachmentCategory;
 import chox.model.LookupItem;
+import java.util.ArrayList;
 /**
  *  
  * @author Emmanuel
