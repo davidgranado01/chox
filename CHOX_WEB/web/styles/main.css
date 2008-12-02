@@ -52,9 +52,34 @@ body
     text-align: center; 
 } 
 
+
+div.UploadStatusContainer
+{
+    height:96%; overflow:auto; border:solid 1px black;background:#dfe8f6
+    
+}
+
+div.UploadStatusContainer h2
+{
+
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 13px;
+    color:#15428b;
+    font-weight:bold;
+    margin:6px;
+    text-align:center;
+    /*
+    background-color:white;
+    padding:8px;
+    border:2px #15428b solid;
+*/
+    
+}
+
+
 .UploadStatusTable
 {    
-    font-family: Arial,Helvetica,sans-serif;
+    font-family: tahoma,arial,verdana,sans-serif;
     font-size: 12px;
     border-style: solid;
     border-width: 1px;
@@ -62,46 +87,56 @@ body
     margin: 12px;
     padding: 8px;  
     width: 90%;
+    border-collapse:collapse;
+    background:#fff;
+}
+
+.UploadStatusMessage
+{
+   margin: 12px; 
+    
 }
 
 table.UploadStatusTable th
 { 
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 12px;
+    color:#15428b;
+    font-weight:bold;
 }
 
 table.UploadStatusTable td
 {    
     border-style: solid;
     border-width: 1px;
-    padding: 2px;
-    border-color: #999999;    
+    border-color:#999;
+    padding: 2px; 
 }
 
 .UploadStatusTable tr.ErrorRow
 {    
-    background-color: red;
+    color: red;
 }
 
 .UploadStatusTable tr.InvoiceApproved
 {
-    background-color: green;
+    color: green;
 }
 
 .UploadStatusTable tr.InvoiceEscalated
 {
-    background-color: orange;
+    color: orange;  
 }
 
 .UploadStatusTable tr.AwaitingPaymentPack
 {
-    background-color: orange;
+    color: orange;
 }
 
 .UploadStatusTable tr.InvoiceDataCalculationIncorrect
 {
-    background-color: orange;
+    color: orange;   
 }
+
 
 
 #loginPanel
@@ -130,6 +165,7 @@ table.UploadStatusTable td
 ul.filterlist{
     
     width: 800px;
+  
 }
 
 ul.filterlist li{
@@ -140,6 +176,7 @@ ul.filterlist li{
     margin: 5px;
     border: 1px solid #CCC;
     width: 300px;
+
 }
 
 table.searchForm{
