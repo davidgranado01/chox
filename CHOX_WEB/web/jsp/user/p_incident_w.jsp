@@ -6,7 +6,7 @@
     <input type="hidden" name="objectId" value='<s:property value="id"/>'>
     <fieldset class="x-fieldset">
         <legend>Incident Details</legend>
-        <div>
+        <div style="display:none" class="form-container">  
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Date / Time</label>
