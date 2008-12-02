@@ -805,6 +805,22 @@ public class Customer implements Serializable, ICustomerVehicleDamageInfo
         }
         
         
+        public String getFormattedName(){
+            
+            String formattedName = "";
+            if(title != null && title.length() > 0){                
+                formattedName += title + " ";                
+            }
+            if(firstName != null && firstName.length() > 0){
+                formattedName += firstName + " ";
+            }
+            if(lastName != null && lastName.length() > 0){
+                formattedName += lastName;
+            }
+            return formattedName;
+        }
+        
+        
         
         
 
@@ -815,6 +831,12 @@ public class Customer implements Serializable, ICustomerVehicleDamageInfo
     public void setIsTotalLoss(Boolean isTotalLoss) {
         this.isTotalLoss = isTotalLoss;
     }
+    
+    
+    
+    
+    
+    
         
         
 }
