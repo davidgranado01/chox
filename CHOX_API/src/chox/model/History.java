@@ -4,7 +4,6 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
-import chox.model.Claim;
 
 public class History implements Serializable
 {
@@ -260,13 +259,13 @@ public class History implements Serializable
             this.isSystem = isSystem;
         }
 
-    public Claim getClaim() {
-        return claim;
-    }
+        public Claim getClaim() {
+            return claim;
+        }
 
-    public void setClaim(Claim claim) {
-        this.claim = claim;
-    }
+        public void setClaim(Claim claim) {
+            this.claim = claim;
+        }
 
         
 }
