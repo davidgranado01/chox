@@ -339,5 +339,10 @@ public class HireMonitoringDetail implements Serializable
 	{
 		this.id = id;
 	}
+        
+        
+        public String getIsTotalLossDesc(){
+           return isTotalLostCheck ? "Yes" : "No";
+        }
 
 }
