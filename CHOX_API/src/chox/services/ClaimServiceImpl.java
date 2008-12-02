@@ -154,7 +154,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService {
     public XMLParseResult saveClaimForXMLUploader(
             XMLParseResult xmlParseResult) {
 
-        xmlParseResult.getClaim().setCreatedBy(getCurrentUser().getId());
+        xmlParseResult.getClaim().setCreatedBy(getCurrentUser());
         xmlParseResult.getClaim().setCreatedDate(DateHelper.getCurrentTimeStamp());
         xmlParseResult.getClaim().setLastModifiedBy(getCurrentUser().getId());
         xmlParseResult.getClaim().setLastModifiedDate(DateHelper.getCurrentTimeStamp());

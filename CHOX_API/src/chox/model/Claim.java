@@ -38,7 +38,7 @@ public class Claim implements Serializable, IClaimInfo {
     /** 
      * This attribute maps to the column created_by in the claim table.
      */
-    protected int createdBy;
+    protected WebUser createdBy;
     /** 
      * This attribute maps to the column created_date in the claim table.
      */
@@ -205,7 +205,7 @@ public class Claim implements Serializable, IClaimInfo {
      * 
      * @return int
      */
-    public int getCreatedBy() {
+    public WebUser getCreatedBy() {
         return createdBy;
     }
 
@@ -214,7 +214,7 @@ public class Claim implements Serializable, IClaimInfo {
      * 
      * @param createdBy
      */
-    public void setCreatedBy(int createdBy) {
+    public void setCreatedBy(WebUser createdBy) {
         this.createdBy = createdBy;
     }
 
