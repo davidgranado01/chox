@@ -73,19 +73,7 @@
                     <s:form action ="processClaimsAction" method ="POST" enctype="multipart/form-data" name="form">
                         
                         <fieldset class="x-fieldset">
-                            
-                            <table>
-                                <tr>
-                                    <td>
-                                        <s:file id="fileUploader" name ="upload" label ="Claim XML File" size="55"/>   
-                                    </td>
-                                </tr>                
-                                <tr>
-                                    <td>
-                                        <input type="submit" id="bAddAttachment" value="Submit" onclick="return validateFile();"/>
-                                    </td>
-                                </tr>
-                            </table>     
+  
                             <div class="status-info">
                                 Please use the form below to upload claims to CHOX. For further information and assistance, please see the support documentation.
                             </div>                        
