@@ -43,7 +43,7 @@ public class HistoryViewData {
         }
     }
 
-    int getId() {
+    public int getId() {
         return id;
     }
 
