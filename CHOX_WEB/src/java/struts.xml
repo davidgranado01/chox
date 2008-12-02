@@ -25,45 +25,34 @@
     </package>
     <package name="user" namespace="/user" extends="home-package">
         <default-interceptor-ref name="authenticated" />
-        
-        
         <action name ="processClaimsAction" class ="chox.web.actions.ProcessClaimsAction">
             <result name ="success">/jsp/user/UploadStatus.jsp
             </result>
             <result name ="error">/jsp/user/UploadClaims.jsp
             </result>
         </action>
-        
-        
         <action name="uploadClaims" class="chox.web.actions.UploadClaimsAction">
             <result>/jsp/user/UploadClaims.jsp</result>
         </action>
-        
-        
         <action name="inbox" class="chox.web.actions.InboxAction">
             <result>/jsp/user/Inbox.jsp</result>
         </action>
-        
-        
         <action name="searchClaim" class="chox.web.actions.SearchClaimAction">
             <result name="success">/jsp/user/p_searchClaim.jsp
             </result>
         </action>
-        
-        
         <action name="doSearchClaim" class="chox.web.actions.SearchClaimAction" method="doSearchClaim">
             <result name="success">/jsp/p_jsonData.jsp
             </result>
         </action>
-        
-        
-        
-        
         <action name="doExportExcel" method="execute" class="chox.web.actions.ExcelGeneratorAction">
             <result name="success" type="stream">
-                <param name="contentType">application/vnd.ms-excel</param>
-                <param name="inputName">excelStream</param>
-                <param name="contentDisposition">filename="excel_report.xls"</param>
+                <param name="contentType">application/vnd.ms-excel
+                </param>
+                <param name="inputName">excelStream
+                </param>
+                <param name="contentDisposition">filename="excel_report.xls"
+                </param>
             </result>
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp
             </result>
@@ -78,27 +67,35 @@
             </result>
             <result name="updateclaiminsurerdetail">/jsp/user/actionPanel/p_acknowledgeClaim.jsp
             </result>
+            <result name="contestOrAcceptRejectedClaim">/jsp/user/actionPanel/p_contestOrAcceptRejectedClaim.jsp
+            </result>
+            <result name="approveContestedClaim">/jsp/user/actionPanel/p_approveContestedClaim.jsp
+            </result>
             <result name="updateclaimcarhiredetail">/jsp/user/actionPanel/p_updateCarHireInfo.jsp
+            </result>
+            <result name="uploadInvoiceData">/jsp/user/actionPanel/p_uploadInvoiceData.jsp
+            </result>
+            <result name="updateinvoicedtailforcalculationincorrect">/jsp/user/actionPanel/p_resubmitInvoiceData.jsp
             </result>
             <result name="updateinvoicedtailbyinsurer">/jsp/user/actionPanel/p_approveContestedInvoice.jsp
             </result>
             <result name="updateinvoicedtailbycho">/jsp/user/actionPanel/p_resubmitOrAcceptContestedInvoice.jsp
             </result>
-            <result name="updateinvoicedtailforcalculationincorrect">/jsp/user/actionPanel/p_resubmitInvoiceData.jsp
+            <result name="approveBREPassedClaim">/jsp/user/actionPanel/p_approveBREPassedClaim.jsp
             </result>
-             <result name="approveBREPassedClaim">/jsp/user/actionPanel/p_approveBREPassedClaim.jsp
+            <result name="approveEscalatedInvoice">/jsp/user/actionPanel/p_approveEscalatedInvoice.jsp
             </result>
-             <result name="approveEscalatedClaim">/jsp/user/actionPanel/p_approveEscalatedInvoice.jsp
+            <result name="approveContestedInvoice">/jsp/user/actionPanel/p_approveContestedInvoice.jsp
+            </result>
+            <result name="resubmitOrAcceptContestedInvoice">/jsp/user/actionPanel/p_resubmitOrAcceptContestedInvoice.jsp
+            </result>
+            <result name="logInvoicePayment">/jsp/user/actionPanel/p_logInvoicePayment.jsp
             </result>
             <result name="empty">/jsp/p_blank.jsp
             </result>
         </action>      
         
-        
-        
-        
-        
-        
+                
         
         
         <!-- Start Claim Detail -->
@@ -112,44 +109,110 @@
         </action>
         <action name="route" class="chox.web.actions.ClaimAction" method="route">
             <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
             </result>
-        </action>  
+        </action>
         <action name="acknowledge" class="chox.web.actions.ClaimAction" method="acknowledge">
             <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
             </result>
-        </action>  
+        </action>
+        <action name="contestOrAcceptRejectedClaim" class="chox.web.actions.ClaimAction" method="contestOrAcceptRejectedClaim">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
+        <action name="approveContestedClaim" class="chox.web.actions.ClaimAction" method="approveContestedClaim">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
         <action name="submitHireMonitoringDetail" class="chox.web.actions.ClaimAction" method="submitHireMonitoringDetail">
             <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
             </result>
-        </action> 
-         <action name="reSubmitRejectedClaim" class="chox.web.actions.ClaimAction" method="reSubmitRejectedClaim">
+        </action>
+        <action name="reSubmitRejectedClaim" class="chox.web.actions.ClaimAction" method="reSubmitRejectedClaim">
             <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
             </result>
-             <result name="error">/jsp/user/ClaimDetail.jsp</result>
-        </action> 
-        
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
         <action name="approveBREPassedClaim" class="chox.web.actions.ClaimAction" method="approveBREPassedClaim">
             <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
             </result>
-             <result name="error">/jsp/user/ClaimDetail.jsp</result>
-        </action> 
-        <action name="approveEscalatedClaim" class="chox.web.actions.ClaimAction" method="approveEscalatedClaim">
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
+        <action name="approveEscalatedInvoice" class="chox.web.actions.ClaimAction" method="approveEscalatedInvoice">
             <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
             </result>
-             <result name="error">/jsp/user/ClaimDetail.jsp</result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
+        <action name="approveContestedInvoice" class="chox.web.actions.ClaimAction" method="approveContestedInvoice">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
+        <action name="resubmitOrAcceptContestedInvoice" class="chox.web.actions.ClaimAction" method="resubmitOrAcceptContestedInvoice">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
+        <action name="logInvoicePayment" class="chox.web.actions.ClaimAction" method="logInvoicePayment">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
         </action> 
+
+        
         <!-- End Claim Detail -->
         
         
@@ -163,8 +226,7 @@
             </result>
             <result name="decline">/jsp/p_accessDeclined.jsp
             </result>
-        </action> 
-        
+        </action>
         <action name="updateCustomer" class="chox.web.actions.CustomerAction" method="updateModel">
             <result name="success">/jsp/p_response.jsp
             </result>
@@ -323,12 +385,16 @@
         
         <!-- Start EngineerReport Detail -->
         <action name="getEngineerReport" class="chox.web.actions.EngineerReportAction">
-            <result name="r">/jsp/user/p_eng_report_r.jsp</result>
-            <result name="w">/jsp/user/p_eng_report_w.jsp</result>
-            <result name="decline">/jsp/p_accessDeclined.jsp</result>
+            <result name="r">/jsp/user/p_eng_report_r.jsp
+            </result>
+            <result name="w">/jsp/user/p_eng_report_w.jsp
+            </result>
+            <result name="decline">/jsp/p_accessDeclined.jsp
+            </result>
         </action>
         <action name="updateEngineerReport" class="chox.web.actions.EngineerReportAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp</result>
+            <result name="success">/jsp/p_response.jsp
+            </result>
         </action>
         <!-- End EngineerReport Detail -->
         
@@ -336,12 +402,16 @@
         
         <!-- Start VehicleHire Detail -->
         <action name="getVehicleHire" class="chox.web.actions.VehicleHireAction">
-            <result name="r">/jsp/user/p_hire_vehicle_r.jsp</result>
-            <result name="w">/jsp/user/p_hire_vehicle_w.jsp</result>
-            <result name="decline">/jsp/p_accessDeclined.jsp</result>
+            <result name="r">/jsp/user/p_hire_vehicle_r.jsp
+            </result>
+            <result name="w">/jsp/user/p_hire_vehicle_w.jsp
+            </result>
+            <result name="decline">/jsp/p_accessDeclined.jsp
+            </result>
         </action>
         <action name="updateVehicleHire" class="chox.web.actions.VehicleHireAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp</result>
+            <result name="success">/jsp/p_response.jsp
+            </result>
         </action>
         <!-- End VehicleHire Detail -->
         
@@ -350,7 +420,8 @@
         
         <!-- Start History Detail -->
         <action name="getHistories" class="chox.web.actions.HistoryAction">
-            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="success">/jsp/p_jsonData.jsp
+            </result>
         </action>
         <!-- End History Detail -->
         
@@ -359,19 +430,25 @@
         
         <!-- Start Comment Detail -->
         <action name="getComment" class="chox.web.actions.GetCommentsAction">
-            <result name="r">/jsp/user/p_Comment_r.jsp</result>
-            <result name="w">/jsp/user/p_Comment_w.jsp</result>
-            <result name="decline">/jsp/p_accessDeclined.jsp</result>
+            <result name="r">/jsp/user/p_Comment_r.jsp
+            </result>
+            <result name="w">/jsp/user/p_Comment_w.jsp
+            </result>
+            <result name="decline">/jsp/p_accessDeclined.jsp
+            </result>
         </action>
         <action name="getComments" class="chox.web.actions.GetCommentsAction" method="getComments">
-            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="success">/jsp/p_jsonData.jsp
+            </result>
         </action>
         <action name="createNewComment" class="chox.web.actions.CommentAction" method="createNewComment">
-            <result name="success">/jsp/p_response.jsp</result>
+            <result name="success">/jsp/p_response.jsp
+            </result>
         </action>
         <!-- End Comment Detail -->
         <action name="dummy" class="chox.web.actions.DummyAction">
-            <result name="success">/jsp/p_blank.jsp</result>
+            <result name="success">/jsp/p_blank.jsp
+            </result>
         </action>
     </package>
     <include file="config-browser.xml"/>

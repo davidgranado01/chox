@@ -34,6 +34,7 @@
         fields:[
             {name:'id'},
             {name:'status'},
+            {name:'createdBy'},
             {name:'invoiceAmount'},
             {name:'vehicleRegistration'},
             {name:'policyNumber'},
@@ -145,6 +146,7 @@ var grid = new Ext.grid.GridPanel({
             renderer: Ext.util.Format.dateRenderer('d/m/Y'), 
             dataIndex: 'created'},
         {header: "Status", width: 250, sortable: true, dataIndex: 'status'},
+        {header: "Created By", width: 250, sortable: true, dataIndex: 'createdBy'},          
         {header: "LOB", width: 250, sortable: true, dataIndex: 'lineOfBusiness'},
         {header: "CHO", width: 250, sortable: true, dataIndex: 'cho'},
         {header: "Insurer", width: 150, sortable: true, dataIndex: 'insurer'}

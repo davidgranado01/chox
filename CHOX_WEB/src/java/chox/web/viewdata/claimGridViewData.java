@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package chox.web.viewdata;
 
 import chox.model.Chorganisation;
@@ -11,18 +10,19 @@ import chox.model.Customer;
 import chox.model.Insurer;
 import chox.model.Invoice;
 import chox.model.LineOfBusiness;
+import chox.model.WebUser;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-
 /**
  *
  * @author Emmanuel
  */
 public class claimGridViewData {
+
     private String supplierReference;
     private int id;
     private String claimNumber;
@@ -33,21 +33,21 @@ public class claimGridViewData {
     private String lineOfBusiness;
     private String cho;
     private String insurer;
-    
-    public claimGridViewData(Claim claim)
-    {        
-        Format dateFormat = new SimpleDateFormat("dd/MM/yyyy") ;
+    private String createdBy;
+
+    public claimGridViewData(Claim claim) {
+        Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
-               
+
         Customer customer = claim.getCustomer();
         Chorganisation c = claim.getChorganisation();
         Insurer i = claim.getInsurer();
         LineOfBusiness lob = claim.getLineOfBusiness();
         Invoice ivc = claim.getInvoice();
-        
+
         this.id = claim.getId();
         this.supplierReference = claim.getChoReference();
-        this.invoiceAmount = ivc == null ? "" : currentcyFormat.format(ivc.getTotalToPay());        
+        this.invoiceAmount = ivc == null ? "" : currentcyFormat.format(ivc.getTotalToPay());
         this.vehicleRegistration = customer == null ? "" : customer.getVehicleRegistration();
         this.lineOfBusiness = lob == null ? "" : lob.getName();
         this.claimNumber = claim.getClaimNumber();
@@ -55,7 +55,20 @@ public class claimGridViewData {
         this.status = claim.getStatus();
         this.cho = c == null ? "" : c.getName();
         this.insurer = i == null ? "" : i.getName();//TODO : assign insurer
-            
+        String orgName = "";
+        WebUser user = claim.getCreatedBy();
+        if (user != null) {
+            Chorganisation cho = user.getChorganisation();
+            Insurer ins = user.getInsurer();
+
+            if (ins != null) {
+                orgName = String.format("(%1$s)", ins.getName());
+            } else if (cho != null) {
+                orgName = String.format("(%1$s)", cho.getName());
+            }
+            this.createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+        }
+
     }
 
     public String getSupplierReference() {
@@ -101,7 +114,9 @@ public class claimGridViewData {
     public void setClaimNumber(String claimNumber) {
         this.claimNumber = claimNumber;
     }
-    
 
+    public String getCreatedBy() {
+        return createdBy;
+    }
 }
 

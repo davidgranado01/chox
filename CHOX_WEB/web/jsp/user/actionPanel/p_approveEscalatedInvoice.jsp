@@ -9,14 +9,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
-<form onsubmit="return true;" action="user/resubmitOrAcceptContestedInvoice.action" method="post" 
-      id="resubmitOrAcceptContestedInvoice" name="resubmitOrAcceptContestedInvoice">
+<form onsubmit="return true;" action="user/approveEscalatedInvoice.action" method="post" 
+      id="approveEscalatedInvoice" name="approveEscalatedInvoice">
     <fieldset class="x-fieldset">
-        <legend>Contested Invoice - Action Required</legend>
+        <legend>Escalated Invoice - Action Required</legend>
         <s:hidden name="id" />
         <div>
             <div class="status-info">
-                Please review the 'History' tab for details on why the claim has been rejected.  
+                Please review the 'History' tab for details on why the claim has been rejected. 
                 Please decide on whether to progress the claim for payment or reject the claim. 
                 Please enter the required details/comments on the 'Invoice Details' tab regarding the decision made.
             </div>
@@ -26,7 +26,7 @@
                         <td colspan="2">
                             <div class="no-format">
                                 <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                                <s:radio name="actionName" list="resubmitOrAcceptContestedInvoiceActions" />
+                                <s:radio name="actionName" list="approveEscalatedInvoiceActions" />
                             </div>
                         </td>
                     </tr>

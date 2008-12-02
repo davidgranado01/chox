@@ -1,41 +1,41 @@
 
-
+<%-- 
+    Document   : p_approveBREPassedClaim
+    Created on : 02-Dec-2008, 17:11:54
+    Author     : Emmanuel
+--%>
 
 <%@ taglib uri="/struts-tags" prefix="s" %>
+    
 
-    <form onsubmit="return true;" action="user/approveBREPassedClaim.action" method="post" id="approveBREPassedClaim" name="approveBREPassedClaim">
-    
-    
+<form onsubmit="return true;" action="user/approveBREPassedClaim.action" 
+    method="post" id="approveBREPassedClaim" name="approveBREPassedClaim">
     <fieldset class="x-fieldset">
-        
-
-        <div>
-        
-<div class="status-info">
-    Please review the 'History' tab for details on why the claim has been rejected.  
-    Please decide on whether to progress the claim for payment or reject the claim. 
-    Please enter the required details/comments on the 'Invoice Details' tab regarding the decision made.
-</div>
-        
-        
-        
-        
+        <legend>BRE Approved Claim - Action Required</legend>
         <s:hidden name="id" />
-        
-
-
-        
-        <div class="status-control-set-no-format">
-        <span>Approval</span>   <s:radio name="actionName" list="actionNames" /> <input type="submit" value="Submit " />
-    </div>
-            
-         
-            
-   
-
-
-        
-        
-    </div>
+        <div>
+            <div class="status-info">             
+             This claim and it's related invoice have been cleared by the CHOX approval system. 
+             Please review the invoice and claim information supplied, and choose whether to clear the invoice for payment or reject the invoice "Clear for payment" or "Reject Invoice"  
+            </div>
+            <div class="status-control-set">
+                <table>
+                    <tr>
+                        <td colspan="2">
+                            <div class="no-format">
+                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                <s:radio name="actionName" list="approveBREPassedClaimActions" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr> 
+                        <td></td>
+                        <td>
+                            <input type="submit" value="Submit" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div> 
     </fieldset>
-    </form>    
+</form>

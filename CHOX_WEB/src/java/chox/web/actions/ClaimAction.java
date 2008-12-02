@@ -182,7 +182,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         names.put(ACCEPT, "Request invoice data");
         names.put(REJECT, "Reject this claim");
         return names;
-    }   
+    }
 
     private boolean validateAcknowledgeClaimInfo() {
 
@@ -198,12 +198,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return result;
     }
-
-    //End Acknowledge 
     
-    //Accept or Contest rejected Claim
-    
-     public String contestOrAcceptRejectedInvoice() {
+     public String contestOrAcceptRejectedClaim() {
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             claim.setStatus(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
         } else {
@@ -216,9 +212,36 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return SUCCESS;
     }
+
+    public Map getContestOrAcceptRejectedClaimActions() {
+        Map names = new HashMap();
+        names.put(ACCEPT, "Accept rejection decision");
+        names.put(REJECT, "Contest this claim");
+        return names;
+    }
+
+     public String approveContestedClaim() {
+        if (this.actionName.equalsIgnoreCase(ACCEPT)) {
+            claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
+        } else {
+            claim.setStatus(ClaimStatus.CLAIM_REJECTED);
+        }
+        try {
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+
+        return SUCCESS;
+    }
     
-    //End Accept or Contest rejected Claim
-    
+    public Map getApproveContestedClaimActions() {
+        Map names = new HashMap();
+        names.put(ACCEPT, "Request invoice data");
+        names.put(REJECT, "Reject this claim");
+        return names;
+    }
+        
     public String submitHireMonitoringDetail() {
         if (validateHireMonitoringDetail()) {
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_DATA);
@@ -232,8 +255,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         return SUCCESS;
-    }
-
+    }   
+    
     public String reSubmitRejectedClaim() {
         claim = constructeClaimForInvoiceValidation(claim);
         InvoiceService invoiceService = new InvoiceServiceImpl();
@@ -257,6 +280,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     }
 
+    public String contestOrAcceptRejectedInvoice() {
+        if (this.actionName.equalsIgnoreCase(ACCEPT)) {
+            claim.setStatus(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
+        } else {
+            claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+        }
+        try {
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+        return SUCCESS;
+    }
+
     public String approveBREPassedClaim() {
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
@@ -272,6 +309,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
 
         return SUCCESS;
+    }    
+    
+    public Map getApproveBREPassedClaimActions() {
+        Map names = new HashMap();
+        names.put(ACCEPT, "Clear for payment");
+        names.put(REJECT, "Reject Invoice");
+        return names;
     }
 
     public String approveEscalatedInvoice() {
@@ -287,7 +331,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             this.actionResult = "ERROR : " + ex.getMessage();
         }
         return SUCCESS;
-    }  
+    }
+    
+     public Map getApproveEscalatedInvoiceActions() {
+        Map names = new HashMap();
+        names.put(ACCEPT, "Clear for payment");
+        names.put(REJECT, "Reject Invoice");
+        return names;
+    }
 
     public String approveContestedInvoice() {
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
@@ -302,7 +353,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return SUCCESS;
     }
-        
+
     public Map getApproveContestedInvoiceActions() {
         Map names = new HashMap();
         names.put(ACCEPT, "Accept and proceed to payment");
@@ -323,12 +374,23 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return SUCCESS;
     }
-    
+
     public Map getResubmitOrAcceptContestedInvoiceActions() {
         Map names = new HashMap();
         names.put(ACCEPT, "Accept rejection decision");
         names.put(REJECT, "Reject rejection decision and resubmit claim");
         return names;
+    }
+    
+    public String logInvoicePayment()
+    {
+        claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
+        try {
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+        return SUCCESS;
     }
 
     private Claim constructeClaimForInvoiceValidation(Claim claim) {
@@ -371,7 +433,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public boolean validateHireMonitoringDetail() {
         //TODO : implement validateHireMonitoringDetail
         return true;
-    }
+    }      
 
     public int getLineOfBusinessId() {
         return lineOfBusinessId;

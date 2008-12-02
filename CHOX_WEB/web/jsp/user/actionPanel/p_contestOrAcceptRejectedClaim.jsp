@@ -1,6 +1,6 @@
 <%-- 
-    Document   : p_approveContestedInvoice
-    Created on : 01-Dec-2008, 02:28:00
+    Document   :p_contestOrAcceptRejectedClaim
+    Created on : Dec 02, 2008, 11:39:12 AM
     Author     : Emmanuel
 --%>
 
@@ -9,16 +9,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
-<form onsubmit="return true;" action="user/approveContestedInvoice.action" method="post" 
-      id="approveContestedInvoice" name="approveContestedInvoice">
+
+
+<form onsubmit="return true;" action="user/contestOrAcceptRejectedClaim.action" method="post" 
+      id="contestOrAcceptRejectedClaim" name="contestOrAcceptRejectedClaim">
     <fieldset class="x-fieldset">
-        <legend>Contested Invoice - Action Required</legend>
+        <legend>Rejected Claim - Action Required</legend>
         <s:hidden name="id" />
         <div>
             <div class="status-info">
-                Please review the 'History' tab for details on why the claim has been rejected and review the details/comments on the 'Invoice Details' tab regarding the previous decision to reject. 
-                Please decide on whether to progress the claim for payment or reject the claim. 
-                Please update the required details/comments on the 'Invoice Details' tab regarding the decision made.
+               Please review the Insurer's notes against rejection reasoning and decide whether to accept or reject the Insurer's rejection decision.  
+               Please include supporting notes on the decision made using the 'Notes' tab.
             </div>
             <div class="status-control-set">
                 <table>
@@ -26,7 +27,7 @@
                         <td colspan="2">
                             <div class="no-format">
                                 <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                                <s:radio name="actionName" list="approveContestedInvoiceActions" />
+                                <s:radio name="actionName" list="ContestOrAcceptRejectedClaimActions" />
                             </div>
                         </td>
                     </tr>
