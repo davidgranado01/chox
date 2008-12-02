@@ -30,7 +30,7 @@ public class HistoryServiceImpl extends DataService implements HistoryService{
         List histories = new ArrayList<History>();
         
         try {
-            Criteria criteria = currentSession.createCriteria(History.class);//.add(Restrictions.eq("claimId", claim.getId()));;
+            Criteria criteria = currentSession.createCriteria(History.class);
             criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
             
             if(!isShowAll){
@@ -46,7 +46,7 @@ public class HistoryServiceImpl extends DataService implements HistoryService{
             criteria.addOrder(Order.asc("ruleId"));
             
             histories = criteria.list();
-            
+
         } catch (Throwable e) {
            e.printStackTrace();
         }
@@ -56,6 +56,8 @@ public class HistoryServiceImpl extends DataService implements HistoryService{
         
         return histories;
     }
+    
+    
     
     public void logInvoiceValidationErrorMsg(RulesEngineResponse reponse, Claim claim){
     

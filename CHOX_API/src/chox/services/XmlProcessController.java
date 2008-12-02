@@ -20,7 +20,7 @@ import scsbre.engine.*;
 import java.util.List;
 import chox.Util.TextHelper;
 import chox.Util.DateHelper;
-import chox.Util.UploadStatus;
+import chox.data.UploadStatus;
 
 public class XmlProcessController {
     

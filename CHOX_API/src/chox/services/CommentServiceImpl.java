@@ -20,7 +20,6 @@ public class CommentServiceImpl extends DataService implements CommentService {
         List comments = new ArrayList<Comment>();
 
         try {
-            //Criteria criteria = currentSession.createCriteria(Comment.class).add(Restrictions.eq("claim", claim));
             Criteria criteria = currentSession.createCriteria(Comment.class);
             criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
             criteria.addOrder(Order.asc("createdDate"));           

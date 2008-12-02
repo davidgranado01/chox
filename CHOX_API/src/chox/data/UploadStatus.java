@@ -1,4 +1,4 @@
-package chox.Util;
+package chox.data;
 
 import chox.model.XMLParseResult;
 import chox.model.ClaimStatus;

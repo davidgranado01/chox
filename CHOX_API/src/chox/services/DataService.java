@@ -30,7 +30,6 @@ public class DataService {
                 currentSession.enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
             }
         }
-
     }
 
     protected WebUser getCurrentUser() {

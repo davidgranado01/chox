@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
 
+
 /**
  *
  * @author Emmanuel
@@ -28,7 +29,7 @@ public class LookupServiceImpl extends DataService implements LookupService {
         
         return items;
     }
-
+    
     public List getLineOfBusinesses() {
 
         Criteria criteria = currentSession.createCriteria(LineOfBusiness.class);
