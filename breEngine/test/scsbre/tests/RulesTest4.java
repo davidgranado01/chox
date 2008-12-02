@@ -106,7 +106,7 @@ public class RulesTest4 {
         
         
         
-        assertTrue(res.getStatus() == ClaimStatus.InvoiceApproved);
+        assertTrue(res.getStatus() == ClaimStatus.InvoiceApprovedByBRE);
         
     }
     
