@@ -12,57 +12,57 @@
                     you may have for the CHO.
                 </div>
                 <div class="status-control-set">
-                    <table>
+                    <table class="status-table">
                         <tr>
                             <td>
                                 <label>
-                                Indemnity (Decimal)</label>
+                                Indemnity (Decimal)</label></td><td>
                                 <input type="text" class="chox-ttxt" name="indemintyAmount" />
                             </td>
                             <td>
                                 <label>
-                                % Liability Accepted</label>
+                                % Liability Accepted</label></td><td>
                                 <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" />
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label>
-                                Claim Number</label>
+                                Claim Number</label></td><td>
                                 <input type="text" class="chox-ttxt" name="claimNumber" />
                             </td>
                             <td>
                                 <label>
-                                Quantum Dispute?</label>
+                                Quantum Dispute?</label></td><td>
                                 <s:checkbox name="isQuantumDispute" />
                             </td>
                         </tr>
                         <tr valign="top">
                             <td>
                                 <label>
-                                Engineer's Claim Review Notes</label>
+                                Engineer's Claim Review Notes</label></td><td>
                                 <textarea class="chox-tta" cols="20" rows="5" name="engineerClaimReviewNotes"></textarea>
                             </td>
                             <td>
                                 <label>
-                                Invoice Review Required</label>
+                                Invoice Review Required</label></td><td>
                                 <s:checkbox name="isInvoiceReviewRequired" />
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2">
-                                <div class="no-format">
+                            <td colspan="4" class="choice">
+                                
                                     <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                                    <s:radio name="actionName" list="acknowledgeClaimActions" />
-                                </div>
+
+                            </td>
+                        </tr>                        
+                        <tr>
+                            <td colspan="4" class="choice">
+                                    <s:radio name="actionName" list="acknowledgeClaimActions" /><input type="submit" value="Save changes and register decision" />
+
                             </td>
                         </tr>
-                        <tr> 
-                            <td></td>
-                            <td>
-                                <input type="submit" value="Submit" />
-                            </td>
-                        </tr>
+
                     </table>
                 </div>
             </div>
