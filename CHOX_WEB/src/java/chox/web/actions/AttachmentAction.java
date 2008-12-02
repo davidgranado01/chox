@@ -102,6 +102,10 @@ public class AttachmentAction extends BaseModelAction implements ModelDriven<Att
 
     private boolean processFile(File inputfile)throws IOException{
         
+        System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP1"+new File(".").getAbsolutePath());
+        System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP2"+new File(".").getCanonicalPath());
+        System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP3"+new File("..").getAbsolutePath());
+        System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP4"+new File("..").getCanonicalPath());        
         Boolean bFlag = false;
         
         GlobalConfigurationService gcService = new GlobalConfigurationServiceImpl();

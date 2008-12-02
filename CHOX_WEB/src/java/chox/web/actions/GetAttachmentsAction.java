@@ -8,6 +8,8 @@ package chox.web.actions;
 import chox.model.Attachment;
 import chox.services.AttachmentService;
 import chox.web.security.ApplicationAccessibility;
+import chox.web.viewdata.AttachmentViewData;
+import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 
@@ -16,7 +18,7 @@ public class GetAttachmentsAction extends BaseModelAction {
 
     private int claimId;
     private AttachmentService service;
-    private List<Attachment> attachments;
+    private List<AttachmentViewData> attachments;
 
     public void setAttachmentService(AttachmentService service) {
         this.service = service;
@@ -40,7 +42,14 @@ public class GetAttachmentsAction extends BaseModelAction {
     
     public String getAttachments()
     {        
-        attachments = this.service.getAttachmentByClaimId(claimId);
+        attachments = new ArrayList<AttachmentViewData>();
+        List<Attachment> attachmwentData = this.service.getAttachmentByClaimId(claimId);
+        
+        for(Attachment a : attachmwentData)
+        {
+            attachments.add(new AttachmentViewData(a));
+        }
+        
         return SUCCESS;
     }
     
