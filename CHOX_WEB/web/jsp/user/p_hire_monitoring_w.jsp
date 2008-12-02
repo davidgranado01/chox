@@ -1,16 +1,11 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<form id="formUpdateIncident" action="user/updateHireMonitorDetail.action" class="NNNentity-form">
+<form id="formUpdateIncident" action="user/updateHireMonitorDetail.action" class="entity-form">
     
     
     <script language="JavaScript">
         
         
-        function doDummySave(){
-            
-            $("#ddummy").text("Your changes have been saved");
-            
-            return false;
-        }
+
         
         </script>
     <input type="hidden" name="objectId" value='<s:property value="id"/>'>
@@ -47,13 +42,7 @@
                 <label class="chox-form-std-label">
                 Is Total Loss?</label>
             <s:checkbox name="isTotalLostCheck" /></div>
-           
-           <div class="chox-form-item">
-                <label class="chox-form-std-label">
-                Total Loss Inspection Report</label>
-           NONE</div>
-            
-            
+
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Repair Completion Date</label>
@@ -67,9 +56,9 @@
             
             
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes" onclick="return doDummySave()" />
+                <input type="submit" value="Save Changes" />
             </div>
-            <div class="chox-form-submit-result" id="ddummy">&nbsp;</div>   
+            <div class="chox-form-submit-result">&nbsp;</div>   
             
             
         </div>
