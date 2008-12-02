@@ -6,10 +6,10 @@
       <generator class="increment"/>
     </id>
     <property column="comment" name="comment" not-null="true"/>
-    <many-to-one class="chox.model.WebUser" column="created_by" name="created_by"/>
     <property column="created_date" name="createdDate" not-null="true"/>
     <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
     <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
     <many-to-one class="chox.model.Claim" column="claim_id" name="claim"/> 
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy" not-null="true"/> 
   </class>
 </hibernate-mapping>

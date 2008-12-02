@@ -1,7 +1,7 @@
 <%-- 
-    Document   : p_invoiceReferralToInsurer
-    Created on : Nov 28, 2008, 12:05:04 PM
-    Author     : Carlson
+    Document   : p_contestOrAcceptRejectedInvoice
+    Created on : 02-Dec-2008, 12:51:32
+    Author     : Emmanuel
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -14,6 +14,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h2>p_invoiceReferralToInsurer!</h2>
+        <h2>Hello World!</h2>
     </body>
 </html>

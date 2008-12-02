@@ -80,15 +80,15 @@
             </result>
             <result name="updateclaimcarhiredetail">/jsp/user/actionPanel/p_updateCarHireInfo.jsp
             </result>
-            <result name="updateinvoicedtailbyinsurer">/jsp/user/actionPanel/p_refInvoiceToInsurer.jsp
+            <result name="updateinvoicedtailbyinsurer">/jsp/user/actionPanel/p_approveContestedInvoice.jsp
             </result>
-            <result name="updateinvoicedtailbycho">/jsp/user/actionPanel/p_refInvoiceToCHO.jsp
+            <result name="updateinvoicedtailbycho">/jsp/user/actionPanel/p_resubmitOrAcceptContestedInvoice.jsp
             </result>
             <result name="updateinvoicedtailforcalculationincorrect">/jsp/user/actionPanel/p_resubmitInvoiceData.jsp
             </result>
              <result name="approveBREPassedClaim">/jsp/user/actionPanel/p_approveBREPassedClaim.jsp
             </result>
-             <result name="approveEscalatedClaim">/jsp/user/actionPanel/p_approveEscalatedClaim.jsp
+             <result name="approveEscalatedClaim">/jsp/user/actionPanel/p_approveEscalatedInvoice.jsp
             </result>
             <result name="empty">/jsp/p_blank.jsp
             </result>
@@ -363,7 +363,7 @@
             <result name="w">/jsp/user/p_Comment_w.jsp</result>
             <result name="decline">/jsp/p_accessDeclined.jsp</result>
         </action>
-        <action name="getComments" class="chox.web.actions.GetCommentsAction" method="getClaims">
+        <action name="getComments" class="chox.web.actions.GetCommentsAction" method="getComments">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="createNewComment" class="chox.web.actions.CommentAction" method="createNewComment">

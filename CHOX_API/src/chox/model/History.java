@@ -1,7 +1,5 @@
 package chox.model;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,7 +16,7 @@ public class History implements Serializable
 	/** 
 	 * This attribute maps to the column created_by in the history table.
 	 */
-	protected int createdBy;
+	protected WebUser createdBy;
 
 	/** 
 	 * This attribute maps to the column created_date in the history table.
@@ -83,25 +81,13 @@ public class History implements Serializable
 		this.id = id;
 	}
 
-	/**
-	 * Method 'getCreatedBy'
-	 * 
-	 * @return int
-	 */
-	public int getCreatedBy()
-	{
-		return createdBy;
-	}
+    public WebUser getCreatedBy() {
+        return createdBy;
+    }
 
-	/**
-	 * Method 'setCreatedBy'
-	 * 
-	 * @param createdBy
-	 */
-	public void setCreatedBy(int createdBy)
-	{
-		this.createdBy = createdBy;
-	}
+    public void setCreatedBy(WebUser createdBy) {
+        this.createdBy = createdBy;
+    }
 
 	/**
 	 * Method 'getCreatedDate'

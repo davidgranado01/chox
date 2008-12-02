@@ -291,7 +291,7 @@
                     {header: "ID", width: 80, dataIndex: 'id', sortable: false, resizable: false},
                     {header: "Created On", width: 110, dataIndex: 'createdDate', sortable: false, resizable: false},
                     {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: false, resizable: false},
-                    {header: "Message Text", width: 650, dataIndex: 'comment', sortable: false, resizable: false}
+                    {header: "Message Text", width: 650, dataIndex: 'narrative', sortable: false, resizable: false}
                 ],
                 renderTo:'historyGrid',
                 width:960,

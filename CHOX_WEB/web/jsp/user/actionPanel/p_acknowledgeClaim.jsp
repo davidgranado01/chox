@@ -1,6 +1,6 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <form onsubmit="return true;" action="user/acknowledge.action" method="post" id="route"
-    name="route">
+      name="route">
     <fieldset class="x-fieldset">
         <legend>Claim Acknowledgement - Action Required</legend>
         <div>
@@ -16,46 +16,49 @@
                         <tr>
                             <td>
                                 <label>
-                                    Indemnity (Decimal)</label>
+                                Indemnity (Decimal)</label>
                                 <input type="text" class="chox-ttxt" name="indemintyAmount" />
                             </td>
                             <td>
                                 <label>
-                                    % Liability Accepted</label>
+                                % Liability Accepted</label>
                                 <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" />
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label>
-                                    Claim Number</label>
+                                Claim Number</label>
                                 <input type="text" class="chox-ttxt" name="claimNumber" />
                             </td>
                             <td>
                                 <label>
-                                    Quantum Dispute?</label>
+                                Quantum Dispute?</label>
                                 <s:checkbox name="isQuantumDispute" />
                             </td>
                         </tr>
                         <tr valign="top">
                             <td>
                                 <label>
-                                    Engineer's Claim Review Notes</label>
+                                Engineer's Claim Review Notes</label>
                                 <textarea class="chox-tta" cols="20" rows="5" name="engineerClaimReviewNotes"></textarea>
                             </td>
                             <td>
                                 <label>
-                                    Invoice Review Required</label>
+                                Invoice Review Required</label>
                                 <s:checkbox name="isInvoiceReviewRequired" />
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td colspan="2">
                                 <div class="no-format">
-                                    <span>Action &nbsp;</span>
-                                    <s:radio name="actionName" list="actionNames" />
+                                    <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                    <s:radio name="actionName" list="acknowledgeClaimActions" />
                                 </div>
                             </td>
+                        </tr>
+                        <tr> 
+                            <td></td>
                             <td>
                                 <input type="submit" value="Submit" />
                             </td>

@@ -152,6 +152,7 @@ var grid = new Ext.grid.GridPanel({
     stripeRows: true,
     layout:'fit',
     autoHeight:true,
+    enableHdMenu:false,
     title:'Claims', viewConfig:{forceFit:true}  
 });
 grid.render('gridPanel');

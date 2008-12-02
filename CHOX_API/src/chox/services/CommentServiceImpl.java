@@ -23,7 +23,7 @@ public class CommentServiceImpl extends DataService implements CommentService {
             //Criteria criteria = currentSession.createCriteria(Comment.class).add(Restrictions.eq("claim", claim));
             Criteria criteria = currentSession.createCriteria(Comment.class);
             criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
-            //criteria.addOrder(Order.asc("claim.id"));           
+            criteria.addOrder(Order.asc("createdDate"));           
             comments = criteria.list();
 
         } catch (Throwable e) {
@@ -63,7 +63,7 @@ public class CommentServiceImpl extends DataService implements CommentService {
 
     public void createNewObject(Comment comment) {
 
-        comment.setCreatedBy(getCurrentUser().getId());
+        comment.setCreatedBy(getCurrentUser());
         comment.setCreatedDate(DateHelper.getCurrentTimeStamp());
         comment.setLastModifiedBy(getCurrentUser().getId());
         comment.setLastModifiedDate(DateHelper.getCurrentTimeStamp());

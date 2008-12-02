@@ -21,6 +21,7 @@ public class CommentAction extends BaseModelAction implements ModelDriven<Commen
 
     private CommentService service;
     private Comment model;
+    private int claimId;
    
     public void setCommentService(CommentService service) {
         this.service = service;
@@ -33,6 +34,10 @@ public class CommentAction extends BaseModelAction implements ModelDriven<Commen
     public void prepare() throws Exception {
         if (objectId == -1) {
             model = new Comment();
+            Claim c = new Claim();
+            c.setId(claimId);
+            model.setClaim(c);
+            
         } else {
             model = service.getObject(objectId);
         }
@@ -56,6 +61,14 @@ public class CommentAction extends BaseModelAction implements ModelDriven<Commen
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_NOTES;
+    }
+
+    public int getClaimId() {
+        return claimId;
+    }
+
+    public void setClaimId(int claimId) {
+        this.claimId = claimId;
     }
     
 }

@@ -6,8 +6,12 @@
 package chox.web.actions;
 
 import chox.model.Comment;
+import chox.model.History;
 import chox.services.CommentService;
 import chox.web.security.ApplicationAccessibility;
+import chox.web.viewdata.CommentViewData;
+import chox.web.viewdata.HistoryViewData;
+import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 
@@ -19,7 +23,7 @@ public class GetCommentsAction extends BaseModelAction {
 
     private int claimId;
     private CommentService service;
-    private List<Comment> comments;
+    private List<CommentViewData> comments;
 
     public void setCommentService(CommentService service) {
         this.service = service;
@@ -43,13 +47,18 @@ public class GetCommentsAction extends BaseModelAction {
         return SUCCESS;
     }
     
-    public String getClaims()
+    public String getComments()
     {        
-        comments = this.service.getCommentByClaimId(claimId);
+        List<Comment> commentsData = this.service.getCommentByClaimId(claimId);
+                
+        comments = new ArrayList<CommentViewData>();
+        for(Comment c : commentsData)
+        {
+            comments.add(new CommentViewData(c));
+        }
+        
         return SUCCESS;
     }
-
-    public
 
     int getClaimId() {
         return claimId;

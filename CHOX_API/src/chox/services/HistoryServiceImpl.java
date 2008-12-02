@@ -51,8 +51,8 @@ public class HistoryServiceImpl extends DataService implements HistoryService{
            e.printStackTrace();
         }
         
-        currentSession.clear();
-        currentSession.disconnect();
+        //currentSession.clear();
+        //currentSession.disconnect();
         
         return histories;
     }
@@ -91,7 +91,7 @@ public class HistoryServiceImpl extends DataService implements HistoryService{
         currentSession.beginTransaction();
         
         history.setProcessDate(DateHelper.getCurrentTimeStamp());
-        history.setCreatedBy(getCurrentUser().getId());
+        history.setCreatedBy(getCurrentUser());
         history.setCreatedDate(DateHelper.getCurrentTimeStamp());
         history.setLastModifiedBy(getCurrentUser().getId());
         history.setLastModifiedDate(DateHelper.getCurrentTimeStamp());

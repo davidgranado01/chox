@@ -1,7 +1,7 @@
 <%-- 
-    Document   : p_invoiceReferralToCho
-    Created on : Nov 28, 2008, 12:05:12 PM
-    Author     : Carlson
+    Document   : p_approveContestedInvoice
+    Created on : Dec 02, 2008, 11:39:12 AM
+    Author     : Emmanuel
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -14,6 +14,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h2>p_invoiceReferralToCho!</h2>
+        <h2>p_invoiceReferralToInsurer!</h2>
     </body>
 </html>

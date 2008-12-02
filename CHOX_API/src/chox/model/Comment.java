@@ -13,7 +13,7 @@ public class Comment implements Serializable{
     
     protected int id;
     protected String comment;
-    protected int createdBy;
+    protected WebUser createdBy;
     protected Date createdDate;
     protected int lastModifiedBy;
     protected Date lastModifiedDate;
@@ -28,11 +28,11 @@ public class Comment implements Serializable{
         this.comment = comment;
     }
 
-    public int getCreatedBy() {
+    public WebUser getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(int createdBy) {
+    public void setCreatedBy(WebUser createdBy) {
         this.createdBy = createdBy;
     }
 

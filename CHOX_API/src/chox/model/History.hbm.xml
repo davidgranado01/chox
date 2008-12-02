@@ -4,8 +4,7 @@
   <class lazy="false" name="chox.model.History" table="history">
     <id column="id" name="id">
       <generator class="increment"/>
-    </id>
-    <property column="created_by" name="createdBy" not-null="true"/>
+    </id>    
     <property column="created_date" name="createdDate" not-null="true"/>
     <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
     <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
@@ -16,5 +15,6 @@
     <property column="rule_id" name="ruleId" not-null="true"/>
     <property column="is_system" name="isSystem" not-null="true"/>
     <many-to-one class="chox.model.Claim" column="claim_id" name="claim"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy" not-null="true"/> 
   </class>
 </hibernate-mapping>

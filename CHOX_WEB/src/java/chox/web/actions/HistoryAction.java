@@ -7,6 +7,8 @@ package chox.web.actions;
 import chox.model.Claim;
 import chox.model.History;
 import chox.services.HistoryService;
+import chox.web.viewdata.HistoryViewData;
+import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 
@@ -16,11 +18,11 @@ import net.sf.json.JSONArray;
  */
 public class HistoryAction extends BaseAction {
 
-    private List<History> histories;
+    private List<HistoryViewData> histories;
     private HistoryService service;
     private int claimId;
 
-    public List<History> getHistories() {
+    public List<HistoryViewData> getHistories() {
         return histories;
     }
 
@@ -55,7 +57,12 @@ public class HistoryAction extends BaseAction {
 
         Claim claim = new Claim();
         claim.setId(claimId);
-        histories = this.service.getHistoryByClaim(claim, isShowAll, isPublic);
+        List<History> historiesData = this.service.getHistoryByClaim(claim, isShowAll, isPublic);
+        histories = new ArrayList<HistoryViewData>();
+        for(History h : historiesData)
+        {
+            histories.add(new HistoryViewData(h));
+        }
 
         return SUCCESS;
     }
