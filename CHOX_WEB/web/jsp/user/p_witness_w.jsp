@@ -5,8 +5,11 @@
 <form id="formUpdateIncident" action="user/updateWitness.action" class="entity-form">
     <input type="hidden" name="objectId" value='<s:property value="id"/>'>
     <fieldset class="x-fieldset">
+        
+     
+        
         <legend>Witness Details</legend>
-        <div>
+            <div style="display:none" class="form-container">  
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Name</label>
