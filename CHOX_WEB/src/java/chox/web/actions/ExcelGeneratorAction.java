@@ -49,27 +49,28 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware{
             List<Claim> claims = cs.listAllClaims();
             ExcelGeneratorAction excelhelper = new ExcelGeneratorAction();
             ByteArrayOutputStream buf = excelhelper.generateXML(claims);
-     }
+    }
     
     
     public ByteArrayOutputStream doExportExcel()throws IOException{
 
         ClaimSearchCriteria c = null;
-        
-        if(session!=null){
-            c = (ClaimSearchCriteria)session.get("searchCriteria");
-        }
-
         ByteArrayOutputStream buf = null;
         
-        ClaimService cs = new ClaimServiceImpl();
-        List<Claim> claims = cs.searchClaims(c);
-        
-        ExcelGeneratorAction excelhelper = new ExcelGeneratorAction();
-        if(claims.size()>0){
-            buf = excelhelper.generateXML(claims);
+        if(session!=null){
+            
+            c = (ClaimSearchCriteria)session.get("searchCriteria");
+
+            if(c!=null){
+                ClaimService cs = new ClaimServiceImpl();
+                List<Claim> claims = cs.searchClaims(c);
+
+                ExcelGeneratorAction excelhelper = new ExcelGeneratorAction();
+                if(claims.size()>0){
+                    buf = excelhelper.generateXML(claims);
+                }
+            }
         }
-        
         return buf;
     }
 
