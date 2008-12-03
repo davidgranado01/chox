@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-  <class  lazy="false" name="chox.model.Attachment" table="attachment">
+  <class lazy="false" name="chox.model.Attachment" table="attachment">
     <id column="id" name="id">
       <generator class="increment"/>
     </id>
@@ -14,6 +14,5 @@
     <property column="created_date" name="createdDate" not-null="true"/>
     <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
     <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
-    
   </class>
 </hibernate-mapping>
