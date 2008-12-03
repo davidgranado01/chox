@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 public class ClaimServiceImpl extends DataService implements ClaimService, Serializable {
@@ -98,6 +99,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         //if (searchCriteria.getHireDateFrom() != null && searchCriteria.getHireDateTo() != null) {
         //    criteria.add(Expression.between("createdDate", searchCriteria.getHireDateFrom(), searchCriteria.getHireDateTo()));
         //}
+        criteria.addOrder(Order.asc("createdDate"));
 
         List claims = criteria.list();
         return claims;

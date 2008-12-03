@@ -23,7 +23,7 @@ public class CommentViewData {
     private String comment;
 
     public CommentViewData(Comment comment) {
-        Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
         this.id = comment.getId();
         this.createdDate = dateFormat.format(comment.getCreatedDate());

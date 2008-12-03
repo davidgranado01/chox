@@ -23,7 +23,7 @@ public class HistoryViewData {
     private String narrative;
 
     public HistoryViewData(History history) {
-        Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
         this.id = history.getId();
         this.createdDate = dateFormat.format(history.getCreatedDate());
