@@ -24,6 +24,6 @@
     <bean id="vehicleClassService" class="chox.services.VehicleClassServiceImpl" singleton="false"/>
     <bean id="witnessService" class="chox.services.WitnessServiceImpl" singleton="false"/>
     <bean id="attachmentService" class="chox.services.AttachmentServiceImpl" singleton="false"/>
-       
+       <bean id="insurerService" class="chox.services.InsurerServiceImpl" singleton="false"/>
 </beans> 
 

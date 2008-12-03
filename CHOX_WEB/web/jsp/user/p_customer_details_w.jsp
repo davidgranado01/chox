@@ -1,8 +1,8 @@
        
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <form id="formUpdateIncident" action="user/updateCustomer.action" class="entity-form">
-    <input type="hidden" name="objectId" value='<s:property value="id"/>'>
-   
+    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
+    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
             <fieldset class="x-fieldset">
                 <legend>Customer Details</legend>
                 <div style="display:none" class="form-container">
@@ -54,11 +54,16 @@
                         <label class="chox-form-std-label">
                         Email</label>
                     <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value='<s:property value="email" />' /></div>
-                    
-  
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                        Insurer</label>NOT IMPLEMENTED</div>
+                        Insurer</label>
+                        <s:select name="insurerId" 
+                        list="insurers" 
+                        listKey="id" 
+                        listValue="name"
+                        headerKey="-1"
+                        headerValue="--- ALL ---"
+                        emptyOption="false"></s:select></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Policy Number</label>
@@ -76,19 +81,22 @@
                         <label class="chox-form-std-label">
                         Vehicle Manufacturer</label>
                     <input type="text" class="chox-ttxt" id="CCDVehicleManufacturer" name="vehicleManufacturer" value='<s:property value="vehicleManufacturer" />' /></div>
-                   
-                   
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                        Vehicle Class</label>NOT IMPLEMENTED</div>
-                    
-                    
+                        Vehicle Class</label>
+                        <s:select name="vehicleClassId" 
+                        list="vehicleClasses" 
+                        listKey="id" 
+                        listValue="name"
+                        headerKey="-1"
+                        headerValue="--- ALL ---"
+                        emptyOption="false"></s:select>
+                        </div>
                      <div class="chox-form-item">
-                    <label class="chox-form-std-label">
-                    Vehicle Registration Number</label>
-                        <input type="text" class="chox-ttxt" id="CCDVehicleManufacturer" name="vehicleManufacturer" value='<s:property value="vehicleRegistration" />' /></div>                    
-                    </div>  
-                    
+                    <label class="chox-form-std-label">Vehicle Registration Number</label>
+                        <input type="text" class="chox-ttxt" id="CCDVehicleManufacturer" name="vehicleManufacturer" value='<s:property value="vehicleRegistration" />' />                  
+                    </div>                      
+
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Vehicle Location</label>

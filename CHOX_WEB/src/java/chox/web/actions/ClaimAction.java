@@ -42,12 +42,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private Claim claim = new Claim();
     private int id = -1;
     private List lineOfBusinesses;
+    private List vehicleClasses;
+    private List insurers;
     private List statuses;
     private ClaimService service;
     private LookupService lookupService;
     private String actionResult;
     private TabAccessibility tabAccessibility;
+    private int vehicleClassId = -1;
     private int lineOfBusinessId = -1;
+    private int insurerId = -1;
     private String actionName;
 
     // ADDED BY CARLSON @ 2008-12-02 - START
@@ -109,6 +113,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return lineOfBusinesses;
     }
 
+    // ADDED BY CARLSON @ 2008-12-03
+    public List getVehicleClasses() {
+        if (vehicleClasses == null) {
+            vehicleClasses = lookupService.getVehicleClasses();
+        }
+        return vehicleClasses;
+    }
+
+    // ADDED BY CARLSON @ 2008-12-03
+    public List getInsurers() {
+        if (insurers == null) {
+            insurers = lookupService.getInsurers();
+        }
+        return insurers;
+    }
+    
     public String getActionResult() {
         return actionResult;
     }
@@ -209,7 +229,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private boolean validateAcknowledgeClaimInfo() {
 
         String claimNumber = claim.getClaimNumber();
-        BigDecimal indemintyAmount = claim.getIndemnityAmount();
+        BigDecimal indemnityAmount = claim.getIndemnityAmount();
         BigDecimal percentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();
         String engineerClaimReviewNotes = claim.getEngineerClaimReviewNotes();
 
@@ -457,6 +477,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return true;
     }      
 
+    public int getVehicleClassId() {
+        return vehicleClassId;
+    }
+
+    public void setVehicleClassId(int vehicleClassId) {
+        this.vehicleClassId = vehicleClassId;
+    }
+    
+    public int getInsurerClassId() {
+        return insurerId;
+    }
+
+    public void setInsurerId(int insurerId) {
+        this.insurerId = insurerId;
+    }
+    
     public int getLineOfBusinessId() {
         return lineOfBusinessId;
     }
