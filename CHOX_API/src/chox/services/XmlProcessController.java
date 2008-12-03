@@ -225,7 +225,6 @@ public class XmlProcessController {
         System.out.println(" ** getIsDataValid: " + xmlParseResult.getIsDataValid());
         System.out.println(" ** getDataValidationRemark: " + xmlParseResult.getDataValidationRemark());
         
-        
         if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
             currentSession.getTransaction().commit();
         }else{
@@ -278,13 +277,12 @@ public class XmlProcessController {
             
             RuleEvaluation rv = results.get(iCount);
             
-            //if(rv.getIsVisibleToCHO() && rv.getResult()==RuleEvaluationResult.RuleFailed){
+            if(rv.getIsVisibleToCHO() && rv.getResult()==RuleEvaluationResult.RuleFailed){
                 //existingErrorMsg = XmlHelper.XMLResultDelimeterContructor(existingErrorMsg, rv.toString());
                 xmlParseResult.getDataValidationRemark().add(rv.toString());
-            //}
+            }
         }
         
-        //xmlParseResult.setDataValidationRemark(existingErrorMsg);
         return xmlParseResult;
     }
     
@@ -323,6 +321,8 @@ public class XmlProcessController {
             XMLParseResult xmlParseResult,
             Element mainElement) throws Exception {
         
+        Claim claim = new Claim();
+        
         String strSectionName = "Claim Header";
         
         // RESET VALIDATION FLAG
@@ -342,49 +342,48 @@ public class XmlProcessController {
         
         // MANDATORY ONLY IN SECOND STAGE
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "gta-notice", bGatNotice, XmlHelper.REG_TIMESTAMP, strSectionName, "GTA 4.1 Notice Date");
-        
-        Claim claim = new Claim();
-        
+
         // CHO ORGANISATION SECTION
         xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "supplier", strSectionName, "");
         
-        if (xmlParseResult.getIsCurrentScheValid() && xmlParseResult.getIsCurrentDataValid()) {
+        //if (xmlParseResult.getIsCurrentScheValid() && xmlParseResult.getIsCurrentDataValid()) {
             
-            Element thisElement = XMLUtils.getElement(mainElement, "supplier");
+        Element thisElement = XMLUtils.getElement(mainElement, "supplier");
 
-            // RESET VALIDATION FLAG
-            xmlParseResult.setIsCurrentDataValid(true);
-            xmlParseResult.setIsCurrentScheValid(true);
+        // RESET VALIDATION FLAG
+        // xmlParseResult.setIsCurrentDataValid(true);
+        // xmlParseResult.setIsCurrentScheValid(true);
 
-            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "supplier-name", XmlHelper.isMAN_Supplier_Name, "", strSectionName, "Supplier Name");
-            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "supplier-reference", XmlHelper.isMAN_Supplier_Reference, "", strSectionName, "Supplier Reference");
-            
-            if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
-                
-                // RENTAL STATUS
-                Boolean bManagingRepair = XmlHelper.getBooleanFromNode(mainElement, "managing-repair");
-                Timestamp tFirstContactDate = XmlHelper.getTimeStampFromNode(mainElement, "first-contact");
-                Timestamp tCreditAgreement = XmlHelper.getTimeStampFromNode(mainElement, "agreement-signed");
-                Timestamp tGtaNoticeDate = XmlHelper.getTimeStampFromNode(mainElement, "gta-notice");
-                
-                if(XmlHelper.getNodeValue(mainElement, "gta-notice").equalsIgnoreCase("")){
-                    tGtaNoticeDate = DateHelper.getCurrentTimeStamp();
-                }
-                
-                // CHO INFORMATION
-                String strCHOReference = XmlHelper.getNodeValue(thisElement, "supplier-reference");
+        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "supplier-name", XmlHelper.isMAN_Supplier_Name, "", strSectionName, "Supplier Name");
+        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "supplier-reference", XmlHelper.isMAN_Supplier_Reference, "", strSectionName, "Supplier Reference");
+        
+        // CHO INFORMATION
+        String strCHOReference = XmlHelper.getNodeValue(thisElement, "supplier-reference");
+        claim.setChoReference(strCHOReference);
+        
+        if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
 
-                ClaimService thisCtrl = new ClaimServiceImpl();
-                
+            // RENTAL STATUS
+            Boolean bManagingRepair = XmlHelper.getBooleanFromNode(mainElement, "managing-repair");
+            Timestamp tFirstContactDate = XmlHelper.getTimeStampFromNode(mainElement, "first-contact");
+            Timestamp tCreditAgreement = XmlHelper.getTimeStampFromNode(mainElement, "agreement-signed");
+            Timestamp tGtaNoticeDate = XmlHelper.getTimeStampFromNode(mainElement, "gta-notice");
+
+            if(XmlHelper.getNodeValue(mainElement, "gta-notice").equalsIgnoreCase("")){
+                tGtaNoticeDate = DateHelper.getCurrentTimeStamp();
+            }
+
+            ClaimService thisCtrl = new ClaimServiceImpl();
+
                 if(thisCtrl.isClaimReferenceNumberExist(strCHOReference)){
-                    
+
                     // CONFIGURATION TO CHECK XML UPLOAD STATUS
                     xmlParseResult.setIsClaimExist(true);
-                    
+
                     // GET EXISTING CLAIM INFORMATION
                     ClaimService claimService = new ClaimServiceImpl();
                     claim = claimService.getClaimByCHOReferenceNumber(strCHOReference);
-                    
+
                     // LOG CLAIM CURRENT STATUS
                     xmlParseResult.setSExistingClaimStatus(claim.getStatus());
 
@@ -392,9 +391,9 @@ public class XmlProcessController {
                     ChoBandService chobandservice = new ChoBandServiceImpl();
                     ChoBand choband = chobandservice.getDummyChoBand();
                     claim.setChoband(choband);
-                    
+
                 }else{
-                    
+
                     // SET CLAIM HEADER INFORMATION
                     claim.setManagingRepair(bManagingRepair);
                     claim.setPolicyHolderContactDate(tFirstContactDate);
@@ -404,12 +403,11 @@ public class XmlProcessController {
                     claim.setGtaNoticeDate(tGtaNoticeDate);
                     claim.setIndemintyAmount(new BigDecimal("0.00"));
                     claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
-                    
                     ChorganisationService chorgService = new ChorganisationServiceImpl();
                     claim.setChorganisation(chorgService.getCurrentCHOrganisation());
                 }
             }
-        }
+        //}
         
         xmlParseResult.setClaim(claim);
         
