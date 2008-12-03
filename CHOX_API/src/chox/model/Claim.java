@@ -97,7 +97,7 @@ public class Claim implements Serializable, IClaimInfo {
     protected String claimNumber;
     protected Date creditAgreementDate;
     protected Date gtaNoticeDate;
-    protected BigDecimal indemintyAmount;
+    protected BigDecimal indemnityAmount;//indemnity
     protected BigDecimal percentageLiabilityAccepted;
     protected boolean isQuantumDispute;
     protected String engineerClaimReviewNotes;
@@ -520,12 +520,12 @@ public class Claim implements Serializable, IClaimInfo {
         this.engineerClaimReviewNotes = engineerClaimReviewNotes;
     }
 
-    public BigDecimal getIndemintyAmount() {
-        return indemintyAmount;
+    public BigDecimal getIndemnityAmount() {
+        return indemnityAmount;
     }
 
-    public void setIndemintyAmount(BigDecimal indemintyAmount) {
-        this.indemintyAmount = indemintyAmount;
+    public void setIndemnityAmount(BigDecimal indemintyAmount) {
+        this.indemnityAmount = indemintyAmount;
     }
 
     public boolean getIsInvoiceReviewRequired() {
