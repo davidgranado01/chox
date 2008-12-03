@@ -188,7 +188,7 @@ public class AttachmentAction extends BaseModelAction implements ModelDriven<Att
     }
 
     public void prepare() throws Exception {
-        if (objectId == -1) {
+        if (objectId <= 0) {
             model = new Attachment();
         } else {
             model = service.getObject(objectId);

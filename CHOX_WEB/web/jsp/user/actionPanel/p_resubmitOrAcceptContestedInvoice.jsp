@@ -23,11 +23,11 @@
                 Rejection of the Insurer's decision will require a modification to the claim details and/or the attachemnt of a payment pack.
                 Please include supporting notes on the decision made using the 'Notes' tab.
             </div>
-            <div class="status-control-set">
+            <div>
                 <table>
                     <tr>
                         <td colspan="2">
-                            <div class="no-format">
+                            <div>
                                 <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
                                 <s:radio name="actionName" list="resubmitOrAcceptContestedInvoiceActions" />
                             </div>

@@ -8,7 +8,8 @@
 
         
         </script>
-    <input type="hidden" name="objectId" value='<s:property value="id"/>'>
+    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
+    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset">
         <legend>Hire Monitoring</legend>
         <div style="display:none" class="form-container">

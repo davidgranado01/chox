@@ -32,7 +32,7 @@ public class CommentAction extends BaseModelAction implements ModelDriven<Commen
     }
 
     public void prepare() throws Exception {
-        if (objectId == -1) {
+        if (objectId <= 0) {
             model = new Comment();
             Claim c = new Claim();
             c.setId(claimId);

@@ -29,7 +29,7 @@ public class IncidentAction extends BaseModelAction implements ModelDriven<Incid
     }
 
     public void prepare() throws Exception {
-        if (objectId == -1) {
+        if (objectId <= 0) {
             model = new Incident();
         } else {
             model = service.getObject(objectId);

@@ -29,7 +29,7 @@ public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>
     }
 
     public void prepare() throws Exception {
-        if (objectId == -1) {
+        if (objectId <= 0) {
             model = new Injury();
         } else {
             model = service.getObject(objectId);

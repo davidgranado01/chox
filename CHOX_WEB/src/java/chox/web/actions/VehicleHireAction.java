@@ -30,7 +30,7 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
     }
 
     public void prepare() throws Exception {
-        if (objectId == -1) {
+        if (objectId <= 0) {
             model = new VehicleHire();
         } else {
             model = service.getObject(objectId);

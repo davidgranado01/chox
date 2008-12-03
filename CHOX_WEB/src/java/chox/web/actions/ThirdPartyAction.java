@@ -29,7 +29,7 @@ public class ThirdPartyAction extends BaseModelAction implements ModelDriven<Thi
     }
 
     public void prepare() throws Exception {
-        if (objectId == -1) {
+        if (objectId <= 0) {
             model = new ThirdParty();
         } else {
             model = service.getObject(objectId);

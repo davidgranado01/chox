@@ -4,6 +4,7 @@
  */
 package chox.web.actions;
 
+import chox.services.ClaimService;
 import chox.web.security.ApplicationAccessibility;
 import org.acegisecurity.GrantedAuthority;
 
@@ -16,9 +17,11 @@ public abstract class BaseModelAction extends BaseAction {
     public static final String READ_ONLY = "r";
     public static final String EDITABLE = "w";
     public static final String DECLINE = "decline";
-    protected int objectId = -1;
+    protected int objectId = 0;
+    protected int claimId = 0;
     protected String claimStatus;
     protected String actionResult;
+    protected ClaimService claimService;
 
     abstract String getTabName();
 
@@ -53,5 +56,17 @@ public abstract class BaseModelAction extends BaseAction {
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
 
         return result;
+    }
+
+    public int getClaimId() {
+        return claimId;
+    }
+
+    public void setClaimId(int claimId) {
+        this.claimId = claimId;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
     }
 }

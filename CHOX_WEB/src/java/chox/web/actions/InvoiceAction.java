@@ -4,6 +4,8 @@
  */
 package chox.web.actions;
 
+import chox.Util.DateHelper;
+import chox.model.Claim;
 import chox.model.Invoice;
 import chox.services.InvoiceService;
 import chox.web.security.ApplicationAccessibility;
@@ -29,7 +31,7 @@ public class InvoiceAction extends BaseModelAction implements ModelDriven<Invoic
     }
 
     public void prepare() throws Exception {
-        if (objectId == -1) {
+        if (objectId <= 0) {
             model = new Invoice();
         } else {
             model = service.getObject(objectId);
@@ -37,9 +39,22 @@ public class InvoiceAction extends BaseModelAction implements ModelDriven<Invoic
     }
 
     public String updateModel() {
-        try {
-            this.service.updateObject(model);
-            this.actionResult = "1";
+       try {
+            if(model.getId() > 0)
+            {
+                this.service.updateObject(model);
+            }
+            else
+            {
+                model.setCreatedDate(DateHelper.getCurrentTimeStamp());
+                model.setCreatedBy(this.getAuthenticatedUser().getUser().getId());  
+                model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+                model.setLastNodifiedBy(this.getAuthenticatedUser().getUser().getId()); 
+                Claim c = claimService.getClaim(getClaimId());
+                c.setInvoice(model);
+                this.claimService.updateClaim(c);
+            }
+            this.actionResult = "";
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }

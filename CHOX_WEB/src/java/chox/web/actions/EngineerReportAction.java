@@ -30,7 +30,7 @@ public class EngineerReportAction extends BaseModelAction implements ModelDriven
     }
 
     public void prepare() throws Exception {
-        if (objectId == -1) {
+        if (objectId <= 0) {
             model = new EngineerReport();
         } else {
             model = service.getObject(objectId);

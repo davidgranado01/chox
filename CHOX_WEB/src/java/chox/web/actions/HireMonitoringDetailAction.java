@@ -5,6 +5,8 @@
 
 package chox.web.actions;
 
+import chox.Util.DateHelper;
+import chox.model.Claim;
 import chox.model.HireMonitoringDetail;
 import chox.services.HireMonitoringDetailService;
 import chox.web.security.ApplicationAccessibility;
@@ -30,7 +32,7 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
     }
 
     public void prepare() throws Exception {
-        if (objectId == -1) {
+        if (objectId <= 0) {
             model = new HireMonitoringDetail();
         } else {
             model = service.getObject(objectId);
@@ -39,8 +41,21 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
 
     public String updateModel() {
         try {
-            this.service.updateObject(model);
-            this.actionResult = "1";
+            if(model.getId() > 0)
+            {
+                this.service.updateObject(model);
+            }
+            else
+            {
+                model.setCreatedDate(DateHelper.getCurrentTimeStamp());
+                model.setCreatedBy(this.getAuthenticatedUser().getUser().getId());  
+                model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+                model.setLastModifiedBy(this.getAuthenticatedUser().getUser().getId()); 
+                Claim c = claimService.getClaim(getClaimId());
+                c.setHireMonitoringDetail(model);
+                this.claimService.updateClaim(c);
+            }
+            this.actionResult = "";
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }

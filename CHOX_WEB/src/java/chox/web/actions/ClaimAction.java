@@ -25,7 +25,10 @@ import java.util.Map;
 import org.acegisecurity.GrantedAuthority;
 import scsbre.engine.RulesEngineResponse;
 import chox.data.AttachmentCategory;
+import chox.model.Chorganisation;
+import chox.model.Insurer;
 import chox.model.LookupItem;
+import chox.model.WebUser;
 import java.util.ArrayList;
 /**
  *  
@@ -85,7 +88,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public void prepare() throws Exception {
-        if (id == -1) {
+        if (id <= 0) {
             claim = new Claim();
         } else {
             claim = service.getClaim(id);
@@ -465,8 +468,32 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getActionName() {
         return actionName;
     }
+    
+    public String getCreatedByDesc()
+    {
+        String desc = "";
+        String orgName = "";
+        WebUser user = claim.getCreatedBy();
+        if (user != null) {
+            Chorganisation cho = user.getChorganisation();
+            Insurer ins = user.getInsurer();
+
+            if (ins != null) {
+                orgName = String.format("(%1$s)", ins.getName());
+            } else if (cho != null) {
+                orgName = String.format("(%1$s)", cho.getName());
+            }
+            desc = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+        }
+        return desc;
+    }
 
     public void setActionName(String actionName) {
         this.actionName = actionName;
+    }
+    
+    public int getHireMonitoringDetailId()
+    {
+        return this.claim.getHireMonitoringDetail() == null ? 0 : this.claim.getHireMonitoringDetail().getId();
     }
 }

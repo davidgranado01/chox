@@ -29,7 +29,7 @@ public class WitnessAction extends BaseModelAction implements ModelDriven<Witnes
     }
 
     public void prepare() throws Exception {
-        if (objectId == -1) {
+        if (objectId <= 0) {
             model = new Witness();
         } else {
             model = service.getObject(objectId);

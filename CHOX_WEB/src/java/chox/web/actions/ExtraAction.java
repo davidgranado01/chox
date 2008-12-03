@@ -29,7 +29,7 @@ public class ExtraAction extends BaseModelAction implements ModelDriven<Invoice>
     }
 
     public void prepare() throws Exception {
-        if (objectId == -1) {
+        if (objectId <= 0) {
             model = new Invoice();
         } else {
             model = service.getObject(objectId);

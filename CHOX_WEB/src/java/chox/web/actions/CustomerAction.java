@@ -29,7 +29,7 @@ public class CustomerAction extends BaseModelAction implements ModelDriven<Custo
     }
 
     public void prepare() throws Exception {
-        if (objectId == -1) {
+        if (objectId <= 0) {
             model = new Customer();
         } else {
             model = service.getObject(objectId);

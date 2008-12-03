@@ -29,7 +29,7 @@ public class SolicitorAction extends BaseModelAction implements ModelDriven<Soli
     }
 
     public void prepare() throws Exception {
-        if (objectId == -1) {
+        if (objectId <= 0) {
             model = new Solicitor();
         } else {
             model = service.getObject(objectId);
