@@ -345,3 +345,61 @@ select 'ALL', 0, id from accessibility where name like 'action.%'
 
 insert into accessibility_item (role, access_right, accessibility_id)
 select a.name, 1, b.id from web_user_role a, accessibility b where b.name like 'action.%'
+
+-- ############################################################################################
+-- START VERSION 2.5 - 2008-12-02
+-- ############################################################################################
+
+CREATE SEQUENCE attachement_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1000
+  CACHE 1;
+ALTER TABLE attachement_id_seq OWNER TO postgres;
+
+-----------------------------------------------------------------------------------------------
+
+CREATE TABLE attachment
+(
+  id integer NOT NULL DEFAULT nextval('attachement_id_seq'::regclass),
+  file_name character varying NOT NULL,
+  remarks character varying,
+  category character varying NOT NULL,
+  claim_id integer NOT NULL,
+  CONSTRAINT attachment_pkey PRIMARY KEY (id),
+  CONSTRAINT attachment_claim_fkey FOREIGN KEY (claim_id)
+      REFERENCES claim (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (OIDS=FALSE);
+ALTER TABLE attachment OWNER TO postgres;
+
+-----------------------------------------------------------------------------------------------
+
+insert into global_configuration (parameter, value, created_by, last_modified_by) values ('attachement_path', 'webapps//CHOX_DEMO//attachment//',999,999);
+
+-----------------------------------------------------------------------------------------------
+
+ALTER TABLE attachment ADD COLUMN created_by integer;
+ALTER TABLE attachment ALTER COLUMN created_by SET STORAGE PLAIN;
+ALTER TABLE attachment ALTER COLUMN created_by SET NOT NULL;
+
+ALTER TABLE attachment ADD COLUMN created_date timestamp without time zone;
+ALTER TABLE attachment ALTER COLUMN created_date SET STORAGE PLAIN;
+ALTER TABLE attachment ALTER COLUMN created_date SET NOT NULL;
+ALTER TABLE attachment ALTER COLUMN created_date SET DEFAULT now();
+
+ALTER TABLE attachment ADD COLUMN last_modified_by integer;
+ALTER TABLE attachment ALTER COLUMN last_modified_by SET STORAGE PLAIN;
+ALTER TABLE attachment ALTER COLUMN last_modified_by SET NOT NULL;
+
+ALTER TABLE attachment ADD COLUMN last_modified_date timestamp without time zone;
+ALTER TABLE attachment ALTER COLUMN last_modified_date SET STORAGE PLAIN;
+ALTER TABLE attachment ALTER COLUMN last_modified_date SET NOT NULL;
+ALTER TABLE attachment ALTER COLUMN last_modified_date SET DEFAULT now();
+
+ALTER TABLE attachment ADD COLUMN file_type character varying;
+ALTER TABLE attachment ALTER COLUMN file_type SET STORAGE EXTENDED;
+
+-----------------------------------------------------------------------------------------------
