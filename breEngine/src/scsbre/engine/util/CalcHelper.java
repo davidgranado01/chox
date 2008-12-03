@@ -6,7 +6,20 @@ import java.util.Date;
 public class CalcHelper {
 
     public static boolean EqualTo(BigDecimal a, BigDecimal b) {
-        return Math.floor(a.doubleValue()) == Math.floor(b.doubleValue());
+        
+        //a.
+        //return Math.round(Math.floor(a.doubleValue())) == Math.round(Math.floor(b.doubleValue()));
+        
+        double x = Math.round(a.doubleValue());
+        double y = Math.round(b.doubleValue());
+        
+        return x == y;
+        
+        
+        
+        //return true;
+        
+        
     }
     private static final long MILISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 

@@ -5,6 +5,7 @@
 
 package scsbre.engine.rules;
 
+import java.math.BigDecimal;
 import scsbre.engine.IBusinessRule;
 import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
@@ -28,7 +29,11 @@ public class HasCorrectHireVatCalculation implements IBusinessRule {
         
         IInvoiceInfo invoice = claim.getInvoice();
         InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
-        boolean success = CalcHelper.EqualTo(invoice.getHireVat(), iCalc.getCalculatedHireVat());
+        
+        BigDecimal actual = invoice.getHireVat();
+        BigDecimal expected = iCalc.getCalculatedHireVat();
+        
+        boolean success = CalcHelper.EqualTo(actual, expected);
         
         res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(true);

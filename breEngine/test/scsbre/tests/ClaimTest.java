@@ -42,6 +42,17 @@ public class ClaimTest {
        BigDecimal y = x.divide(i,4,1);
        
        System.out.println(y.doubleValue());
+       
+       
+       BigDecimal ib = new BigDecimal(720);
+       
+       BigDecimal vatc = ib.multiply(new BigDecimal(.175));
+       
+       double d = 125.999999999999;
+       
+       double e = Math.round(d);
+       
+       int blah = 0;
         
     }
     
