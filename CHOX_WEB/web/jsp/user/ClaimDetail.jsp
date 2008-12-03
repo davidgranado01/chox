@@ -261,7 +261,7 @@
                 [
                     {name:'id'}, 
                     {name:'createdBy'},                     
-                    {name:'createdDate', type: 'date', dateFormat: 'd/m/Y'},         
+                    {name:'createdDate'},        
                     {name:'comment'}
                 ]
             });// {name:'created', type: 'date', dateFormat: 'd/m/Y'},
@@ -283,7 +283,7 @@
                 store: commentsDataStore,
                 loadMask: true,
                 columns: [
-                    {header: "Created", width: 110, dataIndex: 'createdDate', sortable: false, resizable: false, renderer: Ext.util.Format.dateRenderer('d/m/Y')}, 
+                     {header: "Created", width: 110, dataIndex: 'createdDate', sortable: false, resizable: false}, 
                     {header: "Created By", width: 130, dataIndex: 'createdBy', sortable: false, resizable: false},                   
                     {header: "Message", width: 630, dataIndex: 'comment', sortable: false, resizable: false}
                 ],

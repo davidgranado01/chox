@@ -307,6 +307,9 @@ div.std-data-ro-big
 
 
 
+
+
+
 div.status-info
 {
     background-color:white;
@@ -315,28 +318,17 @@ div.status-info
     font-weight:normal;
     font-size:14px;
     margin-bottom:4px;
-
-    
 }
-
-
 div.status-info-submit
 {
-    
     text-align:right;
-
 }
-
-
-
-
 
 div.status-control-set
 {
 
     margin-top:5px;
 }
-
 div.status-control-set label
 {
     
@@ -349,9 +341,8 @@ div.status-control-set label
     width:200px;
     
     */
-    
-    
 }
+
 
 div.status-control-set input, select
 {
@@ -360,53 +351,36 @@ div.status-control-set input, select
 
 div.no-format
 {
-
     text-align:left;
-    
 }
-
-
-
 div.no-format label
 {
-    
     margin-right:6px;
     display:inline;
     float:none;
-
 }
-
-
 div.status-control-set-no-format
 {
     padding:6px;
     margin-top:5px;
 }
-
 table.status-table
 {
-    
     border-collapse:collapse;
-    
 }
-
-
 table.status-table td
 {
-
     padding:4px;
-
-    
 }
-
 table.status-table .choice
 {
-   
-
     font-size:13px;
-    
-    
 }
+
+
+
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; display:block ; font-weight:bold }
+
 
 
 
