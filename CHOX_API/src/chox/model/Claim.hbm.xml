@@ -23,10 +23,10 @@
     <many-to-one class="chox.model.Chorganisation" column="chorganisation_id" lazy="false" name="chorganisation"/>
     <many-to-one class="chox.model.Customer" column="customer_id" lazy="false" name="customer"/>
     <many-to-one class="chox.model.EngineerReport" column="engineer_report_id" lazy="false" name="engineerReport"/>
-    <many-to-one class="chox.model.HireMonitoringDetail" column="hire_monitoring_detail_id" lazy="false" name="hireMonitoringDetail"/>
+    <many-to-one class="chox.model.HireMonitoringDetail" column="hire_monitoring_detail_id" lazy="false" name="hireMonitoringDetail" unique="true" cascade="save-update,delete" />
     <many-to-one class="chox.model.Incident" column="incident_id" lazy="false" name="incident"/>
     <many-to-one class="chox.model.Insurer" column="insurer_id" lazy="false" name="insurer"/>
-    <many-to-one class="chox.model.Invoice" column="invoice_id" lazy="false" name="invoice"/>
+    <many-to-one class="chox.model.Invoice" column="invoice_id" lazy="false" name="invoice" unique="true" cascade="save-update,delete"/>
     <many-to-one class="chox.model.LineOfBusiness" column="line_of_business_id" lazy="false" name="lineOfBusiness"/>
     <many-to-one class="chox.model.ThirdParty" column="third_party_id" lazy="false" name="thirdParty"/>
     <many-to-one class="chox.model.VehicleHire" column="vehicle_hire_id" lazy="false" name="vehicleHire"/>

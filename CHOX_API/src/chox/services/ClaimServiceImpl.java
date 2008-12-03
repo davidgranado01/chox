@@ -7,13 +7,14 @@ import chox.model.Claim;
 import chox.model.Incident;
 import chox.model.XMLParseResult;
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Restrictions;
 
-public class ClaimServiceImpl extends DataService implements ClaimService {
+public class ClaimServiceImpl extends DataService implements ClaimService, Serializable {
 
     public static final String PENDING = "Pending";
     public static final String IN_PROGRESS = "InProgress";
