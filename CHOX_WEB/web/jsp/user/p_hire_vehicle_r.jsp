@@ -25,7 +25,7 @@
                 <div class="chox-form-item">
                     <label class="std-label-ro">
                     Hire End</label>
-        <label class="std-data-ro"><s:property value="rentalStart" /></label></div>
+        <label class="std-data-ro"><s:property value="rentalEnd" /></label></div>
                 <div class="chox-form-item">
                     <label class="std-label-ro">
                     Reason For Collection</label>

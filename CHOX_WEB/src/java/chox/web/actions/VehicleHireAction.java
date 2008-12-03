@@ -10,6 +10,7 @@ import chox.model.Claim;
 import chox.model.VehicleClass;
 import chox.model.VehicleHire;
 import chox.services.LookupService;
+import chox.services.VehicleClassService;
 import chox.services.VehicleHireService;
 import chox.web.security.ApplicationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
@@ -25,6 +26,7 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
 
     private VehicleHireService service;
     private LookupService lookupService;
+    private VehicleClassService vehicleClassService;
     private VehicleHire model;
     private int vehicleClassId;
 
@@ -36,6 +38,11 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
     {
         this.lookupService = lookupService;
     }
+    
+    public void setVehicleClassService(VehicleClassService vehicleClassService)
+    {
+        this.vehicleClassService = vehicleClassService;
+    }
 
     public VehicleHire getModel() {
         return model;
@@ -46,13 +53,15 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
             model = new VehicleHire();
         } else {
             model = service.getObject(objectId);
-        }
-        
-        vehicleClassId = this.model.getVehicleClass() != null ? vehicleClassId = this.model.getVehicleClass().getId() : 0;
+        }  
     }
     
     public String updateModel() {
         
+        if(vehicleClassId >= 0)
+        {
+           model.setVehicleClass(this.vehicleClassService.getObject(vehicleClassId));
+        }
         
         try {
             if(model.getId() > 0)
@@ -83,7 +92,7 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
     
     public int getVehicleClassId()
     {
-        return vehicleClassId;
+        return this.model.getVehicleClass() != null ? vehicleClassId = this.model.getVehicleClass().getId() : 0;
     }
 
     public String getJsonData() {
