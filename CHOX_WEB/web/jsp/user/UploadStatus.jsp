@@ -61,7 +61,7 @@
                           
                             Couldn't find any claims in the input file! Please try again.
                           
-                      </div
+                      </div>
                     </s:if>
                     <s:else>
                         
