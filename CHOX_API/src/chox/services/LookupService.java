@@ -17,5 +17,6 @@ public interface LookupService {
     public List getLineOfBusinesses();   
     public List getSuppliers();
     public List getInsurers();
+    public List getVehicleClasses();
 
 }

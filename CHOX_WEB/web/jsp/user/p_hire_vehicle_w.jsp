@@ -19,7 +19,11 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Replacement Vehicle Class</label>
-            <input type="text" class="chox-ttxt" id="HVDReplacementVehicleClass"  name="date" value='<s:property value="date" />'/></div>
+            <s:select name="vehicleClassId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1"
+                                                                                           headerValue="--- ALL ---"
+                                                                                       emptyOption="false"></s:select>
+            
+            </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Hire Start</label>

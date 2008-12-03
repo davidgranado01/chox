@@ -56,7 +56,7 @@
             <div class="chox-form-item">
                 <label class="std-label-ro">
                 Insurer</label>
-                        <label class="std-data-ro"><s:property value="insurer" /></label></div>
+                        <label class="std-data-ro"><s:property value="insurer.name" /></label></div>
             <div class="chox-form-item">
                 <label class="std-label-ro">
                 Policy Number</label>
