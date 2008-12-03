@@ -54,10 +54,11 @@
                         <label class="chox-form-std-label">
                         Email</label>
                     <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value='<s:property value="email" />' /></div>
+                    
+  
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                        Insurer</label>
-                        NOT IMPLEMENTED</div>
+                        Insurer</label>NOT IMPLEMENTED</div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Policy Number</label>
@@ -75,15 +76,19 @@
                         <label class="chox-form-std-label">
                         Vehicle Manufacturer</label>
                     <input type="text" class="chox-ttxt" id="CCDVehicleManufacturer" name="vehicleManufacturer" value='<s:property value="vehicleManufacturer" />' /></div>
+                   
+                   
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                        Vehicle Class</label>
-                    NOT IMPLEMENTED</div>
-        <div class="chox-form-item">
-            <label class="std-label-ro">
-            Vehicle Registration Number</label>
-            <label class="std-data-ro"><s:property value="vehicleRegistration" /></label>
-            </div>                      
+                        Vehicle Class</label>NOT IMPLEMENTED</div>
+                    
+                    
+                     <div class="chox-form-item">
+                    <label class="chox-form-std-label">
+                    Vehicle Registration Number</label>
+                        <input type="text" class="chox-ttxt" id="CCDVehicleManufacturer" name="vehicleManufacturer" value='<s:property value="vehicleRegistration" />' /></div>                    
+                    </div>  
+                    
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Vehicle Location</label>
