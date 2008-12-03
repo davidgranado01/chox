@@ -209,7 +209,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private boolean validateAcknowledgeClaimInfo() {
 
         String claimNumber = claim.getClaimNumber();
-        BigDecimal indemintyAmount = claim.getIndemintyAmount();
+        BigDecimal indemintyAmount = claim.getIndemnityAmount();
         BigDecimal percentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();
         String engineerClaimReviewNotes = claim.getEngineerClaimReviewNotes();
 
