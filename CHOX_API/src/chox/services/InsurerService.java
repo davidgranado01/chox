@@ -13,4 +13,5 @@ public interface InsurerService {
     
     Insurer getInsurerByName(String s);
     Insurer getInsurerByNodeName(Element thisElement, String nodeName);
+    public Insurer getObject(int id);
 }

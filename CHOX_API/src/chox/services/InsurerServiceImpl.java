@@ -42,4 +42,8 @@ public class InsurerServiceImpl extends DataService implements InsurerService {
         return insurer;
     }
     
+    public Insurer getObject(int id) {
+       return (Insurer)currentSession.get(Insurer.class, id);
+    }    
+    
 }

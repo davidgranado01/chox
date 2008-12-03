@@ -558,7 +558,7 @@ public class XmlProcessController {
                 if(insurerallias!=null){
                     if(insurerallias.getInsurer()!=null){
                         xmlParseResult.getClaim().setInsurer(insurerallias.getInsurer());
-                        customer.setInsurerId((insurerallias.getInsurer()).getId());
+                        customer.setInsurer((insurerallias.getInsurer()));
                     }
                 }else{
                     if(XmlHelper.isMAN_Claim_Customer_Insurer_name){

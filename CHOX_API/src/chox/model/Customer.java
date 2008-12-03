@@ -156,7 +156,7 @@ public class Customer implements Serializable, ICustomerVehicleDamageInfo
 	/** 
 	 * This attribute maps to the column insurer_id in the customer table.
 	 */
-	protected int insurerId;
+	protected Insurer insurer;
 
 	/** 
 	 * This attribute represents the foreign key relationship to the vehicle_class table.
@@ -754,25 +754,13 @@ public class Customer implements Serializable, ICustomerVehicleDamageInfo
 		this.comprehensive = comprehensive;
 	}
 
-	/**
-	 * Method 'getInsurerId'
-	 * 
-	 * @return int
-	 */
-	public int getInsurerId()
-	{
-		return insurerId;
-	}
+    public Insurer getInsurer() {
+        return insurer;
+    }
 
-	/**
-	 * Method 'setInsurerId'
-	 * 
-	 * @param insurerId
-	 */
-	public void setInsurerId(int insurerId)
-	{
-		this.insurerId = insurerId;
-	}
+    public void setInsurer(Insurer insurer) {
+        this.insurer = insurer;
+    }
 
 	/**
 	 * Method 'getVehicleClass'
