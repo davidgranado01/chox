@@ -37,4 +37,8 @@ public class VehicleClassServiceImpl  extends DataService implements VehicleClas
         
         return vehicleclass;
     }
+
+    public VehicleClass getObject(int id) {
+       return (VehicleClass)currentSession.get(VehicleClass.class, id);
+    }
 }

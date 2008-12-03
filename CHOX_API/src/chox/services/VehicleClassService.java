@@ -12,4 +12,7 @@ public interface VehicleClassService {
     public VehicleClass getVehicleClassByName(String s);
 
     public VehicleClass getVehicleClassByNodeName(Element thisElement, String nodeName);
+    
+    public VehicleClass getObject(int id);
+    
 }
