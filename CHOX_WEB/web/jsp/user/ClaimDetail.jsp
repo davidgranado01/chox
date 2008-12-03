@@ -672,6 +672,7 @@
                                         
                                          <s:action name="getVehicleHire" executeResult="true">
                                             <s:param name="objectId"><s:property value="vehicleHire.id" /></s:param> 
+                                            <s:param name="claimId"><s:property value="id" /></s:param>
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
                                         
