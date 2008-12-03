@@ -319,7 +319,6 @@
                 root: 'results', 
                 fields:
                 [
-                    {name:'id'},
                     {name:'createdBy'},  
                     {name:'createdDate'},                 
                     {name:'narrative'}
@@ -341,7 +340,6 @@
             var grid = new Ext.grid.GridPanel({
                 store: historyData,
                 columns: [
-                    {header: "ID", width: 80, dataIndex: 'id', sortable: false, resizable: false},
                     {header: "Created On", width: 110, dataIndex: 'createdDate', sortable: false, resizable: false},
                     {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: false, resizable: false},
                     {header: "Message Text", width: 650, dataIndex: 'narrative', sortable: false, resizable: false}
@@ -500,10 +498,12 @@
                             <legend>Claim Summary</legend>
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <tr>
-                                    <td>
-                                        <label class="chox-claim-header-label">
-                                    Insurer</label><label class="chox-claim-header-text"><s:property value="insurer.name" /></label></td>
-                                    <td>
+<!-- UPDATED BY CALRSON @ 2008-12-03 - START !-->
+<td>
+<label class="chox-claim-header-label">Third Party Insurer</label>
+<label class="chox-claim-header-text"><s:property value="thirdParty.insurer.name" /></label></td>
+<td>
+<!-- UPDATED BY CALRSON @ 2008-12-03 - END !-->
                                         <label class="chox-claim-header-label">
                                     Credit-hire Organsation</label><label class="chox-claim-header-text"><s:property value="chorganisation.name" /></label></td>
                                     <td>
@@ -521,16 +521,17 @@
                                         <label class="chox-claim-header-label">
                                     Created On</label><label class="chox-claim-header-text"><s:date name="createdDate" format="dd MMM yyyy hh:mm"  /></label></td>
                                 </tr>
-                                <tr>
-                                    <td><label class="chox-claim-header-label">Customer</label>
-                                    <label class="chox-claim-header-text"><span id="status"><s:property value="customer.formattedName" /></span></label>
-                                    </td>
-                                    <td>
-                                        <label class="chox-claim-header-label">
-                                    Current Status</label><label class="chox-claim-header-text"><span id="status"><s:property value="status" /></span></label><!--span id="statusTip"><img src="img/tip.gif" style="fixed:relative;top:-50" /></span--></td>
-                                    <td>
-                                    &nbsp;</td>
-                                </tr>
+<tr>
+    <td><label class="chox-claim-header-label">Customer</label><label class="chox-claim-header-text"><span id="status"><s:property value="customer.formattedName" /></span></label></td>
+    <td><label class="chox-claim-header-label">Current Status</label><label class="chox-claim-header-text"><span id="status"><s:property value="status" /></span></label><!--span id="statusTip"><img src="img/tip.gif" style="fixed:relative;top:-50" /></span--></td>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td><label class="chox-claim-header-label">Indemnity</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
+    <td><label class="chox-claim-header-label">Percentage Liability Accepted</label><label class="chox-claim-header-text"><span id="status"><s:property value="percentageLiabilityAccepted" />%</span></label></td>
+    <td>&nbsp;</td>
+</tr>
+                                
                             </table>
                         </fieldset>
                     </div>
