@@ -15,7 +15,7 @@
                 org.acegisecurity.util.FilterChainProxy
             </param-value>
         </init-param>
-    </filter>
+    </filter> 
     <!--Hibernate Open Session in View Filter-->
     <filter>
         <filter-name>hibernateFilter</filter-name>
@@ -70,7 +70,7 @@
     </listener>
     <session-config>
         <session-timeout>
-            30
+            1200
         </session-timeout>
     </session-config>
     <welcome-file-list>

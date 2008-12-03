@@ -57,7 +57,7 @@ public class HistoryAction extends BaseAction {
 
         Claim claim = new Claim();
         claim.setId(claimId);
-        List<History> historiesData = this.service.getHistoryByClaim(claim, isShowAll, isPublic);
+        List<History> historiesData = this.service.getHistoryByClaimSortByDate(claim, isShowAll, isPublic);
         histories = new ArrayList<HistoryViewData>();
         for(History h : historiesData)
         {

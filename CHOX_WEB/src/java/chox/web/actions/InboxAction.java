@@ -7,13 +7,16 @@ package chox.web.actions;
 import chox.services.ClaimService;
 import chox.web.data.FilterRecordCounter;
 import chox.web.security.FilterAccessibility;
+import java.util.Map;
+import org.apache.struts2.interceptor.SessionAware;
 
 /**
  *
  * @author Emmanuel
  */
-public class InboxAction extends BaseAction {
+public class InboxAction extends BaseAction implements SessionAware {
 
+    private Map session;    
     private ClaimService service;
     private FilterRecordCounter filterRecordCounter;
     private FilterAccessibility filterAccessibility;
@@ -25,6 +28,7 @@ public class InboxAction extends BaseAction {
     @Override
     public String execute() throws Exception {
 
+        session.remove("searchCriteria");
         return SUCCESS;
     }
 
@@ -44,5 +48,9 @@ public class InboxAction extends BaseAction {
             filterAccessibility = new FilterAccessibility(super.getAuthenticatedUser().getAuthorities());
         }
         return filterAccessibility;
+    }
+
+    public void setSession(Map arg0) {
+       this.session = arg0;
     }
 }

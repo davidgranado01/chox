@@ -1,6 +1,6 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <form id="formUpdateIncident" action="user/updateVehicleHire.action" class="entity-form">
-    <input type="hidden" name="objectId" value='<s:property value="id"/>'>
+    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <fieldset class="x-fieldset">
         <legend>Hire Vehicle Details</legend>
         <div style="display:none" class="form-container">

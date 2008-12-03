@@ -78,7 +78,7 @@
 
 
 <form id="formUpdateInvoice" action="user/updateInvoice.action" class="entity-form">
-    <input type="hidden" name="objectId" value='<s:property value="id"/>'>
+    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <fieldset class="x-fieldset">
         <legend>Invoice Detail</legend>
         

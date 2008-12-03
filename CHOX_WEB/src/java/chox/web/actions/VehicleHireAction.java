@@ -26,6 +26,7 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
     private VehicleHireService service;
     private LookupService lookupService;
     private VehicleHire model;
+    private int vehicleClassId;
 
     public void setVehicleHireService(VehicleHireService service) {
         this.service = service;
@@ -46,9 +47,13 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
         } else {
             model = service.getObject(objectId);
         }
+        
+        vehicleClassId = this.model.getVehicleClass() != null ? vehicleClassId = this.model.getVehicleClass().getId() : 0;
     }
     
     public String updateModel() {
+        
+        
         try {
             if(model.getId() > 0)
             {
@@ -73,14 +78,12 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
     
     public void setVehicleClassId(int vehicleClassId)
     {
-        VehicleClass v = new VehicleClass();
-        v.setId(vehicleClassId);
-        this.model.setVehicleClass(v);
+        this.vehicleClassId = vehicleClassId;
     }
     
     public int getVehicleClassId()
     {
-        return model.getVehicleClass() != null ? model.getVehicleClass().getId() : 0;
+        return vehicleClassId;
     }
 
     public String getJsonData() {
