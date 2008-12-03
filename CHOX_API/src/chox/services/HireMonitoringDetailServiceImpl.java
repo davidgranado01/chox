@@ -14,19 +14,11 @@ public class HireMonitoringDetailServiceImpl extends DataService implements Hire
     public HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int hiremonitoringdetailid) {
         HireMonitoringDetail hiremonitoringdetail = new HireMonitoringDetail();
 
-        try {
+        Criteria criteria = currentSession.createCriteria(HireMonitoringDetail.class);
+        criteria.add(Restrictions.eq("id", hiremonitoringdetailid));
 
-            Criteria criteria = currentSession.createCriteria(HireMonitoringDetail.class);
-            criteria.add(Restrictions.eq("id", hiremonitoringdetailid));
+        hiremonitoringdetail = (HireMonitoringDetail) criteria.uniqueResult();
 
-            hiremonitoringdetail = (HireMonitoringDetail) criteria.uniqueResult();
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        currentSession.clear();
-        currentSession.disconnect();
 
         return hiremonitoringdetail;
     }
