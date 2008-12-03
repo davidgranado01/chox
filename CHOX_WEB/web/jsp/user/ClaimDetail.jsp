@@ -524,11 +524,19 @@
 <tr>
     <td><label class="chox-claim-header-label">Customer</label><label class="chox-claim-header-text"><span id="status"><s:property value="customer.formattedName" /></span></label></td>
     <td><label class="chox-claim-header-label">Current Status</label><label class="chox-claim-header-text"><span id="status"><s:property value="status" /></span></label><!--span id="statusTip"><img src="img/tip.gif" style="fixed:relative;top:-50" /></span--></td>
-    <td>&nbsp;</td>
+    <td><label class="chox-claim-header-label">Policy Holder Contact Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="policyHolderContactDate" format="dd MMM yyyy hh:mm"  /></span></label></td>
 </tr>
 <tr>
+    <td><label class="chox-claim-header-label">Managing Repair</label><label class="chox-claim-header-text"><span id="status"><s:property value="managingRepair" /></span></label></td>
     <td><label class="chox-claim-header-label">Indemnity</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
+    <td><label class="chox-claim-header-label">GTA 4.1 Notice Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="gtaNoticeDate" format="dd MMM yyyy hh:mm"  /></span></label></td>
+</tr>
+
+  
+  
+<tr>
     <td><label class="chox-claim-header-label">Percentage Liability Accepted</label><label class="chox-claim-header-text"><span id="status"><s:property value="percentageLiabilityAccepted" />%</span></label></td>
+    <td><label class="chox-claim-header-label">Credit Agreement Signed by Insurer Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="creditAgreementDate" format="dd MMM yyyy hh:mm"  /></span></label></td>
     <td>&nbsp;</td>
 </tr>
                                 
