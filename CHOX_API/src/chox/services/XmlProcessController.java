@@ -401,7 +401,7 @@ public class XmlProcessController {
                     claim.setChoReference(strCHOReference);
                     claim.setCreditAgreementDate(tCreditAgreement);
                     claim.setGtaNoticeDate(tGtaNoticeDate);
-                    claim.setIndemintyAmount(new BigDecimal("0.00"));
+                    claim.setIndemnityAmount(new BigDecimal("0.00"));
                     claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
                     ChorganisationService chorgService = new ChorganisationServiceImpl();
                     claim.setChorganisation(chorgService.getCurrentCHOrganisation());
