@@ -21,11 +21,14 @@
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.form.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.blockUI.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/ext-jquery-adapter.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.metadata.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.validate.min.js"></script>            
         
         
         <script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
         <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
         <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script> 
+    
         
         
         <script type="text/javascript">
@@ -505,7 +508,7 @@
                                     Credit-hire Organsation</label><label class="chox-claim-header-text"><s:property value="chorganisation.name" /></label></td>
                                     <td>
                                         <label class="chox-claim-header-label">
-                                    Created By</label><label class="chox-claim-header-text"><s:property value="getCreatedBy" /></label></td>
+                                    Created By</label><label class="chox-claim-header-text"><s:property value="createdByDesc" /></label></td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -627,7 +630,9 @@
                                         
                                         
                                         <s:action name="getHireMonitoringDetail" executeResult="true">
-                                            <s:param name="objectId"><s:property value="hireMonitoringDetail.id" /></s:param> 
+
+                                            <s:param name="claimId"><s:property value="id" /></s:param> 
+                                            <s:param name="objectId"><s:property value="hireMonitoringDetailId" /></s:param>                                            
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
                                         
@@ -657,8 +662,9 @@
                                           
 
                                         
-                                         <s:action name="getInvoice" executeResult="true">
+                                        <s:action name="getInvoice" executeResult="true">
                                             <s:param name="objectId"><s:property value="invoice.id" /></s:param> 
+                                            <s:param name="claimId"><s:property value="id" /></s:param>
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
                                         
@@ -737,15 +743,16 @@
     <form id="fAttachment" action="user/createNewAttachment.action" method="POST" enctype="multipart/form-data" name="form">
         <input type="hidden" name="claimId" value='<s:property value="id" />'>
         <input type="hidden" name="uploadFileName">
-        <table class="x-panel-bwrap chox-form-container" with="100%">
+            
+        <table class="x-panel-bwrap chox-form-container" width="100%">
         <tr>
-            <td><label class="chox-form-std-label">File</label></td>
+            <td><label>File</label></td>
             <td>
             <s:file id="fileUploader" name ="attachmentFile" label ="Attachment" size="40"/>   
             </td>
         </tr>
         <tr>
-            <td>Cagetogy : </td>
+            <td><label>Attachment Type</label></td>
             <td>
             <s:select name="category" 
             list="attachmentCategory" 
@@ -756,13 +763,14 @@
             </td>
         </tr> 
         <tr>
-            <td>Description : </td>
+            <td><label>Description</label></td>
             <td>
-                <s:textarea name="remark" label="Remark:"/>
+                <s:textarea rows="6" cols="30" name="remark" label="Remark:"/>
             </td>
         </tr>
         <tr>
-            <td colspan="2">
+            <td>&nbsp;</td>
+            <td>
             <input type="submit" id="bAddAttachment" value="Add File" onclick="return fileValidation()"/>
             </td>
         </tr>
