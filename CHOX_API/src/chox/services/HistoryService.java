@@ -13,5 +13,6 @@ import chox.model.Claim;
 public interface HistoryService {
     public Boolean saveHistory(History history);
     public void logInvoiceValidationErrorMsg(RulesEngineResponse reponse, Claim claim);
+    public List<History> getHistoryByClaimSortByDate(Claim claim, Boolean isShowAll, Boolean isPublic);
     public List<History> getHistoryByClaim(Claim claim, Boolean isShowAll, Boolean isPublic);
 }

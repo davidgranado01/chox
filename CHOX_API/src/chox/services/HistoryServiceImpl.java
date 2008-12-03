@@ -12,7 +12,6 @@ import scsbre.engine.*;
 import java.util.List;
 import java.util.ArrayList;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
 
@@ -57,7 +56,36 @@ public class HistoryServiceImpl extends DataService implements HistoryService{
         return histories;
     }
     
-    
+    public List<History> getHistoryByClaimSortByDate(Claim claim, Boolean isShowAll, Boolean isPublic){
+         
+        List histories = new ArrayList<History>();
+        
+        try {
+            Criteria criteria = currentSession.createCriteria(History.class);
+            criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
+            
+            if(!isShowAll){
+                criteria.add(Restrictions.eq("type", "ERROR"));
+            }
+            
+            // SHOW TRUE RECORD ONLY IF IT IS NOT PUBLIC
+            if(isPublic){
+                criteria.add(Restrictions.eq("isPublic", true));
+            }
+            
+            criteria.addOrder(Order.asc("createdDate"));
+
+            histories = criteria.list();
+
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
+        
+        //currentSession.clear();
+        //currentSession.disconnect();
+        
+        return histories;
+    }    
     
     public void logInvoiceValidationErrorMsg(RulesEngineResponse reponse, Claim claim){
     
