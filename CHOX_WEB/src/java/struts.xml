@@ -381,6 +381,26 @@
         <!-- End HireMonitoringDetail -->   
         
         
+          <!-- Start HireMonitoringEcd -->
+        <action name="getHireMonitoringEcd" class="chox.web.actions.HireMonitoringEcdAction">
+            <result name="r">/jsp/user/p_hire_monitoring_ecd_w.jsp
+            </result>
+            <result name="w">/jsp/user/p_hire_monitoring_ecd_w.jsp
+            </result>
+            <result name="decline">/jsp/p_accessDeclined.jsp
+            </result>
+        </action>
+        <action name="addNewHireMonitoringEcd" class="chox.web.actions.HireMonitoringEcdAction" method="addNewHireMonitoringEcd">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+        <action name="getHireMonitoringEcds" class="chox.web.actions.GetHireMonitoringEcdsAction" method="getHireMonitoringEcds">
+            <result name="success">/jsp/p_jsonData.jsp
+            </result>
+        </action>
+        <!-- End HireMonitoringEcd -->   
+        
+        
         
         
         <!-- Start EngineerReport Detail -->
@@ -442,14 +462,16 @@
             </result>
         </action>
         <action name="getAttachments" class="chox.web.actions.GetAttachmentsAction" method="getAttachments">
-            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="success">/jsp/p_jsonData.jsp
+            </result>
         </action>
         <action name="createNewComment" class="chox.web.actions.CommentAction" method="createNewComment">
             <result name="success">/jsp/p_response.jsp
             </result>
         </action>
         <action name="createNewAttachment" class="chox.web.actions.AttachmentAction" method="createNewAttachment">
-            <result name="success">/jsp/p_response.jsp</result>
+            <result name="success">/jsp/p_response.jsp
+            </result>
         </action>
         <!-- End Comment Detail -->
         <action name="dummy" class="chox.web.actions.DummyAction">

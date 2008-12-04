@@ -21,7 +21,6 @@ import net.sf.json.JSONArray;
  */
 public class GetCommentsAction extends BaseModelAction {
 
-    private int claimId;
     private CommentService service;
     private List<CommentViewData> comments;
 
@@ -58,13 +57,5 @@ public class GetCommentsAction extends BaseModelAction {
         }
         
         return SUCCESS;
-    }
-
-    public int getClaimId() {
-        return claimId;
-    }
-
-    public void setClaimId(int claimId) {
-        this.claimId = claimId;
     }
 }

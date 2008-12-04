@@ -42,5 +42,6 @@
         <mapping resource="chox/model/AccessibilityItem.hbm.xml" />
         <mapping resource="chox/model/Comment.hbm.xml" />
         <mapping resource="chox/model/Attachment.hbm.xml"/>
+        <mapping resource="chox/model/HireMonitoringEcd.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

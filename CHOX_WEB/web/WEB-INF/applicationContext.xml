@@ -11,7 +11,6 @@
     <bean id="securityInfoProvider" class="chox.web.data.WebSecurityInfoProvider" singleton="false"/>
     <bean id="accessibilityService" class="chox.services.AccessibilityServiceImpl" singleton="false"/>
     <bean id="incidentService" class="chox.services.IncidentServiceImpl" singleton="false"/>
-    
     <bean id="commentService" class="chox.services.CommentServiceImpl" singleton="false"/>
     <bean id="customerService" class="chox.services.CustomerServiceImpl" singleton="false"/>
     <bean id="engineerReportService" class="chox.services.EngineerReportServiceImpl" singleton="false"/>
@@ -24,6 +23,7 @@
     <bean id="vehicleClassService" class="chox.services.VehicleClassServiceImpl" singleton="false"/>
     <bean id="witnessService" class="chox.services.WitnessServiceImpl" singleton="false"/>
     <bean id="attachmentService" class="chox.services.AttachmentServiceImpl" singleton="false"/>
-       <bean id="insurerService" class="chox.services.InsurerServiceImpl" singleton="false"/>
+    <bean id="insurerService" class="chox.services.InsurerServiceImpl" singleton="false"/>
+    <bean id="hireMonitoringEcdService" class="chox.services.HireMonitoringEcdServiceImpl" singleton="false"/>
 </beans> 
 

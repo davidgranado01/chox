@@ -156,6 +156,8 @@
                 }
                 outputDiv.text(output);
                 hasFormUnderSubmission = false;
+                
+                 loadEcds();
         
                 //alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + 
                 //     '\n\nThe output div should have already been updated with the responseText.'); 
@@ -190,7 +192,7 @@
                 {
                     contentEl:'hireMonitoringDetails', 
                     title: 'Hire Monitoring', 
-                    disabled: hireMonitoringDetailsDisabled
+                    disabled: hireMonitoringDetailsDisabled                                      
                 },
                 {
                     contentEl:'invoiceDetails', 
@@ -250,6 +252,49 @@
             
             loadAttachments();
         }
+        
+        //Emmanuel 
+        if(!hireMonitoringDetailsDisabled){
+            
+            ecdJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',   
+                root: 'results', 
+                fields:
+                [
+                    {name:'sequence'},
+                    {name:'ecdDate'},
+                    {name:'reason'},                     
+                    {name:'supportingNote' }
+                ]
+            });
+
+            ecdDataStore = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy
+                ({url: 'user/getHireMonitoringEcds.action',method:'GET'}),
+                reader:ecdJsonReader       
+            });
+
+            ecdGrid = new Ext.grid.GridPanel({
+                store: ecdDataStore,
+                loadMask: true,
+                columns: [
+                    {header: "", width: 30, dataIndex: 'sequence', sortable: false, resizable: false},
+                    {header: "ECD Date", width: 80, dataIndex: 'ecdDate', sortable: false, resizable: false},
+                    {header: "Reason", width: 100, dataIndex: 'reason', sortable: false, resizable: false},
+                    {header: "Supporting Note", width: 260, dataIndex: 'supportingNote', sortable: false, resizable: false}
+                ],
+                renderTo:'ecdGridHolder',
+                width:460,
+                autoHeight:true,
+                enableHdMenu:false
+            });
+           
+            loadEcds();
+        }
+        
+        
+        
+        
         
         if(!commentsDisabled){
             
@@ -451,7 +496,24 @@
                         paymentPackLoaded = true;
                     }       
                 }
-            }      
+            }   
+
+            var ecdsLoaded = false;
+            function loadEcds(){
+                if(!hireMonitoringDetailsDisabled){
+                    
+                    if(!ecdsLoaded)
+                    {
+                        ecdDataStore.load(
+                        {
+                            params:
+                            {
+                                claimId : <s:property value="id" />
+                            }
+                        });   
+                    }
+                }
+            }  
     
         </script>        
         
@@ -649,7 +711,10 @@
                                         
                                     </td>
                                     <td>
-                                        &nbsp;
+                                         <s:action name="getHireMonitoringEcd" executeResult="true">
+                                            <s:param name="claimId"><s:property value="id" /></s:param>                                         
+                                            <s:param name="claimStatus"><s:property value="status" /></s:param> 
+                                        </s:action>  
                                     </td>
                                 </tr>
                             </table>

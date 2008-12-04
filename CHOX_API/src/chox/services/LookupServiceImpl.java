@@ -10,6 +10,7 @@ import chox.model.Insurer;
 import chox.model.LineOfBusiness;
 import chox.model.LookupItem;
 import chox.model.VehicleClass;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -19,7 +20,7 @@ import org.hibernate.criterion.Order;
  *
  * @author Emmanuel
  */
-public class LookupServiceImpl extends DataService implements LookupService {
+public class LookupServiceImpl extends DataService implements LookupService,Serializable {
 
     public List getStatuses() {
         List items = new ArrayList<LookupItem>();
