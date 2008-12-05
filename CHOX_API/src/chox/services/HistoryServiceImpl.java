@@ -2,10 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package chox.services;
 
-import chox.Util.DateHelper;
 import chox.model.History;
 import chox.model.Claim;
 import scsbre.engine.*;
@@ -15,117 +13,98 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
 
-public class HistoryServiceImpl extends DataService implements HistoryService{
-    
+public class HistoryServiceImpl extends DataService implements HistoryService {
+
     /*
      * isShowAll : true > SHOW ALL RECORDS WITH TYPE IS ERROR AND INFO
      * isShowAll : false > SHOW ALL RECORDS WITH TYPE IS ERROR ONLY
      * isPublic : true > SHOW ALL RECORDS WITH IS_PUBLIC IS TRUE ONLY
      * isPublic : false > SHOW ALL RECORDS REGARDLESS THE IS_PUBLIC
      */
-    
-    public List<History> getHistoryByClaim(Claim claim, Boolean isShowAll, Boolean isPublic){
-         
-        List histories = new ArrayList<History>();
-        
-        try {
-            Criteria criteria = getCurrentSession().createCriteria(History.class);
-            criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
-            
-            if(!isShowAll){
-                criteria.add(Restrictions.eq("type", "ERROR"));
-            }
-            
-            // SHOW TRUE RECORD ONLY IF IT IS NOT PUBLIC
-            if(isPublic){
-                criteria.add(Restrictions.eq("isPublic", true));
-            }
-            
-            criteria.addOrder(Order.asc("claim.id"));
-            criteria.addOrder(Order.asc("ruleId"));
-            
-            histories = criteria.list();
+    public List<History> getHistoryByClaim(Claim claim, Boolean isShowAll, Boolean isPublic) {
 
-        } catch (Throwable e) {
-           e.printStackTrace();
+        List histories = new ArrayList<History>();
+
+        Criteria criteria = getCurrentSession().createCriteria(History.class);
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
+
+        if (!isShowAll) {
+            criteria.add(Restrictions.eq("type", "ERROR"));
         }
-        
-        //
-        //
-        
+
+        // SHOW TRUE RECORD ONLY IF IT IS NOT PUBLIC
+        if (isPublic) {
+            criteria.add(Restrictions.eq("isPublic", true));
+        }
+
+        criteria.addOrder(Order.asc("claim.id"));
+        criteria.addOrder(Order.asc("ruleId"));
+
+        histories = criteria.list();
+
         return histories;
     }
-    
-    public List<History> getHistoryByClaimSortByDate(Claim claim, Boolean isShowAll, Boolean isPublic){
-         
+
+    public List<History> getHistoryByClaimSortByDate(Claim claim, Boolean isShowAll, Boolean isPublic) {
+
         List histories = new ArrayList<History>();
-        
-        try {
-            Criteria criteria = getCurrentSession().createCriteria(History.class);
-            criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
-            
-            if(!isShowAll){
-                criteria.add(Restrictions.eq("type", "ERROR"));
-            }
-            
-            // SHOW TRUE RECORD ONLY IF IT IS NOT PUBLIC
-            if(isPublic){
-                criteria.add(Restrictions.eq("isPublic", true));
-            }
-            
-            criteria.addOrder(Order.asc("createdDate"));
 
-            histories = criteria.list();
+        Criteria criteria = getCurrentSession().createCriteria(History.class);
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
 
-        } catch (Throwable e) {
-           e.printStackTrace();
+        if (!isShowAll) {
+            criteria.add(Restrictions.eq("type", "ERROR"));
         }
-        
-        //
-        //
-        
+
+        // SHOW TRUE RECORD ONLY IF IT IS NOT PUBLIC
+        if (isPublic) {
+            criteria.add(Restrictions.eq("isPublic", true));
+        }
+
+        criteria.addOrder(Order.asc("createdDate"));
+
+        histories = criteria.list();
+
         return histories;
-    }    
-    
-    public void logInvoiceValidationErrorMsg(RulesEngineResponse reponse, Claim claim){
-    
+    }
+
+    public void logInvoiceValidationErrorMsg(RulesEngineResponse reponse, Claim claim) {
+
         List<RuleEvaluation> results = reponse.getResults();
-        HistoryService hisService = new HistoryServiceImpl();
-        
-        for(int iCount=0; iCount<results.size(); iCount++){
-            
+
+        for (int iCount = 0; iCount < results.size(); iCount++) {
+
             RuleEvaluation rv = results.get(iCount);
             IBusinessRule rBusinessRule = rv.getRelatedRule();
-            
+
             String sType = "INFO";
-            if(rv.getResult()==RuleEvaluationResult.RuleFailed){
+            if (rv.getResult() == RuleEvaluationResult.RuleFailed) {
                 sType = "ERROR";
             }
 
             History history = new History();
             history.setClaim(claim);
             history.setIsPublic(rv.getIsVisibleToCHO());
-            history.setNarrative(rv.toString()+':'+rv.getResult());
+            history.setNarrative(rv.toString() + ':' + rv.getResult());
             history.setType(sType);
             history.setRuleId(rBusinessRule.getRuleId());
             history.setIsSystem(true);
-            hisService.saveHistory(history);
+            saveHistory(history);
         }
-        
+
     }
-    
-    public Boolean saveHistory(History history){
-        
+
+    public Boolean saveHistory(History history) {
+
         Boolean bFlag = true;
-        
+
         getCurrentSession().beginTransaction();
-        
-        try{
+
+        try {
             getCurrentSession().saveOrUpdate(history);
+            getCurrentSession().getTransaction().commit();
         } catch (Exception e) {
             getCurrentSession().getTransaction().rollback();
-        }finally{
-            getCurrentSession().getTransaction().commit();
         }
 
         return bFlag;

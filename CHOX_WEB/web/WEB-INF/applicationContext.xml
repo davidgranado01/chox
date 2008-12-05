@@ -29,6 +29,8 @@
     <bean id="insurerAlliasService" class="chox.services.InsurerAlliasServiceImpl" singleton="false"/>
     <bean id="chorganisationService" class="chox.services.ChorganisationServiceImpl" singleton="false"/>
     <bean id="choBandService" class="chox.services.ChoBandServiceImpl" singleton="false"/>
+    <bean id="globalConfigurationService" class="chox.services.GlobalConfigurationServiceImpl" singleton="false"/>
+    
     <bean id="uploadClaimXMLService" class="chox.services.UploadClaimXMLServiceImpl" singleton="false">
         <property name="vehicleClassService" ref="vehicleClassService" />
         <property name="engineerReportService" ref="engineerReportService" />
@@ -44,6 +46,7 @@
         <property name="insurerAlliasService" ref="insurerAlliasService" />
         <property name="chorganisationService" ref="chorganisationService" />
         <property name="choBandService" ref="choBandService" />
+        <property name="historyService" ref="historyService" />
     </bean>
 </beans> 
 

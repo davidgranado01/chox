@@ -9,7 +9,6 @@ import chox.model.ClaimStatus;
 import chox.model.EngineerReport;
 import chox.services.ClaimService;
 import chox.services.InvoiceService;
-import chox.services.InvoiceServiceImpl;
 import chox.services.ChoBandService;
 import chox.services.LookupService;
 import chox.web.data.PanelAction;
@@ -28,8 +27,7 @@ import chox.model.Chorganisation;
 import chox.model.Insurer;
 import chox.model.LookupItem;
 import chox.model.WebUser;
-import chox.services.ChorganisationService;
-import chox.services.InsurerAlliasService;
+import chox.services.HistoryService;
 import java.util.ArrayList;
 
 /**
@@ -51,6 +49,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private LookupService lookupService;
     private InvoiceService invoiceService;
     private ChoBandService choBandService;
+    private HistoryService historyService;
+    
     
     private String actionResult;
     private TabAccessibility tabAccessibility;
@@ -295,10 +295,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String reSubmitRejectedClaim() {
-        claim = constructeClaimForInvoiceValidation(claim);
-        InvoiceService invoiceService = new InvoiceServiceImpl();
-        RulesEngineResponse rep = invoiceService.XMLUploaderInvoiceValidation(claim);
-        String repStatus = rep.getStatus().name();
+        claim = constructeClaimForInvoiceValidation(claim);       
+        RulesEngineResponse reponse = invoiceService.XMLUploaderInvoiceValidation(claim);        
+        historyService.logInvoiceValidationErrorMsg(reponse, claim);
+        
+        String repStatus = reponse.getStatus().name();
 
         if (!repStatus.equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
             claim = service.getClaim(claim.getId());
@@ -403,8 +404,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (this.actionName.equalsIgnoreCase(REJECT)) {
             claim = constructeClaimForInvoiceValidation(claim);            
-            RulesEngineResponse rep = invoiceService.XMLUploaderInvoiceValidation(claim);
-
+            RulesEngineResponse reponse = invoiceService.XMLUploaderInvoiceValidation(claim);
+            historyService.logInvoiceValidationErrorMsg(reponse, claim);
+            
             claim = service.getClaim(claim.getId());
             claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
 
@@ -541,5 +543,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setChoBandService(ChoBandService choBandService) {
         this.choBandService = choBandService;
+    }
+
+    public void setHistoryService(HistoryService historyService) {
+        this.historyService = historyService;
     }
 }

@@ -771,17 +771,17 @@
     <script language="JavaScript">
     $(document).ready(function() { 
             var options = { 
-                success: showResponse  // post-submit callback 
+                success: showResponseAtt  // post-submit callback 
             }; 
 
             // bind form using 'ajaxForm' 
             $('#fAttachment').ajaxForm(options); 
     });
     
-    function showResponse(responseText, statusText)  { 
+    function showResponseAtt(responseText, statusText)  { 
         
         paymentPackLoaded = false;
-        
+        loadAttachments();
     } 
     
     function fileValidation(){

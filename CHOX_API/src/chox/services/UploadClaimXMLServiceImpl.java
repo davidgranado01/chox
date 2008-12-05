@@ -38,6 +38,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
     private InsurerAlliasService insurerAlliasService;
     private ChorganisationService chorganisationService;
     private ChoBandService choBandService;
+    private HistoryService historyService;
     
     public UploadClaimXMLServiceImpl()
     {        
@@ -205,6 +206,8 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                 
                 Claim BREClaim = constructeClaimForInvoiceValidation(xmlParseResult.getClaim());
                 RulesEngineResponse validationResult = invoiceService.XMLUploaderInvoiceValidation(BREClaim);
+                historyService.logInvoiceValidationErrorMsg(validationResult, BREClaim);
+                
                 String newClaimStatus = validationResult.getStatus().toString();
                 xmlParseResult.getClaim().setStatus(newClaimStatus);
                 
@@ -1645,6 +1648,10 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
 
     public void setChoBandService(ChoBandService choBandService) {
         this.choBandService = choBandService;
+    }
+
+    public void setHistoryService(HistoryService historyService) {
+        this.historyService = historyService;
     }
     
 }

@@ -298,9 +298,6 @@ hireDateToPicker.render('hireDateToDiv');
                         <s:if test="filterAccessibility.isNewClaimsToBeroutedAccessible">
                             <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedUnrouted');" >New Claims to be routed (<s:property value="filterRecordCounter.newClaimsToBeroutedCount" />)</a></li>
                         </s:if> 
-                        <s:if test="filterAccessibility.isClaimsAwaitingClaimsHandlingPaymentAccessible">
-                            <li><a href="javascript:showClaimByStatus('ClaimsAwaitingClaimsHandlingPayment');" >Claims Awaiting Claims Handling Payment (<s:property value="filterRecordCounter.claimsAwaitingClaimsHandlingPaymentCount" />)</a></li>
-                        </s:if> 
                         <s:if test="filterAccessibility.isApprovedInvoicesAwaitingPaymentAccessible">
                             <li><a href="javascript:showClaimByStatus('AwaitingInvoicePayment');" >Approved Invoices Awaiting Payment (<s:property value="filterRecordCounter.approvedInvoicesAwaitingPaymentCount" />)</a></li>
                         </s:if> 

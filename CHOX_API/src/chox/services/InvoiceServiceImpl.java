@@ -1,7 +1,6 @@
 package chox.services;
 
 import chox.Util.XmlHelper;
-import chox.Util.DateHelper;
 import chox.model.*;
 import scsbre.engine.*;
 
@@ -10,10 +9,7 @@ public class InvoiceServiceImpl extends DataService implements InvoiceService {
     public RulesEngineResponse XMLUploaderInvoiceValidation(Claim claim) {
 
         RulesEngine r = RulesEngine.getInstance(claim);
-        RulesEngineResponse reponse = r.ResolveStatus();
-
-        HistoryService historyService = new HistoryServiceImpl();
-        historyService.logInvoiceValidationErrorMsg(reponse, claim);
+        RulesEngineResponse reponse = r.ResolveStatus(); 
 
         return reponse;
     }
@@ -45,4 +41,5 @@ public class InvoiceServiceImpl extends DataService implements InvoiceService {
         getCurrentSession().update(invoice);
         getCurrentSession().getTransaction().commit();
     }
+
 }
