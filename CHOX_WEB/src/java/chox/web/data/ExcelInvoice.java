@@ -29,8 +29,6 @@ public class ExcelInvoice {
         this.claimStatus = claimStatus;
     }
 
-
-
     public Invoice getInvoice() {
         return invoice;
     }

@@ -47,20 +47,14 @@
         </action>
         <action name="doExportExcel" method="execute" class="chox.web.actions.ExcelGeneratorAction">
             <result name="success" type="stream">
-                <param name="contentType">application/vnd.ms-excel
-                </param>
-                <param name="inputName">excelStream
-                </param>
-                <param name="contentDisposition">filename="excel_report.xls"
-                </param>
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excelStream</param>
+                <param name="contentDisposition">filename="excel_report.xls"</param>
+                <param name="bufferSize">10240</param>
             </result>
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp
             </result>
         </action>    
-        
-        
-        
-        
         <!-- ACTION PANEL VALIDATION By Carlson !-->
         <action name="getActionPanel" class="chox.web.actions.ClaimAction" method="getActionPanel">
             <result name="updateclaimlineofbusiness">/jsp/user/actionPanel/p_routeUnacknowledgedClaim.jsp

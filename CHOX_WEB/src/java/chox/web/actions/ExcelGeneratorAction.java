@@ -30,6 +30,10 @@ import chox.model.Witness;
 import chox.model.Injury;
 import chox.model.Solicitor;
 import chox.model.Invoice;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import chox.Util.FileHelper;
 
 public class ExcelGeneratorAction extends BaseAction implements SessionAware{
     
@@ -44,16 +48,39 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware{
         this.excelStream = excelStream;
     }
     
+/*    
      public static void main(String[] args)throws IOException {
-            ClaimService cs = new ClaimServiceImpl();
-            List<Claim> claims = cs.listAllClaims();
-            ExcelGeneratorAction excelhelper = new ExcelGeneratorAction();
-            ByteArrayOutputStream buf = excelhelper.generateXML(claims);
+            
+         File thisFile = new File(".");
+         System.out.println("A:::::::::::::"+thisFile.getParent());
+         System.out.println("B:::::::::::::"+thisFile.getPath());
+         System.out.println("C:::::::::::::"+thisFile.getAbsolutePath());
+         System.out.println("D:::::::::::::"+thisFile.getCanonicalPath());
+         
+         String classPath = ExcelGeneratorAction.class.getClassLoader().getResource("claimTemplate.xls").getPath();
+         int dotIndex = classPath.lastIndexOf("claimTemplate.xls");
+         classPath = classPath.substring(0, classPath.lastIndexOf("claimTemplate.xls"));
+         System.out.println("AS:"+classPath);
+         
+         //System.out.println("E:"+classPath.lastIndexOf("claimTemplate.xls"));
+         //System.out.println("E:"+classPath.substring(0, classPath.lastIndexOf("claimTemplate.xls")));
+         
+         ClaimService cs = new ClaimServiceImpl();
+         List<Claim> claims = cs.listAllClaims();
+         ExcelGeneratorAction excelhelper = new ExcelGeneratorAction();
+         ByteArrayOutputStream buf = excelhelper.generateXML(claims);  
     }
-    
+    */ 
     
     public ByteArrayOutputStream doExportExcel()throws IOException{
 
+        File thisFile = new File(".");
+        System.out.println("A:::::::::::::"+thisFile.getParent());
+        System.out.println("B:::::::::::::"+thisFile.getPath());
+        System.out.println("C:::::::::::::"+thisFile.getAbsolutePath());
+        System.out.println("D:::::::::::::"+thisFile.getCanonicalPath());
+        System.out.println("AS:"+FileHelper.getClassPath());         
+         
         ClaimSearchCriteria c = null;
         ByteArrayOutputStream buf = null;
         
@@ -64,7 +91,6 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware{
             if(c!=null){
                 ClaimService cs = new ClaimServiceImpl();
                 List<Claim> claims = cs.searchClaims(c);
-
                 ExcelGeneratorAction excelhelper = new ExcelGeneratorAction();
                 if(claims.size()>0){
                     buf = excelhelper.generateXML(claims);
@@ -75,8 +101,6 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware{
     }
 
     public ByteArrayOutputStream generateXML(List<Claim> claims) throws IOException{
-        
-        //InputStream templateIS = Thread.currentThread().getContextClassLoader().getResourceAsStream("claimTemplate.xls");
         
         InputStream templateIS = ExcelGeneratorAction.class.getClassLoader().getResourceAsStream("claimTemplate.xls");
         
@@ -94,6 +118,10 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware{
         
         List<ExcelClaim> excelClaims = new ArrayList<ExcelClaim>();
         
+        // Integer cCount = 0;
+        // Integer vCount = 0;
+        
+        
         //for(Integer iCount=0; iCount<claims.size(); iCount++){
         for(Claim claim : claims){
             
@@ -101,11 +129,19 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware{
             ExcelInvoice ev = new ExcelInvoice();
             ec.setClaim(claim);
             
+            // cCount ++;
+            
+            // System.out.println("CLAIM CHO : "+claim.getChoReference());
+            
             if(claim.getInvoice()!=null){
+                
+                ev = new ExcelInvoice();
                 ev.setInvoice(claim.getInvoice());
                 ev.setChoReference(claim.getChoReference());
                 ev.setClaimStatus(claim.getStatus());
                 invoices.add(ev);
+                // vCount ++;
+                // System.out.println("INVOICE CHO : "+ev.getChoReference());
             }
             
             if(claim.getIncident()!=null){
@@ -115,6 +151,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware{
                 if(witness!=null){
                     ec.setWitness(witness);
                 }
+                
                 // GET INJURY
                 Injury injury = injuryService.getInjuryByIncident(claim.getIncident());
                 
@@ -142,6 +179,9 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware{
             comments.addAll(commentService.getCommentByClaimId(claim.getId()));
         }
         
+        // System.out.println("CLAIM COUNT:"+cCount);
+        // System.out.println("INVOICE COUNT:"+vCount);
+        
         if(histories.size()<=0){
             histories = new ArrayList<History>();
         }
@@ -156,18 +196,13 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware{
         excelMap.put("histories", histories);
         excelMap.put("comments", comments);
 
-        //String templateFileName = "C:\\Project Workplace\\Greefinch\\choxida\\trunk\\CHOX_WEB\\web\\excelTemplate\\claimTemplate.xls";
-        //String destFileName = "C:\\Users\\Carlson\\Desktop\\ExcelTest\\excel_report.xls";
+        // String templateFileName = "C:\\Tomcat 6.0\\webapps\\CHOX\\WEB-INF\\classes\\claimTemplate.xls";
+        // String destFileName = "C:\\Users\\Carlson\\Desktop\\ExcelTest\\excel_report.xls";
+        // transformer.transformXLS(templateFileName, excelMap, destFileName);
         
         XLSTransformer transformer = new XLSTransformer();
-        //transformer.transformXLS(templateFileName, excelMap, destFileName);
         transformer.transformXLS(templateIS, excelMap).write(out);
         
-        /*
-        XLSTransformer transformer = new XLSTransformer();
-        HSSFWorkbook results  = transformer.transformXLS(Thread.currentThread().getContextClassLoader().getResourceAsStream("daysToProvideInstructions.xls"), beans);
-         */
-
         excelMap.clear();
         return out;
     }
@@ -178,8 +213,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware{
         String returnStr = "";
         
         if(buf != null){
-            String excelString = buf.toString();
-            excelStream = new ByteArrayInputStream(excelString.getBytes(), 0, excelString.length());
+            excelStream = new ByteArrayInputStream(buf.toByteArray());
             returnStr = "success";
         }else{
             returnStr = "failed";
