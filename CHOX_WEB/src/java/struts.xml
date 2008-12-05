@@ -47,10 +47,10 @@
         </action>
         <action name="doExportExcel" method="execute" class="chox.web.actions.ExcelGeneratorAction">
             <result name="success" type="stream">
-                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="contentType">application/ms-excel</param>
                 <param name="inputName">excelStream</param>
                 <param name="contentDisposition">filename="excel_report.xls"</param>
-                <param name="bufferSize">10240</param>
+                <param name="bufferSize">99999</param>
             </result>
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp
             </result>
