@@ -50,8 +50,8 @@ public class HistoryServiceImpl extends DataService implements HistoryService{
            e.printStackTrace();
         }
         
-        //getCurrentSession().clear();
-        //getCurrentSession().disconnect();
+        //
+        //
         
         return histories;
     }
@@ -81,8 +81,8 @@ public class HistoryServiceImpl extends DataService implements HistoryService{
            e.printStackTrace();
         }
         
-        //getCurrentSession().clear();
-        //getCurrentSession().disconnect();
+        //
+        //
         
         return histories;
     }    

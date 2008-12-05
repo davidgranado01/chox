@@ -8,10 +8,10 @@
     <property column="date" name="date" not-null="true"/>
     <property column="location" name="location"/>
     <property column="incident_description" name="incidentDescription"/>
-    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy" not-null="true"/>
-    <property column="created_date" name="createdDate" not-null="true"/>
-    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy" not-null="true"/>
-    <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+    <property column="created_date" name="createdDate"/>
+    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="is_police_involved" name="isPoliceInvolved" not-null="true"/>
   </class>
 </hibernate-mapping>

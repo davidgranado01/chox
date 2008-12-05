@@ -28,8 +28,8 @@ public class InjuryServiceImpl extends DataService implements InjuryService {
            e.printStackTrace();
         }
         
-        getCurrentSession().clear();
-        getCurrentSession().disconnect();
+        
+        
         
         return injury;
     }

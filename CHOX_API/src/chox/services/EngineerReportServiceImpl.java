@@ -40,8 +40,8 @@ public class EngineerReportServiceImpl extends DataService implements EngineerRe
             e.printStackTrace();
         }
 
-        getCurrentSession().clear();
-        getCurrentSession().disconnect();
+        
+        
         return engineerreport;
     }
 

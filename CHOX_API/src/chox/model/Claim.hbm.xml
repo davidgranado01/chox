@@ -9,8 +9,8 @@
     <property column="policy_holder_contact_date" name="policyHolderContactDate"/>
     <property column="cho_reference" name="choReference"/>
     <property column="status" name="status" not-null="true"/>
-    <property column="created_date" name="createdDate" not-null="true"/>
-    <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
+    <property column="created_date" name="createdDate"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="claim_number" name="claimNumber"/>
     <property column="gta_notice_date" name="gtaNoticeDate"/>
     <property column="credit_agreement_date" name="creditAgreementDate"/>
@@ -29,8 +29,8 @@
     <many-to-one class="chox.model.LineOfBusiness" column="line_of_business_id" name="lineOfBusiness"/>
     <many-to-one cascade="save-update,delete" class="chox.model.ThirdParty" column="third_party_id" name="thirdParty" unique="true"/>
     <many-to-one class="chox.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire"/>
-    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy" not-null="true"/>
-    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy" not-null="true"/>
+    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <filter condition=":chorganisationId = chorganisation_id" name="Claim_CHOFilter"/>
     <filter condition=":insurerId = insurer_id" name="Claim_InsurerFilter"/>
   </class>

@@ -49,10 +49,10 @@
     <property column="dual_control_qty" name="dualControlQty"/>
     <property column="delivery_collection_fee" name="deliveryCollectionFee"/>
     <property column="delivery_collection_qty" name="deliveryCollectionQty"/>
-    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy" not-null="true"/>
-    <property column="created_date" name="createdDate" not-null="true"/>
-    <property column="last_modified_by" name="lastModifiedBy" not-null="true"/>
-    <property column="last_modified_date" name="lastModifiedDate" not-null="true"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+    <property column="created_date" name="createdDate"/>
+    <many-to-one class="chox.model.WebUser" column="last_nodified_by" name="lastModifiedBy"/>    
+    <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="is_payment_mode" name="isPaymentMode"/>
     <property column="is_engineer_decision_approved" name="isEngineerDecisionApproved"/>
     <property column="engineer_invoice_review_notes" name="engineerInvoiceReviewNotes"/>

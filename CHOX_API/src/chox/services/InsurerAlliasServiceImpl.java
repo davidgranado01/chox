@@ -29,8 +29,8 @@ public class InsurerAlliasServiceImpl extends DataService implements InsurerAlli
            e.printStackTrace();
         }
         
-        getCurrentSession().clear();
-        getCurrentSession().disconnect();
+        
+        
         
         
         return insurerallias;

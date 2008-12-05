@@ -47,8 +47,8 @@ public class ChoBandServiceImpl extends DataService implements ChoBandService{
            e.printStackTrace();
         }
         
-        getCurrentSession().clear();
-        getCurrentSession().disconnect();
+        
+        
         return band;
     }
     
@@ -66,8 +66,8 @@ public class ChoBandServiceImpl extends DataService implements ChoBandService{
            e.printStackTrace();
         }
         
-        getCurrentSession().clear();
-        getCurrentSession().disconnect();
+        
+        
         return band;
     }    
 }

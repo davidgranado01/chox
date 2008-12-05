@@ -122,8 +122,8 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             e.printStackTrace();
         }
 
-        getCurrentSession().clear();
-        getCurrentSession().disconnect();
+        
+        
 
         return isExist;
     }
@@ -144,8 +144,8 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             e.printStackTrace();
         }
 
-        getCurrentSession().clear();
-        getCurrentSession().disconnect();
+        
+        
         return claim;
     }
    

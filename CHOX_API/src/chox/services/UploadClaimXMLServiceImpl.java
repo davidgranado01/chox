@@ -23,8 +23,7 @@ import chox.Util.DateHelper;
 import chox.data.SecurityInfoProvider;
 import chox.data.UploadStatus;
 
-public class UploadClaimXMLServiceImpl implements UploadClaimXMLService {
-    private SecurityInfoProvider securityInforProvider;
+public class UploadClaimXMLServiceImpl extends DataService implements UploadClaimXMLService {
     private VehicleClassService vehicleClassService;
     private EngineerReportService engineerReportService;
     private IncidentService incidentService;
@@ -161,7 +160,7 @@ public class UploadClaimXMLServiceImpl implements UploadClaimXMLService {
             
         //System.out.println("START********************************************");
         
-        Session currentSession = SessionFactoryUtils.getSession(HibernateUtil.getSessionFactory(), true);
+        Session currentSession = getCurrentSession();
         currentSession.beginTransaction();
         
         xmlParseResult.setCurrentSession(currentSession);
@@ -254,11 +253,6 @@ public class UploadClaimXMLServiceImpl implements UploadClaimXMLService {
 
     private XMLParseResult saveClaimForXMLUploader(
             XMLParseResult xmlParseResult) {
-
-        xmlParseResult.getClaim().setCreatedBy(securityInforProvider.getCurrentUSer());
-        xmlParseResult.getClaim().setCreatedDate(DateHelper.getCurrentTimeStamp());
-        xmlParseResult.getClaim().setLastModifiedBy(securityInforProvider.getCurrentUSer());
-        xmlParseResult.getClaim().setLastModifiedDate(DateHelper.getCurrentTimeStamp());
 
         if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
             xmlParseResult.getClaim().setCustomer(xmlParseResult.getClaim().getCustomer());
@@ -1653,7 +1647,4 @@ public class UploadClaimXMLServiceImpl implements UploadClaimXMLService {
         this.choBandService = choBandService;
     }
     
-     public void setSecurityInfoProvider(SecurityInfoProvider provider) {
-        this.securityInforProvider = provider;       
-    }
 }

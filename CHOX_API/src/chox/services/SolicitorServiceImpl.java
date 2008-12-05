@@ -28,8 +28,8 @@ public class SolicitorServiceImpl  extends DataService implements SolicitorServi
            e.printStackTrace();
         }
         
-        getCurrentSession().clear();
-        getCurrentSession().disconnect();
+        
+        
         
         return solicitor;
     }

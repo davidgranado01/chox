@@ -29,8 +29,8 @@ public class CommentServiceImpl extends DataService implements CommentService {
             e.printStackTrace();
         }
 
-        getCurrentSession().clear();
-        getCurrentSession().disconnect();
+        
+        
 
         return comments;
     }
@@ -50,8 +50,8 @@ public class CommentServiceImpl extends DataService implements CommentService {
             e.printStackTrace();
         }
 
-        getCurrentSession().clear();
-        getCurrentSession().disconnect();
+        
+        
 
         return comments;
     }

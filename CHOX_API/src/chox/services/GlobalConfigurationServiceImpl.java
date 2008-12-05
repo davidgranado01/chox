@@ -28,8 +28,8 @@ public class GlobalConfigurationServiceImpl extends DataService implements Globa
            e.printStackTrace();
         }
         
-        getCurrentSession().clear();
-        getCurrentSession().disconnect();
+        
+        
         
         
         return obj;

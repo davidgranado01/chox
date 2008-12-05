@@ -51,8 +51,8 @@ public class HireMonitoringDetailServiceImpl extends DataService implements Hire
     e.printStackTrace();
     }
     
-    getCurrentSession().clear();
-    getCurrentSession().disconnect();
+    
+    
     
     
     return insurer;

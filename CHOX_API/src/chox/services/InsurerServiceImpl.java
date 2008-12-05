@@ -25,8 +25,8 @@ public class InsurerServiceImpl extends DataService implements InsurerService {
            e.printStackTrace();
         }
         
-        getCurrentSession().clear();
-        getCurrentSession().disconnect();
+        
+        
         
         
         return insurer;

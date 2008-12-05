@@ -27,8 +27,8 @@ public class WitnessServiceImpl extends DataService implements WitnessService {
            e.printStackTrace();
         }
         
-        getCurrentSession().clear();
-        getCurrentSession().disconnect();
+        
+        
         
         return witness;
     }

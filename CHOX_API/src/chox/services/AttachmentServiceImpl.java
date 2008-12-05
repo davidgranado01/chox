@@ -46,8 +46,8 @@ public class AttachmentServiceImpl extends DataService implements AttachmentServ
             e.printStackTrace();
         }
 
-        getCurrentSession().clear();
-        getCurrentSession().disconnect();
+        
+        
 
         return attachments;
     }    
