@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 import scsbre.model.ICHOrganisationInfo;
 
-public class Chorganisation implements Serializable, ICHOrganisationInfo
+public class Chorganisation implements Serializable,Auditable, ICHOrganisationInfo
 {
 	/** 
 	 * This attribute maps to the column id in the chorganisation table.
@@ -66,7 +66,7 @@ public class Chorganisation implements Serializable, ICHOrganisationInfo
 	/** 
 	 * This attribute maps to the column created_by in the chorganisation table.
 	 */
-	protected int createdBy;
+	protected WebUser createdBy;
 
 	/** 
 	 * This attribute maps to the column created_date in the chorganisation table.
@@ -76,7 +76,7 @@ public class Chorganisation implements Serializable, ICHOrganisationInfo
 	/** 
 	 * This attribute maps to the column last_modified_by in the chorganisation table.
 	 */
-	protected int lastModifiedBy;
+	protected WebUser lastModifiedBy;
 
 	/** 
 	 * This attribute maps to the column last_modified_date in the chorganisation table.
@@ -316,7 +316,7 @@ public class Chorganisation implements Serializable, ICHOrganisationInfo
 	 * 
 	 * @return int
 	 */
-	public int getCreatedBy()
+	public WebUser getCreatedBy()
 	{
 		return createdBy;
 	}
@@ -326,7 +326,7 @@ public class Chorganisation implements Serializable, ICHOrganisationInfo
 	 * 
 	 * @param createdBy
 	 */
-	public void setCreatedBy(int createdBy)
+	public void setCreatedBy(WebUser createdBy)
 	{
 		this.createdBy = createdBy;
 	}
@@ -356,7 +356,7 @@ public class Chorganisation implements Serializable, ICHOrganisationInfo
 	 * 
 	 * @return int
 	 */
-	public int getLastModifiedBy()
+	public WebUser getLastModifiedBy()
 	{
 		return lastModifiedBy;
 	}
@@ -366,7 +366,7 @@ public class Chorganisation implements Serializable, ICHOrganisationInfo
 	 * 
 	 * @param lastModifiedBy
 	 */
-	public void setLastModifiedBy(int lastModifiedBy)
+	public void setLastModifiedBy(WebUser lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
 	}

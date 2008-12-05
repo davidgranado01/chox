@@ -18,7 +18,7 @@ public class InjuryServiceImpl extends DataService implements InjuryService {
         Injury injury = null;
         
         try {
-            Criteria criteria = currentSession.createCriteria(Injury.class).add(Restrictions.eq("incident", incident));
+            Criteria criteria = getCurrentSession().createCriteria(Injury.class).add(Restrictions.eq("incident", incident));
             injuries = criteria.list();
             if(injuries.size()>0){
                 injury = (Injury)injuries.get(0);
@@ -28,8 +28,8 @@ public class InjuryServiceImpl extends DataService implements InjuryService {
            e.printStackTrace();
         }
         
-        currentSession.clear();
-        currentSession.disconnect();
+        getCurrentSession().clear();
+        getCurrentSession().disconnect();
         
         return injury;
     }
@@ -39,12 +39,7 @@ public class InjuryServiceImpl extends DataService implements InjuryService {
         if ((xmlParseResult.getInjuries()) != null) {
 
             for (Integer i = 0; i < (xmlParseResult.getInjuries()).size(); i++) {
-
-                ((xmlParseResult.getInjuries()).get(i)).setCreatedBy(getCurrentUser().getId());
-                ((xmlParseResult.getInjuries()).get(i)).setCreatedDate(DateHelper.getCurrentTimeStamp());
-                ((xmlParseResult.getInjuries()).get(i)).setLastModifiedBy(getCurrentUser().getId());
-                ((xmlParseResult.getInjuries()).get(i)).setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
+           
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
                     try {
@@ -60,13 +55,13 @@ public class InjuryServiceImpl extends DataService implements InjuryService {
     }
 
     public Injury getObject(int id) {
-        return (Injury)currentSession.get(Injury.class, id);
+        return (Injury)getCurrentSession().get(Injury.class, id);
     }
 
     public void updateObject(Injury injury) {
 
-        currentSession.beginTransaction();
-        currentSession.update(injury);
-        currentSession.getTransaction().commit();
+        getCurrentSession().beginTransaction();
+        getCurrentSession().update(injury);
+        getCurrentSession().getTransaction().commit();
     }
 }

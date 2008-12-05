@@ -17,10 +17,7 @@ public interface ClaimService {
     public Long getHireUpdateAnomaliesCount();
     //
     public List searchClaims(ClaimSearchCriteria searchCriteria);
-    public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, Boolean isAllowPartialUpload);
-    public XMLParseResult saveClaimForXMLUploader(XMLParseResult xmlParseResult);
     public void updateClaim(Claim claim);
-    public void updateIncident(Incident incident);
     // CARLSON
     public Boolean isClaimReferenceNumberExist(String sClaimReferenceNumber);
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);

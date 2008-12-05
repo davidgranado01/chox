@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class LineOfBusiness implements Serializable
+public class LineOfBusiness implements Serializable,Auditable
 {
 	/** 
 	 * This attribute maps to the column id in the line_of_business table.
@@ -52,7 +52,7 @@ public class LineOfBusiness implements Serializable
 	/** 
 	 * This attribute maps to the column created_by in the line_of_business table.
 	 */
-	protected int createdBy;
+	protected WebUser createdBy;
 
 	/** 
 	 * This attribute maps to the column created_date in the line_of_business table.
@@ -62,7 +62,7 @@ public class LineOfBusiness implements Serializable
 	/** 
 	 * This attribute maps to the column last_modified_by in the line_of_business table.
 	 */
-	protected int lastModifiedBy;
+	protected WebUser lastModifiedBy;
 
 	/** 
 	 * This attribute maps to the column last_modified_date in the line_of_business table.
@@ -252,7 +252,7 @@ public class LineOfBusiness implements Serializable
 	 * 
 	 * @return int
 	 */
-	public int getCreatedBy()
+	public WebUser getCreatedBy()
 	{
 		return createdBy;
 	}
@@ -262,7 +262,7 @@ public class LineOfBusiness implements Serializable
 	 * 
 	 * @param createdBy
 	 */
-	public void setCreatedBy(int createdBy)
+	public void setCreatedBy(WebUser createdBy)
 	{
 		this.createdBy = createdBy;
 	}
@@ -292,7 +292,7 @@ public class LineOfBusiness implements Serializable
 	 * 
 	 * @return int
 	 */
-	public int getLastModifiedBy()
+	public WebUser getLastModifiedBy()
 	{
 		return lastModifiedBy;
 	}
@@ -302,7 +302,7 @@ public class LineOfBusiness implements Serializable
 	 * 
 	 * @param lastModifiedBy
 	 */
-	public void setLastModifiedBy(int lastModifiedBy)
+	public void setLastModifiedBy(WebUser lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
 	}

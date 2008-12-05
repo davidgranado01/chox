@@ -12,7 +12,7 @@ import scsbre.model.IHireInfo;
 import scsbre.model.IVehicleClassInfo;
 import java.math.BigDecimal;
 
-public class Claim implements Serializable, IClaimInfo {
+public class Claim implements Serializable,Auditable,IClaimInfo {
 
     protected ChoBand choband;
     /** 
@@ -46,7 +46,7 @@ public class Claim implements Serializable, IClaimInfo {
     /** 
      * This attribute maps to the column last_modified_by in the claim table.
      */
-    protected int lastModifiedBy;
+    protected WebUser lastModifiedBy;
     /** 
      * This attribute maps to the column last_modified_date in the claim table.
      */
@@ -241,7 +241,7 @@ public class Claim implements Serializable, IClaimInfo {
      * 
      * @return int
      */
-    public int getLastModifiedBy() {
+    public WebUser getLastModifiedBy() {
         return lastModifiedBy;
     }
 
@@ -250,7 +250,7 @@ public class Claim implements Serializable, IClaimInfo {
      * 
      * @param lastModifiedBy
      */
-    public void setLastModifiedBy(int lastModifiedBy) {
+    public void setLastModifiedBy(WebUser lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
 

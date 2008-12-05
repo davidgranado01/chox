@@ -25,7 +25,7 @@ public class ChoBandOrganisation implements Serializable
 	/** 
 	 * This attribute maps to the column created_by in the cho_band_organisation table.
 	 */
-	protected int createdBy;
+	protected WebUser createdBy;
 
 	/** 
 	 * This attribute maps to the column created_date in the cho_band_organisation table.
@@ -35,7 +35,7 @@ public class ChoBandOrganisation implements Serializable
 	/** 
 	 * This attribute maps to the column last_modified_by in the cho_band_organisation table.
 	 */
-	protected int lastModifiedBy;
+	protected WebUser lastModifiedBy;
 
 	/** 
 	 * This attribute maps to the column last_modified_date in the cho_band_organisation table.
@@ -115,7 +115,7 @@ public class ChoBandOrganisation implements Serializable
 	 * 
 	 * @return int
 	 */
-	public int getCreatedBy()
+	public WebUser getCreatedBy()
 	{
 		return createdBy;
 	}
@@ -125,7 +125,7 @@ public class ChoBandOrganisation implements Serializable
 	 * 
 	 * @param createdBy
 	 */
-	public void setCreatedBy(int createdBy)
+	public void setCreatedBy(WebUser createdBy)
 	{
 		this.createdBy = createdBy;
 	}
@@ -155,7 +155,7 @@ public class ChoBandOrganisation implements Serializable
 	 * 
 	 * @return int
 	 */
-	public int getLastModifiedBy()
+	public WebUser getLastModifiedBy()
 	{
 		return lastModifiedBy;
 	}
@@ -165,7 +165,7 @@ public class ChoBandOrganisation implements Serializable
 	 * 
 	 * @param lastModifiedBy
 	 */
-	public void setLastModifiedBy(int lastModifiedBy)
+	public void setLastModifiedBy(WebUser lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
 	}

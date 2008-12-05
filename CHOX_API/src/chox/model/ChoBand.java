@@ -5,7 +5,7 @@ import java.util.Date;
 import java.math.BigDecimal;
 import scsbre.model.ICHOBandInfo;
 
-public class ChoBand implements Serializable, ICHOBandInfo
+public class ChoBand implements Auditable, Serializable, ICHOBandInfo
 {
 	/** 
 	 * This attribute maps to the column insurer_id in the cho_band table.
@@ -15,7 +15,7 @@ public class ChoBand implements Serializable, ICHOBandInfo
 	/** 
 	 * This attribute maps to the column created_by in the cho_band table.
 	 */
-	protected int createdBy;
+	protected WebUser createdBy;
 
 	/** 
 	 * This attribute maps to the column created_date in the cho_band table.
@@ -25,7 +25,7 @@ public class ChoBand implements Serializable, ICHOBandInfo
 	/** 
 	 * This attribute maps to the column last_modified_by in the cho_band table.
 	 */
-	protected int lastModifiedBy;
+	protected WebUser lastModifiedBy;
 
 	/** 
 	 * This attribute maps to the column last_modified_date in the cho_band table.
@@ -144,7 +144,7 @@ public class ChoBand implements Serializable, ICHOBandInfo
 	 * 
 	 * @return int
 	 */
-	public int getCreatedBy()
+	public WebUser getCreatedBy()
 	{
 		return createdBy;
 	}
@@ -154,7 +154,7 @@ public class ChoBand implements Serializable, ICHOBandInfo
 	 * 
 	 * @param createdBy
 	 */
-	public void setCreatedBy(int createdBy)
+	public void setCreatedBy(WebUser createdBy)
 	{
 		this.createdBy = createdBy;
 	}
@@ -184,7 +184,7 @@ public class ChoBand implements Serializable, ICHOBandInfo
 	 * 
 	 * @return int
 	 */
-	public int getLastModifiedBy()
+	public WebUser getLastModifiedBy()
 	{
 		return lastModifiedBy;
 	}
@@ -194,7 +194,7 @@ public class ChoBand implements Serializable, ICHOBandInfo
 	 * 
 	 * @param lastModifiedBy
 	 */
-	public void setLastModifiedBy(int lastModifiedBy)
+	public void setLastModifiedBy(WebUser lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
 	}

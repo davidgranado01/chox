@@ -8,27 +8,22 @@ import chox.model.*;
 public class CustomerServiceImpl extends DataService implements CustomerService{
     
     public Customer getObject(int id) {
-        return (Customer) currentSession.get(Customer.class, id);
+        return (Customer) getCurrentSession().get(Customer.class, id);
     }
 
     public void updateObject(Customer customer) {
 
-        currentSession.beginTransaction();
-        currentSession.update(customer);
-        currentSession.getTransaction().commit();
+        getCurrentSession().beginTransaction();
+        getCurrentSession().update(customer);
+        getCurrentSession().getTransaction().commit();
     }
 
     public XMLParseResult saveCustomerForXMLUploader(XMLParseResult xmlParseResult){
         
         Customer customer = xmlParseResult.getClaim().getCustomer();
         
-        if(customer!=null){
-        
-            customer.setCreatedBy(getCurrentUser().getId());
-            customer.setCreatedDate(DateHelper.getCurrentTimeStamp());
-            customer.setLastModifiedBy(getCurrentUser().getId());
-            customer.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
+        if(customer!=null){       
+         
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
                 try{

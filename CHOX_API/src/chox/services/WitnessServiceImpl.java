@@ -16,7 +16,7 @@ public class WitnessServiceImpl extends DataService implements WitnessService {
         Witness witness = null;
         
         try {
-            Criteria criteria = currentSession.createCriteria(Witness.class).add(Restrictions.eq("incident", incident));
+            Criteria criteria = getCurrentSession().createCriteria(Witness.class).add(Restrictions.eq("incident", incident));
             witnesses = criteria.list();
             
             if(witnesses.size()>0){
@@ -27,21 +27,21 @@ public class WitnessServiceImpl extends DataService implements WitnessService {
            e.printStackTrace();
         }
         
-        currentSession.clear();
-        currentSession.disconnect();
+        getCurrentSession().clear();
+        getCurrentSession().disconnect();
         
         return witness;
     }
     
     public Witness getObject(int id) {
-        return (Witness) currentSession.get(Witness.class, id);
+        return (Witness) getCurrentSession().get(Witness.class, id);
     }
 
     public void updateObject(Witness witness) {
 
-        currentSession.beginTransaction();
-        currentSession.update(witness);
-        currentSession.getTransaction().commit();
+        getCurrentSession().beginTransaction();
+        getCurrentSession().update(witness);
+        getCurrentSession().getTransaction().commit();
     }
 
     public XMLParseResult saveWitnessForXMLUploader(XMLParseResult xmlParseResult) {
@@ -54,11 +54,6 @@ public class WitnessServiceImpl extends DataService implements WitnessService {
             for (Integer i = 0; i < witnesses.size(); i++) {
 
                 Witness witness = witnesses.get(i);
-
-                witness.setCreatedBy(getCurrentUser().getId());
-                witness.setCreatedDate(DateHelper.getCurrentTimeStamp());
-                witness.setLastModifiedBy(getCurrentUser().getId());
-                witness.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
 
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 

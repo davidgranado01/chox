@@ -21,7 +21,7 @@ public class AccessibilityServiceImpl extends DataService implements Accessibili
     public HashMap getAccessibilityMap() {
         HashMap map = new HashMap();
 
-        Criteria c = currentSession.createCriteria(Accessibility.class);
+        Criteria c = getCurrentSession().createCriteria(Accessibility.class);
         for (Object o : c.list()) {
             Accessibility a = (Accessibility) o;
 
@@ -40,7 +40,7 @@ public class AccessibilityServiceImpl extends DataService implements Accessibili
 
     public void AddNewAccessibility(List<Accessibility> aList, short right) {
         
-        currentSession.beginTransaction();
+        getCurrentSession().beginTransaction();
         for (Accessibility a : aList) {
 
             AccessibilityItem item = new AccessibilityItem();
@@ -52,10 +52,10 @@ public class AccessibilityServiceImpl extends DataService implements Accessibili
             
             a.setAccessibilityItem(items);
             
-            currentSession.save(a);
+            getCurrentSession().save(a);
             
         }
-       currentSession.getTransaction().commit();
+       getCurrentSession().getTransaction().commit();
 
     }
 }

@@ -2,13 +2,14 @@ package chox.model;
 
 import java.util.Date;
 import chox.model.Insurer;
+import java.io.Serializable;
 
-public class InsurerAllias {
+public class InsurerAllias implements Serializable,Auditable {
     protected int id;
     protected String alliasName;
-    protected int createdBy;
+    protected WebUser createdBy;
     protected Date createdDate;
-    protected int lastModifiedBy;
+    protected WebUser lastModifiedBy;
     protected Date lastModifiedDate;
     protected Insurer insurer;
 
@@ -20,11 +21,11 @@ public class InsurerAllias {
         this.alliasName = alliasName;
     }
 
-    public int getCreatedBy() {
+    public WebUser getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(int createdBy) {
+    public void setCreatedBy(WebUser createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -52,11 +53,11 @@ public class InsurerAllias {
         this.insurer = insurer;
     }
 
-    public int getLastModifiedBy() {
+    public WebUser getLastModifiedBy() {
         return lastModifiedBy;
     }
 
-    public void setLastModifiedBy(int lastModifiedBy) {
+    public void setLastModifiedBy(WebUser lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
 

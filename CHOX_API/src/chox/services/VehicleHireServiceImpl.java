@@ -10,11 +10,6 @@ public class VehicleHireServiceImpl extends DataService implements VehicleHireSe
 
         if ((xmlParseResult.getClaim().getVehicleHire()) != null) {
 
-            (xmlParseResult.getClaim().getVehicleHire()).setCreatedBy(getCurrentUser().getId());
-            (xmlParseResult.getClaim().getVehicleHire()).setCreatedDate(DateHelper.getCurrentTimeStamp());
-            (xmlParseResult.getClaim().getVehicleHire()).setLastModifiedBy(getCurrentUser().getId());
-            (xmlParseResult.getClaim().getVehicleHire()).setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
                 try {
@@ -30,13 +25,13 @@ public class VehicleHireServiceImpl extends DataService implements VehicleHireSe
     }
 
     public VehicleHire getObject(int id) {
-        return (VehicleHire) currentSession.get(VehicleHire.class, id);
+        return (VehicleHire) getCurrentSession().get(VehicleHire.class, id);
     }
 
     public void updateObject(VehicleHire vehicleHire) {
 
-        currentSession.beginTransaction();
-        currentSession.update(vehicleHire);
-        currentSession.getTransaction().commit();
+        getCurrentSession().beginTransaction();
+        getCurrentSession().update(vehicleHire);
+        getCurrentSession().getTransaction().commit();
     }
 }

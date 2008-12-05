@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import scsbre.model.IExtrasInfo;
 import scsbre.model.IInvoiceInfo;
 
-public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo
+public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo,Auditable
 {
 	/** 
 	 * This attribute maps to the column id in the invoice table.
@@ -236,7 +236,7 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo
 	/** 
 	 * This attribute maps to the column created_by in the invoice table.
 	 */
-	protected int createdBy;
+	protected WebUser createdBy;
 
 	/** 
 	 * This attribute maps to the column created_date in the invoice table.
@@ -246,7 +246,7 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo
 	/** 
 	 * This attribute maps to the column last_nodified_by in the invoice table.
 	 */
-	protected int lastNodifiedBy;
+	protected WebUser lastModifiedBy;
 
 	/** 
 	 * This attribute maps to the column last_modified_date in the invoice table.
@@ -1173,7 +1173,7 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo
 	 * 
 	 * @return int
 	 */
-	public int getCreatedBy()
+	public WebUser getCreatedBy()
 	{
 		return createdBy;
 	}
@@ -1183,7 +1183,7 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo
 	 * 
 	 * @param createdBy
 	 */
-	public void setCreatedBy(int createdBy)
+	public void setCreatedBy(WebUser createdBy)
 	{
 		this.createdBy = createdBy;
 	}
@@ -1208,14 +1208,14 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo
 		this.createdDate = createdDate;
 	}
 
-	public int getLastNodifiedBy()
+	public WebUser getLastModifiedBy()
 	{
-		return lastNodifiedBy;
+		return lastModifiedBy;
 	}
 
-	public void setLastNodifiedBy(int lastNodifiedBy)
+	public void setLastModifiedBy(WebUser lastModifiedBy)
 	{
-		this.lastNodifiedBy = lastNodifiedBy;
+		this.lastModifiedBy = lastModifiedBy;
 	}
 
 	public java.util.Date getLastModifiedDate()
@@ -1283,6 +1283,6 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo
     public void setVatAmountCollected(BigDecimal vatAmountCollected) {
         this.vatAmountCollected = vatAmountCollected;
     }
-    
+
     
 }

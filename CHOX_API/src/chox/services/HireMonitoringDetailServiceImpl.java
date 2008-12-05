@@ -14,7 +14,7 @@ public class HireMonitoringDetailServiceImpl extends DataService implements Hire
     public HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int hiremonitoringdetailid) {
         HireMonitoringDetail hiremonitoringdetail = new HireMonitoringDetail();
 
-        Criteria criteria = currentSession.createCriteria(HireMonitoringDetail.class);
+        Criteria criteria = getCurrentSession().createCriteria(HireMonitoringDetail.class);
         criteria.add(Restrictions.eq("id", hiremonitoringdetailid));
 
         hiremonitoringdetail = (HireMonitoringDetail) criteria.uniqueResult();
@@ -24,21 +24,14 @@ public class HireMonitoringDetailServiceImpl extends DataService implements Hire
     }
 
     public HireMonitoringDetail getObject(int id) {
-        return (HireMonitoringDetail) currentSession.get(HireMonitoringDetail.class, id);
+        return (HireMonitoringDetail) getCurrentSession().get(HireMonitoringDetail.class, id);
     }
 
     public void updateObject(HireMonitoringDetail hireMonitoringDetail) {
 
-        if (hireMonitoringDetail.getId() <= 0) {
-            hireMonitoringDetail.setCreatedBy(getCurrentUser().getId());
-            hireMonitoringDetail.setCreatedDate(DateHelper.getCurrentTimeStamp());
-            hireMonitoringDetail.setLastModifiedBy(getCurrentUser().getId());
-            hireMonitoringDetail.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
-        }
-        currentSession.beginTransaction();
-        currentSession.saveOrUpdate(hireMonitoringDetail);
-        currentSession.getTransaction().commit();
+        getCurrentSession().beginTransaction();
+        getCurrentSession().saveOrUpdate(hireMonitoringDetail);
+        getCurrentSession().getTransaction().commit();
 
 
     }
@@ -49,7 +42,7 @@ public class HireMonitoringDetailServiceImpl extends DataService implements Hire
     
     try {
     
-    Criteria criteria = currentSession.createCriteria(Insurer.class);
+    Criteria criteria = getCurrentSession().createCriteria(Insurer.class);
     criteria.add(Restrictions.eq("name", s));
     
     insurer = (Insurer) criteria.uniqueResult();
@@ -58,8 +51,8 @@ public class HireMonitoringDetailServiceImpl extends DataService implements Hire
     e.printStackTrace();
     }
     
-    currentSession.clear();
-    currentSession.disconnect();
+    getCurrentSession().clear();
+    getCurrentSession().disconnect();
     
     
     return insurer;

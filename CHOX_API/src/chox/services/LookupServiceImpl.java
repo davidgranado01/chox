@@ -33,22 +33,22 @@ public class LookupServiceImpl extends DataService implements LookupService,Seri
 
     public List getLineOfBusinesses() {
 
-        Criteria criteria = currentSession.createCriteria(LineOfBusiness.class);
+        Criteria criteria = getCurrentSession().createCriteria(LineOfBusiness.class);
         return criteria.list();
     }
 
     public List getSuppliers() {
-        Criteria criteria = currentSession.createCriteria(Chorganisation.class);
+        Criteria criteria = getCurrentSession().createCriteria(Chorganisation.class);
         return criteria.list();
     }
 
     public List getInsurers() {
-        Criteria criteria = currentSession.createCriteria(Insurer.class);
+        Criteria criteria = getCurrentSession().createCriteria(Insurer.class);
         return criteria.list();
     }
 
     public List getVehicleClasses() {
-        Criteria criteria = currentSession.createCriteria(VehicleClass.class).addOrder(Order.asc("name"));
+        Criteria criteria = getCurrentSession().createCriteria(VehicleClass.class).addOrder(Order.asc("name"));
         return criteria.list();
     }
 }

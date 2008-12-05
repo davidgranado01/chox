@@ -16,7 +16,7 @@ import org.xml.sax.SAXParseException;
 import com.filesystemsoftware.utils.XMLUtils;
 import com.filesystemsoftware.utils.Logger;
 import chox.model.*;
-import chox.services.XmlProcessController;
+import chox.services.UploadClaimXMLServiceImpl;
 
 public class XMLUploaderTest {
     

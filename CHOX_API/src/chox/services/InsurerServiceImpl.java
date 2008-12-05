@@ -16,7 +16,7 @@ public class InsurerServiceImpl extends DataService implements InsurerService {
         
         try {
             
-            Criteria criteria = currentSession.createCriteria(Insurer.class);
+            Criteria criteria = getCurrentSession().createCriteria(Insurer.class);
             criteria.add(Restrictions.eq("name", s));
             
             insurer = (Insurer) criteria.uniqueResult();
@@ -25,8 +25,8 @@ public class InsurerServiceImpl extends DataService implements InsurerService {
            e.printStackTrace();
         }
         
-        currentSession.clear();
-        currentSession.disconnect();
+        getCurrentSession().clear();
+        getCurrentSession().disconnect();
         
         
         return insurer;
@@ -43,7 +43,7 @@ public class InsurerServiceImpl extends DataService implements InsurerService {
     }
     
     public Insurer getObject(int id) {
-       return (Insurer)currentSession.get(Insurer.class, id);
+       return (Insurer)getCurrentSession().get(Insurer.class, id);
     }    
     
 }

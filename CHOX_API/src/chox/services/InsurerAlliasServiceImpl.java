@@ -21,7 +21,7 @@ public class InsurerAlliasServiceImpl extends DataService implements InsurerAlli
         
         try {
             
-            Criteria criteria = currentSession.createCriteria(InsurerAllias.class);
+            Criteria criteria = getCurrentSession().createCriteria(InsurerAllias.class);
             criteria.add(Restrictions.eq("alliasName", s));
             insurerallias = (InsurerAllias) criteria.uniqueResult();
             
@@ -29,8 +29,8 @@ public class InsurerAlliasServiceImpl extends DataService implements InsurerAlli
            e.printStackTrace();
         }
         
-        currentSession.clear();
-        currentSession.disconnect();
+        getCurrentSession().clear();
+        getCurrentSession().disconnect();
         
         
         return insurerallias;

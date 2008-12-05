@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 import scsbre.model.ICustomerVehicleDamageInfo;
 
-public class Customer implements Serializable, ICustomerVehicleDamageInfo
+public class Customer implements Serializable, Auditable, ICustomerVehicleDamageInfo
 {
 	/** 
 	 * This attribute maps to the column id in the customer table.
@@ -116,7 +116,7 @@ public class Customer implements Serializable, ICustomerVehicleDamageInfo
 	/** 
 	 * This attribute maps to the column created_by in the customer table.
 	 */
-	protected int createdBy;
+	protected WebUser createdBy;
 
 	/** 
 	 * This attribute maps to the column created_date in the customer table.
@@ -126,7 +126,7 @@ public class Customer implements Serializable, ICustomerVehicleDamageInfo
 	/** 
 	 * This attribute maps to the column last_modified_by in the customer table.
 	 */
-	protected int lastModifiedBy;
+	protected WebUser lastModifiedBy;
 
 	/** 
 	 * This attribute maps to the column last_modified_date in the customer table.
@@ -599,7 +599,7 @@ public class Customer implements Serializable, ICustomerVehicleDamageInfo
 	 * 
 	 * @return int
 	 */
-	public int getCreatedBy()
+	public WebUser getCreatedBy()
 	{
 		return createdBy;
 	}
@@ -609,7 +609,7 @@ public class Customer implements Serializable, ICustomerVehicleDamageInfo
 	 * 
 	 * @param createdBy
 	 */
-	public void setCreatedBy(int createdBy)
+	public void setCreatedBy(WebUser createdBy)
 	{
 		this.createdBy = createdBy;
 	}
@@ -639,7 +639,7 @@ public class Customer implements Serializable, ICustomerVehicleDamageInfo
 	 * 
 	 * @return int
 	 */
-	public int getLastModifiedBy()
+	public WebUser getLastModifiedBy()
 	{
 		return lastModifiedBy;
 	}
@@ -649,7 +649,7 @@ public class Customer implements Serializable, ICustomerVehicleDamageInfo
 	 * 
 	 * @param lastModifiedBy
 	 */
-	public void setLastModifiedBy(int lastModifiedBy)
+	public void setLastModifiedBy(WebUser lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
 	}

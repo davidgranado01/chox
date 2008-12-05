@@ -11,10 +11,10 @@ public class UserServiceImpl  extends DataService implements UserService {
 
     public WebUser findByEmail(String email) {
 
-        currentSession.beginTransaction();
-        Criteria criteria = currentSession.createCriteria(WebUser.class).add(Restrictions.eq("email", email));
+        getCurrentSession().beginTransaction();
+        Criteria criteria = getCurrentSession().createCriteria(WebUser.class).add(Restrictions.eq("email", email));
         WebUser result = (WebUser) criteria.uniqueResult();
-        currentSession.getTransaction().commit();
+        getCurrentSession().getTransaction().commit();
         return result;
     }
 

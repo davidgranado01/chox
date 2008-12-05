@@ -5,12 +5,12 @@ import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
 
-public class HireMonitoringDetail implements Serializable
+public class HireMonitoringDetail implements Serializable,Auditable
 {
 	/** 
 	 * This attribute maps to the column created_by in the hire_monitoring_detail table.
 	 */
-	protected int createdBy;
+	protected WebUser createdBy;
 
 	/** 
 	 * This attribute maps to the column created_date in the hire_monitoring_detail table.
@@ -20,7 +20,7 @@ public class HireMonitoringDetail implements Serializable
 	/** 
 	 * This attribute maps to the column last_modified_by in the hire_monitoring_detail table.
 	 */
-	protected int lastModifiedBy;
+	protected WebUser lastModifiedBy;
 
 	/** 
 	 * This attribute maps to the column last_modified_date in the hire_monitoring_detail table.
@@ -85,7 +85,7 @@ public class HireMonitoringDetail implements Serializable
 	 * 
 	 * @return int
 	 */
-	public int getCreatedBy()
+	public WebUser getCreatedBy()
 	{
 		return createdBy;
 	}
@@ -95,7 +95,7 @@ public class HireMonitoringDetail implements Serializable
 	 * 
 	 * @param createdBy
 	 */
-	public void setCreatedBy(int createdBy)
+	public void setCreatedBy(WebUser createdBy)
 	{
 		this.createdBy = createdBy;
 	}
@@ -125,7 +125,7 @@ public class HireMonitoringDetail implements Serializable
 	 * 
 	 * @return int
 	 */
-	public int getLastModifiedBy()
+	public WebUser getLastModifiedBy()
 	{
 		return lastModifiedBy;
 	}
@@ -135,7 +135,7 @@ public class HireMonitoringDetail implements Serializable
 	 * 
 	 * @param lastModifiedBy
 	 */
-	public void setLastModifiedBy(int lastModifiedBy)
+	public void setLastModifiedBy(WebUser lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
 	}

@@ -9,13 +9,13 @@ import java.io.Serializable;
 import java.util.Date;
 import chox.model.Claim;
 
-public class Comment implements Serializable{
+public class Comment implements Serializable,Auditable{
     
     protected int id;
     protected String comment;
     protected WebUser createdBy;
     protected Date createdDate;
-    protected int lastModifiedBy;
+    protected WebUser lastModifiedBy;
     protected Date lastModifiedDate;
     //protected int claimId;
     protected Claim claim;
@@ -52,11 +52,11 @@ public class Comment implements Serializable{
         this.id = id;
     }
 
-    public int getLastModifiedBy() {
+    public WebUser getLastModifiedBy() {
         return lastModifiedBy;
     }
 
-    public void setLastModifiedBy(int lastModifiedBy) {
+    public void setLastModifiedBy(WebUser lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
 

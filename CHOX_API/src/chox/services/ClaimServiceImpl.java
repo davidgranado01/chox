@@ -24,20 +24,20 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
     public static final String NEW_CLAIM = "1st Notification";
 
     public Claim getClaim(int id) {
-        return (Claim) currentSession.get(Claim.class, id);
+        return (Claim) getCurrentSession().get(Claim.class, id);
     }
 
     public void updateClaim(Claim claim) {
 
-        currentSession.beginTransaction();
-        currentSession.update(claim);
-        currentSession.getTransaction().commit();
+        getCurrentSession().beginTransaction();
+        getCurrentSession().update(claim);
+        getCurrentSession().getTransaction().commit();
 
     }
 
     public List listAllClaims() {
 
-        Criteria criteria = currentSession.createCriteria(Claim.class);
+        Criteria criteria = getCurrentSession().createCriteria(Claim.class);
         List claims = criteria.list();
 
         return claims;
@@ -45,14 +45,14 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
 
     public List listClaimsByStatus(String status) {
 
-        Criteria criteria = currentSession.createCriteria(Claim.class).add(Restrictions.eq("status", status));
+        Criteria criteria = getCurrentSession().createCriteria(Claim.class).add(Restrictions.eq("status", status));
         List claims = criteria.list();
 
         return claims;
     }
 
     public Long getCountByStatus(String status) {
-        Long count = (Long) currentSession.createQuery("select count(*) from Claim where status = '" + status + "'").uniqueResult();
+        Long count = (Long) getCurrentSession().createQuery("select count(*) from Claim where status = '" + status + "'").uniqueResult();
 
         return count;
     }
@@ -66,7 +66,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
     }
 
     public List searchClaims(ClaimSearchCriteria searchCriteria) {
-        Criteria criteria = currentSession.createCriteria(Claim.class);
+        Criteria criteria = getCurrentSession().createCriteria(Claim.class);
 
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
             criteria.add(Restrictions.like("choReference", searchCriteria.getSupplierReference()).ignoreCase());
@@ -112,7 +112,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
 
         try {
 
-            Criteria criteria = currentSession.createCriteria(Claim.class);
+            Criteria criteria = getCurrentSession().createCriteria(Claim.class);
             criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
 
             if ((criteria.list()).size() > 0) {
@@ -122,8 +122,8 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             e.printStackTrace();
         }
 
-        currentSession.clear();
-        currentSession.disconnect();
+        getCurrentSession().clear();
+        getCurrentSession().disconnect();
 
         return isExist;
     }
@@ -135,7 +135,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
 
         try {
 
-            Criteria criteria = currentSession.createCriteria(
+            Criteria criteria = getCurrentSession().createCriteria(
                     Claim.class);
             criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
             claim = (Claim) criteria.uniqueResult();
@@ -144,54 +144,11 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             e.printStackTrace();
         }
 
-        currentSession.clear();
-        currentSession.disconnect();
+        getCurrentSession().clear();
+        getCurrentSession().disconnect();
         return claim;
     }
-
-    public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, Boolean isAllowPartialUpload) {
-        XmlProcessController thisCtrl = new XmlProcessController();
-        return thisCtrl.XMLValidationProcess(claimXMLFile, isAllowPartialUpload);
-    }
-
-    public XMLParseResult saveClaimForXMLUploader(
-            XMLParseResult xmlParseResult) {
-
-        xmlParseResult.getClaim().setCreatedBy(getCurrentUser());
-        xmlParseResult.getClaim().setCreatedDate(DateHelper.getCurrentTimeStamp());
-        xmlParseResult.getClaim().setLastModifiedBy(getCurrentUser().getId());
-        xmlParseResult.getClaim().setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
-        if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
-            xmlParseResult.getClaim().setCustomer(xmlParseResult.getClaim().getCustomer());
-            xmlParseResult.getClaim().setThirdParty(xmlParseResult.getClaim().getThirdParty());
-            xmlParseResult.getClaim().setInsurer(xmlParseResult.getClaim().getInsurer());
-            xmlParseResult.getClaim().setChorganisation(xmlParseResult.getClaim().getChorganisation());
-            xmlParseResult.getClaim().setLineOfBusiness(xmlParseResult.getClaim().getLineOfBusiness());
-            xmlParseResult.getClaim().setIncident(xmlParseResult.getClaim().getIncident());
-            xmlParseResult.getClaim().setInvoice(xmlParseResult.getClaim().getInvoice());
-            xmlParseResult.getClaim().setEngineerReport(xmlParseResult.getClaim().getEngineerReport());
-            xmlParseResult.getClaim().setVehicleHire(xmlParseResult.getClaim().getVehicleHire());
-
-            try {
-                xmlParseResult.getCurrentSession().saveOrUpdate(xmlParseResult.getClaim());
-            } catch (Exception e) {
-                xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
-            }
-
-        }
-        return xmlParseResult;
-    }
-
-    public void updateIncident(Incident incident) {
-        currentSession.beginTransaction();
-        try {
-            currentSession.update(incident);
-            currentSession.getTransaction().commit();
-        } catch (Exception ex) {
-            currentSession.getTransaction().rollback();
-        }
-    }
+   
 }
 
 

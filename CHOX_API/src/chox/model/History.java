@@ -3,7 +3,7 @@ package chox.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class History implements Serializable
+public class History implements Serializable,Auditable
 {
 	/** 
 	 * This attribute maps to the column id in the history table.
@@ -26,7 +26,7 @@ public class History implements Serializable
 	/** 
 	 * This attribute maps to the column last_modified_by in the history table.
 	 */
-	protected int lastModifiedBy;
+	protected WebUser lastModifiedBy;
 
 	/** 
 	 * This attribute maps to the column last_modified_date in the history table.
@@ -114,7 +114,7 @@ public class History implements Serializable
 	 * 
 	 * @return int
 	 */
-	public int getLastModifiedBy()
+	public WebUser getLastModifiedBy()
 	{
 		return lastModifiedBy;
 	}
@@ -124,7 +124,7 @@ public class History implements Serializable
 	 * 
 	 * @param lastModifiedBy
 	 */
-	public void setLastModifiedBy(int lastModifiedBy)
+	public void setLastModifiedBy(WebUser lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
 	}

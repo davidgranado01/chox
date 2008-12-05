@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import scsbre.model.IVehicleClassInfo;
 
-public class VehicleClass implements Serializable, IVehicleClassInfo
+public class VehicleClass implements Serializable, IVehicleClassInfo,Auditable
 {
 	/** 
 	 * This attribute maps to the column id in the vehicle_class table.
@@ -27,7 +27,7 @@ public class VehicleClass implements Serializable, IVehicleClassInfo
 	/** 
 	 * This attribute maps to the column created_by in the vehicle_class table.
 	 */
-	protected int createdBy;
+	protected WebUser createdBy;
 
 	/** 
 	 * This attribute maps to the column created_date in the vehicle_class table.
@@ -37,7 +37,7 @@ public class VehicleClass implements Serializable, IVehicleClassInfo
 	/** 
 	 * This attribute maps to the column last_modified_by in the vehicle_class table.
 	 */
-	protected int lastModifiedBy;
+	protected WebUser lastModifiedBy;
 
 	/** 
 	 * This attribute maps to the column last_modified_date in the vehicle_class table.
@@ -117,7 +117,7 @@ public class VehicleClass implements Serializable, IVehicleClassInfo
 	 * 
 	 * @return int
 	 */
-	public int getCreatedBy()
+	public WebUser getCreatedBy()
 	{
 		return createdBy;
 	}
@@ -127,7 +127,7 @@ public class VehicleClass implements Serializable, IVehicleClassInfo
 	 * 
 	 * @param createdBy
 	 */
-	public void setCreatedBy(int createdBy)
+	public void setCreatedBy(WebUser createdBy)
 	{
 		this.createdBy = createdBy;
 	}
@@ -157,7 +157,7 @@ public class VehicleClass implements Serializable, IVehicleClassInfo
 	 * 
 	 * @return int
 	 */
-	public int getLastModifiedBy()
+	public WebUser getLastModifiedBy()
 	{
 		return lastModifiedBy;
 	}
@@ -167,7 +167,7 @@ public class VehicleClass implements Serializable, IVehicleClassInfo
 	 * 
 	 * @param lastModifiedBy
 	 */
-	public void setLastModifiedBy(int lastModifiedBy)
+	public void setLastModifiedBy(WebUser lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
 	}

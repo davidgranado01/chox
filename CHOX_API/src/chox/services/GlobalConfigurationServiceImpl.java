@@ -19,7 +19,7 @@ public class GlobalConfigurationServiceImpl extends DataService implements Globa
         
         try {
             
-            Criteria criteria = currentSession.createCriteria(GlobalConfiguration.class);
+            Criteria criteria = getCurrentSession().createCriteria(GlobalConfiguration.class);
             criteria.add(Restrictions.eq("parameter", s));
             
             obj = (GlobalConfiguration) criteria.uniqueResult();
@@ -28,8 +28,8 @@ public class GlobalConfigurationServiceImpl extends DataService implements Globa
            e.printStackTrace();
         }
         
-        currentSession.clear();
-        currentSession.disconnect();
+        getCurrentSession().clear();
+        getCurrentSession().disconnect();
         
         
         return obj;

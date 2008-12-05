@@ -20,15 +20,28 @@ import scsbre.engine.*;
 import java.util.List;
 import chox.Util.TextHelper;
 import chox.Util.DateHelper;
+import chox.data.SecurityInfoProvider;
 import chox.data.UploadStatus;
 
-public class XmlProcessController {
+public class UploadClaimXMLServiceImpl implements UploadClaimXMLService {
+    private SecurityInfoProvider securityInforProvider;
+    private VehicleClassService vehicleClassService;
+    private EngineerReportService engineerReportService;
+    private IncidentService incidentService;
+    private InjuryService injuryService;
+    private CustomerService customerService;
+    private InvoiceService invoiceService;
+    private ClaimService claimService;
+    private WitnessService witnessService;
+    private ThirdPartyService thirdPartyService;
+    private VehicleHireService vehicleHireService;
+    private SolicitorService solicitorService;
+    private InsurerAlliasService insurerAlliasService;
+    private ChorganisationService chorganisationService;
+    private ChoBandService choBandService;
     
-    VehicleClassService vehicleClassService;
-    
-    public XmlProcessController()
-    {
-        vehicleClassService = new VehicleClassServiceImpl();
+    public UploadClaimXMLServiceImpl()
+    {        
     }
     
     public static void main(String[] args) {
@@ -61,7 +74,7 @@ public class XmlProcessController {
                     try {
                         count++;
                         
-                        XmlProcessController thisCtrl = new XmlProcessController();
+                        UploadClaimXMLServiceImpl thisCtrl = new UploadClaimXMLServiceImpl();
 
                         XMLParseResult xmlParseResult = new XMLParseResult();
                         xmlParseResult = thisCtrl.xmlSchemaValidateProcess(xmlParseResult, doc, re, isAllowPartialUpload);
@@ -83,9 +96,9 @@ public class XmlProcessController {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-    }
+    }   
     
-    public ArrayList<XMLParseResult> XMLValidationProcess(File claimXMLFile, Boolean isAllowPartialUpload) {
+    public ArrayList<XMLParseResult> processXML(File claimXMLFile, Boolean isAllowPartialUpload) {
 
         
         ArrayList<XMLParseResult> xmlParseResults = new ArrayList<XMLParseResult>();
@@ -189,12 +202,10 @@ public class XmlProcessController {
                 Boolean isEngReportExist = false;
                 if(xmlParseResult.getClaim().getEngineerReport()!=null){
                     isEngReportExist = true;
-                }
-
-                InvoiceService invoiceservice = new InvoiceServiceImpl();
+                }               
                 
                 Claim BREClaim = constructeClaimForInvoiceValidation(xmlParseResult.getClaim());
-                RulesEngineResponse validationResult = invoiceservice.XMLUploaderInvoiceValidation(BREClaim);
+                RulesEngineResponse validationResult = invoiceService.XMLUploaderInvoiceValidation(BREClaim);
                 String newClaimStatus = validationResult.getStatus().toString();
                 xmlParseResult.getClaim().setStatus(newClaimStatus);
                 
@@ -235,6 +246,41 @@ public class XmlProcessController {
 
         return xmlParseResult;
     }
+    
+     public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, Boolean isAllowPartialUpload) {
+        UploadClaimXMLServiceImpl thisCtrl = new UploadClaimXMLServiceImpl();
+        return thisCtrl.processXML(claimXMLFile, isAllowPartialUpload);
+    }
+
+    private XMLParseResult saveClaimForXMLUploader(
+            XMLParseResult xmlParseResult) {
+
+        xmlParseResult.getClaim().setCreatedBy(securityInforProvider.getCurrentUSer());
+        xmlParseResult.getClaim().setCreatedDate(DateHelper.getCurrentTimeStamp());
+        xmlParseResult.getClaim().setLastModifiedBy(securityInforProvider.getCurrentUSer());
+        xmlParseResult.getClaim().setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+
+        if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
+            xmlParseResult.getClaim().setCustomer(xmlParseResult.getClaim().getCustomer());
+            xmlParseResult.getClaim().setThirdParty(xmlParseResult.getClaim().getThirdParty());
+            xmlParseResult.getClaim().setInsurer(xmlParseResult.getClaim().getInsurer());
+            xmlParseResult.getClaim().setChorganisation(xmlParseResult.getClaim().getChorganisation());
+            xmlParseResult.getClaim().setLineOfBusiness(xmlParseResult.getClaim().getLineOfBusiness());
+            xmlParseResult.getClaim().setIncident(xmlParseResult.getClaim().getIncident());
+            xmlParseResult.getClaim().setInvoice(xmlParseResult.getClaim().getInvoice());
+            xmlParseResult.getClaim().setEngineerReport(xmlParseResult.getClaim().getEngineerReport());
+            xmlParseResult.getClaim().setVehicleHire(xmlParseResult.getClaim().getVehicleHire());
+
+            try {
+                xmlParseResult.getCurrentSession().saveOrUpdate(xmlParseResult.getClaim());
+            } catch (Exception e) {
+                xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
+            }
+
+        }
+        return xmlParseResult;
+    }
+
     
     private Claim constructeClaimForInvoiceValidation(Claim claim){
         
@@ -286,32 +332,21 @@ public class XmlProcessController {
         return xmlParseResult;
     }
     
-    private XMLParseResult saveXMLRecord(XMLParseResult xmlParseResult){
-
-        EngineerReportService erService = new EngineerReportServiceImpl();
-        IncidentService icService = new IncidentServiceImpl();
-        InjuryService ijService = new InjuryServiceImpl();
-        CustomerService ctService = new CustomerServiceImpl();
-        InvoiceService ivService = new InvoiceServiceImpl();
-        ClaimService csService = new ClaimServiceImpl();
-        WitnessService wnService = new WitnessServiceImpl();
-        ThirdPartyService tpService = new ThirdPartyServiceImpl();
-        VehicleHireService vhService = new VehicleHireServiceImpl();
-        SolicitorService slService = new SolicitorServiceImpl();
+    private XMLParseResult saveXMLRecord(XMLParseResult xmlParseResult){       
         
         if(!xmlParseResult.getIsClaimExist()){
-            xmlParseResult = ctService.saveCustomerForXMLUploader(xmlParseResult);
-            xmlParseResult = tpService.saveThirdPartyForXMLUploader(xmlParseResult);
-            xmlParseResult = icService.saveIncidentForXMLUploader(xmlParseResult);
-            xmlParseResult = wnService.saveWitnessForXMLUploader(xmlParseResult);
-            xmlParseResult = ijService.saveInjuryForXMLUploader(xmlParseResult);
-            xmlParseResult = slService.saveSolicitorForXMLUploader(xmlParseResult);        
+            xmlParseResult = customerService.saveCustomerForXMLUploader(xmlParseResult);
+            xmlParseResult = thirdPartyService.saveThirdPartyForXMLUploader(xmlParseResult);
+            xmlParseResult = incidentService.saveIncidentForXMLUploader(xmlParseResult);
+            xmlParseResult = witnessService.saveWitnessForXMLUploader(xmlParseResult);
+            xmlParseResult = injuryService.saveInjuryForXMLUploader(xmlParseResult);
+            xmlParseResult = solicitorService.saveSolicitorForXMLUploader(xmlParseResult);        
         }
 
-        xmlParseResult = erService.saveEngineerReportForXMLUploader(xmlParseResult);
-        xmlParseResult = vhService.saveVehicleHireForXMLUploader(xmlParseResult);
-        xmlParseResult = ivService.saveInvoiceForXMLUploader(xmlParseResult);
-        xmlParseResult = csService.saveClaimForXMLUploader(xmlParseResult); 
+        xmlParseResult = engineerReportService.saveEngineerReportForXMLUploader(xmlParseResult);
+        xmlParseResult = vehicleHireService.saveVehicleHireForXMLUploader(xmlParseResult);
+        xmlParseResult = invoiceService.saveInvoiceForXMLUploader(xmlParseResult);
+        xmlParseResult = saveClaimForXMLUploader(xmlParseResult); 
         
         return xmlParseResult;
     }
@@ -373,23 +408,19 @@ public class XmlProcessController {
                 tGtaNoticeDate = DateHelper.getCurrentTimeStamp();
             }
 
-            ClaimService thisCtrl = new ClaimServiceImpl();
-
-                if(thisCtrl.isClaimReferenceNumberExist(strCHOReference)){
+                if(claimService.isClaimReferenceNumberExist(strCHOReference)){
 
                     // CONFIGURATION TO CHECK XML UPLOAD STATUS
                     xmlParseResult.setIsClaimExist(true);
 
-                    // GET EXISTING CLAIM INFORMATION
-                    ClaimService claimService = new ClaimServiceImpl();
+                    // GET EXISTING CLAIM INFORMATION                   
                     claim = claimService.getClaimByCHOReferenceNumber(strCHOReference);
 
                     // LOG CLAIM CURRENT STATUS
                     xmlParseResult.setSExistingClaimStatus(claim.getStatus());
 
-                    // HARDCODE CHO BAND INFORMATION
-                    ChoBandService chobandservice = new ChoBandServiceImpl();
-                    ChoBand choband = chobandservice.getDummyChoBand();
+                    // HARDCODE CHO BAND INFORMATION                   
+                    ChoBand choband = choBandService.getDummyChoBand();
                     claim.setChoband(choband);
 
                 }else{
@@ -402,9 +433,8 @@ public class XmlProcessController {
                     claim.setCreditAgreementDate(tCreditAgreement);
                     claim.setGtaNoticeDate(tGtaNoticeDate);
                     claim.setIndemnityAmount(new BigDecimal("0.00"));
-                    claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
-                    ChorganisationService chorgService = new ChorganisationServiceImpl();
-                    claim.setChorganisation(chorgService.getCurrentCHOrganisation());
+                    claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));                    
+                    claim.setChorganisation(chorganisationService.getCurrentCHOrganisation());
                 }
             }
         //}
@@ -551,9 +581,8 @@ public class XmlProcessController {
                 }
                 
                 // GET INSURER INFORMATION
-                String insurerAlliasName = XmlHelper.getNodeValue(thisElement, "name");
-                InsurerAlliasService thisISCtrl = new InsurerAlliasServiceImpl();
-                InsurerAllias insurerallias = thisISCtrl.getInsurerByAlliasName(insurerAlliasName);
+                String insurerAlliasName = XmlHelper.getNodeValue(thisElement, "name");                
+                InsurerAllias insurerallias = insurerAlliasService.getInsurerByAlliasName(insurerAlliasName);
 
                 if(insurerallias!=null){
                     if(insurerallias.getInsurer()!=null){
@@ -653,8 +682,7 @@ public class XmlProcessController {
                 
                 // GET INSURER INFORMATION
                 String insurerAlliasName = XmlHelper.getNodeValue(thisElement, "name");
-                InsurerAlliasService thisISCtrl = new InsurerAlliasServiceImpl();
-                InsurerAllias insurerallias = thisISCtrl.getInsurerByAlliasName(insurerAlliasName);
+                InsurerAllias insurerallias = insurerAlliasService.getInsurerByAlliasName(insurerAlliasName);
 
                 if(insurerallias!=null){
                     if(insurerallias.getInsurer()!=null){
@@ -1563,5 +1591,69 @@ public class XmlProcessController {
         }
         
         return xmlParseResult;
+    }
+
+    public void setVehicleClassService(VehicleClassService vehicleClassService) {
+        this.vehicleClassService = vehicleClassService;
+    }
+
+    public void setEngineerReportService(EngineerReportService engineerReportService) {
+        this.engineerReportService = engineerReportService;
+    }
+
+    public void setIncidentService(IncidentService incidentService) {
+        this.incidentService = incidentService;
+    }
+
+    public void setInjuryService(InjuryService injuryService) {
+        this.injuryService = injuryService;
+    }
+
+    public void setCustomerService(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
+    public void setInvoiceService(InvoiceService invoiceService) {
+        this.invoiceService = invoiceService;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+
+    public void setWitnessService(WitnessService witnessService) {
+        this.witnessService = witnessService;
+    }
+
+    public void setThirdPartyService(ThirdPartyService thirdPartyService) {
+        this.thirdPartyService = thirdPartyService;
+    }
+
+    public void setVehicleHireService(VehicleHireService vehicleHireService) {
+        this.vehicleHireService = vehicleHireService;
+    }
+
+    public void setSolicitorService(SolicitorService solicitorService) {
+        this.solicitorService = solicitorService;
+    }
+
+    public void setInvoiceservice(InvoiceService invoiceservice) {
+        this.invoiceService = invoiceservice;
+    }
+
+    public void setInsurerAlliasService(InsurerAlliasService insurerAlliasService) {
+        this.insurerAlliasService = insurerAlliasService;
+    }
+
+    public void setChorganisationService(ChorganisationService chorganisationService) {
+        this.chorganisationService = chorganisationService;
+    }
+
+    public void setChoBandService(ChoBandService choBandService) {
+        this.choBandService = choBandService;
+    }
+    
+     public void setSecurityInfoProvider(SecurityInfoProvider provider) {
+        this.securityInforProvider = provider;       
     }
 }

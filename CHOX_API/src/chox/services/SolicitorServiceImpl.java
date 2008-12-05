@@ -18,7 +18,7 @@ public class SolicitorServiceImpl  extends DataService implements SolicitorServi
         Solicitor solicitor = null;
         
         try {
-            Criteria criteria = currentSession.createCriteria(Solicitor.class).add(Restrictions.eq("injury", injury));
+            Criteria criteria = getCurrentSession().createCriteria(Solicitor.class).add(Restrictions.eq("injury", injury));
             solicitors = criteria.list();
             if(solicitors.size()>0){
                 solicitor = (Solicitor)solicitors.get(0);
@@ -28,8 +28,8 @@ public class SolicitorServiceImpl  extends DataService implements SolicitorServi
            e.printStackTrace();
         }
         
-        currentSession.clear();
-        currentSession.disconnect();
+        getCurrentSession().clear();
+        getCurrentSession().disconnect();
         
         return solicitor;
     }
@@ -40,11 +40,6 @@ public class SolicitorServiceImpl  extends DataService implements SolicitorServi
             
             for(Integer i=0; i<(xmlParseResult.getSolicitors()).size(); i++){
                 
-                ((xmlParseResult.getSolicitors()).get(i)).setCreatedBy(getCurrentUser().getId());
-                ((xmlParseResult.getSolicitors()).get(i)).setCreatedDate(DateHelper.getCurrentTimeStamp());
-                ((xmlParseResult.getSolicitors()).get(i)).setLastModifiedBy(getCurrentUser().getId());
-                ((xmlParseResult.getSolicitors()).get(i)).setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
                 if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
                     try{
@@ -60,14 +55,14 @@ public class SolicitorServiceImpl  extends DataService implements SolicitorServi
     }  
     
         public Solicitor getObject(int id) {
-        return (Solicitor) currentSession.get(Solicitor.class, id);
+        return (Solicitor) getCurrentSession().get(Solicitor.class, id);
     }
 
     public void updateObject(Solicitor solicitor) {
 
-        currentSession.beginTransaction();
-        currentSession.update(solicitor);
-        currentSession.getTransaction().commit();
+        getCurrentSession().beginTransaction();
+        getCurrentSession().update(solicitor);
+        getCurrentSession().getTransaction().commit();
     }
     
 }

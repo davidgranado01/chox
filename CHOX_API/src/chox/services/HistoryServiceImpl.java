@@ -29,7 +29,7 @@ public class HistoryServiceImpl extends DataService implements HistoryService{
         List histories = new ArrayList<History>();
         
         try {
-            Criteria criteria = currentSession.createCriteria(History.class);
+            Criteria criteria = getCurrentSession().createCriteria(History.class);
             criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
             
             if(!isShowAll){
@@ -50,8 +50,8 @@ public class HistoryServiceImpl extends DataService implements HistoryService{
            e.printStackTrace();
         }
         
-        //currentSession.clear();
-        //currentSession.disconnect();
+        //getCurrentSession().clear();
+        //getCurrentSession().disconnect();
         
         return histories;
     }
@@ -61,7 +61,7 @@ public class HistoryServiceImpl extends DataService implements HistoryService{
         List histories = new ArrayList<History>();
         
         try {
-            Criteria criteria = currentSession.createCriteria(History.class);
+            Criteria criteria = getCurrentSession().createCriteria(History.class);
             criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
             
             if(!isShowAll){
@@ -81,8 +81,8 @@ public class HistoryServiceImpl extends DataService implements HistoryService{
            e.printStackTrace();
         }
         
-        //currentSession.clear();
-        //currentSession.disconnect();
+        //getCurrentSession().clear();
+        //getCurrentSession().disconnect();
         
         return histories;
     }    
@@ -118,20 +118,14 @@ public class HistoryServiceImpl extends DataService implements HistoryService{
         
         Boolean bFlag = true;
         
-        currentSession.beginTransaction();
+        getCurrentSession().beginTransaction();
         
-        history.setProcessDate(DateHelper.getCurrentTimeStamp());
-        history.setCreatedBy(getCurrentUser());
-        history.setCreatedDate(DateHelper.getCurrentTimeStamp());
-        history.setLastModifiedBy(getCurrentUser().getId());
-        history.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
         try{
-            currentSession.saveOrUpdate(history);
+            getCurrentSession().saveOrUpdate(history);
         } catch (Exception e) {
-            currentSession.getTransaction().rollback();
+            getCurrentSession().getTransaction().rollback();
         }finally{
-            currentSession.getTransaction().commit();
+            getCurrentSession().getTransaction().commit();
         }
 
         return bFlag;

@@ -20,7 +20,7 @@ public class CommentServiceImpl extends DataService implements CommentService {
         List comments = new ArrayList<Comment>();
 
         try {
-            Criteria criteria = currentSession.createCriteria(Comment.class);
+            Criteria criteria = getCurrentSession().createCriteria(Comment.class);
             criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
             criteria.addOrder(Order.asc("createdDate"));           
             comments = criteria.list();
@@ -29,8 +29,8 @@ public class CommentServiceImpl extends DataService implements CommentService {
             e.printStackTrace();
         }
 
-        currentSession.clear();
-        currentSession.disconnect();
+        getCurrentSession().clear();
+        getCurrentSession().disconnect();
 
         return comments;
     }
@@ -40,8 +40,8 @@ public class CommentServiceImpl extends DataService implements CommentService {
         List comments = new ArrayList<Comment>();
 
         try {
-            //Criteria criteria = currentSession.createCriteria(Comment.class).add(Restrictions.eq("claim", claim));
-            Criteria criteria = currentSession.createCriteria(Comment.class);//.add(Restrictions.eq("claimId", claim.getId()));
+            //Criteria criteria = getCurrentSession().createCriteria(Comment.class).add(Restrictions.eq("claim", claim));
+            Criteria criteria = getCurrentSession().createCriteria(Comment.class);//.add(Restrictions.eq("claimId", claim.getId()));
             criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
             criteria.addOrder(Order.asc("claim.id"));           
             comments = criteria.list();
@@ -50,26 +50,26 @@ public class CommentServiceImpl extends DataService implements CommentService {
             e.printStackTrace();
         }
 
-        currentSession.clear();
-        currentSession.disconnect();
+        getCurrentSession().clear();
+        getCurrentSession().disconnect();
 
         return comments;
     }
 
     public Comment getObject(int id) {
-        return (Comment) currentSession.get(Comment.class, id);
+        return (Comment) getCurrentSession().get(Comment.class, id);
     }
 
     public void createNewObject(Comment comment) {
 
         comment.setCreatedBy(getCurrentUser());
         comment.setCreatedDate(DateHelper.getCurrentTimeStamp());
-        comment.setLastModifiedBy(getCurrentUser().getId());
+        comment.setLastModifiedBy(getCurrentUser());
         comment.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
 
 
-        currentSession.beginTransaction();
-        currentSession.saveOrUpdate(comment);
-        currentSession.getTransaction().commit();
+        getCurrentSession().beginTransaction();
+        getCurrentSession().saveOrUpdate(comment);
+        getCurrentSession().getTransaction().commit();
     }
 }

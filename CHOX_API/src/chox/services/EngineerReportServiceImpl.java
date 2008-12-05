@@ -13,11 +13,6 @@ public class EngineerReportServiceImpl extends DataService implements EngineerRe
 
         if ((xmlParseResult.getClaim().getEngineerReport()) != null) {
 
-            (xmlParseResult.getClaim().getEngineerReport()).setCreatedBy(getCurrentUser().getId());
-            (xmlParseResult.getClaim().getEngineerReport()).setCreatedDate(DateHelper.getCurrentTimeStamp());
-            (xmlParseResult.getClaim().getEngineerReport()).setLastModifiedBy(getCurrentUser().getId());
-            (xmlParseResult.getClaim().getEngineerReport()).setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
                 try {
@@ -37,7 +32,7 @@ public class EngineerReportServiceImpl extends DataService implements EngineerRe
 
         try {
 
-            Criteria criteria = currentSession.createCriteria(EngineerReport.class);
+            Criteria criteria = getCurrentSession().createCriteria(EngineerReport.class);
             criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
             engineerreport = (EngineerReport) criteria.uniqueResult();
 
@@ -45,19 +40,19 @@ public class EngineerReportServiceImpl extends DataService implements EngineerRe
             e.printStackTrace();
         }
 
-        currentSession.clear();
-        currentSession.disconnect();
+        getCurrentSession().clear();
+        getCurrentSession().disconnect();
         return engineerreport;
     }
 
     public EngineerReport getObject(int id) {
-        return (EngineerReport) currentSession.get(EngineerReport.class, id);
+        return (EngineerReport) getCurrentSession().get(EngineerReport.class, id);
     }
 
     public void updateObject(EngineerReport engineerReport) {
 
-        currentSession.beginTransaction();
-        currentSession.update(engineerReport);
-        currentSession.getTransaction().commit();
+        getCurrentSession().beginTransaction();
+        getCurrentSession().update(engineerReport);
+        getCurrentSession().getTransaction().commit();
     }
 }

@@ -39,7 +39,7 @@ public class ChoBandServiceImpl extends DataService implements ChoBandService{
         
         try {
             
-            Criteria criteria = currentSession.createCriteria(ChoBand.class);
+            Criteria criteria = getCurrentSession().createCriteria(ChoBand.class);
             criteria.add(Restrictions.eq("Id", orgId));
             band = (ChoBand) criteria.uniqueResult();
             
@@ -47,8 +47,8 @@ public class ChoBandServiceImpl extends DataService implements ChoBandService{
            e.printStackTrace();
         }
         
-        currentSession.clear();
-        currentSession.disconnect();
+        getCurrentSession().clear();
+        getCurrentSession().disconnect();
         return band;
     }
     
@@ -58,7 +58,7 @@ public class ChoBandServiceImpl extends DataService implements ChoBandService{
         
         try {
             
-            Criteria criteria = currentSession.createCriteria(ChoBand.class);
+            Criteria criteria = getCurrentSession().createCriteria(ChoBand.class);
             criteria.add(Restrictions.eq("Id", orgId));
             band = (ChoBand) criteria.uniqueResult();
             
@@ -66,8 +66,8 @@ public class ChoBandServiceImpl extends DataService implements ChoBandService{
            e.printStackTrace();
         }
         
-        currentSession.clear();
-        currentSession.disconnect();
+        getCurrentSession().clear();
+        getCurrentSession().disconnect();
         return band;
     }    
 }

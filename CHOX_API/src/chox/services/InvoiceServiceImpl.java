@@ -22,12 +22,6 @@ public class InvoiceServiceImpl extends DataService implements InvoiceService {
 
         if ((xmlParseResult.getClaim().getInvoice()) != null) {
 
-
-            (xmlParseResult.getClaim().getInvoice()).setCreatedBy(getCurrentUser().getId());
-            (xmlParseResult.getClaim().getInvoice()).setCreatedDate(DateHelper.getCurrentTimeStamp());
-            (xmlParseResult.getClaim().getInvoice()).setLastNodifiedBy(getCurrentUser().getId());
-            (xmlParseResult.getClaim().getInvoice()).setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
                 try {
@@ -42,13 +36,13 @@ public class InvoiceServiceImpl extends DataService implements InvoiceService {
     }
 
     public Invoice getObject(int id) {
-        return (Invoice) currentSession.get(Invoice.class, id);
+        return (Invoice) getCurrentSession().get(Invoice.class, id);
     }
 
     public void updateObject(Invoice invoice) {
 
-        currentSession.beginTransaction();
-        currentSession.update(invoice);
-        currentSession.getTransaction().commit();
+        getCurrentSession().beginTransaction();
+        getCurrentSession().update(invoice);
+        getCurrentSession().getTransaction().commit();
     }
 }

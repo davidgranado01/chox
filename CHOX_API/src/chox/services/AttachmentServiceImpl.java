@@ -20,20 +20,15 @@ public class AttachmentServiceImpl extends DataService implements AttachmentServ
         
         Boolean bFlag = false;
         
-        currentSession.beginTransaction();
+        getCurrentSession().beginTransaction();
         
-        attachment.setCreatedBy(getCurrentUser().getId());
-        attachment.setCreatedDate(DateHelper.getCurrentTimeStamp());
-        attachment.setLastModifiedBy(getCurrentUser().getId());
-        attachment.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
         try{
-            currentSession.saveOrUpdate(attachment);
+            getCurrentSession().saveOrUpdate(attachment);
             bFlag = true;
         } catch (Exception e) {
-            currentSession.getTransaction().rollback();
+            getCurrentSession().getTransaction().rollback();
         }finally{
-            currentSession.getTransaction().commit();
+            getCurrentSession().getTransaction().commit();
         }
 
         return bFlag;
@@ -44,20 +39,20 @@ public class AttachmentServiceImpl extends DataService implements AttachmentServ
         List attachments = new ArrayList<Attachment>();
 
         try {
-            Criteria criteria = currentSession.createCriteria(Attachment.class);
+            Criteria criteria = getCurrentSession().createCriteria(Attachment.class);
             criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
             attachments = criteria.list();
         } catch (Throwable e) {
             e.printStackTrace();
         }
 
-        currentSession.clear();
-        currentSession.disconnect();
+        getCurrentSession().clear();
+        getCurrentSession().disconnect();
 
         return attachments;
     }    
     
     public Attachment getObject(int id) {
-        return (Attachment) currentSession.get(Attachment.class, id);
+        return (Attachment) getCurrentSession().get(Attachment.class, id);
     }
 }

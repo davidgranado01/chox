@@ -14,7 +14,7 @@ public class VehicleClassServiceImpl  extends DataService implements VehicleClas
         
         try {
             
-            Criteria criteria = currentSession.createCriteria(VehicleClass.class);
+            Criteria criteria = getCurrentSession().createCriteria(VehicleClass.class);
             criteria.add(Restrictions.eq("name", s));
             
             vehicleclass = (VehicleClass) criteria.uniqueResult();
@@ -39,6 +39,6 @@ public class VehicleClassServiceImpl  extends DataService implements VehicleClas
     }
 
     public VehicleClass getObject(int id) {
-       return (VehicleClass)currentSession.get(VehicleClass.class, id);
+       return (VehicleClass)getCurrentSession().get(VehicleClass.class, id);
     }
 }

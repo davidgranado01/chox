@@ -1,17 +1,18 @@
 package chox.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Attachment {
+public class Attachment implements Serializable,Auditable{
     
     protected Integer id;
     protected String fileName;
     protected String remarks;
     protected String category;
     protected Claim claim;
-    protected int createdBy;
+    protected WebUser createdBy;
     protected Date createdDate;
-    protected int lastModifiedBy;
+    protected WebUser lastModifiedBy;
     protected Date lastModifiedDate;
     protected String fileType;
 
@@ -31,11 +32,11 @@ public class Attachment {
         this.claim = claim;
     }
 
-    public int getCreatedBy() {
+    public WebUser getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(int createdBy) {
+    public void setCreatedBy(WebUser createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -71,11 +72,11 @@ public class Attachment {
         this.id = id;
     }
 
-    public int getLastModifiedBy() {
+    public WebUser getLastModifiedBy() {
         return lastModifiedBy;
     }
 
-    public void setLastModifiedBy(int lastModifiedBy) {
+    public void setLastModifiedBy(WebUser lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
 

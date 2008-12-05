@@ -12,12 +12,7 @@ public class ThirdPartyServiceImpl extends DataService implements ThirdPartyServ
         ThirdParty thirdparty = xmlParseResult.getClaim().getThirdParty();
 
         if (thirdparty != null) {
-
-            xmlParseResult.getClaim().getThirdParty().setCreatedBy(getCurrentUser().getId());
-            xmlParseResult.getClaim().getThirdParty().setCreatedDate(DateHelper.getCurrentTimeStamp());
-            xmlParseResult.getClaim().getThirdParty().setLastModifiedBy(getCurrentUser().getId());
-            xmlParseResult.getClaim().getThirdParty().setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
+          
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
                 try {
@@ -32,13 +27,13 @@ public class ThirdPartyServiceImpl extends DataService implements ThirdPartyServ
     }
 
     public ThirdParty getObject(int id) {
-        return (ThirdParty) currentSession.get(ThirdParty.class, id);
+        return (ThirdParty) getCurrentSession().get(ThirdParty.class, id);
     }
 
     public void updateObject(ThirdParty thirdParty) {
 
-        currentSession.beginTransaction();
-        currentSession.update(thirdParty);
-        currentSession.getTransaction().commit();
+        getCurrentSession().beginTransaction();
+        getCurrentSession().update(thirdParty);
+        getCurrentSession().getTransaction().commit();
     }
 }

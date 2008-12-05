@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import scsbre.model.IInsurerInfo;
 
-public class Insurer implements Serializable, IInsurerInfo
+public class Insurer implements Serializable, IInsurerInfo,Auditable
 {
 	/** 
 	 * This attribute maps to the column id in the insurer table.
@@ -22,7 +22,7 @@ public class Insurer implements Serializable, IInsurerInfo
 	/** 
 	 * This attribute maps to the column created_by in the insurer table.
 	 */
-	protected int createdBy;
+	protected WebUser createdBy;
 
         /** 
 	 * This attribute maps to the column admin_handling_charge in the line_of_business table.
@@ -38,7 +38,7 @@ public class Insurer implements Serializable, IInsurerInfo
 	/** 
 	 * This attribute maps to the column last_modified_by in the insurer table.
 	 */
-	protected int lastModifiedBy;
+	protected WebUser lastModifiedBy;
 
 	/** 
 	 * This attribute maps to the column last_modified_date in the insurer table.
@@ -106,7 +106,7 @@ public class Insurer implements Serializable, IInsurerInfo
 	 * 
 	 * @return int
 	 */
-	public int getCreatedBy()
+	public WebUser getCreatedBy()
 	{
 		return createdBy;
 	}
@@ -116,7 +116,7 @@ public class Insurer implements Serializable, IInsurerInfo
 	 * 
 	 * @param createdBy
 	 */
-	public void setCreatedBy(int createdBy)
+	public void setCreatedBy(WebUser createdBy)
 	{
 		this.createdBy = createdBy;
 	}
@@ -146,7 +146,7 @@ public class Insurer implements Serializable, IInsurerInfo
 	 * 
 	 * @return int
 	 */
-	public int getLastModifiedBy()
+	public WebUser getLastModifiedBy()
 	{
 		return lastModifiedBy;
 	}
@@ -156,7 +156,7 @@ public class Insurer implements Serializable, IInsurerInfo
 	 * 
 	 * @param lastModifiedBy
 	 */
-	public void setLastModifiedBy(int lastModifiedBy)
+	public void setLastModifiedBy(WebUser lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
 	}

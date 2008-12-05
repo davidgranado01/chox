@@ -12,11 +12,6 @@ public class IncidentServiceImpl extends DataService implements IncidentService 
 
         if (incident != null) {
 
-            incident.setCreatedBy(getCurrentUser().getId());
-            incident.setCreatedDate(DateHelper.getCurrentTimeStamp());
-            incident.setLastModifiedBy(getCurrentUser().getId());
-            incident.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
             if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
 
                 try {
@@ -33,13 +28,13 @@ public class IncidentServiceImpl extends DataService implements IncidentService 
     }
 
     public Incident getObject(int id) {
-        return (Incident) currentSession.get(Incident.class, id);
+        return (Incident) getCurrentSession().get(Incident.class, id);
     }
 
     public void updateObject(Incident incident) {        
        
-        currentSession.beginTransaction();
-        currentSession.update(incident);
-        currentSession.getTransaction().commit();
+        getCurrentSession().beginTransaction();
+        getCurrentSession().update(incident);
+        getCurrentSession().getTransaction().commit();
     }
 }

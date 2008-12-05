@@ -4,6 +4,7 @@
  */
 package chox.services;
 
+import chox.data.DBInterceptor;
 import chox.data.FakeSecurityInfoProvider;
 import chox.data.HibernateUtil;
 import chox.data.SecurityInfoProvider;
@@ -17,7 +18,7 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
  */
 public class DataService {
 
-    protected Session currentSession;
+    private Session currentSession;
     private SecurityInfoProvider securityInforProvider;
 
     public void setSecurityInfoProvider(SecurityInfoProvider provider) {
@@ -25,9 +26,9 @@ public class DataService {
 
         if (!this.getSecurityInfoProvider().getIsCHOXAdmin()) {
             if (this.getSecurityInfoProvider().getIsCHO()) {
-                currentSession.enableFilter("Claim_CHOFilter").setParameter("chorganisationId", this.getCurrentUser().getChorganisation().getId());
+                getCurrentSession().enableFilter("Claim_CHOFilter").setParameter("chorganisationId", this.getCurrentUser().getChorganisation().getId());
             } else if (this.getSecurityInfoProvider().getIsINS()) {
-                currentSession.enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
+                getCurrentSession().enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
             }
         }
     }
@@ -41,11 +42,16 @@ public class DataService {
             //for testing purpose, will inject by spring in web application
             setSecurityInfoProvider(new FakeSecurityInfoProvider());
         }
-
         return this.securityInforProvider;
     }
-
-    public DataService() {
-        currentSession = SessionFactoryUtils.getSession(HibernateUtil.getSessionFactory(), true);
+    
+    public Session getCurrentSession()
+    {
+        if(currentSession == null)
+        {
+            currentSession = SessionFactoryUtils.getSession(HibernateUtil.getSessionFactory(), new DBInterceptor(securityInforProvider),null);
+        }
+        return currentSession;
     }
+
 }

@@ -6,7 +6,7 @@ import scsbre.model.IHireInfo;
 import scsbre.model.IVehicleClassInfo;
 import chox.services.HireMonitoringDetailService;
 
-public class VehicleHire implements Serializable, IHireInfo
+public class VehicleHire implements Serializable, IHireInfo,Auditable
 {
 
         private HireMonitoringDetailService service;
@@ -113,7 +113,7 @@ public class VehicleHire implements Serializable, IHireInfo
 	/** 
 	 * This attribute maps to the column created_by in the vehicle_hire table.
 	 */
-	protected int createdBy;
+	protected WebUser createdBy;
 
 	/** 
 	 * This attribute maps to the column created_date in the vehicle_hire table.
@@ -123,7 +123,7 @@ public class VehicleHire implements Serializable, IHireInfo
 	/** 
 	 * This attribute maps to the column last_modified_by in the vehicle_hire table.
 	 */
-	protected int lastModifiedBy;
+	protected WebUser lastModifiedBy;
 
 	/** 
 	 * This attribute maps to the column last_modified_date in the vehicle_hire table.
@@ -528,7 +528,7 @@ public class VehicleHire implements Serializable, IHireInfo
 	 * 
 	 * @return int
 	 */
-	public int getCreatedBy()
+	public WebUser getCreatedBy()
 	{
 		return createdBy;
 	}
@@ -538,7 +538,7 @@ public class VehicleHire implements Serializable, IHireInfo
 	 * 
 	 * @param createdBy
 	 */
-	public void setCreatedBy(int createdBy)
+	public void setCreatedBy(WebUser createdBy)
 	{
 		this.createdBy = createdBy;
 	}
@@ -568,7 +568,7 @@ public class VehicleHire implements Serializable, IHireInfo
 	 * 
 	 * @return int
 	 */
-	public int getLastModifiedBy()
+	public WebUser getLastModifiedBy()
 	{
 		return lastModifiedBy;
 	}
@@ -578,7 +578,7 @@ public class VehicleHire implements Serializable, IHireInfo
 	 * 
 	 * @param lastModifiedBy
 	 */
-	public void setLastModifiedBy(int lastModifiedBy)
+	public void setLastModifiedBy(WebUser lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
 	}
