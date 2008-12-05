@@ -11,6 +11,17 @@ import chox.data.AttachmentType;
 
 public class FileHelper {
     
+    public static String getClassPath(){
+        String fileName = "struts.xml";
+        String classPath = FileHelper.class.getClassLoader().getResource(fileName).getPath();
+        
+        System.out.println("MAIN FILE LOCALTION : "+classPath+"|");
+        
+        int dotIndex = classPath.lastIndexOf(fileName);
+        classPath = classPath.substring(0, dotIndex);
+        return classPath;
+    }
+    
     public static Boolean isFileValid(File file){
         Boolean bFlag = false;
         
