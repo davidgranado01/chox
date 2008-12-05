@@ -86,9 +86,8 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
             if (c != null) {
                 ClaimService cs = new ClaimServiceImpl();
                 List<Claim> claims = cs.searchClaims(c);
-                ExcelGeneratorAction excelhelper = new ExcelGeneratorAction();
                 if (claims.size() > 0) {
-                    buf = excelhelper.generateXML(claims);
+                    buf = generateXML(claims);
                 }
             }
         }
@@ -135,12 +134,6 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
             if (claim.getIncident() != null) {
 
-                // GET WITNESS
-                Witness witness = witnessService.getWitnessByIncident(claim.getIncident());
-                if (witness != null) {
-                    ec.setWitness(witness);
-                }
-
                 // GET INJURY
                 Injury injury = injuryService.getInjuryByIncident(claim.getIncident());
 
@@ -154,6 +147,13 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
                     ec.setInjury(injury);
                 }
+                
+                // GET WITNESS
+                Witness witness = witnessService.getWitnessByIncident(claim.getIncident());
+                if (witness != null) {
+                    ec.setWitness(witness);
+                }
+                
             }
 
             excelClaims.add(ec);
@@ -215,23 +215,23 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         this.session = session;
     }
 
-    public void setHistoryService(HistoryService historyService) {
-        this.historyService = historyService;
+    public void setHistoryService(HistoryService service) {
+        this.historyService = service;
     }
 
-    public void setCommentService(CommentService commentService) {
-        this.commentService = commentService;
+    public void setCommentService(CommentService service) {
+        this.commentService = service;
     }
 
-    public void setWitnessService(WitnessService witnessService) {
-        this.witnessService = witnessService;
+    public void setWitnessService(WitnessService service) {
+        this.witnessService = service;
     }
 
-    public void setInjuryService(InjuryService injuryService) {
-        this.injuryService = injuryService;
+    public void setInjuryService(InjuryService service) {
+        this.injuryService = service;
     }
 
-    public void setSolicitorService(SolicitorService solicitorService) {
-        this.solicitorService = solicitorService;
+    public void setSolicitorService(SolicitorService service) {
+        this.solicitorService = service;
     }
 }
