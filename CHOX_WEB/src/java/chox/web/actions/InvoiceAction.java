@@ -4,7 +4,6 @@
  */
 package chox.web.actions;
 
-import chox.Util.DateHelper;
 import chox.model.Claim;
 import chox.model.Invoice;
 import chox.services.InvoiceService;
