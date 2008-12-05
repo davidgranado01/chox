@@ -6,7 +6,53 @@
 
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<form id="formAddNewHireMonitoringEcd" action="user/addNewHireMonitoringEcd.action" class="entity-form">
+
+<script language="JavaScript">
+    
+    
+    
+            $(document).ready(function(){
+  
+
+                var options = { 
+                    beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
+                    success:       onAfterEcdSubmit,  // post-submit callback 
+                    timeout: 3000,
+                    error: onSubmitError
+                };                      
+                $('#formAddNewHireMonitoringEcd').ajaxForm(options); //wrap all <form> elements with ajax submission config   
+            });
+            
+  
+            var ecdsLoaded = false;
+            function loadEcds(){
+                if(!hireMonitoringDetailsDisabled){
+                    
+                    if(!ecdsLoaded)
+                    {
+                        ecdDataStore.load(
+                        {
+                            params:
+                            {
+                                claimId : <s:property value="id" />
+                            }
+                        });   
+                    }
+                }
+            }              
+            
+            function onAfterEcdSubmit(responseText, statusText)  {    
+                onSubmitResponseReceived(responseText, statusText);
+                loadEcds();                
+            }
+    
+    
+    
+</script>
+
+
+
+<form id="formAddNewHireMonitoringEcd" action="user/addNewHireMonitoringEcd.action">
     <input type="hidden" name="objectId" value='<s:property value="id"/>'>
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset">

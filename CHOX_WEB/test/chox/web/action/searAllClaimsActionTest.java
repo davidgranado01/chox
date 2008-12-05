@@ -90,7 +90,7 @@ public class searAllClaimsActionTest {
     {
     Session currentSession = HibernateUtil.currentSession();
     
-    Supplier s = (Supplier)currentSession.load(Supplier.class, 999);
+    Supplier s = (Supplier)getCurrentSession().load(Supplier.class, 999);
     
     assertNotSame(null,s);      
     
@@ -112,19 +112,19 @@ public class searAllClaimsActionTest {
     c4.setProposedRentalClassId(1000000);        
     
     
-    currentSession.beginTransaction();
-    currentSession.save(c4);
-    currentSession.getTransaction().commit();
+    getCurrentSession().beginTransaction();
+    getCurrentSession().save(c4);
+    getCurrentSession().getTransaction().commit();
     
-    /*Claim loadedClaim = (Claim)currentSession.load(Claim.class, c4.getId());
+    /*Claim loadedClaim = (Claim)getCurrentSession().load(Claim.class, c4.getId());
     
     assertEquals(loadedClaim.getPolicyHolderName(),"AhKeong");
     currentSession = HibernateUtil.currentSession();
-    currentSession.beginTransaction();
-    currentSession.delete(c4);
-    currentSession.getTransaction().commit();
+    getCurrentSession().beginTransaction();
+    getCurrentSession().delete(c4);
+    getCurrentSession().getTransaction().commit();
     
-    Criteria criteria = currentSession.createCriteria(Rental.class);       
+    Criteria criteria = getCurrentSession().createCriteria(Rental.class);       
     List rentals = criteria.list();
     assertNotSame(null,rentals);
     
@@ -134,9 +134,9 @@ public class searAllClaimsActionTest {
     r.setSupplier(s);
     
     try{
-    currentSession.beginTransaction();
-    currentSession.save(r);
-    currentSession.getTransaction().commit();
+    getCurrentSession().beginTransaction();
+    getCurrentSession().save(r);
+    getCurrentSession().getTransaction().commit();
     }
     catch(Exception ex)
     {
@@ -150,7 +150,7 @@ public class searAllClaimsActionTest {
     public void testLoad() throws Exception {
 
         Session currentSession = HibernateUtil.currentSession();
-        Criteria criteria = currentSession.createCriteria(WebUser.class);
+        Criteria criteria = getCurrentSession().createCriteria(WebUser.class);
         List result1 = criteria.list();
         assert (result1.size() > 0);
         criteria.add(Restrictions.eq("email", "emmanuel.kong@greenfinch.ie"));

@@ -36,8 +36,8 @@ public class ApplicationAccessibilityTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
         Session currentSession = SessionFactoryUtils.getSession(HibernateUtil.getSessionFactory(), true);
-        if (currentSession != null && currentSession.isOpen()) {
-            currentSession.close();
+        if (currentSession != null && getCurrentSession().isOpen()) {
+            getCurrentSession().close();
         }
     }
 

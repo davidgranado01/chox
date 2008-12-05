@@ -18,6 +18,7 @@
     <bean id="historyService" class="chox.services.HistoryServiceImpl" singleton="false"/>
     <bean id="invoiceService" class="chox.services.InvoiceServiceImpl" singleton="false"/>
     <bean id="solicitorService" class="chox.services.SolicitorServiceImpl" singleton="false"/>
+    <bean id="injuryService" class="chox.services.InjuryServiceImpl" singleton="false"/>
     <bean id="thirdPartyService" class="chox.services.ThirdPartyServiceImpl" singleton="false"/>
     <bean id="vehicleHireService" class="chox.services.VehicleHireServiceImpl" singleton="false"/>
     <bean id="vehicleClassService" class="chox.services.VehicleClassServiceImpl" singleton="false"/>
@@ -25,5 +26,26 @@
     <bean id="attachmentService" class="chox.services.AttachmentServiceImpl" singleton="false"/>
     <bean id="insurerService" class="chox.services.InsurerServiceImpl" singleton="false"/>
     <bean id="hireMonitoringEcdService" class="chox.services.HireMonitoringEcdServiceImpl" singleton="false"/>
+    <bean id="insurerAlliasService" class="chox.services.InsurerAlliasServiceImpl" singleton="false"/>
+    
+    <bean id="chorganisationService" class="chox.services.ChorganisationServiceImpl" singleton="false"/>
+    <bean id="choBandService" class="chox.services.ChoBandServiceImpl" singleton="false"/>
+    <bean id="uploadClaimXMLService" class="chox.services.UploadClaimXMLServiceImpl" singleton="false">
+            <property name="securityInfoProvider" ref="securityInfoProvider" />
+            <property name="vehicleClassService" ref="vehicleClassService" />
+            <property name="engineerReportService" ref="engineerReportService" />
+           <property name="incidentService" ref="incidentService" />
+            <property name="injuryService" ref="injuryService" />
+            <property name="customerService" ref="customerService" />
+            <property name="claimService" ref="claimService" />
+            <property name="witnessService" ref="witnessService" />
+            <property name="thirdPartyService" ref="thirdPartyService" />
+            <property name="vehicleHireService" ref="vehicleHireService" />
+            <property name="solicitorService" ref="solicitorService" />
+            <property name="invoiceService" ref="invoiceService" />
+            <property name="insurerAlliasService" ref="insurerAlliasService" />
+            <property name="chorganisationService" ref="chorganisationService" />
+            <property name="choBandService" ref="choBandService" />
+    </bean>
 </beans> 
 

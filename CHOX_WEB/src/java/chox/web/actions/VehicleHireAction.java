@@ -70,10 +70,6 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
             }
             else
             {
-                model.setCreatedDate(DateHelper.getCurrentTimeStamp());
-                model.setCreatedBy(this.getAuthenticatedUser().getUser().getId());  
-                model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-                model.setLastModifiedBy(this.getAuthenticatedUser().getUser().getId()); 
                 Claim c = claimService.getClaim(getClaimId());
                 c.setVehicleHire(model);
                 this.claimService.updateClaim(c);

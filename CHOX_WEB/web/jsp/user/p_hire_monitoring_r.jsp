@@ -7,7 +7,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
             Original ECD</label>
-        <label class="std-data-ro">NOT IMPLEMENTED</label></div>
+        <label class="std-data-ro"><s:date format="dd/MM/yyyy" name="customer.initialECD" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Name Of Repairer

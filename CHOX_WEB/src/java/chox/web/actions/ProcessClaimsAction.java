@@ -5,7 +5,7 @@
 package chox.web.actions;
 
 import chox.model.XMLParseResult;
-import chox.services.ClaimService;
+import chox.services.UploadClaimXMLService;
 import java.io.File;
 import java.util.List;
 
@@ -15,9 +15,10 @@ import java.util.List;
  */
 public class ProcessClaimsAction extends BaseAction {
 
+    
     private File file;
     private String filename;
-    private ClaimService service;
+    private UploadClaimXMLService service;
     private List<XMLParseResult> result;
     private String uploadType;
 
@@ -25,7 +26,7 @@ public class ProcessClaimsAction extends BaseAction {
         this.file = file;
     }
 
-    public void setClaimService(ClaimService service) {
+    public void setUploadClaimXMLService(UploadClaimXMLService service) {
         this.service = service;
     }   
 
@@ -66,7 +67,7 @@ public class ProcessClaimsAction extends BaseAction {
             
             if (extention.matches("\\.xml")) {
                 
-                List<XMLParseResult> parseResult = this.service.processClaimXMLFile(this.file , true);
+                List<XMLParseResult> parseResult = this.service.processXML(this.file , true);
                 if (parseResult == null) {
                     return ERROR;
                 } else {

@@ -150,14 +150,15 @@
                 elementToBlock.unblock();
                 var output = "Your changes have been saved.";
                 var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
-                if(responseText != ""){
+                if(responseText.trim() != ""){
                     output = responseText;
                     outputDiv.addClass("submit-error");
                 }
-                outputDiv.text(output);
-                hasFormUnderSubmission = false;
                 
-                 loadEcds();
+                
+                
+                outputDiv.text(output);
+                hasFormUnderSubmission = false;  
         
                 //alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + 
                 //     '\n\nThe output div should have already been updated with the responseText.'); 
@@ -391,7 +392,7 @@
                 ],
                 renderTo:'historyGrid',
                 width:960,
-                height:500,
+                autoHeight:true,
                 enableHdMenu:false
             });
 
@@ -498,22 +499,7 @@
                 }
             }   
 
-            var ecdsLoaded = false;
-            function loadEcds(){
-                if(!hireMonitoringDetailsDisabled){
-                    
-                    if(!ecdsLoaded)
-                    {
-                        ecdDataStore.load(
-                        {
-                            params:
-                            {
-                                claimId : <s:property value="id" />
-                            }
-                        });   
-                    }
-                }
-            }  
+
     
         </script>        
         
@@ -703,6 +689,7 @@
                                         <s:action name="getHireMonitoringDetail" executeResult="true">
 
                                             <s:param name="claimId"><s:property value="id" /></s:param> 
+                                            <s:param name="customerId"><s:property value="customer.id" /></s:param> 
                                             <s:param name="objectId"><s:property value="hireMonitoringDetailId" /></s:param>                                            
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>

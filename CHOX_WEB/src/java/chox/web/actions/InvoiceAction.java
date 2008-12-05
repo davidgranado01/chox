@@ -46,10 +46,6 @@ public class InvoiceAction extends BaseModelAction implements ModelDriven<Invoic
             }
             else
             {
-                model.setCreatedDate(DateHelper.getCurrentTimeStamp());
-                model.setCreatedBy(this.getAuthenticatedUser().getUser().getId());  
-                model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-                model.setLastNodifiedBy(this.getAuthenticatedUser().getUser().getId()); 
                 Claim c = claimService.getClaim(getClaimId());
                 c.setInvoice(model);
                 this.claimService.updateClaim(c);

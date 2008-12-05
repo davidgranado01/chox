@@ -45,10 +45,6 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
         try {
             Claim claim = claimService.getClaim(claimId);
             model.setClaim(claim);
-            model.setCreatedDate(DateHelper.getCurrentTimeStamp());
-            model.setCreatedBy(this.getAuthenticatedUser().getUser().getId());
-            model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-            model.setLastModifiedBy(this.getAuthenticatedUser().getUser().getId());
             this.service.updateObject(model);
 
             this.actionResult = "";

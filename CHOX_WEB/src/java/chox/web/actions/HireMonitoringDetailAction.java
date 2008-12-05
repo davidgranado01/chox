@@ -2,12 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package chox.web.actions;
 
 import chox.Util.DateHelper;
 import chox.model.Claim;
+import chox.model.Customer;
 import chox.model.HireMonitoringDetail;
+import chox.services.CustomerService;
 import chox.services.HireMonitoringDetailService;
 import chox.web.security.ApplicationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
@@ -21,10 +22,17 @@ import net.sf.json.JSONObject;
 public class HireMonitoringDetailAction extends BaseModelAction implements ModelDriven<HireMonitoringDetail>, Preparable {
 
     private HireMonitoringDetailService service;
-    private HireMonitoringDetail model;    
+    private CustomerService customerService;
+    private HireMonitoringDetail model;
+    private Customer customer;
+    private int customerId;
 
     public void setHireMonitoringDetailService(HireMonitoringDetailService service) {
         this.service = service;
+    }
+
+    public void setCustomerService(CustomerService customerService) {
+        this.customerService = customerService;
     }
 
     public HireMonitoringDetail getModel() {
@@ -37,20 +45,20 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
         } else {
             model = service.getObject(objectId);
         }
-    }   
+
+        if (customerId <= 0) {
+            customer = new Customer();
+
+        } else {
+            customer = customerService.getObject(customerId);
+        }
+    }
 
     public String updateModel() {
         try {
-            if(model.getId() > 0)
-            {
+            if (model.getId() > 0) {
                 this.service.updateObject(model);
-            }
-            else
-            {
-                model.setCreatedDate(DateHelper.getCurrentTimeStamp());
-                model.setCreatedBy(this.getAuthenticatedUser().getUser().getId());  
-                model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-                model.setLastModifiedBy(this.getAuthenticatedUser().getUser().getId()); 
+            } else {
                 Claim c = claimService.getClaim(getClaimId());
                 c.setHireMonitoringDetail(model);
                 this.claimService.updateClaim(c);
@@ -70,5 +78,17 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_HIRE_MONITORING;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public Customer getCustomer() {
+        return customer;
     }
 }
