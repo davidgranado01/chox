@@ -40,7 +40,7 @@ public class WitnessServiceImpl extends DataService implements WitnessService {
     public void updateObject(Witness witness) {
 
         getCurrentSession().beginTransaction();
-        getCurrentSession().update(witness);
+        getCurrentSession().saveOrUpdate(witness);
         getCurrentSession().getTransaction().commit();
     }
 
