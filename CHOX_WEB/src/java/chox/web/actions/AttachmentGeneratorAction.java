@@ -84,7 +84,7 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
     @Override
     public String execute() throws Exception {
         
-        return "error";
+        
         
         if(this.fileId=="" || this.fileId==null){
             return "error";
@@ -95,9 +95,11 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
             return "error";
         }
         
+        
+        
         String strFile = getFileDirectory() + att.getFileName();
-        fileStream = doExportFile(strFile.trim());
-        return "success";
+        //fileStream = doExportFile(strFile.trim());
+        return "error";
     }
     
     public FileInputStream doExportFile(String strFile) throws IOException {
