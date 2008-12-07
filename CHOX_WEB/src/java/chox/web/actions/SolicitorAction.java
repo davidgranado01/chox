@@ -4,7 +4,9 @@
  */
 package chox.web.actions;
 
+import chox.model.Injury;
 import chox.model.Solicitor;
+import chox.services.InjuryService;
 import chox.services.SolicitorService;
 import chox.web.security.ApplicationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
@@ -19,6 +21,8 @@ public class SolicitorAction extends BaseModelAction implements ModelDriven<Soli
 
     private SolicitorService service;
     private Solicitor model;
+    private InjuryService injuryService;
+    private int injuryId;
 
     public void setSolicitorService(SolicitorService service) {
         this.service = service;
@@ -38,8 +42,18 @@ public class SolicitorAction extends BaseModelAction implements ModelDriven<Soli
     
     public String updateModel() {
         try {
+            if(objectId <= 0)
+            {
+                Injury injury = this.injuryService.getObject(injuryId);
+                if(injury == null)
+                {
+                    return "Error: Please fill in injury detail and save before save solicitor detail.";
+                }
+                this.model.setInjury(injury);
+            }
+            
             this.service.updateObject(model);
-            this.actionResult = "1";
+            this.actionResult = "";
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }
@@ -54,6 +68,18 @@ public class SolicitorAction extends BaseModelAction implements ModelDriven<Soli
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_CLAIM_DETAIL;
+    }
+
+    public void setInjuryService(InjuryService injuryService) {
+        this.injuryService = injuryService;
+    }
+
+    public int getInjuryId() {
+        return injuryId;
+    }
+
+    public void setInjuryId(int injuryId) {
+        this.injuryId = injuryId;
     }
    
     

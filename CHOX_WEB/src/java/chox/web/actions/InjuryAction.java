@@ -4,7 +4,9 @@
  */
 package chox.web.actions;
 
+import chox.model.Incident;
 import chox.model.Injury;
+import chox.services.IncidentService;
 import chox.services.InjuryService;
 import chox.web.security.ApplicationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
@@ -19,7 +21,9 @@ public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>
 
     private InjuryService service;
     private Injury model;
-  
+    private int incidentId;
+    private IncidentService incidentService;
+
     public void setInjuryService(InjuryService service) {
         this.service = service;
     }
@@ -34,12 +38,19 @@ public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>
         } else {
             model = service.getObject(objectId);
         }
-    }   
+    }
 
     public String updateModel() {
         try {
-            this.service.updateObject(model);
-            this.actionResult = "";
+            if (objectId <= 0) {
+                Incident incident = incidentService.getObject(incidentId);
+                this.model.setIncident(incident);
+                this.service.updateObject(model);
+                this.actionResult = "";                
+            } else {
+                this.service.updateObject(model);
+                this.actionResult = "";
+            }
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }
@@ -54,6 +65,17 @@ public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_CLAIM_DETAIL;
-    } 
-    
+    }
+
+    public int getIncidentId() {
+        return incidentId;
+    }
+
+    public void setIncidentId(int incidentId) {
+        this.incidentId = incidentId;
+    }
+
+    public void setIncidentService(IncidentService incidentService) {
+        this.incidentService = incidentService;
+    }
 }
