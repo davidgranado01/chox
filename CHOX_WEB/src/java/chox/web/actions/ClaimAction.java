@@ -195,7 +195,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     //Acknowledge
     public String acknowledge() {
         //chack whether line of busineess if set 
-        if (validateAcknowledgeClaimInfo()) {
+        String validationResult = validateAcknowledgeClaimInfo();
+        if (validationResult.isEmpty()) {
 
             if (this.actionName.equalsIgnoreCase(ACCEPT)) {
                 claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
@@ -209,7 +210,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
 
         } else {
-            this.actionResult = "ERROR : You need to provide correct detail to acknowledge this claim.";
+            this.actionResult = validationResult;
         }
         return SUCCESS;
     }
@@ -221,19 +222,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return names;
     }
 
-    private boolean validateAcknowledgeClaimInfo() {
-
+    private String validateAcknowledgeClaimInfo() {
+        
         String claimNumber = claim.getClaimNumber();
-        BigDecimal indemnityAmount = claim.getIndemnityAmount();
-        BigDecimal percentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();
-        String engineerClaimReviewNotes = claim.getEngineerClaimReviewNotes();
-
-        boolean result = true;
-        result = result && (claimNumber != null && !claimNumber.isEmpty());
-        result = result && (percentageLiabilityAccepted != null);
-        result = result && (engineerClaimReviewNotes != null);
-
-        return result;
+        
+        boolean isClaimNumberExist = this.service.getClaimCoutByClaimNumber(claimNumber) > 0;
+        
+        if(isClaimNumberExist)
+        {
+            return "ERROR : The Claim number you have supplied already exists"
+;
+        } 
+        else
+        {
+             return "";
+        }
+       
     }
 
     public String contestOrAcceptRejectedClaim() {
@@ -280,7 +284,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String submitHireMonitoringDetail() {
-        if (validateHireMonitoringDetail()) {
+        String validationResult = validateHireMonitoringDetail();
+        if (validationResult.isEmpty()) {
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_DATA);
             try {
                 this.service.updateClaim(claim);
@@ -288,10 +293,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 this.actionResult = "ERROR : " + ex.getMessage();
             }
         } else {
-            this.actionResult = "ERROR : You need to provide correct hire monitoring detail detail to submit this claim.";
+            this.actionResult = validationResult;
         }
 
         return SUCCESS;
+    }
+    
+     public String validateHireMonitoringDetail() {
+        if(this.claim.getHireMonitoringDetail() == null)
+        {
+            return "Error : You need to provide correct hire monitoring detail detail to submit this claim.";
+        }
+        else
+        {
+            return "";
+        }   
     }
 
     public String reSubmitRejectedClaim() {
@@ -477,12 +493,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return BREClaim;
     }
-
-    public boolean validateHireMonitoringDetail() {
-        //TODO : implement validateHireMonitoringDetail
-        return true;
-    }
-
+   
     public int getVehicleClassId() {
         return vehicleClassId;
     }
