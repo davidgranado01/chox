@@ -61,7 +61,7 @@ public class InjuryServiceImpl extends DataService implements InjuryService {
     public void updateObject(Injury injury) {
 
         getCurrentSession().beginTransaction();
-        getCurrentSession().update(injury);
+        getCurrentSession().saveOrUpdate(injury);
         getCurrentSession().getTransaction().commit();
     }
 }

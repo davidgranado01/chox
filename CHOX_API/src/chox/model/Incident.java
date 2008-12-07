@@ -41,7 +41,8 @@ public class Incident implements Serializable, Auditable {
      * This attribute maps to the column is_police_involved in the incident table.
      */
     protected boolean isPoliceInvolved;
-    private Witness witness;
+    protected Witness witness;
+    protected Injury injury;
 
     /**
      * Method 'Incident'
@@ -223,5 +224,13 @@ public class Incident implements Serializable, Auditable {
 
     public void setWitness(Witness witness) {
         this.witness = witness;
+    }
+
+    public Injury getInjury() {
+        return injury;
+    }
+
+    public void setInjury(Injury injury) {
+        this.injury = injury;
     }
 }

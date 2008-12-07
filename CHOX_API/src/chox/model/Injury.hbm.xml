@@ -20,5 +20,9 @@
     <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
     <many-to-one class="chox.model.Incident" column="incident_id" name="incident"/>
+    <join table="solicitor" optional="true">
+            <key column="injury_id" unique="true" />
+            <many-to-one name="solicitor" class="chox.model.Solicitor" column="id" />
+        </join>
   </class>
 </hibernate-mapping>

@@ -86,6 +86,8 @@ public class Injury implements Serializable,Auditable
 	 * This attribute represents the foreign key relationship to the incident table.
 	 */
 	protected Incident incident;
+        
+        protected Solicitor solicitor;
 
 	/**
 	 * Method 'Injury'
@@ -414,5 +416,13 @@ public class Injury implements Serializable,Auditable
 	{
 		this.incident = incident;
 	}
+
+    public Solicitor getSolicitor() {
+        return solicitor;
+    }
+
+    public void setSolicitor(Solicitor solicitor) {
+        this.solicitor = solicitor;
+    }
 
 }

@@ -17,5 +17,9 @@
             <key column="incident_id" unique="true" />
             <many-to-one name="witness" class="chox.model.Witness" column="id" />
         </join>
+        <join table="injury" optional="true">
+            <key column="incident_id" unique="true" />
+            <many-to-one name="injury" class="chox.model.Injury" column="id" />
+        </join>
     </class>
 </hibernate-mapping>
