@@ -55,7 +55,8 @@
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp
             </result>
         </action>
-         <action name="doExportFile" method="execute" class="chox.web.actions.AttachmentGeneratorAction">
+        
+        <action name="doExportFile" method="execute" class="chox.web.actions.AttachmentGeneratorAction">
             <result name="success" type="stream">
                 <param name="contentType">application/ms-excel</param>
                 <param name="inputName">fileStream</param>
@@ -65,6 +66,11 @@
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp
             </result>
         </action>
+        
+        <action name="getAttachmentDetail" class="chox.web.actions.GetAttachmentDetailAction">
+            <result name="success">/jsp/user/AttachmentProcess.jsp</result>
+        </action>
+        
         <!-- ACTION PANEL VALIDATION By Carlson !-->
         <action name="getActionPanel" class="chox.web.actions.ClaimAction" method="getActionPanel">
             <result name="updateclaimlineofbusiness">/jsp/user/actionPanel/p_routeUnacknowledgedClaim.jsp
@@ -384,7 +390,6 @@
         </action>
         <!-- End HireMonitoringDetail -->   
         
-        
           <!-- Start HireMonitoringEcd -->
         <action name="getHireMonitoringEcd" class="chox.web.actions.HireMonitoringEcdAction">
             <result name="r">/jsp/user/p_hire_monitoring_ecd_w.jsp
@@ -403,10 +408,7 @@
             </result>
         </action>
         <!-- End HireMonitoringEcd -->   
-        
-        
-        
-        
+
         <!-- Start EngineerReport Detail -->
         <action name="getEngineerReport" class="chox.web.actions.EngineerReportAction">
             <result name="r">/jsp/user/p_eng_report_r.jsp
@@ -421,8 +423,6 @@
             </result>
         </action>
         <!-- End EngineerReport Detail -->
-        
-        
         
         <!-- Start VehicleHire Detail -->
         <action name="getVehicleHire" class="chox.web.actions.VehicleHireAction">
@@ -439,18 +439,12 @@
         </action>
         <!-- End VehicleHire Detail -->
         
-        
-        
-        
         <!-- Start History Detail -->
         <action name="getHistories" class="chox.web.actions.HistoryAction">
             <result name="success">/jsp/p_jsonData.jsp
             </result>
         </action>
         <!-- End History Detail -->
-        
-        
-        
         
         <!-- Start Comment Detail -->
         <action name="getComment" class="chox.web.actions.CommentAction">
