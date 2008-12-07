@@ -16,6 +16,9 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
     private AttachmentService service;
     private GlobalConfigurationService globalConfigurationService;
 
+    public void setAttachmentService(AttachmentService service) {
+        this.service = service;
+    }
     /*
     public String getContentType() {
         return contentType;
@@ -69,7 +72,6 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
     }
     
     private Attachment getAttachmentFileName(String fileId){
-        System.out.println("FILE ID :::::::::::::::::: " + fileId);
         Attachment att = service.getObject(20);
         return att;
     }
@@ -81,20 +83,19 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
     
     @Override
     public String execute() throws Exception {
-
+        
+        return "error";
+        
         if(this.fileId=="" || this.fileId==null){
             return "error";
         }
         
         Attachment att = getAttachmentFileName(this.fileId);
-        if(att!=null){
+        if(att==null){
             return "error";
         }
         
         String strFile = getFileDirectory() + att.getFileName();
-        
-        System.out.println("strFile :::::::::::::::::: " + strFile);
-        
         fileStream = doExportFile(strFile.trim());
         return "success";
     }
