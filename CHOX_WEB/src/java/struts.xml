@@ -316,7 +316,7 @@
         
         
         
-        <!-- Start ThirdPary Detail -->
+        <!-- Start Witness Detail -->
         <action name="getWitness" class="chox.web.actions.WitnessAction">
             <result name="r">/jsp/user/p_witness_r.jsp
             </result>
@@ -325,12 +325,12 @@
             <result name="decline">/jsp/p_accessDeclined.jsp
             </result>
         </action>
-        <action name="updateThirdParty" class="chox.web.actions.WitnessAction" method="updateModel">
+        <action name="updateWitness" class="chox.web.actions.WitnessAction" method="updateModel">
             <result name="success">/jsp/p_response.jsp
             </result>
         </action>
         
-        <!-- End ThirdPary Detail -->                
+        <!-- End Witness Detail -->                
         
         
         

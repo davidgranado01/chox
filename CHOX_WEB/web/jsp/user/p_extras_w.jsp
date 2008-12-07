@@ -1,7 +1,7 @@
 
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <form id="formUpdateIncident" action="user/updateExtra.action" class="entity-form">
-    <input type="hidden" name="objectId" value='<s:property value="id"/>'>
+    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <fieldset class="x-fieldset">
         <legend>Extras</legend>
         <div style="display:none" class="form-container">

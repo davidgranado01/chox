@@ -4,7 +4,9 @@
  */
 package chox.web.actions;
 
+import chox.model.Incident;
 import chox.model.Witness;
+import chox.services.IncidentService;
 import chox.services.WitnessService;
 import chox.web.security.ApplicationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
@@ -18,8 +20,11 @@ import net.sf.json.JSONObject;
 public class WitnessAction extends BaseModelAction implements ModelDriven<Witness>, Preparable {
 
     private WitnessService service;
+    private IncidentService incidentService;
     private Witness model;
+    private int incidentId;
 
+    
     public void setWitnessService(WitnessService service) {
         this.service = service;
     }
@@ -35,11 +40,19 @@ public class WitnessAction extends BaseModelAction implements ModelDriven<Witnes
             model = service.getObject(objectId);
         }
     }
-    
+
     public String updateModel() {
         try {
-            this.service.updateObject(model);
-            this.actionResult = "1";
+            if (objectId <= 0) {
+                Incident incident = this.incidentService.getObject(getIncidentId());
+                model.setIncident(incident);
+                this.service.updateObject(model);
+                this.actionResult = "";                
+            } else {
+                this.service.updateObject(model);
+                this.actionResult = "";
+            }
+
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }
@@ -55,6 +68,20 @@ public class WitnessAction extends BaseModelAction implements ModelDriven<Witnes
     String getTabName() {
         return ApplicationAccessibility.TAB_CLAIM_DETAIL;
     }
-   
-    
+
+    public IncidentService getIncidentService() {
+        return incidentService;
+    }
+
+    public void setIncidentService(IncidentService incidentService) {
+        this.incidentService = incidentService;
+    }
+
+    public int getIncidentId() {
+        return incidentId;
+    }
+
+    public void setIncidentId(int incidentId) {
+        this.incidentId = incidentId;
+    }
 }

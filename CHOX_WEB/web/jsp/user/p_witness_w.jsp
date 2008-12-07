@@ -3,7 +3,8 @@
 
 
 <form id="formUpdateIncident" action="user/updateWitness.action" class="entity-form">
-    <input type="hidden" name="objectId" value='<s:property value="id"/>'>
+    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
+    <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>    
     <fieldset class="x-fieldset">
         
      
