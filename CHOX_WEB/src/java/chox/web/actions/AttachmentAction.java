@@ -185,5 +185,11 @@ public class AttachmentAction extends BaseModelAction implements ModelDriven<Att
     public void setHistoryService(HistoryService historyService) {
         this.historyService = historyService;
     }
+    
+    public void setGlobalConfigurationService(GlobalConfigurationService globalConfigurationService)
+    {
+        this.globalConfigurationService = globalConfigurationService;
+    }
+    
 
 }
