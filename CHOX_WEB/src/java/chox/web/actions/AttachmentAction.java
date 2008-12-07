@@ -89,19 +89,15 @@ public class AttachmentAction extends BaseModelAction implements ModelDriven<Att
 
     private boolean processFile(File inputfile) throws IOException {
 
-        System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP1" + new File(".").getAbsolutePath());
-        System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP2" + new File(".").getCanonicalPath());
-        System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP3" + new File("..").getAbsolutePath());
-        System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP4" + new File("..").getCanonicalPath());
         Boolean bFlag = false;
 
-        GlobalConfiguration gc = globalConfigurationService.getValueByParam("attachement_path");
+        GlobalConfiguration gc = globalConfigurationService.getValueByParam("attachment_path");
         String attachmentPath = gc.getValue();
 
         if (FileHelper.isFileValid(inputfile)) {
 
             String fileName = FileHelper.getNewFileName(this.uploadFileName);
-            String fileType = FileHelper.getFileExtension(inputfile);
+            String fileType = FileHelper.getFileExtension(fileName);
 
             // READ INPUT FILE
             FileInputStream streamIn = new FileInputStream(inputfile);
