@@ -80,6 +80,8 @@ public class ClaimCalcHelper {
 				allowedDays += claim.getChoBand().getTakeVehicleToGarageDaysNonMobile();
 			}
 		}
+                
+                System.out.println("allowedDays is " + allowedDays);
 		return allowedDays;
 	}   
 
