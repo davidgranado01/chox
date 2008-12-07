@@ -48,7 +48,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
 
         try {
             
-            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX.file/invoice.XML";
+            String sXMLPath1 = "C:/Users/Carlson/Desktop/file/FNOC.xml";
             Boolean isAllowPartialUpload = true;
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -159,7 +159,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             Element root,
             Boolean isAllowPartialUpload) throws Exception {
             
-        //System.out.println("START********************************************");
+        System.out.println("START********************************************");
         
         Session currentSession = getCurrentSession();
         currentSession.beginTransaction();
@@ -168,7 +168,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
          
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
-        // System.out.println(" ** CHO REFERENCE: " + xmlParseResult.getClaim().getChoReference());
+        System.out.println(" ** CHO REFERENCE: " + xmlParseResult.getClaim().getChoReference());
 
         // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
         if(!xmlParseResult.getIsClaimExist()){
@@ -205,6 +205,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                 }               
                 
                 Claim BREClaim = constructeClaimForInvoiceValidation(xmlParseResult.getClaim());
+                                
                 RulesEngineResponse validationResult = invoiceService.XMLUploaderInvoiceValidation(BREClaim);
                 historyService.logInvoiceValidationErrorMsg(validationResult, BREClaim);
                 
@@ -278,7 +279,6 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         return xmlParseResult;
     }
 
-    
     private Claim constructeClaimForInvoiceValidation(Claim claim){
         
         Claim BREClaim = claim;
@@ -321,7 +321,6 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             RuleEvaluation rv = results.get(iCount);
             
             if(rv.getIsVisibleToCHO() && rv.getResult()==RuleEvaluationResult.RuleFailed){
-                //existingErrorMsg = XmlHelper.XMLResultDelimeterContructor(existingErrorMsg, rv.toString());
                 xmlParseResult.getDataValidationRemark().add(rv.toString());
             }
         }
@@ -419,7 +418,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                     // HARDCODE CHO BAND INFORMATION                   
                     ChoBand choband = choBandService.getDummyChoBand();
                     claim.setChoband(choband);
-
+                    
                 }else{
 
                     // SET CLAIM HEADER INFORMATION

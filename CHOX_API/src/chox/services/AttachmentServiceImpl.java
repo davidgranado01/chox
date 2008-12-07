@@ -45,13 +45,9 @@ public class AttachmentServiceImpl extends DataService implements AttachmentServ
         } catch (Throwable e) {
             e.printStackTrace();
         }
-
-        
-        
-
         return attachments;
     }    
-    
+           
     public Attachment getObject(int id) {
         return (Attachment) getCurrentSession().get(Attachment.class, id);
     }

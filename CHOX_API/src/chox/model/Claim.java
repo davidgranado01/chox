@@ -12,7 +12,7 @@ import scsbre.model.IHireInfo;
 import scsbre.model.IVehicleClassInfo;
 import java.math.BigDecimal;
 
-public class Claim implements Serializable,Auditable,IClaimInfo {
+public class Claim implements Serializable, Auditable, IClaimInfo{
 
     protected ChoBand choband;
     /** 
@@ -102,6 +102,7 @@ public class Claim implements Serializable,Auditable,IClaimInfo {
     protected boolean isQuantumDispute;
     protected String engineerClaimReviewNotes;
     protected boolean isInvoiceReviewRequired;
+    //protected VehicleClass vehicleClass;
 
     /**
      * Method 'Claim'
@@ -457,27 +458,39 @@ public class Claim implements Serializable,Auditable,IClaimInfo {
     }
 
     public IHireInfo getHireDetail() {
-        return this.vehicleHire;
+        return this.getVehicleHire();
     }
 
     public IEngineerReportInfo getEngineeringReport() {
-        return this.engineerReport;
+        return this.getEngineerReport();
     }
 
     public boolean getManagingRepair() {
         return this.managingRepair;
     }
+/*
+    public VehicleClass getVehicleClass() {
+        return vehicleClass;
+    }
+
+    public void setVehicleClass(VehicleClass vehicleClass) {
+        this.vehicleClass = vehicleClass;
+    }
+    */
+    
     // NO VEHICLE CLASS DIRECT ASSIGN TO CLAIM, ONLY TO VEHICLE
     public IVehicleClassInfo getVClass() {
-        return this.customer.vehicleClass;
+        return this.getCustomer().getVehicleClass();
     }
+    
     // ICustomerVehicleDamageInfo IS PART OF CUSTOMER DETAIL
     public ICustomerVehicleDamageInfo getCustomerVehicleDamage() {
-        return this.customer;
+        return this.getCustomer();
     }
+    
     // getExtras IS PART OF INVOICE DETAIL
     public IExtrasInfo getExtras() {
-        return this.invoice;
+        return this.getInvoice();
     }
 
     public void setChoband(ChoBand choband) {
@@ -551,6 +564,4 @@ public class Claim implements Serializable,Auditable,IClaimInfo {
     public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
     }
-    
-    
 }

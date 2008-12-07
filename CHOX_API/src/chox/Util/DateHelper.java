@@ -5,9 +5,18 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 
 public class DateHelper {
+    
     public static java.sql.Timestamp getCurrentTimeStamp() {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return Timestamp.valueOf(sdf.format(cal.getTime()));
-    }    
+    }
+    
+    public static String getTwoDigitValueInString(int iValue){
+        String returnValue = String.valueOf(iValue);
+        if(iValue<10){
+            returnValue = "0"+returnValue;
+        }
+        return returnValue;
+    }
 }

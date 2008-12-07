@@ -1,10 +1,12 @@
 package chox.model;
 
+import java.math.BigDecimal;
 import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
 import scsbre.model.ICustomerVehicleDamageInfo;
+import scsbre.model.IVehicleClassInfo;
 
 public class Customer implements Serializable, Auditable, ICustomerVehicleDamageInfo
 {
@@ -779,14 +781,10 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
 	 */
 	public void setVehicleClass(VehicleClass vehicleClass)
 	{
-		this.vehicleClass = vehicleClass;
+            this.vehicleClass = vehicleClass;
 	}
-        
-        
-        
-        
+
         //convenince wrapppers
-        
         public String getIsComprehensiveDesc(){
             
              return this.isComprehensive() ? "Yes" : "No";
@@ -808,23 +806,12 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
             return formattedName;
         }
         
-        
-        
-        
+        public Boolean getIsTotalLoss() {
+            return isTotalLoss;
+        }
 
-    public Boolean getIsTotalLoss() {
-        return isTotalLoss;
-    }
-
-    public void setIsTotalLoss(Boolean isTotalLoss) {
-        this.isTotalLoss = isTotalLoss;
-    }
-    
-    
-    
-    
-    
-    
-        
-        
+        public void setIsTotalLoss(Boolean isTotalLoss) {
+            this.isTotalLoss = isTotalLoss;
+        }
+          
 }
