@@ -71,10 +71,6 @@ function showClaimByStatus(status)
 function doExportExcel(){
        
 var popwin = window.open("doExportExcel.action", "Excel", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
-        
-//document.thisForm.action = "doExportExcel.action";
-//document.thisForm.target = "_New";
-//document.thisForm.submit();
 }
     
 function searchClaim()
