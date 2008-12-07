@@ -61,7 +61,7 @@ public class SolicitorServiceImpl  extends DataService implements SolicitorServi
     public void updateObject(Solicitor solicitor) {
 
         getCurrentSession().beginTransaction();
-        getCurrentSession().update(solicitor);
+        getCurrentSession().saveOrUpdate(solicitor);
         getCurrentSession().getTransaction().commit();
     }
     
