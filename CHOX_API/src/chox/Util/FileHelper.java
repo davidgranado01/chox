@@ -8,7 +8,9 @@ package chox.Util;
 import java.util.List;
 import java.io.File;
 import chox.data.AttachmentType;
+import java.math.BigInteger;
 import java.util.Random;
+import java.security.SecureRandom;
 
 public class FileHelper {
     
@@ -29,12 +31,22 @@ public class FileHelper {
         
         return bFlag;
     }
+    private static String getRandomString(){
+       SecureRandom random = new SecureRandom();
+       String sRandom = new BigInteger(130, random).toString(10);
+       
+       if(sRandom.length()>8){
+            sRandom = sRandom.substring(0,8);
+       }
+       
+       return sRandom.toUpperCase();
+    }
     
     public static String getNewFileName(String oldFileName){
-        
-        Random randomGenerator = new Random(1234567890);
-        int iRandom = randomGenerator.nextInt(99999999);
-        return TextHelper.trimWhiteSpace(String.valueOf(iRandom)+"_"+oldFileName);
+    
+        // Random randomGenerator = new Random(1234567890);
+        // int iRandom = randomGenerator.nextInt(99999999);
+        return TextHelper.trimWhiteSpace(getRandomString()+"_"+oldFileName);
     }
     
     public static String getFileExtension(String filename){
