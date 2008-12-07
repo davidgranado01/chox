@@ -22,7 +22,7 @@ import scsbre.model.IInvoiceInfo;
  */
 public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusinessRule {
 
-    String narrative = "Either the claim handling amount is greater than 0 or the claim handling deduction is greater than 0.";
+    String narrative = "Entries against Claims Handling Invoice Amount and Less Claims Handling Fee are not 0.";
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         RuleEvaluation res = new RuleEvaluation();
         if(!claim.getCHOrg().getIsDelegatedAuthority()){
@@ -36,7 +36,7 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
             res.setResult(RuleEvaluationResult.RuleSkipped);
             narrative = "Rule does not apply to CHOs in the DA scheme";
         }
-        res.setIsVisibleToCHO(true);
+        res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         
         return res;

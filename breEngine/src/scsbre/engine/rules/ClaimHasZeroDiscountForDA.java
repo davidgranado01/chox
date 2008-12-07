@@ -20,7 +20,7 @@ import scsbre.model.IClaimInfo;
 public class ClaimHasZeroDiscountForDA implements IBusinessRule{
 
     
-    String narrative = "Entries against Claims Handling Invoice Amount and Less Claims Handling Fee do not equate to 0.";
+    String narrative = "CHO is on DA scheme. Discount should be 0.";
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         RuleEvaluation res = new RuleEvaluation();
         if(claim.getCHOrg().getIsDelegatedAuthority()){
