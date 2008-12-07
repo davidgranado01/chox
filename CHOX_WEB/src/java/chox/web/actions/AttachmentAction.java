@@ -30,7 +30,6 @@ public class AttachmentAction extends BaseModelAction implements ModelDriven<Att
     private Attachment model;
     private HistoryService historyService;
     private GlobalConfigurationService globalConfigurationService;
-    private AttachmentService attachmentService;
 
     public void setAttachmentService(AttachmentService service) {
         this.service = service;
@@ -139,7 +138,7 @@ public class AttachmentAction extends BaseModelAction implements ModelDriven<Att
         att.setRemarks(strRemark);
         att.setFileType(strFileType);
 
-        if (attachmentService.saveObj(att)) {
+        if (service.saveObj(att)) {
             bFlag = true;
             saveAttachmentHistory(att);
         }
