@@ -1,15 +1,129 @@
        
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<form id="formUpdateIncident" action="user/updateCustomer.action" class="entity-form">
+
+
+
+
+
+
+    <script language="JavaScript">
+        
+
+        $(document).ready(function(){
+            
+            $("#formUpdateCustomerDetails").validate(
+            {
+               errorLabelContainer: "#CDmessageBox",                
+               rules: {
+                 title:{
+                     required:true
+                 },
+                 firstName:{
+                     required:true
+                 },
+                 lastName:{
+                     required:true
+                 },
+                 address1:{
+                     required:true
+                 },
+                 postcode:{
+                     required:true
+                 },
+                 telephoneDay:{
+                     required:true
+                 },   
+                 vehicleClassId:{
+                     min:1
+                 },
+                 insurerId:{                     
+                     min:1
+                 },
+                 vehicleManufacturer:{
+                     required:true
+                 },
+                 policyNumber:{
+                     required:true
+                 },
+                 vehicleRegistration:{
+                     required:true
+                 },
+                 location:{
+                     required:true
+                 }
+               },
+               messages: {
+                 title: {
+                   required:"You must supply a value for 'Title'"
+                 }, 
+                 firstName: {
+                   required:"You must supply a value for 'First Name'"
+                 },
+                 lastName: {
+                   required:"You must supply a value for 'Last Name'"
+                 },  
+                 address1: {
+                   required:"You must supply a value for 'Address 1'"
+                 },  
+                 postcode: {
+                   required:"You must supply a value for 'Postcode'"
+                 },  
+                 telephoneDay: {
+                   required:"You must supply a value for 'Telephone Day'"
+                 }, 
+                 vehicleClassId:{
+                     min: "You must select a Vehicle Class"
+                 }, 
+                 insurerId:{
+                     min: "You must select an Insurer"
+                 },
+                 vehicleManufacturer: {
+                   required:"You must supply a value for 'Vehicle Manufacturer'"
+                 },  
+                 policyNumber: {
+                   required:"You must supply a value for 'Policy Number'"
+                 },  
+                 vehicleRegistration: {
+                   required:"You must supply a value for 'Vehicle Registration'"
+                 },  
+                 location: {
+                   required:"You must supply a value for 'Vehicle Location'"
+                 }
+               },
+                submitHandler: function(form) {
+                    $(form).ajaxSubmit(globalEntityFormOptions);
+                }
+            });
+        }); 
+        
+
+
+
+
+        
+        </script>
+
+
+
+
+
+
+
+
+<form id="formUpdateCustomerDetails" action="user/updateCustomer.action" class="XXentity-form">
     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
+    
+    
+    
+    
             <fieldset class="x-fieldset">
                 <legend>Customer Details</legend>
                 <div style="display:none" class="form-container">
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Title</label>
-                    <input type="text" class="chox-ttxt" id="CCDTitle" value='<s:property value="title" />'/></div>
+                    <input type="text" class="chox-ttxt" id="CCDTitle" name="title" value='<s:property value="title" />'/></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         First Name(s)</label>
@@ -62,7 +176,7 @@
                         listKey="id" 
                         listValue="name"
                         headerKey="-1"
-                        headerValue="--- ALL ---"
+                        headerValue="--SELECT--"
                         emptyOption="false"></s:select></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
@@ -89,12 +203,12 @@
                         listKey="id" 
                         listValue="name"
                         headerKey="-1"
-                        headerValue="--- ALL ---"
+                        headerValue="--SELECT--"
                         emptyOption="false"></s:select>
                         </div>
                      <div class="chox-form-item">
                     <label class="chox-form-std-label">Vehicle Registration Number</label>
-                        <input type="text" class="chox-ttxt" id="CCDVehicleManufacturer" name="vehicleManufacturer" value='<s:property value="vehicleRegistration" />' />                  
+                        <input type="text" class="chox-ttxt" id="CCDVehicleRegistration" name="vehicleRegistration" value='<s:property value="vehicleRegistration" />' />                  
                     </div>                      
 
                     <div class="chox-form-item">
@@ -102,8 +216,12 @@
                         Vehicle Location</label>
                     <input type="text" class="chox-ttxt" id="CCDVehicleLocation"  name="location" value='<s:property value="location" />' /></div>
                     <div class="chox-form-button">
-                        <input type="submit" value="Save Changes" /><div class="chox-form-submit-result"></div>
+                        <input type="submit" value="Save Changes" />
+
                     </div>   
+                        
+                        <div id="CDmessageBox" class="errorBox"></div>
+                        <div class="chox-form-submit-result"></div>                    
                 </div>
             </fieldset>
         </form>

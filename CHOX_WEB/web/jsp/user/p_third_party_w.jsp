@@ -1,7 +1,102 @@
 
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<form id="formUpdateIncident" action="user/updateThirdParty.action" class="entity-form">
+
+
+<script language="JavaScript">
+
+
+    $(document).ready(function(){
+
+        $("#formUpdateThirdParty").validate(
+        {
+           errorLabelContainer: "#TPmessageBox",                
+           rules: {
+             title:{
+                 required:true
+             },
+             firstName:{
+                 required:true
+             },
+             lastName:{
+                 required:true
+             },
+             address1:{
+                 required:true
+             },  
+             vehicleClassId:{
+                 min:1
+             },
+             insurerId:{                     
+                 min:1
+             },
+             vehicleManufacturer:{
+                 required:true
+             },
+             policyNumber:{
+                 required:true
+             },
+             claimReference:{
+                 required:true
+             },
+             vehicleRegistration:{
+                 required:true
+             }
+           },
+           messages: {
+             title: {
+               required:"You must supply a value for 'Title'"
+             }, 
+             firstName: {
+               required:"You must supply a value for 'First Name'"
+             },
+             lastName: {
+               required:"You must supply a value for 'Last Name'"
+             },  
+             address1: {
+               required:"You must supply a value for 'Address 1'"
+             },  
+             postcode: {
+               required:"You must supply a value for 'Postcode'"
+             },  
+             telephoneDay: {
+               required:"You must supply a value for 'Telephone Day'"
+             }, 
+             vehicleClassId:{
+                 min: "You must select a Vehicle Class"
+             }, 
+             insurerId:{
+                 min: "You must select an Insurer"
+             },
+             vehicleManufacturer: {
+               required:"You must supply a value for 'Vehicle Manufacturer'"
+             },  
+             policyNumber: {
+               required:"You must supply a value for 'Policy Number'"
+             },  
+             vehicleRegistration: {
+               required:"You must supply a value for 'Vehicle Registration'"
+             },
+             claimReference: {
+               required:"You must supply a value for 'Claim Number'"
+             }             
+           },
+            submitHandler: function(form) {
+                $(form).ajaxSubmit(globalEntityFormOptions);
+            }
+        });
+    }); 
+
+
+
+
+
+
+        </script>
+
+
+
+<form id="formUpdateThirdParty" action="user/updateThirdParty.action" class="XXentity-form">
     <input type="hidden" name="objectId" value='<s:property value="id"/>'>
     <fieldset class="x-fieldset">
         <legend>Third-Party Details</legend>
@@ -57,7 +152,13 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Insurer</label>
-            <input type="text" class="chox-ttxt" name="insurer" value='<s:property value="insurer.name" />'/></div>   
+             <s:select name="insurerId" 
+                        list="insurers" 
+                        listKey="id" 
+                        listValue="name"
+                        headerKey="-1"
+                        headerValue="--SELECT--"
+                        emptyOption="false"></s:select></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Policy Number</label>
@@ -82,11 +183,23 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Vehicle Class</label>
-            <input type="text" class="chox-ttxt" name="vehicleClass.Name" value='<s:property value="vehicleClass.Name" />'/></div>   
+ <s:select name="vehicleClassId" 
+                        list="vehicleClasses" 
+                        listKey="id" 
+                        listValue="name"
+                        headerKey="-1"
+                        headerValue="--SELECT--"
+                        emptyOption="false"></s:select>
+                </div>   
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes" /><div class="chox-form-submit-result"></div>
-            </div> 
+                <input type="submit" value="Save Changes" /></div>
+   
             
-        </div>
+            <div id="TPmessageBox" class="errorBox"></div>
+            <div class="chox-form-submit-result">&nbsp;</div>    
+            
+            </div>
+            
+            
     </fieldset>
 </form>

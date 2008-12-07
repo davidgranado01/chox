@@ -16,15 +16,15 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
             Repair Book In Date</label>
-        <label class="std-data-ro"><s:property value="repairBookInDate" /></label></div>
+        <label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairBookInDate" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
             Inspection Booked Date</label>
-        <label class="std-data-ro"><s:property value="inspectionBookedDate" /></label></div>
+        <label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionBookedDate" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
             Inspection Date</label>
-        <label class="std-data-ro"><s:property value="inspectionDate" /></label></div>
+        <label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionDate" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
             Total Loss Check</label>
@@ -32,7 +32,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
             Repair Completion Date</label>
-        <label class="std-data-ro"><s:property value="repairCompletionDate" /></label></div>
+        <label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCompletionDate" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
             Name of IME</label>

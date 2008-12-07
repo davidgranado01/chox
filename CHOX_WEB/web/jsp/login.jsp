@@ -29,8 +29,8 @@
                             <label for="password">
                                 Password:</label>
                            <input type="password" name="j_password" />
-                            <span class="note">(<a href="#">Forgotten Username/Password</a>)
-                            </span>
+                            <!--<span class="note">(<a href="#">Forgotten Username/Password</a>)
+                            </span>-->
                         </p>
                         <p class="open_id_entry" style="display: none;">
                             <label for="name">
@@ -38,14 +38,14 @@
                                     style="margin-bottom: 4px;" align="absmiddle" height="16" width="16">
                                 OpenID:
                             </label>
-                            <input class="identity_url" id="openid_url" name="openid_url" type="text">
-                            <span class="note">(<a href="#">Can't login?</a>) </span>
+                            <!--<input class="identity_url" id="openid_url" name="openid_url" type="text">
+                            <span class="note">(<a href="#">Can't login?</a>) </span>-->
                         </p>
-                        <div class="checkbox_and_submit">
+                        <div class="checkbox_and_submit"><!--
                             <p>
                                 <label>
                                     <input id="save_login" name="save_login" value="1" type="checkbox">
-                                    Remember me on this computer</label></p>
+                                    Remember me on this computer</label></p>-->
                             <p>
                                 <input type="submit" value="Sign In" />        
                                     <s:if test="#parameters.size()>0">
@@ -60,8 +60,8 @@
         </div>
     </div>
     <div class="below">
-        <span class="note">
-        <a href="#" onclick="return false;">Terms and Conditions</a></span>
+        <span class="note" style="font-size:11px">
+        <a href="#" onclick="return false;">Terms of Service</a></span>
     </div>
 </body>
 </html>

@@ -110,7 +110,16 @@
          
                 // suppresses the use of overlay styles on FF/Linux (due to significant performance issues with opacity) 
                 applyPlatformOpacityRules: true 
-            };               
+            }; 
+            
+            
+            
+            var globalEntityFormOptions = { 
+                    beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
+                    success:       onSubmitResponseReceived,  // post-submit callback 
+                    timeout: 3000,
+                    error: onSubmitError
+                }; 
 
     
             $(document).ready(function(){
@@ -120,13 +129,15 @@
                 fsets.mouseover(function(){ $(this).css("cursor","pointer"); }); 
                 fsets.mouseout(function(){ $(this).css("cursor","normal");});  
 
+                /*
                 var options = { 
                     beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
                     success:       onSubmitResponseReceived,  // post-submit callback 
                     timeout: 3000,
                     error: onSubmitError
-                };                      
-                $('.entity-form').ajaxForm(options); //wrap all <form> elements with ajax submission config   
+                }; 
+                */
+                $('.entity-form').ajaxForm(globalEntityFormOptions); //wrap all <form> elements with ajax submission config   
             });
 
             function onBeforeSubmit(formData, jqForm, options) { 
@@ -150,8 +161,8 @@
                 elementToBlock.unblock();
                 var output = "Your changes have been saved.";
                 var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
-                if(responseText.trim() != ""){
-                    output = responseText;
+                if(responseText.trim() != "" && responseText.trim() != "1"){
+                    output = "There was an error: " + responseText.substring(0,40);
                     outputDiv.addClass("submit-error");
                 }
                 
@@ -217,6 +228,10 @@
                 }            
             ]
         }); 
+        
+        
+        
+        
         // ADDED BY CARLSON @ 2008-12-02
         if(!paymentPackDisabled){
             
@@ -329,9 +344,9 @@
                 store: commentsDataStore,
                 loadMask: true,
                 columns: [
-                     {header: "Created", width: 110, dataIndex: 'createdDate', sortable: false, resizable: false}, 
-                    {header: "Created By", width: 130, dataIndex: 'createdBy', sortable: false, resizable: false},                   
-                    {header: "Message", width: 630, dataIndex: 'comment', sortable: false, resizable: false}
+                     {header: "Created", width: 110, dataIndex: 'createdDate', sortable: false, resizable: true}, 
+                    {header: "Created By", width: 130, dataIndex: 'createdBy', sortable: false, resizable: true},                   
+                    {header: "Message", width: 630, dataIndex: 'comment', sortable: false, resizable: true}
                 ],
                 renderTo:'commentsGrid',
                 width:960,
@@ -407,54 +422,7 @@
             });              
             
         }
-        
-        
-              
 
-        
-
-        /*
-        
-        
-        
-        var commentsData = new Ext.data.Store({
-            // load using HTTP
-            url: 'history.xml',
-
-            // the return will be XML, so lets set up a reader
-            reader: new Ext.data.XmlReader({
-                   // records will have an "Item" tag
-                   record: 'Item',
-                   id: 'ASIN',
-                   totalRecords: '@total'
-               }, [
-                   // set up the fields mapping into the xml doc
-                   // The first needs mapping, the others are very basic
-                   {name: 'Author', mapping: 'ItemAttributes > Author'},
-                   'Title', 'Manufacturer', 'ProductGroup'
-               ])
-        });
-
-
-
-        // create the grid
-        var commentsGrid = new Ext.grid.GridPanel({
-            store: commentsData,
-            loadMask: true,
-            columns: [
-                {header: "ID", width: 80, dataIndex: 'Author', sortable: false, resizable: false},
-                {header: "Created", width: 110, dataIndex: 'Author', sortable: false, resizable: false},
-                {header: "Message", width: 760, dataIndex: 'Title', sortable: false, resizable: false}
-            ],
-            renderTo:'commentsGrid',
-            width:960,
-            height:500,
-            enableHdMenu:false
-        });  
-        
-        
-        */
-        
 
     
     });         
@@ -546,12 +514,12 @@
                             <legend>Claim Summary</legend>
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <tr>
-<!-- UPDATED BY CALRSON @ 2008-12-03 - START !-->
-<td>
-<label class="chox-claim-header-label">Third Party Insurer</label>
-<label class="chox-claim-header-text"><s:property value="thirdParty.insurer.name" /></label></td>
-<td>
-<!-- UPDATED BY CALRSON @ 2008-12-03 - END !-->
+                                    <!-- UPDATED BY CALRSON @ 2008-12-03 - START !-->
+                                    <td>
+                                        <label class="chox-claim-header-label">Third Party Insurer</label>
+                                    <label class="chox-claim-header-text"><s:property value="thirdParty.insurer.name" /></label></td>
+                                    <td>
+                                        <!-- UPDATED BY CALRSON @ 2008-12-03 - END !-->
                                         <label class="chox-claim-header-label">
                                     Credit-hire Organsation</label><label class="chox-claim-header-text"><s:property value="chorganisation.name" /></label></td>
                                     <td>
@@ -569,25 +537,25 @@
                                         <label class="chox-claim-header-label">
                                     Created On</label><label class="chox-claim-header-text"><s:date name="createdDate" format="dd MMM yyyy hh:mm"  /></label></td>
                                 </tr>
-<tr>
-    <td><label class="chox-claim-header-label">Customer</label><label class="chox-claim-header-text"><span id="status"><s:property value="customer.formattedName" /></span></label></td>
-    <td><label class="chox-claim-header-label">Current Status</label><label class="chox-claim-header-text"><span id="status"><s:property value="status" /></span></label><!--span id="statusTip"><img src="img/tip.gif" style="fixed:relative;top:-50" /></span--></td>
-    <td><label class="chox-claim-header-label">Policy Holder Contact Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="policyHolderContactDate" format="dd MMM yyyy hh:mm"  /></span></label></td>
-</tr>
-<tr>
-    <td><label class="chox-claim-header-label">Managing Repair</label><label class="chox-claim-header-text"><span id="status"><s:property value="managingRepair" /></span></label></td>
-    <td><label class="chox-claim-header-label">Indemnity</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
-    <td><label class="chox-claim-header-label">GTA 4.1 Notice Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="gtaNoticeDate" format="dd MMM yyyy hh:mm"  /></span></label></td>
-</tr>
-
-  
-  
-<tr>
-    <td><label class="chox-claim-header-label">Percentage Liability Accepted</label><label class="chox-claim-header-text"><span id="status"><s:property value="percentageLiabilityAccepted" />%</span></label></td>
-    <td><label class="chox-claim-header-label">Credit Agreement Signed by Insurer Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="creditAgreementDate" format="dd MMM yyyy hh:mm"  /></span></label></td>
-    <td>&nbsp;</td>
-</tr>
-                                
+                                <tr>
+                                    <td><label class="chox-claim-header-label">Customer</label><label class="chox-claim-header-text"><span id="status"><s:property value="customer.formattedName" /></span></label></td>
+                                    <td><label class="chox-claim-header-label">Current Status</label><label class="chox-claim-header-text"><span id="status"><s:property value="status" /></span></label><!--span id="statusTip"><img src="img/tip.gif" style="fixed:relative;top:-50" /></span--></td>
+                                    <td><label class="chox-claim-header-label">Policy Holder Contact Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="policyHolderContactDate" format="dd MMM yyyy hh:mm"  /></span></label></td>
+                                </tr>
+                                <tr>
+                                    <td><label class="chox-claim-header-label">Managing Repair</label><label class="chox-claim-header-text"><span id="status"><s:property value="managingRepair" /></span></label></td>
+                                    <td><label class="chox-claim-header-label">Indemnity</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
+                                    <td><label class="chox-claim-header-label">GTA 4.1 Notice Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="gtaNoticeDate" format="dd MMM yyyy hh:mm"  /></span></label></td>
+                                </tr>
+                                    
+                                    
+                                    
+                                <tr>
+                                    <td><label class="chox-claim-header-label">Percentage Liability Accepted</label><label class="chox-claim-header-text"><span id="status"><s:property value="percentageLiabilityAccepted" />%</span></label></td>
+                                    <td><label class="chox-claim-header-label">Credit Agreement Signed by Insurer Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="creditAgreementDate" format="dd MMM yyyy hh:mm"  /></span></label></td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                    
                             </table>
                         </fieldset>
                     </div>
@@ -620,26 +588,25 @@
                                             <s:param name="objectId"><s:property value="customer.id" /></s:param> 
                                             <s:param name="claimStatus"><s:property value="status" /></s:param>         
                                         </s:action>  
-                                        
                                        
+                                        
                                         <s:action name="getInjury" executeResult="true">
-                                            <s:param name="objectId"><s:property value="injury.id" /></s:param> 
-                                            <s:param name="claimStatus"><s:property value="status" /></s:param> 
+                                        <s:param name="objectId"><s:property value="incident.injury.id" /></s:param>
+                                        <s:param name="incidentId"><s:property value="incident.id" /></s:param>
+                                        <s:param name="claimStatus"><s:property value="status" /></s:param>
                                         </s:action>
-
+                                        
 
                                         <s:action name="getSolicitor" executeResult="true">
-                                            <s:param name="objectId"><s:property value="solicitor.id" /></s:param> 
-                                            <s:param name="claimStatus"><s:property value="status" /></s:param> 
-                                        </s:action>       
-
-                                        
-                                                                                
+                                            <s:param name="objectId"><s:property value="incident.injury.solicitor.id" /></s:param>
+                                            <s:param name="injuryId"><s:property value="incident.injury.id" /></s:param>                                                                                      
+                                            <s:param name="claimStatus"><s:property value="status" /></s:param>
+                                        </s:action> 
+                                 
                                         
                                     </td>
                                     <td>
                                         
-
 <!-- third pary -->
 
 
@@ -657,9 +624,11 @@
 
 
 
+
                                         <s:action name="getWitness" executeResult="true">
-                                            <s:param name="objectId"><s:property value="witness.id" /></s:param> 
-                                            <s:param name="claimStatus"><s:property value="status" /></s:param> 
+                                            <s:param name="incidentId"><s:property value="incident.id" /></s:param>
+                                            <s:param name="objectId"><s:property value="incident.witness.id" /></s:param>
+                                            <s:param name="claimStatus"><s:property value="status" /></s:param>
                                         </s:action>
 
 

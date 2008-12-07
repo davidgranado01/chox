@@ -1,6 +1,88 @@
 
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<form id="formUpdateIncident" action="user/updateExtra.action" class="entity-form">
+
+
+
+<script language="JavaScript">
+
+        $(document).ready(function(){        
+        
+        
+            $("#formUpdateExtrasFORM").validate(
+            {
+                errorLabelContainer: "#EXTmessageBox",                
+                rules: {
+                    
+                    cdwFee:{required:true, number:true},
+                    cdwQty:{required:true, digits:true},
+                    automaticFee:{required:true, number:true},
+                    automaticQty:{required:true, digits:true},
+                    satNavFee:{required:true, number:true},
+                    satNavQty:{required:true, digits:true},
+                    estateFee:{required:true, number:true},
+                    estateQty:{required:true, digits:true},
+                    babySeatFee:{required:true, number:true},
+                    babySeatQty:{required:true, digits:true},
+                    towBarsFee:{required:true, number:true},
+                    towBarsQty:{required:true, digits:true},
+                    nonStandardInsurancePremiumFee:{required:true, number:true},
+                    nonStandardInsurancePremiumQty:{required:true, digits:true},
+                    adminFee:{required:true, number:true},
+                    adminQty:{required:true, digits:true},
+                    roofRackFee:{required:true, number:true},
+                    roofRackQty:{required:true, digits:true},
+                    dualControlFee:{required:true, number:true},
+                    dualControlQty:{required:true, digits:true},
+                    deliveryCollectionFee:{required:true, number:true},
+                    deliveryCollectionQty:{required: true, digits:true}
+                    
+                },
+                
+                messages: {
+                    
+                    cdwFee :{required:"Please supply a valid value for Cdw Fee", number:"Please supply a valid value for Cdw Fee"},
+                    cdwQty:{required:"Please supply a valid value for Cdw Qty", digits:"Please supply a valid value for Cdw Qty"},
+                    automaticFee:{required:"Please supply a valid value for Automatic Fee", number:"Please supply a valid value for Automatic Fee"},
+                    automaticQty:{required:"Please supply a valid value for Automatic Qty", digits:"Please supply a valid value for Automatic Qty"},
+                    satNavFee:{required:"Please supply a valid value for Satnav Fee", number:"Please supply a valid value for Satnav Fee"},
+                    satNavQty:{required:"Please supply a valid value for Satnav Qty", digits:"Please supply a valid value for Satnav Qty"},
+                    estateFee:{required:"Please supply a valid value for Estate Fee", number:"Please supply a valid value for Estate Fee"},
+                    estateQty:{required:"Please supply a valid value for Estate Qty", digits:"Please supply a valid value for Estate Qty"},
+                    babySeatFee:{required:"Please supply a valid value for Baby-seat Fee", number:"Please supply a valid value for Baby-seat Fee"},
+                    babySeatQty:{required:"Please supply a valid value for Baby-seat Qty", digits:"Please supply a valid value for Baby-seat Qty"},
+                    towBarsFee:{required:"Please supply a valid value for Tow-bars Fee", number:"Please supply a valid value for Tow-bars Fee"},
+                    towBarsQty:{required:"Please supply a valid value for Tow-bars Qty", digits:"Please supply a valid value for Tow-bars Qty"},
+                    nonStandardInsurancePremiumFee:{required:"Please supply a valid value for Non-Standard Insurance Premium Fee", number:"Please supply a valid value for Non-Standard Insurance Premium Fee"},
+                    nonStandardInsurancePremiumQty:{required:"Please supply a valid value for Non-Standard Insurance Premium Qty", digits:"Please supply a valid value for Non-Standard Insurance Premium Qty"},
+                    adminFee:{required:"Please supply a valid value for Admin Fee", number:"Please supply a valid value for Admin Fee"},
+                    adminQty:{required:"Please supply a valid value for  Admin Qty", digits:"Please supply a valid value for Admin Qty"},
+                    roofRackFee:{required:"Please supply a valid value for Roofrack Fee", number:"Please supply a valid value for Roofrack Fee"},
+                    roofRackQty:{required:"Please supply a valid value for Roofrack Qty", digits:"Please supply a valid value for Roofrack Qty"},
+                    dualControlFee:{required:"Please supply a valid value for Dual Control Fee", number:"Please supply a valid value for Dual Control Fee"},
+                    dualControlQty:{required:"Please supply a valid value for Dual Control Qty", digits:"Please supply a valid value for Dual Control Qty"},
+                    deliveryCollectionFee:{required:"Please supply a valid value for Delivery Collection Fee", number:"Please supply a valid value for Delivery Collection Fee"},
+                    deliveryCollectionQty:{required:"Please supply a valid value for Delivery Collection Qty", digits:"Please supply a valid value for Delivery Collection Qty"}                    
+                    
+                },
+                
+                submitHandler: function(form) {
+                    $(form).ajaxSubmit(globalEntityFormOptions);
+                }                
+
+                
+            }); 
+            
+        });  
+
+
+
+
+</script>
+
+
+
+
+<form id="formUpdateExtrasFORM" name="formUpdateExtrasFORM" action="user/updateExtra.action" class="XXentity-form">
     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <fieldset class="x-fieldset">
         <legend>Extras</legend>
@@ -95,8 +177,10 @@
                 Delivery Collection Fee Quantity</label>
             <input type="text" class="chox-ttxt"  name="deliveryCollectionQty" value='<s:property value="deliveryCollectionQty" />'/></div>
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes" /><div class="chox-update-result"></div>
-            </div>                                            
+                <input type="submit" value="Save Changes" />
+            </div>   
+            <div id="EXTmessageBox" style="text-align:center"></div>   
+            <div class="chox-form-submit-result">&nbsp;</div>   
         </div>
     </fieldset>
 </form>

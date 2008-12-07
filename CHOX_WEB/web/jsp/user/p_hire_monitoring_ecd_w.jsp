@@ -14,13 +14,13 @@
             $(document).ready(function(){
   
 
-                var options = { 
+                var ecdOptions = { 
                     beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
                     success:       onAfterEcdSubmit,  // post-submit callback 
                     timeout: 3000,
                     error: onSubmitError
                 };                      
-                $('#formAddNewHireMonitoringEcd').ajaxForm(options); //wrap all <form> elements with ajax submission config   
+                $('#formAddNewHireMonitoringEcd').ajaxForm(ecdOptions); //wrap all <form> elements with ajax submission config   
             });
             
   
@@ -56,11 +56,11 @@
     <input type="hidden" name="objectId" value='<s:property value="id"/>'>
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset">
-        <legend>Estimate complete Date (ECD)</legend>
+        <legend>Revised ECD</legend>
         <div style="display:none" class="form-container">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Estimate complete Date</label>
+                New ECD</label>
             <input type="text" class="chox-tnum" name="ecdDate" value='<s:property value="ecdDate" />'/></div>                                          
             
             <div class="chox-form-item">

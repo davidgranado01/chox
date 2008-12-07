@@ -1,10 +1,100 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<form id="formUpdateIncident" action="user/updateHireMonitorDetail.action" class="entity-form">
+<form id="formUpdateHireMonitoringDetail" action="user/updateHireMonitorDetail.action" class="XXentity-form">
     
     
     <script language="JavaScript">
         
+
+        $(document).ready(function(){
+            
+            
+            var repairBookInDatePicker = new Ext.form.DateField({
+                name: 'repairBookInDate',
+                width: 185,
+                allowBlank: true,
+                format: 'd/m/Y',
+                showWeekNumber: true,
+                validationEvent : false,
+                value: '<s:date format="dd/MM/yyyy" name="repairBookInDate" />',
+                renderTo:'repairBookInDatePH'
+            });  
+            
+            var inspectionBookedDateDatePicker = new Ext.form.DateField({
+                name: 'inspectionBookedDate',
+                width: 185,
+                allowBlank: true,
+                format: 'd/m/Y',
+                showWeekNumber: true,
+                validationEvent : false,
+                value: '<s:date format="dd/MM/yyyy" name="inspectionBookedDate" />',
+                renderTo:'inspectionBookedDatePH'
+            });  
+            
+            var inspectionDateDatePicker = new Ext.form.DateField({
+                name: 'inspectionDate',
+                width: 185,
+                allowBlank: true,
+                format: 'd/m/Y',
+                showWeekNumber: true,
+                validationEvent : false,
+                value: '<s:date format="dd/MM/yyyy" name="inspectionDate" />',
+                renderTo:'inspectionDatePH'
+            });              
+                 
+            var repairCompletionDateDatePicker = new Ext.form.DateField({
+                name: 'repairCompletionDate',
+                width: 185,
+                allowBlank: true,
+                format: 'd/m/Y',
+                showWeekNumber: true,
+                validationEvent : false,
+                value: '<s:date format="dd/MM/yyyy" name="repairCompletionDate" />',
+                renderTo:'repairCompletionDatePH'
+            });                    
+            
+            
+            //repairBookInDatePicker.render('repairBookInDatePlaceHolder');
+       
+            $("#formUpdateHireMonitoringDetail").validate(
+            {
+               errorLabelContainer: "#HMmessageBox",                
+               rules: {
+                 repairBookInDate:{
+                     date:true
+                 },
+                 inspectionBookedDate:{
+                     date:true
+                 },
+                 inspectionDate:{
+                     date:true
+                 },
+                 repairCompletionDate:{
+                     date:true
+                 }                 
+               },
+               messages: {
+                 repairBookInDate: {
+                   date:"Invalid date format for 'Repair Book In Date'"
+                 }, 
+                 inspectionBookedDate: {
+                   date:"Invalid date format for 'Inspection Booked Date'"
+                 },
+                 inspectionDate: {
+                   date:"Invalid date format for 'Inspection Date'"
+                 },  
+                 repairCompletionDate: {
+                   date:"Invalid date format for 'Repair Completion Date'"
+                 }                   
+               },
+                submitHandler: function(form) {
+                    $(form).ajaxSubmit(globalEntityFormOptions);
+                }
+            });
+        }); 
         
+
+
+
 
         
         </script>
@@ -14,9 +104,11 @@
         <legend>Hire Monitoring</legend>
         <div style="display:none" class="form-container">
             
+
+            
            <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Original ECD</label>&nbsp;</div>
+                Original ECD</label><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="customer.initialECD" /></label></div>
 
            <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -26,18 +118,20 @@
            
            <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Repair Book In Date</label>
-            <input type="text" class="chox-ttxt" name="repairBookInDate" value='<s:property value="repairBookInDate" />'/></div>
+                Repair Book In Date</label><span id="repairBookInDatePH"></span>
+            </div>
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Inspection Booked Date</label>
-            <input type="text" class="chox-ttxt" name="inspectionBookedDate" value='<s:property value="inspectionBookedDate" />'/></div>
+            <span id="inspectionBookedDatePH"></span>
+            </div>
            
            <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Inspection Date</label>
-            <input type="text" class="chox-ttxt" name="inspectionDate" value='<s:property value="inspectionDate" />'/></div>
+            <span id="inspectionDatePH"></span>
+            </div>
            
            <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -47,7 +141,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Repair Completion Date</label>
-            <input type="text" class="chox-ttxt" name="repairCompletionDate" value='<s:property value="repairCompletionDate" />'/></div>
+            <span id="repairCompletionDatePH"></span></div>
             
             
             <div class="chox-form-item">
@@ -59,6 +153,8 @@
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
             </div>
+            
+            <div id="HMmessageBox" style="text-align:center"></div>            
             <div class="chox-form-submit-result">&nbsp;</div>   
             
             
