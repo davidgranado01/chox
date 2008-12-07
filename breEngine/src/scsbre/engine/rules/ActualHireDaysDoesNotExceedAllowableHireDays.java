@@ -35,7 +35,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
         res.setRelatedRule(this);
         
 
-        if (!claim.getHireDetail().getIsTotalLoss() && claim.getEngineeringReport().getEstimatedDaysUnderRepair() > 0) {
+        if (!claim.getHireDetail().getIsTotalLoss() && claim.getEngineeringReport().getEstimatedDaysUnderRepair() < 1) {
 
             ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
             boolean success = claim.getHireDetail().getNumberOfHireDays() <= cCalc.getAllowedDays();
