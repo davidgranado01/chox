@@ -379,9 +379,15 @@ table.status-table .choice
 
 
 
-label.error { float: none; color: red; padding-left: .5em; vertical-align: top; display:block ; font-weight:bold }
+label.error { color: red; font-weight:bold;font-size:12px;display:block ; line-height:25px}
 
-
+div.errorBox
+{
+    
+    padding-left:20px;
+    text-align:center;
+    
+}
 
 
 
