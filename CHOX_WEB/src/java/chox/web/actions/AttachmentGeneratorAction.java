@@ -19,6 +19,7 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
     public void setAttachmentService(AttachmentService service) {
         this.service = service;
     }
+    
     /*
     public String getContentType() {
         return contentType;
@@ -83,8 +84,6 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
     
     @Override
     public String execute() throws Exception {
-        
-        
         
         if(this.fileId=="" || this.fileId==null){
             return "error";

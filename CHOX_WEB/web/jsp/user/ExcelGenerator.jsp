@@ -6,5 +6,3 @@
 
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<s:action name="doExportExcel" namespace="/user" executeResult="false"/> 
-<input type="hidden" name="strDir" value="<%=request.getContextPath()%>"/>
