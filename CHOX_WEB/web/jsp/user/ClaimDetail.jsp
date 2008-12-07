@@ -240,6 +240,7 @@
                 root: 'results', 
                 fields:
                 [
+                    {name:'id'},
                     {name:'fileName'},
                     {name:'category'},                     
                     {name:'remarks' }
@@ -253,12 +254,14 @@
             });
 
             paymentPackGrid = new Ext.grid.GridPanel({
+                listeners:  {cellclick:loadAttachment },
                 store: paymentPackDataStore,
                 loadMask: true,
                 columns: [
-                    {header: "File Name", width: 100, dataIndex: 'fileName', sortable: false, resizable: false},
-                    {header: "category", width: 100, dataIndex: 'category', sortable: false, resizable: false},
-                    {header: "Description", width: 130, dataIndex: 'remarks', sortable: false, resizable: false}
+                    {header: "File Id", width: 60, dataIndex: 'id', sortable: false, resizable: false},
+                    {header: "File Name", width: 300, dataIndex: 'fileName', sortable: false, resizable: false},
+                    {header: "Category", width: 250, dataIndex: 'category', sortable: false, resizable: false},
+                    {header: "Description", width: 300, dataIndex: 'remarks', sortable: false, resizable: false}
                 ],
                 renderTo:'paymentPackGrid',
                 width:960,
@@ -267,6 +270,10 @@
             });
             
             loadAttachments();
+        }
+        
+        function loadAttachment(grid, rowIndex, columnIndex, e){
+
         }
         
         //Emmanuel 
