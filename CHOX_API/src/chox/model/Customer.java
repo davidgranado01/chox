@@ -813,5 +813,10 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
         public void setIsTotalLoss(Boolean isTotalLoss) {
             this.isTotalLoss = isTotalLoss;
         }
+        
+        public String getIsUsableDesc()
+        {
+            return this.isUsable ? "Yes" : "No";
+        }
           
 }
