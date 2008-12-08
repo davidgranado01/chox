@@ -10,6 +10,10 @@ import chox.model.Attachment;
 import java.util.List;
 import java.util.ArrayList;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
@@ -31,6 +35,24 @@ public class AttachmentServiceImpl extends DataService implements AttachmentServ
             getCurrentSession().getTransaction().commit();
         }
 
+        return bFlag;
+    }
+    
+    public Boolean deleteAttachment(Attachment att){
+        
+        Boolean bFlag = false;
+        getCurrentSession().beginTransaction();
+        
+        try{
+            if(att!=null){
+                getCurrentSession().delete(att);
+            }
+            getCurrentSession().getTransaction().commit();
+            bFlag = true;
+        } catch (Exception e) {
+            getCurrentSession().getTransaction().rollback();
+        }
+        
         return bFlag;
     }
     

@@ -12,4 +12,5 @@ public interface AttachmentService {
     public Boolean saveObj(Attachment attachment);
     public List<Attachment> getAttachmentByClaimId(int claimId);
     Attachment getObject(int id);
+    public Boolean deleteAttachment(Attachment att);
 }
