@@ -379,7 +379,7 @@ table.status-table .choice
 
 
 
-label.error { color: red; font-weight:bold;font-size:12px;display:block ; line-height:25px}
+label.error { color: red; font-weight:bold;font-size:11px;display:block ; line-height:25px}
 
 div.errorBox
 {
@@ -389,6 +389,12 @@ div.errorBox
     
 }
 
+
+div.action-message
+{
+    
+        text-align:center;color: red; font-weight:bold;font-size:11px ; line-height:25px
+}
 
 
 
