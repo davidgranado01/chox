@@ -6,7 +6,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import net.sf.json.JSONObject;
 
-public class GetAttachmentDetailAction extends BaseAction implements ModelDriven<Attachment>, Preparable {
+public class GetAttachmentDetailAction extends BaseAction{
     
     private int fileId;
     private Attachment model;
@@ -20,9 +20,11 @@ public class GetAttachmentDetailAction extends BaseAction implements ModelDriven
         this.fileId = fileId;
     }
     
+    /*
     public void prepare() throws Exception {
         model = service.getObject(fileId);
     } 
+    */
     
     public void setAttachmentService(AttachmentService service) {
         this.service = service;
@@ -39,11 +41,13 @@ public class GetAttachmentDetailAction extends BaseAction implements ModelDriven
     
     @Override
     public String execute(){
+        getAttachmentDetail();
         return SUCCESS;
     }
-
+    
+    /*
     public Attachment getModel() {
         return model;
     }
-
+    */
 }
