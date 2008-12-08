@@ -263,7 +263,8 @@
                     {header: "File Name", width: 300, dataIndex: 'fileName', sortable: false, resizable: false},
                     {header: "Category", width: 200, dataIndex: 'category', sortable: false, resizable: false},
                     {header: "Description", width: 270, dataIndex: 'remarks', sortable: false, resizable: false},
-                    {header: "", width: 60, dataIndex: 'delete', sortable: false, resizable: false}
+                    {header: "", width: 60, dataIndex: 'delete', sortable: false, resizable: false, renderer:function(value,p,r){
+                return '<a href="doDeleteFile.action?fileId=' + r.data['id'] + '">' + value + '</a>'}}
                 ],
                 renderTo:'paymentPackGrid',
                 width:960,
@@ -277,11 +278,10 @@
         function loadAttachment(grid, rowIndex, columnIndex, e){
             var attachment = paymentPackGrid.getStore().getAt(rowIndex);  // Get the Record
             var fileId = attachment.get("id");
-            alert(columnIndex);
             if(columnIndex!=4){
                 var popwin = window.open("doExportFile.action?fileId="+fileId, "Attachment", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
             }else{
-                var popwin = window.open("doDeleteFile.action?fileId="+fileId, "Attachment", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
+                //var popwin = window.open("doDeleteFile.action?fileId="+fileId, "Attachment", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
             }
             loadAttachments();
         }

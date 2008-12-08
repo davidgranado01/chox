@@ -67,8 +67,7 @@
         </action>
         
         <action name="doDeleteFile" class="chox.web.actions.DeleteAttachmentAction">
-            <result name="success">/jsp/user/ExcelGenerationFailed.jsp</result>
-            <result name="failed">/jsp/user/ExcelGenerationFailed.jsp</result>
+            <result name="success" type="redirect">openClaimDetail.action?id=${claimid}</result>
         </action>
         
         <action name="getAttachmentDetail" class="chox.web.actions.GetAttachmentDetailAction">

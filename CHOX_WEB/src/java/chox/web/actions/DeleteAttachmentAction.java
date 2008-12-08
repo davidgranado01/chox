@@ -13,6 +13,15 @@ public class DeleteAttachmentAction extends BaseAction implements SessionAware {
     private AttachmentService service;
     private GlobalConfigurationService globalConfigurationService;
     private Map session;
+    private String claimid;
+
+    public String getClaimid() {
+        return claimid;
+    }
+
+    public void setClaimid(String claimid) {
+        this.claimid = claimid;
+    }
     
     public void setAttachmentService(AttachmentService service) {
         this.service = service;
@@ -51,6 +60,8 @@ public class DeleteAttachmentAction extends BaseAction implements SessionAware {
         if(!fileId.equalsIgnoreCase("") && fileId!=null){
             int ifileId = Integer.parseInt(fileId);
             Attachment att = getAttachmentFile(ifileId);
+            
+            claimid = String.valueOf(att.getClaim().getId());
             
             if(!service.deleteAttachment(att)){
                 return "error";
