@@ -58,13 +58,17 @@
         
         <action name="doExportFile" method="execute" class="chox.web.actions.AttachmentGeneratorAction">
             <result name="success" type="stream">
-                <param name="contentType">application/ms-excel</param>
                 <param name="inputName">fileStream</param>
-                <param name="contentDisposition">filename="excel_report.xls"</param>
+                <param name="contentDisposition">${contentDisposition}</param>
                 <param name="bufferSize">99999</param>
             </result>
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp
             </result>
+        </action>
+        
+        <action name="doDeleteFile" class="chox.web.actions.DeleteAttachmentAction">
+            <result name="success">/jsp/user/ExcelGenerationFailed.jsp</result>
+            <result name="failed">/jsp/user/ExcelGenerationFailed.jsp</result>
         </action>
         
         <action name="getAttachmentDetail" class="chox.web.actions.GetAttachmentDetailAction">

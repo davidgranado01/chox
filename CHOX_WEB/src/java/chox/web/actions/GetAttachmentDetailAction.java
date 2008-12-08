@@ -2,8 +2,6 @@ package chox.web.actions;
 
 import chox.model.Attachment;
 import chox.services.AttachmentService;
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
 import net.sf.json.JSONObject;
 
 public class GetAttachmentDetailAction extends BaseAction{
@@ -37,11 +35,7 @@ public class GetAttachmentDetailAction extends BaseAction{
     public void setAttachmentService(AttachmentService service) {
         this.service = service;
     }
-    
-    public Attachment getAttachmentDetail(){
-        return service.getObject(fileId);
-    }
-    
+        
     public String getJsonData() {
         JSONObject jObject = JSONObject.fromObject(this.attachment);
         return jObject.toString();
@@ -49,7 +43,7 @@ public class GetAttachmentDetailAction extends BaseAction{
     
     @Override
     public String execute(){
-        attachment = getAttachmentDetail();
+        attachment = service.getObject(fileId);
         return SUCCESS;
     }
     

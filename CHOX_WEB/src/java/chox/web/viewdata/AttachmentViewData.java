@@ -16,6 +16,7 @@ public class AttachmentViewData {
     private String fileName;
     private String category;
     private String remarks;
+    private String delete = "Delete";
     
     public AttachmentViewData(Attachment attachment)
     {
@@ -25,6 +26,10 @@ public class AttachmentViewData {
         this.remarks = attachment.getRemarks();
     }
 
+    public String getDelete() {
+        return delete;
+    }
+    
     public int getId() {
         return id;
     }

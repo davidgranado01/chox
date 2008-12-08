@@ -15,29 +15,24 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
     private Map session;
     private AttachmentService service;
     private GlobalConfigurationService globalConfigurationService;
+    
+    // private String contentType;
+    private String contentDisposition;
 
+    public String getContentDisposition() {
+        return contentDisposition;
+    }
+
+    public void setContentDisposition(String contentDisposition) {
+        this.contentDisposition = contentDisposition;
+    }
+    
+
+    
     public void setAttachmentService(AttachmentService service) {
         this.service = service;
     }
-    
-    /*
-    public String getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-    */
-    
+        
     public String getFileId() {
         return fileId;
     }
@@ -72,8 +67,8 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
         return attachmentPath;
     }
     
-    private Attachment getAttachmentFileName(String fileId){
-        Attachment att = service.getObject(20);
+    private Attachment getAttachmentFileName(int fileId){
+        Attachment att = service.getObject(fileId);
         return att;
     }
     
@@ -85,20 +80,27 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
     @Override
     public String execute() throws Exception {
         
-        if(this.fileId=="" || this.fileId==null){
+        int fileId = 0;
+        
+        if(!this.fileId.equalsIgnoreCase("") && this.fileId!=null){
+            fileId = Integer.parseInt(this.fileId);
+        }else{
             return "error";
         }
         
-        Attachment att = getAttachmentFileName(this.fileId);
+        Attachment att = getAttachmentFileName(fileId);
+        
         if(att==null){
             return "error";
         }
         
-        
-        
         String strFile = getFileDirectory() + att.getFileName();
-        //fileStream = doExportFile(strFile.trim());
-        return "error";
+        fileStream = doExportFile(strFile.trim());
+        
+        String strContentDisposition = "filename="+att.getFileName();
+        this.setContentDisposition(strContentDisposition);
+                
+        return SUCCESS;
     }
     
     public FileInputStream doExportFile(String strFile) throws IOException {

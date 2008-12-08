@@ -155,7 +155,7 @@
                     return true; 
                 }else alert("Please wait until other save operations have completed");
             } 
-     
+
             // post-submit callback 
             function onSubmitResponseReceived(responseText, statusText)  {         
                 elementToBlock.unblock();
@@ -243,7 +243,8 @@
                     {name:'id'},
                     {name:'fileName'},
                     {name:'category'},                     
-                    {name:'remarks' }
+                    {name:'remarks' },
+                    {name:'delete' }
                 ]
             });
 
@@ -260,8 +261,9 @@
                 columns: [
                     {header: "File Id", width: 60, dataIndex: 'id', sortable: false, resizable: false},
                     {header: "File Name", width: 300, dataIndex: 'fileName', sortable: false, resizable: false},
-                    {header: "Category", width: 250, dataIndex: 'category', sortable: false, resizable: false},
-                    {header: "Description", width: 300, dataIndex: 'remarks', sortable: false, resizable: false}
+                    {header: "Category", width: 200, dataIndex: 'category', sortable: false, resizable: false},
+                    {header: "Description", width: 270, dataIndex: 'remarks', sortable: false, resizable: false},
+                    {header: "", width: 60, dataIndex: 'delete', sortable: false, resizable: false}
                 ],
                 renderTo:'paymentPackGrid',
                 width:960,
@@ -275,7 +277,13 @@
         function loadAttachment(grid, rowIndex, columnIndex, e){
             var attachment = paymentPackGrid.getStore().getAt(rowIndex);  // Get the Record
             var fileId = attachment.get("id");
-            var popwin = window.open("getAttachmentDetail.action?fileId="+fileId, "Attachment", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
+            alert(columnIndex);
+            if(columnIndex!=4){
+                var popwin = window.open("doExportFile.action?fileId="+fileId, "Attachment", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
+            }else{
+                var popwin = window.open("doDeleteFile.action?fileId="+fileId, "Attachment", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
+            }
+            loadAttachments();
         }
         
         //Emmanuel 
