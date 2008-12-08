@@ -108,11 +108,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">Date Invoiced</label>
             <label class="std-data-ro"><s:date name="dateInvoiced" format="dd MMM yyyy hh:mm"  /></label>
-        </div>         
-        <div class="chox-form-item">
-            <label class="std-label-ro">Hire Rate Charge Per Day</label>
-            <label class="std-data-ro"><s:property value="hireRateChargedPerDay" /></label>
-        </div>         
+        </div>                
         
     </div>
 </fieldset>

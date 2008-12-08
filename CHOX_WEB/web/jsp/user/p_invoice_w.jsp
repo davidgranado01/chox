@@ -11,6 +11,17 @@
     $(document).ready(function(){        
         
         
+        var dateInvoicedDatePicker = new Ext.form.DateField({
+            name: 'dateInvoiced',
+            width: 185,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="dateInvoiced" />',
+            renderTo:'dateInvoicedPH'
+        });          
+        
         $("#formUpdateInvoiceForm").validate(
         {
             errorLabelContainer: "#INVmessageBox",                
@@ -37,11 +48,9 @@
                 deductionForClaimsHandlingFee :{required:true, number:true, max:0},
                 discount :{required:true, number:true, min:0},
                 totalToPay :{required:true, number:true, min:0},
-                
-                excessAmountCollected :{required:true, number:true, min:0},
-                vatAmountCollected :{required:true, number:true, min:0},
-                dateInvoiced :{required:true, number:false, min:0},
-                hireRateChargedPerDay :{required:true, number:true, min:0}
+                excessAmountCollected :{number:true, min:0},
+                vatAmountCollected :{number:true, min:0},
+                dateInvoiced :{date:true}
                     
             },
                 
@@ -67,7 +76,10 @@
                 claimsHandlingInvoiceAmount :{required:"You must supply a numeric value for 'Claims Handling Invoice Amount'", number:"You must supply a value for 'Claims Handling Invoice Amount'", min:"Claims Handling Invoice Amount must be greater or equal to zero"},
                 deductionForClaimsHandlingFee :{required:"You must supply a value for 'Deduction For Claims Handling Fee'", number:"You must supply a numeric value for 'Deduction For Claims Handling Fee'", max:"Deduction For Claims Handling Fee must be less than or equal to zero"},
                 discount :{required:"You must supply a value for 'Discount'", number:"You must supply a numeric value for 'Discount'", min:"Discount must be greater or equal to zero"},
-                totalToPay :{required:"You must supply a value for 'Total To Pay'", number:"You must supply a numeric value for 'Total To Pay'", min:"Total To Pay must be greater or equal to zero"}                    
+                totalToPay :{required:"You must supply a value for 'Total To Pay'", number:"You must supply a numeric value for 'Total To Pay'", min:"Total To Pay must be greater or equal to zero"},
+                excessAmountCollected :{number:"You must supply a numeric value for Excess Amount Collected", min:"Excess Amount Collected must be greater or equal to zero"},
+                vatAmountCollected :{number:"You must supply a numeric value for Vat Amount Collected", min:"Vat Amount Collected must be greater or equal to zero"},
+                dateInvoiced :{ date:"Invalid date format for Date Invoiced"}             
                     
             },
                 
@@ -116,63 +128,63 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Hire Net</label>
-            <input type="text" class="chox-tnum" name="hireNet" value='<s:property value="hireNet" />'/></div>
+            <input type="text" class="chox-ttnum" name="hireNet" value='<s:property value="hireNet" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Hire Vat</label>
-            <input type="text" class="required" minlength="2" name="hireVat" value='<s:property value="hireVat"  />'/></div>
+            <input type="text" class="chox-ttnum" minlength="2" name="hireVat" value='<s:property value="hireVat"  />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Hire Gross</label>
-            <input type="text" class="chox-tnum"  name="hireGross" value='<s:property value="hireGross" />'/></div>
+            <input type="text" class="chox-ttnum"  name="hireGross" value='<s:property value="hireGross" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Repair Net</label>
-            <input type="text" class="chox-tnum"  name="repairNet" value='<s:property value="repairNet" />'/></div>
+            <input type="text" class="chox-ttnum"  name="repairNet" value='<s:property value="repairNet" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Repair Vat</label>
-            <input type="text" class="chox-tnum"  name="repairVat" value='<s:property value="repairVat" />'/></div>
+            <input type="text" class="chox-ttnum"  name="repairVat" value='<s:property value="repairVat" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Repair Gross</label>
-            <input type="text" class="chox-tnum"  name="repairGross" value='<s:property value="repairGross" />'/></div>
+            <input type="text" class="chox-ttnum"  name="repairGross" value='<s:property value="repairGross" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Engineer Fee Net</label>
-            <input type="text" class="chox-tnum"  name="engineerFeeNet" value='<s:property value="engineerFeeNet" />'/></div>
+            <input type="text" class="chox-ttnum"  name="engineerFeeNet" value='<s:property value="engineerFeeNet" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Engieer Fee Vat</label>
-            <input type="text" class="chox-tnum"  name="engineerFeeVat" value='<s:property value="engineerFeeVat" />'/></div>
+            <input type="text" class="chox-ttnum"  name="engineerFeeVat" value='<s:property value="engineerFeeVat" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Engineer Fee Gross</label>
-            <input type="text" class="chox-tnum"  name="engineerFeeGross" value='<s:property value="engineerFeeGross" />'/></div>
+            <input type="text" class="chox-ttnum"  name="engineerFeeGross" value='<s:property value="engineerFeeGross" />'/></div>
             
             
             
@@ -180,91 +192,87 @@
                 <label class="chox-form-std-label">
                     Storage Recovery Net
                 </label>
-            <input type="text" class="chox-tnum"  name="storageRecoveryNet" value='<s:property value="storageRecoveryNet" />'/></div>
+            <input type="text" class="chox-ttnum"  name="storageRecoveryNet" value='<s:property value="storageRecoveryNet" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Storage Recovery Vat</label>
-            <input type="text" class="chox-tnum"  name="storageRecoveryVat" value='<s:property value="storageRecoveryVat" />'/></div>
+            <input type="text" class="chox-ttnum"  name="storageRecoveryVat" value='<s:property value="storageRecoveryVat" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Storage Recovery Gross</label>
-            <input type="text" class="chox-tnum"  name="storageRecoveryGross" value='<s:property value="storageRecoveryGross" />'/></div>
+            <input type="text" class="chox-ttnum"  name="storageRecoveryGross" value='<s:property value="storageRecoveryGross" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Total Net</label>
-            <input type="text" class="chox-tnum"  name="totalNet" value='<s:property value="totalNet" />'/></div>
+            <input type="text" class="chox-ttnum"  name="totalNet" value='<s:property value="totalNet" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Total Vat</label>
-            <input type="text" class="chox-tnum"  name="totalVat" value='<s:property value="totalVat" />'/></div>
+            <input type="text" class="chox-ttnum"  name="totalVat" value='<s:property value="totalVat" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Total Gross</label>
-            <input type="text" class="chox-tnum"  name="totalGross" value='<s:property value="totalGross" />'/></div>
+            <input type="text" class="chox-ttnum"  name="totalGross" value='<s:property value="totalGross" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Claims Handling Invoice Amount</label>
-            <input type="text" class="chox-tnum"  name="claimsHandlingInvoiceAmount" value='<s:property value="claimsHandlingInvoiceAmount" />'/></div>
+            <input type="text" class="chox-ttnum"  name="claimsHandlingInvoiceAmount" value='<s:property value="claimsHandlingInvoiceAmount" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Deduction For Claims Handling Fee</label>
-            <input type="text" class="chox-tnum"  name="deductionForClaimsHandlingFee" value='<s:property value="deductionForClaimsHandlingFee" />'/></div>
+            <input type="text" class="chox-ttnum"  name="deductionForClaimsHandlingFee" value='<s:property value="deductionForClaimsHandlingFee" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Discount</label>
-            <input type="text" class="chox-tnum"  name="discount" value='<s:property value="discount" />'/></div>
+            <input type="text" class="chox-ttnum"  name="discount" value='<s:property value="discount" />'/></div>
             
             
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Total To Pay</label>
-                <input type="text" class="chox-tnum"  name="totalToPay" value='<s:property value="totalToPay" />'/>
+                <input type="text" class="chox-ttnum"  name="totalToPay" value='<s:property value="totalToPay" />'/>
             </div>
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Excess Amount Collected From Policyholder</label>
-            <input type="text" class="chox-tnum"  name="excessAmountCollected" value='<s:property value="excessAmountCollected" />'/></div>
+                Excess Collected From Policyholder</label>
+            <input type="text" class="chox-ttnum"  name="excessAmountCollected" value='<s:property value="excessAmountCollected" />'/></div>
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                VAT Amount Collected From Policyholder</label>
-            <input type="text" class="chox-tnum"  name="vatAmountCollected" value='<s:property value="vatAmountCollected" />'/></div>
+                VAT Collected From Policyholder</label>
+            <input type="text" class="chox-ttnum"  name="vatAmountCollected" value='<s:property value="vatAmountCollected" />'/></div>
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Date Invoiced</label>
-            <input type="text" class="chox-tnum"  name="dateInvoiced" value='<s:property value="dateInvoiced" />'/></div>
+            <span id="dateInvoicedPH"></span></div>
             
-            <div class="chox-form-item">
-                <label class="chox-form-std-label">
-                Hire Rate Charge Per Day</label>
-            <input type="text" class="chox-tnum"  name="hireRateChargedPerDay" value='<s:property value="hireRateChargedPerDay" />'/></div>
             
             
             <div class="chox-form-button">
