@@ -17,7 +17,7 @@
                             <td>
                                 <label>
                                 Indemnity (Decimal)</label></td><td>
-                                <input type="text" class="chox-ttxt" name="indemintyAmount" />
+                                <input type="text" class="chox-ttxt" name="indemnityAmount" />
                             </td>
                             <td>
                                 <label>
