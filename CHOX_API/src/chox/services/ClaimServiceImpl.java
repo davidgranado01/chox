@@ -84,7 +84,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             criteria.add(Restrictions.like("invoice.id", searchCriteria.getInvoiceNumber()).ignoreCase());
         }
         if (searchCriteria.getClaimNumber() != null && !searchCriteria.getClaimNumber().isEmpty()) {
-            criteria.add(Restrictions.like("ClaimNumber", searchCriteria.getClaimNumber()).ignoreCase());
+            criteria.add(Restrictions.like("claimNumber", searchCriteria.getClaimNumber()).ignoreCase());
         }
         if (searchCriteria.getVrn() != null && !searchCriteria.getVrn().isEmpty()) {
             String vrn = searchCriteria.getVrn().replaceAll(" ", "");
