@@ -32,7 +32,10 @@
                  },
                  telephoneDay:{
                      required:true
-                 },   
+                 }, 
+                insurerName:{
+                     required:true
+                 },                 
                  vehicleClassId:{
                      min:1
                  },
@@ -71,6 +74,9 @@
                  vehicleClassId:{
                      min: "You must select a Vehicle Class"
                  }, 
+                 insurerName:{
+                     required:"You must supply a value for 'Insurer'"
+                 },
                  vehicleManufacturer: {
                    required:"You must supply a value for 'Vehicle Manufacturer'"
                  },  
@@ -163,12 +169,11 @@
                         Email</label>
                     <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value='<s:property value="email" />' /></div>
                     
-                    
+                     <div class="chox-form-item">
+                        <label class="chox-form-std-label">
+                        Insurer</label>
+                    <input type="text" class="chox-ttxt" id="CCDInsurerName" name="insurerName" value='<s:property value="insurerName" />' /></div>
          
-
-                        
-                        
-                        
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Policy Number</label>

@@ -63,14 +63,12 @@
             <label class="std-label-ro">
             Email</label>
             <label class="std-data-ro"><s:property value="email" /></label>
-            </div>
-            
-            <!--
+            </div>           
         <div class="chox-form-item">
             <label class="std-label-ro">
             Insurer</label>
-            <label class="std-data-ro">todo: get Insurer name</label>
-            </div>-->
+            <label class="std-data-ro"><s:property value="insurerName" /></label>
+            </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
             Policy Number</label>
