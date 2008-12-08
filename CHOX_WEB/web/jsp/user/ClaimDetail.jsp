@@ -273,7 +273,9 @@
         }
         
         function loadAttachment(grid, rowIndex, columnIndex, e){
-            
+            var attachment = paymentPackGrid.getStore().getAt(rowIndex);  // Get the Record
+            var fileId = attachment.get("id");
+            var popwin = window.open("getAttachmentDetail.action?fileId="+fileId, "Attachment", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
         }
         
         //Emmanuel 
@@ -808,7 +810,7 @@
             listValue="text" 
             emptyOption="false"></s:select>
             </td>
-        </tr> 
+        </tr>
         <tr>
             <td><label class="std-label-ro">Description</label></td>
             <td>
