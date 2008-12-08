@@ -42,7 +42,6 @@ public class GetAttachmentDetailAction extends BaseAction implements ModelDriven
         return SUCCESS;
     }
 
-
     public Attachment getModel() {
         return model;
     }

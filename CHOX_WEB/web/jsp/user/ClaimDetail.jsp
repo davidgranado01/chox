@@ -273,7 +273,7 @@
         }
         
         function loadAttachment(grid, rowIndex, columnIndex, e){
-
+            
         }
         
         //Emmanuel 
@@ -785,20 +785,21 @@
         return true;
     }
     </script>
-<div>
+<div class="attachments  x-panel-bwrap chox-form-container">
     <form id="fAttachment" action="user/createNewAttachment.action" method="POST" enctype="multipart/form-data" name="form">
         <input type="hidden" name="claimId" value='<s:property value="id" />'>
         <input type="hidden" name="uploadFileName">
-            
-        <table class="x-panel-bwrap chox-form-container" width="100%">
+        <fieldset class="x-fieldset">
+        <legend>Add a new Attachment</legend>
+        <table class="chox-form-item">
         <tr>
-            <td><label>File</label></td>
+            <td width="30%"><label class="std-label-ro">File</label></td>
             <td>
             <s:file id="fileUploader" name ="attachmentFile" label ="Attachment" size="40"/>   
             </td>
         </tr>
         <tr>
-            <td><label>Attachment Type</label></td>
+            <td><label class="std-label-ro">Attachment Type</label></td>
             <td>
             <s:select name="category" 
             list="attachmentCategory" 
@@ -809,7 +810,7 @@
             </td>
         </tr> 
         <tr>
-            <td><label>Description</label></td>
+            <td><label class="std-label-ro">Description</label></td>
             <td>
                 <s:textarea rows="6" cols="30" name="remark" label="Remark:"/>
             </td>
@@ -820,7 +821,8 @@
             <input type="submit" id="bAddAttachment" value="Add File" onclick="return fileValidation()"/>
             </td>
         </tr>
-        </table>             
+        </table> 
+        </fieldset>
     </form>
 </div>
 <div id="paymentPackGrid"></div>
