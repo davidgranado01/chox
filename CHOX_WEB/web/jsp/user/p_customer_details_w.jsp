@@ -36,9 +36,6 @@
                  vehicleClassId:{
                      min:1
                  },
-                 insurerId:{                     
-                     min:1
-                 },
                  vehicleManufacturer:{
                      required:true
                  },
@@ -74,9 +71,6 @@
                  vehicleClassId:{
                      min: "You must select a Vehicle Class"
                  }, 
-                 insurerId:{
-                     min: "You must select an Insurer"
-                 },
                  vehicleManufacturer: {
                    required:"You must supply a value for 'Vehicle Manufacturer'"
                  },  
@@ -168,16 +162,13 @@
                         <label class="chox-form-std-label">
                         Email</label>
                     <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value='<s:property value="email" />' /></div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">
-                        Insurer</label>
-                        <s:select name="insurerId" 
-                        list="insurers" 
-                        listKey="id" 
-                        listValue="name"
-                        headerKey="-1"
-                        headerValue="--SELECT--"
-                        emptyOption="false"></s:select></div>
+                    
+                    
+         
+
+                        
+                        
+                        
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Policy Number</label>
