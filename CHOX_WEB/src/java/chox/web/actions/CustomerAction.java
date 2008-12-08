@@ -67,12 +67,13 @@ public class CustomerAction extends BaseModelAction implements ModelDriven<Custo
         {
            model.setVehicleClass(this.vehicleClassService.getObject(vehicleClassId));
         }
-
+        
+        /* EDITED @ 20081208
         if(insurerId >= 0)
         {
            model.setInsurer(this.insurerService.getObject(insurerId));
         }
-        
+        */
         try {
             this.service.updateObject(model);
             this.actionResult = "";
@@ -97,11 +98,12 @@ public class CustomerAction extends BaseModelAction implements ModelDriven<Custo
         return this.model.getVehicleClass() != null ? vehicleClassId = this.model.getVehicleClass().getId() : 0;
     }
     
+    /* EDITED @ 20081208
     public int getInsurerId()
     {
         return this.model.getInsurer() != null ? insurerId = this.model.getInsurer().getId() : 0;
     }
-    
+    */
     public List<VehicleClass> getVehicleClasses()
     {
         return this.lookupService.getVehicleClasses();
