@@ -9,8 +9,16 @@ import net.sf.json.JSONObject;
 public class GetAttachmentDetailAction extends BaseAction{
     
     private int fileId;
-    private Attachment model;
+    private Attachment attachment;
     private AttachmentService service;
+
+    public Attachment getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(Attachment attachment) {
+        this.attachment = attachment;
+    }
     
     public int getFileId() {
         return fileId;
@@ -31,17 +39,17 @@ public class GetAttachmentDetailAction extends BaseAction{
     }
     
     public Attachment getAttachmentDetail(){
-        return model;
+        return service.getObject(fileId);
     }
     
     public String getJsonData() {
-        JSONObject jObject = JSONObject.fromObject(this.model);
+        JSONObject jObject = JSONObject.fromObject(this.attachment);
         return jObject.toString();
     }
     
     @Override
     public String execute(){
-        getAttachmentDetail();
+        attachment = getAttachmentDetail();
         return SUCCESS;
     }
     
