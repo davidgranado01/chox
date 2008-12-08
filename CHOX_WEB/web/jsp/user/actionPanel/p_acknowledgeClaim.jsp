@@ -1,6 +1,59 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<form onsubmit="return true;" action="user/acknowledge.action" method="post" id="route"
-      name="route">
+
+<script language="JavaScript">
+    
+    
+        $(document).ready(function(){
+            
+            
+            $("#formAcknowledgeAction").validate(
+            {
+               errorLabelContainer: "#ACKmessageBox",                
+               rules: {
+                 indemnityAmount:{
+                     required:true,
+                     number:true
+                 },
+                 percentageLiabilityAccepted:{
+                     required:true,
+                     number:true
+                 },
+                 claimNumber:{
+                     required:true
+                 } ,
+
+                actionName:{
+                    required:true
+                }
+               },
+               messages: {
+                 indemnityAmount: {
+                   required:"You must supply a value for 'Indemnity'",
+                   number:"You must supply a numeric value for 'Indemnity'"
+                 }, 
+                 percentageLiabilityAccepted: {
+                   required:"You must supply a value for 'Percentage Liability Accepted'",
+                   number:"You must supply a numeric value for Percentage Liability Accepted"
+                 },
+                 claimNumber: {
+                   required:"You must supply a value for 'Claim Number'"
+                 },
+                actionName:{
+                    required:"You must choose 'Reject this claim' or 'Request Invoice Data"
+                }                 
+               }
+            });
+        }); 
+    
+
+
+</script>
+
+
+
+
+<form action="user/acknowledge.action" method="post" id="formAcknowledgeAction"
+      name="formAcknowledgeAction">
     <fieldset class="x-fieldset">
         <legend>Claim Acknowledgement - Action Required</legend>
         <div>
@@ -64,6 +117,8 @@
                         </tr>
 
                     </table>
+                    
+                    <div class="errorBox" id="ACKmessageBox"></div>
                 </div>
             </div>
         </div>
