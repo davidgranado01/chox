@@ -33,7 +33,12 @@
         
         <script type="text/javascript">
             
-           
+            var newwindow;
+            function openFile(url,name)
+            {
+                newwindow=window.open(url,name);
+                if (window.focus) {newwindow.focus()}
+            }
 
 
             var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
@@ -513,7 +518,12 @@
                                     <a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;|&nbsp;
                                     </s:if>
                                     
-                                    <a href="#">Help</a> &nbsp;|&nbsp;
+                                     <s:if test="isCHO">
+                                        <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_CHO_UG_1.1-1.pdf','Help');">Help</a>
+                                    </s:if>
+                                    <s:else>
+                                        <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_IUG_1.0-1.pdf','Help');">Help</a>
+                                    </s:else>&nbsp;|&nbsp;
                                     <a href="#">Support</a>&nbsp;|&nbsp; 
                                     <a href="#">About Chox</a>&nbsp;|&nbsp;
                                     <a href="<%=request.getContextPath()%>/j_acegi_logout">Log Off</a>
@@ -569,9 +579,22 @@
                                     
                                 <tr>
                                     <td><label class="chox-claim-header-label">Percentage Liability Accepted</label><label class="chox-claim-header-text"><span id="status"><s:property value="percentageLiabilityAccepted" />%</span></label></td>
-                                    <td><label class="chox-claim-header-label">Credit Agreement Signed by Insurer Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="creditAgreementDate" format="dd MMM yyyy hh:mm"  /></span></label></td>
-                                    <td>&nbsp;</td>
+                                    <td colspan="2"><label class="chox-claim-header-label">Credit Agreement Signed by Insurer Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="creditAgreementDate" format="dd MMM yyyy hh:mm"  /></span></label></td>
                                 </tr>
+                                
+                                <s:if test="isCHO">
+                                    
+                                </s:if>
+                                <s:else>
+                                     <tr>
+                                        <td><label class="chox-claim-header-label">Quantum</label><label class="chox-claim-header-text"><span id="status"><s:property value="isQuantumDisputeDesc" /></span></label></td>                                    
+                                        <td><label class="chox-claim-header-label">Invoice Review Required</label><label class="chox-claim-header-text"><span id="status"><s:property value="isInvoiceReviewRequiredDesc" /></span></label></td>   
+                                        <td>&nbsp;</td>                                        
+                                    </tr>
+                                    <tr>                                        
+                                        <td colspan="3"><label class="chox-claim-header-label">Engineer's Claim Review Notes</label><label class="chox-claim-header-text"><span id="status">£<s:property value="engineerClaimReviewNotes" /></span></label></td>
+                                    </tr>
+                                </s:else>
                                     
                             </table>
                         </fieldset>
@@ -580,7 +603,7 @@
                 
                 <div class="chox-claim-header x-panel-bwrap chox-form-container">    
                     <s:action name="getActionPanel" executeResult="true" />
-                    <s:property value="actionResult" />
+                    <div class="action-message"><s:property value="actionResult" /></div>
                 </div>
                 
                 
