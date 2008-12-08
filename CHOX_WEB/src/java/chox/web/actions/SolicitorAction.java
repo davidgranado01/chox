@@ -4,8 +4,10 @@
  */
 package chox.web.actions;
 
+import chox.model.Incident;
 import chox.model.Injury;
 import chox.model.Solicitor;
+import chox.services.IncidentService;
 import chox.services.InjuryService;
 import chox.services.SolicitorService;
 import chox.web.security.ApplicationAccessibility;
@@ -22,7 +24,9 @@ public class SolicitorAction extends BaseModelAction implements ModelDriven<Soli
     private SolicitorService service;
     private Solicitor model;
     private InjuryService injuryService;
+    private IncidentService incidentService;
     private int injuryId;
+    private int incidentId;
 
     public void setSolicitorService(SolicitorService service) {
         this.service = service;
@@ -39,19 +43,20 @@ public class SolicitorAction extends BaseModelAction implements ModelDriven<Soli
             model = service.getObject(objectId);
         }
     }
-    
+
     public String updateModel() {
         try {
-            if(objectId <= 0)
-            {
+            if (objectId <= 0) {
                 Injury injury = this.injuryService.getObject(injuryId);
-                if(injury == null)
-                {
-                    return "Error: Please fill in injury detail and save before save solicitor detail.";
+                if (injury == null) {
+                    Incident incident = this.incidentService.getObject(this.getIncidentId());
+                    injury = new Injury();
+                    injury.setIncident(incident);    
+                    this.injuryService.updateObject(injury);
                 }
                 this.model.setInjury(injury);
             }
-            
+
             this.service.updateObject(model);
             this.actionResult = "";
         } catch (Exception ex) {
@@ -81,6 +86,16 @@ public class SolicitorAction extends BaseModelAction implements ModelDriven<Soli
     public void setInjuryId(int injuryId) {
         this.injuryId = injuryId;
     }
-   
-    
+
+    public void setIncidentService(IncidentService incidentService) {
+        this.incidentService = incidentService;
+    }
+
+    public int getIncidentId() {
+        return incidentId;
+    }
+
+    public void setIncidentId(int incidentId) {
+        this.incidentId = incidentId;
+    }
 }
