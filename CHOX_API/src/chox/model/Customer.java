@@ -158,8 +158,9 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
 	/** 
 	 * This attribute maps to the column insurer_id in the customer table.
 	 */
+        /*
 	protected Insurer insurer;
-
+        */
 	/** 
 	 * This attribute represents the foreign key relationship to the vehicle_class table.
 	 */
@@ -167,7 +168,16 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
         
         
         protected Boolean isTotalLoss;
+        protected String insurerName;
 
+        public String getInsurerName() {
+            return insurerName;
+        }
+
+        public void setInsurerName(String insurerName) {
+            this.insurerName = insurerName;
+        }
+        
 	/**
 	 * Method 'Customer'
 	 * 
@@ -755,7 +765,7 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
 	{
 		this.comprehensive = comprehensive;
 	}
-
+/*
     public Insurer getInsurer() {
         return insurer;
     }
@@ -763,7 +773,7 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
     public void setInsurer(Insurer insurer) {
         this.insurer = insurer;
     }
-
+*/
 	/**
 	 * Method 'getVehicleClass'
 	 * 

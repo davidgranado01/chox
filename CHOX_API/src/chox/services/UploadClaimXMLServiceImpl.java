@@ -159,7 +159,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             Element root,
             Boolean isAllowPartialUpload) throws Exception {
             
-        System.out.println("START********************************************");
+        //System.out.println("START********************************************");
         
         Session currentSession = getCurrentSession();
         currentSession.beginTransaction();
@@ -168,7 +168,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
          
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
-        System.out.println(" ** CHO REFERENCE: " + xmlParseResult.getClaim().getChoReference());
+        //System.out.println(" ** CHO REFERENCE: " + xmlParseResult.getClaim().getChoReference());
 
         // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
         if(!xmlParseResult.getIsClaimExist()){
@@ -229,7 +229,8 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         
         xmlParseResult = UploadStatus.getUploadStatus(xmlParseResult);
         
-        //System.out.println(" ** FINAL STATUS CODE: " + xmlParseResult.getUploadStatusCode());
+        /*
+        System.out.println(" ** FINAL STATUS CODE: " + xmlParseResult.getUploadStatusCode());
         System.out.println(" ** FINAL STATUS: " + xmlParseResult.getUploadStatus());
         System.out.println(" ** CLAIM EXIST: " + xmlParseResult.getIsClaimExist());
         System.out.println(" ** INVOICE EXIST: " + xmlParseResult.getIsInvoiceExist());
@@ -238,6 +239,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         System.out.println(" ** getSchemaValidationRemark: " + xmlParseResult.getSchemaValidationRemark());
         System.out.println(" ** getIsDataValid: " + xmlParseResult.getIsDataValid());
         System.out.println(" ** getDataValidationRemark: " + xmlParseResult.getDataValidationRemark());
+        */
         
         if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
             currentSession.getTransaction().commit();
@@ -261,7 +263,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
             xmlParseResult.getClaim().setCustomer(xmlParseResult.getClaim().getCustomer());
             xmlParseResult.getClaim().setThirdParty(xmlParseResult.getClaim().getThirdParty());
-            xmlParseResult.getClaim().setInsurer(xmlParseResult.getClaim().getInsurer());
+            xmlParseResult.getClaim().setInsurer(xmlParseResult.getClaim().getThirdParty().getInsurer());
             xmlParseResult.getClaim().setChorganisation(xmlParseResult.getClaim().getChorganisation());
             xmlParseResult.getClaim().setLineOfBusiness(xmlParseResult.getClaim().getLineOfBusiness());
             xmlParseResult.getClaim().setIncident(xmlParseResult.getClaim().getIncident());
@@ -274,7 +276,6 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             } catch (Exception e) {
                 xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
             }
-
         }
         return xmlParseResult;
     }
@@ -576,6 +577,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                     customer = xmlParseResult.getClaim().getCustomer();
                 }
                 
+                /*
                 // GET INSURER INFORMATION
                 String insurerAlliasName = XmlHelper.getNodeValue(thisElement, "name");                
                 InsurerAllias insurerallias = insurerAlliasService.getInsurerByAlliasName(insurerAlliasName);
@@ -590,6 +592,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Selected Insurer is invalid", false);
                     }
                 }
+                */
                 
                 // GET VEHICLE CLASS ID
                 VehicleClass vehicleclass = vehicleClassService.getVehicleClassByNodeName(thisElement, "vehicle-class");
@@ -600,7 +603,8 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Selected Vehicle Class is invalid", false);
                     }
                 }
-
+                
+                customer.setInsurerName(XmlHelper.getNodeValue(thisElement, "name"));
                 customer.setPolicyNumber(XmlHelper.getNodeValue(thisElement, "policy-number"));
                 customer.setClaimReference(XmlHelper.getNodeValue(thisElement, "claim-reference"));
                 customer.setComprehensive(XmlHelper.getBooleanFromNode(thisElement, "comprehensive"));
@@ -612,7 +616,6 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                 customer.setDamage(XmlHelper.getNodeValue(thisElement, "damage"));
                 customer.setInitialECD(XmlHelper.getTimeStampFromNode(thisElement, "initial-ecd"));
                 customer.setIsTotalLoss(XmlHelper.getBooleanFromNode(thisElement, "total-loss"));
-                
                 xmlParseResult.getClaim().setCustomer(customer);
             }
         }
@@ -675,7 +678,6 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                     thirdparty = xmlParseResult.getClaim().getThirdParty();
                 }
                 
-                
                 // GET INSURER INFORMATION
                 String insurerAlliasName = XmlHelper.getNodeValue(thisElement, "name");
                 InsurerAllias insurerallias = insurerAlliasService.getInsurerByAlliasName(insurerAlliasName);
@@ -683,7 +685,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                 if(insurerallias!=null){
                     if(insurerallias.getInsurer()!=null){
                         thirdparty.setInsurer(insurerallias.getInsurer());
-                    }                
+                    }
                 }else{
                     if(XmlHelper.isMAN_Claim_ThirdParty_Insurer_Name){
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Selected Insurer is invalid", false);
