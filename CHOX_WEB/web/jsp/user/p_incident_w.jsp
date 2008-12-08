@@ -65,7 +65,7 @@
 
 
 <form id="formUpdateIncidentForm" action="user/updateIncident.action" class="XXentity-form">
-    <input type="hidden" name="objectId" value='<s:property value="id"/>'>
+    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <fieldset class="x-fieldset">
         <legend>Incident Details</legend>
         <div style="display:none" class="form-container">  

@@ -357,6 +357,22 @@
         </action>
         <!-- End Invoice Detail -->
         
+        <!-- Start CustomerVehicleDamage Detail -->
+        <action name="getCustomerVehicleDamage" class="chox.web.actions.CustomerVehicleDamageAction">
+            <result name="r">/jsp/user/p_customer_vehicle_damage_r.jsp
+            </result>
+            <result name="w">/jsp/user/p_customer_vehicle_damage_w.jsp
+            </result>
+            <result name="decline">/jsp/p_accessDeclined.jsp
+            </result>
+        </action>
+        <action name="updateCustomerVehicleDamage" class="chox.web.actions.CustomerVehicleDamageAction" method="updateModel">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+        <!-- End CustomerVehicleDamage Detail -->
+        
+        
         
         <!-- Start Extra Detail -->
         <action name="getExtra" class="chox.web.actions.ExtraAction">
