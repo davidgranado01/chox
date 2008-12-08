@@ -564,4 +564,13 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
     }
+    
+    public String getIsInvoiceReviewRequiredDesc()
+    {
+        return isInvoiceReviewRequired ? "Yes" : "No";
+    }
+    
+    public String getIsQuantumDisputeDesc() {
+        return isQuantumDispute ? "Yes" : "No";
+    }
 }

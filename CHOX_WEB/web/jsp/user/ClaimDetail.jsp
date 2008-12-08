@@ -616,9 +616,15 @@
 
                                         <s:action name="getSolicitor" executeResult="true">
                                             <s:param name="objectId"><s:property value="incident.injury.solicitor.id" /></s:param>
-                                            <s:param name="injuryId"><s:property value="incident.injury.id" /></s:param>                                                                                      
+                                            <s:param name="injuryId"><s:property value="incident.injury.id" /></s:param>   
+                                            <s:param name="incidentId"><s:property value="incident.id" /></s:param>   
                                             <s:param name="claimStatus"><s:property value="status" /></s:param>
                                         </s:action> 
+
+                                        <s:action name="getCustomerVehicleDamage" executeResult="true">
+                                            <s:param name="objectId"><s:property value="customer.id" /></s:param> 
+                                            <s:param name="claimStatus"><s:property value="status" /></s:param>         
+                                        </s:action>  
                                  
                                         
                                     </td>

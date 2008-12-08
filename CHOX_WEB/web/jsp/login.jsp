@@ -8,7 +8,18 @@
     
     <head>
         <title>IDAS CHOX Welcome Page</title>
-        <link href="<%= request.getContextPath()%>/styles/login.css" rel="stylesheet" type="text/css" media="all"/>  
+        <link href="<%= request.getContextPath()%>/styles/login.css" rel="stylesheet" type="text/css" media="all"/> 
+        
+        <script>
+            var newwindow;
+            function openFile(url,name)
+            {
+                    newwindow=window.open(url,name);
+                    if (window.focus) {newwindow.focus()}
+            }
+
+        </script>
+        
     </head>
     <body class="modal login">
     <div class="outer">
@@ -61,7 +72,7 @@
     </div>
     <div class="below">
         <span class="note" style="font-size:11px">
-        <a href="#" onclick="return false;">Terms of Service</a></span>
+        <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_Terms_of_Service.pdf','TermOfService');">Terms of Service</a></span>
     </div>
 </body>
 </html>

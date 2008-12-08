@@ -27,6 +27,13 @@
 </head>
 
 <script >
+
+    var newwindow;
+    function openFile(url,name)
+    {
+            newwindow=window.open(url,name);
+            if (window.focus) {newwindow.focus()}
+    }
     
     var rd = new Ext.data.JsonReader({
         totalProperty: 'totalCount',   
@@ -250,7 +257,12 @@ hireDateToPicker.render('hireDateToDiv');
                                     <s:if test="isCHO">
                                     <a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;|&nbsp;
                                     </s:if> 
-                                <a href="#">Help</a> &nbsp;|&nbsp;
+                                    <s:if test="isCHO">
+                                        <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_CHO_UG_1.1-1.pdf','Help');">Help</a>
+                                    </s:if>
+                                    <s:else>
+                                        <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_IUG_1.0-1.pdf','Help');">Help</a>
+                                    </s:else>&nbsp;|&nbsp;
                                 <a href="#">Support</a>&nbsp;|&nbsp; 
                                 <a href="#">About Chox</a>&nbsp;|&nbsp;
                                 <a href="<%=request.getContextPath()%>/j_acegi_logout">Log Off</a>

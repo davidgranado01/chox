@@ -497,10 +497,8 @@
             </result>
         </action>
         <!-- End Comment Detail -->
-        <action name="dummy" class="chox.web.actions.DummyAction">
-            <result name="success">/jsp/p_blank.jsp
-            </result>
-        </action>
+      
+
     </package>
     <include file="config-browser.xml"/>
 </struts>
