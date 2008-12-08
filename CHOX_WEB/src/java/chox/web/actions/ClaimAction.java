@@ -50,8 +50,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private InvoiceService invoiceService;
     private ChoBandService choBandService;
     private HistoryService historyService;
-    
-    
     private String actionResult;
     private TabAccessibility tabAccessibility;
     private int vehicleClassId = -1;
@@ -139,7 +137,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.actionResult = "Claim Updated!";
         return SUCCESS;
     }
-    
+
     public TabAccessibility getTabAccessibility() {
 
         if (tabAccessibility == null) {
@@ -170,6 +168,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
     //Claim Actions
     public String route() {
+        String result = SUCCESS;
         //chack whether line of busineess if set 
         if (this.getLineOfBusinesses() == null) {
             this.actionResult = "ERROR : You need to provide line of business to route this claim.";
@@ -184,16 +183,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 try {
                     this.service.updateClaim(claim);
                 } catch (Exception ex) {
+                    result = ERROR;
                     this.actionResult = "ERROR : " + ex.getMessage();
                 }
             }
         }
 
-        return SUCCESS;
+        return result;
     }
 
     //Acknowledge
     public String acknowledge() {
+
+        String result = SUCCESS;
         //chack whether line of busineess if set 
         String validationResult = validateAcknowledgeClaimInfo();
         if (validationResult.isEmpty()) {
@@ -203,16 +205,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             } else {
                 claim.setStatus(ClaimStatus.CLAIM_REJECTED);
             }
-            try {
-                this.service.updateClaim(claim);
-            } catch (Exception ex) {
-                this.actionResult = "ERROR : " + ex.getMessage();
-            }
-
         } else {
+            claim.setClaimNumber("");
+            result = ERROR;
             this.actionResult = validationResult;
         }
-        return SUCCESS;
+
+        try {
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+
+
+        return result;
     }
 
     public Map getAcknowledgeClaimActions() {
@@ -223,24 +229,23 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     private String validateAcknowledgeClaimInfo() {
-        
+
         String claimNumber = claim.getClaimNumber();
-        
+
         boolean isClaimNumberExist = this.service.getClaimCoutByClaimNumber(claimNumber) > 0;
-        
-        if(isClaimNumberExist)
-        {
-            return "ERROR : The Claim number you have supplied already exists"
-;
-        } 
-        else
-        {
-             return "";
+
+        if (isClaimNumberExist) {
+            return "ERROR : The Claim number you have supplied already exists";
+        } else {
+            return "";
         }
-       
+
     }
 
     public String contestOrAcceptRejectedClaim() {
+
+        String result = SUCCESS;
+
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             claim.setStatus(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
         } else {
@@ -249,9 +254,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
             this.service.updateClaim(claim);
         } catch (Exception ex) {
+            result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
         }
-        return SUCCESS;
+        return result;
     }
 
     public Map getContestOrAcceptRejectedClaimActions() {
@@ -262,6 +268,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String approveContestedClaim() {
+
+        String result = SUCCESS;
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
         } else {
@@ -270,10 +278,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
             this.service.updateClaim(claim);
         } catch (Exception ex) {
+            result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
         }
 
-        return SUCCESS;
+        return result;
     }
 
     public Map getApproveContestedClaimActions() {
@@ -284,37 +293,40 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String submitHireMonitoringDetail() {
+
+        String result = SUCCESS;
         String validationResult = validateHireMonitoringDetail();
         if (validationResult.isEmpty()) {
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_DATA);
-            try {
-                this.service.updateClaim(claim);
-            } catch (Exception ex) {
-                this.actionResult = "ERROR : " + ex.getMessage();
-            }
         } else {
+            result = ERROR;
             this.actionResult = validationResult;
         }
 
-        return SUCCESS;
-    }
-    
-     public String validateHireMonitoringDetail() {
-        if(this.claim.getHireMonitoringDetail() == null)
-        {
-            return "Error : You need to provide correct hire monitoring detail detail to submit this claim.";
+        try {
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            this.actionResult = "ERROR : " + ex.getMessage();
         }
-        else
-        {
+
+
+        return result;
+    }
+
+    public String validateHireMonitoringDetail() {
+        if (this.claim.getHireMonitoringDetail() == null) {
+            return "Error : You need to provide correct hire monitoring detail detail to submit this claim.";
+        } else {
             return "";
-        }   
+        }
     }
 
     public String reSubmitRejectedClaim() {
-        claim = constructeClaimForInvoiceValidation(claim);       
-        RulesEngineResponse reponse = invoiceService.XMLUploaderInvoiceValidation(claim);        
+
+        claim = constructeClaimForInvoiceValidation(claim);
+        RulesEngineResponse reponse = invoiceService.XMLUploaderInvoiceValidation(claim);
         historyService.logInvoiceValidationErrorMsg(reponse, claim);
-        
+
         String repStatus = reponse.getStatus().name();
 
         if (!repStatus.equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
@@ -336,6 +348,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String contestOrAcceptRejectedInvoice() {
+        
+         String result = SUCCESS;
+         
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             claim.setStatus(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
         } else {
@@ -344,13 +359,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
             this.service.updateClaim(claim);
         } catch (Exception ex) {
+            result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
         }
-        return SUCCESS;
+        return result;
     }
 
     public String approveBREPassedClaim() {
 
+         String result = SUCCESS;
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         } else {
@@ -359,11 +376,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
             this.service.updateClaim(claim);
         } catch (Exception ex) {
+            result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
         }
 
 
-        return SUCCESS;
+        return result;
     }
 
     public Map getApproveBREPassedClaimActions() {
@@ -375,6 +393,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String approveEscalatedInvoice() {
 
+         String result = SUCCESS;
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         } else {
@@ -383,9 +402,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
             this.service.updateClaim(claim);
         } catch (Exception ex) {
+            result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
         }
-        return SUCCESS;
+        return result;
     }
 
     public Map getApproveEscalatedInvoiceActions() {
@@ -396,6 +416,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String approveContestedInvoice() {
+         String result = SUCCESS;
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         } else {
@@ -404,9 +425,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
             this.service.updateClaim(claim);
         } catch (Exception ex) {
+            result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
         }
-        return SUCCESS;
+        return result;
     }
 
     public Map getApproveContestedInvoiceActions() {
@@ -418,11 +440,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String resubmitOrAcceptContestedInvoice() {
 
+         String result = SUCCESS;
+         
         if (this.actionName.equalsIgnoreCase(REJECT)) {
-            claim = constructeClaimForInvoiceValidation(claim);            
+            claim = constructeClaimForInvoiceValidation(claim);
             RulesEngineResponse reponse = invoiceService.XMLUploaderInvoiceValidation(claim);
             historyService.logInvoiceValidationErrorMsg(reponse, claim);
-            
+
             claim = service.getClaim(claim.getId());
             claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
 
@@ -433,11 +457,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
             this.service.updateClaim(claim);
         } catch (Exception ex) {
+            result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
-            return ERROR;
         }
 
-        return SUCCESS;
+        return result;
 
     }
 
@@ -493,7 +517,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return BREClaim;
     }
-   
+
     public int getVehicleClassId() {
         return vehicleClassId;
     }

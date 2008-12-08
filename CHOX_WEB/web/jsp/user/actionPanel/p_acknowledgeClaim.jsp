@@ -70,19 +70,19 @@
                             <td>
                                 <label>
                                 Indemnity (Decimal)</label></td><td>
-                                <input type="text" class="chox-ttxt" name="indemnityAmount" />
+                                <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
                             </td>
                             <td>
                                 <label>
                                 % Liability Accepted</label></td><td>
-                                <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" />
+                                <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label>
                                 Claim Number</label></td><td>
-                                <input type="text" class="chox-ttxt" name="claimNumber" />
+                                <input type="text" class="chox-ttxt" name="claimNumber" value="<s:property value="claimNumber" />"/>
                             </td>
                             <td>
                                 <label>
@@ -94,7 +94,7 @@
                             <td>
                                 <label>
                                 Engineer's Claim Review Notes</label></td><td>
-                                <textarea class="chox-tta" cols="20" rows="5" name="engineerClaimReviewNotes"></textarea>
+                                <textarea class="chox-tta" cols="20" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                             </td>
                             <td>
                                 <label>

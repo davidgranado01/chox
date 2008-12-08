@@ -127,6 +127,8 @@
                 <param name="id">${id}
                 </param>
             </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
         </action>
         <action name="acknowledge" class="chox.web.actions.ClaimAction" method="acknowledge">
             <result name="success" type="redirect-action">
@@ -134,6 +136,8 @@
                 </param>
                 <param name="id">${id}
                 </param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
         <action name="contestOrAcceptRejectedClaim" class="chox.web.actions.ClaimAction" method="contestOrAcceptRejectedClaim">
@@ -162,6 +166,8 @@
                 </param>
                 <param name="id">${id}
                 </param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
         <action name="reSubmitRejectedClaim" class="chox.web.actions.ClaimAction" method="reSubmitRejectedClaim">
