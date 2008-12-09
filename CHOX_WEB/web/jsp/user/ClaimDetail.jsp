@@ -592,7 +592,7 @@
                                         <td>&nbsp;</td>                                        
                                     </tr>
                                     <tr>                                        
-                                        <td colspan="3"><label class="chox-claim-header-label">Engineer's Claim Review Notes</label><label class="chox-claim-header-text"><span id="status">£<s:property value="engineerClaimReviewNotes" /></span></label></td>
+                                        <td colspan="3"><label class="chox-claim-header-label">Engineer's Claim Review Notes</label><label class="chox-claim-header-text"><span id="status"><s:property value="engineerClaimReviewNotes" /></span></label></td>
                                     </tr>
                                 </s:else>
                                     
