@@ -197,18 +197,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         //chack whether line of busineess if set 
-        String validationResult = validateAcknowledgeClaimInfo();
-        if (validationResult.isEmpty()) {
 
-            if (this.actionName.equalsIgnoreCase(ACCEPT)) {
+
+        if (this.actionName.equalsIgnoreCase(ACCEPT)) {
+            String validationResult = validateAcknowledgeClaimInfo();
+            if (validationResult.isEmpty()) {
                 claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
             } else {
-                claim.setStatus(ClaimStatus.CLAIM_REJECTED);
+                claim.setClaimNumber("");
+                result = ERROR;
+                this.actionResult = validationResult;
             }
         } else {
-            claim.setClaimNumber("");
-            result = ERROR;
-            this.actionResult = validationResult;
+            claim.setStatus(ClaimStatus.CLAIM_REJECTED);
         }
 
         try {
@@ -348,9 +349,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String contestOrAcceptRejectedInvoice() {
-        
-         String result = SUCCESS;
-         
+
+        String result = SUCCESS;
+
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             claim.setStatus(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
         } else {
@@ -367,7 +368,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String approveBREPassedClaim() {
 
-         String result = SUCCESS;
+        String result = SUCCESS;
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         } else {
@@ -393,7 +394,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String approveEscalatedInvoice() {
 
-         String result = SUCCESS;
+        String result = SUCCESS;
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         } else {
@@ -416,7 +417,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String approveContestedInvoice() {
-         String result = SUCCESS;
+        String result = SUCCESS;
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         } else {
@@ -440,8 +441,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String resubmitOrAcceptContestedInvoice() {
 
-         String result = SUCCESS;
-         
+        String result = SUCCESS;
+
         if (this.actionName.equalsIgnoreCase(REJECT)) {
             claim = constructeClaimForInvoiceValidation(claim);
             RulesEngineResponse reponse = invoiceService.XMLUploaderInvoiceValidation(claim);

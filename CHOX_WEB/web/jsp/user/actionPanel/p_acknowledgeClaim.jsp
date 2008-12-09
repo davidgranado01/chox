@@ -2,48 +2,53 @@
 
 <script language="JavaScript">
     
+    function registeAction(val)
+    {
+        $("#actionName").val(val);
+    }
     
-        $(document).ready(function(){
+    
+    $(document).ready(function(){
             
             
-            $("#formAcknowledgeAction").validate(
-            {
-               errorLabelContainer: "#ACKmessageBox",                
-               rules: {
-                 indemnityAmount:{
-                     required:true,
-                     number:true
-                 },
-                 percentageLiabilityAccepted:{
-                     required:true,
-                     number:true
-                 },
-                 claimNumber:{
-                     required:true
-                 } ,
+        $("#formAcknowledgeAction").validate(
+        {
+            errorLabelContainer: "#ACKmessageBox",                
+            rules: {
+                indemnityAmount:{
+                    required:true,
+                    number:true
+                },
+                percentageLiabilityAccepted:{
+                    required:true,
+                    number:true
+                },
+                claimNumber:{
+                    required:true
+                } ,
 
                 actionName:{
                     required:true
                 }
-               },
-               messages: {
-                 indemnityAmount: {
-                   required:"You must supply a value for 'Indemnity'",
-                   number:"You must supply a numeric value for 'Indemnity'"
-                 }, 
-                 percentageLiabilityAccepted: {
-                   required:"You must supply a value for 'Percentage Liability Accepted'",
-                   number:"You must supply a numeric value for Percentage Liability Accepted"
-                 },
-                 claimNumber: {
-                   required:"You must supply a value for 'Claim Number'"
-                 },
+            },
+            messages: {
+                indemnityAmount: {
+                    required:"You must supply a value for 'Indemnity'",
+                    number:"You must supply a numeric value for 'Indemnity'"
+                }, 
+                percentageLiabilityAccepted: {
+                    required:"You must supply a value for 'Percentage Liability Accepted'",
+                    number:"You must supply a numeric value for Percentage Liability Accepted"
+                },
+                claimNumber: {
+                    required:"You must supply a value for 'Claim Number'"
+                },
                 actionName:{
                     required:"You must choose 'Reject this claim' or 'Request Invoice Data"
                 }                 
-               }
-            });
-        }); 
+            }
+        });
+    }); 
     
 
 
@@ -58,6 +63,7 @@
         <legend>Claim Acknowledgement - Action Required</legend>
         <div>
             <s:hidden name="id" />
+            <s:hidden id="actionName" name="actionName" />
             <div>
                 <div class="status-info">
                     Please enter details of the claim review and decide whether to acknowledge or reject
@@ -69,53 +75,53 @@
                         <tr>
                             <td>
                                 <label>
-                                Indemnity (Decimal)</label></td><td>
+                            Indemnity (Decimal)</label></td><td>
                                 <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
                             </td>
                             <td>
                                 <label>
-                                % Liability Accepted</label></td><td>
+                            % Liability Accepted</label></td><td>
                                 <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label>
-                                Claim Number</label></td><td>
+                            Claim Number</label></td><td>
                                 <input type="text" class="chox-ttxt" name="claimNumber" value="<s:property value="claimNumber" />"/>
                             </td>
                             <td>
                                 <label>
-                                Quantum Dispute?</label></td><td>
+                            Quantum Dispute?</label></td><td>
                                 <s:checkbox name="isQuantumDispute" />
                             </td>
                         </tr>
                         <tr valign="top">
                             <td>
                                 <label>
-                                Engineer's Claim Review Notes</label></td><td>
+                            Engineer's Claim Review Notes</label></td><td>
                                 <textarea class="chox-tta" cols="20" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                             </td>
                             <td>
                                 <label>
-                                Invoice Review Required</label></td><td>
+                            Invoice Review Required</label></td><td>
                                 <s:checkbox name="isInvoiceReviewRequired" />
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4" class="choice">
                                 
-                                    <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-
+                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                
                             </td>
                         </tr>                        
                         <tr>
-                            <td colspan="4" class="choice">
-                                    <s:radio name="actionName" list="acknowledgeClaimActions" /><input type="submit" value="Save changes and register decision" />
-
+                            <td colspan="4" class="choice">                     
+                                <input class="cancel" type="submit" value="Reject"  onclick="registeAction('reject');return confirm('Are you sure you want to reject this claim?')" />
+                                <input type="submit" value="Acknowledge" onclick="registeAction('accept')"  />                                
                             </td>
                         </tr>
-
+                        
                     </table>
                     
                     <div class="errorBox" id="ACKmessageBox"></div>
