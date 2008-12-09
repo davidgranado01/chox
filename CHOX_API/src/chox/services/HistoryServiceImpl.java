@@ -4,6 +4,7 @@
  */
 package chox.services;
 
+import chox.Util.DateHelper;
 import chox.model.History;
 import chox.model.Claim;
 import scsbre.engine.*;
@@ -83,6 +84,7 @@ public class HistoryServiceImpl extends DataService implements HistoryService {
             }
 
             History history = new History();
+            history.setProcessDate(DateHelper.getCurrentTimeStamp());
             history.setClaim(claim);
             history.setIsPublic(rv.getIsVisibleToCHO());
             history.setNarrative(rv.toString() + ':' + rv.getResult());
@@ -91,7 +93,6 @@ public class HistoryServiceImpl extends DataService implements HistoryService {
             history.setIsSystem(true);
             saveHistory(history);
         }
-
     }
 
     public Boolean saveHistory(History history) {

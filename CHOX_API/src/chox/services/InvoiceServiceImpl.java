@@ -8,7 +8,7 @@ public class InvoiceServiceImpl extends DataService implements InvoiceService {
 
     public RulesEngineResponse XMLUploaderInvoiceValidation(Claim claim) {
         
-        System.out.println("CUSTOMER VEHICLE CLASS ::::::::::::::::: 1 "+claim.getCustomer().getVehicleClass().getId());
+        //System.out.println("CUSTOMER VEHICLE CLASS ::::::::::::::::: 1 "+claim.getCustomer().getVehicleClass().getId());
         
         RulesEngine r = RulesEngine.getInstance(claim);
         RulesEngineResponse reponse = r.ResolveStatus(); 
