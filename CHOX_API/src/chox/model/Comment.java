@@ -8,6 +8,8 @@ package chox.model;
 import java.io.Serializable;
 import java.util.Date;
 import chox.model.Claim;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Comment implements Serializable,Auditable{
     
@@ -26,6 +28,8 @@ public class Comment implements Serializable,Auditable{
 
     public void setComment(String comment) {
         this.comment = comment;
+        System.out.println("this.comment 1 ::::: "+this.comment);
+        //System.out.println("this.comment 1 ::::: " +.decode(this.comment));
     }
 
     public WebUser getCreatedBy() {

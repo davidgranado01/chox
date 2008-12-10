@@ -827,5 +827,9 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
         {
             return this.isUsable ? "Yes" : "No";
         }
-          
+
+        public String getIsTotalLossDesc()
+        {
+            return this.isTotalLoss ? "Yes" : "No";
+        }
 }
