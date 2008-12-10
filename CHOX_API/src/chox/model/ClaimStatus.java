@@ -28,6 +28,7 @@ public class ClaimStatus {
     public static final String INVOICE_REJECTED_ACCEPTED = "InvoiceRejectionAccepted";
     public static final String AWAITING_INVOICE_PAYMENT = "AwaitingInvoicePayment";
     public static final String INVOICE_PAYMENT_LOGGED = "InvoicePaymentLogged";    // NEW STATUS
+    public static final String CLAIM_REF_TO_ENG = "ClaimReferredToEngineer";    // NEW STATUS @ 09 Dec 2008
     //public static final String INVOICE_CALCULATION_INCORRECT = "InvoiceDataCalculationIncorrect";
 
     public static List<String> getStatus() {
@@ -47,6 +48,8 @@ public class ClaimStatus {
         status.add(INVOICE_REJECTED_ACCEPTED);
         status.add(AWAITING_INVOICE_PAYMENT);
         status.add(INVOICE_PAYMENT_LOGGED);
+        status.add(CLAIM_REF_TO_ENG);
+        
         //status.add(INVOICE_CALCULATION_INCORRECT);
         return status;
     }

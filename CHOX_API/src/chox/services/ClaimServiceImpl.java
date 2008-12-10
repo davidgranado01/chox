@@ -149,7 +149,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         return claim;
     }
     
-    public Long getClaimCoutByClaimNumber(String claimNumber)
+    public Long getClaimCountByClaimNumber(String claimNumber)
     {
         Long count = (Long) getCurrentSession().createQuery("select count(*) from Claim where claimNumber = '" + claimNumber + "'").uniqueResult();
 
