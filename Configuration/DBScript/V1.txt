@@ -403,3 +403,77 @@ ALTER TABLE attachment ADD COLUMN file_type character varying;
 ALTER TABLE attachment ALTER COLUMN file_type SET STORAGE EXTENDED;
 
 -----------------------------------------------------------------------------------------------
+-- Table: hire_monitoring_ecd
+
+-- DROP TABLE hire_monitoring_ecd;
+
+CREATE TABLE hire_monitoring_ecd
+(
+  created_by integer NOT NULL,
+  created_date timestamp without time zone NOT NULL DEFAULT now(),
+  last_modified_by integer NOT NULL,
+  last_modified_date timestamp without time zone NOT NULL DEFAULT now(),
+  id integer NOT NULL DEFAULT nextval('hiremonitoringecd_id_seq'::regclass),
+  ecd_date timestamp without time zone,
+  claim_id integer,
+  "sequence" integer,
+  supporting_note character varying,
+  reason character varying(50),
+  CONSTRAINT "HireMonitoring_pkey" PRIMARY KEY (id),
+  CONSTRAINT "HireMonitoringECD_Claim_fkey" FOREIGN KEY (claim_id)
+      REFERENCES claim (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (OIDS=FALSE);
+
+-- Index: "fki_HireMonitoringECD_Claim_fkey"
+
+-- DROP INDEX "fki_HireMonitoringECD_Claim_fkey";
+
+CREATE INDEX "fki_HireMonitoringECD_Claim_fkey"
+  ON hire_monitoring_ecd
+  USING btree
+  (claim_id);
+
+-----------------------------------------------------------------------------------------------
+
+insert into global_configuration (parameter, value, created_by, last_modified_by) values ('attachment_path', 'C:/Tomcat 6.0/webapps/IDASCHOX/attachment/',999,999);
+
+-----------------------------------------------------------------------------------------------
+ALTER TABLE customer DROP COLUMN insurer_id;
+ALTER TABLE customer ADD COLUMN insurer_name character varying;
+ALTER TABLE customer ALTER COLUMN insurer_name SET STORAGE EXTENDED;
+
+-- ############################################################################################
+-- START VERSION 2.7a - 2008-12-09
+-- ############################################################################################
+
+alter table vehicle_hire alter column vehicle_registration drop not null;
+alter table vehicle_hire alter column vehicle_manufacturer drop not null;
+alter table vehicle_hire alter column vehicle_model drop not null;
+alter table vehicle_hire alter column vehicle_class_id drop not null;
+alter table vehicle_hire alter column rental_start drop not null;
+alter table vehicle_hire alter column collection_reason drop not null;
+
+-- ############################################################################################
+-- START VERSION 2.9 - 2008-12-10
+-- ############################################################################################
+
+INSERT INTO accessibility (id, "name") VALUES (130, 'tab.ClaimDetail.ClaimReferredToEngineer');
+INSERT INTO accessibility_item ("role", access_right, accessibility_id, id) VALUES ('ALL', 1, 130, 310);
+INSERT INTO accessibility (id, "name") VALUES (131, 'tab.InvoiceDetail.ClaimReferredToEngineer');
+INSERT INTO accessibility_item ("role", access_right, accessibility_id, id) VALUES ('ALL', 1, 131, 311);
+INSERT INTO accessibility (id,"name") VALUES (132, 'tab.History.ClaimReferredToEngineer');
+INSERT INTO accessibility_item ("role", access_right, accessibility_id, id) VALUES ('ALL', 1, 132, 312);
+INSERT INTO accessibility (id, "name") VALUES (133, 'tab.PaymentPack.ClaimReferredToEngineer');
+INSERT INTO accessibility_item( "role", access_right, accessibility_id, id) VALUES ('ALL', 1, 133, 313);
+INSERT INTO accessibility (id, "name") VALUES (134, 'tab.HireMonitoring.ClaimReferredToEngineer');
+INSERT INTO accessibility_item ("role", access_right, accessibility_id, id) VALUES ('ALL', 1, 134, 314);
+INSERT INTO accessibility (id, "name") VALUES (135, 'tab.Notes.ClaimReferredToEngineer');
+INSERT INTO accessibility_item ("role", access_right, accessibility_id, id) VALUES ('ALL', 1, 135, 315);
+INSERT INTO accessibility (id, "name") VALUES (136, 'action.reviewByEngineer.ClaimReferredToEngineer');
+INSERT INTO accessibility_item(  "role", access_right, accessibility_id, id) VALUES ('ROLE_INS_SCR', 1, 136, 316);
+
+-- ############################################################################################
+-- START VERSION 2.10 - 2008-12-11
+-- ############################################################################################
