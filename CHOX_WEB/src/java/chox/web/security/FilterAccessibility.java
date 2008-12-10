@@ -25,6 +25,7 @@ public class FilterAccessibility {
     private boolean escalatedInvoicesAccessible;
     private boolean contestedInvoicesReferredToInsurerAccessible;
     private boolean invoicesApprovedByBREAccessible;
+    private boolean claimReferredToEngineerAccessible;
 
     public FilterAccessibility(GrantedAuthority[] grantedAuthorities) {
         ApplicationAccessibility accessibility = ApplicationAccessibility.getInstance();
@@ -54,6 +55,8 @@ public class FilterAccessibility {
         contestedInvoicesReferredToInsurerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CONTESTED_INVOICE_REF_INS,
                 grantedAuthorities) > 0;
         invoicesApprovedByBREAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_APPROVED_BY_BRE,
+                grantedAuthorities) > 0;
+        claimReferredToEngineerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_REF_ENG,
                 grantedAuthorities) > 0;
     }
 
@@ -108,4 +111,9 @@ public class FilterAccessibility {
     public boolean getIsInvoicesApprovedByBREAccessible() {
         return invoicesApprovedByBREAccessible;
     }
+    
+     public boolean getIsClaimReferredToEngineerAccessible() {
+        return claimReferredToEngineerAccessible;
+    }
+    
 }

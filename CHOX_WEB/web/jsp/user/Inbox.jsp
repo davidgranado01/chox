@@ -47,7 +47,6 @@
             {name:'policyNumber'},
             {name:'lineOfBusiness'},
             {name:'supplierReference'},
-            {name:'claimNumber'},
             {name:'created', type: 'date', dateFormat: 'd/m/Y'},
             {name:'insurer'},
             {name:'cho'}
@@ -142,8 +141,7 @@ var grid = new Ext.grid.GridPanel({
     columns: [
         {id:'Id', header: "Supplier Reference", width: 150, sortable: true, dataIndex: 'supplierReference', 
             renderer:function(value,p,r){
-                return '<a href="openClaimDetail.action?id=' + r.data['id'] + '">' + value + '</a>'}},  
-        {header: "Claim Number", width: 250, sortable: true, dataIndex: 'claimNumber'},                
+                return '<a href="openClaimDetail.action?id=' + r.data['id'] + '">' + value + '</a>'}},               
         {header: "VRN", width: 250, sortable: true, dataIndex: 'vehicleRegistration'},
         {header: "Invoice Amount", width: 250, sortable: true, 
             dataIndex: 'invoiceAmount'},  
@@ -317,6 +315,9 @@ hireDateToPicker.render('hireDateToDiv');
                         </s:if>
                         <s:if test="filterAccessibility.isInvoicesApprovedByBREAccessible">
                             <li><a href="javascript:showClaimByStatus('InvoiceApprovedByBRE');" >Invoices Approved By BRE (<s:property value="filterRecordCounter.invoicesApprovedByBRECount" />)</a></li>
+                        </s:if>
+                        <s:if test="filterAccessibility.isClaimReferredToEngineerAccessible">
+                            <li><a href="javascript:showClaimByStatus('ClaimReferredToEngineer');" >Claim Referred To Engineer (<s:property value="filterRecordCounter.ClaimReferredToEngineerCount" />)</a></li>
                         </s:if>
                     </ul>
                     

@@ -38,6 +38,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public static final String REJECT = "reject";
     public static final String ACCEPT = "accept";
+    public static final String REFER = "refer";
     public static final String EMPTY = "empty";
     private Claim claim = new Claim();
     private int id = -1;
@@ -197,9 +198,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         //chack whether line of busineess if set 
-
-
-        if (this.actionName.equalsIgnoreCase(ACCEPT)) {
+                
+        if (this.actionName.equalsIgnoreCase(ACCEPT)) 
+        {
             String validationResult = validateAcknowledgeClaimInfo();
             if (validationResult.isEmpty()) {
                 claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
@@ -207,12 +208,26 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 claim.setClaimNumber("");
                 result = ERROR;
                 this.actionResult = validationResult;
-            }
-        } else {
+            }   
+        } 
+        else if(this.actionName.equalsIgnoreCase(REFER))
+        {
+            String validationResult = validateAcknowledgeClaimInfo();            
+            if (validationResult.isEmpty()) {
+                claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);
+            } else {
+                claim.setClaimNumber("");
+                result = ERROR;
+                this.actionResult = validationResult;
+            }   
+        }
+        else 
+        {         
             claim.setStatus(ClaimStatus.CLAIM_REJECTED);
         }
 
-        try {
+        try 
+        {
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             this.actionResult = "ERROR : " + ex.getMessage();
@@ -233,7 +248,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String claimNumber = claim.getClaimNumber();
 
-        boolean isClaimNumberExist = this.service.getClaimCoutByClaimNumber(claimNumber) > 0;
+        boolean isClaimNumberExist = this.service.getClaimCountByClaimNumber(claimNumber) > 0;
 
         if (isClaimNumberExist) {
             return "ERROR : The Claim number you have supplied already exists";
@@ -241,6 +256,27 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return "";
         }
 
+    }
+    
+    public String reviewByEngineer() {
+        String result = SUCCESS;
+        //chack whether line of busineess if set 
+
+        if (this.actionName.equalsIgnoreCase(ACCEPT)) {
+
+            claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
+
+        } else {
+            claim.setStatus(ClaimStatus.CLAIM_REJECTED);
+        }
+
+        try {
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+
+        return result;
     }
 
     public String contestOrAcceptRejectedClaim() {

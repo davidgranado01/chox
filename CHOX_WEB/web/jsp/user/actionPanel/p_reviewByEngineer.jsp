@@ -1,3 +1,9 @@
+<%-- 
+    Document   : p_reviewByEngineer
+    Created on : 09-Dec-2008, 18:11:59
+    Author     : Emmanuel
+--%>
+
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script language="JavaScript">
@@ -5,8 +11,8 @@
     function registeAction(val)
     {
         $("#actionName").val(val);
-    }
-          
+    } 
+        
     $(document).ready(function(){
             
             
@@ -56,17 +62,17 @@
 
 
 
-<form action="user/acknowledge.action" method="post" id="formAcknowledgeAction"
+<form action="user/reviewByEngineer.action" method="post" id="formAcknowledgeAction"
       name="formAcknowledgeAction">
     <fieldset class="x-fieldset">
-        <legend>Claim Acknowledgement - Action Required</legend>
+        <legend>Engineer Review - Action Required</legend>
         <div>
             <s:hidden name="id" />
             <s:hidden id="actionName" name="actionName" />
             <div>
                 <div class="status-info">
                     Please enter details of the claim review and decide whether to acknowledge or reject
-                    the claim. Please use the 'Notes' tab in order to communicate detailed comments
+                    the claim. Please enter your private notes in the 'Claim Review Notes' box and add public notes in  the 'Notes' tab in order to communicate detailed comments
                     you may have for the CHO.
                 </div>
                 <div class="status-control-set">
@@ -87,7 +93,7 @@
                             <td>
                                 <label>
                             Claim Number</label></td><td>
-                                <input type="text" class="chox-ttxt" name="claimNumber" value="<s:property value="claimNumber" />"/>
+                                <label class="std-data-ro"><s:property value="claimNumber" /></label>
                             </td>
                             <td>
                                 <label>
@@ -98,12 +104,12 @@
                         <tr valign="top">
                             <td>
                                 <label>
-                                Claim Review Notes</label></td><td>
+                                Engineer Claim Review Notes</label></td><td>
                                 <textarea class="chox-tta" cols="20" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                             </td>
                             <td>
                                 <label>
-                            Invoice Review Required?</label></td><td>
+                                Invoice Review Required?</label></td><td>
                                 <s:checkbox name="isInvoiceReviewRequired" />
                             </td>
                         </tr>
@@ -118,7 +124,6 @@
                             <td colspan="4" class="choice">                     
                                 <input class="cancel" type="submit" value="Reject"  onclick="registeAction('reject');return confirm('Are you sure you want to reject this claim?')" />
                                 <input type="submit" value="Acknowledge" onclick="registeAction('accept')"  />   
-                                <input type="submit" value="Refer To Engineer" onclick="registeAction('refer');"  /> 
                             </td>
                         </tr>
                         

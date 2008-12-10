@@ -70,4 +70,8 @@ public class FilterRecordCounter {
     public long getInvoicesApprovedByBRECount() {
         return service.getCountByStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
     }
+    
+        public long getClaimReferredToEngineerCount() {
+        return service.getCountByStatus(ClaimStatus.CLAIM_REF_TO_ENG);
+    }
 }

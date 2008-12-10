@@ -104,6 +104,8 @@
             </result>
             <result name="logInvoicePayment">/jsp/user/actionPanel/p_logInvoicePayment.jsp
             </result>
+            <result name="reviewByEngineer">/jsp/user/actionPanel/p_reviewByEngineer.jsp
+            </result>
             <result name="empty">/jsp/p_blank.jsp
             </result>
         </action>      
@@ -221,6 +223,16 @@
             </result>
         </action>
         <action name="logInvoicePayment" class="chox.web.actions.ClaimAction" method="logInvoicePayment">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action> 
+        <action name="reviewByEngineer" class="chox.web.actions.ClaimAction" method="reviewByEngineer">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
