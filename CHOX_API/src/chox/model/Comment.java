@@ -28,8 +28,6 @@ public class Comment implements Serializable,Auditable{
 
     public void setComment(String comment) {
         this.comment = comment;
-        System.out.println("this.comment 1 ::::: "+this.comment);
-        //System.out.println("this.comment 1 ::::: " +.decode(this.comment));
     }
 
     public WebUser getCreatedBy() {

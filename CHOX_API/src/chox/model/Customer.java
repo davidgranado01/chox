@@ -795,7 +795,6 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
 
         //convenince wrapppers
         public String getIsComprehensiveDesc(){
-            
              return this.isComprehensive() ? "Yes" : "No";
         }
         
