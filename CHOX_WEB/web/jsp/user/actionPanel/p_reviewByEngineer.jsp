@@ -121,9 +121,8 @@
                             </td>
                         </tr>                        
                         <tr>
-                            <td colspan="4" class="choice">                     
-                                <input class="cancel" type="submit" value="Reject"  onclick="registeAction('reject');return confirm('Are you sure you want to reject this claim?')" />
-                                <input type="submit" value="Acknowledge" onclick="registeAction('accept')"  />   
+                            <td colspan="4" class="choice"> 
+                                <input type="submit" value="Submit" onclick="registeAction('accept')"  />   
                             </td>
                         </tr>
                         

@@ -261,15 +261,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String reviewByEngineer() {
         String result = SUCCESS;
         //chack whether line of busineess if set 
-
-        if (this.actionName.equalsIgnoreCase(ACCEPT)) {
-
-            claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
-
-        } else {
-            claim.setStatus(ClaimStatus.CLAIM_REJECTED);
-        }
-
+        claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
         try {
             this.service.updateClaim(claim);
         } catch (Exception ex) {
