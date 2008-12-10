@@ -12,6 +12,18 @@
     
     
             $(document).ready(function(){
+                       
+        
+            var ecdDateDatePicker = new Ext.form.DateField({
+                name: 'ecdDate',
+                width: 185,
+                allowBlank: true,
+                format: 'd/m/Y',
+                showWeekNumber: true,
+                validationEvent : false,
+                value: '<s:date format="dd/MM/yyyy" name="date" />',
+                renderTo:'ecdDatePH'
+            });   
   
 
                 var ecdOptions = { 
@@ -59,9 +71,9 @@
         <legend>Revised ECD</legend>
         <div style="display:none" class="form-container">
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
-                New ECD</label>
-            <input type="text" class="chox-tnum" name="ecdDate" value='<s:property value="ecdDate" />'/></div>                                          
+                <label class="chox-form-std-label">New ECD</label>
+                <span id="ecdDatePH"></span>
+            </div>                                          
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
