@@ -5,6 +5,7 @@ import java.util.Date;
 import scsbre.model.IHireInfo;
 import scsbre.model.IVehicleClassInfo;
 import chox.services.HireMonitoringDetailService;
+import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 
 public class VehicleHire implements Serializable, IHireInfo,Auditable
 {
@@ -228,6 +229,7 @@ public class VehicleHire implements Serializable, IHireInfo,Auditable
 	 * 
 	 * @return java.util.Date
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public java.util.Date getRentalStart()
 	{
 		return rentalStart;
@@ -238,6 +240,7 @@ public class VehicleHire implements Serializable, IHireInfo,Auditable
 	 * 
 	 * @param rentalStart
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public void setRentalStart(java.util.Date rentalStart)
 	{
 		this.rentalStart = rentalStart;
@@ -248,6 +251,7 @@ public class VehicleHire implements Serializable, IHireInfo,Auditable
 	 * 
 	 * @return java.util.Date
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public java.util.Date getRentalEnd()
 	{
 		return rentalEnd;
@@ -258,6 +262,7 @@ public class VehicleHire implements Serializable, IHireInfo,Auditable
 	 * 
 	 * @param rentalEnd
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public void setRentalEnd(java.util.Date rentalEnd)
 	{
 		this.rentalEnd = rentalEnd;
@@ -623,18 +628,22 @@ public class VehicleHire implements Serializable, IHireInfo,Auditable
 		this.vehicleClass = vehicleClass;
 	}
 
-        public Date getHireStart() {
+        @TypeConversion(converter = "chox.data.DateConverter")
+        public java.util.Date getHireStart() {
             return this.rentalStart;
         }
 
+        @TypeConversion(converter = "chox.data.DateConverter")
         public void setHireStart(Date hireStart) {
             this.rentalStart = hireStart;
         }
 
-        public Date getHireEnd() {
+        @TypeConversion(converter = "chox.data.DateConverter")
+        public java.util.Date getHireEnd() {
             return this.rentalEnd;
         }
 
+        @TypeConversion(converter = "chox.data.DateConverter")
         public void setHireEnd(Date hireEnd) {
             this.rentalEnd = hireEnd;
         }

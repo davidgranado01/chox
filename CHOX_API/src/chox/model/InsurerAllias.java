@@ -29,7 +29,7 @@ public class InsurerAllias implements Serializable,Auditable {
         this.createdBy = createdBy;
     }
 
-    public Date getCreatedDate() {
+    public java.util.Date getCreatedDate() {
         return createdDate;
     }
 
@@ -61,7 +61,7 @@ public class InsurerAllias implements Serializable,Auditable {
         this.lastModifiedBy = lastModifiedBy;
     }
 
-    public Date getLastModifiedDate() {
+    public java.util.Date getLastModifiedDate() {
         return lastModifiedDate;
     }
 

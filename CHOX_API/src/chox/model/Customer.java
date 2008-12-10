@@ -1,12 +1,9 @@
 package chox.model;
 
-import java.math.BigDecimal;
-import java.util.Set;
-import java.util.HashSet;
+import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.util.Date;
 import scsbre.model.ICustomerVehicleDamageInfo;
-import scsbre.model.IVehicleClassInfo;
 
 public class Customer implements Serializable, Auditable, ICustomerVehicleDamageInfo
 {
@@ -551,7 +548,8 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
 	 * 
 	 * @return java.util.Date
 	 */
-	public Date getInitialECD()
+        @TypeConversion(converter = "chox.data.DateConverter")
+	public java.util.Date getInitialECD()
 	{
 		return initialECD;
 	}
@@ -561,6 +559,7 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
 	 * 
 	 * @param initialEcd
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public void setInitialECD(Date initialEcd)
 	{
 		this.initialECD = initialEcd;

@@ -1,5 +1,6 @@
 package chox.model;
 
+import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.util.Date;
 import java.math.BigDecimal;
@@ -293,6 +294,7 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo,Auditabl
 	 * 
 	 * @return java.util.Date
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public java.util.Date getDateInvoiced()
 	{
 		return dateInvoiced;
@@ -303,6 +305,7 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo,Auditabl
 	 * 
 	 * @param dateInvoiced
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public void setDateInvoiced(java.util.Date dateInvoiced)
 	{
 		this.dateInvoiced = dateInvoiced;

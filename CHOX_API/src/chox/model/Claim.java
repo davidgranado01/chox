@@ -1,5 +1,6 @@
 package chox.model;
 
+import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.util.Date;
 import scsbre.model.ICHOBandInfo;
@@ -152,6 +153,7 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
      * 
      * @return java.util.Date
      */
+    @TypeConversion(converter = "chox.data.DateConverter")
     public java.util.Date getPolicyHolderContactDate() {
         return policyHolderContactDate;
     }
@@ -161,6 +163,7 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
      * 
      * @param policyHolderContactDate
      */
+    @TypeConversion(converter = "chox.data.DateConverter")
     public void setPolicyHolderContactDate(java.util.Date policyHolderContactDate) {
         this.policyHolderContactDate = policyHolderContactDate;
     }
@@ -509,15 +512,18 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
         this.claimNumber = claimNumber;
     }
 
-    public Date getCreditAgreementDate() {
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public java.util.Date getCreditAgreementDate() {
         return creditAgreementDate;
     }
 
+    @TypeConversion(converter = "chox.data.DateConverter")
     public void setCreditAgreementDate(Date creditAgreementDate) {
         this.creditAgreementDate = creditAgreementDate;
     }
 
-    public Date getGtaNoticeDate() {
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public java.util.Date getGtaNoticeDate() {
         return gtaNoticeDate;
     }
 

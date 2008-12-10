@@ -1,5 +1,6 @@
 package chox.model;
 
+import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -56,6 +57,7 @@ public class Incident implements Serializable, Auditable {
      * 
      * @return java.util.Date
      */
+    @TypeConversion(converter = "chox.data.DateConverter")
     public java.util.Date getDate() {
         return date;
     }
@@ -65,6 +67,7 @@ public class Incident implements Serializable, Auditable {
      * 
      * @param date
      */
+    @TypeConversion(converter = "chox.data.DateConverter")
     public void setDate(java.util.Date date) {
         this.date = date;
     }

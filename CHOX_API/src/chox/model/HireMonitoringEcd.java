@@ -1,5 +1,6 @@
 package chox.model;
 
+import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -166,6 +167,7 @@ public class HireMonitoringEcd implements Serializable,Auditable
 	 * 
 	 * @return java.util.Date
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public java.util.Date getEcdDate()
 	{
 		return ecdDate;
@@ -176,6 +178,7 @@ public class HireMonitoringEcd implements Serializable,Auditable
 	 * 
 	 * @param ecdDate
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public void setEcdDate(java.util.Date ecdDate)
 	{
 		this.ecdDate = ecdDate;

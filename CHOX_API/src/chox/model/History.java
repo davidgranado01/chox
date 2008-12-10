@@ -1,5 +1,6 @@
 package chox.model;
 
+import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -174,6 +175,7 @@ public class History implements Serializable,Auditable
 	 * 
 	 * @return java.util.Date
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public java.util.Date getProcessDate()
 	{
 		return processDate;
@@ -184,6 +186,7 @@ public class History implements Serializable,Auditable
 	 * 
 	 * @param processDate
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public void setProcessDate(java.util.Date processDate)
 	{
 		this.processDate = processDate;

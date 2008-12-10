@@ -1,7 +1,6 @@
 package chox.model;
 
-import java.util.Set;
-import java.util.HashSet;
+import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -185,6 +184,7 @@ public class HireMonitoringDetail implements Serializable,Auditable
 	 * 
 	 * @return java.util.Date
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public java.util.Date getRepairBookInDate()
 	{
 		return repairBookInDate;
@@ -195,6 +195,7 @@ public class HireMonitoringDetail implements Serializable,Auditable
 	 * 
 	 * @param repairBookInDate
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public void setRepairBookInDate(java.util.Date repairBookInDate)
 	{
 		this.repairBookInDate = repairBookInDate;
@@ -205,6 +206,7 @@ public class HireMonitoringDetail implements Serializable,Auditable
 	 * 
 	 * @return java.util.Date
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public java.util.Date getInspectionBookedDate()
 	{
 		return inspectionBookedDate;
@@ -215,6 +217,7 @@ public class HireMonitoringDetail implements Serializable,Auditable
 	 * 
 	 * @param inspectionBookedDate
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public void setInspectionBookedDate(java.util.Date inspectionBookedDate)
 	{
 		this.inspectionBookedDate = inspectionBookedDate;
@@ -225,6 +228,7 @@ public class HireMonitoringDetail implements Serializable,Auditable
 	 * 
 	 * @return java.util.Date
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public java.util.Date getInspectionDate()
 	{
 		return inspectionDate;
@@ -235,6 +239,7 @@ public class HireMonitoringDetail implements Serializable,Auditable
 	 * 
 	 * @param inspectionDate
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public void setInspectionDate(java.util.Date inspectionDate)
 	{
 		this.inspectionDate = inspectionDate;
@@ -265,6 +270,7 @@ public class HireMonitoringDetail implements Serializable,Auditable
 	 * 
 	 * @return java.util.Date
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public java.util.Date getRepairCompletionDate()
 	{
 		return repairCompletionDate;
@@ -275,6 +281,7 @@ public class HireMonitoringDetail implements Serializable,Auditable
 	 * 
 	 * @param repairCompletionDate
 	 */
+        @TypeConversion(converter = "chox.data.DateConverter")
 	public void setRepairCompletionDate(java.util.Date repairCompletionDate)
 	{
 		this.repairCompletionDate = repairCompletionDate;
