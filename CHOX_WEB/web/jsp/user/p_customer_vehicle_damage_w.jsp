@@ -12,8 +12,14 @@
         <legend> Vehicle Damage</legend>
         <div style="display:none" class="form-container">  
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
-                Is Usable?</label>
+                <label class="chox-form-std-label">Initial ECD</label><s:date format="dd/MM/yyyy" name="initialECD" />&nbsp;
+            </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">Total Loss</label>
+                <s:checkbox name="isTotalLossDesc" />
+            </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">Is Usable?</label>
                 <s:checkbox name="isUsable" />
             </div>
             <div class="chox-form-item">

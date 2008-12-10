@@ -570,18 +570,10 @@
                                     <td><label class="chox-claim-header-label">Policy Holder Contact Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="policyHolderContactDate" format="dd MMM yyyy hh:mm"  /></span></label></td>
                                 </tr>
                                 <tr>
-                                    <td><label class="chox-claim-header-label">Managing Repair</label><label class="chox-claim-header-text"><span id="status"><s:property value="managingRepair" /></span></label></td>
-                                    <td><label class="chox-claim-header-label">Indemnity</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
-                                    <td><label class="chox-claim-header-label">GTA 4.1 Notice Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="gtaNoticeDate" format="dd MMM yyyy hh:mm"  /></span></label></td>
-                                </tr>
-                                    
-                                    
-                                    
-                                <tr>
                                     <td><label class="chox-claim-header-label">Percentage Liability Accepted</label><label class="chox-claim-header-text"><span id="status"><s:property value="percentageLiabilityAccepted" />%</span></label></td>
-                                    <td colspan="2"><label class="chox-claim-header-label">Credit Agreement Signed by Insurer Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="creditAgreementDate" format="dd MMM yyyy hh:mm"  /></span></label></td>
-                                </tr>
-                                
+                                    <td><label class="chox-claim-header-label">Indemnity</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
+                                    <td>&nbsp;</td>  
+                                </tr>                                
                                 <s:if test="isCHO">
                                     
                                 </s:if>
@@ -643,23 +635,34 @@
                                             <s:param name="incidentId"><s:property value="incident.id" /></s:param>   
                                             <s:param name="claimStatus"><s:property value="status" /></s:param>
                                         </s:action> 
-
                                         <s:action name="getCustomerVehicleDamage" executeResult="true">
-                                            <s:param name="objectId"><s:property value="customer.id" /></s:param> 
-                                            <s:param name="claimStatus"><s:property value="status" /></s:param>         
-                                        </s:action>  
-                                 
+                                            <s:param name="objectId"><s:property value="customer.id" /></s:param>
+                                            <s:param name="claimStatus"><s:property value="status" /></s:param>        
+                                        </s:action>
                                         
+
                                     </td>
                                     <td>
                                         
 <!-- third pary -->
 
-
-                                        <s:action name="getCustomerVehicleDamage" executeResult="true">
-                                            <s:param name="objectId"><s:property value="customer.id" /></s:param>
-                                            <s:param name="claimStatus"><s:property value="status" /></s:param>        
-                                        </s:action>
+<fieldset class="x-fieldset">
+    <legend>Claim Details</legend>
+    <div style="display:none" class="form-container">
+        <div class="chox-form-item">
+            <label class="std-label-ro">Managing Repair</label>
+            <label class="std-data-ro"><s:property value="managingRepair" /></label>
+        </div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">GTA 4.1 Notice Date</label>
+            <label class="std-data-ro"><s:date name="gtaNoticeDate" format="dd MMM yyyy hh:mm"  /></label>
+        </div>        
+        <div class="chox-form-item">
+            <label class="std-label-ro">Credit Agreement Signed by Insurer Date</label>
+            <label class="std-data-ro"><s:date name="creditAgreementDate" format="dd MMM yyyy hh:mm"  /></label>
+        </div>    
+    </div>
+</fieldset>
 
 
 

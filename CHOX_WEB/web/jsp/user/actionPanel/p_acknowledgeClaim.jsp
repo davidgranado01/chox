@@ -20,7 +20,8 @@
                 },
                 percentageLiabilityAccepted:{
                     required:true,
-                    number:true
+                    number:true,
+                    max: 100.00
                 },
                 claimNumber:{
                     required:true
@@ -37,7 +38,8 @@
                 }, 
                 percentageLiabilityAccepted: {
                     required:"You must supply a value for 'Percentage Liability Accepted'",
-                    number:"You must supply a numeric value for Percentage Liability Accepted"
+                    number:"You must supply a numeric value for 'Percentage Liability Accepted'",
+                    max:"'Percentage Liability Accepted' cannot be more than 100"
                 },
                 claimNumber: {
                     required:"You must supply a value for 'Claim Number'"
