@@ -574,19 +574,7 @@
                                     <td><label class="chox-claim-header-label">Indemnity</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
                                     <td>&nbsp;</td>  
                                 </tr>                                
-                                <s:if test="isCHO">
-                                    
-                                </s:if>
-                                <s:else>
-                                     <tr>
-                                        <td><label class="chox-claim-header-label">Quantum</label><label class="chox-claim-header-text"><span id="status"><s:property value="isQuantumDisputeDesc" /></span></label></td>                                    
-                                        <td><label class="chox-claim-header-label">Invoice Review Required</label><label class="chox-claim-header-text"><span id="status"><s:property value="isInvoiceReviewRequiredDesc" /></span></label></td>   
-                                        <td>&nbsp;</td>                                        
-                                    </tr>
-                                    <tr>                                        
-                                        <td colspan="3"><label class="chox-claim-header-label">Engineer's Claim Review Notes</label><label class="chox-claim-header-text"><span id="status"><s:property value="engineerClaimReviewNotes" /></span></label></td>
-                                    </tr>
-                                </s:else>
+
                                     
                             </table>
                         </fieldset>
@@ -663,7 +651,27 @@
         </div>    
     </div>
 </fieldset>
-
+<s:if test="isCHO">
+</s:if>
+<s:else>
+    <fieldset class="x-fieldset">
+        <legend>Claim Reviews</legend>
+        <div style="display:none" class="form-container">
+            <div class="chox-form-item">
+                <label class="std-label-ro">Quantum</label>
+                <label class="std-data-ro"><s:property value="isQuantumDisputeDesc"/></label>
+            </div>
+            <div class="chox-form-item">
+                <label class="std-label-ro">Invoice Review Required</label>
+                <label class="std-data-ro"><s:property value="isInvoiceReviewRequiredDesc" /></label>
+            </div>        
+            <div class="chox-form-item">
+                <label class="std-label-ro">Engineer's Claim Review Notes</label>
+                <label class="std-data-ro"><s:property value="engineerClaimReviewNotes" /></label>
+            </div>    
+        </div>
+    </fieldset>
+</s:else>
 
 
                                         <s:action name="getIncident" executeResult="true">

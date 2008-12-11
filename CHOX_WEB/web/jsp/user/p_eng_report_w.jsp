@@ -1,8 +1,32 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
+<script language="JavaScript">
+    
+    $(document).ready(function(){
+            
+        $("#formEngRptAction").validate(
+        {
+            errorLabelContainer: "#EngRptmessageBox",                
+            rules: {
+                
+                labourAmount:{number:true},
+                totalAmount:{number:true},
+                days:{digits:true}
+                
+            },
+            messages: {
+                
+                labourAmount: {number:"You must supply a numeric value for 'Estimated Labour Amount'"}, 
+                totalAmount: {number:"You must supply a numeric value for 'Estimated Total Repair Amount'"},
+                days: {digits:"You must supply a integer value for 'Estimated Days Under Repair'"}
+                
+            }
+        });
+    }); 
+    
+</script>
 
-
-<form id="formUpdateIncident" action="user/updateEngineerReport.action" class="entity-form">
+<form id="formEngRptAction" action="user/updateEngineerReport.action" class="entity-form" name="formEngRptAction">
     <input type="hidden" name="objectId" value='<s:property value="id"/>'>
     <fieldset class="x-fieldset">
         <legend>Engineer Report</legend>
@@ -66,8 +90,9 @@
             
             
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes" /><div class="chox-form-submit-result"></div>
-            </div>                                             
+                <input type="submit" value="Save Changes"/><div class="chox-form-submit-result"></div>
+            </div>        
+            <div class="errorBox" id="EngRptmessageBox"></div>
         </div>
     </fieldset>
 </form>
