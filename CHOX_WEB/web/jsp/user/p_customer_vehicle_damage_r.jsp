@@ -5,7 +5,7 @@
         <div style="display:none" class="form-container"> 
         <div class="chox-form-item">
             <label class="std-label-ro">Initial ECD</label>
-            <label class="std-data-ro"><s:date format="dd/MM/yyyy" name="initialECD" /></label>
+            <label class="std-data-ro"><s:property value="InitialECDDesc" /></label>
         </div>        
         <div class="chox-form-item">
             <label class="std-label-ro">Total Loss</label>

@@ -12,7 +12,8 @@
         <legend> Vehicle Damage</legend>
         <div style="display:none" class="form-container">  
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Initial ECD</label><s:date format="dd/MM/yyyy" name="initialECD" />&nbsp;
+                <label class="chox-form-std-label">Initial ECD</label>
+                <label class="std-data-ro"><s:property value="initialECDDesc" /></label>&nbsp;
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Total Loss</label>

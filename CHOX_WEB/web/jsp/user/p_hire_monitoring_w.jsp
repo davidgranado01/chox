@@ -108,7 +108,7 @@
             
            <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Original ECD</label><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="customer.initialECD" /></label></div>
+                Original ECD</label><label class="std-data-ro"><s:property value="customer.InitialECDDesc" /></label></div>
 
            <div class="chox-form-item">
                 <label class="chox-form-std-label">

@@ -2,6 +2,8 @@ package chox.model;
 
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import scsbre.model.ICustomerVehicleDamageInfo;
 
@@ -552,6 +554,17 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
 	public java.util.Date getInitialECD()
 	{
 		return initialECD;
+	}
+        
+        public String getInitialECDDesc()
+	{
+                String result = "Not Supplied";
+                if(initialECD != null)
+                {
+                    Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    result = dateFormat.format(initialECD);                    
+                }
+		return result ;
 	}
 
 	/**
