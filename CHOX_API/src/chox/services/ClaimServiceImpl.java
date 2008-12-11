@@ -1,14 +1,9 @@
 package chox.services;
 
-import chox.Util.XmlHelper;
-import chox.Util.DateHelper;
 import chox.data.ClaimSearchCriteria;
 import chox.model.Claim;
-import chox.model.Incident;
-import chox.model.XMLParseResult;
-import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Expression;
@@ -89,12 +84,58 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         if (searchCriteria.getVrn() != null && !searchCriteria.getVrn().isEmpty()) {
             String vrn = searchCriteria.getVrn().replaceAll(" ", "");
             criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", vrn).ignoreCase());
+        }      
+                
+        if (searchCriteria.getClaimUploadDateFrom() != null) {
+            Date d = searchCriteria.getClaimUploadDateFrom();
+            d.setHours(0);
+            d.setMinutes(0);
+            d.setSeconds(0);
+            criteria.add(Expression.ge("createdDate", d));
         }
-        if (searchCriteria.getClaimUploadDateFrom() != null && searchCriteria.getClaimUploadDateTo() != null) {
-            criteria.add(Expression.between("createdDate", searchCriteria.getClaimUploadDateFrom(), searchCriteria.getClaimUploadDateTo()));
+        if (searchCriteria.getClaimUploadDateTo() != null) {
+            Date d = searchCriteria.getClaimUploadDateTo();
+            d.setDate(d.getDate() + 1);
+            d.setHours(0);
+            d.setMinutes(0);
+            d.setSeconds(0);
+            criteria.add(Expression.le("createdDate", d));
         }
-        if (searchCriteria.getInvoiceUploadDateFrom() != null && searchCriteria.getInvoiceUploadDateTo() != null) {
-            criteria.createCriteria("invoice").add(Expression.between("createdDate", searchCriteria.getInvoiceUploadDateFrom(), searchCriteria.getInvoiceUploadDateTo()));
+        if (searchCriteria.getInvoiceUploadDateFrom() != null || searchCriteria.getInvoiceUploadDateTo() != null) {
+            Criteria c = criteria.createCriteria("invoice");
+            if (searchCriteria.getInvoiceUploadDateFrom() != null) {
+                Date d = searchCriteria.getInvoiceUploadDateFrom();
+                d.setHours(0);
+                d.setMinutes(0);
+                d.setSeconds(0);
+                c.add(Expression.ge("createdDate", d));
+            }
+            if (searchCriteria.getInvoiceUploadDateTo() != null) {
+                Date d = searchCriteria.getInvoiceUploadDateTo();
+                d.setDate(d.getDate() + 1);
+                d.setHours(0);
+                d.setMinutes(0);
+                d.setSeconds(0);
+                c.add(Expression.le("createdDate", d));
+            }
+        }
+        
+        if (searchCriteria.getHireDateFrom() != null || searchCriteria.getHireDateTo() != null) {
+            if (searchCriteria.getHireDateFrom() != null) {
+                Date d = searchCriteria.getHireDateFrom();
+                d.setHours(0);
+                d.setMinutes(0);
+                d.setSeconds(0);
+                criteria.createCriteria("vehicleHire").add(Expression.ge("rentalStart", d)).add(Expression.le("rentalEnd", d));
+            }
+            if (searchCriteria.getHireDateTo() != null) {
+                Date d = searchCriteria.getHireDateTo();
+                d.setDate(d.getDate() + 1);
+                d.setHours(0);
+                d.setMinutes(0);
+                d.setSeconds(0);
+                criteria.createCriteria("vehicleHire").add(Expression.ge("rentalStart", d)).add(Expression.le("rentalEnd", d));
+            }
         }
         //if (searchCriteria.getHireDateFrom() != null && searchCriteria.getHireDateTo() != null) {
         //    criteria.add(Expression.between("createdDate", searchCriteria.getHireDateFrom(), searchCriteria.getHireDateTo()));
