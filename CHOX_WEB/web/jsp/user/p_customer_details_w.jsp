@@ -121,20 +121,21 @@
                 <legend>Customer Details</legend>
                 <div style="display:none" class="form-container">
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">
-                        Title</label>
-                    <input type="text" class="chox-ttxt" id="CCDTitle" name="title" value='<s:property value="title" />'/></div>
+                        <label class="chox-form-std-label">Title<span class="mandatory">*</span></label>
+                    <input type="text" class="chox-ttxt" id="CCDTitle" name="title" value='<s:property value="title" />'/>
+                    
+                    </div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                        First Name(s)</label>
+                        First Name(s)<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDFirstName" name="firstName" value='<s:property value="firstName" />'/></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                        Surname</label>
+                        Surname<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDSurname" name="lastName"  value='<s:property value="lastName" />' /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                        Address 1</label>
+                        Address 1<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDAddress1"  name="address1" value='<s:property value="address1" />' /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
@@ -154,11 +155,11 @@
                     <input type="text" class="chox-ttxt" id="CCDAddress5" name="address5" value='<s:property value="address5" />' /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                        Postcode</label>
+                        Postcode<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDPostcode" name="postcode" value='<s:property value="postcode" />' /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                        Telephone Day</label>
+                        Telephone Day<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDTeleponeDay" name="telephoneDay" value='<s:property value="telephoneDay" />' /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
@@ -171,12 +172,12 @@
                     
                      <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                        Insurer</label>
+                        Insurer<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDInsurerName" name="insurerName" value='<s:property value="insurerName" />' /></div>
          
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                        Policy Number</label>
+                        Policy Number<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDPolicyNumber" name="policyNumber" value='<s:property value="policyNumber" />' /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
@@ -189,11 +190,11 @@
                     <s:checkbox name="comprehensive" /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                        Vehicle Manufacturer</label>
+                        Vehicle Manufacturer<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDVehicleManufacturer" name="vehicleManufacturer" value='<s:property value="vehicleManufacturer" />' /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                        Vehicle Class</label>
+                        Vehicle Class<span class="mandatory">*</span></label>
                         <s:select name="vehicleClassId" 
                         list="vehicleClasses" 
                         listKey="id" 
@@ -203,13 +204,13 @@
                         emptyOption="false"></s:select>
                         </div>
                      <div class="chox-form-item">
-                    <label class="chox-form-std-label">Vehicle Registration Number</label>
+                    <label class="chox-form-std-label">Vehicle Registration Number<span class="mandatory">*</span></label>
                         <input type="text" class="chox-ttxt" id="CCDVehicleRegistration" name="vehicleRegistration" value='<s:property value="vehicleRegistration" />' />                  
                     </div>                      
 
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                        Vehicle Location</label>
+                        Vehicle Location<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDVehicleLocation"  name="location" value='<s:property value="location" />' /></div>
                     <div class="chox-form-button">
                         <input type="submit" value="Save Changes" />

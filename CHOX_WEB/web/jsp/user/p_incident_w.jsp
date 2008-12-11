@@ -71,11 +71,11 @@
         <div style="display:none" class="form-container">  
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Date / Time</label>
+                Date / Time<span class="mandatory">*</span></label>
             <span id="incidentDatePH"></span></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Location</label>
+                Location<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttxt" id="IDLocation" name="location" value='<s:property value="location" />'/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -84,7 +84,7 @@
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Description</label>
+                Description<span class="mandatory">*</span></label>
                 <textarea class="chox-tta" id="IDDescription" cols="20" rows="5" name="incidentDescription"><s:property value="incidentDescription" /></textarea>
             </div>
             <div class="chox-form-button">

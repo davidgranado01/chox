@@ -33,15 +33,15 @@
         <div style="display:none" class="form-container">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Estimated Labour Amount</label>
+                Estimated Labour Amount<span class="mandatory">*</span></label>
              <input type="text" class="chox-tnum" name="labourAmount" value='<s:property value="labourAmount" />'/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Estimated Total Repair Amount</label>
+                Estimated Total Repair Amount<span class="mandatory">*</span></label>
             <input type="text" class="chox-tnum" name="totalAmount" value='<s:property value="totalAmount" />'/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Estimated Days Under Repair</label>
+                Estimated Days Under Repair<span class="mandatory">*</span></label>
             <input type="text" class="chox-tnum" name="days" value='<s:property value="days" />'/></div>      
             <div class="chox-form-item">
                 <label class="chox-form-std-label">

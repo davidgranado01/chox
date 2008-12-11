@@ -623,6 +623,7 @@
                                             <s:param name="incidentId"><s:property value="incident.id" /></s:param>   
                                             <s:param name="claimStatus"><s:property value="status" /></s:param>
                                         </s:action> 
+                                        
                                         <s:action name="getCustomerVehicleDamage" executeResult="true">
                                             <s:param name="objectId"><s:property value="customer.id" /></s:param>
                                             <s:param name="claimStatus"><s:property value="status" /></s:param>        
@@ -679,16 +680,10 @@
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
                                         
-                                        
-                                        
-                                        
                                         <s:action name="getThirdParty" executeResult="true">
                                             <s:param name="objectId"><s:property value="thirdParty.id" /></s:param> 
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
-
-
-
 
                                         <s:action name="getWitness" executeResult="true">
                                             <s:param name="incidentId"><s:property value="incident.id" /></s:param>
@@ -835,6 +830,7 @@
         return true;
     }
     </script>
+    
 <div class="attachments  x-panel-bwrap chox-form-container">
     <form id="fAttachment" action="user/createNewAttachment.action" method="POST" enctype="multipart/form-data" name="form">
         <input type="hidden" name="claimId" value='<s:property value="id" />'>
@@ -862,7 +858,7 @@
         <tr>
             <td><label class="std-label-ro">Description</label></td>
             <td>
-                <s:textarea rows="6" cols="30" name="remark" label="Remark:"/>
+                <s:textarea rows="3" cols="30" name="remark" label="Remark:"/>
             </td>
         </tr>
         <tr>
@@ -871,10 +867,11 @@
             <input type="submit" id="bAddAttachment" value="Add File" onclick="return fileValidation()"/>
             </td>
         </tr>
-        </table> 
+        </table>
         </fieldset>
     </form>
 </div>
+
 <div id="paymentPackGrid"></div>
     
 <!-- END - CREATED BY CARL -->    

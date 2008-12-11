@@ -118,18 +118,18 @@
            
            <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Repair Book In Date</label><span id="repairBookInDatePH"></span>
+                Repair Book In Date<span class="mandatory">*</span></label><span id="repairBookInDatePH"></span>
             </div>
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Inspection Booked Date</label>
+                Inspection Booked Date<span class="mandatory">*</span></label>
             <span id="inspectionBookedDatePH"></span>
             </div>
            
            <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Inspection Date</label>
+                Inspection Date<span class="mandatory">*</span></label>
             <span id="inspectionDatePH"></span>
             </div>
            
@@ -140,7 +140,7 @@
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Repair Completion Date</label>
+                Repair Completion Date<span class="mandatory">*</span></label>
             <span id="repairCompletionDatePH"></span></div>
             
             

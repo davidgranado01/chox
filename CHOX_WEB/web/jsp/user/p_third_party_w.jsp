@@ -41,7 +41,9 @@
              },
              vehicleRegistration:{
                  required:true
-             }
+             },
+             postcode:{required:true},
+             telephoneDay:{required:true}
            },
            messages: {
              title: {
@@ -103,19 +105,19 @@
         <div style="display:none" class="form-container">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Title</label>
+                Title<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttxt" name="title" value='<s:property value="title" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                First Name(s)</label>
+                First Name(s)<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttxt" name="firstName" value='<s:property value="firstName" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Surname</label>
+                Surname<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttxt" name="lastName" value='<s:property value="lastName" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Address 1</label>
+                Address 1<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttxt" name="address1" value='<s:property value="address1" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -135,11 +137,11 @@
             <input type="text" class="chox-ttxt" name="address5" value='<s:property value="address5" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Postcode</label>
+                Postcode<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttxt" name="postcode" value='<s:property value="postcode" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Telephone Day</label>
+                Telephone Day<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttxt" name="telephoneDay" value='<s:property value="telephoneDay" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -151,7 +153,7 @@
             <input type="text" class="chox-ttxt" name="email" value='<s:property value="email" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Insurer</label>
+                Insurer<span class="mandatory">*</span></label>
              <s:select name="insurerId" 
                         list="insurers" 
                         listKey="id" 
@@ -161,16 +163,16 @@
                         emptyOption="false"></s:select></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Policy Number</label>
+                Policy Number<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttxt" name="policyNumber" value='<s:property value="policyNumber" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Claim Number
+                    Claim Number<span class="mandatory">*</span>
                 </label>
             <input type="text" class="chox-ttxt" name="claimReference" value='<s:property value="claimReference" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Vehicle Manufacturer</label>
+                Vehicle Manufacturer<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttxt" name="vehicleManufacturer" value='<s:property value="vehicleManufacturer" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -178,11 +180,11 @@
             <input type="text" class="chox-ttxt" name="vehicleModel" value='<s:property value="vehicleModel" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Vehicle Registration Number</label>
+                Vehicle Registration Number<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttxt" name="vehicleRegistration" value='<s:property value="vehicleRegistration" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Vehicle Class</label>
+                Vehicle Class<span class="mandatory">*</span></label>
  <s:select name="vehicleClassId" 
                         list="vehicleClasses" 
                         listKey="id" 

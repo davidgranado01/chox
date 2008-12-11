@@ -396,6 +396,6 @@ div.action-message
         text-align:center;color: red; font-weight:bold;font-size:11px ; line-height:25px
 }
 
-
+.mandatory{ color: red; font-weight:bold;font-size:11px;}
 
 

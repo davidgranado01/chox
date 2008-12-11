@@ -76,19 +76,19 @@
                         <tr>
                             <td>
                                 <label>
-                            Indemnity (Decimal)</label></td><td>
+                            Indemnity (Decimal)<span class="mandatory">*</span></label></td><td>
                                 <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
                             </td>
                             <td>
                                 <label>
-                            % Liability Accepted</label></td><td>
+                            % Liability Accepted<span class="mandatory">*</span></label></td><td>
                                 <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label>
-                            Claim Number</label></td><td>
+                            Claim Number<span class="mandatory">*</span></label></td><td>
                                 <input type="text" class="chox-ttxt" name="claimNumber" value="<s:property value="claimNumber" />"/>
                             </td>
                             <td>
