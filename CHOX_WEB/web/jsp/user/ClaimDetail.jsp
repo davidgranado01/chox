@@ -524,7 +524,7 @@
                                     <s:else>
                                         <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_IUG_1.0-1.pdf','Help');">Help</a>
                                     </s:else>&nbsp;|&nbsp;
-                                    <a href="#">Support</a>&nbsp;|&nbsp; 
+                                    <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_Support_Document.pdf','Support');">Support</a>&nbsp;|&nbsp; 
                                     <a href="#">About Chox</a>&nbsp;|&nbsp;
                                     <a href="<%=request.getContextPath()%>/j_acegi_logout">Log Off</a>
                                 </div>
