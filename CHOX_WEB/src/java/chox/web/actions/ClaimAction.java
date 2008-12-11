@@ -343,11 +343,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String validateHireMonitoringDetail() {
+        
+        String result = "";
+        
         if (this.claim.getHireMonitoringDetail() == null) {
-            return "Error : You need to provide correct hire monitoring detail detail to submit this claim.";
-        } else {
-            return "";
+            return  "Error : You need to provide correct hire monitoring detail detail to submit this claim.";
+        } 
+        
+        if(this.claim.getCustomer() == null || this.claim.getCustomer().getInitialECD() == null)
+        {
+            if(this.service.getECDCountByClaimId(this.claim.getId()) == 0)
+            {
+                return "Error : You need to provide an Estimate Completion Date (ECD) to sudmit this claim.";
+            }
         }
+        
+        return result;
     }
 
     public String reSubmitRejectedClaim() {

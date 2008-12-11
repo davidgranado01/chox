@@ -59,6 +59,13 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
     public Long getHireUpdateAnomaliesCount() {
         return (long) 0;
     }
+    
+    public Long getECDCountByClaimId(int claimId)
+    {
+        Long count = (Long) getCurrentSession().createQuery("select count(*) from HireMonitoringEcd where claim.id = '" + claimId + "'").uniqueResult();
+
+        return count;
+    }
 
     public List searchClaims(ClaimSearchCriteria searchCriteria) {
         Criteria criteria = getCurrentSession().createCriteria(Claim.class);
