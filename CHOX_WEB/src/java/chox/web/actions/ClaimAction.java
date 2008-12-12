@@ -237,13 +237,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
 
-    public Map getAcknowledgeClaimActions() {
-        Map names = new HashMap();
-        names.put(ACCEPT, "Request invoice data");
-        names.put(REJECT, "Reject this claim");
-        return names;
-    }
-
     private String validateAcknowledgeClaimInfo() {
 
         String claimNumber = claim.getClaimNumber();
@@ -289,13 +282,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
 
-    public Map getContestOrAcceptRejectedClaimActions() {
-        Map names = new HashMap();
-        names.put(ACCEPT, "Accept rejection decision");
-        names.put(REJECT, "Contest this claim");
-        return names;
-    }
-
     public String approveContestedClaim() {
 
         String result = SUCCESS;
@@ -312,13 +298,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         return result;
-    }
-
-    public Map getApproveContestedClaimActions() {
-        Map names = new HashMap();
-        names.put(ACCEPT, "Request invoice data");
-        names.put(REJECT, "Reject this claim");
-        return names;
     }
 
     public String submitHireMonitoringDetail() {
@@ -408,29 +387,30 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String approveBREPassedClaim() {
 
         String result = SUCCESS;
-        if (this.actionName.equalsIgnoreCase(ACCEPT)) {
+        if (this.actionName.equalsIgnoreCase(ACCEPT)) 
+        {
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-        } else {
+        } 
+        else if(this.actionName.equalsIgnoreCase(REFER))
+        {
+            claim.setStatus(ClaimStatus.INVOICE_ESCALATED);
+        }
+        else 
+        {
             claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
         }
-        try {
+        try 
+        {
             this.service.updateClaim(claim);
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex)
+        {
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
         }
-
-
         return result;
     }
-
-    public Map getApproveBREPassedClaimActions() {
-        Map names = new HashMap();
-        names.put(ACCEPT, "Clear for payment");
-        names.put(REJECT, "Reject Invoice");
-        return names;
-    }
-
+   
     public String approveEscalatedInvoice() {
 
         String result = SUCCESS;
@@ -447,14 +427,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return result;
     }
-
-    public Map getApproveEscalatedInvoiceActions() {
-        Map names = new HashMap();
-        names.put(ACCEPT, "Clear for payment");
-        names.put(REJECT, "Reject Invoice");
-        return names;
-    }
-
+    
     public String approveContestedInvoice() {
         String result = SUCCESS;
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
@@ -469,13 +442,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             this.actionResult = "ERROR : " + ex.getMessage();
         }
         return result;
-    }
-
-    public Map getApproveContestedInvoiceActions() {
-        Map names = new HashMap();
-        names.put(ACCEPT, "Accept and proceed to payment");
-        names.put(REJECT, "Reject the claim");
-        return names;
     }
 
     public String resubmitOrAcceptContestedInvoice() {
@@ -503,13 +469,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return result;
 
-    }
-
-    public Map getResubmitOrAcceptContestedInvoiceActions() {
-        Map names = new HashMap();
-        names.put(ACCEPT, "Accept rejection decision");
-        names.put(REJECT, "Reject rejection decision and resubmit claim");
-        return names;
     }
 
     public String logInvoicePayment() {

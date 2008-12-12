@@ -14,6 +14,7 @@
     <fieldset class="x-fieldset">
         <legend>Escalated Invoice - Action Required</legend>
         <s:hidden name="id" />
+        <s:hidden id="actionName" name="actionName" />
         <div>
             <div class="status-info">
                 Please review the 'History' tab for details on why the claim has been rejected. 
@@ -23,17 +24,16 @@
             <div class="status-control-set">
                 <table>
                     <tr>
-                        <td colspan="2">
+                        <td>
                             <div class="no-format">
-                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                                <s:radio name="actionName" list="approveEscalatedInvoiceActions" />
+                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>                               
                             </div>
                         </td>
                     </tr>
-                    <tr> 
-                        <td></td>
+                    <tr>                         
                         <td>
-                            <input type="submit" value="Submit" />
+                            <input type="submit" value="Reject Invoice"  onclick="registeAction('reject');return confirm('Are you sure you want to reject this invoice?')" />
+                            <input type="submit" value="Clear for payment" onclick="registeAction('accept')"  />   
                         </td>
                     </tr>
                 </table>

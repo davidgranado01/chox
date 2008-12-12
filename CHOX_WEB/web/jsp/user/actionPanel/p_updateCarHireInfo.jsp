@@ -21,9 +21,20 @@
                 
             <s:hidden name="id" />
              
-            <div class="status-info-submit">
-            <input type="submit" value="Proceed" />
-        </div>
+           <div class="status-info-submit">
+                <table>
+                    <tr>
+                        <td>
+                            <div class="no-format">
+                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>                        
+                        <td><input type="submit" value="Proceed" /></td>
+                    </tr>
+                </table>                
+            </div>
                 
         </div>
     </fieldset>

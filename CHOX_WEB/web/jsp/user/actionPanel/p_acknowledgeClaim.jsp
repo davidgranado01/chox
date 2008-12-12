@@ -1,11 +1,6 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script language="JavaScript">
-    
-    function registeAction(val)
-    {
-        $("#actionName").val(val);
-    }
           
     $(document).ready(function(){
             
@@ -110,14 +105,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4" class="choice">
+                            <td colspan="2" class="choice">
                                 
                                 <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
                                 
                             </td>
                         </tr>                        
                         <tr>
-                            <td colspan="4" class="choice">                     
+                            <td colspan="2" class="choice">                     
                                 <input class="cancel" type="submit" value="Reject"  onclick="registeAction('reject');return confirm('Are you sure you want to reject this claim?')" />
                                 <input type="submit" value="Acknowledge" onclick="registeAction('accept')"  />   
                                 <input type="submit" value="Refer To Engineer" onclick="registeAction('refer');"  /> 

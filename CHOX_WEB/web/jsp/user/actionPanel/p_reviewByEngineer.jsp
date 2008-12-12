@@ -7,11 +7,6 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script language="JavaScript">
-    
-    function registeAction(val)
-    {
-        $("#actionName").val(val);
-    } 
         
     $(document).ready(function(){
             
@@ -114,14 +109,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4" class="choice">
+                            <td colspan="2" class="choice">
                                 
                                 <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
                                 
                             </td>
                         </tr>                        
                         <tr>
-                            <td colspan="4" class="choice"> 
+                            <td colspan="2" class="choice"> 
                                 <input type="submit" value="Submit" onclick="registeAction('accept')"  />   
                             </td>
                         </tr>

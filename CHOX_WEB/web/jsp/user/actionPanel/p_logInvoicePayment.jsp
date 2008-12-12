@@ -17,9 +17,21 @@
                 Please update the claim by recording that a payment has been logged against the claim in question.
             </div>
             <s:hidden name="id" />
-            
+                
             <div class="status-info-submit">
-                <input type="submit" value="Invoice Payment Logged" />
+                <table>
+                    <tr>
+                        <td>
+                            <div class="no-format">
+                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>                        
+                        <td>
+                        <input type="submit" value="Invoice Payment Logged" />                  </td>
+                    </tr>
+                </table>                
             </div>
         </div>
     </fieldset> 

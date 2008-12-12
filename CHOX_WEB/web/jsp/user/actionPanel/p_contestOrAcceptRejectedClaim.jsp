@@ -36,6 +36,7 @@
     <fieldset class="x-fieldset">
         <legend>Rejected Claim - Action Required</legend>
         <s:hidden name="id" />
+        <s:hidden id="actionName" name="actionName" />
         <div>
             <div class="status-info">
                Please review the Insurer's notes against rejection reasoning and decide whether to accept or reject the Insurer's rejection decision.  
@@ -44,17 +45,16 @@
             <div class="status-control-set">
                 <table>
                     <tr>
-                        <td colspan="2">
+                        <td>
                             <div class="no-format">
                                 <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                                <s:radio name="actionName" list="ContestOrAcceptRejectedClaimActions" />
                             </div>
                         </td>
                     </tr>
                     <tr> 
-                        <td></td>
                         <td>
-                            <input type="submit" value="Submit" />
+                            <input type="submit" value="Contest this claim"  onclick="registeAction('reject');" />
+                            <input type="submit" value="Accept rejection decision" onclick="registeAction('accept')"  />   
                         </td>
                     </tr>
                 </table>

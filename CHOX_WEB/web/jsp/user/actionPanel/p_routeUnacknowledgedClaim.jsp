@@ -20,22 +20,27 @@
             <div class="status-info">
                 Please select the 'Line of Business' in order to route the claim to the relevant handling team.
             </div>            
-            
-            
+                        
             <s:hidden name="id" />
             
-            
+            <div class="status-control-set">                     
+                <div class="status-info-submit">
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="no-format">
+                                    <label>Line of Business</label>
+                                    <s:select name="lineOfBusiness.id" list="lineOfBusinesses" headerKey="1" listKey="id" listValue="name" headerValue="-- Please Select --"></s:select>
+                                    <input type="submit" value="Assign Line of Business" />
+                                </div>
+                            </td>
+                        </tr>
 
-            <div class="status-control-set">
-                <label>Line of Business</label>
-                    
-
-                <s:select name="lineOfBusiness.id" list="lineOfBusinesses" headerKey="1" listKey="id" listValue="name"></s:select>
-                                                                           
-                <input type="submit" value="Assign Line of Business" />
-                
-                
+                    </table>                
                 </div>
+                    
+                    
+            </div>
         </div>
     </fieldset>
 </form>

@@ -500,7 +500,11 @@
                     }       
                 }
             }   
-
+    
+            function registeAction(val)
+            {
+                $("#actionName").val(val);
+            }
 
     
         </script>        

@@ -36,6 +36,7 @@
     <fieldset class="x-fieldset">
         <legend>Contested Invoice - Action Required</legend>
         <s:hidden name="id" />
+        <s:hidden id="actionName" name="actionName" />
         <div>
             <div class="status-info">
                 Please review the 'Notes' tab for details regarding the rejection reasoning made by the Insurer. 
@@ -46,17 +47,16 @@
             <div>
                 <table>
                     <tr>
-                        <td colspan="2">
+                        <td>
                             <div>
                                 <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                                <s:radio name="actionName" list="resubmitOrAcceptContestedInvoiceActions" />
                             </div>
                         </td>
                     </tr>
-                    <tr> 
-                        <td></td>
+                    <tr>                         
                         <td>
-                            <input type="submit" value="Submit" />
+                            <input type="submit" value="Reject rejection decision and resubmit claim"  onclick="registeAction('reject');" />
+                            <input type="submit" value="Accept rejection decision" onclick="registeAction('accept')"  /> 
                         </td>
                     </tr>
                 </table>
