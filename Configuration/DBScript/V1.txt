@@ -476,8 +476,55 @@ INSERT INTO accessibility_item(  "role", access_right, accessibility_id, id) VAL
 
 -- ############################################################################################
 -- START VERSION 2.10 - 2008-12-11
+<<<<<<< .mine
+-- ############################################################################################
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO_OPR', 1, 51, 318);
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO_OPR', 1, 52, 319);
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO_OPR', 1, 55, 320);
+
+-- ############################################################################################
+-- START VERSION 2.11 - 2008-12-12
+-- ############################################################################################\
+
+-- UPDATE INSURER
+delete from insurer where name ='Direct Line';
+delete from insurer where name ='Dimond';
+
+-----------------------------------------------------------------------------------------------
+
+-- UPDATE INSURER ALLIAS
+insert into insurer_allias (insurer_id, allias_name, created_by, last_modified_by) values (3,'more than insurance',999,999);
+insert into insurer_allias (insurer_id, allias_name, created_by, last_modified_by) values (3,'More Than Insurance',999,999);
+insert into insurer_allias (insurer_id, allias_name, created_by, last_modified_by) values (3,'More Th>n Insurance',999,999);
+insert into insurer_allias (insurer_id, allias_name, created_by, last_modified_by) values (3,'more th>n insurance',999,999);
+
+-----------------------------------------------------------------------------------------------
+
+-- UPDATE LINE OF BUSINESS
+update line_of_business set address1='St. Mark''s Court', address2='Chart Way', address3='Horsham', postcode='RH121XL'
+
+-----------------------------------------------------------------------------------------------
+
+-- UPDATE REASON OF DELAY
+insert into reason_of_delay (id, description, created_by, last_modified_by, is_active) values (1,'Parts Delay',999,999,true);
+insert into reason_of_delay (id, description, created_by, last_modified_by, is_active) values (2,'Incorrect Parts',999,999,true);
+insert into reason_of_delay (id, description, created_by, last_modified_by, is_active) values (3,'Parts Damaged',999,999,true);
+insert into reason_of_delay (id, description, created_by, last_modified_by, is_active) values (4,'Delayed Insurer Approval',999,999,true);
+insert into reason_of_delay (id, description, created_by, last_modified_by, is_active) values (5,'Customer Delay',999,999,true);
+insert into reason_of_delay (id, description, created_by, last_modified_by, is_active) values (6,'Resource Inefficiencies',999,999,true);
+insert into reason_of_delay (id, description, created_by, last_modified_by, is_active) values (7,'Inspection Delay',999,999,true);
+insert into reason_of_delay (id, description, created_by, last_modified_by, is_active) values (8,'Other',999,999,true);
+
+-----------------------------------------------------------------------------------------------
+
+UPDATE accessibility_item SET role = 'ROLE_INS_CH' WHERE accessibility_id = 122;
+UPDATE accessibility_item SET role = 'ROLE_INS_CH' WHERE accessibility_id = 106  AND role like 'ROLE_INS_SCR%';
+
+-----------------------------------------------------------------------------------------------=======
 -- ############################################################################################
 
 UPDATE accessibility_item SET role = 'ROLE_INS_CH' WHERE accessibility_id = 122
 UPDATE accessibility_item SET role = 'ROLE_INS_CH' WHERE accessibility_id = 106  AND role like 'ROLE_INS_SCR%'
 
+>>>>>>> .r547
