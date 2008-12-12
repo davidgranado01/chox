@@ -47,6 +47,7 @@
             {name:'policyNumber'},
             {name:'lineOfBusiness'},
             {name:'supplierReference'},
+            {name:'claimNumber'}, 
             {name:'created', type: 'date', dateFormat: 'd/m/Y'},
             {name:'insurer'},
             {name:'cho'}
@@ -143,6 +144,7 @@ var grid = new Ext.grid.GridPanel({
             renderer:function(value,p,r){
                 return '<a href="openClaimDetail.action?id=' + r.data['id'] + '">' + value + '</a>'}},               
         {header: "VRN", width: 250, sortable: true, dataIndex: 'vehicleRegistration'},
+        {header: "Claim Number", width: 250, sortable: true, dataIndex: 'claimNumber'}, 
         {header: "Invoice Amount", width: 250, sortable: true, 
             dataIndex: 'invoiceAmount'},  
         {header: "Date Uploaded", width: 250, sortable: true, 

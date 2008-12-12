@@ -55,9 +55,15 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
     }
 
     public List<String> getReasonTypes() {
-        List<String> reasonTypes = new ArrayList<String>();
-        reasonTypes.add("Reason 1");
-        reasonTypes.add("Reason 2");
+        List<String> reasonTypes = new ArrayList<String>();        
+        reasonTypes.add("Parts Delay");
+        reasonTypes.add("Incorrect Parts");
+        reasonTypes.add("Parts Damaged");
+        reasonTypes.add("Delayed Insurer Approval");
+        reasonTypes.add("Customer Delay");
+        reasonTypes.add("Resource Inefficiencies");
+        reasonTypes.add("Inspection Delay");
+        reasonTypes.add("Other");
         return reasonTypes;
 
     }
