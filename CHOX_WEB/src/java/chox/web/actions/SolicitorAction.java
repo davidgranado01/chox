@@ -25,7 +25,6 @@ public class SolicitorAction extends BaseModelAction implements ModelDriven<Soli
     private Solicitor model;
     private InjuryService injuryService;
     private IncidentService incidentService;
-    private int injuryId;
     private int incidentId;
 
     public void setSolicitorService(SolicitorService service) {
@@ -47,18 +46,22 @@ public class SolicitorAction extends BaseModelAction implements ModelDriven<Soli
     public String updateModel() {
         try {
             if (objectId <= 0) {
-                Injury injury = this.injuryService.getObject(injuryId);
+                Injury injury = this.injuryService.getObjectByIncidentId(this.getIncidentId());
                 if (injury == null) {
                     Incident incident = this.incidentService.getObject(this.getIncidentId());
                     injury = new Injury();
-                    injury.setIncident(incident);    
+                    injury.setIncident(incident);
                     this.injuryService.updateObject(injury);
                 }
                 this.model.setInjury(injury);
+                this.service.updateObject(model);
+                this.actionResult = "new:" + model.getId();
+            } else {
+                this.service.updateObject(model);
+                this.actionResult = "";
             }
 
-            this.service.updateObject(model);
-            this.actionResult = "";
+
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }
@@ -77,14 +80,6 @@ public class SolicitorAction extends BaseModelAction implements ModelDriven<Soli
 
     public void setInjuryService(InjuryService injuryService) {
         this.injuryService = injuryService;
-    }
-
-    public int getInjuryId() {
-        return injuryId;
-    }
-
-    public void setInjuryId(int injuryId) {
-        this.injuryId = injuryId;
     }
 
     public void setIncidentService(IncidentService incidentService) {

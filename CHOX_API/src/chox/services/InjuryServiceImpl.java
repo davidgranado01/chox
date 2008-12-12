@@ -64,4 +64,24 @@ public class InjuryServiceImpl extends DataService implements InjuryService {
         getCurrentSession().saveOrUpdate(injury);
         getCurrentSession().getTransaction().commit();
     }
+    
+    public Injury getObjectByIncidentId(int incidentId)
+    {
+         List injuries = new ArrayList<Injury>();
+        Injury injury = null;
+        
+        try {
+            Criteria criteria = getCurrentSession().createCriteria(Injury.class).add(Restrictions.eq("incident.id", incidentId));
+            injuries = criteria.list();
+            if(injuries.size()>0){
+                injury = (Injury)injuries.get(0);
+            }
+            
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
+              
+        
+        return injury;
+    }
 }

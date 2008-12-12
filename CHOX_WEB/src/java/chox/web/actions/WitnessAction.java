@@ -47,7 +47,7 @@ public class WitnessAction extends BaseModelAction implements ModelDriven<Witnes
                 Incident incident = this.incidentService.getObject(getIncidentId());
                 model.setIncident(incident);
                 this.service.updateObject(model);
-                this.actionResult = "";                
+                this.actionResult = "new:" + model.getId();                
             } else {
                 this.service.updateObject(model);
                 this.actionResult = "";

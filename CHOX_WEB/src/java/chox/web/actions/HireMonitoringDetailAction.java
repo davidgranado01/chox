@@ -58,12 +58,14 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
         try {
             if (model.getId() > 0) {
                 this.service.updateObject(model);
+                this.actionResult = "";
             } else {
                 Claim c = claimService.getClaim(getClaimId());
                 c.setHireMonitoringDetail(model);
                 this.claimService.updateClaim(c);
+                this.actionResult = "new:" + model.getId(); 
             }
-            this.actionResult = "";
+            
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }

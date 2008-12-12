@@ -5,6 +5,7 @@
 
 package chox.web.actions;
 
+import chox.model.Claim;
 import chox.model.EngineerReport;
 import chox.services.EngineerReportService;
 import chox.web.security.ApplicationAccessibility;
@@ -39,9 +40,20 @@ public class EngineerReportAction extends BaseModelAction implements ModelDriven
 
     public String updateModel() {
         try {
-            this.service.updateObject(model);
-            this.actionResult = "1";
-        } catch (Exception ex) {
+            if(objectId <= 0)
+            {
+                Claim c = claimService.getClaim(getClaimId());
+                c.setEngineerReport(model);
+                this.claimService.updateClaim(c);
+                this.actionResult = "new:" + model.getId();                 
+            }
+            else
+            {
+                this.service.updateObject(model);
+                this.actionResult = "";
+            }        
+        } 
+        catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }
         return SUCCESS;

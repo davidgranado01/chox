@@ -46,7 +46,7 @@ public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>
                 Incident incident = incidentService.getObject(incidentId);
                 this.model.setIncident(incident);
                 this.service.updateObject(model);
-                this.actionResult = "";                
+                this.actionResult = "new:" + model.getId();                
             } else {
                 this.service.updateObject(model);
                 this.actionResult = "";

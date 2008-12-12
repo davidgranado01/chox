@@ -65,11 +65,11 @@
 
 
 <form id="formAddNewHireMonitoringEcd" action="user/addNewHireMonitoringEcd.action">
-    <input type="hidden" name="objectId" value='<s:property value="id"/>'>
-    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset">
         <legend>Revised ECD</legend>
         <div style="display:none" class="form-container">
+            <input type="hidden" name="objectId" value='<s:property value="id"/>'>
+            <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">New ECD</label>
                 <span id="ecdDatePH"></span>

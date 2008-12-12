@@ -38,14 +38,16 @@ public class CustomerVehicleDamageAction extends BaseModelAction implements Mode
             if(model.getId() > 0)
             {
                 this.service.updateObject(model);
+                this.actionResult = "new:" + model.getId(); 
             }
             else
             {
                 Claim c = claimService.getClaim(getClaimId());
                 c.setCustomer(model);
-                this.claimService.updateClaim(c);
+                this.claimService.updateClaim(c);    
+                this.actionResult = "";
             }
-            this.actionResult = "";
+            
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }

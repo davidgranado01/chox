@@ -4,8 +4,11 @@
  */
 package chox.web.actions;
 
+import chox.model.Claim;
 import chox.model.ThirdParty;
+import chox.services.InsurerService;
 import chox.services.ThirdPartyService;
+import chox.services.VehicleClassService;
 import chox.web.security.ApplicationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
@@ -18,7 +21,11 @@ import net.sf.json.JSONObject;
 public class ThirdPartyAction extends BaseModelAction implements ModelDriven<ThirdParty>, Preparable {
 
     private ThirdPartyService service;
+    private VehicleClassService vehicleClassService;
+    private InsurerService insurerService;
     private ThirdParty model;
+    private int insurerId;
+    private int vehicleClassId;
 
     public void setThirdPartyService(ThirdPartyService service) {
         this.service = service;
@@ -35,11 +42,28 @@ public class ThirdPartyAction extends BaseModelAction implements ModelDriven<Thi
             model = service.getObject(objectId);
         }
     }
-    
+
     public String updateModel() {
+
+        if (vehicleClassId >= 0) {
+            model.setVehicleClass(this.vehicleClassService.getObject(vehicleClassId));
+        }
+
+        if (insurerId >= 0) {
+            model.setInsurer(this.insurerService.getObject(insurerId));
+        }
+
+
         try {
-            this.service.updateObject(model);
-            this.actionResult = "1";
+            if (objectId <= 0) {
+                Claim c = claimService.getClaim(getClaimId());
+                c.setThirdParty(model);
+                this.claimService.updateClaim(c);
+                this.actionResult = "new:" + model.getId();
+            } else {
+                this.service.updateObject(model);
+                this.actionResult = "";
+            }
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }
@@ -55,6 +79,28 @@ public class ThirdPartyAction extends BaseModelAction implements ModelDriven<Thi
     String getTabName() {
         return ApplicationAccessibility.TAB_CLAIM_DETAIL;
     }
-   
-    
+
+    public void setVehicleClassId(int vehicleClassId) {
+        this.vehicleClassId = vehicleClassId;
+    }
+
+    public void setInsurerId(int insurerId) {
+        this.insurerId = insurerId;
+    }
+
+    public int getVehicleClassId() {
+        return this.model.getVehicleClass() != null ? vehicleClassId = this.model.getVehicleClass().getId() : 0;
+    }
+
+    public int getInsurerId() {
+        return this.model.getInsurer() != null ? insurerId = this.model.getInsurer().getId() : 0;
+    }
+
+    public void setVehicleClassService(VehicleClassService vehicleClassService) {
+        this.vehicleClassService = vehicleClassService;
+    }
+
+    public void setInsurerService(InsurerService insurerService) {
+        this.insurerService = insurerService;
+    }
 }

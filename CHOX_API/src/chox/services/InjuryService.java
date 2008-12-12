@@ -16,4 +16,5 @@ public interface InjuryService {
    public Injury getObject(int id);
    public void updateObject(Injury injury);
    public Injury getInjuryByIncident(Incident incident);
+   public Injury getObjectByIncidentId(int incidentId);
 }

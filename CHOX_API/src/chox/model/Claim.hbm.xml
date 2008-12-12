@@ -28,7 +28,7 @@
     <many-to-one cascade="save-update,delete" class="chox.model.Invoice" column="invoice_id" name="invoice" unique="true"/>
     <many-to-one class="chox.model.LineOfBusiness" column="line_of_business_id" name="lineOfBusiness"/>
     <many-to-one cascade="save-update,delete" class="chox.model.ThirdParty" column="third_party_id" name="thirdParty" unique="true"/>
-    <many-to-one class="chox.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire"/>
+    <many-to-one cascade="save-update,delete" class="chox.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire" unique="true"/>
     <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <filter condition=":chorganisationId = chorganisation_id" name="Claim_CHOFilter"/>

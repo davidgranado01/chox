@@ -4,6 +4,7 @@
  */
 package chox.web.actions;
 
+import chox.model.Claim;
 import chox.model.Incident;
 import chox.services.IncidentService;
 import chox.web.security.ApplicationAccessibility;
@@ -35,11 +36,18 @@ public class IncidentAction extends BaseModelAction implements ModelDriven<Incid
             model = service.getObject(objectId);
         }
     }
-    
+
     public String updateModel() {
         try {
-            this.service.updateObject(model);
-            this.actionResult = "1";
+            if (objectId <= 0) {
+                Claim c = claimService.getClaim(getClaimId());
+                c.setIncident(model);
+                this.claimService.updateClaim(c);
+                this.actionResult = "new:" + model.getId();
+            } else {
+                this.service.updateObject(model);
+                this.actionResult = "";
+            }
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }
@@ -55,6 +63,4 @@ public class IncidentAction extends BaseModelAction implements ModelDriven<Incid
     String getTabName() {
         return ApplicationAccessibility.TAB_CLAIM_DETAIL;
     }
-   
-    
 }

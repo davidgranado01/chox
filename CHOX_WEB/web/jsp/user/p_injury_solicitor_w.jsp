@@ -2,12 +2,12 @@
 
 
 <form id="formupdateSolicitor" action="user/updateSolicitor.action" class="entity-form">
-    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
-     <input type="hidden" name="injuryId" value='<s:property value="injuryId"/>'>
-     <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>
+   
     <fieldset class="x-fieldset">
         <legend>Injury Solicitor</legend>
         <div style="display:none" class="form-container">
+            <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
+            <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Name</label>

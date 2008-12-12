@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package chox.web.actions;
 
 import chox.Util.DateHelper;
@@ -33,14 +32,12 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
     public void setVehicleHireService(VehicleHireService service) {
         this.service = service;
     }
-    
-    public void setLookupService( LookupService lookupService)
-    {
+
+    public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
     }
-    
-    public void setVehicleClassService(VehicleClassService vehicleClassService)
-    {
+
+    public void setVehicleClassService(VehicleClassService vehicleClassService) {
         this.vehicleClassService = vehicleClassService;
     }
 
@@ -53,41 +50,37 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
             model = new VehicleHire();
         } else {
             model = service.getObject(objectId);
-        }  
-    }
-    
-    public String updateModel() {
-        
-        if(vehicleClassId >= 0)
-        {
-           model.setVehicleClass(this.vehicleClassService.getObject(vehicleClassId));
         }
-        
+    }
+
+    public String updateModel() {
+
+        if (vehicleClassId >= 0) {
+            model.setVehicleClass(this.vehicleClassService.getObject(vehicleClassId));
+        }
+
         try {
-            if(model.getId() > 0)
-            {
+            if (model.getId() > 0) {
                 this.service.updateObject(model);
-            }
-            else
-            {
+                this.actionResult = "";
+            } else {
                 Claim c = claimService.getClaim(getClaimId());
                 c.setVehicleHire(model);
                 this.claimService.updateClaim(c);
+                this.actionResult = "new:" + model.getId();
             }
-            this.actionResult = "";
+
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }
         return SUCCESS;
     }
-    
-    public void setVehicleClassId(int vehicleClassId)
-    {
+
+    public void setVehicleClassId(int vehicleClassId) {
         this.vehicleClassId = vehicleClassId;
     }
-    
-    public int getVehicleClassId()
-    {
+
+    public int getVehicleClassId() {
         return this.model.getVehicleClass() != null ? vehicleClassId = this.model.getVehicleClass().getId() : 0;
     }
 
@@ -95,9 +88,8 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
         JSONObject jObject = JSONObject.fromObject(this.model);
         return jObject.toString();
     }
-    
-    public List<VehicleClass> getVehicleClasses()
-    {
+
+    public List<VehicleClass> getVehicleClasses() {
         return this.lookupService.getVehicleClasses();
     }
 
@@ -105,6 +97,4 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
     String getTabName() {
         return ApplicationAccessibility.TAB_INVOICE_DETAIL;
     }
-   
-    
 }

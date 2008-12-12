@@ -162,13 +162,25 @@
             } 
 
             // post-submit callback 
-            function onSubmitResponseReceived(responseText, statusText)  {         
+            function onSubmitResponseReceived(responseText, statusText)  {      
+                responseText = responseText.trim();
                 elementToBlock.unblock();
                 var output = "Your changes have been saved.";
                 var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
-                if(responseText.trim() != "" && responseText.trim() != "1"){
-                    output = "There was an error: " + responseText.substring(0,40);
-                    outputDiv.addClass("submit-error");
+                       
+                if(responseText != "" && responseText != "1"){
+                                        
+                    if(responseText.substring(0,4) == 'new:')
+                    {
+                        var newObjectId =  parseInt(responseText.substring(4,responseText.length));
+                        var hvObjectId = elementToBlock.find("input[name='objectId']");
+                        hvObjectId.val(newObjectId);                   
+                    }   
+                    else
+                    {
+                        output = "There was an error: " + responseText.substring(0,40);
+                        outputDiv.addClass("submit-error");
+                    }
                 }
                 
                 
@@ -619,7 +631,6 @@
 
                                         <s:action name="getSolicitor" executeResult="true">
                                             <s:param name="objectId"><s:property value="incident.injury.solicitor.id" /></s:param>
-                                            <s:param name="injuryId"><s:property value="incident.injury.id" /></s:param>   
                                             <s:param name="incidentId"><s:property value="incident.id" /></s:param>   
                                             <s:param name="claimStatus"><s:property value="status" /></s:param>
                                         </s:action> 
@@ -676,12 +687,14 @@
 
 
                                         <s:action name="getIncident" executeResult="true">
-                                            <s:param name="objectId"><s:property value="incident.id" /></s:param> 
+                                            <s:param name="objectId"><s:property value="incident.id" /></s:param>
+                                            <s:param name="claimId"><s:property value="id" /></s:param> 
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
                                         
                                         <s:action name="getThirdParty" executeResult="true">
                                             <s:param name="objectId"><s:property value="thirdParty.id" /></s:param> 
+                                            <s:param name="claimId"><s:property value="id" /></s:param> 
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
 
@@ -774,11 +787,13 @@
                                         
                                         <s:action name="getExtra" executeResult="true">
                                             <s:param name="objectId"><s:property value="invoice.id" /></s:param> 
+                                            <s:param name="claimId"><s:property value="id" /></s:param>
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
                                         
                                         <s:action name="getEngineerReport" executeResult="true">
                                             <s:param name="objectId"><s:property value="engineerReport.id" /></s:param> 
+                                            <s:param name="claimId"><s:property value="id" /></s:param>
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
                                         
