@@ -8,7 +8,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <head>
-    <title>IDAS-CHOX V2.10 - 20081211</title>
+    <title>IDAS-CHOX V2.11 - 20081212</title>
     
 
     <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        

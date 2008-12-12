@@ -9,24 +9,36 @@
             errorLabelContainer: "#EngRptmessageBox",                
             rules: {
                 
-                labourAmount:{number:true},
-                totalAmount:{number:true},
-                days:{digits:true}
+                labourAmount:{required:true, number:true},
+                totalAmount:{required:true, number:true},
+                days:{required:true, digits:true}
                 
             },
             messages: {
                 
-                labourAmount: {number:"You must supply a numeric value for 'Estimated Labour Amount'"}, 
-                totalAmount: {number:"You must supply a numeric value for 'Estimated Total Repair Amount'"},
-                days: {digits:"You must supply a integer value for 'Estimated Days Under Repair'"}
+                labourAmount: {
+                    number:"You must supply a numeric value for 'Estimated Labour Amount'",
+                    required:"You must supply a value for 'stimated Labour Amount'"
+                }, 
+                totalAmount: {
+                    required:"You must supply a value for 'Estimated Total Repair Amount'",
+                    number:"You must supply a numeric value for 'Estimated Total Repair Amount'"
+                },
+                days: {
+                    required:"You must supply a value for 'Estimated Days Under Repair'",
+                    digits:"You must supply a integer value for 'Estimated Days Under Repair'"
+                }
                 
-            }
+            },
+            submitHandler: function(form) {
+                $(form).ajaxSubmit(globalEntityFormOptions);
+            }   
         });
-    }); 
+    });
     
 </script>
 
-<form id="formEngRptAction" action="user/updateEngineerReport.action" class="entity-form" name="formEngRptAction">    
+<form id="formEngRptAction" action="user/updateEngineerReport.action" class="XXentity-form" name="formEngRptAction">
     <fieldset class="x-fieldset">
         <legend>Engineer Report</legend>
         <div style="display:none" class="form-container">

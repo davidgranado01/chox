@@ -6,7 +6,27 @@
 
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<form id="formUpdateCustomerVehicleDamageForm" action="updateCustomerVehicleDamage.action" class="entity-form">
+<script language="JavaScript">
+
+        $(document).ready(function(){
+            $("#formUpdateCustomerVehicleDamageForm").validate(
+            {
+                errorLabelContainer: "#INCmessageBox",                
+                rules: {  
+                    damage:{required:true}
+                },
+                messages: {
+                    damage:{required:"Please supply a valid value for Description"}
+                },
+                submitHandler: function(form) {
+                    $(form).ajaxSubmit(globalEntityFormOptions);
+                }                
+            }); 
+        });  
+
+</script>
+
+<form id="formUpdateCustomerVehicleDamageForm" name="formUpdateCustomerVehicleDamageForm" action="updateCustomerVehicleDamage.action" class="XXentity-form">
     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <fieldset class="x-fieldset">
         <legend> Vehicle Damage</legend>
@@ -25,14 +45,14 @@
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Description</label>
+                Description<span class="mandatory">*</span></label>
                 <textarea class="chox-tta" id="IDDescription" cols="20" rows="5" name="damage"><s:property value="damage" /></textarea>
             </div>
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
             </div>
             <div id="INCmessageBox" class="errorBox"></div>
-            <div class="chox-form-submit-result"></div>                
+            <div class="chox-form-submit-result"></div>             
         </div>
     </fieldset>
 </form>    

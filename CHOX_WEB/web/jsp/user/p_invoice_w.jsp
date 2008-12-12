@@ -50,7 +50,7 @@
                 totalToPay :{required:true, number:true, min:0},
                 excessAmountCollected :{number:true, min:0},
                 vatAmountCollected :{number:true, min:0},
-                dateInvoiced :{date:true}
+                dateInvoiced :{required:true, date:true}
                     
             },
                 
@@ -79,7 +79,7 @@
                 totalToPay :{required:"You must supply a value for 'Total To Pay'", number:"You must supply a numeric value for 'Total To Pay'", min:"Total To Pay must be greater or equal to zero"},
                 excessAmountCollected :{number:"You must supply a numeric value for Excess Amount Collected", min:"Excess Amount Collected must be greater or equal to zero"},
                 vatAmountCollected :{number:"You must supply a numeric value for Vat Amount Collected", min:"Vat Amount Collected must be greater or equal to zero"},
-                dateInvoiced :{ date:"Invalid date format for Date Invoiced"}             
+                dateInvoiced :{ required:"You must supply a value for 'Date Invoiced'", date:"Invalid date format for Date Invoiced"}             
                     
             },
                 
@@ -260,12 +260,12 @@
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Excess Collected From Policyholder<span class="mandatory">*</span></label>
+                Excess Collected From Policyholder</label>
             <input type="text" class="chox-ttnum"  name="excessAmountCollected" value='<s:property value="excessAmountCollected" />'/></div>
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                VAT Collected From Policyholder<span class="mandatory">*</span></label>
+                VAT Collected From Policyholder</label>
             <input type="text" class="chox-ttnum"  name="vatAmountCollected" value='<s:property value="vatAmountCollected" />'/></div>
             
             <div class="chox-form-item">

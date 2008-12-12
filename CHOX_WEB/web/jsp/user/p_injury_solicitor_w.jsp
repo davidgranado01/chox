@@ -1,7 +1,26 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
+<script language="JavaScript">
 
-<form id="formupdateSolicitor" action="user/updateSolicitor.action" class="entity-form">
+        $(document).ready(function(){
+            $("#formupdateSolicitor").validate(
+            {
+                errorLabelContainer: "#SolicitorMessageBox",                
+                rules: {  
+                    name:{required:true}
+                },
+                messages: {
+                    name:{required:"Please supply a valid value for Name"}
+                },
+                submitHandler: function(form) {
+                    $(form).ajaxSubmit(globalEntityFormOptions);
+                }                
+            }); 
+        });  
+
+</script>
+
+<form id="formupdateSolicitor" action="user/updateSolicitor.action" class="XXentity-form" name="formupdateSolicitor">
    
     <fieldset class="x-fieldset">
         <legend>Injury Solicitor</legend>
@@ -10,7 +29,7 @@
             <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Name</label>
+                Name<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttxt" id="ISOLName" name="name" value="<s:property value="name" />" /></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -43,7 +62,8 @@
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
             </div>
-            <div class="chox-form-submit-result">&nbsp;</div>                                            
+            <div class="chox-form-submit-result">&nbsp;</div>     
+            <div id="SolicitorMessageBox" style="text-align:center"></div>
         </div>
     </fieldset>
 </form>

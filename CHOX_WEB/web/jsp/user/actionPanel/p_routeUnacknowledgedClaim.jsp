@@ -30,7 +30,7 @@
                 <label>Line of Business</label>
                     
 
-                <s:select name="lineOfBusiness.id" list="lineOfBusinesses" headerKey="1" listKey="id" listValue="name" headerValue="-- Please Select --"></s:select>
+                <s:select name="lineOfBusiness.id" list="lineOfBusinesses" headerKey="1" listKey="id" listValue="name"></s:select>
                                                                            
                 <input type="submit" value="Assign Line of Business" />
                 

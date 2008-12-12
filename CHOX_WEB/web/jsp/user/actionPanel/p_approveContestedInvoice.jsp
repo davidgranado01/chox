@@ -25,7 +25,7 @@
                     <tr>
                         <td colspan="2">
                             <div class="no-format">
-                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                <span>Please specify how you wish to proceed <span class="mandatory">*</span> &nbsp;&nbsp;</span>
                                 <s:radio name="actionName" list="approveContestedInvoiceActions" />
                             </div>
                         </td>

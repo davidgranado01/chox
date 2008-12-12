@@ -831,9 +831,8 @@
     function fileValidation(){
         
         var uploadFile = document.form.attachmentFile.value;
-        
         if(uploadFile==""){
-            alert("No xml document selected for upload");
+            alert("Please select a file to upload");
             return false;
         }
         
@@ -854,13 +853,13 @@
         <legend>Add a new Attachment</legend>
         <table class="chox-form-item">
         <tr>
-            <td width="30%"><label class="std-label-ro">File</label></td>
+            <td width="30%" align="right"><label class="std-label-ro">File</label></td>
             <td>
             <s:file id="fileUploader" name ="attachmentFile" label ="Attachment" size="40"/>   
             </td>
         </tr>
         <tr>
-            <td><label class="std-label-ro">Attachment Type</label></td>
+            <td align="right"><label class="std-label-ro">Attachment Type</label></td>
             <td>
             <s:select name="category" 
             list="attachmentCategory" 
@@ -871,7 +870,7 @@
             </td>
         </tr>
         <tr>
-            <td><label class="std-label-ro">Description</label></td>
+            <td align="right" valign="top"><label class="std-label-ro">Description</label></td>
             <td>
                 <s:textarea rows="3" cols="30" name="remark" label="Remark:"/>
             </td>
@@ -907,12 +906,10 @@
 
     <script language="JavaScript">
         
-        
-    
-
         $(document).ready(function() { 
+            
                 var options = { 
-                    success:       showResponse  // post-submit callback 
+                    success: showResponse  // post-submit callback 
                 }; 
 
                 // bind form using 'ajaxForm' 
@@ -921,7 +918,6 @@
                 //bind close comment button behaviour
                 $("#commentModalClose").click(function(){ $("#comments").unblock();});    
 
-
         });
 
 
@@ -929,8 +925,7 @@
             commentsLoaded = false;
             loadComments();
         }    
-
-        
+     
      
         
     </script>
@@ -941,7 +936,8 @@
             <input type="hidden" name="claimId" value='<s:property value="id" />'>
             <fieldset class="x-fieldset">
                 <legend>Add a new note</legend>
-                <textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment"></textarea><br/><input type="submit" id="bAddComment" value="Add Note" />
+                <textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment"></textarea><br/>
+                <input type="submit" id="bAddComment" value="Add Note"/>
             </fieldset>
         </form>
     </div>

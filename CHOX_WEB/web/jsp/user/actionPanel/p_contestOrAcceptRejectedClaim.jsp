@@ -9,7 +9,27 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
-
+<script language="JavaScript">
+    
+    $(document).ready(function(){
+            
+        $("#contestOrAcceptRejectedClaim").validate(
+        {
+            errorLabelContainer: "#ActionPanelMessageBox",                
+            rules: {
+                
+                actionName:{required:true}
+                
+            },
+            messages: {
+                
+                actionName:{required:"You must select action"}
+            }
+            
+        });
+    });
+    
+</script>
 
 <form onsubmit="return true;" action="user/contestOrAcceptRejectedClaim.action" method="post" 
       id="contestOrAcceptRejectedClaim" name="contestOrAcceptRejectedClaim">
@@ -39,6 +59,7 @@
                     </tr>
                 </table>
             </div>
+            <div class="errorBox" id="ActionPanelMessageBox"></div>
         </div> 
     </fieldset>
 </form>

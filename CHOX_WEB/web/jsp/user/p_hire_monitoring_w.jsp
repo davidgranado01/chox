@@ -73,6 +73,9 @@
                  }                 
                },
                messages: {
+                 nameOfRepairer:{
+                     required:"You must supply a date for 'Name Of Repairer'"
+                 },
                  repairBookInDate: {
                    date:"Invalid date format for 'Repair Book In Date'"
                  }, 
@@ -112,25 +115,23 @@
                 Original ECD</label><label class="std-data-ro"><s:property value="customer.InitialECDDesc" /></label></div>
 
            <div class="chox-form-item">
-                <label class="chox-form-std-label">
-                    Name Of Repairer
-                </label>
+                <label class="chox-form-std-label">Name Of Repairer</label>
            <input type="text" class="chox-ttxt" name="nameOfRepairer" value='<s:property value="nameOfRepairer" />'/></div>
            
            <div class="chox-form-item">
-                <label class="chox-form-std-label">
-                Repair Book In Date<span class="mandatory">*</span></label><span id="repairBookInDatePH"></span>
+                <label class="chox-form-std-label">Repair Book In Date</label>
+                <span id="repairBookInDatePH"></span>
             </div>
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Inspection Booked Date<span class="mandatory">*</span></label>
+                Inspection Booked Date</label>
             <span id="inspectionBookedDatePH"></span>
             </div>
            
            <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Inspection Date<span class="mandatory">*</span></label>
+                Inspection Date</label>
             <span id="inspectionDatePH"></span>
             </div>
            
@@ -141,7 +142,7 @@
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Repair Completion Date<span class="mandatory">*</span></label>
+                Repair Completion Date</label>
             <span id="repairCompletionDatePH"></span></div>
             
             

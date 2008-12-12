@@ -10,55 +10,51 @@
 <script language="JavaScript">
     
     
-    
-            $(document).ready(function(){
-                       
+    $(document).ready(function(){
+                  
+        var ecdDateDatePicker = new Ext.form.DateField({
+            name: 'ecdDate',
+            width: 185,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="date" />',
+            renderTo:'ecdDatePH'
+        });
+        var ecdOptions = { 
+            beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
+            success:       onAfterEcdSubmit,  // post-submit callback 
+            timeout: 3000,
+            error: onSubmitError
+        };                      
         
-            var ecdDateDatePicker = new Ext.form.DateField({
-                name: 'ecdDate',
-                width: 185,
-                allowBlank: true,
-                format: 'd/m/Y',
-                showWeekNumber: true,
-                validationEvent : false,
-                value: '<s:date format="dd/MM/yyyy" name="date" />',
-                renderTo:'ecdDatePH'
-            });   
-  
+        $('#formAddNewHireMonitoringEcd').ajaxForm(ecdOptions); //wrap all <form> elements with ajax submission config   
+    
+    });
 
-                var ecdOptions = { 
-                    beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
-                    success:       onAfterEcdSubmit,  // post-submit callback 
-                    timeout: 3000,
-                    error: onSubmitError
-                };                      
-                $('#formAddNewHireMonitoringEcd').ajaxForm(ecdOptions); //wrap all <form> elements with ajax submission config   
-            });
-            
   
-            var ecdsLoaded = false;
-            function loadEcds(){
-                if(!hireMonitoringDetailsDisabled){
-                    
-                    if(!ecdsLoaded)
+    var ecdsLoaded = false;
+    function loadEcds(){
+        if(!hireMonitoringDetailsDisabled){
+
+            if(!ecdsLoaded)
+            {
+                ecdDataStore.load(
+                {
+                    params:
                     {
-                        ecdDataStore.load(
-                        {
-                            params:
-                            {
-                                claimId : <s:property value="id" />
-                            }
-                        });   
+                        claimId : <s:property value="id" />
                     }
-                }
-            }              
-            
-            function onAfterEcdSubmit(responseText, statusText)  {    
-                onSubmitResponseReceived(responseText, statusText);
-                loadEcds();                
+                });   
             }
-    
-    
+        }
+    }              
+            
+    function onAfterEcdSubmit(responseText, statusText)  {    
+        onSubmitResponseReceived(responseText, statusText);
+        loadEcds();                
+    }
     
 </script>
 

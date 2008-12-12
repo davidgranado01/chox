@@ -347,7 +347,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String result = "";
         
         if (this.claim.getHireMonitoringDetail() == null) {
-            return  "Error : You need to provide correct hire monitoring detail detail to submit this claim.";
+            return  "Error : You need to provide correct hire monitoring detail to submit this claim.";
         } 
         
         if(this.claim.getCustomer() == null || this.claim.getCustomer().getInitialECD() == null)

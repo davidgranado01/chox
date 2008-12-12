@@ -1,8 +1,27 @@
 
 <%@ taglib uri="/struts-tags" prefix="s" %>     
 
+<script language="JavaScript">
 
-<form id="formUpdateWitness" action="user/updateWitness.action" class="entity-form">
+        $(document).ready(function(){
+            $("#formUpdateWitness").validate(
+            {
+                errorLabelContainer: "#WitnessMessageBox",                
+                rules: {  
+                    name:{required:true}
+                },
+                messages: {
+                    name:{required:"Please supply a valid value for Name"}
+                },
+                submitHandler: function(form) {
+                    $(form).ajaxSubmit(globalEntityFormOptions);
+                }                
+            }); 
+        });  
+
+</script>
+
+<form id="formUpdateWitness" name="formUpdateWitness" action="user/updateWitness.action" class="XXentity-form">
    
     <fieldset class="x-fieldset">        
         <legend>Witness Details</legend>
@@ -11,7 +30,7 @@
              <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>    
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Name</label>
+                Name<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttxt" name="name" value='<s:property value="name" />'/></div>        
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -51,7 +70,8 @@
             <input type="text" class="chox-ttxt" name="email" value='<s:property value="email" />'/></div>
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" /><div class="chox-form-submit-result"></div>
-            </div>                    
+            </div>
+            <div id="WitnessMessageBox" class="errorBox"></div>
         </div>
     </fieldset>
 </form>
