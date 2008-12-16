@@ -571,6 +571,10 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
     }
     
+    public String getIsManagingRepairDesc() {
+        return managingRepair ? "Yes" : "No";
+    }
+        
     public String getIsInvoiceReviewRequiredDesc()
     {
         return isInvoiceReviewRequired ? "Yes" : "No";

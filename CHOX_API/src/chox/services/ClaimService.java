@@ -23,4 +23,5 @@ public interface ClaimService {
     // CARLSON
     public Boolean isClaimReferenceNumberExist(String sClaimReferenceNumber);
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
+    public Claim updateClaimStatus(int claimid, String claimStatus);
 }

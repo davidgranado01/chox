@@ -216,7 +216,7 @@ public class Incident implements Serializable, Auditable {
         this.isPoliceInvolved = isPoliceInvolved;
     }
 
-    public String isPoliceInvolvedDesc() {
+    public String getIsPoliceInvolvedDesc() {
 
         return isPoliceInvolved ? "Yes" : "No";
     }

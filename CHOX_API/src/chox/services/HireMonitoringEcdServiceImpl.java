@@ -18,7 +18,6 @@ import org.hibernate.criterion.Restrictions;
 public class HireMonitoringEcdServiceImpl extends DataService implements HireMonitoringEcdService {
 
     public List<HireMonitoringEcd> getHireMonitoringEcdsByClaimId(int claimId) {
-
         Criteria criteria = getCurrentSession().createCriteria(HireMonitoringEcd.class);      
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
         criteria.addOrder(Order.asc("createdDate"));

@@ -203,6 +203,25 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
 
         return count;
     }
+    
+    public Claim updateClaimStatus(int claimid, String claimStatus){
+    
+        Claim claim = new Claim();
+
+        try {
+            Criteria criteria = getCurrentSession().createCriteria(Claim.class);
+            criteria.add(Restrictions.eq("id", claimid));
+            claim = (Claim) criteria.uniqueResult();
+            
+            claim.setStatus(claimStatus);
+            updateClaim(claim);
+            
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        
+        return claim;
+    }
    
 }
 
