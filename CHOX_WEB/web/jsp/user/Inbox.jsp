@@ -8,7 +8,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <head>
-    <title>IDAS-CHOX V2.11 - 20081212</title>
+    <title>IDAS-CHOX V2.12 - 20081215</title>
     
 
     <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
@@ -264,7 +264,7 @@ hireDateToPicker.render('hireDateToDiv');
                                         <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_IUG_1.0-1.pdf','Help');">Help</a>
                                     </s:else>&nbsp;|&nbsp;
                                 <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_Support_Document.pdf','Support');">Support</a>&nbsp;|&nbsp; 
-                                <a href="#">About Chox</a>&nbsp;|&nbsp;
+                                <a href="#">About CHOX</a>&nbsp;|&nbsp;
                                 <a href="<%=request.getContextPath()%>/j_acegi_logout">Log Off</a>
                             </div>
                         </td>
@@ -304,7 +304,7 @@ hireDateToPicker.render('hireDateToDiv');
                             <li><a href="javascript:showClaimByStatus('HireUpdateAnomalies');" >Hire Update Anomalies (<s:property value="filterRecordCounter.hireUpdateAnomaliesCount" />)</a></li>
                         </s:if> 
                         <s:if test="filterAccessibility.isNewClaimsToBeroutedAccessible">
-                            <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedUnrouted');" >New Claims to be routed (<s:property value="filterRecordCounter.newClaimsToBeroutedCount" />)</a></li>
+                            <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedUnrouted');" >New Claims to be Routed (<s:property value="filterRecordCounter.newClaimsToBeroutedCount" />)</a></li>
                         </s:if> 
                         <s:if test="filterAccessibility.isApprovedInvoicesAwaitingPaymentAccessible">
                             <li><a href="javascript:showClaimByStatus('AwaitingInvoicePayment');" >Approved Invoices Awaiting Payment (<s:property value="filterRecordCounter.approvedInvoicesAwaitingPaymentCount" />)</a></li>
@@ -348,10 +348,8 @@ hireDateToPicker.render('hireDateToDiv');
         </div>
         
     </div>
-    
-    
+    <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/> Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.</div>
 </body>
-
 
 
 

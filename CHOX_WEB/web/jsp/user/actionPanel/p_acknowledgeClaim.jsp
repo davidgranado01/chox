@@ -21,7 +21,6 @@
                 claimNumber:{
                     required:true
                 } ,
-
                 actionName:{
                     required:true
                 }
@@ -46,12 +45,7 @@
         });
     }); 
     
-
-
 </script>
-
-
-
 
 <form action="user/acknowledge.action" method="post" id="formAcknowledgeAction"
       name="formAcknowledgeAction">
@@ -62,9 +56,7 @@
             <s:hidden id="actionName" name="actionName" />
             <div>
                 <div class="status-info">
-                    Please enter details of the claim review and decide whether to acknowledge or reject
-                    the claim. Please use the 'Notes' tab in order to communicate detailed comments
-                    you may have for the CHO.
+                    Please enter details of the claim and decide whether to acknowledge, refer to an engineer, or reject the claim. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
                 </div>
                 <div class="status-control-set">
                     <table class="status-table">
@@ -95,7 +87,7 @@
                         <tr valign="top">
                             <td>
                                 <label>
-                                Claim Review Notes</label></td><td>
+                            Claim Review Notes</label></td><td>
                                 <textarea class="chox-tta" cols="20" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                             </td>
                             <td>
@@ -106,9 +98,7 @@
                         </tr>
                         <tr>
                             <td colspan="2" class="choice">
-                                
                                 <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                                
                             </td>
                         </tr>                        
                         <tr>
@@ -118,9 +108,7 @@
                                 <input type="submit" value="Refer To Engineer" onclick="registeAction('refer');"  /> 
                             </td>
                         </tr>
-                        
                     </table>
-                    
                     <div class="errorBox" id="ACKmessageBox"></div>
                 </div>
             </div>

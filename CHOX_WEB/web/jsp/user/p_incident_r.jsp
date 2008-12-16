@@ -14,8 +14,7 @@
             Location</label>
         <label class="std-data-ro"><s:property value="location" /></label></div>
         <div class="chox-form-item">
-            <label class="std-label-ro"><s:property value="isPoliceInvolvedDesc" />
-            Police Involved?</label>
+            <label class="std-label-ro">Police Involved?</label>
         <label class="std-data-ro"><s:property value="isPoliceInvolvedDesc" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">

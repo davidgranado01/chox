@@ -189,12 +189,16 @@ body.login .modal_container .app_title
     /*border-bottom:2px solid #0093c8;*/
     padding-top:5px;
     padding-bottom:5px;
-    background-color:#fff;
-    
-    
+    background-color:#fff;        
 }
 
 
-
-
+.footerText{
+    color:#5F9EA0;
+    font-family:tahoma,arial,verdana,sans-serif;
+    font-size: 10px;
+    text-align:center;    
+    padding-top:10px;
+    padding-bottom:30px;       
+}
 

@@ -108,9 +108,7 @@
             </result>
             <result name="empty">/jsp/p_blank.jsp
             </result>
-        </action>      
-        
-                
+        </action>
         
         
         <!-- Start Claim Detail -->
@@ -126,38 +124,35 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}
-                </param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
         <action name="acknowledge" class="chox.web.actions.ClaimAction" method="acknowledge">
             <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail
-                </param>
-                <param name="id">${id}
-                </param>
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
         <action name="contestOrAcceptRejectedClaim" class="chox.web.actions.ClaimAction" method="contestOrAcceptRejectedClaim">
             <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail
-                </param>
-                <param name="id">${id}
-                </param>
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
             </result>
-            <result name="error">/jsp/user/ClaimDetail.jsp
-            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp</result>
         </action>
         <action name="approveContestedClaim" class="chox.web.actions.ClaimAction" method="approveContestedClaim">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}
-                </param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -166,8 +161,8 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}
-                </param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -176,8 +171,8 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}
-                </param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -186,8 +181,8 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}
-                </param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -196,8 +191,8 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}
-                </param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -206,8 +201,8 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}
-                </param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -216,8 +211,8 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}
-                </param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -226,8 +221,8 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}
-                </param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -236,8 +231,8 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}
-                </param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>

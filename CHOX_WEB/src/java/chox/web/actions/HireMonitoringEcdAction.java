@@ -6,6 +6,7 @@ package chox.web.actions;
 
 import chox.Util.DateHelper;
 import chox.model.Claim;
+import chox.model.ClaimStatus;
 import chox.model.HireMonitoringEcd;
 import chox.services.HireMonitoringEcdService;
 import chox.web.security.ApplicationAccessibility;
@@ -22,6 +23,7 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
 
     private HireMonitoringEcd model;
     private HireMonitoringEcdService service;
+    private Boolean isECDFormVisible = false;
     
     public void setHireMonitoringEcdService(HireMonitoringEcdService service)
     {
@@ -67,4 +69,22 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
         return reasonTypes;
 
     }
+
+    /* Edited by: Carlson
+     * Edited Date: 20081216
+     * Source: According to Emm, the NEW ECD only can be added by CHO 
+     * and Where the claim status is either AwaitingInvoiceData OR AwaitingCarHireInfo
+     */
+    public Boolean getIsECDFormVisible() {
+        Boolean bFlag = false;
+        Claim claim = claimService.getClaim(claimId);        
+        if(this.getIsCHO() 
+            && (claim.getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_CAR_HIRE_INFO)
+            || claim.getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA))
+        ){
+            bFlag = true;
+        }
+        return bFlag;
+    }    
+    
 }

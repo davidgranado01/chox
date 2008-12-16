@@ -74,5 +74,6 @@
         <span class="note" style="font-size:11px">
         <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_Terms_of_Service.pdf','TermOfService');">Terms of Service</a></span>
     </div>
+    <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/> Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.</div>
 </body>
 </html>

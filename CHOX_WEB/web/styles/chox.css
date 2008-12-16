@@ -1,23 +1,23 @@
 body
 {
-	background-attachment: scroll;
-	background-color: #fff;
-	background-image: none;
-	background-repeat: repeat;
-	background-x-position: 0%;
-	background-y-position: 0%;
-	color: #222222;
-	font-family: tahoma,arial,verdana,sans-serif;
-	font-size: 14px;
-	margin-bottom: 0pt;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 0pt;
-	padding-bottom: 0pt;
-	padding-left: 0pt;
-	padding-right: 0pt;
-	padding-top: 0pt;
-	text-align: center;
+    background-attachment: scroll;
+    background-color: #fff;
+    background-image: none;
+    background-repeat: repeat;
+    background-x-position: 0%;
+    background-y-position: 0%;
+    color: #222222;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 14px;
+    margin-bottom: 0pt;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0pt;
+    padding-bottom: 0pt;
+    padding-left: 0pt;
+    padding-right: 0pt;
+    padding-top: 0pt;
+    text-align: center;
 }
 
 div.outer
@@ -35,16 +35,16 @@ div.inner
 
 a{
     
-    	color: #15428b;
-	font: 12px tahoma,arial,verdana,sans-serif;
+    color: #15428b;
+    font: 12px tahoma,arial,verdana,sans-serif;
 }
 
 h1.chox-app-title
 {
-	color: #15428b;
-	font: bold 14px tahoma,arial,verdana,sans-serif;
-	line-height: 30px;
-	padding: 5px 3px 4px 5px;
+    color: #15428b;
+    font: bold 14px tahoma,arial,verdana,sans-serif;
+    line-height: 30px;
+    padding: 5px 3px 4px 5px;
 }
 div#chox-header
 {
@@ -54,12 +54,12 @@ div#chox-header
 
 div.top-menu
 {
-   color:#1641a0;font: 12px tahoma,arial,verdana,sans-serif;
+    color:#1641a0;font: 12px tahoma,arial,verdana,sans-serif;
 }
 
 div.top-menu a
 {
-   color:#1641a0;
+    color:#1641a0;
 }
 
 div#chox-menu
@@ -67,139 +67,139 @@ div#chox-menu
     vertical-align:bottom;
     line-height:40px;
     padding-right:5px;
-    	margin-bottom: 10px;
-        margin-top:10px;
-        
+    margin-bottom: 10px;
+    margin-top:10px;
+    
 }
 .tip
 {
-	background-color: #fff;
-	font-size: 20px;
+    background-color: #fff;
+    font-size: 20px;
 }
 #tabContainer
 {
 }
 .chox-form-container
 {
-	background: #dfe8f6;
-	padding: 6px;
-	padding-left: 11px;
+    background: #dfe8f6;
+    padding: 6px;
+    padding-left: 11px;
 }
 fieldset div
 {
 }
 .chox-ttxt
 {
-	border: 1px solid #B5B8C8;
-	padding: 1px 3px;
-	width: 170px;
+    border: 1px solid #B5B8C8;
+    padding: 1px 3px;
+    width: 170px;
 }
 .chox-tta
 {
-	width: 170px;
+    width: 170px;
 }
 .chox-ttnum
 {
-	width: 60px;
+    width: 60px;
 }
 .chox-form-item
 {
-	display: block;
-	font: normal 12px tahoma,arial,helvetica,sans-serif;
-	margin-bottom: 4px;
-	padding-bottom: 3px;
-	zoom: 1;
+    display: block;
+    font: normal 12px tahoma,arial,helvetica,sans-serif;
+    margin-bottom: 4px;
+    padding-bottom: 3px;
+    zoom: 1;
 }
 
 
 .chox-form-item .chox-form-std-label
 {
     
-	display: block;
-	float: left;
-	margin-right: 10px;
-	text-align: right;
-	width: 200px;
+    display: block;
+    float: left;
+    margin-right: 10px;
+    text-align: right;
+    width: 200px;
 }
 .chox-form-left-col
 {
-	padding-right: 5px;
-	width: 50%;
+    padding-right: 5px;
+    width: 50%;
 }
 div.chox-claim-header
 {
-	border: 1px #8db2e3 solid;
-	font: 11px tahoma,arial,verdana,sans-serif;
-	margin-bottom: 10px;
+    border: 1px #8db2e3 solid;
+    font: 11px tahoma,arial,verdana,sans-serif;
+    margin-bottom: 10px;
 }
 
 div.chox-claim-header table tr td
 {
-	font: 11px tahoma,arial,verdana,sans-serif;
+    font: 11px tahoma,arial,verdana,sans-serif;
 }
 td.chox-claim-command
 {
-	text-align: right;
+    text-align: right;
 }
 .chox-claim-header table
 {
-	width: 100%;
+    width: 100%;
 }
 .chox-claim-header td
 {
-	border: 0px black solid;
-	border-collapse: collapse;
-	width: 25%;
+    border: 0px black solid;
+    border-collapse: collapse;
+    width: 25%;
 }
 div.chox-form-button
 {
-	padding-left: 230px;
+    padding-left: 230px;
 }
 div.chox-form-button input
 {
 }
 div.chox-claim-header label
 {
-	line-height: 26px;
+    line-height: 26px;
 }
 label.chox-claim-header-label
 {
 }
 label.chox-claim-header-text
 {
-	font-weight: bold;
-	margin-left: 10px;
+    font-weight: bold;
+    margin-left: 10px;
 }
 div.comments
 {
-	background: #dfe8f6;
+    background: #dfe8f6;
 }
 div.comments input[type=button]
 {
-	margin-left: 6px;
+    margin-left: 6px;
 }
 h1.block
 {
-	background-color: #fff;
-	border: 5px solid #ddd;
-	font: 16px tahoma,arial,verdana,sans-serif;
+    background-color: #fff;
+    border: 5px solid #ddd;
+    font: 16px tahoma,arial,verdana,sans-serif;
 }
 div.blockMsg
 {
-	background-color: #fff;
-	background-position: center center;
-	background-repeat: no-repeat;
-	border: 1px solid #ddd;
-	height: 50px;
-	width: 100px;
+    background-color: #fff;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: 1px solid #ddd;
+    height: 50px;
+    width: 100px;
 }
 div.chox-form-submit-result
 {
-	color: #15428b;
-	font: bold 11px tahoma,arial,verdana,sans-serif;
-	line-height: 35px;
-	margin-top: 5px;
-	text-align: center;
+    color: #15428b;
+    font: bold 11px tahoma,arial,verdana,sans-serif;
+    line-height: 35px;
+    margin-top: 5px;
+    text-align: center;
 }
 div.submit-error
 {
@@ -221,18 +221,18 @@ div.excel-export
 table.searchForm
 {
     
-   	background: #dfe8f6; 
-        width:100%;
-        border-collapse:collapse;
-        margin:2px;
-        
+    background: #dfe8f6; 
+    width:100%;
+    border-collapse:collapse;
+    margin:2px;
+    
     
 }
 
 table.searchForm td
 {
     
-   padding:4px; 
+    padding:4px; 
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 12px; 
     width:16%;
@@ -242,56 +242,56 @@ table.searchForm td
 
 table.searchForm label
 {
-
+    
 }
 
 div.buttonPanel
 {
-       	background: #dfe8f6; 
-        text-align:center;
-        padding:5px;
-
+    background: #dfe8f6; 
+    text-align:center;
+    padding:5px;
+    
 }
 
 /*
 ul.inbox li ul {
-    
-    
-     background: transparent url(../images/folder_icon.gif) no-repeat;
-     list-style-type: none;
-     margin: -1.4em 0 0 -1.6em;
-     padding: 1.4em 0 0 0.6em;
-    
+
+
+background: transparent url(../images/folder_icon.gif) no-repeat;
+list-style-type: none;
+margin: -1.4em 0 0 -1.6em;
+padding: 1.4em 0 0 0.6em;
+
 }
 
 */
 
 ul.inbox{
-  
-     /*background: transparent url(../images/folder_icon.gif) no-repeat;*/
-     margin:10px;
+    
+    /*background: transparent url(../images/folder_icon.gif) no-repeat;*/
+    margin:10px;
     
 }
 
 ul.inbox li{
-  
-     /*background: transparent url(../images/folder_icon.gif) no-repeat;*/
-     margin:5px;
+    
+    /*background: transparent url(../images/folder_icon.gif) no-repeat;*/
+    margin:5px;
     
 }
 
 
 label.std-label-ro{
     
-
-      line-height:20px;
+    
+    line-height:20px;
     
 }
 
 
 label.std-data-ro
 {
-
+    
     font-weight:bold;
 }
 
@@ -326,7 +326,7 @@ div.status-info-submit
 
 div.status-control-set
 {
-
+    
     margin-top:5px;
 }
 div.status-control-set label
@@ -389,13 +389,21 @@ div.errorBox
     
 }
 
-
 div.action-message
 {
     
-        text-align:center;color: red; font-weight:bold;font-size:11px ; line-height:25px
+    text-align:center;color: red; font-weight:bold;font-size:11px ; line-height:25px;
 }
 
 .mandatory{ color: red; font-weight:bold;font-size:11px;}
+
+.footerText{
+    color:#5F9EA0;
+    font-family:tahoma,arial,verdana,sans-serif;
+    font-size: 10px;
+    text-align:center;    
+    padding-top:10px;
+    padding-bottom:30px;        
+}
 
 

@@ -33,7 +33,7 @@
                     <tr>                         
                         <td>
                             <input type="submit" value="Reject Invoice"  onclick="registeAction('reject');return confirm('Are you sure you want to reject this invoice?')" />
-                            <input type="submit" value="Clear for payment" onclick="registeAction('accept')"  />   
+                            <input type="submit" value="Clear For Payment" onclick="registeAction('accept')"  />   
                         </td>
                     </tr>
                 </table>

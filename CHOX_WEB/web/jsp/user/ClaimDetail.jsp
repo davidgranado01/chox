@@ -541,7 +541,7 @@
                                         <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_IUG_1.0-1.pdf','Help');">Help</a>
                                     </s:else>&nbsp;|&nbsp;
                                     <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_Support_Document.pdf','Support');">Support</a>&nbsp;|&nbsp; 
-                                    <a href="#">About Chox</a>&nbsp;|&nbsp;
+                                    <a href="#">About CHOX</a>&nbsp;|&nbsp;
                                     <a href="<%=request.getContextPath()%>/j_acegi_logout">Log Off</a>
                                 </div>
                             </td>
@@ -601,10 +601,6 @@
                     <s:action name="getActionPanel" executeResult="true" />
                     <div class="action-message"><s:property value="actionResult" /></div>
                 </div>
-                
-                
-   
-                
 
                 <div id="tabContainer">
                     
@@ -655,7 +651,7 @@
     <div style="display:none" class="form-container">
         <div class="chox-form-item">
             <label class="std-label-ro">Managing Repair</label>
-            <label class="std-data-ro"><s:property value="managingRepair" /></label>
+            <label class="std-data-ro"><s:property value="IsManagingRepairDesc" /></label>
         </div>
         <div class="chox-form-item">
             <label class="std-label-ro">GTA 4.1 Notice Date</label>
@@ -912,18 +908,17 @@
         
         $(document).ready(function() { 
             
-                var options = { 
+                var optionsComment = { 
                     success: showResponse  // post-submit callback 
                 }; 
-
+                
                 // bind form using 'ajaxForm' 
-                $('#fComments').ajaxForm(options); 
+                $('#fComments').ajaxForm(optionsComment); 
 
                 //bind close comment button behaviour
                 $("#commentModalClose").click(function(){ $("#comments").unblock();});    
 
         });
-
 
         function showResponse(responseText, statusText)  { 
             commentsLoaded = false;
@@ -936,11 +931,11 @@
                         
                         
     <div class="comments  x-panel-bwrap chox-form-container">
-        <form id="fComments" action="user/createNewComment.action" method="get">
+        <form id="fComments" action="user/createNewComment.action" method="post">
             <input type="hidden" name="claimId" value='<s:property value="id" />'>
             <fieldset class="x-fieldset">
                 <legend>Add a new note</legend>
-                <textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment"></textarea><br/>
+                <s:textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment" /><br/>
                 <input type="submit" id="bAddComment" value="Add Note"/>
             </fieldset>
         </form>
@@ -967,5 +962,6 @@
                 </div>
             </div>
         </div>
+    <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/> Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.</div>       
     </body>
 </html>

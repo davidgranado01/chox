@@ -14,7 +14,7 @@
         
         <div>
             <div class="status-info">
-                Please update the claim by recording that a payment has been logged against the claim in question.
+                Please update the claim by recording that a payment has been logged against this claim.
             </div>
             <s:hidden name="id" />
                 

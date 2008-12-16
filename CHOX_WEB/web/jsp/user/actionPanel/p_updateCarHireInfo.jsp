@@ -16,7 +16,7 @@
         <div>
             
             <div class="status-info">
-                Please complete the 'Hire Monitoring' tab with required details regarding the hire of the vehicle. When you are ready, please click the "proceed" button below. 
+                Please complete the 'Hire Monitoring' tab with required details regarding the hire of the vehicle. When you are ready, please click the "Proceed" button below. 
             </div>
                 
             <s:hidden name="id" />

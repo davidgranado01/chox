@@ -56,9 +56,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private int vehicleClassId = -1;
     private int lineOfBusinessId = -1;
     private int insurerId = -1;
-    private String actionName;    // ADDED BY CARLSON @ 2008-12-02 - START
+    private String actionName;
     private List attachmentCategory;
-
+    private String statusMsg="";
+    
     public List getAttachmentCategory() {
         List items = new ArrayList<LookupItem>();
         for (String s : AttachmentCategory.getAttachmentCategory()) {
@@ -90,7 +91,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public Claim getModel() {
         return claim;
     }
-
+        
     public void prepare() throws Exception {
         if (id <= 0) {
             claim = new Claim();
@@ -189,7 +190,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 }
             }
         }
-
+        statusMsg = "Your action has been recorded";
         return result;
     }
 
@@ -222,7 +223,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }   
         }
         else 
-        {         
+        {
             claim.setStatus(ClaimStatus.CLAIM_REJECTED);
         }
 
@@ -233,7 +234,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             this.actionResult = "ERROR : " + ex.getMessage();
         }
 
-
+        statusMsg = "Your action has been recorded";
         return result;
     }
 
@@ -260,25 +261,35 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } catch (Exception ex) {
             this.actionResult = "ERROR : " + ex.getMessage();
         }
-
+        statusMsg = "Your action has been recorded";
         return result;
     }
 
     public String contestOrAcceptRejectedClaim() {
 
         String result = SUCCESS;
-
+        
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
-            claim.setStatus(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
+            //claim.setStatus(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
+            try {
+                this.service.updateClaimStatus(claim.getId(), ClaimStatus.CLAIM_REJECTION_ACCEPTED);
+            } catch (Exception ex) {
+                result = ERROR;
+                this.actionResult = "ERROR : " + ex.getMessage();
+            }
         } else {
-            claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+            
+            try {
+                claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+                this.service.updateClaim(claim);
+            } catch (Exception ex) {
+                result = ERROR;
+                this.actionResult = "ERROR : " + ex.getMessage();
+            }
+            
         }
-        try {
-            this.service.updateClaim(claim);
-        } catch (Exception ex) {
-            result = ERROR;
-            this.actionResult = "ERROR : " + ex.getMessage();
-        }
+        
+        statusMsg = "Your action has been recorded";
         return result;
     }
 
@@ -296,7 +307,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
         }
-
+        statusMsg = "Your action has been recorded";
         return result;
     }
 
@@ -317,7 +328,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             this.actionResult = "ERROR : " + ex.getMessage();
         }
 
-
+        statusMsg = "Your action has been recorded";
         return result;
     }
 
@@ -333,10 +344,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         {
             if(this.service.getECDCountByClaimId(this.claim.getId()) == 0)
             {
-                return "Error : You need to provide an Estimate Completion Date (ECD) to sudmit this claim.";
+                return "Error : You need to provide an Estimated Completion Date (ECD) to submit this claim.";
             }
         }
-        
+        statusMsg = "Your action has been recorded";
         return result;
     }
 
@@ -357,12 +368,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 this.actionResult = "ERROR : " + ex.getMessage();
                 return ERROR;
             }
+            statusMsg = "Your action has been recorded";
             return SUCCESS;
         } else {
             this.actionResult = "ERROR : Invoice data calculation incorrect";
             return ERROR;
         }
-
+        
 
     }
 
@@ -381,6 +393,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
         }
+        statusMsg = "Your action has been recorded";
         return result;
     }
 
@@ -408,6 +421,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
         }
+        statusMsg = "Your action has been recorded";
         return result;
     }
    
@@ -425,6 +439,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
         }
+        statusMsg = "Your action has been recorded";
         return result;
     }
     
@@ -441,6 +456,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
         }
+        statusMsg = "Your action has been recorded";
         return result;
     }
 
@@ -466,7 +482,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
         }
-
+        statusMsg = "Your action has been recorded";
         return result;
 
     }
@@ -478,6 +494,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } catch (Exception ex) {
             this.actionResult = "ERROR : " + ex.getMessage();
         }
+        statusMsg = "Your action has been recorded";
         return SUCCESS;
     }
 
@@ -581,5 +598,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setHistoryService(HistoryService historyService) {
         this.historyService = historyService;
+    }
+
+    public String getStatusMsg() {
+        return statusMsg;
     }
 }

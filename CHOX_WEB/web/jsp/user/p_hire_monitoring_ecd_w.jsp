@@ -6,15 +6,13 @@
 
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-
 <script language="JavaScript">
     
-    
     $(document).ready(function(){
-                  
+                
         var ecdDateDatePicker = new Ext.form.DateField({
             name: 'ecdDate',
-            width: 185,
+            width: 175,
             allowBlank: true,
             format: 'd/m/Y',
             showWeekNumber: true,
@@ -22,20 +20,43 @@
             value: '<s:date format="dd/MM/yyyy" name="date" />',
             renderTo:'ecdDatePH'
         });
+        
         var ecdOptions = { 
             beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
             success:       onAfterEcdSubmit,  // post-submit callback 
             timeout: 3000,
             error: onSubmitError
-        };                      
+        };
         
-        $('#formAddNewHireMonitoringEcd').ajaxForm(ecdOptions); //wrap all <form> elements with ajax submission config   
-    
+        $("#formAddNewHireMonitoringEcd").validate(
+        {
+            errorLabelContainer: "#ECDMessageBox",                
+            rules: {
+                reason:{required:true},
+                ecdDate:{required:true, date:true},
+                supportingNote:{required:true}
+            },
+            messages: {
+                reason: {
+                    required:"You must supply a value for 'Reason of Delay'"
+                },
+                ecdDate: {
+                    required:"You must supply a value for 'New ECD'",
+                    date:"You must supply valid date format for 'New ECD'"
+                },
+                supportingNote:{
+                    required:"You must supply a value for 'Supporting Note'"
+                }
+            },
+            submitHandler: function(form) {
+                $(form).ajaxSubmit(ecdOptions);
+            }   
+        });
     });
 
-  
     var ecdsLoaded = false;
     function loadEcds(){
+
         if(!hireMonitoringDetailsDisabled){
 
             if(!ecdsLoaded)
@@ -43,53 +64,58 @@
                 ecdDataStore.load(
                 {
                     params:
-                    {
+                        {
                         claimId : <s:property value="id" />
                     }
                 });   
             }
         }
-    }              
-            
+    }
+
     function onAfterEcdSubmit(responseText, statusText)  {    
         onSubmitResponseReceived(responseText, statusText);
-        loadEcds();                
+        loadEcds();
+        doResetForm();
+        
+    }
+    
+    function doResetForm(){
+        document.formAddNewHireMonitoringEcd.reason.value = "";
+        document.formAddNewHireMonitoringEcd.supportingNote.value = "";
     }
     
 </script>
 
-
-
-<form id="formAddNewHireMonitoringEcd" action="user/addNewHireMonitoringEcd.action">
+<form id="formAddNewHireMonitoringEcd" action="user/addNewHireMonitoringEcd.action" name="formAddNewHireMonitoringEcd" class="XXentity-form">
     <fieldset class="x-fieldset">
         <legend>Revised ECD</legend>
         <div style="display:none" class="form-container">
             <input type="hidden" name="objectId" value='<s:property value="id"/>'>
             <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-            <div class="chox-form-item">
-                <label class="chox-form-std-label">New ECD</label>
-                <span id="ecdDatePH"></span>
-            </div>                                          
-            
-            <div class="chox-form-item">
-                <label class="chox-form-std-label">
-                Reason of Delay</label>
-                <s:select name="reason" list="reasonTypes" headerKey="-1"
-                          headerValue="--- SELECT ---"
-                          emptyOption="false"></s:select>
-            </div>    
-            <div class="chox-form-item">
-                <label class="chox-form-std-label">
-                Supporting Note</label>
-                <textarea class="chox-tta" id="ECDSupportingNote" cols="20" rows="5" name="supportingNote"><s:property value="supportingNote" /></textarea>
-            </div>  
-            
-            <div class="chox-form-button">
-                <input type="submit" value="Add New ECD" />
-            </div>
-            <div class="chox-form-submit-result">&nbsp;</div>  
+            <s:if test="isECDFormVisible">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">New ECD</label>
+                    <span id="ecdDatePH"></span>
+                </div>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">
+                    Reason of Delay</label>
+                    <s:select name="reason" list="reasonTypes" headerKey=""
+                              headerValue="--- SELECT ---"
+                              emptyOption="false"></s:select>
+                </div>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">
+                    Supporting Note</label>
+                    <textarea class="chox-tta" id="ECDSupportingNote" cols="20" rows="5" name="supportingNote"><s:property value="supportingNote" /></textarea>
+                </div>
+                <div class="chox-form-button">
+                    <input type="submit" value="Add New ECD" />
+                </div>
+            <div class="errorBox" id="ECDMessageBox"></div>
+            <div class="chox-form-submit-result">&nbsp;</div>
+            </s:if>
             <div id="ecdGridHolder"></div>
         </div>
-         
-    </fieldset>
-</form>
+        
+    </fieldset></form>
