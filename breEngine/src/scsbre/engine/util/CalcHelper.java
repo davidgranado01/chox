@@ -32,5 +32,5 @@ public class CalcHelper {
     // Mantis Id 0000255
     // Updated by Carlson @ 20081211
     // public static final BigDecimal VAT_RATE = new BigDecimal(.175);
-    public static final BigDecimal VAT_RATE = new BigDecimal(.15); 
+    public static final BigDecimal VAT_RATE = new BigDecimal(.15);
 }
