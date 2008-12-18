@@ -92,7 +92,7 @@
         <div style="display:none" class="form-container">
             <input type="hidden" name="objectId" value='<s:property value="id"/>'>
             <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-            <s:if test="isECDFormVisible">
+
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">New ECD</label>
                     <span id="ecdDatePH"></span>
@@ -109,12 +109,14 @@
                     Supporting Note</label>
                     <textarea class="chox-tta" id="ECDSupportingNote" cols="20" rows="5" name="supportingNote"><s:property value="supportingNote" /></textarea>
                 </div>
+                <s:if test="isECDFormVisible">
                 <div class="chox-form-button">
-                    <input type="submit" value="Add New ECD" />
+                    <input type="submit" value="Add New ECD" readonly='<s:property value="isECDFormVisible"/>' />
                 </div>
+                </s:if>
+                
             <div class="errorBox" id="ECDMessageBox"></div>
             <div class="chox-form-submit-result">&nbsp;</div>
-            </s:if>
             <div id="ecdGridHolder"></div>
         </div>
         

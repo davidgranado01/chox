@@ -67,7 +67,7 @@
         </action>
         
         <action name="doDeleteFile" class="chox.web.actions.DeleteAttachmentAction">
-            <result name="success" type="redirect">openClaimDetail.action?id=${claimid}</result>
+            <result name="success">/jsp/p_response.jsp</result>
         </action>
         
         <action name="getAttachmentDetail" class="chox.web.actions.GetAttachmentDetailAction">
@@ -496,8 +496,7 @@
             </result>
         </action>
         <action name="createNewComment" class="chox.web.actions.CommentAction" method="createNewComment">
-            <result name="success">/jsp/p_response.jsp
-            </result>
+            <result name="success">/jsp/p_response.jsp</result>
         </action>
         <action name="createNewAttachment" class="chox.web.actions.AttachmentAction" method="createNewAttachment">
             <result name="success">/jsp/p_response.jsp

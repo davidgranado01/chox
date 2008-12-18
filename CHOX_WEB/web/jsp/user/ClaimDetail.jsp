@@ -12,10 +12,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>IDAS-CHOX</title>
         
-        
         <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
         <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
-        
         
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery-1.2.6.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.form.js"></script>
@@ -24,185 +22,105 @@
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.metadata.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.validate.min.js"></script>            
         
-        
         <script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
         <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
         <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script> 
-    
+        <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script> 
         
-        
-        <script type="text/javascript">
+<script type="text/javascript">
             
-            var newwindow;
-            function openFile(url,name)
+    var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
+    var invoiceDetailTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
+    var hireMonitoringTabAccessibility = <s:property value="tabAccessibility.hireMonitoringTabAccessibility" />;
+    var historyTabAccessibility = <s:property value="tabAccessibility.historyTabAccessibility" />;
+    var notesTabAccessibility = <s:property value="tabAccessibility.notesTabAccessibility" />;
+    var paymentPackTabAccessibility = <s:property value="tabAccessibility.paymentPackTabAccessibility" />;
+
+    var hasFormUnderSubmission = false;
+    var elementToBlock;
+
+    var claimDetailsDisabled = claimDetailTabAccessibility == 0;
+    var hireMonitoringDetailsDisabled = hireMonitoringTabAccessibility  == 0;
+    var invoiceDetailsDisabled = invoiceDetailTabAccessibility == 0;
+    var paymentPackDisabled = paymentPackTabAccessibility == 0;
+    var historyDetailsDisabled = historyTabAccessibility == 0;
+    var commentsDisabled = notesTabAccessibility == 0;
+
+    // COMMENT
+    var commentsJsonReader;
+    var commentsDataStore;
+    var commentsGrid;  
+
+    // PAYMENT PACK
+    var paymentPackJsonReader;
+    var paymentPackDataStore;
+    var paymentPackGrid; 
+
+    var globalEntityFormOptions = { 
+        beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
+        success:       onSubmitResponseReceived,  // post-submit callback 
+        timeout: 3000,
+        error: onSubmitError
+    }; 
+
+    $(document).ready(function(){
+        var fsets =  $('legend');
+        fsets.click(function(){ $(this).next().toggle();});
+        fsets.mouseover(function(){ $(this).css("cursor","pointer"); }); 
+        fsets.mouseout(function(){ $(this).css("cursor","normal");});
+        $('.entity-form').ajaxForm(globalEntityFormOptions);
+    });
+
+    function onBeforeSubmit(formData, jqForm, options) { 
+        if(!hasFormUnderSubmission){
+            if(elementToBlock != undefined){
+                outputDiv = elementToBlock.find('div.chox-form-submit-result');
+                outputDiv.text("");
+                outputDiv.removeClass("submit-error");
+            }
+            hasFormUnderSubmission = true;
+            elementToBlock = jqForm.find('div.form-container');
+            elementToBlock.block({ message: "Please wait.." });
+
+            var queryString = $.param(formData); 
+            return true; 
+        }else alert("Please wait until other save operations have completed");
+    } 
+
+    // post-submit callback 
+    function onSubmitResponseReceived(responseText, statusText)  {      
+        responseText = responseText.trim();
+        elementToBlock.unblock();
+        var output = "Your changes have been saved.";
+        var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
+
+        if(responseText != "" && responseText != "1"){
+
+            if(responseText.substring(0,4) == 'new:')
             {
-                newwindow=window.open(url,name);
-                if (window.focus) {newwindow.focus()}
-            }
-
-
-            var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
-            var invoiceDetailTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
-            var hireMonitoringTabAccessibility = <s:property value="tabAccessibility.hireMonitoringTabAccessibility" />;
-            var historyTabAccessibility = <s:property value="tabAccessibility.historyTabAccessibility" />;
-            var notesTabAccessibility = <s:property value="tabAccessibility.notesTabAccessibility" />;
-            var paymentPackTabAccessibility = <s:property value="tabAccessibility.paymentPackTabAccessibility" />;
-    
-            var hasFormUnderSubmission = false;
-            var elementToBlock;
-
-
-            var claimDetailsDisabled = claimDetailTabAccessibility == 0;
-            var hireMonitoringDetailsDisabled = hireMonitoringTabAccessibility  == 0;
-            var invoiceDetailsDisabled = invoiceDetailTabAccessibility == 0;
-            var paymentPackDisabled = paymentPackTabAccessibility == 0;
-            var historyDetailsDisabled = historyTabAccessibility == 0;
-            var commentsDisabled = notesTabAccessibility == 0;
-         
-
-            var commentsJsonReader;
-            var commentsDataStore;
-            var commentsGrid;  
-
-            var paymentPackJsonReader;
-            var paymentPackDataStore;
-            var paymentPackGrid; 
-
-
-            // override these in your code to change the default behavior and style 
-            $.blockUI.defaults = { 
-                // message displayed when blocking (use null for no message) 
-                message:  '<h1 class="block">Please wait...</h1>', 
-         
-                // styles for the message when blocking; if you wish to disable 
-                // these and use an external stylesheet then do this in your code: 
-                // $.blockUI.defaults.css = {}; 
-                css: {  
-                    padding:        0, 
-                    margin:         0, 
-                    width:          '40%',  
-                    top:            '40%',  
-                    left:           '35%',  
-                    textAlign:      'center',  
-                    color:          '#000',  
-                    border:         '3px solid #aaa', 
-                    backgroundColor:'#fff', 
-                    cursor:         'wait' 
-                }, 
-         
-                // styles for the overlay 
-                overlayCSS:  {  
-                    backgroundColor:'#6c8cbe',  
-                    opacity:        '0.5'  
-                }, 
-         
-                // z-index for the blocking overlay 
-                baseZ: 1000, 
-         
-                // set these to true to have the message automatically centered 
-                centerX: true, // <-- only effects element blocking (page block controlled via css above) 
-                centerY: true, 
-         
-                // allow body element to be stetched in ie6; this makes blocking look better 
-                // on "short" pages.  disable if you wish to prevent changes to the body height 
-                allowBodyStretch: true, 
-         
-                // be default blockUI will supress tab navigation from leaving blocking content; 
-                constrainTabKey: true, 
-         
-                // fadeOut time in millis; set to 0 to disable fadeout on unblock 
-                fadeOut:  0, 
-         
-                // suppresses the use of overlay styles on FF/Linux (due to significant performance issues with opacity) 
-                applyPlatformOpacityRules: true 
-            }; 
-            
-            
-            
-            var globalEntityFormOptions = { 
-                    beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
-                    success:       onSubmitResponseReceived,  // post-submit callback 
-                    timeout: 3000,
-                    error: onSubmitError
-                }; 
-
-    
-            $(document).ready(function(){
-    
-                var fsets =  $('legend');
-                fsets.click(function(){ $(this).next().toggle();});
-                fsets.mouseover(function(){ $(this).css("cursor","pointer"); }); 
-                fsets.mouseout(function(){ $(this).css("cursor","normal");});  
-
-                /*
-                var options = { 
-                    beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
-                    success:       onSubmitResponseReceived,  // post-submit callback 
-                    timeout: 3000,
-                    error: onSubmitError
-                }; 
-                */
-                $('.entity-form').ajaxForm(globalEntityFormOptions); //wrap all <form> elements with ajax submission config   
-            });
-
-            function onBeforeSubmit(formData, jqForm, options) { 
-                if(!hasFormUnderSubmission){
-                    if(elementToBlock != undefined){
-                        outputDiv = elementToBlock.find('div.chox-form-submit-result');
-                        outputDiv.text("");
-                        outputDiv.removeClass("submit-error");
-                    }
-                    hasFormUnderSubmission = true;
-                    elementToBlock = jqForm.find('div.form-container');
-                    elementToBlock.block({ message: "Please wait.." });
-            
-                    var queryString = $.param(formData); 
-                    return true; 
-                }else alert("Please wait until other save operations have completed");
-            } 
-
-            // post-submit callback 
-            function onSubmitResponseReceived(responseText, statusText)  {      
-                responseText = responseText.trim();
-                elementToBlock.unblock();
-                var output = "Your changes have been saved.";
-                var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
-                       
-                if(responseText != "" && responseText != "1"){
-                                        
-                    if(responseText.substring(0,4) == 'new:')
-                    {
-                        var newObjectId =  parseInt(responseText.substring(4,responseText.length));
-                        var hvObjectId = elementToBlock.find("input[name='objectId']");
-                        hvObjectId.val(newObjectId);                   
-                    }   
-                    else
-                    {
-                        output = "There was an error: " + responseText.substring(0,40);
-                        outputDiv.addClass("submit-error");
-                    }
-                }
-                
-                
-                
-                outputDiv.text(output);
-                hasFormUnderSubmission = false;  
-        
-                //alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + 
-                //     '\n\nThe output div should have already been updated with the responseText.'); 
-            }    
-
-            function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
-                elementToBlock.unblock();
-                var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
+                var newObjectId =  parseInt(responseText.substring(4,responseText.length));
+                var hvObjectId = elementToBlock.find("input[name='objectId']");
+                hvObjectId.val(newObjectId);                   
+            }   
+            else
+            {
+                output = "There was an error: " + responseText.substring(0,40);
                 outputDiv.addClass("submit-error");
-                outputDiv.text(textStatus  + ":" + errorThrown);   
-                hasFormUnderSubmission = false;                
             }
-         
-         
-         
-         
+        }
+
+        outputDiv.text(output);
+        hasFormUnderSubmission = false;
+    }    
+
+    function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
+        elementToBlock.unblock();
+        var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
+        outputDiv.addClass("submit-error");
+        outputDiv.text(textStatus  + ":" + errorThrown);   
+        hasFormUnderSubmission = false;                
+    }
+
     Ext.onReady(function(){
     
         var tabs = new Ext.TabPanel({
@@ -246,10 +164,11 @@
             ]
         }); 
         
-        
-        
-        
-        // ADDED BY CARLSON @ 2008-12-02
+        /*
+         * CREATED BY: CALRSON HOO
+         * CREATED DATE: 6 DEC 2008
+         * DESC: PAYMENT PACK / ATTACHMENT
+         **/
         if(!paymentPackDisabled){
             
             paymentPackJsonReader = new Ext.data.JsonReader({
@@ -276,20 +195,32 @@
                 store: paymentPackDataStore,
                 loadMask: true,
                 columns: [
-                    {header: "File Id", width: 60, dataIndex: 'id', sortable: false, resizable: false},
-                    {header: "File Name", width: 300, dataIndex: 'fileName', sortable: false, resizable: false},
-                    {header: "Category", width: 200, dataIndex: 'category', sortable: false, resizable: false},
-                    {header: "Description", width: 270, dataIndex: 'remarks', sortable: false, resizable: false},
+                    {header: "File Id", width: 60, dataIndex: 'id', sortable: false, resizable: true},
+                    {header: "File Name", width: 300, dataIndex: 'fileName', sortable: false, resizable: true},
+                    {header: "Category", width: 200, dataIndex: 'category', sortable: false, resizable: true},
+                    {header: "Description", width: 270, dataIndex: 'remarks', sortable: false, resizable: true},
                     {header: "", width: 60, dataIndex: 'delete', sortable: false, resizable: false, renderer:function(value,p,r){
-                return '<a href="doDeleteFile.action?fileId=' + r.data['id'] + '">' + value + '</a>'}}
+                    return "<a href='#attachmentlisting'>" + value + "</a>"}}
                 ],
                 renderTo:'paymentPackGrid',
                 width:960,
                 autoHeight:true,
                 enableHdMenu:false
             });
-            
             loadAttachments();
+        }
+        
+        //return confirm('Are you sure you want to reject this invoice?')
+        //return '<a href="doDeleteFile.action?fileId=' + r.data['id'] + '">' + value + '</a>'
+        function deleteAttachment(a){
+            var deleteAtt = confirm("Are you sure you want to delete this attachment?")
+            if(deleteAtt){
+                paymentPackLoaded = false;
+                 $.ajax({
+                   url: "doDeleteFile.action?fileId="+a,
+                   success: loadAttachments
+                 });
+            }
         }
         
         function loadAttachment(grid, rowIndex, columnIndex, e){
@@ -298,9 +229,9 @@
             if(columnIndex!=4){
                 var popwin = window.open("doExportFile.action?fileId="+fileId, "Attachment", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
             }else{
-                //var popwin = window.open("doDeleteFile.action?fileId="+fileId, "Attachment", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
+                deleteAttachment(fileId);
             }
-            loadAttachments();
+            //loadAttachments();
         }
         
         //Emmanuel 
@@ -328,9 +259,9 @@
                 store: ecdDataStore,
                 loadMask: true,
                 columns: [
-                    {header: "", width: 30, dataIndex: 'sequence', sortable: false, resizable: false},
-                    {header: "ECD Date", width: 80, dataIndex: 'ecdDate', sortable: false, resizable: false},
-                    {header: "Reason", width: 100, dataIndex: 'reason', sortable: false, resizable: false},
+                    {header: "", width: 30, dataIndex: 'sequence', sortable: false, resizable: true},
+                    {header: "ECD Date", width: 80, dataIndex: 'ecdDate', sortable: false, resizable: true},
+                    {header: "Reason", width: 100, dataIndex: 'reason', sortable: false, resizable: true},
                     {header: "Supporting Note", width: 260, dataIndex: 'supportingNote', sortable: false, resizable: false}
                 ],
                 renderTo:'ecdGridHolder',
@@ -345,7 +276,9 @@
         
         
         
-        
+        /*
+         * DESC: COMMENT
+         **/
         if(!commentsDisabled){
             
             
@@ -359,17 +292,13 @@
                     {name:'createdDate'},        
                     {name:'comment'}
                 ]
-            });// {name:'created', type: 'date', dateFormat: 'd/m/Y'},
-
-
+            });
 
             commentsDataStore = new Ext.data.Store({
                 proxy: new Ext.data.HttpProxy
                 ({url: 'user/getComments.action',method:'GET'}),
                 reader:commentsJsonReader        
             });
-
-
 
             commentsGrid = new Ext.grid.GridPanel({
                 
@@ -378,37 +307,28 @@
                 store: commentsDataStore,
                 loadMask: true,
                 columns: [
-                     {header: "Created", width: 110, dataIndex: 'createdDate', sortable: false, resizable: true}, 
-                    {header: "Created By", width: 130, dataIndex: 'createdBy', sortable: false, resizable: true},                   
-                    {header: "Message", width: 630, dataIndex: 'comment', sortable: false, resizable: true}
+                     {header: "Created", width: 200, dataIndex: 'createdDate', sortable: false, resizable: true}, 
+                    {header: "Created By", width: 200, dataIndex: 'createdBy', sortable: false, resizable: true},                   
+                    {header: "Message", width: 500, dataIndex: 'comment', sortable: false, resizable: true}
                 ],
                 renderTo:'commentsGrid',
                 width:960,
                 autoHeight:true,
                 enableHdMenu:false
-                
-                
             });
-            
-
-            
         }
-            
-
+        
         function loadComment(grid, rowIndex, columnIndex, e){
-            $("#comments").block({message: $("#commentTemplate")  });
-            var comment = commentsGrid.getStore().getAt(rowIndex);  // Get the Record
+            $("#comments").block({message: $("#commentTemplate"), css: { backgroundColor: '#FFFFFF', height:'auto', padding:'10px'}  });
+            var comment = commentsGrid.getStore().getAt(rowIndex);
             var commentText = comment.get("comment");
             $("#commentMessage").text(commentText);
         }
 
-
-
-
-        
+        /*
+         * DESC: HISTORY
+         **/        
         if(!historyDetailsDisabled){
-            
-            
             historyJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',   
                 root: 'results', 
@@ -418,26 +338,20 @@
                     {name:'createdDate'},                 
                     {name:'narrative'}
                 ]
-            });// {name:'created', type: 'date', dateFormat: 'd/m/Y'},
+            });
 
-
-
-            
-            
             var historyData = new Ext.data.Store({
                 proxy: new Ext.data.HttpProxy
                 ({url: 'user/getHistories.action',method:'GET'}),
                 reader:historyJsonReader        
             });            
 
-
-            // create the grid
             var grid = new Ext.grid.GridPanel({
                 store: historyData,
                 columns: [
-                    {header: "Created On", width: 110, dataIndex: 'createdDate', sortable: false, resizable: false},
-                    {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: false, resizable: false},
-                    {header: "Message Text", width: 650, dataIndex: 'narrative', sortable: false, resizable: false}
+                    {header: "Created On", width: 110, dataIndex: 'createdDate', sortable: false, resizable: true},
+                    {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: false, resizable: true},
+                    {header: "Message Text", width: 650, dataIndex: 'narrative', sortable: false, resizable: true}
                 ],
                 renderTo:'historyGrid',
                 width:960,
@@ -445,69 +359,68 @@
                 enableHdMenu:false
             });
 
-            //historyData.load();
-
             historyData.load(
             {
                 params:
                 {
                     claimId : <s:property value="id" />
                 }
-            });              
-            
+            });    
         }
-
 
     
     });         
 
+    // LOAD COMMENT
+    var commentsLoaded = false;
+    function loadComments(){
+        if(!commentsDisabled){
+            if(!commentsLoaded){
+                commentsDataStore.load(
+                {
+                    params:
+                    {
+                        claimId : <s:property value="id" />
+                    }
+                });
+                commentsLoaded = true;
+            }       
+        }
+    }   
     
-            var commentsLoaded = false;
+    // LOAD PAYMENT PACK / ATTACHMENT
+    var paymentPackLoaded = false;
+    function loadAttachments(){
+        if(!paymentPackDisabled){
+            if(!paymentPackLoaded){
+                
+                paymentPackDataStore.load(
+                {
+                    params:
+                    {
+                        claimId : <s:property value="id" />
+                    }
+                });                          
+                paymentPackLoaded = true;
+                resetAttachmentForm();
+            }       
+        }
+    }   
     
-            function loadComments(){
-            
-                if(!commentsDisabled){
-                    if(!commentsLoaded){
-                        
-  
-                        commentsDataStore.load(
-                        {
-                            params:
-                            {
-                                claimId : <s:property value="id" />
-                            }
-                        });                          
+    
+    function resetAttachmentForm(){
 
-                        
-                        commentsLoaded = true;
-                    }       
-                }
-  
-            }   
-            var paymentPackLoaded = false;
+        $("#fAttachment").each(function(){
+	        this.reset();
+	});
+    }
     
-            function loadAttachments(){
-                if(!paymentPackDisabled){
-                    if(!paymentPackLoaded){
-                        paymentPackDataStore.load(
-                        {
-                            params:
-                            {
-                                claimId : <s:property value="id" />
-                            }
-                        });                          
-                        paymentPackLoaded = true;
-                    }       
-                }
-            }   
-    
-            function registeAction(val)
-            {
-                $("#actionName").val(val);
-            }
-
-    
-        </script>        
+    function registeAction(val)
+    {
+        $("#actionName").val(val);
+    }
+   
+</script>        
         
     </head>    
     
@@ -535,14 +448,14 @@
                                     </s:if>
                                     
                                      <s:if test="isCHO">
-                                        <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_CHO_UG_1.1-1.pdf','Help');">Help</a>
+                                        <a href="javascript:openFile('<%= request.getContextPath()%>','ChoHelp');">Help</a>
                                     </s:if>
                                     <s:else>
-                                        <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_IUG_1.0-1.pdf','Help');">Help</a>
+                                        <a href="javascript:openFile('<%= request.getContextPath()%>','InsHelp');">Help</a>
                                     </s:else>&nbsp;|&nbsp;
-                                    <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_Support_Document.pdf','Support');">Support</a>&nbsp;|&nbsp; 
-                                    <a href="#">About CHOX</a>&nbsp;|&nbsp;
-                                    <a href="<%=request.getContextPath()%>/j_acegi_logout">Log Off</a>
+                                    <a href="javascript:openFile('<%= request.getContextPath()%>','Support');">Support</a>&nbsp;|&nbsp; 
+                                    <a href="javascript:onOpenAbout();">About CHOX</a>&nbsp;|&nbsp;
+                                    <b><s:property value="CurrentUserDesc" /></b>&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/j_acegi_logout">( Log Off )</a>
                                 </div>
                             </td>
                         </tr>
@@ -724,20 +637,12 @@
                             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                 <tr valign="top">
                                     <td class="chox-form-left-col">
-                                        
-          
-                                        
-                                        
                                         <s:action name="getHireMonitoringDetail" executeResult="true">
-
                                             <s:param name="claimId"><s:property value="id" /></s:param> 
                                             <s:param name="customerId"><s:property value="customer.id" /></s:param> 
                                             <s:param name="objectId"><s:property value="hireMonitoringDetailId" /></s:param>                                            
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
-                                        
-                                        
-                                        
                                     </td>
                                     <td>
                                          <s:action name="getHireMonitoringEcd" executeResult="true">
@@ -761,10 +666,6 @@
                             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                 <tr valign="top">
                                     <td class="chox-form-left-col">
-                                        
-                                          
-
-                                        
                                         <s:action name="getInvoice" executeResult="true">
                                             <s:param name="objectId"><s:property value="invoice.id" /></s:param> 
                                             <s:param name="claimId"><s:property value="id" /></s:param>
@@ -809,89 +710,97 @@
                         
 </s:if>                         
                     </div>
+                    
+                    
+                    
+                    
                     <div id="paymentPack" class="x-hide-display">
-<s:if test="tabAccessibility.paymentPackTabAccessibility != 0">
-<!-- START - CREATED BY CARL AttachmentAction -->
-    <script language="JavaScript">
-    $(document).ready(function() { 
-            var options = { 
-                success: showResponseAtt  // post-submit callback 
-            }; 
-
-            // bind form using 'ajaxForm' 
-            $('#fAttachment').ajaxForm(options); 
-    });
-    
-    function showResponseAtt(responseText, statusText)  { 
-        
-        paymentPackLoaded = false;
-        loadAttachments();
-    } 
-    
-    function fileValidation(){
-        
-        var uploadFile = document.form.attachmentFile.value;
-        if(uploadFile==""){
-            alert("Please select a file to upload");
-            return false;
-        }
-        
-        if((uploadFile.lastIndexOf("."))>0){
-            var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
-        }
-        
-        document.form.uploadFileName.value = filename;
-        return true;
-    }
-    </script>
-    
-<div class="attachments  x-panel-bwrap chox-form-container">
-    <form id="fAttachment" action="user/createNewAttachment.action" method="POST" enctype="multipart/form-data" name="form">
-        <input type="hidden" name="claimId" value='<s:property value="id" />'>
-        <input type="hidden" name="uploadFileName">
-        <fieldset class="x-fieldset">
-        <legend>Add a new Attachment</legend>
-        <table class="chox-form-item">
-        <tr>
-            <td width="30%" align="right"><label class="std-label-ro">File</label></td>
-            <td>
-            <s:file id="fileUploader" name ="attachmentFile" label ="Attachment" size="40"/>   
-            </td>
-        </tr>
-        <tr>
-            <td align="right"><label class="std-label-ro">Attachment Type</label></td>
-            <td>
-            <s:select name="category" 
-            list="attachmentCategory" 
-            headerKey="" 
-            listKey="value" 
-            listValue="text" 
-            emptyOption="false"></s:select>
-            </td>
-        </tr>
-        <tr>
-            <td align="right" valign="top"><label class="std-label-ro">Description</label></td>
-            <td>
-                <s:textarea rows="3" cols="30" name="remark" label="Remark:"/>
-            </td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td>
-            <input type="submit" id="bAddAttachment" value="Add File" onclick="return fileValidation()"/>
-            </td>
-        </tr>
-        </table>
-        </fieldset>
-    </form>
-</div>
-
-<div id="paymentPackGrid"></div>
-    
-<!-- END - CREATED BY CARL -->    
-</s:if>
+                        <s:if test="tabAccessibility.paymentPackTabAccessibility != 0">
+                            <script language="JavaScript">
+                                
+                                $(document).ready(function() { 
+                                        
+                                    var options = { 
+                                        success: showResponseAtt  // post-submit callback 
+                                    }; 
+                                    $('#fAttachment').ajaxForm(options); 
+                                });
+                                
+                                function showResponseAtt(responseText, statusText){ 
+                                    paymentPackLoaded = false;
+                                    loadAttachments();
+                                    $("#AttMsgBox").text("File has been uploaded successfully");
+                                } 
+                                
+                                function fileValidation(){
+                                    
+                                    var uploadFile = document.Attform.attachmentFile.value;
+                                    if(uploadFile==""){
+                                        alert("Please select a file to upload");
+                                        return false;
+                                    }
+                                    
+                                    if((uploadFile.lastIndexOf("."))>0){
+                                        var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
+                                    }
+                                    
+                                    document.Attform.uploadFileName.value = filename;
+                                    return true;
+                                }
+                            </script>
+                                
+                            <div class="attachments  x-panel-bwrap chox-form-container">
+                                <form id="fAttachment" action="user/createNewAttachment.action" method="POST" enctype="multipart/form-data" name="Attform">
+                                    <input type="hidden" name="claimId" value='<s:property value="id" />'>
+                                    <input type="hidden" name="uploadFileName">
+                                    <fieldset class="x-fieldset">
+                                        <legend>Add a new Attachment</legend>
+                                        <table class="chox-form-item">
+                                            <tr>
+                                                <td width="30%" align="right"><label class="std-label-ro">File</label></td>
+                                                <td>
+                                                    <s:file id="fileUploader" name ="attachmentFile" label ="Attachment" size="40"/>   
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right"><label class="std-label-ro">Attachment Type</label></td>
+                                                <td>
+                                                    <s:select name="category" 
+                                                              list="attachmentCategory" 
+                                                              headerKey="" 
+                                                              listKey="value" 
+                                                              listValue="text" 
+                                                              emptyOption="false"></s:select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right" valign="top"><label class="std-label-ro">Description</label></td>
+                                                <td>
+                                                    <s:textarea rows="3" cols="30" name="remark" label="Remark:"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <td>
+                                                    <input type="submit" id="bAddAttachment" value="Add File" onclick="return fileValidation()"/>
+                                                </td>
+                                            </tr>
+                                            <tr><td colspan="2"><div class="chox-form-submit-result" id="AttMsgBox"></div></td>
+                                        </table>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <a name="attachmentlisting"></a>
+                            <div id="paymentPackGrid"></div>   
+                        </s:if>
                     </div>
-                    <div id="historyDetails" class="x-hide-display">
+
+
+
+
+
+
+<div id="historyDetails" class="x-hide-display">
                         
 <s:if test="tabAccessibility.historyTabAccessibility != 0"> 
 
@@ -922,34 +831,46 @@
 
         function showResponse(responseText, statusText)  { 
             commentsLoaded = false;
+            
+            $("#fComments").each(function(){
+                this.reset();
+            });
+                
             loadComments();
         }    
      
-     
+        function commentFormValidation(){
+            var inp = $("#commentBox").val();
+            if(inp==null || inp==""){
+                $("#CmErrMsgBox").show();
+                $("#CmErrMsgBox").text("Please enter note messages.");
+                return false;
+            }else{
+                $("#CmErrMsgBox").hide();
+            }
+            return true;
+        }
         
     </script>
-                        
-                        
+   
     <div class="comments  x-panel-bwrap chox-form-container">
         <form id="fComments" action="user/createNewComment.action" method="post">
             <input type="hidden" name="claimId" value='<s:property value="id" />'>
             <fieldset class="x-fieldset">
                 <legend>Add a new note</legend>
                 <s:textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment" /><br/>
-                <input type="submit" id="bAddComment" value="Add Note"/>
+                <input type="submit" id="bAddComment" value="Add Note" onclick="javascript:return commentFormValidation();"/>
             </fieldset>
         </form>
+        <div class="errorBox" id="CmErrMsgBox" style="color:red;font-weight: bold;font-size: 10px;"></div>        
     </div>
-                        
-  
-  
+
     <!-- template for modal comment-->
     <div style="display:none" id="commentTemplate">
             <div id="commentMessage"></div><br/><br/>
              <input type="button" value="Close" id="commentModalClose">
     </div>                      
-
-                        
+       
     <div id="commentsGrid">
     </div>
                         
@@ -963,5 +884,7 @@
             </div>
         </div>
     <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/> Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.</div>       
+    
+    
     </body>
 </html>

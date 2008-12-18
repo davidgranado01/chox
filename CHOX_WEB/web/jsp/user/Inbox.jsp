@@ -8,33 +8,26 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <head>
-    <title>IDAS-CHOX V2.12 - 20081215</title>
+    <title>IDAS-CHOX</title>
     
 
     <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
     <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
     
-    
     <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery-1.2.6.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.form.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/ext-jquery-adapter.js"></script>
-    
+    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.blockUI.js"></script>
     
     <script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
     <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script> 
+    <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script> 
     
 </head>
 
 <script >
-
-    var newwindow;
-    function openFile(url,name)
-    {
-            newwindow=window.open(url,name);
-            if (window.focus) {newwindow.focus()}
-    }
-    
+        
     var rd = new Ext.data.JsonReader({
         totalProperty: 'totalCount',   
         root: 'results', 
@@ -233,14 +226,13 @@ hireDateFromPicker.render('hireDateFromDiv');
 hireDateToPicker.render('hireDateToDiv');
 } 
 
-
 </script>
 
 
 <body>
     
     
-    <div class="outer">
+    <div class="outer" id="outerDiv">
         
         <div class="inner">
             
@@ -258,14 +250,14 @@ hireDateToPicker.render('hireDateToDiv');
                                     <a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;|&nbsp;
                                     </s:if> 
                                     <s:if test="isCHO">
-                                        <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_CHO_UG_1.1-1.pdf','Help');">Help</a>
+                                        <a href="javascript:openFile('<%= request.getContextPath()%>','ChoHelp');">Help</a>
                                     </s:if>
                                     <s:else>
-                                        <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_IUG_1.0-1.pdf','Help');">Help</a>
+                                        <a href="javascript:openFile('<%= request.getContextPath()%>','InsHelp');">Help</a>
                                     </s:else>&nbsp;|&nbsp;
-                                <a href="javascript:openFile('<%= request.getContextPath()%>/download/iDAS_CHOX_Support_Document.pdf','Support');">Support</a>&nbsp;|&nbsp; 
-                                <a href="#">About CHOX</a>&nbsp;|&nbsp;
-                                <a href="<%=request.getContextPath()%>/j_acegi_logout">Log Off</a>
+                                <a href="javascript:openFile('<%= request.getContextPath()%>','Support');">Support</a>&nbsp;|&nbsp; 
+                                <a href="javascript:onOpenAbout();">About CHOX</a>&nbsp;|&nbsp;
+                                <b><s:property value="CurrentUserDesc" /></b>&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/j_acegi_logout">( Log Off )</a>
                             </div>
                         </td>
                     </tr>
@@ -343,12 +335,15 @@ hireDateToPicker.render('hireDateToDiv');
             </div>
             
             
+            
+            
             <div class="excel-export"><form name="thisForm">
             <a href="javascript:doExportExcel();">Export To Excel</a></form></div>
         </div>
         
     </div>
     <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/> Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.</div>
+   
 </body>
 
 

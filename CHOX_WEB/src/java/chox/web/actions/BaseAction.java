@@ -1,5 +1,6 @@
 package chox.web.actions;
 
+import chox.model.Chorganisation;
 import chox.web.security.AcegiPrincipal;
 import com.opensymphony.xwork2.ActionSupport;
 import chox.web.security.PermissionedUser;
@@ -40,5 +41,22 @@ public class BaseAction extends ActionSupport {
     public boolean getIsInsurer()
     {
         return getAuthenticatedUser().getIsINS();
+    }
+    
+    public String getCurrentUserDesc(){
+        String logInUserDesc = user.getUser().getFirstName();
+        String strOrgType = "";
+        
+        if(user.getIsCHO()){
+            strOrgType = user.getUser().getChorganisation().getName();
+        }else if(user.getIsINS()){
+            strOrgType = user.getUser().getInsurer().getName();
+        }
+        
+        if(!strOrgType.equalsIgnoreCase("")){
+            logInUserDesc = logInUserDesc + ", " + strOrgType;
+        }
+        
+        return logInUserDesc;
     }
 }

@@ -220,7 +220,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 claim.setClaimNumber("");
                 result = ERROR;
                 this.actionResult = validationResult;
-            }   
+            }
         }
         else 
         {
@@ -241,15 +241,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String validateAcknowledgeClaimInfo() {
 
         String claimNumber = claim.getClaimNumber();
-
-        boolean isClaimNumberExist = this.service.getClaimCountByClaimNumber(claimNumber) > 0;
-
+        int claimId = claim.getId();
+        
+        boolean isClaimNumberExist = this.service.getClaimCountByClaimNumber(claimNumber, claimId) > 0;
         if (isClaimNumberExist) {
             return "ERROR : The Claim number you have supplied already exists";
         } else {
             return "";
         }
-
     }
     
     public String reviewByEngineer() {
@@ -270,23 +269,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String result = SUCCESS;
         
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
-            //claim.setStatus(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
-            try {
-                this.service.updateClaimStatus(claim.getId(), ClaimStatus.CLAIM_REJECTION_ACCEPTED);
-            } catch (Exception ex) {
-                result = ERROR;
-                this.actionResult = "ERROR : " + ex.getMessage();
-            }
+            claim.setStatus(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
         } else {
-            
-            try {
-                claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-                this.service.updateClaim(claim);
-            } catch (Exception ex) {
-                result = ERROR;
-                this.actionResult = "ERROR : " + ex.getMessage();
-            }
-            
+            claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+        }
+        
+        try {
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            result = ERROR;
+            this.actionResult = "ERROR : " + ex.getMessage();
         }
         
         statusMsg = "Your action has been recorded";
@@ -296,11 +288,34 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String approveContestedClaim() {
 
         String result = SUCCESS;
+        
+        String validationResult = validateAcknowledgeClaimInfo();
+        
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
-            claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
-        } else {
+            
+            if (validationResult.isEmpty()) {
+                claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
+            }else {
+                claim.setClaimNumber("");
+                result = ERROR;
+                this.actionResult = validationResult;
+            }
+        
+        }else if(this.actionName.equalsIgnoreCase(REFER)){
+                      
+            if (validationResult.isEmpty()) {
+                claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);
+            } else {
+                claim.setClaimNumber("");
+                result = ERROR;
+                this.actionResult = validationResult;
+            }
+            
+        }else {
+            claim = service.getClaim(id);
             claim.setStatus(ClaimStatus.CLAIM_REJECTED);
         }
+        
         try {
             this.service.updateClaim(claim);
         } catch (Exception ex) {

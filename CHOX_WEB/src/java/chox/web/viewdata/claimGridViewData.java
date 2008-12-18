@@ -10,6 +10,7 @@ import chox.model.Customer;
 import chox.model.Insurer;
 import chox.model.Invoice;
 import chox.model.LineOfBusiness;
+import chox.model.ThirdParty;
 import chox.model.WebUser;
 import java.text.DecimalFormat;
 import java.text.Format;
@@ -44,11 +45,13 @@ public class claimGridViewData {
         Insurer i = claim.getInsurer();
         LineOfBusiness lob = claim.getLineOfBusiness();
         Invoice ivc = claim.getInvoice();
-
+        ThirdParty thirdParty = claim.getThirdParty();
+        
         this.id = claim.getId();
         this.supplierReference = claim.getChoReference();
         this.invoiceAmount = ivc == null ? "" : currentcyFormat.format(ivc.getTotalToPay());
-        this.vehicleRegistration = customer == null ? "" : customer.getVehicleRegistration();
+        //this.vehicleRegistration = customer == null ? "" : customer.getVehicleRegistration();
+        this.vehicleRegistration = customer == null ? "" : thirdParty.getVehicleRegistration();
         this.lineOfBusiness = lob == null ? "" : lob.getName();
         this.claimNumber = claim.getClaimNumber();
         this.created = dateFormat.format(claim.getCreatedDate());
