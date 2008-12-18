@@ -15,7 +15,7 @@ public interface ClaimService {
     public Long getCountByStatus(String status);
     public Long getNonDEPaymentLogCount();
     public Long getHireUpdateAnomaliesCount();
-    public Long getClaimCountByClaimNumber(String claimNumber);
+    public Long getClaimCountByClaimNumber(String claimNumber, int claimId);
     public Long getECDCountByClaimId(int claimId);
     //
     public List searchClaims(ClaimSearchCriteria searchCriteria);

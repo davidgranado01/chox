@@ -90,9 +90,9 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         }
         if (searchCriteria.getVrn() != null && !searchCriteria.getVrn().isEmpty()) {
             String vrn = searchCriteria.getVrn().replaceAll(" ", "");
-            criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", vrn).ignoreCase());
+            criteria.createCriteria("thirdParty").add(Restrictions.like("vehicleRegistration", vrn).ignoreCase());
         }      
-                
+ 
         if (searchCriteria.getClaimUploadDateFrom() != null) {
             Date d = searchCriteria.getClaimUploadDateFrom();
             d.setHours(0);
@@ -197,10 +197,9 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         return claim;
     }
     
-    public Long getClaimCountByClaimNumber(String claimNumber)
+    public Long getClaimCountByClaimNumber(String claimNumber, int claimId)
     {
-        Long count = (Long) getCurrentSession().createQuery("select count(*) from Claim where claimNumber = '" + claimNumber + "'").uniqueResult();
-
+        Long count = (Long) getCurrentSession().createQuery("select count(*) from Claim where claimNumber = '" + claimNumber + "' And id != '"+claimId+"'").uniqueResult();
         return count;
     }
     

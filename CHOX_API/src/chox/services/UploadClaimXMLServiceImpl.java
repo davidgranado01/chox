@@ -210,6 +210,9 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                 historyService.logInvoiceValidationErrorMsg(validationResult, BREClaim);
                 
                 String newClaimStatus = validationResult.getStatus().toString();
+                
+                //newClaimStatus = validateVRN(BREClaim.getCustomer().getVehicleRegistration(), BREClaim.getId(), newClaimStatus);
+                
                 xmlParseResult.getClaim().setStatus(newClaimStatus);
                 
                 if(!isEngReportExist){
@@ -217,7 +220,6 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                 }
 
                 if(validationResult.getResults().size()>0){
-                    // LOG ERROR MESSAGE TO SCREEN
                     xmlParseResult = appendInvoiceValidationErrorMessage(xmlParseResult, validationResult.getResults());
                 }
             }
@@ -250,6 +252,15 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         //System.out.println("END  ********************************************");
 
         return xmlParseResult;
+    }
+    
+    private String validateVRN(String strVRN, int claimId, String oldClaimStatus){
+        
+        String newClaimStatus = oldClaimStatus;
+        
+        
+        
+        return newClaimStatus;
     }
     
      public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, Boolean isAllowPartialUpload) {

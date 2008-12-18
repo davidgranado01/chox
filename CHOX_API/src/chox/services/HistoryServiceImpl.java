@@ -53,9 +53,9 @@ public class HistoryServiceImpl extends DataService implements HistoryService {
         Criteria criteria = getCurrentSession().createCriteria(History.class);
         criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
 
-        // if (!isShowAll) {
+        //if (!isShowAll) {
             criteria.add(Restrictions.eq("type", "ERROR"));
-        // }
+        //}
 
         // SHOW TRUE RECORD ONLY IF IT IS NOT PUBLIC
         if (isPublic) {
