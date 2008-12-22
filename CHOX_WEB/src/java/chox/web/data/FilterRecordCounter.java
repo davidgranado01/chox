@@ -7,10 +7,6 @@ package chox.web.data;
 import chox.model.ClaimStatus;
 import chox.services.ClaimService;
 
-/**
- *
- * @author Emmanuel
- */
 public class FilterRecordCounter {  
     
     private ClaimService service;
@@ -44,7 +40,8 @@ public class FilterRecordCounter {
     }
 
     public long getHireUpdateAnomaliesCount() {
-        return service.getHireUpdateAnomaliesCount();
+       return service.getHireUpdateAnomaliesCountNumber();
+       // return service.getCountByStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
     }
 
     public long getNewClaimsToBeroutedCount() {
@@ -71,7 +68,7 @@ public class FilterRecordCounter {
         return service.getCountByStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
     }
     
-        public long getClaimReferredToEngineerCount() {
+    public long getClaimReferredToEngineerCount() {
         return service.getCountByStatus(ClaimStatus.CLAIM_REF_TO_ENG);
     }
 }

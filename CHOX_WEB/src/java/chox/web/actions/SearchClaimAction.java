@@ -46,6 +46,7 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
     private ClaimService claimService;
     private List results;
     private int totalCount;
+    private boolean isAnomalies;
     
     public String getSupplierReference() {
         return supplierReference;
@@ -241,6 +242,16 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
     public void setSession(Map session) {
         this.session = session;
     }
+
+    public boolean IsAnomalies() {
+        return isAnomalies;
+    }
+
+    public void setIsAnomalies(boolean isAnomalies) {
+        this.isAnomalies = isAnomalies;
+    }
+
+
     
     
 }

@@ -67,7 +67,18 @@ function showClaimByStatus(status)
         }
     });
 }    
-    
+
+function showClaimIsAnomalies()
+{            
+    ds.load(
+    {
+        params:
+            {
+            isAnomalies : true
+        }
+    });
+}   
+
 function doExportExcel(){
        
 var popwin = window.open("doExportExcel.action", "Excel", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
@@ -293,14 +304,14 @@ hireDateToPicker.render('hireDateToDiv');
                             <li><a href="javascript:showClaimByStatus('ClaimRejectionContested');" >Re-Submitted Claims Awaiting Acknowledgement (<s:property value="filterRecordCounter.reSubmittedClaimsAwaitingAcknowledgementCount" />)</a></li>
                         </s:if>
                         <s:if test="filterAccessibility.isHireUpdateAnomaliesAccessible">
-                            <li><a href="javascript:showClaimByStatus('HireUpdateAnomalies');" >Hire Update Anomalies (<s:property value="filterRecordCounter.hireUpdateAnomaliesCount" />)</a></li>
-                        </s:if> 
+                            <li><a href="javascript:showClaimIsAnomalies();" >Hire Update Anomalies (<s:property value="filterRecordCounter.hireUpdateAnomaliesCount" />)</a></li>
+                        </s:if>
                         <s:if test="filterAccessibility.isNewClaimsToBeroutedAccessible">
                             <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedUnrouted');" >New Claims to be Routed (<s:property value="filterRecordCounter.newClaimsToBeroutedCount" />)</a></li>
                         </s:if> 
                         <s:if test="filterAccessibility.isApprovedInvoicesAwaitingPaymentAccessible">
                             <li><a href="javascript:showClaimByStatus('AwaitingInvoicePayment');" >Approved Invoices Awaiting Payment (<s:property value="filterRecordCounter.approvedInvoicesAwaitingPaymentCount" />)</a></li>
-                        </s:if> 
+                        </s:if>
                         <s:if test="filterAccessibility.isEscalatedInvoicesAccessible">
                             <li><a href="javascript:showClaimByStatus('InvoiceEscalated');" >Escalated Invoices (<s:property value="filterRecordCounter.escalatedInvoicesCount" />)</a></li>
                         </s:if> 
@@ -313,6 +324,7 @@ hireDateToPicker.render('hireDateToDiv');
                         <s:if test="filterAccessibility.isClaimReferredToEngineerAccessible">
                             <li><a href="javascript:showClaimByStatus('ClaimReferredToEngineer');" >Claim Referred To Engineer (<s:property value="filterRecordCounter.ClaimReferredToEngineerCount" />)</a></li>
                         </s:if>
+                                           
                     </ul>
                     
                     
@@ -340,10 +352,7 @@ hireDateToPicker.render('hireDateToDiv');
             <div class="excel-export"><form name="thisForm">
             <a href="javascript:doExportExcel();">Export To Excel</a></form></div>
         </div>
-        
     </div>
-    <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/> Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.</div>
-   
 </body>
 
 

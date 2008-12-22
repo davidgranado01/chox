@@ -4,6 +4,7 @@
  */
 package chox.web.actions;
 
+import chox.Util.DateHelper;
 import chox.model.Claim;
 import chox.model.ClaimStatus;
 import chox.model.EngineerReport;
@@ -23,13 +24,14 @@ import java.util.Map;
 import org.acegisecurity.GrantedAuthority;
 import scsbre.engine.RulesEngineResponse;
 import chox.data.AttachmentCategory;
+import chox.model.AuditTrail;
 import chox.model.Chorganisation;
 import chox.model.Insurer;
 import chox.model.LookupItem;
 import chox.model.WebUser;
+import chox.services.AuditTrailService;
 import chox.services.HistoryService;
 import java.util.ArrayList;
-
 /**
  *  
  * @author Emmanuel
@@ -51,6 +53,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private InvoiceService invoiceService;
     private ChoBandService choBandService;
     private HistoryService historyService;
+    private AuditTrailService auditTrailService;
     private String actionResult;
     private TabAccessibility tabAccessibility;
     private int vehicleClassId = -1;
@@ -183,7 +186,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 //claim.setLineOfBusiness(lob);
                 claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
                 try {
+                    auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
+                    
                     this.service.updateClaim(claim);
+                    
                 } catch (Exception ex) {
                     result = ERROR;
                     this.actionResult = "ERROR : " + ex.getMessage();
@@ -199,7 +205,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         //chack whether line of busineess if set 
-                
+
         if (this.actionName.equalsIgnoreCase(ACCEPT)) 
         {
             String validationResult = validateAcknowledgeClaimInfo();
@@ -229,6 +235,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         try 
         {
+            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             this.actionResult = "ERROR : " + ex.getMessage();
@@ -256,6 +263,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         //chack whether line of busineess if set 
         claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
         try {
+            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             this.actionResult = "ERROR : " + ex.getMessage();
@@ -275,6 +283,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         
         try {
+            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             result = ERROR;
@@ -317,6 +326,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         
         try {
+            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             result = ERROR;
@@ -338,6 +348,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         try {
+            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             this.actionResult = "ERROR : " + ex.getMessage();
@@ -378,6 +389,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim = service.getClaim(claim.getId());
             claim.setStatus(repStatus);
             try {
+                auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
                 this.service.updateClaim(claim);
             } catch (Exception ex) {
                 this.actionResult = "ERROR : " + ex.getMessage();
@@ -403,6 +415,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
         }
         try {
+            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             result = ERROR;
@@ -429,6 +442,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         try 
         {
+            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } 
         catch (Exception ex)
@@ -449,6 +463,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
         }
         try {
+            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             result = ERROR;
@@ -466,6 +481,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
         }
         try {
+            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             result = ERROR;
@@ -492,6 +508,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         try {
+            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             result = ERROR;
@@ -505,6 +522,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String logInvoicePayment() {
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
         try {
+            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             this.actionResult = "ERROR : " + ex.getMessage();
@@ -535,7 +553,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             engineerreport.setTotalAmount(new BigDecimal("0.00"));
             BREClaim.setEngineerReport(engineerreport);
         }
-
+        
+        // ADDED CLAIM SERVICES TO CHECK VEHICLE REGISTRATION NUMBER
+        if(service.getCountOfClaimByVRN(BREClaim.getCustomer().getVehicleRegistration(), BREClaim.getId())>0){
+            BREClaim.getCustomer().setIsVehicleRegistrationExist(true);
+        }
+        
         // SET VEHICLE CLASS TO NULL WHEN 
         if (BREClaim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached")) {
             BREClaim.getThirdParty().setVehicleClass(null);
@@ -607,6 +630,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.invoiceService = invoiceService;
     }
 
+    public void setAuditTrailService(AuditTrailService auditTrailService) {
+        this.auditTrailService = auditTrailService;
+    }
+    
     public void setChoBandService(ChoBandService choBandService) {
         this.choBandService = choBandService;
     }
@@ -617,5 +644,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getStatusMsg() {
         return statusMsg;
+    }
+    
+    public String doUpdateAnomalies() {
+        String result = SUCCESS;
+        try {
+            claim = service.getClaim(id);
+            claim.setIsAnomalies(false);
+            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            result = ERROR;
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+        return result;
     }
 }

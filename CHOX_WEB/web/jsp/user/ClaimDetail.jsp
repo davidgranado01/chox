@@ -223,6 +223,8 @@
             }
         }
         
+
+        
         function loadAttachment(grid, rowIndex, columnIndex, e){
             var attachment = paymentPackGrid.getStore().getAt(rowIndex);  // Get the Record
             var fileId = attachment.get("id");
@@ -420,6 +422,9 @@
         $("#actionName").val(val);
     }
    
+   function updateAnomalies(a){
+        document.location = "doUpdateAnomalies.action?id="+a;
+    }
 </script>        
         
     </head>    
@@ -501,8 +506,19 @@
                                 <tr>
                                     <td><label class="chox-claim-header-label">Percentage Liability Accepted</label><label class="chox-claim-header-text"><span id="status"><s:property value="percentageLiabilityAccepted" />%</span></label></td>
                                     <td><label class="chox-claim-header-label">Indemnity</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
-                                    <td>&nbsp;</td>  
-                                </tr>                                
+                                    
+                                    <s:if test="!isCHO">
+                                        <td><label class="chox-claim-header-label">Anomalies</label><label class="chox-claim-header-text"><span id="status">
+                                        <s:if test="isAnomalies">
+                                            <a href="javascript:updateAnomalies('<s:property value="id" />');"><s:property value="isAnomaliesDesc" /></a>
+                                        </s:if>
+                                        <s:else>
+                                            <s:property value="isAnomaliesDesc" />
+                                        </s:else>
+                                        </span></label></td>
+                                    </s:if>
+                                    
+                                </tr>  
 
                                     
                             </table>
@@ -883,8 +899,5 @@
                 </div>
             </div>
         </div>
-    <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/> Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.</div>       
-    
-    
     </body>
 </html>

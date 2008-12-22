@@ -44,7 +44,7 @@ public class BaseAction extends ActionSupport {
     }
     
     public String getCurrentUserDesc(){
-        String logInUserDesc = user.getUser().getFirstName();
+        String logInUserDesc = user.getUser().getFirstName() + " " + user.getUser().getLastName();
         String strOrgType = "";
         
         if(user.getIsCHO()){
