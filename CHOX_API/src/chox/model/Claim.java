@@ -103,6 +103,7 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     protected boolean isQuantumDispute;
     protected String engineerClaimReviewNotes;
     protected boolean isInvoiceReviewRequired;
+    protected boolean isAnomalies;
     //protected VehicleClass vehicleClass;
 
     /**
@@ -583,4 +584,16 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     public String getIsQuantumDisputeDesc() {
         return isQuantumDispute ? "Yes" : "No";
     }
+
+    public boolean isIsAnomalies() {
+        return isAnomalies;
+    }
+
+    public void setIsAnomalies(boolean isAnomalies) {
+        this.isAnomalies = isAnomalies;
+    }
+    
+    public String getIsAnomaliesDesc() {
+        return isAnomalies ? "Yes" : "No";
+    }    
 }

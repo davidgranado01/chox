@@ -14,6 +14,7 @@ import java.util.List;
  */
 public interface HireMonitoringEcdService {
     
+    public List<HireMonitoringEcd> getHireMonitoringEcdsByClaimIdOrderByCreatedDate(int claimId);
     public List<HireMonitoringEcd> getHireMonitoringEcdsByClaimId(int claimId);
     public HireMonitoringEcd getObject(int id);
     public void updateObject(HireMonitoringEcd engineerReport);

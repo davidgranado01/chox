@@ -14,13 +14,10 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import chox.model.*;
 import org.hibernate.Session;
-import chox.data.HibernateUtil;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import scsbre.engine.*;
 import java.util.List;
 import chox.Util.TextHelper;
 import chox.Util.DateHelper;
-import chox.data.SecurityInfoProvider;
 import chox.data.UploadStatus;
 
 public class UploadClaimXMLServiceImpl extends DataService implements UploadClaimXMLService {
@@ -30,6 +27,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
     private InjuryService injuryService;
     private CustomerService customerService;
     private InvoiceService invoiceService;
+    private AuditTrailService auditTrailService;
     private ClaimService claimService;
     private WitnessService witnessService;
     private ThirdPartyService thirdPartyService;
@@ -169,7 +167,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
         //System.out.println(" ** CHO REFERENCE: " + xmlParseResult.getClaim().getChoReference());
-
+        
         // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
         if(!xmlParseResult.getIsClaimExist()){
             xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);
@@ -183,7 +181,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         if(xmlParseResult.getClaim().getInvoice()!=null){
             xmlParseResult.setIsInvoiceExist(true);
         }
-  
+        
         /*
          * ONLY PROCESS THE INVOICE WHERE
          * 1. CLAIM IS EXIST IN DB 
@@ -195,6 +193,9 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             
             xmlParseResult = RentalInvoiceSchemaValidation(xmlParseResult, root, doc);
 
+            // VALIDATE CLAIM OR INVOICE IS UNIQUE
+            xmlParseResult = validateClaimInformation(xmlParseResult);
+            
             // EXECUTE BRE RULE
             if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
               
@@ -205,14 +206,11 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                 }               
                 
                 Claim BREClaim = constructeClaimForInvoiceValidation(xmlParseResult.getClaim());
-                                
+
                 RulesEngineResponse validationResult = invoiceService.XMLUploaderInvoiceValidation(BREClaim);
+                
                 historyService.logInvoiceValidationErrorMsg(validationResult, BREClaim);
-                
-                String newClaimStatus = validationResult.getStatus().toString();
-                
-                //newClaimStatus = validateVRN(BREClaim.getCustomer().getVehicleRegistration(), BREClaim.getId(), newClaimStatus);
-                
+                String newClaimStatus = validationResult.getStatus().toString();                
                 xmlParseResult.getClaim().setStatus(newClaimStatus);
                 
                 if(!isEngReportExist){
@@ -223,7 +221,15 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                     xmlParseResult = appendInvoiceValidationErrorMessage(xmlParseResult, validationResult.getResults());
                 }
             }
+        }else{
+        
+            // VALIDATE CLAIM OR INVOICE IS UNIQUE
+            if(!xmlParseResult.getIsClaimExist()){
+                xmlParseResult = validateClaimInformation(xmlParseResult);
+            }
         }
+        
+
         
         if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){            
             xmlParseResult = saveXMLRecord(xmlParseResult);
@@ -248,22 +254,50 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         }else{
             currentSession.getTransaction().rollback();
         }
-        
-        //System.out.println("END  ********************************************");
 
         return xmlParseResult;
     }
     
-    private String validateVRN(String strVRN, int claimId, String oldClaimStatus){
-        
-        String newClaimStatus = oldClaimStatus;
-        
+    private XMLParseResult validateClaimInformation(XMLParseResult xmlParseResult){
+
         
         
-        return newClaimStatus;
+        System.out.println(" ***********"+xmlParseResult.getClaim().getId());
+        
+        if(xmlParseResult.getClaim().getCustomer()!=null){
+            System.out.println(" ***********"+xmlParseResult.getClaim().getCustomer().getClaimReference());
+            
+            String custClaimNumber = "";
+            
+            if(xmlParseResult.getClaim().getCustomer().getClaimReference()!=null){
+                custClaimNumber = xmlParseResult.getClaim().getCustomer().getClaimReference();
+            }
+            
+            if(claimService.isCustomerClaimNumberExist(custClaimNumber, xmlParseResult.getClaim().getId(), xmlParseResult.getIsClaimExist())){
+                String errorMessage = "The Customer Claim Number supplied already exists in the system";
+                xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, errorMessage, false);
+            }
+        }
+        
+        if(xmlParseResult.getClaim().getThirdParty()!=null){
+            System.out.println(" ***********"+xmlParseResult.getClaim().getThirdParty().getClaimReference());
+            
+            String thirdPartyClaimNumber = "";
+            
+            if(xmlParseResult.getClaim().getThirdParty().getClaimReference()!=null){
+                thirdPartyClaimNumber = xmlParseResult.getClaim().getThirdParty().getClaimReference();
+            }
+            
+            if(claimService.isThirdPartyClaimNumberExist(thirdPartyClaimNumber, xmlParseResult.getClaim().getId(), xmlParseResult.getIsClaimExist())){
+                String errorMessage = "The Third Party Claim Number supplied already exists in the system";
+                xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, errorMessage, false);
+            }  
+        }
+        
+        return xmlParseResult;
     }
     
-     public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, Boolean isAllowPartialUpload) {
+    public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, Boolean isAllowPartialUpload) {
         UploadClaimXMLServiceImpl thisCtrl = new UploadClaimXMLServiceImpl();
         return thisCtrl.processXML(claimXMLFile, isAllowPartialUpload);
     }
@@ -284,6 +318,11 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
 
             try {
                 xmlParseResult.getCurrentSession().saveOrUpdate(xmlParseResult.getClaim());
+                
+                if(xmlParseResult.getIsClaimExist()){
+                    auditTrailService.logAuditLog(xmlParseResult.getClaim().getStatus(), xmlParseResult.getClaim().getId());
+                }
+                
             } catch (Exception e) {
                 xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
             }
@@ -311,6 +350,10 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             BREClaim.setEngineerReport(engineerreport);
         }
         
+        if(claimService.getCountOfClaimByVRN(BREClaim.getCustomer().getVehicleRegistration(), BREClaim.getId())>0){
+           BREClaim.getCustomer().setIsVehicleRegistrationExist(true);
+        }
+        
         // SET VEHICLE CLASS TO NULL WHEN 
         if(BREClaim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached")){
             BREClaim.getThirdParty().setVehicleClass(null);
@@ -325,9 +368,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
     }
     
     private XMLParseResult appendInvoiceValidationErrorMessage(XMLParseResult xmlParseResult, List<RuleEvaluation> results){
-        
-        //String existingErrorMsg = xmlParseResult.getDataValidationRemark();
-        
+
         for(int iCount=0; iCount<results.size(); iCount++){
             
             RuleEvaluation rv = results.get(iCount);
@@ -388,14 +429,8 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
 
         // CHO ORGANISATION SECTION
         xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "supplier", strSectionName, "");
-        
-        //if (xmlParseResult.getIsCurrentScheValid() && xmlParseResult.getIsCurrentDataValid()) {
             
         Element thisElement = XMLUtils.getElement(mainElement, "supplier");
-
-        // RESET VALIDATION FLAG
-        // xmlParseResult.setIsCurrentDataValid(true);
-        // xmlParseResult.setIsCurrentScheValid(true);
 
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "supplier-name", XmlHelper.isMAN_Supplier_Name, "", strSectionName, "Supplier Name");
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "supplier-reference", XmlHelper.isMAN_Supplier_Reference, "", strSectionName, "Supplier Reference");
@@ -445,7 +480,6 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                     claim.setChorganisation(chorganisationService.getCurrentCHOrganisation());
                 }
             }
-        //}
         
         xmlParseResult.setClaim(claim);
         
@@ -1650,6 +1684,10 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         this.invoiceService = invoiceservice;
     }
 
+    public void setAuditTrailService(AuditTrailService auditTrailService) {
+        this.auditTrailService = auditTrailService;
+    }
+        
     public void setInsurerAlliasService(InsurerAlliasService insurerAlliasService) {
         this.insurerAlliasService = insurerAlliasService;
     }

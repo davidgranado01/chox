@@ -39,4 +39,6 @@ public interface ClaimSearchCriteria {
     public Date getHireDateFrom();
 
     public Date getHireDateTo();
+    
+    public boolean IsAnomalies();
 }

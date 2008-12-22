@@ -17,6 +17,7 @@
     <property column="indeminty_amount" name="indemnityAmount"/>
     <property column="percentage_liability_accepted" name="percentageLiabilityAccepted"/>
     <property column="is_quantum_dispute" name="isQuantumDispute"/>
+    <property column="is_anomalies" name="isAnomalies"/>
     <property column="engineer_claim_review_notes" name="engineerClaimReviewNotes"/>
     <property column="is_invoice_review_required" name="isInvoiceReviewRequired"/>
     <many-to-one class="chox.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>

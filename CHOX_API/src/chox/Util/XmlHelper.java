@@ -320,18 +320,7 @@ public class XmlHelper {
     }    
     
     public static XMLParseResult setErrorMessage(XMLParseResult xmlParseResult, String errorMessage, Boolean isSchemaError){
-        
-        /*
-        String sOldMsg = "";
-        if(isSchemaError){
-            sOldMsg = xmlParseResult.getSchemaValidationRemark();
-        }else{
-            sOldMsg = xmlParseResult.getDataValidationRemark();
-        }
-        */
-        
-        //String sNewMsg = sOldMsg + XmlHelper.XMLResultDelimeterContructor(sOldMsg, errorMessage);
-        
+                
         if(isSchemaError){
             xmlParseResult.getSchemaValidationRemark().add(errorMessage);
             xmlParseResult.setIsSchemaValid(false);
@@ -372,13 +361,9 @@ public class XmlHelper {
         String strNodeDesc) {
 
         Boolean bFlag = true;
-        //String SchemaValidationRemark = xmlParseResult.getSchemaValidationRemark();
-
         Element thisElement = XMLUtils.getElement(root, nodeName);
 
         if (thisElement == null) {
-
-            //SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strSectionName, strNodeDesc);
             bFlag = false;
         }
 
@@ -398,10 +383,7 @@ public class XmlHelper {
             String strSectionName,
             String strNodeDesc) {
 
-        //String SchemaValidationRemark = xmlParseResult.getSchemaValidationRemark();
-
         if (thisElements.size() <= 0) {
-            //SchemaValidationRemark = SchemaValidationRemark + XmlHelper.contructureSchemaErrorMessage(strSectionName, strNodeDesc);
             xmlParseResult.getSchemaValidationRemark().add(XmlHelper.contructureSchemaErrorMessage(strSectionName, strNodeDesc));
             xmlParseResult.setIsSchemaValid(false);
             xmlParseResult.setIsCurrentScheValid(false);
@@ -432,13 +414,11 @@ public class XmlHelper {
             
             if (thisElementValue == null || thisElementValue.trim().length() == 0) {
                 if (isMandatory) {
-                    //DataValidationRemark = DataValidationRemark + XmlHelper.contructureDataMandatoryErrorMessage(strSectionName, nodeNameDesc);
                     errorMsg = XmlHelper.contructureDataMandatoryErrorMessage(strSectionName, nodeNameDesc);
                     bFlag = false;
                 }
             } else {
                 if (!XmlHelper.isValidDataType(thisElementValue, regExpression, nodeName)) {
-                    //DataValidationRemark = DataValidationRemark + XmlHelper.contructureIncorrectTypeErrorMessage(strSectionName, nodeNameDesc);
                     errorMsg = XmlHelper.contructureIncorrectTypeErrorMessage(strSectionName, nodeNameDesc);
                     bFlag = false;
                 }

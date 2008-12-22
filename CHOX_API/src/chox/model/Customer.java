@@ -1,5 +1,6 @@
 package chox.model;
 
+import chox.services.ClaimService;
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.text.Format;
@@ -9,6 +10,9 @@ import scsbre.model.ICustomerVehicleDamageInfo;
 
 public class Customer implements Serializable, Auditable, ICustomerVehicleDamageInfo
 {
+    
+    private Boolean isVehicleRegistrationexist = false;
+    
 	/** 
 	 * This attribute maps to the column id in the customer table.
 	 */
@@ -844,4 +848,13 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
         {
             return this.isTotalLoss ? "Yes" : "No";
         }
+
+        public void setIsVehicleRegistrationExist(Boolean b) {
+            isVehicleRegistrationexist = b;
+        }
+                
+        public Boolean isVehicleRegistrationExist() {
+            return isVehicleRegistrationexist;
+        }
+        
 }

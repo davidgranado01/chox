@@ -23,7 +23,9 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
     }
 
     public void updateClaim(Claim claim) {
-
+        
+        
+        
         getCurrentSession().beginTransaction();
         getCurrentSession().update(claim);
         getCurrentSession().getTransaction().commit();
@@ -48,22 +50,79 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
 
     public Long getCountByStatus(String status) {
         Long count = (Long) getCurrentSession().createQuery("select count(*) from Claim where status = '" + status + "'").uniqueResult();
-
         return count;
     }
-
+        
     public Long getNonDEPaymentLogCount() {
         return (long) 0;
     }
 
-    public Long getHireUpdateAnomaliesCount() {
-        return (long) 0;
+    public Long getHireUpdateAnomaliesCountNumber() {
+        Long count = (Long) getCurrentSession().createQuery("select count(*) from Claim where is_anomalies = true").uniqueResult();
+        return count;
+    }
+    
+    public Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit){
+        
+        Boolean bFlag = false;
+        
+        if(!strClaimNumber.equalsIgnoreCase("")){
+            Criteria criteria = getCurrentSession().createCriteria(Claim.class);
+            criteria.createCriteria("customer").add(Restrictions.like("claimReference", strClaimNumber));
+            if(isClaimExit){
+                criteria.add( Expression.ne( "id", claimId));
+            }
+            criteria.setMaxResults(1);
+            List claims = criteria.list();
+            
+            if(claims!=null){
+                if(claims.size()>0){
+                    bFlag = true;
+                }
+            }
+        }
+        
+        return bFlag;
+        
+    }
+    
+    public Boolean isThirdPartyClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit){
+        
+        Boolean bFlag = false;
+
+        if(!strClaimNumber.equalsIgnoreCase("")){
+            
+            Criteria criteria = getCurrentSession().createCriteria(Claim.class);
+            criteria.createCriteria("thirdParty").add(Restrictions.like("claimReference", strClaimNumber));
+            if(isClaimExit){
+                criteria.add( Expression.ne( "id", claimId));
+            }
+            criteria.setMaxResults(1);
+            List claims = criteria.list();
+            
+            if(claims!=null){
+                if(claims.size()>0){
+                    bFlag = true;
+                }
+            }
+        }
+        
+        return bFlag;
+        
+    }
+    
+    public Long getCountOfClaimByVRN(String strVRN, int claimId){
+        Criteria criteria = getCurrentSession().createCriteria(Claim.class);
+        criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN));
+        criteria.add( Expression.ne( "id", claimId));
+        criteria.setMaxResults(1);
+        List claims = criteria.list();
+        return Long.valueOf(claims.size());
     }
     
     public Long getECDCountByClaimId(int claimId)
     {
         Long count = (Long) getCurrentSession().createQuery("select count(*) from HireMonitoringEcd where claim.id = '" + claimId + "'").uniqueResult();
-
         return count;
     }
 
@@ -81,6 +140,9 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         }
         if (searchCriteria.getSupplierId() > 0) {
             criteria.add(Restrictions.eq("chorganisation.id", searchCriteria.getSupplierId()));
+        }
+        if (searchCriteria.IsAnomalies()) {
+            criteria.add(Restrictions.eq("isAnomalies", true));
         }
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {
             criteria.add(Restrictions.like("invoice.id", searchCriteria.getInvoiceNumber()).ignoreCase());
@@ -148,7 +210,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         //    criteria.add(Expression.between("createdDate", searchCriteria.getHireDateFrom(), searchCriteria.getHireDateTo()));
         //}
         criteria.addOrder(Order.asc("createdDate"));
-
+        
         List claims = criteria.list();
         return claims;
     }

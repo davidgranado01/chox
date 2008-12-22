@@ -3,8 +3,11 @@ package chox.Util;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DateHelper {
+    
+    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
     
     public static java.sql.Timestamp getCurrentTimeStamp() {
         Calendar cal = Calendar.getInstance();
@@ -18,5 +21,13 @@ public class DateHelper {
             returnValue = "0"+returnValue;
         }
         return returnValue;
+    }
+
+    public static long daysBetween(Date startDate, Date endDate) {
+        long milliseconds1 = startDate.getTime();
+        long milliseconds2 = endDate.getTime();
+        long diff = milliseconds2 - milliseconds1;
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+        return diffDays;
     }
 }
