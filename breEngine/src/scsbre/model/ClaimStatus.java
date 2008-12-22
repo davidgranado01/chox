@@ -4,5 +4,6 @@ public enum ClaimStatus {
 
     InvoiceEscalated,
     InvoiceApprovedByBRE,
-    InvoiceDataCalculationIncorrect
+    InvoiceDataCalculationIncorrect,
+    InvoiceVehicleRegistrationNotUnique
 }
