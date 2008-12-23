@@ -24,8 +24,6 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
 
     public void updateClaim(Claim claim) {
         
-        
-        
         getCurrentSession().beginTransaction();
         getCurrentSession().update(claim);
         getCurrentSession().getTransaction().commit();

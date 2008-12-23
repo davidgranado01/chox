@@ -25,10 +25,14 @@ public class HireMonitoringEcdServiceImpl extends DataService implements HireMon
         return criteria.list();
     }
     
-    public List<HireMonitoringEcd> getHireMonitoringEcdsByClaimIdOrderByCreatedDate(int claimId) {
+    public List<HireMonitoringEcd> getHireMonitoringEcdsByClaimIdFilter(int claimId, boolean isAsc, String orderByField){
         Criteria criteria = getCurrentSession().createCriteria(HireMonitoringEcd.class);      
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
-        criteria.addOrder(Order.desc("createdDate"));
+        if(isAsc){
+            criteria.addOrder(Order.asc(orderByField));
+        }else{
+            criteria.addOrder(Order.desc(orderByField));
+        }
         return criteria.list();
     }
     
