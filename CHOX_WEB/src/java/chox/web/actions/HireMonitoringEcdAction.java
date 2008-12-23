@@ -26,7 +26,7 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
     private HireMonitoringEcd model;
     private HireMonitoringEcdService service;
     private Boolean isECDFormVisible = false;
-    private static double ecdDurationAllowRate = 0.5;
+    private static double ecdDurationAllowPercentage = 0.5;
     
     public void setHireMonitoringEcdService(HireMonitoringEcdService service)
     {
@@ -91,22 +91,22 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
         Boolean bFlag = false;
         
         Date policyHolderDate = claim.getPolicyHolderContactDate();
-        List<HireMonitoringEcd> ecds = service.getHireMonitoringEcdsByClaimIdOrderByCreatedDate(claim.getId());
+        List<HireMonitoringEcd> ecds = service.getHireMonitoringEcdsByClaimIdFilter(claim.getId(), true, "createdDate");
         
-        if(ecds.size()>0){
+        if(claim.getCustomer().getInitialECD()!=null){
             
-            HireMonitoringEcd thisECD = ecds.get(0);
-            Date LastEstimateECD = thisECD.getEcdDate();
-            bFlag = isClaimAnomalies(LastEstimateECD, policyHolderDate, monitoringecd.getEcdDate());
-            return bFlag;
-            
+            Date FirstEstimateECD = claim.getCustomer().getInitialECD();
+            bFlag = isClaimAnomalies(policyHolderDate, monitoringecd.getEcdDate(), FirstEstimateECD);
+            return bFlag;                
+         
         }else{
             
-            // CHECK ORIGINAL ECD EXIST
-            if(claim.getCustomer().getInitialECD()!=null){
-                Date LastEstimateECD = claim.getCustomer().getInitialECD();
-                bFlag = isClaimAnomalies(LastEstimateECD, policyHolderDate, monitoringecd.getEcdDate());
-                return bFlag;                
+            if(ecds.size()>0){
+
+                HireMonitoringEcd thisECD = ecds.get(0);
+                Date FirstEstimateECD = thisECD.getEcdDate();
+                bFlag = isClaimAnomalies(policyHolderDate, monitoringecd.getEcdDate(), FirstEstimateECD);
+                return bFlag;
             }
             
         }
@@ -114,27 +114,39 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
         return false;
     }
     
-    private Boolean isClaimAnomalies(Date LastEstimateECD, Date policyHolderDate, Date newECDDate){
+    private Boolean isClaimAnomalies(Date policyHolderDate, Date newECDDate, Date firstECD){
         
-        // System.out.println("LastEstimateECD: "+LastEstimateECD);
-        // System.out.println("policyHolderDate: "+policyHolderDate);
-        // System.out.println("newECDDate: "+newECDDate);
+        // System.out.println("***** policyHolderDate: "+policyHolderDate);
+        // System.out.println("***** newECDDate: "+newECDDate);
+        // System.out.println("***** firstECD: "+firstECD);
         
-        Long initialEstimateDays = DateHelper.daysBetween(policyHolderDate, LastEstimateECD);
+        Long iTotalDelayDays = DateHelper.daysBetween(firstECD, newECDDate);
+        Long iMD = DateHelper.daysBetween(policyHolderDate, firstECD);
         
-        if(initialEstimateDays>0){
+        // System.out.println("***** iTotalDelayDays: "+iTotalDelayDays);
+        // System.out.println("***** iMD: "+iMD);
+        
+        if(iMD>0){
             
-            int iInitialEstimateDurationDayAllow = (int) (initialEstimateDays * ecdDurationAllowRate);
-            Long newEstimateDurationDays = DateHelper.daysBetween(LastEstimateECD, newECDDate);
+            int iMDRate = (int)java.lang.Math.round(iMD * ecdDurationAllowPercentage);
             
-            // System.out.println("initialEstimateDays: "+initialEstimateDays);
-            // System.out.println("iInitialEstimateDurationDayAllow: "+iInitialEstimateDurationDayAllow);
-            // System.out.println("newEstimateDurationDays: "+newEstimateDurationDays);
+            // System.out.println("***** iMDRate: "+iMDRate);
+            // System.out.println("***** VALUE: "+(iTotalDelayDays/iMDRate));
             
-            if(newEstimateDurationDays>0 && (newEstimateDurationDays>iInitialEstimateDurationDayAllow)){
+            if((iTotalDelayDays > iMDRate)){
                 return true;
             }
             
+            /*
+            // int iInitialEstimateDurationDayAllow = (int) (initialEstimateDays * ecdDurationAllowRate);
+            // Long newEstimateDurationDays = DateHelper.daysBetween(LastEstimateECD, newECDDate);
+            // System.out.println("initialEstimateDays: "+initialEstimateDays);
+            // System.out.println("iInitialEstimateDurationDayAllow: "+iInitialEstimateDurationDayAllow);
+            // System.out.println("newEstimateDurationDays: "+newEstimateDurationDays);
+            if(newEstimateDurationDays>0 && (newEstimateDurationDays>iInitialEstimateDurationDayAllow)){
+                return true;
+            }
+            */
         }
         
         return false;

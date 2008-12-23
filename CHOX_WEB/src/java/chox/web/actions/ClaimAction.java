@@ -362,9 +362,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         
         String result = "";
         
+        /*0000314
         if (this.claim.getHireMonitoringDetail() == null) {
             return  "Error : You need to provide correct hire monitoring detail to submit this claim.";
         } 
+        */
         
         if(this.claim.getCustomer() == null || this.claim.getCustomer().getInitialECD() == null)
         {
@@ -373,6 +375,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 return "Error : You need to provide an Estimated Completion Date (ECD) to submit this claim.";
             }
         }
+        
         statusMsg = "Your action has been recorded";
         return result;
     }

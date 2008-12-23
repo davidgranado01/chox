@@ -58,18 +58,10 @@
         <s:hidden id="actionName" name="actionName" />
         <div>
             <div class="status-info">
-                Please review the CHO's notes against the reasoning for contesting the claim rejection and make a decision on whether to acknowledge or reject the claim.
+                Please review the CHO's notes against the reasoning for contesting the claim rejection and make a decision on whether to acknowledge the claim, reject the claim or refer the claim to an Engineer.
             </div>
             <div class="status-control-set">
                 <table>
-                    <tr>
-                        <td>
-                            <div class="no-format">
-                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>                                
-                            </div>
-                        </td>
-                    </tr>
-                    
 <tr> 
                         <td>                    
                             <div class="status-control-set">
@@ -116,13 +108,13 @@
                                             <s:checkbox name="isInvoiceReviewRequired" />
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td colspan="2" class="choice">
-                                            
-                                            <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                                            
-                                        </td>
-                                    </tr>                        
+                    <tr>
+                        <td>
+                            <div class="no-format">
+                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>                                
+                            </div>
+                        </td>
+                    </tr>                      
                                     <tr>
                                         <td colspan="2" class="choice">  
                                             <input type="submit" class="cancel" value="Reject this claim"  onclick="registeAction('reject');return confirm('Are you sure you want to reject this claim?')" />

@@ -15,8 +15,7 @@
         <s:hidden id="actionName" name="actionName" />
         <div>
             <div class="status-info">             
-             This claim and it's related invoice have been cleared by the CHOX approval system. 
-             Please review the invoice and claim information supplied, and choose whether to clear the invoice for payment or reject the invoice "Clear for payment" or "Reject Invoice"  
+             This claim and it's related invoice have been cleared by the CHOX approval system. Please review the invoice and claim information supplied, and choose whether to clear the invoice for payment, reject the invoice or refer the invoice to an Engineer.
             </div>
             <div class="status-control-set">
                 <table>

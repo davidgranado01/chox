@@ -258,13 +258,14 @@
             });
 
             ecdGrid = new Ext.grid.GridPanel({
+                listeners:  {cellclick:loadHireMonitor },
                 store: ecdDataStore,
                 loadMask: true,
                 columns: [
-                    {header: "", width: 30, dataIndex: 'sequence', sortable: false, resizable: true},
-                    {header: "ECD Date", width: 80, dataIndex: 'ecdDate', sortable: false, resizable: true},
-                    {header: "Reason", width: 100, dataIndex: 'reason', sortable: false, resizable: true},
-                    {header: "Supporting Note", width: 260, dataIndex: 'supportingNote', sortable: false, resizable: false}
+                    {header: "", width: 20, dataIndex: 'sequence', sortable: false, resizable: true},
+                    {header: "ECD Date", width: 70, dataIndex: 'ecdDate', sortable: false, resizable: true},
+                    {header: "Reason", width: 80, dataIndex: 'reason', sortable: false, resizable: true},
+                    {header: "Supporting Note", width: 280, dataIndex: 'supportingNote', sortable: false, resizable: true}
                 ],
                 renderTo:'ecdGridHolder',
                 width:460,
@@ -275,8 +276,15 @@
             loadEcds();
         }
         
-        
-        
+        function loadHireMonitor(grid, rowIndex, columnIndex, e){
+            $("#hireMonitoringDetails").block({message: $("#hireMonitorTemplate"), css: { backgroundColor: '#FFFFFF', height:'160', width:'400px', top:'10px', padding:'10px', overflow: 'auto'}  });
+            var hiremonitoringECD = ecdGrid.getStore().getAt(rowIndex);
+            var supportingNoteText = hiremonitoringECD.get("supportingNote");
+            $("#hireMonitorMessage").text(supportingNoteText);
+            //setTimeout($("#hireMonitoringDetails").unblock(), 5000);
+            setTimeout(function(){ $("#hireMonitoringDetails").unblock(); }, 10000);
+
+        }        
         
         /*
          * DESC: COMMENT
@@ -305,7 +313,6 @@
             commentsGrid = new Ext.grid.GridPanel({
                 
                 listeners:  {cellclick:loadComment },
-
                 store: commentsDataStore,
                 loadMask: true,
                 columns: [
@@ -321,10 +328,11 @@
         }
         
         function loadComment(grid, rowIndex, columnIndex, e){
-            $("#comments").block({message: $("#commentTemplate"), css: { backgroundColor: '#FFFFFF', height:'auto', padding:'10px'}  });
+            $("#comments").block({message: $("#commentTemplate"), css: { backgroundColor: '#FFFFFF', height:'160', width:'400px', padding:'10px', overflow: 'auto'}  });
             var comment = commentsGrid.getStore().getAt(rowIndex);
             var commentText = comment.get("comment");
             $("#commentMessage").text(commentText);
+            setTimeout(function(){ $("#comments").unblock(); }, 10000);
         }
 
         /*
@@ -508,9 +516,9 @@
                                     <td><label class="chox-claim-header-label">Indemnity</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
                                     
                                     <s:if test="!isCHO">
-                                        <td><label class="chox-claim-header-label">Anomalies</label><label class="chox-claim-header-text"><span id="status">
+                                        <td><label class="chox-claim-header-label">ECD Anomalies?</label><label class="chox-claim-header-text"><span id="status">
                                         <s:if test="isAnomalies">
-                                            <a href="javascript:updateAnomalies('<s:property value="id" />');"><s:property value="isAnomaliesDesc" /></a>
+                                        <s:property value="isAnomaliesDesc" /> ( <a href="javascript:updateAnomalies('<s:property value="id" />');">Remove from hire anomalies</a> )
                                         </s:if>
                                         <s:else>
                                             <s:property value="isAnomaliesDesc" />
@@ -520,7 +528,6 @@
                                     
                                 </tr>  
 
-                                    
                             </table>
                         </fieldset>
                     </div>
@@ -669,6 +676,11 @@
                                 </tr>
                             </table>
                         </div>
+<!-- template for modal comment-->
+<div style="display:none" id="hireMonitorTemplate">
+    <input type="button" value="Close" id="hireMonitorModalClose"><br/>
+    <div id="hireMonitorMessage"></div>
+</div>
                         
 </s:if>                        
                     </div>
@@ -859,7 +871,7 @@
             var inp = $("#commentBox").val();
             if(inp==null || inp==""){
                 $("#CmErrMsgBox").show();
-                $("#CmErrMsgBox").text("Please enter note messages.");
+                $("#CmErrMsgBox").text("Note blank - Please enter text in the Note field and then click on 'Add Note'");
                 return false;
             }else{
                 $("#CmErrMsgBox").hide();
@@ -883,8 +895,10 @@
 
     <!-- template for modal comment-->
     <div style="display:none" id="commentTemplate">
-            <div id="commentMessage"></div><br/><br/>
-             <input type="button" value="Close" id="commentModalClose">
+        <input type="button" value="Close" id="commentModalClose">
+        <br/>
+        <div id="commentMessage"></div>
+             
     </div>                      
        
     <div id="commentsGrid">
