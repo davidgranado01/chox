@@ -521,10 +521,59 @@ insert into reason_of_delay (id, description, created_by, last_modified_by, is_a
 UPDATE accessibility_item SET role = 'ROLE_INS_CH' WHERE accessibility_id = 122;
 UPDATE accessibility_item SET role = 'ROLE_INS_CH' WHERE accessibility_id = 106  AND role like 'ROLE_INS_SCR%';
 
------------------------------------------------------------------------------------------------=======
 -- ############################################################################################
+-- START VERSION 2.14 - 2008-12-23
+-- ############################################################################################\
 
-UPDATE accessibility_item SET role = 'ROLE_INS_CH' WHERE accessibility_id = 122
-UPDATE accessibility_item SET role = 'ROLE_INS_CH' WHERE accessibility_id = 106  AND role like 'ROLE_INS_SCR%'
 
->>>>>>> .r547
+ALTER TABLE claim ADD COLUMN is_anomalies boolean;
+update claim set is_anomalies = false;
+ALTER TABLE claim ALTER COLUMN is_anomalies SET STORAGE PLAIN;
+ALTER TABLE claim ALTER COLUMN is_anomalies SET NOT NULL;
+ALTER TABLE claim ALTER COLUMN is_anomalies SET DEFAULT false;
+
+-----------------------------------------------------------------------------------------------
+
+CREATE SEQUENCE audit_trail_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 106
+  CACHE 1;
+ALTER TABLE audit_trail_id_seq OWNER TO postgres;
+
+
+CREATE TABLE audit_trail
+(
+  id serial NOT NULL,
+  update_date timestamp without time zone,
+  user_id integer NOT NULL,
+  claim_id integer NOT NULL,
+  original_status character varying,
+  new_status character varying,
+  created_by integer NOT NULL,
+  created_date timestamp without time zone NOT NULL DEFAULT now(),
+  last_modified_by integer NOT NULL,
+  last_modified_date timestamp without time zone NOT NULL DEFAULT now(),
+  CONSTRAINT "auditTrail_Pkey" PRIMARY KEY (id),
+  CONSTRAINT "auditTrail_claim_fkey" FOREIGN KEY (claim_id)
+      REFERENCES claim (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT "auditTrail_user_fkey" FOREIGN KEY (user_id)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (OIDS=FALSE);
+ALTER TABLE audit_trail OWNER TO postgres;
+
+CREATE INDEX "fki_auditTrail_claim_fkey"
+  ON audit_trail
+  USING btree
+  (claim_id);
+
+CREATE INDEX "fki_auditTrail_user_fkey"
+  ON audit_trail
+  USING btree
+  (user_id);
+
+  -----------------------------------------------------------------------------------------------
