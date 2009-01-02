@@ -262,10 +262,10 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
 
         
         
-        System.out.println(" ***********"+xmlParseResult.getClaim().getId());
+        //System.out.println(" ***********"+xmlParseResult.getClaim().getId());
         
         if(xmlParseResult.getClaim().getCustomer()!=null){
-            System.out.println(" ***********"+xmlParseResult.getClaim().getCustomer().getClaimReference());
+            //System.out.println(" ***********"+xmlParseResult.getClaim().getCustomer().getClaimReference());
             
             String custClaimNumber = "";
             
@@ -280,7 +280,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         }
         
         if(xmlParseResult.getClaim().getThirdParty()!=null){
-            System.out.println(" ***********"+xmlParseResult.getClaim().getThirdParty().getClaimReference());
+            //System.out.println(" ***********"+xmlParseResult.getClaim().getThirdParty().getClaimReference());
             
             String thirdPartyClaimNumber = "";
             
