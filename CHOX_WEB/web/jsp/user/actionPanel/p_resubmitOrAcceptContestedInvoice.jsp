@@ -41,7 +41,7 @@
             <div class="status-info">
                 Please review the 'Notes' tab for details regarding the rejection reasoning made by the Insurer. 
                 Decide whether to accept or reject the Insurer's rejection decision.  
-                Rejection of the Insurer's decision will require a modification to the claim details and/or the attachemnt of a payment pack.
+                Rejection of the Insurer's decision will require a modification to the claim details and/or the attachment of a Payment Pack.
                 Please include supporting notes on the decision made using the 'Notes' tab.
             </div>
             <div>
@@ -55,8 +55,8 @@
                     </tr>
                     <tr>                         
                         <td>
-                            <input type="submit" value="Reject rejection decision and resubmit claim"  onclick="registeAction('reject');" />
-                            <input type="submit" value="Accept rejection decision" onclick="registeAction('accept')"  /> 
+                            <input type="submit" value="Reject Decision and Resubmit"  onclick="registeAction('reject');" />
+                            <input type="submit" value="Accept Rejection Decision" onclick="registeAction('accept')"  /> 
                         </td>
                     </tr>
                 </table>

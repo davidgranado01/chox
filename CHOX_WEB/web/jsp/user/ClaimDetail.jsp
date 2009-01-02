@@ -176,7 +176,7 @@
                 root: 'results', 
                 fields:
                 [
-                    {name:'id'},
+                    {name:'id',  hidden:true},
                     {name:'fileName'},
                     {name:'category'},                     
                     {name:'remarks' },
@@ -195,7 +195,6 @@
                 store: paymentPackDataStore,
                 loadMask: true,
                 columns: [
-                    {header: "File Id", width: 60, dataIndex: 'id', sortable: false, resizable: true},
                     {header: "File Name", width: 300, dataIndex: 'fileName', sortable: false, resizable: true},
                     {header: "Category", width: 200, dataIndex: 'category', sortable: false, resizable: true},
                     {header: "Description", width: 270, dataIndex: 'remarks', sortable: false, resizable: true},
@@ -228,7 +227,7 @@
         function loadAttachment(grid, rowIndex, columnIndex, e){
             var attachment = paymentPackGrid.getStore().getAt(rowIndex);  // Get the Record
             var fileId = attachment.get("id");
-            if(columnIndex!=4){
+            if(columnIndex!=3){
                 var popwin = window.open("doExportFile.action?fileId="+fileId, "Attachment", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
             }else{
                 deleteAttachment(fileId);
@@ -912,6 +911,7 @@
                     </div>   
                 </div>
             </div>
+            <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/> Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.</div>
         </div>
     </body>
 </html>

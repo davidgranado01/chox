@@ -19,7 +19,7 @@
             <div class="status-info">
                 Please review the 'History' tab for details on why the claim has been rejected. 
                 Please decide on whether to progress the claim for payment or reject the claim. 
-                Please enter the required details/comments on the 'Invoice Details' tab regarding the decision made.
+                Please enter any relevant details/comments on the 'Notes' tab regarding the decision made.
             </div>
             <div class="status-control-set">
                 <table>

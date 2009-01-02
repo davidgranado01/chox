@@ -68,10 +68,9 @@
                 <label class="chox-form-std-label">
                 Email</label>
             <input type="text" class="chox-ttxt" name="email" value='<s:property value="email" />'/></div>
-            <div class="chox-form-button">
-                <input type="submit" value="Save Changes" /><div class="chox-form-submit-result"></div>
-            </div>
+            <div class="chox-form-button"><input type="submit" value="Save Changes" /></div>
             <div id="WitnessMessageBox" class="errorBox"></div>
+            <div class="chox-form-submit-result"></div>
         </div>
     </fieldset>
 </form>

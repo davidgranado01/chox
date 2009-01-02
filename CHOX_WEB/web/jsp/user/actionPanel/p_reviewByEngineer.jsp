@@ -78,9 +78,9 @@
                             </td>
                             <td>
                                 <label>
-                            % Liability Accepted<span class="mandatory">*</span></label></td><td>
-                                <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
-                            </td>
+                                Invoice Review Required?</label></td><td>
+                                <s:checkbox name="isInvoiceReviewRequired" />
+                            </td>                            
                         </tr>
                         <tr>
                             <td>
@@ -97,15 +97,17 @@
                         <tr valign="top">
                             <td>
                                 <label>
-                                Claim Review Notes</label></td><td>
-                                <textarea class="chox-tta" cols="20" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
-                            </td>
-                            <td>
-                                <label>
-                                Invoice Review Required?</label></td><td>
-                                <s:checkbox name="isInvoiceReviewRequired" />
+                            % Liability Accepted<span class="mandatory">*</span></label></td><td colspan="3">
+                                <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                             </td>
                         </tr>
+                        <tr valign="top">
+                            <td>
+                                <label>
+                                Claim Review Notes</label></td><td colspan="3">
+                                <textarea class="chox-canote" cols="20" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
+                            </td>
+                        </tr>                        
                     <tr>
                         <td>
                             <div class="no-format">

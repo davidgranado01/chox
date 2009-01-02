@@ -8,7 +8,7 @@
         var inp = document.getElementById("lineOfBusinessId");
         if(inp.value==1){
             $("#ClaimUnacknowledgeMessageBox").css("errorBox");
-            $("#ClaimUnacknowledgeMessageBox").text("Please select line of business!");
+            $("#ClaimUnacknowledgeMessageBox").text("Please select a Line of Business! ");
             return false;
         }
         return true;

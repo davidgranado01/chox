@@ -147,7 +147,7 @@ var grid = new Ext.grid.GridPanel({
         {id:'Id', header: "Supplier Reference", width: 150, sortable: true, dataIndex: 'supplierReference', 
             renderer:function(value,p,r){
                 return '<a href="openClaimDetail.action?id=' + r.data['id'] + '">' + value + '</a>'}},               
-        {header: "VRN", width: 250, sortable: true, dataIndex: 'vehicleRegistration'},
+        {header: "Insurer's VRN", width: 250, sortable: true, dataIndex: 'vehicleRegistration'},
         {header: "Claim Number", width: 250, sortable: true, dataIndex: 'claimNumber'}, 
         {header: "Invoice Amount", width: 250, sortable: true, 
             dataIndex: 'invoiceAmount'},  
@@ -342,16 +342,11 @@ hireDateToPicker.render('hireDateToDiv');
             
             
             <div id="gridPanel">
-                
-                
             </div>
-            
-            
-            
-            
             <div class="excel-export"><form name="thisForm">
             <a href="javascript:doExportExcel();">Export To Excel</a></form></div>
         </div>
+        <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/> Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.</div>
     </div>
 </body>
 

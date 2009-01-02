@@ -60,7 +60,7 @@
                             <p>
                                 <input type="submit" value="Sign In" />        
                                     <s:if test="#parameters.size()>0">
-                                        <span id="login-error">Incorrect User Name and/or Password </span>
+                                        <span id="login-error">Incorrect Username and/or Password </span>
                                         <!--
                                         <span id="login-error">Error:&nbsp;<s:property value="#session['ACEGI_SECURITY_LAST_EXCEPTION'].message" /></span>
                                         -->

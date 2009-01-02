@@ -101,6 +101,7 @@
                     </s:form> 
                 </div>
             </div>
+            <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/> Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.</div>
         </div>
     </body>
 </html> 

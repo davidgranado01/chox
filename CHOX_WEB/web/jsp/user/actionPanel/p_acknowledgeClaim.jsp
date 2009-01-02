@@ -66,10 +66,10 @@
                             Indemnity (Decimal)<span class="mandatory">*</span></label></td><td>
                                 <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
                             </td>
-                            <td>
+<td>
                                 <label>
-                            % Liability Accepted<span class="mandatory">*</span></label></td><td>
-                                <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                            Invoice Review Required?</label></td><td>
+                                <s:checkbox name="isInvoiceReviewRequired" />
                             </td>
                         </tr>
                         <tr>
@@ -85,22 +85,30 @@
                             </td>
                         </tr>
                         <tr valign="top">
+                            
                             <td>
                                 <label>
-                            Claim Review Notes</label></td><td>
-                                <textarea class="chox-tta" cols="20" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
+                            % Liability Accepted<span class="mandatory">*</span></label></td><td colspan="3">
+                                <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                             </td>
-                            <td>
-                                <label>
-                            Invoice Review Required?</label></td><td>
-                                <s:checkbox name="isInvoiceReviewRequired" />
-                            </td>
+                            
+                            
                         </tr>
-                        <tr>
-                            <td colspan="2" class="choice">
-                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                        <tr valign="top">
+                            <td>
+                                <label>
+                            Claim Review Notes</label></td>
+                            <td colspan="3">
+                                <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                             </td>
                         </tr>                        
+                    <tr>
+                        <td>
+                            <div class="no-format">
+                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                            </div>
+                        </td>
+                    </tr>                   
                         <tr>
                             <td colspan="2" class="choice">                     
                                 <input class="cancel" type="submit" value="Reject"  onclick="registeAction('reject');return confirm('Are you sure you want to reject this claim?')" />

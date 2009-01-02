@@ -1,9 +1,3 @@
-<%-- 
-    Document   : p_hire_monitoring_ecd_w
-    Created on : 03-Dec-2008, 20:09:07
-    Author     : Emmanuel
---%>
-
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script language="JavaScript">
@@ -38,7 +32,7 @@
             },
             messages: {
                 reason: {
-                    required:"You must supply a value for 'Reason of Delay'"
+                    required:"You must supply a value for 'Reason for Delay'"
                 },
                 ecdDate: {
                     required:"You must supply a value for 'New ECD'",
@@ -102,7 +96,7 @@
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">
-                    Reason of Delay</label>
+                    Reason for Delay</label>
                     <s:select name="reason" list="reasonTypes" headerKey=""
                               headerValue="--- SELECT ---"
                               emptyOption="false"></s:select>

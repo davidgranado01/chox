@@ -17,7 +17,9 @@
         <s:hidden id="actionName" name="actionName" />
         <div>
             <div class="status-info">
-                Please review the `History' tab for details on why the claim has been rejected and review the details/comments on the `Notes' tab regarding the previous decision to reject. Please decide on whether to progress the claim for payment or reject the claim. Please provide appropriate notes on the `Notes' tab regarding the decision made.
+                Please review the 'History' tab for details on why the claim has been rejected and review the details/comments on the 'Notes' tab regarding the previous decision to reject. 
+                Please decide on whether to progress the claim for payment or reject the claim. 
+                Please provide appropriate notes on the 'Notes' tab regarding the decision made.
             </div>
             <div class="status-control-set">
                 <table>
