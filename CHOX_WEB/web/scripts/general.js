@@ -1,3 +1,4 @@
+    /*
     var newwindow;
     function openFile(url, name)
     {
@@ -13,12 +14,44 @@
         newwindow=window.open(folderPath, 'IDASCHOX');
         if (window.focus) {newwindow.focus()}
     }
+    */
+   
+    var newwindow;
+    function openFile(url, name)
+    {
+        var folderPath = url;        
+        if(name=='ChoHelp'){
+            folderPath = folderPath + '/download/iDAS_CHOX_CHO_UG_1.1-1.pdf';
+        }else if(name=='InsHelp'){
+            folderPath = folderPath + '/download/iDAS_CHOX_IUG_1.0-1.pdf';
+        }else if(name=='Support'){
+            folderPath = folderPath + '/jsp/chox_support.jsp';
+        }
+        
+        newwindow=window.open(folderPath, 'IDASCHOX');
+        if (window.focus) {newwindow.focus()}
+    }
+    
+    function openChoxPolicyPage(url, name){
+        var folderPath = url;        
+        if(name=='TermsOfService'){
+            folderPath = folderPath + '/jsp/terms_of_service.jsp';
+        }else if(name=='PrivacyPolicy'){
+            folderPath = folderPath + '/jsp/chox_privacy_policy.jsp';
+        }else if(name=='Copyright'){
+            folderPath = folderPath + '/jsp/chox_copyright.jsp';
+        }
+        
+        newwindow=window.open(folderPath, 'IDASCHOX');
+        if (window.focus) {newwindow.focus()}
+        
+    }
     
     function onOpenAbout(){
         
         var msg = "<span class='aboutProductName'>Product Name: iDAS CHOX</span><br/><br/>";
         msg = msg + "<span class='acountCopyright'>Copyright Message: (c)2008 Sherwood Compliance Services Ltd</span><br/><br/>";
-        msg = msg + "<span class='acountVersionNumber'>V2.15 - 20090102</span><br/><br/>";
+        msg = msg + "<span class='acountVersionNumber'>V2.16 - 20090105</span><br/><br/>";
         msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
         
         $.blockUI({message: $(msg), css: { backgroundColor: '#FFFFFF', height:'auto', padding:'10px'}});

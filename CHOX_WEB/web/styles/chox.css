@@ -125,7 +125,8 @@ fieldset div
     float: left;
     margin-right: 10px;
     text-align: right;
-    width: 200px;
+    width: 220px;
+    white-space: nowrap;
 }
 .chox-form-left-col
 {
@@ -288,10 +289,8 @@ ul.inbox li{
 
 
 label.std-label-ro{
-    
-    
     line-height:20px;
-    
+    white-space: nowrap;
 }
 
 
@@ -416,3 +415,29 @@ div.action-message
 .acountCopyright{ color: #000000;font-size:12px; padding:10px;}
 .acountVersionNumber{ color: #000000; font-weight:bold;font-size:12px;}
 
+.line_page_header{
+    color:#000000;
+    font-family:tahoma,arial,verdana,sans-serif;
+    font-size: 22px;  
+    padding-bottom:10px;   
+    font-weight:bold;   
+    padding-bottom:30px; 
+    display:block;           
+}
+
+.line_header{
+    color:#000000;
+    font-family:tahoma,arial,verdana,sans-serif;
+    font-size: 18px;
+    font-weight:bold;
+    display:block;     
+}
+
+.line_item_css{
+    color:#000000;
+    font-family:tahoma,arial,verdana,sans-serif;
+    font-size: 14px;  
+    padding-bottom:30px;     
+    display:block;      
+    text-align:justify;            
+}

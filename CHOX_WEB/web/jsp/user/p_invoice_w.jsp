@@ -29,6 +29,7 @@
                     
                 handlingInvoiceNo :{required:true},
                 claimInvoiceNo :{required:true},
+                hireRateChargedPerDay :{required:true, number:true, min:0},
                 hireNet :{required:true, number:true, min:0},
                 hireVat :{required:true, number:true, min:0},
                 hireGross :{required:true, number:true, min:0},
@@ -48,16 +49,17 @@
                 deductionForClaimsHandlingFee :{required:true, number:true, max:0},
                 discount :{required:true, number:true, min:0},
                 totalToPay :{required:true, number:true, min:0},
-                excessAmountCollected :{number:true, min:0},
-                vatAmountCollected :{number:true, min:0},
+                excessAmountCollected :{required:true, number:true, min:0},
+                vatAmountCollected :{required:true, number:true, min:0},
                 dateInvoiced :{required:true, date:true}
                     
             },
-                
+
             messages: {
                     
                 handlingInvoiceNo :{required:"You must supply a value for 'Supplier Claims Handling Number'"},
                 claimInvoiceNo :{required:"You must supply a value for 'Supplier Claim Invoice Number'"},
+                hireRateChargedPerDay :{required:"You must supply a value for 'Hire Rate Charged Per Day'", number:"You must supply a numeric value for 'Hire Rate Charged Per Day'", min:"Hire Rate Charged Per Day must be greater or equal to zero"},
                 hireNet :{required:"You must supply a value for 'Hire Net'", number:"You must supply a numeric value for 'Hire Net'", min:"Hire Net must be greater or equal to zero"},
                 hireVat :{required:"You must supply a value for 'Hire Vat'", number:"You must supply a numeric value for 'Hire Vat'", min:"Hire Vat must be greater or equal to zero"},
                 hireGross :{required:"You must supply a value for 'Hire Gross'", number:"You must supply a numeric value for 'Hire Gross'", min:"Hire Gross must be greater or equal to zero"},
@@ -77,8 +79,8 @@
                 deductionForClaimsHandlingFee :{required:"You must supply a value for 'Deduction For Claims Handling Fee'", number:"You must supply a numeric value for 'Deduction For Claims Handling Fee'", max:"Deduction For Claims Handling Fee must be less than or equal to zero"},
                 discount :{required:"You must supply a value for 'Discount'", number:"You must supply a numeric value for 'Discount'", min:"Discount must be greater or equal to zero"},
                 totalToPay :{required:"You must supply a value for 'Total To Pay'", number:"You must supply a numeric value for 'Total To Pay'", min:"Total To Pay must be greater or equal to zero"},
-                excessAmountCollected :{number:"You must supply a numeric value for Excess Amount Collected", min:"Excess Amount Collected must be greater or equal to zero"},
-                vatAmountCollected :{number:"You must supply a numeric value for Vat Amount Collected", min:"Vat Amount Collected must be greater or equal to zero"},
+                excessAmountCollected :{required:"You must supply a value for 'Excess Amount Collected'", number:"You must supply a numeric value for Excess Amount Collected", min:"Excess Amount Collected must be greater or equal to zero"},
+                vatAmountCollected :{required:"You must supply a value for 'Vat Amount Collected'", number:"You must supply a numeric value for Vat Amount Collected", min:"Vat Amount Collected must be greater or equal to zero"},
                 dateInvoiced :{ required:"You must supply a value for 'Date Invoiced'", date:"Invalid date format for Date Invoiced"}             
                     
             },
@@ -124,6 +126,11 @@
                 Supplier Claim Invoice #<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttxt"  name="claimInvoiceNo" value='<s:property value="claimInvoiceNo" />'/></div>                                             
             
+            
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">Hire Rate Charged Per Day<span class="mandatory">*</span></label>
+            <input type="text" class="chox-ttnum" name="hireRateChargedPerDay" value='<s:property value="hireRateChargedPerDay" />'/></div>
+            <br/>
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -260,12 +267,12 @@
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Excess Collected From Policyholder</label>
+                Excess Collected From Policyholder<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttnum"  name="excessAmountCollected" value='<s:property value="excessAmountCollected" />'/></div>
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                VAT Collected From Policyholder</label>
+                VAT Collected From Policyholder<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttnum"  name="vatAmountCollected" value='<s:property value="vatAmountCollected" />'/></div>
             
             <div class="chox-form-item">

@@ -30,10 +30,11 @@
                     <label class="std-label-ro">
                     Reason For Collection</label>
         <label class="std-data-ro"><s:property value="collectionReason" /></label></div>
-                <div class="chox-form-item">
+        <div class="chox-form-item">
                     <label class="std-label-ro">
                     No. Days Hire</label>
-        <label class="std-data-ro"><s:property value="days" /></label></div>
-                                             
+        <label class="std-data-ro"><s:property value="days" /></label>
+        </div>               
+                
             </div>
         </fieldset>
