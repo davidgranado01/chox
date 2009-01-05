@@ -584,4 +584,12 @@ CREATE INDEX "fki_auditTrail_user_fkey"
 insert into insurer (name, created_by, last_modified_by) values ('Direct Line', 999, 999);
 delete from insurer where name = 'ROYAL & SUN ALLIANCE';
 
+-- ############################################################################################
+-- START VERSION V2.16 - 20090105
+-- ############################################################################################\
+
+-- INCREASE FIELD SIZE FOR
+-- CUSTOMER > TELEPHONE
+-- WITNESS > TELEPHONE
+
 -----------------------------------------------------------------------------------------------
