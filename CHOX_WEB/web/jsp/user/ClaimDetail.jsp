@@ -11,16 +11,16 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>IDAS-CHOX</title>
-        
         <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
         <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
-        
+          
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery-1.2.6.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.form.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.blockUI.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/ext-jquery-adapter.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.metadata.js"></script>
-        <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.validate.min.js"></script>            
+        <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.validate.min.js"></script> 
+        <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.timer.js"></script>  
         
         <script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
         <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
@@ -428,6 +428,39 @@
     {
         $("#actionName").val(val);
     }
+    
+            
+    $(document).everyTime(3000, function() {
+        pingServer();
+    });
+    
+     function pingServer()
+    {
+        $.getJSON('activityMonitoringAction.action?claimId=<s:property value="id" />',
+        function(data){
+            
+            if(data.results.length > 0)
+            {
+
+                $("#userViewingThisClaim").empty();
+                $.each(data.results, function(i,result){
+                    if(i > 0)
+                    {
+                        $("#userViewingThisClaim").append(', ');
+                    }
+                    $("#userViewingThisClaim").append(result);
+                });
+                $("#userViewingThisClaimDiv").show();
+
+            }
+            else
+            {
+                $("#userViewingThisClaimDiv").hide();
+            }
+            
+        });
+
+    }
    
    function updateAnomalies(a){
         document.location = "doUpdateAnomalies.action?id="+a;
@@ -530,6 +563,10 @@
                             </table>
                         </fieldset>
                     </div>
+                </div>
+                
+                <div id="userViewingThisClaimDiv" class="warning" style="display:none;">                      
+                        This claim is currently being viewed and / or modified by the following user(s) : <span id="userViewingThisClaim"></span>
                 </div>
                 
                 <div class="chox-claim-header x-panel-bwrap chox-form-container">    

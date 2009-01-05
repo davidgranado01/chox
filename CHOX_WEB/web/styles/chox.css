@@ -441,3 +441,18 @@ div.action-message
     display:block;      
     text-align:justify;            
 }
+
+.warning{
+    border: 1px solid;
+    margin: 10px 0px;
+    padding:10px 10px 10px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+
+}
+
+.warning {
+color: #9F6000;
+background-color: #FEEFB3;
+background-image: url('/CHOX_WEB/images/warning.png');
+}

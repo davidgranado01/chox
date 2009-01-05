@@ -18,6 +18,7 @@
     <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.form.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/ext-jquery-adapter.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.timer.js"></script>  
     
     <script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
@@ -158,7 +159,9 @@ var grid = new Ext.grid.GridPanel({
         {header: "Created By", width: 250, sortable: true, dataIndex: 'createdBy'},          
         {header: "LOB", width: 250, sortable: true, dataIndex: 'lineOfBusiness'},
         {header: "CHO", width: 250, sortable: true, dataIndex: 'cho'},
-        {header: "Insurer", width: 150, sortable: true, dataIndex: 'insurer'}
+        {header: "Insurer", width: 150, sortable: true, dataIndex: 'insurer'},
+        {header: "Viewing", width: 150, sortable: true, dataIndex: 'id',renderer:function(value,p,r){
+                return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '" class="std-label-ro">-</label>'}}
     ],
     stripeRows: true,
     layout:'fit',
@@ -235,7 +238,30 @@ invoiceUploadDateFromPicker.render('invoiceUploadDateFromDiv');
 invoiceUploadDateToPicker.render('invoiceUploadDateToDiv');
 hireDateFromPicker.render('hireDateFromDiv');
 hireDateToPicker.render('hireDateToDiv');
-} 
+}     
+
+$(document).everyTime(3000, function() {
+        refreshViewingStatus();
+    });
+    
+    function refreshViewingStatus()
+    {
+        var x = [];
+
+        $("input[name='viewingId']").each(function (i) {
+            var claimId = $(this).val();
+            x.push(claimId);
+        });  
+        
+    $.getJSON('checkViewingStatus.action?claimIds=' + x.join(','),
+    function(data){
+        
+        $.each(data.results, function(i,result){
+            $("#viewingLabel_" + result.claimId).html(result.status);
+        });
+        
+    });
+}
 
 </script>
 

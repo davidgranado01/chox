@@ -513,6 +513,15 @@
             </result>
         </action>
         <!-- End Comment Detail -->
+        <action name="activityMonitoringAction" class="chox.web.actions.ActivityMonitoringAction">
+            <result name="success">/jsp/p_jsonData.jsp
+            </result>
+        </action>
+        
+        <action name="checkViewingStatus" class="chox.web.actions.ActivityMonitoringAction" method="checkViewingStatus">
+            <result name="success">/jsp/p_jsonData.jsp
+            </result>
+        </action>
       
 
     </package>

@@ -31,6 +31,7 @@
     <bean id="choBandService" class="chox.services.ChoBandServiceImpl" singleton="false"/>
     <bean id="globalConfigurationService" class="chox.services.GlobalConfigurationServiceImpl" singleton="false"/>
     <bean id="auditTrailService" class="chox.services.AuditTrailServiceImpl" singleton="false"/>
+    <bean id="userService" class="chox.services.UserServiceImpl" singleton="false"/>
     
     <bean id="uploadClaimXMLService" class="chox.services.UploadClaimXMLServiceImpl" singleton="false">
         <property name="vehicleClassService" ref="vehicleClassService" />

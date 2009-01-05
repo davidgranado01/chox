@@ -11,10 +11,8 @@ public class UserServiceImpl  extends DataService implements UserService {
 
     public WebUser findByEmail(String email) {
 
-        getCurrentSession().beginTransaction();
         Criteria criteria = getCurrentSession().createCriteria(WebUser.class).add(Restrictions.eq("email", email));
         WebUser result = (WebUser) criteria.uniqueResult();
-        getCurrentSession().getTransaction().commit();
         return result;
     }
 
@@ -24,5 +22,17 @@ public class UserServiceImpl  extends DataService implements UserService {
     public WebUser loadUserByUsername(String s) {
         WebUser u = findByEmail(s);
         return u;
+    }
+    
+    public WebUser getObject(int id)
+    {
+        UserCacheManager cacheManager = UserCacheManager.getInstance();
+        WebUser user = cacheManager.getUserFromCache(id);
+        if(user == null){
+            user = (WebUser)getCurrentSession().get(WebUser.class, id);
+            cacheManager.putUserToCache(user);
+        }
+        
+        return user;
     }
 }
