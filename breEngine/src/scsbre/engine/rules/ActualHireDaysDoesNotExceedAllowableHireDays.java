@@ -21,19 +21,13 @@ import scsbre.model.IClaimInfo;
  */
 public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRule {
 
-    
-    
     private String narrative = "Number of hire days billed exceeds the allowable threshold (for repair hires).";
+    
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
-        
-        
-        
 
-        
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        
 
         if (!claim.getHireDetail().getIsTotalLoss() && claim.getEngineeringReport().getEstimatedDaysUnderRepair() < 1) {
 
@@ -44,19 +38,11 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
                 narrative = "";
             }
         } else {
-            
+
            res.setResult(RuleEvaluationResult.RuleSkipped);
            narrative = "Claim is total loss OR a non-zero value has been supplied for Estimated Days Under Repair";
         }
 
-
-
-        
-       
-        
-        
-
-        
         return res;
     }
 
