@@ -104,6 +104,7 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     protected String engineerClaimReviewNotes;
     protected boolean isInvoiceReviewRequired;
     protected boolean isAnomalies;
+    protected Date hireMonitoringEcd;
     //protected VehicleClass vehicleClass;
 
     /**
@@ -595,5 +596,13 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     
     public String getIsAnomaliesDesc() {
         return isAnomalies ? "Yes" : "No";
-    }    
+    }
+    
+    public void setHireMonitoringEcd(Date d){
+        this.hireMonitoringEcd = d;
+    }
+    
+    public Date getHireMonitoringEcd() {
+        return this.hireMonitoringEcd;
+    }
 }

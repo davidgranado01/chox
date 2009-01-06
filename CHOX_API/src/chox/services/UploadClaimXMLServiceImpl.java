@@ -19,6 +19,7 @@ import java.util.List;
 import chox.Util.TextHelper;
 import chox.Util.DateHelper;
 import chox.data.UploadStatus;
+import java.util.Date;
 
 public class UploadClaimXMLServiceImpl extends DataService implements UploadClaimXMLService {
     private VehicleClassService vehicleClassService;
@@ -37,6 +38,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
     private ChorganisationService chorganisationService;
     private ChoBandService choBandService;
     private HistoryService historyService;
+    private HireMonitoringEcdService hireMonitoringEcdService;
     
     public UploadClaimXMLServiceImpl()
     {        
@@ -339,6 +341,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         if(BREClaim.getHireMonitoringDetail()!=null){
             isIsTotalLostCheck = BREClaim.getHireMonitoringDetail().isIsTotalLostCheck();
         }
+        
         BREClaim.getVehicleHire().setIsTotalLoss(isIsTotalLostCheck);
 
         // CONSTRUCTE DUMMY ENGINEERING REPORT WITH ALL VALUE IS ZERO WHEN ER NOT EXIST
@@ -364,9 +367,12 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             BREClaim.getCustomer().setVehicleClass(null);
         }
         
+        // Mantis: 0000331
+        BREClaim.setHireMonitoringEcd(hireMonitoringEcdService.getLatestHireMonitoringECDDate(BREClaim));
+        
         return BREClaim;
     }
-    
+        
     private XMLParseResult appendInvoiceValidationErrorMessage(XMLParseResult xmlParseResult, List<RuleEvaluation> results){
 
         for(int iCount=0; iCount<results.size(); iCount++){
@@ -1702,6 +1708,10 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
 
     public void setHistoryService(HistoryService historyService) {
         this.historyService = historyService;
+    }
+    
+    public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) {
+        this.hireMonitoringEcdService = hireMonitoringEcdService;
     }
     
 }

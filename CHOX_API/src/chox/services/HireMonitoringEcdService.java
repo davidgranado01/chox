@@ -5,7 +5,9 @@
 
 package chox.services;
 
+import chox.model.Claim;
 import chox.model.HireMonitoringEcd;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,5 +20,6 @@ public interface HireMonitoringEcdService {
     public List<HireMonitoringEcd> getHireMonitoringEcdsByClaimId(int claimId);
     public HireMonitoringEcd getObject(int id);
     public void updateObject(HireMonitoringEcd engineerReport);
+    public Date getLatestHireMonitoringECDDate(Claim claim);
 
 }

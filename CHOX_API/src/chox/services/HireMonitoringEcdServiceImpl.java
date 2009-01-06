@@ -5,7 +5,9 @@
 package chox.services;
 
 import chox.Util.DateHelper;
+import chox.model.Claim;
 import chox.model.HireMonitoringEcd;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
@@ -45,5 +47,21 @@ public class HireMonitoringEcdServiceImpl extends DataService implements HireMon
         getCurrentSession().beginTransaction();
         getCurrentSession().saveOrUpdate(object);
         getCurrentSession().getTransaction().commit();
+    }
+    
+    public Date getLatestHireMonitoringECDDate(Claim claim){
+        
+        Date returnECD = null;
+        
+        Date originalEcd = claim.getCustomer().getInitialECD();
+        List<HireMonitoringEcd> hireMonitoringEcds = getHireMonitoringEcdsByClaimIdFilter(claim.getId(), false, "createdDate");
+        
+        if(hireMonitoringEcds.size()>0){
+            returnECD = hireMonitoringEcds.get(0).getEcdDate();
+        }else{
+            returnECD = originalEcd;
+        }
+        
+        return returnECD;
     }
 }
