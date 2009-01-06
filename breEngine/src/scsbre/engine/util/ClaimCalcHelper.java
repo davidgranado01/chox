@@ -26,15 +26,16 @@ public class ClaimCalcHelper {
 	
 	
 	/*------------- helper calc methods ---------------------------*/
-
-
+        
+        
 	public int getHireDuration()
 	{
 		Date hireStart = claim.getHireDetail().getHireStart();
-		Date initialEcd = claim.getCustomerVehicleDamage().getInitialECD();
+		//Date initialEcd = claim.getCustomerVehicleDamage().getInitialECD();
+                Date initialEcd = claim.getHireMonitoringEcd();
 		return CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
 	}
-
+        
 	public BigDecimal getDailyHireRateCharged()
 	{
 		BigDecimal hireNetMinusExtras = claim.getInvoice().getHireNet().subtract(exCalcHelper.getTotalExtras());
@@ -55,7 +56,8 @@ public class ClaimCalcHelper {
 		allowedDays += claim.getChoBand().getTakeVehicleOutDays();
 		allowedDays += claim.getChoBand().getEngineerInspectionDelayDays();
 
-		if (claim.getCustomerVehicleDamage().getInitialECD() == null) //no ecd
+		//if (claim.getCustomerVehicleDamage().getInitialECD() == null) //no ecd
+                if (claim.getHireMonitoringEcd()==null) //no ecd
 		{
 			if (claim.getCustomerVehicleDamage().getIsUsable())
 			{
@@ -70,6 +72,7 @@ public class ClaimCalcHelper {
 		}
 		else //we have an ecd
 		{
+                    
 			allowedDays += getHireDuration() + 1;
 			if (claim.getCustomerVehicleDamage().getIsUsable())
 			{

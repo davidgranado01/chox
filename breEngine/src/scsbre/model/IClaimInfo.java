@@ -25,5 +25,7 @@ public interface IClaimInfo {
     public Date getPolicyHolderContactDate();
 
     public IVehicleClassInfo getVClass();
+    
+    public Date getHireMonitoringEcd();
 
 }
