@@ -9,7 +9,7 @@
             
             var rentalStartDatePicker = new Ext.form.DateField({
                 name: 'rentalStart',
-                width: 185,
+                width: 100,
                 allowBlank: true,
                 format: 'd/m/Y',
                 showWeekNumber: true,
@@ -20,7 +20,7 @@
             
             var rentalEndDatePicker = new Ext.form.DateField({
                 name: 'rentalEnd',
-                width: 185,
+                width: 100,
                 allowBlank: true,
                 format: 'd/m/Y',
                 showWeekNumber: true,

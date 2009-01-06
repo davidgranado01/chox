@@ -13,7 +13,7 @@
         
         var dateInvoicedDatePicker = new Ext.form.DateField({
             name: 'dateInvoiced',
-            width: 185,
+            width: 100,
             allowBlank: true,
             format: 'd/m/Y',
             showWeekNumber: true,

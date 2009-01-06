@@ -6,11 +6,20 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
+<script language="JavaScript">
+    function resetForm(){
+        $("#searchForm").each(function(){
+            this.reset();
+        });
+        
+    }
+    
+</script>
+
 <div>
     
-    
     <table cellpadding="0" cellspacing="0" class="searchForm" border="0">
-        
+
         
         <tr>
             <td><label>Supplier Reference</label></td>
@@ -32,24 +41,18 @@
                                                                   emptyOption="false"></s:select></td> 
             
         </tr>
-        
-        
-        
-        
-        
         <tr>
-            <td><label>Claim Upload Date From</label></td><td colspan="2"><div id="claimUploadDateFromDiv" /></td>
-            <td><label>Claim Upload Date To</label></td><td colspan="2"><div id="claimUploadDateToDiv" /></td>
+            <td nowrap><label>Claim Upload Date From</label></td><td colspan="2"><div id="claimUploadDateFromDiv" /></td>
+            <td nowrap><label>Claim Upload Date To</label></td><td colspan="2"><div id="claimUploadDateToDiv" /></td>
         </tr>
         <tr>
-            <td><label>Invoice Upload Date From</label></td><td colspan="2"><div id="invoiceUploadDateFromDiv" /></td>
-            <td><label>Invoice Upload Date To</label></td><td colspan="2"><div id="invoiceUploadDateToDiv" /></td>
+            <td nowrap><label>Invoice Upload Date From</label></td><td colspan="2"><div id="invoiceUploadDateFromDiv" /></td>
+            <td nowrap><label>Invoice Upload Date To</label></td><td colspan="2"><div id="invoiceUploadDateToDiv" /></td>
         </tr>                        
         <tr>
-            <td><label>Hire Date From</label></td><td colspan="2"><div id="hireDateFromDiv" /></td>
-            <td><label>Hire Date To</label></td><td colspan="2"><div id="hireDateToDiv"/></td>                            
+            <td nowrap><label>Hire Date From</label></td><td colspan="2"><div id="hireDateFromDiv" /></td>
+            <td nowrap><label>Hire Date To</label></td><td colspan="2"><div id="hireDateToDiv"/></td>                            
         </tr>                        
-        
         
         <tr>
             <s:if test="isInsurer">
@@ -73,12 +76,13 @@
             </s:else> 
         </tr>                 
         
-        
     </table>
     
-    <div class="buttonPanel"><div><input type="button" onclick="javascript:searchClaim();" value="Search" /></div>
-        
+    <div class="buttonPanel">
+        <div>
+        <input type="button" onclick="javascript:searchClaim();" value="Search" />
+        </div>
+   
     </div>
-    
-    
+
 </div>

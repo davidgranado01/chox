@@ -11,7 +11,7 @@
         
             var incidentDateDatePicker = new Ext.form.DateField({
                 name: 'date',
-                width: 185,
+                width: 100,
                 allowBlank: true,
                 format: 'd/m/Y',
                 showWeekNumber: true,

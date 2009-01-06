@@ -120,7 +120,11 @@
         outputDiv.text(textStatus  + ":" + errorThrown);   
         hasFormUnderSubmission = false;                
     }
-
+    
+    function doCleanResult(){
+        $(".chox-form-submit-result").html("");
+    }
+    
     Ext.onReady(function(){
     
         var tabs = new Ext.TabPanel({
@@ -134,33 +138,38 @@
                 {
                     contentEl:'claimDetails', 
                     title: 'Claim Details', 
-                    disabled: claimDetailsDisabled
+                    disabled: claimDetailsDisabled,
+                    listeners: {activate : doCleanResult}
                 },
                 {
                     contentEl:'hireMonitoringDetails', 
                     title: 'Hire Monitoring', 
-                    disabled: hireMonitoringDetailsDisabled                                      
+                    disabled: hireMonitoringDetailsDisabled,
+                    listeners: {activate : doCleanResult}
                 },
                 {
                     contentEl:'invoiceDetails', 
                     title: 'Invoice Details', 
-                    disabled: invoiceDetailsDisabled
+                    disabled: invoiceDetailsDisabled,
+                    listeners: {activate : doCleanResult}
                 },
                 {
                     contentEl:'paymentPack', 
                     title: 'Attachments', 
-                    disabled: paymentPackDisabled 
+                    disabled: paymentPackDisabled,
+                    listeners: {activate : doCleanResult} 
                 },
                 {
                     contentEl:'historyDetails', 
-                    title: 'History', disabled: historyDetailsDisabled 
+                    title: 'History', disabled: historyDetailsDisabled,
+                    listeners: {activate : doCleanResult} 
                 },            
                 {
                     contentEl:'comments', 
                     title: 'Notes', 
                     disabled: commentsDisabled,
                     listeners: {activate : loadComments}
-                }            
+                }
             ]
         }); 
         
@@ -220,6 +229,7 @@
                    success: loadAttachments
                  });
             }
+            doCleanResult();
         }
         
 

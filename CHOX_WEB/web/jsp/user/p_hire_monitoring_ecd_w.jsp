@@ -6,7 +6,7 @@
 
         var ecdDateDatePicker = new Ext.form.DateField({
             name: 'ecdDate',
-            width: 175,
+            width: 100,
             allowBlank: true,
             format: 'd/m/Y',
             showWeekNumber: true,

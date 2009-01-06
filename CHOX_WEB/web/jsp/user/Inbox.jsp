@@ -186,7 +186,7 @@ var tabs = new Ext.TabPanel({
         
 var claimUploadDateFromPicker = new Ext.form.DateField({
     name: 'claimUploadDateFrom',
-    width: 185,
+    width: 120,
     allowBlank: true,
     format: 'd/m/Y',
     showWeekNumber: true
@@ -194,7 +194,7 @@ var claimUploadDateFromPicker = new Ext.form.DateField({
         
 var claimUploadDateToPicker = new Ext.form.DateField({
     name: 'claimUploadDateTo',
-    width: 185,
+    width: 120,
     allowBlank: true,
     format: 'd/m/Y',
     showWeekNumber: true
@@ -202,7 +202,7 @@ var claimUploadDateToPicker = new Ext.form.DateField({
         
 var invoiceUploadDateFromPicker = new Ext.form.DateField({
     name: 'invoiceUploadDateFrom',
-    width: 185,
+    width: 120,
     allowBlank: true,
     format: 'd/m/Y',
     showWeekNumber: true
@@ -210,7 +210,7 @@ var invoiceUploadDateFromPicker = new Ext.form.DateField({
         
 var invoiceUploadDateToPicker = new Ext.form.DateField({
     name: 'invoiceUploadDateTo',
-    width: 185,
+    width: 120,
     allowBlank: true,
     format: 'd/m/Y',
     showWeekNumber: true
@@ -218,7 +218,7 @@ var invoiceUploadDateToPicker = new Ext.form.DateField({
         
 var hireDateFromPicker = new Ext.form.DateField({
     name: 'hireDateFrom',
-    width: 185,
+    width: 120,
     allowBlank: true,
     format: 'd/m/Y',
     showWeekNumber: true
@@ -226,7 +226,7 @@ var hireDateFromPicker = new Ext.form.DateField({
         
 var hireDateToPicker = new Ext.form.DateField({
     name: 'hireDateTo',
-    width: 185,
+    width: 120,
     allowBlank: true,
     format: 'd/m/Y',
     showWeekNumber: true

@@ -10,7 +10,7 @@
             
             var repairBookInDatePicker = new Ext.form.DateField({
                 name: 'repairBookInDate',
-                width: 185,
+                width: 100,
                 allowBlank: true,
                 format: 'd/m/Y',
                 showWeekNumber: true,
@@ -21,7 +21,7 @@
             
             var inspectionBookedDateDatePicker = new Ext.form.DateField({
                 name: 'inspectionBookedDate',
-                width: 185,
+                width: 100,
                 allowBlank: true,
                 format: 'd/m/Y',
                 showWeekNumber: true,
@@ -32,7 +32,7 @@
             
             var inspectionDateDatePicker = new Ext.form.DateField({
                 name: 'inspectionDate',
-                width: 185,
+                width: 100,
                 allowBlank: true,
                 format: 'd/m/Y',
                 showWeekNumber: true,
@@ -43,7 +43,7 @@
                  
             var repairCompletionDateDatePicker = new Ext.form.DateField({
                 name: 'repairCompletionDate',
-                width: 185,
+                width: 100,
                 allowBlank: true,
                 format: 'd/m/Y',
                 showWeekNumber: true,

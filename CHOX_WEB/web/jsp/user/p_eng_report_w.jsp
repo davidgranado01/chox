@@ -101,10 +101,10 @@
                 Engineer Email</label>
             <input type="text" class="chox-ttxt" name="email" value='<s:property value="email" />'/></div>
             
-            
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes"/><div class="chox-form-submit-result"></div>
-            </div>        
+                <input type="submit" value="Save Changes"/>
+            </div>
+            <div class="chox-form-submit-result"></div>
             <div class="errorBox" id="EngRptmessageBox"></div>
         </div>
     </fieldset>
