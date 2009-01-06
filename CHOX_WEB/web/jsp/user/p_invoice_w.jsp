@@ -130,7 +130,6 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Hire Rate Charged Per Day<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttnum" name="hireRateChargedPerDay" value='<s:property value="hireRateChargedPerDay" />'/></div>
-            <br/>
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">

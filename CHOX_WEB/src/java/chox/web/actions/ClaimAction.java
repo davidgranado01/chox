@@ -30,7 +30,9 @@ import chox.model.Insurer;
 import chox.model.LookupItem;
 import chox.model.WebUser;
 import chox.services.AuditTrailService;
+import chox.services.HireMonitoringEcdService;
 import chox.services.HistoryService;
+import chox.services.UploadClaimXMLService;
 import java.util.ArrayList;
 /**
  *  
@@ -54,6 +56,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private ChoBandService choBandService;
     private HistoryService historyService;
     private AuditTrailService auditTrailService;
+    private HireMonitoringEcdService hireMonitoringEcdService;
     private String actionResult;
     private TabAccessibility tabAccessibility;
     private int vehicleClassId = -1;
@@ -571,7 +574,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (BREClaim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")) {
             BREClaim.getCustomer().setVehicleClass(null);
         }
-
+        
+        // Mantis: 0000331
+        BREClaim.setHireMonitoringEcd(hireMonitoringEcdService.getLatestHireMonitoringECDDate(BREClaim));
+        
+        
         return BREClaim;
     }
 
@@ -645,6 +652,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.historyService = historyService;
     }
 
+    public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService){
+        this.hireMonitoringEcdService = hireMonitoringEcdService;
+    }
+    
     public String getStatusMsg() {
         return statusMsg;
     }

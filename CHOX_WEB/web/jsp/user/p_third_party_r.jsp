@@ -61,11 +61,13 @@
                 <label class="std-label-ro">
                 Policy Number</label>
                         <label class="std-data-ro"><s:property value="policyNumber" /></label></div>
+<!--                        
             <div class="chox-form-item">
                 <label class="std-label-ro">
                     Claim Number
                 </label>
                         <label class="std-data-ro"><s:property value="claimReference" /></label></div>
+!-->                        
             <div class="chox-form-item">
                 <label class="std-label-ro">
                 Vehicle Manufacturer</label>

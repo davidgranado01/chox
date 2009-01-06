@@ -22,7 +22,7 @@
             <label class="std-label-ro">Hire Rate Charged Per Day</label>
             <label class="std-data-ro"><s:property value="hireRateChargedPerDay" /></label>
         </div> 
-        <br/>
+
         <div class="chox-form-item">
             <label class="std-label-ro">
             Hire Net</label>

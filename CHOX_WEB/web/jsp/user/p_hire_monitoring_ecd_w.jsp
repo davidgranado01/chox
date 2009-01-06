@@ -85,7 +85,7 @@
 
 <form id="formAddNewHireMonitoringEcd" action="user/addNewHireMonitoringEcd.action" name="formAddNewHireMonitoringEcd" class="XXentity-form">
     <fieldset class="x-fieldset">
-        <legend>Revised ECD</legend>
+        <legend>Revised/New ECD</legend>
         <div style="display:none" class="form-container">
             <input type="hidden" name="objectId" value='<s:property value="id"/>'>
             <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>

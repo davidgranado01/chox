@@ -10,7 +10,7 @@
     
     $(document).ready(function(){
             
-        $("#approveContestedClaim").validate(
+        var validateFlag = $("#approveContestedClaim").validate(
         {
             errorLabelContainer: "#ActionPanelMessageBox",                
             rules: {
@@ -121,7 +121,7 @@
                     </tr>                      
                                     <tr>
                                         <td colspan="2" class="choice">  
-                                            <input type="submit" value="Reject"  onclick="registeAction('reject');return confirm('Are you sure you want to reject this claim?')" />
+                                            <input type="submit" value="Reject" onclick="registeAction('reject');return confirm('Are you sure you want to reject this claim?')" />
                                             <input type="submit" value="Acknowledge" onclick="registeAction('accept')"  />
                                             <input type="submit" value="Refer To Engineer" onclick="registeAction('refer');"  /> 
                                         </td>

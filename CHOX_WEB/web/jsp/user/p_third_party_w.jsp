@@ -21,29 +21,18 @@
              lastName:{
                  required:true
              },
-             address1:{
-                 required:true
-             },  
              vehicleClassId:{
                  min:1
              },
              insurerId:{                     
                  min:1
              },
-             vehicleManufacturer:{
-                 required:true
-             },
              policyNumber:{
-                 required:true
-             },
-             claimReference:{
                  required:true
              },
              vehicleRegistration:{
                  required:true
-             },
-             postcode:{required:true},
-             telephoneDay:{required:true}
+             }
            },
            messages: {
              title: {
@@ -55,33 +44,18 @@
              lastName: {
                required:"You must supply a value for 'Last Name'"
              },  
-             address1: {
-               required:"You must supply a value for 'Address 1'"
-             },  
-             postcode: {
-               required:"You must supply a value for 'Postcode'"
-             },  
-             telephoneDay: {
-               required:"You must supply a value for 'Telephone Day'"
-             }, 
              vehicleClassId:{
                  min: "You must select a Vehicle Class"
              }, 
              insurerId:{
                  min: "You must select an Insurer"
              },
-             vehicleManufacturer: {
-               required:"You must supply a value for 'Vehicle Manufacturer'"
-             },  
              policyNumber: {
                required:"You must supply a value for 'Policy Number'"
              },  
              vehicleRegistration: {
                required:"You must supply a value for 'Vehicle Registration'"
-             },
-             claimReference: {
-               required:"You must supply a value for 'Claim Number'"
-             }             
+             }           
            },
             submitHandler: function(form) {
                 $(form).ajaxSubmit(globalEntityFormOptions);
@@ -119,7 +93,7 @@
             <input type="text" class="chox-ttxt" name="lastName" value='<s:property value="lastName" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Address 1<span class="mandatory">*</span></label>
+                Address 1</label>
             <input type="text" class="chox-ttxt" name="address1" value='<s:property value="address1" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -139,11 +113,11 @@
             <input type="text" class="chox-ttxt" name="address5" value='<s:property value="address5" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Postcode<span class="mandatory">*</span></label>
+                Postcode</label>
             <input type="text" class="chox-ttxt" name="postcode" value='<s:property value="postcode" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Telephone Day<span class="mandatory">*</span></label>
+                Telephone Day</label>
             <input type="text" class="chox-ttxt" name="telephoneDay" value='<s:property value="telephoneDay" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -167,14 +141,16 @@
                 <label class="chox-form-std-label">
                 Policy Number<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttxt" name="policyNumber" value='<s:property value="policyNumber" />'/></div>   
+<!--            
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Claim Number<span class="mandatory">*</span>
                 </label>
-            <input type="text" class="chox-ttxt" name="claimReference" value='<s:property value="claimReference" />'/></div>   
+            <input type="text" class="chox-ttxt" name="claimReference" value='<s:property value="claimReference" />'/></div> 
+!-->            
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Vehicle Manufacturer<span class="mandatory">*</span></label>
+                Vehicle Manufacturer</label>
             <input type="text" class="chox-ttxt" name="vehicleManufacturer" value='<s:property value="vehicleManufacturer" />'/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">

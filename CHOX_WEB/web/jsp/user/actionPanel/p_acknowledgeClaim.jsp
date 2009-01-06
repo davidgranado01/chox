@@ -4,7 +4,6 @@
           
     $(document).ready(function(){
             
-            
         $("#formAcknowledgeAction").validate(
         {
             errorLabelContainer: "#ACKmessageBox",                

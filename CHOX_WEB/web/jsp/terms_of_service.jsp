@@ -100,19 +100,11 @@ the use of the ‘Service’, including direct, indirect, incidental and consequ
 
             </div>
             
-<div><i><b>Confidential</b> Sherwood Compliance Services Ltd, Batchworth Park, London Road, Rickmansworth, WD3 1JS<br/>
-Website: <a href="http://www.sherwoodcompliance.co.uk" >www.sherwoodcompliance.co.uk</a>, Telephone: +44(0) 1923 713000, Company registered in England 4819089</i><br/><br/></div>
+<div class="footerText">©2008 Sherwood Compliance Services Ltd</div>
 
         </div>
         
     </div>
-<!--
-<div class="footerText">
-This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/>
-Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.<br/><br/>
-©2008 Sherwood Compliance Services Ltd | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','Copyright');" class="footerText">Copyright</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','PrivacyPolicy');" class="footerText">Privacy Policy</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','TermsOfService');" class="footerText">Terms of Service</a></div>
-</div>
-!-->
 
     </body>
 </html>
