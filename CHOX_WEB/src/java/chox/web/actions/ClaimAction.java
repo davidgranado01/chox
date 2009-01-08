@@ -323,16 +323,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
     
     private String validateAcknowledgeClaimInfo() {
-
-        String claimNumber = claim.getClaimNumber();
-        int claimId = claim.getId();
         
-        boolean isClaimNumberExist = this.service.getClaimCountByClaimNumber(claimNumber, claimId) > 0;
-        if (isClaimNumberExist) {
-            return "ERROR : The Claim number you have supplied already exists";
-        } else {
-            return "";
+        String returnStr = "";
+        
+        String claimNumber = claim.getClaimNumber().trim();
+        
+        if(claimNumber.length()>0){
+            int claimId = claim.getId();
+            boolean isClaimNumberExist = this.service.getClaimCountByClaimNumber(claimNumber, claimId) > 0;
+            if (isClaimNumberExist) {
+                returnStr = "ERROR : The Claim number you have supplied already exists";
+            } else {
+                returnStr = "";
+            }
         }
+        
+        return returnStr;
     }
     
     public String reviewByEngineer() {

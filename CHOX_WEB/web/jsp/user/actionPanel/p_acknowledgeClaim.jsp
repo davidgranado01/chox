@@ -19,6 +19,14 @@
         return true;
     }
     
+    function isClaimNumberMandatory(){
+        var sActionName = $("#actionName").val();
+        if(sActionName=="reject"){
+            return false;
+        }
+        return true;
+    }
+    
     $(document).ready(function(){
         doFormValidation();
     });
@@ -39,7 +47,7 @@
                     max: 100.00
                 },
                 claimNumber:{
-                    required:true
+                    required:isClaimNumberMandatory
                 } ,
                 actionName:{
                     required:true
@@ -100,7 +108,7 @@
                         <tr>
                             <td>
                                 <label>
-                            Claim Number<span class="mandatory">*</span></label></td><td>
+                            Claim Number</label></td><td>
                                 <input type="text" class="chox-ttxt" name="claimNumber" value="<s:property value="claimNumber" />"/>
                             </td>
                             <td>
