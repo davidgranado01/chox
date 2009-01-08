@@ -19,7 +19,6 @@ import java.util.List;
 import chox.Util.TextHelper;
 import chox.Util.DateHelper;
 import chox.data.UploadStatus;
-import java.util.Date;
 
 public class UploadClaimXMLServiceImpl extends DataService implements UploadClaimXMLService {
     private VehicleClassService vehicleClassService;
@@ -169,7 +168,6 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
         //System.out.println(" ** CHO REFERENCE: " + xmlParseResult.getClaim().getChoReference());
-        
         // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
         if(!xmlParseResult.getIsClaimExist()){
             xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);
@@ -228,7 +226,9 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             // VALIDATE CLAIM OR INVOICE IS UNIQUE
             if(!xmlParseResult.getIsClaimExist()){
                 xmlParseResult = validateClaimInformation(xmlParseResult);
+                xmlParseResult.getClaim().setClaimNumber(xmlParseResult.getClaim().getThirdParty().getClaimReference());
             }
+
         }
         
 
@@ -261,13 +261,8 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
     }
     
     private XMLParseResult validateClaimInformation(XMLParseResult xmlParseResult){
-
-        
-        
-        //System.out.println(" ***********"+xmlParseResult.getClaim().getId());
         
         if(xmlParseResult.getClaim().getCustomer()!=null){
-            //System.out.println(" ***********"+xmlParseResult.getClaim().getCustomer().getClaimReference());
             
             String custClaimNumber = "";
             
@@ -281,8 +276,8 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             }
         }
         
+        /*
         if(xmlParseResult.getClaim().getThirdParty()!=null){
-            //System.out.println(" ***********"+xmlParseResult.getClaim().getThirdParty().getClaimReference());
             
             String thirdPartyClaimNumber = "";
             
@@ -295,6 +290,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                 xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, errorMessage, false);
             }  
         }
+        */
         
         return xmlParseResult;
     }
@@ -353,6 +349,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             BREClaim.setEngineerReport(engineerreport);
         }
         
+        // 225
         if(claimService.getCountOfClaimByVRN(BREClaim.getCustomer().getVehicleRegistration(), BREClaim.getId())>0){
            BREClaim.getCustomer().setIsVehicleRegistrationExist(true);
         }
@@ -1476,14 +1473,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             XMLParseResult xmlParseResult,
             Element mainElement,
             Document doc) throws Exception {
-        
-        // String strSectionName = "rental";
-        // String mainNodeName = "rental-vehicles";
-        // String childNodeName = "rental-vehicle";
-        // String childNodeLabelMain = XmlHelper.contructureErrorMessage(parentNodeName, "");
-        // String childNodeLabel1 = XmlHelper.contructureErrorMessage(childNodeLabelMain, mainNodeName);
-        // String childNodeLabel2 = XmlHelper.contructureErrorMessage(childNodeLabel1, childNodeName);
-        
+                
         xmlParseResult.setIsCurrentScheValid(true);
         xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "rental-vehicles", "Hire Vehicle Details", "");
 
@@ -1576,9 +1566,6 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             // PART 2 : EXTRA SECTION
             String nodeName1 = "extras";
             String nodeName2 = "extra";
-
-            // String childNodeLabel1 = XmlHelper.contructureErrorMessage(parentNodePath, nodeName1);
-            // String childNodeLabel2 = XmlHelper.contructureErrorMessage(childNodeLabel1, nodeName2);
 
             xmlParseResult.setIsCurrentDataValid(true);
             xmlParseResult.setIsCurrentScheValid(true);

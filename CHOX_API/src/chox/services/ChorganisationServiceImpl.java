@@ -7,7 +7,9 @@ public class ChorganisationServiceImpl  extends DataService implements Chorganis
     public Chorganisation getCurrentCHOrganisation() {
         
         Chorganisation chorg = new Chorganisation();
-        chorg.setId(1006);
+        WebUser thisUser = getCurrentUser();
+        chorg.setId(thisUser.getChorganisation().getId());
         return chorg;
+        
     }
 }
