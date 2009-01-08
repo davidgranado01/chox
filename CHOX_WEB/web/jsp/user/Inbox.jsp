@@ -63,14 +63,16 @@
     Ext.onReady(setupGrid); 
     
     function showClaimByStatus(status)
-    {            
+    {     
+        ds.baseParams = {
+            status : status
+        }
         ds.load(
         {
             params:
-                {
-                status : status,
+                {            
                 start:0,
-                limit:1000
+                limit:10
             }
         });
     }    
