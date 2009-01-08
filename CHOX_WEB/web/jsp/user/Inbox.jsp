@@ -28,13 +28,13 @@
 </head>
 
 <script >
-        
+    
     var rd = new Ext.data.JsonReader({
         totalProperty: 'totalCount',   
         root: 'results', 
         idProperty: 'threadid',
         remoteSort: true,
-
+        
         fields:[
             {name:'id'},
             {name:'status'},
@@ -50,7 +50,7 @@
             {name:'cho'}
         ]
     });
-        
+    
     var ds = new Ext.data.Store({
         proxy: new Ext.data.HttpProxy
         ({url: 'user/doSearchClaim.action',method:'POST'}),
@@ -59,211 +59,220 @@
     });
     ds.setDefaultSort('created', 'desc');
     // var c = new Ext.DatePicker({renderTo: 'doSearchClaim_invoiceUploadDateFrom'});
-
+    
     Ext.onReady(setupGrid); 
     
-function showClaimByStatus(status)
-{            
-    ds.load(
-    {
-        params:
-            {
-            status : status,
-            start:0,
-            limit:1000
-        }
-    });
-}    
-
-function showClaimIsAnomalies()
-{            
-    ds.load(
-    {
-        params:
-            {
-            isAnomalies : true,
-            start:0,
-            limit:10
-        }
-    });
-}   
-
-function showClaimIsPanaltyChargeApplied()
-{            
-    ds.load(
-    {
-        params:
-            {
-            isPanaltyChargeApplied : true,
-            start:0,
-            limit:10
-        }
-    });
-}  
-
-function doExportExcel(){
-       
-var popwin = window.open("doExportExcel.action", "Excel", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
-}
+    function showClaimByStatus(status)
+    {            
+        ds.load(
+        {
+            params:
+                {
+                status : status,
+                start:0,
+                limit:1000
+            }
+        });
+    }    
     
-function searchClaim()
-{
+    function showClaimIsAnomalies()
+    {  
+        ds.baseParams = {
+            isAnomalies : true
+        }
+        ds.load(
+        {
+            params:
+                {            
+                start:0,
+                limit:10
+            }
+        });
+    }   
+    
+    function showClaimIsPanaltyChargeApplied()
+    {       
+        ds.baseParams = {
+            
+            isPanaltyChargeApplied : true
+        }
+        ds.load(
+        {
+            params:
+                {            
+                start:0,
+                limit:10
+            }
+        });
+    }  
+    
+    function doExportExcel(){
         
-var supplierReference = Ext.query('*[name$=supplierReference]')[0].value;
-var supplierId = Ext.query('*[name$=supplierId]').length > 0 ? Ext.query('*[name$=supplierId]')[0].value : -1;
-var insurerId = Ext.query('*[name$=insurerId]').length > 0 ? Ext.query('*[name$=insurerId]')[0].value : -1;
-var invoiceNumber = Ext.query('*[name$=invoiceNumber]')[0].value;
-var claimNumber = Ext.query('*[name$=claimNumber]')[0].value;
-var vrn = Ext.query('*[name$=vrn]')[0].value;
-var claimUploadDateFrom = Ext.query('*[name$=claimUploadDateFrom]')[0].value;
-var claimUploadDateTo = Ext.query('*[name$=claimUploadDateTo]')[0].value;
-var invoiceUploadDateFrom = Ext.query('*[name$=invoiceUploadDateFrom]')[0].value;
-var invoiceUploadDateTo = Ext.query('*[name$=invoiceUploadDateTo]')[0].value;
-var hireDateFrom = Ext.query('*[name$=hireDateFrom]')[0].value;
-var hireDateTo = Ext.query('*[name$=hireDateTo]')[0].value;
-var status = Ext.query('*[name$=status]')[0].value;
-var lineOfBusiness = Ext.query('*[name$=lineOfBusiness]')[0].value;    
-
-ds.load(
-{
-    params:
-        {        
-        start:0,
-        limit:10,
-        supplierReference : supplierReference,
-        supplierId : supplierId,
-        insurerId : insurerId,
-        invoiceNumber : invoiceNumber,
-        claimNumber : claimNumber,
-        vrn : vrn,
-        claimUploadDateFrom : claimUploadDateFrom,
-        claimUploadDateTo : claimUploadDateTo,
-        invoiceUploadDateFrom : invoiceUploadDateFrom,
-        invoiceUploadDateTo : invoiceUploadDateTo,                
-        hireDateFrom : hireDateFrom,
-        hireDateTo : hireDateTo,
-        status : status,
-        lineOfBusiness : lineOfBusiness
+        var popwin = window.open("doExportExcel.action", "Excel", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
     }
-});        
+    
+    function searchClaim()
+    {
         
-}
-
-function setupGrid(){
-Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-Ext.QuickTips.init();         
-  
-var pagingBar = new Ext.PagingToolbar({
-        pageSize: 10,
-        store: ds,
-        displayInfo: true,
-        displayMsg: 'Displaying topics {0} - {1} of {2}',
-        emptyMsg: "No claim to display"
-    });
-
-
-var grid = new Ext.grid.GridPanel({
-    loadMask: true,
-    ds: ds,
-    width: 960,
-    columns: [
-        {id:'Id', header: "Supplier Reference", width: 150, sortable: true, dataIndex: 'supplierReference', 
-            renderer:function(value,p,r){
-                return '<a href="openClaimDetail.action?id=' + r.data['id'] + '">' + value + '</a>'}},               
-        {header: "Insurer's VRN", width: 250, sortable: true, dataIndex: 'vehicleRegistration'},
-        {header: "Claim Number", width: 250, sortable: true, dataIndex: 'claimNumber'}, 
-        {header: "Invoice Amount", width: 250, sortable: true, 
-            dataIndex: 'invoiceAmount'},  
-        {header: "Date Uploaded", width: 250, sortable: true, 
-            renderer: Ext.util.Format.dateRenderer('d/m/Y'), 
-            dataIndex: 'createdDate'},
-        {header: "Status", width: 250, sortable: true, dataIndex: 'status'},
-        {header: "Created By", width: 250, sortable: true, dataIndex: 'createdBy'},          
-        {header: "LOB", width: 250, sortable: true, dataIndex: 'lineOfBusiness'},
-        {header: "CHO", width: 250, sortable: true, dataIndex: 'cho'},
-        {header: "Insurer", width: 150, sortable: true, dataIndex: 'insurer'},
-        {header: "Viewing", width: 150, sortable: true, dataIndex: 'id',renderer:function(value,p,r){
-                return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '" class="std-label-ro">-</label>'}}
-    ],
-    stripeRows: true,
-    layout:'fit',
-    autoHeight:true,
-    enableHdMenu:false,
-    title:'Claims', viewConfig:{forceFit:true},bbar: pagingBar
-  
-});
-grid.render('gridPanel');
-grid.getSelectionModel().selectFirstRow();               
+        var supplierReference = Ext.query('*[name$=supplierReference]')[0].value;
+        var supplierId = Ext.query('*[name$=supplierId]').length > 0 ? Ext.query('*[name$=supplierId]')[0].value : -1;
+        var insurerId = Ext.query('*[name$=insurerId]').length > 0 ? Ext.query('*[name$=insurerId]')[0].value : -1;
+        var invoiceNumber = Ext.query('*[name$=invoiceNumber]')[0].value;
+        var claimNumber = Ext.query('*[name$=claimNumber]')[0].value;
+        var vrn = Ext.query('*[name$=vrn]')[0].value;
+        var claimUploadDateFrom = Ext.query('*[name$=claimUploadDateFrom]')[0].value;
+        var claimUploadDateTo = Ext.query('*[name$=claimUploadDateTo]')[0].value;
+        var invoiceUploadDateFrom = Ext.query('*[name$=invoiceUploadDateFrom]')[0].value;
+        var invoiceUploadDateTo = Ext.query('*[name$=invoiceUploadDateTo]')[0].value;
+        var hireDateFrom = Ext.query('*[name$=hireDateFrom]')[0].value;
+        var hireDateTo = Ext.query('*[name$=hireDateTo]')[0].value;
+        var status = Ext.query('*[name$=status]')[0].value;
+        var lineOfBusinessId = Ext.query('*[name$=lineOfBusiness]')[0].value;    
         
-var tabs = new Ext.TabPanel({
-    renderTo: 'tabPanel',
-    autoheight:true,
-    activeTab: 0,
-    items:[
-        {contentEl:'filterPanelTab', title:'Inbox'},
-        {contentEl:'searchPanelTab', title:'Search'}
-    ]
-});  
-
-
+        ds.baseParams = {
+            
+            supplierReference : supplierReference,
+            supplierId : supplierId,
+            insurerId : insurerId,
+            invoiceNumber : invoiceNumber,
+            claimNumber : claimNumber,
+            vrn : vrn,
+            claimUploadDateFrom : claimUploadDateFrom,
+            claimUploadDateTo : claimUploadDateTo,
+            invoiceUploadDateFrom : invoiceUploadDateFrom,
+            invoiceUploadDateTo : invoiceUploadDateTo,                
+            hireDateFrom : hireDateFrom,
+            hireDateTo : hireDateTo,
+            status : status,
+            lineOfBusinessId : lineOfBusinessId
+        }
         
-var claimUploadDateFromPicker = new Ext.form.DateField({
-    name: 'claimUploadDateFrom',
-    width: 120,
-    allowBlank: true,
-    format: 'd/m/Y',
-    showWeekNumber: true
-});
+        ds.load(
+        {
+            params:
+                {
+                start:0,
+                limit:10
+            }
+        });
         
-var claimUploadDateToPicker = new Ext.form.DateField({
-    name: 'claimUploadDateTo',
-    width: 120,
-    allowBlank: true,
-    format: 'd/m/Y',
-    showWeekNumber: true
-});
+    }
+    
+    function setupGrid(){
+        Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+        Ext.QuickTips.init();         
         
-var invoiceUploadDateFromPicker = new Ext.form.DateField({
-    name: 'invoiceUploadDateFrom',
-    width: 120,
-    allowBlank: true,
-    format: 'd/m/Y',
-    showWeekNumber: true
-});
+        var pagingBar = new Ext.PagingToolbar({
+            pageSize: 10,
+            store: ds,
+            displayInfo: true,
+            displayMsg: 'Displaying topics {0} - {1} of {2}',
+            emptyMsg: "No claim to display"
+        });
         
-var invoiceUploadDateToPicker = new Ext.form.DateField({
-    name: 'invoiceUploadDateTo',
-    width: 120,
-    allowBlank: true,
-    format: 'd/m/Y',
-    showWeekNumber: true
-});
         
-var hireDateFromPicker = new Ext.form.DateField({
-    name: 'hireDateFrom',
-    width: 120,
-    allowBlank: true,
-    format: 'd/m/Y',
-    showWeekNumber: true
-});
+        var grid = new Ext.grid.GridPanel({
+            loadMask: true,
+            ds: ds,
+            width: 960,
+            columns: [
+                {id:'Id', header: "Supplier Reference", width: 150, sortable: true, dataIndex: 'supplierReference', 
+                    renderer:function(value,p,r){
+                        return '<a href="openClaimDetail.action?id=' + r.data['id'] + '">' + value + '</a>'}},               
+                {header: "Insurer's VRN", width: 250, sortable: true, dataIndex: 'vehicleRegistration'},
+                {header: "Claim Number", width: 250, sortable: true, dataIndex: 'claimNumber'}, 
+                {header: "Invoice Amount", width: 250, sortable: true, 
+                    dataIndex: 'invoiceAmount'},  
+                {header: "Date Uploaded", width: 250, sortable: true, 
+                    renderer: Ext.util.Format.dateRenderer('d/m/Y'), 
+                    dataIndex: 'createdDate'},
+                {header: "Status", width: 250, sortable: true, dataIndex: 'status'},
+                {header: "Created By", width: 250, sortable: true, dataIndex: 'createdBy'},          
+                {header: "LOB", width: 250, sortable: true, dataIndex: 'lineOfBusiness'},
+                {header: "CHO", width: 250, sortable: true, dataIndex: 'cho'},
+                {header: "Insurer", width: 150, sortable: true, dataIndex: 'insurer'},
+                {header: "Viewing", width: 150, sortable: true, dataIndex: 'id',renderer:function(value,p,r){
+                        return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '" class="std-label-ro">-</label>'}}
+            ],
+            stripeRows: true,
+            layout:'fit',
+            autoHeight:true,
+            enableHdMenu:false,
+            title:'Claims', viewConfig:{forceFit:true},bbar: pagingBar
+            
+        });
+        grid.render('gridPanel');
+        grid.getSelectionModel().selectFirstRow();               
         
-var hireDateToPicker = new Ext.form.DateField({
-    name: 'hireDateTo',
-    width: 120,
-    allowBlank: true,
-    format: 'd/m/Y',
-    showWeekNumber: true
-});
+        var tabs = new Ext.TabPanel({
+            renderTo: 'tabPanel',
+            autoheight:true,
+            activeTab: 0,
+            items:[
+                {contentEl:'filterPanelTab', title:'Inbox'},
+                {contentEl:'searchPanelTab', title:'Search'}
+            ]
+        });  
         
-claimUploadDateFromPicker.render('claimUploadDateFromDiv');
-claimUploadDateToPicker.render('claimUploadDateToDiv');
-invoiceUploadDateFromPicker.render('invoiceUploadDateFromDiv');
-invoiceUploadDateToPicker.render('invoiceUploadDateToDiv');
-hireDateFromPicker.render('hireDateFromDiv');
-hireDateToPicker.render('hireDateToDiv');
-}     
-
-$(document).everyTime(3000, function() {
+        
+        
+        var claimUploadDateFromPicker = new Ext.form.DateField({
+            name: 'claimUploadDateFrom',
+            width: 120,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true
+        });
+        
+        var claimUploadDateToPicker = new Ext.form.DateField({
+            name: 'claimUploadDateTo',
+            width: 120,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true
+        });
+        
+        var invoiceUploadDateFromPicker = new Ext.form.DateField({
+            name: 'invoiceUploadDateFrom',
+            width: 120,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true
+        });
+        
+        var invoiceUploadDateToPicker = new Ext.form.DateField({
+            name: 'invoiceUploadDateTo',
+            width: 120,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true
+        });
+        
+        var hireDateFromPicker = new Ext.form.DateField({
+            name: 'hireDateFrom',
+            width: 120,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true
+        });
+        
+        var hireDateToPicker = new Ext.form.DateField({
+            name: 'hireDateTo',
+            width: 120,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true
+        });
+        
+        claimUploadDateFromPicker.render('claimUploadDateFromDiv');
+        claimUploadDateToPicker.render('claimUploadDateToDiv');
+        invoiceUploadDateFromPicker.render('invoiceUploadDateFromDiv');
+        invoiceUploadDateToPicker.render('invoiceUploadDateToDiv');
+        hireDateFromPicker.render('hireDateFromDiv');
+        hireDateToPicker.render('hireDateToDiv');
+    }     
+    
+    $(document).everyTime(3000, function() {
         refreshViewingStatus();
     });
     
@@ -288,9 +297,9 @@ $(document).everyTime(3000, function() {
             });
         }
     }
-
+    
 </script>
-
+    
 
 <body>
     

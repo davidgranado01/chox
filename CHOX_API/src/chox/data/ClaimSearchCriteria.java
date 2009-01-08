@@ -40,6 +40,8 @@ public interface ClaimSearchCriteria {
 
     public Date getHireDateTo();
     
+    public int getLineOfBusinessId();
+    
     public boolean IsAnomalies();
     
     public boolean IsPanaltyChargeApplied();

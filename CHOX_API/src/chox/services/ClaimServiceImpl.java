@@ -158,6 +158,9 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         if (searchCriteria.getSupplierId() > 0) {
             criteria.add(Restrictions.eq("chorganisation.id", searchCriteria.getSupplierId()));
         }
+        if (searchCriteria.getLineOfBusinessId() > 0) {
+            criteria.add(Restrictions.eq("lineOfBusiness.id", searchCriteria.getLineOfBusinessId()));
+        }
         if (searchCriteria.IsAnomalies()) {
             criteria.add(Restrictions.eq("isAnomalies", true));
         }
