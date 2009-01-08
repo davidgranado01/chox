@@ -116,6 +116,7 @@
             </result>
             <result name="reviewByEngineer">/jsp/user/actionPanel/p_reviewByEngineer.jsp
             </result>
+            <result name="registeredclaimbyfnol">/jsp/user/actionPanel/p_registeredclaimbyfnol.jsp</result>
             <result name="empty">/jsp/p_blank.jsp
             </result>
         </action>
@@ -149,6 +150,15 @@
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
+        <action name="registerFNOL" class="chox.web.actions.ClaimAction" method="registerFNOL">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>        
         <action name="contestOrAcceptRejectedClaim" class="chox.web.actions.ClaimAction" method="contestOrAcceptRejectedClaim">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>

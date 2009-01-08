@@ -8,7 +8,27 @@
 
 <script language="JavaScript">
     
+    function doRejectClaim(){
+        
+        registeAction('reject');
+
+        if(doFormValidation().form()){
+            if(!confirm('Are you sure you want to reject this claim?')){
+                return false;
+            }
+        }else{
+            return false;
+        }
+        
+        return true;
+    }
+    
     $(document).ready(function(){
+        doFormValidation();
+    });
+    
+    function doFormValidation(){
+
             
         var validateFlag = $("#approveContestedClaim").validate(
         {
@@ -46,7 +66,9 @@
             }
             
         });
-    });
+        
+        return validateFlag;
+    }
     
 </script>
 
@@ -121,7 +143,7 @@
                     </tr>                      
                                     <tr>
                                         <td colspan="2" class="choice">  
-                                            <input type="submit" value="Reject" onclick="registeAction('reject');return confirm('Are you sure you want to reject this claim?')" />
+                                            <input type="submit" value="Reject" onclick="javascript: return doRejectClaim();" />
                                             <input type="submit" value="Acknowledge" onclick="registeAction('accept')"  />
                                             <input type="submit" value="Refer To Engineer" onclick="registeAction('refer');"  /> 
                                         </td>

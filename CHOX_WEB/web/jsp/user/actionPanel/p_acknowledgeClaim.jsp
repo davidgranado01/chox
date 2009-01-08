@@ -1,10 +1,31 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script language="JavaScript">
-          
+
+    //registeAction('reject'); return confirm('Are you sure you want to reject this claim?')
+    
+    function doRejectClaim(){
+        
+        registeAction('reject');
+
+        if(doFormValidation().form()){
+            if(!confirm('Are you sure you want to reject this claim?')){
+                return false;
+            }
+        }else{
+            return false;
+        }
+        
+        return true;
+    }
+    
     $(document).ready(function(){
-            
-        $("#formAcknowledgeAction").validate(
+        doFormValidation();
+    });
+    
+    function doFormValidation(){
+        
+        var validateFlag = $("#formAcknowledgeAction").validate(
         {
             errorLabelContainer: "#ACKmessageBox",                
             rules: {
@@ -42,7 +63,12 @@
                 }                 
             }
         });
-    }); 
+        
+        return validateFlag;
+    }
+    
+    
+    //}); 
     
 </script>
 
@@ -109,10 +135,11 @@
                         </td>
                     </tr>                   
                         <tr>
-                            <td colspan="2" class="choice">                     
-                                <input type="submit" value="Reject" onclick="registeAction('reject');return confirm('Are you sure you want to reject this claim?')" />
+                            <td colspan="2" class="choice" nowrap>                     
+                                <input type="submit" value="Reject" onclick="javascript: return doRejectClaim();" />
                                 <input type="submit" value="Acknowledge" onclick="registeAction('accept')"  />   
-                                <input type="submit" value="Refer To Engineer" onclick="registeAction('refer');"  /> 
+                                <input type="submit" value="Refer To Engineer" onclick="registeAction('refer');" /> 
+                                <input type="submit" value="Refer To FNOL Handler" onclick="registeAction('referFNOL');" /> 
                             </td>
                         </tr>
                     </table>

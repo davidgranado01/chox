@@ -41,7 +41,6 @@ public class FilterRecordCounter {
 
     public long getHireUpdateAnomaliesCount() {
        return service.getHireUpdateAnomaliesCountNumber();
-       // return service.getCountByStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
     }
 
     public long getNewClaimsToBeroutedCount() {
@@ -71,4 +70,8 @@ public class FilterRecordCounter {
     public long getClaimReferredToEngineerCount() {
         return service.getCountByStatus(ClaimStatus.CLAIM_REF_TO_ENG);
     }
+    
+    public long getClaimReferredToFNOLCount() {
+        return service.getCountByStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
+    }    
 }

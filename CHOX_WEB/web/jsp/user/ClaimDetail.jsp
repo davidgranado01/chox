@@ -13,7 +13,7 @@
         <title>IDAS-CHOX</title>
         <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
         <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
-          
+        
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery-1.2.6.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.form.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.blockUI.js"></script>
@@ -231,9 +231,7 @@
             }
             doCleanResult();
         }
-        
-
-        
+                
         function loadAttachment(grid, rowIndex, columnIndex, e){
             var attachment = paymentPackGrid.getStore().getAt(rowIndex);  // Get the Record
             var fileId = attachment.get("id");
@@ -558,7 +556,7 @@
                                     <td><label class="chox-claim-header-label">Indemnity</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
                                     
                                     <s:if test="!isCHO">
-                                        <td><label class="chox-claim-header-label">ECD Anomalies?</label><label class="chox-claim-header-text"><span id="status">
+                                        <td><label class="chox-claim-header-label">ECD Anomaly?</label><label class="chox-claim-header-text"><span id="status">
                                         <s:if test="isAnomalies">
                                         <s:property value="isAnomaliesDesc" /> ( <a href="javascript:updateAnomalies('<s:property value="id" />');">Remove from hire anomalies</a> )
                                         </s:if>

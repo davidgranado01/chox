@@ -350,9 +350,10 @@ $(document).everyTime(3000, function() {
                         <s:if test="filterAccessibility.isClaimReferredToEngineerAccessible">
                             <li><a href="javascript:showClaimByStatus('ClaimReferredToEngineer');" >Claim Referred To Engineer (<s:property value="filterRecordCounter.ClaimReferredToEngineerCount" />)</a></li>
                         </s:if>
-                                           
+                        <s:if test="filterAccessibility.isClaimReferredToFNOLAccessible">
+                            <li><a href="javascript:showClaimByStatus('ClaimReferredToFNOL');" >Claims To Be Registered (<s:property value="filterRecordCounter.ClaimReferredToFNOLCount" />)</a></li>
+                        </s:if>          
                     </ul>
-                    
                     
                 </div>
                 <div id="searchPanelTab" class="x-hide-display">
@@ -362,10 +363,8 @@ $(document).everyTime(3000, function() {
                         
                     </div>
                 </div>
-                
-                
+                    
             </div>
-            
             
             <div id="gridPanel">
             </div>

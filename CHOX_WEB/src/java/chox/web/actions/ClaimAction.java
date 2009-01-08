@@ -4,7 +4,6 @@
  */
 package chox.web.actions;
 
-import chox.Util.DateHelper;
 import chox.model.Claim;
 import chox.model.ClaimStatus;
 import chox.model.EngineerReport;
@@ -24,26 +23,29 @@ import java.util.Map;
 import org.acegisecurity.GrantedAuthority;
 import scsbre.engine.RulesEngineResponse;
 import chox.data.AttachmentCategory;
-import chox.model.AuditTrail;
 import chox.model.Chorganisation;
+import chox.model.Comment;
 import chox.model.Insurer;
 import chox.model.LookupItem;
 import chox.model.WebUser;
 import chox.services.AuditTrailService;
+import chox.services.CommentService;
 import chox.services.HireMonitoringEcdService;
 import chox.services.HistoryService;
-import chox.services.UploadClaimXMLService;
 import java.util.ArrayList;
 /**
  *  
  * @author Emmanuel
  */
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
-
+    public static final String REFER_FNOL = "referFNOL";
     public static final String REJECT = "reject";
     public static final String ACCEPT = "accept";
     public static final String REFER = "refer";
     public static final String EMPTY = "empty";
+    public static final String REGISTER_FNOL = "registerFNOL";
+    public static final String REJECT_FNOL = "rejectFNOL";
+    
     private Claim claim = new Claim();
     private int id = -1;
     private List lineOfBusinesses;
@@ -57,6 +59,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private HistoryService historyService;
     private AuditTrailService auditTrailService;
     private HireMonitoringEcdService hireMonitoringEcdService;
+    private CommentService commentService;
     private String actionResult;
     private TabAccessibility tabAccessibility;
     private int vehicleClassId = -1;
@@ -65,6 +68,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String actionName;
     private List attachmentCategory;
     private String statusMsg="";
+    private String reasonForRejection;
     
     public List getAttachmentCategory() {
         List items = new ArrayList<LookupItem>();
@@ -165,6 +169,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         List<String> actions = PanelAction.getPanelActions();
 
         for (String action : actions) {
+            
             short accessRight = ApplicationAccessibility.getInstance().checkActionAccessibility(action, grantedAuthorities, claim.getStatus());
 
             if (accessRight > 0) {
@@ -231,6 +236,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 this.actionResult = validationResult;
             }
         }
+        else if(this.actionName.equalsIgnoreCase(REFER_FNOL))
+        {
+            String validationResult = validateAcknowledgeClaimInfo();            
+            if (validationResult.isEmpty()) {
+                claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
+            } else {
+                claim.setClaimNumber("");
+                result = ERROR;
+                this.actionResult = validationResult;
+            }
+        }
         else 
         {
             claim.setStatus(ClaimStatus.CLAIM_REJECTED);
@@ -247,7 +263,65 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         statusMsg = "Your action has been recorded";
         return result;
     }
+    
+    // FNOL
+    public String registerFNOL() {
 
+        String result = SUCCESS;
+
+        if (this.actionName.equalsIgnoreCase(REGISTER_FNOL)) 
+        {
+            String validationResult = validateAcknowledgeClaimInfo();
+            if (validationResult.isEmpty()) {
+                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+            } else {
+                claim.setClaimNumber("");
+                result = ERROR;
+                this.actionResult = validationResult;
+            }   
+        }
+        else if(this.actionName.equalsIgnoreCase(REJECT_FNOL))
+        {
+            String validationResult = validateAcknowledgeClaimInfo();            
+            if (validationResult.isEmpty()) {
+                claim.setStatus(ClaimStatus.CLAIM_REJECTED);
+                
+            } else {
+                claim.setClaimNumber("");
+                result = ERROR;
+                this.actionResult = validationResult;
+            }
+        }
+        
+        createNewNote(reasonForRejection);
+        
+        try 
+        {        
+            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+
+        statusMsg = "Your action has been recorded";
+        return result;
+    }
+    
+    private void createNewNote(String sComment){
+        
+        if(sComment.length()>0){
+            Comment comment = new Comment();
+            comment.setComment(sComment);
+            comment.setClaim(claim);
+
+            try {
+                commentService.createNewObject(comment);
+            } catch (Exception ex) {
+                this.actionResult = "ERROR : " + ex.getMessage();
+            }
+        }
+    }
+    
     private String validateAcknowledgeClaimInfo() {
 
         String claimNumber = claim.getClaimNumber();
@@ -549,6 +623,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (BREClaim.getHireMonitoringDetail() != null) {
             isIsTotalLostCheck = BREClaim.getHireMonitoringDetail().isIsTotalLostCheck();
         }
+
         BREClaim.getVehicleHire().setIsTotalLoss(isIsTotalLostCheck);
 
         // CONSTRUCTE DUMMY ENGINEERING REPORT WITH ALL VALUE IS ZERO WHEN ER NOT EXIST
@@ -656,8 +731,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.hireMonitoringEcdService = hireMonitoringEcdService;
     }
     
+    public void setCommentService(CommentService commentService){
+        this.commentService = commentService;
+    }    
+            
     public String getStatusMsg() {
         return statusMsg;
+    }
+    
+    public void setReasonForRejection(String s){
+        this.reasonForRejection = s;
     }
     
     public String doUpdateAnomalies() {
