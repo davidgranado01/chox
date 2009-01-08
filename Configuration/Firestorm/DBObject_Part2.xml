@@ -3,8 +3,8 @@
   <name>Chox</name>
   <description />
   <dbimport-config>
-    <jdbc-datasource>Postgres Datasource</jdbc-datasource>
-    <jdbc-catalog>choxidasV3</jdbc-catalog>
+    <jdbc-datasource>Jupiter Postgres</jdbc-datasource>
+    <jdbc-catalog>choxidasV6</jdbc-catalog>
     <jdbc-schema>public</jdbc-schema>
     <sql-import-file />
     <sql-vendor />
@@ -18,12 +18,12 @@
     <map-large-integer-to-bigdecimal>false</map-large-integer-to-bigdecimal>
     <verbose-logging>false</verbose-logging>
     <filter-list>
-      <filter>accessibility_item</filter>
+      <filter>ClaimView</filter>
     </filter-list>
   </dbimport-config>
   <database>
     <platform>PostgreSQL</platform>
-    <catalog-name>choxidasV3</catalog-name>
+    <catalog-name>choxidasV6</catalog-name>
     <schema-name>public</schema-name>
     <table-list>
       <table>
@@ -2726,7 +2726,414 @@
         </finder-list>
       </table>
     </table-list>
-    <view-list />
+    <view-list>
+      <view>
+        <sql-name>ClaimView</sql-name>
+        <java-name>ClaimView</java-name>
+        <column-list>
+          <column>
+            <java-name>id</java-name>
+            <java-type>java.lang.Integer</java-type>
+            <java-default-value />
+            <sql-name>id</sql-name>
+            <sql-type>int4</sql-type>
+            <jdbc-type>INTEGER</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>supplierReference</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>supplier_reference</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>128</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>claimNumber</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>claim_number</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>128</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>createdDate</java-name>
+            <java-type>java.util.Date</java-type>
+            <java-default-value />
+            <sql-name>created_date</sql-name>
+            <sql-type>timestamp</sql-type>
+            <jdbc-type>TIMESTAMP</jdbc-type>
+            <jdbc-precision>29</jdbc-precision>
+            <jdbc-scale>6</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>status</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>status</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>128</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>vehicleRegistration</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>vehicle_registration</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>16</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>lineOfBusiness</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>line_of_business</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>128</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>totalToPay</java-name>
+            <java-type>java.lang.Float</java-type>
+            <java-default-value />
+            <sql-name>total_to_pay</sql-name>
+            <sql-type>numeric</sql-type>
+            <jdbc-type>NUMERIC</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>2</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>insurer</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>insurer</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>128</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>cho</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>cho</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>128</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>createdByFirstname</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>created_by_firstname</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>256</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>createdByLastname</java-name>
+            <java-type>java.lang.String</java-type>
+            <java-default-value />
+            <sql-name>created_by_lastname</sql-name>
+            <sql-type>varchar</sql-type>
+            <jdbc-type>VARCHAR</jdbc-type>
+            <jdbc-precision>256</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+          <column>
+            <java-name>createdById</java-name>
+            <java-type>java.lang.Integer</java-type>
+            <java-default-value />
+            <sql-name>created_by_id</sql-name>
+            <sql-type>int4</sql-type>
+            <jdbc-type>INTEGER</jdbc-type>
+            <jdbc-precision>10</jdbc-precision>
+            <jdbc-scale>0</jdbc-scale>
+            <nullable>true</nullable>
+            <unique>false</unique>
+            <auto-increment>false</auto-increment>
+            <sequence-name />
+          </column>
+        </column-list>
+        <finder-list>
+          <finder>
+            <name>findAll</name>
+            <multi-finder>true</multi-finder>
+            <where />
+            <order-by />
+            <query-type>WHERE</query-type>
+            <parameter-list />
+          </finder>
+          <finder>
+            <name>findWhereIdEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>id = :id</where>
+            <order-by>id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>id</java-name>
+                <java-type>java.lang.Integer</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereSupplierReferenceEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>supplier_reference = :supplierReference</where>
+            <order-by>supplier_reference</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>supplierReference</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>128</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereClaimNumberEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>claim_number = :claimNumber</where>
+            <order-by>claim_number</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>claimNumber</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>128</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereCreatedDateEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>created_date = :createdDate</where>
+            <order-by>created_date</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>createdDate</java-name>
+                <java-type>java.util.Date</java-type>
+                <jdbc-type>TIMESTAMP</jdbc-type>
+                <jdbc-precision>29</jdbc-precision>
+                <jdbc-scale>6</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereStatusEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>status = :status</where>
+            <order-by>status</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>status</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>128</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereVehicleRegistrationEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>vehicle_registration = :vehicleRegistration</where>
+            <order-by>vehicle_registration</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>vehicleRegistration</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>16</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereLineOfBusinessEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>line_of_business = :lineOfBusiness</where>
+            <order-by>line_of_business</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>lineOfBusiness</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>128</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereTotalToPayEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>total_to_pay = :totalToPay</where>
+            <order-by>total_to_pay</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>totalToPay</java-name>
+                <java-type>java.lang.Float</java-type>
+                <jdbc-type>NUMERIC</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>2</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereInsurerEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>insurer = :insurer</where>
+            <order-by>insurer</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>insurer</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>128</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereChoEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>cho = :cho</where>
+            <order-by>cho</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>cho</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>128</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereCreatedByFirstnameEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>created_by_firstname = :createdByFirstname</where>
+            <order-by>created_by_firstname</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>createdByFirstname</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>256</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereCreatedByLastnameEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>created_by_lastname = :createdByLastname</where>
+            <order-by>created_by_lastname</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>createdByLastname</java-name>
+                <java-type>java.lang.String</java-type>
+                <jdbc-type>VARCHAR</jdbc-type>
+                <jdbc-precision>256</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+          <finder>
+            <name>findWhereCreatedByIdEquals</name>
+            <multi-finder>true</multi-finder>
+            <where>created_by_id = :createdById</where>
+            <order-by>created_by_id</order-by>
+            <query-type>WHERE</query-type>
+            <parameter-list>
+              <parameter>
+                <java-name>createdById</java-name>
+                <java-type>java.lang.Integer</java-type>
+                <jdbc-type>INTEGER</jdbc-type>
+                <jdbc-precision>10</jdbc-precision>
+                <jdbc-scale>0</jdbc-scale>
+              </parameter>
+            </parameter-list>
+          </finder>
+        </finder-list>
+      </view>
+    </view-list>
     <procedure-list />
     <custom-sql-list />
   </database>

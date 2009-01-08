@@ -25,6 +25,7 @@ import chox.model.Injury;
 import chox.model.Solicitor;
 import java.io.File;
 import chox.Util.FileHelper;
+import chox.services.SearchResult;
 
 public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
@@ -85,7 +86,8 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
             if (c != null) {
                 ClaimService cs = new ClaimServiceImpl();
-                List<Claim> claims = cs.searchClaims(c);
+                SearchResult searchResult = cs.searchClaims(c);
+                List<HashMap> claims = searchResult.getResult();
                 if (claims.size() > 0) {
                     buf = generateXML(claims);
                 }
@@ -94,7 +96,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         return buf;
     }
 
-    public ByteArrayOutputStream generateXML(List<Claim> claims) throws IOException {
+    public ByteArrayOutputStream generateXML(List<HashMap> claims) throws IOException {
 
         InputStream templateIS = ExcelGeneratorAction.class.getClassLoader().getResourceAsStream("claimTemplate.xls");
 
@@ -111,8 +113,8 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
 
         //for(Integer iCount=0; iCount<claims.size(); iCount++){
-        for (Claim claim : claims) {
-
+        for (HashMap m : claims) {
+            Claim claim = (Claim)m.get("this");
             ExcelClaim ec = new ExcelClaim();
             ExcelInvoice ev = new ExcelInvoice();
             ec.setClaim(claim);

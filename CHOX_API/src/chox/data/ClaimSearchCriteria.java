@@ -41,4 +41,6 @@ public interface ClaimSearchCriteria {
     public Date getHireDateTo();
     
     public boolean IsAnomalies();
+    
+    public boolean IsPanaltyChargeApplied();
 }

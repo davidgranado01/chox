@@ -74,4 +74,8 @@ public class FilterRecordCounter {
     public long getClaimReferredToFNOLCount() {
         return service.getCountByStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
     }    
+    
+    public long getPenaltyChargesAppliedCount() {
+        return service.getPenaltyChargeAppliedCount();
+    }
 }

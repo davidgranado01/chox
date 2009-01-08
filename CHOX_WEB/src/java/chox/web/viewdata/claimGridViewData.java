@@ -16,6 +16,7 @@ import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Locale;
 
 /**
@@ -29,14 +30,17 @@ public class claimGridViewData {
     private String claimNumber;
     private String invoiceAmount;
     private String vehicleRegistration;
-    private String created;
+    private String createdDate;
     private String status;
     private String lineOfBusiness;
     private String cho;
     private String insurer;
     private String createdBy;
 
-    public claimGridViewData(Claim claim) {
+    public claimGridViewData(HashMap result) {
+        
+        Claim claim = (Claim)result.get("this");
+        
         Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
 
@@ -54,7 +58,7 @@ public class claimGridViewData {
         this.vehicleRegistration = customer == null ? "" : thirdParty.getVehicleRegistration();
         this.lineOfBusiness = lob == null ? "" : lob.getName();
         this.claimNumber = claim.getClaimNumber();
-        this.created = dateFormat.format(claim.getCreatedDate());
+        this.createdDate = dateFormat.format(claim.getCreatedDate());
         this.status = claim.getStatus();
         this.cho = c == null ? "" : c.getName();
         this.insurer = i == null ? "" : i.getName();//TODO : assign insurer
@@ -90,8 +94,8 @@ public class claimGridViewData {
         return vehicleRegistration;
     }
 
-    public String getCreated() {
-        return created;
+    public String getCreatedDate() {
+        return createdDate;
     }
 
     public String getStatus() {

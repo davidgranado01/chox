@@ -32,6 +32,9 @@
     var rd = new Ext.data.JsonReader({
         totalProperty: 'totalCount',   
         root: 'results', 
+        idProperty: 'threadid',
+        remoteSort: true,
+
         fields:[
             {name:'id'},
             {name:'status'},
@@ -42,7 +45,7 @@
             {name:'lineOfBusiness'},
             {name:'supplierReference'},
             {name:'claimNumber'}, 
-            {name:'created', type: 'date', dateFormat: 'd/m/Y'},
+            {name:'createdDate', type: 'date', dateFormat: 'd/m/Y'},
             {name:'insurer'},
             {name:'cho'}
         ]
@@ -51,9 +54,10 @@
     var ds = new Ext.data.Store({
         proxy: new Ext.data.HttpProxy
         ({url: 'user/doSearchClaim.action',method:'POST'}),
-        reader:rd        
+        reader:rd,
+        remoteSort: true        
     });
-    
+    ds.setDefaultSort('created', 'desc');
     // var c = new Ext.DatePicker({renderTo: 'doSearchClaim_invoiceUploadDateFrom'});
 
     Ext.onReady(setupGrid); 
@@ -64,7 +68,9 @@ function showClaimByStatus(status)
     {
         params:
             {
-            status : status
+            status : status,
+            start:0,
+            limit:1000
         }
     });
 }    
@@ -75,10 +81,25 @@ function showClaimIsAnomalies()
     {
         params:
             {
-            isAnomalies : true
+            isAnomalies : true,
+            start:0,
+            limit:10
         }
     });
 }   
+
+function showClaimIsPanaltyChargeApplied()
+{            
+    ds.load(
+    {
+        params:
+            {
+            isPanaltyChargeApplied : true,
+            start:0,
+            limit:10
+        }
+    });
+}  
 
 function doExportExcel(){
        
@@ -106,7 +127,9 @@ var lineOfBusiness = Ext.query('*[name$=lineOfBusiness]')[0].value;
 ds.load(
 {
     params:
-        {
+        {        
+        start:0,
+        limit:10,
         supplierReference : supplierReference,
         supplierId : supplierId,
         insurerId : insurerId,
@@ -130,15 +153,14 @@ function setupGrid(){
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 Ext.QuickTips.init();         
   
-  
-/*  
-ds.load(
-{
-    params:
-        {
-        status : ''
-    }
-});*/
+var pagingBar = new Ext.PagingToolbar({
+        pageSize: 10,
+        store: ds,
+        displayInfo: true,
+        displayMsg: 'Displaying topics {0} - {1} of {2}',
+        emptyMsg: "No claim to display"
+    });
+
 
 var grid = new Ext.grid.GridPanel({
     loadMask: true,
@@ -154,7 +176,7 @@ var grid = new Ext.grid.GridPanel({
             dataIndex: 'invoiceAmount'},  
         {header: "Date Uploaded", width: 250, sortable: true, 
             renderer: Ext.util.Format.dateRenderer('d/m/Y'), 
-            dataIndex: 'created'},
+            dataIndex: 'createdDate'},
         {header: "Status", width: 250, sortable: true, dataIndex: 'status'},
         {header: "Created By", width: 250, sortable: true, dataIndex: 'createdBy'},          
         {header: "LOB", width: 250, sortable: true, dataIndex: 'lineOfBusiness'},
@@ -167,7 +189,8 @@ var grid = new Ext.grid.GridPanel({
     layout:'fit',
     autoHeight:true,
     enableHdMenu:false,
-    title:'Claims', viewConfig:{forceFit:true}  
+    title:'Claims', viewConfig:{forceFit:true},bbar: pagingBar
+  
 });
 grid.render('gridPanel');
 grid.getSelectionModel().selectFirstRow();               
@@ -247,21 +270,24 @@ $(document).everyTime(3000, function() {
     function refreshViewingStatus()
     {
         var x = [];
-
+        
         $("input[name='viewingId']").each(function (i) {
             var claimId = $(this).val();
             x.push(claimId);
         });  
         
-    $.getJSON('checkViewingStatus.action?claimIds=' + x.join(','),
-    function(data){
-        
-        $.each(data.results, function(i,result){
-            $("#viewingLabel_" + result.claimId).html(result.status);
-        });
-        
-    });
-}
+        if(x.length > 0)
+        {
+            $.getJSON('checkViewingStatus.action?claimIds=' + x.join(','),
+            function(data){
+                
+                $.each(data.results, function(i,result){
+                    $("#viewingLabel_" + result.claimId).html(result.status);
+                });
+                
+            });
+        }
+    }
 
 </script>
 
@@ -353,6 +379,9 @@ $(document).everyTime(3000, function() {
                         <s:if test="filterAccessibility.isClaimReferredToFNOLAccessible">
                             <li><a href="javascript:showClaimByStatus('ClaimReferredToFNOL');" >Claims To Be Registered (<s:property value="filterRecordCounter.ClaimReferredToFNOLCount" />)</a></li>
                         </s:if>          
+                        <s:if test="filterAccessibility.isPenaltyChargesAppliedAccessible">
+                            <li><a href="javascript:showClaimIsPanaltyChargeApplied();" >Penalty Charges To Be Applied (<s:property value="filterRecordCounter.PenaltyChargesAppliedCount" />)</a></li>
+                        </s:if>    
                     </ul>
                     
                 </div>

@@ -42,6 +42,7 @@ public class ApplicationAccessibility {
     public static final String FILTER_INVOICE_APPROVED_BY_BRE = "InvoicesApprovedByBRE";
     public static final String FILTER_CLAIM_REF_ENG = "ClaimReferredToEngineer";
     public static final String FILTER_CLAIM_REF_FNOL = "ClaimReferredToFNOL";
+    public static final String FILTER_PENALTY_CHARGES_APPLIED = "PenaltyChargesApplied";
     
     private HashMap accessibilityMap;
     private AccessibilityService service;

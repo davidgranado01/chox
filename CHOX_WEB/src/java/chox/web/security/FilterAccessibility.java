@@ -27,6 +27,7 @@ public class FilterAccessibility {
     private boolean invoicesApprovedByBREAccessible;
     private boolean claimReferredToEngineerAccessible;
     private boolean claimReferredToFNOLAccessible;
+    private boolean penaltyChargesAppliedAccessible;
 
     public FilterAccessibility(GrantedAuthority[] grantedAuthorities) {
         ApplicationAccessibility accessibility = ApplicationAccessibility.getInstance();
@@ -59,8 +60,9 @@ public class FilterAccessibility {
                 grantedAuthorities) > 0;
         claimReferredToEngineerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_REF_ENG,
                 grantedAuthorities) > 0;
-        claimReferredToFNOLAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_REF_FNOL,
-                grantedAuthorities) > 0;
+        claimReferredToFNOLAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_REF_FNOL,grantedAuthorities) > 0;
+        penaltyChargesAppliedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_PENALTY_CHARGES_APPLIED, grantedAuthorities) > 0;               
+               
     }
 
     public boolean getIsRejectedClaimsAccessible() {
@@ -118,6 +120,11 @@ public class FilterAccessibility {
      public boolean getIsClaimReferredToEngineerAccessible() {
         return claimReferredToEngineerAccessible;
     }
+     
+    public boolean getIsPenaltyChargesAppliedAccessible() {
+        return penaltyChargesAppliedAccessible;
+    }
+
     
      public boolean getIsClaimReferredToFNOLAccessible() {
         return claimReferredToFNOLAccessible;

@@ -260,6 +260,8 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo,Auditabl
         protected BigDecimal hireRateChargedPerDay;
         protected BigDecimal excessAmountCollected;
         protected BigDecimal vatAmountCollected;
+	protected BigDecimal panaltyCharge;
+        protected Integer panaltyAlertQty;
 
 	/**
 	 * Method 'Invoice'
@@ -1285,6 +1287,22 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo,Auditabl
 
     public void setVatAmountCollected(BigDecimal vatAmountCollected) {
         this.vatAmountCollected = vatAmountCollected;
+    }
+
+    public BigDecimal getPanaltyCharge() {
+        return panaltyCharge;
+    }
+
+    public void setPanaltyCharge(BigDecimal panaltyCharge) {
+        this.panaltyCharge = panaltyCharge;
+    }
+
+    public Integer getPanaltyAlertQty() {
+        return panaltyAlertQty;
+    }
+
+    public void setPanaltyAlertQty(Integer panaltyAlertQty) {
+        this.panaltyAlertQty = panaltyAlertQty;
     }
 
     

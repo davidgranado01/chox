@@ -60,5 +60,7 @@
     <property column="hire_rate_charged_per_day" name="hireRateChargedPerDay"/>
     <property column="excess_amount_collected" name="excessAmountCollected"/>
     <property column="vat_amount_collected" name="vatAmountCollected"/>
+    <property column="panalty_charge" name="panaltyCharge"/>
+    <property column="panalty_alert_qty" name="panaltyAlertQty"/>
   </class>
 </hibernate-mapping>

@@ -5,13 +5,14 @@
 package chox.web.actions;
 
 import chox.data.ClaimSearchCriteria;
-import chox.model.Claim;
 import chox.services.ClaimService;
 import chox.services.LookupService;
+import chox.services.SearchResult;
 import chox.web.viewdata.claimGridViewData;
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONArray;
@@ -44,9 +45,14 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
     private List suppliers;
     private LookupService lookupService;
     private ClaimService claimService;
-    private List results;
+    private List<HashMap> results;
     private int totalCount;
     private boolean isAnomalies;
+    private int start;
+    private int limit;
+    private String sort;
+    private String dir;
+    private boolean isPanaltyChargeApplied;
     
     public String getSupplierReference() {
         return supplierReference;
@@ -187,8 +193,8 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
         try {
             List<claimGridViewData> viewData = new ArrayList<claimGridViewData>();
 
-            for (Object c : results) {
-                viewData.add(new claimGridViewData((Claim) c));
+            for (HashMap m : results) {
+                viewData.add(new claimGridViewData(m));
             }
 
             JSONArray jsonArray = JSONArray.fromObject(viewData);
@@ -211,15 +217,14 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
         ClaimSearchCriteria c = this;
         session.put("searchCriteria", c);
         
-        results = this.claimService.searchClaims(c);
-        totalCount = results.size();    
+        SearchResult searchResult = this.claimService.searchClaims(c,start,limit,sort,dir);
+        results = searchResult.getResult();
+        totalCount = searchResult.getTotalCount();    
         return SUCCESS;
-
     }
 
     @Override
     public String execute() throws Exception {
-
         return SUCCESS;
     }
 
@@ -251,6 +256,45 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
         this.isAnomalies = isAnomalies;
     }
 
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    public String getDir() {
+        return dir;
+    }
+
+    public void setDir(String dir) {
+        this.dir = dir;
+    }
+
+    public boolean IsPanaltyChargeApplied() {
+        return isPanaltyChargeApplied;
+    }
+
+    public void setIsPanaltyChargeApplied(boolean isPanaltyChargeApplied) {
+        this.isPanaltyChargeApplied = isPanaltyChargeApplied;
+    }
 
     
     
