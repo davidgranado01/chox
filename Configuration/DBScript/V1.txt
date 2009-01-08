@@ -593,3 +593,35 @@ delete from insurer where name = 'ROYAL & SUN ALLIANCE';
 -- WITNESS > TELEPHONE
 
 -----------------------------------------------------------------------------------------------
+
+-- ############################################################################################
+-- START VERSION V2.17 - 20090107
+-- ############################################################################################\
+
+-- ADD NEW USER ROLE
+insert into web_user_role (id, name, created_by, last_modified_by) values ((select max(id)+1 from web_user_role), 'ROLE_INS_FNOL', 999,999);
+
+-- ADD ACCESSIBLITY - FILTER
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'filter.ClaimReferredToFNOL');
+
+-- ADD ACCESSIBLITY - TAB
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.ClaimDetail.ClaimReferredToFNOL');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.HireMonitoring.ClaimReferredToFNOL');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.History.ClaimReferredToFNOL');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.InvoiceDetail.ClaimReferredToFNOL');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.Notes.ClaimReferredToFNOL');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.PaymentPack.ClaimReferredToFNOL');
+
+-- ADD ACCESSIBLITY - ACTION
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'action.registeredclaimbyfnol.ClaimReferredToFNOL');
+
+-- INSERT ACCESSIBILITY ITEM
+insert into accessibility_item (role, access_right, accessibility_id, id) select 'ROLE_INS_FNOL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name = 'filter.ClaimReferredToFNOL';
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.ClaimDetail.ClaimReferredToFNOL'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.HireMonitoring.ClaimReferredToFNOL'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.History.ClaimReferredToFNOL'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.InvoiceDetail.ClaimReferredToFNOL'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 2, (select id from accessibility where name = 'tab.Notes.ClaimReferredToFNOL'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.PaymentPack.ClaimReferredToFNOL'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) select 'ROLE_INS_FNOL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name = 'action.registeredclaimbyfnol.ClaimReferredToFNOL';
