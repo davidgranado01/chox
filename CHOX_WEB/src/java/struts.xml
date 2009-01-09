@@ -532,7 +532,21 @@
             <result name="success">/jsp/p_jsonData.jsp
             </result>
         </action>
-      
+        
+        <action name="getAlertPanel" class="chox.web.actions.ClaimAction" method="getAlertPanel">
+            <result name="penaltyChargeApplied">/jsp/user/alertPanel/p_penaltyCharge.jsp
+            </result>
+            <result name="empty">/jsp/p_response.jsp
+            </result>
+        </action>
+        
+        <action name="doApplyPenaltyCharge" class="chox.web.actions.ClaimAction" method="doApplyPenaltyCharge">
+             <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}</param>
+            </result>
+        </action>    
 
     </package>
     <include file="config-browser.xml"/>

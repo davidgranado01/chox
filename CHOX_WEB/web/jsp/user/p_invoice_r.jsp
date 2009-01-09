@@ -98,6 +98,10 @@
         <label class="std-data-ro"><s:property value="discount" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
+            Penalty Charge</label>
+        <label class="std-data-ro"><s:property value="panaltyCharge" /></label></div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">
             Total To Pay</label>
         <label class="std-data-ro"><s:property value="totalToPay" /></label></div>    
         

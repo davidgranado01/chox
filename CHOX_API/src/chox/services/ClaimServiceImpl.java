@@ -65,7 +65,8 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
     public Long getPenaltyChargeAppliedCount() {
         Long count = (Long) getCurrentSession().createQuery("select count(*) from Claim as c inner join c.invoice as iv where c.status <> '" 
                 + ClaimStatus.INVOICE_PAYMENT_LOGGED
-                + "' AND day(current_date() - iv.dateInvoiced) >= ((iv.panaltyAlertQty + 1) * 30)").uniqueResult();
+                + "' AND iv.panaltyAlertQty >= 0"
+                + " AND day(current_date() - iv.dateInvoiced) >= ((iv.panaltyAlertQty + 1) * 30)").uniqueResult();
         return count;
     }
 
@@ -167,10 +168,11 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         if (searchCriteria.IsPanaltyChargeApplied()) {
            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
            criteria.createAlias("this.invoice", "iv");
+           criteria.add(Restrictions.ge("iv.panaltyAlertQty", 0));
            criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.date_invoiced)>(iv1_.panalty_alert_qty+1)*30"));
         }
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {
-            criteria.add(Restrictions.like("invoice.id", searchCriteria.getInvoiceNumber()).ignoreCase());
+            criteria.createCriteria("invoice").add(Restrictions.like("claimInvoiceNo", searchCriteria.getInvoiceNumber()).ignoreCase());
         }
         if (searchCriteria.getClaimNumber() != null && !searchCriteria.getClaimNumber().isEmpty()) {
             criteria.add(Restrictions.like("claimNumber", searchCriteria.getClaimNumber()).ignoreCase());

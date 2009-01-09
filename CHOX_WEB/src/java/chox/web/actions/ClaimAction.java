@@ -4,6 +4,7 @@
  */
 package chox.web.actions;
 
+import chox.Util.DateHelper;
 import chox.model.Claim;
 import chox.model.ClaimStatus;
 import chox.model.EngineerReport;
@@ -17,22 +18,26 @@ import chox.web.security.TabAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.acegisecurity.GrantedAuthority;
 import scsbre.engine.RulesEngineResponse;
 import chox.data.AttachmentCategory;
 import chox.model.Chorganisation;
 import chox.model.Comment;
 import chox.model.Insurer;
+import chox.model.Invoice;
 import chox.model.LookupItem;
 import chox.model.WebUser;
 import chox.services.AuditTrailService;
 import chox.services.CommentService;
 import chox.services.HireMonitoringEcdService;
 import chox.services.HistoryService;
+import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 /**
  *  
  * @author Emmanuel
@@ -69,6 +74,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private List attachmentCategory;
     private String statusMsg="";
     private String reasonForRejection;
+    private String totalAmountToPayBeforeNewPenaltyCharge;
+    private String totalAmountToPayAfterNewPenaltyCharge;
+    private BigDecimal penaltyChargeAmount;
+    private Boolean isRemovePenaltyAlert;
     
     public List getAttachmentCategory() {
         List items = new ArrayList<LookupItem>();
@@ -761,6 +770,113 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             this.actionResult = "ERROR : " + ex.getMessage();
         }
         return result;
+    }
+    
+    public String getAlertPanel() {
+        String result = EMPTY;
+
+
+        Invoice invoice = claim.getInvoice();
+        NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
+        setTotalAmountToPayBeforeNewPenaltyCharge(currentcyFormat.format(invoice.getTotalToPay().subtract(invoice.getPanaltyCharge())));
+        setTotalAmountToPayAfterNewPenaltyCharge(currentcyFormat.format(invoice.getTotalToPay()));
+        setPenaltyChargeAmount(invoice.getPanaltyCharge());
+        setIsRemovePenaltyAlert((Boolean) false);
+        result = "penaltyChargeApplied";
+
+
+        return result;
+    }
+    
+    public String doApplyPenaltyCharge()
+    {
+        String result = SUCCESS;
+        try {
+            Invoice invoice = claim.getInvoice();
+             BigDecimal newTotalAmountToPay = (invoice.getTotalToPay().subtract(invoice.getPanaltyCharge())).add(getPenaltyChargeAmount());           
+            invoice.setTotalToPay(newTotalAmountToPay);
+            invoice.setPanaltyCharge(getPenaltyChargeAmount());           
+            Boolean isRemovePenaltyAlert = getIsRemovePenaltyAlert();
+            if(isRemovePenaltyAlert != null && isRemovePenaltyAlert)
+            {
+                long dateDiff = DateHelper.daysBetween(invoice.getDateInvoiced(),new Date());
+                int newPanaltyAlertQty = (int)(dateDiff/30);
+                //if PanaltyAlertQty > 3 mean it already reach the limit and alert not showing anymore, set it to -1
+                newPanaltyAlertQty = newPanaltyAlertQty > 3 ? -1 : newPanaltyAlertQty;
+                invoice.setPanaltyAlertQty(newPanaltyAlertQty);
+            }
+            this.invoiceService.updateObject(invoice);
+        } catch (Exception ex) {
+            result = ERROR;
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+        return result;
+    }
+    
+    public boolean getIsShowPenaltyChargeAlert()
+    {
+       boolean result = false;      
+       
+        if (getIsCHO()) {
+            Invoice invoice = claim.getInvoice();
+
+            //if PanaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
+            if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) && invoice.getPanaltyAlertQty() > -1) {
+                long dateDiff = DateHelper.daysBetween(invoice.getDateInvoiced(), new Date());
+                result = dateDiff >= invoice.getPanaltyAlertQty() * 30;
+            }
+        }
+       
+       return result;
+    }
+    
+    public boolean getIsShowPenaltyChargePanel()
+    {
+       boolean result = false;      
+       
+        if (getIsCHO()) {
+            Invoice invoice = claim.getInvoice();
+
+            //if PanaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
+            if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
+                long dateDiff = DateHelper.daysBetween(invoice.getDateInvoiced(), new Date());
+                result = dateDiff >= 30;
+            }
+        }
+       
+       return result;
+    }
+
+    public String getTotalAmountToPayBeforeNewPenaltyCharge() {
+        return totalAmountToPayBeforeNewPenaltyCharge;
+    }
+
+    public void setTotalAmountToPayBeforeNewPenaltyCharge(String totalAmountToPayBeforeNewPenaltyCharge) {
+        this.totalAmountToPayBeforeNewPenaltyCharge = totalAmountToPayBeforeNewPenaltyCharge;
+    }
+
+    public String getTotalAmountToPayAfterNewPenaltyCharge() {
+        return totalAmountToPayAfterNewPenaltyCharge;
+    }
+
+    public void setTotalAmountToPayAfterNewPenaltyCharge(String totalAmountToPayAfterNewPenaltyCharge) {
+        this.totalAmountToPayAfterNewPenaltyCharge = totalAmountToPayAfterNewPenaltyCharge;
+    }
+
+    public BigDecimal getPenaltyChargeAmount() {
+        return penaltyChargeAmount;
+    }
+
+    public void setPenaltyChargeAmount(BigDecimal penaltyChargeAmount) {
+        this.penaltyChargeAmount = penaltyChargeAmount;
+    }
+
+    public Boolean getIsRemovePenaltyAlert() {
+        return isRemovePenaltyAlert;
+    }
+
+    public void setIsRemovePenaltyAlert(Boolean isRemovePenaltyAlert) {
+        this.isRemovePenaltyAlert = isRemovePenaltyAlert;
     }
     
 }

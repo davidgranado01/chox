@@ -581,6 +581,12 @@
                     <s:action name="getActionPanel" executeResult="true" />
                     <div class="action-message"><s:property value="actionResult" /></div>
                 </div>
+                
+                <s:if test="isShowPenaltyChargePanel">
+                    <div class="chox-claim-header x-panel-bwrap chox-form-container">   
+                        <s:action name="getAlertPanel" executeResult="true" />                    
+                    </div>
+                </s:if>
 
                 <div id="tabContainer">
                     

@@ -213,9 +213,7 @@
                 <label class="chox-form-std-label">
                 Storage Recovery Gross<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttnum"  name="storageRecoveryGross" value='<s:property value="storageRecoveryGross" />'/></div>
-            
-            
-            
+                                                    
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Total Net<span class="mandatory">*</span></label>
@@ -256,7 +254,10 @@
                 Discount<span class="mandatory">*</span></label>
             <input type="text" class="chox-ttnum"  name="discount" value='<s:property value="discount" />'/></div>
             
-            
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                Penalty Charge</label>
+            <input type="text" class="chox-ttnum"  name="panaltyCharge" disabled="true" value='<s:property value="panaltyCharge" />'/></div>            
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">

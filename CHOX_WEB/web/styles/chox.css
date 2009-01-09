@@ -447,12 +447,9 @@ div.action-message
     margin: 10px 0px;
     padding:10px 10px 10px 50px;
     background-repeat: no-repeat;
-    background-position: 10px center;
-
+    background-position: 10px center;   
+    color: #9F6000;
+    background-color: #FEEFB3;
+    background-image: url('/CHOX_WEB/images/warning.png');
 }
 
-.warning {
-color: #9F6000;
-background-color: #FEEFB3;
-background-image: url('/CHOX_WEB/images/warning.png');
-}
