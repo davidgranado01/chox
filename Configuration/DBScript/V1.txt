@@ -592,7 +592,6 @@ delete from insurer where name = 'ROYAL & SUN ALLIANCE';
 -- CUSTOMER > TELEPHONE
 -- WITNESS > TELEPHONE
 
------------------------------------------------------------------------------------------------
 
 -- ############################################################################################
 -- START VERSION V2.17 - 20090107
@@ -645,4 +644,18 @@ ALTER TABLE claim ALTER COLUMN is_fnol_reviewed SET DEFAULT false;
 
 INSERT INTO accessibility(id, "name") VALUES (146, 'filter.PenaltyChargesApplied');
 INSERT INTO accessibility_item("role", access_right, accessibility_id, id) VALUES ('ROLE_CHO_OPR', 1, 146 ,329);
+
+
+-----------------------------------------------------------------------------------------------
+
+-- ############################################################################################
+-- START VERSION V2.17a - 20090108
+-- ############################################################################################\
+
+ALTER TABLE "comment" ADD COLUMN is_public boolean;
+update "comment" set is_public = true;
+ALTER TABLE "comment" ALTER COLUMN is_public SET STORAGE PLAIN;
+ALTER TABLE "comment" ALTER COLUMN is_public SET NOT NULL;
+ALTER TABLE "comment" ALTER COLUMN is_public SET DEFAULT true;
+
 
