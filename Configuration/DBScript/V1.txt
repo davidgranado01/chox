@@ -626,16 +626,22 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.PaymentPack.ClaimReferredToFNOL'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item (role, access_right, accessibility_id, id) select 'ROLE_INS_FNOL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name = 'action.registeredclaimbyfnol.ClaimReferredToFNOL';
 
+-----------------------------------------------------------------------------------------------
+
 -- Add new Column to invoice table to keep penalty charges detail (Emmanuel Kong)
 ALTER TABLE invoice
    ADD COLUMN panalty_charge numeric(10,2) DEFAULT 0.00;
 ALTER TABLE invoice
-   ADD COLUMN panalty_alert_qty smallint DEFAULT 0;
+ADD COLUMN panalty_alert_qty smallint DEFAULT 0;
 
-INSERT INTO accessibility(
-    id, "name")
-VALUES (146, 'filter.PenaltyChargesApplied');
+-----------------------------------------------------------------------------------------------
+ALTER TABLE claim ADD COLUMN is_fnol_reviewed boolean;
+update claim set is_fnol_reviewed = false;
+ALTER TABLE claim ALTER COLUMN is_fnol_reviewed SET STORAGE PLAIN;
+ALTER TABLE claim ALTER COLUMN is_fnol_reviewed SET NOT NULL;
+ALTER TABLE claim ALTER COLUMN is_fnol_reviewed SET DEFAULT false;
 
-INSERT INTO accessibility_item(
-            "role", access_right, accessibility_id, id)
-    VALUES ('ROLE_CHO_OPR', 1, 146 ,329);       
+-----------------------------------------------------------------------------------------------
+
+INSERT INTO accessibility(id, "name") VALUES (146, 'filter.PenaltyChargesApplied');
+INSERT INTO accessibility_item("role", access_right, accessibility_id, id) VALUES ('ROLE_CHO_OPR', 1, 146 ,329);
