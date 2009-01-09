@@ -34,19 +34,36 @@
         return validateFlag;
     }
     
-    function updateTotalToPay()
-    {
-        
+    function updateTotalToPay(input)
+    {       
+        var inputValue;
+        var newPenaltyCharge;
+        var totalAmountToPayBeforeNewPenaltyCharge
+        var totalAmountToPayAfterNewPenaltyCharge;
+              
+        inputValue = input.value.replace(/\./g,'');
+        if(!isNaN(inputValue)){
+            newPenaltyCharge = parseFloat(inputValue) == NaN ? 0 : parseFloat(inputValue);
+        }
+        else
+        {
+            newPenaltyCharge = 0;
+        }       
+        totalAmountToPayBeforeNewPenaltyCharge = parseFloat($("#hvTotalAmountToPayBeforeNewPenaltyCharge").val());                  
+        totalAmountToPayAfterNewPenaltyCharge = newPenaltyCharge + totalAmountToPayBeforeNewPenaltyCharge;            
+        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + totalAmountToPayAfterNewPenaltyCharge);
     }
+
 </script>
 
 <form onsubmit="return true;" action="user/doApplyPenaltyCharge.action" method="post" id="applyPenaltyCharge" name="applyPenaltyCharge">
     
-    <s:hidden name="id" />
+    <s:hidden name="id" />    
+    <s:hidden id="hvTotalAmountToPayBeforeNewPenaltyCharge" name="totalAmountToPayBeforeNewPenaltyCharge" />
     
     <s:if test="isShowPenaltyChargeAlert">
         <div class="warning">
-            Please select the 'Line of Business' in order to route the claim to the relevant handling team.
+            Invoice of this claim were introduced for <s:property value="invoiceIntroducedDays" /> days from <s:date name="invoice.dateInvoiced" format="dd MMM yyyy"  />. Please apply a penalty charge to this claim. 
         </div> 
     </s:if>
     
@@ -61,19 +78,19 @@
                 <tr>
                     <td>
                         <label class="chox-claim-header-label">Total Amount to Pay </label>
-                        <span class="highlight"><s:property value="totalAmountToPayBeforeNewPenaltyCharge" /></span>                            
+                        <label class="chox-claim-header-text"><s:property value="totalAmountToPayBeforeNewPenaltyChargeFormatted" /></label>                            
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <label class="chox-claim-header-label">Penalty Amount&nbsp;:&nbsp;£</label>
-                        <input type="text" class="chox-ttxt" name="penaltyChargeAmount" onchange="javascript:updateTotalToPay();" value="<s:property value="penaltyChargeAmount" />"/>
+                        <input type="text" class="chox-ttxt" id="tPenaltyChargeAmount" name="penaltyChargeAmount" onchange="updateTotalToPay(this)" value="<s:property value="penaltyChargeAmount" />"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <label class="chox-claim-header-label">Total Amount to Pay After Penalty Charge</label>
-                        <span class="highlight"><s:property value="totalAmountToPayAfterNewPenaltyCharge" />&nbsp;&nbsp;</span>
+                        <label id="totalAmountToPayAfterNewPenaltyChargeLabel" class="chox-claim-header-text"><s:property value="totalAmountToPayAfterNewPenaltyChargeFormatted" />&nbsp;&nbsp;</label>
                     </td>
                 </tr>
                 <td>
@@ -81,7 +98,7 @@
                     <td>
                         <input type="submit" value="Apply" />
                         <s:if test="isShowPenaltyChargeAlert">
-                            &nbsp;<s:checkbox name="isRemovePenaltyAlert" label="Remove From Queue"/>
+                            &nbsp;<s:checkbox name="isRemovePenaltyAlert" label="Remove From Penalty Charge Queue"/>
                             <label>Remove From Queue</label>
                         </s:if>
                     </td>

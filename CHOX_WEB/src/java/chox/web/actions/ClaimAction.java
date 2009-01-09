@@ -74,10 +74,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private List attachmentCategory;
     private String statusMsg="";
     private String reasonForRejection;
-    private String totalAmountToPayBeforeNewPenaltyCharge;
-    private String totalAmountToPayAfterNewPenaltyCharge;
+    private BigDecimal totalAmountToPayBeforeNewPenaltyCharge;
+    private BigDecimal totalAmountToPayAfterNewPenaltyCharge;
+    private String totalAmountToPayBeforeNewPenaltyChargeFormatted;
+    private String totalAmountToPayAfterNewPenaltyChargeFormatted;
     private BigDecimal penaltyChargeAmount;
     private Boolean isRemovePenaltyAlert;
+    private long invoiceIntroducedDays;
     
     public List getAttachmentCategory() {
         List items = new ArrayList<LookupItem>();
@@ -778,8 +781,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         Invoice invoice = claim.getInvoice();
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
-        setTotalAmountToPayBeforeNewPenaltyCharge(currentcyFormat.format(invoice.getTotalToPay().subtract(invoice.getPanaltyCharge())));
-        setTotalAmountToPayAfterNewPenaltyCharge(currentcyFormat.format(invoice.getTotalToPay()));
+        long dateDiff = DateHelper.daysBetween(invoice.getDateInvoiced(),new Date());
+        setInvoiceIntroducedDays(dateDiff);
+        setTotalAmountToPayBeforeNewPenaltyCharge(invoice.getTotalToPay().subtract(invoice.getPanaltyCharge()));
+        setTotalAmountToPayAfterNewPenaltyCharge(invoice.getTotalToPay());        
+        setTotalAmountToPayBeforeNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayBeforeNewPenaltyCharge()));
+        setTotalAmountToPayAfterNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayAfterNewPenaltyCharge()));        
         setPenaltyChargeAmount(invoice.getPanaltyCharge());
         setIsRemovePenaltyAlert((Boolean) false);
         result = "penaltyChargeApplied";
@@ -793,7 +800,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String result = SUCCESS;
         try {
             Invoice invoice = claim.getInvoice();
-             BigDecimal newTotalAmountToPay = (invoice.getTotalToPay().subtract(invoice.getPanaltyCharge())).add(getPenaltyChargeAmount());           
+            BigDecimal newTotalAmountToPay = (invoice.getTotalToPay().subtract(invoice.getPanaltyCharge())).add(getPenaltyChargeAmount());           
             invoice.setTotalToPay(newTotalAmountToPay);
             invoice.setPanaltyCharge(getPenaltyChargeAmount());           
             Boolean isRemovePenaltyAlert = getIsRemovePenaltyAlert();
@@ -847,19 +854,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
        return result;
     }
 
-    public String getTotalAmountToPayBeforeNewPenaltyCharge() {
+    public BigDecimal getTotalAmountToPayBeforeNewPenaltyCharge() {
         return totalAmountToPayBeforeNewPenaltyCharge;
     }
 
-    public void setTotalAmountToPayBeforeNewPenaltyCharge(String totalAmountToPayBeforeNewPenaltyCharge) {
+    public void setTotalAmountToPayBeforeNewPenaltyCharge(BigDecimal totalAmountToPayBeforeNewPenaltyCharge) {
         this.totalAmountToPayBeforeNewPenaltyCharge = totalAmountToPayBeforeNewPenaltyCharge;
     }
 
-    public String getTotalAmountToPayAfterNewPenaltyCharge() {
+    public BigDecimal getTotalAmountToPayAfterNewPenaltyCharge() {
         return totalAmountToPayAfterNewPenaltyCharge;
     }
 
-    public void setTotalAmountToPayAfterNewPenaltyCharge(String totalAmountToPayAfterNewPenaltyCharge) {
+    public void setTotalAmountToPayAfterNewPenaltyCharge(BigDecimal totalAmountToPayAfterNewPenaltyCharge) {
         this.totalAmountToPayAfterNewPenaltyCharge = totalAmountToPayAfterNewPenaltyCharge;
     }
 
@@ -877,6 +884,30 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setIsRemovePenaltyAlert(Boolean isRemovePenaltyAlert) {
         this.isRemovePenaltyAlert = isRemovePenaltyAlert;
+    }
+
+    public String getTotalAmountToPayBeforeNewPenaltyChargeFormatted() {
+        return totalAmountToPayBeforeNewPenaltyChargeFormatted;
+    }
+
+    public void setTotalAmountToPayBeforeNewPenaltyChargeFormatted(String totalAmountToPayBeforeNewPenaltyChargeFormatted) {
+        this.totalAmountToPayBeforeNewPenaltyChargeFormatted = totalAmountToPayBeforeNewPenaltyChargeFormatted;
+    }
+
+    public String getTotalAmountToPayAfterNewPenaltyChargeFormatted() {
+        return totalAmountToPayAfterNewPenaltyChargeFormatted;
+    }
+
+    public void setTotalAmountToPayAfterNewPenaltyChargeFormatted(String totalAmountToPayAfterNewPenaltyChargeFormatted) {
+        this.totalAmountToPayAfterNewPenaltyChargeFormatted = totalAmountToPayAfterNewPenaltyChargeFormatted;
+    }
+
+    public long getInvoiceIntroducedDays() {
+        return invoiceIntroducedDays;
+    }
+
+    public void setInvoiceIntroducedDays(long invoiceIntroducedDays) {
+        this.invoiceIntroducedDays = invoiceIntroducedDays;
     }
     
 }
