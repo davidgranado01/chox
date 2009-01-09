@@ -145,7 +145,14 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
     }
 
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria,int start,int limit,String sort,String dir) {
-        Criteria criteria = getCurrentSession().createCriteria(Claim.class);
+        Criteria criteria = getCurrentSession().createCriteria(Claim.class)
+            .createAlias("this.invoice", "iv",CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.lineOfBusiness", "lob",CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.thirdParty", "tp",CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.vehicleHire", "vh",CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.chorganisation", "cho",CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.createdBy", "cb",CriteriaSpecification.LEFT_JOIN)
+            .createAlias("this.insurer", "ins",CriteriaSpecification.LEFT_JOIN);      
         
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
             criteria.add(Restrictions.like("choReference", searchCriteria.getSupplierReference()).ignoreCase());
@@ -154,32 +161,31 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             criteria.add(Restrictions.eq("status", searchCriteria.getStatus()));
         }
         if (searchCriteria.getInsurerId() > 0) {
-            criteria.add(Restrictions.eq("insurer.id", searchCriteria.getInsurerId()));
+            criteria.add(Restrictions.eq("ins.id", searchCriteria.getInsurerId()));
         }
         if (searchCriteria.getSupplierId() > 0) {
-            criteria.add(Restrictions.eq("chorganisation.id", searchCriteria.getSupplierId()));
+            criteria.add(Restrictions.eq("cho.id", searchCriteria.getSupplierId()));
         }
         if (searchCriteria.getLineOfBusinessId() > 0) {
-            criteria.add(Restrictions.eq("lineOfBusiness.id", searchCriteria.getLineOfBusinessId()));
+            criteria.add(Restrictions.eq("lob.id", searchCriteria.getLineOfBusinessId()));
         }
         if (searchCriteria.IsAnomalies()) {
             criteria.add(Restrictions.eq("isAnomalies", true));
         }
         if (searchCriteria.IsPanaltyChargeApplied()) {
            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
-           criteria.createAlias("this.invoice", "iv");
            criteria.add(Restrictions.ge("iv.panaltyAlertQty", 0));
            criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.date_invoiced)>(iv1_.panalty_alert_qty+1)*30"));
         }
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {
-            criteria.createCriteria("invoice").add(Restrictions.like("claimInvoiceNo", searchCriteria.getInvoiceNumber()).ignoreCase());
+            criteria.add(Restrictions.like("iv.claimInvoiceNo", searchCriteria.getInvoiceNumber()).ignoreCase());
         }
         if (searchCriteria.getClaimNumber() != null && !searchCriteria.getClaimNumber().isEmpty()) {
             criteria.add(Restrictions.like("claimNumber", searchCriteria.getClaimNumber()).ignoreCase());
         }
         if (searchCriteria.getVrn() != null && !searchCriteria.getVrn().isEmpty()) {
             String vrn = searchCriteria.getVrn().replaceAll(" ", "");
-            criteria.createCriteria("thirdParty").add(Restrictions.like("vehicleRegistration", vrn).ignoreCase());
+            criteria.add(Restrictions.like("tp.vehicleRegistration", vrn).ignoreCase());
         }      
  
         if (searchCriteria.getClaimUploadDateFrom() != null) {
@@ -198,13 +204,12 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             criteria.add(Expression.le("createdDate", d));
         }
         if (searchCriteria.getInvoiceUploadDateFrom() != null || searchCriteria.getInvoiceUploadDateTo() != null) {
-            Criteria c = criteria.createCriteria("invoice");
             if (searchCriteria.getInvoiceUploadDateFrom() != null) {
                 Date d = searchCriteria.getInvoiceUploadDateFrom();
                 d.setHours(0);
                 d.setMinutes(0);
                 d.setSeconds(0);
-                c.createCriteria("invoice").add(Expression.ge("createdDate", d));
+                criteria.add(Expression.ge("iv.createdDate", d));
             }
             if (searchCriteria.getInvoiceUploadDateTo() != null) {
                 Date d = searchCriteria.getInvoiceUploadDateTo();
@@ -212,7 +217,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
                 d.setHours(0);
                 d.setMinutes(0);
                 d.setSeconds(0);
-                c.createCriteria("invoice").add(Expression.le("createdDate", d));
+                criteria.add(Expression.le("iv.createdDate", d));
             }
         }
         
@@ -222,7 +227,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
                 d.setHours(0);
                 d.setMinutes(0);
                 d.setSeconds(0);
-                criteria.createCriteria("vehicleHire").add(Expression.ge("rentalStart", d)).add(Expression.le("v.rentalEnd", d));
+                criteria.add(Expression.ge("vh.rentalStart", d)).add(Expression.le("vh.rentalEnd", d));
             }
             if (searchCriteria.getHireDateTo() != null) {
                 Date d = searchCriteria.getHireDateTo();
@@ -230,7 +235,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
                 d.setHours(0);
                 d.setMinutes(0);
                 d.setSeconds(0);
-                criteria.createCriteria("vehicleHire").add(Expression.ge("rentalStart", d)).add(Expression.le("v.rentalEnd", d));
+                criteria.add(Expression.ge("vh.rentalStart", d)).add(Expression.le("vh.rentalEnd", d));
             }
         }
         //if (searchCriteria.getHireDateFrom() != null && searchCriteria.getHireDateTo() != null) {
@@ -250,7 +255,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             }
             else if(sort.equalsIgnoreCase("vehicleRegistration"))
             {
-                addSort(criteria.createCriteria("thirdParty"),"vehicleRegistration",dir);
+                addSort(criteria,"tp.vehicleRegistration",dir);
             }
             else if(sort.equalsIgnoreCase("claimNumber"))
             {
@@ -258,7 +263,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             }
             else if(sort.equalsIgnoreCase("invoiceAmount"))
             {
-                addSort(criteria.createCriteria("invoice"),"totalToPay",dir);
+                addSort(criteria,"iv.totalToPay",dir);
             }
             else if(sort.equalsIgnoreCase("createdDate"))
             {
@@ -270,20 +275,20 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             }
             else if(sort.equalsIgnoreCase("lineOfBusiness"))
             {
-                addSort(criteria.createCriteria("lineOfBusiness"),"name",dir);
+                addSort(criteria,"lob.name",dir);
             }
             else if(sort.equalsIgnoreCase("cho"))
             {
-                 addSort(criteria.createCriteria("chorganisation"),"name",dir);
+                 addSort(criteria,"cho.name",dir);
             }
             else if(sort.equalsIgnoreCase("insurer"))
             {
-                addSort(criteria.createCriteria("insurer"),"name",dir);
+                addSort(criteria,"ins.name",dir);
             }
             else if(sort.equalsIgnoreCase("createdBy"))
             {
-                addSort(criteria.createCriteria("createdBy"),"firstName",dir);
-                addSort(criteria.createCriteria("createdBy"),"lastName",dir);
+                addSort(criteria,"cb.firstName",dir);
+                addSort(criteria,"cb.lastName",dir);
             }
             else
             {

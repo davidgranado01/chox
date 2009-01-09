@@ -46,8 +46,7 @@
         var newPenaltyCharge;
         var totalAmountToPayBeforeNewPenaltyCharge
         var totalAmountToPayAfterNewPenaltyCharge;
-              
-        inputValue = inputValue.replace(/\./g,'');
+
         if(!isNaN(inputValue)){
             newPenaltyCharge = parseFloat(inputValue) == NaN ? 0 : parseFloat(inputValue);
         }
