@@ -645,3 +645,4 @@ ALTER TABLE claim ALTER COLUMN is_fnol_reviewed SET DEFAULT false;
 
 INSERT INTO accessibility(id, "name") VALUES (146, 'filter.PenaltyChargesApplied');
 INSERT INTO accessibility_item("role", access_right, accessibility_id, id) VALUES ('ROLE_CHO_OPR', 1, 146 ,329);
+
