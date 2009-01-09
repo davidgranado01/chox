@@ -558,7 +558,7 @@
                                     <s:if test="!isCHO">
                                         <td><label class="chox-claim-header-label">ECD Anomaly?</label><label class="chox-claim-header-text"><span id="status">
                                         <s:if test="isAnomalies">
-                                        <s:property value="isAnomaliesDesc" /> ( <a href="javascript:updateAnomalies('<s:property value="id" />');">Remove from hire anomalies</a> )
+                                            <s:property value="isAnomaliesDesc" /> ( <a href="javascript:updateAnomalies('<s:property value="id" />');">Remove from hire anomalies</a> )
                                         </s:if>
                                         <s:else>
                                             <s:property value="isAnomaliesDesc" />
