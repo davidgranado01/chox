@@ -32,7 +32,7 @@ import chox.services.AuditTrailService;
 import chox.services.CommentService;
 import chox.services.HireMonitoringEcdService;
 import chox.services.HistoryService;
-import java.math.BigInteger;
+import chox.web.security.PanelAccessibility;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -81,6 +81,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private BigDecimal penaltyChargeAmount;
     private Boolean isRemovePenaltyAlert;
     private long invoiceIntroducedDays;
+    private PanelAccessibility panelAccessibility;
     
     public List getAttachmentCategory() {
         List items = new ArrayList<LookupItem>();
@@ -923,6 +924,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setInvoiceIntroducedDays(long invoiceIntroducedDays) {
         this.invoiceIntroducedDays = invoiceIntroducedDays;
+    }
+    
+    public boolean getIsFnolPanelVisible()
+    {
+        return getPanelAccessibility().getFnolReviewedPanelAccessible();
+    }
+    
+    public PanelAccessibility getPanelAccessibility() {
+        if (panelAccessibility == null) {
+            panelAccessibility = new PanelAccessibility(super.getAuthenticatedUser().getAuthorities());
+        }
+        return panelAccessibility;
     }
     
 }

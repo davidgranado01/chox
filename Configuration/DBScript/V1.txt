@@ -658,4 +658,7 @@ ALTER TABLE "comment" ALTER COLUMN is_public SET STORAGE PLAIN;
 ALTER TABLE "comment" ALTER COLUMN is_public SET NOT NULL;
 ALTER TABLE "comment" ALTER COLUMN is_public SET DEFAULT true;
 
+------------------------------------------------------------------------------------------------
+INSERT INTO accessibility(id, "name") VALUES (147, 'panel.FNOLReviewed');
+INSERT INTO accessibility_item("role", access_right, accessibility_id, id) VALUES ('ROLE_INS_CH', 1, 147 ,330);
 

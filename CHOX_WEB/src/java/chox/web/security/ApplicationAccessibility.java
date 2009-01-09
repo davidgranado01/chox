@@ -44,6 +44,8 @@ public class ApplicationAccessibility {
     public static final String FILTER_CLAIM_REF_FNOL = "ClaimReferredToFNOL";
     public static final String FILTER_PENALTY_CHARGES_APPLIED = "PenaltyChargesApplied";
     
+    public static final String PANEL_FNOL_REVIEWED  = "FNOLReviewed";
+    
     private HashMap accessibilityMap;
     private AccessibilityService service;
     private static ApplicationAccessibility instance;
@@ -88,6 +90,18 @@ public class ApplicationAccessibility {
 
         return Declined;
     }
+    
+    public Short checkPanelAccessibility(String filterName, GrantedAuthority[] grantedAuthorities) {
+
+        //accessibilityMap = getAccessibilityMap();
+        String accessibilityKey = getPanelAccessibilityKey(filterName);
+        if (accessibilityMap.containsKey(accessibilityKey)) {
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            return checkAccebility(roleMap, grantedAuthorities);
+        }
+
+        return Declined;
+    }
 
     public Short checkActionAccessibility(String actionName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
 
@@ -111,6 +125,10 @@ public class ApplicationAccessibility {
 
     private String getFilterAccessibilityKey(String filterName) {
         return String.format("filter.%1$s", filterName);
+    }
+    
+    private String getPanelAccessibilityKey(String filterName) {
+        return String.format("panel.%1$s", filterName);
     }
 
     private Short checkAccebility(HashMap roleMap, GrantedAuthority[] grantedAuthorities) {
