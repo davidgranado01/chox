@@ -568,6 +568,11 @@
                                     
                                 </tr>  
 
+<s:if test="!isCHO && isFnolReviewed">
+<tr>
+<td colspan="3"><div class="status-info">This claim has been reviewed by an FNOL Handler, please review notes that may have been added before proceeding.</div></td>
+</tr>
+</s:if>                                
                             </table>
                         </fieldset>
                     </div>

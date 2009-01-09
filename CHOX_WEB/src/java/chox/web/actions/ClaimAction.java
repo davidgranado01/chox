@@ -286,6 +286,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             String validationResult = validateAcknowledgeClaimInfo();
             if (validationResult.isEmpty()) {
                 claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                claim.setIsFnolReviewed(true);
             } else {
                 claim.setClaimNumber("");
                 result = ERROR;

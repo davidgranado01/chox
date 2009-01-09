@@ -71,7 +71,7 @@
                             <td><input type="text" class="chox-ttxt" name="claimNumber" value="<s:property value="claimNumber" />" maxlength=100/></td>
                         </tr>
                         <tr valign="top">
-                            <td><label>Reason for Rejection</label></td>
+                            <td><label>Reason for Rejection (If applicable)</label></td>
                             <td><textarea class="chox-canote" cols="80" rows="5" name="reasonForRejection" id="reasonForRejection"><s:property value="reasonForRejection" /></textarea></td>
                         </tr>                        
                         <tr>
