@@ -6,6 +6,23 @@
             <value>classpath:hibernate.cfg.xml </value>
         </property>
     </bean>
+    <bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
+        <property name="authenticationManager">
+            <ref bean="authenticationManager"/>
+        </property>
+        <property name="authenticationFailureUrl">
+            <value>/login.jsp?error=1</value>
+        </property>
+        <property  name="defaultTargetUrl">
+            <value>/user/inbox.action</value>
+        </property>
+        <property name="filterProcessesUrl">
+            <value>/j_acegi_security_check</value>
+        </property>
+        <property name="alwaysUseDefaultTargetUrl">
+            <value>true</value>
+        </property>
+    </bean>
     <bean id="claimService" class="chox.services.ClaimServiceImpl" singleton="false"/>
     <bean id="lookupService" class="chox.services.LookupServiceImpl" singleton="false"/>
     <bean id="securityInfoProvider" class="chox.web.data.WebSecurityInfoProvider" singleton="false"/>
@@ -32,7 +49,6 @@
     <bean id="globalConfigurationService" class="chox.services.GlobalConfigurationServiceImpl" singleton="false"/>
     <bean id="auditTrailService" class="chox.services.AuditTrailServiceImpl" singleton="false"/>
     <bean id="userService" class="chox.services.UserServiceImpl" singleton="false"/>
-    
     <bean id="uploadClaimXMLService" class="chox.services.UploadClaimXMLServiceImpl" singleton="false">
         <property name="vehicleClassService" ref="vehicleClassService" />
         <property name="engineerReportService" ref="engineerReportService" />
