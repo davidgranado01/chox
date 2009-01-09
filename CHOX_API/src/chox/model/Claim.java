@@ -105,6 +105,7 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     protected boolean isInvoiceReviewRequired;
     protected boolean isAnomalies;
     protected Date hireMonitoringEcd;
+    protected boolean isFnolReviewed;
     //protected VehicleClass vehicleClass;
 
     /**
@@ -605,4 +606,14 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     public Date getHireMonitoringEcd() {
         return this.hireMonitoringEcd;
     }
+
+    public boolean isIsFnolReviewed() {
+        return isFnolReviewed;
+    }
+
+    public void setIsFnolReviewed(boolean isFnolReviewed) {
+        this.isFnolReviewed = isFnolReviewed;
+    }
+    
+    
 }
