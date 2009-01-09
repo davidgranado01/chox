@@ -56,7 +56,7 @@
         }       
         totalAmountToPayBeforeNewPenaltyCharge = parseFloat($("#hvTotalAmountToPayBeforeNewPenaltyCharge").val());                  
         totalAmountToPayAfterNewPenaltyCharge = newPenaltyCharge + totalAmountToPayBeforeNewPenaltyCharge;            
-        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + totalAmountToPayAfterNewPenaltyCharge);
+        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + Math.round(totalAmountToPayAfterNewPenaltyCharge*100)/100);
     }
 
 </script>

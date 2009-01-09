@@ -808,7 +808,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if(isRemovePenaltyAlert != null && isRemovePenaltyAlert)
             {
                 long dateDiff = DateHelper.daysBetween(invoice.getDateInvoiced(),new Date());
-                int newPanaltyAlertQty = (int)(dateDiff/30);
+                int newPanaltyAlertQty = (int)(dateDiff/30) + 1;
                 //if PanaltyAlertQty > 3 mean it already reach the limit and alert not showing anymore, set it to -1
                 newPanaltyAlertQty = newPanaltyAlertQty > 3 ? -1 : newPanaltyAlertQty;
                 invoice.setPanaltyAlertQty(newPanaltyAlertQty);

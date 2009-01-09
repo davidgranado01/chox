@@ -55,7 +55,7 @@
         proxy: new Ext.data.HttpProxy
         ({url: 'user/doSearchClaim.action',method:'POST'}),
         reader:rd,
-        remoteSort: true        
+        remoteSort: true
     });
     ds.setDefaultSort('created', 'desc');
     // var c = new Ext.DatePicker({renderTo: 'doSearchClaim_invoiceUploadDateFrom'});
@@ -171,6 +171,10 @@
             displayMsg: 'Displaying topics {0} - {1} of {2}',
             emptyMsg: "No claim to display"
         });
+        
+        ds.baseParams = {
+            status : '-'
+        }
         
         
         var grid = new Ext.grid.GridPanel({
