@@ -193,7 +193,7 @@
                 {header: "LOB", width: 250, sortable: true, dataIndex: 'lineOfBusiness'},
                 {header: "CHO", width: 250, sortable: true, dataIndex: 'cho'},
                 {header: "Insurer", width: 150, sortable: true, dataIndex: 'insurer'},
-                {header: "Viewing", width: 150, sortable: true, dataIndex: 'id',renderer:function(value,p,r){
+                {header: "Viewing", width: 150, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
                         return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '" class="std-label-ro">-</label>'}}
             ],
             stripeRows: true,

@@ -10,6 +10,10 @@
     
     $(document).ready(function(){
         doFormValidation();
+        
+        $("#tPenaltyChargeAmount").keyup(function (e) {
+            updateTotalToPay($("#tPenaltyChargeAmount").val());
+        });
     });
     
     function doFormValidation(){
@@ -34,14 +38,16 @@
         return validateFlag;
     }
     
-    function updateTotalToPay(input)
+
+
+    
+    function updateTotalToPay(inputValue)
     {       
-        var inputValue;
         var newPenaltyCharge;
         var totalAmountToPayBeforeNewPenaltyCharge
         var totalAmountToPayAfterNewPenaltyCharge;
               
-        inputValue = input.value.replace(/\./g,'');
+        inputValue = inputValue.replace(/\./g,'');
         if(!isNaN(inputValue)){
             newPenaltyCharge = parseFloat(inputValue) == NaN ? 0 : parseFloat(inputValue);
         }
@@ -63,7 +69,7 @@
     
     <s:if test="isShowPenaltyChargeAlert">
         <div class="warning">
-            Invoice of this claim were introduced for <s:property value="invoiceIntroducedDays" /> days from <s:date name="invoice.dateInvoiced" format="dd MMM yyyy"  />. Please apply a penalty charge to this claim. 
+            Payment for this invoice is overdue. The number of days since the invoice was created is <s:property value="invoiceIntroducedDays" />. A penalty charge may be applicable to this invoice.
         </div> 
     </s:if>
     
@@ -84,7 +90,7 @@
                 <tr>
                     <td>
                         <label class="chox-claim-header-label">Penalty Amount&nbsp;:&nbsp;£</label>
-                        <input type="text" class="chox-ttxt" id="tPenaltyChargeAmount" name="penaltyChargeAmount" onchange="updateTotalToPay(this)" value="<s:property value="penaltyChargeAmount" />"/>
+                        <input type="text" class="chox-ttxt" id="tPenaltyChargeAmount" name="penaltyChargeAmount" value="<s:property value="penaltyChargeAmount" />"/>
                     </td>
                 </tr>
                 <tr>
