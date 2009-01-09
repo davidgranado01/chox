@@ -47,7 +47,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
 
         try {
             
-            String sXMLPath1 = "C:/Users/Carlson/Desktop/file/FNOC.xml";
+            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX.file/XML Upload File/1 FNOC XML.xml";
             Boolean isAllowPartialUpload = true;
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -226,13 +226,17 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             // VALIDATE CLAIM OR INVOICE IS UNIQUE
             if(!xmlParseResult.getIsClaimExist()){
                 xmlParseResult = validateClaimInformation(xmlParseResult);
-                xmlParseResult.getClaim().setClaimNumber(xmlParseResult.getClaim().getThirdParty().getClaimReference());
+                
+                if(xmlParseResult.getClaim().getThirdParty()!=null){
+                    if(xmlParseResult.getClaim().getThirdParty().getClaimReference()!=null){
+                        xmlParseResult.getClaim().setClaimNumber(xmlParseResult.getClaim().getThirdParty().getClaimReference());
+                    }
+                }
             }
 
         }
         
 
-        
         if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){            
             xmlParseResult = saveXMLRecord(xmlParseResult);
         }
@@ -453,11 +457,13 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             if(XmlHelper.getNodeValue(mainElement, "gta-notice").equalsIgnoreCase("")){
                 tGtaNoticeDate = DateHelper.getCurrentTimeStamp();
             }
+            
+            System.out.println("************strCHOReference:"+strCHOReference);
+            
+            if(claimService.isClaimReferenceNumberExist(strCHOReference)){
 
-                if(claimService.isClaimReferenceNumberExist(strCHOReference)){
-
-                    // CONFIGURATION TO CHECK XML UPLOAD STATUS
-                    xmlParseResult.setIsClaimExist(true);
+                // CONFIGURATION TO CHECK XML UPLOAD STATUS
+                xmlParseResult.setIsClaimExist(true);
 
                     // GET EXISTING CLAIM INFORMATION                   
                     claim = claimService.getClaimByCHOReferenceNumber(strCHOReference);

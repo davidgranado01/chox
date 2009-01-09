@@ -309,8 +309,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
     }
     
    
-    public Boolean isClaimReferenceNumberExist(
-            String sClaimReferenceNumber) {
+    public Boolean isClaimReferenceNumberExist(String sClaimReferenceNumber) {
 
         Boolean isExist = false;
 
@@ -318,16 +317,14 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
 
             Criteria criteria = getCurrentSession().createCriteria(Claim.class);
             criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
-
+            
             if ((criteria.list()).size() > 0) {
                 isExist = true;
             }
+            
         } catch (Throwable e) {
             e.printStackTrace();
         }
-
-        
-        
 
         return isExist;
     }
