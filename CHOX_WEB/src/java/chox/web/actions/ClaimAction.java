@@ -266,6 +266,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         try 
         {
+            
+            boolean isPublic = false;
+            String strPrefix = "Claim Review Note: ";
+            createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);
+            
+            claim.setEngineerClaimReviewNotes("");
             auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -306,7 +312,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
         }
         
-        createNewNote(reasonForRejection);
+        boolean isPublic = false;
+        String strPrefix = "FNOL Reason for Rejection: ";
+        createNewNote(reasonForRejection, isPublic, strPrefix);
         
         try 
         {        
@@ -320,11 +328,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
     
-    private void createNewNote(String sComment){
+    private void createNewNote(String sComment, boolean isPublic, String strPrefix){
         
         if(sComment.length()>0){
             Comment comment = new Comment();
-            comment.setComment(sComment);
+            comment.setIsPublic(isPublic);
+            comment.setComment(strPrefix+sComment);
             comment.setClaim(claim);
 
             try {
@@ -422,6 +431,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         
         try {
+            
+            boolean isPublic = false;
+            String strPrefix = "Claim Review Note: ";
+            createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);            
+            
             auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {

@@ -21,7 +21,7 @@
     
     function isClaimNumberMandatory(){
         var sActionName = $("#actionName").val();
-        if(sActionName=="reject"){
+        if(sActionName=="reject" || sActionName=="referFNOL"){
             return false;
         }
         return true;
@@ -145,7 +145,7 @@
                                 <input type="submit" value="Reject" onclick="javascript: return doRejectClaim();" />
                                 <input type="submit" value="Acknowledge" onclick="registeAction('accept')"  />   
                                 <input type="submit" value="Refer To Engineer" onclick="registeAction('refer');" /> 
-                                <input type="submit" value="Refer To FNOL Handler" onclick="registeAction('referFNOL');" /> 
+                                <input type="submit" value="Refer to FNOL" onclick="registeAction('referFNOL');" /> 
                             </td>
                         </tr>
                     </table>

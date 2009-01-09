@@ -6,11 +6,9 @@
 package chox.web.actions;
 
 import chox.model.Comment;
-import chox.model.History;
 import chox.services.CommentService;
 import chox.web.security.ApplicationAccessibility;
 import chox.web.viewdata.CommentViewData;
-import chox.web.viewdata.HistoryViewData;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
@@ -48,8 +46,11 @@ public class GetCommentsAction extends BaseModelAction {
     
     public String getComments()
     {        
-        List<Comment> commentsData = this.service.getCommentByClaimId(claimId);
-                
+        
+        boolean isInsurer = getIsInsurer();
+        
+        List<Comment> commentsData = this.service.getCommentByClaimIdFilterByOrg(claimId, isInsurer);
+
         comments = new ArrayList<CommentViewData>();
         for(Comment c : commentsData)
         {

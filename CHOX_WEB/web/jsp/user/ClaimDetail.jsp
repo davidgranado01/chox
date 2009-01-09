@@ -706,10 +706,8 @@
 </s:if> 
                     </div>
                     <div id="hireMonitoringDetails" class="x-hide-display">
-                        
-                        
+
 <s:if test="tabAccessibility.hireMonitoringTabAccessibility != 0">                        
-                        
                         
                         <div class="x-panel-bwrap chox-form-container">
                             <table cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -731,6 +729,7 @@
                                 </tr>
                             </table>
                         </div>
+                        
 <!-- template for modal comment-->
 <div style="display:none" id="hireMonitorTemplate">
     <input type="button" value="Close" id="hireMonitorModalClose"><br/>
@@ -895,7 +894,6 @@
                     <div id="comments" class="x-hide-display">
 <s:if test="tabAccessibility.notesTabAccessibility != 0">  
 
-
     <script language="JavaScript">
         
         $(document).ready(function() { 
@@ -942,6 +940,11 @@
             <fieldset class="x-fieldset">
                 <legend>Add a new note</legend>
                 <s:textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment" /><br/>
+                
+<s:if test="!isCHO"> 
+    <s:checkbox name="isPublic"/>Visible to CHO?
+</s:if>
+<s:else><input name="isPublic" type="hidden" value="true"/></s:else>
                 <input type="submit" id="bAddComment" value="Add Note" onclick="javascript:return commentFormValidation();"/>
             </fieldset>
         </form>
@@ -953,16 +956,9 @@
         <input type="button" value="Close" id="commentModalClose">
         <br/>
         <div id="commentMessage"></div>
-             
     </div>                      
        
-    <div id="commentsGrid">
-    </div>
-                        
-                        
-                        
-                        
-                        
+    <div id="commentsGrid"></div>              
 </s:if>                         
                     </div>   
                 </div>

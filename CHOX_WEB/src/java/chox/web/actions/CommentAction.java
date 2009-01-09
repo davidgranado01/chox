@@ -41,7 +41,7 @@ public class CommentAction extends BaseModelAction implements ModelDriven<Commen
         } else {
             model = service.getObject(objectId);
         }
-    }   
+    }
 
     public String createNewComment() {
         try {
@@ -57,7 +57,7 @@ public class CommentAction extends BaseModelAction implements ModelDriven<Commen
         JSONObject jObject = JSONObject.fromObject(this.model);
         return jObject.toString();
     }
-
+    
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_NOTES;
