@@ -15,7 +15,7 @@ import org.hibernate.criterion.Order;
 
 public class CommentServiceImpl extends DataService implements CommentService {
 
-        public List<Comment> getCommentByClaimId(int claimId) {
+    public List<Comment> getCommentByClaimId(int claimId) {
 
         List comments = new ArrayList<Comment>();
 
@@ -29,8 +29,27 @@ public class CommentServiceImpl extends DataService implements CommentService {
             e.printStackTrace();
         }
 
-        
-        
+        return comments;
+    }
+     
+    public List<Comment> getCommentByClaimIdFilterByOrg(int claimId, boolean isInsurer) {
+
+        List comments = new ArrayList<Comment>();
+
+        try {
+            Criteria criteria = getCurrentSession().createCriteria(Comment.class);
+            criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+            
+            if(!isInsurer){
+                criteria.add(Restrictions.eq("isPublic", true));
+            }
+            
+            criteria.addOrder(Order.asc("createdDate"));
+            comments = criteria.list();
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
 
         return comments;
     }

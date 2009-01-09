@@ -21,6 +21,7 @@ public class Comment implements Serializable,Auditable{
     protected Date lastModifiedDate;
     //protected int claimId;
     protected Claim claim;
+    protected boolean isPublic;
 
     public String getComment() {
         return comment;
@@ -76,6 +77,14 @@ public class Comment implements Serializable,Auditable{
 
     public void setClaim(Claim claim) {
         this.claim = claim;
+    }
+
+    public boolean isIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(boolean isPublic) {
+        this.isPublic = isPublic;
     }
     
     /*
