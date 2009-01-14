@@ -10,6 +10,7 @@
     
     function doRejectClaim(){
         
+        isClaimNumberInvalid();
         registeAction('reject');
 
         if(doFormValidation().form()){
@@ -35,6 +36,34 @@
         return true;
     }
     
+    function isClaimNumberInvalid(){
+        
+        $("#isClaimNumberValidFlag").val("1");
+        
+        var sClaimNumber = $("#claimNumber").val();
+        
+        if(isSpecialCharacterExist(sClaimNumber)){
+            
+            $("#isClaimNumberValidFlag").val("0");
+        }
+
+    }
+    
+    function isSpecialCharacterExist(strClaimNumber){
+        
+        if(strClaimNumber.length>0){
+            
+            var iChars = "!£$%^&*+=-_{[}]#~'@;:/?.>,<"+'"';
+            
+            for (var i = 0; i < strClaimNumber.length; i++) {
+                if (iChars.indexOf(strClaimNumber.charAt(i)) != -1) {
+                    return true;
+                }
+            }             
+        }
+        return false;
+    }
+    
     function doFormValidation(){
 
             
@@ -54,7 +83,10 @@
                 claimNumber:{
                     required:isClaimNumberMandatory
                 },                
-                actionName:{required:true}
+                actionName:{required:true},
+                isClaimNumberValidFlag:{
+                    min:1
+                }
             },
             messages: {
                 indemnityAmount: {
@@ -69,7 +101,8 @@
                 claimNumber: {
                     required:"You must supply a value for 'Claim Number'"
                 },
-                actionName:{required:"You must select action"}
+                actionName:{required:"You must select action"},
+                isClaimNumberValidFlag:{min:"Invalid Character used in Claim Number"}     
             }
             
         });
@@ -77,6 +110,17 @@
         return validateFlag;
     }
     
+    function doSubmit(a){
+        
+        registeAction(a);
+
+        isClaimNumberInvalid();
+        if(!doFormValidation().form()){
+            return false;
+        }
+        return true;
+        
+    }    
 </script>
 
 <form onsubmit="return true;" action="user/approveContestedClaim.action" method="post" 
@@ -85,6 +129,7 @@
         <legend>Contested Claim - Action Required</legend>
         <s:hidden name="id" />
         <s:hidden id="actionName" name="actionName" />
+        <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
         <div>
             <div class="status-info">
                 Please review the CHO's notes against the reasoning for contesting the claim rejection and make a decision on whether to acknowledge the claim, reject the claim or refer the claim to an Engineer.
@@ -111,7 +156,7 @@
                                         <td>
                                             <label>Claim Number</label></td><td>
                                                                                    
-    <input type="text" class="chox-ttxt" name="claimNumber" value="<s:property value="claimNumber" />"/>    
+    <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>    
 
                                         </td>
                                         <td>
@@ -146,8 +191,8 @@
                                     <tr>
                                         <td colspan="2" class="choice">  
                                             <input type="submit" value="Reject" onclick="javascript: return doRejectClaim();" />
-                                            <input type="submit" value="Acknowledge" onclick="registeAction('accept')"  />
-                                            <input type="submit" value="Refer To Engineer" onclick="registeAction('refer');"  /> 
+                                            <input type="submit" value="Acknowledge" onclick="javascript: return doSubmit('accept')"  />
+                                            <input type="submit" value="Refer To Engineer" onclick="javascript: return doSubmit('refer');"  /> 
                                         </td>
                                     </tr>
                                 </table>

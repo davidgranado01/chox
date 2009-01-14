@@ -273,8 +273,11 @@ public class ClaimActionTest {
         System.out.println("getAcknowledgeClaimActions");
         ClaimAction instance = new ClaimAction();
         Map expResult = null;
+        
+        /*
         Map result = instance.getAcknowledgeClaimActions();
         assertEquals(expResult, result);
+        */
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -301,8 +304,10 @@ public class ClaimActionTest {
         System.out.println("getContestOrAcceptRejectedClaimActions");
         ClaimAction instance = new ClaimAction();
         Map expResult = null;
+        /*
         Map result = instance.getContestOrAcceptRejectedClaimActions();
         assertEquals(expResult, result);
+         * */
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -329,8 +334,10 @@ public class ClaimActionTest {
         System.out.println("getApproveContestedClaimActions");
         ClaimAction instance = new ClaimAction();
         Map expResult = null;
+        /*
         Map result = instance.getApproveContestedClaimActions();
         assertEquals(expResult, result);
+        */
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -399,8 +406,8 @@ public class ClaimActionTest {
         System.out.println("getApproveBREPassedClaimActions");
         ClaimAction instance = new ClaimAction();
         Map expResult = null;
-        Map result = instance.getApproveBREPassedClaimActions();
-        assertEquals(expResult, result);
+        // Map result = instance.getApproveBREPassedClaimActions();
+        // assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -427,8 +434,8 @@ public class ClaimActionTest {
         System.out.println("getApproveEscalatedInvoiceActions");
         ClaimAction instance = new ClaimAction();
         Map expResult = null;
-        Map result = instance.getApproveEscalatedInvoiceActions();
-        assertEquals(expResult, result);
+        // Map result = instance.getApproveEscalatedInvoiceActions();
+        // assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -455,8 +462,8 @@ public class ClaimActionTest {
         System.out.println("getApproveContestedInvoiceActions");
         ClaimAction instance = new ClaimAction();
         Map expResult = null;
-        Map result = instance.getApproveContestedInvoiceActions();
-        assertEquals(expResult, result);
+        // Map result = instance.getApproveContestedInvoiceActions();
+        // assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -483,8 +490,8 @@ public class ClaimActionTest {
         System.out.println("getResubmitOrAcceptContestedInvoiceActions");
         ClaimAction instance = new ClaimAction();
         Map expResult = null;
-        Map result = instance.getResubmitOrAcceptContestedInvoiceActions();
-        assertEquals(expResult, result);
+        // Map result = instance.getResubmitOrAcceptContestedInvoiceActions();
+        // assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -511,8 +518,8 @@ public class ClaimActionTest {
         System.out.println("validateHireMonitoringDetail");
         ClaimAction instance = new ClaimAction();
         boolean expResult = false;
-        boolean result = instance.validateHireMonitoringDetail();
-        assertEquals(expResult, result);
+        // boolean result = instance.validateHireMonitoringDetail();
+        // assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

@@ -314,7 +314,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         
         boolean isPublic = false;
-        String strPrefix = "FNOL Reason for Rejection: ";
+        String strPrefix = "FNOL Review Note: ";
         createNewNote(reasonForRejection, isPublic, strPrefix);
         
         try 

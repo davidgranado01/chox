@@ -16,7 +16,7 @@ import net.sf.json.JSONArray;
 
 public class GetAttachmentsAction extends BaseModelAction {
 
-    private int claimId;
+    //private int claimId;
     private AttachmentService service;
     private List<AttachmentViewData> attachments;
 
@@ -53,9 +53,7 @@ public class GetAttachmentsAction extends BaseModelAction {
         return SUCCESS;
     }
     
-    public
-
-    int getClaimId() {
+    public int getClaimId() {
         return claimId;
     }
 

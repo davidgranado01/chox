@@ -52,8 +52,7 @@
         <tr>
             <td nowrap><label>Hire Date From</label></td><td colspan="2"><div id="hireDateFromDiv" /></td>
             <td nowrap><label>Hire Date To</label></td><td colspan="2"><div id="hireDateToDiv"/></td>                            
-        </tr>                        
-        
+        </tr>
         <tr>
             <s:if test="isInsurer">
             

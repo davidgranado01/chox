@@ -46,7 +46,7 @@
                     required:"You must choose 'Register FNOL' or 'Reject"
                 },
                 reasonForRejection:{
-                    required:"You must supply a value for 'Reason for Rejection"
+                    required:"You must supply a value for 'FNOL Review Note"
                 }                 
             }
         });
@@ -62,7 +62,7 @@
             <s:hidden id="actionName" name="actionName" />
             <div>
                 <div class="status-info">
-                    Please review the claim details using the 'Claim Details' tab, if and when the claim has been registered please enter the assigned Claim Number and click on the 'Return to Claims Handler' button to return the claim to the Claims Handler for review. If the claim has not been registered, please enter the reason why in the 'Reason for Rejection' field before clicking on the 'Return to Claims Handler' button.
+                    Please review the claim details using the 'Claim Details' tab, if and when the claim has been registered please enter the assigned Claim Number and click on the 'Return to Claims Handler' button to return the claim to the Claims Handler for review. If the claim has not been registered, please enter the reason why in the 'FNOL Review Note' field before clicking on the 'Return to Claims Handler' button.
                 </div>
                 <div class="status-control-set">
                     <table class="status-table">
@@ -71,7 +71,7 @@
                             <td><input type="text" class="chox-ttxt" name="claimNumber" value="<s:property value="claimNumber" />" maxlength=100/></td>
                         </tr>
                         <tr valign="top">
-                            <td><label>Reason for Rejection (If applicable)</label></td>
+                            <td><label>FNOL Review Note (If applicable)</label></td>
                             <td><textarea class="chox-canote" cols="80" rows="5" name="reasonForRejection" id="reasonForRejection"><s:property value="reasonForRejection" /></textarea></td>
                         </tr>                        
                         <tr>

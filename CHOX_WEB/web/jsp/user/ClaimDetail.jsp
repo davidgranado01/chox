@@ -667,11 +667,13 @@
             <div class="chox-form-item">
                 <label class="std-label-ro">Invoice Review Required</label>
                 <label class="std-data-ro"><s:property value="isInvoiceReviewRequiredDesc" /></label>
-            </div>        
+            </div>
+            <!--
             <div class="chox-form-item">
                 <label class="std-label-ro">Engineer's Claim Review Notes</label>
                 <label class="std-data-ro"><s:property value="engineerClaimReviewNotes" /></label>
-            </div>    
+            </div>   
+            !-->
         </div>
     </fieldset>
 </s:else>
@@ -736,7 +738,7 @@
     <div id="hireMonitorMessage"></div>
 </div>
                         
-</s:if>                        
+</s:if>
                     </div>
                     <div id="invoiceDetails" class="x-hide-display">    
   
