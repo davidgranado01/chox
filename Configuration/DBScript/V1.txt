@@ -681,8 +681,8 @@ INSERT INTO accessibility_item("role", access_right, accessibility_id, id) VALUE
 ALTER TABLE customer ADD COLUMN age integer;
 ALTER TABLE customer ALTER COLUMN age SET STORAGE PLAIN;
 
-ALTER TABLE customer ADD COLUMN age integer;
-ALTER TABLE customer ALTER COLUMN age SET STORAGE PLAIN;
+ALTER TABLE customer ADD COLUMN occupation character varying(100);
+ALTER TABLE customer ALTER COLUMN occupation SET STORAGE EXTENDED;
 
 ALTER TABLE customer ADD COLUMN policy_usage character varying(100);
 ALTER TABLE customer ALTER COLUMN policy_usage SET STORAGE EXTENDED;
