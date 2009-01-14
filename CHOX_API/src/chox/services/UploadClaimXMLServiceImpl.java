@@ -95,11 +95,10 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         } catch (Throwable t) {
             t.printStackTrace();
         }
-    }   
+    }
     
     public ArrayList<XMLParseResult> processXML(File claimXMLFile, Boolean isAllowPartialUpload) {
 
-        
         ArrayList<XMLParseResult> xmlParseResults = new ArrayList<XMLParseResult>();
 
         try {
@@ -158,8 +157,6 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             Element root,
             Boolean isAllowPartialUpload) throws Exception {
             
-        //System.out.println("START********************************************");
-        
         Session currentSession = getCurrentSession();
         currentSession.beginTransaction();
         
@@ -167,7 +164,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
          
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
-        //System.out.println(" ** CHO REFERENCE: " + xmlParseResult.getClaim().getChoReference());
+
         // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
         if(!xmlParseResult.getIsClaimExist()){
             xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);
@@ -457,9 +454,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             if(XmlHelper.getNodeValue(mainElement, "gta-notice").equalsIgnoreCase("")){
                 tGtaNoticeDate = DateHelper.getCurrentTimeStamp();
             }
-            
-            System.out.println("************strCHOReference:"+strCHOReference);
-            
+
             if(claimService.isClaimReferenceNumberExist(strCHOReference)){
 
                 // CONFIGURATION TO CHECK XML UPLOAD STATUS
@@ -539,7 +534,12 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "telephone-evening", XmlHelper.isMAN_Driver_Telephone_Evening, XmlHelper.REG_PHONE, strSectionName, "Telephone Evening");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "email", XmlHelper.isMAN_Driver_Email, XmlHelper.REG_EMAIL, strSectionName, "Email");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "primary-driver", XmlHelper.isMAN_Driver_Primary_Driver, "", strSectionName, "Primary Driver");
-
+                    
+                    // Mantis: 0000336
+                    xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "age", XmlHelper.isMAN_Driver_Age, XmlHelper.REG_INTEGER, strSectionName, "Age");
+                    xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "occupation", XmlHelper.isMAN_Driver_Occupation, "", strSectionName, "Occupation");
+                    xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "policy-usage", XmlHelper.isMAN_Driver_PolicyUsage, "", strSectionName, "Policy Usage");
+                    
                     if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
                         
                         Customer customer = new Customer();
@@ -561,6 +561,9 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                         customer.setTelephoneEvening(XmlHelper.getNodeValue(ee, "telephone-evening"));
                         customer.setEmail(XmlHelper.getEmailAddressFromNode(ee, "email"));
                         customer.setIsPrimaryDriver(true);
+                        customer.setAge(XmlHelper.getIntegerFromNode(ee, "age"));
+                        customer.setOccupation(XmlHelper.getNodeValue(ee, "occupation"));
+                        customer.setPolicyUsage(XmlHelper.getNodeValue(ee, "policy-usage"));
                         
                         xmlParseResult.getClaim().setCustomer(customer);
                         
@@ -1077,90 +1080,166 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         String strSectionName = "Engineer Report";
         
         // RESET VALIDATION FLAG
+        xmlParseResult.setIsCurrentDataValid(true);
         xmlParseResult.setIsCurrentScheValid(true);
         
         Element repairElement = XMLUtils.getElement(mainElement, "repair");
+        xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "repair", strSectionName, "");
+        
+        Element eReportElement = XMLUtils.getElement(mainElement, "engineer-report");
+        Element eRepairDetailElement = XMLUtils.getElement(mainElement, "repair-details");
+        
+        // VALIDATE ENGINEER REPORT 
+        if(xmlParseResult.getIsCurrentScheValid()){
+            
+            if(eReportElement!=null){
+                xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "engineer-report", strSectionName, "");
+                if (xmlParseResult.getIsCurrentScheValid()) {
+                    EngineerReportValidation(xmlParseResult, mainElement, strSectionName);
+                }
+            }
+            
+            if(eRepairDetailElement!=null){
+                xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "repair-details", strSectionName, "");
+                if (xmlParseResult.getIsCurrentScheValid()) {
+                    RepairDetailsValidation(xmlParseResult, mainElement, strSectionName);
+                }
+            }
+            
+        }
+        
+        return xmlParseResult;
+    }
+    
+    private  XMLParseResult RepairDetailsValidation(XMLParseResult xmlParseResult, Element mainElement, String strSectionName){
+        
+        Element eRepairDetailElement = XMLUtils.getElement(mainElement, "repair-details");
+        
+        if (xmlParseResult.getIsCurrentScheValid()) {
+
+            xmlParseResult.setIsCurrentDataValid(true);
+            xmlParseResult.setIsCurrentScheValid(true);
+
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eRepairDetailElement, "repairer", XmlHelper.isMAN_RepairDetail_Repairer, "", strSectionName, "Name of Repairer");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eRepairDetailElement, "inspection-booked-date", XmlHelper.isMAN_RepairDetail_inspectionBookedDate, XmlHelper.REG_TIMESTAMP, strSectionName, "Inspection Booked Date");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eRepairDetailElement, "inspection-date", XmlHelper.isMAN_RepairDetail_InspectionDate, XmlHelper.REG_TIMESTAMP, strSectionName, "Inspection Date");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eRepairDetailElement, "repair-book-in-date", XmlHelper.isMAN_RepairDetail_RepairBookInDate, XmlHelper.REG_TIMESTAMP, strSectionName, "Repair Book In Date");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eRepairDetailElement, "repair-complete-date", XmlHelper.isMAN_RepairDetail_RepairCompleteDate, XmlHelper.REG_TIMESTAMP, strSectionName, "Repair Completion Date");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eRepairDetailElement, "name-ime", XmlHelper.isMAN_RepairDetail_NameIme, "", strSectionName, "Name of IME");
+
+            if ((xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid())
+                && (XmlHelper.isNotNull(XmlHelper.getNodeValue(eRepairDetailElement, "repairer"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eRepairDetailElement, "inspection-booked-date"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eRepairDetailElement, "inspection-date"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eRepairDetailElement, "repair-book-in-date"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eRepairDetailElement, "repair-complete-date"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eRepairDetailElement, "name-ime"))
+                )
+            ) {
+
+                HireMonitoringDetail hireMonitoringDetail = new HireMonitoringDetail();
+
+                if(xmlParseResult.getIsClaimExist() && xmlParseResult.getClaim().getHireMonitoringDetail()!=null){
+                    hireMonitoringDetail = xmlParseResult.getClaim().getHireMonitoringDetail();
+                }
+
+                if(XmlHelper.isNotNull(XmlHelper.getNodeValue(eRepairDetailElement, "repairer"))){
+                    hireMonitoringDetail.setNameOfRepairer(XmlHelper.getNodeValue(eRepairDetailElement, "repairer"));
+                }
+                
+                if(XmlHelper.isNotNull(XmlHelper.getNodeValue(eRepairDetailElement, "inspection-booked-date"))){
+                    hireMonitoringDetail.setInspectionBookedDate(XmlHelper.getTimeStampFromNode(eRepairDetailElement, "inspection-booked-date"));
+                }
+
+                if(XmlHelper.isNotNull(XmlHelper.getNodeValue(eRepairDetailElement, "inspection-date"))){
+                    hireMonitoringDetail.setInspectionDate(XmlHelper.getTimeStampFromNode(eRepairDetailElement, "inspection-date"));
+                }
+                
+                if(XmlHelper.isNotNull(XmlHelper.getNodeValue(eRepairDetailElement, "repair-book-in-date"))){
+                    hireMonitoringDetail.setRepairBookInDate(XmlHelper.getTimeStampFromNode(eRepairDetailElement, "repair-book-in-date"));
+                }
+                
+                if(XmlHelper.isNotNull(XmlHelper.getNodeValue(eRepairDetailElement, "repair-complete-date"))){
+                    hireMonitoringDetail.setRepairCompletionDate(XmlHelper.getTimeStampFromNode(eRepairDetailElement, "repair-complete-date"));
+                }
+                
+                if(XmlHelper.isNotNull(XmlHelper.getNodeValue(eRepairDetailElement, "name-ime"))){
+                    hireMonitoringDetail.setNameOfIme(XmlHelper.getNodeValue(eRepairDetailElement, "name-ime"));
+                }
+                
+                xmlParseResult.getClaim().setHireMonitoringDetail(hireMonitoringDetail);
+            }
+        }
+        
+        return xmlParseResult;
+    }
+    
+    private  XMLParseResult EngineerReportValidation(XMLParseResult xmlParseResult, Element mainElement, String strSectionName){
+        
+        // GET AND VALIDATE ENGINEER REPROT
         Element eReportElement = XMLUtils.getElement(mainElement, "engineer-report");
         
-        if(repairElement!=null && eReportElement!=null){
-            
-            // VALIDATE REPAIR AND ENGINEER REPORT
-            xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "repair", strSectionName, "");
-            xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "engineer-report", strSectionName, "");
-        
-            if (xmlParseResult.getIsCurrentScheValid()) {
-                
-                // GET AND VALIDATE ENGINEER REPROT
-                ArrayList<Element> engineerReportElements = XMLUtils.getElements(doc, mainElement, "engineer-report");
-                xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, engineerReportElements, "engineer-report", strSectionName, "");
-                
-                if (xmlParseResult.getIsCurrentScheValid()) {
-                    
-                    for (Element ee : engineerReportElements) {
-                    
-                        xmlParseResult.setIsCurrentDataValid(true);
-                        xmlParseResult.setIsCurrentScheValid(true);
+        if (xmlParseResult.getIsCurrentScheValid()) {
 
-                        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "labour-amount", XmlHelper.isMAN_Repair_engineerReport_labour_Amount, XmlHelper.REG_BIGDECIMAL, strSectionName, "Estimated Labour Amount");
-                        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "total-amount", XmlHelper.isMAN_Repair_engineerReport_total_Amount, XmlHelper.REG_BIGDECIMAL, strSectionName, "Estimated Total Repair Amount");
-                        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "days", XmlHelper.isMAN_Repair_engineerReport_days, XmlHelper.REG_INTEGER, strSectionName, "Estimated Days Under Repair");
-                        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "name", XmlHelper.isMAN_Repair_engineerReport_name, "", strSectionName, "Engineer Name");
-                        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "company", XmlHelper.isMAN_Repair_engineerReport_company, "", strSectionName, "Engineer Company");
-                        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "address1", XmlHelper.isMAN_Repair_engineerReport_address1, "", strSectionName, "Engineer Address1");
-                        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "address2", XmlHelper.isMAN_Repair_engineerReport_address2, "", strSectionName, "Engineer Address2");
-                        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "address3", XmlHelper.isMAN_Repair_engineerReport_address3, "", strSectionName, "Engineer Address3");
-                        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "address4", XmlHelper.isMAN_Repair_engineerReport_address4, "", strSectionName, "Engineer Address4");
-                        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "address5", XmlHelper.isMAN_Repair_engineerReport_address5, "", strSectionName, "Engineer Address5");
-                        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "postcode", XmlHelper.isMAN_Repair_engineerReport_postcode, "", strSectionName, "Engineer Postcode");
-                        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "telephone", XmlHelper.isMAN_Repair_engineerReport_telephone, XmlHelper.REG_PHONE, strSectionName, "Engineer Telephone");
-                        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "email", XmlHelper.isMAN_Repair_engineerReport_email, XmlHelper.REG_EMAIL, strSectionName, "Engineer Email");
-                        xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "usable", XmlHelper.isMAN_Repair_engineerReport_usable, "", strSectionName, "Usable");
+            xmlParseResult.setIsCurrentDataValid(true);
+            xmlParseResult.setIsCurrentScheValid(true);
 
-                        if ((xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid())
-                            && (XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "labour-amount"))
-                            || XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "total-amount"))
-                            || XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "days"))
-                            || XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "name"))
-                            || XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "company"))
-                            || XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "address1"))
-                            || XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "address2"))
-                            || XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "address3"))
-                            || XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "address4"))
-                            || XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "address5"))
-                            || XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "postcode"))
-                            || XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "telephone"))
-                            || XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "email"))
-                            || XmlHelper.isNotNull(XmlHelper.getNodeValue(ee, "usable"))
-                            )
-                        ) {
-                            
-                            EngineerReport engineerReport = new EngineerReport();
-                            
-                            if(xmlParseResult.getIsClaimExist() && xmlParseResult.getClaim().getEngineerReport()!=null){
-                                engineerReport = xmlParseResult.getClaim().getEngineerReport();
-                            }
-                            
-                            engineerReport.setDays(XmlHelper.getIntegerFromNode(ee, "days"));
-                            engineerReport.setLabourAmount(XmlHelper.getBigDecimalFromNode(ee, "labour-amount"));
-                            engineerReport.setTotalAmount(XmlHelper.getBigDecimalFromNode(ee, "total-amount"));
-                            
-                            engineerReport.setName(XmlHelper.getNodeValue(ee, "name"));
-                            engineerReport.setCompany(XmlHelper.getNodeValue(ee, "company"));
-                            engineerReport.setAddress1(XmlHelper.getNodeValue(ee, "address1"));
-                            engineerReport.setAddress2(XmlHelper.getNodeValue(ee, "address2"));
-                            engineerReport.setAddress3(XmlHelper.getNodeValue(ee, "address3"));
-                            engineerReport.setAddress4(XmlHelper.getNodeValue(ee, "address4"));
-                            engineerReport.setAddress5(XmlHelper.getNodeValue(ee, "address5"));
-                            engineerReport.setPostcode(XmlHelper.getNodeValue(ee, "postcode"));
-                            engineerReport.setTelephone(XmlHelper.getNodeValue(ee, "telephone"));
-                            engineerReport.setEmail(XmlHelper.getEmailAddressFromNode(ee, "email"));
-                            engineerReport.setIsUsable(XmlHelper.getBooleanFromNode(ee, "usable"));
-                            
-                            xmlParseResult.getClaim().setEngineerReport(engineerReport);
-                            break;
-                        }
-                    }
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eReportElement, "labour-amount", XmlHelper.isMAN_Repair_engineerReport_labour_Amount, XmlHelper.REG_BIGDECIMAL, strSectionName, "Estimated Labour Amount");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eReportElement, "total-amount", XmlHelper.isMAN_Repair_engineerReport_total_Amount, XmlHelper.REG_BIGDECIMAL, strSectionName, "Estimated Total Repair Amount");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eReportElement, "days", XmlHelper.isMAN_Repair_engineerReport_days, XmlHelper.REG_INTEGER, strSectionName, "Estimated Days Under Repair");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eReportElement, "name", XmlHelper.isMAN_Repair_engineerReport_name, "", strSectionName, "Engineer Name");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eReportElement, "company", XmlHelper.isMAN_Repair_engineerReport_company, "", strSectionName, "Engineer Company");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eReportElement, "address1", XmlHelper.isMAN_Repair_engineerReport_address1, "", strSectionName, "Engineer Address1");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eReportElement, "address2", XmlHelper.isMAN_Repair_engineerReport_address2, "", strSectionName, "Engineer Address2");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eReportElement, "address3", XmlHelper.isMAN_Repair_engineerReport_address3, "", strSectionName, "Engineer Address3");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eReportElement, "address4", XmlHelper.isMAN_Repair_engineerReport_address4, "", strSectionName, "Engineer Address4");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eReportElement, "address5", XmlHelper.isMAN_Repair_engineerReport_address5, "", strSectionName, "Engineer Address5");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eReportElement, "postcode", XmlHelper.isMAN_Repair_engineerReport_postcode, "", strSectionName, "Engineer Postcode");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eReportElement, "telephone", XmlHelper.isMAN_Repair_engineerReport_telephone, XmlHelper.REG_PHONE, strSectionName, "Engineer Telephone");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eReportElement, "email", XmlHelper.isMAN_Repair_engineerReport_email, XmlHelper.REG_EMAIL, strSectionName, "Engineer Email");
+            xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, eReportElement, "usable", XmlHelper.isMAN_Repair_engineerReport_usable, "", strSectionName, "Usable");
+
+            if ((xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid())
+                && (XmlHelper.isNotNull(XmlHelper.getNodeValue(eReportElement, "labour-amount"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eReportElement, "total-amount"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eReportElement, "days"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eReportElement, "name"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eReportElement, "company"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eReportElement, "address1"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eReportElement, "address2"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eReportElement, "address3"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eReportElement, "address4"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eReportElement, "address5"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eReportElement, "postcode"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eReportElement, "telephone"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eReportElement, "email"))
+                || XmlHelper.isNotNull(XmlHelper.getNodeValue(eReportElement, "usable"))
+                )
+            ) {
+
+                EngineerReport engineerReport = new EngineerReport();
+
+                if(xmlParseResult.getIsClaimExist() && xmlParseResult.getClaim().getEngineerReport()!=null){
+                    engineerReport = xmlParseResult.getClaim().getEngineerReport();
                 }
+
+                engineerReport.setDays(XmlHelper.getIntegerFromNode(eReportElement, "days"));
+                engineerReport.setLabourAmount(XmlHelper.getBigDecimalFromNode(eReportElement, "labour-amount"));
+                engineerReport.setTotalAmount(XmlHelper.getBigDecimalFromNode(eReportElement, "total-amount"));
+
+                engineerReport.setName(XmlHelper.getNodeValue(eReportElement, "name"));
+                engineerReport.setCompany(XmlHelper.getNodeValue(eReportElement, "company"));
+                engineerReport.setAddress1(XmlHelper.getNodeValue(eReportElement, "address1"));
+                engineerReport.setAddress2(XmlHelper.getNodeValue(eReportElement, "address2"));
+                engineerReport.setAddress3(XmlHelper.getNodeValue(eReportElement, "address3"));
+                engineerReport.setAddress4(XmlHelper.getNodeValue(eReportElement, "address4"));
+                engineerReport.setAddress5(XmlHelper.getNodeValue(eReportElement, "address5"));
+                engineerReport.setPostcode(XmlHelper.getNodeValue(eReportElement, "postcode"));
+                engineerReport.setTelephone(XmlHelper.getNodeValue(eReportElement, "telephone"));
+                engineerReport.setEmail(XmlHelper.getEmailAddressFromNode(eReportElement, "email"));
+                engineerReport.setIsUsable(XmlHelper.getBooleanFromNode(eReportElement, "usable"));
+
+                xmlParseResult.getClaim().setEngineerReport(engineerReport);
             }
         }
         return xmlParseResult;
@@ -1386,8 +1465,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, extraElements, "extra", strSectionName, "");
         
         String strExtraNode = XMLUtils.getElement(thisElement, "extra").getTextContent();
-        //System.out.println("XXXXXXXXXXXXXXXX"+strExtraNode.length());
-        
+
         if (xmlParseResult.getIsCurrentScheValid()) {
             
             xmlParseResult.getClaim().getInvoice().setCdwFee(new BigDecimal("0.00"));

@@ -172,7 +172,10 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
         
         protected Boolean isTotalLoss;
         protected String insurerName;
-
+        protected int age;
+        protected String occupation;
+        protected String policyUsage;
+        
         public String getInsurerName() {
             return insurerName;
         }
@@ -181,10 +184,6 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
             this.insurerName = insurerName;
         }
         
-	/**
-	 * Method 'Customer'
-	 * 
-	 */
 	public Customer()
 	{
 	}
@@ -855,6 +854,30 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
                 
         public Boolean isVehicleRegistrationExist() {
             return isVehicleRegistrationexist;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public void setAge(int age) {
+            this.age = age;
+        }
+
+        public String getOccupation() {
+            return occupation;
+        }
+
+        public void setOccupation(String occupation) {
+            this.occupation = occupation;
+        }
+
+        public String getPolicyUsage() {
+            return policyUsage;
+        }
+
+        public void setPolicyUsage(String policyUsage) {
+            this.policyUsage = policyUsage;
         }
         
 }

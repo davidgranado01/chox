@@ -36,5 +36,8 @@
     <property column="is_total_loss" name="isTotalLoss" not-null="true"/>
     <many-to-one class="chox.model.VehicleClass" column="vehicle_class_id" name="vehicleClass"/>
     <property column="insurer_name" name="insurerName" not-null="true"/>
+    <property column="age" name="age" not-null="true"/>
+    <property column="occupation" name="occupation" not-null="true"/>
+    <property column="policy_usage" name="policyUsage" not-null="true"/>
   </class>
 </hibernate-mapping>

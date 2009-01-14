@@ -69,7 +69,7 @@ public class ClaimViewingMonitorTest {
 
             Thread.sleep(1000);
         }*/
-
+/*
         monitor.ping(claimId, "I", 2, 2);
         Set<Integer> users = monitor.getWhoIsViewing(claimId, "I", 2);
         Assert.assertEquals(1, users.size());
@@ -86,6 +86,6 @@ public class ClaimViewingMonitorTest {
         //access to claim with same claimId, orgId but different org type
         users = monitor.getWhoIsViewing(claimId, "C", 2);
         Assert.assertNull(users);
-
+*/
     }
 }

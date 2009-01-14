@@ -50,6 +50,10 @@ public class XmlHelper {
     public static final Boolean isMAN_Driver_Telephone_day= true;
     public static final Boolean isMAN_Driver_Telephone_Evening= false;
     public static final Boolean isMAN_Driver_Title= true;
+    public static final Boolean isMAN_Driver_Age= false;
+    public static final Boolean isMAN_Driver_Occupation= false;
+    public static final Boolean isMAN_Driver_PolicyUsage= false;
+    
     public static final Boolean isMAN_Claim_Customer_Vehicle_Class=true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Location= true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Manufacturer= true;
@@ -59,6 +63,7 @@ public class XmlHelper {
     public static final Boolean isMAN_Claim_Customer_Vehicle_InitialEcd= false;
     public static final Boolean isMAN_Claim_Customer_Vehicle_TotalLoss= true;
     public static final Boolean isMAN_Claim_Customer_Vehicle_Usable= true;
+    
     public static final Boolean isMAN_Repair_engineerReport_address1= false;
     public static final Boolean isMAN_Repair_engineerReport_address2= false;
     public static final Boolean isMAN_Repair_engineerReport_address3= false;
@@ -167,6 +172,14 @@ public class XmlHelper {
     public static final Boolean isMAN_Claim_Incident_Witness_telephoneEvening= false;
     public static final Boolean isMAN_RentalVehicles_Extras_Extra= true;
 
+    // REPAIR DETAIL
+    public static final Boolean isMAN_RepairDetail_Repairer = false;
+    public static final Boolean isMAN_RepairDetail_inspectionBookedDate = false;
+    public static final Boolean isMAN_RepairDetail_InspectionDate = false;
+    public static final Boolean isMAN_RepairDetail_RepairBookInDate = false;
+    public static final Boolean isMAN_RepairDetail_RepairCompleteDate = false;
+    public static final Boolean isMAN_RepairDetail_NameIme = false;
+    
     public static Boolean isValidDataType(String dataValue, String regExpression, String nodeName){
         Boolean bFlag = true;
         
