@@ -646,7 +646,10 @@ INSERT INTO accessibility(id, "name") VALUES (146, 'filter.PenaltyChargesApplied
 INSERT INTO accessibility_item("role", access_right, accessibility_id, id) VALUES ('ROLE_CHO_OPR', 1, 146 ,329);
 
 
------------------------------------------------------------------------------------------------
+
+
+
+
 
 -- ############################################################################################
 -- START VERSION V2.17a - 20090108
@@ -659,6 +662,29 @@ ALTER TABLE "comment" ALTER COLUMN is_public SET NOT NULL;
 ALTER TABLE "comment" ALTER COLUMN is_public SET DEFAULT true;
 
 ------------------------------------------------------------------------------------------------
-INSERT INTO accessibility(id, "name") VALUES (147, 'panel.FNOLReviewed');
-INSERT INTO accessibility_item("role", access_right, accessibility_id, id) VALUES ('ROLE_INS_CH', 1, 147 ,330);
+INSERT INTO accessibility(id, "name") VALUES ((select max(id)+1 from accessibility), 'panel.FNOLReviewed');
 
+INSERT INTO accessibility_item("role", access_right, accessibility_id, id) VALUES ('ROLE_INS_CH', 1, 
+(select id from accessibility where name = 'panel.FNOLReviewed') ,
+(select max(id)+1 from accessibility_item));
+
+
+
+
+
+
+
+-- ############################################################################################
+-- START VERSION V2.18 - 20090114
+-- ############################################################################################\
+
+ALTER TABLE customer ADD COLUMN age integer;
+ALTER TABLE customer ALTER COLUMN age SET STORAGE PLAIN;
+
+ALTER TABLE customer ADD COLUMN age integer;
+ALTER TABLE customer ALTER COLUMN age SET STORAGE PLAIN;
+
+ALTER TABLE customer ADD COLUMN policy_usage character varying(100);
+ALTER TABLE customer ALTER COLUMN policy_usage SET STORAGE EXTENDED;
+
+------------------------------------------------------------------------------------------------
