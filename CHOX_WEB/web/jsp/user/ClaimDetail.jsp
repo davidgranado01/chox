@@ -123,7 +123,9 @@
     
     function doCleanResult(){
         $(".chox-form-submit-result").html("");
-    }
+    }   
+    
+    Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
     
     Ext.onReady(function(){
     

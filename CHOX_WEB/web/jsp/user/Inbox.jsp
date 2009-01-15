@@ -60,6 +60,8 @@
     ds.setDefaultSort('created', 'desc');
     // var c = new Ext.DatePicker({renderTo: 'doSearchClaim_invoiceUploadDateFrom'});
     
+    Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
+    
     Ext.onReady(setupGrid); 
     
     function showClaimByStatus(status)
