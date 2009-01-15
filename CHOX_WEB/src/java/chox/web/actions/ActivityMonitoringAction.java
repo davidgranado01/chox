@@ -55,9 +55,11 @@ public class ActivityMonitoringAction extends BaseAction{
                        
         for(String s : claimIdArray)
         {
-            Integer claimId = Integer.parseInt(s);
-            Boolean status = monitor.isClaimViewingBySomeBody(claimId, getOrganisationType(), getOrganisationId());         
-            statuses.add(new ViewingStatus(claimId,status));            
+            if (s!= null && s.matches("^\\d+$")) {
+                Integer cId = Integer.parseInt(s);
+                Boolean status = monitor.isClaimViewingBySomeBody(cId, getOrganisationType(), getOrganisationId());
+                statuses.add(new ViewingStatus(cId, status));
+            }
         }
         
         method = "checkViewingStatus";

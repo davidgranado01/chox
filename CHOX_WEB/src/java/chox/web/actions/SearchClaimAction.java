@@ -10,6 +10,7 @@ import chox.services.LookupService;
 import chox.services.SearchResult;
 import chox.web.viewdata.claimGridViewData;
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ import org.apache.struts2.interceptor.SessionAware;
  *
  * @author Emmanuel
  */
-public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria,SessionAware {
+public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria,SessionAware ,Serializable{
 
     private Map session;    
     private String supplierReference;

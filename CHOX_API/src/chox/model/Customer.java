@@ -172,7 +172,7 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
         
         protected Boolean isTotalLoss;
         protected String insurerName;
-        protected int age;
+        protected Integer age;
         protected String occupation;
         protected String policyUsage;
         
@@ -856,11 +856,11 @@ public class Customer implements Serializable, Auditable, ICustomerVehicleDamage
             return isVehicleRegistrationexist;
         }
 
-        public int getAge() {
+        public Integer getAge() {
             return age;
         }
 
-        public void setAge(int age) {
+        public void setAge(Integer age) {
             this.age = age;
         }
 
