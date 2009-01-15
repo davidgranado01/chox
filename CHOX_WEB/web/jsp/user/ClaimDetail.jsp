@@ -587,7 +587,7 @@
                     <div class="action-message"><s:property value="actionResult" /></div>
                 </div>
                 
-                <s:if test="isShowPenaltyChargePanel">
+                <s:if test="isShowPenaltyChargeAlert">
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">   
                         <s:action name="getAlertPanel" executeResult="true" />                    
                     </div>

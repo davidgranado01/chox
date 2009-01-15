@@ -823,9 +823,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if(isRemovePenaltyAlert != null && isRemovePenaltyAlert)
             {
                 long dateDiff = DateHelper.daysBetween(invoice.getDateInvoiced(),new Date());
-                int newPanaltyAlertQty = (int)(dateDiff/30) + 1;
+                int newPanaltyAlertQty = (int)(dateDiff/30);
                 //if PanaltyAlertQty > 3 mean it already reach the limit and alert not showing anymore, set it to -1
-                newPanaltyAlertQty = newPanaltyAlertQty > 3 ? -1 : newPanaltyAlertQty;
+                newPanaltyAlertQty = newPanaltyAlertQty >= 3 ? -1 : newPanaltyAlertQty;
                 invoice.setPanaltyAlertQty(newPanaltyAlertQty);
             }
             this.invoiceService.updateObject(invoice);
@@ -844,9 +844,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             Invoice invoice = claim.getInvoice();
 
             //if PanaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
-            if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) && invoice.getPanaltyAlertQty() > -1) {
-                long dateDiff = DateHelper.daysBetween(invoice.getDateInvoiced(), new Date());
-                result = dateDiff >= invoice.getPanaltyAlertQty() * 30;
+            if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) && invoice.getPanaltyAlertQty() > -1) {                
+                result = invoice.getInvoicedDays() > (invoice.getPanaltyAlertQty() + 1) * 30;
             }
         }
        
@@ -861,9 +860,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             Invoice invoice = claim.getInvoice();
 
             //if PanaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
-            if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
-                long dateDiff = DateHelper.daysBetween(invoice.getDateInvoiced(), new Date());
-                result = dateDiff >= 30;
+            if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {                
+                result = invoice.getInvoicedDays() > 30;
             }
         }
        

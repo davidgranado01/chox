@@ -1,5 +1,6 @@
 package chox.model;
 
+import chox.Util.DateHelper;
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.util.Date;
@@ -1304,6 +1305,13 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo,Auditabl
     public void setPanaltyAlertQty(Integer panaltyAlertQty) {
         this.panaltyAlertQty = panaltyAlertQty;
     }
+    
+    public long getInvoicedDays()
+    {
+        long dateDiff = DateHelper.daysBetween(getDateInvoiced(), new Date());
+        return dateDiff;
+    }
+    
 
     
 }

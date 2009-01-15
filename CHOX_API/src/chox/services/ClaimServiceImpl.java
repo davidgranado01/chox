@@ -66,7 +66,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         Long count = (Long) getCurrentSession().createQuery("select count(*) from Claim as c inner join c.invoice as iv where c.status <> '" 
                 + ClaimStatus.INVOICE_PAYMENT_LOGGED
                 + "' AND iv.panaltyAlertQty >= 0"
-                + " AND day(current_date() - iv.dateInvoiced) >= ((iv.panaltyAlertQty + 1) * 30)").uniqueResult();
+                + " AND day(current_date() - iv.dateInvoiced) > ((iv.panaltyAlertQty + 1) * 30)").uniqueResult();
         return count;
     }
 
