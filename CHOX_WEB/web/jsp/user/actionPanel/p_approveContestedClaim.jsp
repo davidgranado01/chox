@@ -193,6 +193,7 @@
                                             <input type="submit" value="Reject" onclick="javascript: return doRejectClaim();" />
                                             <input type="submit" value="Acknowledge" onclick="javascript: return doSubmit('accept')"  />
                                             <input type="submit" value="Refer To Engineer" onclick="javascript: return doSubmit('refer');"  /> 
+                                            <input type="submit" value="Refer to FNOL" onclick="javascript: return doSubmit('referFNOL');" /> 
                                         </td>
                                     </tr>
                                 </table>

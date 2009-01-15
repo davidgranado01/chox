@@ -368,7 +368,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String result = SUCCESS;
         //chack whether line of busineess if set 
         claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
+        
+        
         try {
+            
+            boolean isPublic = false;
+            String strPrefix = "Claim Review Note: ";
+            createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);
+            
+            claim.setEngineerClaimReviewNotes("");
+            
             auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -403,7 +412,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String approveContestedClaim() {
 
         String result = SUCCESS;
-        
         String validationResult = validateAcknowledgeClaimInfo();
         
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
@@ -425,7 +433,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 result = ERROR;
                 this.actionResult = validationResult;
             }
-            
+        }else if(this.actionName.equalsIgnoreCase(REFER_FNOL)){
+                   
+            if (validationResult.isEmpty()) {
+                claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
+            } else {
+                claim.setClaimNumber("");
+                result = ERROR;
+                this.actionResult = validationResult;
+            }
         }else {
             claim = service.getClaim(id);
             claim.setStatus(ClaimStatus.CLAIM_REJECTED);
@@ -435,10 +451,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             
             boolean isPublic = false;
             String strPrefix = "Claim Review Note: ";
-            createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);            
+            createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);
+            claim.setEngineerClaimReviewNotes("");
             
             auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
+            
         } catch (Exception ex) {
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();

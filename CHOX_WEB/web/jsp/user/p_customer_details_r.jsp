@@ -63,7 +63,19 @@
             <label class="std-label-ro">
             Email</label>
             <label class="std-data-ro"><s:property value="email" /></label>
-            </div>           
+            </div>    
+        <div class="chox-form-item">
+            <label class="std-label-ro">Age</label>
+            <label class="std-data-ro"><s:property value="age" /></label>
+            </div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">Occupation</label>
+            <label class="std-data-ro"><s:property value="occupation" /></label>
+            </div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">Policy Usage</label>
+            <label class="std-data-ro"><s:property value="policyUsage" /></label>
+            </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
             Insurer</label>
@@ -104,7 +116,7 @@
             <label class="std-label-ro">
             Vehicle Location</label>
             <label class="std-data-ro"><s:property value="location" /></label>
-            </div>
+            </div>          
     </div>
 </fieldset>
 

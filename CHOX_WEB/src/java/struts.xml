@@ -512,8 +512,7 @@
             </result>
         </action>
         <action name="getAttachments" class="chox.web.actions.GetAttachmentsAction" method="getAttachments">
-            <result name="success">/jsp/p_jsonData.jsp
-            </result>
+            <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="createNewComment" class="chox.web.actions.CommentAction" method="createNewComment">
             <result name="success">/jsp/p_response.jsp</result>

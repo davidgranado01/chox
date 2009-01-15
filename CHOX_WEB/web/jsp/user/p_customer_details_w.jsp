@@ -50,6 +50,9 @@
                  },
                  location:{
                      required:true
+                 },
+                 age:{
+                     number:true
                  }
                },
                messages: {
@@ -88,7 +91,10 @@
                  },  
                  location: {
                    required:"You must supply a value for 'Vehicle Location'"
+                 }, age:{
+                     number:"You must supply a numeric value for 'Age'"
                  }
+                     
                },
                 submitHandler: function(form) {
                     $(form).ajaxSubmit(globalEntityFormOptions);
@@ -170,6 +176,21 @@
                         Email</label>
                     <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value='<s:property value="email" />' /></div>
                     
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Age</label>
+                        <input type="text" class="chox-ttxt" id="CCDAge"  name="age" value='<s:property value="age" />' />
+                    </div>
+                    
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Occupation</label>
+                        <input type="text" class="chox-ttxt" id="CCDOccupation"  name="occupation" value='<s:property value="occupation" />' />
+                    </div>
+                    
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Policy Usage</label>
+                        <input type="text" class="chox-ttxt" id="CCDPolicyUsage"  name="policyUsage" value='<s:property value="policyUsage" />' />
+                    </div>                     
+                    
                      <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Insurer<span class="mandatory">*</span></label>
@@ -209,14 +230,13 @@
                     </div>                      
 
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">
-                        Vehicle Location<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDVehicleLocation"  name="location" value='<s:property value="location" />' /></div>
+                        <label class="chox-form-std-label">Vehicle Location<span class="mandatory">*</span></label>
+                        <input type="text" class="chox-ttxt" id="CCDVehicleLocation"  name="location" value='<s:property value="location" />' />
+                    </div>
+                                        
                     <div class="chox-form-button">
                         <input type="submit" value="Save Changes" />
-
-                    </div>   
-                        
+                    </div>
                         <div id="CDmessageBox" class="errorBox"></div>
                         <div class="chox-form-submit-result"></div>                    
                 </div>

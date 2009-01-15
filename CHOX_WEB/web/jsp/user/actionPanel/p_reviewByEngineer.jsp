@@ -114,7 +114,7 @@
                                 <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>                                
                             </div>
                         </td>
-                    </tr>                         
+                    </tr>
                         <tr>
                             <td colspan="2" class="choice"> 
                                 <input type="submit" value="Submit" onclick="registeAction('accept')"  />   
