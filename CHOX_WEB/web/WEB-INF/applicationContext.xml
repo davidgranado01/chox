@@ -11,7 +11,7 @@
             <ref bean="authenticationManager"/>
         </property>
         <property name="authenticationFailureUrl">
-            <value>/login.jsp?error=1</value>
+            <value>/login.action?login_error=1</value>
         </property>
         <property  name="defaultTargetUrl">
             <value>/user/inbox.action</value>
