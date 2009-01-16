@@ -30,7 +30,7 @@
     
     function isClaimNumberMandatory(){
         var sActionName = $("#actionName").val();
-        if(sActionName=="reject"){
+        if(sActionName=="reject" || sActionName=="referFNOL"){
             return false;
         }
         return true;
@@ -132,7 +132,7 @@
         <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
         <div>
             <div class="status-info">
-                Please review the CHO's notes against the reasoning for contesting the claim rejection and make a decision on whether to acknowledge the claim, reject the claim or refer the claim to an Engineer.
+                Please review the CHO's notes against the reason for contesting the claim rejection and make a decision on whether to acknowledge the claim, reject the claim, refer the claim to FNOL or refer the claim to an Engineer.
             </div>
             <div class="status-control-set">
                 <table>
@@ -182,14 +182,14 @@
 
                                     </tr>                                    
                     <tr>
-                        <td>
+                        <td colspan="4">
                             <div class="no-format">
                                 <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>                                
                             </div>
                         </td>
                     </tr>                      
                                     <tr>
-                                        <td colspan="2" class="choice">  
+                                        <td colspan="4" class="choice" nowrap="true">  
                                             <input type="submit" value="Reject" onclick="javascript: return doRejectClaim();" />
                                             <input type="submit" value="Acknowledge" onclick="javascript: return doSubmit('accept')"  />
                                             <input type="submit" value="Refer To Engineer" onclick="javascript: return doSubmit('refer');"  /> 

@@ -1,10 +1,4 @@
-       
 <%@ taglib uri="/struts-tags" prefix="s" %>
-
-
-
-
-
 
     <script language="JavaScript">
         
@@ -128,83 +122,83 @@
                 <div style="display:none" class="form-container">
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Title<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDTitle" name="title" value='<s:property value="title" />'/>
+                    <input type="text" class="chox-ttxt" id="CCDTitle" name="title" value="<s:property value="title" />"/>
                     
                     </div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         First Name(s)<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDFirstName" name="firstName" value='<s:property value="firstName" />'/></div>
+                        <input type="text" class="chox-ttxt" id="CCDFirstName" name="firstName" value="<s:property value="firstName" />"/></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Surname<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDSurname" name="lastName"  value='<s:property value="lastName" />' /></div>
+                    <input type="text" class="chox-ttxt" id="CCDSurname" name="lastName"  value="<s:property value="lastName" />" /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Address 1<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDAddress1"  name="address1" value='<s:property value="address1" />' /></div>
+                    <input type="text" class="chox-ttxt" id="CCDAddress1"  name="address1" value="<s:property value="address1" />" /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Address 2</label>
-                    <input type="text" class="chox-ttxt" id="CCDAddress2" name="address2" value='<s:property value="address2" />' /></div>
+                    <input type="text" class="chox-ttxt" id="CCDAddress2" name="address2" value="<s:property value="address2" />" /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Address 3</label>
-                    <input type="text" class="chox-ttxt" id="CCDAddress3" name="address3" value='<s:property value="address3" />'/></div>
+                    <input type="text" class="chox-ttxt" id="CCDAddress3" name="address3" value="<s:property value="address3" />"/></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Address 4</label>
-                    <input type="text" class="chox-ttxt" id="CCDAddress4" name="address4" value='<s:property value="address4" />' /></div>
+                    <input type="text" class="chox-ttxt" id="CCDAddress4" name="address4" value="<s:property value="address4" />" /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Address 5</label>
-                    <input type="text" class="chox-ttxt" id="CCDAddress5" name="address5" value='<s:property value="address5" />' /></div>
+                    <input type="text" class="chox-ttxt" id="CCDAddress5" name="address5" value="<s:property value="address5" />" /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Postcode<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDPostcode" name="postcode" value='<s:property value="postcode" />' /></div>
+                    <input type="text" class="chox-ttxt" id="CCDPostcode" name="postcode" value="<s:property value="postcode" />" /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Telephone Day<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDTeleponeDay" name="telephoneDay" value='<s:property value="telephoneDay" />' /></div>
+                    <input type="text" class="chox-ttxt" id="CCDTeleponeDay" name="telephoneDay" value="<s:property value="telephoneDay" />" /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Telepone Evening</label>
-                    <input type="text" class="chox-ttxt" id="CCDTeleponeEvening" name="telephoneEvening"  value='<s:property value="telephoneEvening" />'/></div>
+                    <input type="text" class="chox-ttxt" id="CCDTeleponeEvening" name="telephoneEvening"  value="<s:property value="telephoneEvening" />"/></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Email</label>
-                    <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value='<s:property value="email" />' /></div>
+                    <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value="<s:property value="email" />" /></div>
                     
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Age</label>
-                        <input type="text" class="chox-ttxt" id="CCDAge"  name="age" value='<s:property value="age" />' />
+                        <input type="text" class="chox-ttxt" id="CCDAge"  name="age" value="<s:property value="age" />" />
                     </div>
                     
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Occupation</label>
-                        <input type="text" class="chox-ttxt" id="CCDOccupation"  name="occupation" value='<s:property value="occupation" />' />
+                        <input type="text" class="chox-ttxt" id="CCDOccupation"  name="occupation" value="<s:property value="occupation" />" />
                     </div>
                     
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Policy Usage</label>
-                        <input type="text" class="chox-ttxt" id="CCDPolicyUsage"  name="policyUsage" value='<s:property value="policyUsage" />' />
+                        <input type="text" class="chox-ttxt" id="CCDPolicyUsage"  name="policyUsage" value="<s:property value="policyUsage" />" />
                     </div>                     
                     
                      <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Insurer<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDInsurerName" name="insurerName" value='<s:property value="insurerName" />' /></div>
+                    <input type="text" class="chox-ttxt" id="CCDInsurerName" name="insurerName" value="<s:property value="insurerName" />" /></div>
          
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Policy Number<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDPolicyNumber" name="policyNumber" value='<s:property value="policyNumber" />' /></div>
+                    <input type="text" class="chox-ttxt" id="CCDPolicyNumber" name="policyNumber" value="<s:property value="policyNumber" />" /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                             Claim Number
                         </label>
-                    <input type="text" class="chox-ttxt" id="CCDClaimNumber" name="claimReference" value='<s:property value="claimReference" />' /></div>
+                    <input type="text" class="chox-ttxt" id="CCDClaimNumber" name="claimReference" value="<s:property value="claimReference" />" /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Comprehensive</label>
@@ -212,7 +206,7 @@
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Vehicle Manufacturer<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDVehicleManufacturer" name="vehicleManufacturer" value='<s:property value="vehicleManufacturer" />' /></div>
+                    <input type="text" class="chox-ttxt" id="CCDVehicleManufacturer" name="vehicleManufacturer" value="<s:property value="vehicleManufacturer" />" /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Vehicle Class<span class="mandatory">*</span></label>
@@ -226,12 +220,12 @@
                         </div>
                      <div class="chox-form-item">
                     <label class="chox-form-std-label">Vehicle Registration Number<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDVehicleRegistration" name="vehicleRegistration" value='<s:property value="vehicleRegistration" />' />                  
+                        <input type="text" class="chox-ttxt" id="CCDVehicleRegistration" name="vehicleRegistration" value="<s:property value="vehicleRegistration" />" />                  
                     </div>                      
 
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Vehicle Location<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDVehicleLocation"  name="location" value='<s:property value="location" />' />
+                        <input type="text" class="chox-ttxt" id="CCDVehicleLocation"  name="location" value="<s:property value="location" />" />
                     </div>
                                         
                     <div class="chox-form-button">

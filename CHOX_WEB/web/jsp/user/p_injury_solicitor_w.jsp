@@ -30,7 +30,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Name<span class="mandatory">*</span></label>
-            <input type="text" class="chox-ttxt" id="ISOLName" name="name" value="<s:property value="name" />" /></div>
+            <input type="text" class="chox-ttxt" id="ISOLName" name="name" value='<s:property value="name" />' /></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Address 1</label>

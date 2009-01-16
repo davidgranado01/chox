@@ -273,6 +273,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);
             
             claim.setEngineerClaimReviewNotes("");
+            claim.setIsFnolReviewed(false);
+            
             auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -866,7 +868,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 result = invoice.getInvoicedDays() > (invoice.getPanaltyAlertQty() + 1) * 30;
             }
         }
-       
+
        return result;
     }
     

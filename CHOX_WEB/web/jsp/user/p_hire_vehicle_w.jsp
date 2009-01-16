@@ -119,21 +119,19 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Manufacturer<span class="mandatory">*</span></label>
-            <input type="text" class="chox-ttxt" id="HVDManufacturer" name="vehicleManufacturer" value='<s:property value="vehicleManufacturer" />' /></div>
+            <input type="text" class="chox-ttxt" id="HVDManufacturer" name="vehicleManufacturer" value="<s:property value="vehicleManufacturer" />" /></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Model<span class="mandatory">*</span></label>
-            <input type="text" class="chox-ttxt" id="HVDModel" name="vehicleModel" value='<s:property value="vehicleModel" />' /></div>
+            <input type="text" class="chox-ttxt" id="HVDModel" name="vehicleModel" value="<s:property value="vehicleModel" />" /></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Registration<span class="mandatory">*</span></label>
-            <input type="text" class="chox-ttxt" id="HVDRegistration"  name="vehicleRegistration" value='<s:property value="vehicleRegistration" />'/></div>
+            <input type="text" class="chox-ttxt" id="HVDRegistration"  name="vehicleRegistration" value="<s:property value="vehicleRegistration" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Replacement Vehicle Class<span class="mandatory">*</span></label>
-            <s:select name="vehicleClassId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1"
-                                                                                           headerValue="--- SELECT ---"
-                                                                                       emptyOption="false"></s:select>
+            <s:select name="vehicleClassId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1" headerValue="--- SELECT ---" emptyOption="false"></s:select>
             
             </div>
             <div class="chox-form-item">
@@ -147,11 +145,11 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Reason For Collection</label>
-            <input type="text" class="chox-ttxt" id="HVDReasonForCollection" name="collectionReason" value='<s:property value="collectionReason" />' /></div>
+            <input type="text" class="chox-ttxt" id="HVDReasonForCollection" name="collectionReason" value="<s:property value="collectionReason" />" /></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 No. Days Hire<span class="mandatory">*</span></label>
-            <input type="text" class="chox-ttnum" id="HVDNNumberOfDaysHire" name="days" value='<s:property value="days" />' /></div>
+            <input type="text" class="chox-ttnum" id="HVDNNumberOfDaysHire" name="days" value="<s:property value="days" />" /></div>
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
             </div>

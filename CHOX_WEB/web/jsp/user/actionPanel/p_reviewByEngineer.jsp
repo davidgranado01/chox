@@ -66,7 +66,7 @@
             <s:hidden id="actionName" name="actionName" />
             <div>
                 <div class="status-info">
-                    Please enter your private notes in the `Claim Review Notes' box and add public notes in the `Notes' tab in order to communicate detailed comments you may have for the CHO.
+                    Please enter your private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
                 </div>
                 <div class="status-control-set">
                     <table class="status-table">

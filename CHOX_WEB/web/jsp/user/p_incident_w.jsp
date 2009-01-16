@@ -78,7 +78,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Location<span class="mandatory">*</span></label>
-            <input type="text" class="chox-ttxt" id="IDLocation" name="location" value='<s:property value="location" />'/></div>
+            <input type="text" class="chox-ttxt" id="IDLocation" name="location" value="<s:property value="location" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Police Involved?</label>

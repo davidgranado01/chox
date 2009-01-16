@@ -108,7 +108,7 @@
                 </div>
                 
                 <div class="chox-form-button">
-                    <input type="submit" value="Add New ECD" readonly='<s:property value="isECDFormVisible"/>' />
+                    <input type="submit" value="Add New ECD" readonly="<s:property value="isECDFormVisible"/>" />
                 </div>
             <div class="errorBox" id="ECDMessageBox"></div>
             <div class="chox-form-submit-result">&nbsp;</div>                

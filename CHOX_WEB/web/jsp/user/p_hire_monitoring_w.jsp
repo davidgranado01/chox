@@ -111,7 +111,7 @@
 
            <div class="chox-form-item">
                 <label class="chox-form-std-label">Name Of Repairer</label>
-           <input type="text" class="chox-ttxt" name="nameOfRepairer" value='<s:property value="nameOfRepairer" />'/></div>
+           <input type="text" class="chox-ttxt" name="nameOfRepairer" value="<s:property value="nameOfRepairer" />"/></div>
            
            <div class="chox-form-item">
                 <label class="chox-form-std-label">Repair Book In Date</label>
@@ -144,7 +144,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Name of IME</label>
-            <input type="text" class="chox-ttxt" name="nameOfIme" value='<s:property value="nameOfIme" />'/></div>
+            <input type="text" class="chox-ttxt" name="nameOfIme" value="<s:property value="nameOfIme" />"/></div>
             
             
             <div class="chox-form-button">
