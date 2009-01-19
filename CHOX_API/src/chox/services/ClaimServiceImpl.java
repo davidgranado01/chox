@@ -61,7 +61,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
     public Long getNonDEPaymentLogCount() {
         return (long)0;
     }
-        
+
     public Long getPenaltyChargeAppliedCount() {
         Long count = (Long) getCurrentSession().createQuery("select count(*) from Claim as c inner join c.invoice as iv where c.status <> '" 
                 + ClaimStatus.INVOICE_PAYMENT_LOGGED

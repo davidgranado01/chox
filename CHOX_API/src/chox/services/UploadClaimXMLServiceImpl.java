@@ -1306,6 +1306,8 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             invoice.setDiscount(XmlHelper.getBigDecimalFromNode(thisElement, "less-discount"));
             invoice.setDeductionForClaimsHandlingFee(XmlHelper.getBigDecimalFromNode(thisElement, "less-handling-fee"));
             invoice.setDateInvoiced(XmlHelper.getTimeStampFromNode(thisElement, "date-invoiced"));
+            invoice.setPanaltyAlertQty(0);
+            invoice.setPanaltyCharge(BigDecimal.ZERO);
             
             xmlParseResult.getClaim().setInvoice(invoice);
 
