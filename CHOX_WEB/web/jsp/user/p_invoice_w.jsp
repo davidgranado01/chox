@@ -276,10 +276,14 @@
             <input type="text" class="chox-ttnum"  name="vatAmountCollected" value="<s:property value="vatAmountCollected" />"/></div>
             
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
-                Date Invoiced<span class="mandatory">*</span></label>
-            <span id="dateInvoicedPH"></span></div>
+                <label class="chox-form-std-label">Date Invoiced<span class="mandatory">*</span></label>
+                <label class="std-data-ro"><span id="dateInvoicedPH"></span></label>
+            </div>
             
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">&nbsp;</label>
+                <s:if test="invoicedDays > 0"><label class="std-data-ro"> (<s:property value="invoicedDays" /> days)</label></s:if>
+            </div>            
             
             
             <div class="chox-form-button">
