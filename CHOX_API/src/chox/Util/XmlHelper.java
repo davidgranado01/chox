@@ -155,7 +155,7 @@ public class XmlHelper {
     public static final Boolean isMAN_Claim_ThirdParty_Driver_Postcode= false;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_TelephoneDay= false;
     public static final Boolean isMAN_Claim_ThirdParty_Driver_TelephoneEvening= false;
-    public static final Boolean isMAN_Claim_ThirdParty_Vehicle_class= true;
+    public static final Boolean isMAN_Claim_ThirdParty_Vehicle_class= false;
     public static final Boolean isMAN_Claim_ThirdParty_Vehicle_manufacturer= false;
     public static final Boolean isMAN_Claim_ThirdParty_Vehicle_model= false;
     public static final Boolean isMAN_Claim_ThirdParty_Vehicle_Registration= true;

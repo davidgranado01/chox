@@ -230,10 +230,8 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                     }
                 }
             }
-
         }
         
-
         if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){            
             xmlParseResult = saveXMLRecord(xmlParseResult);
         }
@@ -303,7 +301,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
 
     private XMLParseResult saveClaimForXMLUploader(
             XMLParseResult xmlParseResult) {
-
+            
         if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
             xmlParseResult.getClaim().setCustomer(xmlParseResult.getClaim().getCustomer());
             xmlParseResult.getClaim().setThirdParty(xmlParseResult.getClaim().getThirdParty());
@@ -356,8 +354,10 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         }
         
         // SET VEHICLE CLASS TO NULL WHEN 
-        if(BREClaim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached")){
-            BREClaim.getThirdParty().setVehicleClass(null);
+        if(BREClaim.getThirdParty().getVehicleClass()!=null){
+            if(BREClaim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached")){
+                BREClaim.getThirdParty().setVehicleClass(null);
+            }
         }
         
         // SET VEHICLE CLASS TO NULL WHEN 
@@ -653,6 +653,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                 
                 // GET VEHICLE CLASS ID
                 VehicleClass vehicleclass = vehicleClassService.getVehicleClassByNodeName(thisElement, "vehicle-class");
+                
                 if(vehicleclass!=null){
                     customer.setVehicleClass(vehicleclass);
                 }else{
@@ -750,6 +751,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                 }
                  // GET VEHICLE CLASS ID
                 VehicleClass vehicleclass = vehicleClassService.getVehicleClassByNodeName(thisElement, "vehicle-class");
+                
                 if(vehicleclass!=null){
                     thirdparty.setVehicleClass(vehicleclass);
                 }else{
