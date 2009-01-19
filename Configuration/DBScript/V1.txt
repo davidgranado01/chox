@@ -476,7 +476,6 @@ INSERT INTO accessibility_item(  "role", access_right, accessibility_id, id) VAL
 
 -- ############################################################################################
 -- START VERSION 2.10 - 2008-12-11
-<<<<<<< .mine
 -- ############################################################################################
 
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO_OPR', 1, 51, 318);
@@ -628,10 +627,8 @@ insert into accessibility_item (role, access_right, accessibility_id, id) select
 -----------------------------------------------------------------------------------------------
 
 -- Add new Column to invoice table to keep penalty charges detail (Emmanuel Kong)
-ALTER TABLE invoice
-   ADD COLUMN panalty_charge numeric(10,2) DEFAULT 0.00;
-ALTER TABLE invoice
-ADD COLUMN panalty_alert_qty smallint DEFAULT 0;
+ALTER TABLE invoice ADD COLUMN panalty_charge numeric(10,2) DEFAULT 0.00;
+ALTER TABLE invoice ADD COLUMN panalty_alert_qty smallint DEFAULT 0;
 
 -----------------------------------------------------------------------------------------------
 ALTER TABLE claim ADD COLUMN is_fnol_reviewed boolean;
