@@ -21,9 +21,6 @@
              lastName:{
                  required:true
              },
-             vehicleClassId:{
-                 min:1
-             },
              insurerId:{                     
                  min:1
              },
@@ -44,9 +41,6 @@
              lastName: {
                required:"You must supply a value for 'Last Name'"
              },  
-             vehicleClassId:{
-                 min: "You must select a Vehicle Class"
-             }, 
              insurerId:{
                  min: "You must select an Insurer"
              },
@@ -162,7 +156,7 @@
             <input type="text" class="chox-ttxt" name="vehicleRegistration" value="<s:property value="vehicleRegistration" />"/></div>   
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Vehicle Class<span class="mandatory">*</span></label>
+                Vehicle Class</label>
                 <s:select name="vehicleClassId" 
                         list="vehicleClasses" 
                         listKey="id" 

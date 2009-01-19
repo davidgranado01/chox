@@ -695,10 +695,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         
         // SET VEHICLE CLASS TO NULL WHEN 
-        if (BREClaim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached")) {
-            BREClaim.getThirdParty().setVehicleClass(null);
+        if(BREClaim.getThirdParty().getVehicleClass()!=null){
+            if (BREClaim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached")) {
+                BREClaim.getThirdParty().setVehicleClass(null);
+            }
         }
-
+        
         // SET VEHICLE CLASS TO NULL WHEN 
         if (BREClaim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")) {
             BREClaim.getCustomer().setVehicleClass(null);
