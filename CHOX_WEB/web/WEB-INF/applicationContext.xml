@@ -7,7 +7,7 @@
     </bean>
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"></property>
-        <property name="url" value="jdbc:postgresql://localhost:5432/idaschox_prod"></property>
+        <property name="url" value="jdbc:postgresql://localhost:5432/choxidasV7"></property>
         <property name="username" value="postgres"></property>
         <property name="password" value="GreenF1nCH"></property>
     </bean>

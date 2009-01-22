@@ -885,7 +885,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             Invoice invoice = claim.getInvoice();
 
             //if PanaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
-            if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) && invoice.getPanaltyAlertQty() > -1) {                
+            if (invoice != null 
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) 
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) 
+                    && invoice.getPanaltyAlertQty() > -1) {                
                 result = invoice.getInvoicedDays() > (invoice.getPanaltyAlertQty() + 1) * 30;
             }
         }
@@ -1073,6 +1076,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         return result;
+    }
+
+    public boolean getIsClaimClosed(){
+        boolean bFlag = false;
+
+        if(claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)){
+            bFlag = true;
+        }
+
+        return bFlag;
     }
 
 }
