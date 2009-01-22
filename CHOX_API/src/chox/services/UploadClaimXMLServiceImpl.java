@@ -646,7 +646,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                     customer.setVehicleClass(vehicleclass);
                 }else{
                     if(XmlHelper.isMAN_Claim_Customer_Vehicle_Class){
-                        xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Selected Vehicle Class is invalid", false);
+                        xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Selected Vehicle Class is invalid for Customer Details", false);
                     }
                 }
                 

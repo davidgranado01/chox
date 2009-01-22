@@ -89,10 +89,9 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN));
             criteria.add( Expression.ne( "id", claimId));
             List result = findByCriteria(criteria);
-            
             Integer totalCount = (Integer)result.get(0);
-            
             return totalCount;
+
           
     }
     
