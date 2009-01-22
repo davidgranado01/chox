@@ -151,12 +151,13 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
      * 4. VEHICLE HIRE DETAIL IS UPSERT MODE
      * 5. INVOICE IS INSERT MODE AND ONLY WHEN THE CLAIM STATUS IS AwaitingInvoiceData
      */
+    
     public XMLParseResult xmlSchemaValidateProcess(
             XMLParseResult xmlParseResult,
             Document doc,
             Element root,
             Boolean isAllowPartialUpload) throws Exception {
-            
+
         Session currentSession = getCurrentSession();
         currentSession.beginTransaction();
         
@@ -277,9 +278,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         
         /*
         if(xmlParseResult.getClaim().getThirdParty()!=null){
-            
             String thirdPartyClaimNumber = "";
-            
             if(xmlParseResult.getClaim().getThirdParty().getClaimReference()!=null){
                 thirdPartyClaimNumber = xmlParseResult.getClaim().getThirdParty().getClaimReference();
             }

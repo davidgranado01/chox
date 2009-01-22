@@ -61,11 +61,13 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
     public Long getNonDEPaymentLogCount() {
         return (long)0;
     }
-
+    
+    // FILTER OUT CLOSED ITEM Mantis: 0000386
     public Long getPenaltyChargeAppliedCount() {
-        Long count = (Long) getCurrentSession().createQuery("select count(*) from Claim as c inner join c.invoice as iv where c.status <> '" 
-                + ClaimStatus.INVOICE_PAYMENT_LOGGED
-                + "' AND iv.panaltyAlertQty >= 0"
+        Long count = (Long) getCurrentSession().createQuery("select count(*) from Claim as c inner join c.invoice as iv where " 
+                + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_LOGGED 
+                + "' AND c.status <> '" + ClaimStatus.CLAIM_CLOSED + "'"
+                + " AND iv.panaltyAlertQty >= 0"
                 + " AND day(current_date() - iv.dateInvoiced) > ((iv.panaltyAlertQty + 1) * 30)").uniqueResult();
         return count;
     }
@@ -174,6 +176,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         }
         if (searchCriteria.IsPanaltyChargeApplied()) {
            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
+           criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
            criteria.add(Restrictions.ge("iv.panaltyAlertQty", 0));
            criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.date_invoiced)>(iv1_.panalty_alert_qty+1)*30"));
         }
