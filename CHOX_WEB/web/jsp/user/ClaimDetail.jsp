@@ -581,7 +581,7 @@
                                 
 <s:if test="!isClaimClosed">
 <tr>
-    <td colspan="3"><input value="Close" type="button" onclick="javascript:return closeClaimStatus('<s:property value="id" />');"/></td>
+    <td colspan="3" align="right"><input style="width:200px;" value="Close Claim" type="button" onclick="javascript:return closeClaimStatus('<s:property value="id" />');"/></td>
 </tr>
 </s:if>
 
