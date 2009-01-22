@@ -13,7 +13,7 @@ public interface ClaimService {
     public Long getHireUpdateAnomaliesCountNumber();
     public Long getClaimCountByClaimNumber(String claimNumber, int claimId);
     public Long getECDCountByClaimId(int claimId);
-    public Long getCountOfClaimByVRN(String strVRN, int claimId);
+    public Integer getCountOfClaimByVRN(String strVRN, int claimId);
     public Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit);
     public Boolean isThirdPartyClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit);
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria);

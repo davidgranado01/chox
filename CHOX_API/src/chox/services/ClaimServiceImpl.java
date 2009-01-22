@@ -82,7 +82,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         return getCount(q);
     }
 
-    public Long getCountOfClaimByVRN(String strVRN, int claimId){               
+    public Integer getCountOfClaimByVRN(String strVRN, int claimId){               
    
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
             criteria.setProjection(Projections.rowCount());
@@ -90,7 +90,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             criteria.add( Expression.ne( "id", claimId));
             List result = findByCriteria(criteria);
             
-            Long totalCount = (Long)result.get(0);
+            Integer totalCount = (Integer)result.get(0);
             
             return totalCount;
           
