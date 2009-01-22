@@ -9,7 +9,7 @@ import chox.model.XMLParseResult;
 
 public interface VehicleHireService {
 
-    XMLParseResult saveVehicleHireForXMLUploader(XMLParseResult xmlParseResult);
+    public void  saveObjectForXMLUploader(final XMLParseResult xmlParseResult);
 
     public VehicleHire getObject(int id);
 

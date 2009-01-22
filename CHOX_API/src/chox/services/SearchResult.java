@@ -4,9 +4,6 @@
  */
 
 package chox.services;
-
-import chox.model.Claim;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -16,21 +13,21 @@ import java.util.List;
 public class SearchResult {
     private
 
-    List<HashMap> result;
+    List result;
     private int totalCount;
     
-    public SearchResult(List<HashMap> result,int totalCount)
+    public SearchResult(List result,int totalCount)
  {
         this.result = result;
         this.totalCount = totalCount;
 
     }
 
-    public List<HashMap> getResult() {
+    public List getResult() {
         return result;
     }
 
-    public void setResult(List<HashMap> result) {
+    public void setResult(List result) {
         this.result = result;
     }
 

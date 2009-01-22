@@ -13,12 +13,16 @@ import com.filesystemsoftware.utils.Logger;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import chox.model.*;
-import org.hibernate.Session;
 import scsbre.engine.*;
 import java.util.List;
 import chox.Util.TextHelper;
 import chox.Util.DateHelper;
 import chox.data.UploadStatus;
+import org.hibernate.TransactionException;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 public class UploadClaimXMLServiceImpl extends DataService implements UploadClaimXMLService {
     private VehicleClassService vehicleClassService;
@@ -38,6 +42,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
     private ChoBandService choBandService;
     private HistoryService historyService;
     private HireMonitoringEcdService hireMonitoringEcdService;
+    private HireMonitoringDetailService hireMonitoringDetailService;
     
     public UploadClaimXMLServiceImpl()
     {        
@@ -151,18 +156,12 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
      * 4. VEHICLE HIRE DETAIL IS UPSERT MODE
      * 5. INVOICE IS INSERT MODE AND ONLY WHEN THE CLAIM STATUS IS AwaitingInvoiceData
      */
-    
     public XMLParseResult xmlSchemaValidateProcess(
             XMLParseResult xmlParseResult,
             Document doc,
             Element root,
             Boolean isAllowPartialUpload) throws Exception {
-
-        Session currentSession = getCurrentSession();
-        currentSession.beginTransaction();
-        
-        xmlParseResult.setCurrentSession(currentSession);
-         
+              
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
 
@@ -250,12 +249,6 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         System.out.println(" ** getIsDataValid: " + xmlParseResult.getIsDataValid());
         System.out.println(" ** getDataValidationRemark: " + xmlParseResult.getDataValidationRemark());
         */
-        
-        if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
-            currentSession.getTransaction().commit();
-        }else{
-            currentSession.getTransaction().rollback();
-        }
 
         return xmlParseResult;
     }
@@ -278,7 +271,9 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         
         /*
         if(xmlParseResult.getClaim().getThirdParty()!=null){
+            
             String thirdPartyClaimNumber = "";
+            
             if(xmlParseResult.getClaim().getThirdParty().getClaimReference()!=null){
                 thirdPartyClaimNumber = xmlParseResult.getClaim().getThirdParty().getClaimReference();
             }
@@ -296,34 +291,6 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
     public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, Boolean isAllowPartialUpload) {
         UploadClaimXMLServiceImpl thisCtrl = new UploadClaimXMLServiceImpl();
         return thisCtrl.processXML(claimXMLFile, isAllowPartialUpload);
-    }
-
-    private XMLParseResult saveClaimForXMLUploader(
-            XMLParseResult xmlParseResult) {
-            
-        if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
-            xmlParseResult.getClaim().setCustomer(xmlParseResult.getClaim().getCustomer());
-            xmlParseResult.getClaim().setThirdParty(xmlParseResult.getClaim().getThirdParty());
-            xmlParseResult.getClaim().setInsurer(xmlParseResult.getClaim().getThirdParty().getInsurer());
-            xmlParseResult.getClaim().setChorganisation(xmlParseResult.getClaim().getChorganisation());
-            xmlParseResult.getClaim().setLineOfBusiness(xmlParseResult.getClaim().getLineOfBusiness());
-            xmlParseResult.getClaim().setIncident(xmlParseResult.getClaim().getIncident());
-            xmlParseResult.getClaim().setInvoice(xmlParseResult.getClaim().getInvoice());
-            xmlParseResult.getClaim().setEngineerReport(xmlParseResult.getClaim().getEngineerReport());
-            xmlParseResult.getClaim().setVehicleHire(xmlParseResult.getClaim().getVehicleHire());
-
-            try {
-                xmlParseResult.getCurrentSession().saveOrUpdate(xmlParseResult.getClaim());
-                
-                if(xmlParseResult.getIsClaimExist()){
-                    auditTrailService.logAuditLog(xmlParseResult.getClaim().getStatus(), xmlParseResult.getClaim().getId());
-                }
-                
-            } catch (Exception e) {
-                xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
-            }
-        }
-        return xmlParseResult;
     }
 
     private Claim constructeClaimForInvoiceValidation(Claim claim){
@@ -386,20 +353,40 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
     
     private XMLParseResult saveXMLRecord(XMLParseResult xmlParseResult){       
         
-        if(!xmlParseResult.getIsClaimExist()){
-            xmlParseResult = customerService.saveCustomerForXMLUploader(xmlParseResult);
-            xmlParseResult = thirdPartyService.saveThirdPartyForXMLUploader(xmlParseResult);
-            xmlParseResult = incidentService.saveIncidentForXMLUploader(xmlParseResult);
-            xmlParseResult = witnessService.saveWitnessForXMLUploader(xmlParseResult);
-            xmlParseResult = injuryService.saveInjuryForXMLUploader(xmlParseResult);
-            xmlParseResult = solicitorService.saveSolicitorForXMLUploader(xmlParseResult);        
-        }
+        TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
+        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        try {
+            final XMLParseResult readOnlyXmlParseResult = xmlParseResult;
+            transactionTemplate.execute(
+                    new TransactionCallbackWithoutResult() {
 
-        xmlParseResult = engineerReportService.saveEngineerReportForXMLUploader(xmlParseResult);
-        xmlParseResult = vehicleHireService.saveVehicleHireForXMLUploader(xmlParseResult);
-        xmlParseResult = invoiceService.saveInvoiceForXMLUploader(xmlParseResult);
-        xmlParseResult = saveClaimForXMLUploader(xmlParseResult); 
-        
+                        public void doInTransactionWithoutResult(TransactionStatus status) {
+     
+                                if (!readOnlyXmlParseResult.getIsClaimExist()) {
+                                    customerService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                    thirdPartyService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                    incidentService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                    witnessService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                    injuryService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                    solicitorService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                    hireMonitoringDetailService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                }
+                                engineerReportService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                vehicleHireService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                invoiceService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                claimService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                
+                                if (readOnlyXmlParseResult.getIsClaimExist()) {
+                                    auditTrailService.logAuditLog(readOnlyXmlParseResult.getClaim().getStatus(), readOnlyXmlParseResult.getClaim().getId());
+                                }                         
+                        }
+                    });
+        }
+        catch(TransactionException e)
+        {
+            xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
+        }      
+                
         return xmlParseResult;
     }
     
@@ -1787,5 +1774,11 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
     public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) {
         this.hireMonitoringEcdService = hireMonitoringEcdService;
     }
+    
+    public void setHireMonitoringDetailService(HireMonitoringDetailService hireMonitoringDetailService)
+    {
+        this.hireMonitoringDetailService = hireMonitoringDetailService;
+    }
+
     
 }

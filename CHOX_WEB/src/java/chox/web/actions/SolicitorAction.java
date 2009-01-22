@@ -46,9 +46,10 @@ public class SolicitorAction extends BaseModelAction implements ModelDriven<Soli
     public String updateModel() {
         try {
             if (objectId <= 0) {
-                Injury injury = this.injuryService.getObjectByIncidentId(this.getIncidentId());
+                Incident incident = this.incidentService.getObject(this.getIncidentId());
+                Injury injury = this.injuryService.getObjectByIncidentId(incident);
                 if (injury == null) {
-                    Incident incident = this.incidentService.getObject(this.getIncidentId());
+                    
                     injury = new Injury();
                     injury.setIncident(incident);
                     this.injuryService.updateObject(injury);

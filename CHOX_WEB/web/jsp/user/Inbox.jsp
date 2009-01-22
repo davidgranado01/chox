@@ -280,7 +280,7 @@
     }     
     
     $(document).everyTime(3000, function() {
-        refreshViewingStatus();
+        //refreshViewingStatus();
     });
     
     function refreshViewingStatus()

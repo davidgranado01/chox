@@ -21,12 +21,11 @@
 </script>
 
 <form id="formupdateSolicitor" action="user/updateSolicitor.action" class="XXentity-form" name="formupdateSolicitor">
-   
+   <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
+    <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>
     <fieldset class="x-fieldset">
         <legend>Injury Solicitor</legend>
-        <div style="display:none" class="form-container">
-            <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
-            <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>
+        <div style="display:none" class="form-container">            
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Name<span class="mandatory">*</span></label>

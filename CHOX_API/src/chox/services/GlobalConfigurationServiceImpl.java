@@ -6,7 +6,7 @@
 package chox.services;
 
 import chox.model.GlobalConfiguration;
-import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
 public class GlobalConfigurationServiceImpl extends DataService implements GlobalConfigurationService{
@@ -17,10 +17,10 @@ public class GlobalConfigurationServiceImpl extends DataService implements Globa
         
         try {
             
-            Criteria criteria = getCurrentSession().createCriteria(GlobalConfiguration.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(GlobalConfiguration.class);
             criteria.add(Restrictions.eq("parameter", s));
             
-            obj = (GlobalConfiguration) criteria.uniqueResult();
+            obj = (GlobalConfiguration) getByCriteria(criteria);
             
         } catch (Throwable e) {
            e.printStackTrace();

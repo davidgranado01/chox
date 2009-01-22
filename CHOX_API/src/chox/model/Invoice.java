@@ -1291,19 +1291,19 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo,Auditabl
     }
 
     public BigDecimal getPanaltyCharge() {
-        return panaltyCharge;
+        return panaltyCharge == null ? BigDecimal.ZERO : panaltyCharge;
     }
 
     public void setPanaltyCharge(BigDecimal panaltyCharge) {
-        this.panaltyCharge = panaltyCharge;
+        this.panaltyCharge = panaltyCharge == null ? BigDecimal.ZERO : panaltyCharge;
     }
 
     public Integer getPanaltyAlertQty() {
-        return panaltyAlertQty;
+        return panaltyAlertQty == null ? 0 : panaltyAlertQty;
     }
 
     public void setPanaltyAlertQty(Integer panaltyAlertQty) {
-        this.panaltyAlertQty = panaltyAlertQty;
+        this.panaltyAlertQty = panaltyAlertQty == null ? 0 : panaltyAlertQty;
     }
     
     public long getInvoicedDays()

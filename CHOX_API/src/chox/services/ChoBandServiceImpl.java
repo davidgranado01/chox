@@ -6,10 +6,9 @@
 package chox.services;
 
 import chox.model.ChoBand;
-import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
-import java.util.Date;
 import java.math.BigDecimal;
+import org.hibernate.criterion.DetachedCriteria;
 
 public class ChoBandServiceImpl extends DataService implements ChoBandService{
     
@@ -39,9 +38,9 @@ public class ChoBandServiceImpl extends DataService implements ChoBandService{
         
         try {
             
-            Criteria criteria = getCurrentSession().createCriteria(ChoBand.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(ChoBand.class);
             criteria.add(Restrictions.eq("Id", orgId));
-            band = (ChoBand) criteria.uniqueResult();
+            band = (ChoBand) getByCriteria(criteria);
             
         } catch (Throwable e) {
            e.printStackTrace();
@@ -58,9 +57,9 @@ public class ChoBandServiceImpl extends DataService implements ChoBandService{
         
         try {
             
-            Criteria criteria = getCurrentSession().createCriteria(ChoBand.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(ChoBand.class);
             criteria.add(Restrictions.eq("Id", orgId));
-            band = (ChoBand) criteria.uniqueResult();
+            band = (ChoBand)getByCriteria(criteria);
             
         } catch (Throwable e) {
            e.printStackTrace();

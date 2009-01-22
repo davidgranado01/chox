@@ -6,6 +6,7 @@
 package chox.services;
 
 import chox.model.HireMonitoringDetail;
+import chox.model.XMLParseResult;
 
 public interface HireMonitoringDetailService {
     HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int id);
@@ -13,4 +14,6 @@ public interface HireMonitoringDetailService {
     public HireMonitoringDetail getObject(int id);
 
     public void updateObject(HireMonitoringDetail engineerReport);
+    
+    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult);
 }

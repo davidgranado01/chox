@@ -1,8 +1,6 @@
 package chox.model;
 
-import chox.data.UploadStatus;
 import java.util.ArrayList;
-import org.hibernate.Session;
 import chox.Util.TextHelper;
 import java.util.List;
 
@@ -21,7 +19,6 @@ public class XMLParseResult {
     //private String SchemaValidationRemark = "";
     //private String DataValidationRemark = "";
     private String UploadType;
-    private Session currentSession;
     private Boolean isCurrentScheValid = true;
     private Boolean isCurrentDataValid = true;
     
@@ -153,14 +150,6 @@ public class XMLParseResult {
 
     public void setIsSchemaValid(Boolean isSchemaValid) {
         this.isSchemaValid = isSchemaValid;
-    }
-
-    public Session getCurrentSession() {
-        return currentSession;
-    }
-
-    public void setCurrentSession(Session currentSession) {
-        this.currentSession = currentSession;
     }
     
     private Boolean getSchemaDataValidation(){

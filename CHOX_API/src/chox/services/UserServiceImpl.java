@@ -1,7 +1,7 @@
 package chox.services;
 
 import chox.model.WebUser;
-import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
 public class UserServiceImpl  extends DataService implements UserService {
@@ -11,8 +11,8 @@ public class UserServiceImpl  extends DataService implements UserService {
 
     public WebUser findByEmail(String email) {
 
-        Criteria criteria = getCurrentSession().createCriteria(WebUser.class).add(Restrictions.eq("email", email));
-        WebUser result = (WebUser) criteria.uniqueResult();
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("email", email));
+        WebUser result = (WebUser) getByCriteria(criteria);
         return result;
     }
 
@@ -29,7 +29,7 @@ public class UserServiceImpl  extends DataService implements UserService {
         UserCacheManager cacheManager = UserCacheManager.getInstance();
         WebUser user = cacheManager.getUserFromCache(id);
         if(user == null){
-            user = (WebUser)getCurrentSession().get(WebUser.class, id);
+            user = (WebUser)get(WebUser.class, id);
             cacheManager.putUserToCache(user);
         }
         

@@ -4,11 +4,9 @@ import chox.model.XMLParseResult;
 import chox.model.Incident;
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
-import chox.Util.XmlHelper;
-import chox.Util.DateHelper;
 import chox.model.Injury;
+import org.hibernate.criterion.DetachedCriteria;
 
 public class InjuryServiceImpl extends DataService implements InjuryService {
 
@@ -18,8 +16,8 @@ public class InjuryServiceImpl extends DataService implements InjuryService {
         Injury injury = null;
         
         try {
-            Criteria criteria = getCurrentSession().createCriteria(Injury.class).add(Restrictions.eq("incident", incident));
-            injuries = criteria.list();
+            DetachedCriteria criteria = DetachedCriteria.forClass(Injury.class).add(Restrictions.eq("incident", incident));
+            injuries = findByCriteria(criteria);
             if(injuries.size()>0){
                 injury = (Injury)injuries.get(0);
             }
@@ -34,54 +32,34 @@ public class InjuryServiceImpl extends DataService implements InjuryService {
         return injury;
     }
     
-    public XMLParseResult saveInjuryForXMLUploader(XMLParseResult xmlParseResult) {
-
+    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
         if ((xmlParseResult.getInjuries()) != null) {
-
             for (Integer i = 0; i < (xmlParseResult.getInjuries()).size(); i++) {
-           
-                if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
-
-                    try {
-                        xmlParseResult.getCurrentSession().saveOrUpdate(((xmlParseResult.getInjuries()).get(i)));
-                    } catch (Exception e) {
-                        xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
-                    }
-                }
+                save(((xmlParseResult.getInjuries()).get(i)));
             }
-        }
-
-        return xmlParseResult;
+        }        
     }
 
     public Injury getObject(int id) {
-        return (Injury)getCurrentSession().get(Injury.class, id);
+        return (Injury)get(Injury.class, id);
     }
 
     public void updateObject(Injury injury) {
 
-        getCurrentSession().beginTransaction();
-        getCurrentSession().saveOrUpdate(injury);
-        getCurrentSession().getTransaction().commit();
+        save(injury);
     }
     
-    public Injury getObjectByIncidentId(int incidentId)
+    public Injury getObjectByIncidentId(Incident incident)
     {
-         List injuries = new ArrayList<Injury>();
         Injury injury = null;
         
         try {
-            Criteria criteria = getCurrentSession().createCriteria(Injury.class).add(Restrictions.eq("incident.id", incidentId));
-            injuries = criteria.list();
-            if(injuries.size()>0){
-                injury = (Injury)injuries.get(0);
-            }
+            DetachedCriteria criteria = DetachedCriteria.forClass(Injury.class).add(Restrictions.eq("incident", incident));
+            injury = (Injury)getByCriteria(criteria);       
             
         } catch (Throwable e) {
            e.printStackTrace();
-        }
-              
-        
+        }  
         return injury;
     }
 }

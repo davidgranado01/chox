@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
 
 /**
  *
@@ -21,8 +21,9 @@ public class AccessibilityServiceImpl extends DataService implements Accessibili
     public HashMap getAccessibilityMap() {
         HashMap map = new HashMap();
 
-        Criteria c = getCurrentSession().createCriteria(Accessibility.class);
-        for (Object o : c.list()) {
+        DetachedCriteria c = DetachedCriteria.forClass(Accessibility.class);
+        List result = findByCriteria(c);
+        for (Object o : result) {
             Accessibility a = (Accessibility) o;
 
             HashMap roleMap = new HashMap();
@@ -40,22 +41,15 @@ public class AccessibilityServiceImpl extends DataService implements Accessibili
 
     public void AddNewAccessibility(List<Accessibility> aList, short right) {
         
-        getCurrentSession().beginTransaction();
         for (Accessibility a : aList) {
-
             AccessibilityItem item = new AccessibilityItem();
             item.setAccessibility(a);
             item.setRole("ALL");
             item.setAccessRight(right);
             Set items = new HashSet();
-            items.add(item);
-            
-            a.setAccessibilityItem(items);
-            
-            getCurrentSession().save(a);
-            
+            items.add(item);            
+            a.setAccessibilityItem(items);            
+            save(a);            
         }
-       getCurrentSession().getTransaction().commit();
-
     }
 }

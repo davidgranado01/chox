@@ -441,7 +441,7 @@
     
             
     $(document).everyTime(3000, function() {
-        pingServer();
+        //pingServer();
     });
     
      function pingServer()
@@ -625,29 +625,28 @@
                                         
                                         
                                         <s:action name="getCustomer" executeResult="true">
-                                            <s:param name="objectId"><s:property value="customer.id" /></s:param> 
+                                            <s:param name="objectId"><s:property value="customerId" /></s:param> 
                                             <s:param name="claimStatus"><s:property value="status" /></s:param>         
                                         </s:action>  
                                        
                                         
                                         <s:action name="getInjury" executeResult="true">
-                                        <s:param name="objectId"><s:property value="incident.injury.id" /></s:param>
-                                        <s:param name="incidentId"><s:property value="incident.id" /></s:param>
+                                        <s:param name="objectId"><s:property value="injuryId" /></s:param>
+                                        <s:param name="incidentId"><s:property value="incidentId" /></s:param>
                                         <s:param name="claimStatus"><s:property value="status" /></s:param>
                                         </s:action>
                                         
 
                                         <s:action name="getSolicitor" executeResult="true">
-                                            <s:param name="objectId"><s:property value="incident.injury.solicitor.id" /></s:param>
-                                            <s:param name="incidentId"><s:property value="incident.id" /></s:param>   
+                                            <s:param name="objectId"><s:property value="injurySolicitorId" /></s:param>
+                                            <s:param name="incidentId"><s:property value="incidentId" /></s:param>   
                                             <s:param name="claimStatus"><s:property value="status" /></s:param>
                                         </s:action> 
                                         
                                         <s:action name="getCustomerVehicleDamage" executeResult="true">
-                                            <s:param name="objectId"><s:property value="customer.id" /></s:param>
+                                            <s:param name="objectId"><s:property value="customerId" /></s:param>
                                             <s:param name="claimStatus"><s:property value="status" /></s:param>        
-                                        </s:action>
-                                        
+                                        </s:action>                                        
 
                                     </td>
                                     <td>
@@ -697,20 +696,20 @@
 
 
                                         <s:action name="getIncident" executeResult="true">
-                                            <s:param name="objectId"><s:property value="incident.id" /></s:param>
+                                            <s:param name="objectId"><s:property value="incidentId" /></s:param>
                                             <s:param name="claimId"><s:property value="id" /></s:param> 
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
                                         
                                         <s:action name="getThirdParty" executeResult="true">
-                                            <s:param name="objectId"><s:property value="thirdParty.id" /></s:param> 
+                                            <s:param name="objectId"><s:property value="thirdPartyId" /></s:param> 
                                             <s:param name="claimId"><s:property value="id" /></s:param> 
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
 
                                         <s:action name="getWitness" executeResult="true">
-                                            <s:param name="incidentId"><s:property value="incident.id" /></s:param>
-                                            <s:param name="objectId"><s:property value="incident.witness.id" /></s:param>
+                                            <s:param name="incidentId"><s:property value="incidentId" /></s:param>
+                                            <s:param name="objectId"><s:property value="witnessId" /></s:param>
                                             <s:param name="claimStatus"><s:property value="status" /></s:param>
                                         </s:action>
 
@@ -734,7 +733,7 @@
                                     <td class="chox-form-left-col">
                                         <s:action name="getHireMonitoringDetail" executeResult="true">
                                             <s:param name="claimId"><s:property value="id" /></s:param> 
-                                            <s:param name="customerId"><s:property value="customer.id" /></s:param> 
+                                            <s:param name="customerId"><s:property value="customerId" /></s:param> 
                                             <s:param name="objectId"><s:property value="hireMonitoringDetailId" /></s:param>                                            
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
@@ -768,14 +767,14 @@
                                 <tr valign="top">
                                     <td class="chox-form-left-col">
                                         <s:action name="getInvoice" executeResult="true">
-                                            <s:param name="objectId"><s:property value="invoice.id" /></s:param> 
+                                            <s:param name="objectId"><s:property value="invoiceId" /></s:param> 
                                             <s:param name="claimId"><s:property value="id" /></s:param>
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
                                         
                                         
                                          <s:action name="getVehicleHire" executeResult="true">
-                                            <s:param name="objectId"><s:property value="vehicleHire.id" /></s:param> 
+                                            <s:param name="objectId"><s:property value="vehicleHireId" /></s:param> 
                                             <s:param name="claimId"><s:property value="id" /></s:param>
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
@@ -788,13 +787,13 @@
                                         
                                         
                                         <s:action name="getExtra" executeResult="true">
-                                            <s:param name="objectId"><s:property value="invoice.id" /></s:param> 
+                                            <s:param name="objectId"><s:property value="invoiceId" /></s:param> 
                                             <s:param name="claimId"><s:property value="id" /></s:param>
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
                                         
                                         <s:action name="getEngineerReport" executeResult="true">
-                                            <s:param name="objectId"><s:property value="engineerReport.id" /></s:param> 
+                                            <s:param name="objectId"><s:property value="engineerReportId" /></s:param> 
                                             <s:param name="claimId"><s:property value="id" /></s:param>
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>

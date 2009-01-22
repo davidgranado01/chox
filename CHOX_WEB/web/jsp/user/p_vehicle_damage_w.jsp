@@ -1,7 +1,10 @@
 <form id="f6" action="dummyAction">
+    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>  
     <fieldset class="x-fieldset">
         <legend>Customer Vehicle Damage</legend>
+        
         <div style="display:none" class="form-container">
+            <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Description</label>

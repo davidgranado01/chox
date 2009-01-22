@@ -9,7 +9,7 @@ import chox.model.Incident;
 import chox.model.XMLParseResult;
 
 public interface IncidentService {
-    XMLParseResult saveIncidentForXMLUploader(XMLParseResult xmlParseResult);
+    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult);
     public void updateObject(Incident incident);
     public Incident getObject(int id);
 }

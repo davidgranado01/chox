@@ -22,15 +22,15 @@
     <property column="engineer_claim_review_notes" name="engineerClaimReviewNotes"/>
     <property column="is_invoice_review_required" name="isInvoiceReviewRequired"/>
     <many-to-one class="chox.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>
-    <many-to-one cascade="save-update,delete" class="chox.model.Customer" column="customer_id" name="customer" unique="true"/>
-    <many-to-one cascade="save-update,delete" class="chox.model.EngineerReport" column="engineer_report_id" name="engineerReport" unique="true"/>
-    <many-to-one cascade="save-update,delete" class="chox.model.HireMonitoringDetail" column="hire_monitoring_detail_id" name="hireMonitoringDetail" unique="true"/>
-    <many-to-one cascade="save-update,delete" class="chox.model.Incident" column="incident_id" name="incident" unique="true"/>
+    <many-to-one cascade="save-update,delete" class="chox.model.Customer" column="customer_id" name="customer"/>
+    <many-to-one cascade="save-update,delete" class="chox.model.EngineerReport" column="engineer_report_id" name="engineerReport"/>
+    <many-to-one cascade="save-update,delete" class="chox.model.HireMonitoringDetail" column="hire_monitoring_detail_id" name="hireMonitoringDetail"/>
+    <many-to-one cascade="save-update,delete" class="chox.model.Incident" column="incident_id" name="incident"/>
     <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer"/>
-    <many-to-one cascade="save-update,delete" class="chox.model.Invoice" column="invoice_id" name="invoice" unique="true"/>
+    <many-to-one cascade="save-update,delete" class="chox.model.Invoice" column="invoice_id" name="invoice"/>
     <many-to-one class="chox.model.LineOfBusiness" column="line_of_business_id" name="lineOfBusiness"/>
-    <many-to-one cascade="save-update,delete" class="chox.model.ThirdParty" column="third_party_id" name="thirdParty" unique="true"/>
-    <many-to-one cascade="save-update,delete" class="chox.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire" unique="true"/>
+    <many-to-one cascade="save-update,delete" class="chox.model.ThirdParty" column="third_party_id" name="thirdParty"/>
+    <many-to-one cascade="save-update,delete" class="chox.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire"/>
     <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <filter condition=":chorganisationId = chorganisation_id" name="Claim_CHOFilter"/>

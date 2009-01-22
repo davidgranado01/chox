@@ -5,7 +5,6 @@
 package chox.web.security;
 
 import chox.services.AccessibilityService;
-import chox.services.AccessibilityServiceImpl;
 import java.util.HashMap;
 import org.acegisecurity.GrantedAuthority;
 
@@ -47,31 +46,38 @@ public class ApplicationAccessibility {
     public static final String PANEL_FNOL_REVIEWED  = "FNOLReviewed";
     
     private HashMap accessibilityMap;
-    private AccessibilityService service;
-    private static ApplicationAccessibility instance;
+    private AccessibilityService accessibilityService;
+    //private static ApplicationAccessibility instance = new ApplicationAccessibility();
 
-    public static ApplicationAccessibility getInstance() {
-        if (instance == null) {
-            synchronized (ApplicationAccessibility.class) {  //1
-                if (instance == null) //2
-                {
-                    instance = new ApplicationAccessibility();  //3
-                }
-            }
-        }
-        return instance;
+    //public static ApplicationAccessibility getInstance() {
+        
+   //    return instance;
+    //}
+
+    public ApplicationAccessibility() {
+        //accessibilityMap = getAccessibilityMap();
     }
-
-    private ApplicationAccessibility() {
-        service = new AccessibilityServiceImpl();
-        accessibilityMap = getAccessibilityMap();
+    
+    public TabAccessibility getTabAccessibility(GrantedAuthority[] grantedAuthorities,String claimStatus)
+    {
+        return new TabAccessibility(this,grantedAuthorities,claimStatus);
+    }
+    
+    public PanelAccessibility getPanelAccessibility(GrantedAuthority[] grantedAuthorities)
+    {
+        return new PanelAccessibility(this,grantedAuthorities);
+    }
+    
+    public FilterAccessibility getFilterAccessibility(GrantedAuthority[] grantedAuthorities)
+    {
+        return new FilterAccessibility(this,grantedAuthorities);
     }
 
     public Short checkTabAccessibility(String tabName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
 
         //accessibilityMap = getAccessibilityMap();
         String accessibilityKey = getTabAccessibilityKey(tabName, claimStatus);
-        if (accessibilityMap.containsKey(accessibilityKey)) {
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             return checkAccebility(roleMap, grantedAuthorities);
         }
@@ -83,7 +89,7 @@ public class ApplicationAccessibility {
 
         //accessibilityMap = getAccessibilityMap();
         String accessibilityKey = getFilterAccessibilityKey(filterName);
-        if (accessibilityMap.containsKey(accessibilityKey)) {
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             return checkAccebility(roleMap, grantedAuthorities);
         }
@@ -95,7 +101,7 @@ public class ApplicationAccessibility {
 
         //accessibilityMap = getAccessibilityMap();
         String accessibilityKey = getPanelAccessibilityKey(filterName);
-        if (accessibilityMap.containsKey(accessibilityKey)) {
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             return checkAccebility(roleMap, grantedAuthorities);
         }
@@ -107,7 +113,7 @@ public class ApplicationAccessibility {
 
         //accessibilityMap = getAccessibilityMap();
         String accessibilityKey = getActionAccessibilityKey(actionName, claimStatus);
-        if (accessibilityMap.containsKey(accessibilityKey)) {
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             return checkAccebility(roleMap, grantedAuthorities);
         }
@@ -164,9 +170,17 @@ public class ApplicationAccessibility {
     private HashMap getAccessibilityMap() {
 
         if (accessibilityMap == null) {
-            accessibilityMap = this.service.getAccessibilityMap();
+            accessibilityMap = this.accessibilityService.getAccessibilityMap();
         }
         return accessibilityMap;
+    }
+
+    public AccessibilityService getAccessibilityService() {
+        return accessibilityService;
+    }
+
+    public void setAccessibilityService(AccessibilityService accessibilityService) {
+        this.accessibilityService = accessibilityService;
     }
 }
 

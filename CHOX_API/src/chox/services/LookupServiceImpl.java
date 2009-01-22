@@ -13,7 +13,7 @@ import chox.model.VehicleClass;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 
 /**
@@ -33,22 +33,22 @@ public class LookupServiceImpl extends DataService implements LookupService,Seri
 
     public List getLineOfBusinesses() {
 
-        Criteria criteria = getCurrentSession().createCriteria(LineOfBusiness.class);
-        return criteria.list();
+        DetachedCriteria criteria = DetachedCriteria.forClass(LineOfBusiness.class);
+        return findByCriteria(criteria);
     }
 
     public List getSuppliers() {
-        Criteria criteria = getCurrentSession().createCriteria(Chorganisation.class);
-        return criteria.list();
+        DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
+        return findByCriteria(criteria);
     }
 
     public List getInsurers() {
-        Criteria criteria = getCurrentSession().createCriteria(Insurer.class);
-        return criteria.list();
+        DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
+        return findByCriteria(criteria);
     }
 
     public List getVehicleClasses() {
-        Criteria criteria = getCurrentSession().createCriteria(VehicleClass.class).addOrder(Order.asc("name"));
-        return criteria.list();
+        DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClass.class).addOrder(Order.asc("name"));
+        return findByCriteria(criteria);
     }
 }

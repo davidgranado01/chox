@@ -1,68 +1,47 @@
 package chox.services;
 
-import chox.Util.XmlHelper;
-import chox.Util.DateHelper;
 import chox.model.XMLParseResult;
 import chox.model.Injury;
 import chox.model.Solicitor;
-import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
-import java.util.ArrayList;
-import java.util.List;
+import org.hibernate.criterion.DetachedCriteria;
 
 public class SolicitorServiceImpl  extends DataService implements SolicitorService{
 
     public Solicitor getSolicitorByInjury(Injury injury){
-         
-        List solicitors = new ArrayList<Solicitor>();
+
         Solicitor solicitor = null;
         
         try {
-            Criteria criteria = getCurrentSession().createCriteria(Solicitor.class).add(Restrictions.eq("injury", injury));
-            solicitors = criteria.list();
-            if(solicitors.size()>0){
-                solicitor = (Solicitor)solicitors.get(0);
-            }
+            DetachedCriteria criteria = DetachedCriteria.forClass(Solicitor.class).add(Restrictions.eq("injury", injury));
+            solicitor = (Solicitor)getByCriteria(criteria);
             
         } catch (Throwable e) {
            e.printStackTrace();
         }
         
-        
-        
-        
         return solicitor;
     }
     
-    public XMLParseResult saveSolicitorForXMLUploader(XMLParseResult xmlParseResult){
-        
-        if((xmlParseResult.getSolicitors())!=null){
-            
-            for(Integer i=0; i<(xmlParseResult.getSolicitors()).size(); i++){
-                
-                if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {
+    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
 
-                    try{
-                        xmlParseResult.getCurrentSession().saveOrUpdate(((xmlParseResult.getSolicitors()).get(i)));
-                    } catch (Exception e) {
-                        xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
-                    }
-                }
+        if ((xmlParseResult.getSolicitors()) != null) {
+
+            for (Integer i = 0; i < (xmlParseResult.getSolicitors()).size(); i++) {
+
+                getHibernateTemplate().saveOrUpdate(((xmlParseResult.getSolicitors()).get(i)));
+
             }
         }
-        
-        return xmlParseResult;
-    }  
-    
-        public Solicitor getObject(int id) {
-        return (Solicitor) getCurrentSession().get(Solicitor.class, id);
+    }
+  
+    public Solicitor getObject(int id) {
+        return (Solicitor) get(Solicitor.class, id);
     }
 
     public void updateObject(Solicitor solicitor) {
 
-        getCurrentSession().beginTransaction();
-        getCurrentSession().saveOrUpdate(solicitor);
-        getCurrentSession().getTransaction().commit();
+        save(solicitor);
     }
     
 }

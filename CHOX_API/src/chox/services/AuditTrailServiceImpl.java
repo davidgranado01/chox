@@ -8,7 +8,6 @@ package chox.services;
 import chox.Util.DateHelper;
 import chox.model.AuditTrail;
 import chox.model.Claim;
-import java.util.List;
 
 public class AuditTrailServiceImpl extends DataService implements AuditTrailService{
     
@@ -16,7 +15,7 @@ public class AuditTrailServiceImpl extends DataService implements AuditTrailServ
        
         Boolean bFlag = false;
         
-        Claim thisClaim = (Claim) getCurrentSession().get(Claim.class, claimId);
+        Claim thisClaim = (Claim) get(Claim.class, claimId);
         
         if(!thisClaim.getStatus().trim().equalsIgnoreCase(newStatus.trim())){
         
@@ -25,12 +24,12 @@ public class AuditTrailServiceImpl extends DataService implements AuditTrailServ
             thisAuditTrail.setNewStatus(newStatus);
             thisAuditTrail.setOriginalStatus(thisClaim.getStatus());
             thisAuditTrail.setUpdateDate(DateHelper.getCurrentTimeStamp());
-            thisAuditTrail.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-            thisAuditTrail.setCreatedDate(DateHelper.getCurrentTimeStamp());
+            //thisAuditTrail.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+            //thisAuditTrail.setCreatedDate(DateHelper.getCurrentTimeStamp());
             thisAuditTrail.setUser(getCurrentUser());
-            thisAuditTrail.setCreatedBy(getCurrentUser());
-            thisAuditTrail.setLastModifiedBy(getCurrentUser());
-            saveObj(thisAuditTrail);
+            //thisAuditTrail.setCreatedBy(getCurrentUser());
+            //thisAuditTrail.setLastModifiedBy(getCurrentUser());
+            save(thisAuditTrail);
             bFlag = true;
         }
         return bFlag;
@@ -40,23 +39,16 @@ public class AuditTrailServiceImpl extends DataService implements AuditTrailServ
     public Boolean saveObj(AuditTrail obj){
         
         Boolean bFlag = false;
-
-        
-        getCurrentSession().beginTransaction();
         
         try{
-            getCurrentSession().saveOrUpdate(obj);
+            save(obj);           
             bFlag = true;
-        } catch (Exception e) {
-            getCurrentSession().getTransaction().rollback();
-        }finally{
-            getCurrentSession().getTransaction().commit();
+        } catch (Exception e) {            
         }
-
         return bFlag;
     }
     
     public AuditTrail getObject(int id) {
-        return (AuditTrail) getCurrentSession().get(AuditTrail.class, id);
+        return (AuditTrail) get(AuditTrail.class, id);
     }    
 }

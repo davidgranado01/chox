@@ -3,18 +3,17 @@ package chox.services;
 import chox.data.ClaimSearchCriteria;
 import chox.model.Claim;
 import chox.model.ClaimStatus;
+import chox.model.XMLParseResult;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.Transformers;
 
 public class ClaimServiceImpl extends DataService implements ClaimService, Serializable {
 
@@ -27,54 +26,72 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
     private Map<String,String> sortingMap;
 
     public Claim getClaim(int id) {
-        return (Claim) getCurrentSession().get(Claim.class, id);
+        return (Claim) get(Claim.class, id);
     }
 
     public void updateClaim(Claim claim) {
-        
-        getCurrentSession().beginTransaction();
-        getCurrentSession().update(claim);
-        getCurrentSession().getTransaction().commit();
+        save(claim);
     }
-
-    public List listAllClaims() {
-
-        Criteria criteria = getCurrentSession().createCriteria(Claim.class);
-        List claims = criteria.list();
-
-        return claims;
-    }
-
-    public List listClaimsByStatus(String status) {
-
-        Criteria criteria = getCurrentSession().createCriteria(Claim.class).add(Restrictions.eq("status", status));
-        List claims = criteria.list();
-
-        return claims;
-    }
-
+     
     public Long getCountByStatus(String status) {
-        Long count = (Long) getCurrentSession().createQuery("select count(*) from Claim where status = '" + status + "'").uniqueResult();
-        return count;
+        String q = "select count(*) from Claim where status = '" + status + "'";
+        return getCount(q);
     }
     
     public Long getNonDEPaymentLogCount() {
         return (long)0;
     }
-    
-    // FILTER OUT CLOSED ITEM Mantis: 0000386
+
     public Long getPenaltyChargeAppliedCount() {
-        Long count = (Long) getCurrentSession().createQuery("select count(*) from Claim as c inner join c.invoice as iv where " 
-                + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_LOGGED 
-                + "' AND c.status <> '" + ClaimStatus.CLAIM_CLOSED + "'"
-                + " AND iv.panaltyAlertQty >= 0"
-                + " AND day(current_date() - iv.dateInvoiced) > ((iv.panaltyAlertQty + 1) * 30)").uniqueResult();
+        
+        String q = "select count(*) from Claim as c inner join c.invoice as iv where c.status <> '" 
+                + ClaimStatus.INVOICE_PAYMENT_LOGGED
+                + "' AND iv.panaltyAlertQty >= 0"
+                + " AND day(current_date() - iv.dateInvoiced) > ((iv.panaltyAlertQty + 1) * 30)";
+        
+       return getCount(q);
+    }
+    
+    protected Long getCount(String query)
+    {
+        Long count =  new Long(0);
+        List result = query(query);
+        
+        if(result!= null && !result.isEmpty())
+        {
+            count = (Long)result.get(0);
+        }
         return count;
     }
 
     public Long getHireUpdateAnomaliesCountNumber() {
-        Long count = (Long) getCurrentSession().createQuery("select count(*) from Claim where is_anomalies = true").uniqueResult();
-        return count;
+        String q = "select count(*) from Claim where is_anomalies = true";
+        return getCount(q);
+    }
+    
+    public Long getECDCountByClaimId(int claimId) {
+        String q = "select count(*) from HireMonitoringEcd where claim.id = '" + claimId + "'";
+        return getCount(q);
+    }
+    
+    public Long getClaimCountByClaimNumber(String claimNumber, int claimId)
+    {
+        String q = "select count(*) from Claim where claimNumber = '" + claimNumber + "' And id != '"+claimId+"'";
+        return getCount(q);
+    }
+
+    public Long getCountOfClaimByVRN(String strVRN, int claimId){               
+   
+            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+            criteria.setProjection(Projections.rowCount());
+            criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN));
+            criteria.add( Expression.ne( "id", claimId));
+            List result = findByCriteria(criteria);
+            
+            Long totalCount = (Long)result.get(0);
+            
+            return totalCount;
+          
     }
     
     public Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit){
@@ -82,19 +99,16 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         Boolean bFlag = false;
         
         if(!strClaimNumber.equalsIgnoreCase("")){
-            Criteria criteria = getCurrentSession().createCriteria(Claim.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+            criteria.setProjection(Projections.rowCount());
             criteria.createCriteria("customer").add(Restrictions.like("claimReference", strClaimNumber));
             if(isClaimExit){
                 criteria.add( Expression.ne( "id", claimId));
             }
-            criteria.setMaxResults(1);
-            List claims = criteria.list();
+            List result = findByCriteria(criteria);
             
-            if(claims!=null){
-                if(claims.size()>0){
-                    bFlag = true;
-                }
-            }
+            Integer totalCount = (Integer)result.get(0);
+            bFlag = totalCount > 0;
         }
         
         return bFlag;
@@ -104,50 +118,30 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
     public Boolean isThirdPartyClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit){
         
         Boolean bFlag = false;
-
+        
         if(!strClaimNumber.equalsIgnoreCase("")){
-            
-            Criteria criteria = getCurrentSession().createCriteria(Claim.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+            criteria.setProjection(Projections.rowCount());
             criteria.createCriteria("thirdParty").add(Restrictions.like("claimReference", strClaimNumber));
             if(isClaimExit){
                 criteria.add( Expression.ne( "id", claimId));
             }
-            criteria.setMaxResults(1);
-            List claims = criteria.list();
+            List result = findByCriteria(criteria);
             
-            if(claims!=null){
-                if(claims.size()>0){
-                    bFlag = true;
-                }
-            }
+            Integer totalCount = (Integer)result.get(0);
+            bFlag = totalCount > 0;
         }
         
-        return bFlag;
-        
+        return bFlag;        
     }
-    
-    public Long getCountOfClaimByVRN(String strVRN, int claimId){
-        Criteria criteria = getCurrentSession().createCriteria(Claim.class);
-        criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN));
-        criteria.add( Expression.ne( "id", claimId));
-        criteria.setMaxResults(1);
-        List claims = criteria.list();
-        return Long.valueOf(claims.size());
-    }
-    
-    public Long getECDCountByClaimId(int claimId)
-    {
-        Long count = (Long) getCurrentSession().createQuery("select count(*) from HireMonitoringEcd where claim.id = '" + claimId + "'").uniqueResult();
-        return count;
-    }
-    
+           
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria)
     {
         return searchClaims(searchCriteria,0,Integer.MAX_VALUE,"","");
     }
 
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria,int start,int limit,String sort,String dir) {
-        Criteria criteria = getCurrentSession().createCriteria(Claim.class)
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
             .createAlias("this.invoice", "iv",CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.lineOfBusiness", "lob",CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.thirdParty", "tp",CriteriaSpecification.LEFT_JOIN)
@@ -171,10 +165,10 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         if (searchCriteria.getLineOfBusinessId() > 0) {
             criteria.add(Restrictions.eq("lob.id", searchCriteria.getLineOfBusinessId()));
         }
-        if (searchCriteria.IsAnomalies()) {
+        if (searchCriteria.getIsAnomalies()) {
             criteria.add(Restrictions.eq("isAnomalies", true));
         }
-        if (searchCriteria.IsPanaltyChargeApplied()) {
+        if (searchCriteria.getIsPanaltyChargeApplied()) {
            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
            criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
            criteria.add(Restrictions.ge("iv.panaltyAlertQty", 0));
@@ -246,7 +240,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         //}
         criteria.setProjection(Projections.rowCount());
        
-        List totalCountResult = criteria.list();
+        List totalCountResult = findByCriteria(criteria);
         Integer totalCount = (Integer)totalCountResult.get(0);
                      
         criteria.setProjection(null);
@@ -298,16 +292,12 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
                 addSort(criteria,"createdDate",dir);
             }
         }
-        
-        criteria.setFirstResult(start);
-        criteria.setMaxResults(limit);
-        List claims2 = criteria.list();
-        criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-        List<HashMap> claims = criteria.list();
-        return new SearchResult(claims,totalCount);
+
+        List result = findByCriteria(criteria,Claim.class,start,limit);
+        return new SearchResult(result,totalCount);
     }
     
-    private void addSort(Criteria criteria,String sort,String dir)
+    private void addSort(DetachedCriteria criteria,String sort,String dir)
     {
         if (dir.equalsIgnoreCase("desc")) {
             criteria.addOrder(Order.desc(sort));
@@ -319,68 +309,49 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
    
     public Boolean isClaimReferenceNumberExist(String sClaimReferenceNumber) {
 
-        Boolean isExist = false;
+        Boolean bFlag = false;
 
-        try {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.setProjection(Projections.rowCount());
+        criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
+        List result = findByCriteria(criteria);
 
-            Criteria criteria = getCurrentSession().createCriteria(Claim.class);
-            criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
-            
-            if ((criteria.list()).size() > 0) {
-                isExist = true;
-            }
-            
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        Integer totalCount = (Integer) result.get(0);
+        bFlag = totalCount > 0;
 
-        return isExist;
+
+        return bFlag;
     }
 
-    public Claim getClaimByCHOReferenceNumber(
-            String sClaimReferenceNumber) {
+    public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber) {
 
         Claim claim = new Claim();
-
         try {
 
-            Criteria criteria = getCurrentSession().createCriteria(
-                    Claim.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
             criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
-            claim = (Claim) criteria.uniqueResult();
+            claim = (Claim) getByCriteria(criteria);
 
         } catch (Throwable e) {
             e.printStackTrace();
         }
-
-        
-        
         return claim;
-    }
+    }          
     
-    public Long getClaimCountByClaimNumber(String claimNumber, int claimId)
-    {
-        Long count = (Long) getCurrentSession().createQuery("select count(*) from Claim where claimNumber = '" + claimNumber + "' And id != '"+claimId+"'").uniqueResult();
-        return count;
-    }
-    
-    public Claim updateClaimStatus(int claimid, String claimStatus){
-    
-        Claim claim = new Claim();
+    public void saveObjectForXMLUploader( final XMLParseResult xmlParseResult) {
 
-        try {
-            Criteria criteria = getCurrentSession().createCriteria(Claim.class);
-            criteria.add(Restrictions.eq("id", claimid));
-            claim = (Claim) criteria.uniqueResult();
-            
-            claim.setStatus(claimStatus);
-            updateClaim(claim);
-            
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        
-        return claim;
+        Claim c = xmlParseResult.getClaim();
+        c.setCustomer(xmlParseResult.getClaim().getCustomer());
+        c.setThirdParty(xmlParseResult.getClaim().getThirdParty());
+        c.setInsurer(xmlParseResult.getClaim().getThirdParty().getInsurer());
+        c.setChorganisation(xmlParseResult.getClaim().getChorganisation());
+        c.setLineOfBusiness(xmlParseResult.getClaim().getLineOfBusiness());
+        c.setIncident(xmlParseResult.getClaim().getIncident());
+        c.setInvoice(xmlParseResult.getClaim().getInvoice());
+        c.setEngineerReport(xmlParseResult.getClaim().getEngineerReport());
+        c.setVehicleHire(xmlParseResult.getClaim().getVehicleHire());
+
+        save(xmlParseResult.getClaim());
     }
    
 }

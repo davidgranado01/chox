@@ -9,7 +9,7 @@ import chox.model.XMLParseResult;
 
 public interface EngineerReportService {
 
-    XMLParseResult saveEngineerReportForXMLUploader(XMLParseResult xmlParseResult);
+    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult);
     
     public EngineerReport getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
 

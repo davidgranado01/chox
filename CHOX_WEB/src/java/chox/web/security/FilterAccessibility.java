@@ -29,9 +29,8 @@ public class FilterAccessibility {
     private boolean claimReferredToFNOLAccessible;
     private boolean penaltyChargesAppliedAccessible;
 
-    public FilterAccessibility(GrantedAuthority[] grantedAuthorities) {
-        ApplicationAccessibility accessibility = ApplicationAccessibility.getInstance();
-
+    public FilterAccessibility(ApplicationAccessibility accessibility,GrantedAuthority[] grantedAuthorities) {
+        
         rejectedClaimsAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_REJECTED_CLAIMS,
                 grantedAuthorities) > 0;
         incorrectInvoiceDataCalculationsAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INCORRECT_INVOICE_DATA_COLC,

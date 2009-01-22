@@ -4,12 +4,11 @@
  */
 package chox.services;
 
-import chox.Util.DateHelper;
 import chox.model.Comment;
 import chox.model.Claim;
 import java.util.List;
 import java.util.ArrayList;
-import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
 
@@ -20,10 +19,10 @@ public class CommentServiceImpl extends DataService implements CommentService {
         List comments = new ArrayList<Comment>();
 
         try {
-            Criteria criteria = getCurrentSession().createCriteria(Comment.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);
             criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
             criteria.addOrder(Order.asc("createdDate"));           
-            comments = criteria.list();
+            comments = findByCriteria(criteria);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -37,7 +36,7 @@ public class CommentServiceImpl extends DataService implements CommentService {
         List comments = new ArrayList<Comment>();
 
         try {
-            Criteria criteria = getCurrentSession().createCriteria(Comment.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);
             criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
             
             if(!isInsurer){
@@ -45,7 +44,7 @@ public class CommentServiceImpl extends DataService implements CommentService {
             }
             
             criteria.addOrder(Order.asc("createdDate"));
-            comments = criteria.list();
+            comments = findByCriteria(criteria);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -60,10 +59,10 @@ public class CommentServiceImpl extends DataService implements CommentService {
 
         try {
             //Criteria criteria = getCurrentSession().createCriteria(Comment.class).add(Restrictions.eq("claim", claim));
-            Criteria criteria = getCurrentSession().createCriteria(Comment.class);//.add(Restrictions.eq("claimId", claim.getId()));
+            DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);//.add(Restrictions.eq("claimId", claim.getId()));
             criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
             criteria.addOrder(Order.asc("claim.id"));           
-            comments = criteria.list();
+            comments = findByCriteria(criteria);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -76,19 +75,10 @@ public class CommentServiceImpl extends DataService implements CommentService {
     }
 
     public Comment getObject(int id) {
-        return (Comment) getCurrentSession().get(Comment.class, id);
+        return (Comment) get(Comment.class, id);
     }
 
-    public void createNewObject(Comment comment) {
-
-        comment.setCreatedBy(getCurrentUser());
-        comment.setCreatedDate(DateHelper.getCurrentTimeStamp());
-        comment.setLastModifiedBy(getCurrentUser());
-        comment.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
-
-        getCurrentSession().beginTransaction();
-        getCurrentSession().saveOrUpdate(comment);
-        getCurrentSession().getTransaction().commit();
+    public void createNewObject(Comment comment) {        
+        this.save(comment);
     }
 }

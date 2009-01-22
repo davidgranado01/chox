@@ -98,13 +98,10 @@
         </script>
     
     <fieldset class="x-fieldset">
-        <legend>Hire Monitoring</legend>
-        <div style="display:none" class="form-container">
-            
         <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
         <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-
-            
+        <legend>Hire Monitoring</legend>
+        <div style="display:none" class="form-container">            
            <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Original ECD</label><label class="std-data-ro"><s:property value="customer.InitialECDDesc" /></label></div>

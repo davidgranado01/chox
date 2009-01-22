@@ -31,6 +31,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
     private InputStream excelStream;
     private Map session;
+    private ClaimService claimService;
     private HistoryService historyService;
     private CommentService commentService;
     private WitnessService witnessService;
@@ -85,9 +86,8 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
             c = (ClaimSearchCriteria) session.get("searchCriteria");
 
             if (c != null) {
-                ClaimService cs = new ClaimServiceImpl();
-                SearchResult searchResult = cs.searchClaims(c);
-                List<HashMap> claims = searchResult.getResult();
+                SearchResult searchResult = claimService.searchClaims(c);
+                List claims = searchResult.getResult();
                 if (claims.size() > 0) {
                     buf = generateXML(claims);
                 }
@@ -96,7 +96,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         return buf;
     }
 
-    public ByteArrayOutputStream generateXML(List<HashMap> claims) throws IOException {
+    public ByteArrayOutputStream generateXML(List claims) throws IOException {
 
         InputStream templateIS = ExcelGeneratorAction.class.getClassLoader().getResourceAsStream("claimTemplate.xls");
 
@@ -113,8 +113,8 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
 
         //for(Integer iCount=0; iCount<claims.size(); iCount++){
-        for (HashMap m : claims) {
-            Claim claim = (Claim)m.get("this");
+        for (Object obj : claims) {
+            Claim claim = (Claim)obj;
             ExcelClaim ec = new ExcelClaim();
             ExcelInvoice ev = new ExcelInvoice();
             ec.setClaim(claim);
@@ -235,5 +235,9 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
     public void setSolicitorService(SolicitorService service) {
         this.solicitorService = service;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
     }
 }

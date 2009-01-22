@@ -9,7 +9,7 @@ import chox.model.XMLParseResult;
 
 public interface ThirdPartyService {
 
-    XMLParseResult saveThirdPartyForXMLUploader(XMLParseResult xmlParseResult);
+    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult);
 
     public ThirdParty getObject(int id);
 

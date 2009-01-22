@@ -2,7 +2,7 @@ package chox.services;
 
 import chox.Util.XmlHelper;
 import chox.model.VehicleClass;
-import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.w3c.dom.*;
 
@@ -14,10 +14,10 @@ public class VehicleClassServiceImpl  extends DataService implements VehicleClas
         
         try {
             
-            Criteria criteria = getCurrentSession().createCriteria(VehicleClass.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClass.class);
             criteria.add(Restrictions.eq("name", s));
             
-            vehicleclass = (VehicleClass) criteria.uniqueResult();
+            vehicleclass = (VehicleClass) getByCriteria(criteria);
             
         } catch (Throwable e) {
            e.printStackTrace();
@@ -39,6 +39,6 @@ public class VehicleClassServiceImpl  extends DataService implements VehicleClas
     }
 
     public VehicleClass getObject(int id) {
-       return (VehicleClass)getCurrentSession().get(VehicleClass.class, id);
+       return (VehicleClass)get(VehicleClass.class, id);
     }
 }

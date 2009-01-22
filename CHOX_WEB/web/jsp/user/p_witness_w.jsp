@@ -22,12 +22,11 @@
 </script>
 
 <form id="formUpdateWitness" name="formUpdateWitness" action="user/updateWitness.action" class="XXentity-form">
-   
+     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
+    <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>  
     <fieldset class="x-fieldset">        
         <legend>Witness Details</legend>
-            <div style="display:none" class="form-container">  
-             <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
-             <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>    
+            <div style="display:none" class="form-container">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Name<span class="mandatory">*</span></label>

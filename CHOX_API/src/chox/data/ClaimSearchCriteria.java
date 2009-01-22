@@ -4,45 +4,157 @@
  */
 package chox.data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author Emmanuel
  */
-public interface ClaimSearchCriteria {
+public class ClaimSearchCriteria implements Serializable {
 
-    public String getSupplierReference();
+    private String supplierReference;
+    private int supplierId;
+    private String claimNumber;    
+    private String status;
+    private int insurerId;
+    private String vrn;
+    private String invoiceNumber;
+    private Date claimUploadDateFrom;
+    private Date claimUploadDateTo;
+    private Date invoiceUploadDateFrom;
+    private Date invoiceUploadDateTo;
+    private Date hireDateFrom;
+    private Date hireDateTo;    
+    private int lineOfBusinessId;    
+    private boolean isAnomalies;    
+    private boolean isPanaltyChargeApplied;
 
-    public int getSupplierId();
+    public String getSupplierReference() {
+        return supplierReference;
+    }
 
-    public String getClaimNumber();
-    
-    public String getStatus();
+    public void setSupplierReference(String supplierReference) {
+        this.supplierReference = supplierReference;
+    }
 
-    public int getInsurerId();
+    public int getSupplierId() {
+        return supplierId;
+    }
 
-    public String getVrn();
+    public void setSupplierId(int gesupplierId) {
+        this.supplierId = gesupplierId;
+    }
 
-    public String getInvoiceNumber();
+    public String getClaimNumber() {
+        return claimNumber;
+    }
 
-    public Date getClaimUploadDateFrom();
+    public void setClaimNumber(String claimNumber) {
+        this.claimNumber = claimNumber;
+    }
 
-    public Date getClaimUploadDateTo();
+    public String getStatus() {
+        return status;
+    }
 
-    public void setClaimUploadDateTo(Date claimUploadDateTo);
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-    public Date getInvoiceUploadDateFrom();
+    public int getInsurerId() {
+        return insurerId;
+    }
 
-    public Date getInvoiceUploadDateTo();
+    public void setInsurerId(int insurerId) {
+        this.insurerId = insurerId;
+    }
 
-    public Date getHireDateFrom();
+    public String getVrn() {
+        return vrn;
+    }
 
-    public Date getHireDateTo();
-    
-    public int getLineOfBusinessId();
-    
-    public boolean IsAnomalies();
-    
-    public boolean IsPanaltyChargeApplied();
+    public void setVrn(String vrn) {
+        this.vrn = vrn;
+    }
+
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
+    }
+
+    public Date getClaimUploadDateFrom() {
+        return claimUploadDateFrom;
+    }
+
+    public void setClaimUploadDateFrom(Date claimUploadDateFrom) {
+        this.claimUploadDateFrom = claimUploadDateFrom;
+    }
+
+    public Date getClaimUploadDateTo() {
+        return claimUploadDateTo;
+    }
+
+    public void setClaimUploadDateTo(Date claimUploadDateTo) {
+        this.claimUploadDateTo = claimUploadDateTo;
+    }
+
+    public Date getInvoiceUploadDateFrom() {
+        return invoiceUploadDateFrom;
+    }
+
+    public void setInvoiceUploadDateFrom(Date invoiceUploadDateFrom) {
+        this.invoiceUploadDateFrom = invoiceUploadDateFrom;
+    }
+
+    public Date getInvoiceUploadDateTo() {
+        return invoiceUploadDateTo;
+    }
+
+    public void setInvoiceUploadDateTo(Date invoiceUploadDateTo) {
+        this.invoiceUploadDateTo = invoiceUploadDateTo;
+    }
+
+    public Date getHireDateFrom() {
+        return hireDateFrom;
+    }
+
+    public void setHireDateFrom(Date hireDateFrom) {
+        this.hireDateFrom = hireDateFrom;
+    }
+
+    public Date getHireDateTo() {
+        return hireDateTo;
+    }
+
+    public void setHireDateTo(Date hireDateTo) {
+        this.hireDateTo = hireDateTo;
+    }
+
+    public int getLineOfBusinessId() {
+        return lineOfBusinessId;
+    }
+
+    public void setLineOfBusinessId(int lineOfBusinessId) {
+        this.lineOfBusinessId = lineOfBusinessId;
+    }
+
+    public boolean getIsAnomalies() {
+        return isAnomalies;
+    }
+
+    public void setIsAnomalies(boolean isAnomalies) {
+        this.isAnomalies = isAnomalies;
+    }
+
+    public boolean getIsPanaltyChargeApplied() {
+        return isPanaltyChargeApplied;
+    }
+
+    public void setIsPanaltyChargeApplied(boolean isPanaltyChargeApplied) {
+        this.isPanaltyChargeApplied = isPanaltyChargeApplied;
+    }
 }

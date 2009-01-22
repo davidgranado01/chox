@@ -5,54 +5,36 @@
 
 package chox.services;
 
-import chox.Util.DateHelper;
 import chox.model.Attachment;
 import java.util.List;
 import java.util.ArrayList;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Order;
 
 public class AttachmentServiceImpl extends DataService implements AttachmentService{
 
     public Boolean saveObj(Attachment attachment){
         
-        Boolean bFlag = false;
-        
-        getCurrentSession().beginTransaction();
+        Boolean bFlag = false; 
         
         try{
-            getCurrentSession().saveOrUpdate(attachment);
+           save(attachment);
             bFlag = true;
-        } catch (Exception e) {
-            getCurrentSession().getTransaction().rollback();
-        }finally{
-            getCurrentSession().getTransaction().commit();
+        } catch (Exception e) {    
+            e.printStackTrace();
         }
-
         return bFlag;
     }
     
     public Boolean deleteAttachment(Attachment att){
         
-        Boolean bFlag = false;
-        getCurrentSession().beginTransaction();
-        
+        Boolean bFlag = false;                
         try{
-            if(att!=null){
-                getCurrentSession().delete(att);
-            }
-            getCurrentSession().getTransaction().commit();
+            delete(att);
             bFlag = true;
         } catch (Exception e) {
-            getCurrentSession().getTransaction().rollback();
-        }
-        
+            e.printStackTrace();           
+        }        
         return bFlag;
     }
     
@@ -61,9 +43,10 @@ public class AttachmentServiceImpl extends DataService implements AttachmentServ
         List attachments = new ArrayList<Attachment>();
 
         try {
-            Criteria criteria = getCurrentSession().createCriteria(Attachment.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(Attachment.class);
             criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
-            attachments = criteria.list();
+            List result = findByCriteria(criteria);
+            attachments = result;
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -71,6 +54,6 @@ public class AttachmentServiceImpl extends DataService implements AttachmentServ
     }    
            
     public Attachment getObject(int id) {
-        return (Attachment) getCurrentSession().get(Attachment.class, id);
+        return (Attachment) get(Attachment.class, id);
     }
 }

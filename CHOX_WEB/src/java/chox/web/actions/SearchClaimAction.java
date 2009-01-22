@@ -5,6 +5,7 @@
 package chox.web.actions;
 
 import chox.data.ClaimSearchCriteria;
+import chox.model.Claim;
 import chox.services.ClaimService;
 import chox.services.LookupService;
 import chox.services.SearchResult;
@@ -13,7 +14,6 @@ import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONArray;
@@ -23,7 +23,7 @@ import org.apache.struts2.interceptor.SessionAware;
  *
  * @author Emmanuel
  */
-public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria,SessionAware ,Serializable{
+public class SearchClaimAction extends BaseAction implements SessionAware{
 
     private Map session;    
     private String supplierReference;
@@ -39,14 +39,14 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
     private Date invoiceUploadDateFrom;
     private Date invoiceUploadDateTo;
     private Date hireDateFrom;
-    private Date hireDateTom;
+    private Date hireDateTo;
     private List statuses;
     private List lineOfBusiness;
     private List insurers;
     private List suppliers;
     private LookupService lookupService;
     private ClaimService claimService;
-    private List<HashMap> results;
+    private List results;
     private int totalCount;
     private boolean isAnomalies;
     private int start;
@@ -149,12 +149,12 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
     }
 
     public Date getHireDateTo() {
-        return hireDateTom;
+        return hireDateTo;
     }
 
     @TypeConversion(converter = "chox.web.data.DateConverter")
     public void setHireDateTo(Date hireDateTo) {
-        this.hireDateTom = hireDateTo;
+        this.hireDateTo = hireDateTo;
     }
 
     public List getStatuses() {
@@ -194,8 +194,9 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
         try {
             List<claimGridViewData> viewData = new ArrayList<claimGridViewData>();
 
-            for (HashMap m : results) {
-                viewData.add(new claimGridViewData(m));
+            for (Object obj : results) {
+                Claim c = (Claim)obj;
+                viewData.add(new claimGridViewData(c));
             }
 
             JSONArray jsonArray = JSONArray.fromObject(viewData);
@@ -215,9 +216,26 @@ public class SearchClaimAction extends BaseAction implements ClaimSearchCriteria
     
     public String doSearchClaim() throws Exception {
     
-        ClaimSearchCriteria c = this;
-        session.put("searchCriteria", c);
+        ClaimSearchCriteria c = new ClaimSearchCriteria();
         
+        c.setClaimNumber(claimNumber);
+        c.setClaimUploadDateFrom(claimUploadDateFrom);
+        c.setClaimUploadDateTo(claimUploadDateTo);
+        c.setSupplierId(supplierId);
+        c.setHireDateFrom(hireDateFrom);
+        c.setHireDateTo(hireDateTo);
+        c.setInsurerId(insurerId);
+        c.setInvoiceNumber(invoiceNumber);
+        c.setInvoiceUploadDateFrom(invoiceUploadDateFrom);
+        c.setInvoiceUploadDateTo(invoiceUploadDateTo);
+        c.setIsAnomalies(isAnomalies);
+        c.setIsPanaltyChargeApplied(isPanaltyChargeApplied);
+        c.setLineOfBusinessId(lineOfBusinessId);
+        c.setStatus(status);
+        c.setSupplierReference(supplierReference);
+        c.setVrn(vrn);        
+        
+        session.put("searchCriteria", c);        
         SearchResult searchResult = this.claimService.searchClaims(c,start,limit,sort,dir);
         results = searchResult.getResult();
         totalCount = searchResult.getTotalCount();    

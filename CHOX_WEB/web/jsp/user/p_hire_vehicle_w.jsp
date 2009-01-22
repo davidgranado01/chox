@@ -110,12 +110,11 @@
 
 
 <form id="formUpdateHireVehicle" action="user/updateVehicleHire.action" class="XXentity-form">
-   
+    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
+    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset">
         <legend>Hire Vehicle Details</legend>
-        <div style="display:none" class="form-container">
-            <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
-            <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
+        <div style="display:none" class="form-container">            
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Manufacturer<span class="mandatory">*</span></label>
@@ -131,7 +130,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Replacement Vehicle Class<span class="mandatory">*</span></label>
-            <s:select name="vehicleClassId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1" headerValue="--- SELECT ---" emptyOption="false"></s:select>
+            
             
             </div>
             <div class="chox-form-item">

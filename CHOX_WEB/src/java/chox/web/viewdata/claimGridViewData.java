@@ -37,10 +37,8 @@ public class claimGridViewData {
     private String insurer;
     private String createdBy;
 
-    public claimGridViewData(HashMap result) {
-        
-        Claim claim = (Claim)result.get("this");
-        
+    public claimGridViewData(Claim claim) {       
+              
         Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
 

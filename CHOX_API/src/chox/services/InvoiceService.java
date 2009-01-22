@@ -11,7 +11,7 @@ import chox.model.Invoice;
 import scsbre.engine.*;
 
 public interface InvoiceService {
-    public XMLParseResult saveInvoiceForXMLUploader(XMLParseResult xmlParseResult);
+    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult);
     public RulesEngineResponse XMLUploaderInvoiceValidation(Claim claim);
     
    public Invoice getObject(int id);

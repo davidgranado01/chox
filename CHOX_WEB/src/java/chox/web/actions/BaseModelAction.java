@@ -22,6 +22,7 @@ public abstract class BaseModelAction extends BaseAction {
     protected String claimStatus;
     protected String actionResult;
     protected ClaimService claimService;
+    private ApplicationAccessibility applicationAccessibility;
 
     abstract String getTabName();
 
@@ -50,7 +51,7 @@ public abstract class BaseModelAction extends BaseAction {
         GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
         String tabName = getTabName();
         String claimStatus = getCaimStatus();
-        short accessRight = ApplicationAccessibility.getInstance().checkTabAccessibility(tabName, grantedAuthorities, claimStatus);
+        short accessRight = applicationAccessibility.checkTabAccessibility(tabName, grantedAuthorities, claimStatus);
     
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
 
@@ -67,5 +68,13 @@ public abstract class BaseModelAction extends BaseAction {
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
+    }
+
+    public ApplicationAccessibility getApplicationAccessibility() {
+        return applicationAccessibility;
+    }
+
+    public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
+        this.applicationAccessibility = applicationAccessibility;
     }
 }

@@ -17,37 +17,47 @@ import org.acegisecurity.context.SecurityContextHolder;
  */
 public class WebSecurityInfoProvider implements SecurityInfoProvider {
 
-    private PermissionedUser currentUser;
+    private PermissionedUser permissionedUser;
 
     public WebSecurityInfoProvider() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    }
 
-        if (authentication != null && authentication.getPrincipal() instanceof PermissionedUser) {
-            currentUser = (PermissionedUser) authentication.getPrincipal();
+    public PermissionedUser getPermissionedUser() {
+        if (permissionedUser == null) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            if (authentication != null && authentication.getPrincipal() instanceof PermissionedUser) {
+                permissionedUser = (PermissionedUser) authentication.getPrincipal();
+            }
+            else
+            {
+                permissionedUser = null;
+            }
         }
+        return permissionedUser;
     }
 
     public WebUser getCurrentUSer() {
 
 
-        return currentUser.getUser();
+        return getPermissionedUser().getUser();
     }
 
     public boolean getIsCHO() {
 
-        return currentUser.getIsCHO();
+        return getPermissionedUser().getIsCHO();
 
     }
 
     public boolean getIsINS() {
 
-        return currentUser.getIsINS();
+        return getPermissionedUser().getIsINS();
 
     }
 
     public boolean getIsCHOXAdmin() {
 
-       return currentUser.getIsCHOXAdmin();
+        return getPermissionedUser().getIsCHOXAdmin();
 
     }
 }

@@ -84,11 +84,11 @@
 </script>
 
 <form id="formAddNewHireMonitoringEcd" action="user/addNewHireMonitoringEcd.action" name="formAddNewHireMonitoringEcd" class="XXentity-form">
+   <input type="hidden" name="objectId" value='<s:property value="id"/>'>
+   <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset">
         <legend>New/Revised ECD</legend>
-        <div style="display:none" class="form-container">
-            <input type="hidden" name="objectId" value='<s:property value="id"/>'>
-            <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
+        <div style="display:none" class="form-container">           
                 <s:if test="isECDFormVisible">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">New ECD</label>

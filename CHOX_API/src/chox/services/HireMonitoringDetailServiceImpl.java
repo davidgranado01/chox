@@ -4,9 +4,9 @@
  */
 package chox.services;
 
-import chox.Util.DateHelper;
 import chox.model.HireMonitoringDetail;
-import org.hibernate.Criteria;
+import chox.model.XMLParseResult;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
 public class HireMonitoringDetailServiceImpl extends DataService implements HireMonitoringDetailService {
@@ -14,48 +14,27 @@ public class HireMonitoringDetailServiceImpl extends DataService implements Hire
     public HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int hiremonitoringdetailid) {
         HireMonitoringDetail hiremonitoringdetail = new HireMonitoringDetail();
 
-        Criteria criteria = getCurrentSession().createCriteria(HireMonitoringDetail.class);
+        DetachedCriteria criteria = DetachedCriteria.forClass(HireMonitoringDetail.class);
         criteria.add(Restrictions.eq("id", hiremonitoringdetailid));
 
-        hiremonitoringdetail = (HireMonitoringDetail) criteria.uniqueResult();
+        hiremonitoringdetail = (HireMonitoringDetail) getByCriteria(criteria);
 
 
         return hiremonitoringdetail;
     }
 
     public HireMonitoringDetail getObject(int id) {
-        return (HireMonitoringDetail) getCurrentSession().get(HireMonitoringDetail.class, id);
+        return (HireMonitoringDetail) get(HireMonitoringDetail.class, id);
     }
 
     public void updateObject(HireMonitoringDetail hireMonitoringDetail) {
 
-        getCurrentSession().beginTransaction();
-        getCurrentSession().saveOrUpdate(hireMonitoringDetail);
-        getCurrentSession().getTransaction().commit();
+        this.save(hireMonitoringDetail);
+    }
 
-
+    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
+        if (xmlParseResult.getClaim().getHireMonitoringDetail() != null) {
+            super.getHibernateTemplate().saveOrUpdate(xmlParseResult.getClaim().getHireMonitoringDetail());
+        }
     }
-    /*
-    public Insurer getInsurerByName(String s){
-    
-    Insurer insurer = new Insurer();
-    
-    try {
-    
-    Criteria criteria = getCurrentSession().createCriteria(Insurer.class);
-    criteria.add(Restrictions.eq("name", s));
-    
-    insurer = (Insurer) criteria.uniqueResult();
-    
-    } catch (Throwable e) {
-    e.printStackTrace();
-    }
-    
-    
-    
-    
-    
-    return insurer;
-    }
-     * */
 }

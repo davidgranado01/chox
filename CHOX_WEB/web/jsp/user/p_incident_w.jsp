@@ -65,12 +65,11 @@
 
 
 <form id="formUpdateIncidentForm" action="user/updateIncident.action" class="XXentity-form">
-    
+    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
+    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset">
         <legend>Incident Details</legend>
-        <div style="display:none" class="form-container">  
-        <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
-        <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
+        <div style="display:none" class="form-container">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Date / Time<span class="mandatory">*</span></label>

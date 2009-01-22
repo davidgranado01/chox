@@ -39,11 +39,11 @@
 </script>
 
 <form id="formEngRptAction" action="user/updateEngineerReport.action" class="XXentity-form" name="formEngRptAction">
+    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
+    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset">
         <legend>Engineer Report</legend>
-        <div style="display:none" class="form-container">
-            <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
-            <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
+        <div style="display:none" class="form-container">           
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Estimated Labour Amount<span class="mandatory">*</span></label>

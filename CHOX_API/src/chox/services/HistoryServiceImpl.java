@@ -11,6 +11,7 @@ import scsbre.engine.*;
 import java.util.List;
 import java.util.ArrayList;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
 
@@ -26,7 +27,7 @@ public class HistoryServiceImpl extends DataService implements HistoryService {
 
         List histories = new ArrayList<History>();
 
-        Criteria criteria = getCurrentSession().createCriteria(History.class);
+        DetachedCriteria criteria = DetachedCriteria.forClass(History.class);
         criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
 
         // if (!isShowAll) {
@@ -41,7 +42,7 @@ public class HistoryServiceImpl extends DataService implements HistoryService {
         criteria.addOrder(Order.asc("claim.id"));
         criteria.addOrder(Order.asc("ruleId"));
 
-        histories = criteria.list();
+        histories = findByCriteria(criteria);
 
         return histories;
     }
@@ -50,7 +51,7 @@ public class HistoryServiceImpl extends DataService implements HistoryService {
 
         List histories = new ArrayList<History>();
 
-        Criteria criteria = getCurrentSession().createCriteria(History.class);
+        DetachedCriteria criteria = DetachedCriteria.forClass(History.class);
         criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
 
         //if (!isShowAll) {
@@ -64,7 +65,7 @@ public class HistoryServiceImpl extends DataService implements HistoryService {
 
         criteria.addOrder(Order.asc("createdDate"));
 
-        histories = criteria.list();
+        histories = findByCriteria(criteria);
 
         return histories;
     }
@@ -96,18 +97,14 @@ public class HistoryServiceImpl extends DataService implements HistoryService {
     }
 
     public Boolean saveHistory(History history) {
-
         Boolean bFlag = true;
-
-        getCurrentSession().beginTransaction();
-
         try {
-            getCurrentSession().saveOrUpdate(history);
-            getCurrentSession().getTransaction().commit();
+            save(history);
+            bFlag = true;
         } catch (Exception e) {
-            getCurrentSession().getTransaction().rollback();
+            e.printStackTrace();
+            bFlag = false;
         }
-
         return bFlag;
     }
 }

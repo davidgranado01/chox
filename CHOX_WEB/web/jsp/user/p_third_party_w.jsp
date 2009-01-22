@@ -67,12 +67,11 @@
 
 
 <form id="formUpdateThirdParty" action="user/updateThirdParty.action" class="XXentity-form">
-    
+    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
+    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset">
         <legend>Third-Party Details</legend>
-        <div style="display:none" class="form-container">
-            <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
-            <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
+        <div style="display:none" class="form-container">            
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Title<span class="mandatory">*</span></label>
@@ -157,13 +156,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Vehicle Class</label>
-                <s:select name="vehicleClassId" 
-                        list="vehicleClasses" 
-                        listKey="id" 
-                        listValue="name"
-                        headerKey="-1"
-                        headerValue="--SELECT--"
-                        emptyOption="false"></s:select>
+                
                 </div>   
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" /></div>

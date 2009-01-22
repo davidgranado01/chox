@@ -9,10 +9,7 @@ import org.hibernate.type.Type;
 
 public class DBInterceptor extends EmptyInterceptor {
 
-    public DBInterceptor(SecurityInfoProvider securityInforProvider) {
-        this.securityInforProvider = securityInforProvider;
-    }
-    private SecurityInfoProvider securityInforProvider;
+    private SecurityInfoProvider securityInfoProvider;
 
     @Override
     public boolean onSave(Object entity,
@@ -27,11 +24,11 @@ public class DBInterceptor extends EmptyInterceptor {
                 if ("createdDate".equals(propertyNames[i])) {
                     state[i] = DateHelper.getCurrentTimeStamp();
                 } else if ("createdBy".equals(propertyNames[i])) {
-                    state[i] = this.securityInforProvider.getCurrentUSer();
+                    state[i] = this.getSecurityInfoProvider().getCurrentUSer();
                 } else if ("lastModifiedDate".equals(propertyNames[i])) {
                     state[i] = DateHelper.getCurrentTimeStamp();
                 } else if ("lastModifiedBy".equals(propertyNames[i])) {
-                    state[i] = this.securityInforProvider.getCurrentUSer();
+                    state[i] = this.getSecurityInfoProvider().getCurrentUSer();
                 }
             }
         }
@@ -47,10 +44,18 @@ public class DBInterceptor extends EmptyInterceptor {
                 if ("lastModifiedDate".equals(propertyNames[i])) {
                     state1[i] = DateHelper.getCurrentTimeStamp();
                 } else if ("lastModifiedBy".equals(propertyNames[i])) {
-                    state1[i] = this.securityInforProvider.getCurrentUSer();
+                    state1[i] = this.getSecurityInfoProvider().getCurrentUSer();
                 }
             }
         }
         return true;
+    }
+
+    public SecurityInfoProvider getSecurityInfoProvider() {
+        return securityInfoProvider;
+    }
+
+    public void setSecurityInfoProvider(SecurityInfoProvider securityInforProvider) {
+        this.securityInfoProvider = securityInforProvider;
     }
 }

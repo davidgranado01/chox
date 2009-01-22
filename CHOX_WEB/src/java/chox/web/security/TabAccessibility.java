@@ -19,21 +19,19 @@ public class TabAccessibility {
     private short notesTabAccessibility;
     private short paymentPackTabAccessibility;
 
-    public TabAccessibility(GrantedAuthority[] grantedAuthorities,String claimStatus) {
-        
-        ApplicationAccessibility accessibility = ApplicationAccessibility.getInstance();
-        
-        claimDetailTabAccessibility = accessibility.checkTabAccessibility(ApplicationAccessibility.TAB_CLAIM_DETAIL,
+    public TabAccessibility(ApplicationAccessibility applicationAccessibility,GrantedAuthority[] grantedAuthorities,String claimStatus) {       
+               
+        claimDetailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_CLAIM_DETAIL,
                 grantedAuthorities, claimStatus);
-        hireMonitoringTabAccessibility = accessibility.checkTabAccessibility(ApplicationAccessibility.TAB_HIRE_MONITORING,
+        hireMonitoringTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_HIRE_MONITORING,
                 grantedAuthorities, claimStatus);
-        historyTabAccessibility = accessibility.checkTabAccessibility(ApplicationAccessibility.TAB_HISTORY,
+        historyTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_HISTORY,
                 grantedAuthorities, claimStatus);
-        invoiceDetailTabAccessibility = accessibility.checkTabAccessibility(ApplicationAccessibility.TAB_INVOICE_DETAIL,
+        invoiceDetailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_INVOICE_DETAIL,
                 grantedAuthorities, claimStatus);
-        paymentPackTabAccessibility = accessibility.checkTabAccessibility(ApplicationAccessibility.TAB_PAYMENT_PACK,
+        paymentPackTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_PAYMENT_PACK,
                 grantedAuthorities, claimStatus);
-        notesTabAccessibility = accessibility.checkTabAccessibility(ApplicationAccessibility.TAB_NOTES,
+        notesTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_NOTES,
                 grantedAuthorities, claimStatus);
     }
    
@@ -60,4 +58,5 @@ public class TabAccessibility {
     public short getPaymentPackTabAccessibility() {
         return paymentPackTabAccessibility;
     }
+
 }

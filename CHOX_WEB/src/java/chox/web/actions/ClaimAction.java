@@ -24,10 +24,18 @@ import scsbre.engine.RulesEngineResponse;
 import chox.data.AttachmentCategory;
 import chox.model.Chorganisation;
 import chox.model.Comment;
+import chox.model.Customer;
+import chox.model.HireMonitoringDetail;
+import chox.model.Incident;
+import chox.model.Injury;
 import chox.model.Insurer;
 import chox.model.Invoice;
 import chox.model.LookupItem;
+import chox.model.Solicitor;
+import chox.model.ThirdParty;
+import chox.model.VehicleHire;
 import chox.model.WebUser;
+import chox.model.Witness;
 import chox.services.AuditTrailService;
 import chox.services.CommentService;
 import chox.services.HireMonitoringEcdService;
@@ -81,6 +89,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private BigDecimal penaltyChargeAmount;
     private Boolean isRemovePenaltyAlert;
     private long invoiceIntroducedDays;
+    private ApplicationAccessibility applicationAccessibility;
     private PanelAccessibility panelAccessibility;
     
     public List getAttachmentCategory() {
@@ -166,7 +175,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public TabAccessibility getTabAccessibility() {
 
         if (tabAccessibility == null) {
-            tabAccessibility = new TabAccessibility(getAuthenticatedUser().getAuthorities(), claim.getStatus());
+            tabAccessibility = applicationAccessibility.getTabAccessibility(getAuthenticatedUser().getAuthorities(), claim.getStatus());
         }
         return tabAccessibility;
     }
@@ -183,7 +192,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         for (String action : actions) {
             
-            short accessRight = ApplicationAccessibility.getInstance().checkActionAccessibility(action, grantedAuthorities, claim.getStatus());
+            short accessRight = applicationAccessibility.checkActionAccessibility(action, grantedAuthorities, claim.getStatus());
 
             if (accessRight > 0) {
                 return action;
@@ -763,10 +772,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.actionName = actionName;
     }
 
-    public int getHireMonitoringDetailId() {
-        return this.claim.getHireMonitoringDetail() == null ? 0 : this.claim.getHireMonitoringDetail().getId();
-    }
-
     public void setInvoiceService(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
     }
@@ -804,20 +809,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
             claim = service.getClaim(id);
             claim.setIsAnomalies(false);
-            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
-            this.service.updateClaim(claim);
-        } catch (Exception ex) {
-            result = ERROR;
-            this.actionResult = "ERROR : " + ex.getMessage();
-        }
-        return result;
-    }
-    
-    public String doUpdateClaimStatus() {
-        String result = SUCCESS;
-        try {
-            claim = service.getClaim(id);
-            claim.setStatus(ClaimStatus.CLAIM_CLOSED);
             auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -872,6 +863,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
     
+    public String doUpdateClaimStatus() {
+        String result = SUCCESS;
+        try {
+            claim = service.getClaim(id);
+            claim.setStatus(ClaimStatus.CLAIM_CLOSED);
+            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            result = ERROR;
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+        return result;
+    }
+    
     public boolean getIsShowPenaltyChargeAlert()
     {
        boolean result = false;      
@@ -880,10 +885,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             Invoice invoice = claim.getInvoice();
 
             //if PanaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
-            if (invoice != null 
-                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) 
-                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) 
-                    && invoice.getPanaltyAlertQty() > -1) {                
+            if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) && invoice.getPanaltyAlertQty() > -1) {                
                 result = invoice.getInvoicedDays() > (invoice.getPanaltyAlertQty() + 1) * 30;
             }
         }
@@ -970,16 +972,107 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     
     public PanelAccessibility getPanelAccessibility() {
         if (panelAccessibility == null) {
-            panelAccessibility = new PanelAccessibility(super.getAuthenticatedUser().getAuthorities());
+            panelAccessibility = applicationAccessibility.getPanelAccessibility(getAuthenticatedUser().getAuthorities());
         }
         return panelAccessibility;
     }
-    
-    public boolean getIsClaimClosed(){
-        boolean bFlag = false;
-        if(claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)){
-            bFlag = true;
-        }
-        return bFlag;
+
+    public ApplicationAccessibility getApplicationAccessibility() {
+        return applicationAccessibility;
     }
+
+    public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
+        this.applicationAccessibility = applicationAccessibility;
+    }
+    
+    public int getHireMonitoringDetailId()
+    {
+        HireMonitoringDetail h = claim.getHireMonitoringDetail();
+        return h == null ? -1 : h.getId();
+    }
+    
+    public int getIncidentId()
+    {
+        Incident i = claim.getIncident();
+        return i == null ? -1 : i.getId();
+    }
+    
+    public int getThirdPartyId()
+    {
+        ThirdParty t = claim.getThirdParty();
+        return t == null ? -1 : t.getId();
+    }
+    
+    Integer customerId;
+    
+    public int getCustomerId()
+    {
+        if(customerId == null)
+        {
+            Customer c = claim.getCustomer();        
+            customerId =  c == null ? -1 : c.getId();
+        }
+        
+        return customerId;
+    }
+    
+    public int getInvoiceId()
+    {
+        Invoice i = claim.getInvoice();
+        return i ==null ? -1 : i.getId();
+    }
+    
+    public int getVehicleHireId()
+    {
+        VehicleHire v = claim.getVehicleHire();
+        return v ==null ? -1 : v.getId();
+    } 
+    
+    public int getEngineerReportId()
+    {
+        EngineerReport e = claim.getEngineerReport();
+        return e ==null ? -1 : e.getId();
+    }
+       
+    public int getWitnessId()
+    {
+        int result = -1;
+        Incident incident = claim.getIncident();
+
+        if (incident != null) {
+            Witness witness = incident.getWitness();
+            result = witness == null ? -1 : witness.getId();
+        }
+
+        return result;
+    }
+    
+    public int getInjuryId() {
+        int result = -1;
+        Incident incident = claim.getIncident();
+
+        if (incident != null) {
+            Injury injury = incident.getInjury();
+            result = injury == null ? -1 : injury.getId();
+        }
+
+        return result;
+    }
+    
+        public int getInjurySolicitorId() {
+        int result = -1;
+        Incident incident = claim.getIncident();
+
+        if (incident != null) {
+            Injury injury = incident.getInjury();
+            if(injury != null)
+            {
+                Solicitor solicitor = injury.getSolicitor();
+                result = solicitor == null ? -1 : solicitor.getId();
+            }
+        }
+
+        return result;
+    }
+
 }
