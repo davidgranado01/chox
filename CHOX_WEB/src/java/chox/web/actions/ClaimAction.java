@@ -92,6 +92,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private ApplicationAccessibility applicationAccessibility;
     private PanelAccessibility panelAccessibility;
     
+    Integer hireMonitoringDetailId;
+    Integer incidentId;
+    Integer thirdPartyId;
+    Integer customerId;
+    Integer invoideId;
+    Integer vehicleHireId;
+    Integer engineerReportId;
+    Integer witnessId;
+    Integer injuryId;
+    Integer injurySolicitorId;
+    
     public List getAttachmentCategory() {
         List items = new ArrayList<LookupItem>();
         for (String s : AttachmentCategory.getAttachmentCategory()) {
@@ -987,95 +998,110 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
         this.applicationAccessibility = applicationAccessibility;
     }
-    
-    public int getHireMonitoringDetailId()
-    {
-        HireMonitoringDetail h = claim.getHireMonitoringDetail();
-        return h == null ? -1 : h.getId();
-    }
-    
-    public int getIncidentId()
-    {
-        Incident i = claim.getIncident();
-        return i == null ? -1 : i.getId();
-    }
-    
-    public int getThirdPartyId()
-    {
-        ThirdParty t = claim.getThirdParty();
-        return t == null ? -1 : t.getId();
-    }
-    
-    Integer customerId;
-    
-    public int getCustomerId()
-    {
-        if(customerId == null)
-        {
-            Customer c = claim.getCustomer();        
-            customerId =  c == null ? -1 : c.getId();
+            
+    public int getHireMonitoringDetailId() {
+        if (hireMonitoringDetailId == null) {
+            HireMonitoringDetail h = claim.getHireMonitoringDetail();
+            hireMonitoringDetailId = h == null ? -1 : h.getId();
         }
-        
+
+        return hireMonitoringDetailId;
+    }
+    
+    public int getIncidentId() {
+        if (incidentId == null) {
+            Incident i = claim.getIncident();
+            incidentId = i == null ? -1 : i.getId();
+        }
+        return incidentId;
+    }
+    
+    public int getThirdPartyId() {
+        if (thirdPartyId == null) {
+            ThirdParty t = claim.getThirdParty();
+            thirdPartyId = t == null ? -1 : t.getId();
+        }
+        return thirdPartyId;
+    } 
+    
+    public int getCustomerId() {
+        if (customerId == null) {
+            Customer c = claim.getCustomer();
+            customerId = c == null ? -1 : c.getId();
+        }
+
         return customerId;
     }
     
-    public int getInvoiceId()
-    {
-        Invoice i = claim.getInvoice();
-        return i ==null ? -1 : i.getId();
-    }
-    
-    public int getVehicleHireId()
-    {
-        VehicleHire v = claim.getVehicleHire();
-        return v ==null ? -1 : v.getId();
-    } 
-    
-    public int getEngineerReportId()
-    {
-        EngineerReport e = claim.getEngineerReport();
-        return e ==null ? -1 : e.getId();
-    }
-       
-    public int getWitnessId()
-    {
-        int result = -1;
-        Incident incident = claim.getIncident();
-
-        if (incident != null) {
-            Witness witness = incident.getWitness();
-            result = witness == null ? -1 : witness.getId();
+    public int getInvoiceId() {
+        if (invoideId == null) {
+            Invoice i = claim.getInvoice();
+            invoideId = i == null ? -1 : i.getId();
         }
 
-        return result;
+        return invoideId;
     }
-    
-    public int getInjuryId() {
-        int result = -1;
-        Incident incident = claim.getIncident();
 
-        if (incident != null) {
-            Injury injury = incident.getInjury();
-            result = injury == null ? -1 : injury.getId();
+    public int getVehicleHireId() {
+        if (vehicleHireId == null) {
+            VehicleHire v = claim.getVehicleHire();
+            vehicleHireId = v == null ? -1 : v.getId();
         }
 
-        return result;
+        return vehicleHireId;
     }
     
-        public int getInjurySolicitorId() {
-        int result = -1;
-        Incident incident = claim.getIncident();
+    public int getEngineerReportId() {
+        if (engineerReportId == null) {
+            EngineerReport e = claim.getEngineerReport();
+            engineerReportId = e == null ? -1 : e.getId();
+        }
 
-        if (incident != null) {
-            Injury injury = incident.getInjury();
-            if(injury != null)
-            {
-                Solicitor solicitor = injury.getSolicitor();
-                result = solicitor == null ? -1 : solicitor.getId();
+        return engineerReportId;
+    }
+
+    public int getWitnessId() {
+        if (witnessId == null) {
+            witnessId = -1;
+            Incident incident = claim.getIncident();
+
+            if (incident != null) {
+                Witness witness = incident.getWitness();
+                witnessId = witness == null ? -1 : witness.getId();
             }
         }
+        return witnessId;
+    }
 
-        return result;
+    public int getInjuryId() {
+
+        if (injuryId == null) {
+            injuryId = -1;
+            Incident incident = claim.getIncident();
+
+            if (incident != null) {
+                Injury injury = incident.getInjury();
+                injuryId = injury == null ? -1 : injury.getId();
+            }
+        }
+        return injuryId;
+    }
+
+    public int getInjurySolicitorId() {
+
+        if (injurySolicitorId == null) {
+            injurySolicitorId = -1;
+            Incident incident = claim.getIncident();
+
+            if (incident != null) {
+                Injury injury = incident.getInjury();
+                if (injury != null) {
+                    Solicitor solicitor = injury.getSolicitor();
+                    injurySolicitorId = solicitor == null ? -1 : solicitor.getId();
+                }
+            }
+        }
+        return injurySolicitorId;
     }
 
     public boolean getIsClaimClosed(){
@@ -1087,5 +1113,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return bFlag;
     }
+
 
 }

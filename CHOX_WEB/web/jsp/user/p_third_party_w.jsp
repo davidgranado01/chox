@@ -156,7 +156,13 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Vehicle Class</label>
-                
+                <s:select name="vehicleClassId"  
+                          list="vehicleClasses"  
+                          listKey="id"  
+                          listValue="name" 
+                          headerKey="-1" 
+                          headerValue="--SELECT--" 
+                          emptyOption="false"></s:select>                               
                 </div>   
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" /></div>
