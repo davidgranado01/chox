@@ -10,7 +10,7 @@ public class VehicleClassServiceImpl  extends DataService implements VehicleClas
 
     public VehicleClass getVehicleClassByName(String s){
   
-        VehicleClass vehicleclass = new VehicleClass();
+        VehicleClass vehicleclass = null;
         
         try {
             
@@ -29,7 +29,7 @@ public class VehicleClassServiceImpl  extends DataService implements VehicleClas
     
     public VehicleClass getVehicleClassByNodeName(Element thisElement, String nodeName) {
         
-        VehicleClass vehicleclass = new VehicleClass();
+        VehicleClass vehicleclass = null;
         
         if(XmlHelper.isNotNull(XmlHelper.getNodeValue(thisElement, nodeName))){
             vehicleclass = getVehicleClassByName(XmlHelper.getNodeValue(thisElement, nodeName));
