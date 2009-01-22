@@ -41,12 +41,14 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
     public Long getNonDEPaymentLogCount() {
         return (long)0;
     }
-
+    
+    // UPDATED BY CR, 20090122 - 2100
     public Long getPenaltyChargeAppliedCount() {
         
-        String q = "select count(*) from Claim as c inner join c.invoice as iv where c.status <> '" 
-                + ClaimStatus.INVOICE_PAYMENT_LOGGED
-                + "' AND iv.panaltyAlertQty >= 0"
+        String q = "select count(*) from Claim as c inner join c.invoice as iv where " 
+                + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_LOGGED + "' AND "
+                + "c.status <> '" + ClaimStatus.CLAIM_CLOSED + "' "
+                + "AND iv.panaltyAlertQty >= 0"
                 + " AND day(current_date() - iv.dateInvoiced) > ((iv.panaltyAlertQty + 1) * 30)";
         
        return getCount(q);
