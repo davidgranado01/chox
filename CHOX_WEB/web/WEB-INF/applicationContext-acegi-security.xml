@@ -30,7 +30,11 @@
         </property>
         <!--<property name="passwordEncoder"><ref local="passwordEncoder"/></property>-->
     </bean>
-    <bean id="userDetailsService" class="chox.web.security.WebUserService" />
+    <bean id="userDetailsService" class="chox.web.security.WebUserService" singleton="false">
+        <property name="userService">
+            <ref bean="userService" />
+        </property>
+    </bean>
 
     <!-- Automatically receives AuthenticationEvent messages -->
     <bean id="loggerListener" class="org.acegisecurity.event.authentication.LoggerListener"/>
