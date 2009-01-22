@@ -684,4 +684,44 @@ ALTER TABLE customer ALTER COLUMN occupation SET STORAGE EXTENDED;
 ALTER TABLE customer ADD COLUMN policy_usage character varying(100);
 ALTER TABLE customer ALTER COLUMN policy_usage SET STORAGE EXTENDED;
 
+
+
+-- ############################################################################################
+-- START VERSION V2.21 - 20090122
+-- ############################################################################################\
+
+-- ADD ACCESSIBLITY - TAB
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.ClaimDetail.ClaimClosed');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.HireMonitoring.ClaimClosed');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.History.ClaimClosed');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.InvoiceDetail.ClaimClosed');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.Notes.ClaimClosed');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.PaymentPack.ClaimClosed');
+
+------------------------------------------------------------------------------------------------
+
+-- INSERT ACCESSIBILITY ITEM
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.ClaimDetail.ClaimClosed'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.HireMonitoring.ClaimClosed'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.History.ClaimClosed'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.InvoiceDetail.ClaimClosed'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.Notes.ClaimClosed'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.PaymentPack.ClaimClosed'), (select max(id)+1 from accessibility_item));
+
+------------------------------------------------------------------------------------------------
+
+CREATE TABLE application_release
+(
+  release_date timestamp without time zone,
+  release_by character varying(100),
+  release_version character varying(50),
+  patch_name character varying DEFAULT 100
+)
+WITH (OIDS=FALSE);
+ALTER TABLE application_release OWNER TO postgres;
+
+------------------------------------------------------------------------------------------------
+
+-- insert into application_release (release_date, release_by, release_version, patch_name) values (current_date, 'Carlson Hoo', '2.22', 'Build Release V2.22 - 20090123');
+
 ------------------------------------------------------------------------------------------------
