@@ -361,7 +361,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                     new TransactionCallbackWithoutResult() {
 
                         public void doInTransactionWithoutResult(TransactionStatus status) {
-     
+
                             if (!readOnlyXmlParseResult.getIsClaimExist()) {
                                 customerService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                                 thirdPartyService.saveObjectForXMLUploader(readOnlyXmlParseResult);
@@ -370,17 +370,17 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                                 injuryService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                                 solicitorService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                                 hireMonitoringDetailService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-
-                                engineerReportService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-                                vehicleHireService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-                                invoiceService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-                                claimService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                             }
 
-                                
-                                if (readOnlyXmlParseResult.getIsClaimExist()) {
-                                    auditTrailService.logAuditLog(readOnlyXmlParseResult.getClaim().getStatus(), readOnlyXmlParseResult.getClaim().getId());
-                                }                         
+                            engineerReportService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                            vehicleHireService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                            invoiceService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                            claimService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+
+
+                            if (readOnlyXmlParseResult.getIsClaimExist()) {
+                                auditTrailService.logAuditLog(readOnlyXmlParseResult.getClaim().getStatus(), readOnlyXmlParseResult.getClaim().getId());
+                            }                        
                         }
                     });
         }
