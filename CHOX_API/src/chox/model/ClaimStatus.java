@@ -7,10 +7,6 @@ package chox.model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Emmanuel
- */
 public class ClaimStatus {
 
     public static final String CLAIM_UNACKNOWLEDGED_UNROUTED = "ClaimUnacknowledgedUnrouted";
@@ -68,4 +64,5 @@ public class ClaimStatus {
 //        }
 //        return rStatus;
 //    }
+    
 }
