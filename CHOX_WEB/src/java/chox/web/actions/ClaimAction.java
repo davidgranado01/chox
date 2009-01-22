@@ -813,6 +813,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
     
+    public String doUpdateClaimStatus() {
+        String result = SUCCESS;
+        try {
+            claim = service.getClaim(id);
+            claim.setStatus(ClaimStatus.CLAIM_CLOSED);
+            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            result = ERROR;
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+        return result;
+    }
+    
     public String getAlertPanel() {
         String result = EMPTY;
 
@@ -866,7 +880,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             Invoice invoice = claim.getInvoice();
 
             //if PanaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
-            if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) && invoice.getPanaltyAlertQty() > -1) {                
+            if (invoice != null 
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) 
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) 
+                    && invoice.getPanaltyAlertQty() > -1) {                
                 result = invoice.getInvoicedDays() > (invoice.getPanaltyAlertQty() + 1) * 30;
             }
         }
@@ -958,4 +975,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return panelAccessibility;
     }
     
+    public boolean getIsClaimClosed(){
+        boolean bFlag = false;
+        if(claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)){
+            bFlag = true;
+        }
+        return bFlag;
+    }
 }

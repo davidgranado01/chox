@@ -13,7 +13,7 @@
         <title>IDAS-CHOX</title>
         <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
         <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
-        
+       
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery-1.2.6.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.form.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.blockUI.js"></script>
@@ -475,6 +475,17 @@
    function updateAnomalies(a){
         document.location = "doUpdateAnomalies.action?id="+a;
     }
+
+   function closeClaimStatus(a){
+       
+       if(!confirm('Are you sure you want to close this claim?')){
+                return false;
+        }else{
+            document.location = "doUpdateClaimStatus.action?id="+a;
+        }
+        return true;
+   }
+    
 </script>        
         
     </head>    
@@ -516,9 +527,7 @@
                         </tr>
                     </table>
                 </div>
-                
-                
-                
+                                
                 <div style="width:960px">
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">
                         <fieldset class="x-fieldset">
@@ -568,7 +577,13 @@
                                         </span></label></td>
                                     </s:if>
                                     
-                                </tr>  
+                                </tr>
+                                
+<s:if test="!isClaimClosed">
+<tr>
+    <td colspan="3"><input value="Close" type="button" onclick="javascript:return closeClaimStatus('<s:property value="id" />');"/></td>
+</tr>
+</s:if>
 
 <s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">
 <tr>

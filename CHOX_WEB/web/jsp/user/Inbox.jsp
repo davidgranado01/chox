@@ -97,7 +97,6 @@
     function showClaimIsPanaltyChargeApplied()
     {       
         ds.baseParams = {
-            
             isPanaltyChargeApplied : true
         }
         ds.load(
@@ -307,13 +306,12 @@
     }
     
 </script>
-    
 
 <body>
     
     
     <div class="outer" id="outerDiv">
-        
+       
         <div class="inner">
             
             
@@ -417,7 +415,7 @@
             <div class="excel-export"><form name="thisForm">
             <a href="javascript:doExportExcel();">Export To Excel</a></form></div>
         </div>
-        
+        </div>
 <div class="footerText">
 ©2009 Sherwood Compliance Services Ltd | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','Copyright');" class="footerText">Copyright</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','PrivacyPolicy');" class="footerText">Privacy Policy</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','TermsOfService');" class="footerText">Terms of Service</a></div>
 </body>
