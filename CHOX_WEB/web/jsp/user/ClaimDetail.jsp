@@ -580,17 +580,20 @@
                                     
                                 </tr>
                                 
+
+
+<s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">
+<tr>
+<td colspan="3"><div class="status-info">This claim has been reviewed by an FNOL Handler, please review notes that may have been added before proceeding.</div></td>
+</tr><br/>
+</s:if>    
+
 <s:if test="!isClaimClosed">
 <tr>
     <td colspan="3" align="right"><input style="width:200px;" value="Close Claim" type="button" onclick="javascript:return closeClaimStatus('<s:property value="id" />');"/></td>
 </tr>
 </s:if>
 
-<s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">
-<tr>
-<td colspan="3"><div class="status-info">This claim has been reviewed by an FNOL Handler, please review notes that may have been added before proceeding.</div></td>
-</tr>
-</s:if>                                
                             </table>
                         </fieldset>
                     </div>
