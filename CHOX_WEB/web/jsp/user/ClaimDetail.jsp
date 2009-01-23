@@ -69,6 +69,7 @@
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); }); 
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
         $('.entity-form').ajaxForm(globalEntityFormOptions);
+        pingServer();
     });
 
     function onBeforeSubmit(formData, jqForm, options) { 
@@ -440,8 +441,8 @@
     }
     
             
-    $(document).everyTime(3000, function() {
-        //pingServer();
+    $(document).everyTime(4000, function() {
+        pingServer();
     });
     
      function pingServer()

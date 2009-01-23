@@ -60,10 +60,8 @@
     ds.setDefaultSort('created', 'desc');
     // var c = new Ext.DatePicker({renderTo: 'doSearchClaim_invoiceUploadDateFrom'});
     
-    Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
-    
-    Ext.onReady(setupGrid); 
-    
+    Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';     
+   
     function showClaimByStatus(status)
     {     
         ds.baseParams = {
@@ -77,6 +75,8 @@
                 limit:10
             }
         });
+        
+         refreshViewingStatus();
     }    
     
     function showClaimIsAnomalies()
@@ -92,6 +92,7 @@
                 limit:10
             }
         });
+        refreshViewingStatus();
     }   
     
     function showClaimIsPanaltyChargeApplied()
@@ -107,6 +108,8 @@
                 limit:10
             }
         });
+        
+        refreshViewingStatus();
     }  
     
     function doExportExcel(){
@@ -158,6 +161,8 @@
                 limit:10
             }
         });
+        
+         refreshViewingStatus();
         
     }
     
@@ -279,8 +284,8 @@
         hireDateToPicker.render('hireDateToDiv');
     }     
     
-    $(document).everyTime(3000, function() {
-        //refreshViewingStatus();
+    $(document).everyTime(4000, function() {
+        refreshViewingStatus();
     });
     
     function refreshViewingStatus()
@@ -305,6 +310,10 @@
         }
     }
     
+     Ext.onReady(function(){
+        setupGrid();
+    });  
+    
 </script>
 
 <body>
@@ -312,8 +321,7 @@
     
     <div class="outer" id="outerDiv">
        
-        <div class="inner">
-            
+        <div class="inner">            
             
             <div id="chox-menu">
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
