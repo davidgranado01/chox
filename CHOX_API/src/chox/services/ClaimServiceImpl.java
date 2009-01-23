@@ -5,15 +5,19 @@ import chox.model.Claim;
 import chox.model.ClaimStatus;
 import chox.model.XMLParseResult;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 
 public class ClaimServiceImpl extends DataService implements ClaimService, Serializable {
 
@@ -143,7 +147,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
     }
 
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria,int start,int limit,String sort,String dir) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
+         Criteria criteria = getSession().createCriteria(Claim.class)
             .createAlias("this.invoice", "iv",CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.lineOfBusiness", "lob",CriteriaSpecification.LEFT_JOIN)
             .createAlias("this.thirdParty", "tp",CriteriaSpecification.LEFT_JOIN)
@@ -161,7 +165,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         if (searchCriteria.getInsurerId() > 0) {
             criteria.add(Restrictions.eq("ins.id", searchCriteria.getInsurerId()));
         }
-        if (searchCriteria.getSupplierId() > 0) {            
+        if (searchCriteria.getSupplierId() > 0) {
             criteria.add(Restrictions.eq("cho.id", searchCriteria.getSupplierId()));
         }
         if (searchCriteria.getLineOfBusinessId() > 0) {
@@ -171,10 +175,11 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             criteria.add(Restrictions.eq("isAnomalies", true));
         }
         if (searchCriteria.getIspenaltyChargeApplied()) {
-           criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
-           criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
-           criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
-           criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.date_invoiced)>(iv1_.panalty_alert_qty+1)*30"));
+            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
+            criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
+            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_REJECTED_ACCEPTED));
+            criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
+            criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.date_invoiced)>(iv1_.panalty_alert_qty+1)*30"));
         }
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {
             criteria.add(Restrictions.like("iv.claimInvoiceNo", searchCriteria.getInvoiceNumber()).ignoreCase());
@@ -185,8 +190,8 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         if (searchCriteria.getVrn() != null && !searchCriteria.getVrn().isEmpty()) {
             String vrn = searchCriteria.getVrn().replaceAll(" ", "");
             criteria.add(Restrictions.like("tp.vehicleRegistration", vrn).ignoreCase());
-        }      
- 
+        }
+
         if (searchCriteria.getClaimUploadDateFrom() != null) {
             Date d = searchCriteria.getClaimUploadDateFrom();
             d.setHours(0);
@@ -219,7 +224,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
                 criteria.add(Expression.le("iv.createdDate", d));
             }
         }
-        
+
         if (searchCriteria.getHireDateFrom() != null || searchCriteria.getHireDateTo() != null) {
             if (searchCriteria.getHireDateFrom() != null) {
                 Date d = searchCriteria.getHireDateFrom();
@@ -241,74 +246,63 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         //    criteria.add(Expression.between("createdDate", searchCriteria.getHireDateFrom(), searchCriteria.getHireDateTo()));
         //}
         criteria.setProjection(Projections.rowCount());
-       
-        List totalCountResult = findByCriteria(criteria);
-        Integer totalCount = (Integer)totalCountResult.get(0);
-                     
+
+        List totalCountResult = criteria.list();
+        Integer totalCount = (Integer) totalCountResult.get(0);
+
         criteria.setProjection(null);
-        if(!sort.isEmpty() && !dir.isEmpty() )
-        {
-            if(sort.equalsIgnoreCase("supplierReference"))
-            {
-                addSort(criteria,"choReference",dir);
-            }
-            else if(sort.equalsIgnoreCase("vehicleRegistration"))
-            {
-                addSort(criteria,"tp.vehicleRegistration",dir);
-            }
-            else if(sort.equalsIgnoreCase("claimNumber"))
-            {
-                 addSort(criteria,"claimNumber",dir);
-            }
-            else if(sort.equalsIgnoreCase("invoiceAmount"))
-            {
-                addSort(criteria,"iv.totalToPay",dir);
-            }
-            else if(sort.equalsIgnoreCase("createdDate"))
-            {
-                addSort(criteria,"createdDate",dir);
-            }
-            else if(sort.equalsIgnoreCase("status"))
-            {
-                addSort(criteria,"status",dir);
-            }
-            else if(sort.equalsIgnoreCase("lineOfBusiness"))
-            {
-                addSort(criteria,"lob.name",dir);
-            }
-            else if(sort.equalsIgnoreCase("cho"))
-            {
-                 addSort(criteria,"cho.name",dir);
-            }
-            else if(sort.equalsIgnoreCase("insurer"))
-            {
-                addSort(criteria,"ins.name",dir);
-            }
-            else if(sort.equalsIgnoreCase("createdBy"))
-            {
-                addSort(criteria,"cb.firstName",dir);
-                addSort(criteria,"cb.lastName",dir);
-            }
-            else
-            {
-                addSort(criteria,"createdDate",dir);
+
+        if (!sort.isEmpty() && !dir.isEmpty()) {
+            if (sort.equalsIgnoreCase("supplierReference")) {
+                addSort(criteria, "choReference", dir);
+            } else if (sort.equalsIgnoreCase("vehicleRegistration")) {
+                addSort(criteria, "tp.vehicleRegistration", dir);
+            } else if (sort.equalsIgnoreCase("claimNumber")) {
+                addSort(criteria, "claimNumber", dir);
+            } else if (sort.equalsIgnoreCase("invoiceAmount")) {
+                addSort(criteria, "iv.totalToPay", dir);
+            } else if (sort.equalsIgnoreCase("createdDate")) {
+                addSort(criteria, "createdDate", dir);
+            } else if (sort.equalsIgnoreCase("status")) {
+                addSort(criteria, "status", dir);
+            } else if (sort.equalsIgnoreCase("lineOfBusiness")) {
+                addSort(criteria, "lob.name", dir);
+            } else if (sort.equalsIgnoreCase("cho")) {
+                addSort(criteria, "cho.name", dir);
+            } else if (sort.equalsIgnoreCase("insurer")) {
+                addSort(criteria, "ins.name", dir);
+            } else if (sort.equalsIgnoreCase("createdBy")) {
+                addSort(criteria, "cb.firstName", dir);
+                addSort(criteria, "cb.lastName", dir);
+            } else {
+                addSort(criteria, "createdDate", dir);
             }
         }
 
-        List result = findByCriteria(criteria,Claim.class,start,limit);
-        return new SearchResult(result,totalCount);
-    }
-    
-    private void addSort(DetachedCriteria criteria,String sort,String dir)
-    {
+        criteria.setFirstResult(start);
+        criteria.setMaxResults(limit);
+       
+        criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP); 
+        List<HashMap> resultMap = criteria.list();
+        
+        List claims = new ArrayList<Claim>();
+        
+        for(HashMap m : resultMap)
+        {
+            claims.add(m.get("this"));
+        }
+        
+        return new SearchResult(claims,totalCount);
+    } 
+
+    private void addSort(Criteria criteria, String sort, String dir) {
         if (dir.equalsIgnoreCase("desc")) {
             criteria.addOrder(Order.desc(sort));
         } else {
             criteria.addOrder(Order.asc(sort));
         }
     }
-    
-   
+     
     public Boolean isClaimReferenceNumberExist(String sClaimReferenceNumber) {
 
         Boolean bFlag = false;
