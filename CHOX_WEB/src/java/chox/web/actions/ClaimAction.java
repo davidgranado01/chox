@@ -679,8 +679,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             RulesEngineResponse reponse = invoiceService.XMLUploaderInvoiceValidation(claim);
             historyService.logInvoiceValidationErrorMsg(reponse, claim);
 
-            claim = service.getClaim(claim.getId());
-           newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_INS;
+            newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_INS;
 
         } else {
             newStatus = ClaimStatus.INVOICE_REJECTED_ACCEPTED;

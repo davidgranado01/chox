@@ -46,7 +46,6 @@ public class InvoiceCalcHelper {
         totalNet = totalNet.add(invoice.getEngineerFeeNet());
         totalNet = totalNet.add(invoice.getStorageRecoveryNet());
         totalNet = totalNet.add(invoice.getDeductionForClaimsHandlingFee());
-        //totalNet = totalNet.add(invoice.getPenaltyCharge());
 
         return totalNet;
     }
@@ -60,6 +59,7 @@ public class InvoiceCalcHelper {
     }
 
     public BigDecimal getCalculatedTotalToPay() {
-        return getCalculatedTotalGross().add(invoice.getDiscount());
+        BigDecimal charges = invoice.getDiscount().add(invoice.getPenaltyCharge());
+        return getCalculatedTotalGross().add(charges);
     }
 }
