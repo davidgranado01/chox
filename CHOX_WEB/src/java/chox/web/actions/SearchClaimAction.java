@@ -67,7 +67,7 @@ public class SearchClaimAction extends BaseAction implements SessionAware{
         return supplierId;
     }
 
-    public void setSupplierName(int supplierId) {
+    public void setSupplierId(int supplierId) {
         this.supplierId = supplierId;
     }
 
