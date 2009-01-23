@@ -257,7 +257,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Penalty Charge</label>
-            <input type="text" class="chox-ttnum"  name="panaltyCharge" disabled="true" value="<s:property value="panaltyCharge" />"/></div>            
+            <input type="text" class="chox-ttnum"  name="penaltyCharge" disabled="true" value="<s:property value="penaltyCharge" />"/></div>            
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label">

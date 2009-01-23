@@ -28,7 +28,7 @@ public class ClaimSearchCriteria implements Serializable {
     private Date hireDateTo;    
     private int lineOfBusinessId;    
     private boolean isAnomalies;    
-    private boolean isPanaltyChargeApplied;
+    private boolean ispenaltyChargeApplied;
 
     public String getSupplierReference() {
         return supplierReference;
@@ -150,11 +150,11 @@ public class ClaimSearchCriteria implements Serializable {
         this.isAnomalies = isAnomalies;
     }
 
-    public boolean getIsPanaltyChargeApplied() {
-        return isPanaltyChargeApplied;
+    public boolean getIspenaltyChargeApplied() {
+        return ispenaltyChargeApplied;
     }
 
-    public void setIsPanaltyChargeApplied(boolean isPanaltyChargeApplied) {
-        this.isPanaltyChargeApplied = isPanaltyChargeApplied;
+    public void setIspenaltyChargeApplied(boolean ispenaltyChargeApplied) {
+        this.ispenaltyChargeApplied = ispenaltyChargeApplied;
     }
 }

@@ -44,5 +44,7 @@ public interface IInvoiceInfo {
     public BigDecimal getDiscount();
 
     public BigDecimal getTotalToPay();
+    
+    public BigDecimal getPenaltyCharge();
 
 }

@@ -95,10 +95,10 @@
         refreshViewingStatus();
     }   
     
-    function showClaimIsPanaltyChargeApplied()
+    function showClaimIspenaltyChargeApplied()
     {       
         ds.baseParams = {
-            isPanaltyChargeApplied : true
+            ispenaltyChargeApplied : true
         }
         ds.load(
         {
@@ -403,7 +403,7 @@
                             <li><a href="javascript:showClaimByStatus('ClaimReferredToFNOL');" >Claims To Be Registered (<s:property value="filterRecordCounter.ClaimReferredToFNOLCount" />)</a></li>
                         </s:if>          
                         <s:if test="filterAccessibility.isPenaltyChargesAppliedAccessible">
-                            <li><a href="javascript:showClaimIsPanaltyChargeApplied();" >Penalty Charges To Be Applied (<s:property value="filterRecordCounter.PenaltyChargesAppliedCount" />)</a></li>
+                            <li><a href="javascript:showClaimIspenaltyChargeApplied();" >Penalty Charges To Be Applied (<s:property value="filterRecordCounter.PenaltyChargesAppliedCount" />)</a></li>
                         </s:if>    
                     </ul>
                     

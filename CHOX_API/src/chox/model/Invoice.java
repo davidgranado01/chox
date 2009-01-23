@@ -261,8 +261,8 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo,Auditabl
         protected BigDecimal hireRateChargedPerDay;
         protected BigDecimal excessAmountCollected;
         protected BigDecimal vatAmountCollected;
-	protected BigDecimal panaltyCharge;
-        protected Integer panaltyAlertQty;
+	protected BigDecimal penaltyCharge;
+        protected Integer penaltyAlertQty;
 
 	/**
 	 * Method 'Invoice'
@@ -1290,20 +1290,20 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo,Auditabl
         this.vatAmountCollected = vatAmountCollected;
     }
 
-    public BigDecimal getPanaltyCharge() {
-        return panaltyCharge == null ? BigDecimal.ZERO : panaltyCharge;
+    public BigDecimal getPenaltyCharge() {
+        return penaltyCharge == null ? BigDecimal.ZERO : penaltyCharge;
     }
 
-    public void setPanaltyCharge(BigDecimal panaltyCharge) {
-        this.panaltyCharge = panaltyCharge == null ? BigDecimal.ZERO : panaltyCharge;
+    public void setPenaltyCharge(BigDecimal penaltyCharge) {
+        this.penaltyCharge = penaltyCharge == null ? BigDecimal.ZERO : penaltyCharge;
     }
 
-    public Integer getPanaltyAlertQty() {
-        return panaltyAlertQty == null ? 0 : panaltyAlertQty;
+    public Integer getPenaltyAlertQty() {
+        return penaltyAlertQty == null ? 0 : penaltyAlertQty;
     }
 
-    public void setPanaltyAlertQty(Integer panaltyAlertQty) {
-        this.panaltyAlertQty = panaltyAlertQty == null ? 0 : panaltyAlertQty;
+    public void setPenaltyAlertQty(Integer penaltyAlertQty) {
+        this.penaltyAlertQty = penaltyAlertQty == null ? 0 : penaltyAlertQty;
     }
     
     public long getInvoicedDays()

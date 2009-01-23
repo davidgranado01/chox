@@ -53,7 +53,7 @@ public class SearchClaimAction extends BaseAction implements SessionAware{
     private int limit;
     private String sort;
     private String dir;
-    private boolean isPanaltyChargeApplied;
+    private boolean ispenaltyChargeApplied;
     
     public String getSupplierReference() {
         return supplierReference;
@@ -229,7 +229,7 @@ public class SearchClaimAction extends BaseAction implements SessionAware{
         c.setInvoiceUploadDateFrom(invoiceUploadDateFrom);
         c.setInvoiceUploadDateTo(invoiceUploadDateTo);
         c.setIsAnomalies(isAnomalies);
-        c.setIsPanaltyChargeApplied(isPanaltyChargeApplied);
+        c.setIspenaltyChargeApplied(ispenaltyChargeApplied);
         c.setLineOfBusinessId(lineOfBusinessId);
         c.setStatus(status);
         c.setSupplierReference(supplierReference);
@@ -307,12 +307,12 @@ public class SearchClaimAction extends BaseAction implements SessionAware{
         this.dir = dir;
     }
 
-    public boolean IsPanaltyChargeApplied() {
-        return isPanaltyChargeApplied;
+    public boolean IspenaltyChargeApplied() {
+        return ispenaltyChargeApplied;
     }
 
-    public void setIsPanaltyChargeApplied(boolean isPanaltyChargeApplied) {
-        this.isPanaltyChargeApplied = isPanaltyChargeApplied;
+    public void setIspenaltyChargeApplied(boolean ispenaltyChargeApplied) {
+        this.ispenaltyChargeApplied = ispenaltyChargeApplied;
     }
 
     

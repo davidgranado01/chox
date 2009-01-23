@@ -837,11 +837,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
         long dateDiff = DateHelper.daysBetween(invoice.getDateInvoiced(),new Date());
         setInvoiceIntroducedDays(dateDiff);
-        setTotalAmountToPayBeforeNewPenaltyCharge(invoice.getTotalToPay().subtract(invoice.getPanaltyCharge()));
+        setTotalAmountToPayBeforeNewPenaltyCharge(invoice.getTotalToPay().subtract(invoice.getPenaltyCharge()));
         setTotalAmountToPayAfterNewPenaltyCharge(invoice.getTotalToPay());        
         setTotalAmountToPayBeforeNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayBeforeNewPenaltyCharge()));
         setTotalAmountToPayAfterNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayAfterNewPenaltyCharge()));        
-        setPenaltyChargeAmount(invoice.getPanaltyCharge());
+        setPenaltyChargeAmount(invoice.getPenaltyCharge());
         setIsRemovePenaltyAlert((Boolean) false);
         result = "penaltyChargeApplied";
 
@@ -854,17 +854,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String result = SUCCESS;
         try {
             Invoice invoice = claim.getInvoice();
-            BigDecimal newTotalAmountToPay = (invoice.getTotalToPay().subtract(invoice.getPanaltyCharge())).add(getPenaltyChargeAmount());           
+            BigDecimal newTotalAmountToPay = (invoice.getTotalToPay().subtract(invoice.getPenaltyCharge())).add(getPenaltyChargeAmount());           
             invoice.setTotalToPay(newTotalAmountToPay);
-            invoice.setPanaltyCharge(getPenaltyChargeAmount());           
+            invoice.setPenaltyCharge(getPenaltyChargeAmount());           
             Boolean isRemovePenaltyAlert = getIsRemovePenaltyAlert();
             if(isRemovePenaltyAlert != null && isRemovePenaltyAlert)
             {
                 long dateDiff = DateHelper.daysBetween(invoice.getDateInvoiced(),new Date());
-                int newPanaltyAlertQty = (int)(dateDiff/30);
-                //if PanaltyAlertQty > 3 mean it already reach the limit and alert not showing anymore, set it to -1
-                newPanaltyAlertQty = newPanaltyAlertQty >= 3 ? -1 : newPanaltyAlertQty;
-                invoice.setPanaltyAlertQty(newPanaltyAlertQty);
+                int newpenaltyAlertQty = (int)(dateDiff/30);
+                //if penaltyAlertQty > 3 mean it already reach the limit and alert not showing anymore, set it to -1
+                newpenaltyAlertQty = newpenaltyAlertQty >= 3 ? -1 : newpenaltyAlertQty;
+                invoice.setPenaltyAlertQty(newpenaltyAlertQty);
             }
             this.invoiceService.updateObject(invoice);
         } catch (Exception ex) {
@@ -895,12 +895,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (getIsCHO()) {
             Invoice invoice = claim.getInvoice();
 
-            //if PanaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
+            //if penaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
             if (invoice != null 
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) 
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) 
-                    && invoice.getPanaltyAlertQty() > -1) {                
-                result = invoice.getInvoicedDays() > (invoice.getPanaltyAlertQty() + 1) * 30;
+                    && invoice.getPenaltyAlertQty() > -1) {                
+                result = invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30;
             }
         }
 
@@ -914,7 +914,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (getIsCHO()) {
             Invoice invoice = claim.getInvoice();
 
-            //if PanaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
+            //if penaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
             if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {                
                 result = invoice.getInvoicedDays() > 30;
             }

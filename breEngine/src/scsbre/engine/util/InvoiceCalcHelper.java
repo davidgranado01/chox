@@ -46,6 +46,7 @@ public class InvoiceCalcHelper {
         totalNet = totalNet.add(invoice.getEngineerFeeNet());
         totalNet = totalNet.add(invoice.getStorageRecoveryNet());
         totalNet = totalNet.add(invoice.getDeductionForClaimsHandlingFee());
+        //totalNet = totalNet.add(invoice.getPenaltyCharge());
 
         return totalNet;
     }
