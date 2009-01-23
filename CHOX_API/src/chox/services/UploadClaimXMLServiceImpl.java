@@ -379,7 +379,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
 
 
                             if (readOnlyXmlParseResult.getIsClaimExist()) {
-                                auditTrailService.logAuditLog(readOnlyXmlParseResult.getClaim().getStatus(), readOnlyXmlParseResult.getClaim().getId());
+                                auditTrailService.logAuditLog("",ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, readOnlyXmlParseResult.getClaim());
                             }                        
                         }
                     });

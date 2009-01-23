@@ -225,10 +225,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 //LineOfBusiness lob = new LineOfBusiness();
                 //lob.setId(this.lineOfBusinessId);
                 //claim.setLineOfBusiness(lob);
-                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                
                 try {
-                    auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
-                    
+                    String newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
+                    auditTrailService.logAuditLog(newStatus,claim);
+                    claim.setStatus(newStatus);
                     this.service.updateClaim(claim);
                     
                 } catch (Exception ex) {
@@ -245,13 +246,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String acknowledge() {
 
         String result = SUCCESS;
+        String newStatus = "";
         //chack whether line of busineess if set 
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) 
         {
             String validationResult = validateAcknowledgeClaimInfo();
             if (validationResult.isEmpty()) {
-                claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
+                newStatus = ClaimStatus.AWAITING_CAR_HIRE_INFO;
             } else {
                 claim.setClaimNumber("");
                 result = ERROR;
@@ -262,7 +264,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         {
             String validationResult = validateAcknowledgeClaimInfo();            
             if (validationResult.isEmpty()) {
-                claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);
+                newStatus = ClaimStatus.CLAIM_REF_TO_ENG;
             } else {
                 claim.setClaimNumber("");
                 result = ERROR;
@@ -273,7 +275,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         {
             String validationResult = validateAcknowledgeClaimInfo();            
             if (validationResult.isEmpty()) {
-                claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
+                newStatus = ClaimStatus.CLAIM_REFERRED_TO_FNOL;
             } else {
                 claim.setClaimNumber("");
                 result = ERROR;
@@ -282,26 +284,29 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         else 
         {
-            claim.setStatus(ClaimStatus.CLAIM_REJECTED);
+            newStatus = ClaimStatus.CLAIM_REJECTED;
         }
 
-        try 
-        {
-            
-            boolean isPublic = false;
-            String strPrefix = "Claim Review Note: ";
-            createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);
-            
-            claim.setEngineerClaimReviewNotes("");
-            claim.setIsFnolReviewed(false);
-            
-            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
-            this.service.updateClaim(claim);
-        } catch (Exception ex) {
-            this.actionResult = "ERROR : " + ex.getMessage();
-        }
+        if (!result.equalsIgnoreCase(ERROR)) {
+            try {
+                boolean isPublic = false;
+                String strPrefix = "Claim Review Note: ";
+                createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);
 
-        statusMsg = "Your action has been recorded";
+                claim.setEngineerClaimReviewNotes("");
+                claim.setIsFnolReviewed(false);
+
+                auditTrailService.logAuditLog(newStatus, claim);
+
+                claim.setStatus(newStatus);
+                this.service.updateClaim(claim);
+            } catch (Exception ex) {
+                result = ERROR;
+                this.actionResult = "ERROR : " + ex.getMessage();
+            }
+
+            statusMsg = "Your action has been recorded";
+        }
         return result;
     }
     
@@ -309,12 +314,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String registerFNOL() {
 
         String result = SUCCESS;
-
+        String newStatus = "";
         if (this.actionName.equalsIgnoreCase(REGISTER_FNOL)) 
         {
             String validationResult = validateAcknowledgeClaimInfo();
             if (validationResult.isEmpty()) {
-                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
                 claim.setIsFnolReviewed(true);
             } else {
                 claim.setClaimNumber("");
@@ -326,7 +331,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         {
             String validationResult = validateAcknowledgeClaimInfo();            
             if (validationResult.isEmpty()) {
-                claim.setStatus(ClaimStatus.CLAIM_REJECTED);
+                newStatus = ClaimStatus.CLAIM_REJECTED;
                 
             } else {
                 claim.setClaimNumber("");
@@ -338,13 +343,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         boolean isPublic = false;
         String strPrefix = "FNOL Review Note: ";
         createNewNote(reasonForRejection, isPublic, strPrefix);
-        
-        try 
-        {        
-            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
-            this.service.updateClaim(claim);
-        } catch (Exception ex) {
-            this.actionResult = "ERROR : " + ex.getMessage();
+
+        if (!result.equalsIgnoreCase(ERROR)) {
+            try {
+                auditTrailService.logAuditLog(newStatus, claim);
+                claim.setStatus(newStatus);
+                this.service.updateClaim(claim);
+            } catch (Exception ex) {
+                this.actionResult = "ERROR : " + ex.getMessage();
+            }
         }
 
         statusMsg = "Your action has been recorded";
@@ -388,19 +395,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     
     public String reviewByEngineer() {
         String result = SUCCESS;
-        //chack whether line of busineess if set 
-        claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
-        
-        
+        String newStatus = ClaimStatus.AWAITING_CAR_HIRE_INFO;
+
         try {
-            
+
             boolean isPublic = false;
             String strPrefix = "Claim Review Note: ";
             createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);
-            
+
             claim.setEngineerClaimReviewNotes("");
-            
-            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
+
+            auditTrailService.logAuditLog(newStatus, claim);
+            this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             this.actionResult = "ERROR : " + ex.getMessage();
@@ -412,15 +418,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String contestOrAcceptRejectedClaim() {
 
         String result = SUCCESS;
+        String newStatus;
         
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
-            claim.setStatus(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
+            newStatus = ClaimStatus.CLAIM_REJECTION_ACCEPTED;
         } else {
-            claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+            newStatus = ClaimStatus.CLAIM_REJECTION_CONTESTED;
         }
         
         try {
-            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
+            auditTrailService.logAuditLog(newStatus, claim);
+            this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             result = ERROR;
@@ -434,12 +442,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String approveContestedClaim() {
 
         String result = SUCCESS;
+        String newStatus = "";
         String validationResult = validateAcknowledgeClaimInfo();
         
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             
             if (validationResult.isEmpty()) {
-                claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
+                newStatus = ClaimStatus.AWAITING_CAR_HIRE_INFO;
             }else {
                 claim.setClaimNumber("");
                 result = ERROR;
@@ -449,7 +458,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }else if(this.actionName.equalsIgnoreCase(REFER)){
                       
             if (validationResult.isEmpty()) {
-                claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);
+                newStatus = ClaimStatus.CLAIM_REF_TO_ENG;
             } else {
                 claim.setClaimNumber("");
                 result = ERROR;
@@ -458,7 +467,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }else if(this.actionName.equalsIgnoreCase(REFER_FNOL)){
                    
             if (validationResult.isEmpty()) {
-                claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
+                newStatus = ClaimStatus.CLAIM_REFERRED_TO_FNOL;
             } else {
                 claim.setClaimNumber("");
                 result = ERROR;
@@ -466,44 +475,50 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
         }else {
             claim = service.getClaim(id);
-            claim.setStatus(ClaimStatus.CLAIM_REJECTED);
+            newStatus = ClaimStatus.CLAIM_REJECTED;
         }
         
-        try {
-            
-            boolean isPublic = false;
-            String strPrefix = "Claim Review Note: ";
-            createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);
-            claim.setEngineerClaimReviewNotes("");
-            
-            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
-            this.service.updateClaim(claim);
-            
-        } catch (Exception ex) {
-            result = ERROR;
-            this.actionResult = "ERROR : " + ex.getMessage();
+        if (!result.equalsIgnoreCase(ERROR)) {
+            try {
+
+                boolean isPublic = false;
+                String strPrefix = "Claim Review Note: ";
+                createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);
+                claim.setEngineerClaimReviewNotes("");
+
+                auditTrailService.logAuditLog(newStatus, claim);
+                this.claim.setStatus(newStatus);
+                this.service.updateClaim(claim);
+                statusMsg = "Your action has been recorded";
+
+            } catch (Exception ex) {
+                result = ERROR;
+                this.actionResult = "ERROR : " + ex.getMessage();
+            }
         }
-        statusMsg = "Your action has been recorded";
+        
         return result;
     }
 
     public String submitHireMonitoringDetail() {
 
         String result = SUCCESS;
+
         String validationResult = validateHireMonitoringDetail();
         if (validationResult.isEmpty()) {
-            claim.setStatus(ClaimStatus.AWAITING_INVOICE_DATA);
+             String newStatus = ClaimStatus.AWAITING_INVOICE_DATA;
+            try {
+                auditTrailService.logAuditLog(newStatus, claim);
+                this.claim.setStatus(newStatus);
+                this.service.updateClaim(claim);
+            } catch (Exception ex) {
+                this.actionResult = "ERROR : " + ex.getMessage();
+            }
         } else {
             result = ERROR;
             this.actionResult = validationResult;
         }
-
-        try {
-            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
-            this.service.updateClaim(claim);
-        } catch (Exception ex) {
-            this.actionResult = "ERROR : " + ex.getMessage();
-        }
+       
 
         statusMsg = "Your action has been recorded";
         return result;
@@ -541,9 +556,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (!repStatus.equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
             claim = service.getClaim(claim.getId());
-            claim.setStatus(repStatus);
+            
             try {
-                auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
+                auditTrailService.logAuditLog(repStatus, claim);
+                claim.setStatus(repStatus);
                 this.service.updateClaim(claim);
             } catch (Exception ex) {
                 this.actionResult = "ERROR : " + ex.getMessage();
@@ -562,14 +578,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String contestOrAcceptRejectedInvoice() {
 
         String result = SUCCESS;
+        String newStatus;
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
-            claim.setStatus(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
+            newStatus = ClaimStatus.CLAIM_REJECTION_ACCEPTED;
         } else {
-            claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+            newStatus = ClaimStatus.CLAIM_REJECTION_CONTESTED;
         }
         try {
-            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
+            auditTrailService.logAuditLog(newStatus, claim);
+            this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             result = ERROR;
@@ -582,21 +600,23 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String approveBREPassedClaim() {
 
         String result = SUCCESS;
+        String newStatus;
         if (this.actionName.equalsIgnoreCase(ACCEPT)) 
         {
-            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+            newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
         } 
         else if(this.actionName.equalsIgnoreCase(REFER))
         {
-            claim.setStatus(ClaimStatus.INVOICE_ESCALATED);
+            newStatus = ClaimStatus.INVOICE_ESCALATED;
         }
         else 
         {
-            claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
+            newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
         }
         try 
         {
-            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
+            auditTrailService.logAuditLog(newStatus, claim);
+            this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } 
         catch (Exception ex)
@@ -611,13 +631,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String approveEscalatedInvoice() {
 
         String result = SUCCESS;
+        String newStatus;
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
-            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+            newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
         } else {
-            claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
+            newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
         }
         try {
-            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
+            auditTrailService.logAuditLog(newStatus, claim);
+            this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             result = ERROR;
@@ -629,13 +651,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     
     public String approveContestedInvoice() {
         String result = SUCCESS;
+        String newStatus;
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
-            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+            newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
         } else {
-            claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
+            newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
         }
         try {
-            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
+            auditTrailService.logAuditLog(newStatus, claim);
+            this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             result = ERROR;
@@ -648,6 +672,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String resubmitOrAcceptContestedInvoice() {
 
         String result = SUCCESS;
+        String newStatus;
 
         if (this.actionName.equalsIgnoreCase(REJECT)) {
             claim = constructeClaimForInvoiceValidation(claim);
@@ -655,14 +680,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             historyService.logInvoiceValidationErrorMsg(reponse, claim);
 
             claim = service.getClaim(claim.getId());
-            claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
+           newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_INS;
 
         } else {
-            claim.setStatus(ClaimStatus.INVOICE_REJECTED_ACCEPTED);
+            newStatus = ClaimStatus.INVOICE_REJECTED_ACCEPTED;
         }
 
         try {
-            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
+            auditTrailService.logAuditLog(newStatus, claim);
+            this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             result = ERROR;
@@ -674,9 +700,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String logInvoicePayment() {
-        claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
+        String newStatus = ClaimStatus.INVOICE_PAYMENT_LOGGED;
         try {
-            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
+            auditTrailService.logAuditLog(newStatus, claim);
+            this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             this.actionResult = "ERROR : " + ex.getMessage();
@@ -685,7 +712,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
-    private Claim constructeClaimForInvoiceValidation(Claim claim) {
+    private Claim constructeClaimForInvoiceValidation(final Claim claim) {
 
         Claim BREClaim = claim;
 
@@ -820,7 +847,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
             claim = service.getClaim(id);
             claim.setIsAnomalies(false);
-            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             result = ERROR;
@@ -878,8 +904,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String result = SUCCESS;
         try {
             claim = service.getClaim(id);
-            claim.setStatus(ClaimStatus.CLAIM_CLOSED);
-            auditTrailService.logAuditLog(claim.getStatus(), claim.getId());
+            String newStatus = ClaimStatus.CLAIM_CLOSED;
+            auditTrailService.logAuditLog(newStatus, claim);
+            this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             result = ERROR;

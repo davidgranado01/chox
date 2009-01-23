@@ -6,10 +6,11 @@
 package chox.services;
 
 import chox.model.AuditTrail;
-import java.util.List;
+import chox.model.Claim;
+import chox.model.WebUser;
 
 public interface AuditTrailService {
-    public Boolean saveObj(AuditTrail obj);
     AuditTrail getObject(int id);
-    public Boolean logAuditLog(String newStatus, int claimId);
+    public Boolean logAuditLog(String newStatus,String oldStatus, Claim thisClaim);
+    public Boolean logAuditLog(String newStatus, Claim thisClaim);
 }
