@@ -47,6 +47,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         
         String q = "select count(*) from Claim as c inner join c.invoice as iv where " 
                 + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_LOGGED + "' AND "
+                + "c.status <> '" + ClaimStatus.INVOICE_REJECTED_ACCEPTED + "' AND "
                 + "c.status <> '" + ClaimStatus.CLAIM_CLOSED + "' "
                 + "AND iv.penaltyAlertQty >= 0"
                 + " AND day(current_date() - iv.dateInvoiced) > ((iv.penaltyAlertQty + 1) * 30)";

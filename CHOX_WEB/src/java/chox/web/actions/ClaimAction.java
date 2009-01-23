@@ -924,7 +924,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             //if penaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
             if (invoice != null 
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) 
-                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) 
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED) 
                     && invoice.getPenaltyAlertQty() > -1) {                
                 result = invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30;
             }
@@ -941,7 +942,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             Invoice invoice = claim.getInvoice();
 
             //if penaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
-            if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {                
+            if (invoice != null 
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED) ) {                
                 result = invoice.getInvoicedDays() > 30;
             }
         }
