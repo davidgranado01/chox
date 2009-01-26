@@ -443,14 +443,16 @@ div.action-message
     text-align:justify;            
 }
 
-.warning{
-    border: 1px solid;
-    margin: 10px 0px;
-    padding:10px 10px 10px 50px;
+div.status-warning{
+    background-color:white;
+    border:2px orange solid;
+    padding:8px 8px 8px 50px;
+    font-weight:normal;
+    font-size:14px;
+    margin-bottom:4px;
+    white-space:normal;
     background-repeat: no-repeat;
-    background-position: 10px center;   
-    color: #9F6000;
-    background-color: #FEEFB3;
+    background-position: 10px center; 
     background-image: url('/IDASCHOX/images/warning.png');
 }
 

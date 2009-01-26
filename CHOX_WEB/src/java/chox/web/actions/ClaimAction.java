@@ -860,8 +860,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         Invoice invoice = claim.getInvoice();
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
-        long dateDiff = DateHelper.daysBetween(invoice.getDateInvoiced(),new Date());
-        setInvoiceIntroducedDays(dateDiff);
+        setInvoiceIntroducedDays(invoice.getInvoicedDays());
         setTotalAmountToPayBeforeNewPenaltyCharge(invoice.getTotalToPay().subtract(invoice.getPenaltyCharge()));
         setTotalAmountToPayAfterNewPenaltyCharge(invoice.getTotalToPay());        
         setTotalAmountToPayBeforeNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayBeforeNewPenaltyCharge()));

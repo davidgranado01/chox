@@ -1308,7 +1308,7 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo,Auditabl
     
     public long getInvoicedDays()
     {
-        long dateDiff = DateHelper.daysBetween(getDateInvoiced(), new Date());
+        long dateDiff = DateHelper.daysBetween(getDateInvoiced(), new Date()) + 1;
         return dateDiff;
     }
     

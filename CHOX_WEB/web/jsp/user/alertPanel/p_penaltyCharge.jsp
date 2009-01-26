@@ -67,7 +67,7 @@
     <s:hidden id="hvTotalAmountToPayBeforeNewPenaltyCharge" name="totalAmountToPayBeforeNewPenaltyCharge" />
     
     <s:if test="isShowPenaltyChargeAlert">
-        <div class="warning">
+        <div class="status-warning">
             Payment for this invoice is overdue. The number of days since the invoice was created is <s:property value="invoiceIntroducedDays" />. A penalty charge may be applicable to this invoice.
         </div> 
     </s:if>

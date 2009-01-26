@@ -54,7 +54,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
                 + "c.status <> '" + ClaimStatus.INVOICE_REJECTED_ACCEPTED + "' AND "
                 + "c.status <> '" + ClaimStatus.CLAIM_CLOSED + "' "
                 + "AND iv.penaltyAlertQty >= 0"
-                + " AND day(current_date() - iv.dateInvoiced) > ((iv.penaltyAlertQty + 1) * 30)";
+                + " AND day(current_date() - iv.dateInvoiced) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
         
        return getCount(q);
     }
@@ -179,7 +179,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_REJECTED_ACCEPTED));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
-            criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.date_invoiced)>(iv1_.panalty_alert_qty+1)*30"));
+            criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.date_invoiced) + 1 >(iv1_.panalty_alert_qty+1)*30"));
         }
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {
             criteria.add(Restrictions.like("iv.claimInvoiceNo", searchCriteria.getInvoiceNumber()).ignoreCase());
