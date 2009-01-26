@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="chox.model.Invoice" table="invoice">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <property column="date_invoiced" name="dateInvoiced" not-null="true"/>
+    <property column="hire_net" name="hireNet" not-null="true"/>
+    <property column="hire_vat" name="hireVat" not-null="true"/>
+    <property column="hire_gross" name="hireGross" not-null="true"/>
+    <property column="repair_net" name="repairNet" not-null="true"/>
+    <property column="repair_vat" name="repairVat" not-null="true"/>
+    <property column="repair_gross" name="repairGross" not-null="true"/>
+    <property column="engineer_fee_net" name="engineerFeeNet" not-null="true"/>
+    <property column="engineer_fee_vat" name="engineerFeeVat" not-null="true"/>
+    <property column="engineer_fee_gross" name="engineerFeeGross" not-null="true"/>
+    <property column="storage_recovery_net" name="storageRecoveryNet" not-null="true"/>
+    <property column="storage_recovery_vat" name="storageRecoveryVat" not-null="true"/>
+    <property column="storage_recovery_gross" name="storageRecoveryGross" not-null="true"/>
+    <property column="total_net" name="totalNet" not-null="true"/>
+    <property column="total_vat" name="totalVat" not-null="true"/>
+    <property column="total_gross" name="totalGross" not-null="true"/>
+    <property column="claims_handling_invoice_amount" name="claimsHandlingInvoiceAmount" not-null="true"/>
+    <property column="deduction_for_claims_handling_fee" name="deductionForClaimsHandlingFee" not-null="true"/>
+    <property column="discount" name="discount" not-null="true"/>
+    <property column="total_to_pay" name="totalToPay" not-null="true"/>
+    <property column="handling_invoice_no" name="handlingInvoiceNo"/>
+    <property column="claim_invoice_no" name="claimInvoiceNo"/>
+    <property column="cdw_fee" name="cdwFee"/>
+    <property column="cdw_qty" name="cdwQty"/>
+    <property column="automatic_fee" name="automaticFee"/>
+    <property column="automatic_qty" name="automaticQty"/>
+    <property column="sat_nav_fee" name="satNavFee"/>
+    <property column="sat_nav_qty" name="satNavQty"/>
+    <property column="estate_fee" name="estateFee"/>
+    <property column="estate_qty" name="estateQty"/>
+    <property column="baby_seat_fee" name="babySeatFee"/>
+    <property column="baby_seat_qty" name="babySeatQty"/>
+    <property column="tow_bars_fee" name="towBarsFee"/>
+    <property column="tow_bars_qty" name="towBarsQty"/>
+    <property column="non_standard_insurance_premium_fee" name="nonStandardInsurancePremiumFee"/>
+    <property column="non_standard_insurance_premium_qty" name="nonStandardInsurancePremiumQty"/>
+    <property column="admin_fee" name="adminFee"/>
+    <property column="admin_qty" name="adminQty"/>
+    <property column="roof_rack_fee" name="roofRackFee"/>
+    <property column="roof_rack_qty" name="roofRackQty"/>
+    <property column="dual_control_fee" name="dualControlFee"/>
+    <property column="dual_control_qty" name="dualControlQty"/>
+    <property column="delivery_collection_fee" name="deliveryCollectionFee"/>
+    <property column="delivery_collection_qty" name="deliveryCollectionQty"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+    <property column="created_date" name="createdDate"/>
+    <many-to-one class="chox.model.WebUser" column="last_nodified_by" name="lastModifiedBy"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+    <property column="is_payment_mode" name="isPaymentMode"/>
+    <property column="is_engineer_decision_approved" name="isEngineerDecisionApproved"/>
+    <property column="engineer_invoice_review_notes" name="engineerInvoiceReviewNotes"/>
+    <property column="rejection_reason" name="rejectionReason"/>
+    <property column="hire_rate_charged_per_day" name="hireRateChargedPerDay"/>
+    <property column="excess_amount_collected" name="excessAmountCollected"/>
+    <property column="vat_amount_collected" name="vatAmountCollected"/>
+    <property column="panalty_charge" name="penaltyCharge"/>
+    <property column="panalty_alert_qty" name="penaltyAlertQty"/>
+  </class>
+</hibernate-mapping>
