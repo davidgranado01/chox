@@ -1,0 +1,320 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package chox.web.actions;
+
+import chox.data.ClaimSearchCriteria;
+import chox.model.Claim;
+import chox.services.ClaimService;
+import chox.services.LookupService;
+import chox.services.SearchResult;
+import chox.web.viewdata.claimGridViewData;
+import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import net.sf.json.JSONArray;
+import org.apache.struts2.interceptor.SessionAware;
+
+/**
+ *
+ * @author Emmanuel
+ */
+public class SearchClaimAction extends BaseAction implements SessionAware{
+
+    private Map session;    
+    private String supplierReference;
+    private int supplierId;
+    private String claimNumber;
+    private int insurerId;
+    private int lineOfBusinessId;
+    private String vrn;
+    private String invoiceNumber;
+    private String status;
+    private Date claimUploadDateFrom;
+    private Date claimUploadDateTo;
+    private Date invoiceUploadDateFrom;
+    private Date invoiceUploadDateTo;
+    private Date hireDateFrom;
+    private Date hireDateTo;
+    private List statuses;
+    private List lineOfBusiness;
+    private List insurers;
+    private List suppliers;
+    private LookupService lookupService;
+    private ClaimService claimService;
+    private List results;
+    private int totalCount;
+    private boolean isAnomalies;
+    private int start;
+    private int limit;
+    private String sort;
+    private String dir;
+    private boolean ispenaltyChargeApplied;
+    
+    public String getSupplierReference() {
+        return supplierReference;
+    }
+
+    public void setSupplierReference(String supplierReference) {
+        this.supplierReference = supplierReference;
+    }
+
+    public int getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public String getClaimNumber() {
+        return claimNumber;
+    }
+
+    public void setClaimNumber(String claimNumber) {
+        this.claimNumber = claimNumber;
+    }
+
+    public int getInsurerId() {
+        return this.insurerId;
+    }
+
+    public void setInsurerId(int insurerId) {
+        this.insurerId = insurerId;
+    }
+
+    public String getVrn() {
+        return vrn;
+    }
+
+    public void setVrn(String vrn) {
+        this.vrn = vrn;
+    }
+
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
+    }
+
+    public Date getClaimUploadDateFrom() {
+        return claimUploadDateFrom;
+    }
+
+    @TypeConversion(converter = "chox.web.data.DateConverter")
+    public void setClaimUploadDateFrom(Date claimUploadDateFrom) {
+        this.claimUploadDateFrom = claimUploadDateFrom;
+    }
+
+    public Date getClaimUploadDateTo() {
+        return claimUploadDateTo;
+    }
+
+    @TypeConversion(converter = "chox.web.data.DateConverter")
+    public void setClaimUploadDateTo(Date claimUploadDateTo) {
+        this.claimUploadDateTo = claimUploadDateTo;
+    }
+
+    public Date getInvoiceUploadDateFrom() {
+        return invoiceUploadDateFrom;
+    }
+
+    @TypeConversion(converter = "chox.web.data.DateConverter")
+    public void setInvoiceUploadDateFrom(Date invoiceUploadDateFrom) {
+        this.invoiceUploadDateFrom = invoiceUploadDateFrom;
+    }
+
+    public Date getInvoiceUploadDateTo() {
+        return invoiceUploadDateTo;
+    }
+
+    @TypeConversion(converter = "chox.web.data.DateConverter")
+    public void setInvoiceUploadDateTo(Date invoiceUploadDateTo) {
+        this.invoiceUploadDateTo = invoiceUploadDateTo;
+    }
+
+    public Date getHireDateFrom() {
+        return hireDateFrom;
+    }
+
+    @TypeConversion(converter = "chox.web.data.DateConverter")
+    public void setHireDateFrom(Date hireDateFrom) {
+        this.hireDateFrom = hireDateFrom;
+    }
+
+    public Date getHireDateTo() {
+        return hireDateTo;
+    }
+
+    @TypeConversion(converter = "chox.web.data.DateConverter")
+    public void setHireDateTo(Date hireDateTo) {
+        this.hireDateTo = hireDateTo;
+    }
+
+    public List getStatuses() {
+        if (statuses == null) {
+            statuses = this.lookupService.getStatuses();
+        }
+        return statuses;
+    }
+
+    public List getLineOfBusinesses() {
+
+        if (lineOfBusiness == null) {
+            lineOfBusiness = this.lookupService.getLineOfBusinesses();
+        }
+        return lineOfBusiness;
+    }
+    
+    public List getInsurers() {
+        if (insurers == null) {
+            insurers = this.lookupService.getInsurers();
+        }
+        return insurers;
+    }
+
+    public List getSuppliers() {
+        if (suppliers == null) {
+            suppliers = this.lookupService.getSuppliers();
+        }
+        return suppliers;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public String getJsonData() {
+        try {
+            List<claimGridViewData> viewData = new ArrayList<claimGridViewData>();
+
+            for (Object obj : results) {
+                Claim c = (Claim)obj;
+                viewData.add(new claimGridViewData(c));
+            }
+
+            JSONArray jsonArray = JSONArray.fromObject(viewData);
+            return "{totalCount:" + this.getTotalCount() + ",results:" + jsonArray.toString() + "}";
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public void setLookupService(LookupService service) {
+        this.lookupService = service;
+    }
+
+    public void setClaimService(ClaimService service) {
+        this.claimService = service;
+    }
+    
+    public String doSearchClaim() throws Exception {
+    
+        ClaimSearchCriteria c = new ClaimSearchCriteria();
+        
+        c.setClaimNumber(claimNumber);
+        c.setClaimUploadDateFrom(claimUploadDateFrom);
+        c.setClaimUploadDateTo(claimUploadDateTo);
+        c.setSupplierId(supplierId);
+        c.setHireDateFrom(hireDateFrom);
+        c.setHireDateTo(hireDateTo);
+        c.setInsurerId(insurerId);
+        c.setInvoiceNumber(invoiceNumber);
+        c.setInvoiceUploadDateFrom(invoiceUploadDateFrom);
+        c.setInvoiceUploadDateTo(invoiceUploadDateTo);
+        c.setIsAnomalies(isAnomalies);
+        c.setIspenaltyChargeApplied(ispenaltyChargeApplied);
+        c.setLineOfBusinessId(lineOfBusinessId);
+        c.setStatus(status);
+        c.setSupplierReference(supplierReference);
+        c.setVrn(vrn);        
+        
+        session.put("searchCriteria", c);        
+        SearchResult searchResult = this.claimService.searchClaims(c,start,limit,sort,dir);
+        results = searchResult.getResult();
+        totalCount = searchResult.getTotalCount();    
+        return SUCCESS;
+    }
+
+    @Override
+    public String execute() throws Exception {
+        return SUCCESS;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getLineOfBusinessId() {
+        return lineOfBusinessId;
+    }
+
+    public void setLineOfBusinessId(int lineOfBusinessId) {
+        this.lineOfBusinessId = lineOfBusinessId;
+    }
+
+    public void setSession(Map session) {
+        this.session = session;
+    }
+
+    public boolean IsAnomalies() {
+        return isAnomalies;
+    }
+
+    public void setIsAnomalies(boolean isAnomalies) {
+        this.isAnomalies = isAnomalies;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    public String getDir() {
+        return dir;
+    }
+
+    public void setDir(String dir) {
+        this.dir = dir;
+    }
+
+    public boolean IspenaltyChargeApplied() {
+        return ispenaltyChargeApplied;
+    }
+
+    public void setIspenaltyChargeApplied(boolean ispenaltyChargeApplied) {
+        this.ispenaltyChargeApplied = ispenaltyChargeApplied;
+    }
+
+    
+    
+}
