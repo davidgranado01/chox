@@ -588,9 +588,9 @@
 </tr><br/>
 </s:if>    
 
-<s:if test="!isClaimClosed">
+<s:if test="!isClaimClosed && isCHO">
 <tr>
-    <td colspan="3" align="right"><input style="width:200px;" value="Close Claim" type="button" onclick="javascript:return closeClaimStatus('<s:property value="id" />');"/></td>
+    <td colspan="3" align="right"><input value="Close Claim" type="button" onclick="javascript:return closeClaimStatus('<s:property value="id" />');"/></td>
 </tr>
 </s:if>
 
@@ -633,7 +633,6 @@
                                             <s:param name="claimStatus"><s:property value="status" /></s:param>         
                                         </s:action>  
                                        
-                                        
                                         <s:action name="getInjury" executeResult="true">
                                         <s:param name="objectId"><s:property value="injuryId" /></s:param>
                                         <s:param name="incidentId"><s:property value="incidentId" /></s:param>
@@ -900,10 +899,6 @@
                     </div>
 
 
-
-
-
-
 <div id="historyDetails" class="x-hide-display">
                         
 <s:if test="tabAccessibility.historyTabAccessibility != 0"> 
@@ -957,19 +952,27 @@
     </script>
    
     <div class="comments  x-panel-bwrap chox-form-container">
+
+<s:if test="!isClaimClosed"> 
+
         <form id="fComments" action="user/createNewComment.action" method="post">
             <input type="hidden" name="claimId" value='<s:property value="id" />'>
             <fieldset class="x-fieldset">
                 <legend>Add a new note</legend>
                 <s:textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment" /><br/>
                 
-<s:if test="!isCHO"> 
-    <s:checkbox name="isPublic"/>Visible to CHO?
-</s:if>
-<s:else><input name="isPublic" type="hidden" value="true"/></s:else>
+                <s:if test="!isCHO"> 
+                    <s:checkbox name="isPublic"/>Visible to CHO?
+                </s:if>
+                <s:else><input name="isPublic" type="hidden" value="true"/></s:else>
+                
                 <input type="submit" id="bAddComment" value="Add Note" onclick="javascript:return commentFormValidation();"/>
+                
             </fieldset>
         </form>
+        
+</s:if>
+
         <div class="errorBox" id="CmErrMsgBox" style="color:red;font-weight: bold;font-size: 10px;"></div>        
     </div>
 
@@ -979,13 +982,14 @@
         <br/>
         <div id="commentMessage"></div>
     </div>                      
-       
-    <div id="commentsGrid"></div>              
+        
+    <div id="commentsGrid"></div>   
+    
 </s:if>                         
                     </div>   
                 </div>
             </div>
-            
+
 <div class="footerText">
 ©2009 Sherwood Compliance Services Ltd | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','Copyright');" class="footerText">Copyright</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','PrivacyPolicy');" class="footerText">Privacy Policy</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','TermsOfService');" class="footerText">Terms of Service</a></div>
 
