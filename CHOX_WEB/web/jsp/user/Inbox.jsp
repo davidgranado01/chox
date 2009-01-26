@@ -75,8 +75,6 @@
                 limit:10
             }
         });
-        
-         refreshViewingStatus();
     }    
     
     function showClaimIsAnomalies()
@@ -92,7 +90,6 @@
                 limit:10
             }
         });
-        refreshViewingStatus();
     }   
     
     function showClaimIspenaltyChargeApplied()
@@ -109,7 +106,6 @@
             }
         });
         
-        refreshViewingStatus();
     }  
     
     function doExportExcel(){
@@ -161,8 +157,6 @@
                 limit:10
             }
         });
-        
-         refreshViewingStatus();
         
     }
     
@@ -284,9 +278,16 @@
         hireDateToPicker.render('hireDateToDiv');
     }     
     
-    $(document).everyTime(4000, function() {
-        refreshViewingStatus();
-    });
+    //$(document).everyTime(4000, function() {
+    //    refreshViewingStatus();
+    //});
+    var t;
+    
+    function random_number() {
+        var min = 10000000;
+        var max = 99999999;
+        return (Math.round((max-min) * Math.random() + min));
+    }
     
     function refreshViewingStatus()
     {
@@ -299,7 +300,7 @@
         
         if(x.length > 0)
         {
-            $.getJSON('checkViewingStatus.action?claimIds=' + x.join(','),
+            $.getJSON('checkViewingStatus.action?claimIds=' + x.join(',') + "&token=" + random_number(),
             function(data){
                 
                 $.each(data.results, function(i,result){
@@ -308,10 +309,13 @@
                 
             });
         }
+        
+        t=setTimeout("refreshViewingStatus()",4000);
     }
     
      Ext.onReady(function(){
         setupGrid();
+        refreshViewingStatus();
     });  
     
 </script>

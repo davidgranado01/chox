@@ -441,13 +441,21 @@
     }
     
             
-    $(document).everyTime(4000, function() {
-        pingServer();
-    });
+    //$(document).everyTime(4000, function() {
+    //    pingServer();
+    //});
+    
+    var t;
+    
+    function random_number() {
+        var min = 10000000;
+        var max = 99999999;
+        return (Math.round((max-min) * Math.random() + min));
+    }
     
      function pingServer()
     {
-        $.getJSON('activityMonitoringAction.action?claimId=<s:property value="id" />',
+        $.getJSON('activityMonitoringAction.action?claimId=<s:property value="id" />' + "&token=" + random_number(),
         function(data){
             
             if(data.results.length > 0)
@@ -470,7 +478,8 @@
             }
             
         });
-
+        
+        t=setTimeout("pingServer()",4000);
     }
    
    function updateAnomalies(a){
@@ -599,7 +608,7 @@
                     </div>
                 </div>
                 
-                <div id="userViewingThisClaimDiv" class="warning" style="display:none;">                      
+                <div id="userViewingThisClaimDiv" class="status-warning" style="display:none;">                      
                         This claim is currently being viewed and / or modified by the following user(s) : <span id="userViewingThisClaim"></span>
                 </div>
                 
