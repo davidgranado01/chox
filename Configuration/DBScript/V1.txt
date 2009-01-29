@@ -705,7 +705,7 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.HireMonitoring.ClaimClosed'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.History.ClaimClosed'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.InvoiceDetail.ClaimClosed'), (select max(id)+1 from accessibility_item));
-insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.Notes.ClaimClosed'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.Notes.ClaimClosed'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.PaymentPack.ClaimClosed'), (select max(id)+1 from accessibility_item));
 
 ------------------------------------------------------------------------------------------------
