@@ -52,7 +52,7 @@
                 </table>
             </form> 
             <div class="chox-form-button">
-                <a href="javascript:openReport();">Open Report</a>
+                <a href="javascript:openReport();">Generate Report</a>
                 
             </div>
             <div id="INCmessageBox" class="errorBox"></div>
