@@ -4,6 +4,8 @@
  */
 package chox.web.report.viewdata;
 
+import java.util.Map;
+
 /**
  *
  * @author Emmanuel
@@ -28,6 +30,14 @@ public class WeekSummary {
     private Integer paidInvoiceByRsa;
     private Integer paidInvoicePercentage;
     private Integer claimTobeInvoiced;
+    
+    public static WeekSummary getObject(Map data)
+    {
+        WeekSummary weekSummary = new WeekSummary();
+        
+        
+        return weekSummary;
+    }
 
     public Integer getNewChoxNotification() {
         return newChoxNotification;

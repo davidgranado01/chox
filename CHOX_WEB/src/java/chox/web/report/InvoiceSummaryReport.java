@@ -4,6 +4,7 @@
  */
 package chox.web.report;
 
+import chox.Util.DateHelper;
 import chox.model.Insurer;
 import chox.services.DataService;
 import chox.web.report.viewdata.InvoiceSummary;
@@ -42,70 +43,71 @@ public class InvoiceSummaryReport implements Report {
     public HashMap getReportParameters() {
         HashMap reportParameters = new HashMap();
 
-        String dataStart = ((String[])externalParameter.get("DateStart"))[0];
-        String dataEnd = ((String[])externalParameter.get("DateEnd"))[0];
-        PermissionedUser currentUser = ((PermissionedUser)externalParameter.get("CurrentUser"));
+        try {
+            Date dataStart = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
+            Date dataEnd = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateEnd"))[0]);
+            PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
 
-        String query = "Select chorganisation.id,chorganisation.name, insurer_chorganisation.insurer_id," 
-        + "(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status!='ClaimClosed' and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as noInvoiceSubmitted,"
-        + "(select case when sum(total_to_pay) is null then 0.00 else sum(total_to_pay) end as no_sum from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status!='ClaimClosed' and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as totalInvoiceValue,"
-        + "(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status='InvoicePaymentLogged' and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as noInvoicesPaid,"
-        + "(select case when sum(total_to_pay) is null then 0.00 else sum(total_to_pay) end as no_count from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status='InvoicePaymentLogged' and date_trunc('day', created_date) between @pInvUploadDateFrom and current_date) as valueOfPaidInvoices,"
-        + "(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status='AwaitingInvoicePayment' and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as noInvoiceAwaitingPayment,"
-        + "(select case when sum(total_to_pay) is null then 0.00 else sum(total_to_pay) end as no_sum from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status='AwaitingInvoicePayment' and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as invoiceAwaitingPaymentValue,"
-        + "(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status in ('InvoiceEscalated', 'InvoiceDataCalculationIncorrect', 'InvoiceApprovedByBRE', 'ContestedInvoiceReferredToInsurer','ContestedInvoiceReferredToCHO') and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as noInvoicePending,"
-        + "(select case when sum(total_to_pay) is null then 0.00 else sum(total_to_pay) end as no_sum from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status in ('InvoiceEscalated', 'InvoiceDataCalculationIncorrect', 'InvoiceApprovedByBRE', 'ContestedInvoiceReferredToInsurer','ContestedInvoiceReferredToCHO') and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as invoicePendingValue,"
-        + "(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status='InvoiceRejectionAccepted' and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as noInvoiceWithdrawn,"
-        + "(select case when sum(total_to_pay) is null then 0.00 else sum(total_to_pay) end as no_sum from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status='InvoiceRejectionAccepted' and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as invoiceWithdrawnValue" 
-        + " from chorganisation chorganisation inner join insurer_chorganisation insurer_chorganisation on insurer_chorganisation.chorganisation_id = chorganisation.id"
-        + " where insurer_chorganisation.insurer_id=@pInsId";
-        /*if (orgId > 0) {
+            String query = "Select chorganisation.id,chorganisation.name, insurer_chorganisation.insurer_id," 
+            + "(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status!='ClaimClosed' and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as noInvoiceSubmitted,"
+            + "(select case when sum(total_to_pay) is null then 0.00 else sum(total_to_pay) end as no_sum from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status!='ClaimClosed' and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as totalInvoiceValue,"
+            + "(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status='InvoicePaymentLogged' and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as noInvoicesPaid,"
+            + "(select case when sum(total_to_pay) is null then 0.00 else sum(total_to_pay) end as no_count from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status='InvoicePaymentLogged' and date_trunc('day', created_date) between @pInvUploadDateFrom and current_date) as valueOfPaidInvoices,"
+            + "(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status='AwaitingInvoicePayment' and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as noInvoiceAwaitingPayment,"
+            + "(select case when sum(total_to_pay) is null then 0.00 else sum(total_to_pay) end as no_sum from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status='AwaitingInvoicePayment' and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as invoiceAwaitingPaymentValue,"
+            + "(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status in ('InvoiceEscalated', 'InvoiceDataCalculationIncorrect', 'InvoiceApprovedByBRE', 'ContestedInvoiceReferredToInsurer','ContestedInvoiceReferredToCHO') and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as noInvoicePending,"
+            + "(select case when sum(total_to_pay) is null then 0.00 else sum(total_to_pay) end as no_sum from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status in ('InvoiceEscalated', 'InvoiceDataCalculationIncorrect', 'InvoiceApprovedByBRE', 'ContestedInvoiceReferredToInsurer','ContestedInvoiceReferredToCHO') and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as invoicePendingValue,"
+            + "(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status='InvoiceRejectionAccepted' and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as noInvoiceWithdrawn,"
+            + "(select case when sum(total_to_pay) is null then 0.00 else sum(total_to_pay) end as no_sum from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and status='InvoiceRejectionAccepted' and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as invoiceWithdrawnValue" 
+            + " from chorganisation chorganisation inner join insurer_chorganisation insurer_chorganisation on insurer_chorganisation.chorganisation_id = chorganisation.id"
+            + " where insurer_chorganisation.insurer_id=@pInsId";
+            /*if (orgId > 0) {
             if (currentUser.getIsCHO()) {
-                query = "select chorganisation.id,insurer.id,insurer.name," + query;
-                query += " where insurer_chorganisation.insurer_id=pOrgId";
-                query += " and insurer_chorganisation.chorganisation_id=" + currentUser.getUser().getChorganisation().getId();
+            query = "select chorganisation.id,insurer.id,insurer.name," + query;
+            query += " where insurer_chorganisation.insurer_id=pOrgId";
+            query += " and insurer_chorganisation.chorganisation_id=" + currentUser.getUser().getChorganisation().getId();
             } else {
-                query = "select chorganisation.id,insurer.id,chorganisation.name," + query;
-                query += " where insurer_chorganisation.chorganisation_id=pOrgId";
-                query += " and insurer_chorganisation.insurer_id=" + currentUser.getUser().getInsurer().getId();
+            query = "select chorganisation.id,insurer.id,chorganisation.name," + query;
+            query += " where insurer_chorganisation.chorganisation_id=pOrgId";
+            query += " and insurer_chorganisation.insurer_id=" + currentUser.getUser().getInsurer().getId();
             }
-        }
-        else
-        {
-             if (currentUser.getIsCHO()) {
-                query = "select chorganisation.id,insurer.id,insurer.name," + query;
-                query += " where insurer_chorganisation.chorganisation_id=" + currentUser.getUser().getChorganisation().getId();;
+            }
+            else
+            {
+            if (currentUser.getIsCHO()) {
+            query = "select chorganisation.id,insurer.id,insurer.name," + query;
+            query += " where insurer_chorganisation.chorganisation_id=" + currentUser.getUser().getChorganisation().getId();;
             } else {
-                query = "select chorganisation.id,insurer.id,chorganisation.name," + query;
-                query += " where insurer_chorganisation.insurer_id=" + currentUser.getUser().getInsurer().getId();
+            query = "select chorganisation.id,insurer.id,chorganisation.name," + query;
+            query += " where insurer_chorganisation.insurer_id=" + currentUser.getUser().getInsurer().getId();
             }
-        }*/
-        
-        query = query.replaceAll("@pInvUploadDateFrom", "'" + dataStart + "'");
-        query = query.replaceAll("@pInvUploadDateTo",  "'" + dataEnd +  "'");
-        Insurer ins = currentUser.getUser().getInsurer();
-        Integer insId = ins.getId();
-        query = query.replaceAll("@pInsId", insId.toString());
+            }*/
 
-        List result = dataService.externalQuery(query);
-        List<InvoiceSummary> invoiceSummaries = new ArrayList<InvoiceSummary>();
-        for(Object o : result)
-        {
-            Map data = (Map)o;
-            InvoiceSummary invoiceSummary = InvoiceSummary.getObject(data);
-            invoiceSummaries.add(invoiceSummary);            
+            query = query.replaceAll("@pInvUploadDateFrom", "'" + DateHelper.DBDateFormat.format(dataStart) + "'");
+            query = query.replaceAll("@pInvUploadDateTo", "'" + DateHelper.DBDateFormat.format(dataEnd) + "'");
+            Insurer ins = currentUser.getUser().getInsurer();
+            Integer insId = ins.getId();
+            query = query.replaceAll("@pInsId", insId.toString());
+
+            List result = dataService.externalQuery(query);
+            List<InvoiceSummary> invoiceSummaries = new ArrayList<InvoiceSummary>();
+            for (Object o : result) {
+                Map data = (Map) o;
+                InvoiceSummary invoiceSummary = InvoiceSummary.getObject(data);
+                invoiceSummaries.add(invoiceSummary);
+            }
+
+            InvoiceSummaryReportObject reportObject = new InvoiceSummaryReportObject();
+
+            reportObject.setInvoiceUploadDateFrom(DateHelper.DBDateFormat.format(dataStart));
+            reportObject.setInvoiceUploadDateTo(DateHelper.DBDateFormat.format(dataEnd));
+            reportObject.setCreatedDate(DateHelper.LocalDateFormat.format(new Date()));
+
+            reportParameters.put("invoiceSummaries", invoiceSummaries);
+            reportParameters.put("reportObj", reportObject);
+            reportParameters.put("insurerObj", ins);
+        } catch (Exception ex) {
         }
-        
-        InvoiceSummaryReportObject reportObject = new InvoiceSummaryReportObject();
-        
-        reportObject.setInvoiceUploadDateFrom(dataStart);
-        reportObject.setInvoiceUploadDateTo(dataEnd);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        reportObject.setCreatedDate(sdf.format(new Date()));
-        
-        reportParameters.put("invoiceSummaries", invoiceSummaries);
-        reportParameters.put("reportObj", reportObject);
-        reportParameters.put("insurerObj", ins);
         return reportParameters;
     }
 

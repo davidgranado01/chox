@@ -7,7 +7,9 @@ import java.util.Date;
 
 public class DateHelper {
     
-    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
+    public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+    public static SimpleDateFormat LocalDateFormat = new SimpleDateFormat("dd/MM/yyyy");  
+    public static SimpleDateFormat DBDateFormat = new SimpleDateFormat("yyyy-MM-dd");  
     
     public static java.sql.Timestamp getCurrentTimeStamp() {
         Calendar cal = Calendar.getInstance();
