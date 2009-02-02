@@ -43,59 +43,87 @@ public class InsurerAdminWeeklyOverviewReport implements Report {
 
     public HashMap getReportParameters() {
         HashMap reportParameters = new HashMap();
-
+        //monday as start of week
+        //sunday as end of week
         try {
             PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
-            String dataSelected = ((String[]) externalParameter.get("DateSelected"))[0];
-            Date selectedDate = DateHelper.LocalDateFormat.parse(dataSelected);
-
+            Insurer ins = currentUser.getUser().getInsurer();
+            String dataStartRaw = ((String[]) externalParameter.get("DateStart"))[0];
+            String dateEndRaw = ((String[]) externalParameter.get("DateEnd"))[0];
+            Date startDate = DateHelper.LocalDateFormat.parse(dataStartRaw);//user selected start date of report
+            Date endDate = DateHelper.LocalDateFormat.parse(dateEndRaw);//user selected end date of report
+            
             Calendar c1 = Calendar.getInstance();
-            c1.setTime(selectedDate);
-            Integer dayOfWeek = c1.get(Calendar.DAY_OF_WEEK);
-            c1.add(Calendar.DATE, -dayOfWeek + 1);
-            Date sundayOfSelectedDate = c1.getTime();
-            c1.add(Calendar.DATE, 6);
-            Date saturdayOfSelectedDate = c1.getTime();
-
-            HashMap queryParameters = new HashMap();
-            String query = "select :pSelectedDate,"
-            + "(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from audit_trail where update_date between :pSelectedDate and :pSelectedDate+7 and new_status='ClaimUnacknowledgedUnrouted') as newChoxNotification,"
-            + "0 as claimWithdrawn,"
-            + "(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from audit_trail where update_date < :pSelectedDate and new_status='ClaimUnacknowledgedUnrouted' ) as existingClaim,"
-            + "(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from audit_trail where update_date <= :pSelectedDate+7 and new_status='ClaimUnacknowledgedUnrouted') as cumulativeClaim,"
-            + "0 as claimOutOfScope,"
-            + "0 as claimInScope,"
-            + "(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where update_date between :pSelectedDate and :pSelectedDate+7 and new_status in ('ClaimRejected','ClaimRejectionAccepted','ClaimRejectionContested')) as claimNotificationContestedByRsa,"
-            + "(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where update_date between :pSelectedDate and :pSelectedDate+7 and new_status in ('ClaimRejectionContested','ClaimReferredToFNOL','ClaimReferredToEngineer','ClaimUnacknowledgedUnrouted','ClaimUnacknowledgedRouted')) as claimPendingByRsa,"
-            + "(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where update_date between :pSelectedDate and :pSelectedDate+7 and new_status in ('AwaitingCarHireInfo')) as claimNotificationAcceptedByRsa,"
-            + "0 as inScopeClaimContestedPercentage,"
-            + "(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where update_date between :pSelectedDate and :pSelectedDate+7 and new_status in ('ClaimReferredToFNOL')) as claimFnolCreatedByRsa,"
-            + "(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where update_date between :pSelectedDate and :pSelectedDate+7 and new_status in ('InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated')) as claimInvoiced,"
-            + "(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where update_date between :pSelectedDate and :pSelectedDate+7 and new_status in ('ContestedInvoiceReferredToCHO','InvoiceDataCalculationIncorrect')) as contestedinvoiceByRsa,"
-            + "(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where update_date between :pSelectedDate and :pSelectedDate+7 and new_status in ('ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceEscalated')) as pendingInvoiceByRsa,"
-            + "(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where update_date between :pSelectedDate and :pSelectedDate+7 and new_status in ('AwaitingInvoicePayment')) as approvedInvoiceByRsa,"
-            + "(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where update_date between :pSelectedDate and :pSelectedDate+7 and new_status in ('InvoicePaymentLogged')) as paidInvoiceByRsa,"
-            + "0 as paidInvoicePercentage,"
-            + "(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where update_date between :pSelectedDate and :pSelectedDate+7 and new_status='ClaimUnacknowledgedUnrouted' and claim_id not in (select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from audit_trail where new_status in ('InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated') and update_date between :pSelectedDate and :pSelectedDate+7)) as claimTobeInvoiced"; 
-            queryParameters.put("pSelectedDate", sundayOfSelectedDate);
-
-            List result = dataService.externalQuery(query,queryParameters);
+            c1.setTime(startDate);
+            Integer dayOfWeek1 = c1.get(Calendar.DAY_OF_WEEK);
+            c1.add(Calendar.DATE, -dayOfWeek1 + 2);
+            Date dateFirstMonday = c1.getTime();//actual start date of report
+            
+            Calendar c2 = Calendar.getInstance();
+            c2.setTime(endDate);
+            Integer dayOfWeek2 = c2.get(Calendar.DAY_OF_WEEK);
+            c2.add(Calendar.DATE, -dayOfWeek2 + 2);
+            Date dateLastMonday = c2.getTime();
+            c2.add(Calendar.DATE, 6);
+            Date dateLastSunday = c2.getTime();//actual end date of report
+            
+            Date currentMonday = dateFirstMonday;
             List<WeekSummary> weekSummaries = new ArrayList<WeekSummary>();
-            for (Object o : result) {
-                Map data = (Map) o;
-                WeekSummary weekSummary = WeekSummary.getObject(data);
-                weekSummaries.add(weekSummary);
-            }
+            do {
+                Calendar c = Calendar.getInstance();
+                c.setTime(currentMonday);
+                Date startOfTheWeek = c.getTime();
+                c.add(Calendar.DATE, 6);
+                Date endOfTheWeek = c.getTime();
+
+                HashMap queryParameters = new HashMap();
+                String query = "select 1," 
+                +"(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_his_audit_trail where insurer_id = insurer.id and update_date between :pSelectedStartDate and :pSelectedEndDate and new_status='ClaimUnacknowledgedUnrouted') as newChoxNotification,"
+                +"0 as claimWithdrawn,"
+                +"(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_his_audit_trail where insurer_id = insurer.id and update_date < :pSelectedStartDate and new_status='ClaimUnacknowledgedUnrouted') as existingClaim,"
+                +"(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_his_audit_trail where insurer_id = insurer.id and update_date <= :pSelectedEndDate and new_status='ClaimUnacknowledgedUnrouted') as cumulativeClaim,"
+                +"0 as claimOutOfScope,"
+                +"0 as claimInScope,"
+                +"(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where insurer_id = insurer.id and update_date between :pSelectedStartDate and :pSelectedEndDate and new_status in ('ClaimRejected','ClaimRejectionAccepted','ClaimRejectionContested')) as claimNotificationContestedByRsa,"
+                +"(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where insurer_id = insurer.id and update_date between :pSelectedStartDate and :pSelectedEndDate and new_status in ('ClaimRejectionContested','ClaimReferredToFNOL','ClaimReferredToEngineer','ClaimUnacknowledgedUnrouted','ClaimUnacknowledgedRouted')) as claimPendingByRsa,"
+                +"(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where insurer_id = insurer.id and update_date between :pSelectedStartDate and :pSelectedEndDate and new_status in ('AwaitingCarHireInfo')) as claimNotificationAcceptedByRsa,"
+                +"0 as inScopeClaimContestedPercentage,"
+                +"(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where insurer_id = insurer.id and update_date between :pSelectedStartDate and :pSelectedEndDate and new_status in ('ClaimReferredToFNOL')) as claimFnolCreatedByRsa,"
+                +"(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where insurer_id = insurer.id and update_date between :pSelectedStartDate and :pSelectedEndDate and new_status in ('InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated')) as claimInvoiced,"
+                +"(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where insurer_id = insurer.id and update_date between :pSelectedStartDate and :pSelectedEndDate and new_status in ('ContestedInvoiceReferredToCHO','InvoiceDataCalculationIncorrect')) as contestedinvoiceByRsa,"
+                +"(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where insurer_id = insurer.id and update_date between :pSelectedStartDate and :pSelectedEndDate and new_status in ('ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceEscalated')) as pendingInvoiceByRsa,"
+                +"(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where insurer_id = insurer.id and update_date between :pSelectedStartDate and :pSelectedEndDate and new_status in ('AwaitingInvoicePayment')) as approvedInvoiceByRsa,"
+                +"(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where insurer_id = insurer.id and update_date between :pSelectedStartDate and :pSelectedEndDate and new_status in ('InvoicePaymentLogged')) as paidInvoiceByRsa,"
+                +"0 as paidInvoicePercentage,"
+                +"(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_audit_trail where insurer_id = insurer.id and update_date between :pSelectedStartDate and :pSelectedEndDate and new_status='ClaimUnacknowledgedUnrouted' and claim_id not in (select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from audit_trail where new_status in ('InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated') and update_date between :pSelectedStartDate and :pSelectedEndDate)) as claimTobeInvoiced"
+                +" from insurer insurer where insurer.id = :pInsId";
+
+                queryParameters.put("pSelectedStartDate", startOfTheWeek);
+                queryParameters.put("pSelectedEndDate", endOfTheWeek);
+                queryParameters.put("pInsId", ins.getId());
+
+                List result = dataService.externalQuery(query, queryParameters);
+                
+                for (Object o : result) {
+                    Map data = (Map) o;
+                    data.put("weekCycleDate", DateHelper.LocalDateFormat.format(startOfTheWeek));
+                    WeekSummary weekSummary = WeekSummary.getObject(data);
+                    weekSummaries.add(weekSummary);
+                }
+                
+                c.add(Calendar.DATE, 1);
+                currentMonday = c.getTime();
+
+            }while(currentMonday.before(dateLastSunday));
 
             WeekSummaryReportObject reportObject = new WeekSummaryReportObject();
 
-            reportObject.setWeekCycleFrom(DateHelper.LocalDateFormat.format(sundayOfSelectedDate));
-            reportObject.setWeekCycleTo(DateHelper.LocalDateFormat.format(saturdayOfSelectedDate));
-            reportObject.setCreatedDate(DateHelper.LocalDateFormat.format(new Date()));
+            reportObject.setWeekCycleFrom(dateFirstMonday);
+            reportObject.setWeekCycleTo(dateLastSunday);
+            reportObject.setCreatedDate(new Date());
 
             reportParameters.put("weekSummaries", weekSummaries);
-            reportParameters.put("reportObj", reportObject);
-            Insurer ins = currentUser.getUser().getInsurer();
+            reportParameters.put("reportObj", reportObject);            
             reportParameters.put("insurerObj", ins);
         } catch (Exception ex) {
             ex.printStackTrace();
