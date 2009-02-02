@@ -555,7 +555,37 @@
                 </param>
                 <param name="id">${id}</param>
             </result>
-        </action>    
+        </action>   
+        
+        <action name="buildReport" class="chox.web.actions.ReportAction" method="buildReport">
+            <result name="success">/jsp/user/reportPanel/p_build_report.jsp
+            </result>
+        </action>
+        
+       <action name="loadParameterPanel" class="chox.web.actions.ReportAction" method="loadParameterPanel">
+            <result name="InsurerAdminWeeklyOverviewReport-Excel">/jsp/user/reportPanel/p_insurer_admin_weekly_overview_param_panel.jsp</result>
+            <result name="InvoiceSummaryReport-Excel">/jsp/user/reportPanel/p_invoice_summary_report_param_panel.jsp</result>
+        </action>
+        
+        <action name="exportExcelReport" class="chox.web.actions.ReportAction" method="exportReport">
+            <result name="success" type="stream">
+                <param name="contentType">application/ms-excel</param>
+                <param name="inputName">reportStream</param>
+                <param name="contentDisposition">attachment;filename="report.xls"</param>
+                <param name="bufferSize">99999</param>
+            </result>
+            <result name="failed">/jsp/user/ExcelGenerationFailed.jsp.jsp</result>
+        </action>
+        
+        <action name="testHQL" class="chox.web.actions.TestAction">
+            <result name="success">/jsp/user/testHQL.jsp
+            </result>
+        </action>
+        
+        <action name="runSQL" class="chox.web.actions.TestAction" method="runSQL">
+            <result name="success">/jsp/p_jsonData.jsp
+            </result>
+        </action>
 
     </package>
     <include file="config-browser.xml"/>

@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans default-autowire="autodetect">    
+<beans default-autowire="autodetect">
     <bean id="securityInfoProvider" class="chox.web.data.WebSecurityInfoProvider" singleton="false"/>
     <bean id="auditInterceptor" class="chox.data.DBInterceptor" singleton="false">
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver"></property>
-        <property name="url" value="jdbc:postgresql://localhost:5432/idaschox_prod"></property>
-        <property name="username" value="postgres"></property>
-        <property name="password" value="GreenF1nCH"></property>
+        <property name="driverClassName" value="org.postgresql.Driver">
+        </property>
+        <property name="url" value="jdbc:postgresql://localhost:5432/idaschox_prod">
+        </property>
+        <property name="username" value="postgres">
+        </property>
+        <property name="password" value="GreenF1nCH">
+        </property>
     </bean>
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource">
@@ -17,8 +21,10 @@
         </property>
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
-                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect
+                </prop>
+                <prop key="hibernate.show_sql">false
+                </prop>
             </props>
         </property>
         <property name="mappingResources">
@@ -61,10 +67,11 @@
     </bean>
     <bean id="claimService" class="chox.services.ClaimServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
     <bean id="lookupService" class="chox.services.LookupServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>    
+    </bean>
     <bean id="accessibilityService" class="chox.services.AccessibilityServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
@@ -139,6 +146,9 @@
     <bean id="userService" class="chox.services.UserServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="dataService" class="chox.services.DataService" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="uploadClaimXMLService" class="chox.services.UploadClaimXMLServiceImpl" singleton="false">
         <property name="vehicleClassService" ref="vehicleClassService" />
         <property name="engineerReportService" ref="engineerReportService" />
@@ -156,5 +166,5 @@
         <property name="choBandService" ref="choBandService" />
         <property name="historyService" ref="historyService" />
         <property name="auditTrailService" ref="auditTrailService" />
-    </bean>  
+    </bean>
 </beans>

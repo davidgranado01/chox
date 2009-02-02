@@ -215,8 +215,9 @@
             autoheight:true,
             activeTab: 0,
             items:[
-                {contentEl:'filterPanelTab', title:'Inbox'},
-                {contentEl:'searchPanelTab', title:'Search'}
+                {contentEl:'filterPanelTab', title:'Inbox',listeners: {activate: handleActivate}},
+                {contentEl:'searchPanelTab', title:'Search',listeners: {activate: handleActivate}},
+                {contentEl:'reportPanelTab', title:'Reports',listeners: {activate: handleActivate}}
             ]
         });  
         
@@ -316,7 +317,20 @@
      Ext.onReady(function(){
         setupGrid();
         refreshViewingStatus();
-    });  
+    }); 
+
+    function handleActivate(tab){
+        
+        if(tab.title == 'Reports')
+        {
+            $("#gridPanel").hide();
+        }
+        else
+        {
+            $("#gridPanel").show();
+        }
+    }
+
     
 </script>
 
@@ -416,6 +430,14 @@
                     <div id="searchPanel">
                         
                         <s:action name="searchClaim" namespace="/user" executeResult="true" /> 
+                        
+                    </div>
+                </div>
+                
+                <div id="reportPanelTab" class="x-hide-display">
+                    <div id="reportPanel">
+                        
+                        <s:action name="buildReport" namespace="/user" executeResult="true" /> 
                         
                     </div>
                 </div>

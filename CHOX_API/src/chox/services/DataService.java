@@ -9,16 +9,16 @@ import chox.data.SecurityInfoProvider;
 import chox.model.WebUser;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Subqueries;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate3.HibernateTransactionManager;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -28,19 +28,29 @@ import org.springframework.transaction.support.TransactionTemplate;
  */
 public class DataService extends HibernateDaoSupport {
 
-    private HibernateTemplate hibernateTemplate;
     private HibernateTransactionManager transactionManager;
     private SecurityInfoProvider securityInforProvider;
 
     public void setSecurityInfoProvider(SecurityInfoProvider provider) {
         this.securityInforProvider = provider;
+        
+        if (this.securityInforProvider != null) {
+
+            if (!this.getSecurityInfoProvider().getIsCHOXAdmin()) {
+                if (this.getSecurityInfoProvider().getIsCHO()) {
+                    getCurrentSession().enableFilter("Claim_CHOFilter").setParameter("chorganisationId", this.getCurrentUser().getChorganisation().getId());
+                } else if (this.getSecurityInfoProvider().getIsINS()) {
+                    getCurrentSession().enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
+                }
+            }
+        }
     }
 
-    protected WebUser getCurrentUser() {
+    public WebUser getCurrentUser() {
         return getSecurityInfoProvider().getCurrentUSer();
     }
 
-    protected SecurityInfoProvider getSecurityInfoProvider() {
+    public SecurityInfoProvider getSecurityInfoProvider() {
         if (this.securityInforProvider == null) {
             //for testing purpose, will inject by spring in web application
             setSecurityInfoProvider(new FakeSecurityInfoProvider());
@@ -48,21 +58,28 @@ public class DataService extends HibernateDaoSupport {
         return this.securityInforProvider;
     }
 
-    private Session getCurrentSession() {
+    private Session getCurrentSession() {        
+
         return getSession();
     }
 
-    protected Object get(final Class c, final int id) {
+    public Object get(final Class c, final int id) {
 
         return getHibernateTemplate().get(c, id);
     }
 
-    protected List query(final String query) {
+    public List query(final String query) {
 
         return getHibernateTemplate().find(query);
     }
 
-    protected Object getByCriteria(final DetachedCriteria c) {
+    public List externalQuery(final String query) {
+
+        SQLQuery q = this.getSession().createSQLQuery(query);
+        return q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+    }
+
+    public Object getByCriteria(final DetachedCriteria c) {
 
         List result = getHibernateTemplate().findByCriteria(c);
         if (result != null && !result.isEmpty()) {
@@ -72,12 +89,12 @@ public class DataService extends HibernateDaoSupport {
         }
     }
 
-    protected List findByCriteria(final DetachedCriteria c) {
+    public List findByCriteria(final DetachedCriteria c) {
 
         return getHibernateTemplate().findByCriteria(c);
     }
 
-    protected List findByCriteria(final DetachedCriteria dc, final Class c, final int start, final int limit) {
+    public List findByCriteria(final DetachedCriteria dc, final Class c, final int start, final int limit) {
 
         dc.setProjection(Projections.id());
 
@@ -88,7 +105,7 @@ public class DataService extends HibernateDaoSupport {
         return outer.list();
     }
 
-    protected void save(final Object object) {
+    public void save(final Object object) {
         TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
         transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         transactionTemplate.execute(
@@ -100,7 +117,7 @@ public class DataService extends HibernateDaoSupport {
                 });
     }
 
-    protected void delete(final Object object) {
+    public void delete(final Object object) {
         TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
         transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         transactionTemplate.execute(

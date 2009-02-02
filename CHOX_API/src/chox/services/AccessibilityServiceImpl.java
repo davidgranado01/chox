@@ -11,12 +11,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.hibernate.criterion.DetachedCriteria;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
  *
  * @author Emmanuel
  */
-public class AccessibilityServiceImpl extends DataService implements AccessibilityService {
+public class AccessibilityServiceImpl extends HibernateDaoSupport implements AccessibilityService {
 
     public HashMap getAccessibilityMap() {
         HashMap map = new HashMap();
@@ -38,18 +39,14 @@ public class AccessibilityServiceImpl extends DataService implements Accessibili
 
         return map;
     }
+    
+    private List findByCriteria(final DetachedCriteria c) {
+
+        return getHibernateTemplate().findByCriteria(c);
+    }
 
     public void AddNewAccessibility(List<Accessibility> aList, short right) {
         
-        for (Accessibility a : aList) {
-            AccessibilityItem item = new AccessibilityItem();
-            item.setAccessibility(a);
-            item.setRole("ALL");
-            item.setAccessRight(right);
-            Set items = new HashSet();
-            items.add(item);            
-            a.setAccessibilityItem(items);            
-            save(a);            
-        }
+       
     }
 }
