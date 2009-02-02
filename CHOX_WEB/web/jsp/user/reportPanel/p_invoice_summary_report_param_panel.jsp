@@ -45,26 +45,11 @@
     <div class="x-panel-bwrap chox-form-container">      
         <div class="form-container">
             <form id="formReportParam" class="XXentity-form">
-                <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">
-                    
+                <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">                    
                     <tr>
                         <td nowrap><label>Date From</label></td><td colspan="2"><div id="dateFromDiv" /></td>
                         <td nowrap><label>Date To</label></td><td colspan="2"><div id="dateToDiv"/></td>                            
-                    </tr>
-                    <tr>
-                        <s:if test="isInsurer">
-                            <td><label>CHO</label></td><td colspan="2"><s:select name="OrgId" list="suppliers" listKey="id" listValue="name" headerKey="-1"
-                                                                                     headerValue="--- ALL ---"
-                                                                                 emptyOption="false"></s:select></td>
-                        </s:if> 
-                        <s:if test="isCHO">
-                            <td><label>Insurer</label></td><td colspan="2"><s:select name="OrgId" list="insurers" listKey="id" listValue="name" headerKey="-1"
-                                                                                         headerValue="--- ALL ---"
-                                                                                     emptyOption="false"></s:select>  </td>
-                        </s:if>   
-                        
-                        <td colspan="3">&nbsp;</td>
-                    </tr>        
+                    </tr>                       
                 </table>
             </form> 
             <div class="chox-form-button">

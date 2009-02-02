@@ -11,7 +11,6 @@ package chox.web.report.viewdata;
 public class InvoiceSummaryReportObject {
     private String invoiceUploadDateFrom;
     private String invoiceUploadDateTo;
-    private String name;
     private String createdDate;
 
     public String getInvoiceUploadDateFrom() {
@@ -28,14 +27,6 @@ public class InvoiceSummaryReportObject {
 
     public void setInvoiceUploadDateTo(String invoiceUploadDateTo) {
         this.invoiceUploadDateTo = invoiceUploadDateTo;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getCreatedDate() {
