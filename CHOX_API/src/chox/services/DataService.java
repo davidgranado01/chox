@@ -8,6 +8,7 @@ import chox.data.FakeSecurityInfoProvider;
 import chox.data.SecurityInfoProvider;
 import chox.model.WebUser;
 import java.util.List;
+import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -76,6 +77,19 @@ public class DataService extends HibernateDaoSupport {
     public List externalQuery(final String query) {
 
         SQLQuery q = this.getSession().createSQLQuery(query);
+        return q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+    }
+    
+    public List externalQuery(final String query,Map parameters) {
+
+        SQLQuery q = this.getSession().createSQLQuery(query);
+        
+        for(Object p : parameters.keySet())
+        {
+            String parameterName = (String)p;
+            q.setParameter(parameterName, parameters.get(parameterName));
+        }
+        
         return q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
     }
 

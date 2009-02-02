@@ -18,23 +18,14 @@
     Ext.onReady(function(){
         
         var datePicker = new Ext.form.DateField({
-            name: 'Date',
+            name: 'DateSelected',
             width: 120,
             allowBlank: true,
             format: 'd/m/Y',
             showWeekNumber: true
-        });
+        });  
         
-        var dateToPicker = new Ext.form.DateField({
-            name: 'DateEnd',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            showWeekNumber: true
-        });
-        
-        dateFromPicker.render('dateFromDiv');        
-        dateToPicker.render('dateToDiv');
+        datePicker.render('dateSelectedDiv');        
         
     }); 
         
@@ -47,7 +38,7 @@
             <form id="formReportParam" class="XXentity-form">
                 <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">                    
                     <tr>
-                        <td nowrap><label>Date</label></td><td colspan="2"><div id="dateDiv" /></td>                         
+                        <td nowrap><label>Date1</label></td><td colspan="2"><div id="dateSelectedDiv" /></td>                         
                     </tr>                       
                 </table>
             </form> 

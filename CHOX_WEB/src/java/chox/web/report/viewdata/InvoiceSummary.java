@@ -15,42 +15,42 @@ import java.util.Map;
 public class InvoiceSummary {
 
     private String choName;
-    private BigInteger noInvoiceSubmitted;
+    private Integer noInvoiceSubmitted;
     private BigDecimal totalInvoiceValue;
-    private BigInteger noInvoicesPaid;
+    private Integer noInvoicesPaid;
     private BigDecimal valueOfPaidInvoices;
     private BigDecimal averageInvoiceValue;
-    private BigInteger noInvoiceAwaitingPayment;
+    private Integer noInvoiceAwaitingPayment;
     private BigDecimal invoiceAwaitingPaymentValue;
-    private BigInteger noInvoicePending;
+    private Integer noInvoicePending;
     private BigDecimal invoicePendingValue;
-    private BigInteger noInvoiceWithdrawn;
+    private Integer noInvoiceWithdrawn;
     private BigDecimal invoiceWithdrawnValue;
 
     public static InvoiceSummary getObject(Map data) {
         InvoiceSummary result = new InvoiceSummary();
         result.setChoName((String)data.get("name".toLowerCase()));
-        result.setNoInvoiceSubmitted((BigInteger)data.get("noInvoiceSubmitted".toLowerCase()));
+        result.setNoInvoiceSubmitted(((BigInteger)data.get("noInvoiceSubmitted".toLowerCase())).intValue());
         result.setTotalInvoiceValue((BigDecimal)data.get("totalInvoiceValue".toLowerCase()));
-        result.setNoInvoicesPaid((BigInteger)data.get("noInvoicesPaid".toLowerCase()));
+        result.setNoInvoicesPaid(((BigInteger)data.get("noInvoicesPaid".toLowerCase())).intValue());
         result.setValueOfPaidInvoices((BigDecimal)data.get("valueOfPaidInvoices".toLowerCase()));
         //result.setAverageInvoiceValue((BigDecimal)data.get("averageInvoiceValue".toLowerCase()));
         result.setAverageInvoiceValue(BigDecimal.ZERO);
-        result.setNoInvoiceAwaitingPayment((BigInteger)data.get("noInvoiceAwaitingPayment".toLowerCase()));
+        result.setNoInvoiceAwaitingPayment(((BigInteger)data.get("noInvoiceAwaitingPayment".toLowerCase())).intValue());
         result.setInvoiceAwaitingPaymentValue((BigDecimal) data.get("invoiceAwaitingPaymentValue".toLowerCase()));
-        result.setNoInvoicePending((BigInteger)data.get("noInvoicePending".toLowerCase()));
+        result.setNoInvoicePending(((BigInteger)data.get("noInvoicePending".toLowerCase())).intValue());
         result.setInvoicePendingValue((BigDecimal) data.get("invoicePendingValue".toLowerCase()));
-        result.setNoInvoiceWithdrawn((BigInteger)data.get("noInvoiceWithdrawn".toLowerCase()));
+        result.setNoInvoiceWithdrawn(((BigInteger)data.get("noInvoiceWithdrawn".toLowerCase())).intValue());
         result.setInvoiceWithdrawnValue((BigDecimal) data.get("invoiceWithdrawnValue".toLowerCase()));
 
         return result;
     }
 
-    public BigInteger getNoInvoiceSubmitted() {
+    public Integer getNoInvoiceSubmitted() {
         return noInvoiceSubmitted;
     }
 
-    public void setNoInvoiceSubmitted(BigInteger noInvoiceSubmitted) {
+    public void setNoInvoiceSubmitted(Integer noInvoiceSubmitted) {
         this.noInvoiceSubmitted = noInvoiceSubmitted;
     }
 
@@ -62,11 +62,11 @@ public class InvoiceSummary {
         this.totalInvoiceValue = totalInvoiceValue;
     }
 
-    public BigInteger getNoInvoicesPaid() {
+    public Integer getNoInvoicesPaid() {
         return noInvoicesPaid;
     }
 
-    public void setNoInvoicesPaid(BigInteger noInvoicesPaid) {
+    public void setNoInvoicesPaid(Integer noInvoicesPaid) {
         this.noInvoicesPaid = noInvoicesPaid;
     }
 
@@ -86,11 +86,11 @@ public class InvoiceSummary {
         this.averageInvoiceValue = averageInvoiceValue;
     }
 
-    public BigInteger getNoInvoiceAwaitingPayment() {
+    public Integer getNoInvoiceAwaitingPayment() {
         return noInvoiceAwaitingPayment;
     }
 
-    public void setNoInvoiceAwaitingPayment(BigInteger noInvoiceAwaitingPayment) {
+    public void setNoInvoiceAwaitingPayment(Integer noInvoiceAwaitingPayment) {
         this.noInvoiceAwaitingPayment = noInvoiceAwaitingPayment;
     }
 
@@ -102,11 +102,11 @@ public class InvoiceSummary {
         this.invoiceAwaitingPaymentValue = invoiceAwaitingPaymentValue;
     }
 
-    public BigInteger getNoInvoicePending() {
+    public Integer getNoInvoicePending() {
         return noInvoicePending;
     }
 
-    public void setNoInvoicePending(BigInteger noInvoicePending) {
+    public void setNoInvoicePending(Integer noInvoicePending) {
         this.noInvoicePending = noInvoicePending;
     }
 
@@ -118,11 +118,11 @@ public class InvoiceSummary {
         this.invoicePendingValue = invoicePendingValue;
     }
 
-    public BigInteger getNoInvoiceWithdrawn() {
+    public Integer getNoInvoiceWithdrawn() {
         return noInvoiceWithdrawn;
     }
 
-    public void setNoInvoiceWithdrawn(BigInteger noInvoiceWithdrawn) {
+    public void setNoInvoiceWithdrawn(Integer noInvoiceWithdrawn) {
         this.noInvoiceWithdrawn = noInvoiceWithdrawn;
     }
 

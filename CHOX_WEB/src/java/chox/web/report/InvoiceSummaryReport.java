@@ -11,7 +11,6 @@ import chox.web.report.viewdata.InvoiceSummary;
 import chox.web.report.viewdata.InvoiceSummaryReportObject;
 import chox.web.security.PermissionedUser;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -99,9 +98,9 @@ public class InvoiceSummaryReport implements Report {
 
             InvoiceSummaryReportObject reportObject = new InvoiceSummaryReportObject();
 
-            reportObject.setInvoiceUploadDateFrom(DateHelper.DBDateFormat.format(dataStart));
-            reportObject.setInvoiceUploadDateTo(DateHelper.DBDateFormat.format(dataEnd));
-            reportObject.setCreatedDate(DateHelper.LocalDateFormat.format(new Date()));
+            reportObject.setInvoiceUploadDateFrom(dataStart);
+            reportObject.setInvoiceUploadDateTo(dataEnd);
+            reportObject.setCreatedDate(new Date());
 
             reportParameters.put("invoiceSummaries", invoiceSummaries);
             reportParameters.put("reportObj", reportObject);

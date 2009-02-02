@@ -4,36 +4,38 @@
  */
 package chox.web.report.viewdata;
 
+import java.util.Date;
+
 /**
  *
  * @author Emmanuel
  */
 public class InvoiceSummaryReportObject {
-    private String invoiceUploadDateFrom;
-    private String invoiceUploadDateTo;
-    private String createdDate;
+    private Date invoiceUploadDateFrom;
+    private Date invoiceUploadDateTo;
+    private Date createdDate;
 
-    public String getInvoiceUploadDateFrom() {
+    public Date getInvoiceUploadDateFrom() {
         return invoiceUploadDateFrom;
     }
 
-    public void setInvoiceUploadDateFrom(String invoiceUploadDateFrom) {
+    public void setInvoiceUploadDateFrom(Date invoiceUploadDateFrom) {
         this.invoiceUploadDateFrom = invoiceUploadDateFrom;
     }
 
-    public String getInvoiceUploadDateTo() {
+    public Date getInvoiceUploadDateTo() {
         return invoiceUploadDateTo;
     }
 
-    public void setInvoiceUploadDateTo(String invoiceUploadDateTo) {
+    public void setInvoiceUploadDateTo(Date invoiceUploadDateTo) {
         this.invoiceUploadDateTo = invoiceUploadDateTo;
     }
 
-    public String getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 }
