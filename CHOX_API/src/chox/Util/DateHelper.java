@@ -32,4 +32,27 @@ public class DateHelper {
         long diffDays = diff / (24 * 60 * 60 * 1000);
         return diffDays;
     }
+    
+    public static Date getFirstDateOfTheMonth(Date date)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        Integer dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        cal.add(Calendar.DATE, -dayOfMonth);
+        return cal.getTime();
+    }
+    
+    public static Date getFirstDateOfTheWeek(Date date)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        Integer dayOfMonth = cal.get(Calendar.DAY_OF_WEEK);
+        cal.add(Calendar.DATE, -dayOfMonth);
+        return cal.getTime();
+    }
+    
+    public static Date getMinDate()
+    {
+        return null;
+    }
 }

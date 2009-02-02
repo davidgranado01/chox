@@ -7,9 +7,11 @@ package chox.services;
 import chox.data.FakeSecurityInfoProvider;
 import chox.data.SecurityInfoProvider;
 import chox.model.WebUser;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
@@ -86,8 +88,9 @@ public class DataService extends HibernateDaoSupport {
         
         for(Object p : parameters.keySet())
         {
-            String parameterName = (String)p;
+            String parameterName = (String)p;            
             q.setParameter(parameterName, parameters.get(parameterName));
+            
         }
         
         return q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();

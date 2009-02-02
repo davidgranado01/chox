@@ -207,19 +207,24 @@
             title:'Claims', viewConfig:{forceFit:true},bbar: pagingBar
             
         });
-        grid.render('gridPanel');
+        grid.render('gridHolder');
         grid.getSelectionModel().selectFirstRow();               
         
-        var tabs = new Ext.TabPanel({
-            renderTo: 'tabPanel',
-            autoheight:true,
-            activeTab: 0,
-            items:[
-                {contentEl:'filterPanelTab', title:'Inbox',listeners: {activate: handleActivate}},
-                {contentEl:'searchPanelTab', title:'Search',listeners: {activate: handleActivate}},
-                {contentEl:'reportPanelTab', title:'Reports',listeners: {activate: handleActivate}}
-            ]
-        });  
+             var tabs = new Ext.TabPanel({
+                 renderTo: 'tabPanel',
+                 autoheight:true,
+                 activeTab: 0,
+                 items:[
+                     <s:if test="menuAccessibility.isDashBoardMenuAccessibility">                   
+                         {contentEl:'dashBoardPanelTab', title:'Dashboard',listeners: {activate: handleActivate}},
+                    </s:if>
+                        {contentEl:'filterPanelTab', title:'Inbox',listeners: {activate: handleActivate}}
+                        ,{contentEl:'searchPanelTab', title:'Search',listeners: {activate: handleActivate}}
+                    <s:if test="menuAccessibility.isReportMenuAccessibility">                   
+                        ,{contentEl:'reportPanelTab', title:'Reports',listeners: {activate: handleActivate}}
+                    </s:if>
+                    ]
+                });  
         
         
         
@@ -321,14 +326,38 @@
 
     function handleActivate(tab){
         
-        if(tab.title == 'Reports')
-        {
-            $("#gridPanel").hide();
-        }
-        else
-        {
-            $("#gridPanel").show();
-        }
+                    if(tab.title == 'Reports')
+                    {
+                        $("#gridPanel").hide();
+                        $("#filterPanel").hide();  
+                        $("#searchPanel").hide();  
+                        $("#dashboardPanel").hide();
+                        $("#reportPanel").show();  
+                    }
+                    else if(tab.title == 'Dashboard')
+                    {
+                        $("#gridPanel").hide();
+                        $("#filterPanel").hide();  
+                        $("#searchPanel").hide();  
+                        $("#dashboardPanel").show();
+                        $("#reportPanel").hide();      
+                    }
+                    else if(tab.title == 'Search')
+                    {
+                        $("#gridPanel").show();
+                        $("#filterPanel").hide();  
+                        $("#searchPanel").show();  
+                        $("#dashboardPanel").hide();
+                        $("#reportPanel").hide();      
+                    }
+                    else if(tab.title == 'Inbox')
+                    {
+                        $("#gridPanel").show();
+                        $("#filterPanel").show();  
+                        $("#searchPanel").hide();  
+                        $("#dashboardPanel").hide();
+                        $("#reportPanel").hide();     
+                    }
     }
 
     
@@ -372,62 +401,73 @@
             
             <div id="tabPanel">
                 
-                
+                <div id="dashboardPanelTab">
+                    <div style="display:none" id="dashboardPanel">
+                        <s:if test="isCHO">
+                            <s:action name="showChoBoard" namespace="/user" executeResult="true" />
+                        </s:if>
+                        
+                        <s:if test="isInsurer">
+                            <s:action name="showInsurerBoard" namespace="/user" executeResult="true" />
+                        </s:if>                       
+                         
+                    </div>
+                </div>
                 
                 
                 <div id="filterPanelTab">
-                    
-                    <ul class="inbox">
-                        <s:if test="filterAccessibility.isRejectedClaimsAccessible">
-                            <li><a href="javascript:showClaimByStatus('ClaimRejected');" >Rejected Claims (<s:property value="filterRecordCounter.rejectedClaimsCount" />)</a></li>
-                        </s:if> 
-                        <s:if test="filterAccessibility.isIncorrectInvoiceDataCalculationsAccessible">
-                            <li><a href="javascript:showClaimByStatus('InvoiceDataCalculationIncorrect');" >Incorrect Invoice Data Calculations (<s:property value="filterRecordCounter.incorrectInvoiceDataCalculationsCount" />)</a></li>
-                        </s:if> 
-                        <s:if test="filterAccessibility.isContestedInvoicesReferredToCHOAccessible">
-                            <li><a href="javascript:showClaimByStatus('ContestedInvoiceReferredToCHO');" >Contested Invoices Referred To CHO (<s:property value="filterRecordCounter.contestedInvoicesReferredToCHOCount" />)</a></li>
-                        </s:if> 
-                        <s:if test="filterAccessibility.isClaimsAwaitingHireMonitoringInformationAccessible">
-                            <li><a href="javascript:showClaimByStatus('AwaitingCarHireInfo');" >Claims Awaiting Hire Monitoring Information (<s:property value="filterRecordCounter.claimsAwaitingHireMonitoringInformationCount" />)</a></li>
-                        </s:if> 
-                        <s:if test="filterAccessibility.isClaimsAwaitingAcknowledgementAccessible">
-                            <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedRouted');" >Claims Awaiting Acknowledgement (<s:property value="filterRecordCounter.claimsAwaitingAcknowledgementCount" />)</a></li>
-                        </s:if> 
-                        <s:if test="filterAccessibility.isReSubmittedClaimsAwaitingAcknowledgementAccessible">
-                            <li><a href="javascript:showClaimByStatus('ClaimRejectionContested');" >Re-Submitted Claims Awaiting Acknowledgement (<s:property value="filterRecordCounter.reSubmittedClaimsAwaitingAcknowledgementCount" />)</a></li>
-                        </s:if>
-                        <s:if test="filterAccessibility.isHireUpdateAnomaliesAccessible">
-                            <li><a href="javascript:showClaimIsAnomalies();" >Hire Update Anomalies (<s:property value="filterRecordCounter.hireUpdateAnomaliesCount" />)</a></li>
-                        </s:if>
-                        <s:if test="filterAccessibility.isNewClaimsToBeroutedAccessible">
-                            <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedUnrouted');" >New Claims to be Routed (<s:property value="filterRecordCounter.newClaimsToBeroutedCount" />)</a></li>
-                        </s:if> 
-                        <s:if test="filterAccessibility.isApprovedInvoicesAwaitingPaymentAccessible">
-                            <li><a href="javascript:showClaimByStatus('AwaitingInvoicePayment');" >Approved Invoices Awaiting Payment (<s:property value="filterRecordCounter.approvedInvoicesAwaitingPaymentCount" />)</a></li>
-                        </s:if>
-                        <s:if test="filterAccessibility.isEscalatedInvoicesAccessible">
-                            <li><a href="javascript:showClaimByStatus('InvoiceEscalated');" >Escalated Invoices (<s:property value="filterRecordCounter.escalatedInvoicesCount" />)</a></li>
-                        </s:if> 
-                        <s:if test="filterAccessibility.isContestedInvoicesReferredToInsurerAccessible">
-                            <li><a href="javascript:showClaimByStatus('ContestedInvoiceReferredToInsurer');" >Contested Invoices Referred To Insurer (<s:property value="filterRecordCounter.contestedInvoicesReferredToInsurerCount" />)</a></li>
-                        </s:if>
-                        <s:if test="filterAccessibility.isInvoicesApprovedByBREAccessible">
-                            <li><a href="javascript:showClaimByStatus('InvoiceApprovedByBRE');" >Invoices Approved By BRE (<s:property value="filterRecordCounter.invoicesApprovedByBRECount" />)</a></li>
-                        </s:if>
-                        <s:if test="filterAccessibility.isClaimReferredToEngineerAccessible">
-                            <li><a href="javascript:showClaimByStatus('ClaimReferredToEngineer');" >Claim Referred To Engineer (<s:property value="filterRecordCounter.ClaimReferredToEngineerCount" />)</a></li>
-                        </s:if>
-                        <s:if test="filterAccessibility.isClaimReferredToFNOLAccessible">
-                            <li><a href="javascript:showClaimByStatus('ClaimReferredToFNOL');" >Claims To Be Registered (<s:property value="filterRecordCounter.ClaimReferredToFNOLCount" />)</a></li>
-                        </s:if>          
-                        <s:if test="filterAccessibility.isPenaltyChargesAppliedAccessible">
-                            <li><a href="javascript:showClaimIspenaltyChargeApplied();" >Penalty Charges To Be Applied (<s:property value="filterRecordCounter.PenaltyChargesAppliedCount" />)</a></li>
-                        </s:if>    
-                    </ul>
-                    
+                    <div style="display:none" id="filterPanel">
+                        <ul class="inbox">
+                            <s:if test="filterAccessibility.isRejectedClaimsAccessible">
+                                <li><a href="javascript:showClaimByStatus('ClaimRejected');" >Rejected Claims (<s:property value="filterRecordCounter.rejectedClaimsCount" />)</a></li>
+                            </s:if> 
+                            <s:if test="filterAccessibility.isIncorrectInvoiceDataCalculationsAccessible">
+                                <li><a href="javascript:showClaimByStatus('InvoiceDataCalculationIncorrect');" >Incorrect Invoice Data Calculations (<s:property value="filterRecordCounter.incorrectInvoiceDataCalculationsCount" />)</a></li>
+                            </s:if> 
+                            <s:if test="filterAccessibility.isContestedInvoicesReferredToCHOAccessible">
+                                <li><a href="javascript:showClaimByStatus('ContestedInvoiceReferredToCHO');" >Contested Invoices Referred To CHO (<s:property value="filterRecordCounter.contestedInvoicesReferredToCHOCount" />)</a></li>
+                            </s:if> 
+                            <s:if test="filterAccessibility.isClaimsAwaitingHireMonitoringInformationAccessible">
+                                <li><a href="javascript:showClaimByStatus('AwaitingCarHireInfo');" >Claims Awaiting Hire Monitoring Information (<s:property value="filterRecordCounter.claimsAwaitingHireMonitoringInformationCount" />)</a></li>
+                            </s:if> 
+                            <s:if test="filterAccessibility.isClaimsAwaitingAcknowledgementAccessible">
+                                <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedRouted');" >Claims Awaiting Acknowledgement (<s:property value="filterRecordCounter.claimsAwaitingAcknowledgementCount" />)</a></li>
+                            </s:if> 
+                            <s:if test="filterAccessibility.isReSubmittedClaimsAwaitingAcknowledgementAccessible">
+                                <li><a href="javascript:showClaimByStatus('ClaimRejectionContested');" >Re-Submitted Claims Awaiting Acknowledgement (<s:property value="filterRecordCounter.reSubmittedClaimsAwaitingAcknowledgementCount" />)</a></li>
+                            </s:if>
+                            <s:if test="filterAccessibility.isHireUpdateAnomaliesAccessible">
+                                <li><a href="javascript:showClaimIsAnomalies();" >Hire Update Anomalies (<s:property value="filterRecordCounter.hireUpdateAnomaliesCount" />)</a></li>
+                            </s:if>
+                            <s:if test="filterAccessibility.isNewClaimsToBeroutedAccessible">
+                                <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedUnrouted');" >New Claims to be Routed (<s:property value="filterRecordCounter.newClaimsToBeroutedCount" />)</a></li>
+                            </s:if> 
+                            <s:if test="filterAccessibility.isApprovedInvoicesAwaitingPaymentAccessible">
+                                <li><a href="javascript:showClaimByStatus('AwaitingInvoicePayment');" >Approved Invoices Awaiting Payment (<s:property value="filterRecordCounter.approvedInvoicesAwaitingPaymentCount" />)</a></li>
+                            </s:if>
+                            <s:if test="filterAccessibility.isEscalatedInvoicesAccessible">
+                                <li><a href="javascript:showClaimByStatus('InvoiceEscalated');" >Escalated Invoices (<s:property value="filterRecordCounter.escalatedInvoicesCount" />)</a></li>
+                            </s:if> 
+                            <s:if test="filterAccessibility.isContestedInvoicesReferredToInsurerAccessible">
+                                <li><a href="javascript:showClaimByStatus('ContestedInvoiceReferredToInsurer');" >Contested Invoices Referred To Insurer (<s:property value="filterRecordCounter.contestedInvoicesReferredToInsurerCount" />)</a></li>
+                            </s:if>
+                            <s:if test="filterAccessibility.isInvoicesApprovedByBREAccessible">
+                                <li><a href="javascript:showClaimByStatus('InvoiceApprovedByBRE');" >Invoices Approved By BRE (<s:property value="filterRecordCounter.invoicesApprovedByBRECount" />)</a></li>
+                            </s:if>
+                            <s:if test="filterAccessibility.isClaimReferredToEngineerAccessible">
+                                <li><a href="javascript:showClaimByStatus('ClaimReferredToEngineer');" >Claim Referred To Engineer (<s:property value="filterRecordCounter.ClaimReferredToEngineerCount" />)</a></li>
+                            </s:if>
+                            <s:if test="filterAccessibility.isClaimReferredToFNOLAccessible">
+                                <li><a href="javascript:showClaimByStatus('ClaimReferredToFNOL');" >Claims To Be Registered (<s:property value="filterRecordCounter.ClaimReferredToFNOLCount" />)</a></li>
+                            </s:if>          
+                            <s:if test="filterAccessibility.isPenaltyChargesAppliedAccessible">
+                                <li><a href="javascript:showClaimIspenaltyChargeApplied();" >Penalty Charges To Be Applied (<s:property value="filterRecordCounter.PenaltyChargesAppliedCount" />)</a></li>
+                            </s:if>    
+                        </ul>                            
+                    </div>
                 </div>
                 <div id="searchPanelTab" class="x-hide-display">
-                    <div id="searchPanel">
+                    <div style="display:none" id="searchPanel">
                         
                         <s:action name="searchClaim" namespace="/user" executeResult="true" /> 
                         
@@ -435,7 +475,7 @@
                 </div>
                 
                 <div id="reportPanelTab" class="x-hide-display">
-                    <div id="reportPanel">
+                    <div style="display:none" id="reportPanel">
                         
                         <s:action name="buildReport" namespace="/user" executeResult="true" /> 
                         
@@ -445,9 +485,11 @@
             </div>
             
             <div id="gridPanel">
+                <div id="gridHolder">
+                </div>
+                <div class="excel-export"><form name="thisForm">
+                <a href="javascript:doExportExcel();">Export To Excel</a></form></div>
             </div>
-            <div class="excel-export"><form name="thisForm">
-            <a href="javascript:doExportExcel();">Export To Excel</a></form></div>
         </div>
         </div>
 <div class="footerText">

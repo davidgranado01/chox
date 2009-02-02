@@ -24,7 +24,7 @@ public class ApplicationAccessibility {
     public static final String TAB_HIRE_MONITORING = "HireMonitoring";
     public static final String TAB_PAYMENT_PACK = "PaymentPack";
     public static final String TAB_HISTORY = "History";
-    public static final String TAB_NOTES = "Notes";    
+    public static final String TAB_NOTES = "Notes"; 
     //Filter Name
     public static final String FILTER_REJECTED_CLAIMS = "RejectedClaims";
     public static final String FILTER_INCORRECT_INVOICE_DATA_COLC = "IncorrectInvoiceDataCalculations";
@@ -45,6 +45,12 @@ public class ApplicationAccessibility {
     
     public static final String PANEL_FNOL_REVIEWED  = "FNOLReviewed";
     
+    public static final String MENU_DASHBOARD  = "Dashboard";
+    public static final String MENU_REPORT  = "Report";
+    
+    public static final String REPORT_INVOICE_SUMMARY = "InvoiceSummary";
+    public static final String REPORT_INS_WEEKLY_SUMMARY = "InsurerWeeklySummary";
+    
     private HashMap accessibilityMap;
     private AccessibilityService accessibilityService;
     //private static ApplicationAccessibility instance = new ApplicationAccessibility();
@@ -61,7 +67,7 @@ public class ApplicationAccessibility {
     public TabAccessibility getTabAccessibility(GrantedAuthority[] grantedAuthorities,String claimStatus)
     {
         return new TabAccessibility(this,grantedAuthorities,claimStatus);
-    }
+    }        
     
     public PanelAccessibility getPanelAccessibility(GrantedAuthority[] grantedAuthorities)
     {
@@ -71,6 +77,16 @@ public class ApplicationAccessibility {
     public FilterAccessibility getFilterAccessibility(GrantedAuthority[] grantedAuthorities)
     {
         return new FilterAccessibility(this,grantedAuthorities);
+    }
+    
+    public MenuAccessibility getMenuAccessibility(GrantedAuthority[] grantedAuthorities)
+    {
+        return new MenuAccessibility(this,grantedAuthorities);
+    }
+    
+    public ReportAccessibility getReportAccessibility(GrantedAuthority[] grantedAuthorities)
+    {
+        return new ReportAccessibility(this,grantedAuthorities);
     }
 
     public Short checkTabAccessibility(String tabName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
@@ -120,6 +136,30 @@ public class ApplicationAccessibility {
 
         return Declined;
     }
+    
+    public Short checkMenuAccessibility(String menuName, GrantedAuthority[] grantedAuthorities) {
+
+        //accessibilityMap = getAccessibilityMap();
+        String accessibilityKey = getMenuAccessibilityKey(menuName);
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            return checkAccebility(roleMap, grantedAuthorities);
+        }
+
+        return Declined;
+    }
+    
+    public Short checkReportAccessibility(String reportName, GrantedAuthority[] grantedAuthorities) {
+
+        //accessibilityMap = getAccessibilityMap();
+        String accessibilityKey = getReportAccessibilityKey(reportName);
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            return checkAccebility(roleMap, grantedAuthorities);
+        }
+
+        return Declined;
+    }
 
     private String getTabAccessibilityKey(String tabName, String claimStatus) {
         return String.format("tab.%1$s.%2$s", tabName, claimStatus);
@@ -135,6 +175,14 @@ public class ApplicationAccessibility {
     
     private String getPanelAccessibilityKey(String filterName) {
         return String.format("panel.%1$s", filterName);
+    }
+    
+    private String getMenuAccessibilityKey(String menuName) {
+        return String.format("menu.%1$s", menuName);
+    }
+    
+    private String getReportAccessibilityKey(String reportName) {
+        return String.format("report.%1$s", reportName);
     }
 
     private Short checkAccebility(HashMap roleMap, GrantedAuthority[] grantedAuthorities) {

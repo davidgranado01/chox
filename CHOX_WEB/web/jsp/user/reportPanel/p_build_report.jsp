@@ -18,13 +18,15 @@
 
 <div class="x-panel-bwrap chox-form-container">
     
-    
     <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr valign="top">
-            <td class="chox-form-left-col">
+            <td width="50%" class="chox-form-left-col">
                 <fieldset class="x-fieldset">
-                    <legend>Report List</legend>
+                    <legend>Report List</legend>                    
                     <div class="x-panel-bwrap chox-form-container">
+                        <div class="status-info">
+                            Please select from the list of available reports
+                        </div>
                         <div style="height:400px;" class="x-panel-bwrap chox-form-container">
                             <ul>
                                 <li><a href="javascript:renderParameterPanel('InsurerAdminWeeklyOverviewReport-Excel');">Insurer Admin Weekly Overview Report</a></li>
@@ -34,12 +36,11 @@
                     </div>  
                 </fieldset>
             </td>
-            <td class="chox-form-right-col">
-                    <div id="param_panel"></div>
+            <td width="50%" class="chox-form-right-col">
+                <div id="param_panel"></div>
             </td>
         </tr>
     </table>
-    
     
     
 </div>

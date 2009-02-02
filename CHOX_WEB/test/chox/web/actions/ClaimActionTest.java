@@ -9,7 +9,7 @@ import chox.model.Claim;
 import chox.services.ChoBandService;
 import chox.services.ClaimService;
 import chox.services.InvoiceService;
-import chox.web.security.TabAccessibility;
+import chox.web.security.MenuAccessibility;
 import java.util.List;
 import java.util.Map;
 import org.junit.After;
@@ -202,8 +202,8 @@ public class ClaimActionTest {
     public void testGetTabAccessibility() {
         System.out.println("getTabAccessibility");
         ClaimAction instance = new ClaimAction();
-        TabAccessibility expResult = null;
-        TabAccessibility result = instance.getTabAccessibility();
+        MenuAccessibility expResult = null;
+        MenuAccessibility result = instance.getTabAccessibility();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

@@ -47,51 +47,57 @@
         </action>
         <action name="doExportExcel" method="execute" class="chox.web.actions.ExcelGeneratorAction">
             <result name="success" type="stream">
-                <param name="contentType">application/ms-excel</param>
-                <param name="inputName">excelStream</param>
-                <param name="contentDisposition">filename="excel_report.xls"</param>
-                <param name="bufferSize">99999</param>
+                <param name="contentType">application/ms-excel
+                </param>
+                <param name="inputName">excelStream
+                </param>
+                <param name="contentDisposition">filename="excel_report.xls"
+                </param>
+                <param name="bufferSize">99999
+                </param>
             </result>
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp
             </result>
         </action>
-        
         <action name="doExportFile" method="execute" class="chox.web.actions.AttachmentGeneratorAction">
             <result name="success" type="stream">
-                <param name="inputName">fileStream</param>
-                <param name="contentDisposition">${contentDisposition}</param>
-                <param name="bufferSize">99999</param>
+                <param name="inputName">fileStream
+                </param>
+                <param name="contentDisposition">${contentDisposition}
+                </param>
+                <param name="bufferSize">99999
+                </param>
             </result>
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp
             </result>
         </action>
-        
         <action name="doDeleteFile" class="chox.web.actions.DeleteAttachmentAction">
-            <result name="success">/jsp/p_response.jsp</result>
+            <result name="success">/jsp/p_response.jsp
+            </result>
         </action>
-        
         <action name="doUpdateAnomalies" class="chox.web.actions.ClaimAction" method="doUpdateAnomalies">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}</param>
+                <param name="id">${id}
+                </param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
-        
         <action name="doUpdateClaimStatus" class="chox.web.actions.ClaimAction" method="doUpdateClaimStatus">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}</param>
+                <param name="id">${id}
+                </param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
-        
         <action name="getAttachmentDetail" class="chox.web.actions.GetAttachmentDetailAction">
-            <result name="success">/jsp/user/AttachmentProcess.jsp</result>
+            <result name="success">/jsp/user/AttachmentProcess.jsp
+            </result>
         </action>
         
         <!-- ACTION PANEL VALIDATION By Carlson !-->
@@ -126,7 +132,8 @@
             </result>
             <result name="reviewByEngineer">/jsp/user/actionPanel/p_reviewByEngineer.jsp
             </result>
-            <result name="registeredclaimbyfnol">/jsp/user/actionPanel/p_registeredclaimbyfnol.jsp</result>
+            <result name="registeredclaimbyfnol">/jsp/user/actionPanel/p_registeredclaimbyfnol.jsp
+            </result>
             <result name="empty">/jsp/p_blank.jsp
             </result>
         </action>
@@ -145,44 +152,58 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
         <action name="acknowledge" class="chox.web.actions.ClaimAction" method="acknowledge">
             <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
         <action name="registerFNOL" class="chox.web.actions.ClaimAction" method="registerFNOL">
             <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
-        </action>        
+        </action>
         <action name="contestOrAcceptRejectedClaim" class="chox.web.actions.ClaimAction" method="contestOrAcceptRejectedClaim">
             <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
             </result>
-            <result name="error">/jsp/user/ClaimDetail.jsp</result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
         </action>
         <action name="approveContestedClaim" class="chox.web.actions.ClaimAction" method="approveContestedClaim">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -191,8 +212,10 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -201,8 +224,10 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -211,8 +236,10 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -221,8 +248,10 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -231,8 +260,10 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -241,8 +272,10 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -251,18 +284,22 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
-        </action> 
+        </action>
         <action name="reviewByEngineer" class="chox.web.actions.ClaimAction" method="reviewByEngineer">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -522,10 +559,12 @@
             </result>
         </action>
         <action name="getAttachments" class="chox.web.actions.GetAttachmentsAction" method="getAttachments">
-            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result name="success">/jsp/p_jsonData.jsp
+            </result>
         </action>
         <action name="createNewComment" class="chox.web.actions.CommentAction" method="createNewComment">
-            <result name="success">/jsp/p_response.jsp</result>
+            <result name="success">/jsp/p_response.jsp
+            </result>
         </action>
         <action name="createNewAttachment" class="chox.web.actions.AttachmentAction" method="createNewAttachment">
             <result name="success">/jsp/p_response.jsp
@@ -536,57 +575,68 @@
             <result name="success">/jsp/p_jsonData.jsp
             </result>
         </action>
-        
         <action name="checkViewingStatus" class="chox.web.actions.ActivityMonitoringAction" method="checkViewingStatus">
             <result name="success">/jsp/p_jsonData.jsp
             </result>
         </action>
-        
         <action name="getAlertPanel" class="chox.web.actions.ClaimAction" method="getAlertPanel">
             <result name="penaltyChargeApplied">/jsp/user/alertPanel/p_penaltyCharge.jsp
             </result>
             <result name="empty">/jsp/p_response.jsp
             </result>
         </action>
-        
         <action name="doApplyPenaltyCharge" class="chox.web.actions.ClaimAction" method="doApplyPenaltyCharge">
-             <result name="success" type="redirect-action">
+            <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
-                <param name="id">${id}</param>
+                <param name="id">${id}
+                </param>
             </result>
-        </action>   
-        
+        </action>
         <action name="buildReport" class="chox.web.actions.ReportAction" method="buildReport">
             <result name="success">/jsp/user/reportPanel/p_build_report.jsp
             </result>
         </action>
-        
-       <action name="loadParameterPanel" class="chox.web.actions.ReportAction" method="loadParameterPanel">
-            <result name="InsurerAdminWeeklyOverviewReport-Excel">/jsp/user/reportPanel/p_insurer_admin_weekly_overview_param_panel.jsp</result>
-            <result name="InvoiceSummaryReport-Excel">/jsp/user/reportPanel/p_invoice_summary_report_param_panel.jsp</result>
+        <action name="loadParameterPanel" class="chox.web.actions.ReportAction" method="loadParameterPanel">
+            <result name="InsurerAdminWeeklyOverviewReport-Excel">/jsp/user/reportPanel/p_insurer_admin_weekly_overview_param_panel.jsp
+            </result>
+            <result name="InvoiceSummaryReport-Excel">/jsp/user/reportPanel/p_invoice_summary_report_param_panel.jsp
+            </result>
         </action>
-        
         <action name="exportExcelReport" class="chox.web.actions.ReportAction" method="exportReport">
             <result name="success" type="stream">
-                <param name="contentType">application/ms-excel</param>
-                <param name="inputName">reportStream</param>
-                <param name="contentDisposition">attachment;filename="report.xls"</param>
-                <param name="bufferSize">99999</param>
+                <param name="contentType">application/ms-excel
+                </param>
+                <param name="inputName">reportStream
+                </param>
+                <param name="contentDisposition">attachment;filename="report.xls"
+                </param>
+                <param name="bufferSize">99999
+                </param>
             </result>
-            <result name="failed">/jsp/user/ExcelGenerationFailed.jsp.jsp</result>
+            <result name="failed">/jsp/user/ExcelGenerationFailed.jsp.jsp
+            </result>
         </action>
-        
+        <action name="showInsurerBoard" class="chox.web.actions.DashboardAction" method="showInsurerBoard">
+            <result name="success">/jsp/user/dashboardPanel/insurer_board.jsp
+            </result>
+            <result name="empty">/jsp/p_response.jsp
+            </result>
+        </action>
+        <action name="showChoBoard" class="chox.web.actions.DashboardAction" method="showChoBoard">
+            <result name="success">/jsp/user/dashboardPanel/cho_board.jsp
+            </result>
+            <result name="empty">/jsp/p_response.jsp
+            </result>
+        </action>
         <action name="testHQL" class="chox.web.actions.TestAction">
             <result name="success">/jsp/user/testHQL.jsp
             </result>
         </action>
-        
         <action name="runSQL" class="chox.web.actions.TestAction" method="runSQL">
             <result name="success">/jsp/p_jsonData.jsp
             </result>
         </action>
-
     </package>
     <include file="config-browser.xml"/>
 </struts>

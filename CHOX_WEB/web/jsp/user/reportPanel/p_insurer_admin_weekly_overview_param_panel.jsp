@@ -17,34 +17,46 @@
     
     Ext.onReady(function(){
         
-        var datePicker = new Ext.form.DateField({
-            name: 'DateSelected',
+        var dateFromPicker = new Ext.form.DateField({
+            name: 'DateStart',
             width: 120,
             allowBlank: true,
             format: 'd/m/Y',
             showWeekNumber: true
-        });  
+        });
         
-        datePicker.render('dateSelectedDiv');        
+        var dateToPicker = new Ext.form.DateField({
+            name: 'DateEnd',
+            width: 120,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true
+        });
+        
+        dateFromPicker.render('dateFromDiv');        
+        dateToPicker.render('dateToDiv');
         
     }); 
         
 </script>
 
 <fieldset class="x-fieldset">
-    <legend><s:property value="reportName"/></legend>
+    <legend>Insurer Admin Weekly Overview Report</legend>
     <div class="x-panel-bwrap chox-form-container">      
         <div class="form-container">
+            <div class="status-info">
+                Report Description
+            </div>
             <form id="formReportParam" class="XXentity-form">
                 <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">                    
                     <tr>
-                        <td nowrap><label>Date1</label></td><td colspan="2"><div id="dateSelectedDiv" /></td>                         
+                        <td nowrap><label>Date From</label></td><td colspan="2"><div id="dateFromDiv" /></td>
+                        <td nowrap><label>Date To</label></td><td colspan="2"><div id="dateToDiv"/></td>                            
                     </tr>                       
                 </table>
             </form> 
-            <div class="chox-form-button">
-                <a href="javascript:openReport();">Generate Report</a>
-                
+            <div align="right" class="chox-form-button">
+                <button type="button" onclick="javascript:openReport();">Generate Report</button>
             </div>
             <div id="INCmessageBox" class="errorBox"></div>
             <div id="submitResult" class="chox-form-submit-result"></div>    

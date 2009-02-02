@@ -35,3 +35,13 @@ CREATE OR REPLACE VIEW rpt_claim_invoice AS
 ALTER TABLE rpt_claim_invoice OWNER TO postgres;
 
 ------------------------------------------------------------------------------------------------
+-- Emmanuel Create new accessiblity to menu
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'menu.Report');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'menu.Report'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 1, (select id from accessibility where name = 'menu.Report'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'menu.Dashboard');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'menu.Dashboard'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 1, (select id from accessibility where name = 'menu.Dashboard'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO_MNG', 1, (select id from accessibility where name = 'menu.Dashboard'), (select max(id)+1 from accessibility_item));

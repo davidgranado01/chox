@@ -4,6 +4,8 @@
  */
 package chox.web.report.viewdata;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Map;
 
 /**
@@ -21,22 +23,55 @@ public class WeekSummary {
     private Integer claimNotificationContestedByRsa;
     private Integer claimPendingByRsa;
     private Integer claimNotificationAcceptedByRsa;
-    private Integer inScopeClaimContestedPercentage;
+    private BigDecimal inScopeClaimContestedPercentage;
     private Integer claimFnolCreatedByRsa;
     private Integer claimInvoiced;
     private Integer contestedinvoiceByRsa;
     private Integer pendingInvoiceByRsa;
     private Integer approvedInvoiceByRsa;
     private Integer paidInvoiceByRsa;
-    private Integer paidInvoicePercentage;
+    private BigDecimal paidInvoicePercentage;
     private Integer claimTobeInvoiced;
-    
-    public static WeekSummary getObject(Map data)
-    {
-        WeekSummary weekSummary = new WeekSummary();
-        
-        
-        return weekSummary;
+    private String weekCycleDate;
+
+    public static WeekSummary getObject(Map data) {
+        WeekSummary result = new WeekSummary();
+
+        result.setNewChoxNotification(getIntegerValue(data.get("newChoxNotification".toLowerCase())));
+        result.setClaimWithdrawn(getIntegerValue(data.get("claimWithdrawn".toLowerCase())));
+        result.setExistingClaim(getIntegerValue(data.get("existingClaim".toLowerCase())));
+        result.setCumulativeClaim(getIntegerValue(data.get("cumulativeClaim".toLowerCase())));
+        result.setClaimOutOfScope(getIntegerValue(data.get("claimOutOfScope".toLowerCase())));
+        result.setClaimInScope(getIntegerValue(data.get("claimInScope".toLowerCase())));
+        result.setClaimNotificationContestedByRsa(getIntegerValue(data.get("claimNotificationContestedByRsa".toLowerCase())));
+        result.setClaimPendingByRsa(getIntegerValue(data.get("claimPendingByRsa".toLowerCase())));
+        result.setClaimNotificationAcceptedByRsa(getIntegerValue(data.get("claimNotificationAcceptedByRsa".toLowerCase())));
+        //result.setInScopeClaimContestedPercentage(getIntegerValue(data.get("inScopeClaimContestedPercentage".toLowerCase())));
+        result.setClaimFnolCreatedByRsa(getIntegerValue(data.get("claimFnolCreatedByRsa".toLowerCase())));
+        result.setClaimInvoiced(getIntegerValue(data.get("claimInvoiced".toLowerCase())));
+        result.setContestedinvoiceByRsa(getIntegerValue(data.get("contestedinvoiceByRsa".toLowerCase())));
+        result.setPendingInvoiceByRsa(getIntegerValue(data.get("pendingInvoiceByRsa".toLowerCase())));
+        result.setApprovedInvoiceByRsa(getIntegerValue(data.get("approvedInvoiceByRsa".toLowerCase())));
+        result.setPaidInvoiceByRsa(getIntegerValue(data.get("paidInvoiceByRsa".toLowerCase())));
+        //result.setPaidInvoicePercentage(getIntegerValue(data.get("paidInvoicePercentage".toLowerCase())));
+        result.setClaimTobeInvoiced(getIntegerValue(data.get("claimTobeInvoiced".toLowerCase())));
+        result.setWeekCycleDate(data.get("weekCycleDate").toString());
+        //calculated field
+        BigDecimal cPaidInvoicePercentage = new BigDecimal(result.getClaimInvoiced() * result.getPaidInvoiceByRsa() / 100);
+        BigDecimal cInScopeClaimContestedPercentage = result.getClaimInScope() > 0 ? new BigDecimal(result.getClaimNotificationContestedByRsa() / result.getClaimInScope() * 100) : BigDecimal.ZERO;
+        result.setPaidInvoicePercentage(cPaidInvoicePercentage);
+        result.setInScopeClaimContestedPercentage(cInScopeClaimContestedPercentage);
+        return result;
+    }
+
+    private static Integer getIntegerValue(Object v) {
+        if (v.getClass().equals(Integer.class)) {
+            return (Integer) v;
+        } else if (v.getClass().equals(BigInteger.class)) {
+            return ((BigInteger) v).intValue();
+        } else {
+            return 0;
+        }
     }
 
     public Integer getNewChoxNotification() {
@@ -111,11 +146,11 @@ public class WeekSummary {
         this.claimNotificationAcceptedByRsa = claimNotificationAcceptedByRsa;
     }
 
-    public Integer getInScopeClaimContestedPercentage() {
+    public BigDecimal getInScopeClaimContestedPercentage() {
         return inScopeClaimContestedPercentage;
     }
 
-    public void setInScopeClaimContestedPercentage(Integer inScopeClaimContestedPercentage) {
+    public void setInScopeClaimContestedPercentage(BigDecimal inScopeClaimContestedPercentage) {
         this.inScopeClaimContestedPercentage = inScopeClaimContestedPercentage;
     }
 
@@ -167,11 +202,11 @@ public class WeekSummary {
         this.paidInvoiceByRsa = paidInvoiceByRsa;
     }
 
-    public Integer getPaidInvoicePercentage() {
+    public BigDecimal getPaidInvoicePercentage() {
         return paidInvoicePercentage;
     }
 
-    public void setPaidInvoicePercentage(Integer paidInvoicePercentage) {
+    public void setPaidInvoicePercentage(BigDecimal paidInvoicePercentage) {
         this.paidInvoicePercentage = paidInvoicePercentage;
     }
 
@@ -181,5 +216,13 @@ public class WeekSummary {
 
     public void setClaimTobeInvoiced(Integer claimTobeInvoiced) {
         this.claimTobeInvoiced = claimTobeInvoiced;
+    }
+
+    public String getWeekCycleDate() {
+        return weekCycleDate;
+    }
+
+    public void setWeekCycleDate(String weekCycleDate) {
+        this.weekCycleDate = weekCycleDate;
     }
 }

@@ -1,0 +1,115 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package chox.web.dashboard;
+
+import chox.model.Insurer;
+import chox.services.DataService;
+import chox.web.dashboard.viewdata.InsurerBoardViewData;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * :author Emmanuel
+ */
+public class InsurerDashboardBuilder {
+
+    private DataService dataService;
+    private Insurer insurer;
+    private Map extParameters;
+
+    public InsurerBoardViewData getMonthToDate() {
+        Map queryParameters = getQueryParameters();
+
+        queryParameters.put("pSelectedStartDate", null);
+        queryParameters.put("pSelectedEndDate", null);
+
+        return build(queryParameters);
+    }
+
+    public InsurerBoardViewData getWeekToDate() {
+        Map queryParameters = getQueryParameters();
+
+        queryParameters.put("pSelectedStartDate", null);
+        queryParameters.put("pSelectedEndDate", null);
+
+        return build(queryParameters);
+    }
+
+    public InsurerBoardViewData getCumulative() {
+        Map queryParameters = getQueryParameters();
+
+        queryParameters.put("pSelectedStartDate", null);
+        queryParameters.put("pSelectedEndDate", null);
+
+        return build(queryParameters);
+    }
+
+    private InsurerBoardViewData build(Map queryParameters) {
+        InsurerBoardViewData viewData = new InsurerBoardViewData();
+        String query = getQuery();
+        List result = dataService.externalQuery(query, queryParameters);
+
+        if (!result.isEmpty()) {
+            viewData = InsurerBoardViewData.getObject((Map) result.get(0));
+        }
+
+        return viewData;
+    }
+
+    public void setDataService(DataService dataService) {
+        this.dataService = dataService;
+    }
+
+    public void setInsurer(Insurer insurer) {
+        this.insurer = insurer;
+    }
+
+    private Map getQueryParameters() {
+        Map queryParameters = new HashMap();
+        
+        queryParameters.put("pInsId", insurer.getId());
+
+        Integer choOrgId = null;
+        
+        String choOrgIdRaw = this.extParameters.get("supplierId").toString();
+        if(!choOrgIdRaw.isEmpty()){
+            Integer id = Integer.parseInt(choOrgIdRaw);
+            choOrgId = id > 0 ? id : null;
+        }
+
+        queryParameters.put("pChorganisationId", choOrgId);
+
+        return queryParameters;
+    } 
+
+    private String getQuery()
+    {
+        String query = "select insurer.id, insurer.name,"
+        + "(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_week_his_audit_trail where chorganisation_id = :pChorganisationId and insurer_id = insurer.id and update_date between :pSelectedStartDate and :pSelectedEndDate) as noOfClaimNotificationsSubmitted,"
+        + "select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from claim where chorganisation_id = :pChorganisationId and insurer_id = insurer.id and created_date between :pSelectedStartDate and :pSelectedEndDate and status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as noOfClaimNotificationsAccepted,"
+        + "(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from claim where chorganisation_id = :pChorganisationId and insurer_id = insurer.id and created_date between :pSelectedStartDate and :pSelectedEndDate and status in ('ClaimRejectionAccepted')) as noOfClaimNotificationsRejected,"
+        + "(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from claim where chorganisation_id = :pChorganisationId and insurer_id = insurer.id and created_date between :pSelectedStartDate and :pSelectedEndDate and status in ('ClaimUnacknowledgedRouted',' ClaimRejected',' ClaimRejectionContested',' ClaimReferredToFNOL',' ClaimReferredToEngineer')) as noOfClaimNotificationsPending,"
+        + "(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_invoice where chorganisation_id = :pChorganisationId and insurer_id = insurer.id and created_date between :pSelectedStartDate and :pSelectedEndDate) as noOfInvoicesSubmitted,"
+        + "(select case when sum(total_to_pay-panalty_charge) is null then 0.00 else sum(total_to_pay-panalty_charge) end as no_sum from rpt_claim_invoice where chorganisation_id = :pChorganisationId and insurer_id = insurer.id and created_date between :pSelectedStartDate and :pSelectedEndDate) as valueOfInvoicesSubmitted,"
+        + "(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_invoice where chorganisation_id = :pChorganisationId and insurer_id = insurer.id and created_date between :pSelectedStartDate and :pSelectedEndDate and status in ('InvoicePaymentLogged')) as noOfInvoicesAccepted,"
+        + "(select case when sum(total_to_pay-panalty_charge) is null then 0.00 else sum(total_to_pay-panalty_charge) end as no_sum from rpt_claim_invoice where chorganisation_id = :pChorganisationId and insurer_id = insurer.id and created_date between :pSelectedStartDate and :pSelectedEndDatee and status in ('InvoicePaymentLogged')) as valueOfInvoicesAccepted,"
+        + "(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_invoice where chorganisation_id = :pChorganisationId and insurer_id = insurer.id and created_date between :pSelectedStartDate and :pSelectedEndDate and status in ('InvoiceRejectionAccepted')) as noOfInvoicesRejected,"
+        + "(select case when sum(total_to_pay-panalty_charge) is null then 0.00 else sum(total_to_pay-panalty_charge) end as no_sum from rpt_claim_invoice where chorganisation_id = :pChorganisationId and insurer_id = insurer.id and created_date between :pSelectedStartDate and :pSelectedEndDate and status in ('InvoiceRejectionAccepted')) as valueOfInvoicesRejected,"
+        + "(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_invoice where chorganisation_id = :pChorganisationId and insurer_id = insurer.id and created_date between :pSelectedStartDate and :pSelectedEndDate and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','AwaitingInvoicePayment')) as noOfInvoicesPending,"
+        + "(select case when sum(total_to_pay-panalty_charge) is null then 0.00 else sum(total_to_pay-panalty_charge) end as no_sum from rpt_claim_invoice where chorganisation_id = :pChorganisationId and insurer_id = insurer.id and created_date between :pSelectedStartDate and :pSelectedEndDate and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','AwaitingInvoicePayment')) as valueOfInvoicesPending,"
+        + "(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_invoice where chorganisation_id = :pChorganisationId and insurer_id = insurer.id and created_date between :pSelectedStartDate and :pSelectedEndDate and status in ('ClaimClosed')) as noOfInvoicesClosed,"
+        + "(select case when sum(total_to_pay-panalty_charge) is null then 0.00 else sum(total_to_pay-panalty_charge) end as no_sum from rpt_claim_invoice where chorganisation_id = :pChorganisationId and insurer_id = insurer.id and created_date between :pSelectedStartDate and :pSelectedEndDate and status in ('ClaimClosed')) as valueOfInvoicesClosed,"
+        + "(select case when sum(panalty_charge) is null then 0.00 else sum(panalty_charge) end as no_sum from rpt_claim_invoice where chorganisation_id = :pChorganisationId and insurer_id = insurer.id and created_date between :pSelectedStartDate and :pSelectedEndDate) as totalValueOfPenaltyChargesApplied"
+        + "from insurer insurer where insurer.id = :pInsId";
+        
+        return query;
+    }
+
+    public void setExtParameters(Map extParameters) {
+        this.extParameters = extParameters;
+    }
+}

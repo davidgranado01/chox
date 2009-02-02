@@ -4,45 +4,38 @@
  */
 package chox.web.report.viewdata;
 
+import java.util.Date;
+
 /**
  *
  * @author Emmanuel
  */
 public class WeekSummaryReportObject {
-    private String weekCycleFrom;
-    private String weekCycleTo;
-    private String name;
-    private String createdDate;
+    private Date weekCycleFrom;
+    private Date weekCycleTo;
+    private Date createdDate;
 
-    public String getWeekCycleFrom() {
+    public Date getWeekCycleFrom() {
         return weekCycleFrom;
     }
 
-    public void setWeekCycleFrom(String weekCycleFrom) {
+    public void setWeekCycleFrom(Date weekCycleFrom) {
         this.weekCycleFrom = weekCycleFrom;
     }
 
-    public String getWeekCycleTo() {
+    public Date getWeekCycleTo() {
         return weekCycleTo;
     }
 
-    public void setWeekCycleTo(String weekCycleTo) {
+    public void setWeekCycleTo(Date weekCycleTo) {
         this.weekCycleTo = weekCycleTo;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 }
