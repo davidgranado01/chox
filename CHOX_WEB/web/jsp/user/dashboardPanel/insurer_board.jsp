@@ -49,7 +49,7 @@
             <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">       
                 <tr><td><b>Number of Active User</b></td><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
                 <tr>
-                    <td nowrap><label><b>CH Organisation</b></label></td><td colspan="2"><s:select name="supplierId" id="supplierId" list="suppliers" listKey="id" listValue="name" headerKey="-1"
+                    <td nowrap><label><b>Credit Hire Organisation</b></label></td><td colspan="2"><s:select name="supplierId" id="supplierId" list="suppliers" listKey="id" listValue="name" headerKey="-1"
                                                                                                 headerValue="--- ALL ---"
                                                                                             emptyOption="false"></s:select></td>                         
                 </tr>                       
