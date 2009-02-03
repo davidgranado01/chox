@@ -6,13 +6,16 @@ package chox.services;
 
 import chox.model.Chorganisation;
 import chox.model.ClaimStatus;
+import chox.model.IdLookupItem;
 import chox.model.Insurer;
 import chox.model.LineOfBusiness;
 import chox.model.LookupItem;
 import chox.model.VehicleClass;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 
@@ -20,7 +23,7 @@ import org.hibernate.criterion.Order;
  *
  * @author Emmanuel
  */
-public class LookupServiceImpl extends DataService implements LookupService,Serializable {
+public class LookupServiceImpl extends DataService implements LookupService, Serializable {
 
     public List getStatuses() {
         List items = new ArrayList<LookupItem>();
@@ -50,5 +53,36 @@ public class LookupServiceImpl extends DataService implements LookupService,Seri
     public List getVehicleClasses() {
         DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClass.class).addOrder(Order.asc("name"));
         return findByCriteria(criteria);
+    }
+
+    public List getSuppliers(Integer insurerId) {
+
+        List result = new ArrayList();
+        try {
+            String query = "select a.id as value, a.name as text from chorganisation a inner join insurer_chorganisation b on a.id = b.chorganisation_id where b.insurer_id=:pInsurerId";
+            Map extParameters = new HashMap();
+            extParameters.put("pInsurerId", insurerId);
+            result = externalQuery(query, extParameters, IdLookupItem.class);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return result;
+
+    }
+
+    public List getInsurers(Integer choId) {
+        List result = new ArrayList();
+        try {
+            String query = "select a.id as value, a.name as text from insurer a inner join insurer_chorganisation b on a.id = b.insurer_id where b.chorganisation_id=:pChorganisationId";
+            Map extParameters = new HashMap();
+            extParameters.put("pChorganisationId", choId);
+            result = externalQuery(query, extParameters, IdLookupItem.class);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return result;
+
     }
 }

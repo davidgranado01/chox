@@ -456,3 +456,32 @@ div.status-warning{
     background-image: url('/IDASCHOX/images/warning.png');
 }
 
+table.dashboard th
+{
+   padding:6px;  
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px; 
+    width:16%;    
+    border-bottom:1px #ccc solid;    
+}
+
+table.dashboard
+{    
+    background: #dfe8f6; 
+    width:99.6%;
+    border-collapse:collapse;
+    margin: 16px 2px 2px 2px;        
+}
+
+table.dashboard td
+{
+    
+    padding:6px; 
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px; 
+    width:16%;
+    border-bottom:1px #ccc solid;    
+    text-align:right;
+}
+
+

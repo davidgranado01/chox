@@ -88,14 +88,17 @@ public class DashboardAction extends BaseAction implements ParameterAware {
 
     public List getSuppliers() {
         if (suppliers == null) {
-            suppliers = this.lookupService.getSuppliers();
+            Insurer currentInsurer = this.getAuthenticatedUser().getUser().getInsurer();
+            suppliers = this.lookupService.getSuppliers(currentInsurer.getId());
         }
         return suppliers;
     }
     
     public List getInsurers() {
+         
         if (insurers == null) {
-            insurers = this.lookupService.getInsurers();
+            Chorganisation currentCho = this.getAuthenticatedUser().getUser().getChorganisation();
+            insurers = this.lookupService.getInsurers(currentCho.getId());
         }
         return insurers;
     }

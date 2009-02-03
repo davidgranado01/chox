@@ -82,7 +82,7 @@ public class DataService extends HibernateDaoSupport {
         return q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
     }
     
-    public List externalQuery(final String query,Map parameters) {
+    public List externalQuery(final String query,final Map parameters) {
 
         SQLQuery q = this.getSession().createSQLQuery(query);
         
@@ -94,6 +94,20 @@ public class DataService extends HibernateDaoSupport {
         }
         
         return q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+    }
+    
+    public List externalQuery(final String query,Map parameters,Class entityClass) {
+
+        SQLQuery q = this.getSession().createSQLQuery(query);
+        
+        for(Object p : parameters.keySet())
+        {
+            String parameterName = (String)p;            
+            q.setParameter(parameterName, parameters.get(parameterName));
+            
+        }
+        
+        return q.setResultTransformer(Transformers.aliasToBean(entityClass)).list();
     }
 
     public Object getByCriteria(final DetachedCriteria c) {

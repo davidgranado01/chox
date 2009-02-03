@@ -40,22 +40,24 @@
     <fieldset class="x-fieldset">
         <legend>CHO Admin Dashboard</legend>
         
-        <div class="form-container">
-            <div class="status-info">
+        <div class="status-info">
                This dashboard displays a snapshot of claims in the system
                   to date across a weekly, monthly and yearly period. Results can
                   be viewed for an individual Insurer or across the entire Insurer
                   book.
             </div>
-            <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">       
-                <tr><td>Number of Active User </td><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
+        
+        <div class="form-container">
+            
+            <table cellpadding="0" cellspacing="0" class="dashboard" border="0">       
+                <tr><th>Number of Active Users</th><td><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
                 <tr>
-                    <td nowrap><label>Insurer</label></td><td colspan="2"><s:select name="insurerId" id="insurerId" list="insurers" listKey="id" listValue="name" headerKey="-1"
+                    <th nowrap><label>Insurer</label></th><td><s:select name="insurerId" id="insurerId" list="insurers" listKey="value" listValue="text" headerKey="-1"
                                                                                                 headerValue="--- ALL ---"
                                                                                             emptyOption="false"></s:select></td>                         
                 </tr>                       
             </table>
-            <div style="width:100%;height:480px" id="resultHolder"></div>
+            <div style="height:480px" id="resultHolder"></div>
         </div>        
         
     </fieldset>

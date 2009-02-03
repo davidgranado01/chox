@@ -8,17 +8,17 @@ package chox.model;
  *
  * @author Emmanuel
  */
-public class LookupItem {
+public class IdLookupItem {
 
     private String text;
-    private String value;
+    private Integer value;
 
-    public LookupItem() {
+    public IdLookupItem() {
         this.text = "";
-        this.value = "";
+        this.value = -1;
     }
 
-    public LookupItem(String text, String value) {
+    public IdLookupItem(String text, Integer value) {
         this.text = text;
         this.value = value;
     }
@@ -31,11 +31,11 @@ public class LookupItem {
         this.text = text;
     }
 
-    public String getValue() {
+    public Integer getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Integer value) {
         this.value = value;
     }
 }
