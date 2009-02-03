@@ -38,9 +38,9 @@ public class DashboardAction extends BaseAction implements ParameterAware{
         builder.setDataService(dataService);
         builder.setExtParameters(extParameters);
         builder.setInsurer(this.getAuthenticatedUser().getUser().getInsurer());
-        monthToDateInsurerBoardViewData = builder.getMonthToDate();
-        weekToDateInsurerBoardViewData = builder.getWeekToDate();
-        cumulativeInsurerBoardViewData = builder.getCumulative();
+        //monthToDateInsurerBoardViewData = builder.getMonthToDate();
+        //weekToDateInsurerBoardViewData = builder.getWeekToDate();
+        //cumulativeInsurerBoardViewData = builder.getCumulative();
         
         return SUCCESS;
     }

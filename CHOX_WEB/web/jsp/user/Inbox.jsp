@@ -216,7 +216,7 @@
                  activeTab: 0,
                  items:[
                      <s:if test="menuAccessibility.isDashBoardMenuAccessibility">                   
-                         {contentEl:'dashBoardPanelTab', title:'Dashboard',listeners: {activate: handleActivate}},
+                         {contentEl:'boardPanelTab', title:'Dashboard',listeners: {activate: handleActivate}},
                     </s:if>
                         {contentEl:'filterPanelTab', title:'Inbox',listeners: {activate: handleActivate}}
                         ,{contentEl:'searchPanelTab', title:'Search',listeners: {activate: handleActivate}}
@@ -329,34 +329,34 @@
                     if(tab.title == 'Reports')
                     {
                         $("#gridPanel").hide();
-                        $("#filterPanel").hide();  
-                        $("#searchPanel").hide();  
-                        $("#dashboardPanel").hide();
-                        $("#reportPanel").show();  
+                        //$("#filterPanel").hide();  
+                        //$("#searchPanel").hide();  
+                        //$("#dashboardPanel").hide();
+                        //$("#reportPanel").show();  
                     }
                     else if(tab.title == 'Dashboard')
                     {
                         $("#gridPanel").hide();
-                        $("#filterPanel").hide();  
-                        $("#searchPanel").hide();  
-                        $("#dashboardPanel").show();
-                        $("#reportPanel").hide();      
+                        //$("#filterPanel").hide();  
+                        //$("#searchPanel").hide();  
+                        //$("#dashboardPanel").show();
+                        //$("#reportPanel").hide();      
                     }
                     else if(tab.title == 'Search')
                     {
                         $("#gridPanel").show();
-                        $("#filterPanel").hide();  
-                        $("#searchPanel").show();  
-                        $("#dashboardPanel").hide();
-                        $("#reportPanel").hide();      
+                        //$("#filterPanel").hide();  
+                        //$("#searchPanel").show();  
+                        //$("#dashboardPanel").hide();
+                        //$("#reportPanel").hide();      
                     }
                     else if(tab.title == 'Inbox')
                     {
                         $("#gridPanel").show();
-                        $("#filterPanel").show();  
-                        $("#searchPanel").hide();  
-                        $("#dashboardPanel").hide();
-                        $("#reportPanel").hide();     
+                        //$("#filterPanel").show();  
+                        //$("#searchPanel").hide();  
+                        //$("#dashboardPanel").hide();
+                        //$("#reportPanel").hide();     
                     }
     }
 
@@ -399,24 +399,22 @@
             
             
             
-            <div id="tabPanel">
+            <div id="tabPanel"></div>
                 
-                <div id="dashboardPanelTab">
-                    <div style="display:none" id="dashboardPanel">
+                <div id="boardPanelTab" class="x-hide-display">
+                    <div id="dashboardPanel">
                         <s:if test="isCHO">
                             <s:action name="showChoBoardHeader" namespace="/user" executeResult="true" />
                         </s:if>
-                        
                         <s:if test="isInsurer">
                             <s:action name="showInsurerBoardHeader" namespace="/user" executeResult="true" />
-                        </s:if>                       
-                         
+                        </s:if> 
                     </div>
                 </div>
                 
                 
-                <div id="filterPanelTab">
-                    <div style="display:none" id="filterPanel">
+                <div id="filterPanelTab" class="x-hide-display">
+                    <div id="filterPanel">
                         <ul class="inbox">
                             <s:if test="filterAccessibility.isRejectedClaimsAccessible">
                                 <li><a href="javascript:showClaimByStatus('ClaimRejected');" >Rejected Claims (<s:property value="filterRecordCounter.rejectedClaimsCount" />)</a></li>
@@ -467,7 +465,7 @@
                     </div>
                 </div>
                 <div id="searchPanelTab" class="x-hide-display">
-                    <div style="display:none" id="searchPanel">
+                    <div id="searchPanel">
                         
                         <s:action name="searchClaim" namespace="/user" executeResult="true" /> 
                         
@@ -475,14 +473,13 @@
                 </div>
                 
                 <div id="reportPanelTab" class="x-hide-display">
-                    <div style="display:none" id="reportPanel">
+                    <div id="reportPanel">
                         
                         <s:action name="buildReport" namespace="/user" executeResult="true" /> 
                         
                     </div>
                 </div>
-                    
-            </div>
+           
             
             <div id="gridPanel">
                 <div id="gridHolder">
