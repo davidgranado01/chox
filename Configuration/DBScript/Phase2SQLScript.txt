@@ -62,3 +62,47 @@ insert into web_user_user_role (id, web_user_id, wer_user_role_id, created_by, l
 select (select max(id)+1 from web_user_user_role), id,(select id from web_user_role where name ='ROLE_CHO') ,999,999,true from web_user where email='admin@cho.com';
 
 ------------------------------------------------------------------------------------------------
+
+-- CREATE VIEW FOR REPORT 
+-- rpt_claim_invoice
+
+CREATE OR REPLACE VIEW rpt_claim_invoice AS 
+
+-- VERSION 1.0
+-- DESCRIPTION: GET INVOICE
+
+SELECT invoice.id, invoice.date_invoiced, invoice.handling_invoice_no, invoice.claim_invoice_no, invoice.cdw_qty, invoice.automatic_qty, invoice.sat_nav_qty, 
+invoice.estate_qty, invoice.baby_seat_qty, invoice.tow_bars_qty, invoice.non_standard_insurance_premium_qty, invoice.admin_qty, invoice.roof_rack_qty, 
+invoice.dual_control_qty, invoice.delivery_collection_qty, invoice.created_by, invoice.created_date, invoice.last_nodified_by, invoice.last_modified_date, 
+invoice.hire_net, invoice.hire_vat, invoice.hire_gross, invoice.repair_net, invoice.repair_vat, invoice.repair_gross, invoice.engineer_fee_net, invoice.engineer_fee_vat, 
+invoice.engineer_fee_gross, invoice.storage_recovery_net, invoice.storage_recovery_vat, invoice.storage_recovery_gross, invoice.total_net, invoice.total_vat, 
+invoice.total_gross, invoice.claims_handling_invoice_amount, invoice.deduction_for_claims_handling_fee, invoice.discount, invoice.total_to_pay, invoice.cdw_fee, 
+invoice.automatic_fee, invoice.sat_nav_fee, invoice.estate_fee, invoice.baby_seat_fee, invoice.tow_bars_fee, invoice.non_standard_insurance_premium_fee, 
+invoice.admin_fee, invoice.roof_rack_fee, invoice.dual_control_fee, invoice.delivery_collection_fee, invoice.is_payment_mode, invoice.is_engineer_decision_approved, 
+invoice.engineer_invoice_review_notes, invoice.rejection_reason, invoice.hire_rate_charged_per_day, invoice.excess_amount_collected, invoice.vat_amount_collected, 
+invoice.panalty_charge, invoice.panalty_alert_qty, claim.id AS claim_id, claim.status, claim.insurer_id, claim.chorganisation_id
+FROM claim claim 
+JOIN invoice invoice ON claim.invoice_id = invoice.id;
+
+ALTER TABLE rpt_claim_invoice OWNER TO postgres;
+
+------------------------------------------------------------------------------------------------
+
+-- CREATE VIEW FOR REPORT 
+-- rpt_claim_audit_trail
+
+CREATE OR REPLACE VIEW rpt_claim_audit_trail AS 
+
+-- VERSION 1.0
+-- DESCRIPTION: GET AUDIT TRAIL WITH CLAIM
+
+SELECT audit_trail.id, audit_trail.update_date, audit_trail.user_id, audit_trail.claim_id, audit_trail.original_status, audit_trail.new_status, audit_trail.created_by, 
+audit_trail.created_date, audit_trail.last_modified_by, audit_trail.last_modified_date, claim.insurer_id, claim.chorganisation_id, invoice.total_to_pay, 
+invoice.panalty_charge , invoice.id as invoice_id 
+FROM audit_trail audit_trail 
+inner join claim claim on claim.id=audit_trail.claim_id
+left outer join invoice invoice on claim.invoice_id=invoice.id;
+
+ALTER TABLE rpt_claim_audit_trail OWNER TO postgres;
+
+------------------------------------------------------------------------------------------------
