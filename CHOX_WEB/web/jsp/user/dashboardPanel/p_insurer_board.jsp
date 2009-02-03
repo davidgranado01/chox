@@ -6,7 +6,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">
-    <tr><td>                                         </td>      <td>Week To Date</td><td>Month To Date</td><td>Cumulative</td></tr>
+    <tr><td>                                         </td><td>Week To Date</td><td>Month To Date</td><td>Cumulative</td></tr>
     <tr><td>Number of Claim Notifications Submitted ?</td>	<td><label class="std-data-ro"><s:property value="w2DData.noOfClaimNotificationsSubmitted"/></label></td>	<td><label class="std-data-ro"><s:property value="m2DData.noOfClaimNotificationsSubmitted"/></label></td>	<td><label class="std-data-ro"><s:property value="cData.noOfClaimNotificationsSubmitted"/></label></td></tr>
     <tr><td>Number of Claim Notifications Accepted ?</td>	<td><label class="std-data-ro"><s:property value="w2DData.noOfClaimNotificationsAccepted"/></label></td>	<td><label class="std-data-ro"><s:property value="m2DData.noOfClaimNotificationsAccepted"/></label></td>	<td><label class="std-data-ro"><s:property value="cData.noOfClaimNotificationsAccepted"/></label></td></tr>
     <tr><td>Number of Claim Notifications Rejected ? </td>	<td><label class="std-data-ro"><s:property value="w2DData.noOfClaimNotificationsRejected"/></label></td>	<td><label class="std-data-ro"><s:property value="m2DData.noOfClaimNotificationsRejected"/></label></td>	<td><label class="std-data-ro"><s:property value="cData.noOfClaimNotificationsRejected"/></label></td></tr>
