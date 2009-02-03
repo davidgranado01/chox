@@ -617,14 +617,26 @@
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp.jsp
             </result>
         </action>
-        <action name="showInsurerBoard" class="chox.web.actions.DashboardAction" method="showInsurerBoard">
+        <action name="showInsurerBoardHeader" class="chox.web.actions.DashboardAction" method="showInsurerBoardHeader">
             <result name="success">/jsp/user/dashboardPanel/insurer_board.jsp
             </result>
             <result name="empty">/jsp/p_response.jsp
             </result>
         </action>
-        <action name="showChoBoard" class="chox.web.actions.DashboardAction" method="showChoBoard">
+        <action name="showInsurerBoard" class="chox.web.actions.DashboardAction" method="showInsurerBoard">
+            <result name="success">/jsp/user/dashboardPanel/p_insurer_board.jsp
+            </result>
+            <result name="empty">/jsp/p_response.jsp
+            </result>
+        </action>
+        <action name="showChoBoardHeader" class="chox.web.actions.DashboardAction" method="showChoBoard">
             <result name="success">/jsp/user/dashboardPanel/cho_board.jsp
+            </result>
+            <result name="empty">/jsp/p_response.jsp
+            </result>
+        </action>
+        <action name="showChoBoard" class="chox.web.actions.DashboardAction" method="showChoBoard">
+            <result name="success">/jsp/user/dashboardPanel/p_cho_board.jsp
             </result>
             <result name="empty">/jsp/p_response.jsp
             </result>

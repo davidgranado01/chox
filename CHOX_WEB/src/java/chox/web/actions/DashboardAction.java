@@ -18,15 +18,19 @@ import org.apache.struts2.interceptor.ParameterAware;
  * @author Emmanuel
  */
 public class DashboardAction extends BaseAction implements ParameterAware{    
-    
-    InsurerBoardViewData monthToDateInsurerBoardViewData;
-    InsurerBoardViewData weekToDateInsurerBoardViewData;
-    InsurerBoardViewData cumulativeInsurerBoardViewData;
+    private InsurerBoardViewData monthToDateInsurerBoardViewData;
+    private InsurerBoardViewData weekToDateInsurerBoardViewData;
+    private InsurerBoardViewData cumulativeInsurerBoardViewData;
     
     private DataService dataService;
     private LookupService lookupService;
     private List suppliers;
     private Map extParameters;
+    
+    public String showInsurerBoardHeader()
+    {        
+        return SUCCESS;
+    }
     
     public String showInsurerBoard()
     {
@@ -62,6 +66,18 @@ public class DashboardAction extends BaseAction implements ParameterAware{
 
     public void setParameters(Map extParameters) {
         this.extParameters = extParameters;
+    }
+
+    public InsurerBoardViewData getMonthToDateInsurerBoardViewData() {
+        return monthToDateInsurerBoardViewData;
+    }
+
+    public InsurerBoardViewData getWeekToDateInsurerBoardViewData() {
+        return weekToDateInsurerBoardViewData;
+    }
+
+    public InsurerBoardViewData getCumulativeInsurerBoardViewData() {
+        return cumulativeInsurerBoardViewData;
     }
 
 }

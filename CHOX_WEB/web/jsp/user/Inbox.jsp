@@ -404,11 +404,11 @@
                 <div id="dashboardPanelTab">
                     <div style="display:none" id="dashboardPanel">
                         <s:if test="isCHO">
-                            <s:action name="showChoBoard" namespace="/user" executeResult="true" />
+                            <s:action name="showChoBoardHeader" namespace="/user" executeResult="true" />
                         </s:if>
                         
                         <s:if test="isInsurer">
-                            <s:action name="showInsurerBoard" namespace="/user" executeResult="true" />
+                            <s:action name="showInsurerBoardHeader" namespace="/user" executeResult="true" />
                         </s:if>                       
                          
                     </div>
