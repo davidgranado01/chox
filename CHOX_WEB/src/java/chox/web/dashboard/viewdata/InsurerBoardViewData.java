@@ -47,7 +47,7 @@ public class InsurerBoardViewData {
         viewData.valueOfInvoicesPending = getDecimalValue(data.get("valueOfInvoicesPending".toLowerCase()));
         viewData.noOfInvoicesClosed = getIntegerValue(data.get("noOfInvoicesClosed".toLowerCase()));
         viewData.valueOfInvoicesClosed = getDecimalValue(data.get("valueOfInvoicesClosed".toLowerCase()));
-        viewData.totalValueOfPenaltyChargesApplied = getDecimalValue(data.get("totalValueOfPenaltyChargesApplie".toLowerCase()));
+        viewData.totalValueOfPenaltyChargesApplied = getDecimalValue(data.get("totalValueOfPenaltyChargesApplied".toLowerCase()));
         
         return viewData;
     }

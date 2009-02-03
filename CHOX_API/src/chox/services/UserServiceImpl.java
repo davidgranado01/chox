@@ -25,25 +25,44 @@ public class UserServiceImpl extends HibernateDaoSupport implements UserService 
         WebUser u = findByEmail(s);
         return u;
     }
-    
-    public WebUser getObject(int id)
-    {
+
+    public WebUser getObject(int id) {
         UserCacheManager cacheManager = UserCacheManager.getInstance();
         WebUser user = cacheManager.getUserFromCache(id);
-        if(user == null){
-            user = (WebUser)get(WebUser.class, id);
+        if (user == null) {
+            user = (WebUser) get(WebUser.class, id);
             cacheManager.putUserToCache(user);
         }
-        
+
         return user;
     }
-    
-     private Object get(final Class c, final int id) {
+
+    public Long getNumChoActiveUser(Integer choId) {
+        String q = "select count(*) from WebUser where status = 1 and chorganisation.id = " + choId.toString();
+        return getCount(q);
+    }
+
+    public Long getNumInsActiveUser(Integer insId) {
+        String q = "select count(*) from WebUser where status = 1 and insurer.id = " + insId.toString();
+        return getCount(q);
+    }
+
+    protected Long getCount(String query) {
+        Long count = new Long(0);
+        List result = getHibernateTemplate().find(query);
+
+        if (result != null && !result.isEmpty()) {
+            count = (Long) result.get(0);
+        }
+        return count;
+    }
+
+    private Object get(final Class c, final int id) {
 
         return getHibernateTemplate().get(c, id);
     }
-     
-     private Object getByCriteria(final DetachedCriteria c) {
+
+    private Object getByCriteria(final DetachedCriteria c) {
 
         List result = getHibernateTemplate().findByCriteria(c);
         if (result != null && !result.isEmpty()) {

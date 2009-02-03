@@ -11,7 +11,10 @@
     <div class="x-panel-bwrap chox-form-container">      
         <div class="form-container">
             <div class="status-info">
-                Dashboard Description
+                This dashboard displays a snapshot of claims in the system
+                  to date across a weekly, monthly and yearly period. Results can
+                  be viewed for an individual Insurer or across the entire Insurer
+                  book.
             </div>
                 COMING SOON!!!
         </div>        
