@@ -35,3 +35,30 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 1, (select id from accessibility where name = 'menu.Dashboard'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO_MNG', 1, (select id from accessibility where name = 'menu.Dashboard'), (select max(id)+1 from accessibility_item));
 
+------------------------------------------------------------------------------------------------
+
+-- INSURER MANAGER USER
+
+insert into web_user (id, first_name, last_name, email, password, status, created_by, last_modified_by, insurer_id) 
+values ((select max(id)+1 from web_user where id!=999),'Admin','Insurer','admin@ins.com','1234', 1, 999, 999,(select id from insurer where name like '%RSA%'));
+
+insert into web_user_user_role (id, web_user_id, wer_user_role_id, created_by, last_modified_by, is_active) 
+select (select max(id)+1 from web_user_user_role), id,(select id from web_user_role where name like '%ROLE_INS_MNG%') ,999,999,true from web_user where email='admin@ins.com';
+
+insert into web_user_user_role (id, web_user_id, wer_user_role_id, created_by, last_modified_by, is_active) 
+select (select max(id)+1 from web_user_user_role), id,(select id from web_user_role where name ='ROLE_INS') ,999,999,true from web_user where email='admin@ins.com';
+
+------------------------------------------------------------------------------------------------
+
+-- CHO MANAGER USER
+
+insert into web_user (id, first_name, last_name, email, password, status, created_by, last_modified_by, chorganisation_id) 
+values ((select max(id)+1 from web_user where id!=999),'Admin','Chox','admin@cho.com','1234', 1, 999, 999,(select id from chorganisation where name like '%Drive Assist%'));
+
+insert into web_user_user_role (id, web_user_id, wer_user_role_id, created_by, last_modified_by, is_active) 
+select (select max(id)+1 from web_user_user_role), id,(select id from web_user_role where name like '%ROLE_CHO_MNG%') ,999,999,true from web_user where email='admin@cho.com';
+
+insert into web_user_user_role (id, web_user_id, wer_user_role_id, created_by, last_modified_by, is_active) 
+select (select max(id)+1 from web_user_user_role), id,(select id from web_user_role where name ='ROLE_CHO') ,999,999,true from web_user where email='admin@cho.com';
+
+------------------------------------------------------------------------------------------------
