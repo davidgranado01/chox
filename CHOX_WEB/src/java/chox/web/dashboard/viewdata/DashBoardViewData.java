@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @author Emmanuel
  */
-public class InsurerBoardViewData {
+public class DashBoardViewData {
     private Integer noOfClaimNotificationsSubmitted;
     private Integer noOfClaimNotificationsAccepted;
     private Integer noOfClaimNotificationsRejected;
@@ -29,9 +29,9 @@ public class InsurerBoardViewData {
     private BigDecimal valueOfInvoicesClosed;
     private BigDecimal totalValueOfPenaltyChargesApplied;
     
-    public static InsurerBoardViewData getObject(Map data)
+    public static DashBoardViewData getObject(Map data)
     {
-        InsurerBoardViewData viewData = new InsurerBoardViewData();
+        DashBoardViewData viewData = new DashBoardViewData();
         
         viewData.noOfClaimNotificationsSubmitted = getIntegerValue(data.get("noOfClaimNotificationsSubmitted".toLowerCase()));
         viewData.noOfClaimNotificationsAccepted = getIntegerValue(data.get("noOfClaimNotificationsAccepted".toLowerCase()));

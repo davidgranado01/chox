@@ -4,12 +4,14 @@
  */
 package chox.web.actions;
 
+import chox.model.Chorganisation;
 import chox.model.Insurer;
 import chox.services.DataService;
 import chox.services.LookupService;
 import chox.services.UserService;
+import chox.web.dashboard.ChoDashboardBuilder;
 import chox.web.dashboard.InsurerDashboardBuilder;
-import chox.web.dashboard.viewdata.InsurerBoardViewData;
+import chox.web.dashboard.viewdata.DashBoardViewData;
 import java.util.List;
 import java.util.Map;
 import org.apache.struts2.interceptor.ParameterAware;
@@ -20,19 +22,26 @@ import org.apache.struts2.interceptor.ParameterAware;
  */
 public class DashboardAction extends BaseAction implements ParameterAware {
 
-    private InsurerBoardViewData monthToDateInsurerBoardViewData;
-    private InsurerBoardViewData weekToDateInsurerBoardViewData;
-    private InsurerBoardViewData cumulativeInsurerBoardViewData;
+    private DashBoardViewData monthToDateInsurerBoardViewData;
+    private DashBoardViewData weekToDateInsurerBoardViewData;
+    private DashBoardViewData cumulativeInsurerBoardViewData;
     private DataService dataService;
     private LookupService lookupService;
     private UserService userService;
     private List suppliers;
+    private List insurers;
     private Map extParameters;
     private Long numberOfActiveUser;
 
     public String showInsurerBoardHeader() {
         Insurer currentInsurer = this.getAuthenticatedUser().getUser().getInsurer();
         numberOfActiveUser = userService.getNumInsActiveUser(currentInsurer.getId());
+        return SUCCESS;
+    }
+    
+    public String showChoBoardHeader() {
+        Chorganisation currentCho = this.getAuthenticatedUser().getUser().getChorganisation();
+        numberOfActiveUser = userService.getNumChoActiveUser(currentCho.getId());
         return SUCCESS;
     }
 
@@ -54,6 +63,18 @@ public class DashboardAction extends BaseAction implements ParameterAware {
 
     public String showChoBoard() {
         
+        try {
+            ChoDashboardBuilder builder = new ChoDashboardBuilder();
+            builder.setDataService(dataService);
+            builder.setExtParameters(extParameters);
+            Chorganisation currentChorganisation = this.getAuthenticatedUser().getUser().getChorganisation();
+            builder.setChorganisation(currentChorganisation);
+            monthToDateInsurerBoardViewData = builder.getMonthToDate();
+            weekToDateInsurerBoardViewData = builder.getWeekToDate();
+            cumulativeInsurerBoardViewData = builder.getCumulative();            
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         return SUCCESS;
     }
 
@@ -71,20 +92,27 @@ public class DashboardAction extends BaseAction implements ParameterAware {
         }
         return suppliers;
     }
+    
+    public List getInsurers() {
+        if (insurers == null) {
+            insurers = this.lookupService.getInsurers();
+        }
+        return insurers;
+    }
 
     public void setParameters(Map extParameters) {
         this.extParameters = extParameters;
     }
 
-    public InsurerBoardViewData getM2DData() {
+    public DashBoardViewData getM2DData() {
         return monthToDateInsurerBoardViewData;
     }
 
-    public InsurerBoardViewData getW2DData() {
+    public DashBoardViewData getW2DData() {
         return weekToDateInsurerBoardViewData;
     }
 
-    public InsurerBoardViewData getCData() {
+    public DashBoardViewData getCData() {
         return cumulativeInsurerBoardViewData;
     }
 

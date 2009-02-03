@@ -7,7 +7,7 @@ package chox.web.dashboard;
 import chox.Util.DateHelper;
 import chox.model.Insurer;
 import chox.services.DataService;
-import chox.web.dashboard.viewdata.InsurerBoardViewData;
+import chox.web.dashboard.viewdata.DashBoardViewData;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +23,7 @@ public class InsurerDashboardBuilder {
     private Insurer insurer;
     private Map extParameters;
 
-    public InsurerBoardViewData getMonthToDate() {
+    public DashBoardViewData getMonthToDate() {
         Map queryParameters = getQueryParameters();
 
         Date now = new Date();
@@ -33,7 +33,7 @@ public class InsurerDashboardBuilder {
         return build(queryParameters);
     }
 
-    public InsurerBoardViewData getWeekToDate() {
+    public DashBoardViewData getWeekToDate() {
         Map queryParameters = getQueryParameters();
 
         Date now = new Date();
@@ -43,7 +43,7 @@ public class InsurerDashboardBuilder {
         return build(queryParameters);
     }
 
-    public InsurerBoardViewData getCumulative() {
+    public DashBoardViewData getCumulative() {
         Map queryParameters = getQueryParameters();
 
         queryParameters.put("pSelectedStartDate", DateHelper.getMinDate());
@@ -52,13 +52,13 @@ public class InsurerDashboardBuilder {
         return build(queryParameters);
     }
 
-    private InsurerBoardViewData build(Map queryParameters) {
-        InsurerBoardViewData viewData = new InsurerBoardViewData();
+    private DashBoardViewData build(Map queryParameters) {
+        DashBoardViewData viewData = new DashBoardViewData();
         String query = getQuery();
         List result = dataService.externalQuery(query, queryParameters);
 
         if (!result.isEmpty()) {
-            viewData = InsurerBoardViewData.getObject((Map) result.get(0));
+            viewData = DashBoardViewData.getObject((Map) result.get(0));
         }
 
         return viewData;
