@@ -79,8 +79,8 @@
     <legend>Insurer Admin Weekly Overview Report</legend>
     <div class="x-panel-bwrap chox-form-container">      
         <div class="form-container">
-            <div class="status-info">
-                Report Description
+            <div class="status-info" align="justify">
+This report provides an overview of claims activity reported by weekly segments, expsoing both a historical and current position regarding CHOX claims. The dates that require selection below refer to the dates you wish the report to include, remember the report is based on weekly segments with weeks running from Monday to Sunday.
             </div>
             
                 <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">                    
