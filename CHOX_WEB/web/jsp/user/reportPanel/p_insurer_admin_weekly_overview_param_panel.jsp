@@ -85,14 +85,15 @@
             
                 <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">                    
                     <tr>
-                        <td nowrap><label>Date From</label></td><td colspan="2"><div id="dateFromDiv" /></td>
-                        <td nowrap><label>Date To</label></td><td colspan="2"><div id="dateToDiv"/></td>                            
+                        <td nowrap width="30%"><label>Date From</label></td><td><div id="dateFromDiv" /></td>                       
+                    </tr>    
+                    <tr>
+                        <td nowrap><label>Date To</label></td><td><div id="dateToDiv"/></td>                            
                     </tr>                       
                 </table>
-            
-            <div align="right" class="chox-form-button">
-                <button type="button" onclick="javascript:openReport();">Generate Report</button>
-            </div>
+                <div class="chox-form-button" align="right">
+                    <button type="button" onclick="javascript:openReport();">Generate Report</button>
+                </div>
             <div id="INCmessageBox" class="errorBox"></div>
             <div id="submitResult" class="chox-form-submit-result"></div>    
         </div>

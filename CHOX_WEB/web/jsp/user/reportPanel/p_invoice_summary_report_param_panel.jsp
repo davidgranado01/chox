@@ -59,12 +59,12 @@
             },
             messages: {
                 DateStart: {
-                    required:"A value must be supplied for 'Date From'",
-                    date:"You must supply a date value 'Date From'"
+                    required:"A value must be supplied for 'Invoice Uploaded From'",
+                    date:"You must supply a date value 'Invoice Uploaded From'"
                 }, 
                 DateEnd: {
-                    required:"A value must be supplied for 'Date To'",
-                    date:"You must supply a date value 'Date To'"
+                    required:"A value must be supplied for 'Invoice Uploaded To'",
+                    date:"You must supply a date value 'Invoice Uploaded To'"
                 }         
             }
         });
@@ -84,12 +84,13 @@
                 Report Description
             </div>
             
-                
                 <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">                    
                     <tr>
-                        <td nowrap><label>Date From</label></td><td colspan="2"><div id="dateFromDiv" /></td>
-                        <td nowrap><label>Date To</label></td><td colspan="2"><div id="dateToDiv"/></td>                            
-                    </tr>                       
+                        <td nowrap width="30%"><label>Invoice Uploaded From</label></td><td><div id="dateFromDiv" /></td>                       
+                    </tr>    
+                    <tr>
+                        <td nowrap><label>Invoice Uploaded To</label></td><td><div id="dateToDiv"/></td>                            
+                    </tr>                      
                 </table>
             
             <div align="right" class="chox-form-button">
