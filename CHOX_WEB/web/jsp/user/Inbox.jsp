@@ -464,6 +464,7 @@
                         </ul>                            
                     </div>
                 </div>
+                
                 <div id="searchPanelTab" class="x-hide-display">
                     <div id="searchPanel">
                         

@@ -5,7 +5,11 @@
 --%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<head>
+<head>        
+    
+    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.validate.min.js"></script> 
+    <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script> 
+    
     <script>
         
         function renderParameterPanel(report)

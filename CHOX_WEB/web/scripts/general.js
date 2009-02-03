@@ -1,21 +1,4 @@
-    /*
-    var newwindow;
-    function openFile(url, name)
-    {
-        var folderPath = url + '/download/';        
-        if(name=='ChoHelp'){
-            folderPath = folderPath + 'iDAS_CHOX_CHO_UG_1.1-1.pdf';
-        }else if(name=='InsHelp'){
-            folderPath = folderPath + 'iDAS_CHOX_IUG_1.0-1.pdf';
-        }else if(name=='Support'){
-            folderPath = folderPath + 'iDAS_CHOX_Support_Document.pdf';
-        }
-        
-        newwindow=window.open(folderPath, 'IDASCHOX');
-        if (window.focus) {newwindow.focus()}
-    }
-    */
-   
+  
     var newwindow;
     function openFile(url, name)
     {
@@ -32,6 +15,12 @@
         if (window.focus) {newwindow.focus()}
     }
     
+    var strDateFormat = 'd/m/Y';    
+    function getTodayDate(){
+        var now = new Date();
+        return now.format(strDateFormat);
+    }
+    
     function openChoxPolicyPage(url, name){
         var folderPath = url;        
         if(name=='TermsOfService'){
@@ -44,7 +33,6 @@
         
         newwindow=window.open(folderPath, 'IDASCHOX');
         if (window.focus) {newwindow.focus()}
-        
     }
     
     function onOpenAbout(){
