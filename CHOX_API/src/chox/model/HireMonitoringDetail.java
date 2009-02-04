@@ -2,354 +2,344 @@ package chox.model;
 
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
-public class HireMonitoringDetail implements Serializable, Auditable
-{
-	/** 
-	 * This attribute maps to the column created_by in the hire_monitoring_detail table.
-	 */
-	protected WebUser createdBy;
+public class HireMonitoringDetail implements Serializable, Auditable {
 
-	/** 
-	 * This attribute maps to the column created_date in the hire_monitoring_detail table.
-	 */
-	protected Date createdDate;
+    /** 
+     * This attribute maps to the column created_by in the hire_monitoring_detail table.
+     */
+    protected WebUser createdBy;
+    /** 
+     * This attribute maps to the column created_date in the hire_monitoring_detail table.
+     */
+    protected Date createdDate;
+    /** 
+     * This attribute maps to the column last_modified_by in the hire_monitoring_detail table.
+     */
+    protected WebUser lastModifiedBy;
+    /** 
+     * This attribute maps to the column last_modified_date in the hire_monitoring_detail table.
+     */
+    protected Date lastModifiedDate;
+    /** 
+     * This attribute maps to the column name_of_repairer in the hire_monitoring_detail table.
+     */
+    protected String nameOfRepairer;
+    /** 
+     * This attribute maps to the column repair_book_in_date in the hire_monitoring_detail table.
+     */
+    protected Date repairBookInDate;
+    /** 
+     * This attribute maps to the column inspection_booked_date in the hire_monitoring_detail table.
+     */
+    protected Date inspectionBookedDate;
+    /** 
+     * This attribute maps to the column inspection_date in the hire_monitoring_detail table.
+     */
+    protected Date inspectionDate;
+    /** 
+     * This attribute maps to the column name_Of_ime in the hire_monitoring_detail table.
+     */
+    protected String nameOfIme;
+    /** 
+     * This attribute maps to the column repair_completion_date in the hire_monitoring_detail table.
+     */
+    protected Date repairCompletionDate;
+    /** 
+     * This attribute maps to the column total_loss_inspection_report in the hire_monitoring_detail table.
+     */
+    protected String totalLossInspectionReport;
+    /** 
+     * This attribute maps to the column is_total_lost_check in the hire_monitoring_detail table.
+     */
+    protected boolean isTotalLostCheck;
+    /** 
+     * This attribute maps to the column id in the hire_monitoring_detail table.
+     */
+    protected int id;
+    /** 
+     * This attribute maps to the column labour_cost in the hire_monitoring_detail table.
+     */
+    private BigDecimal labourRate;
+    private Integer labourHour;
+    private BigDecimal labourCost;
 
-	/** 
-	 * This attribute maps to the column last_modified_by in the hire_monitoring_detail table.
-	 */
-	protected WebUser lastModifiedBy;
+    /**
+     * Method 'HireMonitoringDetail'
+     * 
+     */
+    public HireMonitoringDetail() {
+    }
 
-	/** 
-	 * This attribute maps to the column last_modified_date in the hire_monitoring_detail table.
-	 */
-	protected Date lastModifiedDate;
+    /**
+     * Method 'getCreatedBy'
+     * 
+     * @return int
+     */
+    public WebUser getCreatedBy() {
+        return createdBy;
+    }
 
-	/** 
-	 * This attribute maps to the column name_of_repairer in the hire_monitoring_detail table.
-	 */
-	protected String nameOfRepairer;
+    /**
+     * Method 'setCreatedBy'
+     * 
+     * @param createdBy
+     */
+    public void setCreatedBy(WebUser createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	/** 
-	 * This attribute maps to the column repair_book_in_date in the hire_monitoring_detail table.
-	 */
-	protected Date repairBookInDate;
+    /**
+     * Method 'getCreatedDate'
+     * 
+     * @return java.util.Date
+     */
+    public java.util.Date getCreatedDate() {
+        return createdDate;
+    }
 
-	/** 
-	 * This attribute maps to the column inspection_booked_date in the hire_monitoring_detail table.
-	 */
-	protected Date inspectionBookedDate;
+    /**
+     * Method 'setCreatedDate'
+     * 
+     * @param createdDate
+     */
+    public void setCreatedDate(java.util.Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
-	/** 
-	 * This attribute maps to the column inspection_date in the hire_monitoring_detail table.
-	 */
-	protected Date inspectionDate;
+    /**
+     * Method 'getLastModifiedBy'
+     * 
+     * @return int
+     */
+    public WebUser getLastModifiedBy() {
+        return lastModifiedBy;
+    }
 
-	/** 
-	 * This attribute maps to the column name_Of_ime in the hire_monitoring_detail table.
-	 */
-	protected String nameOfIme;
+    /**
+     * Method 'setLastModifiedBy'
+     * 
+     * @param lastModifiedBy
+     */
+    public void setLastModifiedBy(WebUser lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
 
-	/** 
-	 * This attribute maps to the column repair_completion_date in the hire_monitoring_detail table.
-	 */
-	protected Date repairCompletionDate;
+    /**
+     * Method 'getLastModifiedDate'
+     * 
+     * @return java.util.Date
+     */
+    public java.util.Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
 
-	/** 
-	 * This attribute maps to the column total_loss_inspection_report in the hire_monitoring_detail table.
-	 */
-	protected String totalLossInspectionReport;
+    /**
+     * Method 'setLastModifiedDate'
+     * 
+     * @param lastModifiedDate
+     */
+    public void setLastModifiedDate(java.util.Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
 
-	/** 
-	 * This attribute maps to the column is_total_lost_check in the hire_monitoring_detail table.
-	 */
-	protected boolean isTotalLostCheck;
+    /**
+     * Method 'getNameOfRepairer'
+     * 
+     * @return java.lang.String
+     */
+    public java.lang.String getNameOfRepairer() {
+        return nameOfRepairer;
+    }
 
-	/** 
-	 * This attribute maps to the column id in the hire_monitoring_detail table.
-	 */
-	protected int id;
+    /**
+     * Method 'setNameOfRepairer'
+     * 
+     * @param nameOfRepairer
+     */
+    public void setNameOfRepairer(java.lang.String nameOfRepairer) {
+        this.nameOfRepairer = nameOfRepairer;
+    }
 
-	/**
-	 * Method 'HireMonitoringDetail'
-	 * 
-	 */
-	public HireMonitoringDetail()
-	{
-	}
+    /**
+     * Method 'getRepairBookInDate'
+     * 
+     * @return java.util.Date
+     */
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public java.util.Date getRepairBookInDate() {
+        return repairBookInDate;
+    }
 
-	/**
-	 * Method 'getCreatedBy'
-	 * 
-	 * @return int
-	 */
-	public WebUser getCreatedBy()
-	{
-		return createdBy;
-	}
+    /**
+     * Method 'setRepairBookInDate'
+     * 
+     * @param repairBookInDate
+     */
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public void setRepairBookInDate(java.util.Date repairBookInDate) {
+        this.repairBookInDate = repairBookInDate;
+    }
 
-	/**
-	 * Method 'setCreatedBy'
-	 * 
-	 * @param createdBy
-	 */
-	public void setCreatedBy(WebUser createdBy)
-	{
-		this.createdBy = createdBy;
-	}
+    /**
+     * Method 'getInspectionBookedDate'
+     * 
+     * @return java.util.Date
+     */
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public java.util.Date getInspectionBookedDate() {
+        return inspectionBookedDate;
+    }
 
-	/**
-	 * Method 'getCreatedDate'
-	 * 
-	 * @return java.util.Date
-	 */
-	public java.util.Date getCreatedDate()
-	{
-		return createdDate;
-	}
+    /**
+     * Method 'setInspectionBookedDate'
+     * 
+     * @param inspectionBookedDate
+     */
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public void setInspectionBookedDate(java.util.Date inspectionBookedDate) {
+        this.inspectionBookedDate = inspectionBookedDate;
+    }
 
-	/**
-	 * Method 'setCreatedDate'
-	 * 
-	 * @param createdDate
-	 */
-	public void setCreatedDate(java.util.Date createdDate)
-	{
-		this.createdDate = createdDate;
-	}
+    /**
+     * Method 'getInspectionDate'
+     * 
+     * @return java.util.Date
+     */
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public java.util.Date getInspectionDate() {
+        return inspectionDate;
+    }
 
-	/**
-	 * Method 'getLastModifiedBy'
-	 * 
-	 * @return int
-	 */
-	public WebUser getLastModifiedBy()
-	{
-		return lastModifiedBy;
-	}
+    /**
+     * Method 'setInspectionDate'
+     * 
+     * @param inspectionDate
+     */
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public void setInspectionDate(java.util.Date inspectionDate) {
+        this.inspectionDate = inspectionDate;
+    }
 
-	/**
-	 * Method 'setLastModifiedBy'
-	 * 
-	 * @param lastModifiedBy
-	 */
-	public void setLastModifiedBy(WebUser lastModifiedBy)
-	{
-		this.lastModifiedBy = lastModifiedBy;
-	}
+    /**
+     * Method 'getNameOfIme'
+     * 
+     * @return java.lang.String
+     */
+    public java.lang.String getNameOfIme() {
+        return nameOfIme;
+    }
 
-	/**
-	 * Method 'getLastModifiedDate'
-	 * 
-	 * @return java.util.Date
-	 */
-	public java.util.Date getLastModifiedDate()
-	{
-		return lastModifiedDate;
-	}
+    /**
+     * Method 'setNameOfIme'
+     * 
+     * @param nameOfIme
+     */
+    public void setNameOfIme(java.lang.String nameOfIme) {
+        this.nameOfIme = nameOfIme;
+    }
 
-	/**
-	 * Method 'setLastModifiedDate'
-	 * 
-	 * @param lastModifiedDate
-	 */
-	public void setLastModifiedDate(java.util.Date lastModifiedDate)
-	{
-		this.lastModifiedDate = lastModifiedDate;
-	}
+    /**
+     * Method 'getRepairCompletionDate'
+     * 
+     * @return java.util.Date
+     */
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public java.util.Date getRepairCompletionDate() {
+        return repairCompletionDate;
+    }
 
-	/**
-	 * Method 'getNameOfRepairer'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getNameOfRepairer()
-	{
-		return nameOfRepairer;
-	}
+    /**
+     * Method 'setRepairCompletionDate'
+     * 
+     * @param repairCompletionDate
+     */
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public void setRepairCompletionDate(java.util.Date repairCompletionDate) {
+        this.repairCompletionDate = repairCompletionDate;
+    }
 
-	/**
-	 * Method 'setNameOfRepairer'
-	 * 
-	 * @param nameOfRepairer
-	 */
-	public void setNameOfRepairer(java.lang.String nameOfRepairer)
-	{
-		this.nameOfRepairer = nameOfRepairer;
-	}
+    /**
+     * Method 'getTotalLossInspectionReport'
+     * 
+     * @return java.lang.String
+     */
+    public java.lang.String getTotalLossInspectionReport() {
+        return totalLossInspectionReport;
+    }
 
-	/**
-	 * Method 'getRepairBookInDate'
-	 * 
-	 * @return java.util.Date
-	 */
-        @TypeConversion(converter = "chox.data.DateConverter")
-	public java.util.Date getRepairBookInDate()
-	{
-		return repairBookInDate;
-	}
+    /**
+     * Method 'setTotalLossInspectionReport'
+     * 
+     * @param totalLossInspectionReport
+     */
+    public void setTotalLossInspectionReport(java.lang.String totalLossInspectionReport) {
+        this.totalLossInspectionReport = totalLossInspectionReport;
+    }
 
-	/**
-	 * Method 'setRepairBookInDate'
-	 * 
-	 * @param repairBookInDate
-	 */
-        @TypeConversion(converter = "chox.data.DateConverter")
-	public void setRepairBookInDate(java.util.Date repairBookInDate)
-	{
-		this.repairBookInDate = repairBookInDate;
-	}
+    /**
+     * Method 'isIsTotalLostCheck'
+     * 
+     * @return boolean
+     */
+    public boolean isIsTotalLostCheck() {
+        return isTotalLostCheck;
+    }
 
-	/**
-	 * Method 'getInspectionBookedDate'
-	 * 
-	 * @return java.util.Date
-	 */
-        @TypeConversion(converter = "chox.data.DateConverter")
-	public java.util.Date getInspectionBookedDate()
-	{
-		return inspectionBookedDate;
-	}
+    /**
+     * Method 'setIsTotalLostCheck'
+     * 
+     * @param isTotalLostCheck
+     */
+    public void setIsTotalLostCheck(boolean isTotalLostCheck) {
+        this.isTotalLostCheck = isTotalLostCheck;
+    }
 
-	/**
-	 * Method 'setInspectionBookedDate'
-	 * 
-	 * @param inspectionBookedDate
-	 */
-        @TypeConversion(converter = "chox.data.DateConverter")
-	public void setInspectionBookedDate(java.util.Date inspectionBookedDate)
-	{
-		this.inspectionBookedDate = inspectionBookedDate;
-	}
+    /**
+     * Method 'getId'
+     * 
+     * @return int
+     */
+    public int getId() {
+        return id;
+    }
 
-	/**
-	 * Method 'getInspectionDate'
-	 * 
-	 * @return java.util.Date
-	 */
-        @TypeConversion(converter = "chox.data.DateConverter")
-	public java.util.Date getInspectionDate()
-	{
-		return inspectionDate;
-	}
+    /**
+     * Method 'setId'
+     * 
+     * @param id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	/**
-	 * Method 'setInspectionDate'
-	 * 
-	 * @param inspectionDate
-	 */
-        @TypeConversion(converter = "chox.data.DateConverter")
-	public void setInspectionDate(java.util.Date inspectionDate)
-	{
-		this.inspectionDate = inspectionDate;
-	}
+    public String getIsTotalLossDesc() {
+        return isTotalLostCheck ? "Yes" : "No";
+    }
 
-	/**
-	 * Method 'getNameOfIme'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getNameOfIme()
-	{
-		return nameOfIme;
-	}
+    public BigDecimal getLabourRate() {
+        return labourRate;
+    }
 
-	/**
-	 * Method 'setNameOfIme'
-	 * 
-	 * @param nameOfIme
-	 */
-	public void setNameOfIme(java.lang.String nameOfIme)
-	{
-		this.nameOfIme = nameOfIme;
-	}
+    public void setLabourRate(BigDecimal labourRate) {
+        this.labourRate = labourRate;
+    }
 
-	/**
-	 * Method 'getRepairCompletionDate'
-	 * 
-	 * @return java.util.Date
-	 */
-        @TypeConversion(converter = "chox.data.DateConverter")
-	public java.util.Date getRepairCompletionDate()
-	{
-		return repairCompletionDate;
-	}
+    public Integer getLabourHour() {
+        return labourHour;
+    }
 
-	/**
-	 * Method 'setRepairCompletionDate'
-	 * 
-	 * @param repairCompletionDate
-	 */
-        @TypeConversion(converter = "chox.data.DateConverter")
-	public void setRepairCompletionDate(java.util.Date repairCompletionDate)
-	{
-		this.repairCompletionDate = repairCompletionDate;
-	}
+    public void setLabourHour(Integer labourHour) {
+        this.labourHour = labourHour;
+    }
 
-	/**
-	 * Method 'getTotalLossInspectionReport'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getTotalLossInspectionReport()
-	{
-		return totalLossInspectionReport;
-	}
+    public BigDecimal getLabourCost() {
+        return labourCost;
+    }
 
-	/**
-	 * Method 'setTotalLossInspectionReport'
-	 * 
-	 * @param totalLossInspectionReport
-	 */
-	public void setTotalLossInspectionReport(java.lang.String totalLossInspectionReport)
-	{
-		this.totalLossInspectionReport = totalLossInspectionReport;
-	}
-
-	/**
-	 * Method 'isIsTotalLostCheck'
-	 * 
-	 * @return boolean
-	 */
-	public boolean isIsTotalLostCheck()
-	{
-		return isTotalLostCheck;
-	}
-
-	/**
-	 * Method 'setIsTotalLostCheck'
-	 * 
-	 * @param isTotalLostCheck
-	 */
-	public void setIsTotalLostCheck(boolean isTotalLostCheck)
-	{
-		this.isTotalLostCheck = isTotalLostCheck;
-	}
-
-	/**
-	 * Method 'getId'
-	 * 
-	 * @return int
-	 */
-	public int getId()
-	{
-		return id;
-	}
-
-	/**
-	 * Method 'setId'
-	 * 
-	 * @param id
-	 */
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-        
-        
-        public String getIsTotalLossDesc(){
-           return isTotalLostCheck ? "Yes" : "No";
-        }
-
+    public void setLabourCost(BigDecimal labourCost) {
+        this.labourCost = labourCost;
+    }
 }

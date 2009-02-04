@@ -37,6 +37,19 @@
             <label class="std-label-ro">
             Name of IME</label>
         <label class="std-data-ro"><s:property value="nameOfIme" /></label></div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">
+            Labour Rate (Per Hour)</label>
+        <label class="std-data-ro"><s:property value="labourRate" /></label></div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">
+            Labour Hours</label>
+        <label class="std-data-ro"><s:property value="labourHour" /></label></div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">
+            Total Labour Cost</label>
+        <label class="std-data-ro"><s:property value="labourCost" /></label></div>
+        
         
     </div>
 </fieldset>

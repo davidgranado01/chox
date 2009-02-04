@@ -57,60 +57,72 @@
        
             $("#formUpdateHireMonitoringDetail").validate(
             {
-               errorLabelContainer: "#HMmessageBox",                
-               rules: {
-                 repairBookInDate:{
-                     date:true
-                 },
-                 inspectionBookedDate:{
-                     date:true
-                 },
-                 inspectionDate:{
-                     date:true
-                 },
-                 repairCompletionDate:{
-                     date:true
-                 }                 
-               },
-               messages: {
-                 nameOfRepairer:{
-                     required:"You must supply a date for 'Name Of Repairer'"
-                 },
-                 repairBookInDate: {
-                   date:"Invalid date format for 'Repair Book In Date'"
-                 }, 
-                 inspectionBookedDate: {
-                   date:"Invalid date format for 'Inspection Booked Date'"
-                 },
-                 inspectionDate: {
-                   date:"Invalid date format for 'Inspection Date'"
-                 },  
-                 repairCompletionDate: {
-                   date:"Invalid date format for 'Repair Completion Date'"
-                 }                   
-               },
+                errorLabelContainer: "#HMmessageBox",                
+                rules: {
+                    repairBookInDate:{
+                        date:true
+                    },
+                    inspectionBookedDate:{
+                        date:true
+                    },
+                    inspectionDate:{
+                        date:true
+                    },
+                    repairCompletionDate:{
+                        date:true
+                    },
+                    labourRate :{
+                        number:true},
+                    labourHour :{
+                        number:true},
+                    labourCost :{
+                        number:true}
+                },
+                messages: {
+                    nameOfRepairer:{
+                        required:"You must supply a date for 'Name Of Repairer'"
+                    },
+                    repairBookInDate: {
+                        date:"Invalid date format for 'Repair Book In Date'"
+                    }, 
+                    inspectionBookedDate: {
+                        date:"Invalid date format for 'Inspection Booked Date'"
+                    },
+                    inspectionDate: {
+                        date:"Invalid date format for 'Inspection Date'"
+                    },  
+                    repairCompletionDate: {
+                        date:"Invalid date format for 'Repair Completion Date'"
+                    },    
+                    labourRate :{
+                        number:"You must supply a numeric value for 'Labour Rate'"},
+                    labourHour :{
+                        number:"You must supply a numeric value for 'Labour Hours'"},
+                    labourCost :{ 
+                        number:"You must supply a numeric value for 'Total Labour Cost'"}
+                },
                 submitHandler: function(form) {
                     $(form).ajaxSubmit(globalEntityFormOptions);
                 }
             });
         }); 
         
-        </script>
+    </script>
     
     <fieldset class="x-fieldset">
         <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
         <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
         <legend>Hire Monitoring</legend>
         <div style="display:none" class="form-container">            
-           <div class="chox-form-item">
+            <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Original ECD</label><label class="std-data-ro"><s:property value="customer.InitialECDDesc" /></label></div>
-
-           <div class="chox-form-item">
+            Original ECD</label><label class="std-data-ro"><s:property value="customer.InitialECDDesc" /></label></div>
+            
+            <div class="chox-form-item">
                 <label class="chox-form-std-label">Name Of Repairer</label>
-           <input type="text" class="chox-ttxt" name="nameOfRepairer" value="<s:property value="nameOfRepairer" />"/></div>
-           
-           <div class="chox-form-item">
+            <input type="text" class="chox-ttxt" name="nameOfRepairer" value="<s:property value="nameOfRepairer" />"/></div>
+            
+            <div class="chox-form-item">
                 <label class="chox-form-std-label">Repair Book In Date</label>
                 <span id="repairBookInDatePH"></span>
             </div>
@@ -118,20 +130,20 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Inspection Booked Date</label>
-            <span id="inspectionBookedDatePH"></span>
+                <span id="inspectionBookedDatePH"></span>
             </div>
-           
-           <div class="chox-form-item">
+            
+            <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Inspection Date</label>
-            <span id="inspectionDatePH"></span>
+                <span id="inspectionDatePH"></span>
             </div>
-           
-           <div class="chox-form-item">
+            
+            <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Is Total Loss?</label>
             <s:checkbox name="isTotalLostCheck" /></div>
-
+            
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Repair Completion Date</label>
@@ -143,6 +155,18 @@
                 Name of IME</label>
             <input type="text" class="chox-ttxt" name="nameOfIme" value="<s:property value="nameOfIme" />"/></div>
             
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                Labour Rate (Per Hour)</label>
+            <input type="text" class="chox-ttxt" name="labourRate" value="<s:property value="labourRate" />"/></div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                Labour Hours</label>
+            <input type="text" class="chox-ttxt" name="labourHour" value="<s:property value="labourHour" />"/></div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                Total Labour Cost</label>
+            <input type="text" class="chox-ttxt" name="labourCost" value="<s:property value="labourCost" />"/></div>
             
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />

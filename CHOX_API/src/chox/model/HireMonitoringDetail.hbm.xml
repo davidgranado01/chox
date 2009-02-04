@@ -17,5 +17,8 @@
     <property column="repair_completion_date" name="repairCompletionDate"/>
     <property column="total_loss_inspection_report" name="totalLossInspectionReport"/>
     <property column="is_total_lost_check" name="isTotalLostCheck" not-null="true"/>
+    <property column="labour_rate" name="labourRate"/>
+    <property column="labour_hour" name="labourHour"/>
+    <property column="labour_cost" name="labourCost"/>
   </class>
 </hibernate-mapping>
