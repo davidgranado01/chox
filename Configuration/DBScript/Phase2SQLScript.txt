@@ -170,3 +170,10 @@ ALTER TABLE invoice ADD COLUMN reason_of_rejection_id integer;
 ALTER TABLE invoice ALTER COLUMN reason_of_rejection_id SET STORAGE PLAIN;
 
 ------------------------------------------------------------------------------------------------
+
+CREATE BY : EMMANUEL 20080402-1408
+-DESCRIPTION : NEW FIELD TO HIRE MONITORING
+
+ALTER TABLE hire_monitoring_detail ADD COLUMN labour_rate numeric(10,2);
+ALTER TABLE hire_monitoring_detail ADD COLUMN labour_hour smallint;
+ALTER TABLE hire_monitoring_detail ADD COLUMN labour_cost numeric(10,2);
