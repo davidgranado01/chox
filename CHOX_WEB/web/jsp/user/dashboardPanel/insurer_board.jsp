@@ -6,11 +6,15 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <head>
+    
     <script>
         $(document).ready(function(){  
             
             $("#supplierId").change(onSelectChange);  
             loadData(-1);
+            
+            new Ext.ToolTip({target: 'tip0',html: 'Description for Number of Active Users'});
+            Ext.QuickTips.init();
         }); 
         
         function onSelectChange(){  
@@ -48,7 +52,7 @@
         <div class="dashboard" class="form-container">
             
             <table cellpadding="0" cellspacing="0" class="dashboard" border="0">       
-                <tr><th nowrap>Number of Active Users</th><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
+                <tr><th nowrap>Number of Active Users<img class="tip-target" alt="" src="<%=request.getContextPath()%>/images/tip.png" id="tip0"/></th><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
                 <tr><th nowrap><label>Credit Hire Organisation</label></th><td colspan="2"><s:select name="supplierId" id="supplierId" list="suppliers" listKey="value" listValue="text" headerKey="-1"
                                                                                                          headerValue="--- ALL ---"
                                                                                                      emptyOption="false"></s:select></td>                         

@@ -453,12 +453,12 @@ div.status-warning{
     white-space:normal;
     background-repeat: no-repeat;
     background-position: 10px center; 
-    background-image: url('/IDASCHOX/images/warning.png');
+    background-image: url('/CHOX_WEB/images/warning.png');
 }
 
 table.dashboard th
 {
-   padding:6px;  
+    padding:6px;  
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 12px; 
     width:16%;    
@@ -484,4 +484,8 @@ table.dashboard td
     text-align:right;
 }
 
-
+img.tip-target
+{
+    margin-left:4px;
+    margin-right:4px;
+}
