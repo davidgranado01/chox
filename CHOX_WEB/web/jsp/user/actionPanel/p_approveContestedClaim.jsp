@@ -64,6 +64,14 @@
         return false;
     }
     
+    function isRejected(){
+        var sActionName = $("#actionName").val();
+        if(sActionName=="reject"){
+            return true;
+        }
+        return false;
+    }
+    
     function doFormValidation(){
 
             
@@ -86,6 +94,9 @@
                 actionName:{required:true},
                 isClaimNumberValidFlag:{
                     min:1
+                },
+                reasonOfRejectionId:{
+                    required:isRejected
                 }
             },
             messages: {
@@ -102,7 +113,10 @@
                     required:"You must supply a value for 'Claim Number'"
                 },
                 actionName:{required:"You must select action"},
-                isClaimNumberValidFlag:{min:"Invalid Character used in Claim Number"}     
+                isClaimNumberValidFlag:{min:"Invalid Character used in Claim Number"} ,
+                reasonOfRejectionId:{
+                    required:"You must choose 'Reason For Rejection'"
+                }       
             }
             
         });
@@ -114,6 +128,9 @@
         
         registeAction(a);
 
+        // SET REASON OF REJECTION IS EMPTY
+        $("#reasonOfRejectionId").val("");
+        
         isClaimNumberInvalid();
         if(!doFormValidation().form()){
             return false;
@@ -180,7 +197,23 @@
                                             <textarea class="chox-canote" cols="20" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                         </td>                                      
 
-                                    </tr>                                    
+                                    </tr>  
+<tr valign="top">
+    <td>
+        <label>Reason for Rejection</label>
+    </td>
+    <td colspan="3">    
+    <div id="ReasonOfRejectionDiv">
+        <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
+        list="reasonOfClaimRejections"  
+        listKey="id" 
+        listValue="name" 
+        headerKey="" 
+        headerValue="N/A"
+        emptyOption="false"></s:select> 
+    </div>
+    </td>
+</tr>            
                     <tr>
                         <td colspan="4">
                             <div class="no-format">

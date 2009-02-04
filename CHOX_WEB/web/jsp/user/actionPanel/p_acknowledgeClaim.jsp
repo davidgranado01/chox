@@ -3,9 +3,10 @@
 <script language="JavaScript">
 
     function doRejectClaim(){
+        
         isClaimNumberInvalid();
         registeAction('reject');
-
+        
         if(doFormValidation().form()){
             if(!confirm('Are you sure you want to reject this claim?')){
                 return false;
@@ -13,23 +14,32 @@
         }else{
             return false;
         }
-        
+
         return true;
     }
-    
+
     function isClaimNumberMandatory(){
         var sActionName = $("#actionName").val();
         
         if(sActionName=="reject" || sActionName=="referFNOL"){
             return false;
         }
-
         return true;
     }
     
     $(document).ready(function(){
+  
         doFormValidation();
+        
     });
+    
+    function isRejected(){
+        var sActionName = $("#actionName").val();
+        if(sActionName=="reject"){
+            return true;
+        }
+        return false;
+    }
     
     function isClaimNumberInvalid(){
         
@@ -82,7 +92,11 @@
                 },
                 isClaimNumberValidFlag:{
                     min:1
+                },
+                reasonOfRejectionId:{
+                    required:isRejected
                 }
+                
             },
             messages: {
                 indemnityAmount: {
@@ -100,7 +114,12 @@
                 actionName:{
                     required:"You must choose 'Reject this claim' or 'Request Invoice Data"
                 },
-                isClaimNumberValidFlag:{min:"Invalid Character used in Claim Number"}                
+                isClaimNumberValidFlag:{
+                    min:"Invalid Character used in Claim Number"
+                } ,
+                reasonOfRejectionId:{
+                    required:"You must choose 'Reason For Rejection'"
+                }               
             }
         });
         
@@ -108,10 +127,10 @@
     }
     
     function doSubmit(a){
-        
         registeAction(a);
-        
         isClaimNumberInvalid();
+        
+        $("#reasonOfRejectionId").val("");
         
         if(!doFormValidation().form()){
             return false;
@@ -122,8 +141,7 @@
     
 </script>
 
-<form action="user/acknowledge.action" method="post" id="formAcknowledgeAction"
-      name="formAcknowledgeAction">
+<form action="user/acknowledge.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
     <fieldset class="x-fieldset">
         <legend>Claim Acknowledgement - Action Required</legend>
         <div>
@@ -175,7 +193,31 @@
     <td colspan="3">
         <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
     </td>
-</tr>                        
+</tr>
+
+<div id="dReasonOfRejection">
+
+    <tr valign="top">
+        <td>
+            <label>Reason for Rejection</label>
+        </td>
+        <td colspan="3">    
+        <div id="ReasonOfRejectionDiv">
+            <s:select
+            name="reasonOfRejectionId" 
+            id="reasonOfRejectionId"
+            list="reasonOfClaimRejections"  
+            listKey="id" 
+            listValue="name" 
+            headerKey="" 
+            headerValue="N/A"
+            emptyOption="false"></s:select> 
+        </div>
+        </td>
+    </tr>
+
+</div>
+
 <tr>
     <td colspan="4">
         <div class="no-format">
@@ -192,7 +234,9 @@
                             </td>
                         </tr>
                     </table>
+                    
                     <div class="errorBox" id="ACKmessageBox"></div>
+                    
                 </div>
             </div>
         </div>

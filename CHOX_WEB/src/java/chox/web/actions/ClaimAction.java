@@ -31,6 +31,7 @@ import chox.model.Injury;
 import chox.model.Insurer;
 import chox.model.Invoice;
 import chox.model.LookupItem;
+import chox.model.ReasonOfRejection;
 import chox.model.Solicitor;
 import chox.model.ThirdParty;
 import chox.model.VehicleHire;
@@ -40,6 +41,7 @@ import chox.services.AuditTrailService;
 import chox.services.CommentService;
 import chox.services.HireMonitoringEcdService;
 import chox.services.HistoryService;
+import chox.services.ReasonOfRejectionService;
 import chox.web.security.PanelAccessibility;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -63,6 +65,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private int id = -1;
     private List lineOfBusinesses;
     private List vehicleClasses;
+    private List reasonOfClaimRejections;
+    private List reasonOfInvoiceRejections;
     private List insurers;
     private List statuses;
     private ClaimService service;
@@ -71,6 +75,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private ChoBandService choBandService;
     private HistoryService historyService;
     private AuditTrailService auditTrailService;
+    private ReasonOfRejectionService reasonOfRejectionService;
     private HireMonitoringEcdService hireMonitoringEcdService;
     private CommentService commentService;
     private String actionResult;
@@ -115,6 +120,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     }
     // ADDED BY CARLSON @ 2008-12-02 - END
+    
     public int getId() {
         return id;
     }
@@ -173,6 +179,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return insurers;
     }
 
+    // ADDED BY CARLSON @ 2009-02-03
+    public List getReasonOfClaimRejections() {
+        if (reasonOfClaimRejections == null) {
+            reasonOfClaimRejections = lookupService.getClaimRejectionReason();
+        }
+        return reasonOfClaimRejections;
+    }
+    
+    // ADDED BY CARLSON @ 2009-02-03
+    public List getReasonOfInvoiceRejections() {
+        if (reasonOfInvoiceRejections == null) {
+            reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason();
+        }
+        return reasonOfInvoiceRejections;
+    }
+    
     public String getActionResult() {
         return actionResult;
     }
@@ -285,10 +307,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         else 
         {
             newStatus = ClaimStatus.CLAIM_REJECTED;
+            logNewCommentForRejection(claim.getReasonOfRejectionId(),  true);
         }
 
         if (!result.equalsIgnoreCase(ERROR)) {
             try {
+                
                 boolean isPublic = false;
                 String strPrefix = "Claim Review Note: ";
                 createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);
@@ -474,8 +498,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 this.actionResult = validationResult;
             }
         }else {
-            claim = service.getClaim(id);
+            //claim = service.getClaim(id);
             newStatus = ClaimStatus.CLAIM_REJECTED;
+            logNewCommentForRejection(claim.getReasonOfRejectionId(),  true);
         }
         
         if (!result.equalsIgnoreCase(ERROR)) {
@@ -601,6 +626,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         String newStatus;
+        
         if (this.actionName.equalsIgnoreCase(ACCEPT)) 
         {
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
@@ -612,6 +638,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         else 
         {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
+            logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
         }
         try 
         {
@@ -636,11 +663,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
+            logNewCommentForRejection(claim.getReasonOfRejectionId(),  true);
         }
         try {
             auditTrailService.logAuditLog(newStatus, claim);
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
+            
         } catch (Exception ex) {
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
@@ -656,6 +685,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
+            logNewCommentForRejection(claim.getReasonOfRejectionId(),  true);
         }
         try {
             auditTrailService.logAuditLog(newStatus, claim);
@@ -675,6 +705,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String newStatus;
 
         if (this.actionName.equalsIgnoreCase(REJECT)) {
+            
             claim = constructeClaimForInvoiceValidation(claim);
             RulesEngineResponse reponse = invoiceService.XMLUploaderInvoiceValidation(claim);
             historyService.logInvoiceValidationErrorMsg(reponse, claim);
@@ -832,7 +863,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setCommentService(CommentService commentService){
         this.commentService = commentService;
     }    
-            
+        
+    public void setReasonOfRejectionService(ReasonOfRejectionService reasonOfRejectionService){
+        this.reasonOfRejectionService = reasonOfRejectionService;
+    } 
+    
     public String getStatusMsg() {
         return statusMsg;
     }
@@ -1142,6 +1177,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return bFlag;
     }
-
-
+    
+    public void logNewCommentForRejection(Integer reasonOfRejectionId,  boolean isPublic){
+        
+        if(reasonOfRejectionId!=null){
+            ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(claim.getReasonOfRejectionId());
+            createNewNote(reasonOfRejection.getName(), isPublic, "Reason For Rejection: ");
+        }
+    }
 }
