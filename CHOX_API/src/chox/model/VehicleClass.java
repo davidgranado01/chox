@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import scsbre.model.IVehicleClassInfo;
 
-public class VehicleClass implements Serializable, IVehicleClassInfo,Auditable
+public class VehicleClass implements Serializable, IVehicleClassInfo, Auditable
 {
 	/** 
 	 * This attribute maps to the column id in the vehicle_class table.

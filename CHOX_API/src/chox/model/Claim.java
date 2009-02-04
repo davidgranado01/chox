@@ -107,6 +107,7 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     protected Date hireMonitoringEcd;
     protected boolean isFnolReviewed;
     //protected VehicleClass vehicleClass;
+    protected Integer reasonOfRejectionId;
 
     /**
      * Method 'Claim'
@@ -614,6 +615,13 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     public void setIsFnolReviewed(boolean isFnolReviewed) {
         this.isFnolReviewed = isFnolReviewed;
     }
-    
+
+    public Integer getReasonOfRejectionId() {
+        return reasonOfRejectionId;
+    }
+
+    public void setReasonOfRejectionId(Integer reasonOfRejectionId) {
+        this.reasonOfRejectionId = reasonOfRejectionId;
+    }
     
 }

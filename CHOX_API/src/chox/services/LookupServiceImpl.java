@@ -4,6 +4,7 @@
  */
 package chox.services;
 
+import chox.model.ReasonOfRejection;
 import chox.model.Chorganisation;
 import chox.model.ClaimStatus;
 import chox.model.IdLookupItem;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -30,7 +32,6 @@ public class LookupServiceImpl extends DataService implements LookupService, Ser
         for (String s : ClaimStatus.getStatus()) {
             items.add(new LookupItem(s, s));
         }
-
         return items;
     }
 
@@ -52,6 +53,20 @@ public class LookupServiceImpl extends DataService implements LookupService, Ser
 
     public List getVehicleClasses() {
         DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClass.class).addOrder(Order.asc("name"));
+        return findByCriteria(criteria);
+    }
+    
+    public List getClaimRejectionReason(){
+        
+        DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("name"));
+        criteria.add(Restrictions.eq("type", "Claim"));
+        return findByCriteria(criteria);
+
+    }
+    
+    public List getInvoiceRejectionReason(){
+        DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("name"));
+        criteria.add(Restrictions.eq("type", "Invoice"));
         return findByCriteria(criteria);
     }
 
@@ -85,4 +100,5 @@ public class LookupServiceImpl extends DataService implements LookupService, Ser
         return result;
 
     }
+
 }

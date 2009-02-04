@@ -20,5 +20,6 @@ public interface LookupService {
     public List getSuppliers(Integer insurerId);
     public List getInsurers(Integer choId);
     public List getVehicleClasses();
-
+    public List getClaimRejectionReason();
+    public List getInvoiceRejectionReason();
 }

@@ -263,6 +263,7 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo,Auditabl
         protected BigDecimal vatAmountCollected;
 	protected BigDecimal penaltyCharge;
         protected Integer penaltyAlertQty;
+        protected Integer reasonOfRejectionId;
 
 	/**
 	 * Method 'Invoice'
@@ -1310,6 +1311,14 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo,Auditabl
     {
         long dateDiff = DateHelper.daysBetween(getDateInvoiced(), new Date()) + 1;
         return dateDiff;
+    }
+
+    public Integer getReasonOfRejectionId() {
+        return reasonOfRejectionId;
+    }
+
+    public void setReasonOfRejectionId(Integer reasonOfRejectionId) {
+        this.reasonOfRejectionId = reasonOfRejectionId;
     }
     
 

@@ -21,6 +21,7 @@
     <property column="is_fnol_reviewed" name="isFnolReviewed"/>
     <property column="engineer_claim_review_notes" name="engineerClaimReviewNotes"/>
     <property column="is_invoice_review_required" name="isInvoiceReviewRequired"/>
+    <property column="reason_of_rejection_id" name="reasonOfRejectionId"/>
     <many-to-one class="chox.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>
     <many-to-one cascade="save-update,delete" class="chox.model.Customer" column="customer_id" name="customer"/>
     <many-to-one cascade="save-update,delete" class="chox.model.EngineerReport" column="engineer_report_id" name="engineerReport"/>

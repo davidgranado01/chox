@@ -44,5 +44,6 @@
         <mapping resource="chox/model/Attachment.hbm.xml"/>
         <mapping resource="chox/model/HireMonitoringEcd.hbm.xml"/>
         <mapping resource="chox/model/AuditTrail.hbm.xml"/>
+        <mapping resource="chox/model/ReasonOfRejection.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

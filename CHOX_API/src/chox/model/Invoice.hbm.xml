@@ -62,5 +62,6 @@
     <property column="vat_amount_collected" name="vatAmountCollected"/>
     <property column="panalty_charge" name="penaltyCharge"/>
     <property column="panalty_alert_qty" name="penaltyAlertQty"/>
+    <property column="reason_of_rejection_id" name="reasonOfRejectionId"/>
   </class>
 </hibernate-mapping>
