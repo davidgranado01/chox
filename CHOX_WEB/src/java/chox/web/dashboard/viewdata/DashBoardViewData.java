@@ -27,6 +27,8 @@ public class DashBoardViewData {
     private BigDecimal valueOfInvoicesPending;
     private Integer noOfInvoicesClosed;
     private BigDecimal valueOfInvoicesClosed;
+    private Integer noOfInvoicesPaymentLogged;
+    private BigDecimal valueOfInvoicesPaymentLogged;    
     private BigDecimal totalValueOfPenaltyChargesApplied;
     
     public static DashBoardViewData getObject(Map data)
@@ -47,6 +49,8 @@ public class DashBoardViewData {
         viewData.valueOfInvoicesPending = getDecimalValue(data.get("valueOfInvoicesPending".toLowerCase()));
         viewData.noOfInvoicesClosed = getIntegerValue(data.get("noOfInvoicesClosed".toLowerCase()));
         viewData.valueOfInvoicesClosed = getDecimalValue(data.get("valueOfInvoicesClosed".toLowerCase()));
+        viewData.noOfInvoicesPaymentLogged = getIntegerValue(data.get("noOfInvoicesPaymentLogged".toLowerCase()));
+        viewData.valueOfInvoicesPaymentLogged = getDecimalValue(data.get("valueOfInvoicesPaymentLogged".toLowerCase()));        
         viewData.totalValueOfPenaltyChargesApplied = getDecimalValue(data.get("totalValueOfPenaltyChargesApplied".toLowerCase()));
         
         return viewData;
@@ -185,4 +189,20 @@ public class DashBoardViewData {
     public void setTotalValueOfPenaltyChargesApplied(BigDecimal totalValueOfPenaltyChargesApplied) {
         this.totalValueOfPenaltyChargesApplied = totalValueOfPenaltyChargesApplied;
     }
+
+    public Integer getNoOfInvoicesPaymentLogged() {
+        return noOfInvoicesPaymentLogged;
+    }
+
+    public void setNoOfInvoicesPaymentLogged(Integer noOfInvoicesPaymentLogged) {
+        this.noOfInvoicesPaymentLogged = noOfInvoicesPaymentLogged;
+    }
+
+    public BigDecimal getValueOfInvoicesPaymentLogged() {
+        return valueOfInvoicesPaymentLogged;
+    }
+
+    public void setValueOfInvoicesPaymentLogged(BigDecimal valueOfInvoicesPaymentLogged) {
+        this.valueOfInvoicesPaymentLogged = valueOfInvoicesPaymentLogged;
+    }    
 }

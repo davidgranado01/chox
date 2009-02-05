@@ -70,6 +70,7 @@
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
         $('.entity-form').ajaxForm(globalEntityFormOptions);
         pingServer();
+        
     });
 
     function onBeforeSubmit(formData, jqForm, options) { 
@@ -495,6 +496,7 @@
         }
         return true;
    }
+
    
       function reopenClaimStatus(a){
        
@@ -506,6 +508,7 @@
         return true;
    }
     
+
 </script>        
         
     </head>    
@@ -598,19 +601,19 @@
                                     </s:if>
                                     
                                 </tr>
-                                
-
-
 <s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">
 <tr>
-<td colspan="3"><div class="status-info">This claim has been reviewed by an FNOL Handler, please review notes that may have been added before proceeding.</div></td>
+<td colspan="3">
+    <div class="status-info">This claim has been reviewed by an FNOL Handler, please review notes that may have been added before proceeding.</div>
+</td>
 </tr><br/>
-</s:if>    
+</s:if>
 
 <s:if test="!isClaimClosed && isCHO">
 <tr>
     <td colspan="3" align="right"><input value="Close Claim" type="button" onclick="javascript:return closeClaimStatus('<s:property value="id" />');"/></td>
 </tr>
+
 </s:if>
 <s:elseif test="isClaimClosed && isCHO">
 <tr>
@@ -618,34 +621,100 @@
 </tr>
 </s:elseif>
 
+
                             </table>
                         </fieldset>
+<s:if test="extraActionList.size()>0">                      
+<tr>
+    <td colspan="3" align="left">
+    <s:select
+            name="extraAction" 
+            id="extraAction"
+            list="extraActionList"  
+            listKey="text" 
+            listValue="value" 
+            headerKey="" 
+            headerValue="More Actions"
+            emptyOption="false"
+            onchange="javascript:extraActionChange();">
+    </s:select>
+    
+    </td>
+</tr>       
+</s:if>  
                     </div>
                 </div>
-                
+
                 <div id="userViewingThisClaimDiv" class="status-warning" style="display:none;">                      
                         This claim is currently being viewed and / or modified by the following user(s) : <span id="userViewingThisClaim"></span>
                 </div>
-                
+
                 <div class="chox-claim-header x-panel-bwrap chox-form-container">    
                     <s:action name="getActionPanel" executeResult="true" />
                     <div class="action-message"><s:property value="actionResult" /></div>
                 </div>
+  
+
                 
                 <s:if test="isShowPenaltyChargeAlert">
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">   
                         <s:action name="getAlertPanel" executeResult="true" />                    
                     </div>
                 </s:if>
+                
+<s:if test="!isCHO">
+    
+<script language="JavaScript">
+                                
+    $(document).ready(function() {
+        $("#extraAction").val("");
+        $(".extraActionClass").hide();
+    });
+
+   function doShowHideExtraAction(a, b){
+       if(b){
+            $("#"+a).css("visibility", "visible");  
+            $("#"+a).slideDown();
+       }else{
+            $("#"+a).slideUp();
+            $("#"+a).css("visibility", "hidden"); 
+            $("#extraAction").val("");
+            
+       }
+   }
+   
+   function extraActionChange(){
+       
+       var selectedAction = $("#extraAction").val();
+       $(".extraActionClass").slideUp();
+       $(".extraActionClass").css("visibility", "hidden");  
+       
+       
+       if(selectedAction!=null && selectedAction!=""){
+           doShowHideExtraAction(selectedAction, 1);
+       }
+   }
+   
+</script>
+
+<div id="updateInsurerClaimNumber" class="extraActionClass" stype="visibility:hidden;">
+    <table width="100%">
+    <tr><td>
+    <div class="chox-claim-header x-panel-bwrap chox-form-container">
+        <s:action name="getUpdateInsurerClaimNumberAction" executeResult="true"></s:action>
+        <div class="action-message"><s:property value="actionResult" /></div>
+    </div>
+    </td></tr>
+    </table>
+</div>
+
+</s:if>
 
                 <div id="tabContainer">
-                    
-                    
                     <div id="claimDetails">         
 
 <s:if test="tabAccessibility.claimDetailTabAccessibility != 0">    
                        
-                        
                         <div class="x-panel-bwrap chox-form-container">
                             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                 <tr valign="top">
@@ -805,10 +874,7 @@
                                             <s:param name="claimId"><s:property value="id" /></s:param>
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
                                         </s:action>
-                                        
 
-     
-                                        
                                     </td>
                                     <td>
                                         

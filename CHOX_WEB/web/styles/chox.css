@@ -88,6 +88,7 @@ div#chox-menu
 fieldset div
 {
 }
+
 .chox-ttxt
 {
     border: 1px solid #B5B8C8;
@@ -212,9 +213,6 @@ div.submit-error
 {
     color:#ff0000;
 }
-
-
-
 
 div.excel-export
 {
@@ -491,7 +489,6 @@ table.dashboard
 
 table.dashboard td
 {
-    
     padding:6px; 
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 12px; 
@@ -504,4 +501,20 @@ img.tip-target
 {
     margin-left:4px;
     margin-right:4px;
+}
+
+.extraOptionSelectionClass{
+    border:1px #ccc solid; 
+    padding:5px;
+    margin-bottom:5px;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px;
+    font-weight:bold;
+    background: #EDEDED;
+
+}
+
+.extraActionClass{
+    display:inline;
+    float:none; 
 }

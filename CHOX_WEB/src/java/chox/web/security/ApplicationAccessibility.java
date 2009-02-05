@@ -54,6 +54,7 @@ public class ApplicationAccessibility {
     
     private HashMap accessibilityMap;
     private AccessibilityService accessibilityService;
+    
     //private static ApplicationAccessibility instance = new ApplicationAccessibility();
 
     //public static ApplicationAccessibility getInstance() {
@@ -126,9 +127,16 @@ public class ApplicationAccessibility {
         return Declined;
     }
 
+    public Short checkExtraActionAccessibility(String actionName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+        String accessibilityKey = getExtraActionAccessibilityKey(actionName, claimStatus);
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            return checkAccebility(roleMap, grantedAuthorities);
+        }
+        return Declined;
+    }
+    
     public Short checkActionAccessibility(String actionName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
-
-        //accessibilityMap = getAccessibilityMap();
         String accessibilityKey = getActionAccessibilityKey(actionName, claimStatus);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
@@ -170,6 +178,10 @@ public class ApplicationAccessibility {
         return String.format("action.%1$s.%2$s", actionName, claimStatus);
     }
 
+    private String getExtraActionAccessibilityKey(String actionName, String claimStatus) {
+        return String.format("extraAction.%1$s.%2$s", actionName, claimStatus);
+    }
+    
     private String getFilterAccessibilityKey(String filterName) {
         return String.format("filter.%1$s", filterName);
     }

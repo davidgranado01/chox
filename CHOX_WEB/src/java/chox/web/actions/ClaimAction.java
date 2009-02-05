@@ -13,6 +13,7 @@ import chox.services.InvoiceService;
 import chox.services.ChoBandService;
 import chox.services.LookupService;
 import chox.web.data.PanelAction;
+import chox.web.data.ExtraAction;
 import chox.web.security.ApplicationAccessibility;
 import chox.web.security.TabAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
@@ -68,6 +69,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private List vehicleClasses;
     private List reasonOfClaimRejections;
     private List reasonOfInvoiceRejections;
+    private List extraActionList;
     private List insurers;
     private List statuses;
     private ClaimService service;
@@ -97,6 +99,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private long invoiceIntroducedDays;
     private ApplicationAccessibility applicationAccessibility;
     private PanelAccessibility panelAccessibility;
+    private String extraActionName;
     
     Integer hireMonitoringDetailId;
     Integer incidentId;
@@ -196,8 +199,41 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return reasonOfInvoiceRejections;
     }
     
+    // ADDED BY CARLSON @ 2009-02-03
+    public List getExtraActionList() {
+        
+        GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
+        List<String> actions = ExtraAction.getExtraActions();
+        
+        List items = new ArrayList<LookupItem>();
+        
+        for (String action : actions) {
+            short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, grantedAuthorities, claim.getStatus());
+
+            if (accessRight > 1) {
+                String extraActionDescription = getExtraActionName(action);
+                items.add(new LookupItem(action, extraActionDescription));
+            }
+        }
+        
+        extraActionList = items;
+        return extraActionList;
+    }
+    
+    public String getExtraActionName(String extraAction){
+        String returnStr = "";
+        if(extraAction.equalsIgnoreCase("updateInsurerClaimNumber")){
+            returnStr = "Update Insurer Claim Number";
+        }
+        return returnStr;
+    }
+    
     public String getActionResult() {
         return actionResult;
+    }
+
+    public String getExtraActionName() {
+        return extraActionName;
     }
 
     public String updateClaimDetail() {
@@ -235,6 +271,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return EMPTY;
     }
+    
+    public String getUpdateInsurerClaimNumberAction() {        
+        return "updateInsurerClaimNumber";
+    }
+    
     //Claim Actions
     public String route() {
         String result = SUCCESS;
@@ -675,6 +716,33 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
    
+    public String updateInsurerClaimNumber() {
+
+        String result = SUCCESS;
+        String validationResult = validateAcknowledgeClaimInfo();
+        
+        if (!validationResult.isEmpty()) {
+
+            claim.setClaimNumber("");
+            result = ERROR;
+            this.actionResult = validationResult;
+            
+        } 
+
+        try 
+        {
+            this.service.updateClaim(claim);
+        } 
+        catch (Exception ex)
+        {
+            result = ERROR;
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+        
+        statusMsg = "Your action has been recorded";
+        return result;
+    }
+    
     public String approveEscalatedInvoice() {
 
         String result = SUCCESS;

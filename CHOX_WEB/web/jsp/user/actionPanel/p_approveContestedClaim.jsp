@@ -72,6 +72,24 @@
         return false;
     }
     
+    function liabilityMinNumber(){
+        var sActionName = $("#actionName").val();
+        var iMinliability = 0.01;
+        if(sActionName=="reject" || sActionName=="referFNOL"){
+            iMinliability = 0;
+        }
+        return iMinliability;
+    }
+    
+    function liabilityMinNumberMsg(){
+        var sActionName = $("#actionName").val();
+        var iMinliabilityMsg = "'Percentage Liability Accepted' must be more than 0";
+        if(sActionName=="reject" || sActionName=="referFNOL"){
+            iMinliabilityMsg = "'Percentage Liability Accepted' must be more than or equal to 0";
+        }
+        return iMinliabilityMsg;   
+    }
+    
     function doFormValidation(){
 
             
@@ -86,7 +104,8 @@
                 percentageLiabilityAccepted:{
                     required:true,
                     number:true,
-                    max: 100.00
+                    max: 100.00,
+                    min:liabilityMinNumber
                 },
                 claimNumber:{
                     required:isClaimNumberMandatory
@@ -107,7 +126,8 @@
                 percentageLiabilityAccepted: {
                     required:"You must supply a value for 'Percentage Liability Accepted'",
                     number:"You must supply a numeric value for 'Percentage Liability Accepted'",
-                    max:"'Percentage Liability Accepted' cannot be more than 100"
+                    max:"'Percentage Liability Accepted' cannot be more than 100",
+                    min:liabilityMinNumberMsg
                 },
                 claimNumber: {
                     required:"You must supply a value for 'Claim Number'"

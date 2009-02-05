@@ -150,6 +150,11 @@
             </result>
         </action>
         
+        <action name="getUpdateInsurerClaimNumberAction" class="chox.web.actions.ClaimAction" method="getUpdateInsurerClaimNumberAction">
+            <result name="updateInsurerClaimNumber">/jsp/user/actionPanel/p_updateInsurerClaimNumber.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp
+            </result>
+        </action>        
         
         <!-- Start Claim Detail -->
         <action name="openClaimDetail" class="chox.web.actions.ClaimAction">
@@ -220,6 +225,7 @@
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
+        
         <action name="submitHireMonitoringDetail" class="chox.web.actions.ClaimAction" method="submitHireMonitoringDetail">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
@@ -232,6 +238,7 @@
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
+        
         <action name="reSubmitRejectedClaim" class="chox.web.actions.ClaimAction" method="reSubmitRejectedClaim">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
@@ -256,6 +263,20 @@
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
+        
+        <action name="updateInsurerClaimNumber" class="chox.web.actions.ClaimAction" method="updateInsurerClaimNumber">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
+        
         <action name="approveEscalatedInvoice" class="chox.web.actions.ClaimAction" method="approveEscalatedInvoice">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
