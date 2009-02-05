@@ -326,9 +326,6 @@ div.status-info
     background-repeat: no-repeat;
     background-position: 10px center; 
     background-image: url('../images/default/window/icon-info.gif');
-    height:50px;
-    width: 100%;
-    float: right;
 }
 
 div.status-warning{
@@ -343,9 +340,6 @@ div.status-warning{
     background-repeat: no-repeat;
     background-position: 10px center; 
     background-image: url('../images/default/window/icon-warning.gif');
-    height:50px;
-    width: 100%;
-    float: right;
 }
 
 div.status-info-submit

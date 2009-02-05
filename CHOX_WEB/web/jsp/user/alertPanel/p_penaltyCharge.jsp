@@ -103,7 +103,7 @@
         </tr>
     </table>         
     <div class="errorBox" id="ACKmessageBox"></div>
-    </div>
+
 </fieldset> 
 
 
