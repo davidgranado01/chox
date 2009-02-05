@@ -239,7 +239,7 @@
             var attachment = paymentPackGrid.getStore().getAt(rowIndex);  // Get the Record
             var fileId = attachment.get("id");
             if(columnIndex!=3){
-                var popwin = window.open("doExportFile.action?fileId="+fileId, "Attachment", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
+                window.location= "doExportFile.action?fileId=" + fileId;
             }else{
                 deleteAttachment(fileId);
             }

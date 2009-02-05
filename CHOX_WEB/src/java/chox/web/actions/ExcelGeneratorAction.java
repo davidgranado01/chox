@@ -10,7 +10,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
 import java.util.*;
 import chox.services.ClaimService;
-import chox.services.ClaimServiceImpl;
 import chox.model.Claim;
 import chox.model.Comment;
 import java.io.IOException;
@@ -26,6 +25,8 @@ import chox.model.Solicitor;
 import java.io.File;
 import chox.Util.FileHelper;
 import chox.services.SearchResult;
+import java.io.FileInputStream;
+import org.apache.struts2.ServletActionContext;
 
 public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
@@ -95,11 +96,17 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         }
         return buf;
     }
+    
+    protected String getReportTemplatePath(String reportTemplateName) {
+        String reportDefinationFilePath = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + reportTemplateName);
+        //String reportDefinationFilePath = "C:\\Greenfinch\\Projects\\CHOX\\reports\\" + reportTemplateName;
+        return reportDefinationFilePath;
+    }
 
     public ByteArrayOutputStream generateXML(List claims) throws IOException {
 
-        InputStream templateIS = ExcelGeneratorAction.class.getClassLoader().getResourceAsStream("claimTemplate.xls");
-
+        //InputStream templateIS = ExcelGeneratorAction.class.getClassLoader().getResourceAsStream("claimTemplate.xls");
+        InputStream templateIS = new FileInputStream(getReportTemplatePath("claimTemplate.xls"));
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         List histories = new ArrayList<History>();

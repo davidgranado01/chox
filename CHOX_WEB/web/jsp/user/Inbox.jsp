@@ -126,7 +126,7 @@ function showClaimByStatusWithSort(status,sort)
     
     function doExportExcel(){
         
-        var popwin = window.open("doExportExcel.action", "Excel", "WIDTH=575,HEIGHT=500,RESIZABLE=No,SCROLLBARS=YES,TOOLBAR=NO,LEFT=200,TOP=100");
+        window.location= "doExportExcel.action";
     }
     
     function searchClaim()
