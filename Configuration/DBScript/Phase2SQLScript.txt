@@ -288,3 +288,8 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.HireMonitoring.ClaimPending'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 2, (select id from accessibility where name = 'tab.Notes.ClaimPending'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.ClaimDetail.ClaimPending'), (select max(id)+1 from accessibility_item));
+
+
+-- ############################################################################################
+-- START VERSION V2.2.3
+-- ############################################################################################\
