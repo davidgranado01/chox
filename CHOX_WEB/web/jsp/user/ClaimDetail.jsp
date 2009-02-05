@@ -963,23 +963,26 @@
     <div class="comments  x-panel-bwrap chox-form-container">
 
 <s:if test="!isClaimClosed"> 
-
+   
         <form id="fComments" action="user/createNewComment.action" method="post">
             <input type="hidden" name="claimId" value='<s:property value="id" />'>
             <fieldset class="x-fieldset">
                 <legend>Add a new note</legend>
-                <s:textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment" /><br/>
-                
-                <s:if test="!isCHO"> 
-                    <s:checkbox name="isPublic"/>Visible to CHO?
+                 <div class="chox-form-item">
+                    <s:textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment" />
+                </div>
+                 <s:if test="!isCHO"> 
+                <div class="chox-form-item">
+                    <s:checkbox name="isPublic"/>
+                    <label class="std-label-ro">Visible to CHO?</label>                    
+                </div>
                 </s:if>
                 <s:else><input name="isPublic" type="hidden" value="true"/></s:else>
-                
                 <input type="submit" id="bAddComment" value="Add Note" onclick="javascript:return commentFormValidation();"/>
+                
                 
             </fieldset>
         </form>
-        
 </s:if>
 
         <div class="errorBox" id="CmErrMsgBox" style="color:red;font-weight: bold;font-size: 10px;"></div>        
