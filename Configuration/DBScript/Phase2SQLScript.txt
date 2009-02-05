@@ -171,8 +171,85 @@ ALTER TABLE invoice ALTER COLUMN reason_of_rejection_id SET STORAGE PLAIN;
 
 ------------------------------------------------------------------------------------------------
 
-CREATE BY : EMMANUEL 20080402-1408
--DESCRIPTION : NEW FIELD TO HIRE MONITORING
+-- CREATE BY : CARLSON 20080402-1700
+-- CREATE UPDATE INSURER CLAIM NUMBER ACCESSIBILITY
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.ContestedInvoiceReferredToCHO');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.ContestedInvoiceReferredToInsurer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.InvoiceApprovedByBRE');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.InvoiceDataCalculationIncorrect');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.InvoiceEscalated');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.AwaitingInvoicePayment');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.InvoicePaymentLogged');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.InvoiceRejectionAccepted');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.AwaitingCarHireInfo');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.AwaitingInvoiceData');
+
+
+------------------------------------------------------------------------------------------------
+
+-- CREATE BY : CARLSON 20080402-1700
+-- CREATE INSURER CLAIM NUMBER ACCESSIBILITY DEFAULT ITEM
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.ContestedInvoiceReferredToCHO'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.ContestedInvoiceReferredToInsurer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceApprovedByBRE'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceDataCalculationIncorrect'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceEscalated'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.AwaitingInvoicePayment'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoicePaymentLogged'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceRejectionAccepted'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.AwaitingCarHireInfo'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.AwaitingInvoiceData'), (select max(id)+1 from accessibility_item));
+
+
+------------------------------------------------------------------------------------------------
+
+-- CREATE BY : CARLSON 20080402-1700
+-- CREATE INSURER CLAIM NUMBER ACCESSIBILITY - CLAIM HANDLER
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.ContestedInvoiceReferredToCHO'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.ContestedInvoiceReferredToInsurer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceApprovedByBRE'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceDataCalculationIncorrect'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceEscalated'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.AwaitingInvoicePayment'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoicePaymentLogged'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceRejectionAccepted'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.AwaitingCarHireInfo'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.AwaitingInvoiceData'), (select max(id)+1 from accessibility_item));
+
+-- CREATE INSURER CLAIM NUMBER ACCESSIBILITY - INSURER MANAGER
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.ContestedInvoiceReferredToCHO'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.ContestedInvoiceReferredToInsurer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceApprovedByBRE'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceDataCalculationIncorrect'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceEscalated'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.AwaitingInvoicePayment'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoicePaymentLogged'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceRejectionAccepted'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.AwaitingCarHireInfo'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.AwaitingInvoiceData'), (select max(id)+1 from accessibility_item));
+
+
+-- CREATE INSURER CLAIM NUMBER ACCESSIBILITY - FNOL
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_FNOL', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.ContestedInvoiceReferredToCHO'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_FNOL', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.ContestedInvoiceReferredToInsurer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_FNOL', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceApprovedByBRE'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_FNOL', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceDataCalculationIncorrect'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_FNOL', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceEscalated'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_FNOL', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.AwaitingInvoicePayment'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_FNOL', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoicePaymentLogged'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_FNOL', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.InvoiceRejectionAccepted'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_FNOL', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.AwaitingCarHireInfo'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_FNOL', 2, (select id from accessibility where name = 'extraAction.updateInsurerClaimNumber.AwaitingInvoiceData'), (select max(id)+1 from accessibility_item));
+
+------------------------------------------------------------------------------------------------
+
+-- CREATE BY : EMMANUEL 20080402-1408
+-- DESCRIPTION : NEW FIELD TO HIRE MONITORING
 
 ALTER TABLE hire_monitoring_detail ADD COLUMN labour_rate numeric(10,2);
 ALTER TABLE hire_monitoring_detail ADD COLUMN labour_hour smallint;
@@ -180,20 +257,19 @@ ALTER TABLE hire_monitoring_detail ADD COLUMN labour_cost numeric(10,2);
 
 -------------------------------------------------------------------------------------------------
 
-CREATE BY : EMMANUEL 20080402-1540
-
--DESCRIPTION : NEW ACCESSIBILITY SETTING FOR CLAIM PENDING QUEUE
+-- CREATE BY : EMMANUEL 20080402-1540
+-- DESCRIPTION : NEW ACCESSIBILITY SETTING FOR CLAIM PENDING QUEUE
 
 insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'filter.ClaimPending');
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'filter.ClaimPending'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 1, (select id from accessibility where name = 'filter.ClaimPending'), (select max(id)+1 from accessibility_item));
 
--DESCRIPTION : NEW DATABASE FIELD TO CLAIM TABLE
+-- DESCRIPTION : NEW DATABASE FIELD TO CLAIM TABLE
 
 ALTER TABLE claim ADD COLUMN status_modified_date timestamp without time zone;
 ALTER TABLE claim ADD COLUMN previous_status character varying(128);
 
--DESCRIPTION : NEW ACCESSIBILITY SETTING FOR CLAIM PENDING ACTION
+-- DESCRIPTION : NEW ACCESSIBILITY SETTING FOR CLAIM PENDING ACTION
 
 insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'action.claimPending.ClaimPending');
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'action.claimPending.ClaimPending'), (select max(id)+1 from accessibility_item));
@@ -212,6 +288,3 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.HireMonitoring.ClaimPending'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 2, (select id from accessibility where name = 'tab.Notes.ClaimPending'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.ClaimDetail.ClaimPending'), (select max(id)+1 from accessibility_item));
-
-
-
