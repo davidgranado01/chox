@@ -134,6 +134,8 @@
             </result>
             <result name="registeredclaimbyfnol">/jsp/user/actionPanel/p_registeredclaimbyfnol.jsp
             </result>
+            <result name="claimPending">/jsp/user/actionPanel/p_pendingClaim.jsp
+            </result>
             <result name="empty">/jsp/p_blank.jsp
             </result>
         </action>

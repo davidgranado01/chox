@@ -42,6 +42,7 @@ public class ApplicationAccessibility {
     public static final String FILTER_CLAIM_REF_ENG = "ClaimReferredToEngineer";
     public static final String FILTER_CLAIM_REF_FNOL = "ClaimReferredToFNOL";
     public static final String FILTER_PENALTY_CHARGES_APPLIED = "PenaltyChargesApplied";
+    public static final String CLAIM_PENDING = "ClaimPending";
     
     public static final String PANEL_FNOL_REVIEWED  = "FNOLReviewed";
     

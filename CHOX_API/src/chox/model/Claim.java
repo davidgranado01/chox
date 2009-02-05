@@ -1,5 +1,6 @@
 package chox.model;
 
+import chox.Util.DateHelper;
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.util.Date;
@@ -108,6 +109,8 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     protected boolean isFnolReviewed;
     //protected VehicleClass vehicleClass;
     protected Integer reasonOfRejectionId;
+    private Date statusModifiedDate;
+    private String previousStatus;
 
     /**
      * Method 'Claim'
@@ -622,6 +625,30 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
 
     public void setReasonOfRejectionId(Integer reasonOfRejectionId) {
         this.reasonOfRejectionId = reasonOfRejectionId;
+    }
+
+    public Date getStatusModifiedDate() {
+        return statusModifiedDate;
+    }
+
+    public void setStatusModifiedDate(Date statusModifiedDate) {
+        this.statusModifiedDate = statusModifiedDate;
+    }
+
+    public String getPreviousStatus() {
+        return previousStatus;
+    }
+
+    public void setPreviousStatus(String previousStatus) {
+        this.previousStatus = previousStatus;
+    }
+    
+    public Long getDaysInStatus()
+    {
+        Date now = new Date();
+        Date lastStatusModified = this.getStatusModifiedDate();
+        
+        return DateHelper.daysBetween(lastStatusModified, now);
     }
     
 }

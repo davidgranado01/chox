@@ -75,7 +75,23 @@
                 limit:10
             }
         });
-    }    
+    }  
+
+function showClaimByStatusWithSort(status,sort)
+    {     
+        ds.setDefaultSort(sort, 'status');
+        ds.baseParams = {
+            status : status
+        }
+        ds.load(
+        {
+            params:
+                {            
+                start:0,
+                limit:10                
+            }
+        });
+    }  
     
     function showClaimIsAnomalies()
     {  
@@ -460,7 +476,10 @@
                             </s:if>          
                             <s:if test="filterAccessibility.isPenaltyChargesAppliedAccessible">
                                 <li><a href="javascript:showClaimIspenaltyChargeApplied();" >Penalty Charges To Be Applied (<s:property value="filterRecordCounter.PenaltyChargesAppliedCount" />)</a></li>
-                            </s:if>    
+                            </s:if>  
+                            <s:if test="filterAccessibility.isClaimPendingAccessible">
+                                <li><a href="javascript:showClaimByStatusWithSort('ClaimPending','statusModifiedDate');" >Claim Pending (<s:property value="filterRecordCounter.ClaimPendingCount" />)</a></li>
+                            </s:if>   
                         </ul>                            
                     </div>
                 </div>

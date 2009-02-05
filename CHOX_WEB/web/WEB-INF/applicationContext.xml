@@ -8,7 +8,7 @@
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver">
         </property>
-        <property name="url" value="jdbc:postgresql://localhost:5432/PROD_20090127">
+        <property name="url" value="jdbc:postgresql://localhost:5432/idaschox_prod">
         </property>
         <property name="username" value="postgres">
         </property>
@@ -23,7 +23,7 @@
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect
                 </prop>
-                <prop key="hibernate.show_sql">true
+                <prop key="hibernate.show_sql">false
                 </prop>
             </props>
         </property>

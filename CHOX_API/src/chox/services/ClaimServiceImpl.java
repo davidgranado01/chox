@@ -26,8 +26,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
     public static final String COMPLETE = "Complete";
     public static final String CANCELLED = "Cancelled";
     public static final String NEW_CLAIM = "1st Notification";
-    
-    private Map<String,String> sortingMap;
+    private Map<String, String> sortingMap;
 
     public Claim getClaim(int id) {
         return (Claim) get(Claim.class, id);
@@ -36,37 +35,29 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
     public void updateClaim(Claim claim) {
         save(claim);
     }
-     
+
     public Long getCountByStatus(String status) {
         String q = "select count(*) from Claim where status = '" + status + "'";
         return getCount(q);
     }
-    
+
     public Long getNonDEPaymentLogCount() {
-        return (long)0;
+        return (long) 0;
     }
-    
     // UPDATED BY CR, 20090122 - 2100
     public Long getPenaltyChargeAppliedCount() {
-        
-        String q = "select count(*) from Claim as c inner join c.invoice as iv where " 
-                + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_LOGGED + "' AND "
-                + "c.status <> '" + ClaimStatus.INVOICE_REJECTED_ACCEPTED + "' AND "
-                + "c.status <> '" + ClaimStatus.CLAIM_CLOSED + "' "
-                + "AND iv.penaltyAlertQty >= 0"
-                + " AND day(current_date() - iv.dateInvoiced) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
-        
-       return getCount(q);
+
+        String q = "select count(*) from Claim as c inner join c.invoice as iv where " + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_LOGGED + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_REJECTED_ACCEPTED + "' AND " + "c.status <> '" + ClaimStatus.CLAIM_CLOSED + "' " + "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.dateInvoiced) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
+
+        return getCount(q);
     }
-    
-    protected Long getCount(String query)
-    {
-        Long count =  new Long(0);
+
+    protected Long getCount(String query) {
+        Long count = new Long(0);
         List result = query(query);
-        
-        if(result!= null && !result.isEmpty())
-        {
-            count = (Long)result.get(0);
+
+        if (result != null && !result.isEmpty()) {
+            count = (Long) result.get(0);
         }
         return count;
     }
@@ -75,87 +66,78 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         String q = "select count(*) from Claim where is_anomalies = true";
         return getCount(q);
     }
-    
+
     public Long getECDCountByClaimId(int claimId) {
         String q = "select count(*) from HireMonitoringEcd where claim.id = '" + claimId + "'";
         return getCount(q);
     }
-    
-    public Long getClaimCountByClaimNumber(String claimNumber, int claimId)
-    {
-        String q = "select count(*) from Claim where claimNumber = '" + claimNumber + "' And id != '"+claimId+"'";
+
+    public Long getClaimCountByClaimNumber(String claimNumber, int claimId) {
+        String q = "select count(*) from Claim where claimNumber = '" + claimNumber + "' And id != '" + claimId + "'";
         return getCount(q);
     }
 
-    public Integer getCountOfClaimByVRN(String strVRN, int claimId){               
-   
-            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-            criteria.setProjection(Projections.rowCount());
-            criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN));
-            criteria.add( Expression.ne( "id", claimId));
-            List result = findByCriteria(criteria);
-            Integer totalCount = (Integer)result.get(0);
-            return totalCount;
+    public Integer getCountOfClaimByVRN(String strVRN, int claimId) {
 
-          
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.setProjection(Projections.rowCount());
+        criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN));
+        criteria.add(Expression.ne("id", claimId));
+        List result = findByCriteria(criteria);
+        Integer totalCount = (Integer) result.get(0);
+        return totalCount;
+
+
     }
-    
-    public Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit){
-        
+
+    public Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit) {
+
         Boolean bFlag = false;
-        
-        if(!strClaimNumber.equalsIgnoreCase("")){
+
+        if (!strClaimNumber.equalsIgnoreCase("")) {
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
             criteria.setProjection(Projections.rowCount());
             criteria.createCriteria("customer").add(Restrictions.like("claimReference", strClaimNumber));
-            if(isClaimExit){
-                criteria.add( Expression.ne( "id", claimId));
+            if (isClaimExit) {
+                criteria.add(Expression.ne("id", claimId));
             }
             List result = findByCriteria(criteria);
-            
-            Integer totalCount = (Integer)result.get(0);
+
+            Integer totalCount = (Integer) result.get(0);
             bFlag = totalCount > 0;
         }
-        
+
         return bFlag;
-        
+
     }
-    
-    public Boolean isThirdPartyClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit){
-        
+
+    public Boolean isThirdPartyClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit) {
+
         Boolean bFlag = false;
-        
-        if(!strClaimNumber.equalsIgnoreCase("")){
+
+        if (!strClaimNumber.equalsIgnoreCase("")) {
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
             criteria.setProjection(Projections.rowCount());
             criteria.createCriteria("thirdParty").add(Restrictions.like("claimReference", strClaimNumber));
-            if(isClaimExit){
-                criteria.add( Expression.ne( "id", claimId));
+            if (isClaimExit) {
+                criteria.add(Expression.ne("id", claimId));
             }
             List result = findByCriteria(criteria);
-            
-            Integer totalCount = (Integer)result.get(0);
+
+            Integer totalCount = (Integer) result.get(0);
             bFlag = totalCount > 0;
         }
-        
-        return bFlag;        
-    }
-           
-    public SearchResult searchClaims(ClaimSearchCriteria searchCriteria)
-    {
-        return searchClaims(searchCriteria,0,Integer.MAX_VALUE,"","");
+
+        return bFlag;
     }
 
-    public SearchResult searchClaims(ClaimSearchCriteria searchCriteria,int start,int limit,String sort,String dir) {
-         Criteria criteria = getSession().createCriteria(Claim.class)
-            .createAlias("this.invoice", "iv",CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.lineOfBusiness", "lob",CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.thirdParty", "tp",CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.vehicleHire", "vh",CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.chorganisation", "cho",CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.createdBy", "cb",CriteriaSpecification.LEFT_JOIN)
-            .createAlias("this.insurer", "ins",CriteriaSpecification.LEFT_JOIN);      
-        
+    public SearchResult searchClaims(ClaimSearchCriteria searchCriteria) {
+        return searchClaims(searchCriteria, 0, Integer.MAX_VALUE, "", "");
+    }
+
+    public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
+        Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.lineOfBusiness", "lob", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
+
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
             criteria.add(Restrictions.like("choReference", searchCriteria.getSupplierReference()).ignoreCase());
         }
@@ -265,6 +247,8 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
                 addSort(criteria, "createdDate", dir);
             } else if (sort.equalsIgnoreCase("status")) {
                 addSort(criteria, "status", dir);
+            } else if (sort.equalsIgnoreCase("statusModifiedDate")) {
+                addSort(criteria, "statusModifiedDate", dir);
             } else if (sort.equalsIgnoreCase("lineOfBusiness")) {
                 addSort(criteria, "lob.name", dir);
             } else if (sort.equalsIgnoreCase("cho")) {
@@ -281,19 +265,18 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
 
         criteria.setFirstResult(start);
         criteria.setMaxResults(limit);
-       
-        criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP); 
+
+        criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<HashMap> resultMap = criteria.list();
-        
+
         List claims = new ArrayList<Claim>();
-        
-        for(HashMap m : resultMap)
-        {
+
+        for (HashMap m : resultMap) {
             claims.add(m.get("this"));
         }
-        
-        return new SearchResult(claims,totalCount);
-    } 
+
+        return new SearchResult(claims, totalCount);
+    }
 
     private void addSort(Criteria criteria, String sort, String dir) {
         if (dir.equalsIgnoreCase("desc")) {
@@ -302,7 +285,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             criteria.addOrder(Order.asc(sort));
         }
     }
-     
+
     public Boolean isClaimReferenceNumberExist(String sClaimReferenceNumber) {
 
         Boolean bFlag = false;
@@ -332,9 +315,9 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
             e.printStackTrace();
         }
         return claim;
-    }          
-    
-    public void saveObjectForXMLUploader( final XMLParseResult xmlParseResult) {
+    }
+
+    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
 
         Claim c = xmlParseResult.getClaim();
         c.setCustomer(xmlParseResult.getClaim().getCustomer());
@@ -349,7 +332,6 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
 
         save(xmlParseResult.getClaim());
     }
-   
 }
 
 

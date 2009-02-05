@@ -60,6 +60,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public static final String EMPTY = "empty";
     public static final String REGISTER_FNOL = "registerFNOL";
     public static final String REJECT_FNOL = "rejectFNOL";
+    public static final String PENDING = "pending";
     
     private Claim claim = new Claim();
     private int id = -1;
@@ -304,6 +305,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 this.actionResult = validationResult;
             }
         }
+        else if(this.actionName.equalsIgnoreCase(PENDING))
+        {
+            String validationResult = validateAcknowledgeClaimInfo();            
+            if (validationResult.isEmpty()) {
+                newStatus = ClaimStatus.CLAIM_PENDING;
+            } else {
+                claim.setClaimNumber("");
+                result = ERROR;
+                this.actionResult = validationResult;
+            }
+        }
         else 
         {
             newStatus = ClaimStatus.CLAIM_REJECTED;
@@ -488,10 +500,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 result = ERROR;
                 this.actionResult = validationResult;
             }
-        }else if(this.actionName.equalsIgnoreCase(REFER_FNOL)){
-                   
+        } else if (this.actionName.equalsIgnoreCase(REFER_FNOL)) {
+
             if (validationResult.isEmpty()) {
                 newStatus = ClaimStatus.CLAIM_REFERRED_TO_FNOL;
+            } else {
+                claim.setClaimNumber("");
+                result = ERROR;
+                this.actionResult = validationResult;
+            }
+        } else if (this.actionName.equalsIgnoreCase(PENDING)) {
+            if (validationResult.isEmpty()) {
+                newStatus = ClaimStatus.CLAIM_PENDING;
             } else {
                 claim.setClaimNumber("");
                 result = ERROR;

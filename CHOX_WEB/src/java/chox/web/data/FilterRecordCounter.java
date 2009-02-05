@@ -78,4 +78,9 @@ public class FilterRecordCounter {
     public long getPenaltyChargesAppliedCount() {
         return service.getPenaltyChargeAppliedCount();
     }
+    
+    public long getClaimPendingCount()
+    {
+        return service.getCountByStatus(ClaimStatus.CLAIM_PENDING);
+    }
 }

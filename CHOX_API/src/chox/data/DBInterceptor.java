@@ -4,6 +4,7 @@ import chox.Util.DateHelper;
 import chox.model.Auditable;
 import java.io.Serializable;
 
+import java.util.Date;
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.type.Type;
 
@@ -39,6 +40,11 @@ public class DBInterceptor extends EmptyInterceptor {
     @Override
     public boolean onFlushDirty(Object entity, Serializable id, Object[] state1, Object[] state2, String[] propertyNames, Type[] types) {
         if (entity instanceof Auditable) {
+            
+            Integer indexOfStatusModifiedDate = null;
+            Integer indexForPrevStatus = null;
+            Date statusModifiedDate = null;
+            String prevStatus = null;
 
             for (int i = 0; i < propertyNames.length; i++) {
                 if ("lastModifiedDate".equals(propertyNames[i])) {
@@ -46,6 +52,54 @@ public class DBInterceptor extends EmptyInterceptor {
                 } else if ("lastModifiedBy".equals(propertyNames[i])) {
                     state1[i] = this.getSecurityInfoProvider().getCurrentUSer();
                 }
+                else if ("statusModifiedDate".equals(propertyNames[i])) {
+                    if(statusModifiedDate == null)
+                    {
+                        indexOfStatusModifiedDate = i;
+                    }
+                    else
+                    {
+                        state1[i] = statusModifiedDate;
+                    }
+                }
+                else if ("previousStatus".equals(propertyNames[i])) {
+                    if(prevStatus == null)
+                    {
+                        indexForPrevStatus = i;
+                    }
+                    else
+                    {
+                        state1[i] = prevStatus;
+                    }
+                }
+                else if ("status".equals(propertyNames[i])) {
+                    
+                    String newStatus = state1[i].toString();
+                    String oldStatus = state2[i].toString();
+                    
+                    if(!newStatus.equalsIgnoreCase(oldStatus))
+                    {
+                        if(indexOfStatusModifiedDate != null)
+                        {
+                            state1[indexOfStatusModifiedDate] = new Date();
+                        }
+                        else
+                        {
+                            statusModifiedDate = new Date();
+                        }
+                        
+                        if(indexForPrevStatus != null)
+                        {
+                            state1[indexForPrevStatus] = oldStatus;
+                        }
+                        else
+                        {
+                            prevStatus = oldStatus;
+                        }
+                    }
+
+                }
+                
             }
         }
         return true;

@@ -177,3 +177,41 @@ CREATE BY : EMMANUEL 20080402-1408
 ALTER TABLE hire_monitoring_detail ADD COLUMN labour_rate numeric(10,2);
 ALTER TABLE hire_monitoring_detail ADD COLUMN labour_hour smallint;
 ALTER TABLE hire_monitoring_detail ADD COLUMN labour_cost numeric(10,2);
+
+-------------------------------------------------------------------------------------------------
+
+CREATE BY : EMMANUEL 20080402-1540
+
+-DESCRIPTION : NEW ACCESSIBILITY SETTING FOR CLAIM PENDING QUEUE
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'filter.ClaimPending');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'filter.ClaimPending'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 1, (select id from accessibility where name = 'filter.ClaimPending'), (select max(id)+1 from accessibility_item));
+
+-DESCRIPTION : NEW DATABASE FIELD TO CLAIM TABLE
+
+ALTER TABLE claim ADD COLUMN status_modified_date timestamp without time zone;
+ALTER TABLE claim ADD COLUMN previous_status character varying(128);
+
+-DESCRIPTION : NEW ACCESSIBILITY SETTING FOR CLAIM PENDING ACTION
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'action.claimPending.ClaimPending');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'action.claimPending.ClaimPending'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 1, (select id from accessibility where name = 'action.claimPending.ClaimPending'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.InvoiceDetail.ClaimPending');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.History.ClaimPending');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.PaymentPack.ClaimPending');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.HireMonitoring.ClaimPending');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.Notes.ClaimPending');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.ClaimDetail.ClaimPending');
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.InvoiceDetail.ClaimPending'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.History.ClaimPending'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.PaymentPack.ClaimPending'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.HireMonitoring.ClaimPending'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 2, (select id from accessibility where name = 'tab.Notes.ClaimPending'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.ClaimDetail.ClaimPending'), (select max(id)+1 from accessibility_item));
+
+
+
