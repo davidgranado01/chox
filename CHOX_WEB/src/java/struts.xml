@@ -95,6 +95,16 @@
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
+        <action name="doReopenClaimStatus" class="chox.web.actions.ClaimAction" method="doReopenClaimStatus">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
         <action name="getAttachmentDetail" class="chox.web.actions.GetAttachmentDetailAction">
             <result name="success">/jsp/user/AttachmentProcess.jsp
             </result>

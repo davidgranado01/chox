@@ -968,6 +968,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
     
+    public String doReopenClaimStatus() {
+        String result = SUCCESS;
+        try {
+            claim = service.getClaim(id);
+            String newStatus = claim.getPreviousStatus();
+            auditTrailService.logAuditLog(newStatus, claim);
+            this.claim.setStatus(newStatus);
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            result = ERROR;
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+        return result;
+    }
+    
     public boolean getIsShowPenaltyChargeAlert()
     {
        boolean result = false;      

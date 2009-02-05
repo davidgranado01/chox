@@ -495,6 +495,16 @@
         }
         return true;
    }
+   
+      function reopenClaimStatus(a){
+       
+       if(!confirm('Are you sure you want to re-open this claim?')){
+                return false;
+        }else{
+            document.location = "doReopenClaimStatus.action?id="+a;
+        }
+        return true;
+   }
     
 </script>        
         
@@ -602,6 +612,11 @@
     <td colspan="3" align="right"><input value="Close Claim" type="button" onclick="javascript:return closeClaimStatus('<s:property value="id" />');"/></td>
 </tr>
 </s:if>
+<s:elseif test="isClaimClosed && isCHO">
+<tr>
+    <td colspan="3" align="right"><input value="Re-OpenClaim Claim" type="button" onclick="javascript:return reopenClaimStatus('<s:property value="id" />');"/></td>
+</tr>
+</s:elseif>
 
                             </table>
                         </fieldset>
