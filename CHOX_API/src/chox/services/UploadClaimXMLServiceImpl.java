@@ -726,6 +726,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                 
                 // GET INSURER INFORMATION
                 String insurerAlliasName = XmlHelper.getNodeValue(thisElement, "name");
+                
                 InsurerAllias insurerallias = insurerAlliasService.getInsurerByAlliasName(insurerAlliasName);
 
                 if(insurerallias!=null){
@@ -734,7 +735,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                     }
                 }else{
                     if(XmlHelper.isMAN_Claim_ThirdParty_Insurer_Name){
-                        xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Selected Insurer is invalid", false);
+                        xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Selected Third Party Insurer is invalid", false);
                     }
                 }
                  // GET VEHICLE CLASS ID
