@@ -8,7 +8,7 @@
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver">
         </property>
-        <property name="url" value="jdbc:postgresql://10.0.0.2:5432/chox_test">
+        <property name="url" value="jdbc:postgresql://localhost:5432/idaschox_prod">       
         </property>
         <property name="username" value="postgres">
         </property>
@@ -170,5 +170,7 @@
         <property name="choBandService" ref="choBandService" />
         <property name="historyService" ref="historyService" />
         <property name="auditTrailService" ref="auditTrailService" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
 </beans>
