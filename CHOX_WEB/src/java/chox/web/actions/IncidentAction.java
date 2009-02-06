@@ -4,12 +4,14 @@
  */
 package chox.web.actions;
 
+import chox.Util.DateHelper;
 import chox.model.Claim;
 import chox.model.Incident;
 import chox.services.IncidentService;
 import chox.web.security.ApplicationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import java.util.Date;
 import net.sf.json.JSONObject;
 
 /**
@@ -62,5 +64,22 @@ public class IncidentAction extends BaseModelAction implements ModelDriven<Incid
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_CLAIM_DETAIL;
+    }
+
+    public String getTime() {
+            return DateHelper.TimeFormat.format(model.getDate());       
+    }
+
+    public void setTime(String time) {
+        if (model != null) {
+            try {
+                Date a = model.getDate();
+                Date b = DateHelper.TimeFormat.parse(time);
+                model.setDate(DateHelper.mergeTimeToDate(a, b));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
     }
 }

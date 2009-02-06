@@ -14,6 +14,7 @@ import chox.services.VehicleHireService;
 import chox.web.security.ApplicationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import java.util.Date;
 import java.util.List;
 import net.sf.json.JSONObject;
 
@@ -97,4 +98,39 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
     String getTabName() {
         return ApplicationAccessibility.TAB_INVOICE_DETAIL;
     }
+    
+    public String getRentalStartTime() {
+            return DateHelper.TimeFormat.format(model.getHireStart());       
+    }
+
+    public void setRentalStartTime(String time) {
+        if (model != null) {
+            try {
+                Date a = model.getHireStart();
+                Date b = DateHelper.TimeFormat.parse(time);
+                model.setHireStart(DateHelper.mergeTimeToDate(a, b));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public String getRentalEndTime() {
+            return DateHelper.TimeFormat.format(model.getHireEnd());       
+    }
+
+    public void setRentalEndTime(String time) {
+        if (model != null) {
+            try {
+                Date a = model.getHireEnd();
+                Date b = DateHelper.TimeFormat.parse(time);
+                model.setHireStart(DateHelper.mergeTimeToDate(a, b));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+    }
+    
+    
 }

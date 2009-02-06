@@ -11,6 +11,7 @@ public class DateHelper {
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     public static SimpleDateFormat LocalDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     public static SimpleDateFormat DBDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public static SimpleDateFormat TimeFormat = new SimpleDateFormat("kk:mm");
 
     public static java.sql.Timestamp getCurrentTimeStamp() {
         Calendar cal = Calendar.getInstance();
@@ -32,6 +33,13 @@ public class DateHelper {
         long diff = milliseconds2 - milliseconds1;
         long diffDays = diff / (24 * 60 * 60 * 1000);
         return diffDays;
+    }
+    
+    public static Date mergeTimeToDate(Date a,Date b)
+    {
+        a.setHours(b.getHours());
+        a.setMinutes(b.getMinutes());
+        return a;
     }
 
     public static Date getFirstDateOfTheMonth(Date date) {
@@ -61,7 +69,7 @@ public class DateHelper {
         return a;
 
     }
-    
+
     public static Date getMaxDate() {
         Date a = new Date();
         try {

@@ -19,13 +19,27 @@
                 value: '<s:date format="dd/MM/yyyy" name="date" />',
                 renderTo:'incidentDatePH'
             });   
+            
+           var incidentDateTimPicker = new Ext.form.TimeField({
+                name: 'time',
+                width: 100,
+                allowBlank: true,
+                validationEvent : false,
+                increment: 15,
+                format:'H:i',
+                value: '<s:property value="time" />',
+                renderTo:'incidentTimePH'
+            });
 
        
-            
+            $.validator.addMethod('timeFormat', function (value) { 
+                return /^(\d{2}:\d{2})$/.test(value); 
+            });
+
             
             $("#formUpdateIncidentForm").validate(
             {
-               errorLabelContainer: "#INCmessageBox",                
+               errorLabelContainer: "#IncidentMessageBox",                
                rules: {
                  incidentDescription:{
                      required:true
@@ -36,6 +50,11 @@
                  date: {
                      required:true,
                      date:true
+                 },
+                 time: {
+                     required:true,
+                     timeFormat:true
+
                  }
                },
                messages: {  
@@ -46,10 +65,15 @@
                    required:"You must supply a value for 'Incident Location'"
                  },
                  date:{
-                   required:"You must supply a value for 'Date / Time'",
-                   date:"Invalid date format for 'Date / Time'"
+                   required:"You must supply a value for 'Date'",
+                   date:"Invalid date format for 'Date'"
+                 },
+                 time:
+                 {
+                    required:"You must supply a value for 'Time'",
+                    timeFormat:"Invalid format for 'Time'"
                  }
-               },
+                },
                 submitHandler: function(form) {
                     $(form).ajaxSubmit(globalEntityFormOptions);
                 }
@@ -72,8 +96,14 @@
         <div style="display:none" class="form-container">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Date / Time<span class="mandatory">*</span></label>
-            <span id="incidentDatePH"></span></div>
+                Date<span class="mandatory">*</span></label>
+                <span id="incidentDatePH"></span>  
+            </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                Time<span class="mandatory">*</span></label>
+                <span id="incidentTimePH"></span>  
+            </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Location<span class="mandatory">*</span></label>
@@ -91,7 +121,7 @@
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
             </div>
-            <div id="INCmessageBox" class="errorBox"></div>
+            <div id="IncidentMessageBox" class="errorBox"></div>
             <div class="chox-form-submit-result"></div>                
         </div>
     </fieldset>

@@ -21,11 +21,11 @@
                 <div class="chox-form-item">
                     <label class="std-label-ro">
                     Hire Start</label>
-        <label class="std-data-ro"><s:date format="dd/MM/yyyy" name="rentalStart" /></label></div>
+        <label class="std-data-ro"><s:date format="dd/MM/yyyy kk:mm" name="rentalStart" /></label></div>
                 <div class="chox-form-item">
                     <label class="std-label-ro">
                     Hire End</label>
-        <label class="std-data-ro"><s:date format="dd/MM/yyyy" name="rentalEnd" /></label></div>
+        <label class="std-data-ro"><s:date format="dd/MM/yyyy kk:mm" name="rentalEnd" /></label></div>
                 <div class="chox-form-item">
                     <label class="std-label-ro">
                     Reason For Collection</label>
