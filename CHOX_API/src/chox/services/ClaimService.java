@@ -20,7 +20,7 @@ public interface ClaimService {
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria,int start,int limit,String sort,String dir);
     public void updateClaim(Claim claim);
     // CARLSON
-    public Boolean isClaimReferenceNumberExist(String sClaimReferenceNumber);
+    public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber);
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
    
     public void  saveObjectForXMLUploader(final XMLParseResult xmlParseResult);

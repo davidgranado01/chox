@@ -441,8 +441,9 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             if(XmlHelper.getNodeValue(mainElement, "gta-notice").equalsIgnoreCase("")){
                 tGtaNoticeDate = DateHelper.getCurrentTimeStamp();
             }
-
-            if(claimService.isClaimReferenceNumberExist(strCHOReference)){
+            
+            // CHECK SUPPLIER REFERENCE
+            if(claimService.isClaimSupplierReferenceNumberExist(strCHOReference)){
 
                 // CONFIGURATION TO CHECK XML UPLOAD STATUS
                 xmlParseResult.setIsClaimExist(true);

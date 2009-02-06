@@ -286,7 +286,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         }
     }
 
-    public Boolean isClaimReferenceNumberExist(String sClaimReferenceNumber) {
+    public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber) {
 
         Boolean bFlag = false;
 
