@@ -32,7 +32,7 @@
     
 </script>
 
-<table cellpadding="0" cellspacing="0" class="dashboard" style="width:99%;" border="0">
+<table cellpadding="0" cellspacing="0" class="dashboard" style="width:70%;" border="0">
     <tr><td>&nbsp;</td>                                                               <td>Week To Date</td>                                                                                           <td>Month To Date</td>                                                                          <td>Cumulative</td></tr>
     <tr><th nowrap>Number of Claim Notifications Submitted<img class="tip-target" alt="" src="<%=request.getContextPath()%>/images/tip.png" id="tip1"/></th>	<td><label class="std-data-ro"><s:property value="w2DData.noOfClaimNotificationsSubmitted"/></label></td>	<td><label class="std-data-ro"><s:property value="m2DData.noOfClaimNotificationsSubmitted"/></label></td>	<td><label class="std-data-ro"><s:property value="cData.noOfClaimNotificationsSubmitted"/></label></td></tr>
     <tr><th nowrap>Number of Claim Notifications Accepted<img class="tip-target" alt="" src="<%=request.getContextPath()%>/images/tip.png"  id="tip2"/></th>	<td><label class="std-data-ro"><s:property value="w2DData.noOfClaimNotificationsAccepted"/></label></td>	<td><label class="std-data-ro"><s:property value="m2DData.noOfClaimNotificationsAccepted"/></label></td>	<td><label class="std-data-ro"><s:property value="cData.noOfClaimNotificationsAccepted"/></label></td></tr>

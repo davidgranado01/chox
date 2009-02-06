@@ -644,6 +644,13 @@
 </s:if>  
                     </div>
                 </div>
+                
+                 <s:if test="isClaimNumberDuplicated">
+                        <s:action name="getDuplicatedClaimAlert" executeResult="true">
+                            <s:param name="claimId"><s:property value="id" /></s:param> 
+                            <s:param name="claimNumber"><s:property value="claimNumber" /></s:param>   
+                        </s:action>
+                </s:if>
 
                 <div id="userViewingThisClaimDiv" class="status-warning" style="display:none;">                      
                         This claim is currently being viewed and / or modified by the following user(s) : <span id="userViewingThisClaim"></span>
@@ -653,14 +660,14 @@
                     <s:action name="getActionPanel" executeResult="true" />
                     <div class="action-message"><s:property value="actionResult" /></div>
                 </div>
-  
-
-                
+                  
                 <s:if test="isShowPenaltyChargeAlert">
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">   
                         <s:action name="getAlertPanel" executeResult="true" />                    
                     </div>
                 </s:if>
+                
+               
                 
 <s:if test="!isCHO">
     

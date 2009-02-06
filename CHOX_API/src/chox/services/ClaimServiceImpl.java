@@ -76,6 +76,14 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         String q = "select count(*) from Claim where claimNumber = '" + claimNumber + "' And id != '" + claimId + "'";
         return getCount(q);
     }
+    
+    public List getOtherClaimsByClaimNumber(String claimNumber, int claimId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("claimNumber", claimNumber));
+        criteria.add(Restrictions.ne("id", claimId));
+        List result  = this.findByCriteria(criteria);
+        return result;
+    }
 
     public Integer getCountOfClaimByVRN(String strVRN, int claimId) {
 

@@ -674,14 +674,20 @@
             <result name="empty">/jsp/p_response.jsp
             </result>
         </action>
-        <action name="testHQL" class="chox.web.actions.TestAction">
-            <result name="success">/jsp/user/testHQL.jsp
+        <action name="getDuplicatedClaimAlert" class="chox.web.actions.AlertAction" method="getDuplicatedClaimAlert">
+            <result name="success">/jsp/user/alertPanel/p_claim_num_duplicated.jsp
+            </result>
+            <result name="empty">/jsp/p_response.jsp
             </result>
         </action>
-        <action name="runSQL" class="chox.web.actions.TestAction" method="runSQL">
-            <result name="success">/jsp/p_jsonData.jsp
+        
+        <action name="checkIsClaimNumberDuplicated" class="chox.web.actions.AlertAction" method="checkIsClaimNumberDuplicated">
+            <result name="success">/jsp/p_response.jsp
             </result>
         </action>
+        
+        
+
     </package>
     <include file="config-browser.xml"/>
 </struts>

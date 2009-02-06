@@ -2,6 +2,7 @@ package chox.services;
 
 import chox.data.ClaimSearchCriteria;
 import chox.model.*;
+import java.util.List;
 
 public interface ClaimService {
     
@@ -12,6 +13,7 @@ public interface ClaimService {
     public Long getPenaltyChargeAppliedCount();
     public Long getHireUpdateAnomaliesCountNumber();
     public Long getClaimCountByClaimNumber(String claimNumber, int claimId);
+    public List getOtherClaimsByClaimNumber(String claimNumber, int claimId);
     public Long getECDCountByClaimId(int claimId);
     public Integer getCountOfClaimByVRN(String strVRN, int claimId);
     public Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit);
