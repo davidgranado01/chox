@@ -26,6 +26,8 @@ public class InvoiceSummary {
     private BigDecimal invoicePendingValue;
     private Integer noInvoiceWithdrawn;
     private BigDecimal invoiceWithdrawnValue;
+    private Integer noOfInvoicesWithPenalties;
+    private BigDecimal valueOfInvoicesWithPenalties;
 
     public static InvoiceSummary getObject(Map data) {
         InvoiceSummary result = new InvoiceSummary();
@@ -35,14 +37,29 @@ public class InvoiceSummary {
         result.setNoInvoicesPaid(((BigInteger)data.get("noInvoicesPaid".toLowerCase())).intValue());
         result.setValueOfPaidInvoices((BigDecimal)data.get("valueOfPaidInvoices".toLowerCase()));
         //result.setAverageInvoiceValue((BigDecimal)data.get("averageInvoiceValue".toLowerCase()));
-        result.setAverageInvoiceValue(BigDecimal.ZERO);
+        
+        BigDecimal dAverageInvoiceValue = BigDecimal.ZERO;
+        
+        Double dTotalInvoiceValue = result.getTotalInvoiceValue().doubleValue();
+        
+        if(dTotalInvoiceValue>0 && result.getNoInvoiceSubmitted()>0){
+            BigDecimal bdNoInvoiceSubmitted = new BigDecimal(result.getNoInvoiceSubmitted()); 
+            dAverageInvoiceValue = result.getTotalInvoiceValue().divide(bdNoInvoiceSubmitted,2);
+        }
+        
+        result.setAverageInvoiceValue(dAverageInvoiceValue);
+        
         result.setNoInvoiceAwaitingPayment(((BigInteger)data.get("noInvoiceAwaitingPayment".toLowerCase())).intValue());
         result.setInvoiceAwaitingPaymentValue((BigDecimal) data.get("invoiceAwaitingPaymentValue".toLowerCase()));
         result.setNoInvoicePending(((BigInteger)data.get("noInvoicePending".toLowerCase())).intValue());
         result.setInvoicePendingValue((BigDecimal) data.get("invoicePendingValue".toLowerCase()));
         result.setNoInvoiceWithdrawn(((BigInteger)data.get("noInvoiceWithdrawn".toLowerCase())).intValue());
         result.setInvoiceWithdrawnValue((BigDecimal) data.get("invoiceWithdrawnValue".toLowerCase()));
-
+        
+        // NEW ADDED BY CARL.
+        result.setNoOfInvoicesWithPenalties(((BigInteger)data.get("noOfInvoicesWithPenalties".toLowerCase())).intValue());
+        result.setValueOfInvoicesWithPenalties((BigDecimal) data.get("valueOfInvoicesWithPenalties".toLowerCase()));
+        
         return result;
     }
 
@@ -141,4 +158,22 @@ public class InvoiceSummary {
     public void setChoName(String choName) {
         this.choName = choName;
     }
+
+    public Integer getNoOfInvoicesWithPenalties() {
+        return noOfInvoicesWithPenalties;
+    }
+
+    public void setNoOfInvoicesWithPenalties(Integer noOfInvoicesWithPenalties) {
+        this.noOfInvoicesWithPenalties = noOfInvoicesWithPenalties;
+    }
+
+    public BigDecimal getValueOfInvoicesWithPenalties() {
+        return valueOfInvoicesWithPenalties;
+    }
+
+    public void setValueOfInvoicesWithPenalties(BigDecimal valueOfInvoicesWithPenalties) {
+        this.valueOfInvoicesWithPenalties = valueOfInvoicesWithPenalties;
+    }
+    
+    
 }

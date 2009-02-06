@@ -60,6 +60,7 @@ public class WeekSummary {
         BigDecimal cPaidInvoicePercentage = new BigDecimal(result.getClaimInvoiced() * result.getPaidInvoiceByRsa() / 100);
         BigDecimal cInScopeClaimContestedPercentage = result.getClaimInScope() > 0 ? new BigDecimal(result.getClaimNotificationContestedByRsa() / result.getClaimInScope() * 100) : BigDecimal.ZERO;
         result.setPaidInvoicePercentage(cPaidInvoicePercentage);
+        
         result.setInScopeClaimContestedPercentage(cInScopeClaimContestedPercentage);
         return result;
     }
