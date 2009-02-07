@@ -61,17 +61,40 @@
         return validateFlag;
     }
     
+     
     function doSubmitClaimNumber(a){
-        registeAction(a);
-        isClaimNumberInvalid();
-        
-        if(!doFormValidationClaimNumber().form()){
-            return false;
-        }
-        
-        return true;
-        
-    }
+                    registeAction(a);
+                    isClaimNumberInvalid();
+                    
+                    if(doFormValidationClaimNumber().form()){
+                        checkAndConfirClaimNumberDuplication();                       
+                    }                    
+                }
+                
+                function checkAndConfirClaimNumberDuplication()
+                {
+                    var result = true;
+                    var sClaimNumber = $("#claimNumber").val();
+                    var sClaimId = $("#claimId").val();
+                    if(sClaimNumber && sClaimNumber != null)
+                    {
+                        
+                        $.get("checkIsClaimNumberDuplicated.action", { claimNumber: sClaimNumber, claimId: sClaimId },
+                        function(data){
+                            if(data.trim()== "yes"){
+                                if(confirm("The claim number you have supplied is already associated with another claim(s). Do you wish to continue?"))
+                                {
+                                    $("#formAcknowledgeAction").submit();
+                                }
+                            }
+                            else{
+                                $("#formAcknowledgeAction").submit();
+                            }                            
+                        });
+                    
+                }   
+                    return result;
+                }
     
 </script>
 
@@ -82,7 +105,7 @@ method="post"
   id="formUpdateInsurerClaimNumber" 
 name="formUpdateInsurerClaimNumber">
     <fieldset class="x-fieldset">
-            <s:hidden name="id" />
+            <s:hidden id="claimId" name="id" />
             <s:hidden id="actionName" name="actionName" />
             <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>        
         <legend>Insurer Claim Number</legend>
