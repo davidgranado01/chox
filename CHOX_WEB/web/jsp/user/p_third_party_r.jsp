@@ -1,7 +1,6 @@
 
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-
     <fieldset class="x-fieldset">
         <legend>Third-Party Details</legend>
         <div style="display:none" class="form-container">
@@ -61,13 +60,6 @@
                 <label class="std-label-ro">
                 Policy Number</label>
                         <label class="std-data-ro"><s:property value="policyNumber" /></label></div>
-<!--                        
-            <div class="chox-form-item">
-                <label class="std-label-ro">
-                    Claim Number
-                </label>
-                        <label class="std-data-ro"><s:property value="claimReference" /></label></div>
-!-->                        
             <div class="chox-form-item">
                 <label class="std-label-ro">
                 Vehicle Manufacturer</label>
@@ -84,7 +76,5 @@
                 <label class="std-label-ro">
                 Vehicle Class</label>
                         <label class="std-data-ro"><s:property value="vehicleClass.Name" /></label></div>
-
-            
         </div>
     </fieldset>

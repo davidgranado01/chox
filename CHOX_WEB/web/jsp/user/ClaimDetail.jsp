@@ -521,10 +521,7 @@
         <div class="outer">
             
             <div class="inner">        
-                
-                
-                
-                
+
                 <div id="chox-menu">
                     <table cellpadding="0" cellspacing="0" border="0" width="100%">
                         <tr valign="middle">
@@ -729,8 +726,7 @@
                             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                 <tr valign="top">
                                     <td class="chox-form-left-col">
-                                        
-                                        
+                                                                         
                                         <s:action name="getCustomer" executeResult="true">
                                             <s:param name="objectId"><s:property value="customerId" /></s:param> 
                                             <s:param name="claimStatus"><s:property value="status" /></s:param>         
@@ -742,7 +738,6 @@
                                         <s:param name="claimStatus"><s:property value="status" /></s:param>
                                         </s:action>
                                         
-
                                         <s:action name="getSolicitor" executeResult="true">
                                             <s:param name="objectId"><s:property value="injurySolicitorId" /></s:param>
                                             <s:param name="incidentId"><s:property value="incidentId" /></s:param>   
@@ -753,11 +748,9 @@
                                             <s:param name="objectId"><s:property value="customerId" /></s:param>
                                             <s:param name="claimStatus"><s:property value="status" /></s:param>        
                                         </s:action>                                        
-
+                                        
                                     </td>
                                     <td>
-                                        
-<!-- third pary -->
 
 <fieldset class="x-fieldset">
     <legend>Claim Details</legend>
@@ -776,7 +769,8 @@
         </div>    
     </div>
 </fieldset>
-<s:if test="isCHO">
+
+<s:if test="!isCHO">
 </s:if>
 <s:else>
     <fieldset class="x-fieldset">
@@ -790,12 +784,6 @@
                 <label class="std-label-ro">Invoice Review Required</label>
                 <label class="std-data-ro"><s:property value="isInvoiceReviewRequiredDesc" /></label>
             </div>
-            <!--
-            <div class="chox-form-item">
-                <label class="std-label-ro">Engineer's Claim Review Notes</label>
-                <label class="std-data-ro"><s:property value="engineerClaimReviewNotes" /></label>
-            </div>   
-            !-->
         </div>
     </fieldset>
 </s:else>
@@ -818,8 +806,7 @@
                                             <s:param name="objectId"><s:property value="witnessId" /></s:param>
                                             <s:param name="claimStatus"><s:property value="status" /></s:param>
                                         </s:action>
-
-
+                                       
                                     </td>
                                 </tr>
                             </table>
@@ -1092,10 +1079,7 @@
                     </div>   
                 </div>
             </div>
-
-<div class="footerText">
-©2009 Sherwood Compliance Services Ltd | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','Copyright');" class="footerText">Copyright</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','PrivacyPolicy');" class="footerText">Privacy Policy</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','TermsOfService');" class="footerText">Terms of Service</a></div>
-
+<div class="footerText">©2009 Sherwood Compliance Services Ltd | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','Copyright');" class="footerText">Copyright</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','PrivacyPolicy');" class="footerText">Privacy Policy</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','TermsOfService');" class="footerText">Terms of Service</a></div>
         </div>
     </body>
 </html>

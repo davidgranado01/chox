@@ -14,7 +14,7 @@
                     }else{
                         return false;
                     }
-                    
+                    checkAndConfirClaimNumberDuplication();
                     return true;
                 }
                 
@@ -147,6 +147,7 @@
                 }
                 
                 function doSubmit(a){
+                    
                     registeAction(a);
                     isClaimNumberInvalid();
                     
@@ -164,7 +165,6 @@
                     var sClaimId = $("#claimId").val();
                     if(sClaimNumber && sClaimNumber != null)
                     {
-                        
                         $.get("checkIsClaimNumberDuplicated.action", { claimNumber: sClaimNumber, claimId: sClaimId },
                         function(data){
                             if(data.trim()== "yes"){
@@ -270,11 +270,11 @@
 </tr>                   
                         <tr>
                             <td colspan="4" class="choice" nowrap>
-                                <input type="button" value="Reject" onclick="javascript: doRejectClaim();" />
-                                <input type="button" value="Acknowledge" onclick="javascript: doSubmit('accept')"  />   
-                                <input type="button" value="Refer To Engineer" onclick="javascript: doSubmit('refer');" /> 
-                                <input type="button" value="Refer to FNOL" onclick="javascript: doSubmit('referFNOL');" /> 
-                                <input type="button" value="Claim Pending" onclick="javascript: doSubmit('pending');" /> 
+                                <input type="button" value="Reject" onclick="javascript: return doRejectClaim();" />
+                                <input type="button" value="Acknowledge" onclick="javascript: return doSubmit('accept')"  />   
+                                <input type="button" value="Refer To Engineer" onclick="javascript: return doSubmit('refer');" /> 
+                                <input type="button" value="Refer to FNOL" onclick="javascript: return doSubmit('referFNOL');" /> 
+                                <input type="button" value="Claim Pending" onclick="javascript: return doSubmit('pending');" /> 
                             </td>
                         </tr>
                     </table>
