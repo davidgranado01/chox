@@ -148,7 +148,7 @@ insert into reason_of_rejection (id, name, type, status, created_date, last_modi
 insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Indemnity and Liability Issues','Claim', true, current_date, current_date, 999, 999);
 insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Out of Scope','Claim', true, current_date, current_date, 999, 999);
 insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Not our Policyholder','Claim', true, current_date, current_date, 999, 999);
-insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Other','Claim', true, current_date, current_date, 999, 999);
+insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (998, 'Other','Claim', true, current_date, current_date, 999, 999);
 insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Like for Like','Invoice', true, current_date, current_date, 999, 999);
 insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Quantum','Invoice', true, current_date, current_date, 999, 999);
 insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Hire Duration','Invoice', true, current_date, current_date, 999, 999);
@@ -156,7 +156,7 @@ insert into reason_of_rejection (id, name, type, status, created_date, last_modi
 insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Repair Cost','Invoice', true, current_date, current_date, 999, 999);
 insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Liability Dispute','Invoice', true, current_date, current_date, 999, 999);
 insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Disclosed','Invoice', true, current_date, current_date, 999, 999);
-insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Other','Invoice', true, current_date, current_date, 999, 999);
+insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (999, 'Other','Invoice', true, current_date, current_date, 999, 999);
 
 
 ------------------------------------------------------------------------------------------------
