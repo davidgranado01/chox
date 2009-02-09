@@ -4,6 +4,7 @@
  */
 package chox.data;
 
+import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,7 +16,7 @@ public class ClaimSearchCriteria implements Serializable {
 
     private String supplierReference;
     private int supplierId;
-    private String claimNumber;    
+    private String claimNumber;
     private String status;
     private int insurerId;
     private String vrn;
@@ -25,10 +26,14 @@ public class ClaimSearchCriteria implements Serializable {
     private Date invoiceUploadDateFrom;
     private Date invoiceUploadDateTo;
     private Date hireDateFrom;
-    private Date hireDateTo;    
-    private int lineOfBusinessId;    
-    private boolean isAnomalies;    
+    private Date hireDateTo;
+    private int lineOfBusinessId;
+    private boolean isAnomalies;
     private boolean ispenaltyChargeApplied;
+    private int start;
+    private int limit;
+    private String sort;
+    private String dir;  
 
     public String getSupplierReference() {
         return supplierReference;
@@ -86,50 +91,62 @@ public class ClaimSearchCriteria implements Serializable {
         this.invoiceNumber = invoiceNumber;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public Date getClaimUploadDateFrom() {
         return claimUploadDateFrom;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public void setClaimUploadDateFrom(Date claimUploadDateFrom) {
         this.claimUploadDateFrom = claimUploadDateFrom;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public Date getClaimUploadDateTo() {
         return claimUploadDateTo;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public void setClaimUploadDateTo(Date claimUploadDateTo) {
         this.claimUploadDateTo = claimUploadDateTo;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public Date getInvoiceUploadDateFrom() {
         return invoiceUploadDateFrom;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public void setInvoiceUploadDateFrom(Date invoiceUploadDateFrom) {
         this.invoiceUploadDateFrom = invoiceUploadDateFrom;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public Date getInvoiceUploadDateTo() {
         return invoiceUploadDateTo;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public void setInvoiceUploadDateTo(Date invoiceUploadDateTo) {
         this.invoiceUploadDateTo = invoiceUploadDateTo;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public Date getHireDateFrom() {
         return hireDateFrom;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public void setHireDateFrom(Date hireDateFrom) {
         this.hireDateFrom = hireDateFrom;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public Date getHireDateTo() {
         return hireDateTo;
     }
 
+    @TypeConversion(converter = "chox.web.data.DateConverter")
     public void setHireDateTo(Date hireDateTo) {
         this.hireDateTo = hireDateTo;
     }
@@ -156,5 +173,37 @@ public class ClaimSearchCriteria implements Serializable {
 
     public void setIspenaltyChargeApplied(boolean ispenaltyChargeApplied) {
         this.ispenaltyChargeApplied = ispenaltyChargeApplied;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    public String getDir() {
+        return dir;
+    }
+
+    public void setDir(String dir) {
+        this.dir = dir;
     }
 }

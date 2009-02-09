@@ -686,6 +686,11 @@
             </result>
         </action>
         
+        <action name="openUserAccount" class="chox.web.actions.UserAccountAction">
+            <result name="success">/jsp/user/UserAccount.jsp
+            </result>
+        </action>
+        
         
 
     </package>

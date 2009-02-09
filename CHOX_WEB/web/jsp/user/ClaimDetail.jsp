@@ -20,7 +20,6 @@
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/ext-jquery-adapter.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.metadata.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.validate.min.js"></script> 
-        <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.timer.js"></script>  
         
         <script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
         <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
@@ -510,6 +509,26 @@
         }
         return true;
    }
+   
+   function checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form)
+    {
+        if(sClaimNumber && sClaimNumber != null)
+        {
+            $.get("checkIsClaimNumberDuplicated.action", { claimNumber: sClaimNumber, claimId: sClaimId },
+            function(data){
+                if(data.trim()== "yes"){
+                    if(confirm("The claim number you have supplied is already associated with another claim(s). Do you wish to continue?"))
+                    {
+                        form.submit();
+                    }
+                }
+                else{
+                    form.submit();
+                }                            
+            });
+                    
+        }   
+    }
     
 
 </script>        
@@ -545,6 +564,7 @@
                                     <a href="javascript:openFile('<%= request.getContextPath()%>','Support');">Support</a>&nbsp;|&nbsp; 
                                     <a href="javascript:onOpenAbout();">About CHOX</a>&nbsp;|&nbsp;
                                     <b><s:property value="CurrentUserDesc" /></b>&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/j_acegi_logout">( Log Off )</a>
+                                    &nbsp;<a href="<s:url action="openUserAccount" />">( User Account )</a>
                                 </div>
                             </td>
                         </tr>
@@ -624,9 +644,14 @@
 
                             </table>
                         </fieldset>
-<s:if test="extraActionList.size()>0">                      
+                    
 <tr>
-    <td colspan="3" align="left">
+    <td style="padding-right:136px;">
+        <a href="<s:url action="inbox"/>">« Back to Search Results</a>
+    </td>
+    <td>&nbsp;</td>
+    <td align="left">
+    <s:if test="extraActionList.size()>0">  
     <s:select
             name="extraAction" 
             id="extraAction"
@@ -638,10 +663,10 @@
             emptyOption="false"
             onchange="javascript:extraActionChange();">
     </s:select>
-    
+    </s:if>  
     </td>
 </tr>       
-</s:if>  
+
                     </div>
                 </div>
                 

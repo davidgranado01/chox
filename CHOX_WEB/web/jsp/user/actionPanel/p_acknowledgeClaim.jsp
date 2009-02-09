@@ -6,16 +6,24 @@
                     
                     isClaimNumberInvalid();
                     registeAction('reject');
-                    
+
                     if(doFormValidation().form()){
-                        if(!confirm('Are you sure you want to reject this claim?')){
-                            return false;
+                        if(confirm('Are you sure you want to reject this claim?')){                        
+
+                            var sClaimNumber = $("#claimNumber").val();
+                                if(sClaimNumber.length > 0)
+                                {
+                                    var sClaimId = $("#claimId").val();
+                                    var form = $("#formAcknowledgeAction");
+                                    checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form);
+                                }
+                                else
+                                {
+                                    $("#formAcknowledgeAction").submit();
+                                }
+                            } 
                         }
-                    }else{
-                        return false;
-                    }
-                    checkAndConfirClaimNumberDuplication();
-                    return true;
+                                    
                 }
                 
                 function isClaimNumberMandatory(){
@@ -27,10 +35,8 @@
                     return true;
                 }
                 
-                $(document).ready(function(){
-                    
-                    doFormValidation();
-                    
+                $(document).ready(function(){                    
+                    doFormValidation();                    
                 });
                 
                 function isRejected(){
@@ -74,10 +80,8 @@
     
                 function isSpecialCharacterExist(strClaimNumber){
                     
-                    if(strClaimNumber.length>0){
-                        
-                        var iChars = "!£$%^&*+=-_{[}]#~'@;:/?.>,<"+'"';
-                        
+                    if(strClaimNumber.length>0){                        
+                        var iChars = "!£$%^&*+=-_{[}]#~'@;:/?.>,<"+'"';                        
                         for (var i = 0; i < strClaimNumber.length; i++) {
                             if (iChars.indexOf(strClaimNumber.charAt(i)) != -1) {
                                 return true;
@@ -154,34 +158,13 @@
                     $("#reasonOfRejectionId").val("");
                     
                     if(doFormValidation().form()){
-                        checkAndConfirClaimNumberDuplication();                       
+                        var sClaimNumber = $("#claimNumber").val();
+                        var sClaimId = $("#claimId").val();
+                        var form = $("#formAcknowledgeAction");
+                        checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form);                      
                     }                    
-                }
-                
-                function checkAndConfirClaimNumberDuplication()
-                {
-                    var result = true;
-                    var sClaimNumber = $("#claimNumber").val();
-                    var sClaimId = $("#claimId").val();
-                    if(sClaimNumber && sClaimNumber != null)
-                    {
-                        $.get("checkIsClaimNumberDuplicated.action", { claimNumber: sClaimNumber, claimId: sClaimId },
-                        function(data){
-                            if(data.trim()== "yes"){
-                                if(confirm("The claim number you have supplied is already associated with another claim(s). Do you wish to continue?"))
-                                {
-                                    $("#formAcknowledgeAction").submit();
-                                }
-                            }
-                            else{
-                                $("#formAcknowledgeAction").submit();
-                            }                            
-                        });
+                }               
                     
-                }   
-                    return result;
-                }
-    
 </script>
 
 <form action="user/acknowledge.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">

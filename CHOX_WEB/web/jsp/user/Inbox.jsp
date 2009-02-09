@@ -29,6 +29,9 @@
 
 <script >
     
+    var currentTabIndex;
+    var tabs;
+     
     var rd = new Ext.data.JsonReader({
         totalProperty: 'totalCount',   
         root: 'results', 
@@ -61,11 +64,27 @@
     // var c = new Ext.DatePicker({renderTo: 'doSearchClaim_invoiceUploadDateFrom'});
     
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';     
-   
+    
     function showClaimByStatus(status)
     {     
         ds.baseParams = {
-            status : status
+            
+            supplierReference : '',
+            supplierId : -1,
+            insurerId : -1,
+            invoiceNumber : '',
+            claimNumber : '',
+            vrn : '',
+            claimUploadDateFrom : '',
+            claimUploadDateTo : '',
+            invoiceUploadDateFrom : '',
+            invoiceUploadDateTo :  '',                
+            hireDateFrom : '',
+            hireDateTo : '',
+            status : status,
+            lineOfBusinessId : -1,
+            isAnomalies : '',
+            ispenaltyChargeApplied : ''
         }
         ds.load(
         {
@@ -76,19 +95,34 @@
             }
         });
     }  
-
-function showClaimByStatusWithSort(status,sort)
+    
+    function showClaimByStatusWithSort(status,sort)
     {     
         ds.setDefaultSort(sort, 'status');
-        ds.baseParams = {
-            status : status
+        ds.baseParams = {            
+            supplierReference : '',
+            supplierId : -1,
+            insurerId : -1,
+            invoiceNumber : '',
+            claimNumber : '',
+            vrn : '',
+            claimUploadDateFrom : '',
+            claimUploadDateTo : '',
+            invoiceUploadDateFrom : '',
+            invoiceUploadDateTo :  '',                
+            hireDateFrom : '',
+            hireDateTo : '',
+            status : status,
+            lineOfBusinessId : -1,
+            isAnomalies : '',
+            ispenaltyChargeApplied : ''
         }
         ds.load(
         {
             params:
                 {            
                 start:0,
-                limit:10                
+                limit:10
             }
         });
     }  
@@ -96,7 +130,22 @@ function showClaimByStatusWithSort(status,sort)
     function showClaimIsAnomalies()
     {  
         ds.baseParams = {
-            isAnomalies : true
+            supplierReference : '',
+            supplierId : -1,
+            insurerId : -1,
+            invoiceNumber : '',
+            claimNumber : '',
+            vrn : '',
+            claimUploadDateFrom : '',
+            claimUploadDateTo : '',
+            invoiceUploadDateFrom : '',
+            invoiceUploadDateTo :  '',                
+            hireDateFrom : '',
+            hireDateTo : '',
+            status : '',
+            lineOfBusinessId : -1,
+            isAnomalies : true,
+            ispenaltyChargeApplied : ''
         }
         ds.load(
         {
@@ -111,6 +160,21 @@ function showClaimByStatusWithSort(status,sort)
     function showClaimIspenaltyChargeApplied()
     {       
         ds.baseParams = {
+            supplierReference : '',
+            supplierId : -1,
+            insurerId : -1,
+            invoiceNumber : '',
+            claimNumber : '',
+            vrn : '',
+            claimUploadDateFrom : '',
+            claimUploadDateTo : '',
+            invoiceUploadDateFrom : '',
+            invoiceUploadDateTo :  '',                
+            hireDateFrom : '',
+            hireDateTo : '',
+            status : '',
+            lineOfBusinessId : -1,
+            isAnomalies : '',
             ispenaltyChargeApplied : true
         }
         ds.load(
@@ -130,8 +194,7 @@ function showClaimByStatusWithSort(status,sort)
     }
     
     function searchClaim()
-    {
-        
+    {        
         var supplierReference = Ext.query('*[name$=supplierReference]')[0].value;
         var supplierId = Ext.query('*[name$=supplierId]').length > 0 ? Ext.query('*[name$=supplierId]')[0].value : -1;
         var insurerId = Ext.query('*[name$=insurerId]').length > 0 ? Ext.query('*[name$=insurerId]')[0].value : -1;
@@ -162,7 +225,9 @@ function showClaimByStatusWithSort(status,sort)
             hireDateFrom : hireDateFrom,
             hireDateTo : hireDateTo,
             status : status,
-            lineOfBusinessId : lineOfBusinessId
+            lineOfBusinessId : lineOfBusinessId,
+            isAnomalies : '',
+            ispenaltyChargeApplied : ''
         }
         
         ds.load(
@@ -188,11 +253,6 @@ function showClaimByStatusWithSort(status,sort)
             emptyMsg: "No claim to display"
         });
         
-        ds.baseParams = {
-            status : '-'
-        }
-        
-        
         var grid = new Ext.grid.GridPanel({
             loadMask: true,
             ds: ds,
@@ -200,7 +260,7 @@ function showClaimByStatusWithSort(status,sort)
             columns: [
                 {id:'Id', header: "Supplier Reference", width: 150, sortable: true, dataIndex: 'supplierReference', 
                     renderer:function(value,p,r){
-                        return '<a href="openClaimDetail.action?id=' + r.data['id'] + '">' + value + '</a>'}},               
+                        return '<a href="openClaimDetail.action?id=' + r.data['id'] + '&tab=' + currentTabIndex + '">' + value + '</a>'}},               
                 {header: "Insurer's VRN", width: 250, sortable: true, dataIndex: 'vehicleRegistration'},
                 {header: "Claim Number", width: 250, sortable: true, dataIndex: 'claimNumber'}, 
                 {header: "Invoice Amount", width: 250, sortable: true, 
@@ -224,159 +284,97 @@ function showClaimByStatusWithSort(status,sort)
             
         });
         grid.render('gridHolder');
-        grid.getSelectionModel().selectFirstRow();               
+        grid.getSelectionModel().selectFirstRow();              
         
-             var tabs = new Ext.TabPanel({
-                 renderTo: 'tabPanel',
-                 autoheight:true,
-                 activeTab: 0,
-                 items:[
-                     <s:if test="menuAccessibility.isDashBoardMenuAccessibility">                   
-                         {contentEl:'boardPanelTab', title:'Dashboard',listeners: {activate: handleActivate}},
-                    </s:if>
-                        {contentEl:'filterPanelTab', title:'Inbox',listeners: {activate: handleActivate}}
-                        ,{contentEl:'searchPanelTab', title:'Search',listeners: {activate: handleActivate}}
-                    <s:if test="menuAccessibility.isReportMenuAccessibility">                   
-                        ,{contentEl:'reportPanelTab', title:'Reports',listeners: {activate: handleActivate}}
-                    </s:if>
-                    ]
-                });  
-        
-        
-        
-        var claimUploadDateFromPicker = new Ext.form.DateField({
-            name: 'claimUploadDateFrom',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            showWeekNumber: true
-        });
-        
-        var claimUploadDateToPicker = new Ext.form.DateField({
-            name: 'claimUploadDateTo',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            showWeekNumber: true
-        });
-        
-        var invoiceUploadDateFromPicker = new Ext.form.DateField({
-            name: 'invoiceUploadDateFrom',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            showWeekNumber: true
-        });
-        
-        var invoiceUploadDateToPicker = new Ext.form.DateField({
-            name: 'invoiceUploadDateTo',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            showWeekNumber: true
-        });
-        
-        var hireDateFromPicker = new Ext.form.DateField({
-            name: 'hireDateFrom',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            showWeekNumber: true
-        });
-        
-        var hireDateToPicker = new Ext.form.DateField({
-            name: 'hireDateTo',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            showWeekNumber: true
-        });
-        
-        claimUploadDateFromPicker.render('claimUploadDateFromDiv');
-        claimUploadDateToPicker.render('claimUploadDateToDiv');
-        invoiceUploadDateFromPicker.render('invoiceUploadDateFromDiv');
-        invoiceUploadDateToPicker.render('invoiceUploadDateToDiv');
-        hireDateFromPicker.render('hireDateFromDiv');
-        hireDateToPicker.render('hireDateToDiv');
-    }     
+
+    }
     
-    //$(document).everyTime(4000, function() {
-    //    refreshViewingStatus();
-    //});
-    var t;
-    
+    function setupTabPanels()
+    {
+        var getParams = document.URL.split("?");
+        var params = Ext.urlDecode(getParams[getParams.length - 1]);
+        var tabIndex = params.tab == null ? 0 : params.tab;
+
+        tabs = new Ext.TabPanel({
+        renderTo: 'tabPanel',
+        autoheight:true,
+        activeTab: tabIndex,            
+        items:[
+             <s:if test="menuAccessibility.isDashBoardMenuAccessibility">                   
+                 {contentEl:'boardPanelTab', title:'Dashboard',listeners: {activate: handleActivate}},
+            </s:if>
+                {contentEl:'filterPanelTab', title:'Inbox',listeners: {activate: handleActivate}}
+                ,{contentEl:'searchPanelTab', title:'Search',listeners: {activate: handleActivate}}
+            <s:if test="menuAccessibility.isReportMenuAccessibility">                   
+                ,{contentEl:'reportPanelTab', title:'Reports',listeners: {activate: handleActivate}}
+            </s:if>
+            ]
+            });    
+    }
+                        
     function random_number() {
         var min = 10000000;
         var max = 99999999;
         return (Math.round((max-min) * Math.random() + min));
     }
-    
+
     function refreshViewingStatus()
     {
         var x = [];
-        
+
         $("input[name='viewingId']").each(function (i) {
             var claimId = $(this).val();
             x.push(claimId);
         });  
-        
+
         if(x.length > 0)
         {
             $.getJSON('checkViewingStatus.action?claimIds=' + x.join(',') + "&token=" + random_number(),
             function(data){
-                
+
                 $.each(data.results, function(i,result){
                     $("#viewingLabel_" + result.claimId).html(result.status);
                 });
-                
+
             });
         }
-        
+
         t=setTimeout("refreshViewingStatus()",4000);
     }
-    
-     Ext.onReady(function(){
+
+    Ext.onReady(function(){
         setupGrid();
-        refreshViewingStatus();
+        setupTabPanels();
+        refreshViewingStatus();        
+        ds.load();
     }); 
 
     function handleActivate(tab){
-        
-                    if(tab.title == 'Reports')
-                    {
-                        $("#gridPanel").hide();
-                        //$("#filterPanel").hide();  
-                        //$("#searchPanel").hide();  
-                        //$("#dashboardPanel").hide();
-                        //$("#reportPanel").show();  
-                    }
-                    else if(tab.title == 'Dashboard')
-                    {
-                        $("#gridPanel").hide();
-                        //$("#filterPanel").hide();  
-                        //$("#searchPanel").hide();  
-                        //$("#dashboardPanel").show();
-                        //$("#reportPanel").hide();      
-                    }
-                    else if(tab.title == 'Search')
-                    {
-                        $("#gridPanel").show();
-                        //$("#filterPanel").hide();  
-                        //$("#searchPanel").show();  
-                        //$("#dashboardPanel").hide();
-                        //$("#reportPanel").hide();      
-                    }
-                    else if(tab.title == 'Inbox')
-                    {
-                        $("#gridPanel").show();
-                        //$("#filterPanel").show();  
-                        //$("#searchPanel").hide();  
-                        //$("#dashboardPanel").hide();
-                        //$("#reportPanel").hide();     
-                    }
-    }
 
-    
+        if(tab.title == 'Reports'){
+            $("#gridPanel").hide();            
+        }
+        else if(tab.title == 'Dashboard'){
+            $("#gridPanel").hide();  
+        }
+        else if(tab.title == 'Search'){
+            $("#gridPanel").show();  
+        }
+        else if(tab.title == 'Inbox'){
+            $("#gridPanel").show(); 
+        }
+        
+        if(tabs)
+        {
+            currentTabIndex = tabs.items.indexOf(tabs.getActiveTab());
+        }
+        else
+        {
+            currentTabIndex = 0;
+        }
+    }
+                        
+                        
 </script>
 
 <body>
@@ -407,6 +405,7 @@ function showClaimByStatusWithSort(status,sort)
                                 <a href="javascript:openFile('<%= request.getContextPath()%>','Support');">Support</a>&nbsp;|&nbsp; 
                                 <a href="javascript:onOpenAbout();">About CHOX</a>&nbsp;|&nbsp;
                                 <b><s:property value="CurrentUserDesc" /></b>&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/j_acegi_logout">( Log Off )</a>
+                                &nbsp;<a href="<s:url action="openUserAccount" />">( User Account )</a>
                             </div>
                         </td>
                     </tr>
@@ -484,7 +483,7 @@ function showClaimByStatusWithSort(status,sort)
                     </div>
                 </div>
                 
-                <div id="searchPanelTab" class="x-hide-display">
+                <div id="searchPanelTab" style="height:230px" class="x-hide-display">
                     <div id="searchPanel">
                         
                         <s:action name="searchClaim" namespace="/user" executeResult="true" /> 

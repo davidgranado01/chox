@@ -32,7 +32,6 @@ public class InboxAction extends BaseAction implements SessionAware {
     @Override
     public String execute() throws Exception {
 
-        session.remove("searchCriteria");
         return SUCCESS;
     }
 

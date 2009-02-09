@@ -332,18 +332,24 @@ public class WebUser implements Serializable,Auditable
             return this.roles;
         }
         
-        @Override
-        public String toString()
+        public String getOrganisationName()
         {
             String orgName = "";
             Chorganisation cho = this.getChorganisation();
             Insurer ins = this.getInsurer();
 
             if (ins != null) {
-                orgName = String.format("(%1$s)", ins.getName());
+                orgName = ins.getName();
             } else if (cho != null) {
-                orgName = String.format("(%1$s)", cho.getName());
+                orgName = cho.getName();
             }
+            return orgName;
+        }
+        
+        @Override
+        public String toString()
+        {
+            String orgName = orgName = String.format("(%1$s)", getOrganisationName());
             return String.format("%1$s %2$s %3$s", this.getFirstName(), this.getLastName(), orgName);
         }
 

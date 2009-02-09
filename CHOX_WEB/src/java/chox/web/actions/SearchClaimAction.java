@@ -10,8 +10,9 @@ import chox.services.ClaimService;
 import chox.services.LookupService;
 import chox.services.SearchResult;
 import chox.web.viewdata.claimGridViewData;
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,23 +24,9 @@ import org.apache.struts2.interceptor.SessionAware;
  *
  * @author Emmanuel
  */
-public class SearchClaimAction extends BaseAction implements SessionAware{
+public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable, SessionAware {
 
-    private Map session;    
-    private String supplierReference;
-    private int supplierId;
-    private String claimNumber;
-    private int insurerId;
-    private int lineOfBusinessId;
-    private String vrn;
-    private String invoiceNumber;
-    private String status;
-    private Date claimUploadDateFrom;
-    private Date claimUploadDateTo;
-    private Date invoiceUploadDateFrom;
-    private Date invoiceUploadDateTo;
-    private Date hireDateFrom;
-    private Date hireDateTo;
+    private Map session;
     private List statuses;
     private List lineOfBusiness;
     private List insurers;
@@ -47,116 +34,10 @@ public class SearchClaimAction extends BaseAction implements SessionAware{
     private LookupService lookupService;
     private ClaimService claimService;
     private List results;
-    private int totalCount;
-    private boolean isAnomalies;
-    private int start;
-    private int limit;
-    private String sort;
-    private String dir;
-    private boolean ispenaltyChargeApplied;
-    
-    public String getSupplierReference() {
-        return supplierReference;
-    }
-
-    public void setSupplierReference(String supplierReference) {
-        this.supplierReference = supplierReference;
-    }
-
-    public int getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(int supplierId) {
-        this.supplierId = supplierId;
-    }
-
-    public String getClaimNumber() {
-        return claimNumber;
-    }
-
-    public void setClaimNumber(String claimNumber) {
-        this.claimNumber = claimNumber;
-    }
-
-    public int getInsurerId() {
-        return this.insurerId;
-    }
-
-    public void setInsurerId(int insurerId) {
-        this.insurerId = insurerId;
-    }
-
-    public String getVrn() {
-        return vrn;
-    }
-
-    public void setVrn(String vrn) {
-        this.vrn = vrn;
-    }
-
-    public String getInvoiceNumber() {
-        return invoiceNumber;
-    }
-
-    public void setInvoiceNumber(String invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
-    }
-
-    public Date getClaimUploadDateFrom() {
-        return claimUploadDateFrom;
-    }
-
-    @TypeConversion(converter = "chox.web.data.DateConverter")
-    public void setClaimUploadDateFrom(Date claimUploadDateFrom) {
-        this.claimUploadDateFrom = claimUploadDateFrom;
-    }
-
-    public Date getClaimUploadDateTo() {
-        return claimUploadDateTo;
-    }
-
-    @TypeConversion(converter = "chox.web.data.DateConverter")
-    public void setClaimUploadDateTo(Date claimUploadDateTo) {
-        this.claimUploadDateTo = claimUploadDateTo;
-    }
-
-    public Date getInvoiceUploadDateFrom() {
-        return invoiceUploadDateFrom;
-    }
-
-    @TypeConversion(converter = "chox.web.data.DateConverter")
-    public void setInvoiceUploadDateFrom(Date invoiceUploadDateFrom) {
-        this.invoiceUploadDateFrom = invoiceUploadDateFrom;
-    }
-
-    public Date getInvoiceUploadDateTo() {
-        return invoiceUploadDateTo;
-    }
-
-    @TypeConversion(converter = "chox.web.data.DateConverter")
-    public void setInvoiceUploadDateTo(Date invoiceUploadDateTo) {
-        this.invoiceUploadDateTo = invoiceUploadDateTo;
-    }
-
-    public Date getHireDateFrom() {
-        return hireDateFrom;
-    }
-
-    @TypeConversion(converter = "chox.web.data.DateConverter")
-    public void setHireDateFrom(Date hireDateFrom) {
-        this.hireDateFrom = hireDateFrom;
-    }
-
-    public Date getHireDateTo() {
-        return hireDateTo;
-    }
-
-    @TypeConversion(converter = "chox.web.data.DateConverter")
-    public void setHireDateTo(Date hireDateTo) {
-        this.hireDateTo = hireDateTo;
-    }
-
+    private int totalCount;   
+  
+    private ClaimSearchCriteria claimSearchCriteria;
+   
     public List getStatuses() {
         if (statuses == null) {
             statuses = this.lookupService.getStatuses();
@@ -171,7 +52,7 @@ public class SearchClaimAction extends BaseAction implements SessionAware{
         }
         return lineOfBusiness;
     }
-    
+
     public List getInsurers() {
         if (insurers == null) {
             insurers = this.lookupService.getInsurers();
@@ -195,7 +76,7 @@ public class SearchClaimAction extends BaseAction implements SessionAware{
             List<claimGridViewData> viewData = new ArrayList<claimGridViewData>();
 
             for (Object obj : results) {
-                Claim c = (Claim)obj;
+                Claim c = (Claim) obj;
                 viewData.add(new claimGridViewData(c));
             }
 
@@ -213,108 +94,43 @@ public class SearchClaimAction extends BaseAction implements SessionAware{
     public void setClaimService(ClaimService service) {
         this.claimService = service;
     }
-    
+
     public String doSearchClaim() throws Exception {
-    
-        ClaimSearchCriteria c = new ClaimSearchCriteria();
-        
-        c.setClaimNumber(claimNumber);
-        c.setClaimUploadDateFrom(claimUploadDateFrom);
-        c.setClaimUploadDateTo(claimUploadDateTo);
-        c.setSupplierId(supplierId);
-        c.setHireDateFrom(hireDateFrom);
-        c.setHireDateTo(hireDateTo);
-        c.setInsurerId(insurerId);
-        c.setInvoiceNumber(invoiceNumber);
-        c.setInvoiceUploadDateFrom(invoiceUploadDateFrom);
-        c.setInvoiceUploadDateTo(invoiceUploadDateTo);
-        c.setIsAnomalies(isAnomalies);
-        c.setIspenaltyChargeApplied(ispenaltyChargeApplied);
-        c.setLineOfBusinessId(lineOfBusinessId);
-        c.setStatus(status);
-        c.setSupplierReference(supplierReference);
-        c.setVrn(vrn);        
-        
-        session.put("searchCriteria", c);        
-        SearchResult searchResult = this.claimService.searchClaims(c,start,limit,sort,dir);
+
+        session.put("searchCriteria", claimSearchCriteria);
+        Integer start = claimSearchCriteria.getStart();
+        Integer limit = claimSearchCriteria.getLimit();
+        String sort = claimSearchCriteria.getSort();
+        String dir = claimSearchCriteria.getDir();
+        SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria,start, limit, sort, dir);
         results = searchResult.getResult();
-        totalCount = searchResult.getTotalCount();    
+        totalCount = searchResult.getTotalCount();
         return SUCCESS;
     }
 
     @Override
     public String execute() throws Exception {
+
         return SUCCESS;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public int getLineOfBusinessId() {
-        return lineOfBusinessId;
-    }
-
-    public void setLineOfBusinessId(int lineOfBusinessId) {
-        this.lineOfBusinessId = lineOfBusinessId;
     }
 
     public void setSession(Map session) {
         this.session = session;
     }
 
-    public boolean IsAnomalies() {
-        return isAnomalies;
+    public ClaimSearchCriteria getModel() {
+        return claimSearchCriteria;
     }
 
-    public void setIsAnomalies(boolean isAnomalies) {
-        this.isAnomalies = isAnomalies;
+    public void prepare() throws Exception {
+        if (claimSearchCriteria == null) {
+            if (session != null && session.containsKey("searchCriteria")) {
+                claimSearchCriteria = (ClaimSearchCriteria) session.get("searchCriteria");
+            } else {
+                claimSearchCriteria = new ClaimSearchCriteria();
+            }
+        }
+
     }
 
-    public int getStart() {
-        return start;
-    }
-
-    public void setStart(int start) {
-        this.start = start;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
-    }
-
-    public String getSort() {
-        return sort;
-    }
-
-    public void setSort(String sort) {
-        this.sort = sort;
-    }
-
-    public String getDir() {
-        return dir;
-    }
-
-    public void setDir(String dir) {
-        this.dir = dir;
-    }
-
-    public boolean IspenaltyChargeApplied() {
-        return ispenaltyChargeApplied;
-    }
-
-    public void setIspenaltyChargeApplied(boolean ispenaltyChargeApplied) {
-        this.ispenaltyChargeApplied = ispenaltyChargeApplied;
-    }
-
-    
-    
 }

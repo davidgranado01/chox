@@ -12,16 +12,22 @@
         
         isClaimNumberInvalid();
         registeAction('reject');
-
-        if(doFormValidation().form()){
-            if(!confirm('Are you sure you want to reject this claim?')){
-                return false;
-            }
-        }else{
-            return false;
-        }
         
-        return true;
+        if(doFormValidation().form()){
+            if(confirm('Are you sure you want to reject this claim?')){
+                var sClaimNumber = $("#claimNumber").val();                
+                if(sClaimNumber.length > 0)
+                {       
+                    var sClaimId = $("#claimId").val();
+                    var form = $("#formAcknowledgeAction");
+                    checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form);
+                }
+                else
+                {
+                    $("#formAcknowledgeAction").submit();
+                }
+            }
+        }                
     }
     
     $(document).ready(function(){
@@ -38,12 +44,9 @@
     
     function isClaimNumberInvalid(){
         
-        $("#isClaimNumberValidFlag").val("1");
-        
-        var sClaimNumber = $("#claimNumber").val();
-        
-        if(isSpecialCharacterExist(sClaimNumber)){
-            
+        $("#isClaimNumberValidFlag").val("1");        
+        var sClaimNumber = $("#claimNumber").val();        
+        if(isSpecialCharacterExist(sClaimNumber)){            
             $("#isClaimNumberValidFlag").val("0");
         }
 
@@ -93,7 +96,7 @@
     function doFormValidation(){
 
             
-        var validateFlag = $("#approveContestedClaim").validate(
+        var validateFlag = $("#formAcknowledgeAction").validate(
         {
             errorLabelContainer: "#ActionPanelMessageBox",                
             rules: {
@@ -147,24 +150,26 @@
     function doSubmit(a){
         
         registeAction(a);
-
-        // SET REASON OF REJECTION IS EMPTY
+        isClaimNumberInvalid();
+        
         $("#reasonOfRejectionId").val("");
         
-        isClaimNumberInvalid();
-        if(!doFormValidation().form()){
-            return false;
-        }
-        return true;
-        
-    }    
+        if(doFormValidation().form()){
+            var sClaimNumber = $("#claimNumber").val();
+            var sClaimId = $("#claimId").val();
+            var form = $("#formAcknowledgeAction");
+            checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form);                       
+        }                    
+    }                
+    
 </script>
 
 <form onsubmit="return true;" action="user/approveContestedClaim.action" method="post" 
-      id="approveContestedClaim" name="approveContestedClaim">
+      id="formAcknowledgeAction" name="formAcknowledgeAction">
     <fieldset class="x-fieldset">
         <legend>Contested Claim - Action Required</legend>
         <s:hidden name="id" />
+        <s:hidden id="claimId" name="id" />
         <s:hidden id="actionName" name="actionName" />
         <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
         <div>
@@ -173,7 +178,7 @@
             </div>
             <div class="status-control-set">
                 <table>
-<tr> 
+                    <tr> 
                         <td>                    
                             <div class="status-control-set">
                                 <table class="status-table">
@@ -191,10 +196,10 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label>Claim Number</label></td><td>
-                                                                                   
-    <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>    
-
+                                        <label>Claim Number</label></td><td>
+                                            
+                                            <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>    
+                                            
                                         </td>
                                         <td>
                                             <label>
@@ -208,7 +213,7 @@
                                         % Liability Accepted<span class="mandatory">*</span></label></td><td colspan="3">
                                             <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                                         </td>                                        
-
+                                        
                                     </tr>
                                     <tr valign="top">
                                         <td>
@@ -216,38 +221,38 @@
                                         Claim Review Notes</label></td><td colspan="3">
                                             <textarea class="chox-canote" cols="20" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                         </td>                                      
-
+                                        
                                     </tr>  
-<tr valign="top">
-    <td>
-        <label>Reason for Rejection</label>
-    </td>
-    <td colspan="3">    
-    <div id="ReasonOfRejectionDiv">
-        <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
-        list="reasonOfClaimRejections"  
-        listKey="id" 
-        listValue="name" 
-        headerKey="" 
-        headerValue="N/A"
-        emptyOption="false"></s:select> 
-    </div>
-    </td>
-</tr>            
-                    <tr>
-                        <td colspan="4">
-                            <div class="no-format">
-                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>                                
-                            </div>
-                        </td>
-                    </tr>                      
+                                    <tr valign="top">
+                                        <td>
+                                            <label>Reason for Rejection</label>
+                                        </td>
+                                        <td colspan="3">    
+                                            <div id="ReasonOfRejectionDiv">
+                                                <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
+                                                          list="reasonOfClaimRejections"  
+                                                          listKey="id" 
+                                                          listValue="name" 
+                                                          headerKey="" 
+                                                          headerValue="N/A"
+                                                          emptyOption="false"></s:select> 
+                                            </div>
+                                        </td>
+                                    </tr>            
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="no-format">
+                                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>                                
+                                            </div>
+                                        </td>
+                                    </tr>                      
                                     <tr>
                                         <td colspan="4" class="choice" nowrap="true">  
-                                            <input type="submit" value="Reject" onclick="javascript: return doRejectClaim();" />
-                                            <input type="submit" value="Acknowledge" onclick="javascript: return doSubmit('accept')"  />
-                                            <input type="submit" value="Refer To Engineer" onclick="javascript: return doSubmit('refer');"  /> 
-                                            <input type="submit" value="Refer to FNOL" onclick="javascript: return doSubmit('referFNOL');" /> 
-                                            <input type="submit" value="Claim Pending" onclick="javascript: return doSubmit('pending');" /> 
+                                            <input type="button" value="Reject" onclick="javascript: doRejectClaim();" />
+                                            <input type="button" value="Acknowledge" onclick="javascript: doSubmit('accept')"  />
+                                            <input type="button" value="Refer To Engineer" onclick="javascript: doSubmit('refer');"  /> 
+                                            <input type="button" value="Refer to FNOL" onclick="javascript: doSubmit('referFNOL');" /> 
+                                            <input type="button" value="Claim Pending" onclick="javascript: doSubmit('pending');" /> 
                                         </td>
                                     </tr>
                                 </table>
