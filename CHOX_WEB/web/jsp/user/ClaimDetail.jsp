@@ -64,6 +64,9 @@
     }; 
 
     $(document).ready(function(){
+        
+        $(".extraActionClass").hide();
+        
         var fsets =  $('legend');
         fsets.click(function(){ $(this).next().toggle();});
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); }); 
@@ -617,7 +620,7 @@
 </s:if>
 <s:elseif test="isClaimClosed && isCHO">
 <tr>
-    <td colspan="3" align="right"><input value="Re-OpenClaim Claim" type="button" onclick="javascript:return reopenClaimStatus('<s:property value="id" />');"/></td>
+    <td colspan="3" align="right"><input value="Re-Open Claim" type="button" onclick="javascript:return reopenClaimStatus('<s:property value="id" />');"/></td>
 </tr>
 </s:elseif>
 
@@ -675,7 +678,7 @@
                                 
     $(document).ready(function() {
         $("#extraAction").val("");
-        $(".extraActionClass").hide();
+        
     });
 
    function doShowHideExtraAction(a, b){
