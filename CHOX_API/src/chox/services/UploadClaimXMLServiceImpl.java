@@ -314,20 +314,21 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
             BREClaim.setEngineerReport(engineerreport);
         }
         
-        // 225
         if(claimService.getCountOfClaimByVRN(BREClaim.getCustomer().getVehicleRegistration(), BREClaim.getId())>0){
            BREClaim.getCustomer().setIsVehicleRegistrationExist(true);
         }
         
         // SET VEHICLE CLASS TO NULL WHEN 
         if(BREClaim.getThirdParty().getVehicleClass()!=null){
-            if(BREClaim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached")){
+            if(BREClaim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached") 
+                    || BREClaim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("UNATTACHED")){
                 BREClaim.getThirdParty().setVehicleClass(null);
             }
         }
         
         // SET VEHICLE CLASS TO NULL WHEN 
-        if(BREClaim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")){
+        if(BREClaim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")
+                || BREClaim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("UNATTACHED")){
             BREClaim.getCustomer().setVehicleClass(null);
         }
         

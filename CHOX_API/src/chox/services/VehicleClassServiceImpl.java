@@ -32,7 +32,8 @@ public class VehicleClassServiceImpl  extends DataService implements VehicleClas
         VehicleClass vehicleclass = null;
         
         if(XmlHelper.isNotNull(XmlHelper.getNodeValue(thisElement, nodeName))){
-            vehicleclass = getVehicleClassByName(XmlHelper.getNodeValue(thisElement, nodeName));
+            String vehicleName = XmlHelper.getNodeValue(thisElement, nodeName);
+            vehicleclass = getVehicleClassByName(vehicleName.toUpperCase());
         }
         
         return vehicleclass;

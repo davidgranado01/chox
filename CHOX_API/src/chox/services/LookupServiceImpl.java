@@ -58,14 +58,14 @@ public class LookupServiceImpl extends DataService implements LookupService, Ser
     
     public List getClaimRejectionReason(){
         
-        DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("name"));
+        DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("type", "Claim"));
         return findByCriteria(criteria);
 
     }
     
     public List getInvoiceRejectionReason(){
-        DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("name"));
+        DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("type", "Invoice"));
         return findByCriteria(criteria);
     }
