@@ -89,7 +89,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
-        criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN));
+        criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN).ignoreCase());
         criteria.add(Expression.ne("id", claimId));
         List result = findByCriteria(criteria);
         Integer totalCount = (Integer) result.get(0);
@@ -105,7 +105,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         if (!strClaimNumber.equalsIgnoreCase("")) {
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
             criteria.setProjection(Projections.rowCount());
-            criteria.createCriteria("customer").add(Restrictions.like("claimReference", strClaimNumber));
+            criteria.createCriteria("customer").add(Restrictions.like("claimReference", strClaimNumber).ignoreCase());
             if (isClaimExit) {
                 criteria.add(Expression.ne("id", claimId));
             }
@@ -126,7 +126,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         if (!strClaimNumber.equalsIgnoreCase("")) {
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
             criteria.setProjection(Projections.rowCount());
-            criteria.createCriteria("thirdParty").add(Restrictions.like("claimReference", strClaimNumber));
+            criteria.createCriteria("thirdParty").add(Restrictions.like("claimReference", strClaimNumber).ignoreCase());
             if (isClaimExit) {
                 criteria.add(Expression.ne("id", claimId));
             }
@@ -300,7 +300,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
-        criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
+        criteria.add(Restrictions.like("choReference", sClaimReferenceNumber).ignoreCase());
         List result = findByCriteria(criteria);
 
         Integer totalCount = (Integer) result.get(0);
