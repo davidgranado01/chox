@@ -135,7 +135,7 @@
                 actionName:{required:"You must select action"},
                 isClaimNumberValidFlag:{min:"Invalid Character used in Claim Number"} ,
                 reasonOfRejectionId:{
-                    required:"You must choose 'Reason For Rejection'"
+                    required:"You must choose a 'Reason For Rejection'"
                 }       
             }
             

@@ -36,7 +36,7 @@
             },
             messages: {
                 actionName:{required:"You must select action"},
-                reasonOfRejectionId:{required:"You must choose 'Reason For Rejection'"}       
+                reasonOfRejectionId:{required:"You must choose a 'Reason For Rejection'"}       
             }
             
         });
