@@ -132,7 +132,7 @@
             <div class="chox-claim-header x-panel-bwrap chox-form-container">   
                 
                 <fieldset class="x-fieldset">
-                    <legend>User Account Details</legend>
+                    <legend>User Details</legend>
                     <div class="form-container">            
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">First Name</label>
@@ -146,38 +146,34 @@
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">Organisation</label>
                         <label class="std-data-ro"><s:property value="webUser.organisationName" /></label></div>
-                        <div class="chox-form-item" style="vertical-align:bottom;">
-                            <label class="chox-form-std-label">Security</label>                                
-                            <div id="ChangePasswordPanel"> 
-                                <form onsubmit="return true;" id="formChangePassword" action="user/changePassword.action" class="XXentity-form" method="post">
-                                    <fieldset class="x-fieldset">
-                                        <legend>Change Password</legend>
-                                        <div class="form-container">                                             
-                                            <div class="chox-form-item">
-                                                <label class="chox-form-std-label">
-                                                Choose a new password <span class="mandatory">*</span></label>
-                                            <s:password label="Enter Password" name="newPassword" size="10" maxlength="8" /></div>
-                                            <div class="chox-form-item">
-                                                <label class="chox-form-std-label">
-                                                Re-enter new password<span class="mandatory">*</span></label>
-                                            <s:password label="Enter Password" name="confirmNewPassword" size="10" maxlength="8" /> </div>
-                                            <div class="chox-form-button">
-                                                <input type="submit" value="Save"/>
-                                            </div>
-                                            <div id="submitResult" class="chox-form-submit-result"></div>
-                                            <div class="errorBox" id="errorMessageBox"></div>
-                                        </div>
-                                    </fieldset>  
-                                </form>
-                            </div>
-                        </div>
-                        
                     </div>
-                </fieldset>
+                </fieldset> 
+                
+                
+                <fieldset class="x-fieldset">
+                    <legend>Change Password</legend>
+                    <form onsubmit="return true;" id="formChangePassword" action="user/changePassword.action" class="XXentity-form" method="post">
+                        <div class="form-container">                                             
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">
+                                Choose a new password <span class="mandatory">*</span></label>
+                            <input type="password" class="chox-ttxt" label="Enter Password" name="newPassword" id="newPassword" size="10" maxlength="8" /></div>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">
+                                Re-enter new password<span class="mandatory">*</span></label>
+                            <input type="password" class="chox-ttxt" label="Enter Password" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="8" /> </div>
+                            <div class="chox-form-button">
+                                <input type="submit" value="Save"/>
+                            </div>
+                            <div id="submitResult" class="chox-form-submit-result"></div>
+                            <div class="errorBox" id="errorMessageBox"></div>
+                        </div>
+                    </form>
+                </fieldset>  
                 
             </div>
-            
         </div>
+        
     </div>
     
     <div class="footerText">
