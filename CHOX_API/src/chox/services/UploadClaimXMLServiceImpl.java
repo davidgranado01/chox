@@ -184,9 +184,15 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
          * 1. CLAIM IS EXIST IN DB 
          * 2. CLAIM STATUS = 'AwaitingInvoiceData'
          */
+        
+        boolean isNewInvoice = false;
+        String oldClaimStatus = xmlParseResult.getClaim().getStatus();
+
         if(xmlParseResult.getIsClaimExist() 
             && xmlParseResult.getClaim().getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)
             && !xmlParseResult.getIsInvoiceExist()){
+            
+            isNewInvoice = true;
             
             xmlParseResult = RentalInvoiceSchemaValidation(xmlParseResult, root, doc);
 
@@ -233,7 +239,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         }
         
         if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){            
-            xmlParseResult = saveXMLRecord(xmlParseResult);
+            xmlParseResult = saveXMLRecord(xmlParseResult, isNewInvoice, oldClaimStatus);
         }
         
         xmlParseResult = UploadStatus.getUploadStatus(xmlParseResult);
@@ -351,7 +357,7 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
         return xmlParseResult;
     }
     
-    private XMLParseResult saveXMLRecord(XMLParseResult xmlParseResult){       
+    private XMLParseResult saveXMLRecord(XMLParseResult xmlParseResult, final boolean isNewInvoice, final String oldClaimStatus){     
         
         TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
         transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -377,10 +383,14 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                             invoiceService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                             claimService.saveObjectForXMLUploader(readOnlyXmlParseResult);
 
-
-                            if (readOnlyXmlParseResult.getIsClaimExist()) {
+                            if (!readOnlyXmlParseResult.getIsClaimExist()) {
                                 auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, "", readOnlyXmlParseResult.getClaim());
+                            }
+                            
+                            if(isNewInvoice){
+                                auditTrailService.logAuditLog(readOnlyXmlParseResult.getClaim().getStatus(), oldClaimStatus, readOnlyXmlParseResult.getClaim());
                             }                        
+                       
                         }
                     });
         }

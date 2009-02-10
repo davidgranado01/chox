@@ -1,10 +1,12 @@
 package chox.services;
 
 import chox.model.WebUser;
+import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-public class UserServiceImpl  extends DataService implements UserService {
+public class UserServiceImpl extends HibernateDaoSupport implements UserService {
 
     public UserServiceImpl() {
     }
@@ -34,5 +36,20 @@ public class UserServiceImpl  extends DataService implements UserService {
         }
         
         return user;
+    }
+    
+    protected Object getByCriteria(final DetachedCriteria c) {
+
+        List result = getHibernateTemplate().findByCriteria(c);
+        if (result != null && !result.isEmpty()) {
+            return result.get(0);
+        } else {
+            return null;
+        }
+    }
+    
+    protected Object get(final Class c, final int id) {
+
+        return getHibernateTemplate().get(c, id);
     }
 }

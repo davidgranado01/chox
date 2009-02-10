@@ -18,7 +18,6 @@ import org.springframework.orm.hibernate3.HibernateTransactionManager;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -34,6 +33,18 @@ public class DataService extends HibernateDaoSupport {
 
     public void setSecurityInfoProvider(SecurityInfoProvider provider) {
         this.securityInforProvider = provider;
+        
+        if (this.securityInforProvider != null) {
+
+            if (!this.getSecurityInfoProvider().getIsCHOXAdmin()) {
+                if (this.getSecurityInfoProvider().getIsCHO()) {
+                    getCurrentSession().enableFilter("Claim_CHOFilter").setParameter("chorganisationId", this.getCurrentUser().getChorganisation().getId());
+                } else if (this.getSecurityInfoProvider().getIsINS()) {
+                    getCurrentSession().enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
+                    getCurrentSession().enableFilter("LineOfBusiness_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
+                }
+            }
+        }
     }
 
     protected WebUser getCurrentUser() {

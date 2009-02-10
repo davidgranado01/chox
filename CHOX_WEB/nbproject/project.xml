@@ -131,10 +131,6 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library files="1">
-                    <file>${reference.CHOX_API.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library files="1">
                     <file>${file.reference.json-lib-2.2.2-jdk13.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
@@ -159,11 +155,15 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library files="1">
+                    <file>${file.reference.postgresql-8.3-603.jdbc3.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library files="1">
                     <file>${reference.CHOX_BRE.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library files="1">
-                    <file>${file.reference.postgresql-8.3-603.jdbc3.jar}</file>
+                    <file>${reference.CHOX_API.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library files="1">
