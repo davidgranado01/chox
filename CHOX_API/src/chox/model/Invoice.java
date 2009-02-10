@@ -264,6 +264,7 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo,Auditabl
 	protected BigDecimal penaltyCharge;
         protected Integer penaltyAlertQty;
         protected Integer reasonOfRejectionId;
+        protected Date penaltyChargeAppliedDate;
 
 	/**
 	 * Method 'Invoice'
@@ -1320,7 +1321,13 @@ public class Invoice implements Serializable, IInvoiceInfo, IExtrasInfo,Auditabl
     public void setReasonOfRejectionId(Integer reasonOfRejectionId) {
         this.reasonOfRejectionId = reasonOfRejectionId;
     }
-    
 
+    public Date getPenaltyChargeAppliedDate() {
+        return penaltyChargeAppliedDate;
+    }
+
+    public void setPenaltyChargeAppliedDate(Date penaltyChargeAppliedDate) {
+        this.penaltyChargeAppliedDate = penaltyChargeAppliedDate;
+    }
     
 }
