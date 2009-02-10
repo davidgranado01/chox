@@ -271,10 +271,12 @@ public class UploadClaimXMLServiceImpl extends DataService implements UploadClai
                 custClaimNumber = xmlParseResult.getClaim().getCustomer().getClaimReference();
             }
             
+            /*
             if(claimService.isCustomerClaimNumberExist(custClaimNumber, xmlParseResult.getClaim().getId(), xmlParseResult.getIsClaimExist())){
                 String errorMessage = "The Customer Claim Number supplied already exists in the system";
                 xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, errorMessage, false);
             }
+            */ 
         }
         
         /*
