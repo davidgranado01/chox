@@ -293,3 +293,95 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 -- ############################################################################################
 -- START VERSION V2.2.3
 -- ############################################################################################\
+
+
+
+-- ############################################################################################
+-- V2.2.4 - 20090210
+-- ############################################################################################\
+
+-- CREATE BY : CARLSON 20080402-1700
+-- ADD PENALTY CHARGE APPLIED DATE
+
+ALTER TABLE invoice ADD COLUMN penalty_charge_applied_date timestamp without time zone;
+ALTER TABLE invoice ALTER COLUMN penalty_charge_applied_date SET STORAGE PLAIN;
+
+update invoice set penalty_charge_applied_date = last_modified_date where panalty_charge>0;
+
+------------------------------------------------------------------------------------------------
+
+-- CREATE VIEW FOR REPORT 
+-- rpt_claim_invoice
+
+
+DROP VIEW rpt_claim_invoice;
+
+CREATE OR REPLACE VIEW rpt_claim_invoice AS 
+
+-- VERSION 2.0
+-- DESCRIPTION: GET INVOICE
+
+SELECT invoice.id, invoice.date_invoiced, invoice.handling_invoice_no, invoice.claim_invoice_no, invoice.cdw_qty, invoice.automatic_qty, invoice.sat_nav_qty, 
+invoice.estate_qty, invoice.baby_seat_qty, invoice.tow_bars_qty, invoice.non_standard_insurance_premium_qty, invoice.admin_qty, invoice.roof_rack_qty, 
+invoice.dual_control_qty, invoice.delivery_collection_qty, invoice.created_by, invoice.created_date, invoice.last_nodified_by, invoice.last_modified_date, 
+invoice.hire_net, invoice.hire_vat, invoice.hire_gross, invoice.repair_net, invoice.repair_vat, invoice.repair_gross, invoice.engineer_fee_net, invoice.engineer_fee_vat, 
+invoice.engineer_fee_gross, invoice.storage_recovery_net, invoice.storage_recovery_vat, invoice.storage_recovery_gross, invoice.total_net, invoice.total_vat, 
+invoice.total_gross, invoice.claims_handling_invoice_amount, invoice.deduction_for_claims_handling_fee, invoice.discount, invoice.total_to_pay, invoice.cdw_fee, 
+invoice.automatic_fee, invoice.sat_nav_fee, invoice.estate_fee, invoice.baby_seat_fee, invoice.tow_bars_fee, invoice.non_standard_insurance_premium_fee, 
+invoice.admin_fee, invoice.roof_rack_fee, invoice.dual_control_fee, invoice.delivery_collection_fee, invoice.is_payment_mode, invoice.is_engineer_decision_approved, 
+invoice.engineer_invoice_review_notes, invoice.rejection_reason, invoice.hire_rate_charged_per_day, invoice.excess_amount_collected, invoice.vat_amount_collected, 
+invoice.panalty_charge, invoice.panalty_alert_qty, invoice.penalty_charge_applied_date,
+claim.id AS claim_id, claim.status, claim.insurer_id, claim.chorganisation_id
+FROM claim claim 
+JOIN invoice invoice ON claim.invoice_id = invoice.id;
+
+ALTER TABLE rpt_claim_invoice OWNER TO postgres;
+
+------------------------------------------------------------------------------------------------
+
+UPDATE CLAIM SET status_modified_date=DATE('02/04/2009'), previous_status='AwaitingInvoiceData' WHERE ID=4;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=17;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=22;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=35;
+UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=37;
+UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=46;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=47;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=49;
+UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=53;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=54;
+UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=64;
+UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=69;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=71;
+UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=73;
+UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=74;
+UPDATE CLAIM SET status_modified_date=DATE('02/05/2009'), previous_status='InvoiceRejectionAccepted' WHERE ID=75;
+UPDATE CLAIM SET status_modified_date=DATE('02/04/2009'), previous_status='AwaitingInvoiceData' WHERE ID=80;
+UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=89;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=91;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=97;
+UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=106;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=112;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=130;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=155;
+UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=162;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=178;
+UPDATE CLAIM SET status_modified_date=DATE('02/04/2009'), previous_status='AwaitingInvoiceData' WHERE ID=199;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=209;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=221;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=222;
+UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=228;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=239;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=261;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=266;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=292;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=294;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=306;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=309;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=314;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=323;
+UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=332;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=336;
+UPDATE CLAIM SET status_modified_date=DATE('02/04/2009'), previous_status='AwaitingInvoiceData' WHERE ID=341;
+UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=383;
+
+------------------------------------------------------------------------------------------------
