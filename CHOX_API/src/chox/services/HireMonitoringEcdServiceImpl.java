@@ -18,7 +18,7 @@ import org.hibernate.criterion.Restrictions;
  * @author Emmanuel
  */
 
-public class HireMonitoringEcdServiceImpl extends DataService implements HireMonitoringEcdService {
+public class HireMonitoringEcdServiceImpl extends SecureDataService implements HireMonitoringEcdService {
 
     public List<HireMonitoringEcd> getHireMonitoringEcdsByClaimId(int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(HireMonitoringEcd.class);      

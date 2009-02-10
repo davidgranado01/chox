@@ -6,7 +6,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.w3c.dom.*;
 
-public class VehicleClassServiceImpl  extends DataService implements VehicleClassService{ 
+public class VehicleClassServiceImpl  extends SecureDataService implements VehicleClassService{ 
 
     public VehicleClass getVehicleClassByName(String s){
   

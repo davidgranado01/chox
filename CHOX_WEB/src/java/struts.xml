@@ -45,6 +45,10 @@
             <result name="success">/jsp/p_jsonData.jsp
             </result>
         </action>
+        <action name="getPageIndexOfCurrentSearch" class="chox.web.actions.SearchClaimAction" method="getPageIndexOfCurrentSearch">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
         <action name="doExportExcel" method="execute" class="chox.web.actions.ExcelGeneratorAction">
             <result name="success" type="stream">
                 <param name="contentType">application/ms-excel
@@ -688,6 +692,11 @@
         
         <action name="openUserAccount" class="chox.web.actions.UserAccountAction">
             <result name="success">/jsp/user/UserAccount.jsp
+            </result>
+        </action>
+        
+        <action name="changePassword" class="chox.web.actions.UserAccountAction" method="changePassword">
+            <result name="success">/jsp/p_response.jsp
             </result>
         </action>
         

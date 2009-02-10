@@ -19,7 +19,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 
-public class ClaimServiceImpl extends DataService implements ClaimService, Serializable {
+public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
     public static final String PENDING = "Pending";
     public static final String IN_PROGRESS = "InProgress";
@@ -50,17 +50,7 @@ public class ClaimServiceImpl extends DataService implements ClaimService, Seria
         String q = "select count(*) from Claim as c inner join c.invoice as iv where " + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_LOGGED + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_REJECTED_ACCEPTED + "' AND " + "c.status <> '" + ClaimStatus.CLAIM_CLOSED + "' " + "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.dateInvoiced) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
 
         return getCount(q);
-    }
-
-    protected Long getCount(String query) {
-        Long count = new Long(0);
-        List result = query(query);
-
-        if (result != null && !result.isEmpty()) {
-            count = (Long) result.get(0);
-        }
-        return count;
-    }
+    }   
 
     public Long getHireUpdateAnomaliesCountNumber() {
         String q = "select count(*) from Claim where is_anomalies = true";

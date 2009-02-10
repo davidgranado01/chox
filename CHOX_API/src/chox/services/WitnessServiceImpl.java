@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-public class WitnessServiceImpl extends DataService implements WitnessService {
+public class WitnessServiceImpl extends SecureDataService implements WitnessService {
 
     public Witness getWitnessByIncident(Incident incident) {
 

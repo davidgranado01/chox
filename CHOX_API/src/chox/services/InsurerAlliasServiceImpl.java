@@ -8,7 +8,7 @@ import chox.model.InsurerAllias;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-public class InsurerAlliasServiceImpl extends DataService implements InsurerAlliasService {
+public class InsurerAlliasServiceImpl extends SecureDataService implements InsurerAlliasService {
 
     public InsurerAllias getInsurerByAlliasName(String s) {
 

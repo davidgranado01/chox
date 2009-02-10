@@ -2,7 +2,7 @@ package chox.services;
 
 import chox.model.ReasonOfRejection;
 
-public class ReasonOfRejectionServiceImpl  extends DataService implements ReasonOfRejectionService{
+public class ReasonOfRejectionServiceImpl  extends SecureDataService implements ReasonOfRejectionService{
 
     public ReasonOfRejection getObject(int id) {
         return (ReasonOfRejection) get(ReasonOfRejection.class, id);

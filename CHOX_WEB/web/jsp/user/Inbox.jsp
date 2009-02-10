@@ -252,7 +252,7 @@
             displayMsg: 'Displaying topics {0} - {1} of {2}',
             emptyMsg: "No claim to display"
         });
-        
+                
         var grid = new Ext.grid.GridPanel({
             loadMask: true,
             ds: ds,
@@ -293,12 +293,12 @@
     {
         var getParams = document.URL.split("?");
         var params = Ext.urlDecode(getParams[getParams.length - 1]);
-        var tabIndex = params.tab == null ? 0 : params.tab;
-
+        currentTabIndex = params.tab == null ? 0 : params.tab;
+       
         tabs = new Ext.TabPanel({
         renderTo: 'tabPanel',
         autoheight:true,
-        activeTab: tabIndex,            
+        activeTab: currentTabIndex,            
         items:[
              <s:if test="menuAccessibility.isDashBoardMenuAccessibility">                   
                  {contentEl:'boardPanelTab', title:'Dashboard',listeners: {activate: handleActivate}},
@@ -342,37 +342,76 @@
         t=setTimeout("refreshViewingStatus()",4000);
     }
 
-    Ext.onReady(function(){
-        setupGrid();
+    Ext.onReady(function(){        
         setupTabPanels();
-        refreshViewingStatus();        
-        ds.load();
+        setupGrid();
+        refreshViewingStatus();
+        loadDataFromSession();
     }); 
+    
+function loadDataFromSession()
+{
+    $.get("getPageIndexOfCurrentSearch.action", function(data){
+        var start = parseInt(data.trim());            
+        if(start >= 0)
+        {
+            ds.load(
+            {
+                params:
+                    {
+                    start:start,
+                    limit:10
+                }
+            });
+        }  
+    }); 
+}
 
     function handleActivate(tab){
 
         if(tab.title == 'Reports'){
+            ds.removeAll();
             $("#gridPanel").hide();            
         }
         else if(tab.title == 'Dashboard'){
+            ds.removeAll();
             $("#gridPanel").hide();  
         }
         else if(tab.title == 'Search'){
+            ds.removeAll();
             $("#gridPanel").show();  
         }
         else if(tab.title == 'Inbox'){
+            ds.removeAll();
             $("#gridPanel").show(); 
         }
         
         if(tabs)
         {
             currentTabIndex = tabs.items.indexOf(tabs.getActiveTab());
-        }
-        else
-        {
-            currentTabIndex = 0;
-        }
+        }  
     }
+    
+    function clearForm(form) {
+        // iterate over all of the inputs for the form
+        // element that was passed in
+        $(':input', form).each(function() {
+            var type = this.type;
+            var tag = this.tagName.toLowerCase(); // normalize case
+            // it's ok to reset the value attr of text inputs,
+            // password inputs, and textareas
+            if (type == 'text' || type == 'password' || tag == 'textarea')
+                this.value = "";
+            // checkboxes and radios need to have their checked state cleared
+            // but should *not* have their 'value' changed
+            else if (type == 'checkbox' || type == 'radio')
+                this.checked = false;
+            // select elements need to have their 'selectedIndex' property set to -1
+            // (this works for both single and multiple select elements)
+            else if (tag == 'select')
+                this.selectedIndex = -1;
+        });
+    };
                         
                         
 </script>
@@ -393,6 +432,7 @@
                         <td width="100%" align="right">
                             <div class="top-menu">
                                 <a href="<s:url action="inbox"/>">Home</a>&nbsp;|&nbsp;
+                                <a href="<s:url action="openUserAccount" />">Setting</a>&nbsp;|&nbsp;
                                     <s:if test="isCHO">
                                     <a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;|&nbsp;
                                     </s:if> 
@@ -405,7 +445,6 @@
                                 <a href="javascript:openFile('<%= request.getContextPath()%>','Support');">Support</a>&nbsp;|&nbsp; 
                                 <a href="javascript:onOpenAbout();">About CHOX</a>&nbsp;|&nbsp;
                                 <b><s:property value="CurrentUserDesc" /></b>&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/j_acegi_logout">( Log Off )</a>
-                                &nbsp;<a href="<s:url action="openUserAccount" />">( User Account )</a>
                             </div>
                         </td>
                     </tr>
@@ -416,17 +455,18 @@
             
             <div id="tabPanel"></div>
                 
-                <div id="boardPanelTab" class="x-hide-display">
-                    <div id="dashboardPanel">
-                        <s:if test="isCHO">
-                            <s:action name="showChoBoardHeader" namespace="/user" executeResult="true" />
-                        </s:if>
-                        <s:if test="isInsurer">
-                            <s:action name="showInsurerBoardHeader" namespace="/user" executeResult="true" />
-                        </s:if> 
+                <s:if test="menuAccessibility.isDashBoardMenuAccessibility">                    
+                    <div id="boardPanelTab" class="x-hide-display">
+                        <div id="dashboardPanel">
+                            <s:if test="isCHO">
+                                <s:action name="showChoBoardHeader" namespace="/user" executeResult="true" />
+                            </s:if>
+                            <s:if test="isInsurer">
+                                <s:action name="showInsurerBoardHeader" namespace="/user" executeResult="true" />
+                            </s:if> 
+                        </div>
                     </div>
-                </div>
-                
+                </s:if>
                 
                 <div id="filterPanelTab" class="x-hide-display">
                     <div id="filterPanel">
@@ -491,13 +531,15 @@
                     </div>
                 </div>
                 
-                <div id="reportPanelTab" class="x-hide-display">
-                    <div id="reportPanel">
-                        
-                        <s:action name="buildReport" namespace="/user" executeResult="true" /> 
-                        
+                <s:if test="menuAccessibility.isReportMenuAccessibility">
+                    <div id="reportPanelTab" class="x-hide-display">
+                        <div id="reportPanel">
+                            
+                            <s:action name="buildReport" namespace="/user" executeResult="true" /> 
+                                
+                        </div>
                     </div>
-                </div>
+                </s:if>
            
             
             <div id="gridPanel">

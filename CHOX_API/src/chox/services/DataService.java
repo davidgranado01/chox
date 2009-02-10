@@ -7,11 +7,9 @@ package chox.services;
 import chox.data.FakeSecurityInfoProvider;
 import chox.data.SecurityInfoProvider;
 import chox.model.WebUser;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
@@ -32,37 +30,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 public class DataService extends HibernateDaoSupport {
 
     private HibernateTransactionManager transactionManager;
-    private SecurityInfoProvider securityInforProvider;
 
-    public void setSecurityInfoProvider(SecurityInfoProvider provider) {
-        this.securityInforProvider = provider;
-        
-        if (this.securityInforProvider != null) {
-
-            if (!this.getSecurityInfoProvider().getIsCHOXAdmin()) {
-                if (this.getSecurityInfoProvider().getIsCHO()) {
-                    getCurrentSession().enableFilter("Claim_CHOFilter").setParameter("chorganisationId", this.getCurrentUser().getChorganisation().getId());
-                } else if (this.getSecurityInfoProvider().getIsINS()) {
-                    getCurrentSession().enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
-                    getCurrentSession().enableFilter("LineOfBusiness_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
-                }
-            }
-        }
-    }
-
-    public WebUser getCurrentUser() {
-        return getSecurityInfoProvider().getCurrentUSer();
-    }
-
-    public SecurityInfoProvider getSecurityInfoProvider() {
-        if (this.securityInforProvider == null) {
-            //for testing purpose, will inject by spring in web application
-            setSecurityInfoProvider(new FakeSecurityInfoProvider());
-        }
-        return this.securityInforProvider;
-    }
-
-    private Session getCurrentSession() {        
+    protected Session getCurrentSession() {
 
         return getSession();
     }
@@ -82,32 +51,30 @@ public class DataService extends HibernateDaoSupport {
         SQLQuery q = this.getSession().createSQLQuery(query);
         return q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
     }
-    
-    public List externalQuery(final String query,final Map parameters) {
+
+    public List externalQuery(final String query, final Map parameters) {
 
         SQLQuery q = this.getSession().createSQLQuery(query);
-        
-        for(Object p : parameters.keySet())
-        {
-            String parameterName = (String)p;            
+
+        for (Object p : parameters.keySet()) {
+            String parameterName = (String) p;
             q.setParameter(parameterName, parameters.get(parameterName));
-            
+
         }
-        
+
         return q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
     }
-    
-    public List externalQuery(final String query,Map parameters,Class entityClass) {
+
+    public List externalQuery(final String query, Map parameters, Class entityClass) {
 
         SQLQuery q = this.getSession().createSQLQuery(query);
-        
-        for(Object p : parameters.keySet())
-        {
-            String parameterName = (String)p;            
+
+        for (Object p : parameters.keySet()) {
+            String parameterName = (String) p;
             q.setParameter(parameterName, parameters.get(parameterName));
-            
+
         }
-        
+
         return q.setResultTransformer(Transformers.aliasToBean(entityClass)).list();
     }
 
@@ -119,6 +86,16 @@ public class DataService extends HibernateDaoSupport {
         } else {
             return null;
         }
+    }
+    
+    protected Long getCount(String query) {
+        Long count = new Long(0);
+        List result = getHibernateTemplate().find(query);
+
+        if (result != null && !result.isEmpty()) {
+            count = (Long) result.get(0);
+        }
+        return count;
     }
 
     public List findByCriteria(final DetachedCriteria c) {

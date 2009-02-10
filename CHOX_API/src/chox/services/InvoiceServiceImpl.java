@@ -3,7 +3,7 @@ package chox.services;
 import chox.model.*;
 import scsbre.engine.*;
 
-public class InvoiceServiceImpl extends DataService implements InvoiceService {
+public class InvoiceServiceImpl extends SecureDataService implements InvoiceService {
 
     public RulesEngineResponse XMLUploaderInvoiceValidation(Claim claim) {
 

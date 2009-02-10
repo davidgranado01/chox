@@ -549,7 +549,7 @@
                             <td width="100%" align="right">
                                 <div class="top-menu">
                                     <a href='<s:url action="inbox"/>'>Home</a>&nbsp;|&nbsp;
-                                    
+                                    <a href="<s:url action="openUserAccount" />">Setting</a>&nbsp;|&nbsp;
                                     <s:if test="isCHO">
                                     <a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;|&nbsp;
                                     </s:if>
@@ -563,7 +563,6 @@
                                     <a href="javascript:openFile('<%= request.getContextPath()%>','Support');">Support</a>&nbsp;|&nbsp; 
                                     <a href="javascript:onOpenAbout();">About CHOX</a>&nbsp;|&nbsp;
                                     <b><s:property value="CurrentUserDesc" /></b>&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/j_acegi_logout">( Log Off )</a>
-                                    &nbsp;<a href="<s:url action="openUserAccount" />">( User Account )</a>
                                 </div>
                             </td>
                         </tr>

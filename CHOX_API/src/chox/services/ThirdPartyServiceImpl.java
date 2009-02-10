@@ -2,7 +2,7 @@ package chox.services;
 
 import chox.model.*;
 
-public class ThirdPartyServiceImpl extends DataService implements ThirdPartyService {
+public class ThirdPartyServiceImpl extends SecureDataService implements ThirdPartyService {
 
     public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
 

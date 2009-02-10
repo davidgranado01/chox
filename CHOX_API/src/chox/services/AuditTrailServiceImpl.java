@@ -10,7 +10,7 @@ import chox.model.AuditTrail;
 import chox.model.Claim;
 import chox.model.WebUser;
 
-public class AuditTrailServiceImpl extends DataService implements AuditTrailService{
+public class AuditTrailServiceImpl extends SecureDataService implements AuditTrailService{
     
     public Boolean logAuditLog(String newStatus,String oldStatus, Claim thisClaim){
        

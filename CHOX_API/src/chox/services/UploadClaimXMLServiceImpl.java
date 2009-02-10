@@ -24,7 +24,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-public class UploadClaimXMLServiceImpl extends DataService implements UploadClaimXMLService {
+public class UploadClaimXMLServiceImpl extends SecureDataService implements UploadClaimXMLService {
     private VehicleClassService vehicleClassService;
     private EngineerReportService engineerReportService;
     private IncidentService incidentService;

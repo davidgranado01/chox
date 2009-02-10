@@ -9,7 +9,7 @@ import chox.model.XMLParseResult;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-public class HireMonitoringDetailServiceImpl extends DataService implements HireMonitoringDetailService {
+public class HireMonitoringDetailServiceImpl extends SecureDataService implements HireMonitoringDetailService {
 
     public HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int hiremonitoringdetailid) {
         HireMonitoringDetail hiremonitoringdetail = new HireMonitoringDetail();

@@ -6,16 +6,9 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">
-    function resetForm(){
-        $("#searchForm").each(function(){
-            this.reset();
-        });
+<script language="JavaScript">  
         
-    }
-    
-    Ext.onReady(function(){       
-    
+    Ext.onReady(function(){                              
     
         var claimUploadDateFromPicker = new Ext.form.DateField({
             name: 'claimUploadDateFrom',
@@ -84,7 +77,7 @@
 
 <div>
     
-    <table cellpadding="0" cellspacing="0" class="searchForm" border="0">
+    <table id="searchForm" cellpadding="0" cellspacing="0" class="searchForm" border="0">
         
         
         <tr>

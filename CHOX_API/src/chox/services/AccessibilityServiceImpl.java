@@ -7,9 +7,7 @@ package chox.services;
 import chox.model.Accessibility;
 import chox.model.AccessibilityItem;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 

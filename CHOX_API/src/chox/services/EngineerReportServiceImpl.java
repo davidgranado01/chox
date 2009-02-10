@@ -5,7 +5,7 @@ import chox.model.XMLParseResult;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-public class EngineerReportServiceImpl extends DataService implements EngineerReportService {
+public class EngineerReportServiceImpl extends SecureDataService implements EngineerReportService {
 
     public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
 

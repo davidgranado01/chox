@@ -71,30 +71,28 @@
                     }                    
                 }
                 
-                function checkAndConfirClaimNumberDuplication()
-                {
-                    var result = true;
-                    var sClaimNumber = $("#claimNumber").val();
-                    var sClaimId = $("#claimId").val();
-                    if(sClaimNumber && sClaimNumber != null)
-                    {
-                        
-                        $.get("checkIsClaimNumberDuplicated.action", { claimNumber: sClaimNumber, claimId: sClaimId },
-                        function(data){
-                            if(data.trim()== "yes"){
-                                if(confirm("The claim number you have supplied is already associated with another claim(s). Do you wish to continue?"))
-                                {
-                                    $("#formAcknowledgeAction").submit();
-                                }
-                            }
-                            else{
-                                $("#formAcknowledgeAction").submit();
-                            }                            
-                        });
-                    
-                }   
-                    return result;
-                }
+        function checkAndConfirClaimNumberDuplication()
+        {
+            var sClaimNumber = $("#claimNumber").val();
+            var sClaimId = $("#claimId").val();
+            if(sClaimNumber && sClaimNumber != null)
+            {
+                
+                $.get("checkIsClaimNumberDuplicated.action", { claimNumber: sClaimNumber, claimId: sClaimId },
+                function(data){
+                    if(data.trim()== "yes"){
+                        if(confirm("The claim number you have supplied is already associated with another claim(s). Do you wish to continue?"))
+                        {
+                            $("#formUpdateInsurerClaimNumber").submit();
+                        }
+                    }
+                    else{
+                        $("#formUpdateInsurerClaimNumber").submit();
+                    }                            
+                });
+                
+            }   
+        }
     
 </script>
 
@@ -115,7 +113,7 @@ name="formUpdateInsurerClaimNumber">
             <td>
                 <label>Claim Number</label></td><td nowrap>
                 <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
-                <input type="submit" value="Update Claim Number" onclick="javascript: return doSubmitClaimNumber('updateClaimNumber');" /> 
+                <input type="button" value="Update Claim Number" onclick="javascript: doSubmitClaimNumber('updateClaimNumber');" /> 
             </td>
             <td></td><td></td>
         </tr>

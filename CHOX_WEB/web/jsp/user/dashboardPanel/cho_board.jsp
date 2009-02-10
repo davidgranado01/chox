@@ -43,7 +43,7 @@
     <fieldset class="x-fieldset">
         <legend>CHO Admin Dashboard</legend>
         
-        <div class="status-info">
+        <div class="status">
                This dashboard displays a snapshot of claims in the system
                   to date across a weekly, monthly and yearly period. Results can
                   be viewed for an individual Insurer or across the entire Insurer
@@ -53,7 +53,7 @@
         <div class="form-container">
             
             <table cellpadding="0" cellspacing="0" class="dashboard" border="0">       
-                <tr><th nowrap>Number of Active Users<img class="tip-target" alt="" src="<%=request.getContextPath()%>/images/tip.png" id="tip0"/></th><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
+                <tr><th nowrap>Number of Active Users</th><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
                 <tr>
                     <th nowrap><label>Insurer</label></th><td><s:select name="insurerId" id="insurerId" list="insurers" listKey="value" listValue="text" headerKey="-1"
                                                                                                 headerValue="--- ALL ---"

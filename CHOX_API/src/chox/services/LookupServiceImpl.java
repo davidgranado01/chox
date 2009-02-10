@@ -25,7 +25,7 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author Emmanuel
  */
-public class LookupServiceImpl extends DataService implements LookupService, Serializable {
+public class LookupServiceImpl extends SecureDataService implements LookupService, Serializable {
 
     public List getStatuses() {
         List items = new ArrayList<LookupItem>();

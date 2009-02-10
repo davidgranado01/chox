@@ -12,7 +12,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
 
-public class CommentServiceImpl extends DataService implements CommentService {
+public class CommentServiceImpl extends SecureDataService implements CommentService {
 
     public List<Comment> getCommentByClaimId(int claimId) {
 

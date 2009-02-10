@@ -6,7 +6,7 @@ import chox.model.Solicitor;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.DetachedCriteria;
 
-public class SolicitorServiceImpl  extends DataService implements SolicitorService{
+public class SolicitorServiceImpl  extends SecureDataService implements SolicitorService{
 
     public Solicitor getSolicitorByInjury(Injury injury){
 

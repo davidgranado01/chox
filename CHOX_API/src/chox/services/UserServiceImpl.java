@@ -1,12 +1,10 @@
 package chox.services;
 
 import chox.model.WebUser;
-import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-public class UserServiceImpl extends HibernateDaoSupport implements UserService {
+public class UserServiceImpl extends DataService implements UserService {
 
     public UserServiceImpl() {
     }
@@ -19,6 +17,7 @@ public class UserServiceImpl extends HibernateDaoSupport implements UserService 
     }
 
     public void persist(WebUser user, String emailId) {
+        this.save(user);
     }
 
     public WebUser loadUserByUsername(String s) {
@@ -45,30 +44,5 @@ public class UserServiceImpl extends HibernateDaoSupport implements UserService 
     public Long getNumInsActiveUser(Integer insId) {
         String q = "select count(*) from WebUser where status = 1 and insurer.id = " + insId.toString();
         return getCount(q);
-    }
-
-    protected Long getCount(String query) {
-        Long count = new Long(0);
-        List result = getHibernateTemplate().find(query);
-
-        if (result != null && !result.isEmpty()) {
-            count = (Long) result.get(0);
-        }
-        return count;
-    }
-
-    private Object get(final Class c, final int id) {
-
-        return getHibernateTemplate().get(c, id);
-    }
-
-    private Object getByCriteria(final DetachedCriteria c) {
-
-        List result = getHibernateTemplate().findByCriteria(c);
-        if (result != null && !result.isEmpty()) {
-            return result.get(0);
-        } else {
-            return null;
-        }
-    }
+    } 
 }

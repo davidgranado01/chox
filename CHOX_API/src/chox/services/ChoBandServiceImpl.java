@@ -10,7 +10,7 @@ import org.hibernate.criterion.Restrictions;
 import java.math.BigDecimal;
 import org.hibernate.criterion.DetachedCriteria;
 
-public class ChoBandServiceImpl extends DataService implements ChoBandService{
+public class ChoBandServiceImpl extends SecureDataService implements ChoBandService{
     
     public ChoBand getDummyChoBand()
     {

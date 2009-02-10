@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
 
-public class WebUser implements Serializable,Auditable
+public class WebUser implements Serializable
 {
 	/** 
 	 * This attribute maps to the column id in the web_user table.

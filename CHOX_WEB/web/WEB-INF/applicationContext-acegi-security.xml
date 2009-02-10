@@ -23,6 +23,8 @@
         </property>
     </bean>
 
+<bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.Md5PasswordEncoder"/>
+
     <!--<bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.Md5PasswordEncoder"/>-->
     <bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
         <property name="userDetailsService">
@@ -30,12 +32,15 @@
         </property>
         <!--<property name="passwordEncoder"><ref local="passwordEncoder"/></property>-->
     </bean>
+    
+     
+     
     <bean id="userDetailsService" class="chox.web.security.WebUserService" singleton="false">
         <property name="userService">
             <ref bean="userService" />
-        </property>
+        </property>   
     </bean>
-
+      
     <!-- Automatically receives AuthenticationEvent messages -->
     <bean id="loggerListener" class="org.acegisecurity.event.authentication.LoggerListener"/>
     <bean id="basicProcessingFilter" class="org.acegisecurity.ui.basicauth.BasicProcessingFilter">

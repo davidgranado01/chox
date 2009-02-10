@@ -15,7 +15,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
 
-public class HistoryServiceImpl extends DataService implements HistoryService {
+public class HistoryServiceImpl extends SecureDataService implements HistoryService {
 
     /*
      * isShowAll : true > SHOW ALL RECORDS WITH TYPE IS ERROR AND INFO

@@ -2,7 +2,7 @@ package chox.services;
 
 import chox.model.*;
 
-public class VehicleHireServiceImpl extends DataService implements VehicleHireService {
+public class VehicleHireServiceImpl extends SecureDataService implements VehicleHireService {
 
     public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
 

@@ -2,7 +2,7 @@ package chox.services;
 
 import chox.model.*;
 
-public class ChorganisationServiceImpl  extends DataService implements ChorganisationService{
+public class ChorganisationServiceImpl  extends SecureDataService implements ChorganisationService{
 
     public Chorganisation getCurrentCHOrganisation() {
         

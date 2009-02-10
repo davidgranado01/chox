@@ -6,6 +6,7 @@
 package chox.web.actions;
 
 import chox.model.WebUser;
+import chox.services.UserService;
 
 /**
  *
@@ -14,6 +15,9 @@ import chox.model.WebUser;
 public class UserAccountAction extends BaseAction {
     
     private WebUser webUser;
+    private String newPassword;
+    private UserService userService;
+    private String actionResult;
     
     @Override
     public String execute()
@@ -22,10 +26,33 @@ public class UserAccountAction extends BaseAction {
         return SUCCESS;
     }
 
-    public
+    public String changePassword()
+    {
+        webUser = this.getAuthenticatedUser().getUser();
+        webUser.setPassword(newPassword);        
+        userService.persist(webUser, webUser.getEmail());
+        actionResult = "Your password has been changed.";
+        return SUCCESS;
+    }
 
-    WebUser getWebUser() {
+    public WebUser getWebUser() {
         return webUser;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public String getActionResult() {
+        return actionResult;
     }
     
     

@@ -8,7 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import chox.model.Injury;
 import org.hibernate.criterion.DetachedCriteria;
 
-public class InjuryServiceImpl extends DataService implements InjuryService {
+public class InjuryServiceImpl extends SecureDataService implements InjuryService {
 
     public Injury getInjuryByIncident(Incident incident){
          

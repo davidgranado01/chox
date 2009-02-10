@@ -34,10 +34,10 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private LookupService lookupService;
     private ClaimService claimService;
     private List results;
-    private int totalCount;   
-  
+    private int totalCount;
+    private String actionResult;
     private ClaimSearchCriteria claimSearchCriteria;
-   
+
     public List getStatuses() {
         if (statuses == null) {
             statuses = this.lookupService.getStatuses();
@@ -102,15 +102,26 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         Integer limit = claimSearchCriteria.getLimit();
         String sort = claimSearchCriteria.getSort();
         String dir = claimSearchCriteria.getDir();
-        SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria,start, limit, sort, dir);
+        SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria, start, limit, sort, dir);
         results = searchResult.getResult();
         totalCount = searchResult.getTotalCount();
         return SUCCESS;
     }
 
+    public String getPageIndexOfCurrentSearch() {
+        if (session.containsKey("searchCriteria")) {
+            Integer start = claimSearchCriteria.getStart();
+            actionResult = start.toString();
+        }
+        else
+        {
+            actionResult = "-1";
+        }
+        return SUCCESS;
+    }
+
     @Override
     public String execute() throws Exception {
-
         return SUCCESS;
     }
 
@@ -133,4 +144,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     }
 
+    public String getActionResult() {
+        return actionResult;
+    }
 }

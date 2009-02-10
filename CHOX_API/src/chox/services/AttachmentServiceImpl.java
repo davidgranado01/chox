@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-public class AttachmentServiceImpl extends DataService implements AttachmentService{
+public class AttachmentServiceImpl extends SecureDataService implements AttachmentService{
 
     public Boolean saveObj(Attachment attachment){
         

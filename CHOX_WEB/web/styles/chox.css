@@ -342,6 +342,17 @@ div.status-warning{
     background-image: url('../images/default/window/icon-warning.gif');
 }
 
+div.status{
+    background-color:white;
+    border:2px orange solid;
+    padding:12px 12px 12px 12px;
+    font-weight:normal;
+    font-size:14px;
+    vertical-align:middle;
+    margin-bottom:4px;
+    white-space:normal;
+}
+
 div.status-info-submit
 {
     text-align:right;
@@ -469,8 +480,10 @@ table.dashboard th
     padding:6px;  
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 12px; 
-    width:16%;    
-    border-bottom:1px #ccc solid;    
+    font-weight:bold;  
+    width:100%;
+    border-bottom:1px #ccc solid;  
+           
 }
 
 table.dashboard
@@ -486,7 +499,7 @@ table.dashboard td
     padding:6px; 
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 12px; 
-    width:16%;
+    width:200px;
     border-bottom:1px #ccc solid;    
     text-align:right;
 }

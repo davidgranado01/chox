@@ -2,7 +2,7 @@ package chox.services;
 
 import chox.model.*;
 
-public class IncidentServiceImpl extends DataService implements IncidentService {
+public class IncidentServiceImpl extends SecureDataService implements IncidentService {
 
     public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
 

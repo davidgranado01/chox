@@ -174,7 +174,7 @@
         <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
         <div>
             <div class="status-info">
-                Please review the CHO's notes against the reason for contesting the claim rejection and make a decision on whether to acknowledge the claim, reject the claim, refer the claim to FNOL or refer the claim to an Engineer.
+                Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
             </div>
             <div class="status-control-set">
                 <table>

@@ -3,7 +3,7 @@ package chox.services;
 
 import chox.model.*;
 
-public class CustomerServiceImpl extends DataService implements CustomerService{
+public class CustomerServiceImpl extends SecureDataService implements CustomerService{
     
     public Customer getObject(int id) {
         return (Customer) get(Customer.class, id);
