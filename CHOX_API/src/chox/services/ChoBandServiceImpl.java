@@ -17,12 +17,12 @@ public class ChoBandServiceImpl extends DataService implements ChoBandService{
         ChoBand choband = new ChoBand();
         choband.setEngineerInspectionDelayDays(2);
         choband.setHireDayCeiling(22);
-        choband.setHireNetCeiling(new BigDecimal("1000.00"));
+        choband.setHireNetCeiling(new BigDecimal("1500.00"));
         choband.setHireRateChargeTolerance(new BigDecimal("0.01"));
         choband.setInspectionDelayDays(4);
         choband.setIsMobileDayAllowance(2);
         choband.setIsNotMobileDayAllowance(9);
-        choband.setMaxRepairValue(new BigDecimal("1000.00"));
+        choband.setMaxRepairValue(new BigDecimal("1500.00"));
         choband.setOfferMadeDays(7);
         choband.setReceiptOfFinalStatementChequeDays(10);
         choband.setTakeVehicleOutDays(1);
