@@ -27,7 +27,9 @@
         <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script> 
         
 <script type="text/javascript">
-            
+    
+    
+    
     var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
     var invoiceDetailTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
     var hireMonitoringTabAccessibility = <s:property value="tabAccessibility.hireMonitoringTabAccessibility" />;
@@ -63,8 +65,6 @@
     }; 
 
     $(document).ready(function(){
-        
-        $(".extraActionClass").hide();
         
         var fsets =  $('legend');
         fsets.click(function(){ $(this).next().toggle();});
@@ -529,7 +529,6 @@
                     
         }   
     }
-    
 
 </script>        
         
@@ -705,11 +704,11 @@
 
    function doShowHideExtraAction(a, b){
        if(b){
-            $("#"+a).css("visibility", "visible");  
+            $("#"+a).css("display:", "block");  
             $("#"+a).slideDown();
        }else{
             $("#"+a).slideUp();
-            $("#"+a).css("visibility", "hidden"); 
+            $("#"+a).css("display:", "none"); 
             $("#extraAction").val("");
             
        }
@@ -719,8 +718,7 @@
        
        var selectedAction = $("#extraAction").val();
        $(".extraActionClass").slideUp();
-       $(".extraActionClass").css("visibility", "hidden");  
-       
+       $(".extraActionClass").css("display:", "none");  
        
        if(selectedAction!=null && selectedAction!=""){
            doShowHideExtraAction(selectedAction, 1);
@@ -729,7 +727,8 @@
    
 </script>
 
-<div id="updateInsurerClaimNumber" class="extraActionClass" stype="visibility:hidden;">
+<div id="updateInsurerClaimNumber" class="extraActionClass" style="display: none;">
+    
     <table width="100%">
     <tr><td>
     <div class="chox-claim-header x-panel-bwrap chox-form-container">

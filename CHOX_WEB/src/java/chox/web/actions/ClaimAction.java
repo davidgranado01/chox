@@ -885,13 +885,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             invoice.setTotalToPay(newTotalAmountToPay);
             invoice.setPenaltyCharge(getPenaltyChargeAmount());
             Boolean isRemovePenaltyAlert = getIsRemovePenaltyAlert();
+            
             if (isRemovePenaltyAlert != null && isRemovePenaltyAlert) {
                 long dateDiff = DateHelper.daysBetween(invoice.getDateInvoiced(), new Date());
                 int newpenaltyAlertQty = (int) (dateDiff / 30);
                 //if penaltyAlertQty > 3 mean it already reach the limit and alert not showing anymore, set it to -1
                 newpenaltyAlertQty = newpenaltyAlertQty >= 3 ? -1 : newpenaltyAlertQty;
+                
+                
                 invoice.setPenaltyAlertQty(newpenaltyAlertQty);
             }
+            
+            invoice.setPenaltyChargeAppliedDate(DateHelper.getCurrentTimeStamp());
             this.invoiceService.updateObject(invoice);
         } catch (Exception ex) {
             result = ERROR;

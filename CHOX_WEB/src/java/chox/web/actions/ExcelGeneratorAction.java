@@ -23,10 +23,11 @@ import chox.model.Witness;
 import chox.model.Injury;
 import chox.model.Solicitor;
 import java.io.File;
-import chox.Util.FileHelper;
 import chox.services.SearchResult;
 import java.io.FileInputStream;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.struts2.ServletActionContext;
+
 
 public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
@@ -73,12 +74,15 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
     public ByteArrayOutputStream doExportExcel() throws IOException {
 
         File thisFile = new File(".");
+        
+        /*
         System.out.println("A:::::::::::::" + thisFile.getParent());
         System.out.println("B:::::::::::::" + thisFile.getPath());
         System.out.println("C:::::::::::::" + thisFile.getAbsolutePath());
         System.out.println("D:::::::::::::" + thisFile.getCanonicalPath());
         System.out.println("AS:" + FileHelper.getClassPath());
-
+        */
+        
         ClaimSearchCriteria c = null;
         ByteArrayOutputStream buf = null;
 
@@ -115,20 +119,11 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
         List<ExcelClaim> excelClaims = new ArrayList<ExcelClaim>();
 
-        // Integer cCount = 0;
-        // Integer vCount = 0;
-
-
-        //for(Integer iCount=0; iCount<claims.size(); iCount++){
         for (Object obj : claims) {
             Claim claim = (Claim)obj;
             ExcelClaim ec = new ExcelClaim();
             ExcelInvoice ev = new ExcelInvoice();
             ec.setClaim(claim);
-
-            // cCount ++;
-
-            // System.out.println("CLAIM CHO : "+claim.getChoReference());
 
             if (claim.getInvoice() != null) {
 
@@ -137,8 +132,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
                 ev.setChoReference(claim.getChoReference());
                 ev.setClaimStatus(claim.getStatus());
                 invoices.add(ev);
-            // vCount ++;
-            // System.out.println("INVOICE CHO : "+ev.getChoReference());
+
             }
 
             if (claim.getIncident() != null) {
@@ -177,9 +171,6 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
             comments.addAll(commentService.getCommentByClaimId(claim.getId()));
         }
 
-        // System.out.println("CLAIM COUNT:"+cCount);
-        // System.out.println("INVOICE COUNT:"+vCount);
-
         if (histories.size() <= 0) {
             histories = new ArrayList<History>();
         }
@@ -193,18 +184,21 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         excelMap.put("excelinvoices", invoices);
         excelMap.put("histories", histories);
         excelMap.put("comments", comments);
-
-        // String templateFileName = "C:\\Tomcat 6.0\\webapps\\CHOX\\WEB-INF\\classes\\claimTemplate.xls";
-        // String destFileName = "C:\\Users\\Carlson\\Desktop\\ExcelTest\\excel_report.xls";
-        // transformer.transformXLS(templateFileName, excelMap, destFileName);
-
+        
+        /*
         XLSTransformer transformer = new XLSTransformer();
         transformer.transformXLS(templateIS, excelMap).write(out);
-
+        */
+        
+        XLSTransformer transformer = new XLSTransformer();
+        transformer.transformXLS(templateIS, excelMap).write(out);
+        
         excelMap.clear();
         return out;
     }
-
+    
+    
+    
     public String execute() throws Exception {
 
         ByteArrayOutputStream buf = doExportExcel();
