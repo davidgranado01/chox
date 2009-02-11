@@ -527,7 +527,11 @@
                 }                            
             });
                     
-        }   
+        }
+        else
+        {
+            form.submit();
+        }            
     }
 
 </script>        
