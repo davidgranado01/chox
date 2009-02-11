@@ -62,63 +62,44 @@
     }
     
      
-    function doSubmitClaimNumber(a){
-                    registeAction(a);
-                    isClaimNumberInvalid();
+        function doSubmitClaimNumber(a){
+            registeAction(a);
+            isClaimNumberInvalid();
                     
-                    if(doFormValidationClaimNumber().form()){
-                        checkAndConfirClaimNumberDuplication();                       
-                    }                    
-                }
-                
-        function checkAndConfirClaimNumberDuplication()
-        {
-            var sClaimNumber = $("#claimNumber").val();
-            var sClaimId = $("#claimId").val();
-            if(sClaimNumber && sClaimNumber != null)
-            {
-                
-                $.get("checkIsClaimNumberDuplicated.action", { claimNumber: sClaimNumber, claimId: sClaimId },
-                function(data){
-                    if(data.trim()== "yes"){
-                        if(confirm("The claim number you have supplied is already associated with another claim(s). Do you wish to continue?"))
-                        {
-                            $("#formUpdateInsurerClaimNumber").submit();
-                        }
-                    }
-                    else{
-                        $("#formUpdateInsurerClaimNumber").submit();
-                    }                            
-                });
-                
-            }   
-        }
-    
+            if(doFormValidationClaimNumber().form()){
+                        
+                var sClaimNumber = $("#claimNumber").val();
+                var sClaimId = $("#claimId").val();
+                var form = $("#formUpdateInsurerClaimNumber");
+                checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form);                       
+            }                    
+        }                
+       
 </script>
 
 <form 
-onsubmit="return true;" 
-action="user/updateInsurerClaimNumber.action" 
-method="post" 
-  id="formUpdateInsurerClaimNumber" 
-name="formUpdateInsurerClaimNumber">
+    onsubmit="return true;" 
+    action="user/updateInsurerClaimNumber.action" 
+    method="post" 
+    id="formUpdateInsurerClaimNumber" 
+    name="formUpdateInsurerClaimNumber">
     <fieldset class="x-fieldset">
-            <s:hidden id="claimId" name="id" />
-            <s:hidden id="actionName" name="actionName" />
-            <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>        
+        <s:hidden id="claimId" name="id" />
+        <s:hidden id="actionName" name="actionName" />
+        <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>        
         <legend>Insurer Claim Number</legend>
-                <div class="status-control-set">
-    <table class="status-table">
-        <tr>
-            <td>
-                <label>Claim Number</label></td><td nowrap>
-                <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
-                <input type="button" value="Update Claim Number" onclick="javascript: doSubmitClaimNumber('updateClaimNumber');" /> 
-            </td>
-            <td></td><td></td>
-        </tr>
-    </table>
-                </div>
-                <div class="errorBox" id="ACKmessageBox"></div>
+        <div class="status-control-set">
+            <table class="status-table">
+                <tr>
+                    <td>
+                    <label>Claim Number</label></td><td nowrap>
+                        <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
+                        <input type="button" value="Update Claim Number" onclick="javascript: doSubmitClaimNumber('updateClaimNumber');" /> 
+                    </td>
+                    <td></td><td></td>
+                </tr>
+            </table>
+        </div>
+        <div class="errorBox" id="ACKmessageBox"></div>
     </fieldset>
 </form>
