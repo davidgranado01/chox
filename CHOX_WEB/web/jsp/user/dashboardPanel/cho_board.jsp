@@ -53,7 +53,7 @@
         <div class="form-container">
             
             <table cellpadding="0" cellspacing="0" class="dashboard" border="0">       
-                <tr><th nowrap>Number of Active Users</th><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
+                <tr><th nowrap><label id="tip0">Number of Active Users</label></th><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
                 <tr>
                     <th nowrap><label>Insurer</label></th><td><s:select name="insurerId" id="insurerId" list="insurers" listKey="value" listValue="text" headerKey="-1"
                                                                                                 headerValue="--- ALL ---"
