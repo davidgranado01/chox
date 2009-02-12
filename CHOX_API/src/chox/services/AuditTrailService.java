@@ -12,5 +12,5 @@ import chox.model.WebUser;
 public interface AuditTrailService {
     AuditTrail getObject(int id);
     public Boolean logAuditLog(String newStatus,String oldStatus, Claim thisClaim);
-    public Boolean logAuditLog(String newStatus, Claim thisClaim);
+    public Boolean logAuditLog(String newStatus, Claim thisClaim, Integer claimReasonOfRejection, Integer invoiceReasonOfRejection);
 }

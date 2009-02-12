@@ -25,6 +25,8 @@ public class AuditTrail implements Serializable,Auditable{
     protected Date createdDate;
     protected WebUser lastModifiedBy;
     protected Date lastModifiedDate;
+    protected int claimReasonOfRejection;
+    protected int invoiceReasonOfRejection;
 
     public Claim getClaim() {
         return claim;
@@ -106,4 +108,21 @@ public class AuditTrail implements Serializable,Auditable{
         this.createdDate = createdDate;
     }
 
+    public int getClaimReasonOfRejection() {
+        return claimReasonOfRejection;
+    }
+
+    public void setClaimReasonOfRejection(int claimReasonOfRejection) {
+        this.claimReasonOfRejection = claimReasonOfRejection;
+    }
+
+    public int getInvoiceReasonOfRejection() {
+        return invoiceReasonOfRejection;
+    }
+
+    public void setInvoiceReasonOfRejection(int invoiceReasonOfRejection) {
+        this.invoiceReasonOfRejection = invoiceReasonOfRejection;
+    }
+
+    
 }

@@ -12,7 +12,7 @@ import chox.model.WebUser;
 
 public class AuditTrailServiceImpl extends SecureDataService implements AuditTrailService{
     
-    public Boolean logAuditLog(String newStatus,String oldStatus, Claim thisClaim){
+    public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim){
        
         Boolean bFlag = false;
         
@@ -35,7 +35,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
                
     } 
     
-    public Boolean logAuditLog(String newStatus, Claim thisClaim){
+    public Boolean logAuditLog(String newStatus, Claim thisClaim, Integer claimReasonOfRejection, Integer invoiceReasonOfRejection){
        
         Boolean bFlag = false;
         
@@ -51,6 +51,15 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
             thisAuditTrail.setUser(getCurrentUser());
             //thisAuditTrail.setCreatedBy(getCurrentUser());
             //thisAuditTrail.setLastModifiedBy(getCurrentUser());
+            
+            if(claimReasonOfRejection!=null){
+                thisAuditTrail.setClaimReasonOfRejection(claimReasonOfRejection);
+            }
+            
+            if(invoiceReasonOfRejection!=null){
+                thisAuditTrail.setInvoiceReasonOfRejection(invoiceReasonOfRejection);
+            }
+            
             save(thisAuditTrail);
             bFlag = true;
         }
