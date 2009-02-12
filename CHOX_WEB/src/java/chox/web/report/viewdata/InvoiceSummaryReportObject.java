@@ -37,5 +37,5 @@ public class InvoiceSummaryReportObject {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
-    }
+    }    
 }

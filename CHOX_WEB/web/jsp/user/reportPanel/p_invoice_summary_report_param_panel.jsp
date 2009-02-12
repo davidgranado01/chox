@@ -80,11 +80,26 @@
     <legend>Invoice Summary Report</legend>
     <div class="x-panel-bwrap chox-form-container">      
         <div class="form-container">
-            <div class="status-info" align="justify">
-                This report provides infromation at a high level regarding the financials of CHOX invoices, including details relating to penalty charges as a result of late payments. The dates that require selection below refer to the date the invoice was uploaded onto CHOX.
+            
+            <div class="ReportActionMsg" align="justify">This report provides infromation at a high level regarding the financials of CHOX invoices, including details relating to penalty charges as a result of late payments. The dates that require selection below refer to the date the invoice was uploaded onto CHOX.
             </div>
             
-                <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">                    
+                <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">  
+<tr>
+<td nowrap><label>Credit Hire Organisation</label></td>
+<td>
+<s:select 
+    name="supplierId" 
+    id="supplierId" 
+    list="suppliers" 
+    listKey="id" 
+    listValue="name"
+    headerKey=""
+    headerValue="--- ALL ---"
+    emptyOption="false">
+    </s:select>
+</td>                            
+</tr>  
                     <tr>
                         <td nowrap width="30%"><label>Invoice Uploaded From</label></td><td><div id="dateFromDiv" /></td>                       
                     </tr>    

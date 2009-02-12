@@ -25,7 +25,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
     private String reportName;
     private DataService dataService;
     private LookupService lookupService;
-     private List insurers;
+    private List insurers;
     private List suppliers;
    
     public String buildReport() {

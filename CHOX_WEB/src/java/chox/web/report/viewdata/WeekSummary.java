@@ -4,6 +4,7 @@
  */
 package chox.web.report.viewdata;
 
+import chox.Util.MathHelper;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
@@ -14,6 +15,50 @@ import java.util.Map;
  */
 public class WeekSummary {
 
+    private String weekCycleDate;
+    private Integer claimsBFwd = 0;
+    private Integer claimsNotification = 0;
+    private Integer claimsOutOfScope = 0;
+    private Integer nonThisInsurerClaims = 0;
+    private Integer claimsPaid = 0;
+    private Integer claimsNotificationContestedByInsurer = 0;
+    private Integer claimsPendingByInsurer = 0;
+    private Integer claimsNotificationAcceptedByInsurer = 0;
+    private Integer claimsFNOLCreatedByInsurer = 0;
+    private Integer claimsInvoiced = 0;
+    private Integer invoiceContestedByInsurer = 0;
+    private Integer invoicePendingByInsurer = 0;
+    private Integer invoiceApprovedByInsurer = 0;
+    private Integer invoicePaidByInsurer = 0;
+    private Integer claimsToBeInvoiced = 0;
+    
+    // ClaimsCFwd - FORMULA
+    
+    public static WeekSummary getObject(Map data) {
+        
+        WeekSummary result = new WeekSummary();
+        
+        result.setWeekCycleDate(data.get("weekCycleDate").toString());
+        result.setClaimsBFwd(getIntegerValue(data.get("claimsBFwd".toLowerCase())));
+        result.setClaimsNotification(getIntegerValue(data.get("claimsNotification".toLowerCase())));
+        result.setClaimsOutOfScope(getIntegerValue(data.get("claimsOutOfScope".toLowerCase())));
+        result.setNonThisInsurerClaims(getIntegerValue(data.get("nonThisInsurerClaims".toLowerCase())));
+        result.setClaimsPaid(getIntegerValue(data.get("claimsPaid".toLowerCase())));
+        result.setClaimsNotificationContestedByInsurer(getIntegerValue(data.get("claimsNotificationContestedByInsurer".toLowerCase())));
+        result.setClaimsPendingByInsurer(getIntegerValue(data.get("claimsPendingByInsurer".toLowerCase())));
+        result.setClaimsNotificationAcceptedByInsurer(getIntegerValue(data.get("claimsNotificationAcceptedByInsurer".toLowerCase())));
+        result.setClaimsFNOLCreatedByInsurer(getIntegerValue(data.get("claimsFNOLCreatedByInsurer".toLowerCase())));
+        result.setClaimsInvoiced(getIntegerValue(data.get("claimsInvoiced".toLowerCase())));
+        result.setInvoiceContestedByInsurer(getIntegerValue(data.get("invoiceContestedByInsurer".toLowerCase())));
+        result.setInvoicePendingByInsurer(getIntegerValue(data.get("invoicePendingByInsurer".toLowerCase())));
+        result.setInvoiceApprovedByInsurer(getIntegerValue(data.get("invoiceApprovedByInsurer".toLowerCase())));
+        result.setInvoicePaidByInsurer(getIntegerValue(data.get("invoicePaidByInsurer".toLowerCase())));
+        result.setClaimsToBeInvoiced(getIntegerValue(data.get("claimsToBeInvoiced".toLowerCase())));
+        
+        return result;
+    }
+
+    /*
     private Integer newChoxNotification;
     private Integer claimWithdrawn;
     private Integer existingClaim;
@@ -32,7 +77,6 @@ public class WeekSummary {
     private Integer paidInvoiceByRsa;
     private BigDecimal paidInvoicePercentage;
     private Integer claimTobeInvoiced;
-    private String weekCycleDate;
 
     public static WeekSummary getObject(Map data) {
         WeekSummary result = new WeekSummary();
@@ -64,7 +108,7 @@ public class WeekSummary {
         result.setInScopeClaimContestedPercentage(cInScopeClaimContestedPercentage);
         return result;
     }
-
+    */
     private static Integer getIntegerValue(Object v) {
         if (v.getClass().equals(Integer.class)) {
             return (Integer) v;
@@ -75,148 +119,159 @@ public class WeekSummary {
         }
     }
 
-    public Integer getNewChoxNotification() {
-        return newChoxNotification;
+    public Integer getClaimsBFwd() {
+        return claimsBFwd;
     }
 
-    public void setNewChoxNotification(Integer newChoxNotification) {
-        this.newChoxNotification = newChoxNotification;
+    public void setClaimsBFwd(Integer claimsBFwd) {
+        this.claimsBFwd = claimsBFwd;
     }
 
-    public Integer getClaimWithdrawn() {
-        return claimWithdrawn;
+    public Integer getClaimsCFwd() {
+        return claimsBFwd + claimsNotification - claimsOutOfScope - nonThisInsurerClaims - claimsPaid;
     }
 
-    public void setClaimWithdrawn(Integer claimWithdrawn) {
-        this.claimWithdrawn = claimWithdrawn;
+    /*
+    public Integer getClaimsContestedAsPercentageOfChox() {
+        
+        Integer iClaimsContestedAsPercentageOfChox = 0;
+        float iClaimsCFwd = getClaimsCFwd();
+
+        if(claimsNotificationContestedByInsurer>0 && iClaimsCFwd>0){
+            float fClaimsNotificationContestedByInsurer = claimsNotificationContestedByInsurer.longValue();
+            float fClaimsContestedAsPercentageOfChox = fClaimsNotificationContestedByInsurer / iClaimsCFwd * 100;
+            iClaimsContestedAsPercentageOfChox = (int) Round(fClaimsContestedAsPercentageOfChox,0);
+        }
+
+        return iClaimsContestedAsPercentageOfChox;
+    }
+    */
+    
+    public BigDecimal getClaimsContestedAsPercentageOfChox() {
+        
+        float fClaimsNotificationContestedByInsurer = claimsNotificationContestedByInsurer.longValue();
+        float fClaimsCFwd = getClaimsCFwd();
+        
+        return MathHelper.getPercentage(fClaimsNotificationContestedByInsurer, fClaimsCFwd);
+    }
+    
+    public Integer getClaimsFNOLCreatedByInsurer() {
+        return claimsFNOLCreatedByInsurer;
     }
 
-    public Integer getExistingClaim() {
-        return existingClaim;
+    public void setClaimsFNOLCreatedByInsurer(Integer claimsFNOLCreatedByInsurer) {
+        this.claimsFNOLCreatedByInsurer = claimsFNOLCreatedByInsurer;
     }
 
-    public void setExistingClaim(Integer existingClaim) {
-        this.existingClaim = existingClaim;
+    public Integer getClaimsInvoiced() {
+        return claimsInvoiced;
     }
 
-    public Integer getCumulativeClaim() {
-        return cumulativeClaim;
+    public void setClaimsInvoiced(Integer claimsInvoiced) {
+        this.claimsInvoiced = claimsInvoiced;
     }
 
-    public void setCumulativeClaim(Integer cumulativeClaim) {
-        this.cumulativeClaim = cumulativeClaim;
+    public Integer getClaimsNotification() {
+        return claimsNotification;
     }
 
-    public Integer getClaimOutOfScope() {
-        return claimOutOfScope;
+    public void setClaimsNotification(Integer claimsNotification) {
+        this.claimsNotification = claimsNotification;
     }
 
-    public void setClaimOutOfScope(Integer claimOutOfScope) {
-        this.claimOutOfScope = claimOutOfScope;
+    public Integer getClaimsNotificationAcceptedByInsurer() {
+        return claimsNotificationAcceptedByInsurer;
     }
 
-    public Integer getClaimInScope() {
-        return claimInScope;
+    public void setClaimsNotificationAcceptedByInsurer(Integer claimsNotificationAcceptedByInsurer) {
+        this.claimsNotificationAcceptedByInsurer = claimsNotificationAcceptedByInsurer;
     }
 
-    public void setClaimInScope(Integer claimInScope) {
-        this.claimInScope = claimInScope;
+    public Integer getClaimsNotificationContestedByInsurer() {
+        return claimsNotificationContestedByInsurer;
     }
 
-    public Integer getClaimNotificationContestedByRsa() {
-        return claimNotificationContestedByRsa;
+    public void setClaimsNotificationContestedByInsurer(Integer claimsNotificationContestedByInsurer) {
+        this.claimsNotificationContestedByInsurer = claimsNotificationContestedByInsurer;
     }
 
-    public void setClaimNotificationContestedByRsa(Integer claimNotificationContestedByRsa) {
-        this.claimNotificationContestedByRsa = claimNotificationContestedByRsa;
+    public Integer getClaimsOutOfScope() {
+        return claimsOutOfScope;
     }
 
-    public Integer getClaimPendingByRsa() {
-        return claimPendingByRsa;
+    public void setClaimsOutOfScope(Integer claimsOutOfScope) {
+        this.claimsOutOfScope = claimsOutOfScope;
     }
 
-    public void setClaimPendingByRsa(Integer claimPendingByRsa) {
-        this.claimPendingByRsa = claimPendingByRsa;
+    public Integer getClaimsPaid() {
+        return claimsPaid;
     }
 
-    public Integer getClaimNotificationAcceptedByRsa() {
-        return claimNotificationAcceptedByRsa;
+    public void setClaimsPaid(Integer claimsPaid) {
+        this.claimsPaid = claimsPaid;
     }
 
-    public void setClaimNotificationAcceptedByRsa(Integer claimNotificationAcceptedByRsa) {
-        this.claimNotificationAcceptedByRsa = claimNotificationAcceptedByRsa;
+    public Integer getClaimsPendingByInsurer() {
+        return claimsPendingByInsurer;
     }
 
-    public BigDecimal getInScopeClaimContestedPercentage() {
-        return inScopeClaimContestedPercentage;
+    public void setClaimsPendingByInsurer(Integer claimsPendingByInsurer) {
+        this.claimsPendingByInsurer = claimsPendingByInsurer;
     }
 
-    public void setInScopeClaimContestedPercentage(BigDecimal inScopeClaimContestedPercentage) {
-        this.inScopeClaimContestedPercentage = inScopeClaimContestedPercentage;
+    public Integer getClaimsToBeInvoiced() {
+        return claimsNotificationAcceptedByInsurer - claimsInvoiced;
+        // return claimsToBeInvoiced;
     }
 
-    public Integer getClaimFnolCreatedByRsa() {
-        return claimFnolCreatedByRsa;
+    public void setClaimsToBeInvoiced(Integer claimsToBeInvoiced) {
+        this.claimsToBeInvoiced = claimsToBeInvoiced;
     }
 
-    public void setClaimFnolCreatedByRsa(Integer claimFnolCreatedByRsa) {
-        this.claimFnolCreatedByRsa = claimFnolCreatedByRsa;
+    public Integer getInvoiceApprovedByInsurer() {
+        return invoiceApprovedByInsurer;
     }
 
-    public Integer getClaimInvoiced() {
-        return claimInvoiced;
+    public void setInvoiceApprovedByInsurer(Integer invoiceApprovedByInsurer) {
+        this.invoiceApprovedByInsurer = invoiceApprovedByInsurer;
     }
 
-    public void setClaimInvoiced(Integer claimInvoiced) {
-        this.claimInvoiced = claimInvoiced;
+    public Integer getInvoiceContestedByInsurer() {
+        return invoiceContestedByInsurer;
     }
 
-    public Integer getContestedinvoiceByRsa() {
-        return contestedinvoiceByRsa;
+    public void setInvoiceContestedByInsurer(Integer invoiceContestedByInsurer) {
+        this.invoiceContestedByInsurer = invoiceContestedByInsurer;
     }
 
-    public void setContestedinvoiceByRsa(Integer contestedinvoiceByRsa) {
-        this.contestedinvoiceByRsa = contestedinvoiceByRsa;
+    public BigDecimal getInvoicePaidAsPercentageOfInvoicing(){
+        float fInvoicePaidByInsurer = invoicePaidByInsurer.longValue();
+        float fClaimsInvoiced = claimsInvoiced.longValue();
+        return MathHelper.getPercentage(fInvoicePaidByInsurer, fClaimsInvoiced);
     }
 
-    public Integer getPendingInvoiceByRsa() {
-        return pendingInvoiceByRsa;
+    public Integer getInvoicePaidByInsurer() {
+        return invoicePaidByInsurer;
     }
 
-    public void setPendingInvoiceByRsa(Integer pendingInvoiceByRsa) {
-        this.pendingInvoiceByRsa = pendingInvoiceByRsa;
+    public void setInvoicePaidByInsurer(Integer invoicePaidByInsurer) {
+        this.invoicePaidByInsurer = invoicePaidByInsurer;
     }
 
-    public Integer getApprovedInvoiceByRsa() {
-        return approvedInvoiceByRsa;
+    public Integer getInvoicePendingByInsurer() {
+        return invoicePendingByInsurer;
     }
 
-    public void setApprovedInvoiceByRsa(Integer approvedInvoiceByRsa) {
-        this.approvedInvoiceByRsa = approvedInvoiceByRsa;
+    public void setInvoicePendingByInsurer(Integer invoicePendingByInsurer) {
+        this.invoicePendingByInsurer = invoicePendingByInsurer;
     }
 
-    public Integer getPaidInvoiceByRsa() {
-        return paidInvoiceByRsa;
+    public Integer getNonThisInsurerClaims() {
+        return nonThisInsurerClaims;
     }
 
-    public void setPaidInvoiceByRsa(Integer paidInvoiceByRsa) {
-        this.paidInvoiceByRsa = paidInvoiceByRsa;
-    }
-
-    public BigDecimal getPaidInvoicePercentage() {
-        return paidInvoicePercentage;
-    }
-
-    public void setPaidInvoicePercentage(BigDecimal paidInvoicePercentage) {
-        this.paidInvoicePercentage = paidInvoicePercentage;
-    }
-
-    public Integer getClaimTobeInvoiced() {
-        return claimTobeInvoiced;
-    }
-
-    public void setClaimTobeInvoiced(Integer claimTobeInvoiced) {
-        this.claimTobeInvoiced = claimTobeInvoiced;
+    public void setNonThisInsurerClaims(Integer nonThisInsurerClaims) {
+        this.nonThisInsurerClaims = nonThisInsurerClaims;
     }
 
     public String getWeekCycleDate() {
@@ -225,5 +280,6 @@ public class WeekSummary {
 
     public void setWeekCycleDate(String weekCycleDate) {
         this.weekCycleDate = weekCycleDate;
-    }
+    }  
+    
 }

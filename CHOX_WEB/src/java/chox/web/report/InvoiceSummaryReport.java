@@ -43,8 +43,11 @@ public class InvoiceSummaryReport implements Report {
         HashMap reportParameters = new HashMap();
 
         try {
+            
             Date dataStart = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
             Date dataEnd = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateEnd"))[0]);
+            String supplierId = ((String[]) externalParameter.get("supplierId"))[0];
+            
             PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
 
             String query = "Select chorganisation.id,chorganisation.name, insurer_chorganisation.insurer_id," 
@@ -61,36 +64,45 @@ public class InvoiceSummaryReport implements Report {
             + "(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and panalty_charge>0.00 and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as noOfInvoicesWithPenalties,"
             + "(select case when sum(panalty_charge) is null then 0.00 else sum(panalty_charge) end as no_sum from rpt_claim_invoice where insurer_id = insurer_chorganisation.insurer_id and chorganisation_id = insurer_chorganisation.chorganisation_id and panalty_charge>0.00 and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo) as valueOfInvoicesWithPenalties"
             + " from chorganisation chorganisation inner join insurer_chorganisation insurer_chorganisation on insurer_chorganisation.chorganisation_id = chorganisation.id"
-            + " where insurer_chorganisation.insurer_id=@pInsId";
+            + " where insurer_chorganisation.insurer_id=@pInsId ";
             
-            /*if (orgId > 0) {
-            if (currentUser.getIsCHO()) {
-            query = "select chorganisation.id,insurer.id,insurer.name," + query;
-            query += " where insurer_chorganisation.insurer_id=pOrgId";
-            query += " and insurer_chorganisation.chorganisation_id=" + currentUser.getUser().getChorganisation().getId();
-            } else {
-            query = "select chorganisation.id,insurer.id,chorganisation.name," + query;
-            query += " where insurer_chorganisation.chorganisation_id=pOrgId";
-            query += " and insurer_chorganisation.insurer_id=" + currentUser.getUser().getInsurer().getId();
+            if(!supplierId.equalsIgnoreCase("")){
+                query = query + "and insurer_chorganisation.chorganisation_id = @supplierId";
             }
-            }
-            else
-            {
-            if (currentUser.getIsCHO()) {
-            query = "select chorganisation.id,insurer.id,insurer.name," + query;
-            query += " where insurer_chorganisation.chorganisation_id=" + currentUser.getUser().getChorganisation().getId();;
-            } else {
-            query = "select chorganisation.id,insurer.id,chorganisation.name," + query;
-            query += " where insurer_chorganisation.insurer_id=" + currentUser.getUser().getInsurer().getId();
-            }
-            }*/
+            
+            query = query + "order by chorganisation.id,chorganisation.name asc";
+
+                /*if (orgId > 0) {
+                if (currentUser.getIsCHO()) {
+                query = "select chorganisation.id,insurer.id,insurer.name," + query;
+                query += " where insurer_chorganisation.insurer_id=pOrgId";
+                query += " and insurer_chorganisation.chorganisation_id=" + currentUser.getUser().getChorganisation().getId();
+                } else {
+                query = "select chorganisation.id,insurer.id,chorganisation.name," + query;
+                query += " where insurer_chorganisation.chorganisation_id=pOrgId";
+                query += " and insurer_chorganisation.insurer_id=" + currentUser.getUser().getInsurer().getId();
+                }
+                }
+                else
+                {
+                if (currentUser.getIsCHO()) {
+                query = "select chorganisation.id,insurer.id,insurer.name," + query;
+                query += " where insurer_chorganisation.chorganisation_id=" + currentUser.getUser().getChorganisation().getId();;
+                } else {
+                query = "select chorganisation.id,insurer.id,chorganisation.name," + query;
+                query += " where insurer_chorganisation.insurer_id=" + currentUser.getUser().getInsurer().getId();
+                }
+                }*/
 
             query = query.replaceAll("@pInvUploadDateFrom", "'" + DateHelper.DBDateFormat.format(dataStart) + "'");
             query = query.replaceAll("@pInvUploadDateTo", "'" + DateHelper.DBDateFormat.format(dataEnd) + "'");
             Insurer ins = currentUser.getUser().getInsurer();
             Integer insId = ins.getId();
             query = query.replaceAll("@pInsId", insId.toString());
-
+            query = query.replaceAll("@supplierId", supplierId.trim());
+            
+            //System.out.println("Invoice Summary Report Query:"+query.toString().toUpperCase());
+            
             List result = dataService.externalQuery(query);
             List<InvoiceSummary> invoiceSummaries = new ArrayList<InvoiceSummary>();
             for (Object o : result) {
