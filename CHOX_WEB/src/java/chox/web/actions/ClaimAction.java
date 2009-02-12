@@ -288,7 +288,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                 try {
                     String newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
-                    auditTrailService.logAuditLog(newStatus, claim);
+                    auditTrailService.logAuditLog(newStatus, claim, null, null);
                     claim.setStatus(newStatus);
                     this.service.updateClaim(claim);
 
@@ -332,7 +332,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 claim.setEngineerClaimReviewNotes("");
                 claim.setIsFnolReviewed(false);
 
-                auditTrailService.logAuditLog(newStatus, claim);
+                auditTrailService.logAuditLog(newStatus, claim, null, null);
 
                 claim.setStatus(newStatus);
                 this.service.updateClaim(claim);
@@ -363,7 +363,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (!result.equalsIgnoreCase(ERROR)) {
             try {
-                auditTrailService.logAuditLog(newStatus, claim);
+                auditTrailService.logAuditLog(newStatus, claim, null, null);
                 claim.setStatus(newStatus);
                 this.service.updateClaim(claim);
             } catch (Exception ex) {
@@ -403,7 +403,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             claim.setEngineerClaimReviewNotes("");
 
-            auditTrailService.logAuditLog(newStatus, claim);
+            auditTrailService.logAuditLog(newStatus, claim, null, null);
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -417,15 +417,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         String newStatus;
-
+        
+        Integer iClaimRejectionReasonId = null;
+        
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
+            
             newStatus = ClaimStatus.CLAIM_REJECTION_ACCEPTED;
+            iClaimRejectionReasonId = claim.getReasonOfRejectionId();
+            
         } else {
             newStatus = ClaimStatus.CLAIM_REJECTION_CONTESTED;
         }
-
+        
         try {
-            auditTrailService.logAuditLog(newStatus, claim);
+            auditTrailService.logAuditLog(newStatus, claim, iClaimRejectionReasonId, null);
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -473,7 +478,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);
                 claim.setEngineerClaimReviewNotes("");
 
-                auditTrailService.logAuditLog(newStatus, claim);
+                auditTrailService.logAuditLog(newStatus, claim, null, null);
                 this.claim.setStatus(newStatus);
                 this.service.updateClaim(claim);
                 statusMsg = "Your action has been recorded";
@@ -495,7 +500,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (validationResult.isEmpty()) {
             String newStatus = ClaimStatus.AWAITING_INVOICE_DATA;
             try {
-                auditTrailService.logAuditLog(newStatus, claim);
+                auditTrailService.logAuditLog(newStatus, claim, null, null);
                 this.claim.setStatus(newStatus);
                 this.service.updateClaim(claim);
             } catch (Exception ex) {
@@ -543,7 +548,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim = service.getClaim(claim.getId());
 
             try {
-                auditTrailService.logAuditLog(repStatus, claim);
+                auditTrailService.logAuditLog(repStatus, claim, null, null);
                 claim.setStatus(repStatus);
                 this.service.updateClaim(claim);
             } catch (Exception ex) {
@@ -571,7 +576,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             newStatus = ClaimStatus.CLAIM_REJECTION_CONTESTED;
         }
         try {
-            auditTrailService.logAuditLog(newStatus, claim);
+            auditTrailService.logAuditLog(newStatus, claim, null, null);
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -596,7 +601,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
         }
         try {
-            auditTrailService.logAuditLog(newStatus, claim);
+            auditTrailService.logAuditLog(newStatus, claim, null, null);
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -633,7 +638,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
         }
         try {
-            auditTrailService.logAuditLog(newStatus, claim);
+            auditTrailService.logAuditLog(newStatus, claim, null, null);
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
 
@@ -655,7 +660,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
         }
         try {
-            auditTrailService.logAuditLog(newStatus, claim);
+            auditTrailService.logAuditLog(newStatus, claim, null, null);
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -670,6 +675,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         String newStatus;
+        Integer invoiceReasonOfRejectionId = null;
 
         if (this.actionName.equalsIgnoreCase(REJECT)) {
 
@@ -681,10 +687,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         } else {
             newStatus = ClaimStatus.INVOICE_REJECTED_ACCEPTED;
+            invoiceReasonOfRejectionId = claim.getInvoice().getReasonOfRejectionId();
         }
 
         try {
-            auditTrailService.logAuditLog(newStatus, claim);
+            auditTrailService.logAuditLog(newStatus, claim, null, invoiceReasonOfRejectionId);
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -699,7 +706,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String logInvoicePayment() {
         String newStatus = ClaimStatus.INVOICE_PAYMENT_LOGGED;
         try {
-            auditTrailService.logAuditLog(newStatus, claim);
+            auditTrailService.logAuditLog(newStatus, claim, null, null);
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -910,7 +917,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
             claim = service.getClaim(id);
             String newStatus = ClaimStatus.CLAIM_CLOSED;
-            auditTrailService.logAuditLog(newStatus, claim);
+            auditTrailService.logAuditLog(newStatus, claim, null, null);
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -925,7 +932,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
             claim = service.getClaim(id);
             String newStatus = claim.getPreviousStatus();
-            auditTrailService.logAuditLog(newStatus, claim);
+            auditTrailService.logAuditLog(newStatus, claim, null, null);
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
