@@ -385,3 +385,7 @@ UPDATE CLAIM SET status_modified_date=DATE('02/04/2009'), previous_status='Await
 UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=383;
 
 ------------------------------------------------------------------------------------------------
+
+update reason_of_rejection set name='Undisclosed' where name='Disclosed'
+
+------------------------------------------------------------------------------------------------
