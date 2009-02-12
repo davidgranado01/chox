@@ -389,3 +389,31 @@ UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='Await
 update reason_of_rejection set name='Undisclosed' where name='Disclosed'
 
 ------------------------------------------------------------------------------------------------
+
+ALTER TABLE audit_trail ADD COLUMN claim_reason_of_rejection integer;
+ALTER TABLE audit_trail ALTER COLUMN claim_reason_of_rejection SET STORAGE PLAIN;
+
+ALTER TABLE audit_trail ADD COLUMN invoice_reason_of_rejection integer;
+ALTER TABLE audit_trail ALTER COLUMN invoice_reason_of_rejection SET STORAGE PLAIN;
+
+------------------------------------------------------------------------------------------------
+
+DROP VIEW rpt_claim_audit_trail;
+
+CREATE OR REPLACE VIEW rpt_claim_audit_trail AS 
+
+-- VERSION 2.0
+-- DESCRIPTION: GET AUDIT TRAIL WITH CLAIM
+
+SELECT audit_trail.id, audit_trail.update_date, audit_trail.user_id, audit_trail.claim_id, audit_trail.original_status, audit_trail.new_status, audit_trail.created_by, 
+audit_trail.created_date, audit_trail.last_modified_by, audit_trail.last_modified_date, claim.insurer_id, claim.chorganisation_id, invoice.total_to_pay, 
+invoice.panalty_charge , invoice.id as invoice_id, 
+case when audit_trail.claim_reason_of_rejection = 0 then null else audit_trail.claim_reason_of_rejection end as claim_reason_of_rejection, 
+case when audit_trail.invoice_reason_of_rejection = 0 then null else audit_trail.invoice_reason_of_rejection end as invoice_reason_of_rejection
+FROM audit_trail audit_trail 
+inner join claim claim on claim.id=audit_trail.claim_id
+left outer join invoice invoice on claim.invoice_id=invoice.id;
+
+
+ALTER TABLE rpt_claim_audit_trail OWNER TO postgres;
+
