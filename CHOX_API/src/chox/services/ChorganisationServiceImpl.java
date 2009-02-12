@@ -12,4 +12,8 @@ public class ChorganisationServiceImpl  extends SecureDataService implements Cho
         return chorg;
         
     }
+
+    public Chorganisation getObject(int id) {
+        return (Chorganisation) get(Chorganisation.class, id);
+    }
 }

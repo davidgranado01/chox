@@ -47,7 +47,7 @@ public class XmlHelper {
     public static final Boolean isMAN_Claim_Customer_Insurer_policyNumber= true;
     public static final Boolean isMAN_Driver_Postcode= true;
     public static final Boolean isMAN_Driver_Lastname= true;
-    public static final Boolean isMAN_Driver_Telephone_day= true;
+    public static final Boolean isMAN_Driver_Telephone_day= false;
     public static final Boolean isMAN_Driver_Telephone_Evening= false;
     public static final Boolean isMAN_Driver_Title= true;
     public static final Boolean isMAN_Driver_Age= false;
