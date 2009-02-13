@@ -74,7 +74,6 @@
     }); 
     
 </script>
-
 <div>
     
     <table id="searchForm" cellpadding="0" cellspacing="0" class="searchForm" border="0">
@@ -135,12 +134,9 @@
         </tr>                 
         
     </table>
-    
     <div class="buttonPanel">
         <div>
             <input type="button" onclick="javascript:searchClaim();" value="Search" />
         </div>
-        
     </div>
-    
 </div>

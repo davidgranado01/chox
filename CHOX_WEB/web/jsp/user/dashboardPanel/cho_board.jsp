@@ -43,7 +43,7 @@
     <fieldset class="x-fieldset">
         <legend>CHO Admin Dashboard</legend>
         
-        <div class="status">
+        <div class="ReportActionMsg">
                This dashboard displays a snapshot of claims in the system
                   to date across a weekly, monthly and yearly period. Results can
                   be viewed for an individual Insurer or across the entire Insurer
@@ -60,8 +60,7 @@
                                                                                             emptyOption="false"></s:select></td>                         
                 </tr>                       
             </table>
-            <div style="height:580px;" id="resultHolder"></div>
-
+            <div style="height:500px; width:900px" id="resultHolder"></div>
         </div>        
         
     </fieldset>

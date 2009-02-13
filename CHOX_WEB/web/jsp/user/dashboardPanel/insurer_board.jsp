@@ -39,27 +39,41 @@
     </script>  
 </head>
 
-<div class="x-panel-bwrap chox-form-container"> 
+<div class="x-panel-bwrap chox-form-container">
     <fieldset class="x-fieldset">
         <legend>Insurer Admin Dashboard</legend>
         
-        <div class="status">
+        <div class="ReportActionMsg">
             This dashboard displays a snapshot of claims in the
             system to date across a weekly, monthly and yearly period.
             Results can be viewed for an individual CHO or across the entire
             CHO book.
         </div>
+        
         <div class="dashboard" class="form-container">
-            
-            <table cellpadding="0" cellspacing="0" class="dashboard" border="0">       
-            <tr><th nowrap><label id="tip0">Number of Active Users</label></th><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
-                <tr><th nowrap><label>Credit Hire Organisation</label></th><td colspan="2"><s:select name="supplierId" id="supplierId" list="suppliers" listKey="value" listValue="text" headerKey="-1"
-                                                                                                         headerValue="--- ALL ---"
-                                                                                                     emptyOption="false"></s:select></td>                         
-                </tr>                       
+            <table cellpadding="0" cellspacing="0" class="dashboard" border="0">  
+            <tr>
+                <th nowrap>
+                <label id="tip0">Number of Active Users</label></th><td colspan="2"><label class="std-data-ro">
+                <s:property value="numberOfActiveUser"/></label></td>
+            </tr>
+            <tr>
+                <th nowrap><label>Credit Hire Organisation</label></th><td colspan="2">
+                <s:select 
+                name="supplierId" 
+                id="supplierId" 
+                list="suppliers" 
+                listKey="value" 
+                listValue="text" 
+                headerKey="-1"
+                headerValue="--- ALL ---"
+                emptyOption="false"></s:select></td>              
+            </tr>
             </table>
-            <div style="height:580px" id="resultHolder"></div>
-        </div>        
+            
+            <div style="height:500px; width:900px" id="resultHolder"></div>
+            
+        </div>
         
     </fieldset>
 </div>

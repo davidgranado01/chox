@@ -58,7 +58,7 @@
                             <td width="100%" align="right">
                                 <div class="top-menu">
                                     <a href="<s:url action="inbox"/>">Home</a>&nbsp;|&nbsp;
-                                    <a href="<s:url action="openUserAccount" />">Setting</a>&nbsp;|&nbsp;
+                                    <a href="<s:url action="openUserAccount" />">Settings</a>&nbsp;|&nbsp;
                                     <s:if test="isCHO">
                                     <a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;|&nbsp;
                                     </s:if> 

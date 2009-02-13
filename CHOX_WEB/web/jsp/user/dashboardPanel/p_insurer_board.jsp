@@ -1,8 +1,3 @@
-<%-- 
-    Document   : insurer_board
-    Created on : 02-Feb-2009, 16:19:35
-    Author     : Emmanuel
---%>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
@@ -32,6 +27,7 @@
     
 </script>
 
+
 <table cellpadding="0" cellspacing="0" class="dashboard" style="width:100%;" border="0">
     <tr><td nowrap>&nbsp;</td>                                                               <th nowrap style="text-align:right;">Week To Date</th>                                                                                           <th nowrap style="text-align:right;">Month To Date</th>                                                                          <th nowrap style="text-align:right;">Cumulative</th></tr>
     <tr><th nowrap><label id="tip1">Number of Claim Notifications Submitted</label></th>	<td nowrap><label><s:property value="w2DData.noOfClaimNotificationsSubmitted"/></label></td>	<td nowrap><label><s:property value="m2DData.noOfClaimNotificationsSubmitted"/></label></td>	<td nowrap><label><s:property value="cData.noOfClaimNotificationsSubmitted"/></label></td></tr>
@@ -52,4 +48,3 @@
     <tr><th nowrap><label id="tip16">Value of Invoices Payment Logged</label></th>                      <td nowrap><label>£<s:property value="w2DData.valueOfInvoicesPaymentLogged"/></label></td>                 <td nowrap><label>£<s:property value="m2DData.valueOfInvoicesPaymentLogged"/></label></td>                 <td nowrap><label>£<s:property value="cData.valueOfInvoicesPaymentLogged"/></label></td></tr>
     <tr><th nowrap><label id="tip17">Total Value of Penalty Charges Applied</label></th>	<td nowrap><label>£<s:property value="w2DData.totalValueOfPenaltyChargesApplied"/></label></td>	<td nowrap><label>£<s:property value="m2DData.totalValueOfPenaltyChargesApplied"/></label></td>	<td nowrap><label>£<s:property value="cData.totalValueOfPenaltyChargesApplied"/></label></td></tr>    
 </table>
-

@@ -29,7 +29,6 @@
 <script type="text/javascript">
     
     
-    
     var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
     var invoiceDetailTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
     var hireMonitoringTabAccessibility = <s:property value="tabAccessibility.hireMonitoringTabAccessibility" />;
@@ -553,7 +552,7 @@
                             <td width="100%" align="right">
                                 <div class="top-menu">
                                     <a href='<s:url action="inbox"/>'>Home</a>&nbsp;|&nbsp;
-                                    <a href="<s:url action="openUserAccount" />">Setting</a>&nbsp;|&nbsp;
+                                    <a href="<s:url action="openUserAccount" />">Settings</a>&nbsp;|&nbsp;
                                     <s:if test="isCHO">
                                     <a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;|&nbsp;
                                     </s:if>
@@ -572,7 +571,7 @@
                         </tr>
                     </table>
                 </div>
-                                
+
                 <div style="width:960px">
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">
                         <fieldset class="x-fieldset">
@@ -682,8 +681,30 @@
                 <div id="userViewingThisClaimDiv" class="status-warning" style="display:none;">                      
                         This claim is currently being viewed and / or modified by the following user(s) : <span id="userViewingThisClaim"></span>
                 </div>
-
-                <div class="chox-claim-header x-panel-bwrap chox-form-container">    
+                
+<script language="JavaScript">
+    
+    $(document).ready(function() {
+        
+        var strgeneralActionPanelText = $("#generalActionPanel").html();
+        strgeneralActionPanelText = strgeneralActionPanelText.replace('<div class="action-message"></div>',"");
+        strgeneralActionPanelText = strgeneralActionPanelText.replace('<h1>',"");
+        strgeneralActionPanelText = strgeneralActionPanelText.replace('</h1>',"");
+        strgeneralActionPanelText = strgeneralActionPanelText.replace(/\s+/g,'');
+        
+        if(strgeneralActionPanelText.length<=0){
+            $("#generalActionPanel").hide();
+            $("#generalActionPanel").css("display:", "none"); 
+        }else{
+            $("#generalActionPanel").show();
+            $("#generalActionPanel").css("display:", "block");
+        }
+        
+    });
+   
+    
+</script>
+                <div class="chox-claim-header x-panel-bwrap chox-form-container" id="generalActionPanel" style="display: none;">    
                     <s:action name="getActionPanel" executeResult="true" />
                     <div class="action-message"><s:property value="actionResult" /></div>
                 </div>
@@ -1093,7 +1114,6 @@
         <div class="errorBox" id="CmErrMsgBox" style="color:red;font-weight: bold;font-size: 10px;"></div>        
     </div>
 
-    <!-- template for modal comment-->
     <div style="display:none" id="commentTemplate">
         <input type="button" value="Close" id="commentModalClose">
         <br/>

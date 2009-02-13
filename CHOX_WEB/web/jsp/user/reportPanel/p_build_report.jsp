@@ -28,7 +28,7 @@
                 <fieldset class="x-fieldset">
                     <legend>Report List</legend>                    
                     <div class="x-panel-bwrap chox-form-container">
-                        <div class="status-info">
+                        <div class="ReportActionMsg">
                             Please select from the list of available reports
                         </div>
                         <div style="height:400px;" class="x-panel-bwrap chox-form-container">

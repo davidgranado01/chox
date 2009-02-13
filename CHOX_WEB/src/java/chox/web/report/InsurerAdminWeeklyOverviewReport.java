@@ -9,6 +9,7 @@ import chox.model.Chorganisation;
 import chox.model.Insurer;
 import chox.services.DataService;
 import chox.services.ChorganisationService;
+import chox.web.actions.BaseAction;
 import chox.web.report.viewdata.WeekSummary;
 import chox.web.report.viewdata.WeekSummaryReportObject;
 import chox.web.security.PermissionedUser;
@@ -19,19 +20,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 
-/**
- *
- * @author Emmanuel
- */
 
-
-public class InsurerAdminWeeklyOverviewReport implements Report {
+public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Report {
 
     Map externalParameter;
     List<String> reportParameterNames;
     private DataService dataService;
-    private ChorganisationService chorganisationService;
 
     public InsurerAdminWeeklyOverviewReport() {
         reportParameterNames = new ArrayList<String>();
@@ -45,6 +48,21 @@ public class InsurerAdminWeeklyOverviewReport implements Report {
         this.externalParameter = parameters;
     }
 
+    private Chorganisation getChorganisation(int orgId){
+        
+        Chorganisation chorg = new Chorganisation();
+                
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
+            criteria.add(Restrictions.eq("id", orgId));
+            chorg = (Chorganisation)dataService.getByCriteria(criteria);
+            
+        } catch (Throwable e) {
+           e.printStackTrace();
+        } 
+        
+        return chorg;
+    }
     public HashMap getReportParameters() {
         
         HashMap reportParameters = new HashMap();
@@ -63,10 +81,8 @@ public class InsurerAdminWeeklyOverviewReport implements Report {
             
             String strChorganisationName = "All";
             if(!supplierId.equalsIgnoreCase("")){
-                    iSupplierId = Integer.parseInt(supplierId);
-                // System.out.println(supplierId + " ::: supplierId ::::::::::::::::: " + Integer.parseInt(supplierId));
-                // Chorganisation chorganisation = chorganisationService.getObject(Integer.parseInt(supplierId));
-                // strChorganisationName = chorganisation.getName();
+                iSupplierId = Integer.parseInt(supplierId);
+                strChorganisationName = getChorganisation(iSupplierId).getName();
             }
             
             Date startDate = DateHelper.LocalDateFormat.parse(dataStartRaw);//user selected start date of report
@@ -165,10 +181,6 @@ public class InsurerAdminWeeklyOverviewReport implements Report {
 
     public void setDataService(DataService dataService) {
         this.dataService = dataService;
-    }
-    
-    public void setChorganisationService(ChorganisationService chorganisationService) {
-        this.chorganisationService = chorganisationService;
     }
     
 }
