@@ -220,8 +220,7 @@ public class WeekSummary {
     }
 
     public Integer getClaimsToBeInvoiced() {
-        return claimsNotificationAcceptedByInsurer - claimsInvoiced;
-        // return claimsToBeInvoiced;
+        return claimsToBeInvoiced;
     }
 
     public void setClaimsToBeInvoiced(Integer claimsToBeInvoiced) {
