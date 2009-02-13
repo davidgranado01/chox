@@ -127,16 +127,6 @@ ALTER TABLE reason_of_rejection OWNER TO postgres;
 
 ------------------------------------------------------------------------------------------------
 
-CREATE SEQUENCE reason_of_rejection_id_seq
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 106
-  CACHE 1;
-ALTER TABLE reason_of_rejection_id_seq OWNER TO postgres;
-
-------------------------------------------------------------------------------------------------
-
 ALTER TABLE reason_of_rejection ALTER COLUMN id SET DEFAULT nextval('reason_of_rejection_id_seq'::regclass);
 
 ------------------------------------------------------------------------------------------------
@@ -144,20 +134,19 @@ ALTER TABLE reason_of_rejection ALTER COLUMN id SET DEFAULT nextval('reason_of_r
 -- INSERT REASON
 
 insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (1, 'Indemnity Issues','Claim', true, current_date, current_date, 999, 999);
-insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Liability Issues','Claim', true, current_date, current_date, 999, 999);
-insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Indemnity and Liability Issues','Claim', true, current_date, current_date, 999, 999);
-insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Out of Scope','Claim', true, current_date, current_date, 999, 999);
-insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Not our Policyholder','Claim', true, current_date, current_date, 999, 999);
+insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (2, 'Liability Issues','Claim', true, current_date, current_date, 999, 999);
+insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (3, 'Indemnity and Liability Issues','Claim', true, current_date, current_date, 999, 999);
+insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (4, 'Out of Scope','Claim', true, current_date, current_date, 999, 999);
+insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (5, 'Not our Policyholder','Claim', true, current_date, current_date, 999, 999);
 insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (998, 'Other','Claim', true, current_date, current_date, 999, 999);
-insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Like for Like','Invoice', true, current_date, current_date, 999, 999);
-insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Quantum','Invoice', true, current_date, current_date, 999, 999);
-insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Hire Duration','Invoice', true, current_date, current_date, 999, 999);
-insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Hire Charge','Invoice', true, current_date, current_date, 999, 999);
-insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Repair Cost','Invoice', true, current_date, current_date, 999, 999);
-insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Liability Dispute','Invoice', true, current_date, current_date, 999, 999);
-insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values ((select max(id)+1 from reason_of_rejection), 'Disclosed','Invoice', true, current_date, current_date, 999, 999);
+insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (6, 'Like for Like','Invoice', true, current_date, current_date, 999, 999);
+insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (7, 'Quantum','Invoice', true, current_date, current_date, 999, 999);
+insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (8, 'Hire Duration','Invoice', true, current_date, current_date, 999, 999);
+insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (9, 'Hire Charge','Invoice', true, current_date, current_date, 999, 999);
+insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (10, 'Repair Cost','Invoice', true, current_date, current_date, 999, 999);
+insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (11, 'Liability Dispute','Invoice', true, current_date, current_date, 999, 999);
+insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (12, 'Disclosed','Invoice', true, current_date, current_date, 999, 999);
 insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (999, 'Other','Invoice', true, current_date, current_date, 999, 999);
-
 
 ------------------------------------------------------------------------------------------------
 
@@ -393,6 +382,8 @@ update reason_of_rejection set name='Undisclosed' where name='Disclosed';
 ALTER TABLE audit_trail ADD COLUMN claim_reason_of_rejection integer;
 ALTER TABLE audit_trail ALTER COLUMN claim_reason_of_rejection SET STORAGE PLAIN;
 
+------------------------------------------------------------------------------------------------
+
 ALTER TABLE audit_trail ADD COLUMN invoice_reason_of_rejection integer;
 ALTER TABLE audit_trail ALTER COLUMN invoice_reason_of_rejection SET STORAGE PLAIN;
 
@@ -415,3 +406,31 @@ inner join claim claim on claim.id=audit_trail.claim_id
 left outer join invoice invoice on claim.invoice_id=invoice.id;
 
 ALTER TABLE rpt_claim_audit_trail OWNER TO postgres;
+
+------------------------------------------------------------------------------------------------
+
+update claim 
+set reason_of_rejection_id=(select id from reason_of_rejection where name ='Other' and type='Claim')
+where status='ClaimRejectionAccepted';
+
+update audit_trail 
+set claim_reason_of_rejection=(select id from reason_of_rejection where name ='Other' and type='Claim')
+where new_status='ClaimRejectionAccepted';
+
+------------------------------------------------------------------------------------------------
+
+update audit_trail 
+set invoice_reason_of_rejection=(select id from reason_of_rejection where name ='Other' and type='Invoice')
+where new_status='InvoiceRejectionAccepted';
+
+update invoice 
+set reason_of_rejection_id=(select id from reason_of_rejection where name ='Other' and type='Invoice')
+where id in (select invoice_id from claim where id in (select claim_id from audit_trail where new_status='InvoiceRejectionAccepted'));
+
+------------------------------------------------------------------------------------------------
+
+update claim a set status_modified_date = (select date(update_date) from audit_trail where new_status='ClaimClosed' and claim_id=a.id),
+previous_status = (select original_status from audit_trail where new_status='ClaimClosed' and claim_id=a.id)
+where status='ClaimClosed'
+
+------------------------------------------------------------------------------------------------
