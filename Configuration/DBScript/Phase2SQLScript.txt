@@ -386,7 +386,7 @@ UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='Await
 
 ------------------------------------------------------------------------------------------------
 
-update reason_of_rejection set name='Undisclosed' where name='Disclosed'
+update reason_of_rejection set name='Undisclosed' where name='Disclosed';
 
 ------------------------------------------------------------------------------------------------
 
@@ -414,6 +414,4 @@ FROM audit_trail audit_trail
 inner join claim claim on claim.id=audit_trail.claim_id
 left outer join invoice invoice on claim.invoice_id=invoice.id;
 
-
 ALTER TABLE rpt_claim_audit_trail OWNER TO postgres;
-
