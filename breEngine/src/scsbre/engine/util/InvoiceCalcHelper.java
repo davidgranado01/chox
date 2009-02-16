@@ -21,7 +21,7 @@ public class InvoiceCalcHelper {
     }
 
     /* calculation methods */
-    public BigDecimal getCalculatedHireVat() {
+    public BigDecimal getCalculatedHireVat() {        
         return invoice.getHireNet().multiply(vatRate);
     }
 

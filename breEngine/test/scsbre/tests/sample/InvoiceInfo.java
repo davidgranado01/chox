@@ -27,6 +27,7 @@ public class InvoiceInfo implements IInvoiceInfo {
     private BigDecimal deductionForClaimsHandlingFee;
     private BigDecimal discount;
     private BigDecimal totalToPay;
+    private BigDecimal penaltyCharge;
 
     /* (non-Javadoc)
      * @see scsbre.model.IInvoiceInfo#getHireNet()
@@ -309,4 +310,14 @@ public class InvoiceInfo implements IInvoiceInfo {
     public void setTotalToPay(BigDecimal totalToPay) {
         this.totalToPay = totalToPay;
     }
+
+    public void setPenaltyCharge(BigDecimal penaltyCharge) {
+        this.penaltyCharge = penaltyCharge;
+    }
+
+    public BigDecimal getPenaltyCharge() {
+        return penaltyCharge;
+    }
+
+
 }

@@ -36,4 +36,12 @@ public class CustomerVehicleDamageInfo implements ICustomerVehicleDamageInfo {
     public void setInitialECD(Date initialECD) {
         this.initialECD = initialECD;
     }
+
+    public String getVehicleRegistration() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Boolean isVehicleRegistrationExist() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

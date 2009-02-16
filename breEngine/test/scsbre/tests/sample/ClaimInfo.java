@@ -182,4 +182,8 @@ public class ClaimInfo implements IClaimInfo {
     public void setVClass(IVehicleClassInfo class1) {
         vClass = class1;
     }
+
+    public Date getHireMonitoringEcd() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
