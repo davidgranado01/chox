@@ -149,10 +149,18 @@ public class WeekSummary {
     
     public BigDecimal getClaimsContestedAsPercentageOfChox() {
         
+        //(claimsNotificationContestedByInsurer + claimsNotificationAcceptedByInsurer )/claimsNotificationAcceptedByInsurer
         float fClaimsNotificationContestedByInsurer = claimsNotificationContestedByInsurer.longValue();
-        float fClaimsCFwd = getClaimsCFwd();
+        float fclaimsNotificationAcceptedByInsurer = claimsNotificationAcceptedByInsurer.longValue();
+        // float fClaimsCFwd = getClaimsCFwd();
+        // return MathHelper.getPercentage(fClaimsNotificationContestedByInsurer, fClaimsCFwd);
         
-        return MathHelper.getPercentage(fClaimsNotificationContestedByInsurer, fClaimsCFwd);
+        BigDecimal bReturnValue = new BigDecimal("0.00");
+        if(fClaimsNotificationContestedByInsurer>0 && fclaimsNotificationAcceptedByInsurer>0){
+            bReturnValue = new BigDecimal(((fClaimsNotificationContestedByInsurer + fclaimsNotificationAcceptedByInsurer)/fclaimsNotificationAcceptedByInsurer)/100);
+        }
+        
+        return bReturnValue;
     }
     
     public Integer getClaimsFNOLCreatedByInsurer() {
@@ -220,7 +228,7 @@ public class WeekSummary {
     }
 
     public Integer getClaimsToBeInvoiced() {
-        return claimsToBeInvoiced;
+        return getClaimsCFwd() - claimsInvoiced;
     }
 
     public void setClaimsToBeInvoiced(Integer claimsToBeInvoiced) {

@@ -203,8 +203,8 @@ public class ClaimActionTest {
         System.out.println("getTabAccessibility");
         ClaimAction instance = new ClaimAction();
         MenuAccessibility expResult = null;
-        MenuAccessibility result = instance.getTabAccessibility();
-        assertEquals(expResult, result);
+        // MenuAccessibility result = instance.getTabAccessibility();
+        // assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
