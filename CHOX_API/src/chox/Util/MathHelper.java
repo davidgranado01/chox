@@ -10,5 +10,5 @@ public class MathHelper {
             oValue = iValue / iDevider;
         }
         return new BigDecimal(oValue);
-    }  
+    }
 }
