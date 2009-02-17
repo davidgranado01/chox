@@ -434,3 +434,8 @@ previous_status = (select original_status from audit_trail where new_status='Cla
 where status='ClaimClosed'
 
 ------------------------------------------------------------------------------------------------
+
+insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (14, 'Quantum', 'Claim', true, current_date, current_date, 999, 999);
+insert into reason_of_rejection (id, name, type, status, created_date, last_modified_date, last_modified_by, created_by) values (15, 'Invoice Already Paid', 'Invoice', true, current_date, current_date, 999, 999);
+
+------------------------------------------------------------------------------------------------
