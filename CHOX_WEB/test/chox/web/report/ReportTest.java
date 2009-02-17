@@ -4,6 +4,7 @@
  */
 package chox.web.report;
 
+import chox.Util.DateHelper;
 import chox.web.report.viewdata.InvoiceSummary;
 import chox.web.report.viewdata.InvoiceSummaryReportObject;
 import java.io.ByteArrayOutputStream;
@@ -81,43 +82,42 @@ public class ReportTest {
 
         InvoiceSummary is1 = new InvoiceSummary();
         is1.setChoName("Driver Assit");
-        is1.setNoInvoiceSubmitted(BigInteger.valueOf(10));
+        is1.setNoInvoiceSubmitted(Integer.valueOf(10));
         is1.setTotalInvoiceValue(BigDecimal.valueOf(500.50));
-        is1.setNoInvoicesPaid(BigInteger.valueOf(500));
+        is1.setNoInvoicesPaid(Integer.valueOf(500));
         is1.setValueOfPaidInvoices(BigDecimal.valueOf(500.50));
         //result.setAverageInvoiceValue((BigDecimal)data.get("averageInvoiceValue".toLowerCase()));
         is1.setAverageInvoiceValue(BigDecimal.ZERO);
-        is1.setNoInvoiceAwaitingPayment(BigInteger.valueOf(500));
+        is1.setNoInvoiceAwaitingPayment(Integer.valueOf(500));
         is1.setInvoiceAwaitingPaymentValue(BigDecimal.valueOf(500.50));
-        is1.setNoInvoicePending(BigInteger.valueOf(500));
+        is1.setNoInvoicePending(Integer.valueOf(500));
         is1.setInvoicePendingValue(BigDecimal.valueOf(500.50));
-        is1.setNoInvoiceWithdrawn(BigInteger.valueOf(500));
+        is1.setNoInvoiceWithdrawn(Integer.valueOf(500));
         is1.setInvoiceWithdrawnValue(BigDecimal.valueOf(500.50));
         invoiceSummaries.add(is1);
 
         InvoiceSummary is2 = new InvoiceSummary();
         is2.setChoName("ABC Org");
-        is2.setNoInvoiceSubmitted(BigInteger.valueOf(10));
+        is2.setNoInvoiceSubmitted(Integer.valueOf(10));
         is2.setTotalInvoiceValue(BigDecimal.valueOf(500.50));
-        is2.setNoInvoicesPaid(BigInteger.valueOf(500));
+        is2.setNoInvoicesPaid(Integer.valueOf(500));
         is2.setValueOfPaidInvoices(BigDecimal.valueOf(500.50));
         //result.setAverageInvoiceValue((BigDecimal)data.get("averageInvoiceValue".toLowerCase()));
         is2.setAverageInvoiceValue(BigDecimal.ZERO);
-        is2.setNoInvoiceAwaitingPayment(BigInteger.valueOf(500));
+        is2.setNoInvoiceAwaitingPayment(Integer.valueOf(500));
         is2.setInvoiceAwaitingPaymentValue(BigDecimal.valueOf(500.50));
-        is2.setNoInvoicePending(BigInteger.valueOf(500));
+        is2.setNoInvoicePending(Integer.valueOf(500));
         is2.setInvoicePendingValue(BigDecimal.valueOf(500.50));
-        is2.setNoInvoiceWithdrawn(BigInteger.valueOf(500));
+        is2.setNoInvoiceWithdrawn(Integer.valueOf(500));
         is2.setInvoiceWithdrawnValue(BigDecimal.valueOf(500.50));
         invoiceSummaries.add(is2);
 
         InvoiceSummaryReportObject reportObject = new InvoiceSummaryReportObject();
-
+        /*
         reportObject.setInvoiceUploadDateFrom("2008-11-01");
         reportObject.setInvoiceUploadDateTo("2009-01-31");
         reportObject.setCreatedDate("2009-01-31");
-        reportObject.setName("Invoice Summary Report");
-
+        */
         reportParameters.put("invoiceSummaries", invoiceSummaries);
         reportParameters.put("reportObj", reportObject);
         reportParameters.put("insurerObj", reportObject);
