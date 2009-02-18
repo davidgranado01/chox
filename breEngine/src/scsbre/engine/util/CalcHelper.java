@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class CalcHelper {
 
+    /*
     public static boolean EqualTo(BigDecimal a, BigDecimal b) {
         
         //a.
@@ -15,12 +16,28 @@ public class CalcHelper {
         
         return x == y;
         
-        
-        
         //return true;
-        
-        
     }
+    */ 
+    
+    // FIXED ISSUE MANTIS 426
+    public static boolean EqualTo(BigDecimal a, BigDecimal b) {
+        
+        boolean bFlag = false;
+        
+        double cx = Math.ceil(a.doubleValue());
+        double cy = Math.ceil(b.doubleValue());
+        
+        double fx = Math.floor(a.doubleValue());
+        double fy = Math.floor(b.doubleValue());
+        
+        if((cx==cy) || (fx==fy)){
+            bFlag = true;
+        }
+
+        return bFlag;
+    }
+
     private static final long MILISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 
     public static int getDaysBetweenDates(Date startDate, Date endDate) {
