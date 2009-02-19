@@ -2,6 +2,8 @@ package chox.services;
 
 import chox.Util.XmlHelper;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import org.w3c.dom.*;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,11 +20,17 @@ import java.util.List;
 import chox.Util.TextHelper;
 import chox.Util.DateHelper;
 import chox.data.UploadStatus;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import org.hibernate.TransactionException;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
+import org.xml.sax.InputSource;
 
 public class UploadClaimXMLServiceImpl extends SecureDataService implements UploadClaimXMLService {
     private VehicleClassService vehicleClassService;
@@ -52,7 +60,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
         try {
             
-            String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX.file/XML Upload File/1 FNOC XML.xml";
+            String sXMLPath1 = "C:/Users/Carlson/Desktop/MI Report/Deployment Testing/TEST_ERROR.xml";
             Boolean isAllowPartialUpload = true;
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -102,18 +110,35 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
     }
     
-    public ArrayList<XMLParseResult> processXML(File claimXMLFile, Boolean isAllowPartialUpload) {
+    //private ByteArrayInputStream doConvert(File file){
+        
+        //return new ByteArrayInputStream;
+    //}
 
+    public ArrayList<XMLParseResult> processXML(File claimXMLFile, Boolean isAllowPartialUpload) {
+        
         ArrayList<XMLParseResult> xmlParseResults = new ArrayList<XMLParseResult>();
 
         try {
             
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            docBuilderFactory.setNamespaceAware(true); 
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            Document doc = docBuilder.parse(claimXMLFile);
+            
+            // System.out.println(">>>>>>>>>>>>>>>>>>>> processXML : 001");
+            // ByteArrayInputStream bais = doConvert(claimXMLFile);
+            // System.out.println(">>>>>>>>>>>>>>>>>>>> processXML : 002");
+            
+            FileInputStream fileStream = new FileInputStream(claimXMLFile); 
+            InputSource inSource = new InputSource(new InputStreamReader(fileStream, "UTF-8"));
+            Document doc = docBuilder.parse(inSource);
+            
+            // Document doc = docBuilder.parse(claimXMLFile);
+            // System.out.println(">>>>>>>>>>>>>>>>>>>> processXML : 003");
+
             doc.getDocumentElement().normalize();
             Element root = doc.getDocumentElement();
-
+            
             if (root != null && root.getTagName().equals("chox")) {
 
                 ArrayList<Element> rentalElements = XMLUtils.getElements(doc, root, "rental");
@@ -162,9 +187,13 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             Element root,
             Boolean isAllowPartialUpload) throws Exception {
               
+  System.out.println(">>>>>>>>>>>>>>>>>>>> -007");  
+  
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
 
+        System.out.println(">>>>>>>>>>>>>>>>>>>> -008");   
+        
         // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
         if(!xmlParseResult.getIsClaimExist()){
             xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);
@@ -513,7 +542,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             // GET DRIVERS SECTION - RETURN LIST
             Element thisElement = XMLUtils.getElement(mainElement, "drivers");
             ArrayList<Element> driverElements = XMLUtils.getElements(doc, thisElement, "driver");
-            
+System.out.println(">>>>>>>>>>>>>>>>>>>> -009");            
             // VALIDATE DRIVERS LIST
             xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, driverElements, "driver", strSectionName, "");
             
@@ -524,7 +553,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
                     xmlParseResult.setIsCurrentDataValid(true);
                     xmlParseResult.setIsCurrentScheValid(true);
-
+System.out.println(">>>>>>>>>>>>>>>>>>>> 00");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "title", XmlHelper.isMAN_Driver_Title, "", strSectionName, "Title");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "firstnames", XmlHelper.isMAN_Driver_Firstnames, "", strSectionName, "First Name");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "lastname", XmlHelper.isMAN_Driver_Lastname, "", strSectionName, "Surname");
@@ -534,6 +563,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "address4", XmlHelper.isMAN_Driver_Address4, "", strSectionName, "Address4");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "address5", XmlHelper.isMAN_Driver_Address5, "", strSectionName, "Address5");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "postcode", XmlHelper.isMAN_Driver_Postcode, "", strSectionName, "Postcode");
+System.out.println(">>>>>>>>>>>>>>>>>>>> 01");                    
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "telephone-day", XmlHelper.isMAN_Driver_Telephone_day, XmlHelper.REG_PHONE, strSectionName, "Telephone Day");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "telephone-evening", XmlHelper.isMAN_Driver_Telephone_Evening, XmlHelper.REG_PHONE, strSectionName, "Telephone Evening");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "email", XmlHelper.isMAN_Driver_Email, XmlHelper.REG_EMAIL, strSectionName, "Email");
@@ -551,7 +581,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         if(xmlParseResult.getClaim()!=null && xmlParseResult.getClaim().getCustomer()!=null){
                             customer = xmlParseResult.getClaim().getCustomer();
                         }
-                        
+                        System.out.println(">>>>>>>>>>>>>>>>>>>> 02");
                         customer.setTitle(XmlHelper.getNodeValue(ee, "title"));
                         customer.setFirstName(XmlHelper.getNodeValue(ee, "firstnames"));
                         customer.setLastName(XmlHelper.getNodeValue(ee, "lastname"));
@@ -560,6 +590,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         customer.setAddress3(XmlHelper.getNodeValue(ee, "address3"));
                         customer.setAddress4(XmlHelper.getNodeValue(ee, "address4"));
                         customer.setAddress5(XmlHelper.getNodeValue(ee, "address5"));
+                        
+                        System.out.println(">>>>>>>>>>>>>>>>>>>> 03 : "+XmlHelper.getNodeValue(ee, "postcode"));
+                        
                         customer.setPostcode(XmlHelper.getNodeValue(ee, "postcode"));
                         customer.setTelephoneDay(XmlHelper.getNodeValue(ee, "telephone-day"));
                         customer.setTelephoneEvening(XmlHelper.getNodeValue(ee, "telephone-evening"));
