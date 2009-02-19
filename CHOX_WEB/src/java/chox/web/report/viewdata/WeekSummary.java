@@ -22,6 +22,8 @@ public class WeekSummary {
     private Integer nonThisInsurerClaims = 0;
     private Integer claimsPaid = 0;
     private Integer claimsNotificationContestedByInsurer = 0;
+    private BigDecimal claimsContestedAsPercentageOfChox = new BigDecimal(0.00);
+    private BigDecimal invoicePaidAsPercentageOfInvoicing = new BigDecimal(0.00);
     private Integer claimsPendingByInsurer = 0;
     private Integer claimsNotificationAcceptedByInsurer = 0;
     private Integer claimsFNOLCreatedByInsurer = 0;
@@ -109,7 +111,7 @@ public class WeekSummary {
         return result;
     }
     */
-    private static Integer getIntegerValue(Object v) {
+    public static Integer getIntegerValue(Object v) {
         if (v.getClass().equals(Integer.class)) {
             return (Integer) v;
         } else if (v.getClass().equals(BigInteger.class)) {
@@ -131,6 +133,24 @@ public class WeekSummary {
         return claimsBFwd + claimsNotification - claimsOutOfScope - nonThisInsurerClaims - claimsPaid;
     }
 
+    public BigDecimal getClaimsContestedAsPercentageOfChox() {
+        return claimsContestedAsPercentageOfChox;
+    }
+
+    public void setClaimsContestedAsPercentageOfChox(Integer iClaimsAcceptedAsPercentageOfChox) {
+        
+        BigDecimal dClaimsAcceptedAsPercentageOfChox = new BigDecimal(0.00);
+        float iClaimsCFwd = getClaimsCFwd();
+
+        if(iClaimsAcceptedAsPercentageOfChox>0 && iClaimsCFwd>0){
+            float fclaimsNotificationAcceptedByInsurer = iClaimsAcceptedAsPercentageOfChox.longValue();
+            float fClaimsAcceptedAsPercentageOfChox = fclaimsNotificationAcceptedByInsurer / iClaimsCFwd;
+            dClaimsAcceptedAsPercentageOfChox = BigDecimal.valueOf(fClaimsAcceptedAsPercentageOfChox);
+        }
+        
+        this.claimsContestedAsPercentageOfChox = dClaimsAcceptedAsPercentageOfChox;
+    }
+
     /*
     public Integer getClaimsContestedAsPercentageOfChox() {
         
@@ -147,21 +167,30 @@ public class WeekSummary {
     }
     */
     
+    /*
     public BigDecimal getClaimsContestedAsPercentageOfChox() {
         
-        //(claimsNotificationContestedByInsurer + claimsNotificationAcceptedByInsurer )/claimsNotificationAcceptedByInsurer
+        BigDecimal bReturnValue = new BigDecimal("0.00");
         float fClaimsNotificationContestedByInsurer = claimsNotificationContestedByInsurer.longValue();
-        float fclaimsNotificationAcceptedByInsurer = claimsNotificationAcceptedByInsurer.longValue();
+        
+        // float fclaimsNotificationAcceptedByInsurer = claimsNotificationAcceptedByInsurer.longValue();
         // float fClaimsCFwd = getClaimsCFwd();
         // return MathHelper.getPercentage(fClaimsNotificationContestedByInsurer, fClaimsCFwd);
         
-        BigDecimal bReturnValue = new BigDecimal("0.00");
+        float fClaimsNotification = claimsNotification.longValue();
+        
+        if(fClaimsNotificationContestedByInsurer>0 && fClaimsNotification>0){
+            bReturnValue = new BigDecimal(fClaimsNotificationContestedByInsurer/fClaimsNotification);
+        }
+        
+        
         if(fClaimsNotificationContestedByInsurer>0 && fclaimsNotificationAcceptedByInsurer>0){
             bReturnValue = new BigDecimal(((fClaimsNotificationContestedByInsurer + fclaimsNotificationAcceptedByInsurer)/fclaimsNotificationAcceptedByInsurer)/100);
         }
-        
+      
         return bReturnValue;
     }
+    */
     
     public Integer getClaimsFNOLCreatedByInsurer() {
         return claimsFNOLCreatedByInsurer;
@@ -196,7 +225,7 @@ public class WeekSummary {
     }
 
     public Integer getClaimsNotificationContestedByInsurer() {
-        return claimsNotificationContestedByInsurer;
+        return claimsNotificationContestedByInsurer - claimsOutOfScope;
     }
 
     public void setClaimsNotificationContestedByInsurer(Integer claimsNotificationContestedByInsurer) {
@@ -228,7 +257,12 @@ public class WeekSummary {
     }
 
     public Integer getClaimsToBeInvoiced() {
-        return getClaimsCFwd() - claimsInvoiced;
+        
+        if(claimsToBeInvoiced<=0){
+            claimsToBeInvoiced = 0;
+        }
+        
+        return claimsToBeInvoiced;
     }
 
     public void setClaimsToBeInvoiced(Integer claimsToBeInvoiced) {
@@ -251,12 +285,40 @@ public class WeekSummary {
         this.invoiceContestedByInsurer = invoiceContestedByInsurer;
     }
 
+    public BigDecimal getInvoicePaidAsPercentageOfInvoicing() {
+        return invoicePaidAsPercentageOfInvoicing;
+    }
+
+    public void setInvoicePaidAsPercentageOfInvoicing(Integer iClaimsInvoicedHis, Integer iInvoicePaidByInsurerHis) {
+        
+        BigDecimal dInvoicePaidAsPercentageOfInvoicing = new BigDecimal(0.00);
+        
+        // System.out.println(">>>>>>>>>> iClaimsInvoicedHis:"+iClaimsInvoicedHis);
+        // System.out.println(">>>>>>>>> iInvoicePaidByInsurerHis:"+iInvoicePaidByInsurerHis);
+        
+        if(iClaimsInvoicedHis>0 && iInvoicePaidByInsurerHis>0){
+            
+            float fInvoicePaidByInsurerHis = iInvoicePaidByInsurerHis.longValue();
+            float fClaimsInvoicedHis = iClaimsInvoicedHis.longValue();
+            
+            float fInvoicePaidAsPercentageOfInvoicing = fInvoicePaidByInsurerHis / fClaimsInvoicedHis;
+            dInvoicePaidAsPercentageOfInvoicing = new BigDecimal(fInvoicePaidByInsurerHis / fClaimsInvoicedHis);
+            
+            
+            // System.out.println(">>>>>>>>> dInvoicePaidAsPercentageOfInvoicing:"+dInvoicePaidAsPercentageOfInvoicing);
+            // System.out.println(">>>>>>>>> fInvoicePaidAsPercentageOfInvoicing:"+fInvoicePaidAsPercentageOfInvoicing);
+        }
+        
+        this.invoicePaidAsPercentageOfInvoicing = dInvoicePaidAsPercentageOfInvoicing;
+    }
+    
+/*
     public BigDecimal getInvoicePaidAsPercentageOfInvoicing(){
         float fInvoicePaidByInsurer = invoicePaidByInsurer.longValue();
         float fClaimsInvoiced = claimsInvoiced.longValue();
         return MathHelper.getPercentage(fInvoicePaidByInsurer, fClaimsInvoiced);
     }
-
+*/
     public Integer getInvoicePaidByInsurer() {
         return invoicePaidByInsurer;
     }
