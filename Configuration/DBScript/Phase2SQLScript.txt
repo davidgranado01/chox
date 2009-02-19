@@ -328,53 +328,6 @@ ALTER TABLE rpt_claim_invoice OWNER TO postgres;
 
 ------------------------------------------------------------------------------------------------
 
-UPDATE CLAIM SET status_modified_date=DATE('02/04/2009'), previous_status='AwaitingInvoiceData' WHERE ID=4;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=17;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=22;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=35;
-UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=37;
-UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=46;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=47;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=49;
-UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=53;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=54;
-UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=64;
-UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=69;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=71;
-UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=73;
-UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=74;
-UPDATE CLAIM SET status_modified_date=DATE('02/05/2009'), previous_status='InvoiceRejectionAccepted' WHERE ID=75;
-UPDATE CLAIM SET status_modified_date=DATE('02/04/2009'), previous_status='AwaitingInvoiceData' WHERE ID=80;
-UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=89;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=91;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=97;
-UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=106;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=112;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=130;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=155;
-UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=162;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=178;
-UPDATE CLAIM SET status_modified_date=DATE('02/04/2009'), previous_status='AwaitingInvoiceData' WHERE ID=199;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=209;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=221;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=222;
-UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=228;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=239;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=261;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=266;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=292;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=294;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=306;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=309;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=314;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=323;
-UPDATE CLAIM SET status_modified_date=DATE('02/09/2009'), previous_status='AwaitingInvoiceData' WHERE ID=332;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=336;
-UPDATE CLAIM SET status_modified_date=DATE('02/04/2009'), previous_status='AwaitingInvoiceData' WHERE ID=341;
-UPDATE CLAIM SET status_modified_date=DATE('02/03/2009'), previous_status='AwaitingCarHireInfo' WHERE ID=383;
-
-------------------------------------------------------------------------------------------------
-
 update reason_of_rejection set name='Undisclosed' where name='Disclosed';
 
 ------------------------------------------------------------------------------------------------
@@ -431,7 +384,7 @@ where id in (select invoice_id from claim where id in (select claim_id from audi
 
 update claim a set status_modified_date = (select date(update_date) from audit_trail where new_status='ClaimClosed' and claim_id=a.id),
 previous_status = (select original_status from audit_trail where new_status='ClaimClosed' and claim_id=a.id)
-where status='ClaimClosed'
+where status='ClaimClosed';
 
 ------------------------------------------------------------------------------------------------
 
