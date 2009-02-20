@@ -129,11 +129,14 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             // ByteArrayInputStream bais = doConvert(claimXMLFile);
             // System.out.println(">>>>>>>>>>>>>>>>>>>> processXML : 002");
             
+            /*
             FileInputStream fileStream = new FileInputStream(claimXMLFile); 
             InputSource inSource = new InputSource(new InputStreamReader(fileStream, "UTF-8"));
             Document doc = docBuilder.parse(inSource);
+            */
+                    
+            Document doc = docBuilder.parse(claimXMLFile);
             
-            // Document doc = docBuilder.parse(claimXMLFile);
             // System.out.println(">>>>>>>>>>>>>>>>>>>> processXML : 003");
 
             doc.getDocumentElement().normalize();
