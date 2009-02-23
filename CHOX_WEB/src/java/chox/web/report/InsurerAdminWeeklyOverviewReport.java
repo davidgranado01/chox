@@ -169,7 +169,7 @@ public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Repo
                     iInvoicePaidByInsurerHis = iInvoicePaidByInsurerHis + weekSummary.getClaimsPaid();
                     weekSummary.setInvoicePaidAsPercentageOfInvoicing(iClaimsInvoicedHis, iInvoicePaidByInsurerHis);
                     
-                    weekSummary.setClaimsToBeInvoiced(iClaimsNotificationAcceptedByInsurerHis - weekSummary.getClaimsInvoiced());
+                    weekSummary.setClaimsToBeInvoiced(iClaimsNotificationAcceptedByInsurerHis - weekSummary.getInvoicePaidByInsurer());
                     weekSummaries.add(weekSummary);
                 }
                 
