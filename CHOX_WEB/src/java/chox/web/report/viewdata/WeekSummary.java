@@ -4,15 +4,10 @@
  */
 package chox.web.report.viewdata;
 
-import chox.Util.MathHelper;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
-/**
- *
- * @author Emmanuel
- */
 public class WeekSummary {
 
     private String weekCycleDate;
@@ -183,7 +178,6 @@ public class WeekSummary {
             bReturnValue = new BigDecimal(fClaimsNotificationContestedByInsurer/fClaimsNotification);
         }
         
-        
         if(fClaimsNotificationContestedByInsurer>0 && fclaimsNotificationAcceptedByInsurer>0){
             bReturnValue = new BigDecimal(((fClaimsNotificationContestedByInsurer + fclaimsNotificationAcceptedByInsurer)/fclaimsNotificationAcceptedByInsurer)/100);
         }
@@ -225,7 +219,7 @@ public class WeekSummary {
     }
 
     public Integer getClaimsNotificationContestedByInsurer() {
-        return claimsNotificationContestedByInsurer - claimsOutOfScope;
+        return claimsNotificationContestedByInsurer;
     }
 
     public void setClaimsNotificationContestedByInsurer(Integer claimsNotificationContestedByInsurer) {
