@@ -218,7 +218,7 @@ public class XmlHelper {
         if(isNotNull(XMLUtils.getElementValue(root, nodeName))){
             sOutput = XMLUtils.getElementValue(root, nodeName);
         }
-        return sOutput;
+        return sOutput.trim();
     }
     
     /*
