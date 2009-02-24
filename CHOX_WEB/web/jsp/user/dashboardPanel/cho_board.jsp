@@ -60,7 +60,7 @@
                                                                                             emptyOption="false"></s:select></td>                         
                 </tr>                       
             </table>
-            <div style="height:500px; width:900px" id="resultHolder"></div>
+            <div style="height:550px; width:900px" id="resultHolder"></div>
         </div>        
         
     </fieldset>

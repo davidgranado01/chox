@@ -158,9 +158,6 @@ public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Repo
                     data.put("weekCycleDate", DateHelper.LocalDateFormat.format(startOfTheWeek));
                     WeekSummary weekSummary = WeekSummary.getObject(data);
                     
-                    // System.out.println(">>>>>>>>>>>>>>"+DateHelper.LocalDateFormat.format(startOfTheWeek));
-                    // ClaimsContestedAsPercentageOfChox
-                    // iClaimsNotificationContestedByInsurerHis = iClaimsNotificationContestedByInsurerHis + weekSummary.getClaimsNotificationAcceptedByInsurer();
                     iClaimsNotificationAcceptedByInsurerHis = iClaimsNotificationAcceptedByInsurerHis + weekSummary.getClaimsNotificationAcceptedByInsurer();
                     weekSummary.setClaimsContestedAsPercentageOfChox(iClaimsNotificationAcceptedByInsurerHis);
                     
