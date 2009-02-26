@@ -15,6 +15,7 @@
             
             new Ext.ToolTip({target: 'tip0',html: 'Description for Number of Active Users'});
             Ext.QuickTips.init();
+            
         }); 
         
         function onSelectChange(){  
@@ -26,7 +27,6 @@
             }           
             
             loadData(selectedValue);
-            
         }  
         
         function loadData(supplierId)
@@ -35,8 +35,8 @@
                 $("#resultHolder").html(data);
             });
         }
-
-    </script>  
+       
+    </script>
 </head>
 
 <div class="x-panel-bwrap chox-form-container">
@@ -47,16 +47,12 @@
             This dashboard displays a snapshot of claims in the
             system to date across a weekly, monthly and yearly period.
             Results can be viewed for an individual CHO or across the entire
-            CHO book.
+            CHO book. (Please hover over a dashboard item label to see an explanation of the numbers displayed)
         </div>
         
         <div class="dashboard" class="form-container">
             <table cellpadding="0" cellspacing="0" class="dashboard" border="0">  
-            <tr>
-                <th nowrap>
-                <label id="tip0">Number of Active Users</label></th><td colspan="2"><label class="std-data-ro">
-                <s:property value="numberOfActiveUser"/></label></td>
-            </tr>
+            <tr><th nowrap><label id="tip0">Number of Active Users</label></th><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
             <tr>
                 <th nowrap><label>Credit Hire Organisation</label></th><td colspan="2">
                 <s:select 

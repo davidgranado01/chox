@@ -139,10 +139,10 @@ public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Repo
                 // INVOICING SUMMARY
                 + "(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_invoice WHERE (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND insurer_id=insurer.id AND date(created_date) BETWEEN :pSelectedStartDate AND :pSelectedEndDate) as claimsInvoiced, "
                 + "(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ContestedInvoiceReferredToCHO', 'InvoiceDataCalculationIncorrect', 'InvoiceRejectionAccepted')) as invoiceContestedByInsurer, "
-                + "(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ContestedInvoiceReferredToInsurer', 'InvoiceApprovedByBRE', 'InvoiceEscalated')) as invoicePendingByInsurer, "
+                + "(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ContestedInvoiceReferredToInsurer', 'InvoiceApprovedByBRE', 'InvoiceEscalated', 'InvoiceReferredToClaimHandler')) as invoicePendingByInsurer, "
                 + "(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('AwaitingInvoicePayment')) as invoiceApprovedByInsurer, "
                 + "(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('InvoicePaymentLogged')) as invoicePaidByInsurer, "
-                + "0 as claimsToBeInvoiced "
+                + "(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) <= :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) <= :pSelectedEndDate AND a.new_status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as claimsToBeInvoiced "
                 + "from insurer insurer where insurer.id = :pInsId ";
 
                 queryParameters.put("pSelectedStartDate", startOfTheWeek);
@@ -159,14 +159,14 @@ public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Repo
                     WeekSummary weekSummary = WeekSummary.getObject(data);
                     
                     iClaimsNotificationAcceptedByInsurerHis = iClaimsNotificationAcceptedByInsurerHis + weekSummary.getClaimsNotificationAcceptedByInsurer();
-                    weekSummary.setClaimsContestedAsPercentageOfChox(iClaimsNotificationAcceptedByInsurerHis);
                     
                     // InvoicePaidAsPercentageOfInvoicing
                     iClaimsInvoicedHis = iClaimsInvoicedHis + weekSummary.getClaimsInvoiced();
                     iInvoicePaidByInsurerHis = iInvoicePaidByInsurerHis + weekSummary.getClaimsPaid();
                     weekSummary.setInvoicePaidAsPercentageOfInvoicing(iClaimsInvoicedHis, iInvoicePaidByInsurerHis);
                     
-                    weekSummary.setClaimsToBeInvoiced(iClaimsNotificationAcceptedByInsurerHis - weekSummary.getInvoicePaidByInsurer());
+                    //weekSummary.setClaimsToBeInvoiced(iClaimsNotificationAcceptedByInsurerHis - weekSummary.getInvoicePaidByInsurer());
+                    
                     weekSummaries.add(weekSummary);
                 }
                 

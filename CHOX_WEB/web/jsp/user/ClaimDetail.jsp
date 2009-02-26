@@ -245,7 +245,6 @@
             }else{
                 deleteAttachment(fileId);
             }
-            //loadAttachments();
         }
         
         //Emmanuel 

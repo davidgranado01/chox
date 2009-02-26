@@ -514,6 +514,9 @@ function loadDataFromSession()
                         <s:if test="filterAccessibility.isClaimPendingAccessible">
                             <li><a href="javascript:showClaimByStatusWithSort('ClaimPending','statusModifiedDate');" >Claim Pending (<s:property value="filterRecordCounter.ClaimPendingCount" />)</a></li>
                         </s:if>   
+                        <s:if test="filterAccessibility.isInvoiceReferredToClaimHandlerAccessible">
+                            <li><a href="javascript:showClaimByStatus('InvoiceReferredToClaimHandler');" >Invoice Referred By Engineer  (<s:property value="filterRecordCounter.InvoiceReferredToClaimHandlerCount" />)</a></li>
+                        </s:if>  
                     </ul>                            
                 </div>
             </div>

@@ -8,7 +8,7 @@
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver">
         </property>
-        <property name="url" value="jdbc:postgresql://10.0.0.2:5432/chox_dep">       
+        <property name="url" value="jdbc:postgresql://10.0.0.2:5432/chox_test">       
         </property>
         <property name="username" value="postgres">
         </property>

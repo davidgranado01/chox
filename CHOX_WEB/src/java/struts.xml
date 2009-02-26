@@ -114,6 +114,17 @@
             </result>
         </action>
         
+        <action name="approveInvoiceRefferedByEngineer" class="chox.web.actions.ClaimAction" method="approveInvoiceRefferedByEngineer">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
+        
         <!-- ACTION PANEL VALIDATION By Carlson !-->
         <action name="getActionPanel" class="chox.web.actions.ClaimAction" method="getActionPanel">
             <result name="updateclaimlineofbusiness">/jsp/user/actionPanel/p_routeUnacknowledgedClaim.jsp
@@ -150,6 +161,8 @@
             </result>
             <result name="claimPending">/jsp/user/actionPanel/p_pendingClaim.jsp
             </result>
+            <result name="updateInvoiceReferredByEngineer">/jsp/user/actionPanel/p_approveInvoiceReferredByEngineer.jsp
+            </result>            
             <result name="empty">/jsp/p_blank.jsp
             </result>
         </action>
@@ -654,6 +667,7 @@
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp.jsp
             </result>
         </action>
+
         <action name="showInsurerBoardHeader" class="chox.web.actions.DashboardAction" method="showInsurerBoardHeader">
             <result name="success">/jsp/user/dashboardPanel/insurer_board.jsp
             </result>

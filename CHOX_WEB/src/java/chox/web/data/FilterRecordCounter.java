@@ -83,4 +83,9 @@ public class FilterRecordCounter {
     {
         return service.getCountByStatus(ClaimStatus.CLAIM_PENDING);
     }
+
+    public long getInvoiceReferredToClaimHandlerCount()
+    {
+        return service.getCountByStatus(ClaimStatus.INVOICE_REF_TO_CH);
+    }    
 }

@@ -47,7 +47,7 @@
                This dashboard displays a snapshot of claims in the system
                   to date across a weekly, monthly and yearly period. Results can
                   be viewed for an individual Insurer or across the entire Insurer
-                  book.
+                  book. (Please hover over a dashboard item label to see an explanation of the numbers displayed)
             </div>
         
         <div class="form-container">

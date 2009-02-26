@@ -20,7 +20,8 @@ public class PanelAction {
     public static final String ACTION_reviewByEngineer = "reviewByEngineer";
     public static final String ACTION_registeredclaimbyfnol = "registeredclaimbyfnol";
     public static final String ACTION_claimPending = "claimPending";
-
+    public static final String ACTION_InvoiceReferredToClaimHandler = "updateInvoiceReferredByEngineer";
+    
     public static List<String> getPanelActions() {
         List<String> action = new ArrayList<String>();
         action.add(ACTION_claimlineofbusiness);
@@ -38,7 +39,7 @@ public class PanelAction {
         action.add(ACTION_reviewByEngineer);
         action.add(ACTION_registeredclaimbyfnol);
         action.add(ACTION_claimPending);
-
+        action.add(ACTION_InvoiceReferredToClaimHandler);
         return action;
     }
 }

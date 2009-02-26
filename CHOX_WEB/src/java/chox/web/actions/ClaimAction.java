@@ -64,6 +64,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public static final String REGISTER_FNOL = "registerFNOL";
     public static final String REJECT_FNOL = "rejectFNOL";
     public static final String PENDING = "pending";
+    public static final String REFER_CH = "referCH";
     private Claim claim = new Claim();
     private int id = -1;
     private List lineOfBusinesses;
@@ -612,6 +613,31 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
 
+    public String approveInvoiceRefferedByEngineer() {
+
+        String result = SUCCESS;
+        String newStatus;
+
+        if (this.actionName.equalsIgnoreCase(ACCEPT)) {
+            newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
+        } else if (this.actionName.equalsIgnoreCase(REFER)) {
+            newStatus = ClaimStatus.INVOICE_ESCALATED;
+        } else {
+            newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
+            logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
+        }
+        try {
+            auditTrailService.logAuditLog(newStatus, claim, null, null);
+            this.claim.setStatus(newStatus);
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            result = ERROR;
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+        statusMsg = "Your action has been recorded";
+        return result;
+    }
+    
     public String updateInsurerClaimNumber() {
 
         String result = SUCCESS;
@@ -627,12 +653,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
 
+    /*
+     * Edited By: Carlson Hoo
+     * Edited Dt: 25 Feb 2009
+     * Description: Add new function to Refer to Claim Handler
+     */
+    
     public String approveEscalatedInvoice() {
 
         String result = SUCCESS;
         String newStatus;
+        
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
+        }else if(this.actionName.equalsIgnoreCase(REFER_CH)){
+            newStatus = ClaimStatus.INVOICE_REF_TO_CH;            
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
             logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
@@ -649,16 +684,26 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         statusMsg = "Your action has been recorded";
         return result;
     }
-
+    
+    /*
+     * Edited By: Carlson Hoo
+     * Edited Dt: 25 Feb 2009
+     * Description: Add new function to Refer to Claim Handler
+     */
+    
     public String approveContestedInvoice() {
         String result = SUCCESS;
         String newStatus;
+        
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
-        } else {
+        }else if(this.actionName.equalsIgnoreCase(REFER_CH)){
+            newStatus = ClaimStatus.INVOICE_REF_TO_CH;
+        }else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
             logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
         }
+        
         try {
             auditTrailService.logAuditLog(newStatus, claim, null, null);
             this.claim.setStatus(newStatus);
