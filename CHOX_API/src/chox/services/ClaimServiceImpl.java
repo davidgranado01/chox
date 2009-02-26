@@ -330,6 +330,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         save(xmlParseResult.getClaim());
     }
+
 }
 
 
