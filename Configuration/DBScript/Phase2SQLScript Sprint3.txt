@@ -27,48 +27,48 @@ insert into accessibility_item select text('ROLE_INS_CH') as role, 1 as access_r
 -- START VERSION V2.3.1
 -- ############################################################################################\
 
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.AwaitingCarHireInfo');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.AwaitingInvoiceData');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.AwaitingInvoicePayment');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.ClaimClosed');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.ClaimPending');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.ClaimReferredToEngineer');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.ClaimReferredToFNOL');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.ClaimRejected');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.ClaimRejectionAccepted');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.ClaimRejectionContested');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.ClaimUnacknowledgedRouted');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.ClaimUnacknowledgedUnrouted');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.ContestedInvoiceReferredToCHO');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.ContestedInvoiceReferredToInsurer');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.InvoiceApprovedByBRE');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.InvoiceDataCalculationIncorrect');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.InvoiceEscalated');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.InvoicePaymentLogged');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.InvoiceReferredToClaimHandler');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.claimCycle.InvoiceRejectionAccepted');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.AwaitingCarHireInfo');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.AwaitingInvoiceData');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.AwaitingInvoicePayment');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.ClaimClosed');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.ClaimPending');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.ClaimReferredToEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.ClaimReferredToFNOL');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.ClaimRejected');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.ClaimRejectionAccepted');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.ClaimRejectionContested');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.ClaimUnacknowledgedRouted');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.ClaimUnacknowledgedUnrouted');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.ContestedInvoiceReferredToCHO');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.ContestedInvoiceReferredToInsurer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.InvoiceApprovedByBRE');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.InvoiceDataCalculationIncorrect');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.InvoiceEscalated');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.InvoicePaymentLogged');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.InvoiceReferredToClaimHandler');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.InvoiceRejectionAccepted');
 
 -- -------------------------------------------------------------------------------------------
 
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.AwaitingCarHireInfo';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.AwaitingInvoiceData';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.AwaitingInvoicePayment';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.ClaimClosed';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.ClaimPending';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.ClaimReferredToEngineer';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.ClaimReferredToFNOL';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.ClaimRejected';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.ClaimRejectionAccepted';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.ClaimRejectionContested';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.ClaimUnacknowledgedRouted';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.ClaimUnacknowledgedUnrouted';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.ContestedInvoiceReferredToCHO';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.ContestedInvoiceReferredToInsurer';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.InvoiceApprovedByBRE';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.InvoiceDataCalculationIncorrect';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.InvoiceEscalated';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.InvoicePaymentLogged';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.InvoiceReferredToClaimHandler';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.claimCycle.InvoiceRejectionAccepted';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.AwaitingCarHireInfo';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.AwaitingInvoiceData';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.AwaitingInvoicePayment';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.ClaimClosed';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.ClaimPending';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.ClaimReferredToEngineer';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.ClaimReferredToFNOL';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.ClaimRejected';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.ClaimRejectionAccepted';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.ClaimRejectionContested';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.ClaimUnacknowledgedRouted';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.ContestedInvoiceReferredToCHO';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.InvoiceApprovedByBRE';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.InvoiceDataCalculationIncorrect';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.InvoiceEscalated';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.InvoicePaymentLogged';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.InvoiceReferredToClaimHandler';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.InvoiceRejectionAccepted';
 
 -- -------------------------------------------------------------------------------------------
