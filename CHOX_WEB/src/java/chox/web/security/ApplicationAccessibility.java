@@ -25,6 +25,7 @@ public class ApplicationAccessibility {
     public static final String TAB_PAYMENT_PACK = "PaymentPack";
     public static final String TAB_HISTORY = "History";
     public static final String TAB_NOTES = "Notes"; 
+    public static final String TAB_AUDIT_TRAIL = "AuditTrail"; 
     //Filter Name
     public static final String FILTER_REJECTED_CLAIMS = "RejectedClaims";
     public static final String FILTER_INCORRECT_INVOICE_DATA_COLC = "IncorrectInvoiceDataCalculations";
@@ -58,7 +59,6 @@ public class ApplicationAccessibility {
     private AccessibilityService accessibilityService;
     
     //private static ApplicationAccessibility instance = new ApplicationAccessibility();
-
     //public static ApplicationAccessibility getInstance() {
         
    //    return instance;

@@ -595,6 +595,11 @@
         </action>
         <!-- End History Detail -->
         
+        <action name="getAuditTrail" class="chox.web.actions.AuditTrailAction">
+            <result name="success">/jsp/p_jsonData.jsp
+            </result>
+        </action>        
+        
         <!-- Start Comment Detail -->
         <action name="getComment" class="chox.web.actions.CommentAction">
             <result name="r">/jsp/user/p_Comment_r.jsp

@@ -35,6 +35,7 @@
     var historyTabAccessibility = <s:property value="tabAccessibility.historyTabAccessibility" />;
     var notesTabAccessibility = <s:property value="tabAccessibility.notesTabAccessibility" />;
     var paymentPackTabAccessibility = <s:property value="tabAccessibility.paymentPackTabAccessibility" />;
+    var auditTrailTabAccessibility = <s:property value="tabAccessibility.auditTrailTabAccessibility" />;
 
     var hasFormUnderSubmission = false;
     var elementToBlock;
@@ -45,7 +46,8 @@
     var paymentPackDisabled = paymentPackTabAccessibility == 0;
     var historyDetailsDisabled = historyTabAccessibility == 0;
     var commentsDisabled = notesTabAccessibility == 0;
-
+    var auditTrailDisabled = auditTrailTabAccessibility == 0;
+    
     // COMMENT
     var commentsJsonReader;
     var commentsDataStore;
@@ -55,7 +57,12 @@
     var paymentPackJsonReader;
     var paymentPackDataStore;
     var paymentPackGrid; 
-
+    
+    // COMMENT
+    var auditTrailJsonReader;
+    var auditTrailDataStore;
+    var auditTrailGrid;  
+    
     var globalEntityFormOptions = { 
         beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
         success:       onSubmitResponseReceived,  // post-submit callback 
@@ -168,7 +175,12 @@
                     contentEl:'historyDetails', 
                     title: 'History', disabled: historyDetailsDisabled,
                     listeners: {activate : doCleanResult} 
-                },            
+                },    
+                {
+                    contentEl:'auditTrailDetails', 
+                    title: 'Claim Cycle', disabled: auditTrailDisabled,
+                    listeners: {activate : doCleanResult} 
+                },                 
                 {
                     contentEl:'comments', 
                     title: 'Notes', 
@@ -222,7 +234,7 @@
             });
             loadAttachments();
         }
-        
+                
         //return confirm('Are you sure you want to reject this invoice?')
         //return '<a href="doDeleteFile.action?fileId=' + r.data['id'] + '">' + value + '</a>'
         function deleteAttachment(a){
@@ -346,6 +358,47 @@
             setTimeout(function(){ $("#comments").unblock(); }, 10000);
         }
 
+        if(!auditTrailDisabled){
+            
+           auditTrailJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',   
+                root: 'results', 
+                fields:
+                [
+                    {name:'modifiedDate'},  
+                    {name:'modifiedBy'},                 
+                    {name:'status'}
+                ]
+            });     
+
+            var auditTrailData = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy
+                ({url: 'user/getAuditTrail.action',method:'GET'}),
+                reader:auditTrailJsonReader        
+            });
+
+            var grid = new Ext.grid.GridPanel({
+                store: auditTrailData,
+                columns: [
+                    {header: "Modified Date", width: 200, dataIndex: 'modifiedDate', sortable: false, resizable: true},
+                    {header: "Modified By", width: 200, dataIndex: 'modifiedBy', sortable: false, resizable: true},
+                    {header: "Status", width: 400, dataIndex: 'status', sortable: false, resizable: true}
+                ],
+                renderTo:'auditTrailGrid',
+                width:960,
+                autoHeight:true,
+                enableHdMenu:false
+            });
+
+            auditTrailData.load(
+            {
+                params:
+                {
+                    claimId : <s:property value="id" />
+                }
+            });    
+            
+        }    
         /*
          * DESC: HISTORY
          **/        
@@ -389,7 +442,7 @@
             });    
         }
 
-    
+        
     });         
 
     // LOAD COMMENT
@@ -1041,7 +1094,18 @@
 
                         </div>
 </s:if>                        
-                    </div>
+</div>
+
+<div id="auditTrailDetails" class="x-hide-display">
+                        
+<s:if test="tabAccessibility.auditTrailTabAccessibility != 0"> 
+
+                        <div id="auditTrailGrid">
+
+                        </div>
+</s:if>                        
+</div>
+
                     <div id="comments" class="x-hide-display">
 <s:if test="tabAccessibility.notesTabAccessibility != 0">  
 

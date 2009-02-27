@@ -18,6 +18,7 @@ public class TabAccessibility {
     private short historyTabAccessibility;
     private short notesTabAccessibility;
     private short paymentPackTabAccessibility;
+    private short auditTrailTabAccessibility;
 
     public TabAccessibility(ApplicationAccessibility applicationAccessibility,GrantedAuthority[] grantedAuthorities,String claimStatus) {       
                
@@ -33,6 +34,9 @@ public class TabAccessibility {
                 grantedAuthorities, claimStatus);
         notesTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_NOTES,
                 grantedAuthorities, claimStatus);
+        auditTrailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_AUDIT_TRAIL,
+                grantedAuthorities, claimStatus);
+        
     }
    
     public short getClaimDetailTabAccessibility() {
@@ -59,4 +63,7 @@ public class TabAccessibility {
         return paymentPackTabAccessibility;
     }
 
+    public short getAuditTrailTabAccessibility() {
+        return auditTrailTabAccessibility;
+    }    
 }
