@@ -1,3 +1,7 @@
+-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-- V2.2.10.0 - 20090221
+-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 insert into audit_trail (id, update_date, user_id, claim_id, original_status, new_status, created_by, last_modified_by)values ((select max(id)+1 from audit_trail), date('2008/12/10'), 999, 2, 'ClaimUnacknowledgedRouted', 'ClaimRejected', 999, 999);
 insert into audit_trail (id, update_date, user_id, claim_id, original_status, new_status, created_by, last_modified_by)values ((select max(id)+1 from audit_trail), date('2008/12/10'), 999, 3, 'ClaimUnacknowledgedRouted', 'ClaimRejected', 999, 999);
 insert into audit_trail (id, update_date, user_id, claim_id, original_status, new_status, created_by, last_modified_by)values ((select max(id)+1 from audit_trail), date('2008/12/10'), 999, 4, 'ClaimUnacknowledgedRouted', 'AwaitingCarHireInfo', 999, 999);
@@ -34,3 +38,7 @@ insert into audit_trail (id, update_date, user_id, claim_id, original_status, ne
 insert into audit_trail (id, update_date, user_id, claim_id, original_status, new_status, created_by, last_modified_by)values ((select max(id)+1 from audit_trail), date('2008/12/23'), 999, 128, 'ClaimUnacknowledgedRouted', 'AwaitingCarHireInfo', 999, 999);
 insert into audit_trail (id, update_date, user_id, claim_id, original_status, new_status, created_by, last_modified_by)values ((select max(id)+1 from audit_trail), date('2008/12/23'), 999, 133, 'ClaimUnacknowledgedRouted', 'AwaitingCarHireInfo', 999, 999);
 insert into audit_trail (id, update_date, user_id, claim_id, original_status, new_status, created_by, last_modified_by)values ((select max(id)+1 from audit_trail), date('2008/12/24'), 999, 136, 'ClaimUnacknowledgedRouted', 'AwaitingCarHireInfo', 999, 999);
+
+-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-- V2.2.10.2 - 20090225
+-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
