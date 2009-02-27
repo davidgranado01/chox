@@ -99,7 +99,7 @@ public class DataService extends HibernateDaoSupport {
     }
 
     public List findByCriteria(final DetachedCriteria c) {
-
+    
         return getHibernateTemplate().findByCriteria(c);
     }
 

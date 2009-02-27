@@ -8,7 +8,11 @@ package chox.services;
 import chox.Util.DateHelper;
 import chox.model.AuditTrail;
 import chox.model.Claim;
-import chox.model.WebUser;
+import java.util.ArrayList;
+import java.util.List;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 public class AuditTrailServiceImpl extends SecureDataService implements AuditTrailService{
     
@@ -23,11 +27,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
             thisAuditTrail.setNewStatus(newStatus);
             thisAuditTrail.setOriginalStatus(oldStatus);
             thisAuditTrail.setUpdateDate(DateHelper.getCurrentTimeStamp());
-            //thisAuditTrail.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-            //thisAuditTrail.setCreatedDate(DateHelper.getCurrentTimeStamp());
             thisAuditTrail.setUser(getCurrentUser());
-            //thisAuditTrail.setCreatedBy(getCurrentUser());
-            //thisAuditTrail.setLastModifiedBy(getCurrentUser());
             save(thisAuditTrail);
             bFlag = true;
         }
@@ -46,11 +46,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
             thisAuditTrail.setNewStatus(newStatus);
             thisAuditTrail.setOriginalStatus(thisClaim.getStatus());
             thisAuditTrail.setUpdateDate(DateHelper.getCurrentTimeStamp());
-            //thisAuditTrail.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-            //thisAuditTrail.setCreatedDate(DateHelper.getCurrentTimeStamp());
             thisAuditTrail.setUser(getCurrentUser());
-            //thisAuditTrail.setCreatedBy(getCurrentUser());
-            //thisAuditTrail.setLastModifiedBy(getCurrentUser());
             
             if(claimReasonOfRejection!=null){
                 thisAuditTrail.setClaimReasonOfRejection(claimReasonOfRejection);
@@ -69,5 +65,25 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         
     public AuditTrail getObject(int id) {
         return (AuditTrail) get(AuditTrail.class, id);
-    }    
+    }  
+    
+    public List<AuditTrail> getAuditTrailByClaim(int claimId) {
+
+        List auditTrails = new ArrayList<AuditTrail>();
+        
+        try {
+            
+            DetachedCriteria criteria = DetachedCriteria.forClass(AuditTrail.class);
+            criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+            criteria.addOrder(Order.asc("updateDate"));
+            auditTrails = findByCriteria(criteria);
+        
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }    
+        
+        return auditTrails;
+
+    }
+    
 }

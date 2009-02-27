@@ -14,7 +14,7 @@
     <property column="created_date" name="createdDate"/>
     <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
-    <property column="claim_reason_of_rejection" name="claimReasonOfRejection"/>
-    <property column="invoice_reason_of_rejection" name="invoiceReasonOfRejection"/>
+    <property column="claim_reason_of_rejection" name="claimReasonOfRejection" not-null="true"/>
+    <property column="invoice_reason_of_rejection" name="invoiceReasonOfRejection" not-null="true"/>
   </class>
 </hibernate-mapping>
