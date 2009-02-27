@@ -34,15 +34,11 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
             ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
             boolean success = claim.getHireDetail().getNumberOfHireDays() <= cCalc.getAllowedDays();
             
-            // System.out.println("*************** A:"+claim.getHireDetail().getNumberOfHireDays());
-            // System.out.println("*************** B:"+cCalc.getAllowedDays());
-            
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
             if (success) {
                 narrative = "";
             }
         } else {
-
            res.setResult(RuleEvaluationResult.RuleSkipped);
            narrative = "Claim is total loss OR a non-zero value has been supplied for Estimated Days Under Repair";
         }
