@@ -56,7 +56,6 @@ public class ApplicationAccessibility {
     private AccessibilityService accessibilityService;
     
     //private static ApplicationAccessibility instance = new ApplicationAccessibility();
-
     //public static ApplicationAccessibility getInstance() {
         
    //    return instance;

@@ -47,7 +47,7 @@
                This dashboard displays a snapshot of claims in the system
                   to date across a weekly, monthly and yearly period. Results can
                   be viewed for an individual Insurer or across the entire Insurer
-                  book.
+                  book. (Please hover over a dashboard item label to see an explanation of the numbers displayed)
             </div>
         
         <div class="form-container">
@@ -60,7 +60,7 @@
                                                                                             emptyOption="false"></s:select></td>                         
                 </tr>                       
             </table>
-            <div style="height:500px; width:900px" id="resultHolder"></div>
+            <div style="height:550px; width:900px" id="resultHolder"></div>
         </div>        
         
     </fieldset>

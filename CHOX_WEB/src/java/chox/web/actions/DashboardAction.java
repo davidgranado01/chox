@@ -6,6 +6,7 @@ package chox.web.actions;
 
 import chox.model.Chorganisation;
 import chox.model.Insurer;
+import chox.services.ClaimService;
 import chox.services.DataService;
 import chox.services.LookupService;
 import chox.services.UserService;
@@ -28,10 +29,14 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     private DataService dataService;
     private LookupService lookupService;
     private UserService userService;
+    private ClaimService claimService;
     private List suppliers;
     private List insurers;
     private Map extParameters;
     private Long numberOfActiveUser;
+    private Long numberOfClaimPending;
+    private int insurerId;
+    private int choragnisationId;
 
     public String showInsurerBoardHeader() {
         Insurer currentInsurer = this.getAuthenticatedUser().getUser().getInsurer();
@@ -54,7 +59,8 @@ public class DashboardAction extends BaseAction implements ParameterAware {
             builder.setInsurer(currentInsurer);
             monthToDateInsurerBoardViewData = builder.getMonthToDate();
             weekToDateInsurerBoardViewData = builder.getWeekToDate();
-            cumulativeInsurerBoardViewData = builder.getCumulative();            
+            cumulativeInsurerBoardViewData = builder.getCumulative();  
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -80,6 +86,10 @@ public class DashboardAction extends BaseAction implements ParameterAware {
 
     public void setDataService(DataService dataService) {
         this.dataService = dataService;
+    }
+    
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
     }
 
     public void setLookupService(LookupService service) {
@@ -126,4 +136,26 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     public Long getNumberOfActiveUser() {
         return numberOfActiveUser;
     }
+
+    public Long getNumberOfClaimPending() {
+        return numberOfClaimPending;
+    }
+
+    public int getChoragnisationId() {
+        return choragnisationId;
+    }
+
+    public void setChoragnisationId(int choragnisationId) {
+        this.choragnisationId = choragnisationId;
+    }
+
+    public int getInsurerId() {
+        return insurerId;
+    }
+
+    public void setInsurerId(int insurerId) {
+        this.insurerId = insurerId;
+    }
+    
+    
 }

@@ -4,15 +4,10 @@
  */
 package chox.web.report.viewdata;
 
-import chox.Util.MathHelper;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
-/**
- *
- * @author Emmanuel
- */
 public class WeekSummary {
 
     private String weekCycleDate;
@@ -132,65 +127,26 @@ public class WeekSummary {
     public Integer getClaimsCFwd() {
         return claimsBFwd + claimsNotification - claimsOutOfScope - nonThisInsurerClaims - claimsPaid;
     }
-
-    public BigDecimal getClaimsContestedAsPercentageOfChox() {
-        return claimsContestedAsPercentageOfChox;
-    }
-
-    public void setClaimsContestedAsPercentageOfChox(Integer iClaimsAcceptedAsPercentageOfChox) {
-        
-        BigDecimal dClaimsAcceptedAsPercentageOfChox = new BigDecimal(0.00);
-        float iClaimsCFwd = getClaimsCFwd();
-
-        if(iClaimsAcceptedAsPercentageOfChox>0 && iClaimsCFwd>0){
-            float fclaimsNotificationAcceptedByInsurer = iClaimsAcceptedAsPercentageOfChox.longValue();
-            float fClaimsAcceptedAsPercentageOfChox = fclaimsNotificationAcceptedByInsurer / iClaimsCFwd;
-            dClaimsAcceptedAsPercentageOfChox = BigDecimal.valueOf(fClaimsAcceptedAsPercentageOfChox);
-        }
-        
-        this.claimsContestedAsPercentageOfChox = dClaimsAcceptedAsPercentageOfChox;
-    }
-
-    /*
-    public Integer getClaimsContestedAsPercentageOfChox() {
-        
-        Integer iClaimsContestedAsPercentageOfChox = 0;
-        float iClaimsCFwd = getClaimsCFwd();
-
-        if(claimsNotificationContestedByInsurer>0 && iClaimsCFwd>0){
-            float fClaimsNotificationContestedByInsurer = claimsNotificationContestedByInsurer.longValue();
-            float fClaimsContestedAsPercentageOfChox = fClaimsNotificationContestedByInsurer / iClaimsCFwd * 100;
-            iClaimsContestedAsPercentageOfChox = (int) Round(fClaimsContestedAsPercentageOfChox,0);
-        }
-
-        return iClaimsContestedAsPercentageOfChox;
-    }
-    */
     
-    /*
+    public void setClaimsContestedAsPercentageOfChox(BigDecimal claimsContestedAsPercentageOfChox) {
+        this.claimsContestedAsPercentageOfChox = claimsContestedAsPercentageOfChox;
+    }
+    
     public BigDecimal getClaimsContestedAsPercentageOfChox() {
         
         BigDecimal bReturnValue = new BigDecimal("0.00");
         float fClaimsNotificationContestedByInsurer = claimsNotificationContestedByInsurer.longValue();
-        
-        // float fclaimsNotificationAcceptedByInsurer = claimsNotificationAcceptedByInsurer.longValue();
-        // float fClaimsCFwd = getClaimsCFwd();
-        // return MathHelper.getPercentage(fClaimsNotificationContestedByInsurer, fClaimsCFwd);
-        
-        float fClaimsNotification = claimsNotification.longValue();
-        
-        if(fClaimsNotificationContestedByInsurer>0 && fClaimsNotification>0){
-            bReturnValue = new BigDecimal(fClaimsNotificationContestedByInsurer/fClaimsNotification);
-        }
-        
-        
-        if(fClaimsNotificationContestedByInsurer>0 && fclaimsNotificationAcceptedByInsurer>0){
-            bReturnValue = new BigDecimal(((fClaimsNotificationContestedByInsurer + fclaimsNotificationAcceptedByInsurer)/fclaimsNotificationAcceptedByInsurer)/100);
+        float fClaimsNotificationAcceptedByInsurer = claimsNotificationAcceptedByInsurer.longValue();
+                
+        if(fClaimsNotificationAcceptedByInsurer>0){
+            
+            float fTtlProcessClaim = fClaimsNotificationContestedByInsurer + fClaimsNotificationAcceptedByInsurer;
+            bReturnValue = new BigDecimal(fClaimsNotificationAcceptedByInsurer/fTtlProcessClaim);
         }
       
         return bReturnValue;
     }
-    */
+
     
     public Integer getClaimsFNOLCreatedByInsurer() {
         return claimsFNOLCreatedByInsurer;
@@ -225,7 +181,7 @@ public class WeekSummary {
     }
 
     public Integer getClaimsNotificationContestedByInsurer() {
-        return claimsNotificationContestedByInsurer - claimsOutOfScope;
+        return claimsNotificationContestedByInsurer;
     }
 
     public void setClaimsNotificationContestedByInsurer(Integer claimsNotificationContestedByInsurer) {
@@ -257,11 +213,6 @@ public class WeekSummary {
     }
 
     public Integer getClaimsToBeInvoiced() {
-        
-        if(claimsToBeInvoiced<=0){
-            claimsToBeInvoiced = 0;
-        }
-        
         return claimsToBeInvoiced;
     }
 
@@ -293,32 +244,15 @@ public class WeekSummary {
         
         BigDecimal dInvoicePaidAsPercentageOfInvoicing = new BigDecimal(0.00);
         
-        // System.out.println(">>>>>>>>>> iClaimsInvoicedHis:"+iClaimsInvoicedHis);
-        // System.out.println(">>>>>>>>> iInvoicePaidByInsurerHis:"+iInvoicePaidByInsurerHis);
-        
         if(iClaimsInvoicedHis>0 && iInvoicePaidByInsurerHis>0){
-            
             float fInvoicePaidByInsurerHis = iInvoicePaidByInsurerHis.longValue();
             float fClaimsInvoicedHis = iClaimsInvoicedHis.longValue();
-            
-            float fInvoicePaidAsPercentageOfInvoicing = fInvoicePaidByInsurerHis / fClaimsInvoicedHis;
             dInvoicePaidAsPercentageOfInvoicing = new BigDecimal(fInvoicePaidByInsurerHis / fClaimsInvoicedHis);
-            
-            
-            // System.out.println(">>>>>>>>> dInvoicePaidAsPercentageOfInvoicing:"+dInvoicePaidAsPercentageOfInvoicing);
-            // System.out.println(">>>>>>>>> fInvoicePaidAsPercentageOfInvoicing:"+fInvoicePaidAsPercentageOfInvoicing);
         }
         
         this.invoicePaidAsPercentageOfInvoicing = dInvoicePaidAsPercentageOfInvoicing;
     }
     
-/*
-    public BigDecimal getInvoicePaidAsPercentageOfInvoicing(){
-        float fInvoicePaidByInsurer = invoicePaidByInsurer.longValue();
-        float fClaimsInvoiced = claimsInvoiced.longValue();
-        return MathHelper.getPercentage(fInvoicePaidByInsurer, fClaimsInvoiced);
-    }
-*/
     public Integer getInvoicePaidByInsurer() {
         return invoicePaidByInsurer;
     }

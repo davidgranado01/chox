@@ -15,8 +15,11 @@ import java.util.Map;
 public class DashBoardViewData {
     private Integer noOfClaimNotificationsSubmitted;
     private Integer noOfClaimNotificationsAccepted;
+    private Integer noOfClaimNotificationsAcceptedAccumulative;
     private Integer noOfClaimNotificationsRejected;
+    private Integer noOfClaimNotificationsRejectedAccumulative;
     private Integer noOfClaimNotificationsPending;
+    private Integer noOfClaimNotificationsClosed;
     private Integer noOfInvoicesSubmitted;
     private BigDecimal valueOfInvoicesSubmitted;
     private Integer noOfInvoicesAccepted;
@@ -37,8 +40,11 @@ public class DashBoardViewData {
         
         viewData.noOfClaimNotificationsSubmitted = getIntegerValue(data.get("noOfClaimNotificationsSubmitted".toLowerCase()));
         viewData.noOfClaimNotificationsAccepted = getIntegerValue(data.get("noOfClaimNotificationsAccepted".toLowerCase()));
+        viewData.noOfClaimNotificationsRejectedAccumulative = getIntegerValue(data.get("noOfClaimNotificationsRejectedAccumulative".toLowerCase()));
+        viewData.noOfClaimNotificationsAcceptedAccumulative = getIntegerValue(data.get("noOfClaimNotificationsAcceptedAccumulative".toLowerCase()));
         viewData.noOfClaimNotificationsRejected = getIntegerValue(data.get("noOfClaimNotificationsRejected".toLowerCase()));
         viewData.noOfClaimNotificationsPending = getIntegerValue(data.get("noOfClaimNotificationsPending".toLowerCase()));
+        viewData.noOfClaimNotificationsClosed = getIntegerValue(data.get("noOfClaimNotificationsClosed".toLowerCase()));
         viewData.noOfInvoicesSubmitted = getIntegerValue(data.get("noOfInvoicesSubmitted".toLowerCase()));
         viewData.valueOfInvoicesSubmitted = getDecimalValue(data.get("valueOfInvoicesSubmitted".toLowerCase()));
         viewData.noOfInvoicesAccepted = getIntegerValue(data.get("noOfInvoicesAccepted".toLowerCase()));
@@ -204,5 +210,29 @@ public class DashBoardViewData {
 
     public void setValueOfInvoicesPaymentLogged(BigDecimal valueOfInvoicesPaymentLogged) {
         this.valueOfInvoicesPaymentLogged = valueOfInvoicesPaymentLogged;
-    }    
+    }
+
+    public Integer getNoOfClaimNotificationsClosed() {
+        return noOfClaimNotificationsClosed;
+    }
+
+    public void setNoOfClaimNotificationsClosed(Integer noOfClaimNotificationsClosed) {
+        this.noOfClaimNotificationsClosed = noOfClaimNotificationsClosed;
+    }
+
+    public Integer getNoOfClaimNotificationsAcceptedAccumulative() {
+        return noOfClaimNotificationsAcceptedAccumulative;
+    }
+
+    public void setNoOfClaimNotificationsAcceptedAccumulative(Integer noOfClaimNotificationsAcceptedAccumulative) {
+        this.noOfClaimNotificationsAcceptedAccumulative = noOfClaimNotificationsAcceptedAccumulative;
+    }
+
+    public Integer getNoOfClaimNotificationsRejectedAccumulative() {
+        return noOfClaimNotificationsRejectedAccumulative;
+    }
+
+    public void setNoOfClaimNotificationsRejectedAccumulative(Integer noOfClaimNotificationsRejectedAccumulative) {
+        this.noOfClaimNotificationsRejectedAccumulative = noOfClaimNotificationsRejectedAccumulative;
+    }
 }

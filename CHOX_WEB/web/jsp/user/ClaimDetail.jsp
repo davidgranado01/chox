@@ -222,7 +222,7 @@
             });
             loadAttachments();
         }
-        
+                
         //return confirm('Are you sure you want to reject this invoice?')
         //return '<a href="doDeleteFile.action?fileId=' + r.data['id'] + '">' + value + '</a>'
         function deleteAttachment(a){
@@ -245,7 +245,6 @@
             }else{
                 deleteAttachment(fileId);
             }
-            //loadAttachments();
         }
         
         //Emmanuel 
@@ -390,7 +389,7 @@
             });    
         }
 
-    
+        
     });         
 
     // LOAD COMMENT

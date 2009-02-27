@@ -654,6 +654,7 @@
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp.jsp
             </result>
         </action>
+
         <action name="showInsurerBoardHeader" class="chox.web.actions.DashboardAction" method="showInsurerBoardHeader">
             <result name="success">/jsp/user/dashboardPanel/insurer_board.jsp
             </result>
