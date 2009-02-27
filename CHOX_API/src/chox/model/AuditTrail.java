@@ -27,7 +27,7 @@ public class AuditTrail implements Serializable,Auditable{
     protected Date lastModifiedDate;
     protected Integer claimReasonOfRejection;
     protected Integer invoiceReasonOfRejection;
-                
+
     public Claim getClaim() {
         return claim;
     }

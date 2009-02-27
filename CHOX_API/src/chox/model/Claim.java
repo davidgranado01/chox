@@ -96,7 +96,6 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     /** 
      * This attribute maps to the column claim_number in the claim table.
      */
-    
     protected String claimNumber;
     protected Date creditAgreementDate;
     protected Date gtaNoticeDate;
