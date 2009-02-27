@@ -136,8 +136,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             */
                     
             Document doc = docBuilder.parse(claimXMLFile);
-            
-            // System.out.println(">>>>>>>>>>>>>>>>>>>> processXML : 003");
 
             doc.getDocumentElement().normalize();
             Element root = doc.getDocumentElement();
@@ -189,13 +187,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             Document doc,
             Element root,
             Boolean isAllowPartialUpload) throws Exception {
-              
-  System.out.println(">>>>>>>>>>>>>>>>>>>> -007");  
   
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
-
-        System.out.println(">>>>>>>>>>>>>>>>>>>> -008");   
         
         // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
         if(!xmlParseResult.getIsClaimExist()){
@@ -545,7 +539,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             // GET DRIVERS SECTION - RETURN LIST
             Element thisElement = XMLUtils.getElement(mainElement, "drivers");
             ArrayList<Element> driverElements = XMLUtils.getElements(doc, thisElement, "driver");
-System.out.println(">>>>>>>>>>>>>>>>>>>> -009");            
+      
             // VALIDATE DRIVERS LIST
             xmlParseResult = XmlHelper.xmlSchemaNodeListValidation(xmlParseResult, driverElements, "driver", strSectionName, "");
             
@@ -556,7 +550,7 @@ System.out.println(">>>>>>>>>>>>>>>>>>>> -009");
 
                     xmlParseResult.setIsCurrentDataValid(true);
                     xmlParseResult.setIsCurrentScheValid(true);
-System.out.println(">>>>>>>>>>>>>>>>>>>> 00");
+
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "title", XmlHelper.isMAN_Driver_Title, "", strSectionName, "Title");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "firstnames", XmlHelper.isMAN_Driver_Firstnames, "", strSectionName, "First Name");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "lastname", XmlHelper.isMAN_Driver_Lastname, "", strSectionName, "Surname");
@@ -566,7 +560,7 @@ System.out.println(">>>>>>>>>>>>>>>>>>>> 00");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "address4", XmlHelper.isMAN_Driver_Address4, "", strSectionName, "Address4");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "address5", XmlHelper.isMAN_Driver_Address5, "", strSectionName, "Address5");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "postcode", XmlHelper.isMAN_Driver_Postcode, "", strSectionName, "Postcode");
-System.out.println(">>>>>>>>>>>>>>>>>>>> 01");                    
+                  
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "telephone-day", XmlHelper.isMAN_Driver_Telephone_day, XmlHelper.REG_PHONE, strSectionName, "Telephone Day");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "telephone-evening", XmlHelper.isMAN_Driver_Telephone_Evening, XmlHelper.REG_PHONE, strSectionName, "Telephone Evening");
                     xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, ee, "email", XmlHelper.isMAN_Driver_Email, XmlHelper.REG_EMAIL, strSectionName, "Email");
@@ -584,7 +578,7 @@ System.out.println(">>>>>>>>>>>>>>>>>>>> 01");
                         if(xmlParseResult.getClaim()!=null && xmlParseResult.getClaim().getCustomer()!=null){
                             customer = xmlParseResult.getClaim().getCustomer();
                         }
-                        System.out.println(">>>>>>>>>>>>>>>>>>>> 02");
+                        
                         customer.setTitle(XmlHelper.getNodeValue(ee, "title"));
                         customer.setFirstName(XmlHelper.getNodeValue(ee, "firstnames"));
                         customer.setLastName(XmlHelper.getNodeValue(ee, "lastname"));
@@ -593,8 +587,6 @@ System.out.println(">>>>>>>>>>>>>>>>>>>> 01");
                         customer.setAddress3(XmlHelper.getNodeValue(ee, "address3"));
                         customer.setAddress4(XmlHelper.getNodeValue(ee, "address4"));
                         customer.setAddress5(XmlHelper.getNodeValue(ee, "address5"));
-                        
-                        System.out.println(">>>>>>>>>>>>>>>>>>>> 03 : "+XmlHelper.getNodeValue(ee, "postcode"));
                         
                         customer.setPostcode(XmlHelper.getNodeValue(ee, "postcode"));
                         customer.setTelephoneDay(XmlHelper.getNodeValue(ee, "telephone-day"));
