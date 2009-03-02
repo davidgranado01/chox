@@ -3,6 +3,9 @@ package chox.data;
 import chox.model.XMLParseResult;
 import chox.model.ClaimStatus;
 
+/*
+ * PLEASE ALTER ProcessClaimsAction.java if adding new upload status
+ */
 public class UploadStatus {
 
     public static final String CLAIM_EXIST = "Claim Already Exists";
@@ -13,7 +16,7 @@ public class UploadStatus {
     public static final String INVOICE_UPLOAD_FAILED = "Invoice Upload Failed";
     public static final String INCORRECT_CLAIM_STATUS = "Unable to Upload Invoice - Incorrect Claim Status";
     
-    private static final String invoicedetailnotsave = "Invoice related details cannot be uploaded at the [1st claim notification] stage of the claim lifecycle, invoice related details have not been saved";
+    //private static final String invoicedetailnotsave = "Invoice related details cannot be uploaded at the [1st claim notification] stage of the claim lifecycle, invoice related details have not been saved";
     
     public static XMLParseResult getUploadStatus(XMLParseResult result){
         
