@@ -295,6 +295,65 @@ public class InvoiceCalcTest {
   
     }   
     
+    /*
+     * Desc:
+     * TEST FOR INVOICE LESS THAN 100 AND HIRE NET LESS THAN 1 POUNDS
+     */
+    @Test
+    public void TestIvoiceCalculator10() {
+
+        InvoiceInfo inv = new InvoiceInfo();
+
+        inv.setHireNet(new BigDecimal(0.99));
+        inv.setHireVat(new BigDecimal(0.15));
+        inv.setHireGross(new BigDecimal(1.14));
+
+        inv.setRepairNet(new BigDecimal(0.55));
+        inv.setRepairVat(new BigDecimal(0.08));
+        inv.setRepairGross(new BigDecimal(0.63));
+        
+        inv.setEngineerFeeNet(new BigDecimal(0.55));
+        inv.setEngineerFeeVat(new BigDecimal(0.08));
+        inv.setEngineerFeeGross(new BigDecimal(0.63));
+
+        inv.setStorageRecoveryNet(new BigDecimal(0.55));
+        inv.setStorageRecoveryVat(new BigDecimal(0.08));
+        inv.setStorageRecoveryGross(new BigDecimal(0.63));
+
+        inv.setTotalNet(new BigDecimal(2.64));
+        inv.setTotalVat(new BigDecimal(0.40));
+        inv.setTotalGross(new BigDecimal(3.04));
+
+        inv.setClaimsHandlingInvoiceAmount(new BigDecimal(2.00));
+        inv.setDeductionForClaimsHandlingFee(new BigDecimal(0.00));
+        inv.setDiscount(new BigDecimal(-15.00));
+        inv.setPenaltyCharge(new BigDecimal(10.15));
+        
+        inv.setTotalToPay(new BigDecimal(0.00));
+
+        InvoiceCalcHelper helper = InvoiceCalcHelper.getInstance(inv);
+
+        System.out.println("");
+        System.out.println("TestIvoiceCalculator10 - LabourCostBusinessRule");
+        System.out.println("====================================");
+        System.out.println("HireGross:"+inv.getHireGross());
+        System.out.println("HireNet:"+inv.getHireNet());
+        System.out.println("HireVat:"+inv.getHireVat());
+        System.out.println("CalculatedHireVat:"+helper.getCalculatedHireVat());
+        System.out.println("CalculatedTotalNet:"+helper.getCalculatedTotalNet());
+        System.out.println("CalculatedTotalToPay:"+helper.getCalculatedTotalToPay());
+        
+        assertTrue(CalcHelper.EqualTo(inv.getClaimsHandlingInvoiceAmount(), new BigDecimal(2.00)));
+        assertTrue(CalcHelper.EqualTo(helper.getCalculatedHireVat(), new BigDecimal(0.00)));
+        assertTrue(CalcHelper.EqualTo(helper.getCalculatedHireGross(),new BigDecimal(1.14)));
+        assertTrue(CalcHelper.EqualTo(helper.getCalculatedRepairVat(), new BigDecimal(0.98)));
+        assertTrue(CalcHelper.EqualTo(helper.getCalculatedRepairGross(), new BigDecimal(0.63)));
+        assertTrue(CalcHelper.EqualTo(helper.getCalculatedTotalNet(), new BigDecimal(2.64)));
+        assertTrue(CalcHelper.EqualTo(helper.getCalculatedTotalVat(), new BigDecimal(0.40)));
+        assertTrue(CalcHelper.EqualTo(helper.getCalculatedTotalGross(), new BigDecimal(3.04)));
+        assertTrue(CalcHelper.EqualTo(helper.getCalculatedTotalToPay(), new BigDecimal(-1.81)));
+  
+    }      
     
     @After
     public void tearDown() throws Exception {

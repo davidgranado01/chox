@@ -14,6 +14,8 @@ public interface IClaimInfo {
 
     public IHireInfo getHireDetail();
 
+    public IHireMonitoringDetail getHireMonitoringDetail();
+    
     public ICustomerVehicleDamageInfo getCustomerVehicleDamage();
 
     public IInsurerInfo getInsurer();

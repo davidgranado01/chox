@@ -84,8 +84,150 @@ public class ClaimCalcHelper {
 			}
 		}
                 
-                System.out.println("allowedDays is " + allowedDays);
 		return allowedDays;
 	}   
+        
+        public int getNumberDayOfLabourCostWorthy(){
+            
+            int iLabourCostAverageRateDay = getLabourCostAverageRateDay();
+            int iDayBufferForEngineeringProcess = getDayBufferForEngineeringProcess();
+            
+            System.out.println("iLabourCostAverageRateDay:"+iLabourCostAverageRateDay);
+            System.out.println("iDayBufferForEngineeringProcess:"+iDayBufferForEngineeringProcess);
+            
+            int iWeekedBuffer = getWeekedBuffer(iLabourCostAverageRateDay+iDayBufferForEngineeringProcess);
+            
+            System.out.println("iWeekedBuffer:"+iWeekedBuffer);
+            
+            return iLabourCostAverageRateDay + iWeekedBuffer + iDayBufferForEngineeringProcess;
+        }
+        
+        public int getWeekedBuffer(int iLabourCostTotalDay){
+            
+            int iWeekendBufferDay = 0;
+            
+            if(iLabourCostTotalDay<5){ iWeekendBufferDay = 0;
+            }else if(iLabourCostTotalDay>=5 && iLabourCostTotalDay<12){ iWeekendBufferDay = 2;
+            }else if(iLabourCostTotalDay>=12 && iLabourCostTotalDay<19){ iWeekendBufferDay = 4;
+            }else if(iLabourCostTotalDay>=19 && iLabourCostTotalDay<26){ iWeekendBufferDay = 6;
+            }else if(iLabourCostTotalDay>=26 && iLabourCostTotalDay<33){ iWeekendBufferDay = 8;
+            }else if(iLabourCostTotalDay>=40 && iLabourCostTotalDay<47){ iWeekendBufferDay = 10;
+            }else if(iLabourCostTotalDay>=47 && iLabourCostTotalDay<54){ iWeekendBufferDay = 12;
+            }else if(iLabourCostTotalDay>=54 && iLabourCostTotalDay<61){ iWeekendBufferDay = 14;
+            }else if(iLabourCostTotalDay>=61 && iLabourCostTotalDay<68){ iWeekendBufferDay = 16;
+            }else if(iLabourCostTotalDay>=68 && iLabourCostTotalDay<75){ iWeekendBufferDay = 18;
+            }else if(iLabourCostTotalDay>=75 && iLabourCostTotalDay<82){ iWeekendBufferDay = 20;
+            }else if(iLabourCostTotalDay>=82 && iLabourCostTotalDay<89){ iWeekendBufferDay = 22;
+            }else if(iLabourCostTotalDay>=89 && iLabourCostTotalDay<96){ iWeekendBufferDay = 24;
+            }else if(iLabourCostTotalDay>=96 && iLabourCostTotalDay<103){ iWeekendBufferDay = 26;
+            }else if(iLabourCostTotalDay>=103 && iLabourCostTotalDay<110){ iWeekendBufferDay = 28;
+            }else if(iLabourCostTotalDay>=110 && iLabourCostTotalDay<117){ iWeekendBufferDay = 30;
+            }else if(iLabourCostTotalDay>=117 && iLabourCostTotalDay<124){ iWeekendBufferDay = 32;
+            }else if(iLabourCostTotalDay>=124 && iLabourCostTotalDay<131){ iWeekendBufferDay = 34;
+            }else if(iLabourCostTotalDay>=131 && iLabourCostTotalDay<138){ iWeekendBufferDay = 36;
+            }else if(iLabourCostTotalDay>=138 && iLabourCostTotalDay<145){ iWeekendBufferDay = 38;
+            }else if(iLabourCostTotalDay>=145 && iLabourCostTotalDay<152){ iWeekendBufferDay = 40;
+            }else if(iLabourCostTotalDay>=152 && iLabourCostTotalDay<159){ iWeekendBufferDay = 42;
+            }else if(iLabourCostTotalDay>=159 && iLabourCostTotalDay<166){ iWeekendBufferDay = 44;
+            }else if(iLabourCostTotalDay>=166 && iLabourCostTotalDay<173){ iWeekendBufferDay = 46;
+            }else if(iLabourCostTotalDay>=173 && iLabourCostTotalDay<180){ iWeekendBufferDay = 48;
+            }else if(iLabourCostTotalDay>=180 && iLabourCostTotalDay<187){ iWeekendBufferDay = 50;
+            }else if(iLabourCostTotalDay>=187 && iLabourCostTotalDay<194){ iWeekendBufferDay = 52;
+            }else if(iLabourCostTotalDay>=194 && iLabourCostTotalDay<201){ iWeekendBufferDay = 54;
+            }else if(iLabourCostTotalDay>=201 && iLabourCostTotalDay<208){ iWeekendBufferDay = 56;
+            }else if(iLabourCostTotalDay>=208 && iLabourCostTotalDay<215){ iWeekendBufferDay = 58;
+            }else if(iLabourCostTotalDay>=215 && iLabourCostTotalDay<222){ 
+                iWeekendBufferDay = 60;
+            }
+            
+            return iWeekendBufferDay;
+        }
+        
+        public int getLabourCostAverageRateDay(){
+            
+            BigDecimal bLabourCost = claim.getHireMonitoringDetail().getLabourCost();
+            
+            if(bLabourCost.compareTo(new BigDecimal(0.00))<1){
+                bLabourCost = getNewLabourCost();
+            }
+            
+            BigDecimal bAverageLabourHoursPerHireDay = new BigDecimal(claim.getChoBand().getAverageLabourHoursPerHireDay());
+            BigDecimal bAverageLabourRate =  new BigDecimal(claim.getChoBand().getAverageLabourRate());
+            BigDecimal bLabourCostAverageRateDay = new BigDecimal(0.00);
+            
+            // System.out.println("bLabourCost:"+bLabourCost.longValue());
+            // System.out.println("bAverageLabourRate:"+bAverageLabourRate.longValue());
+            // System.out.println("bAverageLabourHoursPerHireDay:"+bAverageLabourHoursPerHireDay.longValue());
+            
+            bLabourCostAverageRateDay = (bLabourCost.divide(bAverageLabourRate)).divide(bAverageLabourHoursPerHireDay);
+            
+            // System.out.println("bLabourCostAverageRateDay:"+bLabourCostAverageRateDay);
 
+            return mathHelper.getIntegerFromDecimalRound(bLabourCostAverageRateDay);
+            
+        }
+        
+        public BigDecimal getNewLabourCost(){
+            
+            BigDecimal bLabourCost = new BigDecimal(0.00);
+            BigDecimal bLabourRate = new BigDecimal(0.00);
+            int iLabourHour = 0;
+            
+            if(claim.getHireMonitoringDetail()!=null){
+                bLabourCost = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourCost());
+                bLabourRate = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourRate());
+                iLabourHour = mathHelper.getNotNullIntValue(claim.getHireMonitoringDetail().getLabourHour());
+            }
+            
+            if((bLabourCost.compareTo(new BigDecimal(0.00))<1) && (iLabourHour>0)){
+                
+                if(bLabourRate.compareTo(new BigDecimal(0.00))<1){
+                    bLabourCost = new BigDecimal(claim.getChoBand().getAverageLabourHoursPerHireDay()*iLabourHour);
+                }else{
+                    bLabourCost = bLabourRate.multiply(new BigDecimal(iLabourHour)); 
+                }
+            }
+            return bLabourCost;
+        }
+        
+        public int getDayBufferForEngineeringProcess(){
+            
+            int iDays = 0;
+            
+            if (claim.getHireMonitoringEcd()==null)
+            {
+                if (claim.getCustomerVehicleDamage().getIsUsable())
+                {
+                    iDays += claim.getChoBand().getTakeVehicleToGarageDaysMobile();
+                    // System.out.println("getTakeVehicleToGarageDaysMobile:"+claim.getChoBand().getTakeVehicleToGarageDaysMobile());
+                }
+                else
+                {
+                    iDays += claim.getChoBand().getTakeVehicleToGarageDaysNonMobile();
+                    // System.out.println("getTakeVehicleToGarageDaysNonMobile:"+claim.getChoBand().getTakeVehicleToGarageDaysNonMobile());
+                }
+            }
+            else
+            {
+                if (claim.getCustomerVehicleDamage().getIsUsable())
+                {
+                    iDays += claim.getChoBand().getTakeVehicleToGarageDaysMobile();
+                    // System.out.println("getTakeVehicleToGarageDaysMobile:"+claim.getChoBand().getTakeVehicleToGarageDaysMobile());
+                }
+                else
+                {
+                    iDays += claim.getChoBand().getTakeVehicleToGarageDaysNonMobile();
+                    // System.out.println("getTakeVehicleToGarageDaysNonMobile:"+claim.getChoBand().getTakeVehicleToGarageDaysNonMobile());
+                }
+            }
+            
+            iDays += claim.getChoBand().getTakeVehicleOutDays();
+            iDays += claim.getChoBand().getEngineerInspectionDelayDays();
+            
+            // System.out.println("getTakeVehicleOutDays:"+claim.getChoBand().getTakeVehicleOutDays());
+            // System.out.println("getEngineerInspectionDelayDays:"+claim.getChoBand().getEngineerInspectionDelayDays());
+            // System.out.println("TOTAL DAYS:"+iDays);
+                    
+            return iDays;
+        }
 }

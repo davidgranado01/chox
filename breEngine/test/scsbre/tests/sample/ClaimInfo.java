@@ -9,6 +9,7 @@ import scsbre.model.ICustomerVehicleDamageInfo;
 import scsbre.model.IEngineerReportInfo;
 import scsbre.model.IExtrasInfo;
 import scsbre.model.IHireInfo;
+import scsbre.model.IHireMonitoringDetail;
 import scsbre.model.IInsurerInfo;
 import scsbre.model.IInvoiceInfo;
 import scsbre.model.IVehicleClassInfo;
@@ -26,8 +27,8 @@ public class ClaimInfo implements IClaimInfo {
     private boolean managingRepair;
     private Date policyHolderContactDate;
     private IVehicleClassInfo vClass;
-
-
+    private IHireMonitoringDetail hireMonitoringDetail;
+    private Date hireMonitoringEcd;
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#getClaimChoBand()
      */
@@ -184,6 +185,14 @@ public class ClaimInfo implements IClaimInfo {
     }
 
     public Date getHireMonitoringEcd() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return hireMonitoringEcd;
+    }
+
+    public void setHireMonitoringDetail(IHireMonitoringDetail hireMonitoringDetail) {
+        this.hireMonitoringDetail = hireMonitoringDetail;
+    }
+
+    public IHireMonitoringDetail getHireMonitoringDetail() {
+        return hireMonitoringDetail;
     }
 }

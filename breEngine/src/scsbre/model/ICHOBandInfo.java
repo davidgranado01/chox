@@ -32,4 +32,6 @@ public interface ICHOBandInfo {
 
     public BigDecimal getHireNetCeiling();
 
+    public int getAverageLabourRate();
+    public int getAverageLabourHoursPerHireDay();
 }

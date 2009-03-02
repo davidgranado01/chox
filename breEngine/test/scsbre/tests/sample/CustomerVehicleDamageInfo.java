@@ -38,10 +38,10 @@ public class CustomerVehicleDamageInfo implements ICustomerVehicleDamageInfo {
     }
 
     public String getVehicleRegistration() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "ABC1234";
     }
 
     public Boolean isVehicleRegistrationExist() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return false;
     }
 }

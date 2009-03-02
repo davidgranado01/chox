@@ -57,17 +57,14 @@ public class RulesTest1 {
     public void tearDown() {
     }
     
-    
-    
     @Test
     public void TestDefaultCase(){
-        
         
         IClaimInfo claim = getClaim();
         RulesEngine engine = RulesEngine.getInstance(claim);
         RulesEngineResponse res =  engine.ResolveStatus();
-        
-       // System.out.println(res.getResults().size());
+
+        // System.out.println(res.getResults().size());
         
         List<RuleEvaluation> results = res.getResults();
         for(int i = 0; i < results.size(); i++){

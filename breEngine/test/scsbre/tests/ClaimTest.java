@@ -32,27 +32,7 @@ public class ClaimTest {
     
     @Test
     public void TestStuff(){
-        
-           // BigDecimal hireNetMinusExtras = claim.getInvoice().getHireNet().subtract(exCalcHelper.getTotalExtras());
-                    //return hireNetMinusExtras.divide(new BigDecimal(claim.getHireDetail().getNumberOfHireDays()));
-        
-       BigDecimal x = new BigDecimal(1880);
-       BigDecimal i = new BigDecimal(6);
-       
-       BigDecimal y = x.divide(i,4,1);
-       
-       System.out.println(y.doubleValue());
-       
-       
-       BigDecimal ib = new BigDecimal(720);
-       
-       BigDecimal vatc = ib.multiply(new BigDecimal(.175));
-       
-       double d = 125.999999999999;
-       
-       double e = Math.round(d);
-       
-       int blah = 0;
+
         
     }
     

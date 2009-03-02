@@ -64,24 +64,15 @@ public class RulesTest5 {
             
             
             RuleEvaluation res1 = results.get(i);
-            
             System.out.println(res1.toString());
-            
-            
         }
-        
-        
                 
         InvoiceCalcHelper ic = InvoiceCalcHelper.getInstance(claim.getInvoice());
-        
         
         System.out.println(claim.getInvoice().getHireNet());
         System.out.println(ic.getCalculatedHireGross());
         System.out.println(ic.getCalculatedHireVat());
 
-              
-                
-        
         assertTrue(results.get(0).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(1).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(2).getResult() == RuleEvaluationResult.RulePassed);

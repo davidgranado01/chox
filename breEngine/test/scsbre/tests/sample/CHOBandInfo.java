@@ -20,7 +20,16 @@ public class CHOBandInfo implements ICHOBandInfo {
     private int isNotMobileDayAllowance;
     private int takeVehicleToGarageDaysMobile;
     private int takeVehicleToGarageDaysNonMobile;
+        protected int averageLabourRate;
+        protected int averageLabourHoursPerHireDay;
 
+    public void setAverageLabourHoursPerHireDay(int averageLabourHoursPerHireDay) {
+        this.averageLabourHoursPerHireDay = averageLabourHoursPerHireDay;
+    }
+
+    public void setAverageLabourRate(int averageLabourRate) {
+        this.averageLabourRate = averageLabourRate;
+    }
 
     /* (non-Javadoc)
      * @see scsbre.model.ICHOBandInfo#getHireDayCeiling()
@@ -219,5 +228,13 @@ public class CHOBandInfo implements ICHOBandInfo {
 
     public void setHireNetCeiling(BigDecimal hireNetCeiling) {
         this.hireNetCeiling = hireNetCeiling;
+    }
+
+    public int getAverageLabourRate() {
+        return averageLabourRate;
+    }
+
+    public int getAverageLabourHoursPerHireDay() {
+        return averageLabourHoursPerHireDay;
     }
 }
