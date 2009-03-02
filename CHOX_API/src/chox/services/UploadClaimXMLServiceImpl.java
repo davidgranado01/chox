@@ -56,6 +56,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     {        
     }
     
+    /*
     public static void main(String[] args) {
 
         try {
@@ -114,7 +115,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         
         //return new ByteArrayInputStream;
     //}
-
+    */
+    
     public ArrayList<XMLParseResult> processXML(File claimXMLFile, Boolean isAllowPartialUpload) {
         
         ArrayList<XMLParseResult> xmlParseResults = new ArrayList<XMLParseResult>();
@@ -124,16 +126,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             docBuilderFactory.setNamespaceAware(true); 
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            
-            // System.out.println(">>>>>>>>>>>>>>>>>>>> processXML : 001");
-            // ByteArrayInputStream bais = doConvert(claimXMLFile);
-            // System.out.println(">>>>>>>>>>>>>>>>>>>> processXML : 002");
-            
-            /*
-            FileInputStream fileStream = new FileInputStream(claimXMLFile); 
-            InputSource inSource = new InputSource(new InputStreamReader(fileStream, "UTF-8"));
-            Document doc = docBuilder.parse(inSource);
-            */
                     
             Document doc = docBuilder.parse(claimXMLFile);
 
