@@ -122,22 +122,29 @@ table.UploadStatusTable td
     color: green;
 }
 
-.UploadStatusTable tr.InvoiceEscalated
-{
-    color: orange;  
-}
+
 
 .UploadStatusTable tr.AwaitingPaymentPack
 {
     color: orange;
 }
 
+
+
 .UploadStatusTable tr.InvoiceDataCalculationIncorrect
 {
-    color: orange;   
+    color: red;   
 }
 
+.UploadStatusTable tr.InvoiceApprovedByBRE
+{
+    color: green;   
+}
 
+.UploadStatusTable tr.InvoiceEscalated
+{
+    color: orange;  
+}
 
 #loginPanel
 {    

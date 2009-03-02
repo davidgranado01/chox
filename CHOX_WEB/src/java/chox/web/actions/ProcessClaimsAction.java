@@ -4,10 +4,14 @@
  */
 package chox.web.actions;
 
+import chox.data.UploadStatus;
+import chox.model.ClaimStatus;
 import chox.model.XMLParseResult;
 import chox.services.UploadClaimXMLService;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  *
@@ -67,6 +71,11 @@ public class ProcessClaimsAction extends BaseAction {
             if (extention.matches("\\.xml")) {
                 
                 List<XMLParseResult> parseResult = this.service.processXML(this.file , true);
+                
+                if(parseResult.size()>1){
+                    parseResult = doOrderXMLUploadResult(parseResult);
+                }
+                
                 if (parseResult == null) {
                     return ERROR;
                 } else {
@@ -77,5 +86,37 @@ public class ProcessClaimsAction extends BaseAction {
                 return ERROR;
             }
 
+    }
+    
+    private List<XMLParseResult> doOrderXMLUploadResult(List<XMLParseResult> xmlParseResult){
+        
+        List<XMLParseResult> newReturnList = new ArrayList<XMLParseResult>();
+        newReturnList = getListByUploadStatus(xmlParseResult, newReturnList, UploadStatus.INCORRECT_CLAIM_STATUS);
+        newReturnList = getListByUploadStatus(xmlParseResult, newReturnList, UploadStatus.CLAIM_UPLOAD_FAILED);
+        newReturnList = getListByUploadStatus(xmlParseResult, newReturnList, UploadStatus.INVOICE_UPLOAD_FAILED);
+        newReturnList = getListByUploadStatus(xmlParseResult, newReturnList, UploadStatus.CLAIM_EXIST);
+        newReturnList = getListByUploadStatus(xmlParseResult, newReturnList, UploadStatus.INVOICE_EXIST);
+        newReturnList = getListByUploadStatus(xmlParseResult, newReturnList, UploadStatus.CLAIM_UPLOAD_SUCCESSFUL);
+        newReturnList = getListByUploadStatus(xmlParseResult, newReturnList, UploadStatus.INVOICE_UPLOAD_SUCCESSFUL);        
+        return newReturnList;
+    }
+    
+    private List<XMLParseResult> getListByUploadStatus(
+            List<XMLParseResult> xmlParseResult, 
+            List<XMLParseResult> xmlNewParseResult, 
+            String strUpdateStatus){
+        
+        ListIterator listIteratorName = xmlParseResult.listIterator();
+        
+        while (listIteratorName.hasNext()) {
+            
+            XMLParseResult nextElement = (XMLParseResult) listIteratorName.next();
+            
+            if(nextElement.getUploadStatus().equalsIgnoreCase(strUpdateStatus)){
+                xmlNewParseResult.add(nextElement);
+            }
+        }
+
+        return xmlNewParseResult;
     }
 }
