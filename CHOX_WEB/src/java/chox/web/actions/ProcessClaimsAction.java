@@ -14,7 +14,6 @@ import java.util.List;
  * @author Emmanuel
  */
 public class ProcessClaimsAction extends BaseAction {
-
     
     private File file;
     private String filename;
