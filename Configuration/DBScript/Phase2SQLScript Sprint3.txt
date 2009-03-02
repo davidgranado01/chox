@@ -4,24 +4,24 @@
 -- ############################################################################################\
 
 -- ADD ACCESSIBILITY
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.ClaimDetail.InvoiceReferredToClaimHandler');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.InvoiceDetail.InvoiceReferredToClaimHandler');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.History.InvoiceReferredToClaimHandler');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.PaymentPack.InvoiceReferredToClaimHandler');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.HireMonitoring.InvoiceReferredToClaimHandler');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.Notes.InvoiceReferredToClaimHandler');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'filter.InvoiceReferredToClaimHandler');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'action.updateInvoiceReferredByEngineer.InvoiceReferredToClaimHandler');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.ClaimDetail.InvoiceReferredToClaimsHandler');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.InvoiceDetail.InvoiceReferredToClaimsHandler');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.History.InvoiceReferredToClaimsHandler');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.PaymentPack.InvoiceReferredToClaimsHandler');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.HireMonitoring.InvoiceReferredToClaimsHandler');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.Notes.InvoiceReferredToClaimsHandler');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'filter.InvoiceReferredToClaimsHandler');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'action.updateInvoiceReferredByEngineer.InvoiceReferredToClaimsHandler');
 
 -- ADD ACCESSIBILITY V.S ROLE
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.ClaimDetail.InvoiceReferredToClaimHandler';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.InvoiceDetail.InvoiceReferredToClaimHandler';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.History.InvoiceReferredToClaimHandler';
-insert into accessibility_item select text('ALL') as role, 0 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.PaymentPack.InvoiceReferredToClaimHandler';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.HireMonitoring.InvoiceReferredToClaimHandler';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.Notes.InvoiceReferredToClaimHandler';
-insert into accessibility_item select text('ROLE_INS_CH') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'filter.InvoiceReferredToClaimHandler';
-insert into accessibility_item select text('ROLE_INS_CH') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'action.updateInvoiceReferredByEngineer.InvoiceReferredToClaimHandler';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.ClaimDetail.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.InvoiceDetail.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.History.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select text('ALL') as role, 0 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.PaymentPack.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.HireMonitoring.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.Notes.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select text('ROLE_INS_CH') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'filter.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select text('ROLE_INS_CH') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'action.updateInvoiceReferredByEngineer.InvoiceReferredToClaimsHandler';
 
 -- ############################################################################################
 -- START VERSION V2.3.1
@@ -45,7 +45,7 @@ insert into accessibility (id, name) values ((select max(id)+1 from accessibilit
 insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.InvoiceDataCalculationIncorrect');
 insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.InvoiceEscalated');
 insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.InvoicePaymentLogged');
-insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.InvoiceReferredToClaimHandler');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.InvoiceReferredToClaimsHandler');
 insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.InvoiceRejectionAccepted');
 
 -- -------------------------------------------------------------------------------------------
@@ -68,7 +68,7 @@ insert into accessibility_item select text('ALL') as role, 1 as access_right, id
 insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.InvoiceDataCalculationIncorrect';
 insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.InvoiceEscalated';
 insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.InvoicePaymentLogged';
-insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.InvoiceReferredToClaimHandler';
+insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.InvoiceReferredToClaimsHandler';
 insert into accessibility_item select text('ALL') as role, 1 as access_right, id as accessibility_id, (select max(id)+1 from accessibility_item) as id from accessibility where name = 'tab.AuditTrail.InvoiceRejectionAccepted';
 
 -- -------------------------------------------------------------------------------------------
