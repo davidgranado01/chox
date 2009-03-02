@@ -4,8 +4,9 @@ import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import scsbre.model.IHireMonitoringDetail;
 
-public class HireMonitoringDetail implements Serializable, Auditable {
+public class HireMonitoringDetail implements Serializable, IHireMonitoringDetail, Auditable {
 
     /** 
      * This attribute maps to the column created_by in the hire_monitoring_detail table.

@@ -368,7 +368,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             BREClaim.getCustomer().setVehicleClass(null);
         }
         
-        // Mantis: 0000331
         BREClaim.setHireMonitoringEcd(hireMonitoringEcdService.getLatestHireMonitoringECDDate(BREClaim));
         
         return BREClaim;

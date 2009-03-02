@@ -111,6 +111,12 @@ public class ChoBand implements Auditable, Serializable, ICHOBandInfo
 	 * This attribute maps to the column is_not_mobile_day_allowance in the cho_band table.
 	 */
 	protected int isNotMobileDayAllowance;
+        
+        
+        protected int averageLabourRate;
+        protected int averageLabourHoursPerHireDay;
+
+        
 	/**
 	 * Method 'ChoBand'
 	 * 
@@ -538,6 +544,22 @@ public class ChoBand implements Auditable, Serializable, ICHOBandInfo
 	{
 		this.isNotMobileDayAllowance = isNotMobileDayAllowance;
 	}
+
+        public int getAverageLabourHoursPerHireDay() {
+            return averageLabourHoursPerHireDay;
+        }
+
+        public void setAverageLabourHoursPerHireDay(int averageLabourHoursPerHireDay) {
+            this.averageLabourHoursPerHireDay = averageLabourHoursPerHireDay;
+        }
+
+        public int getAverageLabourRate() {
+            return averageLabourRate;
+        }
+
+        public void setAverageLabourRate(int averageLabourRate) {
+            this.averageLabourRate = averageLabourRate;
+        }
         
 
 

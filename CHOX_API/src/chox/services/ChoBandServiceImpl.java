@@ -29,6 +29,8 @@ public class ChoBandServiceImpl extends SecureDataService implements ChoBandServ
         choband.setTakeVehicleToGarageDaysMobile(1);
         choband.setTakeVehicleToGarageDaysNonMobile(3);
         choband.setWeekendBufferDays(2);
+        choband.setAverageLabourHoursPerHireDay(4);
+        choband.setAverageLabourRate(40);
         return choband;
     }
 

@@ -28,7 +28,7 @@ public class ClaimStatus {
     public static final String CLAIM_REFERRED_TO_FNOL = "ClaimReferredToFNOL"; // NEW STATUS, MANTIS ID 0000350
     public static final String CLAIM_CLOSED = "ClaimClosed"; // NEW STATUS, MANTIS ID 0000386
     public static final String CLAIM_PENDING = "ClaimPending"; // NEW STATUS, Phase 2 Minor Enhancement -2
-    public static final String INVOICE_REF_TO_CH = "InvoiceReferredToClaimHandler";
+    public static final String INVOICE_REF_TO_CH = "InvoiceReferredToClaimsHandler";
 
     public static List<String> getStatus() {
         List<String> status = new ArrayList<String>();
