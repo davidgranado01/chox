@@ -29,7 +29,7 @@ public class FilterAccessibility {
     private boolean claimReferredToFNOLAccessible;
     private boolean penaltyChargesAppliedAccessible;
     private boolean claimPendingAccessible;
-    private boolean InvoiceReferredToClaimHandlerAccessible;
+    private boolean InvoiceReferredToClaimsHandlerAccessible;
 
     public FilterAccessibility(ApplicationAccessibility accessibility,GrantedAuthority[] grantedAuthorities) {
         
@@ -50,7 +50,7 @@ public class FilterAccessibility {
         claimReferredToFNOLAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_REF_FNOL, grantedAuthorities) > 0;
         penaltyChargesAppliedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_PENALTY_CHARGES_APPLIED, grantedAuthorities) > 0;               
         claimPendingAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.CLAIM_PENDING, grantedAuthorities) > 0;   
-        InvoiceReferredToClaimHandlerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.INVOICE_REF_TO_CH, grantedAuthorities) > 0; 
+        InvoiceReferredToClaimsHandlerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.INVOICE_REF_TO_CH, grantedAuthorities) > 0; 
         
     }
 
@@ -123,8 +123,8 @@ public class FilterAccessibility {
         return claimPendingAccessible;
     }
 
-    public boolean getIsInvoiceReferredToClaimHandlerAccessible() {
-        return InvoiceReferredToClaimHandlerAccessible;
+    public boolean getIsInvoiceReferredToClaimsHandlerAccessible() {
+        return InvoiceReferredToClaimsHandlerAccessible;
     }
     
     

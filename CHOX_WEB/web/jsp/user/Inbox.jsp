@@ -484,6 +484,9 @@ function loadDataFromSession()
                         <s:if test="filterAccessibility.isReSubmittedClaimsAwaitingAcknowledgementAccessible">
                             <li><a href="javascript:showClaimByStatus('ClaimRejectionContested');" >Re-Submitted Claims Awaiting Acknowledgement (<s:property value="filterRecordCounter.reSubmittedClaimsAwaitingAcknowledgementCount" />)</a></li>
                         </s:if>
+                        <s:if test="filterAccessibility.isClaimPendingAccessible">
+                            <li><a href="javascript:showClaimByStatusWithSort('ClaimPending','statusModifiedDate');" >Claim Pending (<s:property value="filterRecordCounter.ClaimPendingCount" />)</a></li>
+                        </s:if>                        
                         <s:if test="filterAccessibility.isHireUpdateAnomaliesAccessible">
                             <li><a href="javascript:showClaimIsAnomalies();" >Hire Update Anomalies (<s:property value="filterRecordCounter.hireUpdateAnomaliesCount" />)</a></li>
                         </s:if>
@@ -511,11 +514,8 @@ function loadDataFromSession()
                         <s:if test="filterAccessibility.isPenaltyChargesAppliedAccessible">
                             <li><a href="javascript:showClaimIspenaltyChargeApplied();" >Penalty Charges To Be Applied (<s:property value="filterRecordCounter.PenaltyChargesAppliedCount" />)</a></li>
                         </s:if>  
-                        <s:if test="filterAccessibility.isClaimPendingAccessible">
-                            <li><a href="javascript:showClaimByStatusWithSort('ClaimPending','statusModifiedDate');" >Claim Pending (<s:property value="filterRecordCounter.ClaimPendingCount" />)</a></li>
-                        </s:if>   
-                        <s:if test="filterAccessibility.isInvoiceReferredToClaimHandlerAccessible">
-                            <li><a href="javascript:showClaimByStatus('InvoiceReferredToClaimHandler');" >Invoice Referred By Engineer  (<s:property value="filterRecordCounter.InvoiceReferredToClaimHandlerCount" />)</a></li>
+                        <s:if test="filterAccessibility.isInvoiceReferredToClaimsHandlerAccessible">
+                            <li><a href="javascript:showClaimByStatus('InvoiceReferredToClaimsHandler');" >Invoice Referred By Engineer  (<s:property value="filterRecordCounter.InvoiceReferredToClaimsHandlerCount" />)</a></li>
                         </s:if>  
                     </ul>                            
                 </div>

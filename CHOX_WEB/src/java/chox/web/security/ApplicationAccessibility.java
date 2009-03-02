@@ -45,7 +45,7 @@ public class ApplicationAccessibility {
     public static final String FILTER_PENALTY_CHARGES_APPLIED = "PenaltyChargesApplied";
     public static final String CLAIM_PENDING = "ClaimPending";
     
-    public static final String INVOICE_REF_TO_CH = "InvoiceReferredToClaimHandler";
+    public static final String INVOICE_REF_TO_CH = "InvoiceReferredToClaimsHandler";
     
     public static final String PANEL_FNOL_REVIEWED  = "FNOLReviewed";
     
