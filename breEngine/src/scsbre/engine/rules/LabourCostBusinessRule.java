@@ -24,13 +24,13 @@ public class LabourCostBusinessRule implements IBusinessRule {
         
         if(isRequiredToValidateByBRE(claim)){
             
-            System.out.println("START BRE - 22 - LabourCostBusinessRule");
+            // System.out.println("START BRE - 22 - LabourCostBusinessRule");
             
             int iNumberOfHireDay =claim.getHireDetail().getNumberOfHireDays();
             int iNumberDayOfLabourCostWorthy = cCalc.getNumberDayOfLabourCostWorthy();
             
-            System.out.println("iNumberOfHireDay:"+iNumberOfHireDay);
-            System.out.println("iNumberDayOfLabourCostWorthy:"+iNumberDayOfLabourCostWorthy);
+            // System.out.println("iNumberOfHireDay:"+iNumberOfHireDay);
+            // System.out.println("iNumberDayOfLabourCostWorthy:"+iNumberDayOfLabourCostWorthy);
             
             if(iNumberOfHireDay>=iNumberDayOfLabourCostWorthy){
                 success = false;
