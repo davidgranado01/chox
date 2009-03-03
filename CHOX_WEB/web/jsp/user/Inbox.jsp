@@ -48,7 +48,7 @@
             {name:'lineOfBusiness'},
             {name:'supplierReference'},
             {name:'claimNumber'}, 
-            {name:'createdDate', type: 'date', dateFormat: 'd/m/Y'},
+            {name:'lastModifiedDate', type: 'date', dateFormat: 'd/m/Y'},
             {name:'insurer'},
             {name:'cho'}
         ]
@@ -80,7 +80,7 @@
             invoiceUploadDateFrom : '',
             invoiceUploadDateTo :  '',                
             hireDateFrom : '',
-            hireDateTo : '',
+            hireDateTo : '',          
             status : status,
             lineOfBusinessId : -1,
             isAnomalies : '',
@@ -111,7 +111,7 @@
             invoiceUploadDateFrom : '',
             invoiceUploadDateTo :  '',                
             hireDateFrom : '',
-            hireDateTo : '',
+            hireDateTo : '',          
             status : status,
             lineOfBusinessId : -1,
             isAnomalies : '',
@@ -141,7 +141,7 @@
             invoiceUploadDateFrom : '',
             invoiceUploadDateTo :  '',                
             hireDateFrom : '',
-            hireDateTo : '',
+            hireDateTo : '',         
             status : '',
             lineOfBusinessId : -1,
             isAnomalies : true,
@@ -171,7 +171,7 @@
             invoiceUploadDateFrom : '',
             invoiceUploadDateTo :  '',                
             hireDateFrom : '',
-            hireDateTo : '',
+            hireDateTo : '',          
             status : '',
             lineOfBusinessId : -1,
             isAnomalies : '',
@@ -206,12 +206,9 @@
         var invoiceUploadDateFrom = Ext.query('*[name$=invoiceUploadDateFrom]')[0].value;
         var invoiceUploadDateTo = Ext.query('*[name$=invoiceUploadDateTo]')[0].value;
         var hireDateFrom = Ext.query('*[name$=hireDateFrom]')[0].value;
-        var hireDateTo = Ext.query('*[name$=hireDateTo]')[0].value;
+        var hireDateTo = Ext.query('*[name$=hireDateTo]')[0].value;    
         var status = Ext.query('*[name$=status]')[0].value;
         var lineOfBusinessId = Ext.query('*[name$=lineOfBusiness]')[0].value;    
-        
-        alert("supplierId:"+supplierId);
-        alert("insurerId"+insurerId);
         
         ds.baseParams = {
             
@@ -226,7 +223,7 @@
             invoiceUploadDateFrom : invoiceUploadDateFrom,
             invoiceUploadDateTo : invoiceUploadDateTo,                
             hireDateFrom : hireDateFrom,
-            hireDateTo : hireDateTo,
+            hireDateTo : hireDateTo,         
             status : status,
             lineOfBusinessId : lineOfBusinessId,
             isAnomalies : '',
@@ -268,9 +265,9 @@
                 {header: "Claim Number", width: 250, sortable: true, dataIndex: 'claimNumber'}, 
                 {header: "Invoice Amount", width: 250, sortable: true, 
                     dataIndex: 'invoiceAmount'},  
-                {header: "Date Uploaded", width: 250, sortable: true, 
+                {header: "Last Modified", width: 250, sortable: true, 
                     renderer: Ext.util.Format.dateRenderer('d/m/Y'), 
-                    dataIndex: 'createdDate'},
+                    dataIndex: 'lastModifiedDate'},
                 {header: "Status", width: 250, sortable: true, dataIndex: 'status'},
                 {header: "Created By", width: 250, sortable: true, dataIndex: 'createdBy'},          
                 {header: "LOB", width: 250, sortable: true, dataIndex: 'lineOfBusiness'},

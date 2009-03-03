@@ -15,6 +15,7 @@
             
             new Ext.ToolTip({target: 'tip0',html: 'Description for Number of Active Users'});
             Ext.QuickTips.init();
+            
         }); 
         
         function onSelectChange(){  

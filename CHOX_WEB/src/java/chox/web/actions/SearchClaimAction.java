@@ -141,7 +141,6 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 claimSearchCriteria = new ClaimSearchCriteria();
             }
         }
-
     }
 
     public String getActionResult() {

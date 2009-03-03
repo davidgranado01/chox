@@ -69,7 +69,7 @@
         invoiceUploadDateFromPicker.render('invoiceUploadDateFromDiv');
         invoiceUploadDateToPicker.render('invoiceUploadDateToDiv');
         hireDateFromPicker.render('hireDateFromDiv');
-        hireDateToPicker.render('hireDateToDiv');
+        hireDateToPicker.render('hireDateToDiv');       
         
     }); 
     
@@ -109,8 +109,9 @@
         </tr>                        
         <tr>
             <td nowrap><label>Hire Date From</label></td><td colspan="2"><div id="hireDateFromDiv" /></td>
-            <td nowrap><label>Hire Date To</label></td><td colspan="2"><div id="hireDateToDiv"/></td>                            
+            <td nowrap><label>Hire Date To</label></td><td colspan="2"><div id="hireDateToDiv"/></td>
         </tr>
+
         <tr>
             <s:if test="isInsurer">
                 <td><label>Supplier Name</label></td><td colspan="2">

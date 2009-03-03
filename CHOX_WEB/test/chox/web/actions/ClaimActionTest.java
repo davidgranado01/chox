@@ -9,6 +9,7 @@ import chox.model.Claim;
 import chox.services.ChoBandService;
 import chox.services.ClaimService;
 import chox.services.InvoiceService;
+import chox.services.UploadClaimXMLServiceImpl;
 import chox.web.security.MenuAccessibility;
 import java.util.List;
 import java.util.Map;
@@ -685,5 +686,5 @@ public class ClaimActionTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
+  
 }

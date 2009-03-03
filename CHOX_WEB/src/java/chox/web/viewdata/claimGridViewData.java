@@ -31,6 +31,7 @@ public class claimGridViewData {
     private String invoiceAmount;
     private String vehicleRegistration;
     private String createdDate;
+    private String lastModifiedDate;
     private String status;
     private String lineOfBusiness;
     private String cho;
@@ -57,6 +58,7 @@ public class claimGridViewData {
         this.lineOfBusiness = lob == null ? "" : lob.getName();
         this.claimNumber = claim.getClaimNumber();
         this.createdDate = dateFormat.format(claim.getCreatedDate());
+        this.lastModifiedDate = dateFormat.format(claim.getLastModifiedDate());
         this.status = claim.getStatus();
         this.cho = c == null ? "" : c.getName();
         this.insurer = i == null ? "" : i.getName();//TODO : assign insurer
@@ -123,5 +125,15 @@ public class claimGridViewData {
     public String getCreatedBy() {
         return createdBy;
     }
+
+    public String getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(String lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+    
+    
 }
 

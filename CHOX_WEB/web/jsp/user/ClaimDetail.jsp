@@ -235,8 +235,6 @@
             loadAttachments();
         }
                 
-        //return confirm('Are you sure you want to reject this invoice?')
-        //return '<a href="doDeleteFile.action?fileId=' + r.data['id'] + '">' + value + '</a>'
         function deleteAttachment(a){
             var deleteAtt = confirm("Are you sure you want to delete this attachment?")
             if(deleteAtt){
