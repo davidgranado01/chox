@@ -49,10 +49,9 @@
                   to date across a weekly, monthly and yearly period. Results can
                   be viewed for an individual Insurer or across the entire Insurer
                   book. (Please hover over a dashboard item label to see an explanation of the numbers displayed)
-            </div>
+        </div>
         
         <div class="form-container">
-            
             <table cellpadding="0" cellspacing="0" class="dashboard" border="0">       
                 <tr><th nowrap><label id="tip0">Number of Active Users</label></th><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
                 <tr>

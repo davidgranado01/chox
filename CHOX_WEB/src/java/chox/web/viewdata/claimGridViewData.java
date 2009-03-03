@@ -133,7 +133,5 @@ public class claimGridViewData {
     public void setLastModifiedDate(String lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
-    
-    
 }
 
