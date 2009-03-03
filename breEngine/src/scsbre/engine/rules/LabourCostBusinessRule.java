@@ -79,7 +79,7 @@ public class LabourCostBusinessRule implements IBusinessRule {
     }
     
     public String getNarrative() {
-        return "LabourCostBusinessRule";
+        return "Insufficient information to perform labour cost rule";
     }
 
     public String getRuleId() {
