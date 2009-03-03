@@ -2,8 +2,6 @@ package chox.services;
 
 import chox.Util.XmlHelper;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import org.w3c.dom.*;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,17 +18,11 @@ import java.util.List;
 import chox.Util.TextHelper;
 import chox.Util.DateHelper;
 import chox.data.UploadStatus;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import org.hibernate.TransactionException;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
-import org.xml.sax.InputSource;
 
 public class UploadClaimXMLServiceImpl extends SecureDataService implements UploadClaimXMLService {
     private VehicleClassService vehicleClassService;
@@ -474,7 +466,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             if(XmlHelper.getNodeValue(mainElement, "gta-notice").equalsIgnoreCase("")){
                 tGtaNoticeDate = DateHelper.getCurrentTimeStamp();
             }
-            
+                        
             // CHECK SUPPLIER REFERENCE
             if(claimService.isClaimSupplierReferenceNumberExist(strCHOReference)){
 
@@ -1783,10 +1775,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     public void setSolicitorService(SolicitorService solicitorService) {
         this.solicitorService = solicitorService;
-    }
-
-    public void setInvoiceservice(InvoiceService invoiceservice) {
-        this.invoiceService = invoiceservice;
     }
 
     public void setAuditTrailService(AuditTrailService auditTrailService) {
