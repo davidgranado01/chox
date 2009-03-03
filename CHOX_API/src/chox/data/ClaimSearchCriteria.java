@@ -27,6 +27,8 @@ public class ClaimSearchCriteria implements Serializable {
     private Date invoiceUploadDateTo;
     private Date hireDateFrom;
     private Date hireDateTo;
+    private Date lastModifiedDateFrom;
+    private Date lastModifiedDateTo;    
     private int lineOfBusinessId;
     private boolean isAnomalies;
     private boolean ispenaltyChargeApplied;
@@ -206,4 +208,26 @@ public class ClaimSearchCriteria implements Serializable {
     public void setDir(String dir) {
         this.dir = dir;
     }
+
+    @TypeConversion(converter = "chox.web.data.DateConverter")
+    public Date getLastModifiedDateFrom() {
+        return lastModifiedDateFrom;
+    }
+    
+    @TypeConversion(converter = "chox.web.data.DateConverter")
+    public void setLastModifiedDateFrom(Date lastModifiedDateFrom) {
+        this.lastModifiedDateFrom = lastModifiedDateFrom;
+    }
+
+    @TypeConversion(converter = "chox.web.data.DateConverter")
+    public Date getLastModifiedDateTo() {
+        return lastModifiedDateTo;
+    }
+
+    @TypeConversion(converter = "chox.web.data.DateConverter")
+    public void setLastModifiedDateTo(Date lastModifiedDateTo) {
+        this.lastModifiedDateTo = lastModifiedDateTo;
+    }
+
+    
 }

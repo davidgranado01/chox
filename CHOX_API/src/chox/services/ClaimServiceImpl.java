@@ -222,9 +222,28 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 criteria.add(Expression.ge("vh.rentalStart", d)).add(Expression.le("vh.rentalEnd", d));
             }
         }
-        //if (searchCriteria.getHireDateFrom() != null && searchCriteria.getHireDateTo() != null) {
-        //    criteria.add(Expression.between("createdDate", searchCriteria.getHireDateFrom(), searchCriteria.getHireDateTo()));
-        //}
+        
+        System.out.println("LastModifiedDateFrom"+searchCriteria.getLastModifiedDateFrom());
+        System.out.println("LastModifiedDateTo"+searchCriteria.getLastModifiedDateTo());
+        
+        if (searchCriteria.getLastModifiedDateFrom() != null || searchCriteria.getLastModifiedDateTo() != null) {
+            if (searchCriteria.getLastModifiedDateFrom() != null) {
+                Date d = searchCriteria.getLastModifiedDateFrom();
+                d.setHours(0);
+                d.setMinutes(0);
+                d.setSeconds(0);
+                criteria.add(Expression.ge("lastModifiedDate", d));
+            }
+            if (searchCriteria.getLastModifiedDateTo() != null) {
+                Date d = searchCriteria.getLastModifiedDateTo();
+                d.setDate(d.getDate() + 1);
+                d.setHours(0);
+                d.setMinutes(0);
+                d.setSeconds(0);
+                criteria.add(Expression.le("lastModifiedDate", d));
+            }
+        }
+        
         criteria.setProjection(Projections.rowCount());
 
         List totalCountResult = criteria.list();

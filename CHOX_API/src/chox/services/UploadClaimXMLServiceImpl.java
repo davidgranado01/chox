@@ -17,6 +17,7 @@ import scsbre.engine.*;
 import java.util.List;
 import chox.Util.TextHelper;
 import chox.Util.DateHelper;
+import chox.Util.DocumentHelper;
 import chox.data.UploadStatus;
 import org.hibernate.TransactionException;
 import org.springframework.transaction.TransactionDefinition;
@@ -103,10 +104,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
     }
     
-    //private ByteArrayInputStream doConvert(File file){
-        
-        //return new ByteArrayInputStream;
-    //}
     */
     
     public ArrayList<XMLParseResult> processXML(File claimXMLFile, Boolean isAllowPartialUpload) {
@@ -115,29 +112,28 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
         try {
             
+            /*
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             docBuilderFactory.setNamespaceAware(true); 
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-                    
             Document doc = docBuilder.parse(claimXMLFile);
-
             doc.getDocumentElement().normalize();
+            */
+            
+            Document doc = DocumentHelper.getDocumentFromFile(claimXMLFile);
+            
             Element root = doc.getDocumentElement();
             
             if (root != null && root.getTagName().equals("chox")) {
-
                 ArrayList<Element> rentalElements = XMLUtils.getElements(doc, root, "rental");
 
                 int count = 0;
                 for (Element re : rentalElements) {
-
                     try {
-                        
                         count++;
                         XMLParseResult xmlParseResult = new XMLParseResult();
                         xmlParseResult = xmlSchemaValidateProcess(xmlParseResult, doc, re, isAllowPartialUpload);
                         xmlParseResults.add(xmlParseResult);
-
                     } catch (Exception e) {
                         Logger.err.println("Error loading record " + count);
                         throw e;

@@ -16,8 +16,6 @@ public class XMLParseResult {
     
     private Boolean isSchemaValid = true;
     private Boolean isDataValid = true;
-    //private String SchemaValidationRemark = "";
-    //private String DataValidationRemark = "";
     private String UploadType;
     private Boolean isCurrentScheValid = true;
     private Boolean isCurrentDataValid = true;
@@ -37,6 +35,8 @@ public class XMLParseResult {
 
     private List<String> SchemaValidationRemark = new ArrayList<String>();
     private List<String> DataValidationRemark = new ArrayList<String>();
+    
+    
     
     public String getSExistingClaimStatus() {
         return sExistingClaimStatus;
@@ -176,59 +176,9 @@ public class XMLParseResult {
         this.uploadStatus = uploadStatus;
     }
     
-    
-    
-    /*
-    public String getUploadStatus() {
-
-        String sStatus;
-        
-        if(!this.isClaimExist){
-            if(getSchemaDataValidation()){
-                sStatus = UploadStatus.CLAIM_UPLOAD_SUCCESSFUL;
-            }else{
-                sStatus = UploadStatus.CLAIM_UPLOAD_FAILED;
-                this.claim.status="";
-            }
-            
-        }else{
-            
-            // CLAIM EXIST
-            if(this.sExistingClaimStatus.equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)){
-                
-                sStatus = UploadStatus.CLAIM_EXIST;
-                
-            }else if(this.sExistingClaimStatus.equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)){
-                
-                if(this.isInvoiceExist){
-                    
-                    sStatus = UploadStatus.INVOICE_EXIST;
-                    
-                }else{
-
-                    if(getSchemaDataValidation()){
-                        sStatus = UploadStatus.INVOICE_UPLOAD_SUCCESSFUL;
-                    }else{
-                        sStatus = UploadStatus.INVOICE_UPLOAD_FAILED;
-                    }
-                }
-            }else{
-                if(this.isInvoiceExist){
-                    sStatus = UploadStatus.INVOICE_EXIST;
-                }else{
-                    sStatus = UploadStatus.INCORRECT_CLAIM_STATUS;
-                }
-            }
-        }
-        return sStatus;
-    }
-    */
-    
     public String getUploadStatusCode(){
         return TextHelper.trimWhiteSpace(getUploadStatus()).toUpperCase();
-        
     }
-    
     
     public List<String> getDataValidationRemark() {
         return DataValidationRemark;
@@ -245,14 +195,4 @@ public class XMLParseResult {
     public void setSchemaValidationRemark(List<String> SchemaValidationRemark) {
         this.SchemaValidationRemark = SchemaValidationRemark;
     }
-    
-    /*
-    public List<String> getDataValidationRemarkInList() {
-        return DataValidationRemark.split("\\|");
-    }
-
-    public String[] getSchemaValidationRemarkInList() {
-        return t
-    }
-    */
 }

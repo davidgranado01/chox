@@ -270,6 +270,7 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
      * 
      * @return java.util.Date
      */
+    
     public java.util.Date getLastModifiedDate() {
         return lastModifiedDate;
     }
