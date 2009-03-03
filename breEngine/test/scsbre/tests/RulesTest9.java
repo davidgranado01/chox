@@ -100,7 +100,7 @@ public class RulesTest9 {
             
             RuleEvaluation res1 = results.get(i);
             
-            System.out.println(">>>"+res1.getResult().toString() + "|" + res1.getRelatedRule().getRuleId());
+            System.out.println(res1.getRelatedRule().getRuleId() + ":"+res1.getResult().toString());
             
         }
         
@@ -127,6 +127,7 @@ public class RulesTest9 {
         //assertTrue(results.get(18).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(19).getResult() == RuleEvaluationResult.RuleSkipped);
         assertTrue(results.get(20).getResult() == RuleEvaluationResult.RuleFailed);
+        assertTrue(results.get(20).getRelatedRule().getNarrative().equalsIgnoreCase("The number of hire days billed is not relative to the number of expected hire days based on labour cost information."));
         assertTrue(results.get(21).getResult() == RuleEvaluationResult.RulePassed);
         
     }

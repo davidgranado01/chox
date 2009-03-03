@@ -58,13 +58,9 @@ public class RulesTest7 {
         RulesEngineResponse res =  engine.ResolveStatus();
         List<RuleEvaluation> results = res.getResults();
         
-        
         for(int i = 0; i < results.size(); i++){
-            
             RuleEvaluation res1 = results.get(i);
-            
-            System.out.println(">>>"+res1.getResult().toString() + "|" + res1.getRelatedRule().getRuleId());
-            
+            System.out.println(res1.getRelatedRule().getRuleId() + ":"+res1.getResult().toString());
         }
         
         assertTrue(results.get(0).getResult() == RuleEvaluationResult.RulePassed);

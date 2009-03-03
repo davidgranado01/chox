@@ -14,7 +14,9 @@ import scsbre.model.ClaimStatus;
 import scsbre.model.IClaimInfo;
 
 public class LabourCostBusinessRule implements IBusinessRule {
-
+    
+    private String narrative = "";
+    
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
 
         boolean success = true;
@@ -23,17 +25,13 @@ public class LabourCostBusinessRule implements IBusinessRule {
         ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
         
         if(isRequiredToValidateByBRE(claim)){
-            
-            // System.out.println("START BRE - 22 - LabourCostBusinessRule");
-            
+
             int iNumberOfHireDay =claim.getHireDetail().getNumberOfHireDays();
             int iNumberDayOfLabourCostWorthy = cCalc.getNumberDayOfLabourCostWorthy();
-            
-            // System.out.println("iNumberOfHireDay:"+iNumberOfHireDay);
-            // System.out.println("iNumberDayOfLabourCostWorthy:"+iNumberDayOfLabourCostWorthy);
-            
+
             if(iNumberOfHireDay>=iNumberDayOfLabourCostWorthy){
                 success = false;
+                narrative = "The number of hire days billed is not relative to the number of expected hire days based on labour cost information.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
@@ -41,6 +39,7 @@ public class LabourCostBusinessRule implements IBusinessRule {
         }else{
             
             res.setResult(RuleEvaluationResult.RuleSkipped);
+            narrative = "Insufficient information to perform labour cost rule.";
             
         }
         
@@ -79,7 +78,7 @@ public class LabourCostBusinessRule implements IBusinessRule {
     }
     
     public String getNarrative() {
-        return "Insufficient information to perform labour cost rule";
+        return narrative;
     }
 
     public String getRuleId() {

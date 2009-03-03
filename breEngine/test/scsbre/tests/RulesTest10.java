@@ -88,22 +88,15 @@ public class RulesTest10 {
     @Test
     public void TestDefaultCase(){
         
-        
         IClaimInfo claim = getClaim();
         RulesEngine engine = RulesEngine.getInstance(claim);
         RulesEngineResponse res =  engine.ResolveStatus();
         List<RuleEvaluation> results = res.getResults();
         
-        
         for(int i = 0; i < results.size(); i++){
-            
             RuleEvaluation res1 = results.get(i);
-            
-            System.out.println(">>>"+res1.getResult().toString() + "|" + res1.getRelatedRule().getRuleId());
-            
+            System.out.println(res1.getRelatedRule().getRuleId() + ":"+res1.getResult().toString());
         }
-        
-        assertTrue(results.get(0).getResult() == RuleEvaluationResult.RulePassed);
         
         assertTrue(results.get(0).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(1).getResult() == RuleEvaluationResult.RulePassed);
@@ -129,7 +122,6 @@ public class RulesTest10 {
         assertTrue(results.get(21).getResult() == RuleEvaluationResult.RulePassed);
         
     }
-    
     
     private static Date getDateFromString(String inp){
         

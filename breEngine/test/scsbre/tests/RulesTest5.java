@@ -62,7 +62,6 @@ public class RulesTest5 {
         List<RuleEvaluation> results = res.getResults();
         for(int i = 0; i <= results.size()-1; i++){
             
-            
             RuleEvaluation res1 = results.get(i);
             System.out.println(res1.toString());
         }
