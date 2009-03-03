@@ -10,7 +10,7 @@
     <script>
         $(document).ready(function(){  
             
-            $("#insurerId").change(onSelectChange);  
+            $("#dashboardInsurerId").change(onSelectChange);  
             loadData(-1);
             
             new Ext.ToolTip({target: 'tip0',html: 'Description for Number of Active Users'});
@@ -20,7 +20,7 @@
         function onSelectChange(){  
             
             var selectedValue = '-1';
-            var selected = $("#insurerId option:selected");           
+            var selected = $("#dashboardInsurerId option:selected");           
             if(selected.val() != ""){  
                 selectedValue = selected.val();
             }           
@@ -55,9 +55,16 @@
             <table cellpadding="0" cellspacing="0" class="dashboard" border="0">       
                 <tr><th nowrap><label id="tip0">Number of Active Users</label></th><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
                 <tr>
-                    <th nowrap><label>Insurer</label></th><td><s:select name="insurerId" id="insurerId" list="insurers" listKey="value" listValue="text" headerKey="-1"
-                                                                                                headerValue="--- ALL ---"
-                                                                                            emptyOption="false"></s:select></td>                         
+                    <th nowrap><label>Insurer</label></th><td>
+                        <s:select 
+                        name="dashboardInsurerId" 
+                        id="dashboardInsurerId" 
+                        list="insurers" 
+                        listKey="id"
+                        listValue="name" 
+                        headerKey="-1"
+                        headerValue="--- ALL ---"
+                        emptyOption="false"></s:select></td>                         
                 </tr>                       
             </table>
             <div style="height:550px; width:900px" id="resultHolder"></div>

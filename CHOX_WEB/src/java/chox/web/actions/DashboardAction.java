@@ -36,7 +36,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     private Long numberOfActiveUser;
     private Long numberOfClaimPending;
     private int insurerId;
-    private int choragnisationId;
+    private int supplierId;
 
     public String showInsurerBoardHeader() {
         Insurer currentInsurer = this.getAuthenticatedUser().getUser().getInsurer();
@@ -98,8 +98,9 @@ public class DashboardAction extends BaseAction implements ParameterAware {
 
     public List getSuppliers() {
         if (suppliers == null) {
-            Insurer currentInsurer = this.getAuthenticatedUser().getUser().getInsurer();
-            suppliers = this.lookupService.getSuppliers(currentInsurer.getId());
+            // Insurer currentInsurer = this.getAuthenticatedUser().getUser().getInsurer();
+            // suppliers = this.lookupService.getSuppliers(currentInsurer.getId());
+            suppliers = this.lookupService.getSuppliers();
         }
         return suppliers;
     }
@@ -107,8 +108,9 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     public List getInsurers() {
          
         if (insurers == null) {
-            Chorganisation currentCho = this.getAuthenticatedUser().getUser().getChorganisation();
-            insurers = this.lookupService.getInsurers(currentCho.getId());
+            // Chorganisation currentCho = this.getAuthenticatedUser().getUser().getChorganisation();
+            // insurers = this.lookupService.getInsurers(currentCho.getId());
+            insurers = this.lookupService.getInsurers();
         }
         return insurers;
     }
@@ -141,12 +143,12 @@ public class DashboardAction extends BaseAction implements ParameterAware {
         return numberOfClaimPending;
     }
 
-    public int getChoragnisationId() {
-        return choragnisationId;
+    public int getSupplierId() {
+        return supplierId;
     }
 
-    public void setChoragnisationId(int choragnisationId) {
-        this.choragnisationId = choragnisationId;
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
     }
 
     public int getInsurerId() {
@@ -156,6 +158,5 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     public void setInsurerId(int insurerId) {
         this.insurerId = insurerId;
     }
-    
     
 }

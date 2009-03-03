@@ -89,9 +89,9 @@ This report provides an overview of claims activity reported by weekly segments,
 <td>                            
 <s:select 
     name="supplierId" 
-    id="supplierId" 
+    id="supplierId"
     list="suppliers" 
-    listKey="id" 
+    listKey="id"
     listValue="name"
     headerKey=""
     headerValue="--- ALL ---"

@@ -210,6 +210,9 @@
         var status = Ext.query('*[name$=status]')[0].value;
         var lineOfBusinessId = Ext.query('*[name$=lineOfBusiness]')[0].value;    
         
+        alert("supplierId:"+supplierId);
+        alert("insurerId"+insurerId);
+        
         ds.baseParams = {
             
             supplierReference : supplierReference,

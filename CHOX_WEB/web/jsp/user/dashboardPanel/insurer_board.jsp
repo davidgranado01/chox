@@ -10,7 +10,7 @@
     <script>
         $(document).ready(function(){  
             
-            $("#supplierId").change(onSelectChange);  
+            $("#dashboardSupplierId").change(onSelectChange);  
             loadData(-1);
             
             new Ext.ToolTip({target: 'tip0',html: 'Description for Number of Active Users'});
@@ -21,13 +21,13 @@
         function onSelectChange(){  
             
             var selectedValue = '-1';
-            var selected = $("#supplierId option:selected");           
+            var selected = $("#dashboardSupplierId option:selected");           
             if(selected.val() != ""){  
                 selectedValue = selected.val();
             }           
             
             loadData(selectedValue);
-        }  
+        }
         
         function loadData(supplierId)
         {
@@ -35,7 +35,7 @@
                 $("#resultHolder").html(data);
             });
         }
-       
+
     </script>
 </head>
 
@@ -56,11 +56,11 @@
             <tr>
                 <th nowrap><label>Credit Hire Organisation</label></th><td colspan="2">
                 <s:select 
-                name="supplierId" 
-                id="supplierId" 
+                name="dashboardSupplierId" 
+                id="dashboardSupplierId" 
                 list="suppliers" 
-                listKey="value" 
-                listValue="text" 
+                listKey="id" 
+                listValue="name" 
                 headerKey="-1"
                 headerValue="--- ALL ---"
                 emptyOption="false"></s:select></td>              

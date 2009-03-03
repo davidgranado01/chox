@@ -113,19 +113,32 @@
         </tr>
         <tr>
             <s:if test="isInsurer">
-            
-                <td><label>Supplier Name</label></td><td colspan="2"><s:select name="supplierId" list="suppliers" listKey="id" listValue="name" headerKey="-1"
-                                                                                   headerValue="--- ALL ---"
-                                                                               emptyOption="false" value="supplierId"></s:select></td>
+                <td><label>Supplier Name</label></td><td colspan="2">
+                    <s:select 
+                    name="supplierId" 
+                    list="suppliers" 
+                    listKey="id" 
+                    listValue="name" 
+                    headerKey="-1"
+                    headerValue="--- ALL ---"
+                    emptyOption="false">
+                    </s:select></td>
             </s:if> 
             <s:else>
                 <td colspan="3">&nbsp;</td>
             </s:else>
             
             <s:if test="isCHO">
-                <td><label>Insurer Name</label></td><td colspan="2"><s:select name="insurerId" list="insurers" listKey="id" listValue="name" headerKey="-1"
-                                                                                  headerValue="--- ALL ---"
-                                                                              emptyOption="false" value="insurerId"></s:select>  </td>
+                <td><label>Insurer Name</label></td><td colspan="2">
+                <s:select 
+                name="insurerId" 
+                list="insurers" 
+                listKey="id" 
+                listValue="name" 
+                headerKey="-1"
+                headerValue="--- ALL ---"
+                emptyOption="false">
+                </s:select>  </td>
             </s:if>   
             
             <s:else>
