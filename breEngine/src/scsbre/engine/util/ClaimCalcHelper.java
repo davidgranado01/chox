@@ -145,7 +145,8 @@ public class ClaimCalcHelper {
         
         public int getLabourCostAverageRateDay(){
             
-            BigDecimal bLabourCost = claim.getHireMonitoringDetail().getLabourCost();
+            
+            BigDecimal bLabourCost = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourCost());
             
             if(bLabourCost.compareTo(new BigDecimal(0.00))<1){
                 bLabourCost = getNewLabourCost();
