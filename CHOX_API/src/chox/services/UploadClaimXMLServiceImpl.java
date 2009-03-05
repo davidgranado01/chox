@@ -125,9 +125,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             Element root = doc.getDocumentElement();
             
             if (root != null && root.getTagName().equals("chox")) {
+                
                 ArrayList<Element> rentalElements = XMLUtils.getElements(doc, root, "rental");
 
                 int count = 0;
+                
                 for (Element re : rentalElements) {
                     try {
                         count++;
