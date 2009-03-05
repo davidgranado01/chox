@@ -1,8 +1,10 @@
 package chox.services;
 
+import chox.Util.DateHelper;
 import chox.data.ClaimSearchCriteria;
 import chox.model.Claim;
 import chox.model.ClaimStatus;
+import chox.model.WebUser;
 import chox.model.XMLParseResult;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,7 +37,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public void updateClaim(Claim claim) {
         save(claim);
     }
-
+    
+    /*
+    public void updateClaimLastModified(int id) {
+        WebUser user = getCurrentUser();            
+        Claim claim = (Claim) get(Claim.class, id);
+        claim.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+        claim.setLastModifiedBy(user);
+        save(claim);
+    }
+    */
+    
     public Long getCountByStatus(String status) {
         String q = "select count(*) from Claim where status = '" + status + "'";
         return getCount(q);
@@ -276,7 +288,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 addSort(criteria, "cb.firstName", dir);
                 addSort(criteria, "cb.lastName", dir);
             } else {
-                addSort(criteria, "createdDate", dir);
+                addSort(criteria, "lastModifiedDate", dir);
             }
         }
 

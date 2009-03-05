@@ -26,4 +26,5 @@ public interface ClaimService {
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
    
     public void  saveObjectForXMLUploader(final XMLParseResult xmlParseResult);
+    // public void updateClaimLastModified(int claimId);
 }
