@@ -48,7 +48,7 @@
             {name:'lineOfBusiness'},
             {name:'supplierReference'},
             {name:'claimNumber'}, 
-            {name:'lastModifiedDate', type: 'date', dateFormat: 'd/m/Y'},
+            {name:'lastModifiedDate', type: 'string', dateFormat:'d/m/Y H:i A'},
             {name:'insurer'},
             {name:'cho'}
         ]
@@ -61,7 +61,6 @@
         remoteSort: true
     });
     ds.setDefaultSort('created', 'desc');
-    // var c = new Ext.DatePicker({renderTo: 'doSearchClaim_invoiceUploadDateFrom'});
     
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';     
     
@@ -263,13 +262,10 @@
                         return '<a href="openClaimDetail.action?id=' + r.data['id'] + '&tab=' + currentTabIndex + '">' + value + '</a>'}},               
                 {header: "Insurer's VRN", width: 250, sortable: true, dataIndex: 'vehicleRegistration'},
                 {header: "Claim Number", width: 250, sortable: true, dataIndex: 'claimNumber'}, 
-                {header: "Invoice Amount", width: 250, sortable: true, 
-                    dataIndex: 'invoiceAmount'},  
-                {header: "Last Modified", width: 250, sortable: true, 
-                    renderer: Ext.util.Format.dateRenderer('d/m/Y'), 
-                    dataIndex: 'lastModifiedDate'},
+                {header: "Invoice Amount", width: 250, sortable: true, dataIndex: 'invoiceAmount'},  
+                {header: "Last Modified", width: 250, sortable: true, renderer: Ext.util.Format.dateRenderer('d/m/Y H:i A'), dataIndex: 'lastModifiedDate'},
                 {header: "Status", width: 250, sortable: true, dataIndex: 'status'},
-                {header: "Created By", width: 250, sortable: true, dataIndex: 'createdBy'},          
+                {header: "Created By", width: 250, sortable: true, dataIndex: 'createdBy'},
                 {header: "LOB", width: 250, sortable: true, dataIndex: 'lineOfBusiness'},
                 {header: "CHO", width: 250, sortable: true, dataIndex: 'cho'},
                 {header: "Insurer", width: 150, sortable: true, dataIndex: 'insurer'},

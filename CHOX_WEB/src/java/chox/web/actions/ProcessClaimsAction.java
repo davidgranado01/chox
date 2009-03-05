@@ -112,6 +112,8 @@ public class ProcessClaimsAction extends BaseAction {
             
             XMLParseResult nextElement = (XMLParseResult) listIteratorName.next();
             
+            //System.out.println("CLAIM ID:"+nextElement.getClaim().getChoReference()+"|UPLOAD STATUS"+nextElement.getUploadStatus());
+            
             if(nextElement.getUploadStatus().equalsIgnoreCase(strUpdateStatus)){
                 xmlNewParseResult.add(nextElement);
             }

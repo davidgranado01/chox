@@ -41,6 +41,7 @@ public class claimGridViewData {
     public claimGridViewData(Claim claim) {       
               
         Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Format dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
 
         Customer customer = claim.getCustomer();
@@ -58,7 +59,8 @@ public class claimGridViewData {
         this.lineOfBusiness = lob == null ? "" : lob.getName();
         this.claimNumber = claim.getClaimNumber();
         this.createdDate = dateFormat.format(claim.getCreatedDate());
-        this.lastModifiedDate = dateFormat.format(claim.getLastModifiedDate());
+        this.lastModifiedDate = dateTimeFormat.format(claim.getLastModifiedDate());
+        // this.lastModifiedDate = claim.getLastModifiedDate().toString();
         this.status = claim.getStatus();
         this.cho = c == null ? "" : c.getName();
         this.insurer = i == null ? "" : i.getName();//TODO : assign insurer
@@ -75,7 +77,10 @@ public class claimGridViewData {
             }
             this.createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
         }
-
+        
+        System.out.println(">>> this.lastModifiedDate :"+this.lastModifiedDate);
+        // System.out.println(">>> this.lastModifiedDate :"+dateTimeFormat.format(claim.getLastModifiedDate()));
+        
     }
 
     public String getSupplierReference() {
