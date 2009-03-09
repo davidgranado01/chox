@@ -48,7 +48,7 @@
             {name:'lineOfBusiness'},
             {name:'supplierReference'},
             {name:'claimNumber'}, 
-            {name:'lastModifiedDate', type: 'string', dateFormat:'d/m/Y H:i A'},
+            {name:'lastModifiedDate', type: 'string', dateFormat:'timestamp'},
             {name:'insurer'},
             {name:'cho'}
         ]
@@ -263,7 +263,7 @@
                 {header: "Insurer's VRN", width: 250, sortable: true, dataIndex: 'vehicleRegistration'},
                 {header: "Claim Number", width: 250, sortable: true, dataIndex: 'claimNumber'}, 
                 {header: "Invoice Amount", width: 250, sortable: true, dataIndex: 'invoiceAmount'},  
-                {header: "Last Modified", width: 250, sortable: true, renderer: Ext.util.Format.dateRenderer('d/m/Y H:i A'), dataIndex: 'lastModifiedDate'},
+                {header: "Last Modified", width: 250, sortable: true, dataIndex: 'lastModifiedDate'},
                 {header: "Status", width: 250, sortable: true, dataIndex: 'status'},
                 {header: "Created By", width: 250, sortable: true, dataIndex: 'createdBy'},
                 {header: "LOB", width: 250, sortable: true, dataIndex: 'lineOfBusiness'},
