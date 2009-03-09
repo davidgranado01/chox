@@ -104,6 +104,11 @@
             </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
+            Vehicle Model</label>
+            <label class="std-data-ro"><s:property value="vehicleModel" /></label>
+            </div>            
+        <div class="chox-form-item">
+            <label class="std-label-ro">
             Vehicle Class</label>
             <label class="std-data-ro"><s:property value="vehicleClass.Name" /></label>
             </div>

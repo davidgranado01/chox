@@ -36,6 +36,9 @@
                  vehicleManufacturer:{
                      required:true
                  },
+                 vehicleModel:{
+                     required:true
+                 },
                  policyNumber:{
                      required:true
                  },
@@ -77,6 +80,9 @@
                  vehicleManufacturer: {
                    required:"You must supply a value for 'Vehicle Manufacturer'"
                  },  
+                 vehicleModel: {
+                   required:"You must supply a value for 'Vehicle Model'"
+                 },                   
                  policyNumber: {
                    required:"You must supply a value for 'Policy Number'"
                  },  
@@ -207,6 +213,10 @@
                         <label class="chox-form-std-label">
                         Vehicle Manufacturer<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDVehicleManufacturer" name="vehicleManufacturer" value="<s:property value="vehicleManufacturer" />" /></div>
+                    <div class="chox-form-item">
+                    <label class="chox-form-std-label">Vehicle Model<span class="mandatory">*</span></label>
+                        <input type="text" class="chox-ttxt" id="CCDVehicleModel" name="vehicleModel" value="<s:property value="vehicleModel" />" />                  
+                    </div>                       
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
                         Vehicle Class<span class="mandatory">*</span></label>
