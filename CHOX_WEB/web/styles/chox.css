@@ -53,12 +53,18 @@ div#chox-header
 
 div.top-menu
 {
-    color:#1641a0;font: 12px tahoma,arial,verdana,sans-serif;
+    color:#1641a0;
+    margin: 0;
+    padding: 0;
+    z-index:99;
 }
 
 div.top-menu a
 {
     color:#1641a0;
+    margin: 0;
+    padding: 0;
+    z-index:99;    
 }
 
 div#chox-menu
@@ -89,13 +95,15 @@ fieldset div
 }
 
 .chox-ttxt
-{
+{  
     border: 1px solid #B5B8C8;
     padding: 1px 3px;
     width: 170px;
 }
 .chox-canote
 {
+    font-family:inherit;
+    font-size:inherit;
     width: 600px;
 }
 
@@ -273,7 +281,6 @@ ul.inbox{
     
     /*background: transparent url(../images/folder_icon.gif) no-repeat;*/
     margin:10px;
-    
 }
 
 ul.inbox li{
@@ -520,4 +527,77 @@ img.tip-target
     color:#413839;
     padding:2px;
     margin-bottom:10px;
+}
+
+.chox-textarea
+{
+    border: 1px solid #B5B8C8;
+    padding: 1px 3px;
+    width: 350px;
+}
+
+#top-menu{	
+  margin: 0;
+  padding: 0;
+  z-index:99;
+  float: right;
+  font-family: tahoma,arial,verdana,sans-serif;
+  font-size: 12px;
+}
+
+#top-menu li
+{	
+  list-style: none;
+  float: left;
+  font:inherit;
+  z-index:99;
+}
+
+#top-menu li a
+{	
+  font:inherit;
+  text-align: center;
+  z-index:99;
+}
+
+#top-menu li a:hover
+{	
+    background: #CEE3F6;
+    z-index:99;
+}
+
+#top-menu div
+{	
+    position: absolute;
+    visibility: hidden;
+    margin-left: 2;
+    padding: 0;
+    background: #FFFFFF;
+    border-left: 1px solid #5970B2;
+    border-right: 1px solid #5970B2;
+    border-bottom: 1px solid #5970B2;
+    z-index:99;
+}
+
+#top-menu div a
+{	
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 5px 10px;
+    width: auto;
+    white-space: nowrap;
+    text-align: left;
+    text-decoration: none;
+    background: #FFFFFF;
+    color: #2875DE;
+    font: 11px arial;
+    z-index:99;
+}
+
+#top-menu div a:hover
+{	
+    background: #E6E6E6;
+    color: #2875DE;
+    z-index:99;
 }

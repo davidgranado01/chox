@@ -21,13 +21,13 @@
     <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.metadata.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.validate.min.js"></script> 
     
-    
     <script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
     <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script> 
     <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script> 
     
     <script>
+        
         $(document).ready(function () {
             
             var op = { 
@@ -36,25 +36,25 @@
                 timeout: 3000,
                 error: onSubmitError
             };
-                       
-            $("#formChangePassword").validate(
+
+            $("#supportMessageForm").validate(
             {
                 errorLabelContainer: "#errorMessageBox",                
                 rules: {
-                    newPassword: {required:true},
-                    confirmNewPassword: {
-                        equalTo: "#newPassword"
+                    iSubject:{
+                        required:true
+                    },
+                    iMessage:{
+                        required:true
                     }
-                }
-                ,
+                },
                 messages: {
-                
-                    newPassword: {
-                        required:"You must supply a value for 'New Password'"
-                    }, 
-                    confirmNewPassword: {
-                        equalTo:"Your passwords do not match"
-                    }                
+                    iSubject:{
+                        required:"You must supply a value for 'Subject'"
+                    },
+                    iMessage:{
+                        required:"You must supply a value for 'Message'"
+                    }
                 },
                 submitHandler: function(form) {
                     $(form).ajaxSubmit(op);
@@ -69,16 +69,17 @@
         
         function onSubmitResponseReceived(responseText, statusText)  {      
             responseText = responseText.trim();
-            $('input[@name=newPassword]').val("");
-            $('input[@name=confirmNewPassword]').val("");
+            $('#iSupplierReference').val("");
+            $('#iSubject').val("");
+            $('#iMessage').val("");
             $("#submitResult").text(responseText);
         }   
 
         function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
-            responseText = responseText.trim();
-            $('input[@name=newPassword]').val("");
-            $('input[@name=confirmNewPassword]').val("");
-            $("#errorMessageBox").text(responseText);            
+            // responseText = responseText.trim();
+            // $('input[@name=newPassword]').val("");
+            // $('input[@name=confirmNewPassword]').val("");
+            // $("#errorMessageBox").text(responseText);            
         }
         
         
@@ -110,7 +111,7 @@
     <s:if test="isCHO"><li>|&nbsp;<a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;</li></s:if>
     <li>|&nbsp;<s:if test="isCHO"><a href="javascript:openFile('<%= request.getContextPath()%>','ChoHelp');">Help</a></s:if><s:else><a href="javascript:openFile('<%= request.getContextPath()%>','InsHelp');">Help</a></s:else>&nbsp;</li>
     <li>|&nbsp;<a href="#" onmouseover="mopen('m2')" onmouseout="mclosetime()">Support</a>
-        <div id="m2" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
+    <div id="m2" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
         <a href="javascript:openFile('<%= request.getContextPath()%>','Support');">Support Procedure</a>
         <a href="<s:url action="onlineSupport"/>">Online Support Form</a>
         </div>&nbsp;</li>
@@ -129,40 +130,27 @@
             <div class="chox-claim-header x-panel-bwrap chox-form-container">   
                 
                 <fieldset class="x-fieldset">
-                    <legend>User Details</legend>
-                    <div class="form-container">            
-                        <div class="chox-form-item">
-                            <label class="chox-form-std-label">First Name</label>
-                        <label class="std-data-ro"><s:property value="webUser.firstName" /></label></div>
-                        <div class="chox-form-item">
-                            <label class="chox-form-std-label">Last Name</label>
-                        <label class="std-data-ro"><s:property value="webUser.lastName" /></label></div>
-                        <div class="chox-form-item">
-                            <label class="chox-form-std-label">Email Address</label>
-                        <label class="std-data-ro"><s:property value="webUser.email" /></label></div>
-                        <div class="chox-form-item">
-                            <label class="chox-form-std-label">Organisation</label>
-                        <label class="std-data-ro"><s:property value="webUser.organisationName" /></label></div>
-                    </div>
-                </fieldset> 
-                
-                
-                <fieldset class="x-fieldset">
-                    <legend>Change Password</legend>
-                    <form onsubmit="return true;" id="formChangePassword" action="user/changePassword.action" class="XXentity-form" method="post">
+                    <legend>Online Support Form</legend>
+                    <form onsubmit="return true;" action="user/submitSupportMessage.action" class="XXentity-form" method="post" id="supportMessageForm">
                         <div class="form-container">                                             
+                            
                             <div class="chox-form-item">
-                                <label class="chox-form-std-label">
-                                Choose a new password <span class="mandatory">*</span></label>
-                            <input type="password" class="chox-ttxt" label="Enter Password" name="newPassword" id="newPassword" size="10" maxlength="8" /></div>
+                                <label class="chox-form-std-label">Supplier Reference</label>
+                                <input type="text" class="chox-ttxt" name="iSupplierReference" id="iSupplierReference" size="10" maxlength="10" /></div>
                             <div class="chox-form-item">
-                                <label class="chox-form-std-label">
-                                Re-enter new password<span class="mandatory">*</span></label>
-                            <input type="password" class="chox-ttxt" label="Enter Password" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="8" /> </div>
+                                <label class="chox-form-std-label">Subject<span class="mandatory">*</span></label>
+                                <input type="text" class="chox-textarea" name="iSubject" id="iSubject" size="20" maxlength="100" /> 
+                            </div>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Message<span class="mandatory">*</span></label>
+                                <textarea class="chox-canote" cols="20" rows="5" name="iMessage" id="iMessage"></textarea>
+                            </div>
                             <div class="chox-form-button">
                                 <input type="submit" value="Save"/>
                             </div>
+                            
                             <div id="submitResult" class="chox-form-submit-result"></div>
+                            
                             <div class="errorBox" id="errorMessageBox"></div>
                         </div>
                     </form>

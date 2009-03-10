@@ -709,6 +709,15 @@
             </result>
         </action>
         
+        <action name="onlineSupport" class="chox.web.actions.OnlineSupportAction">
+            <result name="success">/jsp/user/onlineSupport.jsp</result>
+        </action>
+        
+        <action name="submitSupportMessage" class="chox.web.actions.OnlineSupportAction" method="saveMessage">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+        
         <action name="openUserAccount" class="chox.web.actions.UserAccountAction">
             <result name="success">/jsp/user/UserAccount.jsp
             </result>
@@ -719,8 +728,6 @@
             </result>
         </action>
         
-        
-
     </package>
     <include file="config-browser.xml"/>
 </struts>

@@ -65,6 +65,10 @@ public class PermissionedUser implements UserDetails {
         return user == null ? "" : user.getEmail();
     }
 
+    public String getDisplayName() {
+        return user.getFirstName() + ", " + user.getLastName();
+    }
+    
     public boolean getIsCHO() {
 
         return isInRoleOf("ROLE_CHO");

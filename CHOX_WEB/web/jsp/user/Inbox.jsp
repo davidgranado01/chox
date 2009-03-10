@@ -10,7 +10,6 @@
 <head>
     <title>IDAS-CHOX</title>
     
-
     <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
     <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
     
@@ -305,7 +304,7 @@
                 ,{contentEl:'reportPanelTab', title:'Reports',listeners: {activate: handleActivate}}
             </s:if>
             ]
-            });    
+            });
     }
 
     function random_number() {
@@ -417,32 +416,32 @@ function loadDataFromSession()
         <div class="inner">
             
             <div id="chox-menu">
+              
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr valign="middle">
                         <td>
                             <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left" />
                         </td>
                         <td width="100%" align="right">
-                            <div class="top-menu">
-                                <a href="<s:url action="inbox"/>">Home</a>&nbsp;|&nbsp;
-                                <a href="<s:url action="openUserAccount" />">Settings</a>&nbsp;|&nbsp;
-                                    <s:if test="isCHO">
-                                    <a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;|&nbsp;
-                                    </s:if> 
-                                    <s:if test="isCHO">
-                                        <a href="javascript:openFile('<%= request.getContextPath()%>','ChoHelp');">Help</a>
-                                    </s:if>
-                                    <s:else>
-                                        <a href="javascript:openFile('<%= request.getContextPath()%>','InsHelp');">Help</a>
-                                    </s:else>&nbsp;|&nbsp;
-                                <a href="javascript:openFile('<%= request.getContextPath()%>','Support');">Support</a>&nbsp;|&nbsp; 
-                                <a href="javascript:onOpenAbout();">About CHOX</a>&nbsp;|&nbsp;
-                                <b><s:property value="CurrentUserDesc" /></b>&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/j_acegi_logout">( Log Off )</a>
-                            </div>
+<ul id="top-menu">
+    <li><a href="<s:url action="inbox"/>">Home</a>&nbsp;</li>
+    <li>|&nbsp;<a href="<s:url action="openUserAccount" />">Settings</a>&nbsp;</li>
+    <s:if test="isCHO"><li>|&nbsp;<a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;</li></s:if>
+    <li>|&nbsp;<s:if test="isCHO"><a href="javascript:openFile('<%= request.getContextPath()%>','ChoHelp');">Help</a></s:if><s:else><a href="javascript:openFile('<%= request.getContextPath()%>','InsHelp');">Help</a></s:else>&nbsp;</li>
+    <li>|&nbsp;<a href="#" onmouseover="mopen('m2')" onmouseout="mclosetime()">Support</a>
+        <div id="m2" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
+        <a href="javascript:openFile('<%= request.getContextPath()%>','Support');">Support Procedure</a>
+        <a href="<s:url action="onlineSupport"/>">Online Support Form</a>
+        </div>&nbsp;</li>
+    <li>|&nbsp;<a href="javascript:onOpenAbout();">About CHOX</a>&nbsp;</li>
+    <li>|&nbsp;<b><s:property value="CurrentUserDesc" /></b>&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/j_acegi_logout">( Log Off )</a></li>
+</ul>
+<div style="clear:both"></div>
                         </td>
                     </tr>
-                </table>
+                </table>   
             </div>
+
 
             <div id="tabPanel"></div>
 
