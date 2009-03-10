@@ -7,18 +7,29 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateHelper {
-
+    
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     public static SimpleDateFormat LocalDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     public static SimpleDateFormat DBDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     public static SimpleDateFormat TimeFormat = new SimpleDateFormat("kk:mm");
-
+    
     public static java.sql.Timestamp getCurrentTimeStamp() {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return Timestamp.valueOf(sdf.format(cal.getTime()));
     }
 
+    public static String getCurrentDate() {
+        Calendar cal = Calendar.getInstance();
+        return sdf.format(cal.getTime());
+    }
+    
+    public static String getCurrentDateWithFormat(String sFotmat) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(sFotmat);
+        return sdf.format(cal.getTime());
+    }
+    
     public static String getTwoDigitValueInString(int iValue) {
         String returnValue = String.valueOf(iValue);
         if (iValue < 10) {

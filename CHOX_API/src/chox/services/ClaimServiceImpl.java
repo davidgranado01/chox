@@ -321,7 +321,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
-        criteria.add(Restrictions.like("choReference", sClaimReferenceNumber).ignoreCase());
+        criteria.add(Restrictions.like("choReference", sClaimReferenceNumber.trim()).ignoreCase());
         List result = findByCriteria(criteria);
 
         Integer totalCount = (Integer) result.get(0);

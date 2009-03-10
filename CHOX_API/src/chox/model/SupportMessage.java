@@ -10,6 +10,7 @@ public class SupportMessage implements Serializable,Auditable
 
 	protected int id;
 	protected int claimId;
+        protected String supplierReference;
 	protected String subject;
 	protected String message;
 	protected WebUser createdBy;
@@ -27,6 +28,14 @@ public class SupportMessage implements Serializable,Auditable
 
         public void setClaimId(int claimId) {
             this.claimId = claimId;
+        }
+
+        public String getSupplierReference() {
+            return supplierReference;
+        }
+
+        public void setSupplierReference(String supplierReference) {
+            this.supplierReference = supplierReference;
         }
 
         public int getId() {

@@ -7,7 +7,6 @@ import java.util.List;
 public interface ClaimService {
     
     public Claim getClaim(int id);
-    //Count
     public Long getCountByStatus(String status);
     public Long getNonDEPaymentLogCount();
     public Long getPenaltyChargeAppliedCount();
@@ -21,10 +20,8 @@ public interface ClaimService {
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria);
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria,int start,int limit,String sort,String dir);
     public void updateClaim(Claim claim);
-    // CARLSON
     public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber);
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
-   
     public void  saveObjectForXMLUploader(final XMLParseResult xmlParseResult);
     // public void updateClaimLastModified(int claimId);
 }

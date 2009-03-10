@@ -6,6 +6,7 @@
       <generator class="increment"/>
     </id>
     <property column="claim_id" name="claimId"/>
+    <property column="supplier_reference" name="supplierReference"/>
     <property column="subject" name="subject"/>
     <property column="message" name="message"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
