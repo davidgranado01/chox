@@ -27,3 +27,35 @@ ALTER TABLE support_message OWNER TO postgres;
 ALTER TABLE support_message ALTER COLUMN id SET DEFAULT nextval('support_message_id_seq'::regclass);
 
 ------------------------------------------------------------------------------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'filter.InvoicePaymentLogged');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'filter.InvoicePaymentLogged'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO_OPR', 1, (select id from accessibility where name = 'filter.InvoicePaymentLogged'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO_MNG', 1, (select id from accessibility where name = 'filter.InvoicePaymentLogged'), (select max(id)+1 from accessibility_item));
+
+------------------------------------------------------------------------------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.ClaimDetail.PaymentReceived');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.HireMonitoring.PaymentReceived');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.History.PaymentReceived');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.InvoiceDetail.PaymentReceived');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.Notes.PaymentReceived');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.PaymentPack.PaymentReceived');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.PaymentReceived');
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.ClaimDetail.PaymentReceived'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.HireMonitoring.PaymentReceived'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.History.PaymentReceived'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.InvoiceDetail.PaymentReceived'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.Notes.PaymentReceived'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.PaymentPack.PaymentReceived'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.AuditTrail.PaymentReceived'), (select max(id)+1 from accessibility_item));
+
+------------------------------------------------------------------------------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updatePaymentReceived.InvoicePaymentLogged');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'extraAction.updatePaymentReceived.InvoicePaymentLogged'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO_OPR', 2, (select id from accessibility where name = 'extraAction.updatePaymentReceived.InvoicePaymentLogged'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO_MNG', 2, (select id from accessibility where name = 'extraAction.updatePaymentReceived.InvoicePaymentLogged'), (select max(id)+1 from accessibility_item));
+
+------------------------------------------------------------------------------------------------
