@@ -1,6 +1,7 @@
 package chox.Util;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class MathHelper {
 
@@ -11,4 +12,14 @@ public class MathHelper {
         }
         return new BigDecimal(oValue);
     }
+    
+    public static Integer getIntegerValue(Object v) {
+        if (v.getClass().equals(Integer.class)) {
+            return (Integer) v;
+        } else if (v.getClass().equals(BigInteger.class)) {
+            return ((BigInteger) v).intValue();
+        } else {
+            return 0;
+        }
+    }    
 }

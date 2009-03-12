@@ -235,9 +235,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
         
-        System.out.println("LastModifiedDateFrom"+searchCriteria.getLastModifiedDateFrom());
-        System.out.println("LastModifiedDateTo"+searchCriteria.getLastModifiedDateTo());
-        
         if (searchCriteria.getLastModifiedDateFrom() != null || searchCriteria.getLastModifiedDateTo() != null) {
             if (searchCriteria.getLastModifiedDateFrom() != null) {
                 Date d = searchCriteria.getLastModifiedDateFrom();
