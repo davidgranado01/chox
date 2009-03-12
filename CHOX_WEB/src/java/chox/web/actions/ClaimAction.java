@@ -222,7 +222,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String returnStr = "";
         if (extraAction.equalsIgnoreCase("updateInsurerClaimNumber")) {
             returnStr = "Update Insurer Claim Number";
-        }
+        }else if(extraAction.equalsIgnoreCase("updatePaymentReceived")){
+            returnStr = "Update Payment Logged";
+        } 
+                
         return returnStr;
     }
 
@@ -272,6 +275,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getUpdateInsurerClaimNumberAction() {
         return "updateInsurerClaimNumber";
+    }
+    
+    public String getPaymentReceivedAction(){
+        System.out.println("CLAIM ACTION > getPaymentReceivedAction");
+        return "updatePaymentReceived";
     }
     //Claim Actions
     public String route() {
@@ -653,6 +661,24 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
 
+    public String updatePaymentReceived() {
+    
+        String result = SUCCESS;
+        String newStatus = "";
+        try {
+            newStatus = ClaimStatus.INVOICE_PAYMENT_RECEIVED;
+            auditTrailService.logAuditLog(newStatus, claim, null, null);
+            this.claim.setStatus(newStatus);
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            result = ERROR;
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+
+        statusMsg = "Your action has been recorded";
+        return result;
+    }
+    
     /*
      * Edited By: Carlson Hoo
      * Edited Dt: 25 Feb 2009
@@ -992,9 +1018,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (getIsCHO()) {
             Invoice invoice = claim.getInvoice();
-
-            //if penaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
-            if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED) && invoice.getPenaltyAlertQty() > -1) {
+            if (invoice != null 
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) 
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) 
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED) 
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
+                    && invoice.getPenaltyAlertQty() > -1) {
                 result = invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30;
             }
         }

@@ -511,6 +511,9 @@ function loadDataFromSession()
                         </s:if>  
                         <s:if test="filterAccessibility.isInvoiceReferredToClaimsHandlerAccessible">
                             <li><a href="javascript:showClaimByStatus('InvoiceReferredToClaimsHandler');" >Invoice Referred By Engineer  (<s:property value="filterRecordCounter.InvoiceReferredToClaimsHandlerCount" />)</a></li>
+                        </s:if>
+                        <s:if test="filterAccessibility.isInvoicePaymentLoggedAccessible">
+                            <li><a href="javascript:showClaimByStatus('InvoicePaymentLogged');" >Payments to be received (<s:property value="filterRecordCounter.InvoicePaymentLoggedCount" />)</a></li>
                         </s:if>  
                     </ul>                            
                 </div>

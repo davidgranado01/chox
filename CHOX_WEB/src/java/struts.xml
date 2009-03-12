@@ -167,11 +167,17 @@
             </result>
         </action>
         
+        <action name="getPaymentReceivedAction" class="chox.web.actions.ClaimAction" method="getPaymentReceivedAction">
+            <result name="updatePaymentReceived">/jsp/user/actionPanel/p_updatePaymentReceived.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp
+            </result>
+        </action>        
+        
         <action name="getUpdateInsurerClaimNumberAction" class="chox.web.actions.ClaimAction" method="getUpdateInsurerClaimNumberAction">
             <result name="updateInsurerClaimNumber">/jsp/user/actionPanel/p_updateInsurerClaimNumber.jsp</result>
             <result name="empty">/jsp/p_blank.jsp
             </result>
-        </action>        
+        </action> 
         
         <!-- Start Claim Detail -->
         <action name="openClaimDetail" class="chox.web.actions.ClaimAction">
@@ -282,6 +288,19 @@
         </action>
         
         <action name="updateInsurerClaimNumber" class="chox.web.actions.ClaimAction" method="updateInsurerClaimNumber">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
+        
+        <action name="updatePaymentReceived" class="chox.web.actions.ClaimAction" method="updatePaymentReceived">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
@@ -653,10 +672,9 @@
             </result>
         </action>
         <action name="loadParameterPanel" class="chox.web.actions.ReportAction" method="loadParameterPanel">
-            <result name="InsurerAdminWeeklyOverviewReport-Excel">/jsp/user/reportPanel/p_insurer_admin_weekly_overview_param_panel.jsp
-            </result>
-            <result name="InvoiceSummaryReport-Excel">/jsp/user/reportPanel/p_invoice_summary_report_param_panel.jsp
-            </result>
+            <result name="InsurerAdminWeeklyOverviewReport-Excel">/jsp/user/reportPanel/p_insurer_admin_weekly_overview_param_panel.jsp</result>
+            <result name="InvoiceSummaryReport-Excel">/jsp/user/reportPanel/p_invoice_summary_report_param_panel.jsp</result>
+            <result name="ClaimRejectedReport-Excel">/jsp/user/reportPanel/p_claim_rejected_report_param_panel.jsp</result>            
         </action>
         <action name="exportExcelReport" class="chox.web.actions.ReportAction" method="exportReport">
             <result name="success" type="stream">

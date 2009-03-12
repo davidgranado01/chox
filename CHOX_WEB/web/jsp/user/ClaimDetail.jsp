@@ -681,7 +681,6 @@
 <tr>
     <td colspan="3" align="right"><input value="Close Claim" type="button" onclick="javascript:return closeClaimStatus('<s:property value="id" />');"/></td>
 </tr>
-
 </s:if>
 <s:elseif test="isClaimClosed && isCHO">
 <tr>
@@ -728,7 +727,7 @@
                 <div id="userViewingThisClaimDiv" class="status-warning" style="display:none;">                      
                         This claim is currently being viewed and / or modified by the following user(s) : <span id="userViewingThisClaim"></span>
                 </div>
-                
+
 <script language="JavaScript">
     
     $(document).ready(function() {
@@ -749,7 +748,6 @@
         
     });
    
-    
 </script>
                 <div class="chox-claim-header x-panel-bwrap chox-form-container" id="generalActionPanel" style="display: none;">    
                     <s:action name="getActionPanel" executeResult="true" />
@@ -762,10 +760,6 @@
                     </div>
                 </s:if>
                 
-               
-                
-<s:if test="!isCHO">
-    
 <script language="JavaScript">
                                 
     $(document).ready(function() {
@@ -786,7 +780,6 @@
    }
    
    function extraActionChange(){
-       
        var selectedAction = $("#extraAction").val();
        $(".extraActionClass").slideUp();
        $(".extraActionClass").css("display:", "none");  
@@ -799,7 +792,6 @@
 </script>
 
 <div id="updateInsurerClaimNumber" class="extraActionClass" style="display: none;">
-    
     <table width="100%">
     <tr><td>
     <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -810,7 +802,17 @@
     </table>
 </div>
 
-</s:if>
+<div id="updatePaymentReceived" class="extraActionClass" style="display: none;">
+    <table width="100%">
+    <tr><td>
+    <div class="chox-claim-header x-panel-bwrap chox-form-container">
+        <s:action name="getPaymentReceivedAction" executeResult="true"></s:action>
+        <div class="action-message"><s:property value="actionResult" /></div>
+    </div>
+    </td></tr>
+    </table>
+</div>
+
 
                 <div id="tabContainer">
                     <div id="claimDetails">         

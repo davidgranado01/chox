@@ -77,10 +77,6 @@ public class claimGridViewData {
             }
             this.createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
         }
-        
-        System.out.println(">>> this.lastModifiedDate :"+this.lastModifiedDate);
-        // System.out.println(">>> this.lastModifiedDate :"+dateTimeFormat.format(claim.getLastModifiedDate()));
-        
     }
 
     public String getSupplierReference() {

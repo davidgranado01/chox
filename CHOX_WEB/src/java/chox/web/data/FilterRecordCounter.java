@@ -87,5 +87,11 @@ public class FilterRecordCounter {
     public long getInvoiceReferredToClaimsHandlerCount()
     {
         return service.getCountByStatus(ClaimStatus.INVOICE_REF_TO_CH);
-    }    
+    }  
+    
+    public long getInvoicePaymentLoggedCount()
+    {
+        return service.getCountByStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
+    }     
+    
 }

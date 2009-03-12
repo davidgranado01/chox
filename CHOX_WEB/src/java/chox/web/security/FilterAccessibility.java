@@ -30,7 +30,8 @@ public class FilterAccessibility {
     private boolean penaltyChargesAppliedAccessible;
     private boolean claimPendingAccessible;
     private boolean InvoiceReferredToClaimsHandlerAccessible;
-
+    private boolean InvoicePaymentLoggedAccessible;
+    
     public FilterAccessibility(ApplicationAccessibility accessibility,GrantedAuthority[] grantedAuthorities) {
         
         rejectedClaimsAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_REJECTED_CLAIMS, grantedAuthorities) > 0;
@@ -49,9 +50,9 @@ public class FilterAccessibility {
         claimReferredToEngineerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_REF_ENG, grantedAuthorities) > 0;
         claimReferredToFNOLAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_REF_FNOL, grantedAuthorities) > 0;
         penaltyChargesAppliedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_PENALTY_CHARGES_APPLIED, grantedAuthorities) > 0;               
-        claimPendingAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.CLAIM_PENDING, grantedAuthorities) > 0;   
-        InvoiceReferredToClaimsHandlerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.INVOICE_REF_TO_CH, grantedAuthorities) > 0; 
-        
+        claimPendingAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_PENDING, grantedAuthorities) > 0;   
+        InvoiceReferredToClaimsHandlerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_REF_TO_CH, grantedAuthorities) > 0; 
+        InvoicePaymentLoggedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_PAYMENT_LOGGED, grantedAuthorities) > 0; 
     }
 
     public boolean getIsRejectedClaimsAccessible() {
@@ -125,6 +126,10 @@ public class FilterAccessibility {
 
     public boolean getIsInvoiceReferredToClaimsHandlerAccessible() {
         return InvoiceReferredToClaimsHandlerAccessible;
+    }
+
+    public boolean getIsInvoicePaymentLoggedAccessible() {
+        return InvoicePaymentLoggedAccessible;
     }
     
     

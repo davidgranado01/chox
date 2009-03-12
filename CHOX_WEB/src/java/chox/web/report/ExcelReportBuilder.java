@@ -74,11 +74,6 @@ public class ExcelReportBuilder implements ReportBuilder {
         try {
             InputStream templateIS = new FileInputStream(templatePath);
             out = new ByteArrayOutputStream();
-            
-            /*
-            XLSTransformer transformer = new XLSTransformer();
-            transformer.transformXLS(templateIS, reportParameters).write(out);
-            */
             XLSTransformer transformer = new XLSTransformer();
             HSSFWorkbook resultWorkbook = transformer.transformXLS(templateIS, reportParameters);
             resultWorkbook = appendImage(resultWorkbook);
@@ -93,7 +88,6 @@ public class ExcelReportBuilder implements ReportBuilder {
 
     protected String getReportTemplatePath(String reportTemplateName) {
         String reportDefinationFilePath = ServletActionContext.getServletContext().getRealPath("/reports/" + reportTemplateName);
-        //String reportDefinationFilePath = "C:\\Greenfinch\\Projects\\CHOX\\reports\\" + reportTemplateName;
         return reportDefinationFilePath;
     }
 }

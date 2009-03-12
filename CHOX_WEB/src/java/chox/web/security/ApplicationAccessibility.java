@@ -18,6 +18,7 @@ public class ApplicationAccessibility {
     public static final Short Declined = 0;
     public static final Short ReadOnly = 1;
     public static final Short Editable = 2;
+    
     //Tab Name
     public static final String TAB_CLAIM_DETAIL = "ClaimDetail";
     public static final String TAB_INVOICE_DETAIL = "InvoiceDetail";
@@ -26,6 +27,7 @@ public class ApplicationAccessibility {
     public static final String TAB_HISTORY = "History";
     public static final String TAB_NOTES = "Notes"; 
     public static final String TAB_AUDIT_TRAIL = "AuditTrail"; 
+    
     //Filter Name
     public static final String FILTER_REJECTED_CLAIMS = "RejectedClaims";
     public static final String FILTER_INCORRECT_INVOICE_DATA_COLC = "IncorrectInvoiceDataCalculations";
@@ -43,10 +45,9 @@ public class ApplicationAccessibility {
     public static final String FILTER_CLAIM_REF_ENG = "ClaimReferredToEngineer";
     public static final String FILTER_CLAIM_REF_FNOL = "ClaimReferredToFNOL";
     public static final String FILTER_PENALTY_CHARGES_APPLIED = "PenaltyChargesApplied";
-    public static final String CLAIM_PENDING = "ClaimPending";
-    
-    public static final String INVOICE_REF_TO_CH = "InvoiceReferredToClaimsHandler";
-    
+    public static final String FILTER_CLAIM_PENDING = "ClaimPending";
+    public static final String FILTER_INVOICE_REF_TO_CH = "InvoiceReferredToClaimsHandler";
+    public static final String FILTER_INVOICE_PAYMENT_LOGGED = "InvoicePaymentLogged";
     public static final String PANEL_FNOL_REVIEWED  = "FNOLReviewed";
     
     public static final String MENU_DASHBOARD  = "Dashboard";
@@ -58,14 +59,8 @@ public class ApplicationAccessibility {
     private HashMap accessibilityMap;
     private AccessibilityService accessibilityService;
     
-    //private static ApplicationAccessibility instance = new ApplicationAccessibility();
-    //public static ApplicationAccessibility getInstance() {
-        
-   //    return instance;
-    //}
-
     public ApplicationAccessibility() {
-        //accessibilityMap = getAccessibilityMap();
+        
     }
     
     public TabAccessibility getTabAccessibility(GrantedAuthority[] grantedAuthorities,String claimStatus)

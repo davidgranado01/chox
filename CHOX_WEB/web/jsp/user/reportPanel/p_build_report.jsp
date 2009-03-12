@@ -35,6 +35,7 @@
                             <ul>
                                 <li><a href="javascript:renderParameterPanel('InsurerAdminWeeklyOverviewReport-Excel');">Insurer Admin Weekly Overview Report</a></li>
                                 <li><a href="javascript:renderParameterPanel('InvoiceSummaryReport-Excel');">Invoice Summary Report</a></li>
+                                <li><a href="javascript:renderParameterPanel('ClaimRejectedReport-Excel');">Claim Rejected Report</a></li>
                             </ul>
                         </div>
                     </div>  
