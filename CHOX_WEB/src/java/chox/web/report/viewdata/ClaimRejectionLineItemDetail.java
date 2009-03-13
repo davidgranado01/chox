@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public class ClaimRejectionLineItemDetail {
     
     private Integer numberOfClaim = 0;
-    private BigDecimal numberOfClaimPercentage = new BigDecimal(0.00);
+    private BigDecimal numberOfClaimPercentage;
 
     public Integer getNumberOfClaim() {
         return numberOfClaim;

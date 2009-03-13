@@ -15,12 +15,14 @@ public class ReportAccessibility {
     
      private short invoiceSummaryAccessibility;
      private short insurerWeeklySummaryAccessibility;
-
+     private short claimRejectionAccessibility;
+//
     
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility,GrantedAuthority[] grantedAuthorities) {       
                
         invoiceSummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_SUMMARY,grantedAuthorities);
         insurerWeeklySummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INS_WEEKLY_SUMMARY,grantedAuthorities);     
+        claimRejectionAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_REJECTION,grantedAuthorities);     
     }
 
     public short getInvoiceSummaryAccessibility() {
@@ -31,6 +33,9 @@ public class ReportAccessibility {
         return insurerWeeklySummaryAccessibility;
     }
    
+    public short getClaimRejectionAccessibility() {
+        return claimRejectionAccessibility;
+    }   
 
 
 

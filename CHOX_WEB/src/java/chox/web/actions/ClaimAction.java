@@ -175,7 +175,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return vehicleClasses;
     }
 
-    // ADDED BY CARLSON @ 2008-12-03
     public List getInsurers() {
         if (insurers == null) {
             insurers = lookupService.getInsurers();
@@ -278,7 +277,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
     
     public String getPaymentReceivedAction(){
-        System.out.println("CLAIM ACTION > getPaymentReceivedAction");
         return "updatePaymentReceived";
     }
     //Claim Actions

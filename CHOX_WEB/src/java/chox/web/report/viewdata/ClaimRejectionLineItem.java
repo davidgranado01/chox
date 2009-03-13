@@ -1,5 +1,6 @@
 package chox.web.report.viewdata;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,24 @@ public class ClaimRejectionLineItem {
     private String displayName;
     private List<ClaimRejectionLineItemDetail> ReportColumns = new ArrayList<ClaimRejectionLineItemDetail>();
 
+    private Integer allOrgClaimCount;
+    private BigDecimal allOrgClaimCountPerc;
+    
+    public Integer getAllOrgClaimCount() {
+        return allOrgClaimCount;
+    }
+
+    public void setAllOrgClaimCount(Integer allOrgClaimCount) {
+        this.allOrgClaimCount = allOrgClaimCount;
+    }
+
+    public BigDecimal getAllOrgClaimCountPerc() {
+        return allOrgClaimCountPerc;
+    }
+
+    public void setAllOrgClaimCountPerc(BigDecimal allOrgClaimCountPerc) {
+        this.allOrgClaimCountPerc = allOrgClaimCountPerc;
+    }
     
     public List<ClaimRejectionLineItemDetail> getReportColumns() {
         return ReportColumns;

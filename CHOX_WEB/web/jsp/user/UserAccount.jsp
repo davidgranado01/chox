@@ -105,17 +105,17 @@
                                 </td>
                                 <td width="100%" align="right">
 <ul id="top-menu">
-    <li><a href="<s:url action="inbox"/>">Home</a>&nbsp;</li>
-    <li>|&nbsp;<a href="<s:url action="openUserAccount" />">Settings</a>&nbsp;</li>
-    <s:if test="isCHO"><li>|&nbsp;<a href='<s:url action="uploadClaims"/>'>XML Uploads</a>&nbsp;</li></s:if>
-    <li>|&nbsp;<s:if test="isCHO"><a href="javascript:openFile('<%= request.getContextPath()%>','ChoHelp');">Help</a></s:if><s:else><a href="javascript:openFile('<%= request.getContextPath()%>','InsHelp');">Help</a></s:else>&nbsp;</li>
-    <li>|&nbsp;<a href="#" onmouseover="mopen('m2')" onmouseout="mclosetime()">Support</a>
+    <li><a href="<s:url action="inbox"/>">&nbsp;Home&nbsp;</a></li>
+    <li><a href="<s:url action="openUserAccount" />">|&nbsp;Settings&nbsp;</a></li>
+    <s:if test="isCHO"><li><a href='<s:url action="uploadClaims"/>'>|&nbsp;XML Uploads&nbsp;</a></li></s:if>
+    <li><s:if test="isCHO"><a href="javascript:openFile('<%= request.getContextPath()%>','ChoHelp');">|&nbsp;Help&nbsp;</a></s:if><s:else><a href="javascript:openFile('<%= request.getContextPath()%>','InsHelp');">|&nbsp;Help&nbsp;</a></s:else></li>
+    <li><a href="#" onmouseover="mopen('m2')" onmouseout="mclosetime()">|&nbsp;Support&nbsp;</a>
         <div id="m2" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
         <a href="javascript:openFile('<%= request.getContextPath()%>','Support');">Support Procedure</a>
         <a href="<s:url action="onlineSupport"/>">Online Support Form</a>
-        </div>&nbsp;</li>
-    <li>|&nbsp;<a href="javascript:onOpenAbout();">About CHOX</a>&nbsp;</li>
-    <li>|&nbsp;<b><s:property value="CurrentUserDesc" /></b>&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/j_acegi_logout">( Log Off )</a></li>
+        </div></li>
+    <li><a href="javascript:onOpenAbout();">|&nbsp;About CHOX&nbsp;</a></li>
+    <li><a href="<%=request.getContextPath()%>/j_acegi_logout" >|&nbsp;<b><s:property value="CurrentUserDesc" /></b> ( Log Off )</a></li>
 </ul>
 <div style="clear:both"></div>
                                 </td>

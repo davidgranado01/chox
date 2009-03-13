@@ -39,7 +39,7 @@
                         <p class="password_entry">
                             <label for="password">
                                 Password:</label>
-                           <input type="password" name="j_password" />
+                           <input type="password"  name="j_password" />
                             <!--<span class="note">(<a href="#">Forgotten Username/Password</a>)
                             </span>-->
                         </p>

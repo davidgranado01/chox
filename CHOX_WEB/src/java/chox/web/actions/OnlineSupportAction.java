@@ -6,9 +6,11 @@ import chox.model.Claim;
 import chox.model.SupportMessage;
 import chox.services.ClaimService;
 import chox.services.SupportMessageService;
-import com.opensymphony.xwork2.Preparable;
 
 public class OnlineSupportAction extends BaseAction{
+    
+    //private String[] recipients = {"choxsupport@sherwoodcompliance.co.uk", "carlson.hoo@gmail.com"};
+    private String[] recipients = {"carlson.hoo@gmail.com"};
     
     private SupportMessageService supportMessageService;
     private ClaimService claimService;
@@ -69,14 +71,16 @@ public class OnlineSupportAction extends BaseAction{
         try{
             EmailHelper emailHelper = new EmailHelper();
             String emailMessage = doConstructEmailMessage(message);
-            bFlag = emailHelper.postMail(message.getSubject(), emailMessage);
+            bFlag = emailHelper.postMail(message.getSubject(), emailMessage, recipients);
         }catch(Exception ex){
-            
+            actionResult = "Please try again.";
         }
         
         if(bFlag){
             supportMessageService.updateObject(message);
-            actionResult = "Messag E.g. Message has been submitted to CHOX Admin";
+            actionResult = "Message has been submitted to CHOX Admin";
+        }else{
+            actionResult = "Please try again.";
         }
         
         return SUCCESS;      
@@ -84,8 +88,8 @@ public class OnlineSupportAction extends BaseAction{
     
     private String doConstructEmailMessage(SupportMessage message){
         
-        System.out.println("A:"+getAuthenticatedUser().getDisplayName()); 
-        System.out.println("B:"+DateHelper.getCurrentDate()); 
+        // System.out.println("A:"+getAuthenticatedUser().getDisplayName()); 
+        // System.out.println("B:"+DateHelper.getCurrentDate()); 
         
         StringBuffer emailMsg = new StringBuffer();
         emailMsg.append("======================================================================\n"); 

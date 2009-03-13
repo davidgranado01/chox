@@ -9,6 +9,7 @@ import chox.web.data.FilterRecordCounter;
 import chox.web.security.ApplicationAccessibility;
 import chox.web.security.FilterAccessibility;
 import chox.web.security.MenuAccessibility;
+import chox.web.security.ReportAccessibility;
 import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 
@@ -23,6 +24,7 @@ public class InboxAction extends BaseAction implements SessionAware {
     private FilterRecordCounter filterRecordCounter;
     private FilterAccessibility filterAccessibility;
     private ApplicationAccessibility applicationAccessibility;
+    private ReportAccessibility reportAccessibility;
     private MenuAccessibility menuAccessibility;
 
     public void setClaimService(ClaimService service) {
@@ -49,6 +51,14 @@ public class InboxAction extends BaseAction implements SessionAware {
             filterAccessibility = getApplicationAccessibility().getFilterAccessibility(super.getAuthenticatedUser().getAuthorities());
         }
         return filterAccessibility;
+    }
+    
+    public ReportAccessibility getReportAccessibility() {
+        
+        if (reportAccessibility == null) {
+            reportAccessibility = getApplicationAccessibility().getReportAccessibility(super.getAuthenticatedUser().getAuthorities());
+        }
+        return reportAccessibility;
     }
     
     public MenuAccessibility getMenuAccessibility() {

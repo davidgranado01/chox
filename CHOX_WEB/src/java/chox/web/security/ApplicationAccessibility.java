@@ -55,6 +55,8 @@ public class ApplicationAccessibility {
     
     public static final String REPORT_INVOICE_SUMMARY = "InvoiceSummary";
     public static final String REPORT_INS_WEEKLY_SUMMARY = "InsurerWeeklySummary";
+    public static final String REPORT_CLAIM_REJECTION = "ClaimRejection";
+   
     
     private HashMap accessibilityMap;
     private AccessibilityService accessibilityService;
@@ -157,7 +159,6 @@ public class ApplicationAccessibility {
     
     public Short checkReportAccessibility(String reportName, GrantedAuthority[] grantedAuthorities) {
 
-        //accessibilityMap = getAccessibilityMap();
         String accessibilityKey = getReportAccessibilityKey(reportName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
