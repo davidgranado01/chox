@@ -85,23 +85,7 @@
             </div>
             
                 <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">  
-<!--
-<tr>
-<td nowrap><label>Credit Hire Organisation</label></td>
-<td>
-<s:select 
-    name="supplierId" 
-    id="supplierId" 
-    list="suppliers" 
-    listKey="id" 
-    listValue="name"
-    headerKey=""
-    headerValue="--- ALL ---"
-    emptyOption="false">
-    </s:select>
-</td>                            
-</tr>  
-!-->
+
                     <tr>
                         <td nowrap width="30%"><label>Created Date From</label></td><td><div id="dateFromDiv" /></td>                       
                     </tr>    

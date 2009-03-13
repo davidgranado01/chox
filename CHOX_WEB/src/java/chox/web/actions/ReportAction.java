@@ -33,6 +33,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
     }
 
     public String loadParameterPanel() {
+        System.out.println(">>>>>>>>>>"+this.reportName);
         return this.reportName;
     }
 

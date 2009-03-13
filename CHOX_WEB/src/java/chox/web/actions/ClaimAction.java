@@ -124,7 +124,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return attachmentCategory;
 
     }
-    // ADDED BY CARLSON @ 2008-12-02 - END
+
     public int getId() {
         return id;
     }
@@ -166,8 +166,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return lineOfBusinesses;
     }
-
-    // ADDED BY CARLSON @ 2008-12-03
+    
     public List getVehicleClasses() {
         if (vehicleClasses == null) {
             vehicleClasses = lookupService.getVehicleClasses();
@@ -177,7 +176,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public List getInsurers() {
         if (insurers == null) {
-            insurers = lookupService.getInsurers();
+            Chorganisation currentCho = this.getAuthenticatedUser().getUser().getChorganisation();
+            insurers = this.lookupService.getInsurers(currentCho.getId());
         }
         return insurers;
     }
