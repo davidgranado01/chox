@@ -59,3 +59,22 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO_MNG', 2, (select id from accessibility where name = 'extraAction.updatePaymentReceived.InvoicePaymentLogged'), (select max(id)+1 from accessibility_item));
 
 ------------------------------------------------------------------------------------------------
+
+insert into accessibility_item (role, access_right,accessibility_id, id) values ('ROLE_CHO_MNG', 1, (select id from accessibility where name like 'menu.Report'), (select max(id)+1 from accessibility_item));
+
+------------------------------------------------------------------------------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'report.InvoiceSummary');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'report.InsurerWeeklySummary');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'report.ClaimRejection');
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'report.InvoiceSummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'report.InsurerWeeklySummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'report.ClaimRejection'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS', 1, (select id from accessibility where name = 'report.InvoiceSummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS', 1, (select id from accessibility where name = 'report.InsurerWeeklySummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO', 1, (select id from accessibility where name = 'report.ClaimRejection'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS', 1, (select id from accessibility where name = 'report.ClaimRejection'), (select max(id)+1 from accessibility_item));
+
+------------------------------------------------------------------------------------------------
