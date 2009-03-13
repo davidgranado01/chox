@@ -12,6 +12,7 @@ import chox.model.Insurer;
 import chox.model.LineOfBusiness;
 import chox.model.LookupItem;
 import chox.model.VehicleClass;
+import chox.model.WebUser;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,13 +43,21 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     }
 
     public List getSuppliers() {
-        DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
-        return findByCriteria(criteria);
+        WebUser currentUser = getCurrentUser();
+        return getSuppliers(currentUser.getInsurer().getId());
+        // DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
+        // return findByCriteria(criteria);
     }
 
     public List getInsurers() {
+        
+        WebUser currentUser = getCurrentUser();
+        return getInsurers(currentUser.getChorganisation().getId());
+        /*
         DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
         return findByCriteria(criteria);
+        */
+         
     }
 
     public List getVehicleClasses() {
@@ -72,32 +81,57 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     public List getSuppliers(Integer insurerId) {
 
-        List result = new ArrayList();
+        List<Chorganisation> results = new ArrayList<Chorganisation>();
+        
         try {
+            
+            List result = new ArrayList();
             String query = "select a.id as value, a.name as text from chorganisation a inner join insurer_chorganisation b on a.id = b.chorganisation_id where b.insurer_id=:pInsurerId";
             Map extParameters = new HashMap();
             extParameters.put("pInsurerId", insurerId);
             result = externalQuery(query, extParameters, IdLookupItem.class);
+            
+            for(Object o : result){
+                IdLookupItem data = (IdLookupItem) o;
+                Chorganisation item = new Chorganisation();
+                item.setId(data.getValue());
+                item.setName(data.getText());
+                results.add(item);
+            }
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        return result;
+        return results;
 
     }
 
     public List getInsurers(Integer choId) {
-        List result = new ArrayList();
+        
+        List<Insurer> results = new ArrayList<Insurer>();
+         
+        
         try {
+            List result = new ArrayList();
             String query = "select a.id as value, a.name as text from insurer a inner join insurer_chorganisation b on a.id = b.insurer_id where b.chorganisation_id=:pChorganisationId";
             Map extParameters = new HashMap();
             extParameters.put("pChorganisationId", choId);
             result = externalQuery(query, extParameters, IdLookupItem.class);
+            
+            for(Object o : result){
+                IdLookupItem data = (IdLookupItem) o;
+                Insurer item = new Insurer();
+                item.setId(data.getValue());
+                item.setName(data.getText());
+                results.add(item);
+            }
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        return result;
+        return results;
 
     }
 
