@@ -13,7 +13,6 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailHelper {
     
-    
     // private static final String SMTP_HOST_NAME = "smtp.carlson.com";
     // private static final String SMTP_PORT = "25";
     // private static final String EMAIL_FROM = "info@carlson.com";
@@ -26,7 +25,7 @@ public class EmailHelper {
     private static final String emailSubjectPrefix = "CHOX Support Email: ";
     private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
     private static final String EMAIL_FROM = "info@greenfinch.ie";
-    private String[] recipients = {"carlson.hoo@gmail.com", "carlson.hoo@gmail.com"};
+    
     
     private Authenticator getAuthenticator(final String userName, final String password){
         
@@ -39,10 +38,10 @@ public class EmailHelper {
         return authenticator;
     }
     
-    public boolean postMail(String subject, String message) 
+    public boolean postMail(String subject, String message, String[] recipients) 
         throws MessagingException, UnsupportedEncodingException {
         
-        boolean debug = true;
+        boolean debug = false;
 
         Properties props = new Properties();
         props.put("mail.smtp.host", SMTP_HOST_NAME);

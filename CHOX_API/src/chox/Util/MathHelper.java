@@ -13,6 +13,13 @@ public class MathHelper {
         return new BigDecimal(oValue);
     }
     
+    public static BigDecimal getPercentageBigDecimal(float iValue, float iDevider, int decimalplace){
+        BigDecimal bValue = new BigDecimal(iValue*100);
+        BigDecimal bDevider = new BigDecimal(iDevider);
+        BigDecimal oValue = bValue.divide(bDevider, decimalplace, BigDecimal.ROUND_HALF_UP);
+        return oValue;
+    }
+    
     public static Integer getIntegerValue(Object v) {
         if (v.getClass().equals(Integer.class)) {
             return (Integer) v;
@@ -21,5 +28,10 @@ public class MathHelper {
         } else {
             return 0;
         }
-    }    
+    }  
+   
+    public static BigDecimal Round(BigDecimal iValue, int decimalPlace){
+        iValue.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return iValue;
+    }
 }
