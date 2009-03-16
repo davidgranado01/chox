@@ -32,7 +32,10 @@ public class DashBoardViewData {
     private BigDecimal valueOfInvoicesClosed;
     private Integer noOfInvoicesPaymentLogged;
     private BigDecimal valueOfInvoicesPaymentLogged;    
+    private Integer noOfInvoicesPaymentReceived;
+    private BigDecimal valueOfInvoicesPaymentReceived;        
     private BigDecimal totalValueOfPenaltyChargesApplied;
+    
     
     public static DashBoardViewData getObject(Map data)
     {
@@ -57,6 +60,8 @@ public class DashBoardViewData {
         viewData.valueOfInvoicesClosed = getDecimalValue(data.get("valueOfInvoicesClosed".toLowerCase()));
         viewData.noOfInvoicesPaymentLogged = getIntegerValue(data.get("noOfInvoicesPaymentLogged".toLowerCase()));
         viewData.valueOfInvoicesPaymentLogged = getDecimalValue(data.get("valueOfInvoicesPaymentLogged".toLowerCase()));        
+        viewData.noOfInvoicesPaymentReceived = getIntegerValue(data.get("noOfInvoicesPaymentReceived".toLowerCase()));
+        viewData.valueOfInvoicesPaymentReceived = getDecimalValue(data.get("valueOfInvoicesPaymentReceived".toLowerCase()));           
         viewData.totalValueOfPenaltyChargesApplied = getDecimalValue(data.get("totalValueOfPenaltyChargesApplied".toLowerCase()));
         
         return viewData;
@@ -235,4 +240,22 @@ public class DashBoardViewData {
     public void setNoOfClaimNotificationsRejectedAccumulative(Integer noOfClaimNotificationsRejectedAccumulative) {
         this.noOfClaimNotificationsRejectedAccumulative = noOfClaimNotificationsRejectedAccumulative;
     }
+
+    public Integer getNoOfInvoicesPaymentReceived() {
+        return noOfInvoicesPaymentReceived;
+    }
+
+    public void setNoOfInvoicesPaymentReceived(Integer noOfInvoicesPaymentReceived) {
+        this.noOfInvoicesPaymentReceived = noOfInvoicesPaymentReceived;
+    }
+
+    public BigDecimal getValueOfInvoicesPaymentReceived() {
+        return valueOfInvoicesPaymentReceived;
+    }
+
+    public void setValueOfInvoicesPaymentReceived(BigDecimal valueOfInvoicesPaymentReceived) {
+        this.valueOfInvoicesPaymentReceived = valueOfInvoicesPaymentReceived;
+    }
+    
+    
 }

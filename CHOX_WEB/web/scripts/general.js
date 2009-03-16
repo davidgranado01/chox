@@ -1,5 +1,7 @@
   
     var newwindow;
+    var strDateFormat = 'd/m/Y'; 
+    
     function openFile(url, name)
     {
         var folderPath = url;        
@@ -14,8 +16,7 @@
         newwindow=window.open(folderPath, 'IDASCHOX');
         if (window.focus) {newwindow.focus()}
     }
-    
-    var strDateFormat = 'd/m/Y';    
+       
     function getTodayDate(){
         var now = new Date();
         return now.format(strDateFormat);

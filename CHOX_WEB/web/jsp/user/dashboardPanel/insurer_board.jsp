@@ -67,7 +67,7 @@
             </tr>
             </table>
             
-            <div style="height:570px; width:900px" id="resultHolder"></div>
+            <div style="height:595px; width:900px" id="resultHolder"></div>
             
         </div>
         

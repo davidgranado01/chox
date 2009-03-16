@@ -162,16 +162,12 @@
             <result name="claimPending">/jsp/user/actionPanel/p_pendingClaim.jsp
             </result>
             <result name="updateInvoiceReferredByEngineer">/jsp/user/actionPanel/p_approveInvoiceReferredByEngineer.jsp
-            </result>            
+            </result>
+            <result name="updatePaymentReceived">/jsp/user/actionPanel/p_updatePaymentReceived.jsp
+            </result>
             <result name="empty">/jsp/p_blank.jsp
             </result>
-        </action>
-        
-        <action name="getPaymentReceivedAction" class="chox.web.actions.ClaimAction" method="getPaymentReceivedAction">
-            <result name="updatePaymentReceived">/jsp/user/actionPanel/p_updatePaymentReceived.jsp</result>
-            <result name="empty">/jsp/p_blank.jsp
-            </result>
-        </action>        
+        </action>      
         
         <action name="getUpdateInsurerClaimNumberAction" class="chox.web.actions.ClaimAction" method="getUpdateInsurerClaimNumberAction">
             <result name="updateInsurerClaimNumber">/jsp/user/actionPanel/p_updateInsurerClaimNumber.jsp</result>

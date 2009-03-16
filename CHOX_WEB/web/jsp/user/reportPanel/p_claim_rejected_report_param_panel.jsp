@@ -87,10 +87,10 @@
                 <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">  
 
                     <tr>
-                        <td nowrap width="30%"><label>Created Date From</label></td><td><div id="dateFromDiv" /></td>                       
+                        <td nowrap width="30%"><label>Claim Uploaded Date From</label></td><td><div id="dateFromDiv" /></td>                       
                     </tr>    
                     <tr>
-                        <td nowrap><label>Created Date To</label></td><td><div id="dateToDiv"/></td>                            
+                        <td nowrap><label>Claim Uploaded Date To</label></td><td><div id="dateToDiv"/></td>                            
                     </tr>                      
                 </table>
             

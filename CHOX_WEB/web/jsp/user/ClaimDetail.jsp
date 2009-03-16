@@ -802,18 +802,6 @@
     </table>
 </div>
 
-<div id="updatePaymentReceived" class="extraActionClass" style="display: none;">
-    <table width="100%">
-    <tr><td>
-    <div class="chox-claim-header x-panel-bwrap chox-form-container">
-        <s:action name="getPaymentReceivedAction" executeResult="true"></s:action>
-        <div class="action-message"><s:property value="actionResult" /></div>
-    </div>
-    </td></tr>
-    </table>
-</div>
-
-
                 <div id="tabContainer">
                     <div id="claimDetails">         
 

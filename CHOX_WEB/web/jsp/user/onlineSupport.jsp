@@ -10,7 +10,6 @@
 <head>
     <title>IDAS-CHOX</title>
     
-    
     <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
     <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
     
@@ -80,7 +79,11 @@
 
         function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
             $.unblockUI();
-            $("#submitResult").text("Unexpected error encountered, Please try again!");          
+            $('#iSupplierReference').val("");
+            $('#iSubject').val("");
+            $('#iMessage').val("");            
+            //$("#submitResult").text(errorThrown + "|A|" + textStatus);
+            //$("#submitResult").text("Please try again!");          
         }
         
         

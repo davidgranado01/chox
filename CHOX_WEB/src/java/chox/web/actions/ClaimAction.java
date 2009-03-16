@@ -221,9 +221,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String returnStr = "";
         if (extraAction.equalsIgnoreCase("updateInsurerClaimNumber")) {
             returnStr = "Update Insurer Claim Number";
-        }else if(extraAction.equalsIgnoreCase("updatePaymentReceived")){
-            returnStr = "Update Payment Logged";
-        } 
+        }
                 
         return returnStr;
     }

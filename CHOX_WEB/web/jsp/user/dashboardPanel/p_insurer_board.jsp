@@ -23,7 +23,9 @@
         new Ext.ToolTip({target: 'tip16',html: 'Description for Value of Invoices Close'});
         new Ext.ToolTip({target: 'tip17',html: 'Description for Number of Invoices Payment Logged'});
         new Ext.ToolTip({target: 'tip18',html: 'Description for Value of Invoices Payment Logged'});        
-        new Ext.ToolTip({target: 'tip19',html: 'Description for Total Value of Penalty Charges Applied'});  
+        new Ext.ToolTip({target: 'tip19',html: 'Description for Number of Invoices Payment Received'});
+        new Ext.ToolTip({target: 'tip20',html: 'Description for Value of Invoices Payment Received'});        
+        new Ext.ToolTip({target: 'tip21',html: 'Description for Total Value of Penalty Charges Applied'});  
         new Ext.ToolTip({target: 'tip99',html: 'Description for Number of Pending Claims'});
         
         Ext.QuickTips.init();
@@ -64,5 +66,7 @@
     <tr><th nowrap><label id="tip16">Value of Invoices Closed</label></th>                      <td nowrap><label>£<s:property value="w2DData.valueOfInvoicesClosed"/></label></td>                 <td nowrap><label>£<s:property value="m2DData.valueOfInvoicesClosed"/></label></td>                 <td nowrap><label>£<s:property value="cData.valueOfInvoicesClosed"/></label></td></tr>
     <tr><th nowrap><label id="tip17">Number of Invoices Payment Logged</label></th>                     <td nowrap><label><s:property value="w2DData.noOfInvoicesPaymentLogged"/></label></td>                    <td nowrap><label><s:property value="m2DData.noOfInvoicesPaymentLogged"/></label></td>                    <td nowrap><label><s:property value="cData.noOfInvoicesPaymentLogged"/></label></td></tr>
     <tr><th nowrap><label id="tip18">Value of Invoices Payment Logged</label></th>                      <td nowrap><label>£<s:property value="w2DData.valueOfInvoicesPaymentLogged"/></label></td>                 <td nowrap><label>£<s:property value="m2DData.valueOfInvoicesPaymentLogged"/></label></td>                 <td nowrap><label>£<s:property value="cData.valueOfInvoicesPaymentLogged"/></label></td></tr>
-    <tr><th nowrap><label id="tip19">Total Value of Penalty Charges Applied</label></th>	<td nowrap><label>£<s:property value="w2DData.totalValueOfPenaltyChargesApplied"/></label></td>	<td nowrap><label>£<s:property value="m2DData.totalValueOfPenaltyChargesApplied"/></label></td>	<td nowrap><label>£<s:property value="cData.totalValueOfPenaltyChargesApplied"/></label></td></tr>    
+    <tr><th nowrap><label id="tip19">Number of Invoices Payment Received</label></th>                     <td nowrap><label><s:property value="w2DData.noOfInvoicesPaymentReceived"/></label></td>                    <td nowrap><label><s:property value="m2DData.noOfInvoicesPaymentReceived"/></label></td>                    <td nowrap><label><s:property value="cData.noOfInvoicesPaymentReceived"/></label></td></tr>
+    <tr><th nowrap><label id="tip20">Value of Invoices Payment Received</label></th>                      <td nowrap><label>£<s:property value="w2DData.valueOfInvoicesPaymentReceived"/></label></td>                 <td nowrap><label>£<s:property value="m2DData.valueOfInvoicesPaymentReceived"/></label></td>                 <td nowrap><label>£<s:property value="cData.valueOfInvoicesPaymentReceived"/></label></td></tr>
+    <tr><th nowrap><label id="tip21">Total Value of Penalty Charges Applied</label></th>	<td nowrap><label>£<s:property value="w2DData.totalValueOfPenaltyChargesApplied"/></label></td>	<td nowrap><label>£<s:property value="m2DData.totalValueOfPenaltyChargesApplied"/></label></td>	<td nowrap><label>£<s:property value="cData.totalValueOfPenaltyChargesApplied"/></label></td></tr>    
 </table>

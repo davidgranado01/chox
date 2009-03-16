@@ -9,8 +9,8 @@ import chox.services.SupportMessageService;
 
 public class OnlineSupportAction extends BaseAction{
     
-    //private String[] recipients = {"choxsupport@sherwoodcompliance.co.uk", "carlson.hoo@gmail.com"};
-    private String[] recipients = {"carlson.hoo@gmail.com"};
+    private String[] recipients = {"choxsupport@sherwoodcompliance.co.uk"};
+    //private String[] recipients = {"carlson.hoo@gmail.com"};
     
     private SupportMessageService supportMessageService;
     private ClaimService claimService;
