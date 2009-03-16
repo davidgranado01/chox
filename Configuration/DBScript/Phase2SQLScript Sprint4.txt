@@ -78,3 +78,7 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS', 1, (select id from accessibility where name = 'report.ClaimRejection'), (select max(id)+1 from accessibility_item));
 
 ------------------------------------------------------------------------------------------------
+
+update accessibility set name = 'action.updatePaymentReceived.InvoicePaymentLogged' where name ='extraAction.updatePaymentReceived.InvoicePaymentLogged'
+
+------------------------------------------------------------------------------------------------
