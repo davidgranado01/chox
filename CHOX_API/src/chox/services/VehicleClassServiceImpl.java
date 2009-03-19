@@ -21,10 +21,9 @@ public class VehicleClassServiceImpl  extends SecureDataService implements Vehic
             
         } catch (Throwable e) {
            e.printStackTrace();
-        }       
+        }
   
         return vehicleclass;
-
     }
     
     public VehicleClass getVehicleClassByNodeName(Element thisElement, String nodeName) {

@@ -4,8 +4,6 @@ import chox.Util.XmlHelper;
 import java.io.File;
 import org.w3c.dom.*;
 import java.util.ArrayList;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import com.filesystemsoftware.utils.XMLUtils;
@@ -186,7 +184,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         if(xmlParseResult.getClaim().getInvoice()!=null){
             xmlParseResult.setIsInvoiceExist(true);
         }
-        
+                
         /*
          * ONLY PROCESS THE INVOICE WHERE
          * 1. CLAIM IS EXIST IN DB 
@@ -215,11 +213,17 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     isEngReportExist = true;
                 }               
                 
+                VehicleClass cust_VehicleClass = xmlParseResult.getClaim().getCustomer().getVehicleClass();
+                VehicleClass thirdVehicleClass = xmlParseResult.getClaim().getThirdParty().getVehicleClass();
+                
                 Claim BREClaim = constructeClaimForInvoiceValidation(xmlParseResult.getClaim());
-
                 RulesEngineResponse validationResult = invoiceService.XMLUploaderInvoiceValidation(BREClaim);
+                                
+                xmlParseResult.getClaim().getCustomer().setVehicleClass(cust_VehicleClass);
+                xmlParseResult.getClaim().getThirdParty().setVehicleClass(thirdVehicleClass);
                 
                 historyService.logInvoiceValidationErrorMsg(validationResult, BREClaim);
+                
                 String newClaimStatus = validationResult.getStatus().toString();                
                 xmlParseResult.getClaim().setStatus(newClaimStatus);
                 
@@ -235,6 +239,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             
         }else{
         
+            System.out.println(">>>>>>>>> B");
+            
             // VALIDATE CLAIM OR INVOICE IS UNIQUE
             if(!xmlParseResult.getIsClaimExist()){
                 
@@ -344,11 +350,15 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             }
         }
         
+        System.out.println("NAME :::::::::: 1:"+BREClaim.getCustomer().getVehicleClass().getName());
+        
         // SET VEHICLE CLASS TO NULL WHEN 
         if(BREClaim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")
                 || BREClaim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("UNATTACHED")){
             BREClaim.getCustomer().setVehicleClass(null);
         }
+        
+        System.out.println("NAME :::::::::: 2:"+BREClaim.getCustomer().getVehicleClass());
         
         BREClaim.setHireMonitoringEcd(hireMonitoringEcdService.getLatestHireMonitoringECDDate(BREClaim));
         
@@ -663,7 +673,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     }
                 }
                 */
-                
+
                 // GET VEHICLE CLASS ID
                 VehicleClass vehicleclass = vehicleClassService.getVehicleClassByNodeName(thisElement, "vehicle-class");
                 
