@@ -119,9 +119,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             Document doc = docBuilder.parse(claimXMLFile);
             doc.getDocumentElement().normalize();
             */
+
+        //System.out.println(">>>>>>>>>>>>>.. A01");            
             
             Document doc = DocumentHelper.getDocumentFromFile(claimXMLFile);
-            
+        //System.out.println(">>>>>>>>>>>>>.. A02");                
             Element root = doc.getDocumentElement();
             
             if (root != null && root.getTagName().equals("chox")) {
@@ -170,9 +172,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             Element root,
             Boolean isAllowPartialUpload) throws Exception {
   
+
         // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
         xmlParseResult = CHOoganisationSchemaValidation(xmlParseResult, root);
-        
+
         // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
         if(!xmlParseResult.getIsClaimExist()){
             xmlParseResult = RentalDriversSchemaValidation(xmlParseResult, root, doc);
@@ -181,12 +184,13 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         
         // ALWAYS GET LATEST ENGINEER REPORT AND VEHICLE HIRE INFORMATION FROM BORDEREUR (UPSERT MODE)
         xmlParseResult = RentalRepairSchemaValidation(xmlParseResult, root, doc);
+
         xmlParseResult = RentalVehiclesSchemaValidation(xmlParseResult, root, doc);
 
         if(xmlParseResult.getClaim().getInvoice()!=null){
             xmlParseResult.setIsInvoiceExist(true);
         }
-        
+
         /*
          * ONLY PROCESS THE INVOICE WHERE
          * 1. CLAIM IS EXIST IN DB 
@@ -200,12 +204,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             && !xmlParseResult.getIsInvoiceExist()){
             
             isNewInvoice = true;
-            
             xmlParseResult = RentalInvoiceSchemaValidation(xmlParseResult, root, doc);
-
+            
             // VALIDATE CLAIM OR INVOICE IS UNIQUE
             xmlParseResult = validateClaimInformation(xmlParseResult);
-            
+
             // EXECUTE BRE RULE
             if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
               
@@ -215,11 +218,17 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     isEngReportExist = true;
                 }               
                 
+                VehicleClass cust_VehicleClass = xmlParseResult.getClaim().getCustomer().getVehicleClass();
+                VehicleClass thirdVehicleClass = xmlParseResult.getClaim().getThirdParty().getVehicleClass();
+                
                 Claim BREClaim = constructeClaimForInvoiceValidation(xmlParseResult.getClaim());
-
                 RulesEngineResponse validationResult = invoiceService.XMLUploaderInvoiceValidation(BREClaim);
+                                
+                xmlParseResult.getClaim().getCustomer().setVehicleClass(cust_VehicleClass);
+                xmlParseResult.getClaim().getThirdParty().setVehicleClass(thirdVehicleClass);
                 
                 historyService.logInvoiceValidationErrorMsg(validationResult, BREClaim);
+                
                 String newClaimStatus = validationResult.getStatus().toString();                
                 xmlParseResult.getClaim().setStatus(newClaimStatus);
                 
@@ -230,7 +239,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 if(validationResult.getResults().size()>0){
                     xmlParseResult = appendInvoiceValidationErrorMessage(xmlParseResult, validationResult.getResults());
                 }
-                
             }
             
         }else{
@@ -253,19 +261,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
         
         xmlParseResult = UploadStatus.getUploadStatus(xmlParseResult);
-        
-        /*
-        System.out.println(" ** FINAL STATUS CODE: " + xmlParseResult.getUploadStatusCode());
-        System.out.println(" ** FINAL STATUS: " + xmlParseResult.getUploadStatus());
-        System.out.println(" ** CLAIM EXIST: " + xmlParseResult.getIsClaimExist());
-        System.out.println(" ** INVOICE EXIST: " + xmlParseResult.getIsInvoiceExist());
-        System.out.println(" ** CLAIM STATUS: " + xmlParseResult.getClaim().getStatus());
-        System.out.println(" ** getIsSchemaValid: " + xmlParseResult.getIsSchemaValid());
-        System.out.println(" ** getSchemaValidationRemark: " + xmlParseResult.getSchemaValidationRemark());
-        System.out.println(" ** getIsDataValid: " + xmlParseResult.getIsDataValid());
-        System.out.println(" ** getDataValidationRemark: " + xmlParseResult.getDataValidationRemark());
-        */
-
         return xmlParseResult;
     }
     
@@ -278,13 +273,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             if(xmlParseResult.getClaim().getCustomer().getClaimReference()!=null){
                 custClaimNumber = xmlParseResult.getClaim().getCustomer().getClaimReference();
             }
-            
-            /*
-            if(claimService.isCustomerClaimNumberExist(custClaimNumber, xmlParseResult.getClaim().getId(), xmlParseResult.getIsClaimExist())){
-                String errorMessage = "The Customer Claim Number supplied already exists in the system";
-                xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, errorMessage, false);
-            }
-            */ 
+
         }
         
         /*
@@ -313,48 +302,48 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     private Claim constructeClaimForInvoiceValidation(Claim claim){
         
-        Claim BREClaim = claim;
-        
         // INTERFACE MAPPING WITH BRE - WHERE HIRE MONITORING NOT EXIST
         Boolean isIsTotalLostCheck = false;
-        if(BREClaim.getHireMonitoringDetail()!=null){
-            isIsTotalLostCheck = BREClaim.getHireMonitoringDetail().isIsTotalLostCheck();
+        if(claim.getHireMonitoringDetail()!=null){
+            isIsTotalLostCheck = claim.getHireMonitoringDetail().isIsTotalLostCheck();
         }
         
-        BREClaim.getVehicleHire().setIsTotalLoss(isIsTotalLostCheck);
+        claim.getVehicleHire().setIsTotalLoss(isIsTotalLostCheck);
 
         // CONSTRUCTE DUMMY ENGINEERING REPORT WITH ALL VALUE IS ZERO WHEN ER NOT EXIST
-        if(BREClaim.getEngineerReport()==null){
+        if(claim.getEngineerReport()==null){
             EngineerReport engineerreport = new EngineerReport();
             engineerreport.setDays(0);
             engineerreport.setLabourAmount(new BigDecimal("0.00"));
             engineerreport.setTotalAmount(new BigDecimal("0.00"));
-            BREClaim.setEngineerReport(engineerreport);
+            claim.setEngineerReport(engineerreport);
         }
         
-        if(claimService.getCountOfClaimByVRN(BREClaim.getCustomer().getVehicleRegistration(), BREClaim.getId())>0){
-           BREClaim.getCustomer().setIsVehicleRegistrationExist(true);
+        if(claimService.getCountOfClaimByVRN(claim.getCustomer().getVehicleRegistration(), claim.getId())>0){
+           claim.getCustomer().setIsVehicleRegistrationExist(true);
         }
         
         // SET VEHICLE CLASS TO NULL WHEN 
-        if(BREClaim.getThirdParty().getVehicleClass()!=null){
-            if(BREClaim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached") 
-                    || BREClaim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("UNATTACHED")){
-                BREClaim.getThirdParty().setVehicleClass(null);
+        if(claim.getThirdParty().getVehicleClass()!=null){
+            if(claim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached") 
+                    || claim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("UNATTACHED")){
+                claim.getThirdParty().setVehicleClass(null);
             }
         }
         
         // SET VEHICLE CLASS TO NULL WHEN 
-        if(BREClaim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")
-                || BREClaim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("UNATTACHED")){
-            BREClaim.getCustomer().setVehicleClass(null);
+        if(claim.getCustomer().getVehicleClass()!=null){
+            if(claim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")
+                    || claim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("UNATTACHED")){
+                claim.getCustomer().setVehicleClass(null);
+            }
         }
         
-        BREClaim.setHireMonitoringEcd(hireMonitoringEcdService.getLatestHireMonitoringECDDate(BREClaim));
+        claim.setHireMonitoringEcd(hireMonitoringEcdService.getLatestHireMonitoringECDDate(claim));
         
-        return BREClaim;
+        return claim;
     }
-        
+
     private XMLParseResult appendInvoiceValidationErrorMessage(XMLParseResult xmlParseResult, List<RuleEvaluation> results){
 
         for(int iCount=0; iCount<results.size(); iCount++){
@@ -381,7 +370,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         public void doInTransactionWithoutResult(TransactionStatus status) {
 
                             if (!readOnlyXmlParseResult.getIsClaimExist()) {
-                                
                                 customerService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                                 thirdPartyService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                                 incidentService.saveObjectForXMLUploader(readOnlyXmlParseResult);
@@ -473,7 +461,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
                     // GET EXISTING CLAIM INFORMATION                   
                     claim = claimService.getClaimByCHOReferenceNumber(strCHOReference);
-
+                    
                     // LOG CLAIM CURRENT STATUS
                     xmlParseResult.setSExistingClaimStatus(claim.getStatus());
 
@@ -664,16 +652,26 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 }
                 */
                 
+                System.out.println(">>>>>>>>>>> 00:"+xmlParseResult.getClaim().getChoReference());
+                System.out.println(">>>>>>>>>>> 01:"+XmlHelper.getNodeValue(thisElement, "vehicle-class")+"|");
+                System.out.println(">>>>>>>>>>> 02:");
+                
                 // GET VEHICLE CLASS ID
                 VehicleClass vehicleclass = vehicleClassService.getVehicleClassByNodeName(thisElement, "vehicle-class");
                 
+                System.out.println(">>>>>>>>>>> 03:");
+                
                 if(vehicleclass!=null){
+                    // System.out.println("NOT NULL : "+vehicleclass.getId());
                     customer.setVehicleClass(vehicleclass);
                 }else{
+                    // System.out.println("NULL");
                     if(XmlHelper.isMAN_Claim_Customer_Vehicle_Class){
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Selected Vehicle Class is invalid for Customer Details", false);
                     }
                 }
+                
+                System.out.println(" >>>>>>>>>>>>>>>>> ");
                 
                 customer.setInsurerName(XmlHelper.getNodeValue(thisElement, "name"));
                 customer.setPolicyNumber(XmlHelper.getNodeValue(thisElement, "policy-number"));
@@ -688,6 +686,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 customer.setInitialECD(XmlHelper.getTimeStampFromNode(thisElement, "initial-ecd"));
                 customer.setIsTotalLoss(XmlHelper.getBooleanFromNode(thisElement, "total-loss"));
                 xmlParseResult.getClaim().setCustomer(customer);
+                
+                System.out.println(" >>>>>>>>>>>>>>>>> "+customer.getVehicleClass().getId());
             }
         }
 
@@ -1614,6 +1614,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         xmlParseResult.setIsCurrentScheValid(true);
         
         if(xmlParseResult.getIsClaimExist() && xmlParseResult.getClaim().getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)){
+
             // STAGE 2
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-registration", XmlHelper.isMAN_RentalVehicles_Vehicle_Registration, XmlHelper.REG_VEHICLE_REG, strSectionName, "Registration");
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-manufacturer", XmlHelper.isMAN_RentalVehicles_Vehicle_Manufacturer, "", strSectionName, "Manufacturer");
@@ -1624,6 +1625,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "rental-days", XmlHelper.isMAN_RentalVehicles_Rental_Days, XmlHelper.REG_INTEGER, strSectionName, "Number Days Hire");
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "collection-reason", XmlHelper.isMAN_RentalVehicles_CollectionReason, "", strSectionName, "Reason For Collection");
         }else{
+
             // ANY STAGE EXCEPT STAGE 2
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-registration", false, XmlHelper.REG_VEHICLE_REG, strSectionName, "Registration");
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-manufacturer", false, "", strSectionName, "Manufacturer");
@@ -1634,7 +1636,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "rental-days", false, XmlHelper.REG_INTEGER, strSectionName, "Number Days Hire");
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "collection-reason", false, "", strSectionName, "Reason For Collection");            
         }
-        
+
         if ((xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid())
         && (XmlHelper.isNotNull(XmlHelper.getNodeValue(mainElement, "vehicle-registration"))
             || XmlHelper.isNotNull(XmlHelper.getNodeValue(mainElement, "vehicle-manufacturer"))
@@ -1656,7 +1658,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Selected Vehicle Class is invalid", false);
                 }
             }
-            
+
             vehiclehire.setVehicleRegistration(TextHelper.trimWhiteSpace(XmlHelper.getNodeValue(mainElement, "vehicle-registration")));
             vehiclehire.setVehicleManufacturer(XmlHelper.getNodeValue(mainElement, "vehicle-manufacturer"));
             vehiclehire.setVehicleModel(XmlHelper.getNodeValue(mainElement, "vehicle-model"));
@@ -1665,6 +1667,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             vehiclehire.setDays(XmlHelper.getIntegerFromNode(mainElement, "rental-days"));
             vehiclehire.setCollectionReason(XmlHelper.getNodeValue(mainElement, "collection-reason"));
         
+            
             // PART 2 : EXTRA SECTION
             String nodeName1 = "extras";
             String nodeName2 = "extra";

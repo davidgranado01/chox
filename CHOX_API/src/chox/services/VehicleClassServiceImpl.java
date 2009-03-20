@@ -1,5 +1,6 @@
 package chox.services;
 
+import chox.Util.TextHelper;
 import chox.Util.XmlHelper;
 import chox.model.VehicleClass;
 import org.hibernate.criterion.DetachedCriteria;
@@ -24,7 +25,6 @@ public class VehicleClassServiceImpl  extends SecureDataService implements Vehic
         }       
   
         return vehicleclass;
-
     }
     
     public VehicleClass getVehicleClassByNodeName(Element thisElement, String nodeName) {
@@ -32,10 +32,9 @@ public class VehicleClassServiceImpl  extends SecureDataService implements Vehic
         VehicleClass vehicleclass = null;
         
         if(XmlHelper.isNotNull(XmlHelper.getNodeValue(thisElement, nodeName))){
-            String vehicleName = XmlHelper.getNodeValue(thisElement, nodeName);
+            String vehicleName = TextHelper.trimWhiteSpace(XmlHelper.getNodeValue(thisElement, nodeName));
             vehicleclass = getVehicleClassByName(vehicleName.toUpperCase());
         }
-        
         return vehicleclass;
     }
 
