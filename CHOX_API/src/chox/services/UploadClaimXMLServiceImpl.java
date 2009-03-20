@@ -120,10 +120,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             doc.getDocumentElement().normalize();
             */
 
-        //System.out.println(">>>>>>>>>>>>>.. A01");            
             
             Document doc = DocumentHelper.getDocumentFromFile(claimXMLFile);
-        //System.out.println(">>>>>>>>>>>>>.. A02");                
             Element root = doc.getDocumentElement();
             
             if (root != null && root.getTagName().equals("chox")) {
