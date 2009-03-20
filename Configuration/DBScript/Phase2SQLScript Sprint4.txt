@@ -79,6 +79,14 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 
 ------------------------------------------------------------------------------------------------
 
-update accessibility set name = 'action.updatePaymentReceived.InvoicePaymentLogged' where name ='extraAction.updatePaymentReceived.InvoicePaymentLogged'
+update accessibility set name = 'action.updatePaymentReceived.InvoicePaymentLogged' where name ='extraAction.updatePaymentReceived.InvoicePaymentLogged';
+
+------------------------------------------------------------------------------------------------
+
+delete from insurer_chorganisation where chorganisation_id=1006 and insurer_id !=3;
+
+------------------------------------------------------------------------------------------------
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS', 1, (select id from accessibility where name like '%Dash%'), (select max(id)+1 from accessibility_item));
 
 ------------------------------------------------------------------------------------------------
