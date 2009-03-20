@@ -114,7 +114,14 @@ public class ClaimRejectedReport implements Report {
         
         for(ClaimRejectionLineItem cRejected : claimRejection.getClaimRejectionLineItem()){
             if(cRejected.getId()!=null){
+                
                 sb.append("(select count(*) from claim claim, (select distinct claim_id, new_status from audit_trail where new_status='ClaimRejectionAccepted' and claim_reason_of_rejection="+cRejected.getId()+") as audit_trail where (date_trunc('day', claim.created_date) between @pCreatedDateFrom and @pCreatedDateTo) and claim.id=audit_trail.claim_id and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_"+cRejected.getId()+", ");
+                
+                if(isIns){
+                    sb.append("(select count(*) from claim claim, (select distinct claim_id, new_status from audit_trail where new_status='ClaimRejectionAccepted' and claim_reason_of_rejection="+cRejected.getId()+") as audit_trail where (date_trunc('day', claim.created_date) between @pCreatedDateFrom and @pCreatedDateTo) and claim.id=audit_trail.claim_id and claim.insurer_id=insurer_chorganisation.insurer_id) as REJ_PERC_"+cRejected.getId()+", ");
+                }else{
+                    sb.append("(select count(*) from claim claim, (select distinct claim_id, new_status from audit_trail where new_status='ClaimRejectionAccepted' and claim_reason_of_rejection="+cRejected.getId()+") as audit_trail where (date_trunc('day', claim.created_date) between @pCreatedDateFrom and @pCreatedDateTo) and claim.id=audit_trail.claim_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_PERC_"+cRejected.getId()+", ");
+                }
             }
         }
         
@@ -142,15 +149,20 @@ public class ClaimRejectedReport implements Report {
         for (Object o : result) {
             
             Map data = (Map) o;
+            
             Integer iTotalClaimRejected = MathHelper.getIntegerValue(data.get("iTotalRejected".toLowerCase()));
             
             for(ClaimRejectionLineItem cRejected : claimRejection.getClaimRejectionLineItem()){
                 
                 if(cRejected.getId()!=null){
+                    
                     String keyName = ("REJ_"+cRejected.getId()).toLowerCase();
+                    // String ketPercName = ("REJ_PERC_"+cRejected.getId()).toLowerCase();
+                    
                     ClaimRejectionLineItemDetail ReportColumn = new ClaimRejectionLineItemDetail();
                     ReportColumn.setNumberOfClaim(MathHelper.getIntegerValue(data.get(keyName)));
                     ReportColumn.setNumberOfClaimPercentage(MathHelper.getPercentage(ReportColumn.getNumberOfClaim(), iTotalClaimRejected));
+                    // ReportColumn.setNumberOfClaimPercentage(MathHelper.getPercentage(ReportColumn.getNumberOfClaim(), MathHelper.getIntegerValue(data.get(ketPercName))));
                     cRejected.getReportColumns().add(ReportColumn);
                 }
             }

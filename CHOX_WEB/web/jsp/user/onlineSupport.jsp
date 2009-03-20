@@ -31,9 +31,9 @@
             
             var op = { 
                 beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
-                success:       onSubmitResponseReceived,  // post-submit callback 
+                success:       getAcknowledgementMsg,  // post-submit callback 
                 timeout: 3000,
-                error: onSubmitError
+                error: getAcknowledgementMsg
             };
 
             $("#supportMessageForm").validate(
@@ -57,35 +57,34 @@
                 },
                 submitHandler: function(form) {
                     $(form).ajaxSubmit(op);
-                }   
-
+                }
             });
         });
         
         function onBeforeSubmit(formData, jqForm, options) { 
             $.blockUI();
-        
-        
         }
         
-        function onSubmitResponseReceived(responseText, statusText)  {   
-            $.unblockUI();            
-            responseText = responseText.trim();
+        /*
+        function onSubmitResponseReceived(responseText, statusText)  {  
+            getAcknowledgementMsg();
+        }
+
+        function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
+            getAcknowledgementMsg();
+        }
+        */
+       
+        function doFinalReset(){
             $('#iSupplierReference').val("");
             $('#iSubject').val("");
             $('#iMessage').val("");
-            $("#submitResult").text(responseText);
-        }   
-
-        function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
             $.unblockUI();
-            $('#iSupplierReference').val("");
-            $('#iSubject').val("");
-            $('#iMessage').val("");            
-            //$("#submitResult").text(errorThrown + "|A|" + textStatus);
-            //$("#submitResult").text("Please try again!");          
         }
         
+        function getAcknowledgementMsg(){
+            $(".block").html("<span id='onlineMsgAck'>Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.</span><span id='onlineMsgAck'><input type='button' value='Close' onclick='javascript:doFinalReset();'></span>");
+        }
         
     </script>
     
@@ -96,7 +95,6 @@
     <div class="outer">
         
         <div class="inner">
-            
             
             <div class="outer" id="outerDiv">
                 

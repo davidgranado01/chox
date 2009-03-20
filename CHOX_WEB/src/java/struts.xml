@@ -55,7 +55,7 @@
                 </param>
                 <param name="inputName">excelStream
                 </param>
-                <param name="contentDisposition">filename="excel_report.xls"
+                <param name="contentDisposition">attachment;filename="excel_report.xls"
                 </param>
                 <param name="bufferSize">99999
                 </param>

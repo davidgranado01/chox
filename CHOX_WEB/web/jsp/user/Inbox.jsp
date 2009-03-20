@@ -30,7 +30,8 @@
     
     var currentTabIndex;
     var tabs;
-     
+    var recordPerPage = 20;
+    
     var rd = new Ext.data.JsonReader({
         totalProperty: 'totalCount',   
         root: 'results', 
@@ -89,7 +90,7 @@
             params:
                 {            
                 start:0,
-                limit:10
+                limit:recordPerPage
             }
         });
     }  
@@ -120,7 +121,7 @@
             params:
                 {            
                 start:0,
-                limit:10
+                limit:recordPerPage
             }
         });
     }  
@@ -150,7 +151,7 @@
             params:
                 {            
                 start:0,
-                limit:10
+                limit:recordPerPage
             }
         });
     }   
@@ -180,7 +181,7 @@
             params:
                 {            
                 start:0,
-                limit:10
+                limit:recordPerPage
             }
         });
         
@@ -233,7 +234,7 @@
             params:
                 {
                 start:0,
-                limit:10
+                limit:recordPerPage
             }
         });
         
@@ -244,7 +245,7 @@
         Ext.QuickTips.init();         
         
         var pagingBar = new Ext.PagingToolbar({
-            pageSize: 10,
+            pageSize: recordPerPage,
             store: ds,
             displayInfo: true,
             displayMsg: 'Displaying topics {0} - {1} of {2}',
@@ -355,7 +356,7 @@ function loadDataFromSession()
                 params:
                     {
                     start:start,
-                    limit:10
+                    limit:recordPerPage
                 }
             });
         }  

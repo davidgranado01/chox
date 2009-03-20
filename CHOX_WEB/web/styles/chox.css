@@ -610,3 +610,13 @@ img.tip-target
     color: #2875DE;
     z-index:29;
 }
+
+#onlineMsgAck{
+  font-family: tahoma,arial,verdana,sans-serif;
+  font-size: 12px;
+  font-weight:bold;
+  color:#084B8A;
+  background: #FFFFFF; 
+  display: block;
+  padding: 10px;
+}

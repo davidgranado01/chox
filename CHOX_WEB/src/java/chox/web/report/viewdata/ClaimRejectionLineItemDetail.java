@@ -5,6 +5,7 @@
 
 package chox.web.report.viewdata;
 
+import chox.Util.MathHelper;
 import java.math.BigDecimal;
 
 public class ClaimRejectionLineItemDetail {
@@ -20,8 +21,8 @@ public class ClaimRejectionLineItemDetail {
         this.numberOfClaim = numberOfClaim;
     }
 
-    public BigDecimal getNumberOfClaimPercentage() {
-        return numberOfClaimPercentage;
+    public String getNumberOfClaimPercentage() {
+        return MathHelper.getExcelDisplayPerc(numberOfClaimPercentage);
     }
 
     public void setNumberOfClaimPercentage(BigDecimal numberOfClaimPercentage) {

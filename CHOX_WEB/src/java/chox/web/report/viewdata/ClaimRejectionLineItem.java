@@ -1,5 +1,6 @@
 package chox.web.report.viewdata;
 
+import chox.Util.MathHelper;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +23,8 @@ public class ClaimRejectionLineItem {
         this.allOrgClaimCount = allOrgClaimCount;
     }
 
-    public BigDecimal getAllOrgClaimCountPerc() {
-        return allOrgClaimCountPerc;
+    public String getAllOrgClaimCountPerc() {
+        return MathHelper.getExcelDisplayPerc(allOrgClaimCountPerc);
     }
 
     public void setAllOrgClaimCountPerc(BigDecimal allOrgClaimCountPerc) {

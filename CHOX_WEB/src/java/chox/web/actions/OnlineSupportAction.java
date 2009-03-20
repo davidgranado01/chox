@@ -10,7 +10,7 @@ import chox.services.SupportMessageService;
 public class OnlineSupportAction extends BaseAction{
     
     private String[] recipients = {"choxsupport@sherwoodcompliance.co.uk"};
-    //private String[] recipients = {"carlson.hoo@gmail.com"};
+    //private String[] recipients = {"carlson.hoo@gmail.com","choxsupport@sherwoodcompliance.co.uk"};
     
     private SupportMessageService supportMessageService;
     private ClaimService claimService;
@@ -78,7 +78,7 @@ public class OnlineSupportAction extends BaseAction{
         
         if(bFlag){
             supportMessageService.updateObject(message);
-            actionResult = "Message has been submitted to CHOX Admin";
+            actionResult = "Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.";
         }else{
             actionResult = "Please try again.";
         }
