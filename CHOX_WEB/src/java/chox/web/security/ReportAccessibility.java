@@ -16,13 +16,17 @@ public class ReportAccessibility {
      private short invoiceSummaryAccessibility;
      private short insurerWeeklySummaryAccessibility;
      private short claimRejectionAccessibility;
-//
+     private short insurerPaymentReportAccessibility;
+     private short overviewSummaryAccessibility;
+
     
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility,GrantedAuthority[] grantedAuthorities) {       
                
-        invoiceSummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_SUMMARY,grantedAuthorities);
-        insurerWeeklySummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INS_WEEKLY_SUMMARY,grantedAuthorities);     
-        claimRejectionAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_REJECTION,grantedAuthorities);     
+        invoiceSummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_SUMMARY, grantedAuthorities);
+        insurerWeeklySummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INS_WEEKLY_SUMMARY, grantedAuthorities);     
+        claimRejectionAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_REJECTION, grantedAuthorities);     
+        insurerPaymentReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_PAYMENT, grantedAuthorities);     
+        overviewSummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OVERVIEW_SUMMARY, grantedAuthorities);
     }
 
     public short getInvoiceSummaryAccessibility() {
@@ -37,6 +41,11 @@ public class ReportAccessibility {
         return claimRejectionAccessibility;
     }   
 
+    public short getInsurerPaymentReportAccessibility() {
+        return insurerPaymentReportAccessibility;
+    }
 
-
+    public short getOverviewSummaryAccessibility(){
+        return overviewSummaryAccessibility;
+    }
 }

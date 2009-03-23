@@ -85,6 +85,7 @@
             </div>
             
                 <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">  
+<s:if test="!isCHO">                
 <tr>
 <td nowrap><label>Credit Hire Organisation</label></td>
 <td>
@@ -99,7 +100,25 @@
     emptyOption="false">
     </s:select>
 </td>                            
-</tr>  
+</tr> 
+</s:if>
+<s:else>
+    <tr>
+<td nowrap><label>Insurer</label></td>
+<td>
+    <s:select 
+    name="insurerId" 
+    id="insurerId"
+    list="insurers" 
+    listKey="id"
+    listValue="name"
+    headerKey=""
+    headerValue="--- ALL ---"
+    emptyOption="false">
+    </s:select>
+</td>
+</tr>    
+</s:else>
                     <tr>
                         <td nowrap width="30%"><label>Invoice Uploaded From</label></td><td><div id="dateFromDiv" /></td>                       
                     </tr>    

@@ -84,9 +84,10 @@ This report provides an overview of claims activity reported by weekly segments,
             </div>
             
                 <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">                    
+<s:if test="!isCHO">
 <tr>
 <td nowrap><label>Credit Hire Organisation</label></td>
-<td>                            
+<td>
 <s:select 
     name="supplierId" 
     id="supplierId"
@@ -97,8 +98,26 @@ This report provides an overview of claims activity reported by weekly segments,
     headerValue="--- ALL ---"
     emptyOption="false">
     </s:select>
-</td>                            
+</td>
 </tr>
+</s:if>
+<s:else>
+    <tr>
+<td nowrap><label>Insurer</label></td>
+<td>
+    <s:select 
+    name="insurerId" 
+    id="insurerId"
+    list="insurers" 
+    listKey="id"
+    listValue="name"
+    headerKey=""
+    headerValue="--- ALL ---"
+    emptyOption="false">
+    </s:select>
+</td>
+</tr>    
+</s:else>
                     <tr>
                         <td nowrap width="30%"><label>Date From</label></td><td><div id="dateFromDiv" /></td>                       
                     </tr>    

@@ -56,7 +56,8 @@ public class ApplicationAccessibility {
     public static final String REPORT_INVOICE_SUMMARY = "InvoiceSummary";
     public static final String REPORT_INS_WEEKLY_SUMMARY = "InsurerWeeklySummary";
     public static final String REPORT_CLAIM_REJECTION = "ClaimRejection";
-   
+    public static final String REPORT_INSURER_PAYMENT = "InsurerPayment";
+    public static final String REPORT_OVERVIEW_SUMMARY = "OverviewSummary";
     
     private HashMap accessibilityMap;
     private AccessibilityService accessibilityService;

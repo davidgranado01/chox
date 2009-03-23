@@ -1,35 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package chox.web.report;
 
 import chox.Util.DateHelper;
 import chox.model.Chorganisation;
 import chox.model.Insurer;
 import chox.services.DataService;
-import chox.services.ChorganisationService;
 import chox.web.actions.BaseAction;
 import chox.web.report.viewdata.WeekSummary;
 import chox.web.report.viewdata.WeekSummaryReportObject;
 import chox.web.security.PermissionedUser;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.Transformers;
-
 
 public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Report {
 
@@ -48,7 +35,7 @@ public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Repo
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }
-
+    
     private Chorganisation getChorganisation(int orgId){
         
         Chorganisation chorg = new Chorganisation();
@@ -64,26 +51,76 @@ public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Repo
         
         return chorg;
     }
+    
+    private Insurer getInsurer(int orgId){
+        Insurer ins = new Insurer();
+     
+        try {
+            
+            DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
+            criteria.add(Restrictions.eq("id", orgId));
+            ins = (Insurer)dataService.getByCriteria(criteria);
+            
+        } catch (Throwable e) {
+           e.printStackTrace();
+        } 
+        
+        return ins;
+    }
+    
     public HashMap getReportParameters() {
         
         HashMap reportParameters = new HashMap();
         
-        //monday as start of week
-        //sunday as end of week
-        
         try {
+            
             PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
-            Insurer ins = currentUser.getUser().getInsurer();
+            
+            Integer iSupplierId = -1;
+            Integer iInsurerId = -1;            
+            String userOrgLabel = "";
+            String userOrgName = "";
+            String selectedOrgName = "All";
+            String selectedOrgLabel = "";
+            String reportHeaderTitle = "";
             
             String dataStartRaw = ((String[]) externalParameter.get("DateStart"))[0];
             String dateEndRaw = ((String[]) externalParameter.get("DateEnd"))[0];
-            String supplierId = ((String[]) externalParameter.get("supplierId"))[0];
-            Integer iSupplierId = -1;
             
-            String strChorganisationName = "All";
-            if(!supplierId.equalsIgnoreCase("")){
-                iSupplierId = Integer.parseInt(supplierId);
-                strChorganisationName = getChorganisation(iSupplierId).getName();
+            if(currentUser.getIsINS()){
+                
+                Insurer ins = currentUser.getUser().getInsurer();
+                
+                userOrgLabel = "Insurer";
+                iInsurerId = ins.getId();
+                userOrgName = ins.getName();
+                selectedOrgLabel = "Credit Hire Organisation";
+                reportHeaderTitle = "iDAS CHOX Report - Insurer Weekly Overview Report";
+                
+                String supplierId = ((String[]) externalParameter.get("supplierId"))[0];
+                
+                if(!supplierId.equalsIgnoreCase("")){
+                    iSupplierId = Integer.parseInt(supplierId);
+                    selectedOrgName = getChorganisation(iSupplierId).getName();
+                }
+                
+            }else{
+                
+                Chorganisation chorg = currentUser.getUser().getChorganisation();
+                
+                userOrgLabel = "Credit Hire Organisation";
+                iInsurerId = chorg.getId();
+                userOrgName = chorg.getName();
+                selectedOrgLabel = "Insurer";
+                reportHeaderTitle = "iDAS CHOX Report - Credit Hire Weekly Overview Report";
+                
+                String insurerId = ((String[]) externalParameter.get("insurerId"))[0];
+
+                if(!insurerId.equalsIgnoreCase("")){
+                    iInsurerId = Integer.parseInt(insurerId);
+                    selectedOrgName = getInsurer(iInsurerId).getName();
+                }
+                
             }
             
             Date startDate = DateHelper.LocalDateFormat.parse(dataStartRaw);//user selected start date of report
@@ -120,7 +157,7 @@ public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Repo
 
                 HashMap queryParameters = new HashMap();
                 
-                String query =  "select insurer.id, "
+                String query =  "select "
 
                 // NEW CLAIMS SUMMARY SECTION
                 + "((select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) < :pSelectedStartDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) < :pSelectedStartDate AND a.new_status not in ('ClaimClosed','InvoicePaymentLogged')) "
@@ -132,7 +169,6 @@ public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Repo
 
                 // CLAIM ACCEPTED OR REJECTION SUMMARY
                 + "(select case when count(distinct a.claim_id) is null then 0 else count(distinct a.claim_id) end as no_count from rpt_claim_audit_trail a, claim b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.id AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ClaimRejectionAccepted') AND (b.reason_of_rejection_id != (select id from reason_of_rejection where type='Claim' and name like '%Out of Scope%') OR b.reason_of_rejection_id is null)) as claimsNotificationContestedByInsurer, "
-                // + "(select case when count(distinct a.claim_id) is null then 0 else count(distinct a.claim_id) end as no_count from rpt_claim_audit_trail a, claim b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.id AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedRouted', 'ClaimReferredToEngineer', 'ClaimReferredToFNOL', 'ClaimRejectionContested', 'ClaimRejected', 'ClaimPending')) as claimsPendingByInsurer, "
                 + "(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) <= :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) <= :pSelectedEndDate AND a.new_status in ('ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedRouted', 'ClaimReferredToEngineer', 'ClaimReferredToFNOL', 'ClaimRejectionContested', 'ClaimRejected', 'ClaimPending')) as claimsPendingByInsurer, "
                 + "(select case when count(distinct a.claim_id) is null then 0 else count(distinct a.claim_id) end as no_count from rpt_claim_audit_trail a, claim b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.id AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('AwaitingCarHireInfo')) as claimsNotificationAcceptedByInsurer, "
                 + "(select case when count(distinct a.claim_id) is null then 0 else count(distinct a.claim_id) end as no_count from rpt_claim_audit_trail a, claim b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.id AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ClaimReferredToFNOL')) as claimsFNOLCreatedByInsurer, "
@@ -148,7 +184,7 @@ public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Repo
 
                 queryParameters.put("pSelectedStartDate", startOfTheWeek);
                 queryParameters.put("pSelectedEndDate", endOfTheWeek);
-                queryParameters.put("pInsId", ins.getId());
+                queryParameters.put("pInsId", iInsurerId);
                 queryParameters.put("pChorganisationId", iSupplierId);
 
                 List result = dataService.externalQuery(query, queryParameters);
@@ -160,13 +196,9 @@ public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Repo
                     WeekSummary weekSummary = WeekSummary.getObject(data);
                     
                     iClaimsNotificationAcceptedByInsurerHis = iClaimsNotificationAcceptedByInsurerHis + weekSummary.getClaimsNotificationAcceptedByInsurer();
-                    
-                    // InvoicePaidAsPercentageOfInvoicing
                     iClaimsInvoicedHis = iClaimsInvoicedHis + weekSummary.getClaimsInvoiced();
                     iInvoicePaidByInsurerHis = iInvoicePaidByInsurerHis + weekSummary.getClaimsPaid();
                     weekSummary.setInvoicePaidAsPercentageOfInvoicing(iClaimsInvoicedHis, iInvoicePaidByInsurerHis);
-                    
-                    //weekSummary.setClaimsToBeInvoiced(iClaimsNotificationAcceptedByInsurerHis - weekSummary.getInvoicePaidByInsurer());
                     
                     weekSummaries.add(weekSummary);
                 }
@@ -184,8 +216,11 @@ public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Repo
 
             reportParameters.put("weekSummaries", weekSummaries);
             reportParameters.put("reportObj", reportObject);            
-            reportParameters.put("insurerObj", ins);
-            reportParameters.put("chorganisationName", strChorganisationName);
+            reportParameters.put("userOrgLabel", userOrgLabel);
+            reportParameters.put("userOrgName", userOrgName);
+            reportParameters.put("selectedOrgLabel", selectedOrgLabel);
+            reportParameters.put("selectedOrgName", selectedOrgName);
+            reportParameters.put("reportHeaderTitle", reportHeaderTitle);
             
         } catch (Exception ex) {
             ex.printStackTrace();

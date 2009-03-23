@@ -34,13 +34,19 @@
                         <div style="height:400px;" class="x-panel-bwrap chox-form-container">
                             <ul>
                                 <s:if test="reportAccessibility.insurerWeeklySummaryAccessibility">
-                                <li><a href="javascript:renderParameterPanel('InsurerAdminWeeklyOverviewReport-Excel');">Insurer Admin Weekly Overview Report</a></li>
+                                <li><a href="javascript:renderParameterPanel('InsurerAdminWeeklyOverviewReport-Excel');">Admin Weekly Overview Report</a></li>
                                 </s:if> 
                                 <s:if test="reportAccessibility.invoiceSummaryAccessibility">
                                 <li><a href="javascript:renderParameterPanel('InvoiceSummaryReport-Excel');">Invoice Summary Report</a></li>
                                 </s:if> 
                                 <s:if test="reportAccessibility.claimRejectionAccessibility">                                
                                 <li><a href="javascript:renderParameterPanel('ClaimRejectedReport-Excel');">Claim Rejection Report</a></li>
+                                </s:if>                                 
+                                <s:if test="reportAccessibility.insurerPaymentReportAccessibility">                                
+                                <li><a href="javascript:renderParameterPanel('PaymentReport-Excel');">Insurer Payment Report</a></li>
+                                </s:if>
+                                <s:if test="reportAccessibility.overviewSummaryAccessibility">                                
+                                <li><a href="javascript:renderParameterPanel('OverviewSummary-Excel');">Overview Summary Report</a></li>
                                 </s:if>                                 
                             </ul>
                         </div>

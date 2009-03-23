@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class InvoiceSummary {
 
-    private String choName;
+    private String orgName;
     private Integer noInvoiceSubmitted;
     private BigDecimal totalInvoiceValue;
     private Integer noInvoicesPaid;
@@ -31,12 +31,11 @@ public class InvoiceSummary {
 
     public static InvoiceSummary getObject(Map data) {
         InvoiceSummary result = new InvoiceSummary();
-        result.setChoName((String)data.get("name".toLowerCase()));
+        result.setOrgName((String)data.get("name".toLowerCase()));
         result.setNoInvoiceSubmitted(((BigInteger)data.get("noInvoiceSubmitted".toLowerCase())).intValue());
         result.setTotalInvoiceValue((BigDecimal)data.get("totalInvoiceValue".toLowerCase()));
         result.setNoInvoicesPaid(((BigInteger)data.get("noInvoicesPaid".toLowerCase())).intValue());
         result.setValueOfPaidInvoices((BigDecimal)data.get("valueOfPaidInvoices".toLowerCase()));
-        //result.setAverageInvoiceValue((BigDecimal)data.get("averageInvoiceValue".toLowerCase()));
         
         BigDecimal dAverageInvoiceValue = BigDecimal.ZERO;
         
@@ -151,12 +150,12 @@ public class InvoiceSummary {
         this.invoiceWithdrawnValue = invoiceWithdrawnValue;
     }
 
-    public String getChoName() {
-        return choName;
+    public String getOrgName() {
+        return orgName;
     }
 
-    public void setChoName(String choName) {
-        this.choName = choName;
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 
     public Integer getNoOfInvoicesWithPenalties() {
