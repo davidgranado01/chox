@@ -28,7 +28,10 @@ DROP VIEW rpt_claim_invoice;
 
 CREATE OR REPLACE VIEW rpt_claim_invoice AS 
 	SELECT 
-	invoice.id, invoice.date_invoiced, invoice.handling_invoice_no, invoice.claim_invoice_no, invoice.cdw_qty, invoice.automatic_qty, 
+	invoice.id, invoice.date_invoiced, 
+	invoice.handling_invoice_no, 
+	invoice.claim_invoice_no, invoice.cdw_qty, 
+	invoice.automatic_qty, 
 	invoice.sat_nav_qty, invoice.estate_qty, invoice.baby_seat_qty, invoice.tow_bars_qty, invoice.non_standard_insurance_premium_qty, 
 	invoice.admin_qty, invoice.roof_rack_qty, invoice.dual_control_qty, invoice.delivery_collection_qty, invoice.created_by, invoice.created_date, 
 	invoice.last_nodified_by, invoice.last_modified_date, invoice.hire_net, invoice.hire_vat, invoice.hire_gross, invoice.repair_net, 
@@ -38,10 +41,13 @@ CREATE OR REPLACE VIEW rpt_claim_invoice AS
 	invoice.automatic_fee, invoice.sat_nav_fee, invoice.estate_fee, invoice.baby_seat_fee, invoice.tow_bars_fee, invoice.non_standard_insurance_premium_fee, 
 	invoice.admin_fee, invoice.roof_rack_fee, invoice.dual_control_fee, invoice.delivery_collection_fee, invoice.is_payment_mode, invoice.is_engineer_decision_approved, 
 	invoice.engineer_invoice_review_notes, invoice.rejection_reason, invoice.hire_rate_charged_per_day, invoice.excess_amount_collected, invoice.vat_amount_collected, 
-	invoice.panalty_charge, invoice.panalty_alert_qty, invoice.penalty_charge_applied_date, 
+	invoice.panalty_charge, 
+	invoice.panalty_alert_qty, 
+	invoice.penalty_charge_applied_date, 
 	claim.id AS claim_id, 
 	claim.status, 
 	claim.cho_reference,
+	claim.claim_number,
 	claim.insurer_id, 
 	claim.chorganisation_id, 
 	third_party.first_name as policy_holder_first_name,
@@ -53,3 +59,208 @@ CREATE OR REPLACE VIEW rpt_claim_invoice AS
    LEFT OUTER JOIN line_of_business line_of_business ON line_of_business.id=claim.line_of_business_id
    LEFT OUTER JOIN third_party third_party ON third_party.id=claim.third_party_id;
 ALTER TABLE rpt_claim_invoice OWNER TO postgres;
+
+------------------------------------------------------------------------------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'filter.ClaimUpdatedByEngineer');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'filter.ClaimUpdatedByEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 1, (select id from accessibility where name = 'filter.ClaimUpdatedByEngineer'), (select max(id)+1 from accessibility_item));
+
+------------------------------------------------------------------------------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.ClaimUpdatedByEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.ClaimDetail.ClaimUpdatedByEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.HireMonitoring.ClaimUpdatedByEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.History.ClaimUpdatedByEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.InvoiceDetail.ClaimUpdatedByEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.Notes.ClaimUpdatedByEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.PaymentPack.ClaimUpdatedByEngineer');
+
+------------------------------------------------------------------------------------------------
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.AuditTrail.ClaimUpdatedByEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.ClaimDetail.ClaimUpdatedByEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.HireMonitoring.ClaimUpdatedByEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.History.ClaimUpdatedByEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.InvoiceDetail.ClaimUpdatedByEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.Notes.ClaimUpdatedByEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.PaymentPack.ClaimUpdatedByEngineer'), (select max(id)+1 from accessibility_item));
+
+------------------------------------------------------------------------------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'action.updateClaimUpdatedByEngineer.ClaimUpdatedByEngineer');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'action.updateClaimUpdatedByEngineer.ClaimUpdatedByEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 2, (select id from accessibility where name = 'action.updateClaimUpdatedByEngineer.ClaimUpdatedByEngineer'), (select max(id)+1 from accessibility_item));
+
+
+------------------------------------------------------------------------------------------------
+
+CREATE TABLE action
+(
+  id character varying(10) NOT NULL,
+  description character varying(100),
+  CONSTRAINT action_pkey PRIMARY KEY (id)
+)
+WITH (OIDS=FALSE);
+ALTER TABLE action OWNER TO postgres;
+
+------------------------------------------------------------------------------------------------
+
+insert into action (id, description) values ('RPT001', 'Generate CHO Payment Bordereau');
+insert into action (id, description) values ('RPT002', 'Generate Insurer Invoice Payment Report');
+insert into action (id, description) values ('RPT003', 'Generate Claim Rejection Report');
+insert into action (id, description) values ('RPT004', 'Generate Admin Weekly Overview Report');
+insert into action (id, description) values ('RPT005', 'Generate Invoice Summary Report');
+insert into action (id, description) values ('OSF001', 'Send Support Messages Email');
+insert into action (id, description) values ('OSF002', 'Insert Support Messages');
+insert into action (id, description) values ('ACT001', 'Claim Action : Assign Line Of Business');
+insert into action (id, description) values ('ACT002', 'Claim Action : Claim Acknowledgement');
+insert into action (id, description) values ('ACT003', 'Claim Action : Claim Registeration by FNOL');
+insert into action (id, description) values ('ACT004', 'Claim Action : Review By Engineer');
+insert into action (id, description) values ('ACT005', 'contestOrAcceptRejectedClaim');
+insert into action (id, description) values ('ACT006', 'approveContestedClaim');
+insert into action (id, description) values ('ACT007', 'submitHireMonitoringDetail');
+insert into action (id, description) values ('ACT008', 'reSubmitRejectedClaim');
+insert into action (id, description) values ('ACT009', 'contestOrAcceptRejectedInvoice');
+insert into action (id, description) values ('ACT010', 'approveBREPassedClaim');
+insert into action (id, description) values ('ACT011', 'approveInvoiceRefferedByEngineer');
+insert into action (id, description) values ('ACT012', 'updatePaymentReceived');
+insert into action (id, description) values ('ACT013', 'approveEscalatedInvoice');
+insert into action (id, description) values ('ACT014', 'approveContestedInvoice');
+insert into action (id, description) values ('ACT015', 'resubmitOrAcceptContestedInvoice');
+insert into action (id, description) values ('ACT016', 'logInvoicePayment');
+insert into action (id, description) values ('ACT017', 'doUpdateAnomalies');
+insert into action (id, description) values ('ACT018', 'doApplyPenaltyCharge');
+insert into action (id, description) values ('ACT019', 'doUpdateClaimStatus');
+insert into action (id, description) values ('ACT020', 'doReopenClaimStatus');
+insert into action (id, description) values ('CLM001', 'Update Claim: Update Claim Number');
+insert into action (id, description) values ('RBD001', 'Report Builder Engine');
+
+------------------------------------------------------------------------------------------------
+
+CREATE TABLE system_log
+(
+  id serial NOT NULL,
+  action_id character varying(10),
+  message character varying(100),
+  status character varying(1),
+  created_by integer,
+  last_modified_by integer,
+  last_modified_date timestamp without time zone,
+  created_date timestamp without time zone,
+  CONSTRAINT system_log_pkey PRIMARY KEY (id),
+  CONSTRAINT action_fkey FOREIGN KEY (action_id)
+      REFERENCES "action" (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (OIDS=FALSE);
+ALTER TABLE system_log OWNER TO postgres;
+
+------------------------------------------------------------------------------------------------
+
+ALTER TABLE system_log ALTER COLUMN id SET DEFAULT nextval('system_log_id_seq'::regclass);
+
+------------------------------------------------------------------------------------------------
+
+create view vw_system_log as
+select system_log.id, system_log.action_id, action.description, system_log.message, system_log.status, 
+system_log.created_by, web_user.first_name||', '||web_user.last_name as name, web_user.email, system_log.created_date
+from system_log system_log, action action, web_user web_user 
+where action.id=system_log.action_id 
+and system_log.created_by=web_user.id
+order by created_date asc;
+
+------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW rpt_all_claim_with_invoice AS 
+
+SELECT claim.id as claim_id, 
+claim.status, 
+claim.cho_reference, 
+claim.claim_number, 
+claim.insurer_id, 
+claim.chorganisation_id,
+claim.created_date as claim_created_date,
+invoice.id as invoice_id, 
+invoice.date_invoiced, 
+invoice.handling_invoice_no, 
+invoice.claim_invoice_no, 
+invoice.cdw_qty, 
+invoice.automatic_qty, 
+invoice.sat_nav_qty, 
+invoice.estate_qty, 
+invoice.baby_seat_qty, 
+invoice.tow_bars_qty, 
+invoice.non_standard_insurance_premium_qty, 
+invoice.admin_qty, 
+invoice.roof_rack_qty, 
+invoice.dual_control_qty, 
+invoice.delivery_collection_qty, 
+invoice.created_by, 
+invoice.created_date as invoice_created_date, 
+invoice.last_nodified_by, 
+invoice.last_modified_date, 
+invoice.hire_net, 
+invoice.hire_vat, 
+invoice.hire_gross, 
+invoice.repair_net, 
+invoice.repair_vat, 
+invoice.repair_gross, 
+invoice.engineer_fee_net, 
+invoice.engineer_fee_vat, 
+invoice.engineer_fee_gross, 
+invoice.storage_recovery_net, 
+invoice.storage_recovery_vat, 
+invoice.storage_recovery_gross, 
+invoice.total_net, 
+invoice.total_vat, 
+invoice.total_gross, 
+invoice.claims_handling_invoice_amount, 
+invoice.deduction_for_claims_handling_fee, 
+invoice.discount, 
+invoice.total_to_pay, 
+invoice.cdw_fee, 
+invoice.automatic_fee, 
+invoice.sat_nav_fee, 
+invoice.estate_fee, 
+invoice.baby_seat_fee, 
+invoice.tow_bars_fee, 
+invoice.non_standard_insurance_premium_fee, 
+invoice.admin_fee, 
+invoice.roof_rack_fee, 
+invoice.dual_control_fee, 
+invoice.delivery_collection_fee, 
+invoice.is_payment_mode, 
+invoice.is_engineer_decision_approved, 
+invoice.engineer_invoice_review_notes, 
+invoice.rejection_reason, 
+invoice.hire_rate_charged_per_day, 
+invoice.excess_amount_collected, 
+invoice.vat_amount_collected, 
+invoice.panalty_charge, 
+invoice.panalty_alert_qty, 
+invoice.penalty_charge_applied_date
+FROM claim claim
+LEFT OUTER JOIN invoice invoice ON claim.invoice_id = invoice.id;
+
+ALTER TABLE rpt_all_claim_with_invoice OWNER TO postgres;
+
+------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW rpt_claim_audit_trail AS 
+ SELECT audit_trail.id, audit_trail.update_date, audit_trail.user_id, audit_trail.claim_id, audit_trail.original_status, audit_trail.new_status, audit_trail.created_by, audit_trail.created_date, audit_trail.last_modified_by, audit_trail.last_modified_date, claim.insurer_id, claim.chorganisation_id, invoice.total_to_pay, invoice.panalty_charge, invoice.id AS invoice_id, 
+        CASE
+            WHEN audit_trail.claim_reason_of_rejection = 0 THEN NULL::integer
+            ELSE audit_trail.claim_reason_of_rejection
+        END AS claim_reason_of_rejection, 
+        CASE
+            WHEN audit_trail.invoice_reason_of_rejection = 0 THEN NULL::integer
+            ELSE audit_trail.invoice_reason_of_rejection
+        END AS invoice_reason_of_rejection
+   FROM audit_trail audit_trail
+   JOIN claim claim ON claim.id = audit_trail.claim_id
+   LEFT JOIN invoice invoice ON claim.invoice_id = invoice.id;
+
+ALTER TABLE rpt_claim_audit_trail OWNER TO postgres;
+
+------------------------------------------------------------------------------------------------
