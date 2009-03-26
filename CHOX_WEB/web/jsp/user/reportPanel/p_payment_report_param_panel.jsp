@@ -19,6 +19,7 @@
     
     Ext.onReady(function(){
         
+        /*
         var dateFromPicker = new Ext.form.DateField({
             name: 'DateStart',
             width: 120,
@@ -39,7 +40,8 @@
         
         dateFromPicker.render('dateFromDiv');        
         dateToPicker.render('dateToDiv');
-        
+        */
+       
     }); 
 
     function doFormValidation(){
@@ -50,7 +52,8 @@
             rules: {
                 supplierId:{
                     required:true
-                },
+                }
+                /*,
                 DateStart:{
                     required:true,
                     date: true
@@ -59,11 +62,13 @@
                     required:true,
                     date: true
                 }
+                */
             },
             messages: {
                 supplierId:{
                     required:"You must select 'Credit Hire Organisation'"
-                },                
+                }
+                /*,                
                 DateStart: {
                     required:"A value must be supplied for 'Invoice Uploaded From'",
                     date:"You must supply a date value 'Invoice Uploaded From'"
@@ -71,7 +76,8 @@
                 DateEnd: {
                     required:"A value must be supplied for 'Invoice Uploaded To'",
                     date:"You must supply a date value 'Invoice Uploaded To'"
-                }         
+                }  
+                */                
             }
         });
 
@@ -83,11 +89,11 @@
 <form id="formReportParam" class="XXentity-form" name="formReportParam">
     
 <fieldset class="x-fieldset">
-    <legend>Insurer Payment Report</legend>
+    <legend>CHO Payment Bordereau</legend>
     <div class="x-panel-bwrap chox-form-container">      
         <div class="form-container">
             
-            <div class="ReportActionMsg" align="justify"> [MSG] </div>
+            <div class="ReportActionMsg" align="justify">This report produces a list of claims that require payment. The report results are per CHO and allow an Insurer to make payments in a more efficient manner.</div>
             
                 <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">  
 <s:if test="!isCHO">                
@@ -107,12 +113,14 @@
 </td>
 </tr> 
 </s:if>
+<!--
                     <tr>
                         <td nowrap width="30%"><label>Invoice Uploaded From</label></td><td><div id="dateFromDiv" /></td>                       
                     </tr>    
                     <tr>
                         <td nowrap><label>Invoice Uploaded To</label></td><td><div id="dateToDiv"/></td>                            
-                    </tr>                      
+                    </tr>        
+!-->                    
                 </table>
             
             <div align="right" class="chox-form-button">

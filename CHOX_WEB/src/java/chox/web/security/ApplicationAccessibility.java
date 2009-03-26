@@ -49,6 +49,7 @@ public class ApplicationAccessibility {
     public static final String FILTER_INVOICE_REF_TO_CH = "InvoiceReferredToClaimsHandler";
     public static final String FILTER_INVOICE_PAYMENT_LOGGED = "InvoicePaymentLogged";
     public static final String PANEL_FNOL_REVIEWED  = "FNOLReviewed";
+    public static final String FILTER_CLAIM_UPDATED_BY_ENGINEER = "ClaimUpdatedByEngineer";
     
     public static final String MENU_DASHBOARD  = "Dashboard";
     public static final String MENU_REPORT  = "Report";

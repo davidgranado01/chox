@@ -31,6 +31,7 @@ public class FilterAccessibility {
     private boolean claimPendingAccessible;
     private boolean InvoiceReferredToClaimsHandlerAccessible;
     private boolean InvoicePaymentLoggedAccessible;
+    private boolean ClaimUpdatedByEngineerAccessible;
     
     public FilterAccessibility(ApplicationAccessibility accessibility,GrantedAuthority[] grantedAuthorities) {
         
@@ -53,6 +54,7 @@ public class FilterAccessibility {
         claimPendingAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_PENDING, grantedAuthorities) > 0;   
         InvoiceReferredToClaimsHandlerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_REF_TO_CH, grantedAuthorities) > 0; 
         InvoicePaymentLoggedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_PAYMENT_LOGGED, grantedAuthorities) > 0; 
+        ClaimUpdatedByEngineerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_UPDATED_BY_ENGINEER, grantedAuthorities) > 0; 
     }
 
     public boolean getIsRejectedClaimsAccessible() {
@@ -115,7 +117,6 @@ public class FilterAccessibility {
         return penaltyChargesAppliedAccessible;
     }
 
-    
      public boolean getIsClaimReferredToFNOLAccessible() {
         return claimReferredToFNOLAccessible;
     }
@@ -132,5 +133,8 @@ public class FilterAccessibility {
         return InvoicePaymentLoggedAccessible;
     }
     
+    public boolean getIsClaimUpdatedByEngineerAccessible(){
+        return ClaimUpdatedByEngineerAccessible;
+    }
     
 }

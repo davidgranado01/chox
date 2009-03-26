@@ -30,8 +30,8 @@ public class PaymentReport {
     public static PaymentReport getObject(Map data) {
         PaymentReport result = new PaymentReport();
         
-        result.setSupplierClaimInvoiceNo((String)data.get("claim_invoice_no".toLowerCase()));
-        result.setClaimNo((String)data.get("cho_reference".toLowerCase()));
+        result.setSupplierClaimInvoiceNo((String)data.get("cho_reference".toLowerCase()));
+        result.setClaimNo((String)data.get("claim_number".toLowerCase()));
         result.setVehicleRegistrationNo((String)data.get("vehicle_registration_number".toLowerCase()));
         result.setLineOfBusiness((String)data.get("line_of_business".toLowerCase()));
         result.setPolicyHolderFirstname((String)data.get("policy_holder_first_name".toLowerCase()));
@@ -47,7 +47,6 @@ public class PaymentReport {
         result.setLessDiscount((BigDecimal) data.get("discount".toLowerCase())); 
         result.setLessExcessCollected((BigDecimal) data.get("excess_amount_collected".toLowerCase())); 
         result.setLessVATCollected((BigDecimal) data.get("vat_amount_collected".toLowerCase())); 
-        // totalHireandRepairServices
         result.setAdditionalClaimsHandlingFee((BigDecimal) data.get("claims_handling_invoice_amount".toLowerCase())); 
         result.setTotaltoPay((BigDecimal) data.get("total_to_pay".toLowerCase())); 
 
@@ -176,6 +175,8 @@ public class PaymentReport {
     }
 
     public BigDecimal getTotalHireandRepairServices() {
+        BigDecimal totalDiscount = (lessDiscount.add(lessExcessCollected).add(lessVATCollected)).multiply(new BigDecimal("-1"));
+        totalHireandRepairServices = totalGross.add(totalDiscount);
         return totalHireandRepairServices;
     }
 

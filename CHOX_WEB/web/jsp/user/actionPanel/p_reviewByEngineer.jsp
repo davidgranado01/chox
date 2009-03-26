@@ -66,7 +66,7 @@
             <s:hidden id="actionName" name="actionName" />
             <div>
                 <div class="status-info">
-                    Please enter your private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
+                    Please enter your private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.  Click on the 'Submit' button to progress the claim without updating a Claims Handler, use the 'Update Claims Handler' button to notify a Claims Handler of the note/action made.
                 </div>
                 <div class="status-control-set">
                     <table class="status-table">
@@ -118,9 +118,9 @@
                         <tr>
                             <td colspan="2" class="choice"> 
                                 <input type="submit" value="Submit" onclick="registeAction('accept')"  />   
+                                <input type="submit" value="Update Claims Handler" onclick="registeAction('updatedByEng')"  />  
                             </td>
                         </tr>
-                        
                     </table>
                     
                     <div class="errorBox" id="ACKmessageBox"></div>

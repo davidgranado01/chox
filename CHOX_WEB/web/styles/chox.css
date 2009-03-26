@@ -620,3 +620,10 @@ img.tip-target
   display: block;
   padding: 10px;
 }
+
+.reportTypeHeader{
+  font-family: tahoma,arial,verdana,sans-serif;
+  font-size: 12px;
+  font-weight:bold;    
+  padding-top:15px;
+}

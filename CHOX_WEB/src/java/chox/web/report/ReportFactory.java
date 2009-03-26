@@ -14,6 +14,7 @@ public class ReportFactory {
     private static String INVOICE_SUMMARY_RPT = "InvoiceSummaryReport-Excel";
     private static String CLAIM_REJECTED_RPT = "ClaimRejectedReport-Excel";
     private static String INSURER_PAYMENT_RPT = "PaymentReport-Excel";
+    private static String OVERVIEW_SUMMARY_REPORT = "OverviewSummary-Excel";
     
     public static Report getReportByName(String name) {
         Report report = null;
@@ -25,6 +26,8 @@ public class ReportFactory {
             report = new ClaimRejectedReport();
         } else if (name.equalsIgnoreCase(INSURER_PAYMENT_RPT)) {
             report = new InsurerPaymentReport();
+        } else if (name.equalsIgnoreCase(OVERVIEW_SUMMARY_REPORT)){
+            report = new OverviewSummaryReport();
         }
 
         return report;

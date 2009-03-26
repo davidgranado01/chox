@@ -33,21 +33,24 @@
                         </div>
                         <div style="height:400px;" class="x-panel-bwrap chox-form-container">
                             <ul>
+                            <li class='reportTypeHeader'>General Reports</li>
                                 <s:if test="reportAccessibility.insurerWeeklySummaryAccessibility">
                                 <li><a href="javascript:renderParameterPanel('InsurerAdminWeeklyOverviewReport-Excel');">Admin Weekly Overview Report</a></li>
                                 </s:if> 
+                            <li class='reportTypeHeader'>Claim Reports</li>
+                                <s:if test="reportAccessibility.overviewSummaryAccessibility">                                
+                                <li><a href="javascript:renderParameterPanel('OverviewSummary-Excel');">Claim Overview Summary Report</a></li>
+                                </s:if>                                          
+                                <s:if test="reportAccessibility.claimRejectionAccessibility">                                
+                                <li><a href="javascript:renderParameterPanel('ClaimRejectedReport-Excel');">Claim Rejection Report</a></li>
+                                </s:if>                                                
+                            <li class='reportTypeHeader'>Invoice Reports</li>
                                 <s:if test="reportAccessibility.invoiceSummaryAccessibility">
                                 <li><a href="javascript:renderParameterPanel('InvoiceSummaryReport-Excel');">Invoice Summary Report</a></li>
                                 </s:if> 
-                                <s:if test="reportAccessibility.claimRejectionAccessibility">                                
-                                <li><a href="javascript:renderParameterPanel('ClaimRejectedReport-Excel');">Claim Rejection Report</a></li>
-                                </s:if>                                 
                                 <s:if test="reportAccessibility.insurerPaymentReportAccessibility">                                
-                                <li><a href="javascript:renderParameterPanel('PaymentReport-Excel');">Insurer Payment Report</a></li>
-                                </s:if>
-                                <s:if test="reportAccessibility.overviewSummaryAccessibility">                                
-                                <li><a href="javascript:renderParameterPanel('OverviewSummary-Excel');">Overview Summary Report</a></li>
-                                </s:if>                                 
+                                <li><a href="javascript:renderParameterPanel('PaymentReport-Excel');">CHO Payment Bordereau</a></li>
+                                </s:if>                               
                             </ul>
                         </div>
                     </div>  

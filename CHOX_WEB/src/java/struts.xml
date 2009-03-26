@@ -165,6 +165,8 @@
             </result>
             <result name="updatePaymentReceived">/jsp/user/actionPanel/p_updatePaymentReceived.jsp
             </result>
+            <result name="updateClaimUpdatedByEngineer">/jsp/user/actionPanel/p_updateClaimUpdatedByEngineer.jsp
+            </result>            
             <result name="empty">/jsp/p_blank.jsp
             </result>
         </action>      

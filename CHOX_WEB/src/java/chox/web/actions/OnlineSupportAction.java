@@ -6,6 +6,7 @@ import chox.model.Claim;
 import chox.model.SupportMessage;
 import chox.services.ClaimService;
 import chox.services.SupportMessageService;
+import chox.services.SystemLogService;
 
 public class OnlineSupportAction extends BaseAction{
     
@@ -13,6 +14,7 @@ public class OnlineSupportAction extends BaseAction{
     //private String[] recipients = {"carlson.hoo@gmail.com","choxsupport@sherwoodcompliance.co.uk"};
     
     private SupportMessageService supportMessageService;
+    private SystemLogService systemLogService;
     private ClaimService claimService;
     private String iSupplierReference;
     private String iSubject;
@@ -66,21 +68,35 @@ public class OnlineSupportAction extends BaseAction{
             message.setClaimId(claim.getId());
         }
         
-        boolean bFlag = false;
-
+        boolean bFlag = true;
+        String sActionMsg = "";
         try{
             EmailHelper emailHelper = new EmailHelper();
             String emailMessage = doConstructEmailMessage(message);
-            bFlag = emailHelper.postMail(message.getSubject(), emailMessage, recipients);
-        }catch(Exception ex){
+            bFlag = emailHelper.postMail(message.getSubject(), emailMessage, recipients);        
+        } catch (Exception ex) {
+            ex.printStackTrace();
             actionResult = "Please try again.";
+            bFlag = false;
+            sActionMsg = ex.getLocalizedMessage();
+        } finally {
+            systemLogService.logSystemLog("OSF001", sActionMsg, bFlag);
         }
         
         if(bFlag){
-            supportMessageService.updateObject(message);
+            
+            try{
+                supportMessageService.updateObject(message);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                actionResult = "Please try again.";
+                bFlag = false;
+                sActionMsg = ex.getLocalizedMessage();
+            } finally {
+                systemLogService.logSystemLog("OSF002", sActionMsg, bFlag);
+            }
+            
             actionResult = "Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.";
-        }else{
-            actionResult = "Please try again.";
         }
         
         return SUCCESS;      
@@ -116,6 +132,10 @@ public class OnlineSupportAction extends BaseAction{
     
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
+    }
+    
+    public void setSystemLogService(SystemLogService systemLogService){
+        this.systemLogService = systemLogService;
     }
     
     @Override

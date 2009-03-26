@@ -8,6 +8,7 @@ import chox.Util.DateHelper;
 import chox.model.Chorganisation;
 import chox.model.Insurer;
 import chox.services.DataService;
+import chox.services.SystemLogService;
 import chox.web.report.viewdata.InvoiceSummary;
 import chox.web.report.viewdata.InvoiceSummaryReportObject;
 import chox.web.security.PermissionedUser;
@@ -20,16 +21,13 @@ import java.util.Map;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-/**
- *
- * @author Emmanuel
- */
 public class InvoiceSummaryReport implements Report {
 
     Map externalParameter;
     List<String> reportParameterNames;
     private DataService dataService;
-
+    private SystemLogService systemLogService;
+    
     public InvoiceSummaryReport() {
         reportParameterNames = new ArrayList<String>();
     }
@@ -45,7 +43,7 @@ public class InvoiceSummaryReport implements Report {
     private Chorganisation getChorganisation(int orgId){
         
         Chorganisation chorg = new Chorganisation();
-                
+
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
             criteria.add(Restrictions.eq("id", orgId));
@@ -77,7 +75,9 @@ public class InvoiceSummaryReport implements Report {
     public HashMap getReportParameters() {
         
         HashMap reportParameters = new HashMap();
-
+        boolean bAction = true;
+        String sActionMsg = "";
+        
         try {
             
             PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
@@ -96,6 +96,9 @@ public class InvoiceSummaryReport implements Report {
             String selectedOrgName = "All";
             String selectedOrgLabel = "";
             String reportColumnHeader = "";
+            
+            userOrgName = currentUser.getUser().getOrganisationName();
+            
             if(currentUser.getIsINS()){
                 
                 Insurer ins = currentUser.getUser().getInsurer();
@@ -105,7 +108,6 @@ public class InvoiceSummaryReport implements Report {
                 reportColumnHeader = "Credit Hire Organisation";
                 selectedOrgLabel = "Credit Hire Organisation"; 
                 userOrgLabel = "Insurer";
-                userOrgName = ins.getName(); 
                 
                 supplierId = (((String[]) externalParameter.get("supplierId"))[0]).trim();
                 if(!supplierId.equalsIgnoreCase("")){
@@ -123,7 +125,6 @@ public class InvoiceSummaryReport implements Report {
                 reportColumnHeader = "Insurer";
                 selectedOrgLabel = "Insurer"; 
                 userOrgLabel = "Credit Hire Organisation";
-                userOrgName = chorg.getName(); 
                 
                 insurerId = (((String[]) externalParameter.get("insurerId"))[0]).trim();
                 if(!insurerId.equalsIgnoreCase("")){
@@ -131,7 +132,7 @@ public class InvoiceSummaryReport implements Report {
                     selectedOrgId = iInsurerId.toString().trim();
                     selectedOrgName = getInsurer(iInsurerId).getName();
                 }
-                
+
             }
             
             StringBuffer sb = new StringBuffer();
@@ -204,7 +205,13 @@ public class InvoiceSummaryReport implements Report {
             reportParameters.put("selectedOrgName",selectedOrgName);
             reportParameters.put("selectedOrgLabel",selectedOrgLabel);
             reportParameters.put("reportColumnHeader", reportColumnHeader);
+            
         } catch (Exception ex) {
+            ex.printStackTrace();
+            bAction = false;
+            sActionMsg = ex.getLocalizedMessage();
+        } finally {
+            dataService.logSystemLog(getReportCode(), sActionMsg, bAction);
         }
         
         return reportParameters;
@@ -221,5 +228,13 @@ public class InvoiceSummaryReport implements Report {
 
     public void setDataService(DataService dataService) {
         this.dataService = dataService;
+    }
+    
+    public void setSystemLogService(SystemLogService systemLogService) {
+        this.systemLogService = systemLogService;
+    }
+
+    public String getReportCode() {
+        return "RPT005";
     }
 }

@@ -94,4 +94,9 @@ public class FilterRecordCounter {
         return service.getCountByStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
     }     
     
+    public long getClaimUpdatedByEngineerCount()
+    {
+        return service.getCountByStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
+    }     
+    
 }

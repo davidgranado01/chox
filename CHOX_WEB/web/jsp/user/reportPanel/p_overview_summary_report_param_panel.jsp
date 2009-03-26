@@ -48,9 +48,6 @@
         {
             errorLabelContainer: "#ACKmessageBox",  
             rules: {
-                supplierId:{
-                    required:true
-                },
                 DateStart:{
                     required:true,
                     date: true
@@ -60,17 +57,14 @@
                     date: true
                 }
             },
-            messages: {
-                supplierId:{
-                    required:"You must select 'Credit Hire Organisation'"
-                },                
+            messages: {              
                 DateStart: {
-                    required:"A value must be supplied for 'Invoice Uploaded From'",
-                    date:"You must supply a date value 'Invoice Uploaded From'"
+                    required:"A value must be supplied for 'Claim Uploaded From'",
+                    date:"You must supply a date value 'Claim Uploaded From'"
                 }, 
                 DateEnd: {
-                    required:"A value must be supplied for 'Invoice Uploaded To'",
-                    date:"You must supply a date value 'Invoice Uploaded To'"
+                    required:"A value must be supplied for 'Claim Uploaded To'",
+                    date:"You must supply a date value 'Claim Uploaded To'"
                 }         
             }
         });
@@ -83,35 +77,25 @@
 <form id="formReportParam" class="XXentity-form" name="formReportParam">
     
 <fieldset class="x-fieldset">
-    <legend>Overview Summary Report</legend>
+    <legend>Claim Overview Summary Report</legend>
     <div class="x-panel-bwrap chox-form-container">      
         <div class="form-container">
             
-            <div class="ReportActionMsg" align="justify"> [MSG] </div>
+            <div class="ReportActionMsg" align="justify">
+<s:if test="isCHO">
+This report shows a high level summary of claims across all Insurers and per Insurer. Displaying information such as average invoice values, average hire durations and average cycle times.    
+</s:if>      
+<s:else>
+This report shows a high level summary of claims across all CHOs and per CHO. Displaying information such as average invoice values, average hire durations and average cycle times.    
+</s:else>      
+             </div>
             
                 <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">  
-<s:if test="!isCHO">             
-<tr>
-<td nowrap><label>Credit Hire Organisation</label></td>
-<td>
-<s:select 
-    name="supplierId" 
-    id="supplierId" 
-    list="suppliers" 
-    listKey="id" 
-    listValue="name"
-    headerKey=""
-    headerValue="--- Select ---"
-    emptyOption="false">
-    </s:select>
-</td>                            
-</tr> 
-</s:if>
                     <tr>
-                        <td nowrap width="30%"><label>Invoice Uploaded From</label></td><td><div id="dateFromDiv" /></td>                       
+                        <td nowrap width="30%"><label>Claim Uploaded Date From</label></td><td><div id="dateFromDiv" /></td>                       
                     </tr>    
                     <tr>
-                        <td nowrap><label>Invoice Uploaded To</label></td><td><div id="dateToDiv"/></td>                            
+                        <td nowrap><label>Claim Uploaded Date To</label></td><td><div id="dateToDiv"/></td>                            
                     </tr>                      
                 </table>
             

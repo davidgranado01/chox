@@ -26,6 +26,7 @@ import java.util.Map;
  *
  * @author Emmanuel
  */
+
 public class ClaimRejectedReport implements Report {
 
     Map externalParameter;
@@ -47,7 +48,8 @@ public class ClaimRejectedReport implements Report {
     public HashMap getReportParameters() {
         
         HashMap reportParameters = new HashMap();
-        
+        boolean bAction = true;
+        String sActionMsg = "";        
         
         PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
         
@@ -97,7 +99,11 @@ public class ClaimRejectedReport implements Report {
             reportParameters.put("organisationName", sOrganisationName);
             
         } catch (Exception ex) {
-            
+            ex.printStackTrace();
+            bAction = false;
+            sActionMsg = ex.getLocalizedMessage();
+        } finally {
+            dataService.logSystemLog(getReportCode(), sActionMsg, bAction);
         }
 
         return reportParameters;
@@ -303,5 +309,9 @@ public class ClaimRejectedReport implements Report {
 
     public void setDataService(DataService dataService) {
         this.dataService = dataService;
+    }
+
+    public String getReportCode() {
+        return "RPT003";
     }
 }

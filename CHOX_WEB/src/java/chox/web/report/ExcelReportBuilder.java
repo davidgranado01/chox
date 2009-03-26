@@ -30,7 +30,6 @@ public class ExcelReportBuilder implements ReportBuilder {
         Map reportParameters = report.getReportParameters();
         ByteArrayOutputStream buf = doCreateReport(reportParameters, templatePath);
         InputStream reportStream = new ByteArrayInputStream(buf.toByteArray());
-
         return reportStream;
     }
     

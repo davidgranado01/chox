@@ -43,6 +43,7 @@ import chox.services.CommentService;
 import chox.services.HireMonitoringEcdService;
 import chox.services.HistoryService;
 import chox.services.ReasonOfRejectionService;
+import chox.services.SystemLogService;
 import chox.web.security.PanelAccessibility;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -56,6 +57,9 @@ import java.util.Locale;
  */
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
+    private static final String strPrefix = "Claim Review Note: ";
+    private static final String statusMsg = "Your action has been recorded";
+    
     public static final String REFER_FNOL = "referFNOL";
     public static final String REJECT = "reject";
     public static final String ACCEPT = "accept";
@@ -65,6 +69,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public static final String REJECT_FNOL = "rejectFNOL";
     public static final String PENDING = "pending";
     public static final String REFER_CH = "referCH";
+    public static final String UPDATED_BY_ENG= "updatedByEng";
     private Claim claim = new Claim();
     private int id = -1;
     private List lineOfBusinesses;
@@ -79,6 +84,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private InvoiceService invoiceService;
     private ChoBandService choBandService;
     private HistoryService historyService;
+    private SystemLogService systemLogService;
     private AuditTrailService auditTrailService;
     private ReasonOfRejectionService reasonOfRejectionService;
     private HireMonitoringEcdService hireMonitoringEcdService;
@@ -90,7 +96,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private int insurerId = -1;
     private String actionName;
     private List attachmentCategory;
-    private String statusMsg = "";
     private String reasonForRejection;
     private BigDecimal totalAmountToPayBeforeNewPenaltyCharge;
     private BigDecimal totalAmountToPayAfterNewPenaltyCharge;
@@ -182,21 +187,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return insurers;
     }
 
-    // ADDED BY CARLSON @ 2009-02-03
     public List getReasonOfClaimRejections() {
         if (reasonOfClaimRejections == null) {
             reasonOfClaimRejections = lookupService.getClaimRejectionReason();
         }
         return reasonOfClaimRejections;
     }
-    // ADDED BY CARLSON @ 2009-02-03
+
     public List getReasonOfInvoiceRejections() {
         if (reasonOfInvoiceRejections == null) {
             reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason();
         }
         return reasonOfInvoiceRejections;
     }
-    // ADDED BY CARLSON @ 2009-02-03
+
     public List getExtraActionList() {
 
         GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
@@ -277,106 +281,134 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getPaymentReceivedAction(){
         return "updatePaymentReceived";
     }
-    //Claim Actions
+
     public String route() {
+        
+        boolean bActionFlag = true;
+        String sActionMsg = "";
         String result = SUCCESS;
-        //chack whether line of busineess if set 
+        
         if (this.getLineOfBusinesses() == null) {
             this.actionResult = "ERROR : You need to provide line of business to route this claim.";
         } else {
             if (!claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)) {
                 this.actionResult = "ERROR : Invalid operation!";
             } else {
-                //LineOfBusiness lob = new LineOfBusiness();
-                //lob.setId(this.lineOfBusinessId);
-                //claim.setLineOfBusiness(lob);
-
+                
                 try {
+                    
                     String newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
+                    
                     auditTrailService.logAuditLog(newStatus, claim, null, null);
+                    sActionMsg = "ClaimId:"+claim.getId()+"| LineOfBusiness:" + claim.getLineOfBusiness().getId();
+                    
                     claim.setStatus(newStatus);
                     this.service.updateClaim(claim);
-
+                    
                 } catch (Exception ex) {
                     result = ERROR;
                     this.actionResult = "ERROR : " + ex.getMessage();
+                    bActionFlag = false;
+                    sActionMsg = ex.getLocalizedMessage();
+                }finally {
+                    systemLogService.logSystemLog("ACT001", sActionMsg, bActionFlag);
                 }
             }
         }
-        statusMsg = "Your action has been recorded";
         return result;
     }
 
     //Acknowledge
     public String acknowledge() {
 
+        boolean bActionFlag = true;
+        String sActionMsg = "";
+        
         String result = SUCCESS;
         String newStatus = "";
-        //chack whether line of busineess if set 
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_CAR_HIRE_INFO;
+            sActionMsg =  "ClaimId:"+claim.getId()+"| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(REFER)) {
             newStatus = ClaimStatus.CLAIM_REF_TO_ENG;
+            sActionMsg =  "ClaimId:"+claim.getId()+"| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(REFER_FNOL)) {
             newStatus = ClaimStatus.CLAIM_REFERRED_TO_FNOL;
+            sActionMsg =  "ClaimId:"+claim.getId()+"| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(PENDING)) {
             newStatus = ClaimStatus.CLAIM_PENDING;
+            sActionMsg =  "ClaimId:"+claim.getId()+"| Status:" + newStatus;
         } else {
             newStatus = ClaimStatus.CLAIM_REJECTED;
+            sActionMsg =  "ClaimId:"+claim.getId()+"| Status:" + newStatus + "| ReasonOfRejectionId:"+claim.getReasonOfRejectionId();
             logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
         }
 
         if (!result.equalsIgnoreCase(ERROR)) {
+            
+            boolean isPublic = false;
+            
             try {
-
-                boolean isPublic = false;
-                String strPrefix = "Claim Review Note: ";
+                
+                auditTrailService.logAuditLog(newStatus, claim, null, null);
                 createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);
-
+                
                 claim.setEngineerClaimReviewNotes("");
                 claim.setIsFnolReviewed(false);
-
-                auditTrailService.logAuditLog(newStatus, claim, null, null);
-
                 claim.setStatus(newStatus);
                 this.service.updateClaim(claim);
+                
             } catch (Exception ex) {
+                
                 result = ERROR;
                 this.actionResult = "ERROR : " + ex.getMessage();
+                bActionFlag = false;
+                sActionMsg = ex.getLocalizedMessage(); 
+                
+            }finally {
+                systemLogService.logSystemLog("ACT002", sActionMsg, bActionFlag);
             }
-
-            statusMsg = "Your action has been recorded";
         }
+        
         return result;
     }
-    // FNOL
+    
     public String registerFNOL() {
 
+        boolean bActionFlag = true;
+        String sActionMsg = "";        
         String result = SUCCESS;
         String newStatus = "";
+        
         if (this.actionName.equalsIgnoreCase(REGISTER_FNOL)) {
             newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
+            sActionMsg =  "ClaimId:"+claim.getId()+"| Status:" + newStatus;
             claim.setIsFnolReviewed(true);
         } else if (this.actionName.equalsIgnoreCase(REJECT_FNOL)) {
             newStatus = ClaimStatus.CLAIM_REJECTED;
+            sActionMsg =  "ClaimId:"+claim.getId()+"| Status:" + newStatus + "| ReasonOfRejectionId:"+claim.getReasonOfRejectionId();
         }
 
-        boolean isPublic = false;
-        String strPrefix = "FNOL Review Note: ";
-        createNewNote(reasonForRejection, isPublic, strPrefix);
+        createNewNote(reasonForRejection, false, strPrefix);
 
         if (!result.equalsIgnoreCase(ERROR)) {
+            
             try {
                 auditTrailService.logAuditLog(newStatus, claim, null, null);
+                
                 claim.setStatus(newStatus);
                 this.service.updateClaim(claim);
+                
             } catch (Exception ex) {
                 this.actionResult = "ERROR : " + ex.getMessage();
+                bActionFlag = false;
+                sActionMsg = ex.getLocalizedMessage();                  
+            }finally {
+                systemLogService.logSystemLog("ACT003", sActionMsg, bActionFlag);
             }
+            
         }
-
-        statusMsg = "Your action has been recorded";
         return result;
     }
 
@@ -397,24 +429,38 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String reviewByEngineer() {
+        
+        boolean bActionFlag = true;
+        String sActionMsg = "";          
         String result = SUCCESS;
-        String newStatus = ClaimStatus.AWAITING_CAR_HIRE_INFO;
-
+        String newStatus = "";
+        
+        if (this.actionName.equalsIgnoreCase(UPDATED_BY_ENG)) {
+            newStatus = ClaimStatus.CLAIM_UPDATE_BY_ENG;
+        }else{
+            newStatus = ClaimStatus.AWAITING_CAR_HIRE_INFO;
+        }
+        
         try {
-
-            boolean isPublic = false;
-            String strPrefix = "Claim Review Note: ";
-            createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);
-
-            claim.setEngineerClaimReviewNotes("");
-
+            
             auditTrailService.logAuditLog(newStatus, claim, null, null);
+            createNewNote(claim.getEngineerClaimReviewNotes(), false, strPrefix);
+            
+            claim.setEngineerClaimReviewNotes("");
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
+            
         } catch (Exception ex) {
+            
+            bActionFlag = false;
+            sActionMsg = ex.getLocalizedMessage();            
             this.actionResult = "ERROR : " + ex.getMessage();
+            
+        }finally {
+            sActionMsg =  "ClaimId:"+claim.getId()+"| Status:" + newStatus;
+            systemLogService.logSystemLog("ACT004", sActionMsg, bActionFlag);
         }
-        statusMsg = "Your action has been recorded";
+        
         return result;
     }
 
@@ -422,6 +468,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         String newStatus;
+        boolean bActionFlag = true;
+        String sActionMsg = "";
         
         Integer iClaimRejectionReasonId = null;
         
@@ -435,15 +483,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         
         try {
+            
             auditTrailService.logAuditLog(newStatus, claim, iClaimRejectionReasonId, null);
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
+            
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
+
         } catch (Exception ex) {
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
+            bActionFlag = false;
+            sActionMsg = this.actionResult;
+        }finally {
+            systemLogService.logSystemLog("ACT005", sActionMsg, bActionFlag);
         }
-
-        statusMsg = "Your action has been recorded";
+        
         return result;
     }
 
@@ -451,46 +506,46 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         String newStatus = "";
-
+        boolean bActionFlag = true;
+        String sActionMsg = "";
+        
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
-
             newStatus = ClaimStatus.AWAITING_CAR_HIRE_INFO;
-
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
         } else if (this.actionName.equalsIgnoreCase(REFER)) {
-
             newStatus = ClaimStatus.CLAIM_REF_TO_ENG;
-
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
         } else if (this.actionName.equalsIgnoreCase(REFER_FNOL)) {
-
-
             newStatus = ClaimStatus.CLAIM_REFERRED_TO_FNOL;
-
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
         } else if (this.actionName.equalsIgnoreCase(PENDING)) {
-
             newStatus = ClaimStatus.CLAIM_PENDING;
-
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
         } else {
-            //claim = service.getClaim(id);
             newStatus = ClaimStatus.CLAIM_REJECTED;
             logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus+"| ReasonOfRejection:"+claim.getReasonOfRejectionId();
         }
 
         if (!result.equalsIgnoreCase(ERROR)) {
             try {
 
-                boolean isPublic = false;
-                String strPrefix = "Claim Review Note: ";
-                createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);
-                claim.setEngineerClaimReviewNotes("");
-
+                createNewNote(claim.getEngineerClaimReviewNotes(), false, strPrefix);
                 auditTrailService.logAuditLog(newStatus, claim, null, null);
+                
+                claim.setEngineerClaimReviewNotes("");
                 this.claim.setStatus(newStatus);
                 this.service.updateClaim(claim);
-                statusMsg = "Your action has been recorded";
 
             } catch (Exception ex) {
+                
                 result = ERROR;
                 this.actionResult = "ERROR : " + ex.getMessage();
+                bActionFlag = false;
+                sActionMsg = this.actionResult;
+                
+            }finally {
+                systemLogService.logSystemLog("ACT006", sActionMsg, bActionFlag);
             }
         }
 
@@ -500,95 +555,132 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String submitHireMonitoringDetail() {
 
         String result = SUCCESS;
-
+        boolean bActionFlag = true;
+        String sActionMsg = "";
+        
         String validationResult = validateHireMonitoringDetail();
+        
         if (validationResult.isEmpty()) {
+            
             String newStatus = ClaimStatus.AWAITING_INVOICE_DATA;
+            
             try {
+                
                 auditTrailService.logAuditLog(newStatus, claim, null, null);
+                sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
+                
                 this.claim.setStatus(newStatus);
                 this.service.updateClaim(claim);
+                
             } catch (Exception ex) {
+                
                 this.actionResult = "ERROR : " + ex.getMessage();
+                bActionFlag = false;
+                sActionMsg = this.actionResult;
+                
+            }finally {
+                systemLogService.logSystemLog("ACT007", sActionMsg, bActionFlag);
             }
+            
         } else {
             result = ERROR;
             this.actionResult = validationResult;
         }
 
-
-        statusMsg = "Your action has been recorded";
         return result;
     }
 
     public String validateHireMonitoringDetail() {
 
         String result = "";
-
-        /*0000314
-        if (this.claim.getHireMonitoringDetail() == null) {
-        return  "Error : You need to provide correct hire monitoring detail to submit this claim.";
-        } 
-         */
-
+        
         if (this.claim.getCustomer() == null || this.claim.getCustomer().getInitialECD() == null) {
             if (this.service.getECDCountByClaimId(this.claim.getId()) == 0) {
                 return "Error : You need to provide an Estimated Completion Date (ECD) to submit this claim.";
             }
         }
 
-        statusMsg = "Your action has been recorded";
         return result;
     }
 
     public String reSubmitRejectedClaim() {
-
+    
+        boolean bActionFlag = true;
+        String result = SUCCESS;
+        String sActionMsg = "";
+        
         claim = constructeClaimForInvoiceValidation(claim);
         RulesEngineResponse reponse = invoiceService.XMLUploaderInvoiceValidation(claim);
         historyService.logInvoiceValidationErrorMsg(reponse, claim);
-
         String repStatus = reponse.getStatus().name();
 
         if (!repStatus.equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
+            
             claim = service.getClaim(claim.getId());
 
             try {
+                
                 auditTrailService.logAuditLog(repStatus, claim, null, null);
+                sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+repStatus;
+                
                 claim.setStatus(repStatus);
                 this.service.updateClaim(claim);
+                
             } catch (Exception ex) {
+                
                 this.actionResult = "ERROR : " + ex.getMessage();
-                return ERROR;
+                bActionFlag = false;
+                result = ERROR;
+                sActionMsg = this.actionResult;
+                
+            }finally {
+                systemLogService.logSystemLog("ACT008", sActionMsg, bActionFlag);
             }
-            statusMsg = "Your action has been recorded";
-            return SUCCESS;
+            
+            result = SUCCESS;
+            
         } else {
+            
             this.actionResult = "ERROR : Invoice data calculation incorrect";
-            return ERROR;
+            result = ERROR;
         }
 
-
+        return result;
+        
     }
 
     public String contestOrAcceptRejectedInvoice() {
-
+    
+        boolean bActionFlag = true;
         String result = SUCCESS;
         String newStatus;
-
+        String sActionMsg = "";
+        
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.CLAIM_REJECTION_ACCEPTED;
         } else {
             newStatus = ClaimStatus.CLAIM_REJECTION_CONTESTED;
         }
+        
         try {
+            
             auditTrailService.logAuditLog(newStatus, claim, null, null);
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
+            
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
+
         } catch (Exception ex) {
+            
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
+            bActionFlag = false;
+            sActionMsg = this.actionResult;
+            
+        }finally {
+            systemLogService.logSystemLog("ACT009", sActionMsg, bActionFlag);
         }
-        statusMsg = "Your action has been recorded";
+        
         return result;
     }
 
@@ -596,24 +688,39 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         String newStatus;
-
+        boolean bActionFlag = true;
+        String sActionMsg = "";
+        
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
         } else if (this.actionName.equalsIgnoreCase(REFER)) {
             newStatus = ClaimStatus.INVOICE_ESCALATED;
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
             logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus+"| ReasonOfRejection:"+claim.getReasonOfRejectionId();
         }
+        
         try {
+            
             auditTrailService.logAuditLog(newStatus, claim, null, null);
+            
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
+            
         } catch (Exception ex) {
+            
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
+            bActionFlag = false;
+            sActionMsg = this.actionResult;
+            
+        }finally {
+            systemLogService.logSystemLog("ACT010", sActionMsg, bActionFlag);
         }
-        statusMsg = "Your action has been recorded";
+        
         return result;
     }
 
@@ -621,7 +728,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         String newStatus;
-
+        boolean bActionFlag = true;
+        String sActionMsg = "";
+        
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
         } else if (this.actionName.equalsIgnoreCase(REFER)) {
@@ -629,112 +738,164 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
             logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus+"| ReasonOfRejection:"+claim.getReasonOfRejectionId();
         }
+        
         try {
+            
             auditTrailService.logAuditLog(newStatus, claim, null, null);
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
+            
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
+            
         } catch (Exception ex) {
+            
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
+            bActionFlag = false;
+            sActionMsg = this.actionResult;
+            
+        }finally {
+            systemLogService.logSystemLog("ACT011", sActionMsg, bActionFlag);
         }
-        statusMsg = "Your action has been recorded";
+        
         return result;
     }
     
     public String updateInsurerClaimNumber() {
 
         String result = SUCCESS;
-
+        boolean bActionFlag = true;
+        String sActionMsg = "";
+        
         try {
+            
             this.service.updateClaim(claim);
+            sActionMsg = "ClaimId:"+claim.getId()+"| ClaimNumber:"+claim.getClaimNumber();
+            
         } catch (Exception ex) {
+            
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
+            bActionFlag = false;
+            sActionMsg = this.actionResult;
+            
+        }finally {
+            systemLogService.logSystemLog("CLM001", sActionMsg, bActionFlag);
         }
-
-        statusMsg = "Your action has been recorded";
+        
         return result;
     }
 
     public String updatePaymentReceived() {
-    
+        
+        boolean bActionFlag = true;
         String result = SUCCESS;
         String newStatus = "";
+        String sActionMsg = "";
+        
         try {
+            
             newStatus = ClaimStatus.INVOICE_PAYMENT_RECEIVED;
+            
             auditTrailService.logAuditLog(newStatus, claim, null, null);
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
+            
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
+            
         } catch (Exception ex) {
+            
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
+            bActionFlag = false;
+            sActionMsg = this.actionResult;
+            
+        }finally {
+            systemLogService.logSystemLog("ACT012", sActionMsg, bActionFlag);
         }
 
-        statusMsg = "Your action has been recorded";
         return result;
     }
-    
-    /*
-     * Edited By: Carlson Hoo
-     * Edited Dt: 25 Feb 2009
-     * Description: Add new function to Refer to Claim Handler
-     */
     
     public String approveEscalatedInvoice() {
-
+    
+        boolean bActionFlag = true;
         String result = SUCCESS;
         String newStatus;
+        String sActionMsg = "";
         
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
         }else if(this.actionName.equalsIgnoreCase(REFER_CH)){
-            newStatus = ClaimStatus.INVOICE_REF_TO_CH;            
+            newStatus = ClaimStatus.INVOICE_REF_TO_CH;        
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus + "| ReasonOfRejection:"+claim.getReasonOfRejectionId();
             logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
         }
+        
         try {
+            
             auditTrailService.logAuditLog(newStatus, claim, null, null);
+            
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
-
+            
         } catch (Exception ex) {
+            
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
+            bActionFlag = false;
+            sActionMsg = this.actionResult;
+
+        }finally {
+            systemLogService.logSystemLog("ACT013", sActionMsg, bActionFlag);
         }
-        statusMsg = "Your action has been recorded";
+        
         return result;
     }
     
-    /*
-     * Edited By: Carlson Hoo
-     * Edited Dt: 25 Feb 2009
-     * Description: Add new function to Refer to Claim Handler
-     */
-    
     public String approveContestedInvoice() {
+        
         String result = SUCCESS;
         String newStatus;
+        boolean bActionFlag = true;
+        String sActionMsg = "";
         
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
         }else if(this.actionName.equalsIgnoreCase(REFER_CH)){
             newStatus = ClaimStatus.INVOICE_REF_TO_CH;
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
         }else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
             logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus + "| ReasonOfRejection:"+claim.getReasonOfRejectionId();
         }
         
         try {
+            
             auditTrailService.logAuditLog(newStatus, claim, null, null);
+            
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
+            
         } catch (Exception ex) {
+        
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
+            bActionFlag = false;
+            sActionMsg = this.actionResult;
+        
+        }finally {
+            systemLogService.logSystemLog("ACT014", sActionMsg, bActionFlag);
         }
-        statusMsg = "Your action has been recorded";
+        
         return result;
     }
 
@@ -743,7 +904,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String result = SUCCESS;
         String newStatus;
         Integer invoiceReasonOfRejectionId = null;
-
+        boolean bActionFlag = true;
+        String sActionMsg = "";
+        
         if (this.actionName.equalsIgnoreCase(REJECT)) {
 
             claim = constructeClaimForInvoiceValidation(claim);
@@ -751,35 +914,62 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             historyService.logInvoiceValidationErrorMsg(reponse, claim);
 
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_INS;
-
+            
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
+            
         } else {
+            
             newStatus = ClaimStatus.INVOICE_REJECTED_ACCEPTED;
             invoiceReasonOfRejectionId = claim.getInvoice().getReasonOfRejectionId();
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus + "| ReasonOfRejection:"+invoiceReasonOfRejectionId;
+            
         }
 
         try {
+            
             auditTrailService.logAuditLog(newStatus, claim, null, invoiceReasonOfRejectionId);
+            
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
+            
         } catch (Exception ex) {
+            
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
+            bActionFlag = false;
+            sActionMsg = this.actionResult;
+            
+        }finally {
+            systemLogService.logSystemLog("ACT015", sActionMsg, bActionFlag);
         }
-        statusMsg = "Your action has been recorded";
+        
         return result;
 
     }
 
     public String logInvoicePayment() {
+        
         String newStatus = ClaimStatus.INVOICE_PAYMENT_LOGGED;
+        boolean bActionFlag = true;
+        String sActionMsg = "";
         try {
+        
             auditTrailService.logAuditLog(newStatus, claim, null, null);
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
+            
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
+            
         } catch (Exception ex) {
+        
             this.actionResult = "ERROR : " + ex.getMessage();
+            bActionFlag = false;
+            sActionMsg = this.actionResult;
+        
+        }finally {
+            systemLogService.logSystemLog("ACT016", sActionMsg, bActionFlag);
         }
-        statusMsg = "Your action has been recorded";
+        
         return SUCCESS;
     }
 
@@ -906,7 +1096,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setCommentService(CommentService commentService) {
         this.commentService = commentService;
     }
-
+    
+    public void setSystemLogService(SystemLogService systemLogService){
+        this.systemLogService = systemLogService;
+    }
+    
     public void setReasonOfRejectionService(ReasonOfRejectionService reasonOfRejectionService) {
         this.reasonOfRejectionService = reasonOfRejectionService;
     }
@@ -920,14 +1114,28 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String doUpdateAnomalies() {
+        
         String result = SUCCESS;
+        boolean bActionFlag = true;
+        String sActionMsg = "";
+        
         try {
+        
             claim = service.getClaim(id);
             claim.setIsAnomalies(false);
             this.service.updateClaim(claim);
+            
+            sActionMsg = "ClaimId:"+claim.getId();
+            
         } catch (Exception ex) {
+            
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
+            bActionFlag = false;
+            sActionMsg = this.actionResult;
+            
+        }finally {
+            systemLogService.logSystemLog("ACT017", sActionMsg, bActionFlag);
         }
         return result;
     }
@@ -953,7 +1161,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String doApplyPenaltyCharge() {
         String result = SUCCESS;
+        boolean bActionFlag = true;
+        String sActionMsg = "";
+        
         try {
+            
             Invoice invoice = claim.getInvoice();
             BigDecimal newTotalAmountToPay = (invoice.getTotalToPay().subtract(invoice.getPenaltyCharge())).add(getPenaltyChargeAmount());
             invoice.setTotalToPay(newTotalAmountToPay);
@@ -972,39 +1184,78 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             
             invoice.setPenaltyChargeAppliedDate(DateHelper.getCurrentTimeStamp());
             this.invoiceService.updateObject(invoice);
+            
+            sActionMsg = "ClaimId:"+claim.getId();
+            
         } catch (Exception ex) {
+            
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
+            bActionFlag = false;
+            sActionMsg = this.actionResult;
+            
+        }finally {
+            systemLogService.logSystemLog("ACT018", sActionMsg, bActionFlag);
         }
+        
         return result;
     }
 
     public String doUpdateClaimStatus() {
         String result = SUCCESS;
+        boolean bActionFlag = true;
+        String sActionMsg = "";
+        
         try {
+            
             claim = service.getClaim(id);
             String newStatus = ClaimStatus.CLAIM_CLOSED;
+            
             auditTrailService.logAuditLog(newStatus, claim, null, null);
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
+            
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
+            
         } catch (Exception ex) {
+            
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
+            bActionFlag = false;
+            sActionMsg = this.actionResult;
+            
+        }finally {
+            systemLogService.logSystemLog("ACT019", sActionMsg, bActionFlag);
         }
         return result;
     }
 
     public String doReopenClaimStatus() {
+        
         String result = SUCCESS;
+        boolean bActionFlag = true;
+        String sActionMsg = "";
+        
         try {
+            
             claim = service.getClaim(id);
             String newStatus = claim.getPreviousStatus();
+            
             auditTrailService.logAuditLog(newStatus, claim, null, null);
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
+            
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
+            
         } catch (Exception ex) {
+            
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
+            bActionFlag = false;
+            sActionMsg = this.actionResult;
+            
+        }finally {
+            systemLogService.logSystemLog("ACT020", sActionMsg, bActionFlag);
         }
         return result;
     }
@@ -1032,8 +1283,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (getIsCHO()) {
             Invoice invoice = claim.getInvoice();
-
-            //if penaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
+            
             if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED)) {
                 result = invoice.getInvoicedDays() > 30;
             }

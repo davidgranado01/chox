@@ -76,7 +76,7 @@
 
 <form id="formReportParam" class="XXentity-form" name="formReportParam">
 <fieldset class="x-fieldset">
-    <legend>Insurer Admin Weekly Overview Report</legend>
+    <legend>Admin Weekly Overview Report</legend>
     <div class="x-panel-bwrap chox-form-container">      
         <div class="form-container">
             <div class="ReportActionMsg" align="justify">

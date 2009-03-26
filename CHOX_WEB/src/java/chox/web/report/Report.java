@@ -10,17 +10,13 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- *
- * @author Emmanuel
- */
 public interface Report {
     
     void setExternalParameter(Map parameters);
     void setDataService(DataService dataService);
+    String getReportCode();
     HashMap getReportParameters();
     String getReportTemplateFileName();
-    
     InputStream build();
 
 }
