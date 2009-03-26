@@ -72,6 +72,9 @@ public class OverviewSummaryReportByOrg {
         
         // AVERAGE INFORMATION
         result.setAverage_claim_cycle_day(ReportHelper.getIntegerValue(data.get("average_claim_cycle_day".toLowerCase())));
+        
+        System.out.println(">???>>"+ReportHelper.getIntegerValue(data.get("average_hire_duration_day".toLowerCase())));
+        
         result.setAverage_hire_duration_day(ReportHelper.getIntegerValue(data.get("average_hire_duration_day".toLowerCase())));
         result.setAverage_invoice_val(ReportHelper.getBigDecimalValue(data.get("average_invoice_val".toLowerCase())));
         result.setAverage_penalty_val(ReportHelper.getBigDecimalValue(data.get("average_penalty_val".toLowerCase())));
