@@ -15,5 +15,16 @@ public class TextHelper {
         }
         return t;
     }
+    
+    public static String appendDelimiter (String strInput, String strDelimiter){
+        
+        if(!strInput.equalsIgnoreCase("")){
+            return strInput + strDelimiter + " ";
+        }
+        
+        return "";
+    }
+            
+            
    
 }

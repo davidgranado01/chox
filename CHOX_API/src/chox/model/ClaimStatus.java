@@ -30,6 +30,7 @@ public class ClaimStatus {
     public static final String CLAIM_PENDING = "ClaimPending"; // NEW STATUS, Phase 2 Minor Enhancement -2
     public static final String INVOICE_REF_TO_CH = "InvoiceReferredToClaimsHandler";
     public static final String INVOICE_PAYMENT_RECEIVED = "PaymentReceived";
+    public static final String CLAIM_UPDATE_BY_ENG = "ClaimUpdatedByEngineer";
 
     public static List<String> getStatus() {
         List<String> status = new ArrayList<String>();
@@ -54,6 +55,7 @@ public class ClaimStatus {
         status.add(CLAIM_PENDING);
         status.add(INVOICE_REF_TO_CH);
         status.add(INVOICE_PAYMENT_RECEIVED);
+        status.add(CLAIM_UPDATE_BY_ENG);
         return status;
     }
 

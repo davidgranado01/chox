@@ -6,7 +6,10 @@ package chox.services;
 
 import chox.data.FakeSecurityInfoProvider;
 import chox.data.SecurityInfoProvider;
+import chox.model.Chorganisation;
+import chox.model.SystemLog;
 import chox.model.WebUser;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Criteria;
@@ -14,6 +17,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate3.HibernateTransactionManager;
@@ -126,6 +130,20 @@ public class DataService extends HibernateDaoSupport {
                 });
     }
 
+    public void logSystemLog(String actionId, String msg, boolean status){
+        
+        SystemLog systemLog = new SystemLog();
+        systemLog.setActionId(actionId);
+        systemLog.setMessage(msg);
+        
+        if(status){
+            systemLog.setStatus("S");
+        }else{
+            systemLog.setStatus("F");
+        }
+        save(systemLog);
+    } 
+    
     public void delete(final Object object) {
         TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
         transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -145,4 +163,5 @@ public class DataService extends HibernateDaoSupport {
     public void setTransactionManager(HibernateTransactionManager transactionManager) {
         this.transactionManager = transactionManager;
     }
+
 }

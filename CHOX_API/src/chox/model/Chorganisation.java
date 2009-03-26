@@ -1,5 +1,6 @@
 package chox.model;
 
+import chox.Util.TextHelper;
 import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
@@ -82,7 +83,6 @@ public class Chorganisation implements Serializable,Auditable, ICHOrganisationIn
 	 * This attribute maps to the column last_modified_date in the chorganisation table.
 	 */
 	protected Date lastModifiedDate;
-
 	/**
 	 * Method 'Chorganisation'
 	 * 
@@ -393,5 +393,25 @@ public class Chorganisation implements Serializable,Auditable, ICHOrganisationIn
 
         public boolean getIsDelegatedAuthority() {
             return this.isDelegatedAuthority;
+        }
+        
+        public String getDisplayAddress(){
+            
+            String strDelimiter = ",";
+            
+            System.out.println(">>>address1:"+address1+"|"+TextHelper.appendDelimiter(address1, strDelimiter));
+            System.out.println(">>>address2:"+address2+"|"+TextHelper.appendDelimiter(address2, strDelimiter));
+            System.out.println(">>>address3:"+address3+"|"+TextHelper.appendDelimiter(address3, strDelimiter));
+            System.out.println(">>>address4:"+address4+"|"+TextHelper.appendDelimiter(address4, strDelimiter));
+            System.out.println(">>>address5:"+address5+"|"+TextHelper.appendDelimiter(address5, strDelimiter));
+            System.out.println(">>>postcode:"+postcode+"|"+TextHelper.appendDelimiter(postcode, strDelimiter));
+            
+            /*
+            System.out.println(">>>>"+address1 + TextHelper.appendDelimiter(address2, strDelimiter) + TextHelper.appendDelimiter(address3, strDelimiter) + TextHelper.appendDelimiter(address4, strDelimiter) 
+                    + TextHelper.appendDelimiter(postcode, strDelimiter) + TextHelper.appendDelimiter(address5, ""));
+            */
+            return "ABC";
+            //return "A"+address1 + TextHelper.appendDelimiter(address2, strDelimiter) + TextHelper.appendDelimiter(address3, strDelimiter) + TextHelper.appendDelimiter(address4, strDelimiter) 
+            //        + TextHelper.appendDelimiter(postcode, strDelimiter) + TextHelper.appendDelimiter(address5, "");
         }
 }
