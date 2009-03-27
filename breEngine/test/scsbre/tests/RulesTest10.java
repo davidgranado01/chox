@@ -190,7 +190,7 @@ public class RulesTest10 {
         inv.setClaimsHandlingInvoiceAmount(BigDecimal.ZERO);
         inv.setDeductionForClaimsHandlingFee(BigDecimal.ZERO);
         inv.setDiscount(BigDecimal.ZERO);
-        inv.setTotalToPay(BigDecimal.ZERO);
+        inv.setTotalToPay(new BigDecimal(422.15));
         inv.setPenaltyCharge(BigDecimal.ZERO);
 
         return inv;
