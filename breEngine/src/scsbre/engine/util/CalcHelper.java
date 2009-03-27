@@ -9,27 +9,11 @@ public class CalcHelper {
         
         boolean bFlag = false;
         
-        // INITIAL METHOD
-        // return Math.round(Math.floor(a.doubleValue())) == Math.round(Math.floor(b.doubleValue()));
-        
-        // SECOND METHOD
-        // double x = Math.round(a.doubleValue());
-        // double y = Math.round(b.doubleValue());
-        
-        // FIXED ISSUE MANTIS 426
-        
         double cx = Math.ceil(a.doubleValue());
         double cy = Math.ceil(b.doubleValue());
         
         double fx = Math.floor(a.doubleValue());
         double fy = Math.floor(b.doubleValue());
-        
-        /*
-        System.out.println("CX:"+cx);
-        System.out.println("CY:"+cy);
-        System.out.println("FX:"+fx);
-        System.out.println("FY:"+fy);
-        */
         
         if((cx==cy) || (fx==fy)){
             bFlag = true;
@@ -37,6 +21,23 @@ public class CalcHelper {
         
         return bFlag;
         
+    }
+    
+    public static boolean LessThanOrEqualTo(BigDecimal a, BigDecimal b) {
+        
+        boolean bFlag = false;
+        
+        double cx = Math.ceil(a.doubleValue());
+        double cy = Math.ceil(b.doubleValue());
+        
+        double fx = Math.floor(a.doubleValue());
+        double fy = Math.floor(b.doubleValue());
+        
+        if((cx<=cy) || (fx<=fy)){
+            bFlag = true;
+        }
+        
+        return bFlag;        
     }
     
     private static final long MILISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
