@@ -37,7 +37,7 @@ public class OverviewSummaryReport implements Report {
         PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
         boolean isInsReport = currentUser.getIsINS();
         userOrgName = currentUser.getUser().getOrganisationName();
-                
+      
         if(isInsReport){
             userOrgLabel = "Insurer";
             userOrgId = currentUser.getUser().getInsurer().getId();
@@ -65,14 +65,14 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='AwaitingCarHireInfo') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_accepted_claims_val, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='ClaimRejectionAccepted') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_rejected_claims_num, ");
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='ClaimRejectionAccepted') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_rejected_claims_val, ");
-            sb.append("5.00 as total_no_rejected_claims_per, ");
+            sb.append("0.00 as total_no_rejected_claims_per, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='AwaitingInvoicePayment') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_approved_invoice_num, ");
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='AwaitingInvoicePayment') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_approved_invoice_val, ");
-            sb.append("8.00 as total_no_approved_invoice_per, ");
+            sb.append("0.00 as total_no_approved_invoice_per, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='InvoiceRejectionAccepted') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_rejected_invoice_num, ");
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='InvoiceRejectionAccepted') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_rejected_invoice_val, ");
-            sb.append("11.00 as total_no_rejected_invoice_per, ");
-            sb.append("12 as average_claim_cycle_day, ");
+            sb.append("0.00 as total_no_rejected_invoice_per, ");
+            sb.append("(select cast(round(sum(audit_trail.no_count)/count(*)) as bigint) as no_count from rpt_claim_invoice rpt_claim_invoice, (select audit_trail.claim_id, cast(EXTRACT(DAY FROM (max(audit_trail.update_date) - min(audit_trail.update_date))) as bigint) as no_count from audit_trail audit_trail where audit_trail.claim_id in (select distinct claim_id from audit_trail where new_status='InvoicePaymentLogged') group by audit_trail.claim_id) audit_trail where rpt_claim_invoice.claim_id=audit_trail.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as average_claim_cycle_day, ");
             sb.append("(select cast(round(sum(vehicle_hire.days)/count(*)) as bigint) as no_count from rpt_claim_invoice rpt_claim_invoice left outer join vehicle_hire vehicle_hire on vehicle_hire.id = rpt_claim_invoice.claim_vehicle_hire_id where chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as average_hire_duration_day, ");
             sb.append("(select cast(sum(rpt_claim_invoice.total_to_pay)/count(*) as numeric(20,2)) as no_count from rpt_claim_invoice rpt_claim_invoice left outer join vehicle_hire vehicle_hire on vehicle_hire.id = rpt_claim_invoice.claim_vehicle_hire_id where chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as average_invoice_val, ");
             sb.append("(select cast(sum(rpt_claim_invoice.panalty_charge)/count(*) as numeric(20,2)) as no_count from rpt_claim_invoice rpt_claim_invoice left outer join vehicle_hire vehicle_hire on vehicle_hire.id = rpt_claim_invoice.claim_vehicle_hire_id where chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as average_penalty_val ");
@@ -83,7 +83,7 @@ public class OverviewSummaryReport implements Report {
                 sb.append("and insurer_chorganisation.insurer_id=@pUserOrgId ");
             }else{
                 sb.append("from insurer_chorganisation insurer_chorganisation, insurer insurer ");
-                sb.append("where insurer.id=insurer_chorganisation.insurer_id  ");
+                sb.append("where insurer.id=insurer_chorganisation.insurer_id ");
                 sb.append("and insurer_chorganisation.chorganisation_id=@pUserOrgId ");                
             }
 
@@ -108,6 +108,12 @@ public class OverviewSummaryReport implements Report {
             
             List<OverviewSummaryLineItem> summaries = doOverviewSummaryLineItem(overviewSummaryReportByOrgs);
             
+            OverviewSummaryReportObject reportObj = new OverviewSummaryReportObject();
+            reportObj.setUploadDateFrom(dataStart);
+            reportObj.setUploadDateTo(dataEnd);
+            reportObj.setCreatedDate(new Date());
+            
+            reportParameters.put("reportObj", reportObj);
             reportParameters.put("orgName", orgName);
             reportParameters.put("userOrgLabel",userOrgLabel);
             reportParameters.put("userOrgName",userOrgName);
@@ -168,7 +174,6 @@ public class OverviewSummaryReport implements Report {
                         lineItemDetail.setTotalDay(recordPerOrg.getAverage_claim_cycle_day());
                         break;
                     case 7:
-                        System.out.println("getAverage_hire_duration_day:"+recordPerOrg.getAverage_hire_duration_day());
                         lineItemDetail.setTotalDay(recordPerOrg.getAverage_hire_duration_day());
                         break;
                     case 8:

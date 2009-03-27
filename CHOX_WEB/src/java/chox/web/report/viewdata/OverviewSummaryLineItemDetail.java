@@ -11,8 +11,13 @@ public class OverviewSummaryLineItemDetail {
     private BigDecimal totalPercentage;
     private Integer totalDay;
 
-    public Integer getNoCount() {
-        return noCount;
+    public Object getNoCount() {
+    
+        if(noCount==null){
+            return " ";
+        }else{
+            return noCount;
+        }     
     }
 
     public void setNoCount(Integer noCount) {
@@ -35,24 +40,38 @@ public class OverviewSummaryLineItemDetail {
         this.orgName = orgName;
     }
 
-    public Integer getTotalDay() {
-        return totalDay;
+    public Object getTotalDay() {
+        if(totalDay==null){
+            return " ";
+        }else{
+            return totalDay;
+        }            
     }
 
     public void setTotalDay(Integer totalDay) {
         this.totalDay = totalDay;
     }
 
-    public BigDecimal getTotalPercentage() {
-        return totalPercentage;
+    public Object getTotalPercentage() {
+        if(totalPercentage==null){
+            return " ";
+        }else{
+            return totalPercentage;
+        }        
     }
 
     public void setTotalPercentage(BigDecimal totalPercentage) {
         this.totalPercentage = totalPercentage;
     }
 
-    public BigDecimal getTotalValue() {
-        return totalValue;
+    public Object getTotalValue() {
+        
+        if(totalValue==null){
+            return " ";
+        }else{
+            return totalValue;
+        }
+        
     }
 
     public void setTotalValue(BigDecimal totalValue) {
