@@ -241,8 +241,11 @@
     }
     
     function setupGrid(){
+        
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-        Ext.QuickTips.init();         
+        Ext.QuickTips.init();    
+
+        var sm2 = new Ext.grid.CheckboxSelectionModel();
         
         var pagingBar = new Ext.PagingToolbar({
             pageSize: recordPerPage,
@@ -251,12 +254,42 @@
             displayMsg: 'Displaying topics {0} - {1} of {2}',
             emptyMsg: "No claim to display"
         });
+        
+       var approvedInvoicesPaymentAction = new Ext.Action
+            ({
+                text: 'Approved Invoices Awaiting Payment',
+                handler: function(){
+                     var selectedRecords =  sm2.getSelections();
+                }
+            }); 
+            
+        var actionMenu = new Ext.Toolbar.MenuButton({
+            text: 'Action',
+            handler: function()
+            {
+                var selectedRecords =  sm2.getSelections();
+                selectedRecords.each(function(item,index,length)
+                {
+                    var status = item.json.status;
+                    if(status == '')
+                    {
+
+                    }
+                    
+                });
+                
+            },
+            tooltip: {text:'Action', title:'Action'},
+            // Menus can be built/referenced by using nested menu config objects
+            menu : {items: [approvedInvoicesPaymentAction]}
+        });
                 
         var grid = new Ext.grid.GridPanel({
             loadMask: true,
             ds: ds,
             width: 960,
             columns: [
+                sm2,
                 {id:'Id', header: "Supplier Reference", width: 150, sortable: true, dataIndex: 'supplierReference', 
                     renderer:function(value,p,r){
                         return '<a href="openClaimDetail.action?id=' + r.data['id'] + '&tab=' + currentTabIndex + '">' + value + '</a>'}},               
@@ -272,11 +305,13 @@
                 {header: "Viewing", width: 150, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
                         return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '" class="std-label-ro">-</label>'}}
             ],
+            sm:sm2,
             stripeRows: true,
             layout:'fit',
             autoHeight:true,
             enableHdMenu:false,
-            title:'Claims', viewConfig:{forceFit:true},bbar: pagingBar
+            title:'Claims', viewConfig:{forceFit:true},bbar: pagingBar,
+            tbar:[actionMenu]
             
         });
         grid.render('gridHolder');
@@ -284,7 +319,7 @@
         
 
     }
-    
+  
     function setupTabPanels()
     {
         var getParams = document.URL.split("?");
