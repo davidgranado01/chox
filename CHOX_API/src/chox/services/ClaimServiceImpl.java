@@ -62,7 +62,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         String q = "select count(*) from Claim as c inner join c.invoice as iv where " 
                 + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_LOGGED 
                 + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_REJECTED_ACCEPTED 
-                + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_ESCALATED 
                 + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_RECEIVED 
                 + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT 
                 + "' AND " + "c.status <> '" + ClaimStatus.CLAIM_CLOSED + "' " 
@@ -176,7 +175,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getIspenaltyChargeApplied()) {
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
             criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
-            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_ESCALATED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_REJECTED_ACCEPTED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
