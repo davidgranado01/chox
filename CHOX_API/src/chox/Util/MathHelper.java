@@ -25,9 +25,15 @@ public class MathHelper {
     }
     
     public static BigDecimal getPercentageBigDecimal(float iValue, float iDevider, int decimalplace){
-        BigDecimal bValue = new BigDecimal(iValue*100);
-        BigDecimal bDevider = new BigDecimal(iDevider);
-        BigDecimal oValue = bValue.divide(bDevider, decimalplace, BigDecimal.ROUND_HALF_UP);
+        
+        BigDecimal oValue = new BigDecimal("0.00");
+        
+        if(iDevider > 0 && iValue>0){
+            BigDecimal bValue = new BigDecimal(iValue*100);
+            BigDecimal bDevider = new BigDecimal(iDevider);
+            oValue = bValue.divide(bDevider, decimalplace, BigDecimal.ROUND_HALF_UP);
+        }
+        
         return oValue;
     }
     
