@@ -1268,7 +1268,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (invoice != null 
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) 
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) 
-                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_ESCALATED) 
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED) 
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)
@@ -1286,7 +1285,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (getIsCHO()) {
             Invoice invoice = claim.getInvoice();
             
-            if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED)) {
+            if (invoice != null 
+				&& !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) 
+				&& !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)
+				&& !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED) 
+				&& !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
+				&& !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)
+				) {
                 result = invoice.getInvoicedDays() > 30;
             }
         }
