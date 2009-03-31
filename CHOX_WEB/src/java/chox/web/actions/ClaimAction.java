@@ -20,6 +20,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import org.acegisecurity.GrantedAuthority;
 import scsbre.engine.RulesEngineResponse;
 import chox.data.AttachmentCategory;
@@ -50,12 +51,13 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import org.apache.struts2.interceptor.SessionAware;
 
 /**
  *  
  * @author Emmanuel
  */
-public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
+public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable, SessionAware {
 
     private static final String strPrefix = "Claim Review Note: ";
     private static final String statusMsg = "Your action has been recorded";
@@ -107,16 +109,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private ApplicationAccessibility applicationAccessibility;
     private PanelAccessibility panelAccessibility;
     private String extraActionName;
-    Integer hireMonitoringDetailId;
-    Integer incidentId;
-    Integer thirdPartyId;
-    Integer customerId;
-    Integer invoideId;
-    Integer vehicleHireId;
-    Integer engineerReportId;
-    Integer witnessId;
-    Integer injuryId;
-    Integer injurySolicitorId;
+    private Integer hireMonitoringDetailId;
+    private Integer incidentId;
+    private Integer thirdPartyId;
+    private Integer customerId;
+    private Integer invoideId;
+    private Integer vehicleHireId;
+    private Integer engineerReportId;
+    private Integer witnessId;
+    private Integer injuryId;
+    private Integer injurySolicitorId;
+    private Map session;
+    private Integer tab = -1;
 
     public List getAttachmentCategory() {
         List items = new ArrayList<LookupItem>();
@@ -254,7 +258,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     @Override
     public String execute() throws Exception {
-
+        
+        if(tab > 0)
+        {
+            session.put("tabIndex", tab);
+        }
         return SUCCESS;
     }
 
@@ -972,7 +980,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         
         return SUCCESS;
     }
-
+        
     private Claim constructeClaimForInvoiceValidation(final Claim claim) {
 
         Claim BREClaim = claim;
@@ -1240,7 +1248,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             
             claim = service.getClaim(id);
             String newStatus = claim.getPreviousStatus();
-            
+                    
             auditTrailService.logAuditLog(newStatus, claim, null, null);
             sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
             
@@ -1272,7 +1280,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)
                     && invoice.getPenaltyAlertQty() > -1) {
-                result = invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30;
+                    result = invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30;
             }
         }
 
@@ -1509,5 +1517,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(claim.getReasonOfRejectionId());
             createNewNote(reasonOfRejection.getName(), isPublic, "Reason For Rejection: ");
         }
+    }
+
+    public void setSession(Map arg0) {
+        this.session = arg0;
+    }
+
+    public void setTab(Integer tab) {
+        this.tab = tab;
     }
 }

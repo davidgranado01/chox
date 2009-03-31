@@ -61,6 +61,8 @@
         remoteSort: true
     });
     ds.setDefaultSort('created', 'desc');
+     
+
     
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';     
     
@@ -255,35 +257,99 @@
             emptyMsg: "No claim to display"
         });
         
-       var approvedInvoicesPaymentAction = new Ext.Action
-            ({
-                text: 'Approved Invoices Awaiting Payment',
-                handler: function(){
-                     var selectedRecords =  sm2.getSelections();
-                }
-            }); 
-            
-        var actionMenu = new Ext.Toolbar.MenuButton({
-            text: 'Action',
-            handler: function()
-            {
-                var selectedRecords =  sm2.getSelections();
-                selectedRecords.each(function(item,index,length)
-                {
-                    var status = item.json.status;
-                    if(status == '')
-                    {
+        //setup actions
+        var approvedInvoicesPaymentAction = new Ext.Action
+                        ({
+                            text: 'Approved Invoices Awaiting Payment',
+                            handler: function(){
+                                if(confirm('Are you sure you want to perform this action?'))
+                                {
+                                    var selectedRecords =  sm2.getSelections();  
+                                    var selectedIDs = $.map(selectedRecords, function(n){
+                                        return n.json.id;
+                                    });
 
-                    }
-                    
-                });
-                
-            },
-            tooltip: {text:'Action', title:'Action'},
+                                    var param = selectedIDs.join(",")
+
+                                    $.ajax({
+                                        url: "logInvoicePayments.action?selectedClaimIds=" + param,
+                                        success: function()
+                                        {
+                                            ds.reload();
+                                            refreshFilterPanel();
+                                        }
+                                    });
+                                }
+                            }
+                        }); 
+                        
+       var clearBREApprovedInvoicesForPaymentAction = new Ext.Action
+                        ({
+                            text: 'Clear BRE-Approved Invoices for Payment',
+                            handler: function(){
+                                if(confirm('Are you sure you want to perform this action?'))
+                                {
+                                    var selectedRecords =  sm2.getSelections();  
+                                    var selectedIDs = $.map(selectedRecords, function(n){
+                                        return n.json.id;
+                                    });
+
+                                    var param = selectedIDs.join(",")
+
+                                    $.ajax({
+                                        url: "clearBREApprovedInvoicesForPayment.action?selectedClaimIds=" + param,
+                                        success: function()
+                                        {
+                                            ds.reload();
+                                            refreshFilterPanel();
+                                        }
+                                    });
+                                }
+                            }
+                        }); 
+        
+        //setup grid panel tool bar menu        
+        var actionMenu = new Ext.Toolbar.MenuButton({
+            text: 'More actions',            
+            tooltip: {text:'', title:'More actions'},
             // Menus can be built/referenced by using nested menu config objects
-            menu : {items: [approvedInvoicesPaymentAction]}
+            menu : {items: [approvedInvoicesPaymentAction,clearBREApprovedInvoicesForPaymentAction]}
         });
+        
+        actionMenu.on('arrowclick', function()
+        {
+             //check thye accessibility on action item
+                var selectedRecords = sm2.getSelections();
                 
+                <s:if test="IsApprovePaymentAccessibile"> 
+
+                    if(isSelectedRecordsMatchGivenStatus(selectedRecords,'AwaitingInvoicePayment'))
+                    {   
+                        approvedInvoicesPaymentAction.enable(); 
+                    }
+                    else
+                    {
+                        approvedInvoicesPaymentAction.disable(); 
+                    }  
+                </s:if>
+                <s:else> approvedInvoicesPaymentAction.disable();</s:else>   
+
+                <s:if test="IsClearBREApprovedInvoicesForPaymentAccessibile"> 
+
+                    if(isSelectedRecordsMatchGivenStatus(selectedRecords,'InvoiceApprovedByBRE'))
+                    {   
+                        clearBREApprovedInvoicesForPaymentAction.enable(); 
+                    }
+                    else
+                    {
+                        clearBREApprovedInvoicesForPaymentAction.disable(); 
+                    }  
+                </s:if>
+                <s:else> clearBREApprovedInvoicesForPaymentAction.disable();</s:else>
+        }, this);
+        
+          
+        //Setup Grid Panel
         var grid = new Ext.grid.GridPanel({
             loadMask: true,
             ds: ds,
@@ -314,17 +380,43 @@
             tbar:[actionMenu]
             
         });
-        grid.render('gridHolder');
-        grid.getSelectionModel().selectFirstRow();              
         
-
+        ds.on('load',function()
+        {
+            $('.x-grid3-hd-checker').removeClass('x-grid3-hd-checker-on');
+        });
+        
+        grid.render('gridHolder');
+        grid.getSelectionModel().selectFirstRow(); 
     }
-  
+    
+    function isSelectedRecordsMatchGivenStatus(selectedRecords,status)
+    {
+        if(selectedRecords.length > 0)
+        {
+            for(i = 0; i < selectedRecords.length; i ++)       
+            {
+                var s = selectedRecords[i].json.status;
+                if(status != s)
+                {
+                    return false;
+                }        
+            }   
+            return true;
+        }
+        else
+        {
+            return false;
+        }      
+    }
+    
+    
     function setupTabPanels()
     {
-        var getParams = document.URL.split("?");
-        var params = Ext.urlDecode(getParams[getParams.length - 1]);
-        currentTabIndex = params.tab == null ? 0 : params.tab;
+        //var getParams = document.URL.split("?");
+        //var params = Ext.urlDecode(getParams[getParams.length - 1]);
+        //currentTabIndex = params.tab == null ? 0 : params.tab;
+        currentTabIndex = <s:property value="tab" />;
        
         tabs = new Ext.TabPanel({
         renderTo: 'tabPanel',
@@ -343,7 +435,7 @@
             });
     }
 
-    function random_number() {
+    function random_number(){
         var min = 10000000;
         var max = 99999999;
         return (Math.round((max-min) * Math.random() + min));
@@ -380,40 +472,40 @@
         loadDataFromSession();
     }); 
     
-function loadDataFromSession()
-{
-    $.get("getPageIndexOfCurrentSearch.action", function(data){
-        var start = parseInt(data.trim());            
-        if(start >= 0)
-        {
-            ds.load(
+    function loadDataFromSession()
+    {
+        $.get("getPageIndexOfCurrentSearch.action", function(data){
+            var start = parseInt(data.trim());            
+            if(start >= 0)
             {
-                params:
-                    {
-                    start:start,
-                    limit:recordPerPage
-                }
-            });
-        }  
-    }); 
-}
+                ds.load(
+                {
+                    params:
+                        {
+                        start:start,
+                        limit:recordPerPage
+                    }
+                });
+            }  
+        }); 
+    }
 
     function handleActivate(tab){
 
         if(tab.title == 'Reports'){
-            ds.removeAll();
+            ds.load({ params:{start:0,limit:0}});
             $("#gridPanel").hide();            
         }
         else if(tab.title == 'Dashboard'){
-            ds.removeAll();
+            ds.load({ params:{start:0,limit:0}});
             $("#gridPanel").hide();  
         }
         else if(tab.title == 'Search'){
-            ds.removeAll();
+            ds.load({ params:{start:0,limit:0}});
             $("#gridPanel").show();  
         }
         else if(tab.title == 'Inbox'){
-            ds.removeAll();
+            ds.load({ params:{start:0,limit:0}});
             $("#gridPanel").show(); 
         }
         
@@ -421,6 +513,8 @@ function loadDataFromSession()
         {
             currentTabIndex = tabs.items.indexOf(tabs.getActiveTab());
         }  
+        
+        $('.x-grid3-hd-checker').removeClass('x-grid3-hd-checker-on');
     }
     
     function clearForm(form) {
@@ -443,6 +537,15 @@ function loadDataFromSession()
                 this.selectedIndex = -1;
         });
     };
+    
+    function refreshFilterPanel()
+    {
+        $.get("getFilterRecordCounters.action", function(content){
+           
+        $("#filterPanel").html(content);
+           
+        }); 
+    }
 
 </script>
 
@@ -495,70 +598,10 @@ function loadDataFromSession()
             
             <div id="filterPanelTab" class="x-hide-display">
                 <div id="filterPanel">
-                    <ul class="inbox">
-                        <s:if test="filterAccessibility.isNewClaimsToBeroutedAccessible">
-                            <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedUnrouted');" >New Claims to be Routed (<s:property value="filterRecordCounter.newClaimsToBeroutedCount" />)</a></li>
-                        </s:if>                         
-                        <s:if test="filterAccessibility.isRejectedClaimsAccessible">
-                            <li><a href="javascript:showClaimByStatus('ClaimRejected');" >Rejected Claims (<s:property value="filterRecordCounter.rejectedClaimsCount" />)</a></li>
-                        </s:if> 
-                        <s:if test="filterAccessibility.isIncorrectInvoiceDataCalculationsAccessible">
-                            <li><a href="javascript:showClaimByStatus('InvoiceDataCalculationIncorrect');" >Incorrect Invoice Data Calculations (<s:property value="filterRecordCounter.incorrectInvoiceDataCalculationsCount" />)</a></li>
-                        </s:if> 
-                        
-                        <s:if test="filterAccessibility.isClaimsAwaitingHireMonitoringInformationAccessible">
-                            <li><a href="javascript:showClaimByStatus('AwaitingCarHireInfo');" >Claims Awaiting Hire Monitoring Information (<s:property value="filterRecordCounter.claimsAwaitingHireMonitoringInformationCount" />)</a></li>
-                        </s:if> 
-                        <s:if test="filterAccessibility.isClaimsAwaitingAcknowledgementAccessible">
-                            <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedRouted');" >Claims Awaiting Acknowledgement (<s:property value="filterRecordCounter.claimsAwaitingAcknowledgementCount" />)</a></li>
-                        </s:if> 
-                        <s:if test="filterAccessibility.isReSubmittedClaimsAwaitingAcknowledgementAccessible">
-                            <li><a href="javascript:showClaimByStatus('ClaimRejectionContested');" >Re-Submitted Claims Awaiting Acknowledgement (<s:property value="filterRecordCounter.reSubmittedClaimsAwaitingAcknowledgementCount" />)</a></li>
-                        </s:if>
-                        <s:if test="filterAccessibility.isClaimPendingAccessible">
-                            <li><a href="javascript:showClaimByStatusWithSort('ClaimPending','statusModifiedDate');" >Claim Pending (<s:property value="filterRecordCounter.ClaimPendingCount" />)</a></li>
-                        </s:if>                        
-                        <s:if test="filterAccessibility.isHireUpdateAnomaliesAccessible">
-                            <li><a href="javascript:showClaimIsAnomalies();" >Hire Update Anomalies (<s:property value="filterRecordCounter.hireUpdateAnomaliesCount" />)</a></li>
-                        </s:if>
-                        <s:if test="filterAccessibility.isClaimReferredToEngineerAccessible">
-                            <li><a href="javascript:showClaimByStatus('ClaimReferredToEngineer');" >Claim Referred To Engineer (<s:property value="filterRecordCounter.ClaimReferredToEngineerCount" />)</a></li>
-                        </s:if>
-                        <s:if test="filterAccessibility.isClaimReferredToFNOLAccessible">
-                            <li><a href="javascript:showClaimByStatus('ClaimReferredToFNOL');" >Claims To Be Registered (<s:property value="filterRecordCounter.ClaimReferredToFNOLCount" />)</a></li>
-                        </s:if>
-                        <s:if test="filterAccessibility.isClaimUpdatedByEngineerAccessible">
-                            <li><a href="javascript:showClaimByStatus('ClaimUpdatedByEngineer');" >Claims Updated By Engineer (<s:property value="filterRecordCounter.ClaimUpdatedByEngineerCount" />)</a></li>
-                        </s:if>
-                        
-                        <s:if test="filterAccessibility.isContestedInvoicesReferredToCHOAccessible">
-                            <li><a href="javascript:showClaimByStatus('ContestedInvoiceReferredToCHO');" >Contested Invoices Referred To CHO (<s:property value="filterRecordCounter.contestedInvoicesReferredToCHOCount" />)</a></li>
-                        </s:if>         
-                        <s:if test="filterAccessibility.isApprovedInvoicesAwaitingPaymentAccessible">
-                            <li><a href="javascript:showClaimByStatus('AwaitingInvoicePayment');" >Approved Invoices Awaiting Payment (<s:property value="filterRecordCounter.approvedInvoicesAwaitingPaymentCount" />)</a></li>
-                        </s:if>                        
-                        <s:if test="filterAccessibility.isEscalatedInvoicesAccessible">
-                            <li><a href="javascript:showClaimByStatus('InvoiceEscalated');" >Escalated Invoices (<s:property value="filterRecordCounter.escalatedInvoicesCount" />)</a></li>
-                        </s:if> 
-                        <s:if test="filterAccessibility.isContestedInvoicesReferredToInsurerAccessible">
-                            <li><a href="javascript:showClaimByStatus('ContestedInvoiceReferredToInsurer');" >Contested Invoices Referred To Insurer (<s:property value="filterRecordCounter.contestedInvoicesReferredToInsurerCount" />)</a></li>
-                        </s:if>
-                        <s:if test="filterAccessibility.isInvoicesApprovedByBREAccessible">
-                            <li><a href="javascript:showClaimByStatus('InvoiceApprovedByBRE');" >Invoices Approved By BRE (<s:property value="filterRecordCounter.invoicesApprovedByBRECount" />)</a></li>
-                        </s:if>
-                        <s:if test="filterAccessibility.isPenaltyChargesAppliedAccessible">
-                            <li><a href="javascript:showClaimIspenaltyChargeApplied();" >Penalty Charges To Be Applied (<s:property value="filterRecordCounter.PenaltyChargesAppliedCount" />)</a></li>
-                        </s:if>  
-                        <s:if test="filterAccessibility.isInvoiceReferredToClaimsHandlerAccessible">
-                            <li><a href="javascript:showClaimByStatus('InvoiceReferredToClaimsHandler');" >Invoice Referred By Engineer  (<s:property value="filterRecordCounter.InvoiceReferredToClaimsHandlerCount" />)</a></li>
-                        </s:if>
-                        <s:if test="filterAccessibility.isInvoicePaymentLoggedAccessible">
-                            <li><a href="javascript:showClaimByStatus('InvoicePaymentLogged');" >Payments to be received (<s:property value="filterRecordCounter.InvoicePaymentLoggedCount" />)</a></li>
-                        </s:if>  
-                    </ul>                            
+                    <s:action name="getFilterRecordCounters" namespace="/user" executeResult="true" />
                 </div>
             </div>
-
+              
             <div id="searchPanelTab" style="height:230px; background: #dfe8f6;" class="x-hide-display">
                 <div id="searchPanel">
                     <s:action name="searchClaim" namespace="/user" executeResult="true" /> 

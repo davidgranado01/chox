@@ -37,6 +37,9 @@
         <action name="inbox" class="chox.web.actions.InboxAction">
             <result>/jsp/user/Inbox.jsp</result>
         </action>
+        <action name="getFilterRecordCounters" class="chox.web.actions.FilterRecordCounterAction">
+            <result>/jsp/user/p_get_filter_record_counters.jsp</result>
+        </action>
         <action name="searchClaim" class="chox.web.actions.SearchClaimAction">
             <result name="success">/jsp/user/p_searchClaim.jsp
             </result>
@@ -358,6 +361,12 @@
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
+        </action>
+        <action name="logInvoicePayments" class="chox.web.actions.BatchUpdateAction" method="logInvoicePayments">
+            <result name="success">/jsp/p_response.jsp</result>
+        </action>
+        <action name="clearBREApprovedInvoicesForPayment" class="chox.web.actions.BatchUpdateAction" method="clearBREApprovedInvoicesForPayment">
+            <result name="success">/jsp/p_response.jsp</result>
         </action>
         <action name="reviewByEngineer" class="chox.web.actions.ClaimAction" method="reviewByEngineer">
             <result name="success" type="redirect-action">
