@@ -54,7 +54,7 @@
             
             
             //repairBookInDatePicker.render('repairBookInDatePlaceHolder');
-       
+
             $("#formUpdateHireMonitoringDetail").validate(
             {
                 errorLabelContainer: "#HMmessageBox",                
@@ -72,11 +72,17 @@
                         date:true
                     },
                     labourRate :{
-                        number:true},
+                        number:true
+                    },
                     labourHour :{
-                        number:true},
+                        number:true
+                    },
                     labourCost :{
-                        number:true}
+                        number:true
+                    },
+                    nonProvisionReason :{
+                        required: isNonProvisionReasonRequired
+                    }
                 },
                 messages: {
                     nameOfRepairer:{
@@ -95,17 +101,38 @@
                         date:"Invalid date format for 'Repair Completion Date'"
                     },    
                     labourRate :{
-                        number:"You must supply a numeric value for 'Labour Rate'"},
+                        number:"You must supply a numeric value for 'Labour Rate'"
+                    },
                     labourHour :{
-                        number:"You must supply a numeric value for 'Labour Hours'"},
+                        number:"You must supply a numeric value for 'Labour Hours'"
+                    }, 
                     labourCost :{ 
-                        number:"You must supply a numeric value for 'Total Labour Cost'"}
+                        number:"You must supply a numeric value for 'Total Labour Cost'"
+                    },
+                    nonProvisionReason :{
+                        required:"You must select 'Labour Information Non-Provision Reason' if 'Labour Rate', 'Labour Hours' or 'Total Labour Cost' cannot be provided"
+                    }
                 },
                 submitHandler: function(form) {
                     $(form).ajaxSubmit(globalEntityFormOptions);
                 }
             });
         }); 
+        
+        function isNonProvisionReasonRequired(){
+            
+            /*
+            var sLabourRate = $("#labourCost").val();
+            var sLabourHour = $("#labourHour").val();
+            var sLabourCost = $("#labourCost").val();
+
+            if(sLabourRate.length<=0 && sLabourHour.length<=0 && sLabourCost.length<=0){
+                return true;
+            }
+            */
+           
+            return false;
+        }
         
     </script>
     
@@ -158,16 +185,26 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Labour Rate (Per Hour)</label>
-            <input type="text" class="chox-ttxt" name="labourRate" value="<s:property value="labourRate" />"/></div>
+            <input type="text" class="chox-ttxt" name="labourRate" id="labourRate" value="<s:property value="labourRate" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Labour Hours</label>
-            <input type="text" class="chox-ttxt" name="labourHour" value="<s:property value="labourHour" />"/></div>
+            <input type="text" class="chox-ttxt" name="labourHour" id="labourHour" value="<s:property value="labourHour" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                 Total Labour Cost</label>
-            <input type="text" class="chox-ttxt" name="labourCost" value="<s:property value="labourCost" />"/></div>
-            
+            <input type="text" class="chox-ttxt" name="labourCost" id="labourCost" value="<s:property value="labourCost" />"/></div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">Labour Information Non-Provision Reason</label>
+                <select class="chox-ttxt" name="nonProvisionReason">
+                    <option value="">-- Select --</option>
+                    <option value="Point Blank Refusal">Point Blank Refusal</option>
+                    <option value="Faxed Garage">Faxed Garage</option>
+                    <option value="Information Not Available/No System Access">Information Not Available/No System Access</option>
+                    <option value="Non Contactable/Ring Through">Non Contactable/Ring Through</option>
+                    <option value="Update Obtained By Other Source">Update Obtained By Other Source</option>
+                </select>
+                </div>
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
             </div>

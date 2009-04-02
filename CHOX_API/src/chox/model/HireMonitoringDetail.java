@@ -66,6 +66,7 @@ public class HireMonitoringDetail implements Serializable, IHireMonitoringDetail
     private BigDecimal labourRate;
     private Integer labourHour;
     private BigDecimal labourCost;
+    private String nonProvisionReason;
 
     /**
      * Method 'HireMonitoringDetail'
@@ -343,4 +344,13 @@ public class HireMonitoringDetail implements Serializable, IHireMonitoringDetail
     public void setLabourCost(BigDecimal labourCost) {
         this.labourCost = labourCost;
     }
+    
+    public String getNonProvisionReason() {
+        return nonProvisionReason;
+    }
+
+    public void setNonProvisionReason(String nonProvisionReason) {
+        this.nonProvisionReason = nonProvisionReason;
+    }
+    
 }

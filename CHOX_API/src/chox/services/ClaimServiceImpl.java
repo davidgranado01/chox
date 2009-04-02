@@ -59,10 +59,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     // UPDATED BY CR, 20090122 - 2100
     public Long getPenaltyChargeAppliedCount() {
 
-        String q = "select count(*) from Claim as c inner join c.invoice as iv where " + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_LOGGED + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_REJECTED_ACCEPTED + "' AND " + "c.status <> '" + ClaimStatus.CLAIM_CLOSED + "' " + "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.dateInvoiced) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
-
+        String q = "select count(*) from Claim as c inner join c.invoice as iv where " 
+                + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_LOGGED 
+                + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_REJECTED_ACCEPTED 
+                + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_RECEIVED 
+                + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT 
+                + "' AND " + "c.status <> '" + ClaimStatus.CLAIM_CLOSED + "' " 
+                + "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.dateInvoiced) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
         return getCount(q);
-    }   
+    }    
 
     public Long getHireUpdateAnomaliesCountNumber() {
         String q = "select count(*) from Claim where is_anomalies = true";
@@ -170,6 +175,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
             criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_REJECTED_ACCEPTED));
+            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
+            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
             criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.date_invoiced) + 1 >(iv1_.panalty_alert_qty+1)*30"));
         }

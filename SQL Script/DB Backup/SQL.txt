@@ -1,0 +1,3 @@
+
+ALTER TABLE hire_monitoring_detail ADD COLUMN non_provision_reason character varying;
+ALTER TABLE hire_monitoring_detail ALTER COLUMN non_provision_reason SET STORAGE EXTENDED;

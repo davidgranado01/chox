@@ -524,21 +524,41 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String validateHireMonitoringDetail() {
 
         String result = "";
-
-        /*0000314
-        if (this.claim.getHireMonitoringDetail() == null) {
-        return  "Error : You need to provide correct hire monitoring detail to submit this claim.";
-        } 
-         */
-
+        String sNonProvisionReasonDetailErrorMsg = "In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required, if this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.";
+        
         if (this.claim.getCustomer() == null || this.claim.getCustomer().getInitialECD() == null) {
             if (this.service.getECDCountByClaimId(this.claim.getId()) == 0) {
-                return "Error : You need to provide an Estimated Completion Date (ECD) to submit this claim.";
+                result = "You need to provide an Estimated Completion Date (ECD) to submit this claim. ";
             }
         }
+        
 
-        statusMsg = "Your action has been recorded";
-        return result;
+        if(claim.getHireMonitoringDetail() == null){
+            result = result + sNonProvisionReasonDetailErrorMsg;
+        }else{
+
+            String sNonProvisionReason = "";
+            if(claim.getHireMonitoringDetail().getNonProvisionReason()!=null){
+                sNonProvisionReason = claim.getHireMonitoringDetail().getNonProvisionReason().trim();
+            }
+            
+            // if(!claim.getHireMonitoringDetail().isIsTotalLostCheck()){
+                if(claim.getHireMonitoringDetail().getLabourCost()==null 
+                    && claim.getHireMonitoringDetail().getLabourHour()==null
+                    && sNonProvisionReason.length()==0
+                    && !claim.getHireMonitoringDetail().isIsTotalLostCheck()
+                ){
+                    result = result + sNonProvisionReasonDetailErrorMsg;
+                }
+            // }
+        }
+        
+        
+        if(result.length()>0){
+            return "Error : " + result;
+        }
+        
+        return "";
     }
 
     public String reSubmitRejectedClaim() {
@@ -1019,6 +1039,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) 
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED) 
                     && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
+                    && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)
                     && invoice.getPenaltyAlertQty() > -1) {
                 result = invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30;
             }
@@ -1032,9 +1053,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (getIsCHO()) {
             Invoice invoice = claim.getInvoice();
-
-            //if penaltyAlertQty = -1 mean it already reach the limit and alert not showing anymore 
-            if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED)) {
+            
+            if (invoice != null 
+                && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) 
+                && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) 
+                && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED) 
+                && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED)
+                && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)
+                ) {
                 result = invoice.getInvoicedDays() > 30;
             }
         }

@@ -49,7 +49,9 @@
             <label class="std-label-ro">
             Total Labour Cost</label>
         <label class="std-data-ro"><s:property value="labourCost" /></label></div>
-        
+        <div class="chox-form-item">
+            <label class="std-label-ro">Labour Information Non-Provision Reason</label>
+        <label class="std-data-ro"><s:property value="nonProvisionReason" /></label></div>        
         
     </div>
 </fieldset>
