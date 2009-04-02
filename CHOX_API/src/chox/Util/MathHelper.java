@@ -51,4 +51,14 @@ public class MathHelper {
         iValue.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
         return iValue;
     }
+    
+    public static BigDecimal devide(Integer iInput, Integer iDevider){
+        BigDecimal bOutput = new BigDecimal(0.00);
+        
+        if(iInput>0 && iDevider>0){
+            bOutput = new BigDecimal(iInput.floatValue() / iDevider.floatValue());
+        }
+        
+        return bOutput;
+    }
 }

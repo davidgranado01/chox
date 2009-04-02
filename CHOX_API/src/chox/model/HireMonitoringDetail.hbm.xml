@@ -20,5 +20,6 @@
     <property column="labour_rate" name="labourRate"/>
     <property column="labour_hour" name="labourHour"/>
     <property column="labour_cost" name="labourCost"/>
+    <property column="non_provision_reason" name="nonProvisionReason"/>
   </class>
 </hibernate-mapping>
