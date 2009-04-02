@@ -162,8 +162,6 @@ ALTER TABLE system_log ALTER COLUMN id SET DEFAULT nextval('system_log_id_seq'::
 
 ------------------------------------------------------------------------------------------------
 
-DROP view vw_system_log;
-
 create view vw_system_log as
 select system_log.id, system_log.action_id, action.description, system_log.message, system_log.status, 
 system_log.created_by, web_user.first_name||', '||web_user.last_name as name, web_user.email, system_log.created_date
@@ -173,8 +171,6 @@ and system_log.created_by=web_user.id
 order by created_date asc;
 
 ------------------------------------------------------------------------------------------------
-
-DROP view rpt_all_claim_with_invoice;
 
 CREATE OR REPLACE VIEW rpt_all_claim_with_invoice AS 
 
@@ -309,5 +305,15 @@ CREATE OR REPLACE VIEW rpt_claim_invoice AS
    LEFT JOIN third_party third_party ON third_party.id = claim.third_party_id;
 
 ALTER TABLE rpt_claim_invoice OWNER TO postgres;
+
+------------------------------------------------------------------------------------------------
+
+-- PATCH DATA
+delete from audit_trail where claim_id = 635 and id in (3373, 3894, 3895);
+
+------------------------------------------------------------------------------------------------
+
+ALTER TABLE hire_monitoring_detail ADD COLUMN non_provision_reason character varying;
+ALTER TABLE hire_monitoring_detail ALTER COLUMN non_provision_reason SET STORAGE EXTENDED;
 
 ------------------------------------------------------------------------------------------------
