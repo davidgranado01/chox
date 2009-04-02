@@ -116,37 +116,17 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
     
     private Boolean isClaimAnomalies(Date policyHolderDate, Date newECDDate, Date firstECD){
         
-        // System.out.println("***** policyHolderDate: "+policyHolderDate);
-        // System.out.println("***** newECDDate: "+newECDDate);
-        // System.out.println("***** firstECD: "+firstECD);
-        
         Long iTotalDelayDays = DateHelper.daysBetween(firstECD, newECDDate);
         Long iMD = DateHelper.daysBetween(policyHolderDate, firstECD);
-        
-        // System.out.println("***** iTotalDelayDays: "+iTotalDelayDays);
-        // System.out.println("***** iMD: "+iMD);
         
         if(iMD>0){
             
             int iMDRate = (int)java.lang.Math.round(iMD * ecdDurationAllowPercentage);
             
-            // System.out.println("***** iMDRate: "+iMDRate);
-            // System.out.println("***** VALUE: "+(iTotalDelayDays/iMDRate));
-            
             if((iTotalDelayDays > iMDRate)){
                 return true;
             }
             
-            /*
-            // int iInitialEstimateDurationDayAllow = (int) (initialEstimateDays * ecdDurationAllowRate);
-            // Long newEstimateDurationDays = DateHelper.daysBetween(LastEstimateECD, newECDDate);
-            // System.out.println("initialEstimateDays: "+initialEstimateDays);
-            // System.out.println("iInitialEstimateDurationDayAllow: "+iInitialEstimateDurationDayAllow);
-            // System.out.println("newEstimateDurationDays: "+newEstimateDurationDays);
-            if(newEstimateDurationDays>0 && (newEstimateDurationDays>iInitialEstimateDurationDayAllow)){
-                return true;
-            }
-            */
         }
         
         return false;

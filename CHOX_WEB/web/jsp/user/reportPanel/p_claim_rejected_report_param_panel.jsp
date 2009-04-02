@@ -11,9 +11,9 @@
 
     function openReport()
     {        
-        if(doFormValidation().form()){        
+        if(doFormValidation().form()){
             var queryString = $('#formReportParam').formSerialize();  
-            window.location= "exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
+            window.location = "exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
         }
     }
     

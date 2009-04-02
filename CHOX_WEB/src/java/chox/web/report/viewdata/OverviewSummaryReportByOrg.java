@@ -20,6 +20,7 @@ public class OverviewSummaryReportByOrg {
     private boolean isIns = true;
 
     private Integer total_no_claims_num;
+    private Integer total_no_invoice_num;
     private BigDecimal total_no_claims_val;
     private Integer total_no_accepted_claims_num;
     private BigDecimal total_no_accepted_claims_val;
@@ -37,6 +38,7 @@ public class OverviewSummaryReportByOrg {
     private Integer average_hire_duration_day;
     private BigDecimal average_invoice_val;
     private BigDecimal average_penalty_val;
+    private Integer average_invoice_cycle_day;
     
     public static OverviewSummaryReportByOrg getObject(Map data, boolean isIns) {
         
@@ -48,6 +50,8 @@ public class OverviewSummaryReportByOrg {
         
         // TOTAL NO. CLAIMS
         result.setTotal_no_claims_num(ReportHelper.getIntegerValue(data.get("total_no_claims_num".toLowerCase())));
+        result.setTotal_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_no_invoice_num".toLowerCase())));
+        
         result.setTotal_no_claims_val(ReportHelper.getBigDecimalValue(data.get("total_no_claims_val".toLowerCase())));
         
         // TOTAL NO. ACCPETED CLAIMS
@@ -72,11 +76,10 @@ public class OverviewSummaryReportByOrg {
         
         // AVERAGE INFORMATION
         result.setAverage_claim_cycle_day(ReportHelper.getIntegerValue(data.get("average_claim_cycle_day".toLowerCase())));
-        
         result.setAverage_hire_duration_day(ReportHelper.getIntegerValue(data.get("average_hire_duration_day".toLowerCase())));
         result.setAverage_invoice_val(ReportHelper.getBigDecimalValue(data.get("average_invoice_val".toLowerCase())));
         result.setAverage_penalty_val(ReportHelper.getBigDecimalValue(data.get("average_penalty_val".toLowerCase())));
-        
+        result.setAverage_invoice_cycle_day(ReportHelper.getIntegerValue(data.get("average_invoice_cycle_day".toLowerCase())));
         return result;
     }
     
@@ -246,6 +249,22 @@ public class OverviewSummaryReportByOrg {
 
     public void setTotal_no_rejected_invoice_val(BigDecimal total_no_rejected_invoice_val) {
         this.total_no_rejected_invoice_val = total_no_rejected_invoice_val;
+    }
+
+    public Integer getTotal_no_invoice_num() {
+        return total_no_invoice_num;
+    }
+
+    public void setTotal_no_invoice_num(Integer total_no_invoice_num) {
+        this.total_no_invoice_num = total_no_invoice_num;
+    }
+
+    public Integer getAverage_invoice_cycle_day() {
+        return average_invoice_cycle_day;
+    }
+
+    public void setAverage_invoice_cycle_day(Integer average_invoice_cycle_day) {
+        this.average_invoice_cycle_day = average_invoice_cycle_day;
     }
 
     

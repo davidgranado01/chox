@@ -15,17 +15,13 @@ import chox.web.report.viewdata.ClaimRejectionLineItem;
 import chox.web.report.viewdata.ClaimRejectionLineItemDetail;
 import chox.web.security.PermissionedUser;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- *
- * @author Emmanuel
- */
+
 
 public class ClaimRejectedReport implements Report {
 
@@ -55,6 +51,8 @@ public class ClaimRejectedReport implements Report {
         
         try {
             
+            System.out.println(">>>>>>>>>>>>> 1");
+            
             List<ClaimRejectionLineItem> reportRows = getReasonOfRejection();
             
             Date dataStart = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
@@ -66,6 +64,8 @@ public class ClaimRejectedReport implements Report {
             
             ClaimRejection claimRejection = new ClaimRejection();
             claimRejection.setClaimRejectionLineItem(reportRows);
+            
+            System.out.println(">>>>>>>>>>>>> 2");
             
             Integer iOrgId = null;
             
@@ -85,18 +85,26 @@ public class ClaimRejectedReport implements Report {
                 sOrganisationName = cho.getName();                
             }
             
+            System.out.println(">>>>>>>>>>>>> 3");
+            
             claimRejection = getReportLineResult(isInsReport, iOrgId, claimRejection, dataStart, dataEnd);
+            
+            System.out.println(">>>>>>>>>>>>> 4");
             
             ClaimRejectedReportObject reportObject = new ClaimRejectedReportObject();
             reportObject.setDateFrom(dataStart);
             reportObject.setDateTo(dataEnd);
             reportObject.setCreatedDate(new Date());
-
+            
+            System.out.println(">>>>>>>>>>>>> 5");
+            
             reportParameters.put("reportHeaderName", claimRejection.getOrgName());
             reportParameters.put("reportRows", reportRows);
             reportParameters.put("reportObj", reportObject);
             reportParameters.put("organisationLabel", sOrganisationLabel);
             reportParameters.put("organisationName", sOrganisationName);
+            
+            System.out.println(">>>>>>>>>>>>> 6");
             
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -105,7 +113,9 @@ public class ClaimRejectedReport implements Report {
         } finally {
             dataService.logSystemLog(getReportCode(), sActionMsg, bAction);
         }
-
+        
+        System.out.println(">>>>>>>>>>>>> 7");
+        
         return reportParameters;
     }
 
@@ -163,12 +173,10 @@ public class ClaimRejectedReport implements Report {
                 if(cRejected.getId()!=null){
                     
                     String keyName = ("REJ_"+cRejected.getId()).toLowerCase();
-                    // String ketPercName = ("REJ_PERC_"+cRejected.getId()).toLowerCase();
                     
                     ClaimRejectionLineItemDetail ReportColumn = new ClaimRejectionLineItemDetail();
                     ReportColumn.setNumberOfClaim(MathHelper.getIntegerValue(data.get(keyName)));
                     ReportColumn.setNumberOfClaimPercentage(MathHelper.getPercentage(ReportColumn.getNumberOfClaim(), iTotalClaimRejected));
-                    // ReportColumn.setNumberOfClaimPercentage(MathHelper.getPercentage(ReportColumn.getNumberOfClaim(), MathHelper.getIntegerValue(data.get(ketPercName))));
                     cRejected.getReportColumns().add(ReportColumn);
                 }
             }

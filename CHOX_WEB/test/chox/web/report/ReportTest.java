@@ -79,7 +79,7 @@ public class ReportTest {
         List<InvoiceSummary> invoiceSummaries = new ArrayList<InvoiceSummary>();
 
         InvoiceSummary is1 = new InvoiceSummary();
-        is1.setChoName("Driver Assit");
+        is1.setOrgName("Driver Assit");
         is1.setNoInvoiceSubmitted(Integer.valueOf(10));
         is1.setTotalInvoiceValue(BigDecimal.valueOf(500.50));
         is1.setNoInvoicesPaid(Integer.valueOf(500));
@@ -95,7 +95,7 @@ public class ReportTest {
         invoiceSummaries.add(is1);
 
         InvoiceSummary is2 = new InvoiceSummary();
-        is2.setChoName("ABC Org");
+        is2.setOrgName("ABC Org");
         is2.setNoInvoiceSubmitted(Integer.valueOf(10));
         is2.setTotalInvoiceValue(BigDecimal.valueOf(500.50));
         is2.setNoInvoicesPaid(Integer.valueOf(500));
