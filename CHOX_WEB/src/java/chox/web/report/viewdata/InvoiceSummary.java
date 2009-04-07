@@ -13,6 +13,7 @@ import java.util.Map;
  *
  * @author Emmanuel
  */
+
 public class InvoiceSummary {
 
     private String orgName;
@@ -38,24 +39,17 @@ public class InvoiceSummary {
     private Integer InvoiceSettledCat90Days;
     private Integer averageNoDaysOfInvoiceSettlement;
     private Integer averageAgeDaysOfPendingInvoices;
+    private Integer noOfInvoicesClosed;
             
     public static InvoiceSummary getObject(Map data) {
+        
         InvoiceSummary result = new InvoiceSummary();
         result.setOrgName((String)data.get("name".toLowerCase()));
         result.setNoInvoiceSubmitted(((BigInteger)data.get("noInvoiceSubmitted".toLowerCase())).intValue());
         result.setTotalInvoiceValue((BigDecimal)data.get("totalInvoiceValue".toLowerCase()));
         result.setNoInvoicesPaid(((BigInteger)data.get("noInvoicesPaid".toLowerCase())).intValue());
         result.setValueOfPaidInvoices((BigDecimal)data.get("valueOfPaidInvoices".toLowerCase()));
-        
-        BigDecimal dAverageInvoiceValue = BigDecimal.ZERO;
-        Double dTotalInvoiceValue = result.getTotalInvoiceValue().doubleValue();
-        
-        if(dTotalInvoiceValue>0 && result.getNoInvoiceSubmitted()>0){
-            BigDecimal bdNoInvoiceSubmitted = new BigDecimal(result.getNoInvoiceSubmitted()); 
-            dAverageInvoiceValue = result.getTotalInvoiceValue().divide(bdNoInvoiceSubmitted,2);
-        }
-        
-        result.setAverageInvoiceValue(dAverageInvoiceValue);
+        result.setAverageInvoiceValue((BigDecimal)data.get("averageInvoiceValue".toLowerCase()));
         result.setNoInvoiceAwaitingPayment(((BigInteger)data.get("noInvoiceAwaitingPayment".toLowerCase())).intValue());
         result.setInvoiceAwaitingPaymentValue((BigDecimal) data.get("invoiceAwaitingPaymentValue".toLowerCase()));
         result.setNoInvoicePending(((BigInteger)data.get("noInvoicePending".toLowerCase())).intValue());
@@ -69,13 +63,12 @@ public class InvoiceSummary {
         result.setInvoiceSettledCat0Days(((BigInteger)data.get("invoiceSettledCat0Days".toLowerCase())).intValue());
         result.setInvoiceSettledCat30Days(((BigInteger)data.get("invoiceSettledCat30Days".toLowerCase())).intValue());
         result.setInvoiceSettledCat60Days(((BigInteger)data.get("invoiceSettledCat60Days".toLowerCase())).intValue());
-        result.setInvoiceSettledCat90Days(((BigInteger)data.get("invoiceSettledCat90Days".toLowerCase())).intValue());
+        result.setInvoiceSettledCat90Days(((BigInteger)data.get("InvoiceSettledCat90Days".toLowerCase())).intValue());
         result.setAverageAgeDaysOfPendingInvoices(((BigInteger)data.get("averageAgeDaysOfPendingInvoices".toLowerCase())).intValue());
         result.setAverageNoDaysOfInvoiceSettlement(((BigInteger)data.get("averageNoDaysOfInvoiceSettlement".toLowerCase())).intValue());
+        result.setNoOfInvoicesClosed(((BigInteger)data.get("noOfInvoicesClosed".toLowerCase())).intValue());
         
         
-        
-
         return result;
     }
 
@@ -244,23 +237,19 @@ public class InvoiceSummary {
     }
 
     public BigDecimal getInvoiceSettledCat0DaysPerc() {
-        //return new BigDecimal(InvoiceSettledCat0Days.floatValue()/noInvoiceSubmitted.floatValue());
-        return MathHelper.devide(InvoiceSettledCat0Days, noInvoiceSubmitted);
+        return MathHelper.devide(InvoiceSettledCat0Days, noInvoicesPaid);
     }
 
     public BigDecimal getInvoiceSettledCat30DaysPerc() {
-        //return new BigDecimal(InvoiceSettledCat30Days.floatValue()/noInvoiceSubmitted.floatValue());
-        return MathHelper.devide(InvoiceSettledCat30Days, noInvoiceSubmitted);
+        return MathHelper.devide(InvoiceSettledCat30Days, noInvoicesPaid);
     }
 
     public BigDecimal getInvoiceSettledCat60DaysPerc() {
-        //return new BigDecimal(InvoiceSettledCat60Days.floatValue()/noInvoiceSubmitted.floatValue());
-        return MathHelper.devide(InvoiceSettledCat60Days, noInvoiceSubmitted);
+        return MathHelper.devide(InvoiceSettledCat60Days, noInvoicesPaid);
     }
 
     public BigDecimal getInvoiceSettledCat90DaysPerc() {
-        //return new BigDecimal(InvoiceSettledCat90Days.floatValue()/noInvoiceSubmitted.floatValue());
-        return MathHelper.devide(InvoiceSettledCat90Days, noInvoiceSubmitted);
+        return MathHelper.devide(InvoiceSettledCat90Days, noInvoicesPaid);
     }
     
     public Integer getAverageAgeDaysOfPendingInvoices() {
@@ -280,17 +269,19 @@ public class InvoiceSummary {
     }
 
     public BigDecimal getInvoiceDisputedSettledPerc() {
-        return MathHelper.devide(invoiceDisputedSettled, noInvoiceSubmitted);
+        return MathHelper.devide(invoiceDisputedSettled, noInvoicesPaid);
     }
     
     public BigDecimal getSubmittedInvoicesSettlePerc() {
-        //return new BigDecimal(noInvoicesPaid.floatValue()/noInvoiceSubmitted.floatValue());
         return MathHelper.devide(noInvoicesPaid, noInvoiceSubmitted);
     }
 
-    
-    
-    
-    
-    
+    public Integer getNoOfInvoicesClosed() {
+        return noOfInvoicesClosed;
+    }
+
+    public void setNoOfInvoicesClosed(Integer noOfInvoicesClosed) {
+        this.noOfInvoicesClosed = noOfInvoicesClosed;
+    }
+
 }

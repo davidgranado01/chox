@@ -20,8 +20,9 @@ public class OverviewSummaryReportByOrg {
     private boolean isIns = true;
 
     private Integer total_no_claims_num;
-    private Integer total_no_invoice_num;
     private BigDecimal total_no_claims_val;
+    private Integer total_no_invoice_num;
+    private BigDecimal total_no_invoice_val;
     private Integer total_no_accepted_claims_num;
     private BigDecimal total_no_accepted_claims_val;
     private BigDecimal total_no_accepted_claims_per;
@@ -51,6 +52,7 @@ public class OverviewSummaryReportByOrg {
         // TOTAL NO. CLAIMS
         result.setTotal_no_claims_num(ReportHelper.getIntegerValue(data.get("total_no_claims_num".toLowerCase())));
         result.setTotal_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_no_invoice_num".toLowerCase())));
+        result.setTotal_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_no_invoice_val".toLowerCase())));
         
         result.setTotal_no_claims_val(ReportHelper.getBigDecimalValue(data.get("total_no_claims_val".toLowerCase())));
         
@@ -265,6 +267,14 @@ public class OverviewSummaryReportByOrg {
 
     public void setAverage_invoice_cycle_day(Integer average_invoice_cycle_day) {
         this.average_invoice_cycle_day = average_invoice_cycle_day;
+    }
+
+    public BigDecimal getTotal_no_invoice_val() {
+        return total_no_invoice_val;
+    }
+
+    public void setTotal_no_invoice_val(BigDecimal total_no_invoice_val) {
+        this.total_no_invoice_val = total_no_invoice_val;
     }
 
     

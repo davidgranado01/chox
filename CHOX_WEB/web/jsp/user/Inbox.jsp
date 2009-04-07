@@ -260,7 +260,7 @@
         //setup actions
         var approvedInvoicesPaymentAction = new Ext.Action
                         ({
-                            text: 'Approved Invoices Awaiting Payment',
+                            text: 'Update Claim(s) To Invoice Payment Logged',
                             handler: function(){
                                 if(confirm('Are you sure you want to perform this action?'))
                                 {
@@ -285,7 +285,7 @@
                         
        var clearBREApprovedInvoicesForPaymentAction = new Ext.Action
                         ({
-                            text: 'Clear BRE-Approved Invoices for Payment',
+                            text: 'Approve Claim(s) For Payment',
                             handler: function(){
                                 if(confirm('Are you sure you want to perform this action?'))
                                 {

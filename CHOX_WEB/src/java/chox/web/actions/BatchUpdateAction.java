@@ -71,7 +71,7 @@ public class BatchUpdateAction extends BaseAction {
                     bActionFlag = false;
                     sActionMsg = getActionResult();
                 } finally {
-                    systemLogService.logSystemLog("ACT016", sActionMsg, bActionFlag);
+                    // systemLogService.logSystemLog("ACT016", sActionMsg, bActionFlag);
                 }
             }
     }        

@@ -61,13 +61,14 @@ public class OverviewSummaryReport implements Report {
 
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice where date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_no_claims_num, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_no_invoice_num, ");
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice where date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_no_invoice_val, ");
             sb.append("(select case when sum(rpt_all_claim_with_invoice.total_to_pay) is null then 0.00 else sum(rpt_all_claim_with_invoice.total_to_pay) end as no_count from rpt_all_claim_with_invoice where date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_no_claims_val, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='AwaitingCarHireInfo') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_accepted_claims_num, ");
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='AwaitingCarHireInfo') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_accepted_claims_val, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='ClaimRejectionAccepted') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_rejected_claims_num, ");
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='ClaimRejectionAccepted') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_rejected_claims_val, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='AwaitingInvoicePayment') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_approved_invoice_num, ");
-            sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='AwaitingInvoicePayment') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_approved_invoice_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='InvoicePaymentLogged') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_approved_invoice_num, ");
+            sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='InvoicePaymentLogged') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_approved_invoice_val, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='InvoiceRejectionAccepted') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_rejected_invoice_num, ");
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='InvoiceRejectionAccepted') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo) as total_no_rejected_invoice_val, ");
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.claim_created_date)))/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.new_status='InvoicePaymentLogged' where date(claim_created_date) between @pUploadDateFrom and @pUploadDateTo and invoice.insurer_id=insurer_chorganisation.insurer_id and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) as average_claim_cycle_day, ");
@@ -75,7 +76,7 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(vehicle_hire.days)/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice left outer join vehicle_hire vehicle_hire on vehicle_hire.id = invoice.claim_vehicle_hire_id where date(invoice.claim_created_date) between @pUploadDateFrom and @pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_hire_duration_day, ");
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.total_to_pay)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(invoice.claim_created_date) between @pUploadDateFrom and @pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_invoice_val, ");
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.panalty_charge)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(invoice.claim_created_date) between @pUploadDateFrom and @pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_penalty_val ");
-        
+
             if(currentUser.getIsINS()){
                 sb.append("from insurer_chorganisation insurer_chorganisation, chorganisation chorganisation ");
                 sb.append("where chorganisation.id=insurer_chorganisation.chorganisation_id  ");
@@ -156,8 +157,6 @@ public class OverviewSummaryReport implements Report {
                 Integer bTotalNoClaims = recordPerOrg.getTotal_no_claims_num();
                 Integer bTotalNoInvoices = recordPerOrg.getTotal_no_invoice_num();
                 
-                System.out.println("bTotalNoInvoices::::"+bTotalNoInvoices);
-                
                 noCountClaimAll = noCountClaimAll + bTotalNoClaims;
                 noCountInvoiceAll = noCountInvoiceAll + bTotalNoInvoices;
                 
@@ -181,36 +180,42 @@ public class OverviewSummaryReport implements Report {
                         noCountAll = noCountAll + (Integer)lineItemDetail.getNoCount();
                         break;
                     case 4:
+                        lineItemDetail.setNoCount(recordPerOrg.getTotal_no_invoice_num());
+                        lineItemDetail.setTotalValue(recordPerOrg.getTotal_no_invoice_val());
+                        noCountAll = noCountAll + (Integer)lineItemDetail.getNoCount();
+                        totalValueAll = totalValueAll.add((BigDecimal)lineItemDetail.getTotalValue());
+                        break;
+                    case 5:
                         lineItemDetail.setNoCount(recordPerOrg.getTotal_no_approved_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getTotal_no_approved_invoice_val());                        
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getTotal_no_approved_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
                         noCountAll = noCountAll + (Integer)lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal)lineItemDetail.getTotalValue());
                         break;
-                    case 5:
+                    case 6:
                         lineItemDetail.setNoCount(recordPerOrg.getTotal_no_rejected_invoice_num());
                         lineItemDetail.setTotalValue(recordPerOrg.getTotal_no_rejected_invoice_val());                        
                         lineItemDetail.setTotalPercentage(MathHelper.getPercentageBigDecimal(recordPerOrg.getTotal_no_rejected_invoice_num().floatValue(), bTotalNoInvoices.floatValue(), 2));
                         noCountAll = noCountAll + (Integer)lineItemDetail.getNoCount();
                         totalValueAll = totalValueAll.add((BigDecimal)lineItemDetail.getTotalValue());
                         break;
-                    case 6:
+                    case 7:
                         lineItemDetail.setTotalDay(recordPerOrg.getAverage_claim_cycle_day());
                         totalDayAll = totalDayAll + (Integer)lineItemDetail.getTotalDay();
                         break;
-                    case 7:
+                    case 8:
                         lineItemDetail.setTotalDay(recordPerOrg.getAverage_invoice_cycle_day());
                         totalDayAll = totalDayAll + (Integer)lineItemDetail.getTotalDay();
                         break;                        
-                    case 8:
+                    case 9:
                         lineItemDetail.setTotalDay(recordPerOrg.getAverage_hire_duration_day());
                         totalDayAll = totalDayAll + (Integer)lineItemDetail.getTotalDay();
                         break;
-                    case 9:
+                    case 10:
                         lineItemDetail.setTotalValue(recordPerOrg.getAverage_invoice_val());
                         totalValueAll = totalValueAll.add((BigDecimal)lineItemDetail.getTotalValue());
                         break; 
-                    case 10:
+                    case 11:
                         lineItemDetail.setTotalValue(recordPerOrg.getAverage_penalty_val());
                         totalValueAll = totalValueAll.add((BigDecimal)lineItemDetail.getTotalValue());
                         break;               
@@ -220,6 +225,8 @@ public class OverviewSummaryReport implements Report {
                 lineItemDetails.add(lineItemDetail);
                 
             }
+            
+            System.out.println(">>>LINE ID"+reportLine.getLineId());
             
             // LINE 1 to 5
             lineItemDetails = processAllOrganisationDetailPerLines(
@@ -269,11 +276,11 @@ public class OverviewSummaryReport implements Report {
         for (Object o : dataService.externalQuery(query)) {
             Map data = (Map) o;
             
-            reportLines.get(getLineItemIndex(6, reportLines)).getLineItem().get(0).setTotalDay(ReportHelper.getIntegerValue(data.get("averageClaimCycleForAllOrg".toLowerCase())));
-            reportLines.get(getLineItemIndex(7, reportLines)).getLineItem().get(0).setTotalDay(ReportHelper.getIntegerValue(data.get("averageInvoiceCycleForAllOrg".toLowerCase())));
-            reportLines.get(getLineItemIndex(8, reportLines)).getLineItem().get(0).setTotalDay(ReportHelper.getIntegerValue(data.get("averageHireDurationForAllOrg".toLowerCase())));
-            reportLines.get(getLineItemIndex(9, reportLines)).getLineItem().get(0).setTotalValue(ReportHelper.getBigDecimalValue(data.get("averageInvoiceValueForAllOrg".toLowerCase())));
-            reportLines.get(getLineItemIndex(10, reportLines)).getLineItem().get(0).setTotalValue(ReportHelper.getBigDecimalValue(data.get("averagePenaltyValueForAllOrg".toLowerCase())));
+            reportLines.get(getLineItemIndex(7, reportLines)).getLineItem().get(0).setTotalDay(ReportHelper.getIntegerValue(data.get("averageClaimCycleForAllOrg".toLowerCase())));
+            reportLines.get(getLineItemIndex(8, reportLines)).getLineItem().get(0).setTotalDay(ReportHelper.getIntegerValue(data.get("averageInvoiceCycleForAllOrg".toLowerCase())));
+            reportLines.get(getLineItemIndex(9, reportLines)).getLineItem().get(0).setTotalDay(ReportHelper.getIntegerValue(data.get("averageHireDurationForAllOrg".toLowerCase())));
+            reportLines.get(getLineItemIndex(10, reportLines)).getLineItem().get(0).setTotalValue(ReportHelper.getBigDecimalValue(data.get("averageInvoiceValueForAllOrg".toLowerCase())));
+            reportLines.get(getLineItemIndex(11, reportLines)).getLineItem().get(0).setTotalValue(ReportHelper.getBigDecimalValue(data.get("averagePenaltyValueForAllOrg".toLowerCase())));
         }
         
         return reportLines;
@@ -323,9 +330,13 @@ public class OverviewSummaryReport implements Report {
                 case 4:
                     lineItemDetails.get(0).setNoCount(noCount);        
                     lineItemDetails.get(0).setTotalValue(totalValue);
-                    lineItemDetails.get(0).setTotalPercentage(MathHelper.getPercentageBigDecimal(noCount, noCountInvoiceAll, 2));
                     break;
                 case 5:
+                    lineItemDetails.get(0).setNoCount(noCount);        
+                    lineItemDetails.get(0).setTotalValue(totalValue);
+                    lineItemDetails.get(0).setTotalPercentage(MathHelper.getPercentageBigDecimal(noCount, noCountInvoiceAll, 2));
+                    break;
+                case 6:
                     lineItemDetails.get(0).setNoCount(noCount);        
                     lineItemDetails.get(0).setTotalValue(totalValue);
                     lineItemDetails.get(0).setTotalPercentage(MathHelper.getPercentageBigDecimal(noCount, noCountInvoiceAll, 2));
@@ -382,36 +393,41 @@ public class OverviewSummaryReport implements Report {
         
         lineItem = new OverviewSummaryLineItem();
         lineItem.setLineId(4);
-        lineItem.setName("Total No. Approved Invoices");
+        lineItem.setName("Total No. Invoices");
+        summaries.add(lineItem); 
+        
+        lineItem = new OverviewSummaryLineItem();
+        lineItem.setLineId(5);
+        lineItem.setName("Total No. Paid Invoices");
         summaries.add(lineItem);  
 
         lineItem = new OverviewSummaryLineItem();
-        lineItem.setLineId(5);
+        lineItem.setLineId(6);
         lineItem.setName("Total No. Rejected Invoices");
         summaries.add(lineItem);  
         
         lineItem = new OverviewSummaryLineItem();
-        lineItem.setLineId(6);
+        lineItem.setLineId(7);
         lineItem.setName("Average Claim Cycle Time");
         summaries.add(lineItem);  
         
         lineItem = new OverviewSummaryLineItem();
-        lineItem.setLineId(7);
+        lineItem.setLineId(8);
         lineItem.setName("Average Invoice Cycle Time");
         summaries.add(lineItem); 
         
         lineItem = new OverviewSummaryLineItem();
-        lineItem.setLineId(8);
+        lineItem.setLineId(9);
         lineItem.setName("Average Hire Duration");
         summaries.add(lineItem);  
         
         lineItem = new OverviewSummaryLineItem();
-        lineItem.setLineId(9);
+        lineItem.setLineId(10);
         lineItem.setName("Average Invoice Value");
         summaries.add(lineItem);  
         
         lineItem = new OverviewSummaryLineItem();
-        lineItem.setLineId(10);
+        lineItem.setLineId(11);
         lineItem.setName("Average Penalty Charge");
         summaries.add(lineItem);  
         

@@ -626,14 +626,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 result = result + sNonProvisionReasonDetailErrorMsg;
             }
             
-            /*
-            if(claim.getHireMonitoringDetail().getLabourCost()==null 
-                && claim.getHireMonitoringDetail().getLabourHour()==null
-                && sNonProvisionReason.length()==0
-            ){
-                result = result + sNonProvisionReasonDetailErrorMsg;
-            }
-            */ 
         }
         
         if(result.length()>0){
