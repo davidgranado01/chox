@@ -648,28 +648,19 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Selected Insurer is invalid", false);
                     }
                 }
-                */
                 
-                System.out.println(">>>>>>>>>>> 00:"+xmlParseResult.getClaim().getChoReference());
-                System.out.println(">>>>>>>>>>> 01:"+XmlHelper.getNodeValue(thisElement, "vehicle-class")+"|");
-                System.out.println(">>>>>>>>>>> 02:");
+                */
                 
                 // GET VEHICLE CLASS ID
                 VehicleClass vehicleclass = vehicleClassService.getVehicleClassByNodeName(thisElement, "vehicle-class");
                 
-                System.out.println(">>>>>>>>>>> 03:");
-                
                 if(vehicleclass!=null){
-                    // System.out.println("NOT NULL : "+vehicleclass.getId());
                     customer.setVehicleClass(vehicleclass);
                 }else{
-                    // System.out.println("NULL");
                     if(XmlHelper.isMAN_Claim_Customer_Vehicle_Class){
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Selected Vehicle Class is invalid for Customer Details", false);
                     }
                 }
-                
-                System.out.println(" >>>>>>>>>>>>>>>>> ");
                 
                 customer.setInsurerName(XmlHelper.getNodeValue(thisElement, "name"));
                 customer.setPolicyNumber(XmlHelper.getNodeValue(thisElement, "policy-number"));
@@ -685,7 +676,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 customer.setIsTotalLoss(XmlHelper.getBooleanFromNode(thisElement, "total-loss"));
                 xmlParseResult.getClaim().setCustomer(customer);
                 
-                System.out.println(" >>>>>>>>>>>>>>>>> "+customer.getVehicleClass().getId());
             }
         }
 

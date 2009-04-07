@@ -35,6 +35,7 @@ public class VehicleClassServiceImpl  extends SecureDataService implements Vehic
             String vehicleName = TextHelper.trimWhiteSpace(XmlHelper.getNodeValue(thisElement, nodeName));
             vehicleclass = getVehicleClassByName(vehicleName.toUpperCase());
         }
+        
         return vehicleclass;
     }
 
