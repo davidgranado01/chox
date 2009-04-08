@@ -65,7 +65,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_RECEIVED 
                 + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT 
                 + "' AND " + "c.status <> '" + ClaimStatus.CLAIM_CLOSED + "' " 
-                + "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.dateInvoiced) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
+                + "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.createdDate) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
+                //+ "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.dateInvoiced) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
 
         return getCount(q);
     }   
@@ -179,7 +180,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
-            criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.date_invoiced) + 1 >(iv1_.panalty_alert_qty+1)*30"));
+            criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.created_date) + 1 >(iv1_.panalty_alert_qty+1)*30"));
+            // criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.date_invoiced) + 1 >(iv1_.panalty_alert_qty+1)*30"));
         }
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {
             criteria.add(Restrictions.like("iv.claimInvoiceNo", searchCriteria.getInvoiceNumber()).ignoreCase());

@@ -1,0 +1,17 @@
+insert into accessibility_item (role, access_right, accessibility_id, id) 
+values ('ROLE_INS_MNG', 1,  (select id from accessibility where name like 'filter.InvoiceReferredToClaimsHandler'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility_item (role, access_right, accessibility_id, id) 
+values ('ROLE_INS_MNG', 1,  (select id from accessibility where name like 'filter.ClaimUpdatedByEngineer'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility_item (role, access_right, accessibility_id, id) 
+values ('ROLE_INS_MNG', 1,  (select id from accessibility where name like 'filter.ClaimReferredToFNOL'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility_item (role, access_right, accessibility_id, id) 
+values ('ROLE_INS_MNG', 1,  (select id from accessibility where name like 'filter.ClaimReferredToEngineer'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility_item (role, access_right, accessibility_id, id) 
+values ('ROLE_INS_MNG', 1,  (select id from accessibility where name like 'filter.ClaimPending'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility_item (role, access_right, accessibility_id, id) 
+values ('ROLE_CHO_MNG', 1,  (select id from accessibility where name like 'filter.PenaltyChargesApplied'), (select max(id)+1 from accessibility_item));

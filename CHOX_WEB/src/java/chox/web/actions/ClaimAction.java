@@ -1205,7 +1205,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             Boolean isRemovePenaltyAlert = getIsRemovePenaltyAlert();
             
             if (isRemovePenaltyAlert != null && isRemovePenaltyAlert) {
-                long dateDiff = DateHelper.daysBetween(invoice.getDateInvoiced(), new Date());
+                //long dateDiff = DateHelper.daysBetween(invoice.getDateInvoiced(), new Date());
+                long dateDiff = DateHelper.daysBetween(invoice.getCreatedDate(), new Date());
                 int newpenaltyAlertQty = (int) (dateDiff / 30);
                 //if penaltyAlertQty > 3 mean it already reach the limit and alert not showing anymore, set it to -1
                 newpenaltyAlertQty = newpenaltyAlertQty >= 3 ? -1 : newpenaltyAlertQty;
