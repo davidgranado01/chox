@@ -116,11 +116,14 @@
         <div class="chox-form-item">
             <label class="std-label-ro">Date Invoiced</label>
             <label class="std-data-ro"><s:date name="dateInvoiced" format="dd MMM yyyy" /></label>
+        </div>                
+        <div class="chox-form-item">
+            <label class="std-label-ro">Invoice Uploaded Date</label>
+            <label class="std-data-ro"><s:date name="createdDate" format="dd MMM yyyy" /></label>
             <s:if test="invoicedDays > 0">    
                 <label class="std-data-ro"> (<s:property value="invoicedDays" /> days)</label>
             </s:if>
-        </div>                
-        
+        </div>          
     </div>
 </fieldset>
 

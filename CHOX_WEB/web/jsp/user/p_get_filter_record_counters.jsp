@@ -9,8 +9,7 @@
     </s:if> 
     <s:if test="filterAccessibility.isIncorrectInvoiceDataCalculationsAccessible">
         <li><a href="javascript:showClaimByStatus('InvoiceDataCalculationIncorrect');" >Incorrect Invoice Data Calculations (<s:property value="filterRecordCounter.incorrectInvoiceDataCalculationsCount" />)</a></li>
-    </s:if> 
-    
+    </s:if>
     <s:if test="filterAccessibility.isClaimsAwaitingHireMonitoringInformationAccessible">
         <li><a href="javascript:showClaimByStatus('AwaitingCarHireInfo');" >Claims Awaiting Hire Monitoring Information (<s:property value="filterRecordCounter.claimsAwaitingHireMonitoringInformationCount" />)</a></li>
     </s:if> 
@@ -35,13 +34,12 @@
     <s:if test="filterAccessibility.isClaimUpdatedByEngineerAccessible">
         <li><a href="javascript:showClaimByStatus('ClaimUpdatedByEngineer');" >Claims Updated By Engineer (<s:property value="filterRecordCounter.ClaimUpdatedByEngineerCount" />)</a></li>
     </s:if>
-    
     <s:if test="filterAccessibility.isContestedInvoicesReferredToCHOAccessible">
         <li><a href="javascript:showClaimByStatus('ContestedInvoiceReferredToCHO');" >Contested Invoices Referred To CHO (<s:property value="filterRecordCounter.contestedInvoicesReferredToCHOCount" />)</a></li>
-    </s:if>         
+    </s:if>    
     <s:if test="filterAccessibility.isApprovedInvoicesAwaitingPaymentAccessible">
         <li><a href="javascript:showClaimByStatus('AwaitingInvoicePayment');" >Approved Invoices Awaiting Payment (<s:property value="filterRecordCounter.approvedInvoicesAwaitingPaymentCount" />)</a></li>
-    </s:if>                        
+    </s:if>
     <s:if test="filterAccessibility.isEscalatedInvoicesAccessible">
         <li><a href="javascript:showClaimByStatus('InvoiceEscalated');" >Escalated Invoices (<s:property value="filterRecordCounter.escalatedInvoicesCount" />)</a></li>
     </s:if> 

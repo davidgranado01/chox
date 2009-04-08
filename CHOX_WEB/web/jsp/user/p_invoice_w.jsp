@@ -279,12 +279,19 @@
                 <label class="chox-form-std-label">Date Invoiced<span class="mandatory">*</span></label>
                 <label class="std-data-ro"><span id="dateInvoicedPH"></span></label>
             </div>
-            
+            <!--
             <div class="chox-form-item">
                 <label class="chox-form-std-label">&nbsp;</label>
                 <s:if test="invoicedDays > 0"><label class="std-data-ro"> (<s:property value="invoicedDays" /> days)</label></s:if>
-            </div>            
-            
+            </div>
+            !-->
+        <div class="chox-form-item">
+            <label class="chox-form-std-label">Invoice Uploaded Date</label>
+            <label class="std-data-ro"><s:date name="createdDate" format="dd MMM yyyy" /></label>
+            <s:if test="invoicedDays > 0">    
+                <label class="std-data-ro"> (<s:property value="invoicedDays" /> days)</label>
+            </s:if>
+        </div>              
             
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" id="submitInvoice"/>
