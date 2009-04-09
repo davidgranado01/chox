@@ -752,8 +752,9 @@
                 <div class="chox-claim-header x-panel-bwrap chox-form-container" id="generalActionPanel" style="display: none;">    
                     <s:action name="getActionPanel" executeResult="true" />
                     <div class="action-message"><s:property value="actionResult" /></div>
+                    <div class="action-message"><s:property value="actionResult2" /></div>
                 </div>
-                  
+                
                 <s:if test="isShowPenaltyChargeAlert">
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">   
                         <s:action name="getAlertPanel" executeResult="true" />                    
