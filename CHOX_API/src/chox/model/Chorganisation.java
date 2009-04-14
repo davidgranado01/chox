@@ -83,6 +83,7 @@ public class Chorganisation implements Serializable,Auditable, ICHOrganisationIn
 	 * This attribute maps to the column last_modified_date in the chorganisation table.
 	 */
 	protected Date lastModifiedDate;
+        protected boolean status;
 	/**
 	 * Method 'Chorganisation'
 	 * 
@@ -394,24 +395,55 @@ public class Chorganisation implements Serializable,Auditable, ICHOrganisationIn
         public boolean getIsDelegatedAuthority() {
             return this.isDelegatedAuthority;
         }
+
+        public boolean isStatus() {
+            return status;
+        }
+
+        public void setStatus(boolean status) {
+            this.status = status;
+        }
         
         public String getDisplayAddress(){
             
-            String strDelimiter = ",";
+            String strDelimiter = ", ";
+            StringBuffer sb = new StringBuffer();
             
-            System.out.println(">>>address1:"+address1+"|"+TextHelper.appendDelimiter(address1, strDelimiter));
-            System.out.println(">>>address2:"+address2+"|"+TextHelper.appendDelimiter(address2, strDelimiter));
-            System.out.println(">>>address3:"+address3+"|"+TextHelper.appendDelimiter(address3, strDelimiter));
-            System.out.println(">>>address4:"+address4+"|"+TextHelper.appendDelimiter(address4, strDelimiter));
-            System.out.println(">>>address5:"+address5+"|"+TextHelper.appendDelimiter(address5, strDelimiter));
-            System.out.println(">>>postcode:"+postcode+"|"+TextHelper.appendDelimiter(postcode, strDelimiter));
+            if(TextHelper.isValidText(this.address1)){
+                if(TextHelper.isValidText(sb.toString())){
+                    sb.append(strDelimiter);
+                }                
+                sb.append(this.address1);
+            }
+
+            if(TextHelper.isValidText(this.address2)){
+                if(TextHelper.isValidText(sb.toString())){
+                    sb.append(strDelimiter);
+                }
+                sb.append(this.address2);
+            }
             
-            /*
-            System.out.println(">>>>"+address1 + TextHelper.appendDelimiter(address2, strDelimiter) + TextHelper.appendDelimiter(address3, strDelimiter) + TextHelper.appendDelimiter(address4, strDelimiter) 
-                    + TextHelper.appendDelimiter(postcode, strDelimiter) + TextHelper.appendDelimiter(address5, ""));
-            */
-            return "ABC";
-            //return "A"+address1 + TextHelper.appendDelimiter(address2, strDelimiter) + TextHelper.appendDelimiter(address3, strDelimiter) + TextHelper.appendDelimiter(address4, strDelimiter) 
-            //        + TextHelper.appendDelimiter(postcode, strDelimiter) + TextHelper.appendDelimiter(address5, "");
+            if(TextHelper.isValidText(this.postcode)){
+                if(TextHelper.isValidText(sb.toString())){
+                    sb.append(strDelimiter);
+                }                
+                sb.append(this.postcode);
+            }
+            
+            if(TextHelper.isValidText(this.address3)){
+                if(TextHelper.isValidText(sb.toString())){
+                    sb.append(strDelimiter);
+                }                
+                sb.append(this.address3);
+            }
+            
+            if(TextHelper.isValidText(sb.toString())){
+                    return sb.toString();
+            }else{
+                return "N/A";
+            }
+            
+            
+            
         }
 }

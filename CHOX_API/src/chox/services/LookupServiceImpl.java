@@ -43,21 +43,26 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     }
 
     public List getSuppliers() {
+        
         WebUser currentUser = getCurrentUser();
-        return getSuppliers(currentUser.getInsurer().getId());
-        // DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
-        // return findByCriteria(criteria);
+                
+        if(currentUser.isCHOXAdmin()){
+            DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
+            return findByCriteria(criteria);            
+        }else{
+            return getSuppliers(currentUser.getInsurer().getId());
+        }
     }
 
     public List getInsurers() {
         
         WebUser currentUser = getCurrentUser();
-        return getInsurers(currentUser.getChorganisation().getId());
-        /*
-        DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
-        return findByCriteria(criteria);
-        */
-         
+        if(currentUser.isCHOXAdmin()){
+            DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
+            return findByCriteria(criteria);            
+        }else{
+            return getInsurers(currentUser.getChorganisation().getId());
+        }
     }
 
     public List getVehicleClasses() {
@@ -133,6 +138,20 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
         return results;
 
+    }
+    
+    public List getNonProvisionReason(){
+    
+        List items = new ArrayList<LookupItem>();
+        
+        items.add(new LookupItem("Point Blank Refusal", "Point Blank Refusal"));
+        items.add(new LookupItem("Faxed Garage", "Faxed Garage"));
+        items.add(new LookupItem("Information Not Available/No System Access", "Info. Not Available/No System Access"));
+        items.add(new LookupItem("Non Contactable/Ring Through", "Non Contactable/Ring Through"));
+        items.add(new LookupItem("Update Obtained By Other Source", "Update Obtained By Other Source"));
+        
+        return items;
+        
     }
 
 }

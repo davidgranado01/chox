@@ -22,4 +22,5 @@ public interface LookupService {
     public List getVehicleClasses();
     public List getClaimRejectionReason();
     public List getInvoiceRejectionReason();
+    public List getNonProvisionReason();
 }

@@ -16,12 +16,15 @@ public class TextHelper {
         return t;
     }
     
-    public static String appendDelimiter (String strInput, String strDelimiter){
+    public static boolean isValidText(String strInp){
         
-        if(!strInput.equalsIgnoreCase("")){
-            return strInput + strDelimiter + " ";
+        boolean bFlag = false;
+        
+        if((strInp.trim()).length()>1){
+            bFlag = true;
         }
         
-        return "";
-    }   
+        return bFlag;
+    }
+    
 }

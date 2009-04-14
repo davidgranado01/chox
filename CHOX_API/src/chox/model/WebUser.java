@@ -353,5 +353,39 @@ public class WebUser implements Serializable
             return String.format("%1$s %2$s %3$s", this.getFirstName(), this.getLastName(), orgName);
         }
 
+        
+        public boolean isCHOXAdmin(){
+            
+            boolean bFlag = false;
+            
+            if(this.getChorganisation()==null && this.getInsurer()==null){
+                bFlag = true;
+            }
+            
+            return bFlag;
+            
+        }
+        
+        public String getDisplayName(){
+            return String.format("%1$s %2$s", this.getFirstName(), this.getLastName());
+        }
+        
+        public int getOrganisationType(){
+            
+            Integer typeIdex = -1;
+            
+            if(this.isCHOXAdmin()){
+                typeIdex = 1;
+            }else{
+                
+                if(this.getInsurer()!=null){
+                     typeIdex = 2;
+                }else if(this.getChorganisation()!=null){
+                    typeIdex = 3;
+                }
+            }
+            
+            return typeIdex;
+        } 
 
 }

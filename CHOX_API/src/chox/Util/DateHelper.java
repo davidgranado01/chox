@@ -12,6 +12,7 @@ public class DateHelper {
     public static SimpleDateFormat LocalDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     public static SimpleDateFormat DBDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     public static SimpleDateFormat TimeFormat = new SimpleDateFormat("kk:mm");
+    public static SimpleDateFormat GridViewDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     
     public static java.sql.Timestamp getCurrentTimeStamp() {
         Calendar cal = Calendar.getInstance();

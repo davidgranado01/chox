@@ -1,7 +1,10 @@
 package chox.services;
 
 import chox.model.WebUser;
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 public class UserServiceImpl extends DataService implements UserService {
@@ -12,6 +15,7 @@ public class UserServiceImpl extends DataService implements UserService {
     public WebUser findByEmail(String email) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("email", email));
+        criteria.add(Restrictions.eq("status", 1));
         WebUser result = (WebUser) getByCriteria(criteria);
         return result;
     }
@@ -45,4 +49,29 @@ public class UserServiceImpl extends DataService implements UserService {
         String q = "select count(*) from WebUser where status = 1 and insurer.id = " + insId.toString();
         return getCount(q);
     } 
+    
+    public List<WebUser> getUsers(int start, int limit){
+        
+        List<WebUser> users = new ArrayList<WebUser>();
+        
+        try {
+            
+            DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
+            criteria.addOrder(Order.asc("email"));      
+            users = findByCriteria(criteria);
+        
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }    
+        
+        return users;
+    } 
+    
+    public void updateObject(WebUser object) {
+        try {
+            save(object);
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }          
+    }    
 }

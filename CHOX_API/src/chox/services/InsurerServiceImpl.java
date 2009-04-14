@@ -2,7 +2,10 @@ package chox.services;
 
 import chox.Util.XmlHelper;
 import chox.model.Insurer;
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.w3c.dom.Element;
 
@@ -36,4 +39,30 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
     public Insurer getObject(int id) {
         return (Insurer) get(Insurer.class, id);
     }
+    
+    public List<Insurer> getInsurers(){
+        
+        List<Insurer> insurer = new ArrayList<Insurer>();
+        
+        try {
+            
+            DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
+            criteria.addOrder(Order.asc("name"));
+            insurer = findByCriteria(criteria);
+        
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }    
+        
+        return insurer;
+    }    
+    
+    public void updateObject(Insurer object) {
+        try {
+            save(object);
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }          
+    }  
+    
 }

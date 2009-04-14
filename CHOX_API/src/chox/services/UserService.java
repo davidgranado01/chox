@@ -1,6 +1,7 @@
 package chox.services;
 
 import chox.model.WebUser;
+import java.util.List;
 
 public interface UserService {
 
@@ -13,4 +14,6 @@ public interface UserService {
     public Long getNumChoActiveUser(Integer choId);
 
     public Long getNumInsActiveUser(Integer insId);
+    public List<WebUser> getUsers(int start, int limit);
+    public void updateObject(WebUser object);
 }

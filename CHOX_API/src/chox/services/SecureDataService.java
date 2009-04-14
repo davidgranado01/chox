@@ -33,13 +33,12 @@ public class SecureDataService extends DataService {
         }
     }
     
-     public WebUser getCurrentUser() {
+    public WebUser getCurrentUser() {
         return getSecurityInfoProvider().getCurrentUSer();
     }
 
     public SecurityInfoProvider getSecurityInfoProvider() {
         if (this.securityInforProvider == null) {
-            //for testing purpose, will inject by spring in web application
             setSecurityInfoProvider(new FakeSecurityInfoProvider());
         }
         return this.securityInforProvider;

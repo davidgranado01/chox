@@ -6,6 +6,7 @@
       <generator class="increment"/>
     </id>
     <property column="name" name="name"/>
+    <property column="status" name="status"/>
     <property column="admin_handling_charge" name="adminHandlingCharge"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>

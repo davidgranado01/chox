@@ -44,6 +44,7 @@ public class Insurer implements Serializable, IInsurerInfo,Auditable
 	 * This attribute maps to the column last_modified_date in the insurer table.
 	 */
 	protected Date lastModifiedDate;
+        protected boolean status;
 
 	/**
 	 * Method 'Insurer'
@@ -180,5 +181,13 @@ public class Insurer implements Serializable, IInsurerInfo,Auditable
 	{
 		this.lastModifiedDate = lastModifiedDate;
 	}
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
 }
