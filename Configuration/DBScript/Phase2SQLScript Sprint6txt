@@ -4,10 +4,30 @@
 -- ############################################################################################\
 
 -- CREATED BY: Carlson
--- CREATED DT: 200904
+-- CREATED DT: 20090409
 
--- DESC: Assign accessilbity to CHO manager to view the report
+-- DESC: ADD NEW MENU ON INBOX PAGE
 
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'menu.Admin');
 
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO_MNG', 1, (select id from accessibility where name = 'menu.Admin'),(select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 1, (select id from accessibility where name = 'menu.Admin'),(select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHOX_ADMIN', 1, (select id from accessibility where name = 'menu.Admin'),(select max(id)+1 from accessibility_item));
+
+------------------------------------------------------------------------------------------------
+
+-- DELETE INCORRECT ROLE ASSIGN TO CHOX ADMIN
+delete from web_user_user_role where web_user_id=5 and id!=12;
+
+------------------------------------------------------------------------------------------------
+
+ALTER TABLE chorganisation ADD COLUMN status boolean;
+ALTER TABLE chorganisation ALTER COLUMN status SET DEFAULT true;
+update chorganisation set status = true;
+------------------------------------------------------------------------------------------------
+
+ALTER TABLE insurer ADD COLUMN status boolean;
+ALTER TABLE insurer ALTER COLUMN status SET DEFAULT true;
+update insurer set status = true;
 
 ------------------------------------------------------------------------------------------------
