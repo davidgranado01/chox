@@ -142,69 +142,69 @@
         <legend>Hire Monitoring</legend>
         <div style="display:none" class="form-container">            
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="chox-form-std-label2">
             Original ECD</label><label class="std-data-ro"><s:property value="customer.InitialECDDesc" /></label></div>
             
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Name Of Repairer</label>
+                <label class="chox-form-std-label2">Name Of Repairer</label>
             <input type="text" class="chox-ttxt" name="nameOfRepairer" value="<s:property value="nameOfRepairer" />"/></div>
             
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Repair Book In Date</label>
+                <label class="chox-form-std-label2">Repair Book In Date</label>
                 <span id="repairBookInDatePH"></span>
             </div>
             
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="chox-form-std-label2">
                 Inspection Booked Date</label>
                 <span id="inspectionBookedDatePH"></span>
             </div>
             
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="chox-form-std-label2">
                 Inspection Date</label>
                 <span id="inspectionDatePH"></span>
             </div>
             
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="chox-form-std-label2">
                 Is Total Loss?</label>
             <s:checkbox name="isTotalLostCheck" /></div>
             
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="chox-form-std-label2">
                 Repair Completion Date</label>
             <span id="repairCompletionDatePH"></span></div>
             
             
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="chox-form-std-label2">
                 Name of IME</label>
             <input type="text" class="chox-ttxt" name="nameOfIme" value="<s:property value="nameOfIme" />"/></div>
             
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="chox-form-std-label2">
                 Labour Rate (Per Hour)</label>
             <input type="text" class="chox-ttxt" name="labourRate" id="labourRate" value="<s:property value="labourRate" />"/></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="chox-form-std-label2">
                 Labour Hours</label>
             <input type="text" class="chox-ttxt" name="labourHour" id="labourHour" value="<s:property value="labourHour" />"/></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="chox-form-std-label2">
                 Total Labour Cost</label>
             <input type="text" class="chox-ttxt" name="labourCost" id="labourCost" value="<s:property value="labourCost" />"/></div>
+            
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Labour Information Non-Provision Reason</label>
-                <select class="chox-ttxt" name="nonProvisionReason">
-                    <option value="">-- Select --</option>
-                    <option value="Point Blank Refusal">Point Blank Refusal</option>
-                    <option value="Faxed Garage">Faxed Garage</option>
-                    <option value="Information Not Available/No System Access">Information Not Available/No System Access</option>
-                    <option value="Non Contactable/Ring Through">Non Contactable/Ring Through</option>
-                    <option value="Update Obtained By Other Source">Update Obtained By Other Source</option>
-                </select>
-                </div>
+                <label class="chox-form-std-label2">Labour Information <br/>Non-Provision Reason</label>
+                <s:select name="nonProvisionReason" 
+                list="nonProvisionReasons" 
+                headerKey="" listKey="text" 
+                listValue="value"
+                headerValue="--- ALL ---" 
+                emptyOption="false" cssStyle="width:250px"></s:select>
+            </div>
+                
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
             </div>

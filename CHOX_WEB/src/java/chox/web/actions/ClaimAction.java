@@ -92,6 +92,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private HireMonitoringEcdService hireMonitoringEcdService;
     private CommentService commentService;
     private String actionResult;
+    private String actionResult2;
     private TabAccessibility tabAccessibility;
     private int vehicleClassId = -1;
     private int lineOfBusinessId = -1;
@@ -186,7 +187,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public List getInsurers() {
         if (insurers == null) {
             Chorganisation currentCho = this.getAuthenticatedUser().getUser().getChorganisation();
+            System.out.println("CHECK: CHO 1: "+this.getAuthenticatedUser().getUser().getChorganisation());
             insurers = this.lookupService.getInsurers(currentCho.getId());
+            System.out.println("CHECK: CHO 2: "+this.getAuthenticatedUser().getUser().getChorganisation());
         }
         return insurers;
     }
@@ -238,6 +241,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return actionResult;
     }
 
+    public String getActionResult2() {
+        return actionResult2;
+    }
+    
     public String getExtraActionName() {
         return extraActionName;
     }
@@ -566,9 +573,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         boolean bActionFlag = true;
         String sActionMsg = "";
         
-        String validationResult = validateHireMonitoringDetail();
+        String validationECDResult = validateHireMonitoringECDDetail();
+        String validationLabourResult = validateHireMonitoringLabourDetail();
         
-        if (validationResult.isEmpty()) {
+        System.out.println("V:validationECDResult"+validationECDResult);
+        System.out.println("V:validationLabourResult"+validationLabourResult);
+        
+        if ((validationLabourResult.length()+validationECDResult.length()) <= 0) {
+            
+            System.out.println("V:PASSED");
             
             String newStatus = ClaimStatus.AWAITING_INVOICE_DATA;
             
@@ -591,26 +604,44 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
             
         } else {
+            
+            System.out.println("V:FAILED");
+            
             result = ERROR;
-            this.actionResult = validationResult;
-        }
-
-        return result;
-    }
-
-    public String validateHireMonitoringDetail() {
-
-        String result = "";
-        String sNonProvisionReasonDetailErrorMsg = "In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required, if this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.";
-        
-        if (this.claim.getCustomer() == null || this.claim.getCustomer().getInitialECD() == null) {
-            if (this.service.getECDCountByClaimId(this.claim.getId()) == 0) {
-                result = "You need to provide an Estimated Completion Date (ECD) to submit this claim. ";
+            
+            if(validationECDResult.length()>0){
+                this.actionResult = validationECDResult;
+                this.actionResult2 = validationLabourResult;
+            }else{
+                this.actionResult = validationLabourResult;
             }
         }
         
+        System.out.println("V:FAILED 1:"+this.actionResult);
+        System.out.println("V:FAILED 2:"+this.actionResult2);
+        
+        return result;
+    }
+
+    public String validateHireMonitoringECDDetail() {
+        
+        if (this.claim.getCustomer() == null || this.claim.getCustomer().getInitialECD() == null) {
+            if (this.service.getECDCountByClaimId(this.claim.getId()) == 0) {
+                return "Error : You need to provide an Estimated Completion Date (ECD) to submit this claim. ";
+            }
+        }
+        
+        return "";
+    }
+
+    public String validateHireMonitoringLabourDetail() {
+
+        String result = "";
+        String sNonProvisionReasonDetailErrorMsg = "Error : In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required, if this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.";
+        
         if(claim.getHireMonitoringDetail() == null){
-            result = result + sNonProvisionReasonDetailErrorMsg;
+            return sNonProvisionReasonDetailErrorMsg;
+            
         }else{
             
             String sNonProvisionReason = "";
@@ -623,13 +654,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 && sNonProvisionReason.length()==0
                 && !claim.getHireMonitoringDetail().isIsTotalLostCheck()
             ){
-                result = result + sNonProvisionReasonDetailErrorMsg;
+                return sNonProvisionReasonDetailErrorMsg;
             }
             
-        }
-        
-        if(result.length()>0){
-            return "Error : " + result;
         }
         
         return "";

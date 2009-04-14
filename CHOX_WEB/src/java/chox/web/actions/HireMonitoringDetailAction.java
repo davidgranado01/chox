@@ -10,9 +10,11 @@ import chox.model.Customer;
 import chox.model.HireMonitoringDetail;
 import chox.services.CustomerService;
 import chox.services.HireMonitoringDetailService;
+import chox.services.LookupService;
 import chox.web.security.ApplicationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import java.util.List;
 import net.sf.json.JSONObject;
 
 /**
@@ -26,6 +28,8 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
     private HireMonitoringDetail model;
     private Customer customer;
     private int customerId;
+    private List nonProvisionReasons;
+    private LookupService lookupService;
 
     public void setHireMonitoringDetailService(HireMonitoringDetailService service) {
         this.service = service;
@@ -35,6 +39,10 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
         this.customerService = customerService;
     }
 
+    public void setLookupService(LookupService service) {
+        this.lookupService = service;
+    }
+    
     public HireMonitoringDetail getModel() {
         return model;
     }
@@ -94,4 +102,13 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
     public Customer getCustomer() {
         return customer;
     }
+    
+    public List getNonProvisionReasons() {
+        if (nonProvisionReasons == null) {
+            nonProvisionReasons = this.lookupService.getNonProvisionReason();
+        }
+        
+        return nonProvisionReasons;
+    }
+    
 }

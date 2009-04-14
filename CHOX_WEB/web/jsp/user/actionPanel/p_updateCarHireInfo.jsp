@@ -4,10 +4,7 @@
     Author     : Carlson
 --%>
 
-
 <%@ taglib uri="/struts-tags" prefix="s" %>
-
-
 
 <form onsubmit="return true;" action="user/submitHireMonitoringDetail.action" method="post" id="route" name="route">
     

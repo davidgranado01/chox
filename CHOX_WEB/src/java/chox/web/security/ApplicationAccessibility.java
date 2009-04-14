@@ -53,6 +53,7 @@ public class ApplicationAccessibility {
     
     public static final String MENU_DASHBOARD  = "Dashboard";
     public static final String MENU_REPORT  = "Report";
+    public static final String MENU_ADMIN  = "Admin";
     
     public static final String REPORT_INVOICE_SUMMARY = "InvoiceSummary";
     public static final String REPORT_INS_WEEKLY_SUMMARY = "InsurerWeeklySummary";

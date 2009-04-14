@@ -431,6 +431,9 @@
             <s:if test="menuAccessibility.isReportMenuAccessibility">                   
                 ,{contentEl:'reportPanelTab', title:'Reports',listeners: {activate: handleActivate}}
             </s:if>
+            <s:if test="menuAccessibility.isAdminMenuAccessibility">                   
+                ,{contentEl:'adminPanelTab', title:'Admin',listeners: {activate: handleActivate}}
+            </s:if>                
             ]
             });
     }
@@ -616,6 +619,14 @@
             </div>
             </s:if>
            
+            <s:if test="menuAccessibility.isAdminMenuAccessibility">
+            <div id="adminPanelTab" class="x-hide-display">
+                <div id="reportPanel">
+                    <s:action name="adminFunction" namespace="/user" executeResult="true" /> 
+                </div>
+            </div>
+            </s:if>
+            
             <div id="gridPanel">
                 <div id="gridHolder"></div>
                 <div class="excel-export"><form name="thisForm">

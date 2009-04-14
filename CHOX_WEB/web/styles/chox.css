@@ -1,4 +1,4 @@
-body
+chox-form-left-colbody
 {
     background-attachment: scroll;
     background-color: #fff;
@@ -136,11 +136,30 @@ fieldset div
     width: 220px;
     white-space: nowrap;
 }
+
+.chox-form-item .chox-form-std-label2
+{
+    
+    display: block;
+    float: left;
+    margin-right: 10px;
+    text-align: right;
+    width: 150px;
+    white-space: nowrap;
+}
+
 .chox-form-left-col
 {
     padding-right: 5px;
     width: 50%;
 }
+
+.chox-admin-form-left-col
+{
+    padding-right: 5px;
+    width: 30%;
+}
+
 div.chox-claim-header
 {
     border: 1px #8db2e3 solid;
@@ -626,4 +645,20 @@ img.tip-target
   font-size: 12px;
   font-weight:bold;    
   padding-top:15px;
+}
+
+.gridViewHeader{  
+    padding-bottom:5px;  
+    width:630px;
+}
+
+.gridViewHeader td{
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px;
+}
+
+.highlightItem{
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 10px;   
+  font-weight:bold;           
 }

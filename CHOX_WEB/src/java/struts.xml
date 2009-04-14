@@ -626,6 +626,18 @@
             </result>
         </action>        
         
+        <action name="getChorganisation" class="chox.web.actions.ChorganisationAction">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action> 
+        
+        <action name="getInsurer" class="chox.web.actions.InsurerAction">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action> 
+        
+        <action name="getUser" class="chox.web.actions.UserAction">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action> 
+        
         <!-- Start Comment Detail -->
         <action name="getComment" class="chox.web.actions.CommentAction">
             <result name="r">/jsp/user/p_Comment_r.jsp
@@ -678,6 +690,11 @@
             <result name="success">/jsp/user/reportPanel/p_build_report.jsp
             </result>
         </action>
+        <action name="adminFunction" class="chox.web.actions.AdminAction" method="adminPanel">
+            <result name="success">/jsp/user/adminPanel/p_admin_panel.jsp
+            </result>
+        </action>
+        
         <action name="loadParameterPanel" class="chox.web.actions.ReportAction" method="loadParameterPanel">
             <result name="InsurerAdminWeeklyOverviewReport-Excel">/jsp/user/reportPanel/p_insurer_admin_weekly_overview_param_panel.jsp</result>
             <result name="InvoiceSummaryReport-Excel">/jsp/user/reportPanel/p_invoice_summary_report_param_panel.jsp</result>
@@ -685,6 +702,13 @@
             <result name="PaymentReport-Excel">/jsp/user/reportPanel/p_payment_report_param_panel.jsp</result> 
             <result name="OverviewSummary-Excel">/jsp/user/reportPanel/p_overview_summary_report_param_panel.jsp</result> 
         </action>
+        
+        <action name="loadAdminPanel" class="chox.web.actions.AdminAction" method="loadAdminPanel">
+            <result name="CreditHireOrgMgmt">/jsp/user/adminPanel/p_credit_hire_org_mgmt_panel.jsp</result>
+            <result name="InsurerOrgMgmt">/jsp/user/adminPanel/p_insurer_org_mgmt_panel.jsp</result>
+            <result name="UserMgmt">/jsp/user/adminPanel/p_user_mgmt_panel.jsp</result>
+        </action>
+        
         <action name="exportExcelReport" class="chox.web.actions.ReportAction" method="exportReport">
             <result name="success" type="stream">
                 <param name="contentType">application/ms-excel
@@ -751,6 +775,21 @@
         </action>
         
         <action name="changePassword" class="chox.web.actions.UserAccountAction" method="changePassword">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+        
+        <action name="doTriggerUserAccountStatus" class="chox.web.actions.doUserAction" method="triggerStatus">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+        
+        <action name="doTriggerCreditHireAccountStatus" class="chox.web.actions.doChorganisationAction" method="triggerStatus">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+        
+        <action name="doTriggerInsurerAccountStatus" class="chox.web.actions.doInsurerAction" method="triggerStatus">
             <result name="success">/jsp/p_response.jsp
             </result>
         </action>

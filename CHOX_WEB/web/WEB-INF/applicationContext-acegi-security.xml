@@ -91,6 +91,7 @@
             <bean class="org.acegisecurity.ui.AccessDeniedHandlerImpl" />
         </property>
     </bean>
+
     <bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
         <property name="authenticationManager">
             <ref bean="authenticationManager"/>
@@ -108,6 +109,8 @@
             <value>true</value>
         </property>
     </bean>
+
+    
     <bean id="authenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
         <property name="loginFormUrl">
             <value>/login.action</value>
