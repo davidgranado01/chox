@@ -28,24 +28,31 @@
                         </div>
                         <div style="height:550px;" class="x-panel-bwrap chox-form-container">
                             <ul>
-                            <li class='reportTypeHeader'>Organisation Management</li>
-                                <s:if test="reportAccessibility.overviewSummaryAccessibility || true">                                
-                                <li><a href="javascript:renderAdminParameterPanel('CreditHireOrgMgmt');">Credit Hire Management</a></li>
-                                </s:if>
-                                <s:if test="reportAccessibility.claimRejectionAccessibility">                                
-                                <li><a href="javascript:renderAdminParameterPanel('InsurerOrgMgmt');">Insurer Management</a></li>
-                                </s:if>
-                            <li class='reportTypeHeader'>User Management</li>
-                                <s:if test="reportAccessibility.insurerWeeklySummaryAccessibility || true">
-                                <li><a href="javascript:renderAdminParameterPanel('UserMgmt');">User Management</a></li>
-                                </s:if>
+
+                            <li class='reportTypeHeader'>PART A</li>
+
+<s:if test="adminAccessibility.isInsurerCompaniesAdminAccessibility">
+                                <li><a href="javascript:renderAdminParameterPanel('InsurerOrgMgmt');">Insurence Companies</a></li>
+</s:if>    
+<s:if test="adminAccessibility.isCreditHireOrgAdminAccessibility">                            
+                                <li><a href="javascript:renderAdminParameterPanel('CreditHireOrgMgmt');">Credit Hire Organisation</a></li>
+</s:if> 
+<s:if test="adminAccessibility.isUserManagementAdminAccessibility">         
+<li><a href="javascript:renderAdminParameterPanel('UserMgmt');">User Management</a></li>
+</s:if> 
+
+<li class='reportTypeHeader'>PART B</li>
+                                <li><a href="javascript:renderAdminParameterPanel('InsurerAlliasMappingMgmt');">Alliases</a></li>
+                                <li><a href="javascript:renderAdminParameterPanel('InsurerLineOfBusinessMappingMgmt');">Line Of Businesses</a></li>
+                                <li><a href="javascript:renderAdminParameterPanel('InsurerOrgMappingMgmt');">Credit Hire Mapping</a></li>
+                                
                             </ul>
                         </div>
-                    </div>  
+                    </div>
                 </fieldset>
             </td>
             <td width="70%" class="chox-form-right-col">
-                <div id="admin_param_panel"></div>
+                <div id="admin_param_panel" style="height:650px; overflow:auto;" ></div>
             </td>
         </tr>
     </table>

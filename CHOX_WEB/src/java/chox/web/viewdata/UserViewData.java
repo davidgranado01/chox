@@ -27,12 +27,11 @@ public class UserViewData {
         this.name = object.getDisplayName();
         this.createdBy = object.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.GridViewDateFormat.format(object.getCreatedDate());   
+        this.status = object.getStatus();
         
-        if(object.getStatus()>=1){
-            this.status = true;
+        if(object.getStatus()){
             this.statusDesc = "Active";
         }else{
-            this.status = false;
             this.statusDesc = "Inactive";
         }
     

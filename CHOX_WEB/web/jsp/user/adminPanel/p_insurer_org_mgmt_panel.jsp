@@ -4,8 +4,6 @@
 
 <script type="text/javascript">
     
-    
-        
     var gridviewJsonReader;
     var gridviewDataStore;
     var gridviewGrid;  
@@ -49,7 +47,7 @@
             {header: "Created Date", width: 150, dataIndex: 'createdDate', sortable: false, resizable: true}
         ],
         renderTo:'gridviewGrid',
-            width:630,
+            width:615,
             autoHeight:true,
             enableHdMenu:false
         });
@@ -61,8 +59,6 @@
                 gridviewtype : "insurerOrgMgmt"
             }
         });
-    
-
     }); 
     
     function recordOnclick(grid, rowIndex, columnIndex, e){
@@ -77,15 +73,16 @@
     }
     
     function loadSelectedRecord(grid, rowIndex, columnIndex, e){
-            $("#xPenalMainRight").block({message: $("#ObjectDetailPanel"), css: { backgroundColor: '#FFFFFF', height:'160', width:'400px', padding:'10px', overflow: 'auto'}  });
-            var object = gridviewGrid.getStore().getAt(rowIndex);
-            
-            // var commentText = object.get("comment");
-            // $("#commentMessage").text(commentText);
-            
-            setTimeout(function(){ $("#xPenalMainRight").unblock(); }, 1000);
+        var gridView = gridviewGrid.getStore().getAt(rowIndex);
+        var gridViewId = gridView.get("id");
+        $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + gridViewId);
     }
 
+    function createNewRecord(){
+         var gridViewId = -1;
+        $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + gridViewId);
+    }
+    
     function loadGridViewList(){
         gridviewData.load(
         {
@@ -96,7 +93,7 @@
             }
         });
     }
-    
+
     function triggerStatusUpdateRecord(gridView){
             
             var aletMsg = "Are you sure you want to inactive this insurer?";
@@ -128,7 +125,7 @@
             <table width="100%">
                 <tr>
                     <td></td>
-                    <td align="right"><button type="button" onclick="javascript:createNewRecord('InsurerDetailMgmt');">New</button></td>
+                    <td align="right"><button type="button" onclick="javascript:createNewRecord();">New</button></td>
                 </tr>
             </table>
 

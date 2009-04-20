@@ -16,6 +16,7 @@ import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 import chox.services.AuditTrailService;
 import chox.services.SystemLogService;
+import chox.web.security.AdminAccessibility;
 
 /**
  *
@@ -28,6 +29,7 @@ public class InboxAction extends BaseAction implements SessionAware {
     private ApplicationAccessibility applicationAccessibility;
     private ReportAccessibility reportAccessibility;
     private MenuAccessibility menuAccessibility;
+    private AdminAccessibility adminAccessibility;
     private AuditTrailService auditTrailService;
     private SystemLogService systemLogService;
     private String actionResult;
@@ -48,6 +50,14 @@ public class InboxAction extends BaseAction implements SessionAware {
             reportAccessibility = getApplicationAccessibility().getReportAccessibility(super.getAuthenticatedUser().getAuthorities());
         }
         return reportAccessibility;
+    }
+    
+    public AdminAccessibility getAdminAccessibility() {
+        
+        if (adminAccessibility == null) {
+            adminAccessibility = getApplicationAccessibility().getAdminAccessibility(super.getAuthenticatedUser().getAuthorities());
+        }
+        return adminAccessibility;
     }
     
     public MenuAccessibility getMenuAccessibility() {

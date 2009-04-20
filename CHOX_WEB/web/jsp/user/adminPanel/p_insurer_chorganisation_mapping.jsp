@@ -9,17 +9,10 @@
     var gridviewGrid;
     var gridviewData;
     var recordPerPage = 20;
-    var orgTypeId = 1 ;
-    var selectOrgTypeId = <s:property value="selectOrgTypeId" />;
+    var selectedOrgTypeId = 1 ;
     
     Ext.onReady(function(){
-    
-    
-       if(selectOrgTypeId>0){
-            orgTypeId = selectOrgTypeId;
-            $("#orgTypeId").val(selectOrgTypeId);
-       }
-
+        
        gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
@@ -86,14 +79,9 @@
     }
     
     function loadSelectedRecord(grid, rowIndex, columnIndex, e){
-        var gridView = gridviewGrid.getStore().getAt(rowIndex);
-        var gridViewId = gridView.get("id");
-        $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId);
-    }
-
-    function createNewRecord(){
-         var gridViewId = -1;
-        $("#admin_param_panel").load("updateUserDetailPanel.action?mode=New&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId);
+        // var gridView = gridviewGrid.getStore().getAt(rowIndex);
+        // var gridViewId = gridView.get("id");
+        // $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + gridViewId + "&orgTypeId=" + selectedOrgTypeId);
     }
     
     function loadGridViewList(){
@@ -102,7 +90,7 @@
         {
             params:
             {
-                orgType:orgTypeId,
+                orgType:selectedOrgTypeId,
                 start:0,
                 limit:recordPerPage
             }
@@ -110,7 +98,7 @@
     }
     
     function doSelectChange(){
-        orgTypeId = $("#orgTypeId").val();
+        selectedOrgTypeId = $("#orgTypeId").val();
         loadGridViewList();
     }
     
@@ -134,26 +122,28 @@
             }
     }
     
-
-    
 </script>
 
+<div>
 <fieldset class="x-fieldset">
-    <legend>User Management</legend>
+    <legend>Credit Hire Mapping</legend>
     <div id="organisationGird">
         <div class="gridViewHeader">
             <table width="100%">
                 <tr>
                     <td>
-<s:if test="isSelectable">
-Organisation Type: <select id="orgTypeId" onchange="javascript:doSelectChange()">
-                <option value="1">CHOX</option>
-                <option value="2">Insurer</option>
-                <option value="3">Credit Hire</option>
-            </select>
-</s:if>
+                                <s:select 
+                                id="insurerId"                                 
+                                name="insurerId" 
+                                list="insurers" 
+                                listKey="id" 
+                                listValue="name" 
+                                headerKey=""
+                                headerValue="--- ALL ---"
+                                emptyOption="false">
+                                </s:select>
                     </td>
-                    <td align="right"><button type="button" onclick="javascript:createNewRecord();">New</button></td>
+                    <td align="right"></td>
                 </tr>
             </table>
 

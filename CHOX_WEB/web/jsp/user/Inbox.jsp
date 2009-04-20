@@ -494,7 +494,8 @@
     }
 
     function handleActivate(tab){
-
+        
+        /*
         if(tab.title == 'Reports'){
             ds.load({ params:{start:0,limit:0}});
             $("#gridPanel").hide();            
@@ -511,7 +512,15 @@
             ds.load({ params:{start:0,limit:0}});
             $("#gridPanel").show(); 
         }
+        */
+       
+        $("#gridPanel").hide();
         
+        if(tab.title == 'Inbox' || tab.title == 'Search'){
+            ds.load({ params:{start:0,limit:0}});
+            $("#gridPanel").show();         
+        }
+       
         if(tabs)
         {
             currentTabIndex = tabs.items.indexOf(tabs.getActiveTab());

@@ -118,8 +118,8 @@
                     <s:select 
                     name="supplierId" 
                     list="suppliers" 
-                    listKey="id" 
-                    listValue="name" 
+                    listKey="value" 
+                    listValue="text" 
                     headerKey="-1"
                     headerValue="--- ALL ---"
                     emptyOption="false">
@@ -134,8 +134,8 @@
                 <s:select 
                 name="insurerId" 
                 list="insurers" 
-                listKey="id" 
-                listValue="name" 
+                    listKey="value" 
+                    listValue="text" 
                 headerKey="-1"
                 headerValue="--- ALL ---"
                 emptyOption="false">

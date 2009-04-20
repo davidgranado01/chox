@@ -1,16 +1,121 @@
 package chox.web.actions;
 
+import chox.Util.DateHelper;
+import chox.model.Chorganisation;
+import chox.model.Insurer;
 import chox.model.WebUser;
+import chox.model.WebUserRole;
+import chox.model.WebUserUserRole;
+import chox.services.ChorganisationService;
+import chox.services.InsurerService;
+import chox.services.LookupService;
 import chox.services.UserService;
+import chox.services.WebUserUserRoleService;
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+import java.util.List;
 
-public class doUserAction extends BaseAction {
+public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Preparable {
 
     private UserService service;
     private String objectId;
+    private WebUser model;
+    private String orgTypeId;
+    private String mode;
+    private List insurers;
+    private List suppliers;
+    private LookupService lookupService;
+    private InsurerService insurerService;
+    private ChorganisationService chorganisationService;
+    private WebUserUserRoleService webUserUserRoleService;
+    private String actionResult;
+    private Integer insurerId = -1;
+    private Integer supplierId = -1;
     
-    public void setUserService(UserService service)
-    {
-        this.service = service;
+    public String getActionResult() {
+        return actionResult;
+    }
+
+    public void setActionResult(String actionResult) {
+        this.actionResult = actionResult;
+    }
+    
+    public List getInsurers() {
+        insurers = this.lookupService.getAllActiveInsurers();
+        return insurers;
+    }
+    
+    public List getSuppliers() {
+        suppliers = this.lookupService.getAllActiveSuppliers();
+        return suppliers;
+    }
+    
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+
+    public Integer getInsurerId() {
+        return insurerId;
+    }
+
+    public void setInsurerId(Integer insurerId) {
+        this.insurerId = insurerId;
+    }
+
+    public Integer getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Integer supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public String getOrgTypeId() {
+        return orgTypeId;
+    }
+
+    public void setOrgTypeId(String orgTypeId) {
+        this.orgTypeId = orgTypeId;
+    }
+    
+    public String getOrgTypeName() {
+        
+        String orgTypeName = "N/A";
+        
+        if(this.orgTypeId.equalsIgnoreCase("1")){
+            orgTypeName = "CHOX Users";
+        }else if(this.orgTypeId.equalsIgnoreCase("2")){
+            orgTypeName = "Insurer Users";
+        }else if(this.orgTypeId.equalsIgnoreCase("3")){    
+            orgTypeName = "Credit Hire Users";
+        }
+        
+        return orgTypeName;
+    }
+    
+    public String getOrgName() {
+        
+        String sOutput = "N/A";
+        
+        if(this.orgTypeId.equalsIgnoreCase("1")){
+            sOutput = "CHOX";
+        }else{
+            sOutput = model.getOrganisationName();
+        }
+        
+        return sOutput;
+    }
+    
+    public WebUser getModel() {
+        return model;
+    }
+
+    public void setModel(WebUser model) {
+        this.model = model;
     }
 
     public String getObjectId() {
@@ -21,20 +126,48 @@ public class doUserAction extends BaseAction {
         this.objectId = objectId;
     }
     
+    public void setUserService(UserService service)
+    {
+        this.service = service;
+    }
+
+    public void setLookupService(LookupService lookupService)
+    {
+        this.lookupService = lookupService;
+    }
+    
+    public void setInsurerService(InsurerService insurerService)
+    {
+        this.insurerService = insurerService;
+    }
+    
+    
+    public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService)
+    {
+        this.webUserUserRoleService = webUserUserRoleService;
+    }
+    
+    public void setChorganisationService(ChorganisationService chorganisationService)
+    {
+        this.chorganisationService = chorganisationService;
+    }
+    
     public String triggerStatus() throws Exception{
-                
-        WebUser thisUser = null;
-        thisUser = this.service.getObject(Integer.valueOf(objectId));
+
+        WebUser thisObject = this.service.getObject(Integer.valueOf(objectId));
         
-        if(thisUser.getStatus()==1){
-            thisUser.setStatus(0);
+        if(thisObject.getStatus()){
+            thisObject.setStatus(false);
         }else{
-            thisUser.setStatus(1);
+            thisObject.setStatus(true);
         }
         
         try {
             
-            this.service.updateObject(thisUser);
+            thisObject.setLastModifiedBy(this.getAuthenticatedUser().getUser());
+            thisObject.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+            this.service.updateObject(thisObject);
+            
         } catch (Exception ex) {
             throw ex; 
         }
@@ -42,4 +175,96 @@ public class doUserAction extends BaseAction {
         return SUCCESS;
     }
 
+    public String doRenderActionPage(){
+        return SUCCESS;
+    }  
+    
+    public String updateModel() throws Exception {
+        
+        try {
+            
+            model.setLastModifiedBy(this.getAuthenticatedUser().getUser());
+            model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());  
+            
+            if(mode.equalsIgnoreCase("New")){
+                
+                doAddNewObject();
+                
+            }else{
+                this.service.updateObject(model);   
+            }
+            
+            actionResult = "Your changes have been saved.";
+            
+        } catch (Exception ex) {
+            throw ex; 
+        }
+        
+        return SUCCESS;
+    }
+
+    private boolean doAddNewObject(){
+        
+        boolean bFlag  = false;
+        
+        if(!this.service.isEmailExist(model.getEmail())){
+                    
+            model.setCreatedBy(this.getAuthenticatedUser().getUser());
+            model.setCreatedDate(DateHelper.getCurrentTimeStamp());
+            
+            if(insurerId>0){
+                Insurer selectInsurer = insurerService.getObject(insurerId);
+                model.setInsurer(selectInsurer);
+            }
+            
+            if(supplierId>0){
+                Chorganisation selectChorganisation = chorganisationService.getObject(supplierId);
+                model.setChorganisation(selectChorganisation);
+            }
+            
+            if(this.service.updateObject(model)){
+                
+                if(webUserUserRoleService.addNewUserRole(model.getId(), getUserOrgBaseRole())){
+                    
+                    bFlag = true;
+                    actionResult = "New user has been created!";
+                }
+            }else{
+                actionResult = "Please try again!";
+            }
+            
+        }else{    
+            actionResult = "Email Address already exist!";     
+        }
+        
+        return bFlag;
+    }
+    
+    private String getUserOrgBaseRole() {
+        
+        String sOutput = "-";
+        
+        if(this.orgTypeId.equalsIgnoreCase("1")){
+            sOutput = WebUserRole.ROLE_CHOX;
+        }else if(this.orgTypeId.equalsIgnoreCase("2")){
+            sOutput = WebUserRole.ROLE_INS;
+        }else if(this.orgTypeId.equalsIgnoreCase("3")){    
+            sOutput = WebUserRole.ROLE_CHO;
+        }
+        
+        return sOutput;
+    }
+    
+    public void prepare() throws Exception {
+        
+        if (Integer.valueOf(objectId) <= 0) {
+            model = new WebUser();
+            mode = "New";
+        } else {
+            model = service.getObject(Integer.valueOf(objectId));
+            mode = "Edit";
+        }
+        
+    }    
+    
 }

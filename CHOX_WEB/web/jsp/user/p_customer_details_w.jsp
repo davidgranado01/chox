@@ -109,19 +109,9 @@
         
         </script>
 
-
-
-
-
-
-
-
 <form id="formUpdateCustomerDetails" action="user/updateCustomer.action" class="XXentity-form">
     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-    
-    
-    
     
             <fieldset class="x-fieldset">
                 <legend>Customer Details</legend>

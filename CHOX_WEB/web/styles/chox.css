@@ -1,3 +1,8 @@
+body
+{    
+    overflow:scroll;
+}
+
 chox-form-left-colbody
 {
     background-attachment: scroll;
@@ -16,8 +21,6 @@ chox-form-left-colbody
     padding-right: 0pt;
     padding-top: 0pt;
     text-align: center;
-    overflow:scroll;
-    
 }
 
 div.outer
@@ -429,16 +432,13 @@ table.status-table .choice
     font-size:13px;
 }
 
-
-
 label.error { color: red; font-weight:bold;font-size:11px;display:block ; line-height:25px}
 
 div.errorBox
 {
-    
+    color: red;
     padding-left:20px;
     text-align:center;
-    
 }
 
 div.action-message
@@ -649,7 +649,7 @@ img.tip-target
 
 .gridViewHeader{  
     padding-bottom:5px;  
-    width:630px;
+    width:615px;
 }
 
 .gridViewHeader td{

@@ -60,6 +60,7 @@
                 <value>chox/model/ReasonOfRejection.hbm.xml</value>
                 <value>chox/model/SupportMessage.hbm.xml</value>
                 <value>chox/model/SystemLog.hbm.xml</value>
+                <value>chox/model/WebUserUserRole.hbm.xml</value>
             </list>
         </property>
         <property name="entityInterceptor" ref="auditInterceptor"/>
@@ -161,6 +162,12 @@
     <bean id="systemLogService" class="chox.services.SystemLogServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>     
+    <bean id="webUserUserRoleService" class="chox.services.WebUserUserRoleServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>  
+    <bean id="lineOfBusinessService" class="chox.services.LineOfBusinessServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="uploadClaimXMLService" class="chox.services.UploadClaimXMLServiceImpl" singleton="false">
         <property name="vehicleClassService" ref="vehicleClassService" />
         <property name="engineerReportService" ref="engineerReportService" />

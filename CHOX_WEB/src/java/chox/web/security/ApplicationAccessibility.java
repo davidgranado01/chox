@@ -61,6 +61,10 @@ public class ApplicationAccessibility {
     public static final String REPORT_INSURER_PAYMENT = "InsurerPayment";
     public static final String REPORT_OVERVIEW_SUMMARY = "OverviewSummary";
     
+    public static final String ADMIN_INSURER_COMPANIES = "InsurerCompanies";
+    public static final String ADMIN_CREDIT_HIRE_ORG = "CreditHireOrg";
+    public static final String ADMIN_USER_MANAGEMENT = "UserManagement";
+    
     private HashMap accessibilityMap;
     private AccessibilityService accessibilityService;
     
@@ -93,6 +97,11 @@ public class ApplicationAccessibility {
         return new ReportAccessibility(this,grantedAuthorities);
     }
 
+    public AdminAccessibility getAdminAccessibility(GrantedAuthority[] grantedAuthorities)
+    {
+        return new AdminAccessibility(this,grantedAuthorities);
+    }
+    
     public Short checkTabAccessibility(String tabName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
 
         //accessibilityMap = getAccessibilityMap();
@@ -171,6 +180,18 @@ public class ApplicationAccessibility {
         return Declined;
     }
 
+    public Short checkAdminAccessibility(String adminName, GrantedAuthority[] grantedAuthorities) {
+
+        //accessibilityMap = getAccessibilityMap();
+        String accessibilityKey = getAdminAccessibilityKey(adminName);
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            return checkAccebility(roleMap, grantedAuthorities);
+        }
+
+        return Declined;
+    }
+    
     private String getTabAccessibilityKey(String tabName, String claimStatus) {
         return String.format("tab.%1$s.%2$s", tabName, claimStatus);
     }
@@ -244,6 +265,12 @@ public class ApplicationAccessibility {
     public void setAccessibilityService(AccessibilityService accessibilityService) {
         this.accessibilityService = accessibilityService;
     }
+    
+    
+    private String getAdminAccessibilityKey(String adminName) {
+        return String.format("admin.%1$s", adminName);
+    }
+    
 }
 
 

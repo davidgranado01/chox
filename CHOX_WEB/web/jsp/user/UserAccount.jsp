@@ -36,7 +36,7 @@
                 timeout: 3000,
                 error: onSubmitError
             };
-                       
+
             $("#formChangePassword").validate(
             {
                 errorLabelContainer: "#errorMessageBox",                

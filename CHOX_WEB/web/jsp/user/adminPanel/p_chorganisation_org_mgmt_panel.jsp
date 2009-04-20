@@ -52,7 +52,7 @@
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: false, resizable: true}
             ],
             renderTo:'gridviewGrid',
-                width:630,
+                width:615,
                 autoHeight:true,
                 enableHdMenu:false
             });
@@ -78,6 +78,7 @@
                 limit:recordPerPage
             }
         });
+        
     }
     
     function recordOnclick(grid, rowIndex, columnIndex, e){
@@ -85,10 +86,21 @@
         var gridView = gridviewGrid.getStore().getAt(rowIndex);  // Get the Record
         
         if(columnIndex==0){
-            alert("EDIT");
+            loadSelectedRecord(grid, rowIndex, columnIndex, e);
         }else if(columnIndex==3){
             triggerStatusUpdateRecord(gridView);
         }
+    }
+    
+    function loadSelectedRecord(grid, rowIndex, columnIndex, e){
+        var gridView = gridviewGrid.getStore().getAt(rowIndex);
+        var gridViewId = gridView.get("id");
+        $("#admin_param_panel").load("updateChorganisationDetailPanel.action?objectId=" + gridViewId);
+    }
+
+    function createNewRecord(){
+         var gridViewId = -1;
+        $("#admin_param_panel").load("updateChorganisationDetailPanel.action?objectId=" + gridViewId);
     }
     
     function triggerStatusUpdateRecord(gridView){
@@ -121,7 +133,7 @@
             <table width="100%">
                 <tr>
                     <td></td>
-                    <td align="right"><button type="button" onclick="javascript:createNewRecord('ChorganisationDetailMgmt');">New</button></td>
+                    <td align="right"><button type="button" onclick="javascript:createNewRecord();">New</button></td>
                 </tr>
             </table>
 
