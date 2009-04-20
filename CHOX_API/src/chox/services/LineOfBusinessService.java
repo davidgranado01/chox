@@ -14,5 +14,6 @@ public interface LineOfBusinessService {
     public LineOfBusiness getObject(int id);
     public boolean DeleteObject(LineOfBusiness object);
     public boolean updateObject(LineOfBusiness object);
+    public boolean isLineOfBusinessExist(int insurerId, String lineOfBusinessName);
     
 }

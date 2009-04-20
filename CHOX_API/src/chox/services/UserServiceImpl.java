@@ -81,6 +81,41 @@ public class UserServiceImpl extends DataService implements UserService {
         return users;
     } 
     
+    public List<WebUser> getUsers(int orgTypeId, int orgId){
+        
+        List<WebUser> users = new ArrayList<WebUser>();
+        
+        try {
+            
+            DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
+
+            if(orgId>0){
+                
+                if(orgTypeId==2){
+                    criteria.add(Restrictions.eq("insurer.id", orgId));
+                }else if(orgTypeId==3){
+                    criteria.add(Restrictions.eq("chorganisation.id", orgId));
+                }
+                
+            }
+            
+            criteria.addOrder(Order.asc("email")); 
+            
+            List<WebUser> userData = findByCriteria(criteria);
+            
+            for(WebUser h : userData){
+                if(h.getOrganisationType()==(Integer.valueOf(orgTypeId))){
+                    users.add(h);
+                }
+            }
+            
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }    
+        
+        return users;
+    } 
+    
     public boolean updateObject(WebUser object) {
         
         boolean bFlag = false;

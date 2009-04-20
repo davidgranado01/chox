@@ -6,12 +6,12 @@
       <generator class="increment"/>
     </id>
     <property column="name" name="name" not-null="true"/>
-    <property column="address1" name="address1" not-null="true"/>
+    <property column="address1" name="address1"/>
     <property column="address2" name="address2"/>
     <property column="address3" name="address3"/>
     <property column="address4" name="address4"/>
     <property column="address5" name="address5"/>
-    <property column="postcode" name="postcode" not-null="true"/>
+    <property column="postcode" name="postcode"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
     <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

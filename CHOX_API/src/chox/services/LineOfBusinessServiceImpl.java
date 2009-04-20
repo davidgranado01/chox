@@ -14,25 +14,47 @@ import org.hibernate.criterion.Restrictions;
 
 public class LineOfBusinessServiceImpl extends SecureDataService implements LineOfBusinessService {
 
+    public boolean isLineOfBusinessExist(int insurerId, String lineOfBusinessName){
+        
+        boolean isExist = false;
+        
+        try {
+            
+            DetachedCriteria criteria = DetachedCriteria.forClass(LineOfBusiness.class);
+
+            criteria.add(Restrictions.eq("insurer.id", insurerId));
+            criteria.add(Restrictions.eq("name", lineOfBusinessName.trim()));
+            
+            if(findByCriteria(criteria).size()>0){
+                isExist = true;
+            }
+            
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+         
+        return isExist;
+    }
+    
     public List<LineOfBusiness> getInsurerLineOfBusiness(int insurerId) {
 
         List<LineOfBusiness> lineofbusiness = new ArrayList<LineOfBusiness>();
         
         try {
-
+            
             DetachedCriteria criteria = DetachedCriteria.forClass(LineOfBusiness.class);
             
             if(insurerId>0){
                 criteria.add(Restrictions.eq("insurer.id", insurerId));
+                
             }
             
-            criteria.addOrder(Order.asc("alliasName"));     
             lineofbusiness = findByCriteria(criteria);
             
         } catch (Throwable e) {
             e.printStackTrace();
         }
-        
+
         return lineofbusiness;
     } 
     
