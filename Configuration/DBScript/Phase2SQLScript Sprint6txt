@@ -31,3 +31,43 @@ ALTER TABLE insurer ALTER COLUMN status SET DEFAULT true;
 update insurer set status = true;
 
 ------------------------------------------------------------------------------------------------
+
+ALTER TABLE web_user DROP COLUMN status;
+ALTER TABLE web_user ADD COLUMN status boolean;
+ALTER TABLE web_user ALTER COLUMN status SET DEFAULT true;
+update web_user set status = true;
+
+------------------------------------------------------------------------------------------------
+
+
+ALTER TABLE web_user_role ADD COLUMN description character varying;
+
+update web_user_role set description='Sherwood Admin' where name='ROLE_CHOX_ADMIN';
+update web_user_role set description='Insurer Manager' where name='ROLE_INS_MNG';
+update web_user_role set description='Insurer Special Claim Reviewer' where name='ROLE_INS_SCR';
+update web_user_role set description='Insurer Claim Router' where name='ROLE_INS_CR';
+update web_user_role set description='Insurer Payment Clark' where name='ROLE_INS_PC';
+update web_user_role set description='Insurer Claim Handler' where name='ROLE_INS_CH';
+update web_user_role set description='CHO Manager' where name='ROLE_CHO_MNG';
+update web_user_role set description='CHO Operactive' where name='ROLE_CHO_OPR';
+update web_user_role set description='FNOL Handler' where name='ROLE_INS_FNOL';
+update web_user_role set description='CHO User' where name='ROLE_CHO';
+update web_user_role set description='Insurer User' where name='ROLE_INS';
+
+------------------------------------------------------------------------------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'admin.InsurerCompanies');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'admin.InsurerCompanies'),(select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHOX_ADMIN', 2, (select id from accessibility where name = 'admin.InsurerCompanies'),(select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'admin.CreditHireOrg');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'admin.CreditHireOrg'),(select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHOX_ADMIN', 2, (select id from accessibility where name = 'admin.CreditHireOrg'),(select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'admin.UserManagement');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'admin.UserManagement'),(select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO_MNG', 2, (select id from accessibility where name = 'admin.UserManagement'),(select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name = 'admin.UserManagement'),(select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHOX_ADMIN', 2, (select id from accessibility where name = 'admin.UserManagement'),(select max(id)+1 from accessibility_item));
+
+------------------------------------------------------------------------------------------------
