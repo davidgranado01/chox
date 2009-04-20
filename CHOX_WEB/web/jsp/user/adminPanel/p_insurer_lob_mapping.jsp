@@ -9,12 +9,18 @@
     var gridviewGrid;
     var gridviewData;
     var recordPerPage = 20;
-    var selectedInsurerId = -1 ;
+    
+    var orgId = -1;
+    var selectOrgId = <s:property value="selectOrgId" />;
     
     selectedPanel = 'InsurerLineOfBusinessMappingMgmt';
     
     Ext.onReady(function(){
         
+       if(selectOrgId>0){
+           $("#insurerId").val(selectOrgId);
+       }
+
        gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
@@ -42,14 +48,12 @@
             store: gridviewData,
             loadMask: true,
             columns: [
-                {header: "id", width: 90, dataIndex: 'id', sortable: false, resizable: true},
-                {header: "name", width: 90, dataIndex: 'name', sortable: false, resizable: true},
-                {header: "insurerId", width: 90, dataIndex: 'insurerId', sortable: false, resizable: true},
-                {header: "insurerName", width: 90, dataIndex: 'insurerName', sortable: false, resizable: true},
-                {header: "Status", width: 50, dataIndex: 'statusDesc', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Line Of Business", width: 150, dataIndex: 'name', sortable: true, resizable: true},
+                {header: "insurer", width: 150, dataIndex: 'insurerName', sortable: true, resizable: true},
+                {header: "Status", width: 60, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
-                {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: false, resizable: true},
-                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: false, resizable: true}
+                {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
+                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
             renderTo:'gridviewGrid',
                 width:615,
@@ -73,40 +77,48 @@
 
         var gridView = gridviewGrid.getStore().getAt(rowIndex);  // Get the Record
 
-        if(columnIndex==4){
+        if(columnIndex==2){
             triggerStatusRemoveRecord(gridView);
         }
     }
     
     function loadGridViewList(){
+        
+        doParameters();
+        
         gridviewData.load(
         {
             params:
             {
-                insurerId:selectedInsurerId
+                insurerId:orgId
             }
         });
-        $("#insurerAlliasName").val("");
+        
+        $("#lineOfBusinessName").val("");
         
     }
     
+    function doParameters(){
+        orgId = $("#insurerId").val();
+    }
+    
     function doSelectChange(){
-        selectedInsurerId = $("#insurerId").val();
         loadGridViewList();
     }
     
     function triggerStatusAddRecord(){
         
-        var insurerId = $("#insurerId").val()
-        var iineOfBusinessName = $("#iineOfBusinessName").val();
+        doParameters();
         
-        if(iineOfBusinessName!=null && iineOfBusinessName!="" && insurerId!=null && insurerId!=""){
+        var lineOfBusinessName = $("#lineOfBusinessName").val();
+        
+        if(lineOfBusinessName!=null && lineOfBusinessName!="" && orgId!=null && orgId>0){
             
             $("#CDInsurerLineOfBusinessMessageBox").html("");
             
             $.ajax({
-               url: "addInsurerLineOfBusiness.action?insurerId="+insurerId+"&iineOfBusinessName="+iineOfBusinessName,
-               success: loadGridViewList
+               url: "addInsurerLineOfBusiness.action?insurerId="+orgId+"&lineOfBusinessName="+lineOfBusinessName,
+               success: onSubmitResponseReceived
             });
             
         }else{
@@ -116,16 +128,20 @@
     
     function triggerStatusRemoveRecord(gridView){
 
-        if(confirm("Are you sure you want to remove this allias?")){
-            
             var gridViewId = gridView.get("id");
                 
             $.ajax({
                url: "removeInsurerLineOfBusiness.action?lineOfBusinessId="+gridViewId,
-               success: loadGridViewList
+               success: onSubmitResponseReceived
             });
-        }
+        
     }
+    
+    function onSubmitResponseReceived(responseText, statusText)  {      
+        responseText = responseText.trim();
+        $("#CDInsurerLineOfBusinessMessageBox").html(responseText);
+        loadGridViewList();
+    } 
     
 </script>
 
@@ -137,22 +153,27 @@
             <table width="100%">
                 <tr>
                     <td>
+                        <s:if test="isSelectable">
                         <s:select 
                             id="insurerId"                                 
                             name="insurerId" 
                             list="insurers" 
                             listKey="id" 
                             listValue="name" 
-                            headerKey=""
+                            headerKey="-1"
                             headerValue="--- ALL ---"
                             emptyOption="false"
                             onchange="javascript:doSelectChange();">
                         </s:select>
+                        </s:if>
+                        <s:else>
+                            <input name="insurerId" id="insurerId" type="hidden" value="<s:property value="insurerId" />">
+                        </s:else>
                     </td>
                     <td align="right"></td>
                 </tr>
-                <tr><td>Insurer Allias: <input name="iineOfBusinessName" id="iineOfBusinessName" type="text">
-                    <input type="submit" onclick="javascript: triggerStatusAddRecord();" value="Add"/></td></tr>
+                <tr><td>Line of Business: <input name="lineOfBusinessName" id="lineOfBusinessName" type="text">
+                    <input type="button" onclick="javascript: triggerStatusAddRecord();" value="Add"/></td></tr>
                 <tr><td><div id="CDInsurerLineOfBusinessMessageBox" class="errorBox"></div></td></tr>                
             </table>
 

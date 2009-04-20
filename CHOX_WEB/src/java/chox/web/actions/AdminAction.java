@@ -6,6 +6,7 @@
 package chox.web.actions;
 
 import chox.services.LookupService;
+import chox.web.security.PermissionedUser;
 import java.util.List;
 
 public class AdminAction extends BaseAction{
@@ -14,18 +15,20 @@ public class AdminAction extends BaseAction{
     private String gridViewType;
     private String mode;    
     private int selectOrgTypeId=-1;  
+    private int selectOrgId=-1;
     private String objectId;
     private List insurers;
     private List suppliers;
     private LookupService lookupService;
-    private boolean isSelectable = true;
-
+    private PermissionedUser currentUser = getAuthenticatedUser();
+    
+    private boolean isSelectable = false;
+    
     public boolean isIsSelectable() {
+        if(currentUser.getIsCHOXAdmin()){
+            isSelectable = true;
+        }
         return isSelectable;
-    }
-
-    public void setIsSelectable(boolean isSelectable) {
-        this.isSelectable = isSelectable;
     }
     
     public void setLookupService(LookupService lookupService)
@@ -43,7 +46,34 @@ public class AdminAction extends BaseAction{
         return suppliers;
     }
 
-    public int getSelectOrgTypeId() {
+    public int getSelectOrgId() {
+        
+        if(!currentUser.getIsCHOXAdmin()){
+            if(currentUser.getIsCHO()){
+                selectOrgId = currentUser.getUser().getChorganisation().getId();
+            }else if(currentUser.getIsINS()){
+                selectOrgId = currentUser.getUser().getInsurer().getId();
+            }
+        }
+        
+        return selectOrgId;
+    }
+
+    public void setSelectOrgId(int selectOrgId) {
+        this.selectOrgId = selectOrgId;
+    }
+
+    
+    public int getSelectOrgTypeId(){
+        
+        if(!currentUser.getIsCHOXAdmin()){
+            if(currentUser.getIsCHO()){
+                selectOrgTypeId = 3;
+            }else if(currentUser.getIsINS()){
+                selectOrgTypeId = 2;
+            }
+        }
+        
         return selectOrgTypeId;
     }
 

@@ -31,29 +31,29 @@
                  insurerId:{required:"Please select 'Insurer Company'"},
                  supplierId:{required:"Please select 'Credit Hire Organisation'"}
                },
-                submitHandler: function(form) {
+               submitHandler: function(form) {
                     // $(form).ajaxSubmit(op);
-                }
+               }
             });
             
             return validateFlag;
-        }                  
+        }
+        
         function onBeforeSubmit(formData, jqForm, options) {
-            
         }
 
-        function onSubmitResponseReceived(responseText, statusText)  {      
+        function onSubmitResponseReceived(responseText, statusText)  {        
             responseText = responseText.trim();
             $(".chox-form-submit-result").html(responseText);
         }     
 
         function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
-            // responseText = responseText.trim();
-            // alert("Error" + responseText);  
         }
         
         function doSubmit(){
+            
             if(doFormValidation().form()){
+                
                 var op = { 
                     beforeSubmit:  onBeforeSubmit,
                     success:       onSubmitResponseReceived,
@@ -65,14 +65,14 @@
             }
         }
         
-        function doBack(){
+        function doCancelBack(){
             $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=" + selectedPanel + "&selectOrgTypeId="+<s:property value="orgTypeId"/>);
         }
         
 </script>
 
 <div>
-    <form id="formUpdateUserDetail" action="user/updateUserDetail.action" class="XXentity-form" method="post" onsubmit="return true;">
+    <form id="formUpdateUserDetail" action="user/updateUserDetail.action" class="XXentity-form" onsubmit="return true;" method="post">
     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <input type="hidden" name="orgTypeId" value='<s:property value="orgTypeId"/>'>
     
@@ -102,24 +102,32 @@
 
                         <s:if test="orgTypeId==2">
                             
-                            <div class="chox-form-item">
-                                <label class="chox-form-std-label">Insurer Company<span class="mandatory">*</span></label>
-                                <s:select 
-                                id="insurerId"                                 
-                                name="insurerId" 
-                                list="insurers" 
-                                listKey="id" 
-                                listValue="name" 
-                                headerKey=""
-                                headerValue="--- ALL ---"
-                                emptyOption="false">
-                                </s:select>
-                            </div>       
+                            <s:if test="isOrgSelectable">
                             
+                                <div class="chox-form-item">
+                                    <label class="chox-form-std-label">Insurer Company<span class="mandatory">*</span></label>
+                                    <s:select 
+                                    id="insurerId"                                 
+                                    name="insurerId" 
+                                    list="insurers" 
+                                    listKey="id" 
+                                    listValue="name" 
+                                    headerKey=""
+                                    headerValue="--- ALL ---"
+                                    emptyOption="false">
+                                    </s:select>
+                                </div>       
+                            
+                            </s:if>
+                            <s:else>
+                                <input name="insurerId" id="insurerId" type="hidden" value="<s:property value="insurerId" />">
+                            </s:else>                             
                         </s:if>
 
                         <s:if test="orgTypeId==3">
                             
+                            <s:if test="isOrgSelectable">
+                                
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">Credit Hire Company<span class="mandatory">*</span></label>
                                 <s:select 
@@ -132,18 +140,20 @@
                                 headerValue="--- ALL ---"
                                 emptyOption="false">
                                 </s:select>
-                            </div>            
+                            </div>   
                             
+                            </s:if>
+                            <s:else>
+                                <input name="supplierId" id="supplierId" type="hidden" value="<s:property value="supplierId" />">
+                            </s:else> 
                         </s:if>
 
-                        
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">Email<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value="<s:property value="email" />"/>
                         </div>                        
                         
                     </s:else>
-                    
  
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">First Name<span class="mandatory">*</span></label>
@@ -166,11 +176,9 @@
                         <s:checkbox name="status" value="status" />
                     </div>        
                     <div class="chox-form-button">
-                        <input type="submit" value="Save Changes" onclick="javascript: doSubmit();"/>
-                        <input type="submit" value="Cancel" class="cancel" onclick="javascript: doBack();" />
-                        
+                        <input type="button" value="Save Changes" onclick="javascript: return doSubmit();"/>
+                        <input type="button" value="Cancel" class="cancel" onclick="javascript: return doCancelBack();" />
                     </div>
-                        <div id="CDmessageBox" class="errorBox"></div>
                         <div class="chox-form-submit-result"></div>                 
                 </div>
             </fieldset>
@@ -184,5 +192,5 @@
                 <s:param name="webUserId"><s:property value="id" /></s:param> 
                 <s:param name="orgTypeId"><s:property value="orgTypeId" /></s:param>         
             </s:action>
-    </div>
+    </div> 
 </s:if>

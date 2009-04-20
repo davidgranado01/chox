@@ -2,6 +2,7 @@ package chox.web.actions;
 
 import chox.model.WebUser;
 import chox.services.UserService;
+import chox.web.security.PermissionedUser;
 import chox.web.viewdata.UserViewData;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +12,9 @@ public class UserAction extends BaseAction {
 
     private List<UserViewData> user;
     private UserService service;
-    private int start;
-    private int limit;
-    private String orgType;
+    private PermissionedUser currentUser = getAuthenticatedUser();
+    private int orgTypeId = -1;
+    private int orgId;
     
     public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.user);
@@ -24,38 +25,45 @@ public class UserAction extends BaseAction {
     {
         this.service = service;
     }
-   
+
     @Override
     public String execute() {
 
-        List<WebUser> userData = this.service.getUsers();
+        List<WebUser> userData = this.service.getUsers(orgTypeId, orgId);
         
         user = new ArrayList<UserViewData>();
         
         for(WebUser h : userData)
         {
-            if(h.getOrganisationType()==(Integer.valueOf(orgType))){
-                user.add(new UserViewData(h));
-            }
+            user.add(new UserViewData(h));
         }
         
         return SUCCESS;
     }
 
-    public int getLimit() {
-        return limit;
+    public int getOrgId() {
+        return orgId;
     }
 
-    public int getStart() {
-        return start;
+    public void setOrgId(int orgId) {
+        this.orgId = orgId;
     }
 
-    public String getOrgType() {
-        return orgType;
+    public int getOrgTypeId() {        
+        return orgTypeId;
     }
 
-    public void setOrgType(String orgType) {
-        this.orgType = orgType;
+    public void setOrgTypeId(int orgTypeId) {
+        this.orgTypeId = orgTypeId;
     }
     
+    /*
+        if(currentUser.getIsCHOXAdmin()){
+            orgTypeId = 1;
+        }else if(currentUser.getIsINS()){
+            orgTypeId = 2;
+        }else if(currentUser.getIsCHO()){
+            orgTypeId = 3;
+        }
+     */
 }

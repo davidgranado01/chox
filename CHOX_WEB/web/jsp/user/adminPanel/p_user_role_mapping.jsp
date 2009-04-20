@@ -150,7 +150,7 @@
                             headerValue="--- ALL ---"
                             onchange="javascript: doSelectOnChange();"
                             emptyOption="false">
-                        </s:select><input type="submit" onclick="javascript: triggerStatusAddRecord();" value="Add"/>
+                        </s:select><input type="button" onclick="javascript: triggerStatusAddRecord();" value="Add"/>
                     </td>
                     <td align="right"></td>
                 </tr>

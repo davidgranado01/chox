@@ -9,12 +9,17 @@
     var gridviewGrid;
     var gridviewData;
     var recordPerPage = 20;
-    var selectedInsurereId = -1 ;
+    var orgId = -1;
+    var selectOrgId = <s:property value="selectOrgId" />;
     
     selectedPanel = 'InsurerAlliasMappingMgmt';
     
     Ext.onReady(function(){
         
+       if(selectOrgId>0){
+           $("#insurerId").val(selectOrgId);
+       }
+       
        gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
@@ -76,32 +81,38 @@
     }
     
     function loadGridViewList(){
+        doParameters();
         gridviewData.load(
         {
             params:
             {
-                insurerId:selectedInsurereId
+                insurerId:orgId
             }
         });
         $("#insurerAlliasName").val("");
     }
     
     function doSelectChange(){
-        selectedInsurereId = $("#insurerId").val();
         loadGridViewList();
+    }
+    
+    
+    function doParameters(){
+        orgId = $("#insurerId").val();
     }
     
     function triggerStatusAddRecord(){
         
-        var insurerId = $("#insurerId").val()
+        doParameters();
+        
         var insurerAlliasName = $("#insurerAlliasName").val();
         
-        if(insurerAlliasName!=null && insurerAlliasName!="" && insurerId!=null && insurerId!=""){
+        if(insurerAlliasName!=null && insurerAlliasName!="" && orgId!=null && orgId!=""){
             
             $("#CDInsurerAlliasMessageBox").html("");
             
             $.ajax({
-               url: "addInsurerAllias.action?insurerId="+insurerId+"&insurerAlliasName="+insurerAlliasName,
+               url: "addInsurerAllias.action?insurerId="+orgId+"&insurerAlliasName="+insurerAlliasName,
                success: onSubmitResponseReceived
             });
             
@@ -128,7 +139,8 @@
         responseText = responseText.trim();
         $("#CDInsurerAlliasMessageBox").html(responseText);
         loadGridViewList();
-    }        
+    } 
+    
 </script>
 
 
@@ -141,6 +153,7 @@
             <table width="100%">
                 <tr>
                     <td>
+                        <s:if test="isSelectable">
                         <s:select 
                             id="insurerId"                                 
                             name="insurerId" 
@@ -152,6 +165,10 @@
                             emptyOption="false"
                             onchange="javascript:doSelectChange();">
                         </s:select>
+                        </s:if>
+                        <s:else>
+                            <input name="insurerId" id="insurerId" type="hidden" value="<s:property value="insurerId" />">
+                        </s:else>                        
                     </td>
                     <td align="right"></td>
                 </tr>

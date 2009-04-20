@@ -9,17 +9,30 @@
     var gridviewGrid;
     var gridviewData;
     var recordPerPage = 20;
-    var orgTypeId = 1 ;
-    var selectOrgTypeId = <s:property value="selectOrgTypeId" />;
     
+    var orgTypeId = -1;
+    var orgId = -1;
+
+   var selectOrgTypeId = <s:property value="selectOrgTypeId" />;
+   var selectOrgId = <s:property value="selectOrgId" />;
+   
     Ext.onReady(function(){
     
-    
+       //alert(selectOrgTypeId);
+       
        if(selectOrgTypeId>0){
-            orgTypeId = selectOrgTypeId;
             $("#orgTypeId").val(selectOrgTypeId);
        }
-
+       if(selectOrgId>0){
+           $("#orgId").val(selectOrgId);
+       }
+       /*
+       if(selectOrgId>0){
+            orgId = selectOrgId;
+            $("#orgId").val(selectOrgId);
+       }
+       */
+      
        gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
@@ -76,7 +89,7 @@
     
     function recordOnclick(grid, rowIndex, columnIndex, e){
 
-        var gridView = gridviewGrid.getStore().getAt(rowIndex);  // Get the Record
+        var gridView = gridviewGrid.getStore().getAt(rowIndex);
         
         if(columnIndex==0){
             loadSelectedRecord(grid, rowIndex, columnIndex, e);
@@ -84,33 +97,40 @@
             triggerStatusUpdateRecord(gridView);
         }
     }
+
+    function getParameters(){
+        orgTypeId = $("#orgTypeId").val();
+        orgId = $("#orgId").val();
+    }
     
     function loadSelectedRecord(grid, rowIndex, columnIndex, e){
         var gridView = gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
+        getParameters();
         $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId);
     }
 
     function createNewRecord(){
          var gridViewId = -1;
+         getParameters();
         $("#admin_param_panel").load("updateUserDetailPanel.action?mode=New&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId);
     }
     
     function loadGridViewList(){
     
+        getParameters();
+        
         gridviewData.load(
         {
             params:
             {
-                orgType:orgTypeId,
-                start:0,
-                limit:recordPerPage
+                orgTypeId:orgTypeId,
+                orgId:orgId
             }
         });
     }
     
-    function doSelectChange(){
-        orgTypeId = $("#orgTypeId").val();
+    function doSelectChange(){        
         loadGridViewList();
     }
     
@@ -144,7 +164,8 @@
         <div class="gridViewHeader">
             <table width="100%">
                 <tr>
-                    <td>
+                    <td><s:property value="orgTypeId" />
+                           
 <s:if test="isSelectable">
 Organisation Type: <select id="orgTypeId" onchange="javascript:doSelectChange()">
                 <option value="1">CHOX</option>
@@ -152,6 +173,13 @@ Organisation Type: <select id="orgTypeId" onchange="javascript:doSelectChange()"
                 <option value="3">Credit Hire</option>
             </select>
 </s:if>
+<s:else>
+    <input name="orgTypeId" id="orgTypeId" type="hidden" value="<s:property value="orgTypeId" />">
+</s:else>
+
+<input name="orgId" id="orgId" type="hidden" value="<s:property value="orgId" />">
+
+
                     </td>
                     <td align="right"><button type="button" onclick="javascript:createNewRecord();">New</button></td>
                 </tr>

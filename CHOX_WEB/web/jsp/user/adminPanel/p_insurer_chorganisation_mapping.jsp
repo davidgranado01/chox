@@ -9,10 +9,16 @@
     var gridviewGrid;
     var gridviewData;
     var recordPerPage = 20;
-    var selectedOrgTypeId = 1 ;
+    
+    var orgId = -1;
+    var selectOrgId = <s:property value="selectOrgId" />;
     
     Ext.onReady(function(){
         
+       if(selectOrgId>0){
+           $("#insurerId").val(selectOrgId);
+       }
+       
        gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
@@ -34,7 +40,7 @@
             ({url: 'user/getUser.action',method:'GET'}),
             reader:gridviewJsonReader      
         });
-    
+
         gridviewGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:recordOnclick },
             store: gridviewData,
@@ -61,10 +67,9 @@
                 displayInfo: true,
                 displayMsg: 'Displaying records {0} - {1} of {2}',
                 emptyMsg: "No record to display"
-            });    
+            }); 
             
-            loadGridViewList()
-
+            loadGridViewList();
     }); 
     
     function recordOnclick(grid, rowIndex, columnIndex, e){
@@ -79,31 +84,38 @@
     }
     
     function loadSelectedRecord(grid, rowIndex, columnIndex, e){
-        // var gridView = gridviewGrid.getStore().getAt(rowIndex);
-        // var gridViewId = gridView.get("id");
+       var gridView = gridviewGrid.getStore().getAt(rowIndex);
+       var gridViewId = gridView.get("id");
+       alert("gridViewId:"+gridViewId);
         // $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + gridViewId + "&orgTypeId=" + selectedOrgTypeId);
     }
     
     function loadGridViewList(){
-    
+        
+        doParameters();
+        
         gridviewData.load(
         {
             params:
             {
-                orgType:selectedOrgTypeId,
-                start:0,
-                limit:recordPerPage
+                insurerId:orgId
             }
         });
+        
+        $("#lineOfBusinessName").val("");
+        
+    }
+    
+    function doParameters(){
+        orgId = $("#insurerId").val();
     }
     
     function doSelectChange(){
-        selectedOrgTypeId = $("#orgTypeId").val();
         loadGridViewList();
     }
     
     function triggerStatusUpdateRecord(gridView){
-            
+            doParameters();
             var aletMsg = "Are you sure you want to inactive this user?";
             
             if(!gridView.get("status")){
@@ -122,6 +134,7 @@
             }
     }
     
+    
 </script>
 
 <div>
@@ -132,16 +145,22 @@
             <table width="100%">
                 <tr>
                     <td>
+                        <s:if test="isSelectable">
                                 <s:select 
                                 id="insurerId"                                 
                                 name="insurerId" 
                                 list="insurers" 
                                 listKey="id" 
                                 listValue="name" 
-                                headerKey=""
+                                headerKey="-1"
                                 headerValue="--- ALL ---"
-                                emptyOption="false">
+                                emptyOption="false"
+                                onchange="javascript:doSelectChange();">
                                 </s:select>
+                        </s:if>
+                        <s:else>
+                            <input name="insurerId" id="insurerId" type="hidden" value="<s:property value="insurerId" />">
+                        </s:else>                                
                     </td>
                     <td align="right"></td>
                 </tr>

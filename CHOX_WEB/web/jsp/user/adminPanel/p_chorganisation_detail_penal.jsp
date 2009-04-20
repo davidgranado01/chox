@@ -157,8 +157,8 @@
                         <s:checkbox name="status" value="status" />
                     </div>
                     <div class="chox-form-button">
-                        <input type="submit" value="Save Changes" onclick="javascript: doSubmit();"/>
-                        <input type="submit" value="Cancel" class="cancel" onclick="javascript: doBack();" />
+                        <input type="button" value="Save Changes" onclick="javascript: doSubmit();"/>
+                        <input type="button" value="Cancel" class="cancel" onclick="javascript: doBack();" />
                     </div>
                         <div id="CDmessageBox" class="errorBox"></div>
                         <div class="chox-form-submit-result"></div>          

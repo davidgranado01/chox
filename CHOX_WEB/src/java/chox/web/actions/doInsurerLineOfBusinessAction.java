@@ -15,11 +15,27 @@ public class doInsurerLineOfBusinessAction extends BaseAction implements ModelDr
     
     protected int insurerId=-1;
     protected int lineOfBusinessId=-1;
-    protected String iineOfBusinessName;
+    protected String lineOfBusinessName;
     private LineOfBusiness model;
     private String actionResult;
     protected LineOfBusinessService service;
     protected InsurerService insurerService;
+
+    public int getLineOfBusinessId() {
+        return lineOfBusinessId;
+    }
+
+    public void setLineOfBusinessId(int lineOfBusinessId) {
+        this.lineOfBusinessId = lineOfBusinessId;
+    }
+
+    public String getLineOfBusinessName() {
+        return lineOfBusinessName;
+    }
+
+    public void setLineOfBusinessName(String lineOfBusinessName) {
+        this.lineOfBusinessName = lineOfBusinessName;
+    }
     
     public String getActionResult() {
         return actionResult;
@@ -47,20 +63,26 @@ public class doInsurerLineOfBusinessAction extends BaseAction implements ModelDr
         this.insurerId = insurerId;
     }
 
-    
     public String removeObject(){
-        service.DeleteObject(model);
+        model.setActive(!model.isActive());
+        service.updateObject(model);
+        return SUCCESS;
+    }
+    
+    public String doRenderActionPage(){
         return SUCCESS;
     }
     
     public String addObject(){
-        
-        model = new LineOfBusiness();
-        
-        // model.setAlliasName(insurerAlliasName);
-        // model.setInsurer(insurerService.getObject(insurerId));
-        // service.updateObject(model);
-        
+
+        if(!service.isLineOfBusinessExist(insurerId, lineOfBusinessName)){
+            model.setInsurer(insurerService.getObject(insurerId));
+            model.setName(lineOfBusinessName);
+            model.setActive(true);
+            service.updateObject(model);
+        }else{
+            actionResult = "Line of business is already exists";
+        }
         return SUCCESS;
     }
 
@@ -75,6 +97,7 @@ public class doInsurerLineOfBusinessAction extends BaseAction implements ModelDr
         } else {
             model = service.getObject(lineOfBusinessId);
         }
+        
     }
     
 }

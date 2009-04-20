@@ -812,7 +812,6 @@
             <result name="success">/jsp/p_response.jsp</result>
         </action>  
       
-        
         <action name="getUser" class="chox.web.actions.UserAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>

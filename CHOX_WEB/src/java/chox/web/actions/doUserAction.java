@@ -11,6 +11,7 @@ import chox.services.InsurerService;
 import chox.services.LookupService;
 import chox.services.UserService;
 import chox.services.WebUserUserRoleService;
+import chox.web.security.PermissionedUser;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import java.util.List;
@@ -31,6 +32,19 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     private String actionResult;
     private Integer insurerId = -1;
     private Integer supplierId = -1;
+    
+    private PermissionedUser currentUser = getAuthenticatedUser();
+    
+    private boolean isOrgSelectable = false;
+
+    public boolean isIsOrgSelectable() {
+        if(currentUser.getIsCHOXAdmin()){
+            isOrgSelectable = true;
+        }
+        return isOrgSelectable;
+    }
+    
+    
     
     public String getActionResult() {
         return actionResult;
@@ -59,6 +73,11 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     }
 
     public Integer getInsurerId() {
+        
+        if(!currentUser.getIsCHOXAdmin()){
+            insurerId = currentUser.getUser().getInsurer().getId();
+        }
+        
         return insurerId;
     }
 
@@ -67,6 +86,9 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     }
 
     public Integer getSupplierId() {
+        if(!currentUser.getIsCHOXAdmin()){
+            supplierId = currentUser.getUser().getChorganisation().getId();
+        }        
         return supplierId;
     }
 

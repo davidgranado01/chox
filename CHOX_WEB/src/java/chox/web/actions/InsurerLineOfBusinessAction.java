@@ -11,7 +11,7 @@ import java.util.List;
 public class InsurerLineOfBusinessAction extends BaseAction {
 
     protected int insurerId;
-    protected List<LineOfBusinessViewData> LineOfBusinesses;
+    protected List<LineOfBusinessViewData> lineOfBusinesses;
     protected LineOfBusinessService service;
 
     public int getInsurerId() {
@@ -22,37 +22,28 @@ public class InsurerLineOfBusinessAction extends BaseAction {
         this.insurerId = insurerId;
     }
 
-    public void setService(LineOfBusinessService service) {
+    public void setLineOfBusinessService(LineOfBusinessService service) {
         this.service = service;
     }
-    
+
+
     @Override
     public String execute() {
         
-        System.out.println(">>>>>>>>>>>>>> 0"+insurerId);
-        
         List<LineOfBusiness> lineOfBusinessData = this.service.getInsurerLineOfBusiness(insurerId);
         
-        System.out.println(">>>>>>>>>>>>>> 1");
-        
-        LineOfBusinesses = new ArrayList<LineOfBusinessViewData>();
-        
-        System.out.println(">>>>>>>>>>>>>> 2");
+        lineOfBusinesses = new ArrayList<LineOfBusinessViewData>();
         
         for(LineOfBusiness h : lineOfBusinessData)
         {    
-            System.out.println(">>>>>>>>>>>>>> + "+h.getName());
-            
-            LineOfBusinesses.add(new LineOfBusinessViewData(h));
+            lineOfBusinesses.add(new LineOfBusinessViewData(h));
         }
-        
-        System.out.println(">>>>>>>>>>>>>> 3");
         
         return SUCCESS;
     }     
     
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.LineOfBusinesses);
-        return "{totalCount:" + this.LineOfBusinesses.size() + ",results:" + jObject.toString() + "}";
+        JSONArray jObject = JSONArray.fromObject(this.lineOfBusinesses);
+        return "{totalCount:" + this.lineOfBusinesses.size() + ",results:" + jObject.toString() + "}";
     }    
 }

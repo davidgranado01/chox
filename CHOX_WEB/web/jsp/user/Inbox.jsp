@@ -190,7 +190,6 @@
     }  
     
     function doExportExcel(){
-        
         window.location= "doExportExcel.action";
     }
     
@@ -257,99 +256,96 @@
             emptyMsg: "No claim to display"
         });
         
-        //setup actions
         var approvedInvoicesPaymentAction = new Ext.Action
-                        ({
-                            text: 'Update Claim(s) To Invoice Payment Logged',
-                            handler: function(){
-                                if(confirm('Are you sure you want to perform this action?'))
-                                {
-                                    var selectedRecords =  sm2.getSelections();  
-                                    var selectedIDs = $.map(selectedRecords, function(n){
-                                        return n.json.id;
-                                    });
+        ({
+            text: 'Update Claim(s) To Invoice Payment Logged',
+            handler: function(){
+                if(confirm('Are you sure you want to perform this action?'))
+                {
+                    var selectedRecords =  sm2.getSelections();  
+                    var selectedIDs = $.map(selectedRecords, function(n){
+                        return n.json.id;
+                    });
 
-                                    var param = selectedIDs.join(",")
+                    var param = selectedIDs.join(",")
 
-                                    $.ajax({
-                                        url: "logInvoicePayments.action?selectedClaimIds=" + param,
-                                        success: function()
-                                        {
-                                            ds.reload();
-                                            refreshFilterPanel();
-                                        }
-                                    });
-                                }
-                            }
-                        }); 
-                        
+                    $.ajax({
+                        url: "logInvoicePayments.action?selectedClaimIds=" + param,
+                        success: function()
+                        {
+                            ds.reload();
+                            refreshFilterPanel();
+                        }
+                    });
+                }
+            }
+        }); 
+    
        var clearBREApprovedInvoicesForPaymentAction = new Ext.Action
-                        ({
-                            text: 'Approve Claim(s) For Payment',
-                            handler: function(){
-                                if(confirm('Are you sure you want to perform this action?'))
-                                {
-                                    var selectedRecords =  sm2.getSelections();  
-                                    var selectedIDs = $.map(selectedRecords, function(n){
-                                        return n.json.id;
-                                    });
+        ({
+            text: 'Approve Claim(s) For Payment',
+            handler: function(){
+                if(confirm('Are you sure you want to perform this action?'))
+                {
+                    var selectedRecords =  sm2.getSelections();  
+                    var selectedIDs = $.map(selectedRecords, function(n){
+                        return n.json.id;
+                    });
 
-                                    var param = selectedIDs.join(",")
+                    var param = selectedIDs.join(",")
 
-                                    $.ajax({
-                                        url: "clearBREApprovedInvoicesForPayment.action?selectedClaimIds=" + param,
-                                        success: function()
-                                        {
-                                            ds.reload();
-                                            refreshFilterPanel();
-                                        }
-                                    });
-                                }
-                            }
-                        }); 
+                    $.ajax({
+                        url: "clearBREApprovedInvoicesForPayment.action?selectedClaimIds=" + param,
+                        success: function()
+                        {
+                            ds.reload();
+                            refreshFilterPanel();
+                        }
+                    });
+                }
+            }
+        }); 
         
-        //setup grid panel tool bar menu        
         var actionMenu = new Ext.Toolbar.MenuButton({
             text: 'More actions',            
             tooltip: {text:'', title:'More actions'},
-            // Menus can be built/referenced by using nested menu config objects
             menu : {items: [approvedInvoicesPaymentAction,clearBREApprovedInvoicesForPaymentAction]}
         });
         
         actionMenu.on('arrowclick', function()
         {
-             //check thye accessibility on action item
-                var selectedRecords = sm2.getSelections();
+
+            var selectedRecords = sm2.getSelections();
                 
-                <s:if test="IsApprovePaymentAccessibile"> 
+            <s:if test="IsApprovePaymentAccessibile"> 
+                if(isSelectedRecordsMatchGivenStatus(selectedRecords,'AwaitingInvoicePayment'))
+                {   
+                    approvedInvoicesPaymentAction.enable(); 
+                }
+                else
+                {
+                    approvedInvoicesPaymentAction.disable(); 
+                }  
+            </s:if>
+            <s:else>
+                approvedInvoicesPaymentAction.disable();
+            </s:else>   
 
-                    if(isSelectedRecordsMatchGivenStatus(selectedRecords,'AwaitingInvoicePayment'))
-                    {   
-                        approvedInvoicesPaymentAction.enable(); 
-                    }
-                    else
-                    {
-                        approvedInvoicesPaymentAction.disable(); 
-                    }  
-                </s:if>
-                <s:else> approvedInvoicesPaymentAction.disable();</s:else>   
-
-                <s:if test="IsClearBREApprovedInvoicesForPaymentAccessibile"> 
-
-                    if(isSelectedRecordsMatchGivenStatus(selectedRecords,'InvoiceApprovedByBRE'))
-                    {   
-                        clearBREApprovedInvoicesForPaymentAction.enable(); 
-                    }
-                    else
-                    {
-                        clearBREApprovedInvoicesForPaymentAction.disable(); 
-                    }  
-                </s:if>
-                <s:else> clearBREApprovedInvoicesForPaymentAction.disable();</s:else>
+            <s:if test="IsClearBREApprovedInvoicesForPaymentAccessibile"> 
+                if(isSelectedRecordsMatchGivenStatus(selectedRecords,'InvoiceApprovedByBRE'))
+                {   
+                    clearBREApprovedInvoicesForPaymentAction.enable(); 
+                }
+                else
+                {
+                    clearBREApprovedInvoicesForPaymentAction.disable(); 
+                }  
+            </s:if>
+            <s:else>
+                clearBREApprovedInvoicesForPaymentAction.disable();
+            </s:else>
         }, this);
         
-          
-        //Setup Grid Panel
         var grid = new Ext.grid.GridPanel({
             loadMask: true,
             ds: ds,
@@ -471,7 +467,11 @@
     Ext.onReady(function(){        
         setupTabPanels();
         setupGrid();
-        refreshViewingStatus();
+        
+        if(!<s:property value="isChoxAdmin"/>){
+            refreshViewingStatus();
+        }
+        
         loadDataFromSession();
     }); 
     
@@ -492,7 +492,7 @@
             }  
         }); 
     }
-
+    
     function handleActivate(tab){
         
         /*
@@ -513,14 +513,14 @@
             $("#gridPanel").show(); 
         }
         */
-       
+        
         $("#gridPanel").hide();
         
         if(tab.title == 'Inbox' || tab.title == 'Search'){
             ds.load({ params:{start:0,limit:0}});
             $("#gridPanel").show();         
         }
-       
+
         if(tabs)
         {
             currentTabIndex = tabs.items.indexOf(tabs.getActiveTab());
@@ -563,6 +563,7 @@
 
 <body>
     <div class="outer" id="outerDiv">
+        
         <div class="inner">
             
             <div id="chox-menu">

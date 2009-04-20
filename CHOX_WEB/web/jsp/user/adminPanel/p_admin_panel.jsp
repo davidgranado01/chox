@@ -29,8 +29,6 @@
                         <div style="height:550px;" class="x-panel-bwrap chox-form-container">
                             <ul>
 
-                            <li class='reportTypeHeader'>PART A</li>
-
 <s:if test="adminAccessibility.isInsurerCompaniesAdminAccessibility">
                                 <li><a href="javascript:renderAdminParameterPanel('InsurerOrgMgmt');">Insurence Companies</a></li>
 </s:if>    
