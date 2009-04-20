@@ -6,9 +6,13 @@
 package chox.services;
 
 import chox.model.InsurerAllias;
-import chox.model.Insurer;
+import java.util.List;
 
 public interface InsurerAlliasService{
     public InsurerAllias getInsurerByAlliasName(String s);
-
+    public List<InsurerAllias> getInsurerAllias(int insurerId);
+    public InsurerAllias getObject(int id);
+    public boolean DeleteObject(InsurerAllias object);
+    public boolean updateObject(InsurerAllias object);
+    public boolean isInsurerAlliasExist(int insurerId, String AlliasName);
 }

@@ -62,7 +62,7 @@ public class Chorganisation implements Serializable,Auditable, ICHOrganisationIn
 	/** 
 	 * This attribute maps to the column is_delegated_authority in the chorganisation table.
 	 */
-	protected boolean isDelegatedAuthority;
+	protected boolean delegatedAuthority;
 
 	/** 
 	 * This attribute maps to the column created_by in the chorganisation table.
@@ -297,9 +297,9 @@ public class Chorganisation implements Serializable,Auditable, ICHOrganisationIn
 	 * 
 	 * @return boolean
 	 */
-	public boolean isIsDelegatedAuthority()
+	public boolean isDelegatedAuthority()
 	{
-		return isDelegatedAuthority;
+		return delegatedAuthority;
 	}
 
 	/**
@@ -307,9 +307,9 @@ public class Chorganisation implements Serializable,Auditable, ICHOrganisationIn
 	 * 
 	 * @param isDelegatedAuthority
 	 */
-	public void setIsDelegatedAuthority(boolean isDelegatedAuthority)
+	public void setDelegatedAuthority(boolean delegatedAuthority)
 	{
-		this.isDelegatedAuthority = isDelegatedAuthority;
+		this.delegatedAuthority = delegatedAuthority;
 	}
 
 	/**
@@ -393,9 +393,13 @@ public class Chorganisation implements Serializable,Auditable, ICHOrganisationIn
 	}
 
         public boolean getIsDelegatedAuthority() {
-            return this.isDelegatedAuthority;
+            return this.delegatedAuthority;
         }
 
+        public void setIsDelegatedAuthority(boolean isDelegatedAuthority) {
+            this.delegatedAuthority = isDelegatedAuthority;
+        }
+    
         public boolean isStatus() {
             return status;
         }
@@ -441,9 +445,6 @@ public class Chorganisation implements Serializable,Auditable, ICHOrganisationIn
                     return sb.toString();
             }else{
                 return "N/A";
-            }
-            
-            
-            
+            }   
         }
 }

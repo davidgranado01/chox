@@ -18,7 +18,14 @@ public class SystemLogServiceImpl extends SecureDataService implements SystemLog
         }else{
             systemLog.setStatus("F");
         }
-        //save(systemLog);
+        
+        try {
+            
+            save(systemLog);
+            
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }            
     } 
 
     public SystemLog getObject(int id) {

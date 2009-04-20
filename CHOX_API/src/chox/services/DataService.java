@@ -141,7 +141,12 @@ public class DataService extends HibernateDaoSupport {
         }else{
             systemLog.setStatus("F");
         }
-        // save(systemLog);
+        
+        try {
+            save(systemLog);
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
     } 
     
     public void delete(final Object object) {

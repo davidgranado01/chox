@@ -14,6 +14,7 @@ public interface UserService {
     public Long getNumChoActiveUser(Integer choId);
 
     public Long getNumInsActiveUser(Integer insId);
-    public List<WebUser> getUsers(int start, int limit);
-    public void updateObject(WebUser object);
+    public List<WebUser> getUsers();
+    public boolean updateObject(WebUser object);
+    public boolean isEmailExist(String email);
 }

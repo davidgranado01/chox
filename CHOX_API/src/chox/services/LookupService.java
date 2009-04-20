@@ -16,6 +16,8 @@ public interface LookupService {
     public List getStatuses();
     public List getLineOfBusinesses();   
     public List getSuppliers();
+    public List getAllActiveSuppliers();
+    public List getAllActiveInsurers();
     public List getInsurers();
     public List getSuppliers(Integer insurerId);
     public List getInsurers(Integer choId);
@@ -23,4 +25,5 @@ public interface LookupService {
     public List getClaimRejectionReason();
     public List getInvoiceRejectionReason();
     public List getNonProvisionReason();
+    public List getSelectedUserAvailableRole(int orgTypeId, int webUserId);
 }

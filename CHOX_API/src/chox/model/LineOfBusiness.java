@@ -72,7 +72,7 @@ public class LineOfBusiness implements Serializable,Auditable
 	/** 
 	 * This attribute maps to the column is_active in the line_of_business table.
 	 */
-	protected boolean isActive;
+	protected boolean active;
 
 	/** 
 	 * This attribute represents the foreign key relationship to the insurer table.
@@ -332,9 +332,9 @@ public class LineOfBusiness implements Serializable,Auditable
 	 * 
 	 * @return boolean
 	 */
-	public boolean isIsActive()
+	public boolean isActive()
 	{
-		return isActive;
+		return active;
 	}
 
 	/**
@@ -342,9 +342,9 @@ public class LineOfBusiness implements Serializable,Auditable
 	 * 
 	 * @param isActive
 	 */
-	public void setIsActive(boolean isActive)
+	public void setActive(boolean active)
 	{
-		this.isActive = isActive;
+		this.active = active;
 	}
 
 	/**

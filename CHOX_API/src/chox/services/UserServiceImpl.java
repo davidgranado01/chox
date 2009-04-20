@@ -15,11 +15,25 @@ public class UserServiceImpl extends DataService implements UserService {
     public WebUser findByEmail(String email) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("email", email));
-        criteria.add(Restrictions.eq("status", 1));
+        criteria.add(Restrictions.eq("status", true));
         WebUser result = (WebUser) getByCriteria(criteria);
         return result;
     }
 
+    public boolean isEmailExist(String email){
+        
+        boolean bFlag = true;
+        
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("email", email));
+        WebUser result = (WebUser) getByCriteria(criteria);
+        
+        if(result==null){
+            bFlag = false;
+        }
+        
+        return bFlag;
+    }
+    
     public void persist(WebUser user, String emailId) {
         this.save(user);
     }
@@ -41,16 +55,16 @@ public class UserServiceImpl extends DataService implements UserService {
     }
 
     public Long getNumChoActiveUser(Integer choId) {
-        String q = "select count(*) from WebUser where status = 1 and chorganisation.id = " + choId.toString();
+        String q = "select count(*) from WebUser where status = true and chorganisation.id = " + choId.toString();
         return getCount(q);
     }
 
     public Long getNumInsActiveUser(Integer insId) {
-        String q = "select count(*) from WebUser where status = 1 and insurer.id = " + insId.toString();
+        String q = "select count(*) from WebUser where status = true and insurer.id = " + insId.toString();
         return getCount(q);
     } 
     
-    public List<WebUser> getUsers(int start, int limit){
+    public List<WebUser> getUsers(){
         
         List<WebUser> users = new ArrayList<WebUser>();
         
@@ -67,11 +81,20 @@ public class UserServiceImpl extends DataService implements UserService {
         return users;
     } 
     
-    public void updateObject(WebUser object) {
+    public boolean updateObject(WebUser object) {
+        
+        boolean bFlag = false;
+        
         try {
+            
             save(object);
+            bFlag = true;
+
         } catch (Throwable e) {
-           e.printStackTrace();
-        }          
+            bFlag = false;
+            e.printStackTrace();
+        }    
+
+        return bFlag;
     }    
 }

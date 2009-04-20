@@ -1,12 +1,14 @@
 package chox.model;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
 
 public class WebUserRole implements Serializable,Auditable
 {
+        public static final String ROLE_CHOX = "ROLE_CHOX_ADMIN";
+        public static final String ROLE_INS = "ROLE_INS";
+        public static final String ROLE_CHO = "ROLE_CHO";
+        
 	/** 
 	 * This attribute maps to the column id in the web_user_role table.
 	 */
@@ -16,6 +18,7 @@ public class WebUserRole implements Serializable,Auditable
 	 * This attribute maps to the column name in the web_user_role table.
 	 */
 	protected String name;
+        protected String description;
 
 	/** 
 	 * This attribute maps to the column created_by in the web_user_role table.
@@ -44,6 +47,14 @@ public class WebUserRole implements Serializable,Auditable
 	public WebUserRole()
 	{
 	}
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 	/**
 	 * Method 'getId'

@@ -13,6 +13,8 @@ import chox.model.LineOfBusiness;
 import chox.model.LookupItem;
 import chox.model.VehicleClass;
 import chox.model.WebUser;
+import chox.model.WebUserRole;
+import chox.model.WebUserUserRole;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +29,14 @@ import org.hibernate.criterion.Restrictions;
  * @author Emmanuel
  */
 public class LookupServiceImpl extends SecureDataService implements LookupService, Serializable {
-
+    
+    private WebUserUserRoleService webUserUserRoleService;
+    
+    public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService)
+    {
+        this.webUserUserRoleService = webUserUserRoleService;
+    }
+    
     public List getStatuses() {
         List items = new ArrayList<LookupItem>();
         for (String s : ClaimStatus.getStatus()) {
@@ -42,13 +51,54 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         return findByCriteria(criteria);
     }
 
+    public List getAllActiveSuppliers() {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
+        criteria.add(Restrictions.eq("status", true));
+        return findByCriteria(criteria);            
+    }
+    
+    public List getSelectedUserAvailableRole(int orgTypeId, int webUserId){
+        
+        List items = new ArrayList<IdLookupItem>();
+        
+        List<WebUserRole> webUserroles = webUserUserRoleService.getWebUserroles(orgTypeId);
+        List<WebUserUserRole> selectedWebUserroles = webUserUserRoleService.getUserRoleMapping(webUserId, null);
+        
+        List<Integer> selectedList = new ArrayList<Integer>();
+        
+        for (WebUserUserRole o : selectedWebUserroles) {
+            selectedList.add(o.getWebUserRole().getId());
+        }
+        
+        for (WebUserRole s : webUserroles) {
+            
+            if(!selectedList.contains(s.getId())){
+                
+                items.add(new IdLookupItem(s.getDescription(),s.getId()));
+            }
+        }
+        
+        return items;
+    }
+    
+   
+    
+    public List getAllActiveInsurers() {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
+        criteria.add(Restrictions.eq("status", true));
+        return findByCriteria(criteria);
+    }
+    
     public List getSuppliers() {
         
         WebUser currentUser = getCurrentUser();
                 
         if(currentUser.isCHOXAdmin()){
+            
             DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
+            criteria.add(Restrictions.eq("status", true));
             return findByCriteria(criteria);            
+            
         }else{
             return getSuppliers(currentUser.getInsurer().getId());
         }
@@ -59,6 +109,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         WebUser currentUser = getCurrentUser();
         if(currentUser.isCHOXAdmin()){
             DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
+            criteria.add(Restrictions.eq("status", true));
             return findByCriteria(criteria);            
         }else{
             return getInsurers(currentUser.getChorganisation().getId());
@@ -91,7 +142,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         try {
             
             List result = new ArrayList();
-            String query = "select a.id as value, a.name as text from chorganisation a inner join insurer_chorganisation b on a.id = b.chorganisation_id where b.insurer_id=:pInsurerId";
+            String query = "select a.id as value, a.name as text from chorganisation a inner join insurer_chorganisation b on a.id = b.chorganisation_id where a.status=true and b.insurer_id=:pInsurerId";
             Map extParameters = new HashMap();
             extParameters.put("pInsurerId", insurerId);
             result = externalQuery(query, extParameters, IdLookupItem.class);
@@ -119,7 +170,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         
         try {
             List result = new ArrayList();
-            String query = "select a.id as value, a.name as text from insurer a inner join insurer_chorganisation b on a.id = b.insurer_id where b.chorganisation_id=:pChorganisationId";
+            String query = "select a.id as value, a.name as text from insurer a inner join insurer_chorganisation b on a.id = b.insurer_id where a.status=true and b.chorganisation_id=:pChorganisationId";
             Map extParameters = new HashMap();
             extParameters.put("pChorganisationId", choId);
             result = externalQuery(query, extParameters, IdLookupItem.class);

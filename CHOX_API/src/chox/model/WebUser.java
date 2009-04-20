@@ -35,7 +35,7 @@ public class WebUser implements Serializable
 	/** 
 	 * This attribute maps to the column status in the web_user table.
 	 */
-	protected int status;
+	protected boolean status;
 
 	/** 
 	 * This attribute maps to the column created_by in the web_user table.
@@ -73,6 +73,7 @@ public class WebUser implements Serializable
 	protected WebUserRole webUserRole;
         
         protected Set roles;
+        protected String organisationName;
 
 	/**
 	 * Method 'WebUser'
@@ -187,7 +188,7 @@ public class WebUser implements Serializable
 	 * 
 	 * @return int
 	 */
-	public int getStatus()
+	public boolean getStatus()
 	{
 		return status;
 	}
@@ -197,7 +198,7 @@ public class WebUser implements Serializable
 	 * 
 	 * @param status
 	 */
-	public void setStatus(int status)
+	public void setStatus(boolean status)
 	{
 		this.status = status;
 	}
@@ -334,16 +335,16 @@ public class WebUser implements Serializable
         
         public String getOrganisationName()
         {
-            String orgName = "";
             Chorganisation cho = this.getChorganisation();
             Insurer ins = this.getInsurer();
 
             if (ins != null) {
-                orgName = ins.getName();
+                organisationName = ins.getName();
             } else if (cho != null) {
-                orgName = cho.getName();
+                organisationName = cho.getName();
             }
-            return orgName;
+            
+            return organisationName;
         }
         
         @Override
