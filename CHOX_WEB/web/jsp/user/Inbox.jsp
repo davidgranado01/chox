@@ -616,14 +616,6 @@
             </div>
             </s:if>
            
-            <s:if test="menuAccessibility.isReportMenuAccessibility">
-            <div id="reportPanelTab" class="x-hide-display">
-                <div id="reportPanel">
-                    <s:action name="buildReport" namespace="/user" executeResult="true" /> 
-                </div>
-            </div>
-            </s:if>
-            
             <div id="gridPanel">
                 <div id="gridHolder"></div>
                 <div class="excel-export"><form name="thisForm">

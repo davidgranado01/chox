@@ -61,7 +61,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     private static final String strPrefix = "Claim Review Note: ";
     private static final String statusMsg = "Your action has been recorded";
-    
     public static final String REFER_FNOL = "referFNOL";
     public static final String REJECT = "reject";
     public static final String ACCEPT = "accept";
@@ -756,8 +755,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
-            logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
-            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus+"| ReasonOfRejection:"+claim.getReasonOfRejectionId();
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus+"| ReasonOfRejection:"+claim.getInvoice().getReasonOfRejectionId();
+            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
         }
         
         try {
@@ -794,10 +793,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             newStatus = ClaimStatus.INVOICE_ESCALATED;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
-            logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
-            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus+"| ReasonOfRejection:"+claim.getReasonOfRejectionId();
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus+"| ReasonOfRejection:"+claim.getInvoice().getReasonOfRejectionId();
+            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
         }
-        
+
         try {
             
             auditTrailService.logAuditLog(newStatus, claim, null, null);
@@ -891,8 +890,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
-            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus + "| ReasonOfRejection:"+claim.getReasonOfRejectionId();
-            logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus + "| ReasonOfRejection:"+claim.getInvoice().getReasonOfRejectionId();
+            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
         }
         
         try {
@@ -931,8 +930,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
         }else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
-            logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
-            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus + "| ReasonOfRejection:"+claim.getReasonOfRejectionId();
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus + "| ReasonOfRejection:"+claim.getInvoice().getReasonOfRejectionId();
+            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
         }
         
         try {
@@ -1564,7 +1563,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void logNewCommentForRejection(Integer reasonOfRejectionId, boolean isPublic) {
 
         if (reasonOfRejectionId != null) {
-            ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(claim.getReasonOfRejectionId());
+            ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
             createNewNote(reasonOfRejection.getName(), isPublic, "Reason For Rejection: ");
         }
     }

@@ -1,9 +1,3 @@
-<%-- 
-    Document   : p_approveClaim
-    Created on : 01-Dec-2008, 02:28:00
-    Author     : Emmanuel
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -16,14 +10,21 @@
     });
     
     function doRejectClaim(){
+        
         registeAction('reject');
+        
         if(doFormValidation().form()){
+            
             if(!confirm('Are you sure you want to reject this claim?')){
                 return false;
             }
+            
+            $("#reasonOfRejectionIdHolder").val($("#InvoiceReasonOfRejectionId").val());
+            
         }else{
             return false;
         }
+        
         return true;
     }
     
@@ -41,11 +42,11 @@
             errorLabelContainer: "#ActionPanelMessageBox",                
             rules: {
                 actionName:{required:true},
-                reasonOfRejectionId:{required:isRejected}
+                InvoiceReasonOfRejectionId:{required:isRejected}
             },
             messages: {
                 actionName:{required:"You must select action"},
-                reasonOfRejectionId:{required:"You must choose a 'Reason For Rejection'"}       
+                InvoiceReasonOfRejectionId:{required:"You must choose a 'Reason For Rejection'"}       
             }
             
         });
@@ -57,7 +58,7 @@
         
         registeAction(a);
 
-        $("#reasonOfRejectionId").val("");
+        $("#InvoiceReasonOfRejectionId").val("");
         
         isClaimNumberInvalid();
         if(!doFormValidation().form()){
@@ -75,6 +76,8 @@
         <legend>Escalated Invoice - Action Required</legend>
         <s:hidden name="id" />
         <s:hidden id="actionName" name="actionName" />
+        <s:hidden id="reasonOfRejectionIdHolder" name="invoice.reasonOfRejectionId"/>
+        
         <div>
             <div class="status-info">
                 Please review the 'History' tab for details on why the claim has been rejected. 
@@ -88,7 +91,7 @@
             <label>Reason for Rejection</label>
         </td>
         <td>
-            <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
+            <s:select name="InvoiceReasonOfRejectionId" id="InvoiceReasonOfRejectionId"
             list="reasonOfInvoiceRejections"  
             listKey="id" 
             listValue="name" 

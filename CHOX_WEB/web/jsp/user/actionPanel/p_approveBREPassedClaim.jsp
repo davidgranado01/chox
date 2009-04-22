@@ -1,4 +1,7 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
 
 <script language="JavaScript">
     
@@ -7,14 +10,21 @@
     });
     
     function doRejectClaim(){
+        
         registeAction('reject');
+        
         if(doFormValidation().form()){
+            
             if(!confirm('Are you sure you want to reject this claim?')){
                 return false;
             }
+            
+            $("#reasonOfRejectionIdHolder").val($("#InvoiceReasonOfRejectionId").val());
+            
         }else{
             return false;
         }
+        
         return true;
     }
     
@@ -32,11 +42,11 @@
             errorLabelContainer: "#ActionPanelMessageBox",                
             rules: {
                 actionName:{required:true},
-                reasonOfRejectionId:{required:isRejected}
+                InvoiceReasonOfRejectionId:{required:isRejected}
             },
             messages: {
                 actionName:{required:"You must select action"},
-                reasonOfRejectionId:{required:"You must choose a 'Reason For Rejection'"}       
+                InvoiceReasonOfRejectionId:{required:"You must choose a 'Reason For Rejection'"}       
             }
             
         });
@@ -48,7 +58,7 @@
         
         registeAction(a);
 
-        $("#reasonOfRejectionId").val("");
+        $("#InvoiceReasonOfRejectionId").val("");
         
         isClaimNumberInvalid();
         if(!doFormValidation().form()){
@@ -66,6 +76,8 @@
         <legend>BRE Approved Claim - Action Required</legend>
         <s:hidden name="id" />
         <s:hidden id="actionName" name="actionName" />
+        <s:hidden id="reasonOfRejectionIdHolder" name="invoice.reasonOfRejectionId"/>
+        
         <div>
             <div class="status-info">             
              This claim and it's related invoice have been cleared by the CHOX approval system. Please review the invoice and claim information supplied, and choose whether to clear the invoice for payment, reject the invoice or refer the invoice to an Engineer.
@@ -78,7 +90,7 @@
             <label>Reason for Rejection</label>
         </td>
         <td>
-            <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
+            <s:select name="InvoiceReasonOfRejectionId" id="InvoiceReasonOfRejectionId"
             list="reasonOfInvoiceRejections"  
             listKey="id" 
             listValue="name" 
