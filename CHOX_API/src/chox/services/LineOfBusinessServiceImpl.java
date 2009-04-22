@@ -9,7 +9,6 @@ import chox.model.LineOfBusiness;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 public class LineOfBusinessServiceImpl extends SecureDataService implements LineOfBusinessService {

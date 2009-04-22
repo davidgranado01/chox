@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Iterator;
 
 public class WebUser implements Serializable
 {
@@ -356,12 +357,26 @@ public class WebUser implements Serializable
 
         
         public boolean isCHOXAdmin(){
-            
+
             boolean bFlag = false;
             
+            if(this.roles.size()>0){
+                Iterator itr = roles.iterator();
+
+                while(itr.hasNext()) {
+                    WebUserRole webUserrole = (WebUserRole) itr.next();
+                    if(webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHOX)){
+                        bFlag = true;
+                        break;
+                    }
+                }
+            }
+            
+            /*
             if(this.getChorganisation()==null && this.getInsurer()==null){
                 bFlag = true;
             }
+            */
             
             return bFlag;
             
