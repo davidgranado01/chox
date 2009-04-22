@@ -74,3 +74,5 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 
 ALTER TABLE line_of_business ALTER COLUMN address1 DROP NOT NULL;
 ALTER TABLE line_of_business ALTER COLUMN postcode DROP NOT NULL;
+
+------------------------------------------------------------------------------------------------
