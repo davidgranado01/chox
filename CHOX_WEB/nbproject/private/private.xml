@@ -11,4 +11,12 @@
             <line>67</line>
         </file>
     </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/C:/Project%20Workplace/Greefinch/choxida/trunk/CHOX_WEB/src/java/chox/web/actions/ClaimAction.java</file>
+        <file>file:/C:/Project%20Workplace/Greefinch/choxida/trunk/CHOX_WEB/src/java/struts.xml</file>
+        <file>file:/C:/Project%20Workplace/Greefinch/choxida/trunk/CHOX_WEB/web/jsp/user/actionPanel/p_approveBREPassedClaim.jsp</file>
+        <file>file:/C:/Project%20Workplace/Greefinch/choxida/trunk/CHOX_WEB/web/jsp/user/actionPanel/p_approveContestedInvoice.jsp</file>
+        <file>file:/C:/Project%20Workplace/Greefinch/choxida/trunk/CHOX_WEB/web/jsp/user/actionPanel/p_approveEscalatedInvoice.jsp</file>
+        <file>file:/C:/Project%20Workplace/Greefinch/choxida/trunk/CHOX_WEB/web/jsp/user/actionPanel/p_approveInvoiceReferredByEngineer.jsp</file>
+    </open-files>
 </project-private>

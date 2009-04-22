@@ -72,7 +72,8 @@
             renderTo:'gridviewGrid',
                 width:615,
                 autoHeight:true,
-                enableHdMenu:false
+                enableHdMenu:false,
+                bbar: pagingBar
             });
 
             var pagingBar = new Ext.PagingToolbar({

@@ -114,8 +114,6 @@ public class ClaimRejectedReport implements Report {
             dataService.logSystemLog(getReportCode(), sActionMsg, bAction);
         }
         
-        System.out.println(">>>>>>>>>>>>> 7");
-        
         return reportParameters;
     }
 

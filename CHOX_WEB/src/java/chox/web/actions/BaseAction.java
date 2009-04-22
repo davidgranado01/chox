@@ -49,14 +49,10 @@ public class BaseAction extends ActionSupport {
         
         boolean isChoxAdmin = false;
         
-        // System.out.println("A :"+getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CHOX));
-        // System.out.println("B :"+getAuthenticatedUser().getIsCHO());
-        // System.out.println("C :"+getAuthenticatedUser().getIsINS());
-        
         if(getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CHOX)){
             isChoxAdmin = true;
         }
-        // System.out.println("D :"+isChoxAdmin);
+        
         return isChoxAdmin;
     }
     
