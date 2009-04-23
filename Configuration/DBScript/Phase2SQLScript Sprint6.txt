@@ -19,7 +19,9 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 -- DELETE INCORRECT ROLE ASSIGN TO CHOX ADMIN
 delete from web_user_user_role where web_user_id=5 and id!=12;
 
-------------------------------------------------------------------------------------------------
+-- ############################################################################################
+-- START VERSION V2.6.1
+-- ############################################################################################\
 
 ALTER TABLE chorganisation ADD COLUMN status boolean;
 ALTER TABLE chorganisation ALTER COLUMN status SET DEFAULT true;
@@ -122,4 +124,6 @@ update accessibility_item set role = 'ROLE_INS_CR' where role like 'ROLE_INS_CR%
 update accessibility_item set role = 'ROLE_CHO_OPR' where role like 'ROLE_CHO_OPR%';
 update accessibility_item set role = 'ROLE_CHO_MNG' where role like 'ROLE_CHO_MNG%';
 
-------------------------------------------------------------------------------------------------
+-- ############################################################################################
+-- START VERSION V2.6.2
+-- ############################################################################################\
