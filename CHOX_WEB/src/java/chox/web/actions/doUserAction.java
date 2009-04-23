@@ -251,6 +251,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
                     bFlag = true;
                     actionResult = "New user has been created!";
                 }
+                
             }else{
                 actionResult = "Please try again!";
             }

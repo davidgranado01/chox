@@ -30,7 +30,7 @@
                             <ul>
 
 <s:if test="adminAccessibility.isInsurerCompaniesAdminAccessibility">
-                                <li><a href="javascript:renderAdminParameterPanel('InsurerOrgMgmt');">Insurence Companies</a></li>
+                                <li><a href="javascript:renderAdminParameterPanel('InsurerOrgMgmt');">Insurance Companies</a></li>
 </s:if>    
 <s:if test="adminAccessibility.isCreditHireOrgAdminAccessibility">                            
                                 <li><a href="javascript:renderAdminParameterPanel('CreditHireOrgMgmt');">Credit Hire Organisation</a></li>
@@ -43,7 +43,8 @@
                                 <li><a href="javascript:renderAdminParameterPanel('InsurerAlliasMappingMgmt');">Alliases</a></li>
                                 <li><a href="javascript:renderAdminParameterPanel('InsurerLineOfBusinessMappingMgmt');">Line Of Businesses</a></li>
                                 <li><a href="javascript:renderAdminParameterPanel('InsurerOrgMappingMgmt');">Credit Hire Mapping</a></li>
-                                
+                                <li><a href="javascript:renderAdminParameterPanel('InsurerOrgMappingMgmt');">BRE Band</a></li>
+                                <li><a href="javascript:renderAdminParameterPanel('InsurerOrgMappingMgmt');">BRE Mapping</a></li>
                             </ul>
                         </div>
                     </div>
