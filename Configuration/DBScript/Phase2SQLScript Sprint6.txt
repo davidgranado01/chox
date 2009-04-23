@@ -117,3 +117,9 @@ ALTER TABLE insurer_chorganisation ADD COLUMN last_modified_date timestamp witho
 
 ------------------------------------------------------------------------------------------------
 
+update accessibility_item set role = 'ROLE_INS_SCR' where role like 'ROLE_INS_SCR%';
+update accessibility_item set role = 'ROLE_INS_CR' where role like 'ROLE_INS_CR%';
+update accessibility_item set role = 'ROLE_CHO_OPR' where role like 'ROLE_CHO_OPR%';
+update accessibility_item set role = 'ROLE_CHO_MNG' where role like 'ROLE_CHO_MNG%';
+
+------------------------------------------------------------------------------------------------
