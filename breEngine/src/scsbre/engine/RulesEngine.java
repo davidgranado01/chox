@@ -1,8 +1,5 @@
 package scsbre.engine;
 
-
-
-
 import scsbre.engine.rules.*;
 import scsbre.model.IClaimInfo;
 
@@ -14,7 +11,6 @@ public class RulesEngine {
         RulesEngine engine = new RulesEngine(c);
         return engine;
     }
-
 
     private RulesEngine(IClaimInfo c) {
         claim = c;
