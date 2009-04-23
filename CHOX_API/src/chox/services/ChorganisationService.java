@@ -8,4 +8,8 @@ public interface ChorganisationService {
     public List<Chorganisation> getChorganisation();
     public Chorganisation getObject(int id);
     public void updateObject(Chorganisation object);
+    public List<Chorganisation> getActiveChorganisation();
+    public List<Chorganisation> getAvailableChorganisationByInsurer(int insurerId);
+    
+        
 }
