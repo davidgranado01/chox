@@ -76,3 +76,44 @@ ALTER TABLE line_of_business ALTER COLUMN address1 DROP NOT NULL;
 ALTER TABLE line_of_business ALTER COLUMN postcode DROP NOT NULL;
 
 ------------------------------------------------------------------------------------------------
+
+ALTER TABLE insurer_chorganisation ADD COLUMN status boolean;
+ALTER TABLE insurer_chorganisation ALTER COLUMN status SET DEFAULT true;
+update insurer_chorganisation set status = true;
+
+------------------------------------------------------------------------------------------------
+
+ALTER TABLE insurer_chorganisation ADD COLUMN id integer;
+
+update insurer_chorganisation set id=1 where insurer_id=3 and chorganisation_id=1006;
+update insurer_chorganisation set id=2 where insurer_id=3 and chorganisation_id=1007;
+update insurer_chorganisation set id=3 where insurer_id=5 and chorganisation_id=1007;
+update insurer_chorganisation set id=4 where insurer_id=6 and chorganisation_id=1007;
+update insurer_chorganisation set id=5 where insurer_id=7 and chorganisation_id=1007;
+update insurer_chorganisation set id=6 where insurer_id=10 and chorganisation_id=1007;
+update insurer_chorganisation set id=7 where insurer_id=16 and chorganisation_id=1007;
+
+ALTER TABLE insurer_chorganisation ALTER COLUMN id SET NOT NULL;
+
+CREATE SEQUENCE insurer_chorganisation_seq;
+
+ALTER TABLE insurer_chorganisation DROP CONSTRAINT insurer_chorganisation_pkey;
+ALTER TABLE insurer_chorganisation ADD PRIMARY KEY(id);
+
+------------------------------------------------------------------------------------------------
+
+ALTER TABLE insurer_chorganisation ADD COLUMN created_by integer;
+update insurer_chorganisation set created_by = 999;
+ALTER TABLE insurer_chorganisation ALTER COLUMN created_by SET NOT NULL;
+
+ALTER TABLE insurer_chorganisation ADD COLUMN last_modified_by integer;
+update insurer_chorganisation set last_modified_by = 999;
+ALTER TABLE insurer_chorganisation ALTER COLUMN last_modified_by SET NOT NULL;
+
+------------------------------------------------------------------------------------------------
+
+ALTER TABLE insurer_chorganisation ADD COLUMN created_date timestamp without time zone NOT NULL DEFAULT now();
+ALTER TABLE insurer_chorganisation ADD COLUMN last_modified_date timestamp without time zone NOT NULL DEFAULT now();
+
+------------------------------------------------------------------------------------------------
+
