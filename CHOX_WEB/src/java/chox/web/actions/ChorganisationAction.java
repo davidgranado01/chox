@@ -11,6 +11,15 @@ public class ChorganisationAction extends BaseAction {
 
     private List<ChorganisationViewData> credithireorganisation;
     private ChorganisationService service;
+    private int insurerId;
+    
+    public int getInsurerId() {
+        return insurerId;
+    }
+
+    public void setInsurerId(int insurerId) {
+        this.insurerId = insurerId;
+    }
     
     public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.credithireorganisation);
@@ -37,4 +46,25 @@ public class ChorganisationAction extends BaseAction {
         return SUCCESS;
     }         
     
+    public String getAvailableChorganisation(){
+        
+        System.out.println("getAvailableChorganisation Insurer ID : " + insurerId);
+        
+        if(insurerId>0){
+        
+            List<Chorganisation> chorganisationData = this.service.getAvailableChorganisationByInsurer(insurerId);
+
+
+            credithireorganisation = new ArrayList<ChorganisationViewData>();
+
+            for(Chorganisation h : chorganisationData)
+            {
+                credithireorganisation.add(new ChorganisationViewData(h));
+            }
+
+            System.out.println("getAvailableChorganisation output Size : " + credithireorganisation.size());
+        }
+        
+        return SUCCESS;
+    }    
 }

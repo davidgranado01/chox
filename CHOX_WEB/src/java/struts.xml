@@ -835,7 +835,7 @@
         <action name="addNewRoleMapping" class="chox.web.actions.doUserroleAction" method="addNewRoleMapping">
             <result name="success">/jsp/p_response.jsp
             </result>
-        </action>        
+        </action>
         
         <action name="getInsurerAllias" class="chox.web.actions.InsurerAlliasAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
@@ -861,9 +861,20 @@
             </result>
         </action>   
         
-        <action name="getInsurerChorganisation" class="chox.web.actions.InsurerChorganisationAction">
+        <action name="getAvailableInsurerChorganisation" class="chox.web.actions.ChorganisationAction" method="getAvailableChorganisation">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>        
+        <action name="getSelectedInsurerChorganisation" class="chox.web.actions.InsurerChorganisationAction" method="getSelectedChorganisation">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>    
+        <action name="doRemoveInsurerChorganisation" class="chox.web.actions.doInsurerChorganisationAction" method="removeObject">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+        <action name="doAddNewInsurerChorganisation" class="chox.web.actions.doInsurerChorganisationAction" method="addObject">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>   
         
     </package>
     <include file="config-browser.xml"/>
