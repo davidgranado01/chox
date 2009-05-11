@@ -189,6 +189,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             xmlParseResult.setIsInvoiceExist(true);
         }
 
+        //System.out.println("CHECK INVOICE >>>>>>>>>>>" + xmlParseResult.getClaim().getChoReference());
+        
         /*
          * ONLY PROCESS THE INVOICE WHERE
          * 1. CLAIM IS EXIST IN DB 
@@ -197,10 +199,18 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         boolean isNewInvoice = false;
         String oldClaimStatus = xmlParseResult.getClaim().getStatus();
         
+        //System.out.println("CHECK INVOICE >>>>>>>>>>> INVOICE: " + xmlParseResult.getClaim().getInvoice());
+        
         if(xmlParseResult.getIsClaimExist() 
             && xmlParseResult.getClaim().getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)
             && !xmlParseResult.getIsInvoiceExist()){
             
+            //System.out.println("CHECK INVOICE >>>>>>>>>>> CD: " + xmlParseResult.getIsCurrentDataValid());
+            //System.out.println("CHECK INVOICE >>>>>>>>>>> CS: " + xmlParseResult.getIsCurrentScheValid());
+            //System.out.println("CHECK INVOICE >>>>>>>>>>> AD: " + xmlParseResult.getIsDataValid());
+            //System.out.println("CHECK INVOICE >>>>>>>>>>> AS: " + xmlParseResult.getIsSchemaValid());
+            //System.out.println("CHECK INVOICE >>>>>>>>>>> INVOICE: " + xmlParseResult.getIsInvoiceExist());
+
             isNewInvoice = true;
             xmlParseResult = RentalInvoiceSchemaValidation(xmlParseResult, root, doc);
             
@@ -209,7 +219,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
             // EXECUTE BRE RULE
             if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
-              
+                
                 // CHECK INITIAL ENGINEERING REPORT
                 Boolean isEngReportExist = false;
                 if(xmlParseResult.getClaim().getEngineerReport()!=null){
@@ -254,6 +264,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             }
         }
         
+        //System.out.println("CHECK ALL >>>>>>>>>>> AD: " + xmlParseResult.getIsDataValid());
+        //System.out.println("CHECK ALL >>>>>>>>>>> AS: " + xmlParseResult.getIsSchemaValid());
+        //System.out.println("CHECK ALL >>>>>>>>>>> INVOICE: " + xmlParseResult.getClaim().getInvoice());
+
         if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){            
             xmlParseResult = saveXMLRecord(xmlParseResult, isNewInvoice, oldClaimStatus);
         }
@@ -1295,7 +1309,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "total-to-pay", XmlHelper.isMAN_Invoice_TotalToPay, XmlHelper.REG_BIGDECIMAL, strSectionName, "Total to Pay");
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "date-invoiced", XmlHelper.isMAN_Invoice_DateInvoiced, XmlHelper.REG_TIMESTAMP, strSectionName, "Date Invoiced");
         
-        if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
+        // EDITED @ 20090511
+        if (xmlParseResult.getIsCurrentDataValid() 
+                && xmlParseResult.getIsCurrentScheValid() 
+                && xmlParseResult.getIsSchemaValid() 
+                && xmlParseResult.getIsDataValid()) {
             
             // CONFIGURATION TO CHECK XML UPLOAD STATUS
             xmlParseResult.setIsNewInvoiceExit(true);
@@ -1555,6 +1573,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 }
             }
         }
+        
         return xmlParseResult;
     }
     
@@ -1582,6 +1601,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             }
         }
         
+        //System.out.println("RentalVehiclesSchemaValidation : AD : " + xmlParseResult.getIsDataValid());
+        //System.out.println("RentalVehiclesSchemaValidation : AS : " + xmlParseResult.getIsSchemaValid());
+        //System.out.println("RentalVehiclesSchemaValidation : CD : " + xmlParseResult.getIsCurrentDataValid());
+        //System.out.println("RentalVehiclesSchemaValidation : CS : " + xmlParseResult.getIsCurrentScheValid());
+        
         return xmlParseResult;
     }
 
@@ -1601,8 +1625,16 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         xmlParseResult.setIsCurrentDataValid(true);
         xmlParseResult.setIsCurrentScheValid(true);
         
+        //System.out.println("RentalVehiclesDetailSchemaValidation : START : " + xmlParseResult.getClaim().getChoReference());
+        //System.out.println("RentalVehiclesDetailSchemaValidation : START : AD : " + xmlParseResult.getIsDataValid());
+        //System.out.println("RentalVehiclesDetailSchemaValidation : START : AS : " + xmlParseResult.getIsSchemaValid());
+        //System.out.println("RentalVehiclesDetailSchemaValidation : START : CD : " + xmlParseResult.getIsCurrentDataValid());
+        //System.out.println("RentalVehiclesDetailSchemaValidation : START : CS : " + xmlParseResult.getIsCurrentScheValid());
+        
         if(xmlParseResult.getIsClaimExist() && xmlParseResult.getClaim().getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)){
-
+            
+          //  System.out.println("RentalVehiclesDetailSchemaValidation : 1 : YES");
+            
             // STAGE 2
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-registration", XmlHelper.isMAN_RentalVehicles_Vehicle_Registration, XmlHelper.REG_VEHICLE_REG, strSectionName, "Registration");
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-manufacturer", XmlHelper.isMAN_RentalVehicles_Vehicle_Manufacturer, "", strSectionName, "Manufacturer");
@@ -1612,8 +1644,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "rental-end", XmlHelper.isMAN_RentalVehicles_Rental_End, XmlHelper.REG_TIMESTAMP, strSectionName, "Hire End");
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "rental-days", XmlHelper.isMAN_RentalVehicles_Rental_Days, XmlHelper.REG_INTEGER, strSectionName, "Number Days Hire");
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "collection-reason", XmlHelper.isMAN_RentalVehicles_CollectionReason, "", strSectionName, "Reason For Collection");
+            
         }else{
-
+        
+            //System.out.println("RentalVehiclesDetailSchemaValidation : 1 : NO");
+            
             // ANY STAGE EXCEPT STAGE 2
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-registration", false, XmlHelper.REG_VEHICLE_REG, strSectionName, "Registration");
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "vehicle-manufacturer", false, "", strSectionName, "Manufacturer");
@@ -1625,8 +1660,13 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, mainElement, "collection-reason", false, "", strSectionName, "Reason For Collection");            
         }
 
+        //System.out.println("RentalVehiclesDetailSchemaValidation : 2 : AD : " + xmlParseResult.getIsDataValid());
+        //System.out.println("RentalVehiclesDetailSchemaValidation : 2 : AS : " + xmlParseResult.getIsSchemaValid());
+        //System.out.println("RentalVehiclesDetailSchemaValidation : 2 : CD : " + xmlParseResult.getIsCurrentDataValid());
+        //System.out.println("RentalVehiclesDetailSchemaValidation : 2 : CS : " + xmlParseResult.getIsCurrentScheValid());
+        
         if ((xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid())
-        && (XmlHelper.isNotNull(XmlHelper.getNodeValue(mainElement, "vehicle-registration"))
+            && (XmlHelper.isNotNull(XmlHelper.getNodeValue(mainElement, "vehicle-registration"))
             || XmlHelper.isNotNull(XmlHelper.getNodeValue(mainElement, "vehicle-manufacturer"))
             || XmlHelper.isNotNull(XmlHelper.getNodeValue(mainElement, "vehicle-model"))
             || XmlHelper.isNotNull(XmlHelper.getNodeValue(mainElement, "vehicle-class"))
@@ -1635,6 +1675,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             || XmlHelper.isNotNull(XmlHelper.getNodeValue(mainElement, "rental-days"))
             || XmlHelper.isNotNull(XmlHelper.getNodeValue(mainElement, "collection-reason"))
         )){
+            
+            //System.out.println("RentalVehiclesDetailSchemaValidation : 3 : YES");
             
             // GET VEHICLE CLASS ID
             if(XmlHelper.isNotNull(XmlHelper.getNodeValue(mainElement, "vehicle-class"))){
@@ -1718,6 +1760,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 }
             }
         }
+        
+        //System.out.println("RentalVehiclesDetailSchemaValidation : END : AD : " + xmlParseResult.getIsDataValid());
+        //System.out.println("RentalVehiclesDetailSchemaValidation : END : AS : " + xmlParseResult.getIsSchemaValid());
+        //System.out.println("RentalVehiclesDetailSchemaValidation : END : CD : " + xmlParseResult.getIsCurrentDataValid());
+        //System.out.println("RentalVehiclesDetailSchemaValidation : END : CS : " + xmlParseResult.getIsCurrentScheValid());
         
         return xmlParseResult;
     }
