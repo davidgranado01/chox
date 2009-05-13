@@ -1,11 +1,16 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
+<link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
+<link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
+
 <script language="JavaScript">
         
-        var selectedPanel = "InsurerOrgMgmt";
+        // var selectedPanel = "InsurerOrgMgmt";
+        var adminCurrentTabIndex;
+        var adminTabs;
         
         $(document).ready(function(){
-            doFormValidation(); 
+            doFormValidation();
         }); 
         
         function doFormValidation(){
@@ -32,9 +37,9 @@
                  }
                      
                },
-                submitHandler: function(form) {
+               submitHandler: function(form) {
                     // $(form).ajaxSubmit(op);
-                }
+               }
             });
             
             return validateFlag;
@@ -43,6 +48,7 @@
         function doSubmit(){
             
             if(doFormValidation().form()){
+                
                 var op = { 
                     beforeSubmit:  onBeforeSubmit,
                     success:       onSubmitResponseReceived,
@@ -51,52 +57,118 @@
                 };
 
                 $("#formUpdateInsurerDetail").ajaxSubmit(op);
+                
             }
         }
         
-        function doBack(){
-            $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=" + selectedPanel);
+        function doInsurerBack(){
+            $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=InsurerOrgMgmt");
         }
         
         function onBeforeSubmit(formData, jqForm, options) { 
         }
 
-        function onSubmitResponseReceived(responseText, statusText)  {      
+        function onSubmitResponseReceived(responseText, statusText){
             responseText = responseText.trim();
             $(".chox-form-submit-result").html(responseText);
-        }    
+        }
 
         function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
             alert("Error");  
         }
         
+        function setupTabPanels()
+        {
+
+           if(adminCurrentTabIndex==null || <s:property value="isNew"/>){
+               adminCurrentTabIndex = 0;
+           }
+           
+           adminTabs = new Ext.TabPanel({
+           renderTo: 'mainPanel',
+           height:630,
+           autoScroll :true,
+           activeTab: adminCurrentTabIndex,
+           items:[
+                {contentEl:'insurerDetailPanelTab', title:'Details',listeners: {activate: handleActivate}},
+                {contentEl:'insurerAlliasPanelTab', title:'Allias', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},                   
+                {contentEl:'insurerLobPanelTab', title:'Line Of Business', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
+                {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
+           ]
+           });
+        }
+
+        Ext.onReady(function(){        
+            setupTabPanels();
+        }); 
+
+        function handleActivate(tab){
+            
+            adminCurrentTabIndex = 0;
+            
+            if(adminTabs)
+            {
+                adminCurrentTabIndex = adminTabs.items.indexOf(adminTabs.getActiveTab());
+            }
+
+        }
+
 </script>
 
-<form id="formUpdateInsurerDetail" action="user/updateInsurerDetail.action" class="XXentity-form" onsubmit="return true;">
-    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
-    
-            <fieldset class="x-fieldset">
-                <legend>Insurer Details</legend>
-                <div class="form-container">
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Name<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Admin Handling Charge<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDAdminHandlingCharge" name="adminHandlingCharge" value="<s:property value="adminHandlingCharge" />"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Status</label>
-                        <s:checkbox name="status" value="status" />
-                    </div>                   
-                    <div class="chox-form-button">
-                        <input type="button" value="Save Changes" onclick="javascript: doSubmit();"/>
-                        <input type="button" value="Cancel" class="cancel" onclick="javascript: doBack();" />
-                    </div>
-                        <div class="chox-form-submit-result"></div>                    
+<div id="mainPanel" class="adminTabCss"></div>
+
+<div id="insurerLobPanelTab" class="x-hide-display">
+    <div class="subAdminTabCss">
+        <s:action name="loadAdminPanel" executeResult="true">
+            <s:param name="adminPanelName">InsurerLineOfBusinessMappingMgmt</s:param>
+            <s:param name="selectOrgId"><s:property value="objectId" /></s:param>        
+        </s:action> 
+    </div>
+</div>
+
+<div id="insurerCreditHirePanelTab" class="x-hide-display">
+        <div class="subAdminTabCss">
+        <s:action name="loadAdminPanel" executeResult="true">
+            <s:param name="adminPanelName">InsurerOrgMappingMgmt</s:param>
+            <s:param name="selectOrgId"><s:property value="objectId" /></s:param>        
+        </s:action> 
+    </div>
+</div>
+
+<div id="insurerAlliasPanelTab" class="x-hide-display">
+    <div class="subAdminTabCss">
+        <s:action name="loadAdminPanel" executeResult="true">
+            <s:param name="adminPanelName">InsurerAlliasMappingMgmt</s:param>
+            <s:param name="selectOrgId"><s:property value="objectId" /></s:param>        
+        </s:action> 
+    </div>
+</div>
+
+<div id="insurerDetailPanelTab" class="x-hide-display">
+    <div class="subAdminTabCss">
+    <form id="formUpdateInsurerDetail" action="user/updateInsurerDetail.action" class="XXentity-form" onsubmit="return true;">
+    <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
+
+            <div class="form-container">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">Name<span class="mandatory">*</span></label>
+                    <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
                 </div>
-            </fieldset>
-            <div id="CDmessageBox" style="text-align:center"></div>  
-        </form>
-        
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">Admin Handling Charge<span class="mandatory">*</span></label>
+                    <input type="text" class="chox-ttxt" id="CCDAdminHandlingCharge" name="adminHandlingCharge" value="<s:property value="adminHandlingCharge" />"/>
+                </div>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">Status</label>
+                    <s:checkbox name="status" value="status" />
+                </div>                   
+                <div class="chox-form-button">
+                    <input type="button" value="Save Changes" onclick="javascript: doSubmit();"/>
+                    <input type="button" value="Cancel" class="cancel" onclick="javascript: doInsurerBack();" />
+                </div>
+                <div id="CDmessageBox" style="text-align:center"></div>  
+                <div class="chox-form-submit-result"></div>  
+            </div>
+    </form>        
+    </div>
+</div>

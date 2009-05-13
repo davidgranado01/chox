@@ -127,11 +127,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (String s : AttachmentCategory.getAttachmentCategory()) {
             items.add(new LookupItem(s, s));
         }
-
         attachmentCategory = items;
-
         return attachmentCategory;
-
     }
 
     public int getId() {
@@ -184,12 +181,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public List getInsurers() {
+        
         if (insurers == null) {
-            Chorganisation currentCho = this.getAuthenticatedUser().getUser().getChorganisation();
-            System.out.println("CHECK: CHO 1: "+this.getAuthenticatedUser().getUser().getChorganisation());
+            Chorganisation currentCho = this.getAuthenticatedUser().getUser().getChorganisation();    
             insurers = this.lookupService.getInsurers(currentCho.getId());
-            System.out.println("CHECK: CHO 2: "+this.getAuthenticatedUser().getUser().getChorganisation());
         }
+        
         return insurers;
     }
 

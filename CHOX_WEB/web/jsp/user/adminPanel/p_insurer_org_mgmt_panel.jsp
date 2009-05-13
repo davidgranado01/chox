@@ -38,7 +38,6 @@
         listeners:  {cellclick:recordOnclick },
         store: gridviewData,
         columns: [
-            // {header: "Name", width: 200, dataIndex: 'name', sortable: false, resizable: true, renderer: function(value, p, r) { return '<a href="javascript:openRecordDetail(this,' + r.data['Id'] + ')" class="highlightItem">' + value + '</a>'; } },
             {header: "Name", width: 200, dataIndex: 'name', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
             {header: "Status", width: 100, dataIndex: 'statusDesc', sortable: false, resizable: true, renderer:function(value,p,r){
@@ -63,7 +62,7 @@
     
     function recordOnclick(grid, rowIndex, columnIndex, e){
 
-        var gridView = gridviewGrid.getStore().getAt(rowIndex);  // Get the Record
+        var gridView = gridviewGrid.getStore().getAt(rowIndex);
         
         if(columnIndex==0){
             loadSelectedRecord(grid, rowIndex, columnIndex, e);
@@ -79,7 +78,7 @@
     }
 
     function createNewRecord(){
-         var gridViewId = -1;
+        var gridViewId = -1;
         $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + gridViewId);
     }
     
@@ -96,42 +95,43 @@
 
     function triggerStatusUpdateRecord(gridView){
             
-            var aletMsg = "Are you sure you want to inactive this insurer?";
-            
-            if(!gridView.get("status")){
-                aletMsg = "Are you sure you want to activate this insurer?";
-            }
-            
-            var deleteAtt = confirm(aletMsg);
-            
-            if(deleteAtt){
-                var gridViewId = gridView.get("id");
-                
-                 $.ajax({
-                   url: "doTriggerInsurerAccountStatus.action?objectId="+gridViewId,
-                   success: loadGridViewList
-                 });
-            }
+        var aletMsg = "Are you sure you want to inactive this insurer?";
+
+        if(!gridView.get("status")){
+            aletMsg = "Are you sure you want to activate this insurer?";
+        }
+
+        var deleteAtt = confirm(aletMsg);
+
+        if(deleteAtt){
+            var gridViewId = gridView.get("id");
+
+             $.ajax({
+               url: "doTriggerInsurerAccountStatus.action?objectId="+gridViewId,
+               success: loadGridViewList
+             });
+        }
     }
     
 </script>
+
 <div>
-<form id="formAdminParam" class="XXentity-form" name="formAdminParam">
-
-<fieldset class="x-fieldset">
-    <legend>Insurer Organisation Management</legend>
-    <div id="organisationGird">
-        <div class="gridViewHeader">
-            <table width="100%">
-                <tr>
-                    <td></td>
-                    <td align="right"><button type="button" onclick="javascript:createNewRecord();">New</button></td>
-                </tr>
-            </table>
-
-        </div>        
-        <div id="gridviewGrid"></div>
-    </div>
-</fieldset>
-</form> 
+    
+    <form id="formAdminParam" class="XXentity-form" name="formAdminParam">
+    <fieldset class="x-fieldset">
+        <legend>Insurer Organisation Management</legend>
+        <div id="organisationGird">
+            <div class="gridViewHeader">
+                <table width="100%">
+                    <tr>
+                        <td></td>
+                        <td align="right"><button type="button" onclick="javascript:createNewRecord();">New</button></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="gridviewGrid" style="height:570px; overflow:auto;" ></div>
+        </div>
+    </fieldset>
+    </form> 
+    
 </div>

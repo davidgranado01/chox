@@ -9,6 +9,8 @@ public class InsurerChorganisationViewData {
     private int chorganisationId;
     private String insurerName;
     private String chorganisationName;
+    private boolean chorganisationStatus;
+    private String chorganisationStatusDesc;
     private boolean status;
     private String statusDesc;
     private String createdBy;
@@ -31,13 +33,19 @@ public class InsurerChorganisationViewData {
         this.createdBy = insurerChorganisation.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.GridViewDateFormat.format(insurerChorganisation.getCreatedDate());            
         this.status = insurerChorganisation.isStatus();
+        this.chorganisationStatus = insurerChorganisation.getChorganisation().isStatus();
         
         if(insurerChorganisation.isStatus()){
             this.statusDesc = "Active";
         }else{
             this.statusDesc = "Inactive";
         }
-
+        
+        if(insurerChorganisation.getChorganisation().isStatus()){
+            this.chorganisationStatusDesc = "Active";
+        }else{
+            this.chorganisationStatusDesc = "Inactive";
+        }
     }
 
     public int getChorganisationId() {
@@ -76,6 +84,12 @@ public class InsurerChorganisationViewData {
         return statusDesc;
     }
 
-    
+    public boolean isChorganisationStatus() {
+        return chorganisationStatus;
+    }
+
+    public String getChorganisationStatusDesc() {
+        return chorganisationStatusDesc;
+    }
     
 }

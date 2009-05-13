@@ -761,7 +761,6 @@
             </result>
         </action>
         
-        
         <action name="loadAdminPanel" class="chox.web.actions.AdminAction" method="loadAdminPanel">
             <result name="CreditHireOrgMgmt">/jsp/user/adminPanel/p_chorganisation_org_mgmt_panel.jsp</result>
             <result name="InsurerOrgMgmt">/jsp/user/adminPanel/p_insurer_org_mgmt_panel.jsp</result>
@@ -787,7 +786,6 @@
             </result>
         </action>
         
-        
         <action name="getInsurer" class="chox.web.actions.InsurerAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>         
@@ -800,8 +798,7 @@
         <action name="updateInsurerMapping" class="chox.web.actions.doInsurerAction" method="updateModel">
             <result name="success">/jsp/p_response.jsp</result>
         </action>
-        
-        
+
         <action name="getChorganisation" class="chox.web.actions.ChorganisationAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
@@ -860,6 +857,10 @@
             <result name="success">/jsp/p_response.jsp
             </result>
         </action>   
+        <action name="openInsurerLineOfBusinessDetail" class="chox.web.actions.ClaimAction">
+            <result name="success">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
         
         <action name="getAvailableInsurerChorganisation" class="chox.web.actions.ChorganisationAction" method="getAvailableChorganisation">
             <result name="success">/jsp/p_jsonData.jsp</result>

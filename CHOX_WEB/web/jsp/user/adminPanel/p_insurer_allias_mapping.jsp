@@ -4,11 +4,11 @@
 
 <script type="text/javascript">
     
-    var gridviewJsonReader;
-    var gridviewDataStore;
-    var gridviewGrid;
-    var gridviewData;
-    var recordPerPage = 20;
+    var allias_gridviewJsonReader;
+    var allias_gridviewDataStore;
+    var allias_gridviewGrid;
+    var allias_gridviewData;
+    var allias_recordPerPage = 20;
     var orgId = -1;
     var selectOrgId = <s:property value="selectOrgId" />;
     
@@ -17,10 +17,10 @@
     Ext.onReady(function(){
         
        if(selectOrgId>0){
-           $("#insurerId").val(selectOrgId);
+           $("#allias_insurerId").val(selectOrgId);
        }
        
-       gridviewJsonReader = new Ext.data.JsonReader({
+       allias_gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
             fields:
@@ -34,76 +34,80 @@
             ]
         });
 
-        gridviewData = new Ext.data.Store({
+        allias_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
             ({url: 'user/getInsurerAllias.action',method:'GET'}),
-            reader:gridviewJsonReader      
+            reader:allias_gridviewJsonReader      
         });
     
-        gridviewGrid = new Ext.grid.GridPanel({
-            listeners:  {cellclick:recordOnclick },
-            store: gridviewData,
+        allias_gridviewGrid = new Ext.grid.GridPanel({
+            listeners:  {cellclick:allias_recordOnclick },
+            store: allias_gridviewData,
             loadMask: true,
             columns: [
-                {header: "Insurer", width: 80, dataIndex: 'insurerName', sortable: false, resizable: true},
+                {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: false, resizable: true},
                 {header: "Allias Name", width: 180, dataIndex: 'name', sortable: false, resizable: true},
+                {header: "Action", width: 80, dataIndex: 'Remove', sortable: false, resizable: true, renderer:function(value,p,r){
+                    return "<a href='#' class='highlightItem'>Remove</a>"}},
                 {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: false, resizable: true},
-                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: false, resizable: true}                ,
-                {header: "", width: 100, dataIndex: 'Remove', sortable: false, resizable: true, renderer:function(value,p,r){
-                    return "<a href='#' class='highlightItem'>Remove</a>"}}
+                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: false, resizable: true}
+                
 
             ],
-            renderTo:'gridviewGrid',
-                width:615,
+            renderTo:'allias_gridviewGrid',
+                width:605,
                 autoHeight:true,
                 enableHdMenu:false
             });
 
             var pagingBar = new Ext.PagingToolbar({
-                pageSize: recordPerPage,
-                store: gridviewData,
+                pageSize: allias_recordPerPage,
+                store: allias_gridviewData,
                 displayInfo: true,
                 displayMsg: 'Displaying records {0} - {1} of {2}',
                 emptyMsg: "No record to display"
             });    
             
-            loadGridViewList()
+            allias_loadGridViewList()
 
     }); 
     
-    function recordOnclick(grid, rowIndex, columnIndex, e){
+    function allias_recordOnclick(grid, rowIndex, columnIndex, e){
 
-        var gridView = gridviewGrid.getStore().getAt(rowIndex);  // Get the Record
+        var gridView = allias_gridviewGrid.getStore().getAt(rowIndex);  // Get the Record
 
-        if(columnIndex==4){
-            triggerStatusRemoveRecord(gridView);
+        if(columnIndex==2){
+            allias_triggerStatusRemoveRecord(gridView);
         }
     }
     
-    function loadGridViewList(){
-        doParameters();
-        gridviewData.load(
+    function allias_loadGridViewList(){
+        
+        allias_doParameters();
+        
+        allias_gridviewData.load(
         {
             params:
             {
                 insurerId:orgId
             }
         });
+        
         $("#insurerAlliasName").val("");
     }
     
-    function doSelectChange(){
-        loadGridViewList();
+    function allias_doSelectChange(){
+        allias_loadGridViewList();
     }
     
     
-    function doParameters(){
-        orgId = $("#insurerId").val();
+    function allias_doParameters(){
+        orgId = $("#allias_insurerId").val();
     }
     
-    function triggerStatusAddRecord(){
+    function allias_triggerStatusAddRecord(){
         
-        doParameters();
+        allias_doParameters();
         
         var insurerAlliasName = $("#insurerAlliasName").val();
         
@@ -113,74 +117,59 @@
             
             $.ajax({
                url: "addInsurerAllias.action?insurerId="+orgId+"&insurerAlliasName="+insurerAlliasName,
-               success: onSubmitResponseReceived
+               success: allias_onSubmitResponseReceived
             });
+            
+            return true;
             
         }else{
             $("#CDInsurerAlliasMessageBox").html("Please enter 'Insurer Allias Name'");
         }
+        
+        return false;
     }
     
-    function triggerStatusRemoveRecord(gridView){
+    function allias_triggerStatusRemoveRecord(gridView){
 
         if(confirm("Are you sure you want to remove this allias?")){
             
             var gridViewId = gridView.get("id");
-                
+
             $.ajax({
                url: "removeInsurerAllias.action?insurerAlliasId="+gridViewId,
-               success: onSubmitResponseReceived
+               success: allias_onSubmitResponseReceived
             });
         }
     }
     
-
-    function onSubmitResponseReceived(responseText, statusText)  {      
+    function allias_onSubmitResponseReceived(responseText, statusText)  {
         responseText = responseText.trim();
         $("#CDInsurerAlliasMessageBox").html(responseText);
-        loadGridViewList();
+        allias_loadGridViewList();
     } 
     
 </script>
 
-
-
 <div>
-<fieldset class="x-fieldset">
-    <legend>Insurer Allias Mapping</legend>
+
     <div id="organisationGird">
         <div class="gridViewHeader">
             <table width="100%">
                 <tr>
                     <td>
-                        <s:if test="isSelectable">
-                        <s:select 
-                            id="insurerId"                                 
-                            name="insurerId" 
-                            list="insurers" 
-                            listKey="id" 
-                            listValue="name" 
-                            headerKey=""
-                            headerValue="--- ALL ---"
-                            emptyOption="false"
-                            onchange="javascript:doSelectChange();">
-                        </s:select>
-                        </s:if>
-                        <s:else>
-                            <input name="insurerId" id="insurerId" type="hidden" value="<s:property value="insurerId" />">
-                        </s:else>                        
+                    <input name="allias_insurerId" id="allias_insurerId" type="hidden" value="<s:property value="insurerId" />">          
                     </td>
                     <td align="right"></td>
                 </tr>
                 
                 <tr><td>Insurer Allias: <input name="insurerAlliasName" id="insurerAlliasName" type="text">
-                    <input type="submit" onclick="javascript: triggerStatusAddRecord();" value="Add"/></td></tr>
+                    <input type="submit" onclick="javascript: return allias_triggerStatusAddRecord();" value="Add"/></td></tr>
                 <tr><td><div id="CDInsurerAlliasMessageBox" class="errorBox"></div></td></tr>
-                <tr><td><div class="chox-form-submit-result"></div></td></tr>
             </table>
 
         </div>
-        <div id="gridviewGrid"></div>
+        <div id="allias_gridviewGrid" style="height:540px; overflow:auto;"></div>
     </div>
-</fieldset>
+
+
 </div>

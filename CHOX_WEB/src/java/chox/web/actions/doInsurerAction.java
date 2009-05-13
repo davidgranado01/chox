@@ -10,8 +10,17 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
     private InsurerService service;
     private String objectId;
     private Insurer model;
-    private String actionResult;
+    private String actionResult;    
+    private boolean isNew;
 
+    public boolean isIsNew() {
+        return isNew;
+    }
+
+    public void setIsNew(boolean isNew) {
+        this.isNew = isNew;
+    }
+    
     public String getActionResult() {
         return actionResult;
     }
@@ -67,9 +76,23 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
     
     public String updateModel() throws Exception {
         
+        //TODO: CHECK INSURER NAME
+        
         try {
-            this.service.updateObject(model);
+            
+            if(this.isNew){
+                
+                if(this.service.isInsurerNameExist(model.getName())){
+                    actionResult = "Insurer name already exist!"; 
+                    return SUCCESS;
+                }
+                
+            }
+            
+            model = this.service.updateObject(model);
             actionResult = "Your changes have been saved.";
+            this.isNew = false;
+            
         } catch (Exception ex) {
             throw ex; 
         }
@@ -80,8 +103,10 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
     public void prepare() throws Exception {
         if (Integer.valueOf(objectId) <= 0) {
             model = new Insurer();
+            this.isNew = true;
         } else {
             model = service.getObject(Integer.valueOf(objectId));
+            this.isNew = false;
         }
     }
 }

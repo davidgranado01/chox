@@ -11,7 +11,16 @@ public class doChorganisationAction extends BaseAction implements ModelDriven<Ch
     private String objectId;
     private Chorganisation model;
     private String actionResult;
+    private boolean isNew;
 
+    public boolean isIsNew() {
+        return isNew;
+    }
+
+    public void setIsNew(boolean isNew) {
+        this.isNew = isNew;
+    }
+    
     public String getActionResult() {
         return actionResult;
     }
@@ -70,8 +79,18 @@ public class doChorganisationAction extends BaseAction implements ModelDriven<Ch
     public String updateModel() throws Exception {
         
         try {
-            this.service.updateObject(model);
+            if(this.isNew){
+                
+                if(this.service.isChorgNameExist(model.getName())){
+                    actionResult = "Insurer name already exist!"; 
+                    return SUCCESS;
+                }
+            }
+            
+            model = this.service.updateObject(model);
+            this.isNew = false;
             actionResult = "Your changes have been saved.";
+            
         } catch (Exception ex) {
             throw ex; 
         }
@@ -82,8 +101,10 @@ public class doChorganisationAction extends BaseAction implements ModelDriven<Ch
     public void prepare() throws Exception {
         if (Integer.valueOf(objectId) <= 0) {
             model = new Chorganisation();
+            this.isNew = true;
         } else {
             model = service.getObject(Integer.valueOf(objectId));
+            this.isNew = false;
         }
     }
 

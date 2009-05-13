@@ -9,24 +9,24 @@
     var orgId = -1;
     var selectOrgId = <s:property value="selectOrgId" />;
     
-    var gridviewJsonReader;
-    var choGridviewJsonReader;
+    var ins_cho_gridviewJsonReader;
+    var ins_cho_choGridviewJsonReader;
     
-    var a_gridviewDataStore;
-    var a_gridviewGrid;
-    var a_gridviewData;
+    var ins_cho_a_gridviewDataStore;
+    var ins_cho_a_gridviewGrid;
+    var ins_cho_a_gridviewData;
     
-    var s_gridviewDataStore;
-    var s_gridviewGrid;
-    var s_gridviewData;
+    var ins_cho_s_gridviewDataStore;
+    var ins_cho_s_gridviewGrid;
+    var ins_cho_s_gridviewData;
     
     Ext.onReady(function(){
         
        if(selectOrgId>0){
-           $("#insurerId").val(selectOrgId);
+           $("#ins_cho_insurerId").val(selectOrgId);
        }
        
-       choGridviewJsonReader = new Ext.data.JsonReader({
+       ins_cho_choGridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
             fields:
@@ -40,7 +40,7 @@
             ]
         });
         
-        gridviewJsonReader = new Ext.data.JsonReader({
+        ins_cho_gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
             fields:
@@ -50,6 +50,8 @@
                 {name:'chorganisationId'},
 		{name:'insurerName'},
 		{name:'chorganisationName'},
+                {name:'chorganisationStatus'},
+                {name:'chorganisationStatusDesc'},
 		{name:'status'},
                 {name:'statusDesc'},
                 {name:'createdBy'},
@@ -57,58 +59,59 @@
             ]
         });
 
-        a_gridviewData = new Ext.data.Store({
+        ins_cho_a_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
             ({url: 'user/getAvailableInsurerChorganisation.action',method:'GET'}),
-            reader:choGridviewJsonReader      
+            reader:ins_cho_choGridviewJsonReader      
         });
 
-        s_gridviewData = new Ext.data.Store({
+        ins_cho_s_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
             ({url: 'user/getSelectedInsurerChorganisation.action',method:'GET'}),
-            reader:gridviewJsonReader      
+            reader:ins_cho_gridviewJsonReader      
         });
         
         
-        a_gridviewGrid = new Ext.grid.GridPanel({
-            listeners:  {cellclick:recordOnclickAdd },
-            store: a_gridviewData,
+        ins_cho_a_gridviewGrid = new Ext.grid.GridPanel({
+            listeners:  {cellclick:ins_cho_recordOnclickAdd },
+            store: ins_cho_a_gridviewData,
             loadMask: true,
             columns: [
-                {header: "Name", width: 220, dataIndex: 'name', sortable: false, resizable: true},
-                {header: "Action", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Name", width: 200, dataIndex: 'name', sortable: true, resizable: true},
+                {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Add</a>"}}                
             ],
-            renderTo:'a_gridviewGrid',
-                width:280,
+            renderTo:'ins_cho_a_gridviewGrid',
+                width:270,
                 autoHeight:true,
                 enableHdMenu:false
             });
-           
-        s_gridviewGrid = new Ext.grid.GridPanel({
-            listeners:  {cellclick:recordOnclickRemove },
-            store: s_gridviewData,
+
+        ins_cho_s_gridviewGrid = new Ext.grid.GridPanel({
+            listeners:  {cellclick:ins_cho_recordOnclickRemove },
+            store: ins_cho_s_gridviewData,
             loadMask: true,
             columns: [
-                {header: "Name", width: 220, dataIndex: 'chorganisationName', sortable: false, resizable: true},
-                {header: "Action", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Name", width: 140, dataIndex: 'chorganisationName', sortable: true, resizable: true},
+                {header: "Status", width: 50, dataIndex: 'chorganisationStatusDesc', sortable: true, resizable: true},
+                {header: "", width: 50, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Remove</a>"}}
             ],
-            renderTo:'s_gridviewGrid',
-                width:280,
+            renderTo:'ins_cho_s_gridviewGrid',
+                width:270,
                 autoHeight:true,
                 enableHdMenu:false
             });
             
-            loadGridViewList();
+            ins_cho_loadGridViewList();
     }); 
     
-    function recordOnclickAdd(grid, rowIndex, columnIndex, e){
+    function ins_cho_recordOnclickAdd(grid, rowIndex, columnIndex, e){
         
-        var gridView = a_gridviewGrid.getStore().getAt(rowIndex);  // Get the Record
+        var gridView = ins_cho_a_gridviewGrid.getStore().getAt(rowIndex);  // Get the Record
         
         if(columnIndex==1){
-            doAddnewCredirHire(gridView);
+            ins_cho_doAddnewCredirHire(gridView);
         }
         /*
         if(columnIndex==0){
@@ -119,16 +122,16 @@
         */
     }
     
-    function recordOnclickRemove(grid, rowIndex, columnIndex, e){
+    function ins_cho_recordOnclickRemove(grid, rowIndex, columnIndex, e){
         
-        var gridView = s_gridviewGrid.getStore().getAt(rowIndex);  // Get the Record
+        var gridView = ins_cho_s_gridviewGrid.getStore().getAt(rowIndex);  // Get the Record
         
-        if(columnIndex==1){
-            triggerStatusInactiveRecord(gridView);
+        if(columnIndex==2){
+            ins_cho_triggerStatusInactiveRecord(gridView);
         }
     }
     
-    function loadSelectedRecord(grid, rowIndex, columnIndex, e){
+    function ins_cho_loadSelectedRecord(grid, rowIndex, columnIndex, e){
         
         /*
        var gridView = gridviewGrid.getStore().getAt(rowIndex);
@@ -138,11 +141,11 @@
         // $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + gridViewId + "&orgTypeId=" + selectedOrgTypeId);
     }
     
-    function loadGridViewList(){
+    function ins_cho_loadGridViewList(){
         
-        doParameters();
+        ins_cho_doParameters();
         
-        a_gridviewData.load(
+        ins_cho_a_gridviewData.load(
         {
             params:
             {
@@ -150,7 +153,7 @@
             }
         });
         
-        s_gridviewData.load(
+        ins_cho_s_gridviewData.load(
         {
             params:
             {
@@ -162,34 +165,34 @@
         
     }
     
-    function doParameters(){
-        orgId = $("#insurerId").val();
+    function ins_cho_doParameters(){
+        orgId = $("#ins_cho_insurerId").val();
        // alert("doParameters>orgId:"+orgId);
     }
     
-    function doSelectChange(){
-        loadGridViewList();
+    function ins_cho_doSelectChange(){
+        ins_cho_loadGridViewList();
     }
     
-    function doAddnewCredirHire(gridView){
+    function ins_cho_doAddnewCredirHire(gridView){
         
-        doParameters();
+        ins_cho_doParameters();
         var gridViewId = gridView.get("id");
         
         $.ajax({
            url: "doAddNewInsurerChorganisation.action?chorganisationId="+gridViewId+"&insurerId="+orgId,
-           success: doSelectChange
+           success: ins_cho_doSelectChange
         });
     }
     
-    function triggerStatusInactiveRecord(gridView){
-        doParameters();
+    function ins_cho_triggerStatusInactiveRecord(gridView){
+        ins_cho_doParameters();
         var gridViewId = gridView.get("id");
         
         if(confirm("Are you sure you want to remove this credit hire?")){
          $.ajax({
            url: "doRemoveInsurerChorganisation.action?objectId="+gridViewId,
-           success: doSelectChange
+           success: ins_cho_doSelectChange
          });
         }
     }
@@ -198,45 +201,33 @@
 </script>
 
 <div>
-<fieldset class="x-fieldset">
-    <legend>Credit Hire Mapping</legend>
+
     <div id="organisationGird">
         <div class="gridViewHeader">
             <table width="100%">
                 <tr>
                     <td>
-                        <s:if test="isSelectable">
-                                <s:select 
-                                id="insurerId"                                 
-                                name="insurerId" 
-                                list="insurers" 
-                                listKey="id" 
-                                listValue="name" 
-                                emptyOption="false"
-                                onchange="javascript:doSelectChange();">
-                                </s:select>
-                        </s:if>
-                        <s:else>
-                            <input name="insurerId" id="insurerId" type="hidden" value="<s:property value="insurerId" />">
-                        </s:else>                                
+                    <input name="ins_cho_insurerId" id="ins_cho_insurerId" type="hidden" value="<s:property value="insurerId" />">
                     </td>
                     <td align="right"></td>
                 </tr>
             </table>
 
         </div>
-        <table>
-            <tr><td valign="top">
-                    <fieldset class="x-fieldset"><legend>Available</legend>
-                <div id="a_gridviewGrid"></div>
-                    </fieldset>
-            </td><td valign="top">
+        <table width="100%">
+            <tr>
+            <td valign="top">
                 <fieldset class="x-fieldset">
-                <div id="s_gridviewGrid"></div><legend>Selected</legend>
+                <div id="ins_cho_s_gridviewGrid"  style="height:520px; overflow:auto;"></div><legend>Selected Credit Hire</legend>
                 </fieldset>
-                </td></tr>
+            </td>
+            <td valign="top">
+                    <fieldset class="x-fieldset"><legend>Available Credit Hire</legend>
+                <div id="ins_cho_a_gridviewGrid" style="height:520px; overflow:auto;"></div>
+                    </fieldset>
+            </td>
+            </tr>
         </table>
-        
     </div>
-</fieldset>
+
 </div>

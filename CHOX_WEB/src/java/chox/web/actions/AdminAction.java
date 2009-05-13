@@ -12,13 +12,10 @@ import java.util.List;
 public class AdminAction extends BaseAction{
     
     private String adminPanelName;
-    private String gridViewType;
-    private String mode;    
+    private String gridViewType; 
     private int selectOrgTypeId=-1;  
     private int selectOrgId=-1;
     private String objectId;
-    private List insurers;
-    private List suppliers;
     private LookupService lookupService;
     private PermissionedUser currentUser = getAuthenticatedUser();
     
@@ -34,16 +31,6 @@ public class AdminAction extends BaseAction{
     public void setLookupService(LookupService lookupService)
     {
         this.lookupService = lookupService;
-    }
-    
-    public List getInsurers() {
-        insurers = this.lookupService.getAllActiveInsurers();
-        return insurers;
-    }
-    
-    public List getSuppliers() {
-        suppliers = this.lookupService.getAllActiveSuppliers();
-        return suppliers;
     }
 
     public int getSelectOrgId() {
@@ -88,7 +75,7 @@ public class AdminAction extends BaseAction{
     public void setObjectId(String objectId) {
         this.objectId = objectId;
     }
-
+/*
     public String getMode() {
         return mode;
     }
@@ -96,7 +83,7 @@ public class AdminAction extends BaseAction{
     public void setMode(String mode) {
         this.mode = mode;
     }
-    
+    */
     public String adminPanel() {
         return SUCCESS;
     }

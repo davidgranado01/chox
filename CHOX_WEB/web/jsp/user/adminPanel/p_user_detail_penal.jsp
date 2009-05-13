@@ -7,7 +7,7 @@
         $(document).ready(function(){
             doFormValidation(); 
         }); 
-                
+
         function doFormValidation(){
                     
             var validateFlag = $("#formUpdateUserDetail").validate(
@@ -45,7 +45,7 @@
         function onSubmitResponseReceived(responseText, statusText)  {        
             responseText = responseText.trim();
             $(".chox-form-submit-result").html(responseText);
-        }     
+        }
 
         function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
         }
@@ -151,8 +151,7 @@
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">Email<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value="<s:property value="email" />"/>
-                        </div>                        
-                        
+                        </div>
                     </s:else>
  
                     <div class="chox-form-item">

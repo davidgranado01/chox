@@ -12,18 +12,12 @@ import chox.services.SearchResult;
 import chox.web.viewdata.claimGridViewData;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONArray;
 import org.apache.struts2.interceptor.SessionAware;
 
-/**
- *
- * @author Emmanuel
- */
 public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable, SessionAware {
 
     private Map session;

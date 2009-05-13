@@ -660,5 +660,18 @@ img.tip-target
 .highlightItem{
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 10px;   
-  font-weight:bold;           
+    font-weight:bold;           
+}
+
+.adminTabCss{
+    padding-top:6px;
+    width:650px;
+    background:#dfe8f6;
+}
+
+.subAdminTabCss{
+    padding:10px;
+    padding-bottom:50px;
+    background:#dfe8f6;  
+    height:650;
 }

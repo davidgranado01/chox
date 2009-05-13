@@ -5,7 +5,6 @@ import chox.model.Chorganisation;
 import chox.model.Insurer;
 import chox.model.WebUser;
 import chox.model.WebUserRole;
-import chox.model.WebUserUserRole;
 import chox.services.ChorganisationService;
 import chox.services.InsurerService;
 import chox.services.LookupService;
@@ -55,15 +54,15 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     }
     
     public List getInsurers() {
-        insurers = this.lookupService.getAllActiveInsurers();
+        insurers = this.lookupService.getInsurers();
         return insurers;
     }
     
     public List getSuppliers() {
-        suppliers = this.lookupService.getAllActiveSuppliers();
+        suppliers = this.lookupService.getAllSuppliers();
         return suppliers;
     }
-    
+
     public String getMode() {
         return mode;
     }
@@ -109,7 +108,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         String orgTypeName = "N/A";
         
         if(this.orgTypeId.equalsIgnoreCase("1")){
-            orgTypeName = "CHOX Users";
+            orgTypeName = "Sherwood Users";
         }else if(this.orgTypeId.equalsIgnoreCase("2")){
             orgTypeName = "Insurer Users";
         }else if(this.orgTypeId.equalsIgnoreCase("3")){    
@@ -124,7 +123,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         String sOutput = "N/A";
         
         if(this.orgTypeId.equalsIgnoreCase("1")){
-            sOutput = "CHOX";
+            sOutput = "Sherwood";
         }else{
             sOutput = model.getOrganisationName();
         }
@@ -176,7 +175,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     
     public String triggerStatus() throws Exception{
 
-        WebUser thisObject = this.service.getObject(Integer.valueOf(objectId));
+        WebUser thisObject = this.service.getUsers(Integer.valueOf(objectId));
         
         if(thisObject.getStatus()){
             thisObject.setStatus(false);
@@ -213,7 +212,9 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
                 doAddNewObject();
                 
             }else{
-                this.service.updateObject(model);   
+                
+                this.service.updateObject(model);  
+                
             }
             
             actionResult = "Your changes have been saved.";
@@ -247,7 +248,6 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
             if(this.service.updateObject(model)){
                 
                 if(webUserUserRoleService.addNewUserRole(model.getId(), getUserOrgBaseRole())){
-                    
                     bFlag = true;
                     actionResult = "New user has been created!";
                 }
@@ -284,10 +284,8 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
             model = new WebUser();
             mode = "New";
         } else {
-            model = service.getObject(Integer.valueOf(objectId));
+            model = service.getUsers(Integer.valueOf(objectId));
             mode = "Edit";
         }
-        
     }    
-    
 }

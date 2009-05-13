@@ -117,14 +117,14 @@
                 <td><label>Supplier Name</label></td><td colspan="2">
                     <s:select 
                     name="supplierId" 
-                    list="suppliers" 
-                    listKey="value" 
-                    listValue="text" 
+                    list="suppliers"
+                    listKey="id"
+                    listValue="name"
                     headerKey="-1"
                     headerValue="--- ALL ---"
                     emptyOption="false">
                     </s:select></td>
-            </s:if> 
+            </s:if>
             <s:else>
                 <td colspan="3">&nbsp;</td>
             </s:else>
@@ -134,8 +134,8 @@
                 <s:select 
                 name="insurerId" 
                 list="insurers" 
-                    listKey="value" 
-                    listValue="text" 
+                listKey="id" 
+                listValue="name" 
                 headerKey="-1"
                 headerValue="--- ALL ---"
                 emptyOption="false">

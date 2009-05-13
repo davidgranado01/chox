@@ -23,6 +23,7 @@
        if(selectOrgTypeId>0){
             $("#orgTypeId").val(selectOrgTypeId);
        }
+       
        if(selectOrgId>0){
            $("#orgId").val(selectOrgId);
        }
@@ -169,7 +170,7 @@
                            
 <s:if test="isSelectable">
 Organisation Type: <select id="orgTypeId" onchange="javascript:doSelectChange()">
-                <option value="1">CHOX</option>
+                <option value="1">Sherwood Organisation</option>
                 <option value="2">Insurer</option>
                 <option value="3">Credit Hire</option>
             </select>
@@ -180,14 +181,13 @@ Organisation Type: <select id="orgTypeId" onchange="javascript:doSelectChange()"
 
 <input name="orgId" id="orgId" type="hidden" value="<s:property value="orgId" />">
 
-
                     </td>
                     <td align="right"><button type="button" onclick="javascript:createNewRecord();">New</button></td>
                 </tr>
             </table>
 
         </div>
-        <div id="gridviewGrid"></div>
+        <div id="gridviewGrid" style="height:570px; overflow:auto;"></div>
     </div>
 </fieldset>
 </div>
