@@ -15,6 +15,34 @@ public class ChorganisationServiceImpl  extends SecureDataService implements Cho
         this.insurerChorganisationService = insurerChorganisationService;
     }
     
+    public boolean isChorgNameExist(String s){
+        
+        boolean isExist = false;
+        
+        if(getChorgByName(s)!=null){
+            isExist = true;
+        }
+        
+        return isExist;
+        
+    }
+    
+    public Chorganisation getChorgByName(String s) {
+
+        Chorganisation object = new Chorganisation();
+        
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
+            criteria.add(Restrictions.eq("name", s));
+            object = (Chorganisation) getByCriteria(criteria);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        return object;
+    }
+    
     public List<Chorganisation> getAvailableChorganisationByInsurer(int insurerId) {
 
         List<Chorganisation> objects = new ArrayList<Chorganisation>();
@@ -87,12 +115,14 @@ public class ChorganisationServiceImpl  extends SecureDataService implements Cho
         return (Chorganisation) get(Chorganisation.class, id);
     }
     
-    public void updateObject(Chorganisation object) {
+    public Chorganisation updateObject(Chorganisation object) {
+        
         try {
             save(object);
         } catch (Throwable e) {
            e.printStackTrace();
-        }          
+        }      
+        return object;
     }
 
 }

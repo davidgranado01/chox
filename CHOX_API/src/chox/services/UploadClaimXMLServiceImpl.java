@@ -1295,7 +1295,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "total-to-pay", XmlHelper.isMAN_Invoice_TotalToPay, XmlHelper.REG_BIGDECIMAL, strSectionName, "Total to Pay");
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "date-invoiced", XmlHelper.isMAN_Invoice_DateInvoiced, XmlHelper.REG_TIMESTAMP, strSectionName, "Date Invoiced");
         
-        if (xmlParseResult.getIsCurrentDataValid() && xmlParseResult.getIsCurrentScheValid()) {
+        // EDITED @ 20090511
+        if (xmlParseResult.getIsCurrentDataValid() 
+                && xmlParseResult.getIsCurrentScheValid() 
+                && xmlParseResult.getIsSchemaValid() 
+                && xmlParseResult.getIsDataValid()) {
             
             // CONFIGURATION TO CHECK XML UPLOAD STATUS
             xmlParseResult.setIsNewInvoiceExit(true);

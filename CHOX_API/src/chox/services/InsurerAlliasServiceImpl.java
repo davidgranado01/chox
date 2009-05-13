@@ -63,7 +63,8 @@ public class InsurerAlliasServiceImpl extends SecureDataService implements Insur
                 criteria.add(Restrictions.eq("insurer.id", insurerId));
             }
             
-            criteria.addOrder(Order.asc("alliasName"));     
+            criteria.addOrder(Order.asc("alliasName"));  
+            
             insurerallias = findByCriteria(criteria);
             
         } catch (Throwable e) {

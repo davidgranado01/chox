@@ -10,11 +10,10 @@ import chox.model.Insurer;
 import java.util.List;
 
 public interface InsurerService {
-    
-    
+    public boolean isInsurerNameExist(String s);
     Insurer getInsurerByName(String s);
     Insurer getInsurerByNodeName(Element thisElement, String nodeName);
     public Insurer getObject(int id);
     public List<Insurer> getInsurers();
-    public void updateObject(Insurer object);
+    public Insurer updateObject(Insurer object);
 }

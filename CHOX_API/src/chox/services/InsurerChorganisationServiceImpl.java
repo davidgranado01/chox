@@ -8,6 +8,7 @@ import chox.model.InsurerChorganisation;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 public class InsurerChorganisationServiceImpl extends SecureDataService implements InsurerChorganisationService {

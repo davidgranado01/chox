@@ -323,7 +323,7 @@ public class WebUser implements Serializable
 	{
 		this.insurer = insurer;
 	}
-        
+
         public void setRoles(Set roles)
         {
             this.roles = roles;
@@ -333,7 +333,7 @@ public class WebUser implements Serializable
         {
             return this.roles;
         }
-        
+
         public String getOrganisationName()
         {
             Chorganisation cho = this.getChorganisation();

@@ -10,7 +10,19 @@ import org.hibernate.criterion.Restrictions;
 import org.w3c.dom.Element;
 
 public class InsurerServiceImpl extends SecureDataService implements InsurerService {
-
+    
+    public boolean isInsurerNameExist(String s){
+        
+        boolean isExist = false;
+        
+        if(getInsurerByName(s)!=null){
+            isExist = true;
+        }
+        
+        return isExist;
+        
+    }
+    
     public Insurer getInsurerByName(String s) {
 
         Insurer insurer = new Insurer();
@@ -57,12 +69,15 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
         return insurer;
     }    
     
-    public void updateObject(Insurer object) {
+    public Insurer updateObject(Insurer object) {
+        
         try {
             save(object);
         } catch (Throwable e) {
            e.printStackTrace();
-        }          
+        }      
+        
+        return object;
     }  
     
 }

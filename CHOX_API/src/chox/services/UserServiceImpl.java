@@ -81,6 +81,7 @@ public class UserServiceImpl extends DataService implements UserService {
         return users;
     } 
     
+   
     public List<WebUser> getUsers(int orgTypeId, int orgId){
         
         List<WebUser> users = new ArrayList<WebUser>();
@@ -116,6 +117,12 @@ public class UserServiceImpl extends DataService implements UserService {
         return users;
     } 
     
+
+    public WebUser getUsers(int id){
+        
+        return (WebUser) get(WebUser.class, id);
+    } 
+    
     public boolean updateObject(WebUser object) {
         
         boolean bFlag = false;
@@ -124,7 +131,7 @@ public class UserServiceImpl extends DataService implements UserService {
             
             save(object);
             bFlag = true;
-
+            
         } catch (Throwable e) {
             bFlag = false;
             e.printStackTrace();

@@ -10,32 +10,35 @@ package chox.model;
  */
 public class IdLookupItem {
 
-    private String text;
-    private Integer value;
+    private Integer id;
+    private String name;
 
     public IdLookupItem() {
-        this.text = "";
-        this.value = -1;
+        this.id = -1;
+        this.name = "";
     }
 
-    public IdLookupItem(String text, Integer value) {
-        this.text = text;
-        this.value = value;
+    public IdLookupItem(Integer id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public String getText() {
-        return text;
+    public Integer getId() {
+        return id;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Integer getValue() {
-        return value;
+    public String getName() {
+        return name;
     }
 
-    public void setValue(Integer value) {
-        this.value = value;
+    public void setName(String name) {
+        this.name = name;
     }
+
+    
+
 }
