@@ -45,13 +45,15 @@
             return validateFlag;
         }
         
-        function doSubmit(){
+        function doInsurerSubmit(){
+            
+            $("#admin_param_panel").block();
             
             if(doFormValidation().form()){
                 
                 var op = { 
                     beforeSubmit:  onBeforeSubmit,
-                    success:       onSubmitResponseReceived,
+                    success:onSubmitResponseReceived,
                     timeout: 3000,
                     error: onSubmitError
                 };
@@ -69,11 +71,25 @@
         }
 
         function onSubmitResponseReceived(responseText, statusText){
+            
             responseText = responseText.trim();
-            $(".chox-form-submit-result").html(responseText);
+            var output = "Your changes have been saved.";
+            
+            if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
+                
+                var newObjectId =  parseInt(responseText.substring(9,responseText.length));
+                $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + newObjectId);
+                
+            }else{
+                output = responseText;
+                $(".chox-form-submit-result").html(output);
+            }
+            
+            $("#admin_param_panel").unblock();
         }
 
         function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
+            $("#admin_param_panel").unblock();
             alert("Error");  
         }
         
@@ -94,7 +110,9 @@
                 {contentEl:'insurerAlliasPanelTab', title:'Allias', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},                   
                 {contentEl:'insurerLobPanelTab', title:'Line Of Business', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
                 {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
-           ]
+                {contentEl:'insurerBrePanelTab', title:'Business Rule Enginee', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
+                {contentEl:'insurerBreMappingPanelTab', title:'Business Rule Enginee Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
+            ]
            });
         }
 
@@ -116,6 +134,9 @@
 </script>
 
 <div id="mainPanel" class="adminTabCss"></div>
+
+<div id="insurerBrePanelTab" class="x-hide-display">BRE</div>
+<div id="insurerBreMappingPanelTab" class="x-hide-display">BRE MAPPING</div>
 
 <div id="insurerLobPanelTab" class="x-hide-display">
     <div class="subAdminTabCss">
@@ -148,7 +169,6 @@
     <div class="subAdminTabCss">
     <form id="formUpdateInsurerDetail" action="user/updateInsurerDetail.action" class="XXentity-form" onsubmit="return true;">
     <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
-
             <div class="form-container">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Name<span class="mandatory">*</span></label>
@@ -163,7 +183,7 @@
                     <s:checkbox name="status" value="status" />
                 </div>                   
                 <div class="chox-form-button">
-                    <input type="button" value="Save Changes" onclick="javascript: doSubmit();"/>
+                    <input type="button" value="Save Changes" onclick="javascript: doInsurerSubmit();"/>
                     <input type="button" value="Cancel" class="cancel" onclick="javascript: doInsurerBack();" />
                 </div>
                 <div id="CDmessageBox" style="text-align:center"></div>  

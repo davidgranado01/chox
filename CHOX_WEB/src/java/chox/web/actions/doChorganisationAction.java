@@ -79,6 +79,9 @@ public class doChorganisationAction extends BaseAction implements ModelDriven<Ch
     public String updateModel() throws Exception {
         
         try {
+            
+            actionResult = "Your changes have been saved.";
+            
             if(this.isNew){
                 
                 if(this.service.isChorgNameExist(model.getName())){
@@ -88,8 +91,12 @@ public class doChorganisationAction extends BaseAction implements ModelDriven<Ch
             }
             
             model = this.service.updateObject(model);
-            this.isNew = false;
-            actionResult = "Your changes have been saved.";
+            
+            if(this.isNew){
+                actionResult = "objectId:"+model.getId();
+                this.isNew = false;
+            }
+            
             
         } catch (Exception ex) {
             throw ex; 

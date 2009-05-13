@@ -80,6 +80,8 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
         
         try {
             
+            actionResult = "Your changes have been saved.";   
+            
             if(this.isNew){
                 
                 if(this.service.isInsurerNameExist(model.getName())){
@@ -89,9 +91,12 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
                 
             }
             
-            model = this.service.updateObject(model);
-            actionResult = "Your changes have been saved.";
-            this.isNew = false;
+            model = this.service.updateObject(model);            
+            
+            if(this.isNew){
+                actionResult = "objectId:"+model.getId();
+                this.isNew = false;
+            }
             
         } catch (Exception ex) {
             throw ex; 

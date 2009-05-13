@@ -20,7 +20,7 @@
                 },
                 submitHandler: function(form) {
                     $(form).ajaxSubmit(globalEntityFormOptions);
-                }                
+                }
             }); 
         });  
 

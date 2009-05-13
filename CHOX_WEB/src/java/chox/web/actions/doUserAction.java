@@ -214,10 +214,8 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
             }else{
                 
                 this.service.updateObject(model);  
-                
+                actionResult = "Your changes have been saved.";
             }
-            
-            actionResult = "Your changes have been saved.";
             
         } catch (Exception ex) {
             throw ex; 
@@ -249,14 +247,14 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
                 
                 if(webUserUserRoleService.addNewUserRole(model.getId(), getUserOrgBaseRole())){
                     bFlag = true;
-                    actionResult = "New user has been created!";
+                    actionResult = "objectId:"+model.getId();
                 }
                 
             }else{
                 actionResult = "Please try again!";
             }
             
-        }else{    
+        }else{
             actionResult = "Email Address already exist!";     
         }
         

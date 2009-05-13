@@ -42,16 +42,31 @@
         function onBeforeSubmit(formData, jqForm, options) {
         }
 
-        function onSubmitResponseReceived(responseText, statusText)  {        
+        function onSubmitResponseReceived(responseText, statusText){
+            
             responseText = responseText.trim();
-            $(".chox-form-submit-result").html(responseText);
+            var output = "Your changes have been saved.";
+            
+            if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
+                
+                var newObjectId =  parseInt(responseText.substring(9,responseText.length));
+                var orgTypeId = $("#orgTypeId").val();
+                $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + newObjectId + "&orgTypeId=" + orgTypeId);
+                
+            }else{
+                output = responseText;
+                $(".chox-form-submit-result").html(output);
+            }
+            
+            $("#admin_param_panel").unblock();
         }
 
         function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
+            $("#admin_param_panel").unblock();
         }
         
         function doSubmit(){
-            
+            $("#admin_param_panel").block();
             if(doFormValidation().form()){
                 
                 var op = { 
@@ -74,7 +89,7 @@
 <div>
     <form id="formUpdateUserDetail" action="user/updateUserDetail.action" class="XXentity-form" onsubmit="return true;" method="post">
     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
-    <input type="hidden" name="orgTypeId" value='<s:property value="orgTypeId"/>'>
+    <input type="hidden" name="orgTypeId" id="orgTypeId" value='<s:property value="orgTypeId"/>'>
     
             <fieldset class="x-fieldset">
                 <legend>User Details</legend>

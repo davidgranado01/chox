@@ -3,7 +3,7 @@
 <script language="JavaScript">
         
         var selectedPanel = "CreditHireOrgMgmt";
-        
+
         $(document).ready(function(){
             doFormValidation(); 
         }); 
@@ -76,6 +76,8 @@
         
         function doSubmit(){
             
+            $("#admin_param_panel").block();
+            
             if(doFormValidation().form()){
                 var op = { 
                     beforeSubmit:  onBeforeSubmit,
@@ -95,12 +97,27 @@
         function onBeforeSubmit(formData, jqForm, options) { 
         }
 
-        function onSubmitResponseReceived(responseText, statusText)  {      
+        function onSubmitResponseReceived(responseText, statusText){
+            
             responseText = responseText.trim();
-            $(".chox-form-submit-result").html(responseText);
-        }   
+            var output = "Your changes have been saved.";
+            
+            if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
+                
+                var newObjectId =  parseInt(responseText.substring(9,responseText.length));
+                $("#admin_param_panel").load("updateChorganisationDetailPanel.action?objectId=" + newObjectId);
+                
+            }else{
+                output = responseText;
+                $(".chox-form-submit-result").html(output);
+            }
+            
+            $("#admin_param_panel").unblock();
+            
+        }  
 
         function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
+            $("#admin_param_panel").unblock();
             alert("Error");  
         }        
 
