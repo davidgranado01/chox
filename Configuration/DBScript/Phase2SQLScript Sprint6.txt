@@ -129,7 +129,5 @@ update accessibility_item set role = 'ROLE_CHO_MNG' where role like 'ROLE_CHO_MN
 -- ############################################################################################\
 
 insert into web_user_role (id, name, created_by, last_modified_by, description) values ((select max(id)+1 from web_user_role),'ROLE_CHOX', 99, 999, 'Sherwood User');
-
 insert into web_user_user_role (id, web_user_id, wer_user_role_id, created_by, last_modified_by, is_active) values ((select max(id)+1 from web_user_user_role), 1, 12, 999,999, true);
 insert into web_user_user_role (id, web_user_id, wer_user_role_id, created_by, last_modified_by, is_active) values ((select max(id)+1 from web_user_user_role), 5, 12, 999,999, true);
-insert into web_user_user_role (id, web_user_id, wer_user_role_id, created_by, last_modified_by, is_active) values ((select max(id)+1 from web_user_user_role), 1000, 12, 999,999, true);
