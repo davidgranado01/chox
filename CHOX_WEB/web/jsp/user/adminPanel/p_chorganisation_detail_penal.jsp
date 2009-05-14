@@ -76,9 +76,10 @@
         
         function doSubmit(){
             
-            $("#admin_param_panel").block();
-            
             if(doFormValidation().form()){
+                
+                $("#admin_param_panel").block();
+                
                 var op = { 
                     beforeSubmit:  onBeforeSubmit,
                     success:       onSubmitResponseReceived,
