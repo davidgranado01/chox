@@ -179,7 +179,7 @@
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Mobile Day Allowance<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDIsMobileDayAllowance" name="isMobileDayAllowance" value="<s:property value="isMobileDayAllowance" />"/>
+                    <input size="5" maxlength="5" type="text" class="chox-ttxt" id="CCDIsMobileDayAllowance" name="isMobileDayAllowance" value="<s:property value="isMobileDayAllowance" />"/>
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Not Mobile Day Allowance<span class="mandatory">*</span></label>
