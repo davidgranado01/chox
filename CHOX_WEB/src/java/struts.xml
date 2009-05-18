@@ -769,23 +769,26 @@
             <result name="InsurerAlliasMappingMgmt">/jsp/user/adminPanel/p_insurer_allias_mapping.jsp</result>
             <result name="InsurerLineOfBusinessMappingMgmt">/jsp/user/adminPanel/p_insurer_lob_mapping.jsp</result>
             <result name="UserroleMapping">/jsp/user/adminPanel/p_user_role_mapping.jsp</result>
+            <result name="InsurerChoBandMgmt">/jsp/user/adminPanel/p_insurer_choband_mgmt_panel.jsp</result>
         </action>
         
         <action name="doTriggerUserAccountStatus" class="chox.web.actions.doUserAction" method="triggerStatus">
             <result name="success">/jsp/p_response.jsp
             </result>
         </action>
-        
         <action name="doTriggerCreditHireAccountStatus" class="chox.web.actions.doChorganisationAction" method="triggerStatus">
             <result name="success">/jsp/p_response.jsp
             </result>
         </action>
-        
         <action name="doTriggerInsurerAccountStatus" class="chox.web.actions.doInsurerAction" method="triggerStatus">
             <result name="success">/jsp/p_response.jsp
             </result>
         </action>
-        
+        <action name="doDeleteCreditHireBand" class="chox.web.actions.doInsurerChoBandAction" method="deleteChoBand">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+
         <action name="getInsurer" class="chox.web.actions.InsurerAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>         
@@ -876,7 +879,17 @@
             <result name="success">/jsp/p_response.jsp
             </result>
         </action>   
-        
+
+        <action name="getInsurerChoBand" class="chox.web.actions.InsurerChoBandAction">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="updateInsurerChoBandDetailPanel" class="chox.web.actions.doInsurerChoBandAction" method="doRenderActionPage">
+            <result name="success">/jsp/user/adminPanel/p_insurer_choband_detail_panel.jsp</result>
+        </action>
+        <action name="updateInsurerChoBandDetail" class="chox.web.actions.doInsurerChoBandAction" method="updateModel">
+            <result name="success">/jsp/p_response.jsp</result>
+        </action>
+
     </package>
     <include file="config-browser.xml"/>
 </struts>
