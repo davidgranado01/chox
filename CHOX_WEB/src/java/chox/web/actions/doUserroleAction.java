@@ -5,9 +5,7 @@
 
 package chox.web.actions;
 
-import chox.Util.DateHelper;
 import chox.model.WebUserUserRole;
-import chox.services.LookupService;
 import chox.services.WebUserUserRoleService;
 import java.util.List;
 
@@ -19,16 +17,18 @@ public class doUserroleAction extends BaseAction{
     private int webUserUserRoleId;  
     private int webUserRoleId;
     private int webUserId;
-    private LookupService lookupService;
     private WebUserUserRoleService service;
     
+    /*
+    private LookupService lookupService;
     public void setLookupService(LookupService lookupService)
     {
         this.lookupService = lookupService;
     }
+    */
     
     public List getUserroles() {
-        userroles = this.lookupService.getSelectedUserAvailableRole(orgTypeId, webUserId);
+        userroles = this.service.getSelectedUserAvailableRole(orgTypeId, webUserId);
         return userroles;
     }
     

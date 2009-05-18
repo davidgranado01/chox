@@ -245,7 +245,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
             
             if(this.service.updateObject(model)){
                 
-                if(webUserUserRoleService.addNewUserRole(model.getId(), getUserOrgBaseRole())){
+                if(webUserUserRoleService.addBaseNewUserRole(model.getId(), Integer.valueOf(this.orgTypeId))){
                     bFlag = true;
                     actionResult = "objectId:"+model.getId();
                 }
@@ -260,7 +260,8 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         
         return bFlag;
     }
-    
+
+    /*
     private String getUserOrgBaseRole() {
         
         String sOutput = "-";
@@ -275,6 +276,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         
         return sOutput;
     }
+    */
     
     public void prepare() throws Exception {
         

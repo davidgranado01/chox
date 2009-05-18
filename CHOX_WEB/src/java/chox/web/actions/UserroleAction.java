@@ -1,6 +1,5 @@
 package chox.web.actions;
 
-import chox.model.WebUser;
 import chox.model.WebUserRole;
 import chox.model.WebUserUserRole;
 import chox.services.WebUserUserRoleService;
@@ -42,7 +41,6 @@ public class UserroleAction extends BaseAction {
         
         for(WebUserUserRole h : userroleData)
         {
-            
             if(!h.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_CHO) 
                     && !h.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_INS)
                     && !h.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_CHOX)){

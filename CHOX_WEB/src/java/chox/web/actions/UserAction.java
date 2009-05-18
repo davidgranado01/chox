@@ -28,7 +28,7 @@ public class UserAction extends BaseAction {
 
     @Override
     public String execute() {
-
+ 
         List<WebUser> userData = this.service.getUsers(orgTypeId, orgId);
         
         user = new ArrayList<UserViewData>();
