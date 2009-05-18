@@ -38,7 +38,7 @@ public class UserViewData {
         if(object.isCHOXAdmin()){
             
             this.orgType = 1;
-            this.orgName = "CHOX";
+            this.orgName = "Sherwood";
             
         }else{
             
