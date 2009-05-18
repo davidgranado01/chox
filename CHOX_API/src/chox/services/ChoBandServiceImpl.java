@@ -8,10 +8,68 @@ package chox.services;
 import chox.model.ChoBand;
 import org.hibernate.criterion.Restrictions;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import chox.services.ChoBandOrganisationService;
+
 
 public class ChoBandServiceImpl extends SecureDataService implements ChoBandService{
+
+    private ChoBandOrganisationService chobandorganisaionservice;
+
+    public void setChoBandOrganisationService(ChoBandOrganisationService chobandorganisaionservice)
+    {
+        this.chobandorganisaionservice = chobandorganisaionservice;
+    }
+
     
+    public List<ChoBand> getInsurerChoBand(int insurerId){
+
+        List<ChoBand> choBand = new ArrayList<ChoBand>();
+
+        try {
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(ChoBand.class);
+
+            if(insurerId>0){
+                
+                criteria.add(Restrictions.eq("insurer.id", insurerId));
+                
+            }
+            
+            criteria.addOrder(Order.asc("name"));
+            choBand = findByCriteria(criteria);
+
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
+        
+        return choBand;
+    }
+
+    public List<ChoBand> getInsurerChoBand(){
+
+        List<ChoBand> choBand = new ArrayList<ChoBand>();
+
+        try {
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(ChoBand.class);
+            criteria.addOrder(Order.asc("name"));
+            choBand = findByCriteria(criteria);
+
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
+
+        return choBand;
+    }
+
+    public boolean isChoBandOccupied(ChoBand object){
+        return chobandorganisaionservice.isChoBandOccupied(object.getId());
+    }
+
     public ChoBand getDummyChoBand()
     {
         ChoBand choband = new ChoBand();
@@ -34,6 +92,34 @@ public class ChoBandServiceImpl extends SecureDataService implements ChoBandServ
         return choband;
     }
 
+    public ChoBand getObject(int id) {
+        return (ChoBand) get(ChoBand.class, id);
+    }
+
+    public void updateObject(ChoBand object) {
+
+        save(object);
+    }
+
+    public boolean deleteObject(ChoBand object){
+        
+        boolean bFlag = false;
+
+        try{
+            System.out.println("START DELETING PROCESS - 0001");
+            if(chobandorganisaionservice.deleteChoBandOrganisationByBandId(object.getId())){
+                System.out.println("START DELETING PROCESS - 0002");
+                delete(object);
+                bFlag = true;
+            }
+            
+        } catch (Throwable e) {
+            bFlag = false;
+        }
+
+        return bFlag;
+    }
+    
     public ChoBand getChoBandByChorganisationId(int orgId){
         
         ChoBand band = new ChoBand();

@@ -103,7 +103,7 @@ public class UserServiceImpl extends DataService implements UserService {
             criteria.addOrder(Order.asc("email")); 
             
             List<WebUser> userData = findByCriteria(criteria);
-            
+
             for(WebUser h : userData){
                 if(h.getOrganisationType()==(Integer.valueOf(orgTypeId))){
                     users.add(h);

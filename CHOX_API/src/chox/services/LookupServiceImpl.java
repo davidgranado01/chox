@@ -29,13 +29,15 @@ import org.hibernate.criterion.Restrictions;
  * @author Emmanuel
  */
 public class LookupServiceImpl extends SecureDataService implements LookupService, Serializable {
-    
+
+    /*
     private WebUserUserRoleService webUserUserRoleService;
     
     public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService)
     {
         this.webUserUserRoleService = webUserUserRoleService;
     }
+    */
     
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
@@ -73,7 +75,8 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         items.add(new LookupItem("Update Obtained By Other Source", "Update Obtained By Other Source"));    
         return items;
     }
-    
+
+    /*
     public List getSelectedUserAvailableRole(int orgTypeId, int webUserId){
         
         List items = new ArrayList<IdLookupItem>();
@@ -93,6 +96,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         
         return items;
     }
+    */
     
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // LINE OF BUSINESS LIST

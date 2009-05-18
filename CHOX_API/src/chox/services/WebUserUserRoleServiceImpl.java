@@ -1,9 +1,8 @@
 package chox.services;
 
-import chox.model.WebUser;
+import chox.model.IdLookupItem;
 import chox.model.WebUserRole;
 import chox.model.WebUserUserRole;
-import chox.services.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
@@ -85,7 +84,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
 
     }
     
-    public boolean addNewUserRole(int webUserId, String roleName){
+    public boolean addBaseNewUserRole(int webUserId, int typeId){
         
         boolean bFlag = false;
         
@@ -94,7 +93,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
             WebUserUserRole webUserUserRole = new WebUserUserRole();
             webUserUserRole.setActive(true);
             webUserUserRole.setWebUser(userService.getObject(webUserId));
-            webUserUserRole.setWebUserRole(getWebUserRole(roleName));
+            webUserUserRole.setWebUserRole(getUserOrgBaseRoleId(typeId));
 
             updateObject(webUserUserRole);
             bFlag = true;
@@ -107,7 +106,21 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return bFlag;
 
     }
-    
+
+    private WebUserRole getUserOrgBaseRoleId(int orgTypeId) {
+       
+        String webUserRoleName = "-";
+
+        switch(orgTypeId){
+            case 1: webUserRoleName = WebUserRole.ROLE_CHOX; break;
+            case 2: webUserRoleName = WebUserRole.ROLE_INS; break;
+            case 3: webUserRoleName = WebUserRole.ROLE_CHO; break;
+        }
+
+        return getWebUserRole(webUserRoleName);
+        
+    }
+
     public boolean DeleteObject(WebUserUserRole object){
         
         boolean bFlag = false;
@@ -153,27 +166,54 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         List<WebUserRole> webUserRoles = new ArrayList<WebUserRole>();
         
         try {
-            
+
             DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class); 
-            
+
+            criteria.add(Restrictions.eq("typeId", orgTypeId));
+
+            /*
             if(orgTypeId==1){
-                criteria.add(Restrictions.like("name", "ROLE_CHOX_%"));
+                criteria.add(Restrictions.like("name", WebUserRole.ROLE_CHOX+"_%"));
             }else if(orgTypeId==2){
                 criteria.add(Restrictions.like("name", WebUserRole.ROLE_INS+"_%"));
             }else if(orgTypeId==3){
-                criteria.add(Restrictions.like("name", WebUserRole.ROLE_CHO+"_%"));
+                //criteria.add(Restrictions.like("name", WebUserRole.ROLE_CHO+"_%"));
+                System.out.println("CHECK ~ >> :"+WebUserRole.ROLE_CHO+"_%");
+                criteria.add(Restrictions.like("name", "ROLE_CHO_%"));
             }
+            */
             
             criteria.add(Restrictions.ne("name", WebUserRole.ROLE_CHO));
             criteria.add(Restrictions.ne("name", WebUserRole.ROLE_INS));
             criteria.add(Restrictions.ne("name", WebUserRole.ROLE_CHOX));
+            
             webUserRoles = findByCriteria(criteria);
         
         } catch (Throwable e) {
            e.printStackTrace();
-        }    
+        }
         
         return webUserRoles;
         
+    }
+
+    public List getSelectedUserAvailableRole(int orgTypeId, int webUserId){
+
+        List items = new ArrayList<IdLookupItem>();
+        List<WebUserRole> webUserroles = getWebUserroles(orgTypeId);
+        List<WebUserUserRole> selectedWebUserroles = getUserRoleMapping(webUserId, null);
+        List<Integer> selectedList = new ArrayList<Integer>();
+
+        for (WebUserUserRole o : selectedWebUserroles) {
+            selectedList.add(o.getWebUserRole().getId());
+        }
+
+        for (WebUserRole s : webUserroles) {
+            if(!selectedList.contains(s.getId())){
+                items.add(new IdLookupItem(s.getId(), s.getDescription()));
+            }
+        }
+
+        return items;
     }
 }

@@ -17,7 +17,7 @@ public interface LookupService {
     public List getClaimRejectionReason();
     public List getInvoiceRejectionReason();
     public List getNonProvisionReason();
-    public List getSelectedUserAvailableRole(int orgTypeId, int webUserId);
+    //public List getSelectedUserAvailableRole(int orgTypeId, int webUserId);
     
     public List getLineOfBusinesses();
     public List getAllLineOfBusinesses();
