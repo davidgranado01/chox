@@ -61,7 +61,7 @@
             {
                 params:
                 {
-                    gridviewtype : "creditHireOrgMgmt"
+                    gridviewtype : "InsurerChoBandMgmt"
                 }
             });
     

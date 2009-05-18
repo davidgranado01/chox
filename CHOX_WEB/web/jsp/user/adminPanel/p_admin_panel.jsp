@@ -36,6 +36,8 @@
 <li><a href="javascript:renderAdminParameterPanel('UserMgmt');">User Management</a></li>
 </s:if> 
 
+                                <li><a href="javascript:renderAdminParameterPanel('InsurerChoBandMgmt');">BRE Band</a></li>
+                                <li><a href="javascript:renderAdminParameterPanel('InsurerChoBandMgmt');">BRE Mapping</a></li>
 <!--
                                 <li><a href="javascript:renderAdminParameterPanel('InsurerAlliasMappingMgmt');">Alliases</a></li>
                                 <li><a href="javascript:renderAdminParameterPanel('InsurerLineOfBusinessMappingMgmt');">Line Of Businesses</a></li>

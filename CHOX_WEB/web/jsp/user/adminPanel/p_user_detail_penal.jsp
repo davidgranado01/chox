@@ -202,7 +202,7 @@
         </form>
 </div>
 
-<s:if test="orgTypeId!=1 && mode=='Edit'">
+<s:if test="mode=='Edit'">
     <div>
             <s:action name="getUserroleMapping" executeResult="true">
                 <s:param name="webUserId"><s:property value="id" /></s:param> 
