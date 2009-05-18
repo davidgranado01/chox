@@ -131,3 +131,28 @@ update accessibility_item set role = 'ROLE_CHO_MNG' where role like 'ROLE_CHO_MN
 insert into web_user_role (id, name, created_by, last_modified_by, description) values ((select max(id)+1 from web_user_role),'ROLE_CHOX', 99, 999, 'Sherwood User');
 insert into web_user_user_role (id, web_user_id, wer_user_role_id, created_by, last_modified_by, is_active) values ((select max(id)+1 from web_user_user_role), 1, 12, 999,999, true);
 insert into web_user_user_role (id, web_user_id, wer_user_role_id, created_by, last_modified_by, is_active) values ((select max(id)+1 from web_user_user_role), 5, 12, 999,999, true);
+
+-- ############################################################################################
+-- START VERSION V2.6.3
+-- ############################################################################################\
+
+ALTER TABLE web_user_role ADD COLUMN type_id integer;
+update web_user_role set type_id=-1;
+ALTER TABLE web_user_role ALTER COLUMN type_id SET STORAGE PLAIN;
+ALTER TABLE web_user_role ALTER COLUMN type_id SET NOT NULL;
+ALTER TABLE web_user_role ALTER COLUMN type_id SET DEFAULT (-1);
+
+------------------------------------------------------------------------------------------------
+
+update web_user_role set type_id=2 where name like 'ROLE_INS%';
+update web_user_role set type_id=1 where name like 'ROLE_CHOX%';
+update web_user_role set type_id=3 where type_id<=0;
+
+------------------------------------------------------------------------------------------------
+
+ALTER TABLE cho_band ADD COLUMN "name" character varying(100);
+ALTER TABLE cho_band ALTER COLUMN "name" SET STORAGE EXTENDED;
+ALTER TABLE cho_band ALTER COLUMN "name" SET NOT NULL;
+ALTER TABLE cho_band ALTER COLUMN "name" SET DEFAULT 'N/A'::character varying;
+
+------------------------------------------------------------------------------------------------
