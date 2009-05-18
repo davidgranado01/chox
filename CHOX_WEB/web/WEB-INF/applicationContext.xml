@@ -138,6 +138,10 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
+    <bean id="choBandOrganisationService" class="chox.services.ChoBandOrganisationServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
     <bean id="choBandService" class="chox.services.ChoBandServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
