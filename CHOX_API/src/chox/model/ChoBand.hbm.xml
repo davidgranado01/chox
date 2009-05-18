@@ -5,12 +5,13 @@
     <id column="id" name="id">
       <generator class="increment"/>
     </id>
-    <property column="insurer_id" name="insurerId" not-null="true"/>
+    <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
     <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="is_active" name="isActive" not-null="true"/>
+    <property column="name" name="name" not-null="true"/>
     <property column="take_vehicle_to_garage_days_mobile" name="takeVehicleToGarageDaysMobile" not-null="true"/>
     <property column="take_vehicle_to_garage_days_non_mobile" name="takeVehicleToGarageDaysNonMobile" not-null="true"/>
     <property column="weekend_buffer_days" name="weekendBufferDays" not-null="true"/>

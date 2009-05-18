@@ -355,7 +355,6 @@ public class WebUser implements Serializable
             return String.format("%1$s %2$s %3$s", this.getFirstName(), this.getLastName(), orgName);
         }
 
-        
         public boolean isCHOXAdmin(){
 
             boolean bFlag = false;
@@ -365,6 +364,7 @@ public class WebUser implements Serializable
 
                 while(itr.hasNext()) {
                     WebUserRole webUserrole = (WebUserRole) itr.next();
+
                     if(webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHOX)){
                         bFlag = true;
                         break;
@@ -372,11 +372,6 @@ public class WebUser implements Serializable
                 }
             }
             
-            /*
-            if(this.getChorganisation()==null && this.getInsurer()==null){
-                bFlag = true;
-            }
-            */
             
             return bFlag;
             
@@ -388,20 +383,22 @@ public class WebUser implements Serializable
         
         public int getOrganisationType(){
             
-            Integer typeIdex = -1;
+            Integer typeIndex = -1;
             
             if(this.isCHOXAdmin()){
-                typeIdex = 1;
+                
+                typeIndex = 1;
+                
             }else{
                 
                 if(this.getInsurer()!=null){
-                     typeIdex = 2;
+                     typeIndex = 2;
                 }else if(this.getChorganisation()!=null){
-                    typeIdex = 3;
+                    typeIndex = 3;
                 }
             }
             
-            return typeIdex;
+            return typeIndex;
         } 
 
 }

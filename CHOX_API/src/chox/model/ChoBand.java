@@ -10,7 +10,7 @@ public class ChoBand implements Auditable, Serializable, ICHOBandInfo
 	/** 
 	 * This attribute maps to the column insurer_id in the cho_band table.
 	 */
-	protected int insurerId;
+	protected Insurer insurer;
 
 	/** 
 	 * This attribute maps to the column created_by in the cho_band table.
@@ -111,10 +111,9 @@ public class ChoBand implements Auditable, Serializable, ICHOBandInfo
 	 * This attribute maps to the column is_not_mobile_day_allowance in the cho_band table.
 	 */
 	protected int isNotMobileDayAllowance;
-        
-        
-        protected int averageLabourRate;
-        protected int averageLabourHoursPerHireDay;
+    protected int averageLabourRate;
+    protected int averageLabourHoursPerHireDay;
+    protected String name;
 
         
 	/**
@@ -125,25 +124,15 @@ public class ChoBand implements Auditable, Serializable, ICHOBandInfo
 	{
 	}
 
-	/**
-	 * Method 'getInsurerId'
-	 * 
-	 * @return int
-	 */
-	public int getInsurerId()
-	{
-		return insurerId;
-	}
+    public Insurer getInsurer() {
+        return insurer;
+    }
 
-	/**
-	 * Method 'setInsurerId'
-	 * 
-	 * @param insurerId
-	 */
-	public void setInsurerId(int insurerId)
-	{
-		this.insurerId = insurerId;
-	}
+    public void setInsurer(Insurer insurer) {
+        this.insurer = insurer;
+    }
+
+
 
 	/**
 	 * Method 'getCreatedBy'
@@ -560,6 +549,14 @@ public class ChoBand implements Auditable, Serializable, ICHOBandInfo
         public void setAverageLabourRate(int averageLabourRate) {
             this.averageLabourRate = averageLabourRate;
         }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
         
 
 

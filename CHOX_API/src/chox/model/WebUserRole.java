@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class WebUserRole implements Serializable,Auditable
 {
-        public static final String ROLE_CHOX = "ROLE_CHOX_ADMIN";
+        public static final String ROLE_CHOX = "ROLE_CHOX";
         public static final String ROLE_INS = "ROLE_INS";
         public static final String ROLE_CHO = "ROLE_CHO";
         
@@ -18,7 +18,8 @@ public class WebUserRole implements Serializable,Auditable
 	 * This attribute maps to the column name in the web_user_role table.
 	 */
 	protected String name;
-        protected String description;
+    protected String description;
+    protected Integer typeId;
 
 	/** 
 	 * This attribute maps to the column created_by in the web_user_role table.
@@ -175,5 +176,15 @@ public class WebUserRole implements Serializable,Auditable
 	{
 		this.lastModifiedDate = lastModifiedDate;
 	}
+
+    public Integer getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
+    }
+
+
 
 }
