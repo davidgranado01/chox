@@ -151,8 +151,58 @@ update web_user_role set type_id=3 where type_id<=0;
 ------------------------------------------------------------------------------------------------
 
 ALTER TABLE cho_band ADD COLUMN "name" character varying(100);
+update cho_band set "name" ='N/A';
 ALTER TABLE cho_band ALTER COLUMN "name" SET STORAGE EXTENDED;
 ALTER TABLE cho_band ALTER COLUMN "name" SET NOT NULL;
 ALTER TABLE cho_band ALTER COLUMN "name" SET DEFAULT 'N/A'::character varying;
 
 ------------------------------------------------------------------------------------------------
+
+-- ALTER TABLE cho_band DROP COLUMN average_labour_hours_per_hire_day;
+
+ALTER TABLE cho_band ADD COLUMN average_labour_hours_per_hire_day integer;
+update cho_band set average_labour_hours_per_hire_day = 0;
+ALTER TABLE cho_band ALTER COLUMN average_labour_hours_per_hire_day SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN average_labour_hours_per_hire_day SET NOT NULL;
+ALTER TABLE cho_band ALTER COLUMN average_labour_hours_per_hire_day SET DEFAULT 0;
+
+------------------------------------------------------------------------------------------------
+
+ALTER TABLE cho_band ADD COLUMN average_labour_rate integer;
+update cho_band set average_labour_rate = 0;
+ALTER TABLE cho_band ALTER COLUMN average_labour_rate SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN average_labour_rate SET NOT NULL;
+ALTER TABLE cho_band ALTER COLUMN average_labour_rate SET DEFAULT 0;
+
+------------------------------------------------------------------------------------------------
+
+ALTER TABLE chorganisation ADD COLUMN phone character varying(50);
+ALTER TABLE chorganisation ALTER COLUMN phone SET STORAGE EXTENDED;
+
+------------------------------------------------------------------------------------------------
+
+
+delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'tab.Payment%')
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 46, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 47, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 48, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 49, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 50, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 51, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 52, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 53, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 54, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 55, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 56, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 57, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 58, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 59, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 60, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 133, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 144, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 153, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 170, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 177, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 208, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 223, (select max(id)+1 from accessibility_item));
