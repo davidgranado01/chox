@@ -36,15 +36,15 @@ public class InsurerChorganisationViewData {
         this.chorganisationStatus = insurerChorganisation.getChorganisation().isStatus();
         
         if(insurerChorganisation.isStatus()){
-            this.statusDesc = "Active";
+            this.statusDesc = "Yes";
         }else{
-            this.statusDesc = "Inactive";
+            this.statusDesc = "No";
         }
         
         if(insurerChorganisation.getChorganisation().isStatus()){
-            this.chorganisationStatusDesc = "Active";
+            this.chorganisationStatusDesc = "Yes";
         }else{
-            this.chorganisationStatusDesc = "Inactive";
+            this.chorganisationStatusDesc = "No";
         }
     }
 

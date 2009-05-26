@@ -7,6 +7,9 @@ package chox.web.viewdata;
 
 import chox.Util.DateHelper;
 import chox.model.WebUser;
+import chox.model.WebUserRole;
+import java.util.Iterator;
+import java.util.Set;
 
 public class UserViewData {
     
@@ -19,6 +22,7 @@ public class UserViewData {
     private String createdDate;
     private String orgName;
     private int orgType;
+    private String role;
     
     public UserViewData(WebUser object) {
         
@@ -30,9 +34,9 @@ public class UserViewData {
         this.status = object.getStatus();
         
         if(object.getStatus()){
-            this.statusDesc = "Active";
+            this.statusDesc = "Yes";
         }else{
-            this.statusDesc = "Inactive";
+            this.statusDesc = "No";
         }
     
         if(object.isCHOXAdmin()){
@@ -51,8 +55,41 @@ public class UserViewData {
             this.orgName = object.getOrganisationName();
             
         }
+        
+        this.role = getRoleString(object.getRoles());
     }
-
+    
+    private String getRoleString(Set roles){
+        
+        Integer iRoles = roles.size();
+        String sRole = "";
+        
+        if(iRoles>0){
+            
+            Iterator it = roles.iterator();
+            
+            while (it.hasNext()) {
+                
+                WebUserRole webUserrole = (WebUserRole) it.next();
+                
+                if(!webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHO)
+                        && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHOX)
+                        && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS)){
+                    
+                    sRole = sRole + webUserrole.getDescription() + ", ";
+                }
+            }
+        }
+        
+        if((sRole.trim()).length()<=0){
+            sRole = "N/A";
+        }else{
+            sRole = sRole.substring(0, (sRole.length()-2));
+        }
+        
+        return sRole;
+    }
+    
     public String getCreatedBy() {
         return createdBy;
     }
@@ -83,6 +120,14 @@ public class UserViewData {
 
     public String getStatusDesc() {
         return statusDesc;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
 

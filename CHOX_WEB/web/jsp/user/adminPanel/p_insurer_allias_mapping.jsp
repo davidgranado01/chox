@@ -9,17 +9,12 @@
     var allias_gridviewGrid;
     var allias_gridviewData;
     var allias_recordPerPage = 20;
-    var orgId = -1;
     var selectOrgId = <s:property value="selectOrgId" />;
-    
+
     selectedPanel = 'InsurerAlliasMappingMgmt';
     
     Ext.onReady(function(){
-        
-       if(selectOrgId>0){
-           $("#allias_insurerId").val(selectOrgId);
-       }
-       
+      
        allias_gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
@@ -45,12 +40,12 @@
             store: allias_gridviewData,
             loadMask: true,
             columns: [
-                {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: false, resizable: true},
-                {header: "Allias Name", width: 180, dataIndex: 'name', sortable: false, resizable: true},
-                {header: "Action", width: 80, dataIndex: 'Remove', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
+                {header: "Allias Name", width: 180, dataIndex: 'name', sortable: true, resizable: true},
+                {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Remove</a>"}},
-                {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: false, resizable: true},
-                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: false, resizable: true}
+                {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
+                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
                 
 
             ],
@@ -83,13 +78,11 @@
     
     function allias_loadGridViewList(){
         
-        allias_doParameters();
-        
         allias_gridviewData.load(
         {
             params:
             {
-                insurerId:orgId
+                insurerId:selectOrgId
             }
         });
         
@@ -100,23 +93,16 @@
         allias_loadGridViewList();
     }
     
-    
-    function allias_doParameters(){
-        orgId = $("#allias_insurerId").val();
-    }
-    
     function allias_triggerStatusAddRecord(){
-        
-        allias_doParameters();
         
         var insurerAlliasName = $("#insurerAlliasName").val();
         
-        if(insurerAlliasName!=null && insurerAlliasName!="" && orgId!=null && orgId!=""){
+        if(insurerAlliasName!=null && insurerAlliasName!="" && selectOrgId!=null && selectOrgId!=""){
             
             $("#CDInsurerAlliasMessageBox").html("");
             
             $.ajax({
-               url: "addInsurerAllias.action?insurerId="+orgId+"&insurerAlliasName="+insurerAlliasName,
+               url: "addInsurerAllias.action?insurerId="+selectOrgId+"&insurerAlliasName="+insurerAlliasName,
                success: allias_onSubmitResponseReceived
             });
             
@@ -149,24 +135,18 @@
     } 
     
 </script>
-
 <div>
-
     <div id="organisationGird">
         <div class="gridViewHeader">
             <table width="100%">
-                <tr>
-                    <td>
-                    <input name="allias_insurerId" id="allias_insurerId" type="hidden" value="<s:property value="insurerId" />">          
-                    </td>
-                    <td align="right"></td>
-                </tr>
-                
-                <tr><td>Insurer Allias: <input name="insurerAlliasName" id="insurerAlliasName" type="text">
-                    <input type="submit" onclick="javascript: return allias_triggerStatusAddRecord();" value="Add"/></td></tr>
+                <tr><td>
+                        <div class="label-block">
+                            <p class="std-label">Insurer Allias: </p> <input name="insurerAlliasName" id="insurerAlliasName" type="text">
+                            <input type="submit" onclick="javascript: return allias_triggerStatusAddRecord();" value="Add"/>
+                        </div>
+                    </td></tr>
                 <tr><td><div id="CDInsurerAlliasMessageBox" class="errorBox"></div></td></tr>
             </table>
-
         </div>
         <div id="allias_gridviewGrid" style="height:540px; overflow:auto;"></div>
     </div>

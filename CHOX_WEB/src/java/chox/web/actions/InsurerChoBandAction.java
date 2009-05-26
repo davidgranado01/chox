@@ -17,7 +17,7 @@ public class InsurerChoBandAction extends BaseAction {
         JSONArray jObject = JSONArray.fromObject(this.insurerChoBand);
         return "{totalCount:" + this.insurerChoBand.size() + ",results:" + jObject.toString() + "}";
     }
-
+    
     public void setChoBandService(ChoBandService service)
     {
         this.service = service;

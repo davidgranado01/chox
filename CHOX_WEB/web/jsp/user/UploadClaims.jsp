@@ -75,9 +75,10 @@
                     </table>
                 </div>  
                 
-                 
                 <div class="chox-claim-header x-panel-bwrap chox-form-container">
                     <s:form action ="processClaimsAction" method ="POST" enctype="multipart/form-data" name="form">
+                        
+                        
                         
                         <fieldset class="x-fieldset">
   
@@ -91,16 +92,21 @@
                                     </td>
                                 </tr>                
                                 <tr>
-                                    <td>
-                                        <s:submit onclick="javascript:validateFile();" value="Upload Claims"/>
+                                    <td>    
+                                        <s:if test="uploadFlag">
+                                            <s:submit onclick="javascript:validateFile();" value="Upload Claims"/>
+                                        </s:if>
+                                        <s:else><br/>
+                                            <div class="errorBox"><b>Please Contact Admin, BRE Engineer does not exists</b></div>
+                                        </s:else>                                        
                                     </td>
                                 </tr>
-                            </table>     
+                            </table> 
                         </fieldset>
-                    </s:form> 
+                    </s:form>
                 </div>
             </div>
-            
+
 <div class="footerText">
 ©2009 Sherwood Compliance Services Ltd | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','Copyright');" class="footerText">Copyright</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','PrivacyPolicy');" class="footerText">Privacy Policy</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','TermsOfService');" class="footerText">Terms of Service</a>
 </div>

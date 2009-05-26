@@ -146,9 +146,8 @@ Accordingly, you should place MOST SPECIFIC (ie a/b/c/d.*) expressions first, wi
             <value>
                 CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
                 PATTERN_TYPE_APACHE_ANT
-                /user/**=ROLE_CHO,ROLE_INS,ROLE_ADMIN   
-                /admin/**=ROLE_ADMIN 
-                /**=ROLE_ANONYMOUS,ROLE_CHO,ROLE_INS,ROLE_ADMIN
+                /user/**=ROLE_CHO,ROLE_INS,ROLE_CHOX   
+                /**=ROLE_ANONYMOUS,ROLE_CHO,ROLE_INS,ROLE_CHOX
             </value>
         </property>
     </bean>

@@ -28,7 +28,7 @@ public class doUserroleAction extends BaseAction{
     */
     
     public List getUserroles() {
-        userroles = this.service.getSelectedUserAvailableRole(orgTypeId, webUserId);
+        userroles = this.service.getSelectedUserAvailableRoleLookupItem(orgTypeId, webUserId);
         return userroles;
     }
     

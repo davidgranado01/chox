@@ -15,10 +15,6 @@
     lob_selectedPanel = 'InsurerLineOfBusinessMappingMgmt';
     
     Ext.onReady(function(){
-        
-       if(selectOrgId>0){
-           $("#lob_insurerId").val(selectOrgId);
-       }
 
        lob_gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
@@ -49,7 +45,7 @@
             columns: [
                 {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
                 {header: "Line Of Business", width: 180, dataIndex: 'name', sortable: true, resizable: true},
-                {header: "Status", width: 80, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
+                {header: "Active", width: 80, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
                 {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
@@ -83,36 +79,27 @@
     
     function lob_loadGridViewList(){
         
-        lob_doParameters();
-        
         lob_gridviewData.load(
         {
             params:
             {
-                insurerId:orgId
+                insurerId:selectOrgId
             }
         });
         
         $("#lineOfBusinessName").val("");
-        
-    }
-    
-    function lob_doParameters(){
-        orgId = $("#lob_insurerId").val();
     }
     
     function lob_triggerStatusAddRecord(){
         
-        lob_doParameters();
-        
         var lineOfBusinessName = $("#lineOfBusinessName").val();
         
-        if(lineOfBusinessName!=null && lineOfBusinessName!="" && orgId!=null && orgId>0){
+        if(lineOfBusinessName!=null && lineOfBusinessName!="" && selectOrgId!=null && selectOrgId>0){
 
             $("#CDInsurerLineOfBusinessMessageBox").html("");
             
             $.ajax({
-               url: "addInsurerLineOfBusiness.action?insurerId="+orgId+"&lineOfBusinessName="+lineOfBusinessName,
+               url: "addInsurerLineOfBusiness.action?insurerId="+selectOrgId+"&lineOfBusinessName="+lineOfBusinessName,
                success: lob_onSubmitResponseReceived
             });
             
@@ -129,7 +116,6 @@
                url: "removeInsurerLineOfBusiness.action?lineOfBusinessId="+gridViewId,
                success: lob_onSubmitResponseReceived
             });
-        
     }
     
     function lob_onSubmitResponseReceived(responseText, statusText)  {         
@@ -142,18 +128,17 @@
 
 <div>
 
-    
     <div id="organisationGird">
         <div class="gridViewHeader">
             <table width="100%">
                 <tr>
-                    <td>
-                        <input name="lob_insurerId" id="lob_insurerId" type="hidden" value="<s:property value="insurerId" />">
-                    </td>
-                    <td align="right"></td>
                 </tr>
-                <tr><td>Line of Business: <input name="lineOfBusinessName" id="lineOfBusinessName" type="text">
-                    <input type="button" onclick="javascript:return lob_triggerStatusAddRecord();" value="Add"/></td></tr>
+                <tr><td>
+                        <div class="label-block">
+                    <p class="std-label">Line of Business: </p> <input name="lineOfBusinessName" id="lineOfBusinessName" type="text">
+                    <input type="button" onclick="javascript:return lob_triggerStatusAddRecord();" value="Add"/>
+                    </div>
+                    </td></tr>
                 <tr><td><div id="CDInsurerLineOfBusinessMessageBox" class="errorBox"></div></td></tr>                
             </table>
 

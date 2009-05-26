@@ -1,7 +1,6 @@
 
 package chox.web.actions;
 
-import chox.model.Chorganisation;
 import chox.model.InsurerChorganisation;
 import chox.services.InsurerChorganisationService;
 import chox.web.viewdata.InsurerChorganisationViewData;
@@ -52,12 +51,10 @@ public class InsurerChorganisationAction extends BaseAction {
         {    
             insurerChorgs.add(new InsurerChorganisationViewData(h));
         }
-       
         return insurerChorgs;
     }
     
     public String getSelectedChorganisation(){
-
         List<InsurerChorganisation> chorganisationsData = this.service.getInsurerChorganisationByInsurer(insurerId);
         insurerChorganisations = getChoViewDataList(chorganisationsData);
         return SUCCESS;

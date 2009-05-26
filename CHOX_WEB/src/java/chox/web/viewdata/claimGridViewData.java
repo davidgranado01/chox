@@ -16,13 +16,8 @@ import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.Locale;
 
-/**
- *
- * @author Emmanuel
- */
 public class claimGridViewData {
 
     private String supplierReference;

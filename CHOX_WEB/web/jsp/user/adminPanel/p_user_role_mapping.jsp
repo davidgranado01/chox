@@ -140,7 +140,7 @@
             <table width="100%">
                 <tr>
                     <td>
-                        <s:select 
+                        <s:select
                             id="userrolesId"                                 
                             name="userrolesId" 
                             list="userroles" 

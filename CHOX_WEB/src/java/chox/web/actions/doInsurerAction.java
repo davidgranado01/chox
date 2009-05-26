@@ -1,5 +1,7 @@
 package chox.web.actions;
 
+import chox.Util.DateHelper;
+import chox.model.ChoBand;
 import chox.model.Insurer;
 import chox.services.InsurerService;
 import com.opensymphony.xwork2.ModelDriven;
@@ -12,7 +14,7 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
     private Insurer model;
     private String actionResult;    
     private boolean isNew;
-
+   
     public boolean isIsNew() {
         return isNew;
     }
@@ -76,8 +78,6 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
     
     public String updateModel() throws Exception {
         
-        //TODO: CHECK INSURER NAME
-        
         try {
             
             actionResult = "Your changes have been saved.";   
@@ -88,7 +88,6 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
                     actionResult = "Insurer name already exist!"; 
                     return SUCCESS;
                 }
-                
             }
             
             model = this.service.updateObject(model);            

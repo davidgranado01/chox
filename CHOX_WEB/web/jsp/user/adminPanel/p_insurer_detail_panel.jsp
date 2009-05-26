@@ -57,7 +57,7 @@
                     timeout: 3000,
                     error: onSubmitError
                 };
-
+                
                 $("#formUpdateInsurerDetail").ajaxSubmit(op);
                 
             }
@@ -109,9 +109,9 @@
                 {contentEl:'insurerDetailPanelTab', title:'Details',listeners: {activate: handleActivate}},
                 {contentEl:'insurerAlliasPanelTab', title:'Allias', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},                   
                 {contentEl:'insurerLobPanelTab', title:'Line Of Business', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
-                {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
-                {contentEl:'insurerBrePanelTab', title:'Business Rule Enginee', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
-                {contentEl:'insurerBreMappingPanelTab', title:'Business Rule Enginee Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
+                {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
+                {contentEl:'insurerBrePanelTab', title:'BRE Band', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
+                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
             ]
            });
         }
@@ -127,22 +127,38 @@
             if(adminTabs)
             {
                 adminCurrentTabIndex = adminTabs.items.indexOf(adminTabs.getActiveTab());
+                onPageRefresh();
             }
-
+            
         }
 
 </script>
 
 <div id="mainPanel" class="adminTabCss"></div>
 
-<div id="insurerBrePanelTab" class="x-hide-display">BRE</div>
-<div id="insurerBreMappingPanelTab" class="x-hide-display">BRE MAPPING</div>
+<div id="insurerBrePanelTab" class="x-hide-display">
+    <div class="subAdminTabCss">
+        <s:action name="loadAdminPanel" executeResult="true">
+            <s:param name="adminPanelName">InsurerChoBandMgmt</s:param>
+            <s:param name="selectOrgId"><s:property value="objectId" /></s:param>        
+        </s:action>
+    </div>
+</div>
+
+<div id="insurerBreMappingPanelTab" class="x-hide-display">
+    <div class="subAdminTabCss">
+        <s:action name="loadAdminPanel" executeResult="true">
+            <s:param name="adminPanelName">InsurerChoBandMappingMgmt</s:param>
+            <s:param name="selectOrgId"><s:property value="objectId" /></s:param>        
+        </s:action>
+    </div>
+</div>
 
 <div id="insurerLobPanelTab" class="x-hide-display">
     <div class="subAdminTabCss">
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerLineOfBusinessMappingMgmt</s:param>
-            <s:param name="selectOrgId"><s:property value="objectId" /></s:param>        
+            <s:param name="selectOrgId"><s:property value="objectId" /></s:param>
         </s:action> 
     </div>
 </div>
@@ -161,14 +177,17 @@
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerAlliasMappingMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="objectId" /></s:param>        
-        </s:action> 
+        </s:action>
     </div>
 </div>
 
 <div id="insurerDetailPanelTab" class="x-hide-display">
+  
     <div class="subAdminTabCss">
     <form id="formUpdateInsurerDetail" action="user/updateInsurerDetail.action" class="XXentity-form" onsubmit="return true;">
+    
     <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
+    
             <div class="form-container">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Name<span class="mandatory">*</span></label>
@@ -179,7 +198,7 @@
                     <input type="text" class="chox-ttxt" id="CCDAdminHandlingCharge" name="adminHandlingCharge" value="<s:property value="adminHandlingCharge" />"/>
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label">Status</label>
+                    <label class="chox-form-std-label">Active</label>
                     <s:checkbox name="status" value="status" />
                 </div>                   
                 <div class="chox-form-button">

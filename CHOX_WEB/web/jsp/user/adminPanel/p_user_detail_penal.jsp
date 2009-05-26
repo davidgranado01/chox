@@ -48,7 +48,7 @@
             var output = "Your changes have been saved.";
             
             if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
-                
+                confirm("New User has been created!");
                 var newObjectId =  parseInt(responseText.substring(9,responseText.length));
                 var orgTypeId = $("#orgTypeId").val();
                 $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + newObjectId + "&orgTypeId=" + orgTypeId);
@@ -170,7 +170,7 @@
                             <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value="<s:property value="email" />"/>
                         </div>
                     </s:else>
- 
+
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">First Name<span class="mandatory">*</span></label>
                         <input type="text" class="chox-ttxt" id="CCDFirstName" name="firstName" value="<s:property value="firstName" />"/>
@@ -188,7 +188,7 @@
                         <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="8" value="<s:property value="password" />"/>
                     </div>    
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">Status</label>
+                        <label class="chox-form-std-label">Active</label>
                         <s:checkbox name="status" value="status" />
                     </div>        
                     <div class="chox-form-button">

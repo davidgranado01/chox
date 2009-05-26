@@ -2,16 +2,11 @@ package chox.web.security;
 
 import chox.model.WebUser;
 import chox.model.WebUserRole;
-import java.util.List;
 import java.util.Set;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
 
-/**
- * @author Ian Roughley
- * @version $Id$
- */
 public class PermissionedUser implements UserDetails {
 
     private WebUser user;

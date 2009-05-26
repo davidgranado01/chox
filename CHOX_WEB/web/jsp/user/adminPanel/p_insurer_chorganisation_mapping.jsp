@@ -4,9 +4,6 @@
 
 <script type="text/javascript">
     
-
-    
-    var orgId = -1;
     var selectOrgId = <s:property value="selectOrgId" />;
     
     var ins_cho_gridviewJsonReader;
@@ -21,10 +18,6 @@
     var ins_cho_s_gridviewData;
     
     Ext.onReady(function(){
-        
-       if(selectOrgId>0){
-           $("#ins_cho_insurerId").val(selectOrgId);
-       }
        
        ins_cho_choGridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
@@ -93,7 +86,7 @@
             loadMask: true,
             columns: [
                 {header: "Name", width: 140, dataIndex: 'chorganisationName', sortable: true, resizable: true},
-                {header: "Status", width: 50, dataIndex: 'chorganisationStatusDesc', sortable: true, resizable: true},
+                {header: "Active", width: 50, dataIndex: 'chorganisationStatusDesc', sortable: true, resizable: true},
                 {header: "", width: 50, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Remove</a>"}}
             ],
@@ -113,13 +106,6 @@
         if(columnIndex==1){
             ins_cho_doAddnewCredirHire(gridView);
         }
-        /*
-        if(columnIndex==0){
-            loadSelectedRecord(grid, rowIndex, columnIndex, e);
-        }else if(columnIndex==3){
-            triggerStatusUpdateRecord(gridView);
-        }
-        */
     }
     
     function ins_cho_recordOnclickRemove(grid, rowIndex, columnIndex, e){
@@ -131,25 +117,13 @@
         }
     }
     
-    function ins_cho_loadSelectedRecord(grid, rowIndex, columnIndex, e){
-        
-        /*
-       var gridView = gridviewGrid.getStore().getAt(rowIndex);
-       var gridViewId = gridView.get("id");
-       alert("gridViewId:"+gridViewId);
-       */
-        // $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + gridViewId + "&orgTypeId=" + selectedOrgTypeId);
-    }
-    
     function ins_cho_loadGridViewList(){
-        
-        ins_cho_doParameters();
-        
+                
         ins_cho_a_gridviewData.load(
         {
             params:
             {
-                insurerId:orgId
+                insurerId:selectOrgId
             }
         });
         
@@ -157,7 +131,7 @@
         {
             params:
             {
-                insurerId:orgId
+                insurerId:selectOrgId
             }
         });
         
@@ -165,10 +139,6 @@
         
     }
     
-    function ins_cho_doParameters(){
-        orgId = $("#ins_cho_insurerId").val();
-       // alert("doParameters>orgId:"+orgId);
-    }
     
     function ins_cho_doSelectChange(){
         ins_cho_loadGridViewList();
@@ -176,17 +146,16 @@
     
     function ins_cho_doAddnewCredirHire(gridView){
         
-        ins_cho_doParameters();
         var gridViewId = gridView.get("id");
         
         $.ajax({
-           url: "doAddNewInsurerChorganisation.action?chorganisationId="+gridViewId+"&insurerId="+orgId,
+           url: "doAddNewInsurerChorganisation.action?chorganisationId="+gridViewId+"&insurerId="+selectOrgId,
            success: ins_cho_doSelectChange
         });
     }
     
     function ins_cho_triggerStatusInactiveRecord(gridView){
-        ins_cho_doParameters();
+        
         var gridViewId = gridView.get("id");
         
         if(confirm("Are you sure you want to remove this credit hire?")){
@@ -203,17 +172,6 @@
 <div>
 
     <div id="organisationGird">
-        <div class="gridViewHeader">
-            <table width="100%">
-                <tr>
-                    <td>
-                    <input name="ins_cho_insurerId" id="ins_cho_insurerId" type="hidden" value="<s:property value="insurerId" />">
-                    </td>
-                    <td align="right"></td>
-                </tr>
-            </table>
-
-        </div>
         <table width="100%">
             <tr>
             <td valign="top">

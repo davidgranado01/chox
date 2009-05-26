@@ -21,9 +21,9 @@ public class InsurerViewData {
         this.status = object.isStatus();
         
         if(object.isStatus()){
-            this.statusDesc = "Active";
+            this.statusDesc = "Yes";
         }else{
-            this.statusDesc = "Inactive";
+            this.statusDesc = "No";
         }
     }
 

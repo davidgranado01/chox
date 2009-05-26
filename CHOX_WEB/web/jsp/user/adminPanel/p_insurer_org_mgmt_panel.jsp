@@ -11,7 +11,7 @@
     var recordPerPage = 20;
     var win;
     var selectedObjectId;
-                
+
     Ext.onReady(function(){
     
    gridviewJsonReader = new Ext.data.JsonReader({
@@ -40,7 +40,7 @@
         columns: [
             {header: "Name", width: 200, dataIndex: 'name', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
-            {header: "Status", width: 100, dataIndex: 'statusDesc', sortable: false, resizable: true, renderer:function(value,p,r){
+            {header: "Active", width: 100, dataIndex: 'statusDesc', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
             {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: false, resizable: true},
             {header: "Created Date", width: 150, dataIndex: 'createdDate', sortable: false, resizable: true}

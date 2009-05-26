@@ -33,9 +33,9 @@ public class ChorganisationViewData {
         }
         
         if(chorganisation.isStatus()){
-            this.statusDesc = "Active";
+            this.statusDesc = "Yes";
         }else{
-            this.statusDesc = "Inactive";
+            this.statusDesc = "No";
         }
 
     }

@@ -169,6 +169,7 @@
     </bean>     
     <bean id="webUserUserRoleService" class="chox.services.WebUserUserRoleServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>  
     <bean id="lineOfBusinessService" class="chox.services.LineOfBusinessServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>

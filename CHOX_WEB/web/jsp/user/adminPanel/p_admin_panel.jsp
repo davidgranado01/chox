@@ -22,31 +22,21 @@
             <td class="chox-admin-form-left-col">
                 <fieldset class="x-fieldset">
                     <legend>Admin Panel</legend>                    
-                    <div class="x-panel-bwrap chox-form-container">
+                    
                         <div style="height:580px;" class="x-panel-bwrap chox-form-container">
                             <ul>
 
 <s:if test="adminAccessibility.isInsurerCompaniesAdminAccessibility">
                                 <li><a href="javascript:renderAdminParameterPanel('InsurerOrgMgmt');">Insurance Companies</a></li>
-</s:if>    
+</s:if>
 <s:if test="adminAccessibility.isCreditHireOrgAdminAccessibility">                            
                                 <li><a href="javascript:renderAdminParameterPanel('CreditHireOrgMgmt');">Credit Hire Organisations</a></li>
 </s:if> 
 <s:if test="adminAccessibility.isUserManagementAdminAccessibility">         
 <li><a href="javascript:renderAdminParameterPanel('UserMgmt');">User Management</a></li>
-</s:if> 
-
-                                <li><a href="javascript:renderAdminParameterPanel('InsurerChoBandMgmt');">BRE Band</a></li>
-                                <li><a href="javascript:renderAdminParameterPanel('InsurerChoBandMgmt');">BRE Mapping</a></li>
-<!--
-                                <li><a href="javascript:renderAdminParameterPanel('InsurerAlliasMappingMgmt');">Alliases</a></li>
-                                <li><a href="javascript:renderAdminParameterPanel('InsurerLineOfBusinessMappingMgmt');">Line Of Businesses</a></li>
-                                <li><a href="javascript:renderAdminParameterPanel('InsurerOrgMappingMgmt');">Credit Hire Mapping</a></li>
-                                <li><a href="javascript:renderAdminParameterPanel('InsurerOrgMappingMgmt');">BRE Band</a></li>
-                                <li><a href="javascript:renderAdminParameterPanel('InsurerOrgMappingMgmt');">BRE Mapping</a></li>
-!-->
+</s:if>
                             </ul>
-                        </div>
+                        
                     </div>
                 </fieldset>
             </td>

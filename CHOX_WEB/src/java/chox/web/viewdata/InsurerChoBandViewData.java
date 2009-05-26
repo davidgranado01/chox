@@ -26,11 +26,10 @@ public class InsurerChoBandViewData {
         this.status = object.isIsActive();
         
         if(object.isIsActive()){
-            this.statusDesc = "Active";
+            this.statusDesc = "Yes";
         }else{
-            this.statusDesc = "Inactive";
+            this.statusDesc = "No";
         }
-
     }
 
     public String getCreatedBy() {

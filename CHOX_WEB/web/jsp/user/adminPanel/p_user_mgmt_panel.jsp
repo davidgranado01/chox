@@ -12,14 +12,15 @@
     
     var orgTypeId = -1;
     var orgId = -1;
-
-   var selectOrgTypeId = <s:property value="selectOrgTypeId" />;
-   var selectOrgId = <s:property value="selectOrgId" />;
-   
+    var userRoleId = -1;
+    
+    
+    var selectOrgTypeId = <s:property value="selectOrgTypeId" />;
+    var selectOrgId = <s:property value="selectOrgId" />;
+    
     Ext.onReady(function(){
     
-       //alert(selectOrgTypeId);
-       
+    
        if(selectOrgTypeId>0){
             $("#orgTypeId").val(selectOrgTypeId);
        }
@@ -27,13 +28,7 @@
        if(selectOrgId>0){
            $("#orgId").val(selectOrgId);
        }
-       /*
-       if(selectOrgId>0){
-            orgId = selectOrgId;
-            $("#orgId").val(selectOrgId);
-       }
-       */
-      
+       
        gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
@@ -46,7 +41,8 @@
                 {name:'status'},
                 {name:'statusDesc'},
                 {name:'createdBy'},
-                {name:'createdDate'}
+                {name:'createdDate'},
+                {name:'role'}
             ]
         });
 
@@ -61,12 +57,13 @@
             store: gridviewData,
             loadMask: true,
             columns: [
-                {header: "Email", width: 120, dataIndex: 'email', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Email", width: 120, dataIndex: 'email', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
-                {header: "Name", width: 90, dataIndex: 'name', sortable: false, resizable: true},
-                {header: "Organisation", width: 80, dataIndex: 'orgName', sortable: false, resizable: true},
-                {header: "Status", width: 50, dataIndex: 'statusDesc', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Name", width: 90, dataIndex: 'name', sortable: true, resizable: true},
+                {header: "Organisation", width: 80, dataIndex: 'orgName', sortable: true, resizable: true},
+                {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
+                {header: "Role", width: 650, dataIndex: 'role', sortable: false, resizable: true},
                 {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: false, resizable: true},
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: false, resizable: true}
             ],
@@ -85,7 +82,7 @@
                 emptyMsg: "No record to display"
             });    
             
-            loadGridViewList()
+            pageRefresh();
 
     }); 
     
@@ -103,6 +100,7 @@
     function getParameters(){
         orgTypeId = $("#orgTypeId").val();
         orgId = $("#orgId").val();
+        userRoleId = $("#userrolesId").val();
     }
     
     function loadSelectedRecord(grid, rowIndex, columnIndex, e){
@@ -119,20 +117,31 @@
     }
     
     function loadGridViewList(){
-    
-        getParameters();
         
         gridviewData.load(
         {
             params:
             {
                 orgTypeId:orgTypeId,
-                orgId:orgId
+                orgId:orgId,
+                userRoleId:userRoleId
             }
         });
     }
     
-    function doSelectChange(){        
+    function doSelectChange(){
+        pageRefresh();
+    }
+    
+    function pageRefresh(){
+        getParameters();
+        userRoleId = -1;
+        showUserroleDropDown();
+        loadGridViewList();
+    }
+    
+    function doUseroleSelected(){
+        getParameters();
         loadGridViewList();
     }
     
@@ -156,6 +165,9 @@
             }
     }
     
+    function showUserroleDropDown() {
+        $("#userroleDropDownDiv").load("UserroleDropDownAction.action?orgTypeId=" + orgTypeId);
+    }    
 
     
 </script>
@@ -169,16 +181,21 @@
                     <td><s:property value="orgTypeId" />
                            
 <s:if test="isSelectable">
-Organisation Type: <select id="orgTypeId" onchange="javascript:doSelectChange()">
-                <option value="1">Sherwood Organisation</option>
-                <option value="2">Insurer</option>
-                <option value="3">Credit Hire</option>
-            </select>
+    <div class="label-block">
+    <p class="std-label">Organisation Type: </p>
+    <select id="orgTypeId" onchange="javascript:doSelectChange()">
+        <option value="1">Sherwood Organisation</option>
+        <option value="2">Insurer</option>
+        <option value="3">Credit Hire</option>
+    </select>
+    </div>         
 </s:if>
 <s:else>
     <input name="orgTypeId" id="orgTypeId" type="hidden" value="<s:property value="orgTypeId" />">
 </s:else>
 
+<div id="userroleDropDownDiv" class="label-block"></div>
+ 
 <input name="orgId" id="orgId" type="hidden" value="<s:property value="orgId" />">
 
                     </td>
@@ -187,7 +204,7 @@ Organisation Type: <select id="orgTypeId" onchange="javascript:doSelectChange()"
             </table>
 
         </div>
-        <div id="gridviewGrid" style="height:570px; overflow:auto;"></div>
+        <div id="gridviewGrid" style="height:530px; overflow:auto;"></div>
     </div>
 </fieldset>
 </div>

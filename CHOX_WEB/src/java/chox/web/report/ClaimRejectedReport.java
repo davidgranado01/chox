@@ -51,7 +51,7 @@ public class ClaimRejectedReport implements Report {
         
         try {
             
-            System.out.println(">>>>>>>>>>>>> 1");
+            // System.out.println(">>>>>>>>>>>>> 1");
             
             List<ClaimRejectionLineItem> reportRows = getReasonOfRejection();
             
@@ -65,7 +65,7 @@ public class ClaimRejectedReport implements Report {
             ClaimRejection claimRejection = new ClaimRejection();
             claimRejection.setClaimRejectionLineItem(reportRows);
             
-            System.out.println(">>>>>>>>>>>>> 2");
+            // System.out.println(">>>>>>>>>>>>> 2");
             
             Integer iOrgId = null;
             
@@ -85,18 +85,18 @@ public class ClaimRejectedReport implements Report {
                 sOrganisationName = cho.getName();                
             }
             
-            System.out.println(">>>>>>>>>>>>> 3");
+            // System.out.println(">>>>>>>>>>>>> 3");
             
             claimRejection = getReportLineResult(isInsReport, iOrgId, claimRejection, dataStart, dataEnd);
             
-            System.out.println(">>>>>>>>>>>>> 4");
+            // System.out.println(">>>>>>>>>>>>> 4");
             
             ClaimRejectedReportObject reportObject = new ClaimRejectedReportObject();
             reportObject.setDateFrom(dataStart);
             reportObject.setDateTo(dataEnd);
             reportObject.setCreatedDate(new Date());
             
-            System.out.println(">>>>>>>>>>>>> 5");
+            // System.out.println(">>>>>>>>>>>>> 5");
             
             reportParameters.put("reportHeaderName", claimRejection.getOrgName());
             reportParameters.put("reportRows", reportRows);
@@ -104,7 +104,7 @@ public class ClaimRejectedReport implements Report {
             reportParameters.put("organisationLabel", sOrganisationLabel);
             reportParameters.put("organisationName", sOrganisationName);
             
-            System.out.println(">>>>>>>>>>>>> 6");
+            // System.out.println(">>>>>>>>>>>>> 6");
             
         } catch (Exception ex) {
             ex.printStackTrace();

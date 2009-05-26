@@ -48,12 +48,27 @@ public class ChorganisationAction extends BaseAction {
     
     public String getAvailableChorganisation(){
         
-        System.out.println("getAvailableChorganisation Insurer ID : " + insurerId);
-        
         if(insurerId>0){
         
             List<Chorganisation> chorganisationData = this.service.getAvailableChorganisationByInsurer(insurerId);
+            credithireorganisation = new ArrayList<ChorganisationViewData>();
 
+            for(Chorganisation h : chorganisationData)
+            {
+                credithireorganisation.add(new ChorganisationViewData(h));
+            }
+        }
+        
+        return SUCCESS;
+    }  
+
+    public String getChorganisationWithoutChoBand(){
+        
+        // System.out.println("getChorganisationWithoutChoBand Insurer ID : " + insurerId);
+        
+        if(insurerId>0){
+        
+            List<Chorganisation> chorganisationData = this.service.getAvailableChorganisationByInsurerWithoutBand(insurerId);
 
             credithireorganisation = new ArrayList<ChorganisationViewData>();
 
@@ -62,9 +77,11 @@ public class ChorganisationAction extends BaseAction {
                 credithireorganisation.add(new ChorganisationViewData(h));
             }
 
-            System.out.println("getAvailableChorganisation output Size : " + credithireorganisation.size());
+            // System.out.println("getChorganisationWithoutChoBand output Size : " + credithireorganisation.size());
+            
         }
         
         return SUCCESS;
-    }    
+    } 
+    
 }

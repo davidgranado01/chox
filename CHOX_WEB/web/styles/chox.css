@@ -1,3 +1,7 @@
+body {
+    overflow:scroll;
+}
+
 chox-ttxtbody
 {    
     overflow:scroll;
@@ -148,6 +152,18 @@ fieldset div
     margin-right: 10px;
     text-align: right;
     width: 150px;
+    white-space: nowrap;
+}
+
+
+.chox-form-item .chox-form-std-label-longer
+{
+    
+    display: block;
+    float: left;
+    margin-right: 10px;
+    text-align: right;
+    width: 260px;
     white-space: nowrap;
 }
 
@@ -439,6 +455,7 @@ div.errorBox
     color: red;
     padding-left:20px;
     text-align:center;
+    font-family: tahoma,arial,verdana,sans-serif;
 }
 
 div.action-message
@@ -447,7 +464,7 @@ div.action-message
     text-align:center;color: red; font-weight:bold;font-size:11px ; line-height:25px;
 }
 
-.mandatory{ color: red; font-weight:bold;font-size:11px;}
+.mandatory{ color: red; font-weight:bold;font-size:11px; padding-left:2px; padding-right:2px;}
 
 .footerText{
     color:#5F9EA0;
@@ -674,4 +691,22 @@ img.tip-target
     padding-bottom:50px;
     background:#dfe8f6;  
     height:650;
+}
+
+.label-block
+{
+    display: block;
+    font: normal 12px tahoma,arial,helvetica,sans-serif;
+    margin-bottom: 4px;
+    padding-bottom: 3px;
+}
+
+.label-block .std-label
+{
+    display: block;
+    float: left;
+    margin-right: 10px;
+    text-align: right;
+    width: 100px;
+    white-space: nowrap;
 }

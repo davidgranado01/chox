@@ -104,7 +104,7 @@
             var output = "Your changes have been saved.";
             
             if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
-                
+                confirm("New Credit Hire has been created!");
                 var newObjectId =  parseInt(responseText.substring(9,responseText.length));
                 $("#admin_param_panel").load("updateChorganisationDetailPanel.action?objectId=" + newObjectId);
                 
@@ -112,10 +112,8 @@
                 output = responseText;
                 $(".chox-form-submit-result").html(output);
             }
-            
-            $("#admin_param_panel").unblock();
-            
-        }  
+            $("#admin_param_panel").unblock();   
+        }
 
         function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
             $("#admin_param_panel").unblock();
@@ -165,13 +163,17 @@
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Country<span class="mandatory">*</span></label>
                         <input type="text" class="chox-ttxt" id="CCDAddress5" name="address5" value="<s:property value="address5" />"/>
-                    </div>                
+                    </div>
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Phone</label>
+                        <input type="text" maxlength="50" class="chox-ttxt" id="CCDPhone" name="phone" value="<s:property value="phone" />"/>
+                    </div>                           
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Delegated Authority</label>
                         <s:checkbox name="delegatedAuthority" value="delegatedAuthority" />
                     </div>                      
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">Status</label>
+                        <label class="chox-form-std-label">Active</label>
                         <s:checkbox name="status" value="status" />
                     </div>
                     <div class="chox-form-button">

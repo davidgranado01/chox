@@ -6,6 +6,7 @@ package chox.web.dashboard.viewdata;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.util.Map;
 
 /**
@@ -81,7 +82,7 @@ public class DashBoardViewData {
         return (BigDecimal) v;        
     }
 
-    public Integer getNoOfClaimNotificationsSubmitted() {
+    public Integer getNoOfClaimNotificationsSubmitted() {        
         return noOfClaimNotificationsSubmitted;
     }
 

@@ -44,7 +44,7 @@
                         return "<a href='#' class='highlightItem'>" + value + "</a>"}},
                 {header: "Address", width: 170, dataIndex: 'address', sortable: false, resizable: true},
                 {header: "VAT No.", width: 80, dataIndex: 'vatNo', sortable: false, resizable: true},
-                {header: "Status", width: 50, dataIndex: 'statusDesc', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: false, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='highlightItem'>" + value + "</a>"}},                
                // {header: "Company No.", width: 75, dataIndex: 'companyNo', sortable: false, resizable: true},
                // {header: "Authority", width: 55, dataIndex: 'authoritiyDelegated', sortable: false, resizable: true},

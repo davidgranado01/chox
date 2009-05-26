@@ -15,13 +15,13 @@ import com.opensymphony.xwork2.Preparable;
 public class doInsurerChorganisationAction extends BaseAction implements ModelDriven<InsurerChorganisation>, Preparable {
 
     private InsurerChorganisation model;
-    protected int objectId=-1;
-    protected int insurerId=-1;
-    protected int chorganisationId=-1;
+    private int objectId=-1;
+    private int insurerId=-1;
+    private int chorganisationId=-1;
     private String actionResult;
-    protected InsurerChorganisationService service;
-    protected ChorganisationService chorganisationService;
-    protected InsurerService insurerService;
+    private InsurerChorganisationService service;
+    private ChorganisationService chorganisationService;
+    private InsurerService insurerService;
 
     public void setInsurerChorganisationService(InsurerChorganisationService service)
     {

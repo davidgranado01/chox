@@ -42,9 +42,9 @@ public class LineOfBusinessViewData {
         this.createdDate = DateHelper.GridViewDateFormat.format(object.getCreatedDate());   
         this.status = object.isActive();
         
-        this.statusDesc = "Active";
+        this.statusDesc = "Yes";
         if(!object.isActive()){
-            this.statusDesc = "Inactive";
+            this.statusDesc = "No";
         }
 
     }

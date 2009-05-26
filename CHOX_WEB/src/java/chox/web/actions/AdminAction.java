@@ -7,15 +7,13 @@ package chox.web.actions;
 
 import chox.services.LookupService;
 import chox.web.security.PermissionedUser;
-import java.util.List;
 
 public class AdminAction extends BaseAction{
     
     private String adminPanelName;
-    private String gridViewType; 
-    private int selectOrgTypeId=-1;  
+    private String gridViewType;
+    private int selectOrgTypeId=-1;
     private int selectOrgId=-1;
-    private String objectId;
     private LookupService lookupService;
     private PermissionedUser currentUser = getAuthenticatedUser();
     
@@ -68,22 +66,6 @@ public class AdminAction extends BaseAction{
         this.selectOrgTypeId = selectOrgTypeId;
     }
     
-    public String getObjectId() {
-        return objectId;
-    }
-
-    public void setObjectId(String objectId) {
-        this.objectId = objectId;
-    }
-/*
-    public String getMode() {
-        return mode;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
-    */
     public String adminPanel() {
         return SUCCESS;
     }

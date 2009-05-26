@@ -6,11 +6,6 @@ package chox.web.security;
 
 import org.acegisecurity.GrantedAuthority;
 
-/**
- *
- * @author Emmanuel
- */
-
 public class AdminAccessibility {
 
     private boolean insurerCompaniesAdminAccessibility;

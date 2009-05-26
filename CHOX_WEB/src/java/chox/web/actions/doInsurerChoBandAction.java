@@ -2,18 +2,30 @@ package chox.web.actions;
 
 import chox.model.ChoBand;
 import chox.services.ChoBandService;
-import chox.services.ChoBandOrganisationService;
+import chox.services.InsurerService;
+import chox.services.LookupService;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import java.util.List;
 
 public class doInsurerChoBandAction extends BaseAction implements ModelDriven<ChoBand>, Preparable {
 
     private ChoBandService service;
+    private InsurerService insurerService;
     private String objectId;
+    private int insurerId = -1;
     private ChoBand model;
     private String actionResult;    
     private boolean isNew;
+    
+    public int getInsurerId() {
+        return insurerId;
+    }
 
+    public void setInsurerId(int insurerId) {
+        this.insurerId = insurerId;
+    }
+    
     public boolean isIsNew() {
         return isNew;
     }
@@ -51,28 +63,34 @@ public class doInsurerChoBandAction extends BaseAction implements ModelDriven<Ch
         this.service = service;
     }
 
+    public void setInsurerService(InsurerService insurerService){
+        this.insurerService = insurerService;
+    }
 
     public String deleteChoBand() throws Exception{
 
         try {
-
-            System.out.println("START DELETING PROCESS");
-
-            ChoBand thisObject = this.service.getObject(Integer.valueOf(objectId));
-
-            if(service.isChoBandOccupied(thisObject)){
-                System.out.println("START DELETING PROCESS - CANNOT DELETE");
-                actionResult = "Please remove the credit hire organisation from this CHO band before you delete!";
+            
+            
+            
+            
+            
+            if(service.isChoBandOccupied(model)){
+            
+                actionResult = "F:'"+model.getName()+"' is not allowed to delete, please remove the credit hire attaching";
                 return SUCCESS;
             }else{
-                System.out.println("START DELETING PROCESS - ALLOW TO DELETE");
-                this.service.deleteObject(thisObject);
+                this.service.deleteObject(model);
+            
+                actionResult = "D:'"+model.getName()+"' has been deleted";
+                
             }
+            
+            
             
         } catch (Exception ex) {
             throw ex; 
         }
-        
         
         return SUCCESS;
     }
@@ -83,37 +101,34 @@ public class doInsurerChoBandAction extends BaseAction implements ModelDriven<Ch
     
     public String updateModel() throws Exception {
         
-        //TODO: CHECK INSURER NAME
-        
         try {
             
-            actionResult = "Your changes have been saved.";   
-            /*
-            if(this.isNew){
-                
-                if(this.service.isInsurerNameExist(model.getName())){
-                    actionResult = "Insurer name already exist!"; 
-                    return SUCCESS;
-                }
-                
+            if(this.isNew){    
+                model.setInsurer(insurerService.getObject(insurerId));
             }
-            */
             
-          // model = this.service.updateObject(model);
-             this.service.updateObject(model);
-           
+            if(service.isChoBandNameExist(model)){
+                actionResult = "Selected Band Name is already exists"; 
+                return SUCCESS;
+            }
+            
+            actionResult = "Your changes have been saved.";   
+            
+            this.service.updateObject(model);
+            
             if(this.isNew){
                 actionResult = "objectId:"+model.getId();
                 this.isNew = false;
             }
             
+            System.out.println("updateModel START - 0 : ");
         } catch (Exception ex) {
             throw ex; 
         }
         
         return SUCCESS;
     }
-
+    
     public void prepare() throws Exception {
         if (Integer.valueOf(objectId) <= 0) {
             model = new ChoBand();
