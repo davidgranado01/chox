@@ -2,11 +2,11 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
   <class name="chox.model.ChoBandOrganisation" table="cho_band_organisation">
-    <composite-id>
-      <key-property column="id" name="id"/>
-      <key-property column="band_id" name="bandId"/>
-      <key-property column="chorganisation_id" name="chorganisationId"/>
-    </composite-id>
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <many-to-one class="chox.model.ChoBand" column="band_id" name="choBand"/>
+    <many-to-one class="chox.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
     <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

@@ -9,11 +9,11 @@ import chox.model.ChoBandOrganisation;
 import java.util.List;
 
 public interface ChoBandOrganisationService {
-
     public boolean isChoBandOccupied(int bandId);
     public ChoBandOrganisation getObject(int id);
     public void updateObject(ChoBandOrganisation object);
     public boolean deleteChoBandOrganisationByBandId(int bandId);
-
-
+    public List<ChoBandOrganisation> getChoBandChorganisationsByChoBandId(int bandId);
+    public List<ChoBandOrganisation> getChoBandChorganisationsByChoOrgId(int choOrgid);
+    public boolean isActiveChorganisationWithBand(int choOrgid);
 }

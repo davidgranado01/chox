@@ -170,18 +170,6 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
             DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class); 
 
             criteria.add(Restrictions.eq("typeId", orgTypeId));
-
-            /*
-            if(orgTypeId==1){
-                criteria.add(Restrictions.like("name", WebUserRole.ROLE_CHOX+"_%"));
-            }else if(orgTypeId==2){
-                criteria.add(Restrictions.like("name", WebUserRole.ROLE_INS+"_%"));
-            }else if(orgTypeId==3){
-                //criteria.add(Restrictions.like("name", WebUserRole.ROLE_CHO+"_%"));
-                System.out.println("CHECK ~ >> :"+WebUserRole.ROLE_CHO+"_%");
-                criteria.add(Restrictions.like("name", "ROLE_CHO_%"));
-            }
-            */
             
             criteria.add(Restrictions.ne("name", WebUserRole.ROLE_CHO));
             criteria.add(Restrictions.ne("name", WebUserRole.ROLE_INS));
@@ -197,7 +185,19 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         
     }
 
-    public List getSelectedUserAvailableRole(int orgTypeId, int webUserId){
+    public List getWebUserrolesLookupItem(int orgTypeId){
+     
+        List<WebUserRole> webUserroles = getWebUserroles(orgTypeId);
+        List items = new ArrayList<IdLookupItem>();
+        
+        for (WebUserRole s : webUserroles) {
+            items.add(new IdLookupItem(s.getId(), s.getDescription()));
+        }        
+        
+        return items;
+    }
+    
+    public List getSelectedUserAvailableRoleLookupItem(int orgTypeId, Integer webUserId){
 
         List items = new ArrayList<IdLookupItem>();
         List<WebUserRole> webUserroles = getWebUserroles(orgTypeId);

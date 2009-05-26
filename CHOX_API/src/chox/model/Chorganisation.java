@@ -84,6 +84,7 @@ public class Chorganisation implements Serializable,Auditable, ICHOrganisationIn
 	 */
 	protected Date lastModifiedDate;
         protected boolean status;
+        protected String phone;
 	/**
 	 * Method 'Chorganisation'
 	 * 
@@ -447,4 +448,14 @@ public class Chorganisation implements Serializable,Auditable, ICHOrganisationIn
                 return "N/A";
             }   
         }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+        
+        
 }

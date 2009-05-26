@@ -7,184 +7,107 @@ import java.util.Date;
 
 public class ChoBandOrganisation implements Serializable
 {
-	/** 
-	 * This attribute maps to the column id in the cho_band_organisation table.
-	 */
 	protected int id;
-
-	/** 
-	 * This attribute maps to the column band_id in the cho_band_organisation table.
-	 */
-	protected int bandId;
-
-	/** 
-	 * This attribute maps to the column chorganisation_id in the cho_band_organisation table.
-	 */
-	protected int chorganisationId;
-
-	/** 
-	 * This attribute maps to the column created_by in the cho_band_organisation table.
-	 */
+	// protected int bandId;
+        // protected int chorganisationId;
+        protected ChoBand choBand;
+	protected Chorganisation chorganisation;
 	protected WebUser createdBy;
-
-	/** 
-	 * This attribute maps to the column created_date in the cho_band_organisation table.
-	 */
 	protected Date createdDate;
-
-	/** 
-	 * This attribute maps to the column last_modified_by in the cho_band_organisation table.
-	 */
 	protected WebUser lastModifiedBy;
-
-	/** 
-	 * This attribute maps to the column last_modified_date in the cho_band_organisation table.
-	 */
 	protected Date lastModifiedDate;
 
-	/**
-	 * Method 'ChoBandOrganisation'
-	 * 
-	 */
 	public ChoBandOrganisation()
 	{
 	}
 
-	/**
-	 * Method 'getId'
-	 * 
-	 * @return int
-	 */
 	public int getId()
 	{
 		return id;
 	}
 
-	/**
-	 * Method 'setId'
-	 * 
-	 * @param id
-	 */
 	public void setId(int id)
 	{
 		this.id = id;
 	}
 
-	/**
-	 * Method 'getBandId'
-	 * 
-	 * @return int
-	 */
+    public ChoBand getChoBand() {
+        return choBand;
+    }
+
+    public void setChoBand(ChoBand choBand) {
+        this.choBand = choBand;
+    }
+
+
+
+    public Chorganisation getChorganisation() {
+        return chorganisation;
+    }
+
+    public void setChorganisation(Chorganisation chorganisation) {
+        this.chorganisation = chorganisation;
+    }
+        
+
+        
+        /*
+         * 
 	public int getBandId()
 	{
 		return bandId;
 	}
 
-	/**
-	 * Method 'setBandId'
-	 * 
-	 * @param bandId
-	 */
 	public void setBandId(int bandId)
 	{
 		this.bandId = bandId;
 	}
-
-	/**
-	 * Method 'getChorganisationId'
-	 * 
-	 * @return int
-	 */
+         *          
 	public int getChorganisationId()
 	{
 		return chorganisationId;
 	}
 
-	/**
-	 * Method 'setChorganisationId'
-	 * 
-	 * @param chorganisationId
-	 */
 	public void setChorganisationId(int chorganisationId)
 	{
 		this.chorganisationId = chorganisationId;
 	}
-
-	/**
-	 * Method 'getCreatedBy'
-	 * 
-	 * @return int
-	 */
+        */
 	public WebUser getCreatedBy()
 	{
 		return createdBy;
 	}
 
-	/**
-	 * Method 'setCreatedBy'
-	 * 
-	 * @param createdBy
-	 */
 	public void setCreatedBy(WebUser createdBy)
 	{
 		this.createdBy = createdBy;
 	}
 
-	/**
-	 * Method 'getCreatedDate'
-	 * 
-	 * @return java.util.Date
-	 */
 	public java.util.Date getCreatedDate()
 	{
 		return createdDate;
 	}
 
-	/**
-	 * Method 'setCreatedDate'
-	 * 
-	 * @param createdDate
-	 */
 	public void setCreatedDate(java.util.Date createdDate)
 	{
 		this.createdDate = createdDate;
 	}
 
-	/**
-	 * Method 'getLastModifiedBy'
-	 * 
-	 * @return int
-	 */
 	public WebUser getLastModifiedBy()
 	{
 		return lastModifiedBy;
 	}
 
-	/**
-	 * Method 'setLastModifiedBy'
-	 * 
-	 * @param lastModifiedBy
-	 */
 	public void setLastModifiedBy(WebUser lastModifiedBy)
 	{
 		this.lastModifiedBy = lastModifiedBy;
 	}
 
-	/**
-	 * Method 'getLastModifiedDate'
-	 * 
-	 * @return java.util.Date
-	 */
 	public java.util.Date getLastModifiedDate()
 	{
 		return lastModifiedDate;
 	}
 
-	/**
-	 * Method 'setLastModifiedDate'
-	 * 
-	 * @param lastModifiedDate
-	 */
 	public void setLastModifiedDate(java.util.Date lastModifiedDate)
 	{
 		this.lastModifiedDate = lastModifiedDate;

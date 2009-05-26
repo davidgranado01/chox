@@ -26,5 +26,7 @@
     <property column="hire_day_ceiling" name="hireDayCeiling" not-null="true"/>
     <property column="max_repair_value" name="maxRepairValue" not-null="true"/>
     <property column="is_not_mobile_day_allowance" name="isNotMobileDayAllowance" not-null="true"/>
+    <property column="average_labour_hours_per_hire_day" name="averageLabourHoursPerHireDay" not-null="true"/>
+    <property column="average_labour_rate" name="averageLabourRate" not-null="true"/>
   </class>
 </hibernate-mapping>

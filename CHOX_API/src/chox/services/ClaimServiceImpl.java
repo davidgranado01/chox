@@ -334,7 +334,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         Integer totalCount = (Integer) result.get(0);
         bFlag = totalCount > 0;
 
-
         return bFlag;
     }
 

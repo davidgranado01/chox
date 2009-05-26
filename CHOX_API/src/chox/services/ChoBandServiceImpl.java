@@ -6,13 +6,13 @@
 package chox.services;
 
 import chox.model.ChoBand;
+import chox.model.ChoBandOrganisation;
 import org.hibernate.criterion.Restrictions;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
-import chox.services.ChoBandOrganisationService;
 
 
 public class ChoBandServiceImpl extends SecureDataService implements ChoBandService{
@@ -66,6 +66,35 @@ public class ChoBandServiceImpl extends SecureDataService implements ChoBandServ
         return choBand;
     }
 
+    public boolean isChoBandNameExist(ChoBand object){
+
+        boolean bFlag = false;
+        
+        List<ChoBand> choBand = new ArrayList<ChoBand>();
+
+        try {
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(ChoBand.class);
+            criteria.add(Restrictions.eq("name", object.getName()));
+            criteria.add(Restrictions.eq("insurer.id", object.getInsurer().getId()));
+            
+            if(object.getId()>0){
+               criteria.add(Restrictions.ne("id", object.getId())); 
+            }
+            
+            choBand = findByCriteria(criteria);
+
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
+        
+        if(choBand.size()>0){
+            bFlag = true;
+        }
+        
+        return bFlag;
+    }
+    
     public boolean isChoBandOccupied(ChoBand object){
         return chobandorganisaionservice.isChoBandOccupied(object.getId());
     }
@@ -106,9 +135,9 @@ public class ChoBandServiceImpl extends SecureDataService implements ChoBandServ
         boolean bFlag = false;
 
         try{
-            System.out.println("START DELETING PROCESS - 0001");
+
             if(chobandorganisaionservice.deleteChoBandOrganisationByBandId(object.getId())){
-                System.out.println("START DELETING PROCESS - 0002");
+
                 delete(object);
                 bFlag = true;
             }
@@ -134,26 +163,33 @@ public class ChoBandServiceImpl extends SecureDataService implements ChoBandServ
            e.printStackTrace();
         }
         
-        
-        
         return band;
     }
     
     public ChoBand getChoBandByChorganisationIdAndInsurerId(int orgId, int insurerId){
         
         ChoBand band = new ChoBand();
-        
+    
         try {
             
+            List<ChoBandOrganisation> bandChorgs = chobandorganisaionservice.getChoBandChorganisationsByChoOrgId(orgId);
+            
+            for(ChoBandOrganisation object : bandChorgs){
+                if(object.getChoBand().getInsurer().getId()==insurerId){
+                    band = object.getChoBand();
+                    break;
+                }
+            }
+            
+            /*
             DetachedCriteria criteria = DetachedCriteria.forClass(ChoBand.class);
             criteria.add(Restrictions.eq("Id", orgId));
             band = (ChoBand)getByCriteria(criteria);
+            */
             
         } catch (Throwable e) {
            e.printStackTrace();
         }
-        
-        
         
         return band;
     }    

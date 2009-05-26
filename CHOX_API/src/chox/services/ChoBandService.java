@@ -18,4 +18,5 @@ public interface ChoBandService {
     public void updateObject(ChoBand object);
     public boolean deleteObject(ChoBand object);
     public boolean isChoBandOccupied(ChoBand object);
+    public boolean isChoBandNameExist(ChoBand object);
 }

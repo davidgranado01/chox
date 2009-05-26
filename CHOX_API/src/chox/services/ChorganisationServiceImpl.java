@@ -10,9 +10,14 @@ import org.hibernate.criterion.Restrictions;
 public class ChorganisationServiceImpl  extends SecureDataService implements ChorganisationService{
     
     protected InsurerChorganisationService insurerChorganisationService;
+    protected ChoBandOrganisationService choBandOrganisationService;
     
     public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {
         this.insurerChorganisationService = insurerChorganisationService;
+    }
+    
+    public void setChoBandOrganisationService(ChoBandOrganisationService choBandOrganisationService) {
+        this.choBandOrganisationService = choBandOrganisationService;
     }
     
     public boolean isChorgNameExist(String s){
@@ -54,9 +59,28 @@ public class ChorganisationServiceImpl  extends SecureDataService implements Cho
             for(Chorganisation org : allchos){
                 
                 if(!insurerChorganisationService.isActiveInsurerChorganisationExist(insurerId, org.getId())){
-                    
-                    System.out.println("getAvailableChorganisationByInsurer TRUE : " + insurerId + "|" +org.getId() + "|" + org.getName());
+                    objects.add(org);
+                }
+            }
 
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        return objects;
+    } 
+
+    public List<Chorganisation> getAvailableChorganisationByInsurerWithoutBand(int insurerId) {
+
+        List<Chorganisation> objects = new ArrayList<Chorganisation>();
+
+        try{
+
+            List<Chorganisation> allchos = getActiveChorganisation();
+
+            for(Chorganisation org : allchos){
+                
+                if(!choBandOrganisationService.isActiveChorganisationWithBand(org.getId())){
                     objects.add(org);
                 }
             }

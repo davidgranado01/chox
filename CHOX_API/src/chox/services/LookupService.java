@@ -17,7 +17,6 @@ public interface LookupService {
     public List getClaimRejectionReason();
     public List getInvoiceRejectionReason();
     public List getNonProvisionReason();
-    //public List getSelectedUserAvailableRole(int orgTypeId, int webUserId);
     
     public List getLineOfBusinesses();
     public List getAllLineOfBusinesses();
@@ -30,7 +29,7 @@ public interface LookupService {
     public List getInsurers(Integer choId);
     public List getAllInsurers();
     
-    
+    public List getInsurerChoBand(int insurerId);
     
     
 }

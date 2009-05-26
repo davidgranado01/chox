@@ -12,5 +12,6 @@ public interface WebUserUserRoleService {
     public List<WebUserUserRole> getUserRoleMapping(Integer webUserId, Integer webUserRoleId);
     public boolean DeleteObject(WebUserUserRole object);
     public List<WebUserRole> getWebUserroles(int orgTypeId);
-    public List getSelectedUserAvailableRole(int orgTypeId, int webUserId);
+    public List getSelectedUserAvailableRoleLookupItem(int orgTypeId, Integer webUserId);
+    public List getWebUserrolesLookupItem(int orgTypeId);
 }

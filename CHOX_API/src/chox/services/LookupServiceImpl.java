@@ -4,6 +4,7 @@
  */
 package chox.services;
 
+import chox.model.ChoBand;
 import chox.model.ReasonOfRejection;
 import chox.model.Chorganisation;
 import chox.model.ClaimStatus;
@@ -57,6 +58,12 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     public List getClaimRejectionReason(){
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("type", "Claim"));
+        return findByCriteria(criteria);
+    }
+    
+    public List getInsurerChoBand(int insurerId){
+        DetachedCriteria criteria = DetachedCriteria.forClass(ChoBand.class).addOrder(Order.asc("id"));
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
         return findByCriteria(criteria);
     }
     

@@ -10,6 +10,7 @@ public interface ChorganisationService {
     public Chorganisation updateObject(Chorganisation object);
     public List<Chorganisation> getActiveChorganisation();
     public List<Chorganisation> getAvailableChorganisationByInsurer(int insurerId);
+    public List<Chorganisation> getAvailableChorganisationByInsurerWithoutBand(int insurerId);
     public boolean isChorgNameExist(String s);
     public Chorganisation getChorgByName(String s);
     
