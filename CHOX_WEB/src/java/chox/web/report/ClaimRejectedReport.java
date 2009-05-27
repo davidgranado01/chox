@@ -21,8 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
 public class ClaimRejectedReport implements Report {
 
     Map externalParameter;
@@ -51,8 +49,6 @@ public class ClaimRejectedReport implements Report {
         
         try {
             
-            // System.out.println(">>>>>>>>>>>>> 1");
-            
             List<ClaimRejectionLineItem> reportRows = getReasonOfRejection();
             
             Date dataStart = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
@@ -64,8 +60,6 @@ public class ClaimRejectedReport implements Report {
             
             ClaimRejection claimRejection = new ClaimRejection();
             claimRejection.setClaimRejectionLineItem(reportRows);
-            
-            // System.out.println(">>>>>>>>>>>>> 2");
             
             Integer iOrgId = null;
             
@@ -85,18 +79,12 @@ public class ClaimRejectedReport implements Report {
                 sOrganisationName = cho.getName();                
             }
             
-            // System.out.println(">>>>>>>>>>>>> 3");
-            
             claimRejection = getReportLineResult(isInsReport, iOrgId, claimRejection, dataStart, dataEnd);
-            
-            // System.out.println(">>>>>>>>>>>>> 4");
             
             ClaimRejectedReportObject reportObject = new ClaimRejectedReportObject();
             reportObject.setDateFrom(dataStart);
             reportObject.setDateTo(dataEnd);
             reportObject.setCreatedDate(new Date());
-            
-            // System.out.println(">>>>>>>>>>>>> 5");
             
             reportParameters.put("reportHeaderName", claimRejection.getOrgName());
             reportParameters.put("reportRows", reportRows);
@@ -104,14 +92,12 @@ public class ClaimRejectedReport implements Report {
             reportParameters.put("organisationLabel", sOrganisationLabel);
             reportParameters.put("organisationName", sOrganisationName);
             
-            // System.out.println(">>>>>>>>>>>>> 6");
-            
         } catch (Exception ex) {
             ex.printStackTrace();
             bAction = false;
             sActionMsg = ex.getLocalizedMessage();
         } finally {
-            dataService.logSystemLog(getReportCode(), sActionMsg, bAction);
+            //dataService.logSystemLog(getReportCode(), sActionMsg, bAction, 1);
         }
         
         return reportParameters;

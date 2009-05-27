@@ -76,7 +76,7 @@
             loadMask: true,
             columns: [
                 {header: "Name", width: 200, dataIndex: 'name', sortable: true, resizable: true},
-                {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "", width: 70, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Add</a>"}}                
             ],
             renderTo:'choband_a_gridviewGrid',
@@ -90,9 +90,9 @@
             store: choband_s_gridviewData,
             loadMask: true,
             columns: [
-                {header: "Name", width: 140, dataIndex: 'chorganisationName', sortable: true, resizable: true},
-                {header: "Active", width: 50, dataIndex: 'chorganisationStatusDesc', sortable: true, resizable: true},
-                {header: "", width: 50, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Name", width: 160, dataIndex: 'chorganisationName', sortable: true, resizable: true},
+                {header: "Status", width: 40, dataIndex: 'chorganisationStatusDesc', sortable: true, resizable: true},
+                {header: "", width: 70, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Remove</a>"}}
             ],
             renderTo:'choband_s_gridviewGrid',
@@ -102,13 +102,12 @@
             });
             
             onPageRefresh()
-            
     }); 
     
     function onPageRefresh(){
+        showBreDropDown();
         doParameterRefresh();
         choband_loadGridViewList();
-        showBreDropDown();
     }
     
     function choband_loadGridViewList(){
@@ -132,39 +131,37 @@
     }
     
     function choband_recordOnclickAdd(grid, rowIndex, columnIndex, e){
+        
         doParameterRefresh();
+        
         var gridView = choband_a_gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
         
         if(columnIndex==1){
-            
             $.ajax({
                url: "doAddNewBandChorganisationMapping.action?chorganisationId="+gridViewId+"&chobandId="+selectBandId,
-               success: doSelectOnChange
+               success: doBRESelectOnChange
             });
-            
         }
     }
 
     function choband_recordOnclickRemove(grid, rowIndex, columnIndex, e){
         
-        doParameterRefresh();
-        
         var gridView = choband_s_gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
         
         if(columnIndex==2){
-            
-           
+        
             $.ajax({
-               url: "doRemoveBandChorganisationMapping.action?chorganisationId="+gridViewId+"&chobandId="+selectBandId,
-               success: doSelectOnChange
+               url: "doRemoveBandChorganisationMapping.action?objectId="+gridViewId,
+               success: doBRESelectOnChange
             });           
         
         }
     }
-
+    
     function doBRESelectOnChange(){  
+        
         doParameterRefresh();
         
         if(selectBandId>0){    

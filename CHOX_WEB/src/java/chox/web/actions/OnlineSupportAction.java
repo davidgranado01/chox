@@ -70,6 +70,7 @@ public class OnlineSupportAction extends BaseAction{
         
         boolean bFlag = true;
         String sActionMsg = "";
+        
         try{
             EmailHelper emailHelper = new EmailHelper();
             String emailMessage = doConstructEmailMessage(message);
@@ -80,7 +81,7 @@ public class OnlineSupportAction extends BaseAction{
             bFlag = false;
             sActionMsg = ex.getLocalizedMessage();
         } finally {
-            systemLogService.logSystemLog("OSF001", sActionMsg, bFlag);
+            systemLogService.logSystemLog("OSF001", sActionMsg, bFlag, 2);
         }
         
         if(bFlag){
@@ -93,7 +94,7 @@ public class OnlineSupportAction extends BaseAction{
                 bFlag = false;
                 sActionMsg = ex.getLocalizedMessage();
             } finally {
-                systemLogService.logSystemLog("OSF002", sActionMsg, bFlag);
+                systemLogService.logSystemLog("OSF002", sActionMsg, bFlag, 2);
             }
             
             actionResult = "Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.";

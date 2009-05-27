@@ -1,15 +1,17 @@
 package chox.web.actions;
 
 import chox.model.Chorganisation;
+import chox.services.ChoBandOrganisationService;
 import chox.services.ChorganisationService;
 import chox.web.viewdata.ChorganisationViewData;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 
-public class ChorganisationAction extends BaseAction {
+public class ChorganisationAction extends AdminBaseModelAction {
 
     private List<ChorganisationViewData> credithireorganisation;
+    private ChoBandOrganisationService choBandOrganisationService;
     private ChorganisationService service;
     private int insurerId;
     
@@ -25,7 +27,11 @@ public class ChorganisationAction extends BaseAction {
         JSONArray jObject = JSONArray.fromObject(this.credithireorganisation);
         return "{totalCount:" + this.credithireorganisation.size() + ",results:" + jObject.toString() + "}";
     }
-     
+
+    public void setChoBandOrganisationService(ChoBandOrganisationService choBandOrganisationService) {
+        this.choBandOrganisationService = choBandOrganisationService;
+    }
+    
     public void setChorganisationService(ChorganisationService service)
     {
         this.service = service;
@@ -50,7 +56,8 @@ public class ChorganisationAction extends BaseAction {
         
         if(insurerId>0){
         
-            List<Chorganisation> chorganisationData = this.service.getAvailableChorganisationByInsurer(insurerId);
+            List<Chorganisation> chorganisationData = this.service.getObjectsWithoutInsurer(insurerId);
+            
             credithireorganisation = new ArrayList<ChorganisationViewData>();
 
             for(Chorganisation h : chorganisationData)
@@ -61,26 +68,38 @@ public class ChorganisationAction extends BaseAction {
         
         return SUCCESS;
     }  
-
-    public String getChorganisationWithoutChoBand(){
+    
+    // BRE MAPPING, GET CREDIT HIRE WITHOUT CHO BAND
+    public String getChorganisationsByInsurerIdWithoutChoBand(){
         
-        // System.out.println("getChorganisationWithoutChoBand Insurer ID : " + insurerId);
-        
-        if(insurerId>0){
-        
-            List<Chorganisation> chorganisationData = this.service.getAvailableChorganisationByInsurerWithoutBand(insurerId);
-
+        String sActionMsg = "";
+        boolean bActionFlag = false;
+         
+        try{
+            
             credithireorganisation = new ArrayList<ChorganisationViewData>();
+            
+            if(insurerId>0){
+                
+                List<Chorganisation> chorganisations = service.getObjectsByInsurerId(insurerId);
+                
+                for(Chorganisation object : chorganisations){
+                    
+                    if(!choBandOrganisationService.isActiveChorganisationWithBand(object.getId(), insurerId)){
+                        credithireorganisation.add(new ChorganisationViewData(object));
+                    }
 
-            for(Chorganisation h : chorganisationData)
-            {
-                credithireorganisation.add(new ChorganisationViewData(h));
+                }
             }
 
-            // System.out.println("getChorganisationWithoutChoBand output Size : " + credithireorganisation.size());
+            bActionFlag = true;
+            sActionMsg = getSystemLogService().getListingLogMsg(credithireorganisation.size(), "InsurerId:"+insurerId);
             
+        } catch (Exception ex) {
+            sActionMsg = ex.getMessage();
         }
         
+        getSystemLogService().logSystemLog("ADM003", sActionMsg, bActionFlag, 0);          
         return SUCCESS;
     } 
     

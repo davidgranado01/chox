@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import net.sf.json.JSONArray;
 import java.util.List;
 
-public class InsurerLineOfBusinessAction extends BaseAction {
+public class InsurerLineOfBusinessAction extends AdminBaseModelAction {
 
     protected int insurerId;
     protected List<LineOfBusinessViewData> lineOfBusinesses;
@@ -30,14 +30,28 @@ public class InsurerLineOfBusinessAction extends BaseAction {
     @Override
     public String execute() {
         
-        List<LineOfBusiness> lineOfBusinessData = this.service.getInsurerLineOfBusiness(insurerId);
+        String sActionMsg = "";
+        boolean bActionFlag = false;
         
-        lineOfBusinesses = new ArrayList<LineOfBusinessViewData>();
-        
-        for(LineOfBusiness h : lineOfBusinessData)
-        {    
-            lineOfBusinesses.add(new LineOfBusinessViewData(h));
+        try{   
+            
+            List<LineOfBusiness> lineOfBusinessData = this.service.getInsurerLineOfBusiness(insurerId);
+
+            lineOfBusinesses = new ArrayList<LineOfBusinessViewData>();
+
+            for(LineOfBusiness h : lineOfBusinessData)
+            {    
+                lineOfBusinesses.add(new LineOfBusinessViewData(h));
+            }
+            
+            bActionFlag = true;
+            sActionMsg = getSystemLogService().getListingLogMsg(lineOfBusinesses.size(), "InsurerId:"+insurerId);
+            
+        } catch (Exception ex) {
+            sActionMsg = ex.getMessage();
         }
+        
+        getSystemLogService().logSystemLog("ADM005", sActionMsg, bActionFlag, 0);
         
         return SUCCESS;
     }     

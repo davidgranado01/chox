@@ -322,7 +322,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     bActionFlag = false;
                     sActionMsg = ex.getLocalizedMessage();
                 }finally {
-                    systemLogService.logSystemLog("ACT001", sActionMsg, bActionFlag);
+                    systemLogService.logSystemLog("ACT001", sActionMsg, bActionFlag, 3);
                 }
             }
         }
@@ -378,7 +378,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 sActionMsg = ex.getLocalizedMessage(); 
                 
             }finally {
-                systemLogService.logSystemLog("ACT002", sActionMsg, bActionFlag);
+                systemLogService.logSystemLog("ACT002", sActionMsg, bActionFlag, 3);
             }
         }
         
@@ -416,7 +416,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 bActionFlag = false;
                 sActionMsg = ex.getLocalizedMessage();                  
             }finally {
-                systemLogService.logSystemLog("ACT003", sActionMsg, bActionFlag);
+                systemLogService.logSystemLog("ACT003", sActionMsg, bActionFlag, 3);
             }
             
         }
@@ -469,7 +469,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             
         }finally {
             sActionMsg =  "ClaimId:"+claim.getId()+"| Status:" + newStatus;
-            systemLogService.logSystemLog("ACT004", sActionMsg, bActionFlag);
+            systemLogService.logSystemLog("ACT004", sActionMsg, bActionFlag, 3);
         }
         
         return result;
@@ -507,7 +507,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             bActionFlag = false;
             sActionMsg = this.actionResult;
         }finally {
-            systemLogService.logSystemLog("ACT005", sActionMsg, bActionFlag);
+            systemLogService.logSystemLog("ACT005", sActionMsg, bActionFlag, 3);
         }
         
         return result;
@@ -556,7 +556,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 sActionMsg = this.actionResult;
                 
             }finally {
-                systemLogService.logSystemLog("ACT006", sActionMsg, bActionFlag);
+                systemLogService.logSystemLog("ACT006", sActionMsg, bActionFlag, 3);
             }
         }
 
@@ -596,7 +596,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 sActionMsg = this.actionResult;
                 
             }finally {
-                systemLogService.logSystemLog("ACT007", sActionMsg, bActionFlag);
+                systemLogService.logSystemLog("ACT007", sActionMsg, bActionFlag, 3);
             }
             
         } else {
@@ -689,7 +689,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 sActionMsg = this.actionResult;
                 
             }finally {
-                systemLogService.logSystemLog("ACT008", sActionMsg, bActionFlag);
+                systemLogService.logSystemLog("ACT008", sActionMsg, bActionFlag, 3);
             }
             
             result = SUCCESS;
@@ -733,7 +733,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = this.actionResult;
             
         }finally {
-            systemLogService.logSystemLog("ACT009", sActionMsg, bActionFlag);
+            systemLogService.logSystemLog("ACT009", sActionMsg, bActionFlag, 3);
         }
         
         return result;
@@ -775,7 +775,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = this.actionResult;
             
         }finally {
-            systemLogService.logSystemLog("ACT010", sActionMsg, bActionFlag);
+            systemLogService.logSystemLog("ACT010", sActionMsg, bActionFlag, 3);
         }
         
         return result;
@@ -816,7 +816,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = this.actionResult;
             
         }finally {
-            systemLogService.logSystemLog("ACT011", sActionMsg, bActionFlag);
+            systemLogService.logSystemLog("ACT011", sActionMsg, bActionFlag, 3);
         }
         
         return result;
@@ -841,7 +841,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = this.actionResult;
             
         }finally {
-            systemLogService.logSystemLog("CLM001", sActionMsg, bActionFlag);
+            systemLogService.logSystemLog("CLM001", sActionMsg, bActionFlag, 3);
         }
         
         return result;
@@ -872,7 +872,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = this.actionResult;
             
         }finally {
-            systemLogService.logSystemLog("ACT012", sActionMsg, bActionFlag);
+            systemLogService.logSystemLog("ACT012", sActionMsg, bActionFlag, 3);
         }
 
         return result;
@@ -914,7 +914,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = this.actionResult;
 
         }finally {
-            systemLogService.logSystemLog("ACT013", sActionMsg, bActionFlag);
+            systemLogService.logSystemLog("ACT013", sActionMsg, bActionFlag, 3);
         }
         
         return result;
@@ -956,7 +956,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = this.actionResult;
         
         }finally {
-            systemLogService.logSystemLog("ACT014", sActionMsg, bActionFlag);
+            systemLogService.logSystemLog("ACT014", sActionMsg, bActionFlag, 3);
         }
         
         return result;
@@ -1005,7 +1005,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = this.actionResult;
             
         }finally {
-            systemLogService.logSystemLog("ACT015", sActionMsg, bActionFlag);
+            systemLogService.logSystemLog("ACT015", sActionMsg, bActionFlag, 3);
         }
         
         return result;
@@ -1032,7 +1032,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = this.actionResult;
         
         }finally {
-            systemLogService.logSystemLog("ACT016", sActionMsg, bActionFlag);
+            systemLogService.logSystemLog("ACT016", sActionMsg, bActionFlag, 3);
         }
         
         return SUCCESS;
@@ -1200,7 +1200,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = this.actionResult;
             
         }finally {
-            systemLogService.logSystemLog("ACT017", sActionMsg, bActionFlag);
+            systemLogService.logSystemLog("ACT017", sActionMsg, bActionFlag, 3);
         }
         return result;
     }
@@ -1261,7 +1261,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = this.actionResult;
             
         }finally {
-            systemLogService.logSystemLog("ACT018", sActionMsg, bActionFlag);
+            systemLogService.logSystemLog("ACT018", sActionMsg, bActionFlag, 3);
         }
         
         return result;
@@ -1291,7 +1291,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = this.actionResult;
             
         }finally {
-            systemLogService.logSystemLog("ACT019", sActionMsg, bActionFlag);
+            systemLogService.logSystemLog("ACT019", sActionMsg, bActionFlag, 3);
         }
         return result;
     }
@@ -1321,7 +1321,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = this.actionResult;
             
         }finally {
-            systemLogService.logSystemLog("ACT020", sActionMsg, bActionFlag);
+            systemLogService.logSystemLog("ACT020", sActionMsg, bActionFlag, 3);
         }
         return result;
     }

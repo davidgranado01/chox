@@ -3,13 +3,15 @@
 <script language="JavaScript">
         
         var selectedPanel = 'UserMgmt';
+
+        $("#lineOfBusinessId").val(<s:property value="lineOfBusiness.id" />);
         
-        $(document).ready(function(){
+        $(document).ready(function(){           
             doFormValidation(); 
         }); 
-
+        
         function doFormValidation(){
-                    
+            
             var validateFlag = $("#formUpdateUserDetail").validate(
             {
                errorLabelContainer: "#CDmessageBox",                
@@ -138,7 +140,8 @@
                             </s:if>
                             <s:else>
                                 <input name="insurerId" id="insurerId" type="hidden" value="<s:property value="insurerId" />">
-                            </s:else>                             
+                            </s:else>        
+                            
                         </s:if>
 
                         <s:if test="orgTypeId==3">
@@ -170,7 +173,23 @@
                             <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value="<s:property value="email" />"/>
                         </div>
                     </s:else>
-
+                    <s:if test="orgTypeId==2">
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Line Of Business</label>
+                         <s:select 
+                                    id="lineOfBusinessId"                                 
+                                    name="lineOfBusinessId" 
+                                    list="lineOfBusinesses" 
+                                    listKey="id" 
+                                    listValue="name" 
+                                    headerKey="-1"
+                                    headerValue="--- ALL ---"
+                                    emptyOption="false">
+                                    </s:select>
+                    </div>
+                    <input type="hidden" id="User_LineOfBusinessId" name="User_LineOfBusinessId" value="<s:property value="lineOfBusiness.id" />">
+                    
+                    </s:if>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">First Name<span class="mandatory">*</span></label>
                         <input type="text" class="chox-ttxt" id="CCDFirstName" name="firstName" value="<s:property value="firstName" />"/>

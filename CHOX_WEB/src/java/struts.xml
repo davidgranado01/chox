@@ -895,7 +895,7 @@
             <result name="success">/jsp/p_response.jsp</result>
         </action>      
         
-        <action name="getAvailableInsurerChoBandChorganisation" class="chox.web.actions.ChorganisationAction" method="getChorganisationWithoutChoBand">
+        <action name="getAvailableInsurerChoBandChorganisation" class="chox.web.actions.ChorganisationAction" method="getChorganisationsByInsurerIdWithoutChoBand">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="getSelectedInsurerChoBandChorganisation" class="chox.web.actions.InsurerChoBandMappingAction" method="getChorganisationWithChoBandAssigned">
@@ -903,7 +903,7 @@
         </action>   
         <action name="doAddNewBandChorganisationMapping" class="chox.web.actions.doInsurerChoBandMappingAction" method="addObject">
             <result name="success">/jsp/p_response.jsp</result>
-        </action>   
+        </action>
         <action name="doRemoveBandChorganisationMapping" class="chox.web.actions.doInsurerChoBandMappingAction" method="removeObject">
             <result name="success">/jsp/p_response.jsp</result>
         </action>

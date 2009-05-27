@@ -1,14 +1,18 @@
 package chox.web.actions;
 
-import chox.Util.DateHelper;
-import chox.model.ChoBand;
 import chox.model.Insurer;
+import chox.services.ChoBandService;
+import chox.services.InsurerAlliasService;
 import chox.services.InsurerService;
+import chox.services.LineOfBusinessService;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
 public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>, Preparable {
 
+    private InsurerAlliasService insurerAlliasService;
+    private LineOfBusinessService lineOfBusinessService;
+    private ChoBandService choBandService;
     private InsurerService service;
     private String objectId;
     private Insurer model;
@@ -50,6 +54,19 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
     public void setInsurerService(InsurerService service)
     {
         this.service = service;
+    }
+
+    
+    public void setChoBandService(ChoBandService choBandService) {
+        this.choBandService = choBandService;
+    }
+    
+    public void setLineOfBusinessService(LineOfBusinessService lineOfBusinessService) {
+        this.lineOfBusinessService = lineOfBusinessService;
+    }
+
+    public void setInsurerAlliasService(InsurerAlliasService insurerAlliasService) {
+        this.insurerAlliasService = insurerAlliasService;
     }
     
     public String triggerStatus() throws Exception{
@@ -93,6 +110,9 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
             model = this.service.updateObject(model);            
             
             if(this.isNew){
+                lineOfBusinessService.createDefaultRecord(model);
+                insurerAlliasService.createDefaultRecord(model);
+                choBandService.createDefaultRecord(model);
                 actionResult = "objectId:"+model.getId();
                 this.isNew = false;
             }

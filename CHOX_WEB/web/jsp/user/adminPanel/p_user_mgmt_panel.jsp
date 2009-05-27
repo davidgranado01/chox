@@ -14,7 +14,6 @@
     var orgId = -1;
     var userRoleId = -1;
     
-    
     var selectOrgTypeId = <s:property value="selectOrgTypeId" />;
     var selectOrgId = <s:property value="selectOrgId" />;
     
@@ -167,8 +166,7 @@
     
     function showUserroleDropDown() {
         $("#userroleDropDownDiv").load("UserroleDropDownAction.action?orgTypeId=" + orgTypeId);
-    }    
-
+    }
     
 </script>
 

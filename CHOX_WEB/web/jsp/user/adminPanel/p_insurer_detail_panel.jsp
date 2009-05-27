@@ -6,7 +6,7 @@
 <script language="JavaScript">
         
         // var selectedPanel = "InsurerOrgMgmt";
-        var adminCurrentTabIndex;
+        var adminCurrentTabIndex = 0;
         var adminTabs;
         
         $(document).ready(function(){
@@ -111,7 +111,7 @@
                 {contentEl:'insurerLobPanelTab', title:'Line Of Business', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
                 {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
                 {contentEl:'insurerBrePanelTab', title:'BRE Band', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
-                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
+                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: doBreMappingRefresh}},  
             ]
            });
         }
@@ -120,6 +120,11 @@
             setupTabPanels();
         }); 
 
+        function doBreMappingRefresh(tab){
+            handleActivate(tab);
+            onPageRefresh();
+        }
+        
         function handleActivate(tab){
             
             adminCurrentTabIndex = 0;
@@ -127,7 +132,6 @@
             if(adminTabs)
             {
                 adminCurrentTabIndex = adminTabs.items.indexOf(adminTabs.getActiveTab());
-                onPageRefresh();
             }
             
         }

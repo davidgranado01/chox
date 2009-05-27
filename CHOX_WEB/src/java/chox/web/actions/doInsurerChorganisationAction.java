@@ -12,7 +12,7 @@ import chox.services.InsurerService;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
-public class doInsurerChorganisationAction extends BaseAction implements ModelDriven<InsurerChorganisation>, Preparable {
+public class doInsurerChorganisationAction extends AdminBaseModelAction implements ModelDriven<InsurerChorganisation>, Preparable {
 
     private InsurerChorganisation model;
     private int objectId=-1;
@@ -84,27 +84,50 @@ public class doInsurerChorganisationAction extends BaseAction implements ModelDr
     }
 
     public String removeObject(){
-        service.triggerStatus(model);
+        
+        String sActionMsg = "";
+        boolean bActionFlag = false;
+         
+        try{          
+            
+            service.triggerStatus(model);
+        
+            bActionFlag = true;
+            sActionMsg = getSystemLogService().getObjectActionLogMsg("DELETE", "InsurerChorganisationId:"+model.getId());
+            
+        } catch (Exception ex) {
+            sActionMsg = ex.getMessage();
+        }
+        
+        getSystemLogService().logSystemLog("ADM009", sActionMsg, bActionFlag, 3);         
         return SUCCESS;
     }
     
     public String addObject(){
         
-        if(!service.isInactiveInsurerChorganisationExist(insurerId, chorganisationId)){
+        String sActionMsg = "";
+        boolean bActionFlag = false;
+        
+        try{ 
             
-            System.out.println("INACTIVE NOT EXISTS");
-            model.setChorganisation(chorganisationService.getObject(chorganisationId));
-            model.setInsurer(insurerService.getObject(insurerId));
-            model.setStatus(true);
-            service.updateObject(model);
+            if(!service.isInactiveObjectExist(insurerId, chorganisationId)){
+                model.setChorganisation(chorganisationService.getObject(chorganisationId));
+                model.setInsurer(insurerService.getObject(insurerId));
+                model.setStatus(true);
+                service.updateObject(model);
+            }else{
+                model = service.getObject(insurerId, chorganisationId);
+                service.triggerStatus(model);
+            }
+        
+            bActionFlag = true;
+            sActionMsg = getSystemLogService().getObjectActionLogMsg("ADD", "InsurerChorganisationId:"+model.getId());
             
-        }else{
-            
-            System.out.println("INACTIVE EXISTS");
-            model = service.getInsurerChorganisationObject(insurerId, chorganisationId);
-            service.triggerStatus(model);
-            
+        } catch (Exception ex) {
+            sActionMsg = ex.getMessage();
         }
+        
+        getSystemLogService().logSystemLog("ADM010", sActionMsg, bActionFlag, 3); 
         
         return SUCCESS;
     }

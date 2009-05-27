@@ -280,7 +280,7 @@ public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Repo
             bAction = false;
             sActionMsg = ex.getLocalizedMessage();
         } finally {
-            dataService.logSystemLog(getReportCode(), sActionMsg, bAction);
+            //dataService.logSystemLog(getReportCode(), sActionMsg, bAction);
         }
         
         return reportParameters;

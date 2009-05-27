@@ -4,9 +4,9 @@ import chox.Util.DateHelper;
 import chox.model.Chorganisation;
 import chox.model.Insurer;
 import chox.model.WebUser;
-import chox.model.WebUserRole;
 import chox.services.ChorganisationService;
 import chox.services.InsurerService;
+import chox.services.LineOfBusinessService;
 import chox.services.LookupService;
 import chox.services.UserService;
 import chox.services.WebUserUserRoleService;
@@ -24,14 +24,16 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     private String mode;
     private List insurers;
     private List suppliers;
+    private List lineOfBusinesses;
     private LookupService lookupService;
     private InsurerService insurerService;
     private ChorganisationService chorganisationService;
     private WebUserUserRoleService webUserUserRoleService;
+    private LineOfBusinessService lineOfBusinessService;
     private String actionResult;
     private Integer insurerId = -1;
     private Integer supplierId = -1;
-    
+    private Integer lineOfBusinessId = -1;
     private PermissionedUser currentUser = getAuthenticatedUser();
     
     private boolean isOrgSelectable = false;
@@ -42,8 +44,6 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         }
         return isOrgSelectable;
     }
-    
-    
     
     public String getActionResult() {
         return actionResult;
@@ -57,10 +57,27 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         insurers = this.lookupService.getInsurers();
         return insurers;
     }
+
+    public Integer getLineOfBusinessId() {
+        return lineOfBusinessId;
+    }
+
+    public void setLineOfBusinessId(Integer lineOfBusinessId) {
+        this.lineOfBusinessId = lineOfBusinessId;
+    }
     
     public List getSuppliers() {
         suppliers = this.lookupService.getAllSuppliers();
         return suppliers;
+    }
+
+    public List getLineOfBusinesses() {
+        
+        if(orgTypeId.equalsIgnoreCase("2")){
+            lineOfBusinesses = this.lookupService.getLineOfBusinessesByInsurerId(model.getInsurer().getId());
+        }
+        
+        return lineOfBusinesses;
     }
 
     public String getMode() {
@@ -161,7 +178,10 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     {
         this.insurerService = insurerService;
     }
-    
+
+    public void setLineOfBusinessService(LineOfBusinessService lineOfBusinessService) {
+        this.lineOfBusinessService = lineOfBusinessService;
+    }
     
     public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService)
     {
@@ -213,6 +233,12 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
                 
             }else{
                 
+                //System.out.println("doUserAction > updateModel > lineOfBusinessId : "+lineOfBusinessId);
+                
+                if(lineOfBusinessId!=null && lineOfBusinessId>0){
+                    model.setLineOfBusiness(lineOfBusinessService.getObject(lineOfBusinessId));
+                }
+                
                 this.service.updateObject(model);  
                 actionResult = "Your changes have been saved.";
             }
@@ -223,7 +249,9 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         
         return SUCCESS;
     }
-
+    
+    
+    
     private boolean doAddNewObject(){
         
         boolean bFlag  = false;
@@ -286,6 +314,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         } else {
             model = service.getUsers(Integer.valueOf(objectId));
             mode = "Edit";
+            
         }
     }    
 }
