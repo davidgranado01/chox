@@ -10,15 +10,23 @@ import java.util.List;
 
 public interface InsurerChorganisationService{
     
-    public InsurerChorganisation getObject(int id);
-    // public boolean DeleteObject(InsurerChorganisation object);
-    public boolean triggerStatus(InsurerChorganisation object);
+    // ACTION
     public boolean updateObject(InsurerChorganisation object);
-    public boolean isActiveInsurerChorganisationExist(int insurerId, int chorganisationId);
-    public boolean isInactiveInsurerChorganisationExist(int insurerId, int chorganisationId);
-    public List<InsurerChorganisation> getInsurerChorganisationByInsurer(int insurerId);
-    public List<InsurerChorganisation> getInsurerChorganisationByChorganisation(int chorganisationId);
-    public List<InsurerChorganisation> getInsurerChorganisation(int insurerId, int chorganisationId);
-    public InsurerChorganisation getInsurerChorganisationObject(int insurerId, int chorganisationId);
+    public void deleteObject(InsurerChorganisation object);
+    public boolean triggerStatus(InsurerChorganisation object);
     
+    // RETREIVE - OBJECT
+    public InsurerChorganisation getObject(int insurerId, int chorganisationId);
+    public InsurerChorganisation getObject(int id);
+    
+    // RETREIVE - LISTING
+    public List<InsurerChorganisation> getObjects(Integer insurerId, Integer chorganisationId);        
+    
+    // VALIDATION
+    public boolean isInactiveObjectExist(int insurerId, int chorganisationId);
+    public boolean isActiveObjectExist(int insurerId, int chorganisationId);
+    
+    
+    
+
 }

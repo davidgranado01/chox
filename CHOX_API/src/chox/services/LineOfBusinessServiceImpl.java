@@ -5,6 +5,7 @@
 
 package chox.services;
 
+import chox.model.Insurer;
 import chox.model.LineOfBusiness;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,14 @@ public class LineOfBusinessServiceImpl extends SecureDataService implements Line
         return isExist;
     }
     
+    public void createDefaultRecord(Insurer insurer){
+        LineOfBusiness object = new LineOfBusiness();
+        object.setInsurer(insurer);
+        object.setName("Default");
+        object.setActive(true);
+        updateObject(object);
+    }
+    
     public List<LineOfBusiness> getInsurerLineOfBusiness(int insurerId) {
 
         List<LineOfBusiness> lineofbusiness = new ArrayList<LineOfBusiness>();
@@ -65,7 +74,6 @@ public class LineOfBusinessServiceImpl extends SecureDataService implements Line
         boolean bFlag = false;
         
         try {
-            
             
             delete(object);
             

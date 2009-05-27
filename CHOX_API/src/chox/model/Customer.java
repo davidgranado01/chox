@@ -1,6 +1,5 @@
 package chox.model;
 
-import chox.services.ClaimService;
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.text.Format;

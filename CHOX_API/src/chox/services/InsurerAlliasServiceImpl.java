@@ -4,6 +4,7 @@
  */
 package chox.services;
 
+import chox.model.Insurer;
 import chox.model.InsurerAllias;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,13 @@ import org.hibernate.criterion.Restrictions;
 
 public class InsurerAlliasServiceImpl extends SecureDataService implements InsurerAlliasService {
 
+    public void createDefaultRecord(Insurer insurer){
+        InsurerAllias object = new InsurerAllias();
+        object.setInsurer(insurer);
+        object.setAlliasName(insurer.getName());
+        updateObject(object);
+    }
+    
     public InsurerAllias getInsurerByAlliasName(String s) {
 
         InsurerAllias insurerallias = new InsurerAllias();

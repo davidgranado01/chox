@@ -7,6 +7,7 @@ package chox.services;
 
 import chox.model.ChoBand;
 import chox.model.ChoBandOrganisation;
+import chox.model.Insurer;
 import org.hibernate.criterion.Restrictions;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -98,7 +99,15 @@ public class ChoBandServiceImpl extends SecureDataService implements ChoBandServ
     public boolean isChoBandOccupied(ChoBand object){
         return chobandorganisaionservice.isChoBandOccupied(object.getId());
     }
-
+    
+    public void createDefaultRecord(Insurer insurer){
+        ChoBand choband = getDummyChoBand();
+        choband.setName("Default");
+        choband.setInsurer(insurer);
+        choband.setIsActive(true);
+        updateObject(choband);
+    }
+    
     public ChoBand getDummyChoBand()
     {
         ChoBand choband = new ChoBand();

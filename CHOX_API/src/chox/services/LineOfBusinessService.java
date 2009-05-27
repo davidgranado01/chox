@@ -5,6 +5,7 @@
 
 package chox.services;
 
+import chox.model.Insurer;
 import chox.model.LineOfBusiness;
 import java.util.List;
 
@@ -15,5 +16,6 @@ public interface LineOfBusinessService {
     public boolean DeleteObject(LineOfBusiness object);
     public boolean updateObject(LineOfBusiness object);
     public boolean isLineOfBusinessExist(int insurerId, String lineOfBusinessName);
+    public void createDefaultRecord(Insurer insurer);
     
 }

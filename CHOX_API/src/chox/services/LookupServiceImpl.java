@@ -122,6 +122,14 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         return findByCriteria(criteria);
     }
     
+    public List getLineOfBusinessesByInsurerId(int insurerId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(LineOfBusiness.class);
+        criteria.add(Restrictions.eq("active", true));
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
+        criteria.addOrder(Order.asc("name"));  
+        return findByCriteria(criteria);
+    }
+    
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // SUPPLIERS / CREDIT HIRES
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

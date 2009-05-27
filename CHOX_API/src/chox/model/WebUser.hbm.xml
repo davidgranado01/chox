@@ -8,6 +8,7 @@
     <property column="email" name="email" not-null="true"/>
     <property column="first_name" name="firstName" not-null="true"/>
     <property column="last_name" name="lastName" not-null="true"/>
+    <many-to-one class="chox.model.LineOfBusiness" column="lineofbusiness_id" name="lineOfBusiness"/>
     <property column="password" name="password" not-null="true"/>
     <property column="status" name="status" not-null="true"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>

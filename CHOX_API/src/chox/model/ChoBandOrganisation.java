@@ -1,15 +1,11 @@
 package chox.model;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ChoBandOrganisation implements Serializable
+public class ChoBandOrganisation implements Serializable, Auditable
 {
 	protected int id;
-	// protected int bandId;
-        // protected int chorganisationId;
         protected ChoBand choBand;
 	protected Chorganisation chorganisation;
 	protected WebUser createdBy;
@@ -31,48 +27,22 @@ public class ChoBandOrganisation implements Serializable
 		this.id = id;
 	}
 
-    public ChoBand getChoBand() {
-        return choBand;
-    }
+        public ChoBand getChoBand() {
+            return choBand;
+        }
 
-    public void setChoBand(ChoBand choBand) {
-        this.choBand = choBand;
-    }
+        public void setChoBand(ChoBand choBand) {
+            this.choBand = choBand;
+        }
 
+        public Chorganisation getChorganisation() {
+            return chorganisation;
+        }
 
-
-    public Chorganisation getChorganisation() {
-        return chorganisation;
-    }
-
-    public void setChorganisation(Chorganisation chorganisation) {
-        this.chorganisation = chorganisation;
-    }
+        public void setChorganisation(Chorganisation chorganisation) {
+            this.chorganisation = chorganisation;
+        }
         
-
-        
-        /*
-         * 
-	public int getBandId()
-	{
-		return bandId;
-	}
-
-	public void setBandId(int bandId)
-	{
-		this.bandId = bandId;
-	}
-         *          
-	public int getChorganisationId()
-	{
-		return chorganisationId;
-	}
-
-	public void setChorganisationId(int chorganisationId)
-	{
-		this.chorganisationId = chorganisationId;
-	}
-        */
 	public WebUser getCreatedBy()
 	{
 		return createdBy;

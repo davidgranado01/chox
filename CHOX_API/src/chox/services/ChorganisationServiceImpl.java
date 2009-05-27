@@ -20,6 +20,8 @@ public class ChorganisationServiceImpl  extends SecureDataService implements Cho
         this.choBandOrganisationService = choBandOrganisationService;
     }
     
+    
+    
     public boolean isChorgNameExist(String s){
         
         boolean isExist = false;
@@ -31,6 +33,41 @@ public class ChorganisationServiceImpl  extends SecureDataService implements Cho
         return isExist;
         
     }
+    
+    public List<Chorganisation> getObjectsByInsurerId(int insurerId){
+        List<Chorganisation> objects = new ArrayList<Chorganisation>();
+        
+        List<InsurerChorganisation> InsurerChorganisation = insurerChorganisationService.getObjects(insurerId, null);
+        
+        for(InsurerChorganisation object :InsurerChorganisation){
+            if(object.getChorganisation().isStatus()){
+                objects.add(object.getChorganisation());
+            }
+        }
+        
+        return objects;
+    }
+    
+    public List<Chorganisation> getObjectsWithoutInsurer(int insurerId) {
+
+        List<Chorganisation> objects = new ArrayList<Chorganisation>();
+
+        try{
+
+            List<Chorganisation> allchos = this.getActiveChorganisation();
+
+            for(Chorganisation org : allchos){
+                if(!insurerChorganisationService.isActiveObjectExist(insurerId, org.getId())){
+                    objects.add(org);
+                }
+            }
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        return objects;
+    } 
     
     public Chorganisation getChorgByName(String s) {
 
@@ -48,50 +85,10 @@ public class ChorganisationServiceImpl  extends SecureDataService implements Cho
         return object;
     }
     
-    public List<Chorganisation> getAvailableChorganisationByInsurer(int insurerId) {
+    
 
-        List<Chorganisation> objects = new ArrayList<Chorganisation>();
-
-        try{
-
-            List<Chorganisation> allchos = getActiveChorganisation();
-
-            for(Chorganisation org : allchos){
-                
-                if(!insurerChorganisationService.isActiveInsurerChorganisationExist(insurerId, org.getId())){
-                    objects.add(org);
-                }
-            }
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        return objects;
-    } 
-
-    public List<Chorganisation> getAvailableChorganisationByInsurerWithoutBand(int insurerId) {
-
-        List<Chorganisation> objects = new ArrayList<Chorganisation>();
-
-        try{
-
-            List<Chorganisation> allchos = getActiveChorganisation();
-
-            for(Chorganisation org : allchos){
-                
-                if(!choBandOrganisationService.isActiveChorganisationWithBand(org.getId())){
-                    objects.add(org);
-                }
-            }
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        return objects;
-    } 
-
+    
+    
     public Chorganisation getCurrentCHOrganisation() {
         
         Chorganisation chorg = new Chorganisation();

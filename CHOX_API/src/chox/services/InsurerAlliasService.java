@@ -5,6 +5,7 @@
 
 package chox.services;
 
+import chox.model.Insurer;
 import chox.model.InsurerAllias;
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface InsurerAlliasService{
     public boolean DeleteObject(InsurerAllias object);
     public boolean updateObject(InsurerAllias object);
     public boolean isInsurerAlliasExist(int insurerId, String AlliasName);
+    public void createDefaultRecord(Insurer insurer);
 }

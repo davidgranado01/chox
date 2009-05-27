@@ -129,7 +129,8 @@ public class DataService extends HibernateDaoSupport {
                     }
                 });
     }
-
+    
+    /*
     public void logSystemLog(String actionId, String msg, boolean status){
         
         SystemLog systemLog = new SystemLog();
@@ -148,6 +149,7 @@ public class DataService extends HibernateDaoSupport {
            e.printStackTrace();
         }
     } 
+    */
     
     public void delete(final Object object) {
         TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());

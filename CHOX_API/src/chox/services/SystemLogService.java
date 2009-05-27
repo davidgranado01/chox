@@ -8,6 +8,9 @@ package chox.services;
 import chox.model.SystemLog;
 
 public interface SystemLogService {
+    
     SystemLog getObject(int id);
-    public void logSystemLog(String actionId, String msg, boolean status);
+    public void logSystemLog(String actionId, String msg, boolean status, int iLevel);
+    public String getListingLogMsg(Integer iCount, String sFilter);
+    public String getObjectActionLogMsg(String sAction, String sFilter);
 }

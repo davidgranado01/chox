@@ -6,6 +6,7 @@
 package chox.services;
 
 import chox.model.ChoBand;
+import chox.model.Insurer;
 import java.util.List;
 
 public interface ChoBandService {
@@ -19,4 +20,5 @@ public interface ChoBandService {
     public boolean deleteObject(ChoBand object);
     public boolean isChoBandOccupied(ChoBand object);
     public boolean isChoBandNameExist(ChoBand object);
+    public void createDefaultRecord(Insurer insurer);
 }
