@@ -206,3 +206,24 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 177, (select max(id)+1 from accessibility_item));
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 208, (select max(id)+1 from accessibility_item));
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 223, (select max(id)+1 from accessibility_item));
+
+------------------------------------------------------------------------------------------------
+
+ALTER TABLE web_user ADD COLUMN lineofbusiness_id integer;
+ALTER TABLE web_user ALTER COLUMN lineofbusiness_id SET STORAGE PLAIN;
+
+------------------------------------------------------------------------------------------------
+	
+-- 	insert into action (id, description) values ('', '');
+
+insert into action (id, description) values ('ADM001', 'Extract Insurer List');
+insert into action (id, description) values ('ADM002', 'Extract Insurer Allias List');
+insert into action (id, description) values ('ADM003', 'Extract Credit hire List without Cho Band');
+insert into action (id, description) values ('ADM004', 'Extract Credit Hire List With Insurer');
+insert into action (id, description) values ('ADM005', 'Extract Line Of Business');
+insert into action (id, description) values ('ADM006', 'Extract Credit Hire List With Cho Band');
+insert into action (id, description) values ('ADM007', 'Remove Cho Band and Credit Hire Mapping');
+insert into action (id, description) values ('ADM008', 'Add Cho Band and Credit Hire Mapping');	
+insert into action (id, description) values ('ADM009', 'Remove Insurer and Credit Hire Mapping');
+
+
