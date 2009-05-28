@@ -213,6 +213,12 @@ ALTER TABLE web_user ADD COLUMN lineofbusiness_id integer;
 ALTER TABLE web_user ALTER COLUMN lineofbusiness_id SET STORAGE PLAIN;
 
 ------------------------------------------------------------------------------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'admin.InsurerBreManagement');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'admin.InsurerBreManagement'),(select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 1, (select id from accessibility where name = 'admin.InsurerBreManagement'),(select max(id)+1 from accessibility_item));
+
+------------------------------------------------------------------------------------------------
 	
 -- 	insert into action (id, description) values ('', '');
 
@@ -225,5 +231,6 @@ insert into action (id, description) values ('ADM006', 'Extract Credit Hire List
 insert into action (id, description) values ('ADM007', 'Remove Cho Band and Credit Hire Mapping');
 insert into action (id, description) values ('ADM008', 'Add Cho Band and Credit Hire Mapping');	
 insert into action (id, description) values ('ADM009', 'Remove Insurer and Credit Hire Mapping');
-
+insert into action (id, description) values ('ADM010', 'Add Insurer and Credit Hire Mapping');
+insert into action (id, description) values ('ADM011', 'Add Userrole and User Mapping');
 
