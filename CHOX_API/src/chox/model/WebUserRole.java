@@ -9,6 +9,8 @@ public class WebUserRole implements Serializable,Auditable
         public static final String ROLE_INS = "ROLE_INS";
         public static final String ROLE_CHO = "ROLE_CHO";
         
+        public static final String ROLE_CH = "ROLE_INS_CH";
+        
 	/** 
 	 * This attribute maps to the column id in the web_user_role table.
 	 */

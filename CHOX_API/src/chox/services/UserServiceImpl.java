@@ -1,6 +1,7 @@
 package chox.services;
 
 import chox.model.WebUser;
+import chox.model.WebUserRole;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
@@ -9,6 +10,7 @@ import org.hibernate.criterion.Restrictions;
 
 public class UserServiceImpl extends DataService implements UserService {
 
+            
     public UserServiceImpl() {
     }
 
@@ -138,5 +140,6 @@ public class UserServiceImpl extends DataService implements UserService {
         }    
 
         return bFlag;
-    }    
+    }
+    
 }

@@ -1,6 +1,7 @@
 package chox.services;
 
 import chox.model.IdLookupItem;
+import chox.model.WebUser;
 import chox.model.WebUserRole;
 import chox.model.WebUserUserRole;
 import java.util.ArrayList;
@@ -28,6 +29,13 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
     
     public WebUserUserRole getObject(int id) {        
         return (WebUserUserRole) get(WebUserUserRole.class, id);
+    }
+    
+    public String getUserroleName(int id){
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);  
+        criteria.add(Restrictions.eq("id", id));
+        WebUserRole object = (WebUserRole) getByCriteria(criteria);
+        return object.getName();
     }
     
     public List<WebUserUserRole> getUserRoleMapping(Integer webUserId, Integer webUserRoleId){
@@ -216,4 +224,27 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
 
         return items;
     }
+    
+    public boolean validateUserWithRole(int webUserId, Integer webUserRoleId){
+        
+        boolean bFlag = false;
+        
+        WebUser userObj = userService.getUsers(webUserId);
+        
+
+        
+        
+        if(userObj.getLineOfBusiness()==null
+            && getUserroleName(webUserRoleId).equalsIgnoreCase(WebUserRole.ROLE_CH)){
+            
+                bFlag = true;
+                userObj.setStatus(false);
+                userService.updateObject(userObj);
+        }
+        
+       
+        
+        return bFlag;
+    }
+    
 }

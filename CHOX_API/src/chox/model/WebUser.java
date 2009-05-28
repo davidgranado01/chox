@@ -372,6 +372,26 @@ public class WebUser implements Serializable
                 }
             }
             
+            return bFlag;
+            
+        }
+        
+        public boolean isClaimHandler(){
+
+            boolean bFlag = false;
+            
+            if(this.roles.size()>0){
+                Iterator itr = roles.iterator();
+
+                while(itr.hasNext()) {
+                    WebUserRole webUserrole = (WebUserRole) itr.next();
+
+                    if(webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CH)){
+                        bFlag = true;
+                        break;
+                    }
+                }
+            }
             
             return bFlag;
             

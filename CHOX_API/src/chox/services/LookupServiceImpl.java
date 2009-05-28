@@ -154,21 +154,15 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         try {
 
             List result = new ArrayList();
-
-            System.out.println("getSuppliers - START - 0");
             
             StringBuffer sb = new StringBuffer();
             sb.append("select a.id as id, a.name as name from chorganisation ");
             sb.append("a inner join insurer_chorganisation b on a.id = b.chorganisation_id and b.status=true ");
             sb.append("where a.status=true and b.insurer_id=:pInsurerId");
             
-            System.out.println("getSuppliers - START - 1");
-            
             Map extParameters = new HashMap();
             extParameters.put("pInsurerId", insurerId);
             result = externalQuery(sb.toString(), extParameters, IdLookupItem.class);
-            
-            System.out.println("getSuppliers - START - 2");
             
             for(Object o : result){
                 IdLookupItem data = (IdLookupItem) o;
@@ -177,8 +171,6 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
                 item.setName(data.getName());
                 results.add(item);
             }
-            
-            System.out.println("getSuppliers - START - 3");
             
         } catch (Exception ex) {
             ex.printStackTrace();
