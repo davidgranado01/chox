@@ -69,17 +69,8 @@
             renderTo:'gridviewGrid',
                 width:615,
                 autoHeight:true,
-                enableHdMenu:false,
-                bbar: pagingBar
+                enableHdMenu:false
             });
-
-            var pagingBar = new Ext.PagingToolbar({
-                pageSize: recordPerPage,
-                store: gridviewData,
-                displayInfo: true,
-                displayMsg: 'Displaying records {0} - {1} of {2}',
-                emptyMsg: "No record to display"
-            });    
             
             pageRefresh();
 
@@ -159,9 +150,22 @@
                 
                  $.ajax({
                    url: "doTriggerUserAccountStatus.action?objectId="+gridViewId,
-                   success: loadGridViewList
+                   success: onUpdateUserSubmitResult
                  });
             }
+    }
+    
+    function onUpdateUserSubmitResult(responseText, statusText){
+        
+        responseText = responseText.trim();
+        
+        if(responseText != ""){
+            if(responseText.substring(0,2)=="1:"){
+                confirm("Please assign line of business to the user in order to activate the user!");
+            }
+        }
+        
+        loadGridViewList();
     }
     
     function showUserroleDropDown() {
@@ -202,7 +206,7 @@
             </table>
 
         </div>
-        <div id="gridviewGrid" style="height:530px; overflow:auto;"></div>
+        <div id="gridviewGrid" style="height:567px; overflow:auto;"></div>
     </div>
 </fieldset>
 </div>

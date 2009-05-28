@@ -116,12 +116,26 @@
             
             $.ajax({
                url: "addNewRoleMapping.action?webUserRoleId="+webUserRoleId+"&webUserId="+webUserId,
-               success: doRefreshPage
+               success: onUserroleMappingSubmitResult
             });
+            
         }else{
             $("#CDUserroleMessageBox").html("Please select user role.");
         }
-    }    
+    }  
+    
+    function onUserroleMappingSubmitResult(responseText, statusText){
+        
+        responseText = responseText.trim();
+        
+        if(responseText != ""){
+            if(responseText.substring(0,2)=="1:"){
+                confirm("Please assign line of business to the user in order to activate the user!");
+            }
+        }
+        
+        doRefreshPage();
+    }
     
     function doRefreshPage(){
         $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" />);

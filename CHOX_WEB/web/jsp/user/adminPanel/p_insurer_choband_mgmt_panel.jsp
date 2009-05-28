@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
@@ -27,7 +26,7 @@
             {name:'createdBy'},
             {name:'createdDate'}
         ]
-    });     
+    });
 
     choband_gridviewData = new Ext.data.Store({
         proxy: new Ext.data.HttpProxy
@@ -46,7 +45,7 @@
             {header: "Created Date", width: 150, dataIndex: 'createdDate', sortable: false, resizable: true}
         ],
         renderTo:'choband_gridviewGrid',
-            width:610,
+            width:620,
             autoHeight:true,
             enableHdMenu:false
         });
@@ -98,6 +97,7 @@
 <div id="chobandDiv" name="chobandDiv">
         <div id="organisationGird">
             <div class="gridViewHeader">
+                
                 <table width="100%">
                     <tr>
                         <td></td>
@@ -107,5 +107,4 @@
             </div>
             <div id="choband_gridviewGrid"></div>
         </div>
-        
 </div>

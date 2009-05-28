@@ -102,7 +102,7 @@
            
            adminTabs = new Ext.TabPanel({
            renderTo: 'mainPanel',
-           height:630,
+           height:660,
            autoScroll :true,
            activeTab: adminCurrentTabIndex,
            items:[
@@ -122,7 +122,7 @@
 
         function doBreMappingRefresh(tab){
             handleActivate(tab);
-            onPageRefresh();
+            onChoBandPageRefresh();
         }
         
         function handleActivate(tab){

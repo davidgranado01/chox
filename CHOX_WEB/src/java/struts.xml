@@ -771,6 +771,7 @@
             <result name="UserroleMapping">/jsp/user/adminPanel/p_user_role_mapping.jsp</result>
             <result name="InsurerChoBandMgmt">/jsp/user/adminPanel/p_insurer_choband_mgmt_panel.jsp</result>
             <result name="InsurerChoBandMappingMgmt">/jsp/user/adminPanel/p_insurer_choband_mapping.jsp</result>
+            <result name="InsurerPanelMgmt">/jsp/user/adminPanel/p_insurer_mgmt_panel.jsp</result>
         </action>
         
         <action name="doTriggerUserAccountStatus" class="chox.web.actions.doUserAction" method="triggerStatus">
@@ -785,7 +786,6 @@
             <result name="success">/jsp/p_response.jsp
             </result>
         </action>
-
         <action name="getInsurer" class="chox.web.actions.InsurerAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>         

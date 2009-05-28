@@ -138,7 +138,7 @@
             </table>
 
         </div>        
-        <div id="gridviewGrid" style="height:570px; overflow:auto;"></div>
+        <div id="gridviewGrid" style="height:597px; overflow:auto;"></div>
     </div>
 </fieldset>
 </form> 

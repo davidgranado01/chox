@@ -684,13 +684,31 @@ img.tip-target
     padding-top:6px;
     width:650px;
     background:#dfe8f6;
+    background-color:#dfe8f6;
 }
 
 .subAdminTabCss{
     padding:10px;
     padding-bottom:50px;
-    background:#dfe8f6;  
-    height:650;
+    background:#dfe8f6;
+    background-color:#dfe8f6;   
+    height:570px;
+}
+
+.girdViewObject{
+    height:560px; 
+    overflow:auto;
+    width:310px;
+    
+}
+
+.girdViewLabel{
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px;   
+    font-weight:bold;
+    color: #15428b;
+    padding-bottom:5px; 
+    width:310px;
 }
 
 .label-block
@@ -699,6 +717,7 @@ img.tip-target
     font: normal 12px tahoma,arial,helvetica,sans-serif;
     margin-bottom: 4px;
     padding-bottom: 3px;
+    width:500px;
 }
 
 .label-block .std-label

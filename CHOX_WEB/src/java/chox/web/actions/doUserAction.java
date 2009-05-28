@@ -3,6 +3,7 @@ package chox.web.actions;
 import chox.Util.DateHelper;
 import chox.model.Chorganisation;
 import chox.model.Insurer;
+import chox.model.LineOfBusiness;
 import chox.model.WebUser;
 import chox.services.ChorganisationService;
 import chox.services.InsurerService;
@@ -198,9 +199,20 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         WebUser thisObject = this.service.getUsers(Integer.valueOf(objectId));
         
         if(thisObject.getStatus()){
+            
             thisObject.setStatus(false);
+            
         }else{
-            thisObject.setStatus(true);
+            
+//            System.out.println("triggerStatus : "+thisObject.isClaimHandler());
+//            System.out.println("triggerStatus : "+thisObject.getLineOfBusiness());
+            
+            if(thisObject.isClaimHandler() && thisObject.getLineOfBusiness()==null){
+               actionResult="1:"; 
+            }else{
+                thisObject.setStatus(true);
+            }
+            
         }
         
         try {
@@ -212,6 +224,8 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         } catch (Exception ex) {
             throw ex; 
         }
+        
+        // System.out.println(">>>>>"+actionResult);
         
         return SUCCESS;
     }
@@ -233,12 +247,13 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
                 
             }else{
                 
-                //System.out.println("doUserAction > updateModel > lineOfBusinessId : "+lineOfBusinessId);
+                LineOfBusiness lineofbusiness = null;
                 
-                if(lineOfBusinessId!=null && lineOfBusinessId>0){
-                    model.setLineOfBusiness(lineOfBusinessService.getObject(lineOfBusinessId));
+                if(lineOfBusinessId!=null){   
+                    lineofbusiness = lineOfBusinessService.getObject(lineOfBusinessId);
                 }
                 
+                model.setLineOfBusiness(lineofbusiness);
                 this.service.updateObject(model);  
                 actionResult = "Your changes have been saved.";
             }
@@ -288,23 +303,6 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         
         return bFlag;
     }
-
-    /*
-    private String getUserOrgBaseRole() {
-        
-        String sOutput = "-";
-        
-        if(this.orgTypeId.equalsIgnoreCase("1")){
-            sOutput = WebUserRole.ROLE_CHOX;
-        }else if(this.orgTypeId.equalsIgnoreCase("2")){
-            sOutput = WebUserRole.ROLE_INS;
-        }else if(this.orgTypeId.equalsIgnoreCase("3")){    
-            sOutput = WebUserRole.ROLE_CHO;
-        }
-        
-        return sOutput;
-    }
-    */
     
     public void prepare() throws Exception {
         

@@ -69,7 +69,7 @@
 
 <!--
 <span id="login-error">Error:&nbsp;<s:property value="#session['ACEGI_SECURITY_LAST_EXCEPTION'].message" /></span>
--->
+!-->
 
                                     </s:if>
                             </p>

@@ -64,12 +64,12 @@ public class ApplicationAccessibility {
     public static final String ADMIN_INSURER_COMPANIES = "InsurerCompanies";
     public static final String ADMIN_CREDIT_HIRE_ORG = "CreditHireOrg";
     public static final String ADMIN_USER_MANAGEMENT = "UserManagement";
+    public static final String ADMIN_INSURER_BRE_MANAGEMENT = "InsurerBreManagement";
     
     private HashMap accessibilityMap;
     private AccessibilityService accessibilityService;
     
     public ApplicationAccessibility() {
-        
     }
     
     public TabAccessibility getTabAccessibility(GrantedAuthority[] grantedAuthorities,String claimStatus)

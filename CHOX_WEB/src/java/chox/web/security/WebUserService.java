@@ -22,10 +22,25 @@ public class WebUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException, DataAccessException {
+        
         WebUser u = findByEmail(s);
+        
         if (s == null || "".equals(s.trim()) || u == null) {
             throw new UsernameNotFoundException(s);
         }
+        
+        if(u.getInsurer()!=null){
+            if(!u.getInsurer().isStatus()){
+                throw new UsernameNotFoundException(s);
+            }
+        }
+        
+        if(u.getChorganisation()!=null){
+            if(!u.getChorganisation().isStatus()){
+                throw new UsernameNotFoundException(s);
+            }
+        }
+        
         return new PermissionedUser(u);
     }
 
@@ -36,6 +51,5 @@ public class WebUserService implements UserDetailsService {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
-    
-    
+
 }

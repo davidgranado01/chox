@@ -64,18 +64,17 @@
             reader:ins_cho_gridviewJsonReader      
         });
         
-        
         ins_cho_a_gridviewGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:ins_cho_recordOnclickAdd },
             store: ins_cho_a_gridviewData,
             loadMask: true,
             columns: [
-                {header: "Name", width: 200, dataIndex: 'name', sortable: true, resizable: true},
+                {header: "Name", width: 220, dataIndex: 'name', sortable: true, resizable: true},
                 {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Add</a>"}}                
             ],
             renderTo:'ins_cho_a_gridviewGrid',
-                width:270,
+                width:290,
                 autoHeight:true,
                 enableHdMenu:false
             });
@@ -85,13 +84,13 @@
             store: ins_cho_s_gridviewData,
             loadMask: true,
             columns: [
-                {header: "Name", width: 140, dataIndex: 'chorganisationName', sortable: true, resizable: true},
+                {header: "Name", width: 170, dataIndex: 'chorganisationName', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'chorganisationStatusDesc', sortable: true, resizable: true},
-                {header: "", width: 50, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Remove</a>"}}
             ],
             renderTo:'ins_cho_s_gridviewGrid',
-                width:270,
+                width:290,
                 autoHeight:true,
                 enableHdMenu:false
             });
@@ -170,19 +169,17 @@
 </script>
 
 <div>
-
     <div id="organisationGird">
         <table width="100%">
             <tr>
             <td valign="top">
-                <fieldset class="x-fieldset">
-                <div id="ins_cho_s_gridviewGrid"  style="height:520px; overflow:auto;"></div><legend>Selected Credit Hire</legend>
-                </fieldset>
+                <div class="girdViewLabel">Selected Credit Hire</div>
+                <div id="ins_cho_s_gridviewGrid" class="girdViewObject"></div>
+                
             </td>
             <td valign="top">
-                    <fieldset class="x-fieldset"><legend>Available Credit Hire</legend>
-                <div id="ins_cho_a_gridviewGrid" style="height:520px; overflow:auto;"></div>
-                    </fieldset>
+                <div class="girdViewLabel">Available Credit Hire</div>
+                <div id="ins_cho_a_gridviewGrid" class="girdViewObject"></div>
             </td>
             </tr>
         </table>

@@ -75,12 +75,12 @@
             store: choband_a_gridviewData,
             loadMask: true,
             columns: [
-                {header: "Name", width: 200, dataIndex: 'name', sortable: true, resizable: true},
+                {header: "Name", width: 180, dataIndex: 'name', sortable: true, resizable: true},
                 {header: "", width: 70, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Add</a>"}}                
             ],
             renderTo:'choband_a_gridviewGrid',
-                width:270,
+                width:290,
                 autoHeight:true,
                 enableHdMenu:false
             });
@@ -90,27 +90,28 @@
             store: choband_s_gridviewData,
             loadMask: true,
             columns: [
-                {header: "Name", width: 160, dataIndex: 'chorganisationName', sortable: true, resizable: true},
-                {header: "Status", width: 40, dataIndex: 'chorganisationStatusDesc', sortable: true, resizable: true},
-                {header: "", width: 70, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Name", width: 180, dataIndex: 'chorganisationName', sortable: true, resizable: true},
+                {header: "Active", width: 50, dataIndex: 'chorganisationStatusDesc', sortable: true, resizable: true},
+                {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Remove</a>"}}
             ],
             renderTo:'choband_s_gridviewGrid',
-                width:270,
+                width:290,
                 autoHeight:true,
                 enableHdMenu:false
             });
             
-            onPageRefresh()
+            onChoBandPageRefresh()
     }); 
     
-    function onPageRefresh(){
+    function onChoBandPageRefresh(){
+    
         showBreDropDown();
         doParameterRefresh();
-        choband_loadGridViewList();
+        chobandMapping_loadGridViewList();
     }
     
-    function choband_loadGridViewList(){
+    function chobandMapping_loadGridViewList(){
         
         choband_a_gridviewData.load(
         {
@@ -165,7 +166,7 @@
         doParameterRefresh();
         
         if(selectBandId>0){    
-            choband_loadGridViewList();
+            chobandMapping_loadGridViewList();
         }
     }
     
@@ -175,15 +176,15 @@
     
     function showBreDropDown() {
         $("#chobandDropDownDiv").load("ChoBandDropDownAction.action?orgId=" + selectOrgId);
+        $("#breBandId").val(-1);
     }
     
 </script>
 
 <div>
-
     <div id="organisationGird">
         <div class="gridViewHeader">
-            <table width="100%">
+           <table width="100%">
                 <tr>
                 </tr>
                 <tr>
@@ -194,22 +195,15 @@
                 <tr><td colspan="2"><div id="CDChobandMappingMessageBox" class="errorBox"></div></td></tr>                
             <tr>
                 <td valign="top">
-                    <fieldset class="x-fieldset">
-                    <div id="choband_s_gridviewGrid"  style="height:520px; overflow:auto;"></div><legend>Selected Credit Hire</legend>
-                    </fieldset>
+                    <div class="girdViewLabel">Selected Credit Hire</div>
+                    <div id="choband_s_gridviewGrid" class="girdViewObject"></div>
                 </td>
                 <td valign="top">
-                        <fieldset class="x-fieldset"><legend>Available Credit Hire</legend>
-                    <div id="choband_a_gridviewGrid" style="height:520px; overflow:auto;"></div>
-                        </fieldset>
+                    <div class="girdViewLabel">Available Credit Hire</div>
+                    <div id="choband_a_gridviewGrid" class="girdViewObject"></div>
                 </td>
-            </tr>              
-            </table>
-
+            </tr>
+            </table> 
         </div>
-        
-        <div id="choband_mapping_gridviewGrid" style="height:540px; overflow:auto;"></div>
-        
     </div>
-
 </div>

@@ -3,10 +3,8 @@ package chox.web.actions;
 import chox.model.ChoBand;
 import chox.services.ChoBandService;
 import chox.services.InsurerService;
-import chox.services.LookupService;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-import java.util.List;
 
 public class doInsurerChoBandAction extends BaseAction implements ModelDriven<ChoBand>, Preparable {
 
@@ -81,7 +79,6 @@ public class doInsurerChoBandAction extends BaseAction implements ModelDriven<Ch
                 return SUCCESS;
             }else{
                 this.service.deleteObject(model);
-            
                 actionResult = "D:'"+model.getName()+"' has been deleted";
                 
             }

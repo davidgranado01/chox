@@ -3,12 +3,15 @@
 <script language="JavaScript">
         
         var selectedPanel = 'UserMgmt';
-
         $("#lineOfBusinessId").val(<s:property value="lineOfBusiness.id" />);
         
         $(document).ready(function(){           
             doFormValidation(); 
         }); 
+        
+        function isClaimHandlers(){
+            return <s:property value="claimHandler"/>;
+        }
         
         function doFormValidation(){
             
@@ -22,7 +25,8 @@
                  password:{required:true},
                  confirmNewPassword:{equalTo: "#password"},
                  insurerId:{required:true},
-                 supplierId:{required:true}
+                 supplierId:{required:true},
+                 lineOfBusinessId:{required:isClaimHandlers}
                },
                messages: {
                  email:{required:"You must supply a value for 'Email'", email: "Incorrect email format"},
@@ -31,7 +35,8 @@
                  password:{required:"You must supply a value for 'Password'"},
                  confirmNewPassword:{equalTo: "Your passwords do not match"},
                  insurerId:{required:"Please select 'Insurer Company'"},
-                 supplierId:{required:"Please select 'Credit Hire Organisation'"}
+                 supplierId:{required:"Please select 'Credit Hire Organisation'"},
+                 lineOfBusinessId:{required:"Please select 'Line of Business'"}
                },
                submitHandler: function(form) {
                     // $(form).ajaxSubmit(op);
@@ -94,6 +99,7 @@
     <form id="formUpdateUserDetail" action="user/updateUserDetail.action" class="XXentity-form" onsubmit="return true;" method="post">
     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <input type="hidden" name="orgTypeId" id="orgTypeId" value='<s:property value="orgTypeId"/>'>
+    <input type="hidden" name="isClaimHandler" id="isClaimHandler" value='<s:property value="claimHandler"/>'>
     
             <fieldset class="x-fieldset">
                 <legend>User Details</legend>
@@ -182,7 +188,7 @@
                                     list="lineOfBusinesses" 
                                     listKey="id" 
                                     listValue="name" 
-                                    headerKey="-1"
+                                    headerKey=""
                                     headerValue="--- ALL ---"
                                     emptyOption="false">
                                     </s:select>
@@ -209,7 +215,7 @@
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Active</label>
                         <s:checkbox name="status" value="status" />
-                    </div>        
+                    </div>
                     <div class="chox-form-button">
                         <input type="button" value="Save Changes" onclick="javascript: return doSubmit();"/>
                         <input type="button" value="Cancel" class="cancel" onclick="javascript: return doCancelBack();" />
@@ -217,7 +223,7 @@
                         <div class="chox-form-submit-result"></div>                 
                 </div>
             </fieldset>
-            <div id="CDmessageBox" style="text-align:center"></div>  
+            <div id="CDmessageBox" style="text-align:center" class="errorBox"></div>  
         </form>
 </div>
 

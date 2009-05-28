@@ -127,7 +127,7 @@
     
             <fieldset class="x-fieldset">
                 <legend>Credit Hire Details</legend>
-                <div class="form-container">
+                <div class="form-container" style="height:632px;">
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Name<span class="mandatory">*</span></label>
                         <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>

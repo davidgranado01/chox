@@ -23,7 +23,7 @@
                 <fieldset class="x-fieldset">
                     <legend>Admin Panel</legend>                    
                     
-                        <div style="height:580px;" class="x-panel-bwrap chox-form-container">
+                        <div style="height:620px;" class="x-panel-bwrap chox-form-container" width="200px" >
                             <ul>
 
 <s:if test="adminAccessibility.isInsurerCompaniesAdminAccessibility">
@@ -35,17 +35,19 @@
 <s:if test="adminAccessibility.isUserManagementAdminAccessibility">         
 <li><a href="javascript:renderAdminParameterPanel('UserMgmt');">User Management</a></li>
 </s:if>
-                            </ul>
+<s:if test="adminAccessibility.isInsurerBreManagementAdminAccessibility">         
+<li><a href="javascript:renderAdminParameterPanel('InsurerPanelMgmt');">Business Rule Enginee</a></li>
+</s:if>
+</ul>
                         
                     </div>
                 </fieldset>
             </td>
-            <td width="70%" class="chox-form-right-col">
+            <td class="chox-form-right-col" style="height:620px; ">
                 <div id="admin_param_panel"></div>
             </td>
         </tr>
     </table>
-    
     
 </div>
 
