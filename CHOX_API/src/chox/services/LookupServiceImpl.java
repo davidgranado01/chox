@@ -110,10 +110,18 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
     public List getLineOfBusinesses() {
-        DetachedCriteria criteria = DetachedCriteria.forClass(LineOfBusiness.class);
-        criteria.add(Restrictions.eq("active", true));
-        criteria.addOrder(Order.asc("name"));  
-        return findByCriteria(criteria);
+        
+        WebUser currentUser = getCurrentUser();
+        
+        if(currentUser.isCHOXAdmin()){
+            DetachedCriteria criteria = DetachedCriteria.forClass(LineOfBusiness.class);
+            criteria.add(Restrictions.eq("active", true));
+            criteria.addOrder(Order.asc("name"));  
+            return findByCriteria(criteria);
+        }else{
+            return getLineOfBusinessesByInsurerId(currentUser.getInsurer().getId());
+        }
+
     }
 
     public List getAllLineOfBusinesses() {
@@ -130,11 +138,47 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         return findByCriteria(criteria);
     }
     
+    /*
+    public List getLineOfBusinessesByCreditHireId(int chorganisationId) {
+        
+        List<LineOfBusiness> results = new ArrayList<LineOfBusiness>();
+
+        try {
+
+            List result = new ArrayList();
+            
+            StringBuffer sb = new StringBuffer();
+            sb.append("select b.id as id, c.name ||' - '|| b.name as name from insurer_chorganisation a, line_of_business b, insurer c ");
+            sb.append("where a.insurer_id=b.insurer_id and a.insurer_id=c.id  ");
+            sb.append("and a.status=true and a.chorganisation_id=:pchorganisationId order by c.name asc, b.name asc ");
+        
+            Map extParameters = new HashMap();
+            extParameters.put("pchorganisationId", chorganisationId);
+            result = externalQuery(sb.toString(), extParameters, IdLookupItem.class);
+            
+            for(Object o : result){
+                IdLookupItem data = (IdLookupItem) o;
+                LineOfBusiness item = new LineOfBusiness();
+                item.setId(data.getId());
+                item.setName(data.getName());
+                results.add(item);
+            }
+            
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return results;
+        
+    }
+    */
+    
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // SUPPLIERS / CREDIT HIRES
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
     public List getSuppliers() {
+        
         WebUser currentUser = getCurrentUser();
         
         if(currentUser.isCHOXAdmin()){

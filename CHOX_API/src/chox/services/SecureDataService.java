@@ -28,6 +28,16 @@ public class SecureDataService extends DataService {
                 } else if (this.getSecurityInfoProvider().getIsINS()) {
                     getCurrentSession().enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
                     getCurrentSession().enableFilter("LineOfBusiness_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
+                    
+                    if(isClaimHandlerOnly()){
+                        int lineOfBusinessId = -1;
+                        if(getCurrentUser().getLineOfBusiness()!=null){
+                            lineOfBusinessId = getCurrentUser().getLineOfBusiness().getId();
+                        }
+                        
+                        getCurrentSession().enableFilter("LineOfBusiness_LineOfBusinessFilter").setParameter("lineOfBusinessId", lineOfBusinessId);
+                        getCurrentSession().enableFilter("Claim_LineOfBusinessFilter").setParameter("lineOfBusinessId", lineOfBusinessId);
+                    }
                 }
             }
         }
@@ -37,6 +47,17 @@ public class SecureDataService extends DataService {
         return getSecurityInfoProvider().getCurrentUSer();
     }
 
+    public boolean isClaimHandlerOnly(){
+        
+        boolean bFlag = false;
+        
+        WebUser user = getCurrentUser();
+        if(user.isClaimHandler() && (user.getRoles().size()<=2)){
+            bFlag = true;
+        }
+        return bFlag;
+    }
+    
     public SecurityInfoProvider getSecurityInfoProvider() {
         if (this.securityInforProvider == null) {
             setSecurityInfoProvider(new FakeSecurityInfoProvider());

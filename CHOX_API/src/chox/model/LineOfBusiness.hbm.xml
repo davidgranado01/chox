@@ -19,8 +19,12 @@
     <property column="is_active" name="active" not-null="true"/>
     <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer"/>
     <filter condition=":insurerId = insurer_id" name="LineOfBusiness_InsurerFilter"/>
+    <filter condition=":lineOfBusinessId = id" name="LineOfBusiness_LineOfBusinessFilter"/>
   </class>
   <filter-def name="LineOfBusiness_InsurerFilter">
     <filter-param name="insurerId" type="integer"/>
   </filter-def>
+  <filter-def name="LineOfBusiness_LineOfBusinessFilter">
+    <filter-param name="lineOfBusinessId" type="integer"/>
+  </filter-def>    
 </hibernate-mapping>

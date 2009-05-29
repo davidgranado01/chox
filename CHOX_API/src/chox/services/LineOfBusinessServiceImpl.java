@@ -55,7 +55,6 @@ public class LineOfBusinessServiceImpl extends SecureDataService implements Line
             
             if(insurerId>0){
                 criteria.add(Restrictions.eq("insurer.id", insurerId));
-                
             }
             
             criteria.addOrder(Order.asc("name"));

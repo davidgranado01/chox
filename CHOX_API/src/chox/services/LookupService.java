@@ -21,6 +21,7 @@ public interface LookupService {
     public List getLineOfBusinesses();
     public List getAllLineOfBusinesses();
     public List getLineOfBusinessesByInsurerId(int insurerId);
+    // public List getLineOfBusinessesByCreditHireId(int chorganisationId);
     
     public List getSuppliers();
     public List getSuppliers(Integer insurerId);
