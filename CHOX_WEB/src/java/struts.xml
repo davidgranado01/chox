@@ -909,12 +909,14 @@
         </action>
         
         <action name="UserroleDropDownAction" class="chox.web.actions.WebUserroleDropDownAction">
-            <result>/jsp/user/p_dropdown_userrole.jsp</result>
+            <result>/jsp/user/adminPanel/p_dropdown_userrole.jsp</result>
         </action>
         <action name="ChoBandDropDownAction" class="chox.web.actions.ChoBandDropDownAction">
-            <result>/jsp/user/p_dropdown_bre.jsp</result>
+            <result>/jsp/user/adminPanel/p_dropdown_bre.jsp</result>
         </action>  
-        
+        <action name="LineOfBusinessDropDownAction" class="chox.web.actions.LineOfBusinessDropDownAction">
+            <result>/jsp/user/p_search_dropdown_lineOfbusiness.jsp</result>
+        </action>          
     </package>
     <include file="config-browser.xml"/>
 </struts>

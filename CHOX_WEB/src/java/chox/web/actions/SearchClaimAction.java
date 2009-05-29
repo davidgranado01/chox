@@ -22,7 +22,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     private Map session;
     private List statuses;
-    private List lineOfBusiness;
+    //private List lineOfBusiness;
     private List insurers;
     private List suppliers;
     private LookupService lookupService;
@@ -38,7 +38,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         }
         return statuses;
     }
-
+/*
     public List getLineOfBusinesses() {
 
         if (lineOfBusiness == null) {
@@ -46,7 +46,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         }
         return lineOfBusiness;
     }
-
+*/
     public List getInsurers() {
         if (insurers == null) {
             insurers = this.lookupService.getInsurers();

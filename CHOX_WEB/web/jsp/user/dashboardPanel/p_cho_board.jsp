@@ -1,8 +1,3 @@
-<%-- 
-    Document   : insurer_board
-    Created on : 02-Feb-2009, 16:19:35
-    Author     : Emmanuel
---%>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
@@ -31,6 +26,7 @@
         new Ext.ToolTip({target: 'tip19',html: 'Description for Number of Invoices Payment Received'});
         new Ext.ToolTip({target: 'tip20',html: 'Description for Value of Invoices Payment Received'});         
         new Ext.ToolTip({target: 'tip99',html: 'Description for Number of Pending Claims'});
+        
         Ext.QuickTips.init();
 });    
     

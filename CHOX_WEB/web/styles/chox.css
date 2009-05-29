@@ -261,7 +261,7 @@ div.submit-error
 
 div.excel-export
 {
-    
+    color: #15428b; 
     margin-top:5px;
     text-align:right;
     font-size:11px;
@@ -513,12 +513,11 @@ table.dashboard th
     font-size: 12px; 
     font-weight:bold;  
     width:100%;
-    border-bottom:1px #ccc solid;  
-    
+    border-bottom:1px #ccc solid;
 }
 
 table.dashboard
-{    
+{   
     background: #dfe8f6; 
     width:99.6%;
     border-collapse:collapse;
@@ -549,7 +548,6 @@ img.tip-target
     font-size: 12px;
     font-weight:bold;
     background: #EDEDED;
-    
 }
 
 .extraActionClass{

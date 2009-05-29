@@ -7,7 +7,12 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script language="JavaScript">  
-        
+    
+    $(document).ready(function(){
+        doInsuereSearchSelectOnChange();
+    }); 
+    
+    
     Ext.onReady(function(){                              
     
         var claimUploadDateFromPicker = new Ext.form.DateField({
@@ -73,80 +78,108 @@
         
     }); 
     
+    function doInsuereSearchSelectOnChange(){
+        var selectedInsurerId = -1;
+        
+        if($("#insurerId").val()!=null){
+            selectedInsurerId = $("#insurerId").val();
+        }
+        
+        $("#searchScreenChobandDropDownDiv").load("LineOfBusinessDropDownAction.action?orgId=" + selectedInsurerId);
+    }
+    
 </script>
 <div>
     
     <table id="searchForm" cellpadding="0" cellspacing="0" class="searchForm" border="0">
-        
         
         <tr>
             <td><label>Supplier Reference</label></td>
             <td><s:textfield name="supplierReference"/></td>
             <td><label>Claim Number</label></td>
             <td><s:textfield name="claimNumber"/></td>
-            <td><label>Invoice Number</label></td>
-            <td><s:textfield name="invoiceNumber"/></td>    
         </tr>    
         
         <tr>
-            
+            <td><label>Invoice Number</label></td>
+            <td><s:textfield name="invoiceNumber"/></td> 
             <td><label>VRN</label></td><td><s:textfield name="vrn" /></td>
-            <td><label>Status</label></td><td><s:select name="status" list="statuses" headerKey="" listKey="value" listValue="text"
-                                                            headerValue="--- ALL ---" headerKey=""
-                                                        emptyOption="false" value="status"></s:select></td>
-            <td><label>Line of Business</label></td><td><s:select name="lineOfBusiness" list="lineOfBusinesses" listKey="id" listValue="name" headerKey="-1"
-                                                                      headerValue="--- ALL ---"
-                                                                  emptyOption="false" value="lineOfBusinessId"></s:select></td> 
-            
+        </tr>  
+        
+        
+        <tr>
+            <td nowrap><label>Claim Upload Date From</label></td><td><div id="claimUploadDateFromDiv" /></td>
+            <td nowrap><label>Claim Upload Date To</label></td><td><div id="claimUploadDateToDiv" /></td>
         </tr>
         <tr>
-            <td nowrap><label>Claim Upload Date From</label></td><td colspan="2"><div id="claimUploadDateFromDiv" /></td>
-            <td nowrap><label>Claim Upload Date To</label></td><td colspan="2"><div id="claimUploadDateToDiv" /></td>
-        </tr>
-        <tr>
-            <td nowrap><label>Invoice Upload Date From</label></td><td colspan="2"><div id="invoiceUploadDateFromDiv" /></td>
-            <td nowrap><label>Invoice Upload Date To</label></td><td colspan="2"><div id="invoiceUploadDateToDiv" /></td>
+            <td nowrap><label>Invoice Upload Date From</label></td><td><div id="invoiceUploadDateFromDiv" /></td>
+            <td nowrap><label>Invoice Upload Date To</label></td><td><div id="invoiceUploadDateToDiv" /></td>
         </tr>                        
         <tr>
-            <td nowrap><label>Hire Date From</label></td><td colspan="2"><div id="hireDateFromDiv" /></td>
-            <td nowrap><label>Hire Date To</label></td><td colspan="2"><div id="hireDateToDiv"/></td>
+            <td nowrap><label>Hire Date From</label></td><td><div id="hireDateFromDiv" /></td>
+            <td nowrap><label>Hire Date To</label></td><td><div id="hireDateToDiv"/></td>
         </tr>
 
         <tr>
-            <s:if test="isInsurer">
-                <td><label>Supplier Name</label></td><td colspan="2">
-                    <s:select 
-                    name="supplierId" 
-                    list="suppliers"
-                    listKey="id"
-                    listValue="name"
-                    headerKey="-1"
-                    headerValue="--- ALL ---"
-                    emptyOption="false">
-                    </s:select></td>
+            <s:if test="isInsurer || isChoxAdmin">
+                <td><label>Supplier Name</label></td>
+                <td>
+                        <s:select 
+                        name="supplierId" 
+                        list="suppliers"
+                        listKey="id"
+                        listValue="name"
+                        headerKey="-1"
+                        headerValue="--- ALL ---"
+                        emptyOption="false">
+                        </s:select>
+                    </td>
             </s:if>
             <s:else>
-                <td colspan="3">&nbsp;</td>
+                <td><label></label></td>
+                <td></td>
             </s:else>
             
-            <s:if test="isCHO">
-                <td><label>Insurer Name</label></td><td colspan="2">
+            <td><label>Status</label></td><td>
                 <s:select 
-                name="insurerId" 
-                list="insurers" 
-                listKey="id" 
-                listValue="name" 
-                headerKey="-1"
-                headerValue="--- ALL ---"
-                emptyOption="false">
-                </s:select>  </td>
-            </s:if>   
+                    name="status" 
+                    list="statuses" 
+                    headerKey="" 
+                    listKey="value" 
+                    listValue="text"
+                    headerValue="--- ALL ---" headerKey=""
+                    emptyOption="false" 
+                    value="status">
+                </s:select></td>            
             
+        </tr>
+<tr>
+            
+            <s:if test="isCHO || isChoxAdmin">
+                <td><label>Insurer Name</label></td>
+                <td>
+                    <s:select 
+                    name="insurerId" 
+                    list="insurers" 
+                    listKey="id" 
+                    listValue="name" 
+                    headerKey="-1"
+                    headerValue="--- ALL ---"
+                    onchange="javascript: doInsuereSearchSelectOnChange();"
+                    emptyOption="false">
+                    </s:select>
+                </td>
+            </s:if>   
             <s:else>
-                <td colspan="3">&nbsp;</td>
-            </s:else> 
-        </tr>                 
-        
+                 <td><label></label></td>
+                <td></td>
+            </s:else>
+
+            <td><label>Line of Business</label></td><td>
+                <div id="searchScreenChobandDropDownDiv"></div>   
+            </td> 
+            
+        </tr>        
     </table>
     <div class="buttonPanel">
         <div>

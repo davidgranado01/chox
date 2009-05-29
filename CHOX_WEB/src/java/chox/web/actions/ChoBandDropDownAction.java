@@ -1,7 +1,6 @@
 package chox.web.actions;
 
 import chox.services.ChoBandService;
-import chox.services.LookupService;
 import java.util.List;
 
 public class ChoBandDropDownAction extends BaseAction{
@@ -29,7 +28,6 @@ public class ChoBandDropDownAction extends BaseAction{
     @Override
     public String execute() throws Exception {
         this.breBands = services.getInsurerChoBand(getOrgId());
-        return SUCCESS;
-        
+        return SUCCESS;     
     }    
 }

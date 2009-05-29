@@ -595,8 +595,8 @@
 
 
             <div id="tabPanel"></div>
-
-            <s:if test="menuAccessibility.isDashBoardMenuAccessibility">                    
+            
+            <s:if test="menuAccessibility.isDashBoardMenuAccessibility">
             <div id="boardPanelTab" class="x-hide-display">
                 <div id="dashboardPanel">
                     <s:if test="isCHO">
@@ -606,6 +606,7 @@
                         <s:action name="showInsurerBoardHeader" namespace="/user" executeResult="true" />
                     </s:if> 
                 </div>
+                
             </div>
             </s:if>
             
@@ -615,7 +616,7 @@
                 </div>
             </div>
               
-            <div id="searchPanelTab" style="height:230px; background: #dfe8f6;" class="x-hide-display">
+            <div id="searchPanelTab" style="height:250px; background: #dfe8f6;" class="x-hide-display">
                 <div id="searchPanel">
                     <s:action name="searchClaim" namespace="/user" executeResult="true" /> 
                 </div>
