@@ -182,7 +182,7 @@ ALTER TABLE chorganisation ALTER COLUMN phone SET STORAGE EXTENDED;
 ------------------------------------------------------------------------------------------------
 
 
-delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'tab.Payment%')
+delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'tab.Payment%');
 
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 46, (select max(id)+1 from accessibility_item));
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, 47, (select max(id)+1 from accessibility_item));
