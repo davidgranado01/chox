@@ -74,10 +74,11 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
     public List getLineOfBusinesses() {
         
+        // System.out.println(" >>>>>>>>> getLineOfBusinesses : "+orgTypeId);
         if(orgTypeId.equalsIgnoreCase("2")){
             lineOfBusinesses = this.lookupService.getLineOfBusinessesByInsurerId(model.getInsurer().getId());
         }
-        
+        // System.out.println(" >>>>>>>>> getLineOfBusinesses : "+lineOfBusinesses.size());
         return lineOfBusinesses;
     }
 
@@ -204,9 +205,6 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
             
         }else{
             
-//            System.out.println("triggerStatus : "+thisObject.isClaimHandler());
-//            System.out.println("triggerStatus : "+thisObject.getLineOfBusiness());
-            
             if(thisObject.isClaimHandler() && thisObject.getLineOfBusiness()==null){
                actionResult="1:"; 
             }else{
@@ -224,8 +222,6 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         } catch (Exception ex) {
             throw ex; 
         }
-        
-        // System.out.println(">>>>>"+actionResult);
         
         return SUCCESS;
     }
