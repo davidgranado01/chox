@@ -75,6 +75,12 @@ public class WebUser implements Serializable
         protected Set roles;
         protected String organisationName;
         protected LineOfBusiness lineOfBusiness;
+        protected boolean claimHandler = false;
+
+    public void setClaimHandler(boolean claimHandler) {
+        this.claimHandler = claimHandler;
+    }
+        
 
 	/**
 	 * Method 'WebUser'

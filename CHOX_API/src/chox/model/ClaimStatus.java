@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package chox.model;
 
 import java.util.ArrayList;
@@ -23,14 +19,15 @@ public class ClaimStatus {
     public static final String CONTESTED_INVOICE_REF_TO_CHO = "ContestedInvoiceReferredToCHO";
     public static final String INVOICE_REJECTED_ACCEPTED = "InvoiceRejectionAccepted";
     public static final String AWAITING_INVOICE_PAYMENT = "AwaitingInvoicePayment";
-    public static final String INVOICE_PAYMENT_LOGGED = "InvoicePaymentLogged";    // NEW STATUS
-    public static final String CLAIM_REF_TO_ENG = "ClaimReferredToEngineer";    // NEW STATUS @ 09 Dec 2008
-    public static final String CLAIM_REFERRED_TO_FNOL = "ClaimReferredToFNOL"; // NEW STATUS, MANTIS ID 0000350
-    public static final String CLAIM_CLOSED = "ClaimClosed"; // NEW STATUS, MANTIS ID 0000386
-    public static final String CLAIM_PENDING = "ClaimPending"; // NEW STATUS, Phase 2 Minor Enhancement -2
+    public static final String INVOICE_PAYMENT_LOGGED = "InvoicePaymentLogged";
+    public static final String CLAIM_REF_TO_ENG = "ClaimReferredToEngineer";
+    public static final String CLAIM_REFERRED_TO_FNOL = "ClaimReferredToFNOL";
+    public static final String CLAIM_CLOSED = "ClaimClosed";
+    public static final String CLAIM_PENDING = "ClaimPending";
     public static final String INVOICE_REF_TO_CH = "InvoiceReferredToClaimsHandler";
     public static final String INVOICE_PAYMENT_RECEIVED = "PaymentReceived";
     public static final String CLAIM_UPDATE_BY_ENG = "ClaimUpdatedByEngineer";
+    public static final String INVOICE_REF_TO_ENG = "InvoiceReferredToEngineer";
 
     public static List<String> getStatus() {
         List<String> status = new ArrayList<String>();
@@ -46,6 +43,7 @@ public class ClaimStatus {
         status.add(INVOICE_ESCALATED);
         status.add(CONTESTED_INVOICE_REF_TO_INS);
         status.add(CONTESTED_INVOICE_REF_TO_CHO);
+        status.add(INVOICE_REF_TO_ENG);
         status.add(INVOICE_REJECTED_ACCEPTED);
         status.add(AWAITING_INVOICE_PAYMENT);
         status.add(INVOICE_PAYMENT_LOGGED);
@@ -57,20 +55,5 @@ public class ClaimStatus {
         status.add(INVOICE_PAYMENT_RECEIVED);
         status.add(CLAIM_UPDATE_BY_ENG);
         return status;
-    }
-
-//    public static String getUploadStatus(String sClaimStatus) {
-//        String rStatus = "";
-//        if (sClaimStatus.equalsIgnoreCase(INVOICE_APPROVED)) {
-//            rStatus = "Invoice Approved";
-//        } else if (sClaimStatus.equalsIgnoreCase(INVOICE_ESCALATED)) {
-//            rStatus = "Invoice Escalated";
-//        } else if (sClaimStatus.equalsIgnoreCase(AWAITING_PAYMENT_PACK)) {
-//            rStatus = "Awaiting Payment Pack";
-//        } else if (sClaimStatus.equalsIgnoreCase(INVOICE_CALCULATION_INCORRECT)) {
-//            rStatus = "Invoice Data Calculation Incorrect";
-//        }
-//        return rStatus;
-//    }
-    
+    }    
 }

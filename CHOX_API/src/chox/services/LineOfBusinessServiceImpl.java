@@ -40,7 +40,7 @@ public class LineOfBusinessServiceImpl extends SecureDataService implements Line
     public void createDefaultRecord(Insurer insurer){
         LineOfBusiness object = new LineOfBusiness();
         object.setInsurer(insurer);
-        object.setName("Default");
+        object.setName(insurer.getName());
         object.setActive(true);
         updateObject(object);
     }

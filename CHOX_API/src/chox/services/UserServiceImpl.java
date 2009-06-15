@@ -1,7 +1,6 @@
 package chox.services;
 
 import chox.model.WebUser;
-import chox.model.WebUserRole;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
@@ -16,7 +15,7 @@ public class UserServiceImpl extends DataService implements UserService {
 
     public WebUser findByEmail(String email) {
 
-        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("email", email));
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("email", email).ignoreCase());
         criteria.add(Restrictions.eq("status", true));
         WebUser result = (WebUser) getByCriteria(criteria);
         return result;
@@ -26,7 +25,7 @@ public class UserServiceImpl extends DataService implements UserService {
         
         boolean bFlag = true;
         
-        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("email", email));
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("email", email).ignoreCase());
         WebUser result = (WebUser) getByCriteria(criteria);
         
         if(result==null){

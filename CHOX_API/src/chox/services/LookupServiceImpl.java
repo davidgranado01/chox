@@ -14,8 +14,6 @@ import chox.model.LineOfBusiness;
 import chox.model.LookupItem;
 import chox.model.VehicleClass;
 import chox.model.WebUser;
-import chox.model.WebUserRole;
-import chox.model.WebUserUserRole;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -121,7 +119,6 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         }else{
             return getLineOfBusinessesByInsurerId(currentUser.getInsurer().getId());
         }
-
     }
 
     public List getAllLineOfBusinesses() {
