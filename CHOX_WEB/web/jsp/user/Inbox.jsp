@@ -3,27 +3,22 @@
     Created on : 10-Nov-2008, 22:13:54
     Author     : Emmanuel
 --%>
-
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <head>
     <title>IDAS-CHOX</title>
-    
     <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
     <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
-    
     <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery-1.2.6.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.form.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/ext-jquery-adapter.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.blockUI.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.timer.js"></script>  
-    
+    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.timer.js"></script>      
     <script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
     <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script> 
     <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script> 
-    
 </head>
 
 <script >
@@ -318,6 +313,7 @@
             var selectedRecords = sm2.getSelections();
                 
             <s:if test="IsApprovePaymentAccessibile"> 
+                    
                 if(isSelectedRecordsMatchGivenStatus(selectedRecords,'AwaitingInvoicePayment'))
                 {   
                     approvedInvoicesPaymentAction.enable(); 
@@ -326,9 +322,12 @@
                 {
                     approvedInvoicesPaymentAction.disable(); 
                 }  
+                
             </s:if>
             <s:else>
+                
                 approvedInvoicesPaymentAction.disable();
+                
             </s:else>   
 
             <s:if test="IsClearBREApprovedInvoicesForPaymentAccessibile"> 
@@ -409,29 +408,27 @@
     
     function setupTabPanels()
     {
-        //var getParams = document.URL.split("?");
-        //var params = Ext.urlDecode(getParams[getParams.length - 1]);
-        //currentTabIndex = params.tab == null ? 0 : params.tab;
-        currentTabIndex = <s:property value="tab" />;
-       
-        tabs = new Ext.TabPanel({
-        renderTo: 'tabPanel',
-        autoheight:true,
-        activeTab: currentTabIndex,
-        items:[
+         
+       currentTabIndex = <s:property value="tab" />;
+           
+       tabs = new Ext.TabPanel({
+       renderTo: 'tabPanel',
+       autoheight:true,
+       activeTab: currentTabIndex,
+       items:[
              <s:if test="menuAccessibility.isDashBoardMenuAccessibility">                   
-                 {contentEl:'boardPanelTab', title:'Dashboard', listeners: {activate: handleActivate}},
+                {contentEl:'boardPanelTab', title:'Dashboard', listeners: {activate: handleActivate}},
             </s:if>
-                {contentEl:'filterPanelTab', title:'Inbox',listeners: {activate: handleActivate}},
-                {contentEl:'searchPanelTab', title:'Search',listeners: {activate: handleActivate}}
+                {contentEl:'filterPanelTab', title:'Inbox', listeners: {activate: handleActivate}},
+                {contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}}
             <s:if test="menuAccessibility.isReportMenuAccessibility">                   
-                ,{contentEl:'reportPanelTab', title:'Reports',listeners: {activate: handleActivate}}
+                ,{contentEl:'reportPanelTab', title:'Reports', listeners: {activate: handleActivate}}
             </s:if>
             <s:if test="menuAccessibility.isAdminMenuAccessibility">                   
-                ,{contentEl:'adminPanelTab', title:'Admin',listeners: {activate: handleActivate}}
-            </s:if>                
+                ,{contentEl:'adminPanelTab', title:'Admin', listeners: {activate: handleActivate}}
+            </s:if> 
             ]
-            });
+       });
     }
 
     function random_number(){
@@ -463,17 +460,6 @@
 
         t=setTimeout("refreshViewingStatus()",4000);
     }
-
-    Ext.onReady(function(){        
-        setupTabPanels();
-        setupGrid();
-        
-        if(!<s:property value="isChoxAdmin"/>){
-            refreshViewingStatus();
-        }
-        
-        loadDataFromSession();
-    }); 
     
     function loadDataFromSession()
     {
@@ -495,25 +481,6 @@
     
     function handleActivate(tab){
         
-        /*
-        if(tab.title == 'Reports'){
-            ds.load({ params:{start:0,limit:0}});
-            $("#gridPanel").hide();            
-        }
-        else if(tab.title == 'Dashboard'){
-            ds.load({ params:{start:0,limit:0}});
-            $("#gridPanel").hide();  
-        }
-        else if(tab.title == 'Search'){
-            ds.load({ params:{start:0,limit:0}});
-            $("#gridPanel").show();  
-        }
-        else if(tab.title == 'Inbox'){
-            ds.load({ params:{start:0,limit:0}});
-            $("#gridPanel").show(); 
-        }
-        */
-        
         $("#gridPanel").hide();
         
         if(tab.title == 'Inbox' || tab.title == 'Search'){
@@ -526,9 +493,14 @@
             currentTabIndex = tabs.items.indexOf(tabs.getActiveTab());
         }  
         
+        <s:if test="menuAccessibility.isAdminMenuAccessibility">
+        $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=NONE");
+        </s:if>
+            
         $('.x-grid3-hd-checker').removeClass('x-grid3-hd-checker-on');
     }
     
+    /*
     function clearForm(form) {
         // iterate over all of the inputs for the form
         // element that was passed in
@@ -549,7 +521,8 @@
                 this.selectedIndex = -1;
         });
     };
-    
+    */
+   
     function refreshFilterPanel()
     {
         $.get("getFilterRecordCounters.action", function(content){
@@ -559,6 +532,18 @@
         }); 
     }
 
+    Ext.onReady(function(){
+        
+        setupTabPanels();
+        setupGrid();
+        
+        if(!<s:property value="isChoxAdmin"/>){
+            refreshViewingStatus();
+        }
+        
+        loadDataFromSession();
+    }); 
+    
 </script>
 
 <body>
@@ -593,23 +578,21 @@
                 </table>   
             </div>
 
-
             <div id="tabPanel"></div>
             
             <s:if test="menuAccessibility.isDashBoardMenuAccessibility">
-            <div id="boardPanelTab" class="x-hide-display">
-                <div id="dashboardPanel">
-                    <s:if test="isCHO">
-                        <s:action name="showChoBoardHeader" namespace="/user" executeResult="true" />
-                    </s:if>
-                    <s:if test="isInsurer">
-                        <s:action name="showInsurerBoardHeader" namespace="/user" executeResult="true" />
-                    </s:if> 
+                <div id="boardPanelTab" class="x-hide-display">
+                    <div id="boardPanel">
+                        <s:if test="isInsurer">
+                            <s:action name="showInsurerBoardHeader" namespace="/user" executeResult="true" />
+                        </s:if> 
+                        <s:if test="isCHO">
+                            <s:action name="showChoBoardHeader" namespace="/user" executeResult="true" />
+                        </s:if>
+                    </div>
                 </div>
-                
-            </div>
             </s:if>
-            
+    
             <div id="filterPanelTab" class="x-hide-display">
                 <div id="filterPanel">
                     <s:action name="getFilterRecordCounters" namespace="/user" executeResult="true" />
@@ -632,7 +615,7 @@
            
             <s:if test="menuAccessibility.isAdminMenuAccessibility">
             <div id="adminPanelTab" class="x-hide-display">
-                <div id="reportPanel">
+                <div id="adminPanel">
                     <s:action name="adminFunction" namespace="/user" executeResult="true" /> 
                 </div>
             </div>

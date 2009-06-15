@@ -22,12 +22,13 @@
             
             var selectedValue = '-1';
             var selected = $("#dashboardInsurerId option:selected");           
+            
             if(selected.val() != ""){  
                 selectedValue = selected.val();
             }           
             
+            $("#resultHolder").block();
             loadData(selectedValue);
-            
         }  
         
         function loadData(insurerId)
@@ -40,7 +41,7 @@
     </script>  
 </head>
 
-<div class="x-panel-bwrap chox-form-container"> 
+<div class="x-panel-bwrap chox-form-container" id="dashboardId"> 
     <fieldset class="x-fieldset">
         <legend>CHO Admin Dashboard</legend>
         
@@ -67,7 +68,7 @@
                         emptyOption="false"></s:select></td>                         
                 </tr>                       
             </table>
-            <div style="height:575px; width:900px" id="resultHolder"></div>
+            <div style="height:575px; width:900px" id="resultHolder" name="resultHolder"></div>
         </div>        
         
     </fieldset>

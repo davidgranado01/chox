@@ -5,8 +5,7 @@
 --%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<head>
-    
+
     <script>
         $(document).ready(function(){  
             
@@ -25,7 +24,7 @@
             if(selected.val() != ""){  
                 selectedValue = selected.val();
             }           
-            
+            $("#resultHolder").block();
             loadData(selectedValue);
         }
         
@@ -37,7 +36,7 @@
         }
 
     </script>
-</head>
+
 
 <div class="x-panel-bwrap chox-form-container">
     <fieldset class="x-fieldset">
@@ -66,9 +65,7 @@
                 emptyOption="false"></s:select></td>              
             </tr>
             </table>
-            
-            <div style="height:595px; width:900px" id="resultHolder"></div>
-            
+            <div style="height:595px; width:900px" id="resultHolder" name="resultHolder"></div>
         </div>
         
     </fieldset>

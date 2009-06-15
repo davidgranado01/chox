@@ -56,7 +56,7 @@
                      required:"You must supply a value for 'Address 2'"
                  },
                  address4:{
-                     required:"You must supply a value for 'State'"
+                     required:"You must supply a value for 'County'"
                  },
                  address5:{
                      required:"You must supply a value for 'Country'"
@@ -157,7 +157,7 @@
                         <input type="text" class="chox-ttxt" id="CCDPostcode" name="postcode" value="<s:property value="postcode" />"/>
                     </div>                      
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">State<span class="mandatory">*</span></label>
+                        <label class="chox-form-std-label">County<span class="mandatory">*</span></label>
                         <input type="text" class="chox-ttxt" id="CCDAddress4" name="address4" value="<s:property value="address4" />"/>
                     </div>  
                     <div class="chox-form-item">

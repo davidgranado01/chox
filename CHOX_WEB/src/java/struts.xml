@@ -154,6 +154,8 @@
             </result>
             <result name="approveContestedInvoice">/jsp/user/actionPanel/p_approveContestedInvoice.jsp
             </result>
+            <result name="approveContestedInvoiceToEng">/jsp/user/actionPanel/p_approveContestedInvoiceToEng.jsp
+            </result>
             <result name="resubmitOrAcceptContestedInvoice">/jsp/user/actionPanel/p_resubmitOrAcceptContestedInvoice.jsp
             </result>
             <result name="logInvoicePayment">/jsp/user/actionPanel/p_logInvoicePayment.jsp
@@ -338,6 +340,19 @@
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
+        <action name="ContestedInvoiceByCH" class="chox.web.actions.ClaimAction" method="contestedInvoiceByCH">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
+        
         <action name="resubmitOrAcceptContestedInvoice" class="chox.web.actions.ClaimAction" method="resubmitOrAcceptContestedInvoice">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
@@ -772,6 +787,7 @@
             <result name="InsurerChoBandMgmt">/jsp/user/adminPanel/p_insurer_choband_mgmt_panel.jsp</result>
             <result name="InsurerChoBandMappingMgmt">/jsp/user/adminPanel/p_insurer_choband_mapping.jsp</result>
             <result name="InsurerPanelMgmt">/jsp/user/adminPanel/p_insurer_mgmt_panel.jsp</result>
+            <result name="NONE">/jsp/p_response.jsp</result>
         </action>
         
         <action name="doTriggerUserAccountStatus" class="chox.web.actions.doUserAction" method="triggerStatus">
@@ -916,7 +932,10 @@
         </action>  
         <action name="LineOfBusinessDropDownAction" class="chox.web.actions.LineOfBusinessDropDownAction">
             <result>/jsp/user/p_search_dropdown_lineOfbusiness.jsp</result>
-        </action>          
+        </action>    
+        <action name="LineOfBusinessDropDownByIdAction" class="chox.web.actions.LineOfBusinessDropDownAction">
+            <result>/jsp/user/p_search_dropdown_lineOfbusiness_id.jsp</result>
+        </action>         
     </package>
     <include file="config-browser.xml"/>
 </struts>

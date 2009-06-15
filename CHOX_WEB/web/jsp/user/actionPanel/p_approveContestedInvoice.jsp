@@ -80,9 +80,7 @@
         
         <div>
             <div class="status-info">
-                Please review the 'History' tab for details on why the claim has been rejected and review the details/comments on the 'Notes' tab regarding the previous decision to reject. 
-                Please decide on whether to progress the claim for payment or reject the claim. 
-                Please provide appropriate notes on the 'Notes' tab regarding the decision made.
+                Please review the 'History' tab for details on why the claim has been rejected and review the details/comments on the 'Notes' tab regarding the previous decision to reject. Please decide on whether to progress the claim for payment, refer the claim to an Engineer or reject the claim. Please provide appropriate notes on the 'Notes' tab regarding the decision made.
             </div>
             <div class="status-control-set">
                 <table>
@@ -112,7 +110,7 @@
                         <td colspan="4" class="choice"> 
                             <input type="submit" value="Reject Invoice"  onclick="return doRejectClaim();" />
                             <input type="submit" value="Clear For Payment" onclick="return doSubmit('accept');"  />  
-                            <input type="submit" value="Refer To Claims Handler" onclick="return doSubmit('referCH');"  />  
+                            <input type="submit" value="Refer To Engineer" onclick="return doSubmit('InvReferEng');"  />  
                         </td>
                     </tr>
                 </table>

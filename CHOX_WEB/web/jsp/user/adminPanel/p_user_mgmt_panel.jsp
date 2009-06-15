@@ -17,8 +17,8 @@
     var selectOrgTypeId = <s:property value="selectOrgTypeId" />;
     var selectOrgId = <s:property value="selectOrgId" />;
     
-    Ext.onReady(function(){
     
+    Ext.onReady(function(){
     
        if(selectOrgTypeId>0){
             $("#orgTypeId").val(selectOrgTypeId);
@@ -197,7 +197,7 @@
 </s:else>
 
 <div id="userroleDropDownDiv" class="label-block"></div>
- 
+
 <input name="orgId" id="orgId" type="hidden" value="<s:property value="orgId" />">
 
                     </td>
@@ -209,4 +209,3 @@
         <div id="gridviewGrid" style="height:567px; overflow:auto;"></div>
     </div>
 </fieldset>
-</div>

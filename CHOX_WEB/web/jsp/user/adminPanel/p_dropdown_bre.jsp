@@ -8,6 +8,8 @@
     list="breBands" 
     listKey="id" 
     listValue="name" 
+    headerKey="-1"
+    headerValue="-- Please Select --"    
     onchange="javascript: doBRESelectOnChange();"
     emptyOption="false">
 </s:select>

@@ -88,6 +88,23 @@
         $("#searchScreenChobandDropDownDiv").load("LineOfBusinessDropDownAction.action?orgId=" + selectedInsurerId);
     }
     
+   
+   function clearForm(){
+   
+        $('#searchForm').contents().find(':input').each(function() {
+                var type = this.type;
+                var tag = this.tagName.toLowerCase();
+
+                  if (type == 'text' || type == 'password' || tag == 'textarea'){
+                      this.value = "";
+                  }else if(tag == 'select'){
+                      this.selectedIndex = 0;
+                  }
+        });
+
+    }
+
+    
 </script>
 <div>
     
@@ -104,8 +121,7 @@
             <td><label>Invoice Number</label></td>
             <td><s:textfield name="invoiceNumber"/></td> 
             <td><label>VRN</label></td><td><s:textfield name="vrn" /></td>
-        </tr>  
-        
+        </tr>
         
         <tr>
             <td nowrap><label>Claim Upload Date From</label></td><td><div id="claimUploadDateFromDiv" /></td>
@@ -184,6 +200,7 @@
     <div class="buttonPanel">
         <div>
             <input type="button" onclick="javascript:searchClaim();" value="Search" />
+            <input type="reset" onclick="javascript:clearForm();" value="Reset" />
         </div>
     </div>
 </div>

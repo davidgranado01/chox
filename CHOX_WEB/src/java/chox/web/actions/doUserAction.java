@@ -2,6 +2,7 @@ package chox.web.actions;
 
 import chox.Util.DateHelper;
 import chox.model.Chorganisation;
+import chox.model.IdLookupItem;
 import chox.model.Insurer;
 import chox.model.LineOfBusiness;
 import chox.model.WebUser;
@@ -25,7 +26,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     private String mode;
     private List insurers;
     private List suppliers;
-    private List lineOfBusinesses;
+    private List lineOfBusinesses = null;
     private LookupService lookupService;
     private InsurerService insurerService;
     private ChorganisationService chorganisationService;
@@ -74,11 +75,15 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
     public List getLineOfBusinesses() {
         
-        // System.out.println(" >>>>>>>>> getLineOfBusinesses : "+orgTypeId);
         if(orgTypeId.equalsIgnoreCase("2")){
             lineOfBusinesses = this.lookupService.getLineOfBusinessesByInsurerId(model.getInsurer().getId());
         }
-        // System.out.println(" >>>>>>>>> getLineOfBusinesses : "+lineOfBusinesses.size());
+        
+        for(Object o : lineOfBusinesses){
+                
+            IdLookupItem data = (IdLookupItem) o;
+        }
+        
         return lineOfBusinesses;
     }
 
@@ -237,19 +242,21 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
             model.setLastModifiedBy(this.getAuthenticatedUser().getUser());
             model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());  
             
+            LineOfBusiness lineofbusiness = null;
+            
+            if(lineOfBusinessId!=null && lineOfBusinessId>0){   
+                lineofbusiness = lineOfBusinessService.getObject(lineOfBusinessId);
+                model.setLineOfBusiness(lineofbusiness);
+            }
+
             if(mode.equalsIgnoreCase("New")){
-                
                 doAddNewObject();
-                
             }else{
                 
-                LineOfBusiness lineofbusiness = null;
-                
-                if(lineOfBusinessId!=null){   
-                    lineofbusiness = lineOfBusinessService.getObject(lineOfBusinessId);
+                if((lineOfBusinessId == null || lineOfBusinessId<0) && orgTypeId.equalsIgnoreCase("2")){
+                    model.setLineOfBusiness(null);
                 }
                 
-                model.setLineOfBusiness(lineofbusiness);
                 this.service.updateObject(model);  
                 actionResult = "Your changes have been saved.";
             }
@@ -260,8 +267,6 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         
         return SUCCESS;
     }
-    
-    
     
     private boolean doAddNewObject(){
         
@@ -304,6 +309,11 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         
         if (Integer.valueOf(objectId) <= 0) {
             model = new WebUser();
+            model.setClaimHandler(false);
+            
+            
+                    
+                    
             mode = "New";
         } else {
             model = service.getUsers(Integer.valueOf(objectId));

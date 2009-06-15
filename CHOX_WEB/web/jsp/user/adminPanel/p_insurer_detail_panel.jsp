@@ -5,7 +5,6 @@
 
 <script language="JavaScript">
         
-        // var selectedPanel = "InsurerOrgMgmt";
         var adminCurrentTabIndex = 0;
         var adminTabs;
         
@@ -106,26 +105,26 @@
            autoScroll :true,
            activeTab: adminCurrentTabIndex,
            items:[
-                {contentEl:'insurerDetailPanelTab', title:'Details',listeners: {activate: handleActivate}},
-                {contentEl:'insurerAlliasPanelTab', title:'Allias', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},                   
-                {contentEl:'insurerLobPanelTab', title:'Line Of Business', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
-                {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
-                {contentEl:'insurerBrePanelTab', title:'BRE Band', disabled:<s:property value="isNew"/>, listeners: {activate: handleActivate}},  
-                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: doBreMappingRefresh}},  
+                {contentEl:'insurerDetailPanelTab', title:'Details',listeners: {activate: insHandleActivate}},
+                {contentEl:'insurerAlliasPanelTab', title:'Alias', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
+                {contentEl:'insurerLobPanelTab', title:'Line Of Business', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
+                {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
+                {contentEl:'insurerBrePanelTab', title:'BRE Band', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
+                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: doBreMappingRefresh}}
             ]
            });
         }
-
+       
         Ext.onReady(function(){        
             setupTabPanels();
         }); 
 
         function doBreMappingRefresh(tab){
-            handleActivate(tab);
+            insHandleActivate(tab);
             onChoBandPageRefresh();
         }
         
-        function handleActivate(tab){
+        function insHandleActivate(tab){
             
             adminCurrentTabIndex = 0;
             
@@ -186,7 +185,6 @@
 </div>
 
 <div id="insurerDetailPanelTab" class="x-hide-display">
-  
     <div class="subAdminTabCss">
     <form id="formUpdateInsurerDetail" action="user/updateInsurerDetail.action" class="XXentity-form" onsubmit="return true;">
     

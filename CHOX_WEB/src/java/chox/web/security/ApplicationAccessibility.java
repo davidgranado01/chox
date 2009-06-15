@@ -28,7 +28,9 @@ public class ApplicationAccessibility {
     public static final String TAB_NOTES = "Notes"; 
     public static final String TAB_AUDIT_TRAIL = "AuditTrail"; 
     
-    //Filter Name
+    // ***************************************
+    // FILTER
+    // ***************************************
     public static final String FILTER_REJECTED_CLAIMS = "RejectedClaims";
     public static final String FILTER_INCORRECT_INVOICE_DATA_COLC = "IncorrectInvoiceDataCalculations";
     public static final String FILTER_CONTESTED_INVOICE_REF_CHO = "ContestedInvoicesReferredToCHO";
@@ -48,8 +50,14 @@ public class ApplicationAccessibility {
     public static final String FILTER_CLAIM_PENDING = "ClaimPending";
     public static final String FILTER_INVOICE_REF_TO_CH = "InvoiceReferredToClaimsHandler";
     public static final String FILTER_INVOICE_PAYMENT_LOGGED = "InvoicePaymentLogged";
-    public static final String PANEL_FNOL_REVIEWED  = "FNOLReviewed";
     public static final String FILTER_CLAIM_UPDATED_BY_ENGINEER = "ClaimUpdatedByEngineer";
+    public static final String FILTER_CONTESTED_INVOICE_REF_ENF = "ContestedInvoicesReferredToEngineer";
+    
+    
+    // ***************************************
+    // PANEL
+    // ***************************************
+    public static final String PANEL_FNOL_REVIEWED  = "FNOLReviewed";
     
     public static final String MENU_DASHBOARD  = "Dashboard";
     public static final String MENU_REPORT  = "Report";

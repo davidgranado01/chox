@@ -18,8 +18,8 @@
            autoScroll :true,
            activeTab: 0,
            items:[
-                {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: handleActivate}},  
-                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: doBreMappingRefresh}},  
+                {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: doSelectBreDetail}},
+                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: doBreMappingRefresh}}
             ]
            });
         }
@@ -33,15 +33,17 @@
             onChoBandPageRefresh();
         }
         
-        function handleActivate(tab){
-            
+        function doSelectBreDetail(tab){
+            handleActivate(tab);
+            //$("#chobandDiv").load("loadAdminPanel.action?adminPanelName=InsurerChoBandMgmt&selectOrgId="+selectOrgId);
+        }
+        
+        function handleActivate(tab){    
             adminCurrentTabIndex = 0;
-            
             if(InsurerMainPanelTabs)
             {
                 adminCurrentTabIndex = InsurerMainPanelTabs.items.indexOf(InsurerMainPanelTabs.getActiveTab());
             }
-            
         }
 
 </script>

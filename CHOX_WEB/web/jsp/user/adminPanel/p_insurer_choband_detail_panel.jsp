@@ -98,7 +98,7 @@
             
             doLoadParameter();
             
-            if(confirm("Are you sure you want to delete this Band?")){
+            if(confirm("Are you sure you want to delete this BRE Band?")){
                 
                 var apn = $.ajax({
                    url: "doDeleteCreditHireBand.action?objectId="+<s:property value="objectId"/>,
@@ -114,10 +114,12 @@
             responseText = responseText.trim();
             var output = responseText.substring(2,responseText.length);
             
-            confirm(output);
+            
             
             if(responseText != "" && responseText != "1" && responseText.substring(0,2) == 'D:'){                
                 doInsurerChoBandBack();
+            }else{
+                confirm(output);
             }
             
         }

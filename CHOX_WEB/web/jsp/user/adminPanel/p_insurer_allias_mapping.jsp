@@ -41,7 +41,7 @@
             loadMask: true,
             columns: [
                 {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
-                {header: "Allias Name", width: 180, dataIndex: 'name', sortable: true, resizable: true},
+                {header: "Alias Name", width: 180, dataIndex: 'name', sortable: true, resizable: true},
                 {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Remove</a>"}},
                 {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
@@ -109,7 +109,7 @@
             return true;
             
         }else{
-            $("#CDInsurerAlliasMessageBox").html("Please enter 'Insurer Allias Name'");
+            $("#CDInsurerAlliasMessageBox").html("Please enter 'Insurer Alias Name'");
         }
         
         return false;
@@ -117,7 +117,7 @@
     
     function allias_triggerStatusRemoveRecord(gridView){
 
-        if(confirm("Are you sure you want to remove this allias?")){
+        if(confirm("Are you sure you want to remove this alias?")){
             
             var gridViewId = gridView.get("id");
 
@@ -141,7 +141,7 @@
             <table width="100%">
                 <tr><td>
                         <div class="label-block">
-                            <p class="std-label">Insurer Allias: </p> <input name="insurerAlliasName" id="insurerAlliasName" type="text">
+                            <p class="std-label">Insurer Alias: </p> <input name="insurerAlliasName" id="insurerAlliasName" type="text">
                             <input type="submit" onclick="javascript: return allias_triggerStatusAddRecord();" value="Add"/>
                         </div>
                     </td></tr>
@@ -150,6 +150,4 @@
         </div>
         <div id="allias_gridviewGrid" style="height:540px; overflow:auto;"></div>
     </div>
-
-
 </div>

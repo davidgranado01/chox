@@ -105,10 +105,10 @@
     
     function triggerStatusUpdateRecord(gridView){
             
-            var aletMsg = "Are you sure you want to inactive this credit hire?";
+            var aletMsg = "Are you sure you want to make this Credit Hire Organisation inactive?";
             
             if(!gridView.get("status")){
-                aletMsg = "Are you sure you want to activate this credit hire?";
+                aletMsg = "Are you sure you want to make this Credit Hire Organisation active?";
             }
             
             var deleteAtt = confirm(aletMsg);
@@ -124,6 +124,7 @@
     }
     
 </script>
+
 <form id="formAdminParam" class="XXentity-form" name="formAdminParam">
 
 <fieldset class="x-fieldset">

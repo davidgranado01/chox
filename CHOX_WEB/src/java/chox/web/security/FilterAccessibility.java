@@ -32,6 +32,8 @@ public class FilterAccessibility {
     private boolean InvoiceReferredToClaimsHandlerAccessible;
     private boolean InvoicePaymentLoggedAccessible;
     private boolean ClaimUpdatedByEngineerAccessible;
+    private boolean contestedInvoiceReferToEngAccessible;
+    
     
     public FilterAccessibility(ApplicationAccessibility accessibility,GrantedAuthority[] grantedAuthorities) {
         
@@ -55,6 +57,7 @@ public class FilterAccessibility {
         InvoiceReferredToClaimsHandlerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_REF_TO_CH, grantedAuthorities) > 0; 
         InvoicePaymentLoggedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_PAYMENT_LOGGED, grantedAuthorities) > 0; 
         ClaimUpdatedByEngineerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_UPDATED_BY_ENGINEER, grantedAuthorities) > 0; 
+        contestedInvoiceReferToEngAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CONTESTED_INVOICE_REF_ENF, grantedAuthorities) > 0; 
     }
 
     public boolean getIsRejectedClaimsAccessible() {
@@ -136,5 +139,9 @@ public class FilterAccessibility {
     public boolean getIsClaimUpdatedByEngineerAccessible(){
         return ClaimUpdatedByEngineerAccessible;
     }
-    
+
+    public boolean getIsContestedInvoiceReferToEngAccessible() {
+        return contestedInvoiceReferToEngAccessible;
+    }
+
 }

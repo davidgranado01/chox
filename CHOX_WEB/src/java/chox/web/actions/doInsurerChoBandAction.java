@@ -72,14 +72,14 @@ public class doInsurerChoBandAction extends BaseAction implements ModelDriven<Ch
             
             
             
-            
+//             <<BRE NAME>> 
             if(service.isChoBandOccupied(model)){
             
-                actionResult = "F:'"+model.getName()+"' is not allowed to delete, please remove the credit hire attaching";
+                actionResult = "F: You cannot delete '"+model.getName()+"' because it is currently being used by one or more Credit Hire Organisations. Please remove the Credit Hire Organisations from this BRE and try again";
                 return SUCCESS;
             }else{
                 this.service.deleteObject(model);
-                actionResult = "D:'"+model.getName()+"' has been deleted";
+                actionResult = "D:'"+model.getName()+"' has deleted";
                 
             }
             

@@ -21,8 +21,7 @@
         <tr valign="top">
             <td class="chox-admin-form-left-col">
                 <fieldset class="x-fieldset">
-                    <legend>Admin Panel</legend>                    
-                    
+                    <legend>Admin Panel</legend>
                         <div style="height:620px;" class="x-panel-bwrap chox-form-container" width="200px" >
                             <ul>
 
@@ -36,14 +35,14 @@
 <li><a href="javascript:renderAdminParameterPanel('UserMgmt');">User Management</a></li>
 </s:if>
 <s:if test="adminAccessibility.isInsurerBreManagementAdminAccessibility">         
-<li><a href="javascript:renderAdminParameterPanel('InsurerPanelMgmt');">Business Rule Enginee</a></li>
+<li><a href="javascript:renderAdminParameterPanel('InsurerPanelMgmt');">Business Rule Engine</a></li>
 </s:if>
 </ul>
                         
                     </div>
                 </fieldset>
             </td>
-            <td class="chox-form-right-col" style="height:620px; ">
+            <td class="chox-form-right-col" style="height:620px;">
                 <div id="admin_param_panel"></div>
             </td>
         </tr>

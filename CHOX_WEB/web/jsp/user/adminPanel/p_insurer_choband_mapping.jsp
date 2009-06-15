@@ -102,10 +102,9 @@
             });
             
             onChoBandPageRefresh()
-    }); 
+    });
     
     function onChoBandPageRefresh(){
-    
         showBreDropDown();
         doParameterRefresh();
         chobandMapping_loadGridViewList();
@@ -135,6 +134,11 @@
         
         doParameterRefresh();
         
+        if(selectBandId<=0){
+            alert("Please select Business Rule Engine!");
+            return;
+        }
+        
         var gridView = choband_a_gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
         
@@ -152,22 +156,16 @@
         var gridViewId = gridView.get("id");
         
         if(columnIndex==2){
-        
             $.ajax({
                url: "doRemoveBandChorganisationMapping.action?objectId="+gridViewId,
                success: doBRESelectOnChange
             });           
-        
         }
     }
     
     function doBRESelectOnChange(){  
-        
         doParameterRefresh();
-        
-        if(selectBandId>0){    
-            chobandMapping_loadGridViewList();
-        }
+        chobandMapping_loadGridViewList();
     }
     
     function doParameterRefresh(){
@@ -189,7 +187,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <div id="chobandDropDownDiv" class="label-block"></div>               
+                        <div id="chobandDropDownDiv" class="label-block"></div> 
                     </td>
                     </tr>
                 <tr><td colspan="2"><div id="CDChobandMappingMessageBox" class="errorBox"></div></td></tr>                

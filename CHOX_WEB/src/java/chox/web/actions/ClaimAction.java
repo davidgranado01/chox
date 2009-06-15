@@ -70,6 +70,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public static final String REJECT_FNOL = "rejectFNOL";
     public static final String PENDING = "pending";
     public static final String REFER_CH = "referCH";
+    public static final String INV_REFER_ENG = "InvReferEng";
     public static final String UPDATED_BY_ENG= "updatedByEng";
     private Claim claim = new Claim();
     private int id = -1;
@@ -276,7 +277,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (String action : actions) {
 
             short accessRight = applicationAccessibility.checkActionAccessibility(action, grantedAuthorities, claim.getStatus());
-
+            
             if (accessRight > 0) {
                 return action;
             }
@@ -751,8 +752,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
             sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
-        } else if (this.actionName.equalsIgnoreCase(REFER)) {
-            newStatus = ClaimStatus.INVOICE_ESCALATED;
+        } else if (this.actionName.equalsIgnoreCase(INV_REFER_ENG)) {
+            newStatus = ClaimStatus.INVOICE_REF_TO_ENG;
             sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
@@ -792,8 +793,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
-        } else if (this.actionName.equalsIgnoreCase(REFER)) {
-            newStatus = ClaimStatus.INVOICE_ESCALATED;
+        } else if (this.actionName.equalsIgnoreCase(INV_REFER_ENG)) {
+            newStatus = ClaimStatus.INVOICE_REF_TO_ENG;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
             sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus+"| ReasonOfRejection:"+claim.getInvoice().getReasonOfRejectionId();
@@ -932,6 +933,46 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
             sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
+        }else if(this.actionName.equalsIgnoreCase(INV_REFER_ENG)){
+            newStatus = ClaimStatus.INVOICE_REF_TO_ENG;
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
+        }else {
+            newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus + "| ReasonOfRejection:"+claim.getInvoice().getReasonOfRejectionId();
+            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
+        }
+        
+        try {
+            
+            auditTrailService.logAuditLog(newStatus, claim, null, null);
+            
+            this.claim.setStatus(newStatus);
+            this.service.updateClaim(claim);
+            
+        } catch (Exception ex) {
+        
+            result = ERROR;
+            this.actionResult = "ERROR : " + ex.getMessage();
+            bActionFlag = false;
+            sActionMsg = this.actionResult;
+        
+        }finally {
+            systemLogService.logSystemLog("ACT014", sActionMsg, bActionFlag, 3);
+        }
+        
+        return result;
+    }
+    
+    public String contestedInvoiceByCH() {
+        
+        String result = SUCCESS;
+        String newStatus;
+        boolean bActionFlag = true;
+        String sActionMsg = "";
+        
+        if (this.actionName.equalsIgnoreCase(ACCEPT)) {
+            newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
+            sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
         }else if(this.actionName.equalsIgnoreCase(REFER_CH)){
             newStatus = ClaimStatus.INVOICE_REF_TO_CH;
             sActionMsg = "ClaimId:"+claim.getId()+"| Status:"+newStatus;
@@ -961,7 +1002,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         
         return result;
     }
-    
+
     // 20090422
     // CHECK THE INVOICE 
     public String resubmitOrAcceptContestedInvoice() {

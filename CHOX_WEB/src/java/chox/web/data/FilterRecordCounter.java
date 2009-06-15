@@ -99,4 +99,8 @@ public class FilterRecordCounter {
         return service.getCountByStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
     }     
     
+    public long getContestedInvoiceReferToEngAccessibleCount()
+    {
+        return service.getCountByStatus(ClaimStatus.INVOICE_REF_TO_ENG);
+    }         
 }

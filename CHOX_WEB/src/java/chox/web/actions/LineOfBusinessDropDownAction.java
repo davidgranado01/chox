@@ -1,7 +1,6 @@
 package chox.web.actions;
 
 import chox.model.LookupItem;
-import chox.services.LineOfBusinessService;
 import chox.services.LookupService;
 import chox.web.security.PermissionedUser;
 import java.util.ArrayList;

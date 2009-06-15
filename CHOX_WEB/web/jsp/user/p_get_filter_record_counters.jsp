@@ -58,6 +58,9 @@
     <s:if test="filterAccessibility.isInvoicePaymentLoggedAccessible">
         <li><a href="javascript:showClaimByStatus('InvoicePaymentLogged');" >Payments to be received (<s:property value="filterRecordCounter.InvoicePaymentLoggedCount" />)</a></li>
     </s:if>  
+    <s:if test="filterAccessibility.isContestedInvoiceReferToEngAccessible">
+        <li><a href="javascript:showClaimByStatus('InvoiceReferredToEngineer');" >Invoice Referred By Claim Handler (<s:property value="filterRecordCounter.ContestedInvoiceReferToEngAccessibleCount" />)</a></li>
+    </s:if> 
 </ul>                            
 
 
