@@ -1,8 +1,14 @@
 package scsbre.engine.util;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import scsbre.model.IClaimInfo;
 
 public class ClaimCalcHelper {
@@ -23,15 +29,36 @@ public class ClaimCalcHelper {
                 cc.exCalcHelper = ExtrasCalcHelper.getInstance(c.getExtras());
 		return cc;		
 	}
-	
-	
+        
+	/*
+	public static void main(String[] args) {
+            
+            DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd");
+
+        
+		
+                
+        try {
+            Date hireStart = dfm.parse("2008-07-18 00:00:00");
+            Date initialEcd = dfm.parse("2008-08-03 00:00:00");
+            
+                System.out.println(">>>>>>>"+ hireStart);
+                System.out.println(">>>>>>>"+ initialEcd);
+		System.out.println(">>>>>>>"+ CalcHelper.getDaysBetweenDates(hireStart, initialEcd));
+                
+        } catch (ParseException ex) {
+            Logger.getLogger(ClaimCalcHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        }
+        */
+        
 	/*------------- helper calc methods ---------------------------*/
         
         
 	public int getHireDuration()
 	{
 		Date hireStart = claim.getHireDetail().getHireStart();
-		//Date initialEcd = claim.getCustomerVehicleDamage().getInitialECD();
                 Date initialEcd = claim.getHireMonitoringEcd();
 		return CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
 	}
@@ -73,7 +100,8 @@ public class ClaimCalcHelper {
 		else //we have an ecd
 		{
                     
-			allowedDays += getHireDuration() + 1;
+                    	// allowedDays += getHireDuration() + 1; CHANGE TO 2, as per requested by Andy
+			allowedDays += getHireDuration() + 2;
 			if (claim.getCustomerVehicleDamage().getIsUsable())
 			{
 				allowedDays += claim.getChoBand().getTakeVehicleToGarageDaysMobile();

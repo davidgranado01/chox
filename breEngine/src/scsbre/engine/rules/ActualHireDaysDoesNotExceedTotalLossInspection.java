@@ -27,17 +27,14 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
         
         RuleEvaluation res = new RuleEvaluation();
         if(claim.getHireDetail().getIsTotalLoss()){
-            
             CHOBandCalcHelper bandCalc = CHOBandCalcHelper.getInstance(claim.getChoBand());
             boolean success =  claim.getHireDetail().getNumberOfHireDays() <= bandCalc.getTotalLossInspectionDays(); 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
             if(success) narrative = "";
-        }
-        else{
+        } else{
             res.setResult(RuleEvaluationResult.RuleSkipped);
             narrative = "Rule only applies when the clam is a total loss";
         }
-
 
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
