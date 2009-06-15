@@ -219,6 +219,42 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 1, (select id from accessibility where name = 'admin.InsurerBreManagement'),(select max(id)+1 from accessibility_item));
 
 ------------------------------------------------------------------------------------------------
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 1, (select id from accessibility where name like 'filter.ContestedInvoicesReferredToInsurer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 1, (select id from accessibility where name like 'action.approveContestedInvoice.ContestedInvoiceReferredToInsurer'), (select max(id)+1 from accessibility_item));
+delete from accessibility_item where accessibility_id=(select id from accessibility where name like 'filter.ContestedInvoicesReferredToInsurer') and role='ROLE_INS_SCR';
+delete from accessibility_item where accessibility_id=(select id from accessibility where name like 'action.approveContestedInvoice.ContestedInvoiceReferredToInsurer') and role='ROLE_INS_SCR';
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'filter.ContestedInvoicesReferredToEngineer');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_SCR', 1, (select id from accessibility where name like 'filter.ContestedInvoicesReferredToEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 1, (select id from accessibility where name like 'filter.ContestedInvoicesReferredToEngineer'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'action.approveContestedInvoiceToEng.InvoiceReferredToEngineer');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_SCR', 1, (select id from accessibility where name like 'action.approveContestedInvoiceToEng.InvoiceReferredToEngineer'), (select max(id)+1 from accessibility_item));
+------------------------------------------------------------------------------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.AuditTrail.InvoiceReferredToEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.ClaimDetail.InvoiceReferredToEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.HireMonitoring.InvoiceReferredToEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.History.InvoiceReferredToEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.InvoiceDetail.InvoiceReferredToEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.Notes.InvoiceReferredToEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'tab.PaymentPack.InvoiceReferredToEngineer');
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.AuditTrail.InvoiceReferredToEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.ClaimDetail.InvoiceReferredToEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'tab.HireMonitoring.InvoiceReferredToEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.History.InvoiceReferredToEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.InvoiceDetail.InvoiceReferredToEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.Notes.InvoiceReferredToEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 1, (select id from accessibility where name = 'tab.PaymentPack.InvoiceReferredToEngineer'), (select max(id)+1 from accessibility_item));
+
+------------------------------------------------------------------------------------------------
+	
+delete from accessibility_item where id=303;
+delete from accessibility where id=121;
+
+------------------------------------------------------------------------------------------------
 	
 -- 	insert into action (id, description) values ('', '');
 
