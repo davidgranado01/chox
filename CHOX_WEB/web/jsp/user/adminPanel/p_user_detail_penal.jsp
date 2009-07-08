@@ -23,9 +23,6 @@
         
         function doFormValidation(){
             
-            // alert("insurerId : "+$("#insurerId").val());
-            // alert("supplierId : "+$("#supplierId").val());
-            
             var validateFlag = $("#formUpdateUserDetail").validate(
             {
                errorLabelContainer: "#CDmessageBox",                
@@ -66,7 +63,7 @@
         var output = "Your changes have been saved.";
 
         if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
-            confirm("New User creation successful");
+            confirm("New user setup successful. Please assign a role(s) to the new user.");
             var newObjectId =  parseInt(responseText.substring(9,responseText.length));
             var orgTypeId = $("#orgTypeId").val();
             $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + newObjectId + "&orgTypeId=" + orgTypeId);
@@ -145,14 +142,19 @@
                         <b><s:property value="orgName" /></b>
                     </div>
                     
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Email</label>
-                        <b><s:property value="email" /></b>
-                    </div>
-                    
                     <s:if test="orgTypeId==2">
                         <input name="insurerId" id="insurerId" type="hidden" value="<s:property value="insurer.id" />">
                     </s:if>
+                    
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Email</label>
+                        <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value="<s:property value="email" />"/>
+                    </div>
+                    
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">&nbsp;</label>
+                        <span class="column_remark">Please note this (Email) will be the user's Username</span>
+                    </div>
                     
                 </s:if>
                 <s:else>
@@ -162,6 +164,11 @@
                         <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value="<s:property value="email" />"/>
                     </div>
 
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">&nbsp;</label>
+                        <span class="column_remark">Please note this (Email) will be the user's Username</span>
+                    </div>
+                    
                     <s:if test="orgTypeId==2">
                             
                         <s:if test="isOrgSelectable">
@@ -221,7 +228,7 @@
      
                 </s:else>
                 
-                <s:if test="orgTypeId==2">
+                <s:if test="orgTypeId==2 && claimHandler">
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Line Of Business</label>
                         <div id="userDetailScreenChobandDropDownDiv"></div> 
@@ -244,7 +251,10 @@
                     <label class="chox-form-std-label">Re-enter Password<span class="mandatory">*</span></label>
                     <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="8" value="<s:property value="password" />"/>
                 </div>  
-
+                <div class="chox-form-item">
+                        <label class="chox-form-std-label">&nbsp;</label>
+                        <span class="column_remark">N.B. Passwords are case sensitive.</span>
+                    </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Active</label>
                     <s:checkbox name="status" value="status" />

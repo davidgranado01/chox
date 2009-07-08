@@ -132,11 +132,11 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         String orgTypeName = "N/A";
         
         if(this.orgTypeId.equalsIgnoreCase("1")){
-            orgTypeName = "Sherwood Users";
+            orgTypeName = "Sherwood Organisation Users";
         }else if(this.orgTypeId.equalsIgnoreCase("2")){
-            orgTypeName = "Insurer Users";
+            orgTypeName = "Insurer Organisation Users";
         }else if(this.orgTypeId.equalsIgnoreCase("3")){    
-            orgTypeName = "Credit Hire Users";
+            orgTypeName = "Credit Hire Organisation Users";
         }
         
         return orgTypeName;

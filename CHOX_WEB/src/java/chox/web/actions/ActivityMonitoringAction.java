@@ -11,7 +11,6 @@ import chox.services.UserService;
 import chox.web.viewdata.ViewingStatus;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import net.sf.json.JSONArray;
 
 /**

@@ -40,16 +40,16 @@
             listeners:  {cellclick:recordOnclick },
             store: gridviewData,
             columns: [
-                {header: "Name", width: 110, dataIndex: 'name', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Name", width: 110, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='highlightItem'>" + value + "</a>"}},
-                {header: "Address", width: 170, dataIndex: 'address', sortable: false, resizable: true},
-                {header: "VAT No.", width: 80, dataIndex: 'vatNo', sortable: false, resizable: true},
-                {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Address", width: 170, dataIndex: 'address', sortable: true, resizable: true},
+                {header: "VAT No.", width: 80, dataIndex: 'vatNo', sortable: true, resizable: true},
+                {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='highlightItem'>" + value + "</a>"}},                
                // {header: "Company No.", width: 75, dataIndex: 'companyNo', sortable: false, resizable: true},
                // {header: "Authority", width: 55, dataIndex: 'authoritiyDelegated', sortable: false, resizable: true},
-                {header: "Created By", width: 80, dataIndex: 'createdBy', sortable: false, resizable: true},
-                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: false, resizable: true}
+                {header: "Created By", width: 80, dataIndex: 'createdBy', sortable: true, resizable: true},
+                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
             renderTo:'gridviewGrid',
                 width:615,
@@ -134,7 +134,7 @@
             <table width="100%">
                 <tr>
                     <td></td>
-                    <td align="right"><button type="button" onclick="javascript:createNewRecord();">New</button></td>
+                    <td align="right"><button type="button" onclick="javascript:createNewRecord();">Add New Credit Hire Organisation</button></td>
                 </tr>
             </table>
 

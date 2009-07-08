@@ -18,6 +18,7 @@
     var selectOrgId = <s:property value="selectOrgId" />;
     
     
+    
     Ext.onReady(function(){
     
        if(selectOrgTypeId>0){
@@ -50,7 +51,17 @@
             ({url: 'user/getUser.action',method:'GET'}),
             reader:gridviewJsonReader      
         });
-    
+        
+        /*
+        var pagingBar = new Ext.PagingToolbar({
+            pageSize: recordPerPage,
+            store: gridviewData,
+            displayInfo: true,
+            displayMsg: 'Displaying users {0} - {1} of {2}',
+            emptyMsg: "No user to display"
+        });
+        */
+       
         gridviewGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:recordOnclick },
             store: gridviewData,
@@ -62,7 +73,7 @@
                 {header: "Organisation", width: 80, dataIndex: 'orgName', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
-                {header: "Role", width: 650, dataIndex: 'role', sortable: false, resizable: true},
+                {header: "Role", width: 650, dataIndex: 'role', sortable: true, resizable: true},
                 {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: false, resizable: true},
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: false, resizable: true}
             ],
@@ -112,6 +123,8 @@
         {
             params:
             {
+                            start:0,
+                limit:recordPerPage,
                 orgTypeId:orgTypeId,
                 orgId:orgId,
                 userRoleId:userRoleId
@@ -137,7 +150,7 @@
     
     function triggerStatusUpdateRecord(gridView){
             
-            var aletMsg = "Are you sure you want to inactive this user?";
+            var aletMsg = "Are you sure you want to inactivate this user?";
             
             if(!gridView.get("status")){
                 aletMsg = "Are you sure you want to activate this user?";
@@ -187,8 +200,8 @@
     <p class="std-label">Organisation Type: </p>
     <select id="orgTypeId" onchange="javascript:doSelectChange()">
         <option value="1">Sherwood Organisation</option>
-        <option value="2">Insurer</option>
-        <option value="3">Credit Hire</option>
+        <option value="2">Insurer Organisation</option>
+        <option value="3">Credit Hire Organisation</option>
     </select>
     </div>         
 </s:if>
@@ -201,7 +214,7 @@
 <input name="orgId" id="orgId" type="hidden" value="<s:property value="orgId" />">
 
                     </td>
-                    <td align="right"><button type="button" onclick="javascript:createNewRecord();">New</button></td>
+                    <td align="right" width="50%"><button type="button" onclick="javascript:createNewRecord();" style="white-space: nowrap;">Add New User</button></td>
                 </tr>
             </table>
 

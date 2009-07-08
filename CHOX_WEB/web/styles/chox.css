@@ -163,7 +163,7 @@ fieldset div
     float: left;
     margin-right: 10px;
     text-align: right;
-    width: 260px;
+    width: 280px;
     white-space: nowrap;
 }
 
@@ -726,4 +726,21 @@ img.tip-target
     text-align: right;
     width: 100px;
     white-space: nowrap;
+}
+
+.popUpViewDiv{
+    display:none;
+    background-color:#FFFFFF;
+    min-height:100px;
+    min-width:500px;
+    padding:10px;
+    overflow:auto;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px;
+}
+
+.column_remark{
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: .8em;
+    color:#585858;
 }

@@ -1,6 +1,6 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<p class="std-label">BRE: </p>
+<p class="std-label">BRE Band: </p>
 
 <s:select
     id="breBandId"                                 

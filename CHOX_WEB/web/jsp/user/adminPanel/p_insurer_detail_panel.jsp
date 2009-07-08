@@ -21,6 +21,27 @@
                  name:{
                      required:true
                  },
+                 vatNo:{
+                     required:true
+                 },
+                 companyNo:{
+                     required:true
+                 },
+                 address1:{
+                     required:true
+                 },
+                 address2:{
+                     required:true
+                 },
+                 address4:{
+                     required:true
+                 },
+                 address5:{
+                     required:true
+                 },
+                 postcode:{
+                     required:true
+                 },                 
                  adminHandlingCharge:{
                      required:true, number:true, min:0
                  }
@@ -33,6 +54,27 @@
                    required:"You must supply a value for 'Admin Handling Charge'",
                    number:"'Admin Handling Charge' must be numeric",
                    min:"'Admin Handling Charge' cannot be less than zero"
+                 },
+                 vatNo:{
+                     required:"You must supply a value for 'VAT No.'"
+                 },
+                 companyNo:{
+                     required:"You must supply a value for 'Company No.'"
+                 },
+                 address1:{
+                     required:"You must supply a value for 'Address 1'"
+                 },
+                 address2:{
+                     required:"You must supply a value for 'Address 2'"
+                 },
+                 address4:{
+                     required:"You must supply a value for 'County'"
+                 },
+                 address5:{
+                     required:"You must supply a value for 'Country'"
+                 },
+                 postcode:{
+                     required:"You must supply a value for 'Postcode'"
                  }
                      
                },
@@ -75,9 +117,10 @@
             var output = "Your changes have been saved.";
             
             if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
-                
+                confirm("New Insurer has been created!");
                 var newObjectId =  parseInt(responseText.substring(9,responseText.length));
                 $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + newObjectId);
+                
                 
             }else{
                 output = responseText;
@@ -195,6 +238,42 @@
                     <label class="chox-form-std-label">Name<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
                 </div>
+<div class="chox-form-item">
+                        <label class="chox-form-std-label">VAT No.<span class="mandatory">*</span></label>
+                        <input type="text" class="chox-ttxt" id="CCDVatNo" name="vatNo" value="<s:property value="vatNo" />"/>
+                    </div>        
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Company No.<span class="mandatory">*</span></label>
+                        <input type="text" class="chox-ttxt" id="CCDCompanyNo" name="companyNo" value="<s:property value="companyNo" />"/>
+                    </div>                          
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Address 1<span class="mandatory">*</span></label>
+                        <input type="text" class="chox-ttxt" id="CCDAddress1" name="address1" value="<s:property value="address1" />"/>
+                    </div>
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Address 2<span class="mandatory">*</span></label>
+                        <input type="text" class="chox-ttxt" id="CCDAddress2" name="address2" value="<s:property value="address2" />"/>
+                    </div>
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Address 3</label>
+                        <input type="text" class="chox-ttxt" id="CCDAddress3" name="address3" value="<s:property value="address3" />"/>
+                    </div>
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Postcode<span class="mandatory">*</span></label>
+                        <input type="text" class="chox-ttxt" id="CCDPostcode" name="postcode" value="<s:property value="postcode" />"/>
+                    </div>                      
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">County<span class="mandatory">*</span></label>
+                        <input type="text" class="chox-ttxt" id="CCDAddress4" name="address4" value="<s:property value="address4" />"/>
+                    </div>  
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Country<span class="mandatory">*</span></label>
+                        <input type="text" class="chox-ttxt" id="CCDAddress5" name="address5" value="<s:property value="address5" />"/>
+                    </div>
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Phone</label>
+                        <input type="text" maxlength="50" class="chox-ttxt" id="CCDPhone" name="phone" value="<s:property value="phone" />"/>
+                    </div>              
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Admin Handling Charge<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDAdminHandlingCharge" name="adminHandlingCharge" value="<s:property value="adminHandlingCharge" />"/>

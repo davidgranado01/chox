@@ -84,22 +84,30 @@
     });
 
     function onBeforeSubmit(formData, jqForm, options) { 
+        
         if(!hasFormUnderSubmission){
+            
             if(elementToBlock != undefined){
                 outputDiv = elementToBlock.find('div.chox-form-submit-result');
                 outputDiv.text("");
                 outputDiv.removeClass("submit-error");
             }
+            
             hasFormUnderSubmission = true;
             elementToBlock = jqForm.find('div.form-container');
             elementToBlock.block({ message: "Please wait.." });
 
             var queryString = $.param(formData); 
+            
             return true; 
-        }else alert("Please wait until other save operations have completed");
+            
+        }else{
+            alert("Please wait until other save operations have completed");
+        } 
+        
+        return false; 
     } 
 
-    // post-submit callback 
     function onSubmitResponseReceived(responseText, statusText)  {      
         responseText = responseText.trim();
         elementToBlock.unblock();
@@ -192,11 +200,10 @@
             ]
         }); 
         
-        /*
-         * CREATED BY: CALRSON HOO
-         * CREATED DATE: 6 DEC 2008
-         * DESC: PAYMENT PACK / ATTACHMENT
-         **/
+        /***********************************************************************************
+         * ATTACHMENT / PAYMENT PACK 
+         ***********************************************************************************/
+        
         if(!paymentPackDisabled){
             
             paymentPackJsonReader = new Ext.data.JsonReader({
@@ -259,7 +266,10 @@
             }
         }
         
-        //Emmanuel 
+        /***********************************************************************************
+         * HIRE MONITORING 
+         ***********************************************************************************/
+        
         if(!hireMonitoringDetailsDisabled){
             
             ecdJsonReader = new Ext.data.JsonReader({
@@ -305,58 +315,44 @@
             var supportingNoteText = hiremonitoringECD.get("supportingNote");
             $("#hireMonitorMessage").text(supportingNoteText);
             setTimeout(function(){ $("#hireMonitoringDetails").unblock(); }, popupTimeUp);
-
         }        
         
-        /*
-         * DESC: COMMENT
-         **/
+        /***********************************************************************************
+         * COMMENT / NOTE
+         ***********************************************************************************/
+        
         if(!commentsDisabled){
             
-            
             commentsJsonReader = new Ext.data.JsonReader({
-                totalProperty: 'totalCount',   
-                root: 'results', 
-                fields:
-                [
-                    {name:'id'}, 
-                    {name:'createdBy'},                     
-                    {name:'createdDate'},        
-                    {name:'comment'}
-                ]
+                totalProperty: 'totalCount', root: 'results', fields:[{name:'id'}, {name:'createdBy'}, {name:'createdDate'}, {name:'comment'}]
             });
 
             commentsDataStore = new Ext.data.Store({
-                proxy: new Ext.data.HttpProxy
-                ({url: 'user/getComments.action',method:'GET'}),
-                reader:commentsJsonReader        
+                proxy: new Ext.data.HttpProxy({url: 'user/getComments.action',method:'GET'}), reader:commentsJsonReader        
             });
 
             commentsGrid = new Ext.grid.GridPanel({
-                
                 listeners:  {cellclick:loadComment },
-                store: commentsDataStore,
-                loadMask: true,
+                store: commentsDataStore, loadMask: true,
                 columns: [
                      {header: "Created", width: 200, dataIndex: 'createdDate', sortable: false, resizable: true}, 
                     {header: "Created By", width: 200, dataIndex: 'createdBy', sortable: false, resizable: true},                   
                     {header: "Message", width: 500, dataIndex: 'comment', sortable: false, resizable: true}
                 ],
-                renderTo:'commentsGrid',
-                width:960,
-                autoHeight:true,
-                enableHdMenu:false
+                renderTo:'commentsGrid', width:960, autoHeight:true, enableHdMenu:false
             });
         }
         
-        function loadComment(grid, rowIndex, columnIndex, e){
-            $("#comments").block({message: $("#commentTemplate"), css: { backgroundColor: '#FFFFFF', height:'160', width:'400px', padding:'10px', overflow: 'auto'}  });
+        function loadComment(grid, rowIndex, columnIndex, e){            
             var comment = commentsGrid.getStore().getAt(rowIndex);
             var commentText = comment.get("comment");
-            $("#commentMessage").text(commentText);
-            setTimeout(function(){ $("#comments").unblock(); }, popupTimeUp);
+            propmtMsg(commentText);
         }
 
+        /***********************************************************************************
+         * AUDIT TRAIL 
+         ***********************************************************************************/
+        
         if(!auditTrailDisabled){
             
            auditTrailJsonReader = new Ext.data.JsonReader({
@@ -395,13 +391,20 @@
                 {
                     claimId : <s:property value="id" />
                 }
-            });    
+            });
             
-        }    
-        /*
-         * DESC: HISTORY
-         **/        
+        } 
+
+        /***********************************************************************************
+         * HISTORY
+         ***********************************************************************************/
+         
+        var historyData;
+        var historyJsonReader;
+        var historyGrid; 
+    
         if(!historyDetailsDisabled){
+        
             historyJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',   
                 root: 'results', 
@@ -413,13 +416,14 @@
                 ]
             });
 
-            var historyData = new Ext.data.Store({
+            historyData = new Ext.data.Store({
                 proxy: new Ext.data.HttpProxy
                 ({url: 'user/getHistories.action',method:'GET'}),
                 reader:historyJsonReader        
             });            
 
-            var grid = new Ext.grid.GridPanel({
+            historyGrid = new Ext.grid.GridPanel({
+                listeners:  {cellclick:loadHistory },
                 store: historyData,
                 columns: [
                     {header: "Created On", width: 110, dataIndex: 'createdDate', sortable: false, resizable: true},
@@ -441,11 +445,17 @@
             });    
         }
 
+        function loadHistory(grid, rowIndex, columnIndex, e){
+            var historyItem = historyGrid.getStore().getAt(rowIndex);
+            var textMsg = historyItem.get("narrative");
+            propmtMsg(textMsg);
+        }
         
     });         
 
     // LOAD COMMENT
     var commentsLoaded = false;
+    
     function loadComments(){
         if(!commentsDisabled){
             if(!commentsLoaded){
@@ -480,7 +490,7 @@
         }
     }   
     
-    
+
     function resetAttachmentForm(){
 
         $("#fAttachment").each(function(){
@@ -492,12 +502,7 @@
     {
         $("#actionName").val(val);
     }
-    
-            
-    //$(document).everyTime(4000, function() {
-    //    pingServer();
-    //});
-    
+
     var t;
     
     function random_number() {
@@ -535,32 +540,32 @@
         t=setTimeout("pingServer()",4000);
     }
    
-   function updateAnomalies(a){
+    function updateAnomalies(a){
         document.location = "doUpdateAnomalies.action?id="+a;
     }
 
-   function closeClaimStatus(a){
-       
-       if(!confirm('Are you sure you want to close this claim?')){
-                return false;
+    function closeClaimStatus(a){
+
+        if(!confirm('Are you sure you want to close this claim?')){
+            return false;
         }else{
             document.location = "doUpdateClaimStatus.action?id="+a;
         }
+        
         return true;
-   }
+    }
 
-   
-      function reopenClaimStatus(a){
-       
-       if(!confirm('Are you sure you want to re-open this claim?')){
-                return false;
+    function reopenClaimStatus(a){
+
+        if(!confirm('Are you sure you want to re-open this claim?')){
+            return false;
         }else{
             document.location = "doReopenClaimStatus.action?id="+a;
         }
         return true;
-   }
+    }
    
-   function checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form)
+    function checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form)
     {
         if(sClaimNumber && sClaimNumber != null)
         {
@@ -584,11 +589,26 @@
         }            
     }
 
+    $(document).ready(function() { 
+        $("#popGeneralTemplateClose").click(function(){ $.unblockUI();});     
+    });
+
+    function propmtMsg(msg){
+
+        $.blockUI({
+            message: $("#popGeneralTemplate"), 
+            css: { backgroundColor: '#FFFFFF', minHeight:'100', minWidth:'600', padding:'10px', overflow: 'auto'} 
+        });
+
+        $("#popGeneralTemplateMessage").text(msg);
+        setTimeout($.unblockUI, popupTimeUp);
+    }
+        
 </script>        
         
     </head>    
     
-    <body>
+    <body id="claimDetailPageId">
         
         <div class="outer">
             
@@ -1072,111 +1092,109 @@
                         </s:if>
                     </div>
 
-
-<div id="historyDetails" class="x-hide-display">
-                        
-<s:if test="tabAccessibility.historyTabAccessibility != 0"> 
-
-                        <div id="historyGrid">
-
-                        </div>
-</s:if>                        
-</div>
-
-<div id="auditTrailDetails" class="x-hide-display">
-                        
-<s:if test="tabAccessibility.auditTrailTabAccessibility != 0"> 
-
-                        <div id="auditTrailGrid">
-
-                        </div>
-</s:if>                        
-</div>
-
-                    <div id="comments" class="x-hide-display">
-<s:if test="tabAccessibility.notesTabAccessibility != 0">  
-
-    <script language="JavaScript">
-        
-        $(document).ready(function() { 
-            
-                var optionsComment = { 
-                    success: showResponse  // post-submit callback 
-                }; 
-                
-                // bind form using 'ajaxForm' 
-                $('#fComments').ajaxForm(optionsComment); 
-
-                //bind close comment button behaviour
-                $("#commentModalClose").click(function(){ $("#comments").unblock();});    
-
-        });
-
-        function showResponse(responseText, statusText)  { 
-            commentsLoaded = false;
-            
-            $("#fComments").each(function(){
-                this.reset();
-            });
-                
-            loadComments();
-        }    
-     
-        function commentFormValidation(){
-            var inp = $("#commentBox").val();
-            if(inp==null || inp==""){
-                $("#CmErrMsgBox").show();
-                $("#CmErrMsgBox").text("Note blank - Please enter text in the Note field and then click on 'Add Note'");
-                return false;
-            }else{
-                $("#CmErrMsgBox").hide();
-            }
-            return true;
-        }
-        
-    </script>
-   
-    <div class="comments  x-panel-bwrap chox-form-container">
-
-<s:if test="!isClaimClosed"> 
-   
-        <form id="fComments" action="user/createNewComment.action" method="post">
-            <input type="hidden" name="claimId" value='<s:property value="id" />'>
-            <fieldset class="x-fieldset">
-                <legend>Add a new note</legend>
-                 <div class="chox-form-item">
-                    <s:textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment" />
-                </div>
-                 <s:if test="!isCHO"> 
-                <div class="chox-form-item">
-                    <s:checkbox name="isPublic"/>
-                    <label class="std-label-ro">Visible to CHO?</label>                    
-                </div>
-                </s:if>
-                <s:else><input name="isPublic" type="hidden" value="true"/></s:else>
-                <input type="submit" id="bAddComment" value="Add Note" onclick="javascript:return commentFormValidation();"/>
-                
-                
-            </fieldset>
-        </form>
-</s:if>
-
-        <div class="errorBox" id="CmErrMsgBox" style="color:red;font-weight: bold;font-size: 10px;"></div>        
+    <!-- ************************ HISTORY  ****************************** !-->
+    <div id="historyDetails" class="x-hide-display">
+        <s:if test="tabAccessibility.historyTabAccessibility != 0"> 
+            <div id="historyGrid"></div>
+        </s:if>
     </div>
 
-    <div style="display:none" id="commentTemplate">
-        <input type="button" value="Close" id="commentModalClose">
-        <br/>
-        <div id="commentMessage"></div>
-    </div>                      
+    <!-- ************************ AUDIT TRAIL  ************************** !-->
+    <div id="auditTrailDetails" class="x-hide-display">
+        <s:if test="tabAccessibility.auditTrailTabAccessibility != 0"> 
+            <div id="auditTrailGrid"></div>
+        </s:if>                        
+    </div>
+
+    <!-- ************************ COMMENT / NOTE (START) **************** !-->
+    <div id="comments" class="x-hide-display">
+
+        <s:if test="tabAccessibility.notesTabAccessibility != 0">  
+
+        <script language="JavaScript">
+
+            $(document).ready(function() { 
+
+                var optionsComment = { 
+                    success: showResponse
+                }; 
+
+                $('#fComments').ajaxForm(optionsComment);   
+
+            });
+
+            function showResponse(responseText, statusText)  { 
+                commentsLoaded = false;
+
+                $("#fComments").each(function(){
+                    this.reset();
+                });
+
+                loadComments();
+            }
+
+            function commentFormValidation(){
+                var inp = $("#commentBox").val();
+                if(inp==null || inp==""){
+                    $("#CmErrMsgBox").show();
+                    $("#CmErrMsgBox").text("Note blank - Please enter text in the Note field and then click on 'Add Note'");
+                    return false;
+                }else{
+                    $("#CmErrMsgBox").hide();
+                }
+                return true;
+            }
+
+        </script>
+
+        <div class="comments  x-panel-bwrap chox-form-container">
+
+            <s:if test="!isClaimClosed"> 
+                <form id="fComments" action="user/createNewComment.action" method="post">
+                    <input type="hidden" name="claimId" value='<s:property value="id" />'>
+                    <fieldset class="x-fieldset">
+                        <legend>Add a new note</legend>
+                         <div class="chox-form-item">
+                            <s:textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment" />
+                        </div>
+                         <s:if test="!isCHO"> 
+                        <div class="chox-form-item">
+                            <s:checkbox name="isPublic"/>
+                            <label class="std-label-ro">Visible to CHO?</label>                    
+                        </div>
+                        </s:if>
+                        <s:else><input name="isPublic" type="hidden" value="true"/></s:else>
+                        <input type="submit" id="bAddComment" value="Add Note" onclick="javascript:return commentFormValidation();"/>
+                    </fieldset>
+                </form>
+            </s:if>
+
+            <div class="errorBox" id="CmErrMsgBox" style="color:red;font-weight: bold;font-size: 10px;"></div>
+
+        </div>
+
+        <div id="commentsGrid"></div>   
+
+        </s:if>
         
-    <div id="commentsGrid"></div>   
+    </div>
     
-</s:if>                         
-                    </div>   
+    <!-- ************************************************* !-->
+    
+    <div class="popUpViewDiv" id="popGeneralTemplate"><input type="button" value="Close" id="popGeneralTemplateClose"><br/><br/><div id="popGeneralTemplateMessage"></div></div>
+
                 </div>
             </div>
-<div class="footerText">©2009 Sherwood Compliance Services Ltd | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','Copyright');" class="footerText">Copyright</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','PrivacyPolicy');" class="footerText">Privacy Policy</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','TermsOfService');" class="footerText">Terms of Service</a></div>
+    
+    <!-- ************************ PAGE FOOTER *************************** !-->
+    <div class="footerText">
+        ©2009 Sherwood Compliance Services Ltd | 
+        <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','Copyright');" class="footerText">Copyright</a> | 
+        <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','PrivacyPolicy');" class="footerText">Privacy Policy</a> | 
+        <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','TermsOfService');" class="footerText">Terms of Service</a>
+    </div>
+    <!-- ************************ PAGE FOOTER *************************** !-->
+    
         </div>
     </body>
 </html>

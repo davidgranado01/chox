@@ -38,11 +38,11 @@
         listeners:  {cellclick:choband_recordOnclick },
         store: choband_gridviewData,
         columns: [
-            {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: false, resizable: true},
-            {header: "Band", width: 240, dataIndex: 'name', sortable: false, resizable: true, renderer:function(value,p,r){
+            {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
+            {header: "Band", width: 240, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
-            {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: false, resizable: true},
-            {header: "Created Date", width: 150, dataIndex: 'createdDate', sortable: false, resizable: true}
+            {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: true, resizable: true},
+            {header: "Created Date", width: 150, dataIndex: 'createdDate', sortable: true, resizable: true}
         ],
         renderTo:'choband_gridviewGrid',
             width:620,
@@ -101,7 +101,7 @@
                 <table width="100%">
                     <tr>
                         <td></td>
-                        <td align="right"><button type="button" onclick="javascript:choband_createNewRecord();">New</button></td>
+                        <td align="right"><button type="button" onclick="javascript:choband_createNewRecord();">Add New Band</button></td>
                     </tr>
                 </table>
             </div>

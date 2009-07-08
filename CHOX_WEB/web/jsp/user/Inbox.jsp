@@ -247,7 +247,7 @@
             pageSize: recordPerPage,
             store: ds,
             displayInfo: true,
-            displayMsg: 'Displaying topics {0} - {1} of {2}',
+            displayMsg: 'Displaying claims {0} - {1} of {2}',
             emptyMsg: "No claim to display"
         });
         
@@ -371,7 +371,8 @@
             layout:'fit',
             autoHeight:true,
             enableHdMenu:false,
-            title:'Claims', viewConfig:{forceFit:true},bbar: pagingBar,
+            title:'Claims', 
+			viewConfig:{forceFit:true},bbar: pagingBar,
             tbar:[actionMenu]
             
         });

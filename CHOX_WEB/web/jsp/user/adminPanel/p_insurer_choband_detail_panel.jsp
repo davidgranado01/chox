@@ -1,4 +1,5 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
 <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
@@ -114,8 +115,6 @@
             responseText = responseText.trim();
             var output = responseText.substring(2,responseText.length);
             
-            
-            
             if(responseText != "" && responseText != "1" && responseText.substring(0,2) == 'D:'){                
                 doInsurerChoBandBack();
             }else{
@@ -129,18 +128,16 @@
             doLoadParameter();
             
             responseText = responseText.trim();
-            var output = "Your changes have been saved.";
+            var output = "Your changes have been saved. Click on the Cancel button to return to the BRE Band tab options";
             
             if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
-                
+                confirm("New BRE band has been created!");
                 var newObjectId =  parseInt(responseText.substring(9,responseText.length));
-                $("#chobandDiv").load("updateInsurerChoBandDetailPanel.action?objectId=" + newObjectId + "&insurerId=" + selectOrgId);
-                
+                // $("#chobandDiv").load("updateInsurerChoBandDetailPanel.action?objectId=" + newObjectId + "&insurerId=" + selectOrgId);
+                $("#chobandDiv").load("loadAdminPanel.action?adminPanelName=InsurerChoBandMgmt&selectOrgId=" + selectOrgId);
             }else{
-                
                 output = responseText;
                 $(".chox-form-submit-result").html(output);
-                
             }
             
             $("#admin_param_panel").unblock();
@@ -169,19 +166,19 @@
                     <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Mobile Day Allowance<span class="mandatory">*</span></label>
+                    <label class="chox-form-std-label-longer">Mobile Day Allowance (Days)<span class="mandatory">*</span></label>
                     <input size="5" maxlength="5" type="text" class="chox-ttxt" id="CCDIsMobileDayAllowance" name="isMobileDayAllowance" value="<s:property value="isMobileDayAllowance" />"/>
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Not Mobile Day Allowance<span class="mandatory">*</span></label>
+                    <label class="chox-form-std-label-longer">Not Mobile Day Allowance (Days)<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDIsNotMobileDayAllowance" name="isNotMobileDayAllowance" value="<s:property value="isNotMobileDayAllowance" />"/>
                 </div> 
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Take Vehicle To Garage Days - Mobile<span class="mandatory">*</span></label>
+                    <label class="chox-form-std-label-longer">Take Vehicle To Garage Days - Mobile (Days)<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDTakeVehicleToGarageDaysMobile" name="takeVehicleToGarageDaysMobile" value="<s:property value="takeVehicleToGarageDaysMobile" />"/>
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Take Vehicle To Garage Days - Non Mobile<span class="mandatory">*</span></label>
+                    <label class="chox-form-std-label-longer">Take Vehicle To Garage Days - Non Mobile (Days)<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDTakeVehicleToGarageDaysNonMobile" name="takeVehicleToGarageDaysNonMobile" value="<s:property value="takeVehicleToGarageDaysNonMobile" />"/>
                 </div>
                 <div class="chox-form-item">
@@ -205,7 +202,7 @@
                     <input type="text" class="chox-ttxt" id="CCDReceiptOfFinalStatementChequeDays" name="receiptOfFinalStatementChequeDays" value="<s:property value="receiptOfFinalStatementChequeDays" />"/>
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Average Labour Rate<span class="mandatory">*</span></label>
+                    <label class="chox-form-std-label-longer">Average Labour Rate Per Hour (£)<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDAverageLabourRate" name="averageLabourRate" value="<s:property value="averageLabourRate" />"/>
                 </div>
                 <div class="chox-form-item">
@@ -217,19 +214,19 @@
                     <input type="text" class="chox-ttxt" id="CCDInspectionDelayDays" name="inspectionDelayDays" value="<s:property value="inspectionDelayDays" />"/>
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Hire Day Ceiling<span class="mandatory">*</span></label>
+                    <label class="chox-form-std-label-longer">Hire Day Ceiling (Days)<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDHireDayCeiling" name="hireDayCeiling" value="<s:property value="hireDayCeiling" />"/>
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Hire Net Ceiling<span class="mandatory">*</span></label>
+                    <label class="chox-form-std-label-longer">Hire Net Ceiling (£)<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDHireNetCeiling" name="hireNetCeiling" value="<s:property value="hireNetCeiling" />"/>
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Hire Rate Charge Tolerance<span class="mandatory">*</span></label>
+                    <label class="chox-form-std-label-longer">Hire Rate Charge Tolerance (£)<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDHireRateChargeTolerance" name="hireRateChargeTolerance" value="<s:property value="hireRateChargeTolerance" />"/>
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Max Repair Value<span class="mandatory">*</span></label>
+                    <label class="chox-form-std-label-longer">Max Repair Value (£)<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDMaxRepairValue" name="maxRepairValue" value="<s:property value="maxRepairValue" />"/>
                 </div>
                 <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>

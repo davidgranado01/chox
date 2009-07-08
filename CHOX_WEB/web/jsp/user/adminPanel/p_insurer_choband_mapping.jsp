@@ -135,7 +135,7 @@
         doParameterRefresh();
         
         if(selectBandId<=0){
-            alert("Please select Business Rule Engine!");
+            alert("Please select a BRE band.");
             return;
         }
         

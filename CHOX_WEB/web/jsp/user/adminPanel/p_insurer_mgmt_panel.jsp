@@ -17,10 +17,8 @@
            height:660,
            autoScroll :true,
            activeTab: 0,
-           items:[
-                {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: doSelectBreDetail}},
-                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: doBreMappingRefresh}}
-            ]
+           items:[{contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: doSelectBreDetail}},
+                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: doBreMappingRefresh}}]
            });
         }
 

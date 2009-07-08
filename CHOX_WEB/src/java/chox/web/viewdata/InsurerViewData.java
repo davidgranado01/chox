@@ -7,6 +7,8 @@ public class InsurerViewData {
 
     private int id;
     private String name;
+    private String vatNo;
+    private String companyNo;
     private boolean status;
     private String statusDesc;
     private String createdBy;
@@ -16,6 +18,8 @@ public class InsurerViewData {
         
         this.id = object.getId();
         this.name = object.getName();
+        this.vatNo = object.getVatNo();
+        this.companyNo = object.getCompanyNo();
         this.createdBy =object.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.GridViewDateFormat.format(object.getCreatedDate());   
         this.status = object.isStatus();
@@ -49,6 +53,14 @@ public class InsurerViewData {
 
     public String getStatusDesc() {
         return statusDesc;
+    }
+
+    public String getCompanyNo() {
+        return companyNo;
+    }
+
+    public String getVatNo() {
+        return vatNo;
     }
 
 

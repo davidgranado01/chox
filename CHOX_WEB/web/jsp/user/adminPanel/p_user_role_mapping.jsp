@@ -164,7 +164,7 @@
                             headerValue="--- ALL ---"
                             onchange="javascript: doSelectOnChange();"
                             emptyOption="false">
-                        </s:select><input type="button" onclick="javascript: triggerStatusAddRecord();" value="Add"/>
+                        </s:select><input type="button" onclick="javascript: triggerStatusAddRecord();" value="Add New Role"/>
                     </td>
                     <td align="right"></td>
                 </tr>

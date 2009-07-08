@@ -157,7 +157,7 @@
         
         var gridViewId = gridView.get("id");
         
-        if(confirm("Are you sure you want to remove this credit hire?")){
+        if(confirm("Are you sure you want to remove this credit hire organisation?")){
          $.ajax({
            url: "doRemoveInsurerChorganisation.action?objectId="+gridViewId,
            success: ins_cho_doSelectChange

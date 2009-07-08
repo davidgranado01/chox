@@ -21,6 +21,8 @@
         [
             {name:'id'},
             {name:'name'},
+            {name:'vatNo'},
+            {name:'companyNo'},
             {name:'status'},
             {name:'statusDesc'},
             {name:'createdBy'},
@@ -38,12 +40,14 @@
         listeners:  {cellclick:recordOnclick },
         store: gridviewData,
         columns: [
-            {header: "Name", width: 200, dataIndex: 'name', sortable: false, resizable: true, renderer:function(value,p,r){
+            {header: "Name", width: 130, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
-            {header: "Active", width: 100, dataIndex: 'statusDesc', sortable: false, resizable: true, renderer:function(value,p,r){
+            {header: "VAT No.", width: 100, dataIndex: 'vatNo', sortable: true, resizable: true},
+            {header: "Company No.", width: 100, dataIndex: 'companyNo', sortable: true, resizable: true},
+            {header: "Active", width: 60, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
-            {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: false, resizable: true},
-            {header: "Created Date", width: 150, dataIndex: 'createdDate', sortable: false, resizable: true}
+            {header: "Created By", width:80, dataIndex: 'createdBy', sortable: true, resizable: true},
+            {header: "Created Date", width:140, dataIndex: 'createdDate', sortable: true, resizable: true}
         ],
         renderTo:'gridviewGrid',
             width:615,
@@ -66,7 +70,7 @@
         
         if(columnIndex==0){
             loadSelectedRecord(grid, rowIndex, columnIndex, e);
-        }else if(columnIndex==1){
+        }else if(columnIndex==3){
             triggerStatusUpdateRecord(gridView);
         }
     }
@@ -125,7 +129,7 @@
                 <table width="100%">
                     <tr>
                         <td></td>
-                        <td align="right"><button type="button" onclick="javascript:createNewRecord();">New</button></td>
+                        <td align="right"><button type="button" onclick="javascript:createNewRecord();">Add New Insurer</button></td>
                     </tr>
                 </table>
             </div>
