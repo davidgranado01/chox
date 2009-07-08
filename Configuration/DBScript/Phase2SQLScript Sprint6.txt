@@ -270,3 +270,64 @@ insert into action (id, description) values ('ADM009', 'Remove Insurer and Credi
 insert into action (id, description) values ('ADM010', 'Add Insurer and Credit Hire Mapping');
 insert into action (id, description) values ('ADM011', 'Add Userrole and User Mapping');
 
+update web_user_role set description='CHO Operative' where name='ROLE_CHO_OPR';
+
+------------------------------------------------------------------------------------------------
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHOX_ADMIN', 1, 137, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHOX_ADMIN', 1, 138, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHOX_ADMIN', 1, 146, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHOX_ADMIN', 1, 166, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHOX_ADMIN', 1, 180, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHOX_ADMIN', 1, 202, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHOX_ADMIN', 1, 216, (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHOX_ADMIN', 1, 230, (select max(id)+1 from accessibility_item));
+
+------------------------------------------------------------------------------------------------
+
+DROP TABLE comment_2;
+
+------------------------------------------------------------------------------------------------
+
+update web_user set chorganisation_id=null, insurer_id=null where email = 'emmanuel.kong@greenfinch.ie';
+
+------------------------------------------------------------------------------------------------
+
+ALTER TABLE insurer ADD COLUMN vat_no character varying(32);
+ALTER TABLE insurer ALTER COLUMN vat_no SET STORAGE EXTENDED;
+UPDATE insurer set vat_no = 'N/A';
+ALTER TABLE insurer ALTER COLUMN vat_no SET NOT NULL;
+
+ALTER TABLE insurer ADD COLUMN company_no character varying(32);
+ALTER TABLE insurer ALTER COLUMN company_no SET STORAGE EXTENDED;
+UPDATE insurer set company_no = 'N/A';
+ALTER TABLE insurer ALTER COLUMN company_no SET NOT NULL;
+
+ALTER TABLE insurer ADD COLUMN address1 character varying(128);
+ALTER TABLE insurer ALTER COLUMN address1 SET STORAGE EXTENDED;
+UPDATE insurer set address1 = 'N/A';
+ALTER TABLE insurer ALTER COLUMN address1 SET NOT NULL;
+
+ALTER TABLE insurer ADD COLUMN address2 character varying(128);
+ALTER TABLE insurer ALTER COLUMN address2 SET STORAGE EXTENDED;
+UPDATE insurer set address2 = 'N/A';
+ALTER TABLE insurer ALTER COLUMN address2 SET NOT NULL;
+
+ALTER TABLE insurer ADD COLUMN address3 character varying(128);
+ALTER TABLE insurer ALTER COLUMN address3 SET STORAGE EXTENDED;
+
+ALTER TABLE insurer ADD COLUMN address4 character varying(128);
+ALTER TABLE insurer ALTER COLUMN address4 SET STORAGE EXTENDED;
+
+ALTER TABLE insurer ADD COLUMN address5 character varying(128);
+ALTER TABLE insurer ALTER COLUMN address5 SET STORAGE EXTENDED;
+
+ALTER TABLE insurer ADD COLUMN postcode character varying(128);
+ALTER TABLE insurer ALTER COLUMN postcode SET STORAGE EXTENDED;
+UPDATE insurer set postcode = 'N/A';
+ALTER TABLE insurer ALTER COLUMN postcode SET NOT NULL;
+
+ALTER TABLE insurer ADD COLUMN phone character varying(50);
+ALTER TABLE insurer ALTER COLUMN phone SET STORAGE EXTENDED;
+
+------------------------------------------------------------------------------------------------
