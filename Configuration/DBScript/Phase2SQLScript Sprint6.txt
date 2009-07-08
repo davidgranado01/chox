@@ -95,6 +95,8 @@ update insurer_chorganisation set id=5 where insurer_id=7 and chorganisation_id=
 update insurer_chorganisation set id=6 where insurer_id=10 and chorganisation_id=1007;
 update insurer_chorganisation set id=7 where insurer_id=16 and chorganisation_id=1007;
 
+delete from insurer_chorganisation where id is null;
+
 ALTER TABLE insurer_chorganisation ALTER COLUMN id SET NOT NULL;
 
 CREATE SEQUENCE insurer_chorganisation_seq;
