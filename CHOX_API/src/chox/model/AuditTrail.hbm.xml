@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="chox.model.AuditTrail" table="audit_trail">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <property column="update_date" name="updateDate" not-null="true"/>
+    <property column="original_status" name="originalStatus"/>
+    <property column="new_status" name="newStatus"/>
+    <many-to-one class="chox.model.WebUser" column="user_id" name="user" not-null="true"/>
+    <many-to-one class="chox.model.Claim" column="claim_id" name="claim" not-null="true"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+    <property column="created_date" name="createdDate"/>
+    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+    <property column="claim_reason_of_rejection" name="claimReasonOfRejection"/>
+    <property column="invoice_reason_of_rejection" name="invoiceReasonOfRejection"/>
+  </class>
+</hibernate-mapping>

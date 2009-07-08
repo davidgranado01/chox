@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="chox.model.ThirdParty" table="third_party">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <property column="policy_number" name="policyNumber"/>
+    <property column="claim_reference" name="claimReference"/>
+    <property column="vehicle_registration" name="vehicleRegistration"/>
+    <property column="vehicle_manufacturer" name="vehicleManufacturer"/>
+    <property column="vehicle_model" name="vehicleModel"/>
+    <property column="first_name" name="firstName"/>
+    <property column="address1" name="address1"/>
+    <property column="address2" name="address2"/>
+    <property column="address3" name="address3"/>
+    <property column="address4" name="address4"/>
+    <property column="address5" name="address5"/>
+    <property column="postcode" name="postcode"/>
+    <property column="telephone_day" name="telephoneDay"/>
+    <property column="telephone_evening" name="telephoneEvening"/>
+    <property column="email" name="email"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+    <property column="created_date" name="createdDate"/>
+    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+    <property column="last_name" name="lastName"/>
+    <property column="title" name="title"/>
+    <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer"/>
+    <many-to-one class="chox.model.VehicleClass" column="vehicle_class_id" name="vehicleClass"/>
+  </class>
+</hibernate-mapping>

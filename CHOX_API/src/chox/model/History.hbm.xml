@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="chox.model.History" table="history">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <property column="created_date" name="createdDate"/>
+    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+    <property column="narrative" name="narrative"/>
+    <property column="process_date" name="processDate"/>
+    <property column="is_public" name="isPublic" not-null="true"/>
+    <property column="type" name="type"/>
+    <property column="rule_id" name="ruleId" not-null="true"/>
+    <property column="is_system" name="isSystem" not-null="true"/>
+    <many-to-one class="chox.model.Claim" column="claim_id" name="claim"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+  </class>
+</hibernate-mapping>

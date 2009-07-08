@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="chox.model.LineOfBusiness" table="line_of_business">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <property column="name" name="name" not-null="true"/>
+    <property column="address1" name="address1"/>
+    <property column="address2" name="address2"/>
+    <property column="address3" name="address3"/>
+    <property column="address4" name="address4"/>
+    <property column="address5" name="address5"/>
+    <property column="postcode" name="postcode"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+    <property column="created_date" name="createdDate"/>
+    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+    <property column="is_active" name="active" not-null="true"/>
+    <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer"/>
+    <filter condition=":insurerId = insurer_id" name="LineOfBusiness_InsurerFilter"/>
+    <filter condition=":lineOfBusinessId = id" name="LineOfBusiness_LineOfBusinessFilter"/>
+  </class>
+  <filter-def name="LineOfBusiness_InsurerFilter">
+    <filter-param name="insurerId" type="integer"/>
+  </filter-def>
+  <filter-def name="LineOfBusiness_LineOfBusinessFilter">
+    <filter-param name="lineOfBusinessId" type="integer"/>
+  </filter-def>    
+</hibernate-mapping>
