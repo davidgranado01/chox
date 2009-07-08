@@ -46,6 +46,16 @@ public class Insurer implements Serializable, IInsurerInfo,Auditable
 	protected Date lastModifiedDate;
         protected boolean status;
 
+        protected String address1;
+	protected String address2;
+	protected String address3;
+	protected String address4;
+	protected String address5;
+	protected String postcode;
+	protected String vatNo;
+	protected String companyNo;
+        protected String phone;
+        
 	/**
 	 * Method 'Insurer'
 	 * 
@@ -188,6 +198,78 @@ public class Insurer implements Serializable, IInsurerInfo,Auditable
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getAddress1() {
+        return address1;
+    }
+
+    public void setAddress1(String address1) {
+        this.address1 = address1;
+    }
+
+    public String getAddress2() {
+        return address2;
+    }
+
+    public void setAddress2(String address2) {
+        this.address2 = address2;
+    }
+
+    public String getAddress3() {
+        return address3;
+    }
+
+    public void setAddress3(String address3) {
+        this.address3 = address3;
+    }
+
+    public String getAddress4() {
+        return address4;
+    }
+
+    public void setAddress4(String address4) {
+        this.address4 = address4;
+    }
+
+    public String getAddress5() {
+        return address5;
+    }
+
+    public void setAddress5(String address5) {
+        this.address5 = address5;
+    }
+
+    public String getCompanyNo() {
+        return companyNo;
+    }
+
+    public void setCompanyNo(String companyNo) {
+        this.companyNo = companyNo;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getVatNo() {
+        return vatNo;
+    }
+
+    public void setVatNo(String vatNo) {
+        this.vatNo = vatNo;
     }
 
 }

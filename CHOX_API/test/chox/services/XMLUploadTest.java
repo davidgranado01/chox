@@ -35,7 +35,6 @@ public class XMLUploadTest extends SecureDataService{
         
         UploadClaimXMLServiceImpl instance = new UploadClaimXMLServiceImpl();
         
-        
         // UploadClaimXMLServiceImpl instance = (UploadClaimXMLServiceImpl)SpringContextTestFactory.getServiceContext().getBean("uploadClaimXMLService");
         File claimFile = new File("C:/Project Workplace/Greefinch/choxida/trunk/CHOX_API/test/chox/testFile/BRE_PASSED.xml");
         

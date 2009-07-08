@@ -45,7 +45,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private HistoryService historyService;
     private HireMonitoringEcdService hireMonitoringEcdService;
     private HireMonitoringDetailService hireMonitoringDetailService;
-    
+    private InsurerChorganisationService insurerChorganisationService;
+
+        
     public UploadClaimXMLServiceImpl()
     {        
     }
@@ -172,7 +174,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
         if(!xmlParseResult.getIsClaimExist()){
             xmlParseResult = driverValidation.DriversSchemaValidation(xmlParseResult, root, doc);
-            xmlParseResult = claimValidation.ClaimSchemaValidation(xmlParseResult, root, doc, vehicleClassService, insurerAlliasService);
+            xmlParseResult = claimValidation.ClaimSchemaValidation(xmlParseResult, root, doc, vehicleClassService, insurerAlliasService, insurerChorganisationService);
         }
         
         xmlParseResult = repairValidation.RepairSchemaValidation(xmlParseResult, root, doc);
@@ -309,9 +311,13 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         
         TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
         transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        
         try {
+            
             final XMLParseResult readOnlyXmlParseResult = xmlParseResult;
+            
             transactionTemplate.execute(
+                    
                     new TransactionCallbackWithoutResult() {
 
                         public void doInTransactionWithoutResult(TransactionStatus status) {
@@ -367,5 +373,5 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     public void setHistoryService(HistoryService historyService) { this.historyService = historyService; }
     public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) { this.hireMonitoringEcdService = hireMonitoringEcdService; }
     public void setHireMonitoringDetailService(HireMonitoringDetailService hireMonitoringDetailService) { this.hireMonitoringDetailService = hireMonitoringDetailService; }
-
+    public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {this.insurerChorganisationService = insurerChorganisationService; }
 }

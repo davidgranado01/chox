@@ -12,8 +12,9 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-public class InsurerAlliasServiceImpl extends SecureDataService implements InsurerAlliasService {
 
+public class InsurerAlliasServiceImpl extends SecureDataService implements InsurerAlliasService {
+    
     public void createDefaultRecord(Insurer insurer){
         InsurerAllias object = new InsurerAllias();
         object.setInsurer(insurer);
@@ -24,6 +25,7 @@ public class InsurerAlliasServiceImpl extends SecureDataService implements Insur
     public InsurerAllias getInsurerByAlliasName(String s) {
 
         InsurerAllias insurerallias = new InsurerAllias();
+        
         try {
 
             DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAllias.class);

@@ -9,6 +9,7 @@ import chox.services.ChoBandService;
 import chox.services.ChorganisationService;
 import chox.services.ClaimService;
 import chox.services.InsurerAlliasService;
+import chox.services.InsurerChorganisationService;
 import chox.services.SecureDataService;
 import chox.services.VehicleClassService;
 import java.math.BigDecimal;
@@ -16,6 +17,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class claimValidation extends SecureDataService{
+    
+
     
     /*
     public static XMLParseResult validateClaimInformation(XMLParseResult xmlParseResult){
@@ -141,7 +144,9 @@ public class claimValidation extends SecureDataService{
             Element root,
             Document doc,
             VehicleClassService vehicleClassService,
-            InsurerAlliasService insurerAlliasService ) throws Exception {        
+            InsurerAlliasService insurerAlliasService,
+            InsurerChorganisationService insurerChorganisationService) throws Exception {   
+        
         try {
         
             xmlParseResult.setIsCurrentScheValid(true);
@@ -151,9 +156,8 @@ public class claimValidation extends SecureDataService{
                 Element claimNodeElement = XMLUtils.getElement(root, "claim");
                 
                 claimValidation claimCtrl = new claimValidation();
-                
                 xmlParseResult = claimCtrl.CustomerSchemaValidation(xmlParseResult, claimNodeElement, "Customer Details", vehicleClassService);
-                xmlParseResult = claimCtrl.ThirdPartySchemaValidation(xmlParseResult, claimNodeElement, "Third Party Details", vehicleClassService, insurerAlliasService);
+                xmlParseResult = claimCtrl.ThirdPartySchemaValidation(xmlParseResult, claimNodeElement, "Third Party Details", vehicleClassService, insurerAlliasService, insurerChorganisationService);
                 xmlParseResult = claimCtrl.IncidentSchemaValidation(xmlParseResult, claimNodeElement, doc, "Incident Details");
                 
             }
@@ -205,12 +209,8 @@ public class claimValidation extends SecureDataService{
                     customer = xmlParseResult.getClaim().getCustomer();
                 }
                 
-                System.out.println(" >>>>>>>>>>>> ClaimSchemaValidation >>>> " + vehicleClassService);
-                
                 // GET VEHICLE CLASS ID
                 VehicleClass vehicleclass = vehicleClassService.getVehicleClassByNodeName(thisElement, "vehicle-class");
-                
-                System.out.println(" >>>>>>>>>>>> ClaimSchemaValidation >>>> " + vehicleclass.getName());
                 
                 if(vehicleclass!=null){
                     customer.setVehicleClass(vehicleclass);
@@ -240,14 +240,13 @@ public class claimValidation extends SecureDataService{
         return xmlParseResult;
     }
     
-
-
     private  XMLParseResult ThirdPartySchemaValidation(
             XMLParseResult xmlParseResult,
             Element mainElement,
             String strSectionName,
             VehicleClassService vehicleClassService,
-            InsurerAlliasService insurerAlliasService ) throws Exception {
+            InsurerAlliasService insurerAlliasService,
+            InsurerChorganisationService insurerChorganisationService) throws Exception {
         
         xmlParseResult.setIsCurrentScheValid(true);
         xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "third-party", strSectionName, "");
@@ -301,18 +300,25 @@ public class claimValidation extends SecureDataService{
                 
                 // GET INSURER INFORMATION
                 String insurerAlliasName = XmlHelper.getNodeValue(thisElement, "name");
-                
                 InsurerAllias insurerallias = insurerAlliasService.getInsurerByAlliasName(insurerAlliasName);
-
-                if(insurerallias!=null){
+                
+                if(insurerallias!=null){ 
                     if(insurerallias.getInsurer()!=null){
-                        thirdparty.setInsurer(insurerallias.getInsurer());
+                        if(!insurerChorganisationService.isActiveObjectExist(insurerallias.getInsurer().getId(), xmlParseResult.getClaim().getChorganisation().getId())){
+                            xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Selected Third Party Insurer is invalid", false);
+                        }else{
+                            thirdparty.setInsurer(insurerallias.getInsurer());
+                        }
+                        
                     }
                 }else{
                     if(XmlHelper.isMAN_Claim_ThirdParty_Insurer_Name){
                         xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, "Selected Third Party Insurer is invalid", false);
                     }
                 }
+                
+                
+                
                  // GET VEHICLE CLASS ID
                 VehicleClass vehicleclass = vehicleClassService.getVehicleClassByNodeName(thisElement, "vehicle-class");
                 
