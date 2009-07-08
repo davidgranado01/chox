@@ -10,8 +10,7 @@ import chox.services.SystemLogService;
 
 public class OnlineSupportAction extends BaseAction{
     
-    private String[] recipients = {"choxsupport@sherwoodcompliance.co.uk"};
-    //private String[] recipients = {"carlson.hoo@gmail.com","choxsupport@sherwoodcompliance.co.uk"};
+    private String[] recipients = {"choxsupport@sherwoodcompliance.co.uk", "colin.foster@sherwoodcompliance.co.uk", "info@greenfinch.ie"};
     
     private SupportMessageService supportMessageService;
     private SystemLogService systemLogService;

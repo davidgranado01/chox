@@ -63,6 +63,8 @@
     var auditTrailDataStore;
     var auditTrailGrid;  
     
+    var popupTimeUp = 900000;
+    
     var globalEntityFormOptions = { 
         beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
         success:       onSubmitResponseReceived,  // post-submit callback 
@@ -302,8 +304,7 @@
             var hiremonitoringECD = ecdGrid.getStore().getAt(rowIndex);
             var supportingNoteText = hiremonitoringECD.get("supportingNote");
             $("#hireMonitorMessage").text(supportingNoteText);
-            //setTimeout($("#hireMonitoringDetails").unblock(), 5000);
-            setTimeout(function(){ $("#hireMonitoringDetails").unblock(); }, 10000);
+            setTimeout(function(){ $("#hireMonitoringDetails").unblock(); }, popupTimeUp);
 
         }        
         
@@ -349,11 +350,11 @@
         }
         
         function loadComment(grid, rowIndex, columnIndex, e){
-            $("#comments").block({message: $("#commentTemplate"), css: { backgroundColor: '#FFFFFF', height:'160', width:'400px', padding:'10px', overflow: 'auto'}  });
+            $("#comments").block({message: $("#commentTemplate"), css: { backgroundColor: '#FFFFFF', min-height:'160', width:'400px', padding:'10px', overflow: 'auto'}  });
             var comment = commentsGrid.getStore().getAt(rowIndex);
             var commentText = comment.get("comment");
             $("#commentMessage").text(commentText);
-            setTimeout(function(){ $("#comments").unblock(); }, 10000);
+            setTimeout(function(){ $("#comments").unblock(); }, popupTimeUp);
         }
 
         if(!auditTrailDisabled){
