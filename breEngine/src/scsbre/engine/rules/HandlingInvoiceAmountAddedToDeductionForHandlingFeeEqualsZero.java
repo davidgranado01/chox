@@ -28,6 +28,7 @@ public class HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero imple
         IInvoiceInfo invoice = claim.getInvoice();
         
         BigDecimal sum = invoice.getClaimsHandlingInvoiceAmount().add(invoice.getDeductionForClaimsHandlingFee());
+
         boolean success = CalcHelper.EqualTo(sum, BigDecimal.ZERO);        
         
         res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
