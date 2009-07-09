@@ -67,8 +67,12 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
         return SUCCESS;
     }
     
+    /* Edited by: Carlson
+     * Edited Date: 20090708
+     * Description: New Reason Type
+     */    
     public List<String> getReasonTypes() {
-        List<String> reasonTypes = new ArrayList<String>();        
+        /*
         reasonTypes.add("Parts Delay");
         reasonTypes.add("Incorrect Parts");
         reasonTypes.add("Parts Damaged");
@@ -76,6 +80,17 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
         reasonTypes.add("Customer Delay");
         reasonTypes.add("Resource Inefficiencies");
         reasonTypes.add("Inspection Delay");
+        reasonTypes.add("Other");
+     */
+        
+        List<String> reasonTypes = new ArrayList<String>();  
+        reasonTypes.add("Additional Damage");
+        reasonTypes.add("Failed QC");
+        reasonTypes.add("First ECD");
+        reasonTypes.add("Gone To Dealers");
+        reasonTypes.add("Parts Delay");
+        reasonTypes.add("Repairs Taking Longer Than Expected");
+        reasonTypes.add("Total Loss");
         reasonTypes.add("Other");
         return reasonTypes;
 
