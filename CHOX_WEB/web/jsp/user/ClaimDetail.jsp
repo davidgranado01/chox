@@ -350,7 +350,7 @@
         }
         
         function loadComment(grid, rowIndex, columnIndex, e){
-            $("#comments").block({message: $("#commentTemplate"), css: { backgroundColor: '#FFFFFF', min-height:'160', width:'400px', padding:'10px', overflow: 'auto'}  });
+            $("#comments").block({message: $("#commentTemplate"), css: { backgroundColor: '#FFFFFF', height:'160', width:'400px', padding:'10px', overflow: 'auto'}  });
             var comment = commentsGrid.getStore().getAt(rowIndex);
             var commentText = comment.get("comment");
             $("#commentMessage").text(commentText);

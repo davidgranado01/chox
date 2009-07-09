@@ -91,18 +91,18 @@
         <div style="display:none" class="form-container">           
                 <s:if test="isECDFormVisible">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label">New ECD</label>
+                    <label class="chox-form-std-label" style="width:150px;">New ECD</label>
                     <span id="ecdDatePH"></span>
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label">
+                    <label class="chox-form-std-label" style="width:150px;">
                     Reason for Delay</label>
                     <s:select name="reason" list="reasonTypes" headerKey=""
                               headerValue="--- SELECT ---"
                               emptyOption="false"></s:select>
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label">
+                    <label class="chox-form-std-label" style="width:150px;">
                     Supporting Note</label>
                     <textarea class="chox-tta" id="ECDSupportingNote" cols="20" rows="5" name="supportingNote"><s:property value="supportingNote" /></textarea>
                 </div>
