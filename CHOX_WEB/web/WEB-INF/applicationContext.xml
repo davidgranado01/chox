@@ -8,7 +8,7 @@
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver">
         </property>
-        <property name="url" value="jdbc:postgresql://10.0.0.2:5432/chox_test">       
+        <property name="url" value="jdbc:postgresql://localhost:5432/chox_test">       
         </property>
         <property name="username" value="postgres">
         </property>
@@ -62,6 +62,7 @@
                 <value>chox/model/SystemLog.hbm.xml</value>
                 <value>chox/model/WebUserUserRole.hbm.xml</value>
                 <value>chox/model/InsurerChorganisation.hbm.xml</value>
+                <value>chox/model/ReasonOfDelay.hbm.xml</value>
             </list>
         </property>
         <property name="entityInterceptor" ref="auditInterceptor"/>
@@ -134,6 +135,9 @@
     <bean id="insurerAlliasService" class="chox.services.InsurerAlliasServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="reasonOfDelayService" class="chox.services.ReasonOfDelayServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>    
     <bean id="chorganisationService" class="chox.services.ChorganisationServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
