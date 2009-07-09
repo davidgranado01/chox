@@ -8,7 +8,10 @@ import chox.Util.DateHelper;
 import chox.model.Claim;
 import chox.model.ClaimStatus;
 import chox.model.HireMonitoringEcd;
+import chox.model.ReasonOfDelay;
 import chox.services.HireMonitoringEcdService;
+import chox.services.LookupService;
+import chox.services.ReasonOfDelayService;
 import chox.web.security.ApplicationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
@@ -24,9 +27,21 @@ import java.util.List;
 public class HireMonitoringEcdAction extends BaseModelAction implements ModelDriven<HireMonitoringEcd>, Preparable {
 
     private HireMonitoringEcd model;
+    private ReasonOfDelayService reasonOfDelayService;
     private HireMonitoringEcdService service;
     private Boolean isECDFormVisible = false;
     private static double ecdDurationAllowPercentage = 0.5;
+    private List reasonOfDelay;
+    private LookupService lookupService;
+    private int reasonOfDelayId = -1;
+
+    public int getReasonOfDelayId() {
+        return reasonOfDelayId;
+    }
+
+    public void setReasonOfDelayId(int reasonOfDelayId) {
+        this.reasonOfDelayId = reasonOfDelayId;
+    }
     
     public void setHireMonitoringEcdService(HireMonitoringEcdService service)
     {
@@ -47,45 +62,63 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
     }
 
     public String addNewHireMonitoringEcd() {
+        
         try {
             
-            Claim claim = claimService.getClaim(claimId);
-            claim.setIsAnomalies(getAnomaliesValidation(claim, model));
+            if(reasonOfDelayId>0){
             
+                ReasonOfDelay reasonOfDelayObject = reasonOfDelayService.getObject(reasonOfDelayId);
+                
+                Claim claim = claimService.getClaim(claimId);
+                claim.setIsAnomalies(getAnomaliesValidation(claim, model));
+
+                model.setClaim(claim);
+                model.setReason(reasonOfDelayObject.getName());
+                
+                this.service.updateObject(model);
+                claimService.updateClaim(claim);
+                
+            }else{
+                this.actionResult = "";
+            }
             
-            model.setClaim(claim);
-            this.service.updateObject(model);
-            
-            
-            
-            claimService.updateClaim(claim);
-            
-            this.actionResult = "";
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }
+        
         return SUCCESS;
     }
     
+    public List getReasonOfDelay(){
+        if (reasonOfDelay == null) {
+            reasonOfDelay = this.lookupService.getReasonOfDelay();
+        }
+        return reasonOfDelay;
+    }
+    
+    /* Edited by: Carlson
+     * Edited Date: 20090708
+     * Description: New Reason Type
+     */    
     public List<String> getReasonTypes() {
-        List<String> reasonTypes = new ArrayList<String>();        
+        
+        List<String> reasonTypes = new ArrayList<String>();  
+        reasonTypes.add("Additional Damage");
+        reasonTypes.add("Failed QC");
+        reasonTypes.add("First ECD");
+        reasonTypes.add("Gone To Dealers");
         reasonTypes.add("Parts Delay");
-        reasonTypes.add("Incorrect Parts");
-        reasonTypes.add("Parts Damaged");
-        reasonTypes.add("Delayed Insurer Approval");
-        reasonTypes.add("Customer Delay");
-        reasonTypes.add("Resource Inefficiencies");
-        reasonTypes.add("Inspection Delay");
+        reasonTypes.add("Repairs Taking Longer Than Expected");
+        reasonTypes.add("Total Loss");
         reasonTypes.add("Other");
         return reasonTypes;
 
     }
-
+    
     /* Edited by: Carlson
      * Edited Date: 20081222
      * Description: Check new added ECD and latest ECD, calculate %
      */
-    
     public Boolean getAnomaliesValidation(Claim claim, HireMonitoringEcd monitoringecd) {
         
         Boolean bFlag = false;
@@ -149,4 +182,6 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
         return bFlag;
     }    
     
+    public void setReasonOfDelayService(ReasonOfDelayService reasonOfDelayService) { this.reasonOfDelayService = reasonOfDelayService; }    
+    public void setLookupService(LookupService lookupService) { this.lookupService = lookupService; }    
 }

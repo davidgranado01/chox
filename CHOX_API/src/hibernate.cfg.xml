@@ -45,6 +45,7 @@
         <mapping resource="chox/model/HireMonitoringEcd.hbm.xml"/>
         <mapping resource="chox/model/AuditTrail.hbm.xml"/>
         <mapping resource="chox/model/ReasonOfRejection.hbm.xml"/>
+        <mapping resource="chox/model/ReasonOfDelay.hbm.xml"/>
         <mapping resource="chox/model/SystemLog.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

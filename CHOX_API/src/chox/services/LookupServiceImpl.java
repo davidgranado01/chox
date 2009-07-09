@@ -12,6 +12,7 @@ import chox.model.IdLookupItem;
 import chox.model.Insurer;
 import chox.model.LineOfBusiness;
 import chox.model.LookupItem;
+import chox.model.ReasonOfDelay;
 import chox.model.VehicleClass;
 import chox.model.WebUser;
 import java.io.Serializable;
@@ -102,6 +103,23 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         return items;
     }
     */
+    
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // LINE OF REASON OF DELAY
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    
+    public List getReasonOfDelay() {
+        
+        System.out.println(">>>>>> 01");
+        
+        DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfDelay.class);
+        criteria.add(Restrictions.eq("status", true));
+        criteria.addOrder(Order.asc("id"));  
+        
+        System.out.println(">>>>>> 02");
+        
+        return findByCriteria(criteria);
+    }
     
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // LINE OF BUSINESS LIST

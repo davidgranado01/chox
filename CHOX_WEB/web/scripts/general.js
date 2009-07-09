@@ -114,5 +114,19 @@
         }
     }    
     
+    function random_number() {
+        var min = 10000000;
+        var max = 99999999;
+        return (Math.round((max-min) * Math.random() + min));
+    }
     
+    function propmtMsg(title, msg){
+            
+            Ext.MessageBox.show({
+               title: title,
+               msg: msg,
+               width : 400,
+               buttons: Ext.MessageBox.OK
+           });
+    }    
         

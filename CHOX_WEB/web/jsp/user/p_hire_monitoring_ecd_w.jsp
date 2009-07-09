@@ -1,9 +1,9 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script language="JavaScript">
-    
+        
     $(document).ready(function(){
-
+        
         var ecdDateDatePicker = new Ext.form.DateField({
             name: 'ecdDate',
             width: 100,
@@ -26,12 +26,12 @@
         {
             errorLabelContainer: "#ECDMessageBox",                
             rules: {
-                reason:{required:true},
+                reasonOfDelayId:{required:true},
                 ecdDate:{required:true, date:true},
                 supportingNote:{required:true}
             },
             messages: {
-                reason: {
+                reasonOfDelayId: {
                     required:"You must supply a value for 'Reason for Delay'"
                 },
                 ecdDate: {
@@ -48,7 +48,6 @@
         });
         
         $("#hireMonitorModalClose").click(function(){ $("#hireMonitoringDetails").unblock();});  
-        
     });
 
     var ecdsLoaded = false;
@@ -81,6 +80,23 @@
         document.formAddNewHireMonitoringEcd.supportingNote.value = "";
     }
     
+    function doPopulateNote(){
+        var reasonOfDelayId = $('#reasonOfDelayId :selected').val();
+        $("#ECDSupportingNote").val(getReasonDescription(reasonOfDelayId));
+    }
+    
+    function getReasonDescription(id){
+        
+        <s:iterator value="reasonOfDelay">
+            
+            if(id=="<s:property value="id"/>"){
+                return "<s:property value="description"/>";
+            }
+
+        </s:iterator>
+        
+    }
+    
 </script>
 
 <form id="formAddNewHireMonitoringEcd" action="user/addNewHireMonitoringEcd.action" name="formAddNewHireMonitoringEcd" class="XXentity-form">
@@ -91,20 +107,27 @@
         <div style="display:none" class="form-container">           
                 <s:if test="isECDFormVisible">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label">New ECD</label>
+                    <label class="chox-form-std-label" style="width:150px;">New ECD</label>
                     <span id="ecdDatePH"></span>
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label">
-                    Reason for Delay</label>
-                    <s:select name="reason" list="reasonTypes" headerKey=""
-                              headerValue="--- SELECT ---"
-                              emptyOption="false"></s:select>
+                    <label class="chox-form-std-label" style="width:150px;">Reason for Delay</label>
+                    
+                    <s:select 
+                    name="reasonOfDelayId" 
+                    id="reasonOfDelayId"
+                    list="reasonOfDelay" 
+                    listKey="id" 
+                    listValue="name" 
+                    headerKey=""
+                    headerValue="--- SELECT ---"
+                    emptyOption="false" onchange="doPopulateNote();">
+                    </s:select>
+
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label">
-                    Supporting Note</label>
-                    <textarea class="chox-tta" id="ECDSupportingNote" cols="20" rows="5" name="supportingNote"><s:property value="supportingNote" /></textarea>
+                    <label class="chox-form-std-label" style="width:150px;">Supporting Note</label>
+                    <textarea class="chox-tta" id="ECDSupportingNote" cols="30" rows="5" name="supportingNote"><s:property value="supportingNote" /></textarea>
                 </div>
                 
                 <div class="chox-form-button">

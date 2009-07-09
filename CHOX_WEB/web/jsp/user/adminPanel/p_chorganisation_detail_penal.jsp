@@ -106,7 +106,6 @@
             if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
                 confirm("New Credit Hire has been created!");
                 var newObjectId =  parseInt(responseText.substring(9,responseText.length));
-                // $("#admin_param_panel").load("updateChorganisationDetailPanel.action?objectId=" + newObjectId);
                 $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=CreditHireOrgMgmt&selectOrgId=" + newObjectId);
                 
             }else{

@@ -32,6 +32,7 @@ public interface LookupService {
     public List getAllInsurers();
     
     public List getInsurerChoBand(int insurerId);
+    public List getReasonOfDelay();
     
     
 }

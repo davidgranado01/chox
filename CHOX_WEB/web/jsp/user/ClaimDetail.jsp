@@ -310,11 +310,14 @@
         }
         
         function loadHireMonitor(grid, rowIndex, columnIndex, e){
-            $("#hireMonitoringDetails").block({message: $("#hireMonitorTemplate"), css: { backgroundColor: '#FFFFFF', height:'160', width:'400px', top:'10px', padding:'10px', overflow: 'auto'}  });
             var hiremonitoringECD = ecdGrid.getStore().getAt(rowIndex);
-            var supportingNoteText = hiremonitoringECD.get("supportingNote");
-            $("#hireMonitorMessage").text(supportingNoteText);
-            setTimeout(function(){ $("#hireMonitoringDetails").unblock(); }, popupTimeUp);
+            var supportingNoteText = "<br/><b>Supporting note</b>: <br/>"+hiremonitoringECD.get("supportingNote");
+            var EcdText = "<b>ECD Date</b>: "+hiremonitoringECD.get("ecdDate");
+            var ReasonText = "<b>Reason</b>: "+hiremonitoringECD.get("reason");
+            
+            var title = EcdText;
+            var msg = EcdText + "<br/>" + ReasonText + "<br/>" + supportingNoteText;
+            propmtMsg(title, msg);
         }        
         
         /***********************************************************************************
@@ -346,7 +349,13 @@
         function loadComment(grid, rowIndex, columnIndex, e){            
             var comment = commentsGrid.getStore().getAt(rowIndex);
             var commentText = comment.get("comment");
-            propmtMsg(commentText);
+            
+            var title="Notes";
+            var msg = "<b>Created Date</b>: " + comment.get("createdDate") 
+                + "<br/><b>Created By</b>: " + comment.get("createdBy") 
+                + "<br/><br/><b>Message</b>: <br/>" + comment.get("comment");
+            
+            propmtMsg(title, msg);
         }
 
         /***********************************************************************************
@@ -372,7 +381,8 @@
                 reader:auditTrailJsonReader        
             });
 
-            var grid = new Ext.grid.GridPanel({
+            var auditGrid = new Ext.grid.GridPanel({
+                listeners:  {cellclick:loadAudit},
                 store: auditTrailData,
                 columns: [
                     {header: "Modified Date", width: 200, dataIndex: 'modifiedDate', sortable: false, resizable: true},
@@ -395,6 +405,17 @@
             
         } 
 
+        function loadAudit(grid, rowIndex, columnIndex, e){            
+            var audit = auditGrid.getStore().getAt(rowIndex);
+            
+            var title = "Claim Cycle";
+            var msg = "<b>Modified Date</b>: " + audit.get("modifiedDate") 
+                + "<br/><b>Modified By</b>: " + audit.get("modifiedBy") 
+                + "<br/><b>Status</b>: " + audit.get("status")
+            
+            propmtMsg(title, msg);
+        }
+        
         /***********************************************************************************
          * HISTORY
          ***********************************************************************************/
@@ -447,8 +468,13 @@
 
         function loadHistory(grid, rowIndex, columnIndex, e){
             var historyItem = historyGrid.getStore().getAt(rowIndex);
-            var textMsg = historyItem.get("narrative");
-            propmtMsg(textMsg);
+            
+            var title = "History";
+            var msg = "<b>Created Date</b>: " + historyItem.get("createdDate") 
+                + "<br/><b>Created By</b>: " + historyItem.get("createdBy") 
+                + "<br/><br/><b>Message</b>: <br/>" + historyItem.get("narrative")
+            
+            propmtMsg(title, msg);
         }
         
     });         
@@ -490,7 +516,6 @@
         }
     }   
     
-
     function resetAttachmentForm(){
 
         $("#fAttachment").each(function(){
@@ -505,13 +530,7 @@
 
     var t;
     
-    function random_number() {
-        var min = 10000000;
-        var max = 99999999;
-        return (Math.round((max-min) * Math.random() + min));
-    }
-    
-     function pingServer()
+    function pingServer()
     {
         $.getJSON('activityMonitoringAction.action?claimId=<s:property value="id" />' + "&token=" + random_number(),
         function(data){
@@ -593,16 +612,6 @@
         $("#popGeneralTemplateClose").click(function(){ $.unblockUI();});     
     });
 
-    function propmtMsg(msg){
-
-        $.blockUI({
-            message: $("#popGeneralTemplate"), 
-            css: { backgroundColor: '#FFFFFF', minHeight:'100', minWidth:'600', padding:'10px', overflow: 'auto'} 
-        });
-
-        $("#popGeneralTemplateMessage").text(msg);
-        setTimeout($.unblockUI, popupTimeUp);
-    }
         
 </script>        
         

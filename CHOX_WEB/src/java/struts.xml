@@ -589,6 +589,7 @@
             <result name="decline">/jsp/p_accessDeclined.jsp
             </result>
         </action>
+        
         <action name="addNewHireMonitoringEcd" class="chox.web.actions.HireMonitoringEcdAction" method="addNewHireMonitoringEcd">
             <result name="success">/jsp/p_response.jsp
             </result>
@@ -596,7 +597,7 @@
         <action name="getHireMonitoringEcds" class="chox.web.actions.GetHireMonitoringEcdsAction" method="getHireMonitoringEcds">
             <result name="success">/jsp/p_jsonData.jsp
             </result>
-        </action>
+        </action>      
         <!-- End HireMonitoringEcd -->   
 
         <!-- Start EngineerReport Detail -->

@@ -1,0 +1,32 @@
+
+-- ############################################################################################
+-- START VERSION V2.7.0
+-- ############################################################################################\
+
+ALTER TABLE reason_of_delay ADD COLUMN "name" character varying(100);
+ALTER TABLE reason_of_delay ALTER COLUMN "name" SET STORAGE EXTENDED;
+
+-- -------------------------------------------------------------------------------------------
+
+update reason_of_delay set name = 'Additional Damage' where id=1;
+update reason_of_delay set name = 'Failed QC' where id=2;
+update reason_of_delay set name = 'First ECD' where id=3;
+update reason_of_delay set name = 'Gone To Dealers' where id=4;
+update reason_of_delay set name = 'Parts Delay' where id=5;
+update reason_of_delay set name = 'Repairs Taking Longer Than Expected' where id=6;
+update reason_of_delay set name = 'Total Loss' where id=7;
+update reason_of_delay set name = 'Other' where id=8;
+
+-- -------------------------------------------------------------------------------------------
+
+update reason_of_delay set description='Further damage discovered during repair of vehicle.' where id=1;
+update reason_of_delay set description='Further checks required on vehicle due to failed quality control on road test.' where id=2;
+update reason_of_delay set description='No delays, first ECD provided by the garage or if no ECD provided date repairs completed.' where id=3;
+update reason_of_delay set description='Electrics/airbags need to be reset after repairs completed, further tests need to be completed.' where id=4;
+update reason_of_delay set description='Delays with parts on back order, arrived damaged or wrong part delivered.' where id=5;
+update reason_of_delay set description='Repairer have not provided reason for change in ECD, workload/resource in garage could have changed ECD or repairs continued over weekend/bank holiday.' where id=6;
+update reason_of_delay set description='No ECD ever given as total loss claim, ECD is date of off-hire after cheque received.' where id=7;
+update reason_of_delay set description='Other.' where id=8;
+
+-- -------------------------------------------------------------------------------------------
+
