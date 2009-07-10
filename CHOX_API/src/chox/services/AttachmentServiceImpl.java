@@ -39,20 +39,23 @@ public class AttachmentServiceImpl extends SecureDataService implements Attachme
     }
     
     public List<Attachment> getAttachmentByClaimId(int claimId) {
-
+        
         List attachments = new ArrayList<Attachment>();
-
+        
         try {
+
             DetachedCriteria criteria = DetachedCriteria.forClass(Attachment.class);
             criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
             List result = findByCriteria(criteria);
             attachments = result;
+            
         } catch (Throwable e) {
             e.printStackTrace();
         }
+
         return attachments;
-    }    
-           
+    }
+    
     public Attachment getObject(int id) {
         return (Attachment) get(Attachment.class, id);
     }

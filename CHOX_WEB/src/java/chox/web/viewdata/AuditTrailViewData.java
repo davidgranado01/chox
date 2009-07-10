@@ -1,5 +1,6 @@
 package chox.web.viewdata;
 
+import chox.Util.DateHelper;
 import chox.model.Chorganisation;
 import chox.model.AuditTrail;
 import chox.model.Insurer;
@@ -16,9 +17,8 @@ public class AuditTrailViewData {
     
     public AuditTrailViewData(AuditTrail auditTrail) {
         
-        Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         this.id = auditTrail.getId();
-        this.modifiedDate = dateFormat.format(auditTrail.getUpdateDate());
+        this.modifiedDate = DateHelper.GridViewDateFormat.format(auditTrail.getUpdateDate());
         
         String orgName = "";
         WebUser user = auditTrail.getCreatedBy();

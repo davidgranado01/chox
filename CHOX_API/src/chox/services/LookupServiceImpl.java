@@ -109,15 +109,9 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
     public List getReasonOfDelay() {
-        
-        System.out.println(">>>>>> 01");
-        
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfDelay.class);
         criteria.add(Restrictions.eq("status", true));
         criteria.addOrder(Order.asc("id"));  
-        
-        System.out.println(">>>>>> 02");
-        
         return findByCriteria(criteria);
     }
     

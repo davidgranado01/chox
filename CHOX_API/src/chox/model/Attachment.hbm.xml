@@ -9,6 +9,7 @@
     <property column="remarks" name="remarks"/>
     <property column="category" name="category" not-null="true"/>
     <property column="file_type" name="fileType"/>
+    <property column="file_buffer" name="fileBuffer"/>
     <many-to-one class="chox.model.Claim" column="claim_id" name="claim" not-null="true"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>

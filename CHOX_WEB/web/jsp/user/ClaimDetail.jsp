@@ -215,6 +215,8 @@
                     {name:'fileName'},
                     {name:'category'},                     
                     {name:'remarks' },
+                    {name:'modifiedDate' },
+                    {name:'modifiedBy' },
                     {name:'delete' }
                 ]
             });
@@ -230,9 +232,10 @@
                 store: paymentPackDataStore,
                 loadMask: true,
                 columns: [
-                    {header: "File Name", width: 300, dataIndex: 'fileName', sortable: false, resizable: true},
-                    {header: "Category", width: 200, dataIndex: 'category', sortable: false, resizable: true},
-                    {header: "Description", width: 270, dataIndex: 'remarks', sortable: false, resizable: true},
+                    {header: "File Name", width: 250, dataIndex: 'fileName', sortable: true, resizable: true},
+                    {header: "Category", width: 150, dataIndex: 'category', sortable: true, resizable: true},
+                    {header: "Description", width: 300, dataIndex: 'remarks', sortable: true, resizable: true},
+                    {header: "Created Date", width: 150, dataIndex: 'modifiedDate', sortable: true, resizable: true},
                     {header: "", width: 60, dataIndex: 'delete', sortable: false, resizable: false, renderer:function(value,p,r){
                     return "<a href='#attachmentlisting'>" + value + "</a>"}}
                 ],
@@ -257,10 +260,12 @@
         }
                 
         function loadAttachment(grid, rowIndex, columnIndex, e){
-            var attachment = paymentPackGrid.getStore().getAt(rowIndex);  // Get the Record
+            
+            var attachment = paymentPackGrid.getStore().getAt(rowIndex);
             var fileId = attachment.get("id");
-            if(columnIndex!=3){
-                window.location= "doExportFile.action?fileId=" + fileId;
+            if(columnIndex!=4){
+                var link = "doExportFile.action?fileId=" + fileId;
+                window.open(link,"","width=600,height=400,status=yes,menubar=no");
             }else{
                 deleteAttachment(fileId);
             }
@@ -1017,41 +1022,58 @@
 </s:if>                         
                     </div>
                     
-                    
-                    
-                    
                     <div id="paymentPack" class="x-hide-display">
                         <s:if test="tabAccessibility.paymentPackTabAccessibility != 0">
                             <script language="JavaScript">
                                 
-                                $(document).ready(function() { 
-                                        
+                                $(document).ready(function() {
+                                    var maxFileSize = "<s:property value="maxFileSize"/>";
                                     var options = { 
-                                        success: showResponseAtt  // post-submit callback 
+                                        success: showResponseAtt
                                     }; 
                                     $('#fAttachment').ajaxForm(options); 
                                 });
                                 
                                 function showResponseAtt(responseText, statusText){ 
+                                    if(statusText=="success"){
+                                        $("#AttMsgBox").text(responseText);
+                                    }else{
+                                        $("#AttMsgBox").text("Unknown Error Encountered, please try again.");
+                                    }
                                     paymentPackLoaded = false;
                                     loadAttachments();
-                                    $("#AttMsgBox").text("File has been uploaded successfully");
-                                } 
+                                }
                                 
                                 function fileValidation(){
                                     
+                                    var bFlag = true;
                                     var uploadFile = document.Attform.attachmentFile.value;
+                                    
                                     if(uploadFile==""){
-                                        alert("Please select a file to upload");
+                                        showMsg("Please select file to upload");
                                         return false;
                                     }
                                     
-                                    if((uploadFile.lastIndexOf("."))>0){
-                                        var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
+                                    var remark = document.Attform.remark.value;
+                                    if(remark.length<=0){
+                                        showMsg("Remark cannot be empty");
+                                        return false;
                                     }
                                     
-                                    document.Attform.uploadFileName.value = filename;
-                                    return true;
+                                    if(bFlag){
+                                        $("#AttMsgBox").css("color","#15428b");
+                                        if((uploadFile.lastIndexOf("."))>0){
+                                            var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
+                                            document.Attform.uploadFileName.value = filename;
+                                        }
+                                    }
+                                    
+                                    return bFlag;
+                                }
+                                
+                                function showMsg(errorMsg){
+                                        $("#AttMsgBox").css("color","red");
+                                        $("#AttMsgBox").text(errorMsg);                                    
                                 }
                             </script>
                                 
@@ -1060,19 +1082,21 @@
                                     <input type="hidden" name="claimId" value='<s:property value="id" />'>
                                     <input type="hidden" name="uploadFileName">
                                     <fieldset class="x-fieldset">
-                                        <legend>Add a new Attachment</legend>
-                                        <table class="chox-form-item">
+                                        <legend>Add a new Attachment&nbsp;</legend>
+                                        <table class="chox-form-item" cellpadding="0" cellspacing="0" border="0" width="100%">
                                             <tr>
-                                                <td width="30%" align="right"><label class="std-label-ro">File</label></td>
+                                                <td width="200" align="right">
+                                                    <label class="std-label-ro">File&nbsp;&nbsp;</label>
+                                                </td>
                                                 <td>
                                                     <s:file id="fileUploader" name ="attachmentFile" label ="Attachment" size="40"/>   
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td align="right"><label class="std-label-ro">Attachment Type</label></td>
+                                                <td align="right"><label class="std-label-ro">Attachment Type&nbsp;&nbsp;</label></td>
                                                 <td>
-                                                    <s:select name="category" 
-                                                              list="attachmentCategory" 
+                                                    <s:select name="category" id="category"
+                                                    list="attachmentCategory" 
                                                               headerKey="" 
                                                               listKey="value" 
                                                               listValue="text" 
@@ -1080,9 +1104,9 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td align="right" valign="top"><label class="std-label-ro">Description</label></td>
+                                                <td align="right" valign="top"><label class="std-label-ro">Description&nbsp;&nbsp;</label></td>
                                                 <td>
-                                                    <s:textarea rows="3" cols="30" name="remark" label="Remark:"/>
+                                                    <s:textarea rows="3" cols="30" id="remark" name="remark" label="Remark:"/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -1091,7 +1115,10 @@
                                                     <input type="submit" id="bAddAttachment" value="Add File" onclick="return fileValidation()"/>
                                                 </td>
                                             </tr>
-                                            <tr><td colspan="2"><div class="chox-form-submit-result" id="AttMsgBox"></div></td>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <td align="left" valign="top"><div class="chox-form-submit-result" id="AttMsgBox" style="text-align: left;"/></td>
+                                            </tr>
                                         </table>
                                     </fieldset>
                                 </form>

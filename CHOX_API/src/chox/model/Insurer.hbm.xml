@@ -15,7 +15,7 @@
     <property column="postcode" name="postcode" not-null="true"/>
     <property column="phone" name="phone"/>
     <property column="vat_no" name="vatNo" not-null="true"/>
-    <property column="company_no" name="companyNo" not-null="true"/>    
+    <property column="company_no" name="companyNo" not-null="true"/>
     <property column="admin_handling_charge" name="adminHandlingCharge"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>

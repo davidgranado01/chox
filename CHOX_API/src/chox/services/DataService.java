@@ -110,7 +110,6 @@ public class DataService extends HibernateDaoSupport {
     public List findByCriteria(final DetachedCriteria dc, final Class c, final int start, final int limit) {
 
         dc.setProjection(Projections.id());
-
         Criteria outer = getCurrentSession().createCriteria(c);
         outer.add(Subqueries.propertyIn("id", dc));
         outer.setFirstResult(start);

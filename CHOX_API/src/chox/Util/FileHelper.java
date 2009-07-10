@@ -1,19 +1,35 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chox.Util;
 
+import chox.model.AttachmentType;
 import java.util.List;
 import java.io.File;
-import chox.data.AttachmentType;
+import java.lang.String;
+import java.lang.String;
 import java.math.BigInteger;
-import java.util.Random;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 
 public class FileHelper {
     
+    public static int MAX_FILE_SIZE_ALLOW = 10240000; // 10MB
+    
+    
+    
+    
+    public static int maxFileSize(String unit){
+        
+        Integer size = 0;
+        
+        if(unit.equalsIgnoreCase("MB")){
+            size = MAX_FILE_SIZE_ALLOW / 1000 / 1024;
+        }else if(unit.equalsIgnoreCase("KB")){
+            size = MAX_FILE_SIZE_ALLOW / 1000;
+        }
+        
+        return size;
+    }
+    
+    /*
     public static String getClassPath(){
         String fileName = "struts.xml";
         String classPath = FileHelper.class.getClassLoader().getResource(fileName).getPath();
@@ -21,14 +37,13 @@ public class FileHelper {
         classPath = classPath.substring(0, dotIndex);
         return classPath;
     }
+    */
     
     public static Boolean isFileValid(File file){
-        Boolean bFlag = false;
-        
+        Boolean bFlag = false;        
         if(file.canRead() && file.isFile() && file.exists()){
             bFlag = true;
         }
-        
         return bFlag;
     }
     private static String getRandomString(){
@@ -42,31 +57,51 @@ public class FileHelper {
        return sRandom.toUpperCase();
     }
     
-    public static String getNewFileName(String oldFileName){
-    
-        // Random randomGenerator = new Random(1234567890);
-        // int iRandom = randomGenerator.nextInt(99999999);
-        return TextHelper.trimWhiteSpace(getRandomString()+"_"+oldFileName);
+    public static String getNewFileName(String oldFileName, boolean isRandom){
+        String result = "";
+        
+        if(isRandom){
+            result = TextHelper.trimWhiteSpace(getRandomString()+"_"+oldFileName).toLowerCase();
+        }else{
+            result = TextHelper.trimWhiteSpace(oldFileName).toLowerCase();
+        }
+        
+        return result;
     }
     
     public static String getFileExtension(String filename){
-        //String filename = file.getName();
         int pos = filename.lastIndexOf(".");
-        return filename.substring(pos+1);        
+        return filename.substring(pos+1).toLowerCase();        
     }
     
-    public static Boolean isFileTypeAllow(File file){
+    public static Boolean isFileTypeAllow(String fileName, List<String> allowTypes){
         Boolean bFlag = false;
-        String fileExpension = getFileExtension(file.getName()).toUpperCase();
-        List<String> allowTypes = AttachmentType.getAttachmentType();
+        String fileExpension = getFileExtension(fileName).toLowerCase();
+        
         for(String s : allowTypes){
-            if(s.toUpperCase().equalsIgnoreCase(fileExpension)){
+            if(s.toLowerCase().equalsIgnoreCase(fileExpension)){
                 bFlag = true;
                 break;
             }
         }
+        
         return bFlag;
     }
     
+    public static int isFileSizeAllow(File file){
+        
+        int result = 1;
+        
+        if(file.length() <= 0){
+            result = 0;
+        }
+            
+        if(file.length() > MAX_FILE_SIZE_ALLOW){
+            result = -1;
+        }
+        
+        return result;
+    }    
    
+    
 }

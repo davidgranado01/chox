@@ -6,7 +6,10 @@
             <value>classpath:hibernate.cfg.xml </value>
         </property>
     </bean>
-    <bean id="claimService" class="chox.services.ClaimServiceImpl" singleton="false"/>
+        <bean id="claimService" class="chox.services.ClaimServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
     <bean id="lookupService" class="chox.services.LookupServiceImpl" singleton="false"/>
     <bean id="securityInfoProvider" class="chox.web.data.WebSecurityInfoProvider" singleton="false"/>
     <bean id="accessibilityService" class="chox.services.AccessibilityServiceImpl" singleton="false"/>
@@ -30,6 +33,7 @@
     <bean id="chorganisationService" class="chox.services.ChorganisationServiceImpl" singleton="false"/>
     <bean id="choBandService" class="chox.services.ChoBandServiceImpl" singleton="false"/>
     <bean id="globalConfigurationService" class="chox.services.GlobalConfigurationServiceImpl" singleton="false"/> 
+    <bean id="dataService" class="chox.services.SecureDataService" singleton="false"/>
     <bean id="uploadClaimXMLService" class="chox.services.UploadClaimXMLServiceImpl" singleton="false">
         <property name="vehicleClassService" ref="vehicleClassService" />
         <property name="engineerReportService" ref="engineerReportService" />

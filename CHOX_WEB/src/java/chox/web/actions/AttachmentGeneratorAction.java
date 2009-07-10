@@ -16,7 +16,6 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
     private AttachmentService service;
     private GlobalConfigurationService globalConfigurationService;
     
-    // private String contentType;
     private String contentDisposition;
 
     public String getContentDisposition() {
@@ -26,8 +25,6 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
     public void setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
     }
-    
-
     
     public void setAttachmentService(AttachmentService service) {
         this.service = service;
@@ -72,11 +69,6 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
         return att;
     }
     
-    public static void main(String[] args) throws IOException {
-        //AttachmentGeneratorAction thisCtrl = new AttachmentGeneratorAction();
-        //thisCtrl.doExportFile();
-    }
-    
     @Override
     public String execute() throws Exception {
         
@@ -94,12 +86,11 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
             return "error";
         }
         
-        String strFile = getFileDirectory() + att.getFileName();
-        fileStream = doExportFile(strFile.trim());
-        
+        fileStream = new ByteArrayInputStream(att.getFileBuffer());
+
         String strContentDisposition = "filename="+att.getFileName();
         this.setContentDisposition(strContentDisposition);
-                
+        
         return SUCCESS;
     }
     

@@ -4,7 +4,7 @@
 <struts>
     <constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
     <constant name="struts.devMode" value="false" />
-    <constant name="struts.multipart.maxSize" value="2097152" />
+    <constant name="struts.multipart.maxSize" value="21000000" />
     <package name="home-package" extends="struts-default" namespace="/">
         <interceptors>
             <interceptor name="acegi" class="chox.web.security.AcegiInterceptor" />

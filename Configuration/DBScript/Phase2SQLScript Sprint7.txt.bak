@@ -49,6 +49,8 @@ CREATE TABLE s_attachment_type
 WITH (OIDS=FALSE);
 ALTER TABLE s_attachment_type OWNER TO postgres;
 
+
+
 delete from s_attachment_type;
 insert into s_attachment_type (id, code, description, status) values (1, 'xml', 'XML File', true);
 insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'doc', 'Microsoft Word 97', true);

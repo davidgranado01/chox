@@ -26,12 +26,6 @@ public class GetAttachmentDetailAction extends BaseAction{
         this.fileId = fileId;
     }
     
-    /*
-    public void prepare() throws Exception {
-        model = service.getObject(fileId);
-    } 
-    */
-    
     public void setAttachmentService(AttachmentService service) {
         this.service = service;
     }
@@ -46,10 +40,4 @@ public class GetAttachmentDetailAction extends BaseAction{
         attachment = service.getObject(fileId);
         return SUCCESS;
     }
-    
-    /*
-    public Attachment getModel() {
-        return model;
-    }
-    */
 }

@@ -5,6 +5,7 @@
 package chox.web.actions;
 
 import chox.Util.DateHelper;
+import chox.Util.FileHelper;
 import chox.model.Claim;
 import chox.model.ClaimStatus;
 import chox.model.EngineerReport;
@@ -122,7 +123,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private Integer injurySolicitorId;
     private Map session;
     private Integer tab = -1;
-
+    
+    public int getMaxFileSize() {
+        return FileHelper.MAX_FILE_SIZE_ALLOW;
+    }
+    
     public List getAttachmentCategory() {
         List items = new ArrayList<LookupItem>();
         for (String s : AttachmentCategory.getAttachmentCategory()) {

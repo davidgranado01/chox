@@ -5,7 +5,9 @@
 
 package chox.web.viewdata;
 
+import chox.Util.DateHelper;
 import chox.model.Attachment;
+import chox.model.WebUser;
 
 /**
  *
@@ -16,6 +18,8 @@ public class AttachmentViewData {
     private String fileName;
     private String category;
     private String remarks;
+    private String modifiedDate;
+    private String modifiedBy;
     private String delete = "Delete";
     
     public AttachmentViewData(Attachment attachment)
@@ -24,6 +28,30 @@ public class AttachmentViewData {
         this.fileName = attachment.getFileName();
         this.category = attachment.getCategory();
         this.remarks = attachment.getRemarks();
+        
+        this.modifiedDate = DateHelper.GridViewDateFormat.format(attachment.getLastModifiedDate());
+        
+        WebUser user = attachment.getLastModifiedBy();
+        if (user != null) {
+            this.modifiedBy = String.format("%1$s %2$s", user.getFirstName(), user.getLastName());
+        }  
+        
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
+    public String getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(String modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 
     public String getDelete() {

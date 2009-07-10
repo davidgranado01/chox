@@ -15,6 +15,15 @@ public class Attachment implements Serializable,Auditable{
     protected WebUser lastModifiedBy;
     protected Date lastModifiedDate;
     protected String fileType;
+    protected byte[] fileBuffer;
+
+    public byte[] getFileBuffer() {
+        return fileBuffer;
+    }
+
+    public void setFileBuffer(byte[] fileBuffer) {
+        this.fileBuffer = fileBuffer;
+    }
 
     public String getCategory() {
         return category;

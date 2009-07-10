@@ -15,9 +15,10 @@ import chox.model.WebUser;
  */
 public class SecureDataService extends DataService {
     
-     private SecurityInfoProvider securityInforProvider;
+    private SecurityInfoProvider securityInforProvider;
 
     public void setSecurityInfoProvider(SecurityInfoProvider provider) {
+        
         this.securityInforProvider = provider;
         
         if (this.securityInforProvider != null) {
