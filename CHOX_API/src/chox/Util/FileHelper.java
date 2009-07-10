@@ -12,10 +12,7 @@ import java.util.ArrayList;
 public class FileHelper {
     
     public static int MAX_FILE_SIZE_ALLOW = 10240000; // 10MB
-    
-    
-    
-    
+
     public static int maxFileSize(String unit){
         
         Integer size = 0;

@@ -30,6 +30,11 @@ update reason_of_delay set description='Other.' where id=8;
 
 -- -------------------------------------------------------------------------------------------
 
+ALTER TABLE attachment ADD COLUMN file_buffer bytea;
+ALTER TABLE attachment ALTER COLUMN file_buffer SET STORAGE EXTENDED;
+
+-- -------------------------------------------------------------------------------------------
+
 CREATE SEQUENCE s_attachment_type_id_seq
   INCREMENT 1
   MINVALUE 1
@@ -56,7 +61,7 @@ insert into s_attachment_type (id, code, description, status) values ((select ma
 insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'txt', 'Plain Text File', true);
 insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'pdf', 'Portable Document Format', true);
 insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'xlsx', 'Microsoft Excel', true);
-insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'docs', 'Microsoft Word', true);
+insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'docx', 'Microsoft Word', true);
 insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'jpg', 'Picture', true);
 insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'jpeg', 'Picture', true);
 

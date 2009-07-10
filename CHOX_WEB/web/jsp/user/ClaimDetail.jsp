@@ -1053,7 +1053,7 @@
                                         showMsg("Please select file to upload");
                                         return false;
                                     }
-                                    
+
                                     var remark = document.Attform.remark.value;
                                     if(remark.length<=0){
                                         showMsg("Remark cannot be empty");
@@ -1091,6 +1091,10 @@
                                                 <td>
                                                     <s:file id="fileUploader" name ="attachmentFile" label ="Attachment" size="40"/>   
                                                 </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="200" align="right"></td>
+                                                <td><span class="column_remark">Maximum attachment size is <s:property value="maxFileSize/1000/1024"/> MB</span><br/><br/></td>
                                             </tr>
                                             <tr>
                                                 <td align="right"><label class="std-label-ro">Attachment Type&nbsp;&nbsp;</label></td>
