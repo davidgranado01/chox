@@ -25,11 +25,11 @@ public class DBInterceptor extends EmptyInterceptor {
                 if ("createdDate".equals(propertyNames[i])) {
                     state[i] = DateHelper.getCurrentTimeStamp();
                 } else if ("createdBy".equals(propertyNames[i])) {
-                    state[i] = this.getSecurityInfoProvider().getCurrentUSer();
+                    state[i] = this.getSecurityInfoProvider().getCurrentUser();
                 } else if ("lastModifiedDate".equals(propertyNames[i])) {
                     state[i] = DateHelper.getCurrentTimeStamp();
                 } else if ("lastModifiedBy".equals(propertyNames[i])) {
-                    state[i] = this.getSecurityInfoProvider().getCurrentUSer();
+                    state[i] = this.getSecurityInfoProvider().getCurrentUser();
                 }
             }
         }
@@ -50,7 +50,7 @@ public class DBInterceptor extends EmptyInterceptor {
                 if ("lastModifiedDate".equals(propertyNames[i])) {
                     state1[i] = DateHelper.getCurrentTimeStamp();
                 } else if ("lastModifiedBy".equals(propertyNames[i])) {
-                    state1[i] = this.getSecurityInfoProvider().getCurrentUSer();
+                    state1[i] = this.getSecurityInfoProvider().getCurrentUser();
                 }
                 else if ("statusModifiedDate".equals(propertyNames[i])) {
                     if(statusModifiedDate == null)

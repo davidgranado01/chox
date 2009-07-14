@@ -32,7 +32,7 @@ public class WebSecurityInfoProvider implements SecurityInfoProvider {
         return permissionedUser;
     }
 
-    public WebUser getCurrentUSer() {
+    public WebUser getCurrentUser() {
 
 
         return getPermissionedUser().getUser();

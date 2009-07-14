@@ -11,7 +11,6 @@ import chox.model.Claim;
 import chox.services.AttachmentService;
 import chox.services.HistoryService;
 import chox.data.AttachmentCategory;
-import chox.model.AttachmentType;
 import chox.services.AttachmentTypeService;
 import chox.services.GlobalConfigurationService;
 import chox.web.security.ApplicationAccessibility;

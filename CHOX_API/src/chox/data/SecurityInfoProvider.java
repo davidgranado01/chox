@@ -13,7 +13,7 @@ import chox.model.WebUser;
  */
 public interface SecurityInfoProvider {
     
-  public WebUser getCurrentUSer();
+  public WebUser getCurrentUser();
   public boolean getIsCHO();
   public boolean getIsINS();
   public boolean getIsCHOXAdmin();

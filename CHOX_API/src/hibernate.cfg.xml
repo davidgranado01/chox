@@ -47,5 +47,6 @@
         <mapping resource="chox/model/ReasonOfRejection.hbm.xml"/>
         <mapping resource="chox/model/ReasonOfDelay.hbm.xml"/>
         <mapping resource="chox/model/SystemLog.hbm.xml"/>
+        <mapping resource="chox/model/Bordereau.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

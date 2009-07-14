@@ -13,7 +13,7 @@ import chox.model.WebUser;
  */
 public class FakeSecurityInfoProvider implements SecurityInfoProvider {
 
-    public WebUser getCurrentUSer() {
+    public WebUser getCurrentUser() {
         WebUser fakeUser = new WebUser();
         fakeUser.setId(999);
         return fakeUser;

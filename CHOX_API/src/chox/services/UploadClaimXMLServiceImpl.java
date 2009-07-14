@@ -2,6 +2,8 @@ package chox.services;
 
 import chox.Util.XmlHelper;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import org.w3c.dom.*;
 import java.util.ArrayList;
 import org.xml.sax.SAXException;
@@ -14,11 +16,16 @@ import scsbre.engine.*;
 import java.util.List;
 import chox.Util.DocumentHelper;
 import chox.data.UploadStatus;
+import chox.xmlValidation.result.ParseResult;
 import chox.xmlValidation.rules.claimValidation;
 import chox.xmlValidation.rules.driverValidation;
+import chox.xmlValidation.rules.fileValidation;
 import chox.xmlValidation.rules.invoiceValidation;
 import chox.xmlValidation.rules.repairValidation;
 import chox.xmlValidation.rules.vehicleValidation;
+import chox.xmlValidation.rules.xmlVersionValidation;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.hibernate.TransactionException;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -46,17 +53,43 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private HireMonitoringEcdService hireMonitoringEcdService;
     private HireMonitoringDetailService hireMonitoringDetailService;
     private InsurerChorganisationService insurerChorganisationService;
+    private BordereauService bordereauService;
+    
+    private File file;
+    private String fileName;
 
-        
-    public UploadClaimXMLServiceImpl()
-    {        
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public UploadClaimXMLServiceImpl(File file, String fileName)
+    {
+        setFile(file);
+        setFileName(fileName);
     }
     
-    /*
+   
     public static void main(String[] args) {
 
         try {
+
+            File testFile = new File("C:/Project Workplace/Greefinch/Sherwood/testXML/Demo Data XMLWting.xml");
+            UploadClaimXMLServiceImpl ctrl = new UploadClaimXMLServiceImpl(testFile, testFile.getName());
+            ctrl.processClaimXMLFile(testFile, testFile.getName());
             
+            /*
             String sXMLPath1 = "C:/Users/Carlson/Desktop/CHOX.file/P2S6/23042009 INVOICE UPLOAD.V.2.xml";
             Boolean isAllowPartialUpload = true;
 
@@ -95,23 +128,41 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     }
                 }
             }
+            */
+            
 
-        } catch (SAXParseException err) {
-            System.out.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
-            System.out.println(" " + err.getMessage());
-        } catch (SAXException e) {
-            Exception x = e.getException();
-            ((x == null) ? e : x).printStackTrace();
         } catch (Throwable t) {
             t.printStackTrace();
         }
     }
-    */
     
-    public ArrayList<XMLParseResult> processClaimXMLFile(File claimXMLFile, Boolean isAllowPartialUpload) {
-        UploadClaimXMLServiceImpl thisCtrl = new UploadClaimXMLServiceImpl();
-        return thisCtrl.processXML(claimXMLFile, isAllowPartialUpload);
+    
+    public ParseResult processClaimXMLFile(File file, String fileName){
+        
+        this.file = file;
+        this.fileName = fileName;
+        
+        ParseResult parseResult = new ParseResult();
+        
+        try {
+            
+            parseResult = new fileValidation().validate(this.file, this.fileName);
+
+            if(parseResult.isStatus()){                
+                parseResult = new xmlVersionValidation().validate(this.file, this.fileName, parseResult);
+            }
+            
+            if(parseResult.isStatus()){
+                // PROCESS XML
+            }
+            
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+
+        return parseResult;
     }
+
     
     public ArrayList<XMLParseResult> processXML(File claimXMLFile, Boolean isAllowPartialUpload) {
         
@@ -374,4 +425,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) { this.hireMonitoringEcdService = hireMonitoringEcdService; }
     public void setHireMonitoringDetailService(HireMonitoringDetailService hireMonitoringDetailService) { this.hireMonitoringDetailService = hireMonitoringDetailService; }
     public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {this.insurerChorganisationService = insurerChorganisationService; }
+    public void setBordereauService(BordereauService bordereauService) {this.bordereauService = bordereauService; }
+     
 }

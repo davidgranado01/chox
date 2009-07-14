@@ -30,6 +30,11 @@ update reason_of_delay set description='Other.' where id=8;
 
 -- -------------------------------------------------------------------------------------------
 
+ALTER TABLE attachment ADD COLUMN file_buffer bytea;
+ALTER TABLE attachment ALTER COLUMN file_buffer SET STORAGE EXTENDED;
+
+-- -------------------------------------------------------------------------------------------
+
 CREATE SEQUENCE s_attachment_type_id_seq
   INCREMENT 1
   MINVALUE 1
@@ -49,8 +54,6 @@ CREATE TABLE s_attachment_type
 WITH (OIDS=FALSE);
 ALTER TABLE s_attachment_type OWNER TO postgres;
 
-
-
 delete from s_attachment_type;
 insert into s_attachment_type (id, code, description, status) values (1, 'xml', 'XML File', true);
 insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'doc', 'Microsoft Word 97', true);
@@ -58,8 +61,33 @@ insert into s_attachment_type (id, code, description, status) values ((select ma
 insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'txt', 'Plain Text File', true);
 insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'pdf', 'Portable Document Format', true);
 insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'xlsx', 'Microsoft Excel', true);
-insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'docs', 'Microsoft Word', true);
+insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'docx', 'Microsoft Word', true);
 insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'jpg', 'Picture', true);
 insert into s_attachment_type (id, code, description, status) values ((select max(id)+1 from s_attachment_type), 'jpeg', 'Picture', true);
+
+-- -------------------------------------------------------------------------------------------
+
+CREATE SEQUENCE bordereau_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE bordereau_id_seq OWNER TO postgres;
+
+CREATE TABLE bordereau
+(
+  id integer NOT NULL DEFAULT nextval('bordereau_id_seq'::regclass),
+  file bytea,
+  status boolean NOT NULL DEFAULT false,
+  description character varying(400),
+  created_by integer,
+  created_date timestamp without time zone DEFAULT now(),
+  last_modified_by integer,
+  last_modified_date timestamp without time zone DEFAULT now(),
+  CONSTRAINT bordereau_pkey PRIMARY KEY (id)
+)
+WITH (OIDS=FALSE);
+ALTER TABLE bordereau OWNER TO postgres;
 
 -- -------------------------------------------------------------------------------------------

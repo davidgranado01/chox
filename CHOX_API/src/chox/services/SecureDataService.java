@@ -45,7 +45,7 @@ public class SecureDataService extends DataService {
     }
     
     public WebUser getCurrentUser() {
-        return getSecurityInfoProvider().getCurrentUSer();
+        return getSecurityInfoProvider().getCurrentUser();
     }
 
     public boolean isClaimHandlerOnly(){

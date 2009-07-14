@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-autowire="autodetect">
-    <bean id="securityInfoProvider" class="chox.web.data.WebSecurityInfoProvider" singleton="false"/>
+    <bean id="securityInfoProvider" class="chox.data.DummyWebSecurityInfoProvider" singleton="false"/>
     <bean id="auditInterceptor" class="chox.data.DBInterceptor" singleton="false">
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver">
         </property>
-        <property name="url" value="jdbc:postgresql://10.0.0.2:5432/chox_test">       
+        <property name="url" value="jdbc:postgresql://localhost:5432/chox_test">       
         </property>
         <property name="username" value="postgres">
         </property>
@@ -58,11 +58,11 @@
                 <value>chox/model/HireMonitoringEcd.hbm.xml</value>
                 <value>chox/model/AuditTrail.hbm.xml</value>
                 <value>chox/model/ReasonOfRejection.hbm.xml</value>
+                <value>chox/model/Bordereau.hbm.xml</value>
             </list>
         </property>
         <property name="entityInterceptor" ref="auditInterceptor"/>
     </bean>
-        <!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
@@ -75,9 +75,6 @@
     </bean>
     <bean id="accessibilityService" class="chox.services.AccessibilityServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="applicationAccessibility" class="chox.web.security.ApplicationAccessibility" singleton="true">
-        <property name="accessibilityService" ref="accessibilityService"/>
     </bean>
     <bean id="incidentService" class="chox.services.IncidentServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -152,7 +149,10 @@
     </bean>    
     <bean id="reasonOfRejectionService" class="chox.services.ReasonOfRejectionServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>    
+    </bean>  
+    <bean id="bordereauService" class="chox.services.BordereauServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>      
     <bean id="uploadClaimXMLService" class="chox.services.UploadClaimXMLServiceImpl" singleton="false">
         <property name="vehicleClassService" ref="vehicleClassService" />
         <property name="engineerReportService" ref="engineerReportService" />
@@ -172,5 +172,6 @@
         <property name="auditTrailService" ref="auditTrailService" />
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
+        <property name="bordereauService" ref="bordereauService"/>
     </bean>
 </beans>
