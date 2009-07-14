@@ -1,21 +1,12 @@
 package chox.xmlValidation.result;
-
-import chox.model.Bordereau;
+import java.lang.String;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ParseResult {
     
-    protected Bordereau bordereau;
     protected boolean status = true;
-    protected List<String> message;
-
-    public Bordereau getBordereau() {
-        return bordereau;
-    }
-
-    public void setBordereau(Bordereau bordereau) {
-        this.bordereau = bordereau;
-    }
+    protected List<String> message = new ArrayList<String>();
 
     public List<String> getMessage() {
         return message;
@@ -33,5 +24,13 @@ public class ParseResult {
         this.status = status;
     }
     
+    public void addMessage(String errMsg) {
+        /*
+        if(this.message==null || this.message.size()<=0){
+            this.message = new ArrayList<String>();
+        }
+         */ 
+        this.message.add(errMsg);
+    }
     
 }

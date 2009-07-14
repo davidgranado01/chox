@@ -11,10 +11,6 @@ import java.util.Date;
 import java.util.Map;
 import org.apache.struts2.util.StrutsTypeConverter;
 
-/**
- *
- * @author Emmanuel
- */
 public class DateConverter extends StrutsTypeConverter {
 
     public Object convertFromString(Map context, String[] values, Class toClass) {
@@ -36,7 +32,5 @@ public class DateConverter extends StrutsTypeConverter {
             return sdf.format((Date) o);
         }
         return "";
-
-
     }
 }

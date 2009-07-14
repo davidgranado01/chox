@@ -1,10 +1,7 @@
 package chox.services;
 
-import chox.model.XMLParseResult;
 import chox.xmlValidation.result.ParseResult;
-import chox.xmlValidation.rules.fileValidation;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -12,9 +9,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import static org.junit.Assert.*;
 
-public class XMLUploadTest extends SecureDataService{
+public class XMLUploadTest{
     private ClassPathXmlApplicationContext ctx;
     private UploadClaimXMLService service = null;
     
@@ -33,7 +29,7 @@ public class XMLUploadTest extends SecureDataService{
 
     @Before
     public void setUp() {
-        //service = (UploadClaimXMLService) ctx.getBean("uploadClaimXMLService");
+        service = (UploadClaimXMLService) ctx.getBean("uploadClaimXMLService");
     }
 
     @After

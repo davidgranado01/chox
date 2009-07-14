@@ -24,6 +24,7 @@ import chox.xmlValidation.rules.invoiceValidation;
 import chox.xmlValidation.rules.repairValidation;
 import chox.xmlValidation.rules.vehicleValidation;
 import chox.xmlValidation.rules.xmlVersionValidation;
+import java.io.FileInputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.hibernate.TransactionException;
@@ -85,7 +86,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
         try {
 
-            File testFile = new File("C:/Project Workplace/Greefinch/Sherwood/testXML/Demo Data XMLWting.xml");
+            File testFile = new File("C:/Project Workplace/Greefinch/Sherwood/testXML/DemoDataXML-01.xml");
             UploadClaimXMLServiceImpl ctrl = new UploadClaimXMLServiceImpl(testFile, testFile.getName());
             ctrl.processClaimXMLFile(testFile, testFile.getName());
             
@@ -146,14 +147,32 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         
         try {
             
-            parseResult = new fileValidation().validate(this.file, this.fileName);
+            parseResult = new fileValidation().validate(this.file, this.fileName, parseResult);
 
-            if(parseResult.isStatus()){                
+            if(parseResult.isStatus()){
                 parseResult = new xmlVersionValidation().validate(this.file, this.fileName, parseResult);
             }
             
+            System.out.println(">>>"+parseResult.isStatus());
+            System.out.println(">>>"+parseResult.getMessage().get(0));
+            
+            // ONLY ACCESS IF AND ONLY IF BOTH VALIDATION RETURN TRUE
             if(parseResult.isStatus()){
-                // PROCESS XML
+                
+                Bordereau bordereau = new Bordereau();
+                FileInputStream streamIn = new FileInputStream(this.file);
+                byte fileContent[] = new byte[(int)this.file.length()];
+                streamIn.read(fileContent);
+                bordereau.setFileBuffer(fileContent);
+            
+                bordereau.setFileName(this.fileName);
+                bordereau.setStatus(true);
+                
+                System.out.println("A: "+bordereau.getFileName());
+                System.out.println("B: "+bordereau.getStatus());
+                System.out.println("C: "+bordereau.getFileBuffer().length);
+                
+                // VALIDATE THE DATA TYPE AND MANDATORY
             }
             
         } catch (Throwable t) {
@@ -162,7 +181,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
         return parseResult;
     }
-
     
     public ArrayList<XMLParseResult> processXML(File claimXMLFile, Boolean isAllowPartialUpload) {
         

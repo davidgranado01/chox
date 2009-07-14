@@ -16,7 +16,6 @@ import scsbre.model.IInvoiceInfo;
  */
 public class HasCorrectDiscountForNonDA implements IBusinessRule {
 
-
     String narrative = "Discount calculation is incorrect";
     
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
