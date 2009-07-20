@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chox.xmlValidation.model;
 
 import chox.model.Claim;
@@ -11,7 +6,7 @@ import org.w3c.dom.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClaimResult {
+public class ClaimResult{
     
     private Claim claim;
     private Element element;
