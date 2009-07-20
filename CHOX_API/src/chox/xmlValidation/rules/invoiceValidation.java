@@ -1,6 +1,6 @@
 package chox.xmlValidation.rules;
 
-import chox.Util.XmlHelper;
+import chox.xmlValidation.rules.Util.XmlHelper;
 import org.w3c.dom.*;
 import com.filesystemsoftware.utils.XMLUtils;
 import chox.model.*;

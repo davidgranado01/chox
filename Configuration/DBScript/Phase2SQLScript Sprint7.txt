@@ -79,7 +79,7 @@ CREATE TABLE bordereau
 (
   id integer NOT NULL DEFAULT nextval('bordereau_id_seq'::regclass),
   file bytea,
-  status boolean NOT NULL DEFAULT false,
+  status character varying(50),
   description character varying(400),
   created_by integer,
   created_date timestamp without time zone DEFAULT now(),

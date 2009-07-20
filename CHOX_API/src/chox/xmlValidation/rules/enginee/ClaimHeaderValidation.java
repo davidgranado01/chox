@@ -1,7 +1,8 @@
-package chox.xmlValidation.rules;
+package chox.xmlValidation.rules.enginee;
+import chox.xmlValidation.rules.*;
 import chox.Util.DateHelper;
 import chox.Util.TextHelper;
-import chox.Util.XmlHelper;
+import chox.xmlValidation.rules.Util.XmlHelper;
 import org.w3c.dom.*;
 import com.filesystemsoftware.utils.XMLUtils;
 import chox.model.*;
@@ -12,46 +13,171 @@ import chox.services.InsurerAlliasService;
 import chox.services.InsurerChorganisationService;
 import chox.services.SecureDataService;
 import chox.services.VehicleClassService;
+import chox.xmlValidation.model.ClaimResult;
+import chox.xmlValidation.model.status.ClaimParseStatus;
+import chox.xmlValidation.rules.Util.NodeHelper;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import javax.xml.xpath.XPathExpressionException;
 
-public class claimValidation extends SecureDataService{
+public class ClaimHeaderValidation extends SecureDataService implements rulesInterface{
     
+    protected static String sectionName = "Claim Header";
+    private DataValidationParameter dataValidationParameter;
+    private ClaimService claimService;
+    private ChorganisationService chorganisationService;
+    private ChoBandService choBandService;
+    private ClaimResult claimResult;
+    private Element element;
 
+    public void setChoBandService(ChoBandService choBandService) { this.choBandService = choBandService; }
+    public void setChorganisationService(ChorganisationService chorganisationService) { this.chorganisationService = chorganisationService; }
+    public void setClaimResult(ClaimResult claimResult) { this.claimResult = claimResult; }
+    public void setClaimService(ClaimService claimService) { this.claimService = claimService; }
+    public void setDataValidationParameter(DataValidationParameter dataValidationParameter) { this.dataValidationParameter = dataValidationParameter; }
     
-    /*
-    public static XMLParseResult validateClaimInformation(XMLParseResult xmlParseResult){
+    public ClaimHeaderValidation(ClaimResult claimResult, DataValidationParameter dataValidationParameter, 
+            ClaimService claimService, ChorganisationService chorganisationService, ChoBandService choBandService){
+            setClaimResult(claimResult);
+            setDataValidationParameter(dataValidationParameter);
+            setClaimService(claimService);
+            setChorganisationService(chorganisationService);
+            setChoBandService(choBandService);    
+    }
+    
+    public ClaimResult execute() throws DOMException, XPathExpressionException{
+
+        this.element = XMLUtils.getElement(claimResult.getElement(), "supplier");
         
-        if(xmlParseResult.getClaim().getCustomer()!=null){
-            
-            String custClaimNumber = "";
-            
-            if(xmlParseResult.getClaim().getCustomer().getClaimReference()!=null){
-                custClaimNumber = xmlParseResult.getClaim().getCustomer().getClaimReference();
-            }
-
+        if(validate()){
+            process();
         }
         
-        //        
-        //        if(xmlParseResult.getClaim().getThirdParty()!=null){
-        //            
-        //            String thirdPartyClaimNumber = "";
-        //            
-        //            if(xmlParseResult.getClaim().getThirdParty().getClaimReference()!=null){
-        //                thirdPartyClaimNumber = xmlParseResult.getClaim().getThirdParty().getClaimReference();
-        //            }
-        //            
-        //            if(claimService.isThirdPartyClaimNumberExist(thirdPartyClaimNumber, xmlParseResult.getClaim().getId(), xmlParseResult.getIsClaimExist())){
-        //                String errorMessage = "The Third Party Claim Number supplied already exists in the system";
-        //                xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, errorMessage, false);
-        //            }  
-        //        }
-        
-        return xmlParseResult;
+        doPrintResult(true);
+        return claimResult;
     }
-    */
+    
+    private boolean validate(){
+        
+        boolean isAllowToReadData = true;
+        this.claimResult.setCheckDataValid(true);
 
+        this.claimResult = NodeHelper.nodeValidate(sectionName, "first-contact", claimResult.getElement(), claimResult, dataValidationParameter);
+        this.claimResult = NodeHelper.nodeValidate(sectionName, "managing-repair", claimResult.getElement(), claimResult, dataValidationParameter);
+        this.claimResult = NodeHelper.nodeValidate(sectionName, "agreement-signed", claimResult.getElement(), claimResult, dataValidationParameter);
+        this.claimResult = NodeHelper.nodeValidate(sectionName, "gta-notice", claimResult.getElement(), claimResult, dataValidationParameter);
+        this.claimResult = NodeHelper.nodeValidate(sectionName, "rental-status", claimResult.getElement(), claimResult, dataValidationParameter);
+        this.claimResult = NodeHelper.nodeValidate(sectionName, "supplier-name", this.element, claimResult, dataValidationParameter);
+        this.claimResult = NodeHelper.nodeValidate(sectionName, "supplier-reference", this.element, claimResult, dataValidationParameter);
+        
+        isAllowToReadData = this.claimResult.isCheckDataValid();
+
+        return isAllowToReadData;
+    }
+    
+    private void process(){
+            
+        Boolean managingRepair = XmlHelper.getBooleanFromNode(claimResult.getElement(), "managing-repair");
+        Timestamp firstContactDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "first-contact");
+        Timestamp creditAgreementDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "agreement-signed");
+        Timestamp gtaNoticeDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "gta-notice");
+        String choReferenceNumber = XmlHelper.getNodeValue(this.element, "supplier-reference");
+        // String choName = XmlHelper.getNodeValue(this.element, "supplier-name");
+
+        if(gtaNoticeDate==null){
+            gtaNoticeDate = DateHelper.getCurrentTimeStamp();
+        }
+
+        Claim claim = new Claim();
+        
+        
+        // System.out.println("");
+        // System.out.println(">>> Ref:"+choReferenceNumber+"|");
+        
+        if(claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)){
+        
+            // System.out.println(">>> CHO REF IS EXIST");
+            
+            claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+
+            // System.out.println(">>> CHECK CLAIM : "+claim.getChoReference());
+            
+            if(claim.getInvoice() != null){
+
+                // System.out.println(">>> INVOICE EXIST");
+                claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
+                claimResult.setValid(false);
+                
+            }else{
+                
+                // System.out.print(">>> INVOICE NOT EXIST");
+                if(claim.getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)){
+                    // System.out.println(">>> NEW INVOICE");
+                    claimResult.setClaimParseStatus(ClaimParseStatus.newInvoice);
+                    ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                    claim.setChoband(choBand);
+                    
+                }else if(claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) ||
+                    claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING) ||
+                    claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_ACCEPTED)){
+                    // System.out.println(">>> NOT EDITABLE CLAIM");
+                    // NOT EDITABNLE CLAIM
+                    claimResult.setClaimParseStatus(ClaimParseStatus.ClaimNotEditable);
+                    claimResult.setValid(false);
+                }else{
+                    // System.out.println(">>> EDITABLE CLAIM");
+                    // EDITABLE CLAIM
+                    claimResult.setClaimParseStatus(ClaimParseStatus.existClaim);
+                }
+            }
+            
+       }else{
+       
+            // System.out.println(">>> CHO REF IS NOT EXIST");
+            claimResult.setClaimParseStatus(ClaimParseStatus.newClaim);
+            claim.setManagingRepair(managingRepair);
+            claim.setPolicyHolderContactDate(firstContactDate);
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+            claim.setChoReference(choReferenceNumber);
+            claim.setCreditAgreementDate(creditAgreementDate);
+            claim.setGtaNoticeDate(gtaNoticeDate);
+            claim.setIndemnityAmount(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));                    
+            claim.setChorganisation(chorganisationService.getCurrentCHOrganisation());
+            
+        }
+        
+        claimResult.setClaim(claim);
+        // System.out.println(">>> Ref:"+choReferenceNumber+"|Type:"+choName+"|ClaimProcessStatus:"+claimResult.getClaimParseStatus().toString());
+        // System.out.println("");
+                
+    }
+    
+    
+    private void doPrintResult(boolean isAllowed){
+        
+        if(isAllowed){
+            
+            System.out.println("-------");
+            System.out.println(sectionName + "| " + XmlHelper.getNodeValue(this.element, "supplier-name"));
+            
+            if(this.claimResult.getClaim()!=null){
+
+                System.out.println(sectionName + "| getManagingRepair :"+this.claimResult.getClaim().getManagingRepair());
+                System.out.println(sectionName + "| getPolicyHolderContactDate :"+this.claimResult.getClaim().getPolicyHolderContactDate());
+                System.out.println(sectionName + "| getStatus :"+this.claimResult.getClaim().getStatus());
+                System.out.println(sectionName + "| getChoReference :"+this.claimResult.getClaim().getChoReference());
+                System.out.println(sectionName + "| getCreditAgreementDate :"+this.claimResult.getClaim().getCreditAgreementDate());
+                System.out.println(sectionName + "| getGtaNoticeDate :"+this.claimResult.getClaim().getGtaNoticeDate());
+                System.out.println(sectionName + "| getIndemnityAmount :"+this.claimResult.getClaim().getIndemnityAmount());
+                System.out.println(sectionName + "| getPercentageLiabilityAccepted :"+this.claimResult.getClaim().getPercentageLiabilityAccepted());  
+                
+            }
+        }   
+    }
+    
+    /*
     public static XMLParseResult ClaimHeaderSchemaValidation(
                 XMLParseResult xmlParseResult,
                 Element mainElement,
@@ -83,7 +209,7 @@ public class claimValidation extends SecureDataService{
 
         // CHO ORGANISATION SECTION
         xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "supplier", strSectionName, "");
-            
+
         Element thisElement = XMLUtils.getElement(mainElement, "supplier");
 
         xmlParseResult = XmlHelper.xmlNodeValidation(xmlParseResult, thisElement, "supplier-name", XmlHelper.isMAN_Supplier_Name, "", strSectionName, "Supplier Name");
@@ -139,6 +265,7 @@ public class claimValidation extends SecureDataService{
         return xmlParseResult;
     }
 
+    // DONE MIGTATED AND CHECKED BUSINESS LOGIC    
     public static XMLParseResult ClaimSchemaValidation(
             XMLParseResult xmlParseResult,
             Element root,
@@ -155,10 +282,10 @@ public class claimValidation extends SecureDataService{
             if (xmlParseResult.getIsCurrentScheValid()) {
                 Element claimNodeElement = XMLUtils.getElement(root, "claim");
                 
-                claimValidation claimCtrl = new claimValidation();
-                xmlParseResult = claimCtrl.CustomerSchemaValidation(xmlParseResult, claimNodeElement, "Customer Details", vehicleClassService);
-                xmlParseResult = claimCtrl.ThirdPartySchemaValidation(xmlParseResult, claimNodeElement, "Third Party Details", vehicleClassService, insurerAlliasService, insurerChorganisationService);
-                xmlParseResult = claimCtrl.IncidentSchemaValidation(xmlParseResult, claimNodeElement, doc, "Incident Details");
+                //ClaimValidation claimCtrl = new ClaimValidation();
+                //xmlParseResult = claimCtrl.CustomerSchemaValidation(xmlParseResult, claimNodeElement, "Customer Details", vehicleClassService);
+                //xmlParseResult = claimCtrl.ThirdPartySchemaValidation(xmlParseResult, claimNodeElement, "Third Party Details", vehicleClassService, insurerAlliasService, insurerChorganisationService);
+                //xmlParseResult = claimCtrl.IncidentSchemaValidation(xmlParseResult, claimNodeElement, doc, "Incident Details");
                 
             }
         
@@ -169,6 +296,7 @@ public class claimValidation extends SecureDataService{
         return xmlParseResult;
     }
     
+
     private  XMLParseResult CustomerSchemaValidation(
             XMLParseResult xmlParseResult,
             Element mainElement,
@@ -240,6 +368,7 @@ public class claimValidation extends SecureDataService{
         return xmlParseResult;
     }
     
+    // DONE MIGTATED AND CHECKED BUSINESS LOGIC   
     private  XMLParseResult ThirdPartySchemaValidation(
             XMLParseResult xmlParseResult,
             Element mainElement,
@@ -355,6 +484,7 @@ public class claimValidation extends SecureDataService{
         return xmlParseResult;
     }
     
+    // DONE MIGTATED AND CHECKED BUSINESS LOGIC   
     private  XMLParseResult IncidentSchemaValidation(
         XMLParseResult xmlParseResult,
         Element mainElement,
@@ -390,14 +520,14 @@ public class claimValidation extends SecureDataService{
                 xmlParseResult.getClaim().setIncident(incident);
                 
                 // SET SUB NODE FOR INCIDENT (WITNESS, INJURY, AND SOLICITOR
-                xmlParseResult = IncidentWitnessSchemaValidation(xmlParseResult, thisElement, doc, "Witness");
+                // xmlParseResult = IncidentWitnessSchemaValidation(xmlParseResult, thisElement, doc, "Witness");
                 xmlParseResult = IncidentInjuriesSchemaValidation(xmlParseResult, thisElement, doc, "Injury");
             }
         }
         
         return xmlParseResult;
     }
-    
+
     private XMLParseResult IncidentInjuriesSchemaValidation(
         XMLParseResult xmlParseResult,
         Element mainElement,
@@ -542,7 +672,8 @@ public class claimValidation extends SecureDataService{
         return xmlParseResult;
     }    
     
-
+    /*
+    // DONE MIGTATED AND CHECKED BUSINESS LOGIC   
     private XMLParseResult IncidentWitnessSchemaValidation(
         XMLParseResult xmlParseResult,
         Element mainElement,
@@ -639,5 +770,6 @@ public class claimValidation extends SecureDataService{
         }
         
         return xmlParseResult;
-    }    
+    }
+    */
 }

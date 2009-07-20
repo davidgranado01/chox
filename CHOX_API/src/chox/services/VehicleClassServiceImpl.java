@@ -1,7 +1,7 @@
 package chox.services;
 
 import chox.Util.TextHelper;
-import chox.Util.XmlHelper;
+import chox.xmlValidation.rules.Util.XmlHelper;
 import chox.model.VehicleClass;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;

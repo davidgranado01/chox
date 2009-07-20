@@ -1,6 +1,6 @@
 package chox.services;
 
-import chox.xmlValidation.result.ParseResult;
+import chox.xmlValidation.model.BordereauResult;
 import java.io.File;
 import java.util.List;
 import org.junit.After;
@@ -145,9 +145,9 @@ public class XMLUploadTest{
         try
         {
 
-            ParseResult parseResult = service.processClaimXMLFile(testFile, testFile.getName());
+            BordereauResult parseResult = service.processClaimXMLFile(testFile, testFile.getName());
             
-            System.out.println(">>>"+parseResult.isStatus());
+            // System.out.println(">>>"+parseResult.isStatus());
             // ArrayList<XMLParseResult> parseResult = new ArrayList<XMLParseResult>();
             // instance.processClaimXMLFile(claimFile, true);
         }

@@ -12,22 +12,18 @@ import java.util.logging.Logger;
 import scsbre.model.IClaimInfo;
 
 public class ClaimCalcHelper {
-	
-	
+
 	private IClaimInfo claim;
         private ExtrasCalcHelper exCalcHelper;
 	
-	private ClaimCalcHelper(){
-		
-		
-	}
+	private ClaimCalcHelper(){ }
 	
 	public static ClaimCalcHelper getInstance(IClaimInfo c)
 	{
-		ClaimCalcHelper cc = new ClaimCalcHelper();
-		cc.claim = c;
-                cc.exCalcHelper = ExtrasCalcHelper.getInstance(c.getExtras());
-		return cc;		
+            ClaimCalcHelper cc = new ClaimCalcHelper();
+            cc.claim = c;
+            cc.exCalcHelper = ExtrasCalcHelper.getInstance(c.getExtras());
+            return cc;		
 	}
         
 	/*
@@ -58,21 +54,22 @@ public class ClaimCalcHelper {
         
 	public int getHireDuration()
 	{
-		Date hireStart = claim.getHireDetail().getHireStart();
-                Date initialEcd = claim.getHireMonitoringEcd();
-		return CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
+            Date hireStart = claim.getHireDetail().getHireStart();
+            Date initialEcd = claim.getHireMonitoringEcd();
+            return CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
 	}
         
 	public BigDecimal getDailyHireRateCharged()
 	{
-		BigDecimal hireNetMinusExtras = claim.getInvoice().getHireNet().subtract(exCalcHelper.getTotalExtras());
-		return hireNetMinusExtras.divide(new BigDecimal(claim.getHireDetail().getNumberOfHireDays()),4,1);
+            BigDecimal hireNetMinusExtras = claim.getInvoice().getHireNet().subtract(exCalcHelper.getTotalExtras());
+            return hireNetMinusExtras.divide(new BigDecimal(claim.getHireDetail().getNumberOfHireDays()), 4, 1);
 	}
 
 	public BigDecimal getDailyHireRateChargedWithToleranceDeduction()
 	{
-		BigDecimal tolerance = getDailyHireRateCharged().multiply(claim.getChoBand().getHireRateChargeTolerance());
-		return getDailyHireRateCharged().subtract(tolerance);
+         
+            BigDecimal tolerance = getDailyHireRateCharged().multiply(claim.getChoBand().getHireRateChargeTolerance());
+            return getDailyHireRateCharged().subtract(tolerance);
 	}
 
 	public int getAllowedDays()
@@ -120,12 +117,12 @@ public class ClaimCalcHelper {
             int iLabourCostAverageRateDay = getLabourCostAverageRateDay();
             int iDayBufferForEngineeringProcess = getDayBufferForEngineeringProcess();
             
-            System.out.println("iLabourCostAverageRateDay:"+iLabourCostAverageRateDay);
-            System.out.println("iDayBufferForEngineeringProcess:"+iDayBufferForEngineeringProcess);
+            // System.out.println("iLabourCostAverageRateDay:"+iLabourCostAverageRateDay);
+            // System.out.println("iDayBufferForEngineeringProcess:"+iDayBufferForEngineeringProcess);
             
             int iWeekedBuffer = getWeekedBuffer(iLabourCostAverageRateDay+iDayBufferForEngineeringProcess);
             
-            System.out.println("iWeekedBuffer:"+iWeekedBuffer);
+            // System.out.println("iWeekedBuffer:"+iWeekedBuffer);
             
             return iLabourCostAverageRateDay + iWeekedBuffer + iDayBufferForEngineeringProcess;
         }

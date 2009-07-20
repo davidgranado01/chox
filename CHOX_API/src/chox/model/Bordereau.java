@@ -7,7 +7,7 @@ public class Bordereau implements Serializable,Auditable{
     
     protected Integer id;
     protected byte[] fileBuffer;
-    protected boolean status;
+    protected String status;
     protected String fileName;
     protected String description;
     protected WebUser createdBy;
@@ -47,11 +47,11 @@ public class Bordereau implements Serializable,Auditable{
         this.id = id;
     }
 
-    public boolean getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
     

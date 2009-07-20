@@ -3,8 +3,8 @@
  * and open the template in the editor.
  */
 
-package chox.xmlValidation.result;
+package chox.xmlValidation.rules;
 
-public class claimResult {
+public interface rulesInterface {
 
 }

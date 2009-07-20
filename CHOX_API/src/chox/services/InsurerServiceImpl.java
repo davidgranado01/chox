@@ -1,6 +1,6 @@
 package chox.services;
 
-import chox.Util.XmlHelper;
+import chox.xmlValidation.rules.Util.XmlHelper;
 import chox.model.Insurer;
 import java.util.ArrayList;
 import java.util.List;

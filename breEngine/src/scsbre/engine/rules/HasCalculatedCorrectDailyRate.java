@@ -16,11 +16,6 @@ import scsbre.engine.RuleEvaluationResult;
 import scsbre.engine.util.*;
 import scsbre.model.*;
 
-
-/**
- *
- * @author Derm
- */
 public class HasCalculatedCorrectDailyRate implements IBusinessRule {
 
     String narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
@@ -30,7 +25,9 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
         if(claim.getVClass() != null){
             ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
             IVehicleClassInfo customerVClass = claim.getVClass();
+            
             boolean success = cCalc.getDailyHireRateChargedWithToleranceDeduction().compareTo(customerVClass.getPrice()) <= 0;
+            
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);    
             if(success)narrative = "";
         }

@@ -48,5 +48,5 @@
   </filter-def>
   <filter-def name="Claim_LineOfBusinessFilter">
     <filter-param name="lineOfBusinessId" type="integer"/>
-  </filter-def>
+  </filter-def>  
 </hibernate-mapping>

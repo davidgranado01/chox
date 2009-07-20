@@ -40,7 +40,7 @@ public class RulesEngine {
         response.addRuleEvaulation(new HasSuppliedCorrectTotalToPay().applyToClaim(claim));        
         response.addRuleEvaulation(new EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays().applyToClaim(claim)); 
         response.addRuleEvaulation(new LabourCostBusinessRule().applyToClaim(claim)); 
-        
+
         // MUST RUN AT LAST
         response.addRuleEvaulation(new validateUniqueVehicleRegistrationNumber().applyToClaim(claim)); 
         return response;

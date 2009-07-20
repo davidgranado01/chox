@@ -1,7 +1,7 @@
 package chox.xmlValidation.rules;
 
 import chox.Util.TextHelper;
-import chox.Util.XmlHelper;
+import chox.xmlValidation.rules.Util.XmlHelper;
 import org.w3c.dom.*;
 import com.filesystemsoftware.utils.XMLUtils;
 import chox.model.*;
@@ -21,6 +21,7 @@ public class vehicleValidation {
         xmlParseResult = XmlHelper.xmlSchemaNodeValidation(xmlParseResult, mainElement, "rental-vehicles", "Hire Vehicle Details", "");
 
         if (xmlParseResult.getIsCurrentScheValid()) {
+            
             
             Element thisElement = XMLUtils.getElement(mainElement, "rental-vehicles");
             ArrayList<Element> rentalVehicleElements = XMLUtils.getElements(doc, thisElement, "rental-vehicle");

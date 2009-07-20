@@ -1,6 +1,7 @@
-package chox.Util;
+package chox.xmlValidation.rules.Util;
 
 
+import chox.Util.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.*;
@@ -9,6 +10,8 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import com.filesystemsoftware.utils.XMLUtils;
 import chox.model.*;
+import chox.xmlValidation.rules.DataValidationParameter;
+import chox.xmlValidation.model.NodeRuleModel;
 
 public class XmlHelper {
     
@@ -274,7 +277,7 @@ public class XmlHelper {
         }
         return bOutput;
     }
-        
+
     public static BigDecimal getBigDecimalFromNode(Element thisElement, String thisNodeName){
         BigDecimal bOutput = new BigDecimal("0.00");
         String sOutput = XMLUtils.getElementValue(thisElement, thisNodeName);
@@ -444,5 +447,8 @@ public class XmlHelper {
             }
         }
         return xmlParseResult;
-    }       
+    }     
+
+
+    
 }

@@ -6,7 +6,7 @@
 package chox.xmlValidation.rules;
 
 import chox.Util.TextHelper;
-import chox.Util.XmlHelper;
+import chox.xmlValidation.rules.Util.XmlHelper;
 import org.w3c.dom.*;
 import com.filesystemsoftware.utils.XMLUtils;
 import chox.model.*;
@@ -70,7 +70,6 @@ public class engineerReportValidation {
                     engineerReport.setDays(XmlHelper.getIntegerFromNode(eReportElement, "days"));
                     engineerReport.setLabourAmount(XmlHelper.getBigDecimalFromNode(eReportElement, "labour-amount"));
                     engineerReport.setTotalAmount(XmlHelper.getBigDecimalFromNode(eReportElement, "total-amount"));
-
                     engineerReport.setName(XmlHelper.getNodeValue(eReportElement, "name"));
                     engineerReport.setCompany(XmlHelper.getNodeValue(eReportElement, "company"));
                     engineerReport.setAddress1(XmlHelper.getNodeValue(eReportElement, "address1"));

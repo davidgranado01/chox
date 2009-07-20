@@ -1,32 +1,26 @@
 package chox.services;
 
-import chox.Util.XmlHelper;
+import chox.xmlValidation.rules.Util.XmlHelper;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import org.w3c.dom.*;
 import java.util.ArrayList;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import com.filesystemsoftware.utils.XMLUtils;
-import com.filesystemsoftware.utils.Logger;
 import java.math.BigDecimal;
 import chox.model.*;
 import scsbre.engine.*;
 import java.util.List;
-import chox.Util.DocumentHelper;
 import chox.data.UploadStatus;
-import chox.xmlValidation.result.ParseResult;
-import chox.xmlValidation.rules.claimValidation;
-import chox.xmlValidation.rules.driverValidation;
-import chox.xmlValidation.rules.fileValidation;
+import chox.xmlValidation.model.BordereauResult;
+import chox.xmlValidation.model.ClaimResult;
+import chox.xmlValidation.rules.BordereauDataValidation;
+import chox.xmlValidation.rules.BordereauFileValidation;
 import chox.xmlValidation.rules.invoiceValidation;
 import chox.xmlValidation.rules.repairValidation;
 import chox.xmlValidation.rules.vehicleValidation;
-import chox.xmlValidation.rules.xmlVersionValidation;
+import chox.xmlValidation.rules.BordereauVersionValidation;
+import chox.xmlValidation.rules.enginee.ClaimHeaderValidation;
 import java.io.FileInputStream;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import org.hibernate.TransactionException;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -75,19 +69,15 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         this.file = file;
     }
 
-    public UploadClaimXMLServiceImpl(File file, String fileName)
-    {
-        setFile(file);
-        setFileName(fileName);
-    }
-    
-   
     public static void main(String[] args) {
 
         try {
-
-            File testFile = new File("C:/Project Workplace/Greefinch/Sherwood/testXML/DemoDataXML-01.xml");
-            UploadClaimXMLServiceImpl ctrl = new UploadClaimXMLServiceImpl(testFile, testFile.getName());
+            
+            //String xmlFile = "C:/Project Workplace/Greefinch/Sherwood/testXML/DemoDataXMLTest-01.xml";
+            String xmlFile = "C:/Project Workplace/Greefinch/Sherwood/testXML/UnitTest01.xml";
+            
+            File testFile = new File(xmlFile);
+            UploadClaimXMLServiceImpl ctrl = new UploadClaimXMLServiceImpl();
             ctrl.processClaimXMLFile(testFile, testFile.getName());
             
             /*
@@ -137,243 +127,44 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
     }
     
-    
-    public ParseResult processClaimXMLFile(File file, String fileName){
-        
-        this.file = file;
-        this.fileName = fileName;
-        
-        ParseResult parseResult = new ParseResult();
+    public BordereauResult processClaimXMLFile(File file, String fileName){
+                
+        BordereauResult bordereauResult = new BordereauResult();
         
         try {
             
-            parseResult = new fileValidation().validate(this.file, this.fileName, parseResult);
+            bordereauResult = new BordereauFileValidation().validate(file, fileName, bordereauResult);
+            
+            if(bordereauResult.isValid()){
+                
+                bordereauResult = new BordereauVersionValidation().validate(file, fileName, bordereauResult);
+                bordereauResult = new BordereauDataValidation().validate(file, fileName, bordereauResult, claimService, chorganisationService, choBandService, vehicleClassService, insurerAlliasService, insurerChorganisationService, hireMonitoringEcdService, invoiceService, historyService);
 
-            if(parseResult.isStatus()){
-                parseResult = new xmlVersionValidation().validate(this.file, this.fileName, parseResult);
+                
+                for(ClaimResult claimResult : bordereauResult.getClaimResult()){
+                    
+                    if(claimResult.isValid()){
+                        System.out.println("========================================================================");
+                        System.out.println("*** is Claim Valid?: " + claimResult.isValid());
+                        System.out.println("*** is Claim Data valid?: " + claimResult.isDataValid());
+                        System.out.println("*** Claim Process Status: " + claimResult.getClaimParseStatus());
+                        System.out.println("*** Claim Process Msg Size: " + claimResult.getMessage().size());                        
+                        
+                    }
+                }
+                
+                bordereauResult.setBordereau(doBordereau(this.file, this.fileName, bordereauResult.getBordereauStatus().toString()));
+                
+                
             }
             
-            System.out.println(">>>"+parseResult.isStatus());
-            System.out.println(">>>"+parseResult.getMessage().get(0));
-            
-            // ONLY ACCESS IF AND ONLY IF BOTH VALIDATION RETURN TRUE
-            if(parseResult.isStatus()){
-                
-                Bordereau bordereau = new Bordereau();
-                FileInputStream streamIn = new FileInputStream(this.file);
-                byte fileContent[] = new byte[(int)this.file.length()];
-                streamIn.read(fileContent);
-                bordereau.setFileBuffer(fileContent);
-            
-                bordereau.setFileName(this.fileName);
-                bordereau.setStatus(true);
-                
-                System.out.println("A: "+bordereau.getFileName());
-                System.out.println("B: "+bordereau.getStatus());
-                System.out.println("C: "+bordereau.getFileBuffer().length);
-                
-                // VALIDATE THE DATA TYPE AND MANDATORY
-            }
-            
+        doCheck(bordereauResult);
+
         } catch (Throwable t) {
             t.printStackTrace();
         }
 
-        return parseResult;
-    }
-    
-    public ArrayList<XMLParseResult> processXML(File claimXMLFile, Boolean isAllowPartialUpload) {
-        
-        ArrayList<XMLParseResult> xmlParseResults = new ArrayList<XMLParseResult>();
-
-        try {
-            
-            Document doc = DocumentHelper.getDocumentFromFile(claimXMLFile);
-            Element root = doc.getDocumentElement();
-            
-            if (root != null && root.getTagName().equals("chox")) {
-                
-                ArrayList<Element> rentalElements = XMLUtils.getElements(doc, root, "rental");
-
-                int count = 0;
-                
-                for (Element re : rentalElements) {
-                    try {
-                        count++;
-                        XMLParseResult xmlParseResult = new XMLParseResult();
-                        xmlParseResult = xmlSchemaValidateProcess(xmlParseResult, doc, re, isAllowPartialUpload);
-                        xmlParseResults.add(xmlParseResult);
-                    } catch (Exception e) {
-                        Logger.err.println("Error loading record " + count);
-                        throw e;
-                    }
-                }
-            }
-
-        } catch (SAXParseException err) {
-            System.out.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
-            System.out.println(" " + err.getMessage());
-        } catch (SAXException e) {
-            Exception x = e.getException();
-            ((x == null) ? e : x).printStackTrace();
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-
-        return xmlParseResults;
-    }
-    
-    /*
-     * MAIN METHOS TO PROCESS THE XML PARSE PASSING IN
-     * 1. CLAIM IS INSERT MODE ONLY
-     * 2. CUSTOMER DETAIL ONLY INSERT WHEN IS NEW CLAIM
-     * 3. ENGINEER REPORT IS UPSERT MODE
-     * 4. VEHICLE HIRE DETAIL IS UPSERT MODE
-     * 5. INVOICE IS INSERT MODE AND ONLY WHEN THE CLAIM STATUS IS AwaitingInvoiceData
-     */
-    public XMLParseResult xmlSchemaValidateProcess(
-            XMLParseResult xmlParseResult,
-            Document doc,
-            Element root,
-            Boolean isAllowPartialUpload) throws Exception {
-  
-        // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
-        xmlParseResult = claimValidation.ClaimHeaderSchemaValidation(xmlParseResult, root, claimService, choBandService, chorganisationService);
-
-        // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
-        if(!xmlParseResult.getIsClaimExist()){
-            xmlParseResult = driverValidation.DriversSchemaValidation(xmlParseResult, root, doc);
-            xmlParseResult = claimValidation.ClaimSchemaValidation(xmlParseResult, root, doc, vehicleClassService, insurerAlliasService, insurerChorganisationService);
-        }
-        
-        xmlParseResult = repairValidation.RepairSchemaValidation(xmlParseResult, root, doc);
-        xmlParseResult = vehicleValidation.RentalVehiclesSchemaValidation(xmlParseResult, root, doc, vehicleClassService);
-
-        if(xmlParseResult.getClaim().getInvoice()!=null){
-            xmlParseResult.setIsInvoiceExist(true);
-        }
-        
-        boolean isNewInvoice = false;
-        String oldClaimStatus = xmlParseResult.getClaim().getStatus();
-        
-        if(xmlParseResult.getIsClaimExist() 
-            && xmlParseResult.getClaim().getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)
-            && !xmlParseResult.getIsInvoiceExist()){
-            
-            isNewInvoice = true;
-            xmlParseResult = invoiceValidation.InvoicesSchemaValidation(xmlParseResult, root, doc);
-
-            // EXECUTE BRE RULE
-            if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
-              
-                // CHECK INITIAL ENGINEERING REPORT
-                Boolean isEngReportExist = false;
-                if(xmlParseResult.getClaim().getEngineerReport()!=null){
-                    isEngReportExist = true;
-                }
-                
-                VehicleClass cust_VehicleClass = xmlParseResult.getClaim().getCustomer().getVehicleClass();
-                VehicleClass thirdVehicleClass = xmlParseResult.getClaim().getThirdParty().getVehicleClass();
-                
-                Claim BREClaim = constructeClaimForInvoiceValidation(xmlParseResult.getClaim());
-                RulesEngineResponse validationResult = invoiceService.XMLUploaderInvoiceValidation(BREClaim);
-
-                xmlParseResult.getClaim().getCustomer().setVehicleClass(cust_VehicleClass);
-                xmlParseResult.getClaim().getThirdParty().setVehicleClass(thirdVehicleClass);
-                
-                historyService.logInvoiceValidationErrorMsg(validationResult, BREClaim);
-
-                String newClaimStatus = validationResult.getStatus().toString();                
-                xmlParseResult.getClaim().setStatus(newClaimStatus);
-                
-                if(!isEngReportExist){
-                    xmlParseResult.getClaim().setEngineerReport(null);
-                }
-
-                if(validationResult.getResults().size()>0){
-                    xmlParseResult = appendInvoiceValidationErrorMessage(xmlParseResult, validationResult.getResults());
-                }
-            }
-            
-        }else{
-        
-            // VALIDATE CLAIM OR INVOICE IS UNIQUE
-            if(!xmlParseResult.getIsClaimExist()){
-                
-                // xmlParseResult = claimValidation.validateClaimInformation(xmlParseResult);
-                
-                if(xmlParseResult.getClaim().getThirdParty()!=null){
-                    if(xmlParseResult.getClaim().getThirdParty().getClaimReference()!=null){
-                        xmlParseResult.getClaim().setClaimNumber(xmlParseResult.getClaim().getThirdParty().getClaimReference());
-                    }
-                }
-            }
-        }
-        
-        if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){            
-            xmlParseResult = saveXMLRecord(xmlParseResult, isNewInvoice, oldClaimStatus);
-        }
-        
-        xmlParseResult = UploadStatus.getUploadStatus(xmlParseResult);
-        return xmlParseResult;
-    }
-
-    private Claim constructeClaimForInvoiceValidation(Claim claim){
-        
-        // INTERFACE MAPPING WITH BRE - WHERE HIRE MONITORING NOT EXIST
-        Boolean isIsTotalLostCheck = false;
-        if(claim.getHireMonitoringDetail()!=null){
-            isIsTotalLostCheck = claim.getHireMonitoringDetail().isIsTotalLostCheck();
-        }
-        
-        claim.getVehicleHire().setIsTotalLoss(isIsTotalLostCheck);
-
-        // CONSTRUCTE DUMMY ENGINEERING REPORT WITH ALL VALUE IS ZERO WHEN ER NOT EXIST
-        if(claim.getEngineerReport()==null){
-            EngineerReport engineerreport = new EngineerReport();
-            engineerreport.setDays(0);
-            engineerreport.setLabourAmount(new BigDecimal("0.00"));
-            engineerreport.setTotalAmount(new BigDecimal("0.00"));
-            claim.setEngineerReport(engineerreport);
-        }
-        
-        if(claimService.getCountOfClaimByVRN(claim.getCustomer().getVehicleRegistration(), claim.getId())>0){
-           claim.getCustomer().setIsVehicleRegistrationExist(true);
-        }
-        
-        // SET VEHICLE CLASS TO NULL WHEN 
-        if(claim.getThirdParty().getVehicleClass()!=null){
-            if(claim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached") 
-                    || claim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("UNATTACHED")){
-                claim.getThirdParty().setVehicleClass(null);
-            }
-        }
-        
-        // SET VEHICLE CLASS TO NULL WHEN 
-        if(claim.getCustomer().getVehicleClass()!=null){
-            if(claim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")
-                    || claim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("UNATTACHED")){
-                claim.getCustomer().setVehicleClass(null);
-            }
-        }
-        
-        claim.setHireMonitoringEcd(hireMonitoringEcdService.getLatestHireMonitoringECDDate(claim));
-        
-        return claim;
-    }
-
-    private XMLParseResult appendInvoiceValidationErrorMessage(XMLParseResult xmlParseResult, List<RuleEvaluation> results){
-
-        for(int iCount=0; iCount<results.size(); iCount++){
-            
-            RuleEvaluation rv = results.get(iCount);
-            
-            if(rv.getIsVisibleToCHO() && rv.getResult()==RuleEvaluationResult.RuleFailed){
-                xmlParseResult.getDataValidationRemark().add(rv.toString());
-            }
-        }
-        
-        return xmlParseResult;
+        return bordereauResult;
     }
     
     private XMLParseResult saveXMLRecord(XMLParseResult xmlParseResult, final boolean isNewInvoice, final String oldClaimStatus){       
@@ -423,6 +214,325 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 
         return xmlParseResult;
     }
+
+    /*
+    private XMLParseResult saveXMLRecord(XMLParseResult xmlParseResult, final boolean isNewInvoice, final String oldClaimStatus){       
+        
+        TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
+        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        
+        try {
+            
+            final XMLParseResult readOnlyXmlParseResult = xmlParseResult;
+            
+            transactionTemplate.execute(
+                    
+                    new TransactionCallbackWithoutResult() {
+
+                        public void doInTransactionWithoutResult(TransactionStatus status) {
+
+                            if (!readOnlyXmlParseResult.getIsClaimExist()) {
+                                customerService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                thirdPartyService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                incidentService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                witnessService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                injuryService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                solicitorService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                                hireMonitoringDetailService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                            }
+
+                            engineerReportService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                            vehicleHireService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                            invoiceService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                            claimService.saveObjectForXMLUploader(readOnlyXmlParseResult);
+                            
+                            if (!readOnlyXmlParseResult.getIsClaimExist()) {
+                                auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, "", readOnlyXmlParseResult.getClaim());
+                            }
+                            
+                            if(isNewInvoice){
+                                auditTrailService.logAuditLog(readOnlyXmlParseResult.getClaim().getStatus(), oldClaimStatus, readOnlyXmlParseResult.getClaim());
+                            }                        
+                        }
+                    });
+        }
+        catch(TransactionException e)
+        {
+            xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
+        }      
+                
+        return xmlParseResult;
+    }
+    */
+    
+    private Bordereau doBordereau(File file, String fileName, Object status) throws FileNotFoundException, IOException{
+        
+            Bordereau bordereau = new Bordereau();
+            FileInputStream streamIn = new FileInputStream(file);
+            byte fileContent[] = new byte[(int)file.length()];
+            streamIn.read(fileContent);
+            
+            bordereau.setFileName(fileName);  
+            if(status != null){
+                bordereau.setStatus(status.toString());  
+            }
+            bordereau.setFileBuffer(fileContent);
+            
+            System.out.println("Bordereau File Name: "+bordereau.getFileName());
+            System.out.println("Bordereau Status: "+bordereau.getStatus());
+            System.out.println("Bordereau: "+bordereau.getFileBuffer().length);
+            
+            return bordereau;
+    }
+    
+    
+    private void doCheck(BordereauResult bordereauResult){
+    
+        System.out.println("");
+        System.out.println("+++++++++++++++++++++ START SUMMARY +++++++++++++++++++++");
+        System.out.println("bordereauResult Valid: "+bordereauResult.isValid());
+        System.out.println("bordereauResult Status: "+bordereauResult.getBordereauStatus());
+        System.out.println("bordereauResult Claim Size: "+bordereauResult.getClaimResult().size());
+        System.out.println("bordereauResult Msg Size: "+bordereauResult.getMessage().size());
+        
+        for(String bmsg : bordereauResult.getMessage()){
+            System.out.println("bordereauResult > MESSAGE: "+bmsg);
+        }
+        
+        System.out.println("+++++++++++++++++++++ END SUMMARY +++++++++++++++++++++");
+        
+        System.out.println("");
+        System.out.println("** START CLAIMS ********************************************");
+        
+        for(ClaimResult c : bordereauResult.getClaimResult()){
+            
+            if(c.getClaim()!=null){
+                System.out.println(":: Claim > Cho Ref: "+c.getClaim().getChoReference());
+                System.out.println(":: Claim > Valid: "+c.isValid());
+                System.out.println(":: Claim > Data Valid: "+c.isDataValid());
+                System.out.println(":: Claim > Status: "+c.getClaimParseStatus());
+                System.out.println(":: Claim > Msg Size: "+c.getMessage().size());
+
+                for(String cmsg : c.getMessage()){
+                    System.out.println(":: Claim >> MESSAGE:"+cmsg);
+                }
+            }
+            System.out.println("-----------");
+            
+        }
+        System.out.println("** END CLAIMS ********************************************");
+        System.out.println("");
+        
+    }
+    
+    public ArrayList<XMLParseResult> processXML(File claimXMLFile, Boolean isAllowPartialUpload) {
+        
+        try {
+            
+            // UploadClaimXMLServiceImpl ctrl = new UploadClaimXMLServiceImpl();
+            // ctrl.processClaimXMLFile(claimXMLFile, claimXMLFile.getName());
+            processClaimXMLFile(claimXMLFile, claimXMLFile.getName());
+            
+        
+        
+        /*
+        ArrayList<XMLParseResult> xmlParseResults = new ArrayList<XMLParseResult>();
+
+        
+            
+            Document doc = DocumentHelper.getDocumentFromFile(claimXMLFile);
+            Element root = doc.getDocumentElement();
+            
+            if (root != null && root.getTagName().equals("chox")) {
+                
+                ArrayList<Element> rentalElements = XMLUtils.getElements(doc, root, "rental");
+
+                int count = 0;
+                
+                for (Element re : rentalElements) {
+                    try {
+                        count++;
+                        XMLParseResult xmlParseResult = new XMLParseResult();
+                        xmlParseResult = xmlSchemaValidateProcess(xmlParseResult, doc, re, isAllowPartialUpload);
+                        xmlParseResults.add(xmlParseResult);
+                    } catch (Exception e) {
+                        Logger.err.println("Error loading record " + count);
+                        throw e;
+                    }
+                }
+            }
+
+
+        return xmlParseResults;
+         */ 
+
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        
+        return new ArrayList<XMLParseResult>();
+    }
+    
+    /*
+     * MAIN METHOS TO PROCESS THE XML PARSE PASSING IN
+     * 1. CLAIM IS INSERT MODE ONLY
+     * 2. CUSTOMER DETAIL ONLY INSERT WHEN IS NEW CLAIM
+     * 3. ENGINEER REPORT IS UPSERT MODE
+     * 4. VEHICLE HIRE DETAIL IS UPSERT MODE
+     * 5. INVOICE IS INSERT MODE AND ONLY WHEN THE CLAIM STATUS IS AwaitingInvoiceData
+     */
+
+    public XMLParseResult xmlSchemaValidateProcess(
+            XMLParseResult xmlParseResult,
+            Document doc,
+            Element root,
+            Boolean isAllowPartialUpload) throws Exception {
+  
+        // VALIDATE AND GET RECORD FOR CLAIM OBJECT AND CHECK THE CLAIM IS EXIST OR NOT 
+        //xmlParseResult = claimValidation.ClaimHeaderSchemaValidation(xmlParseResult, root, claimService, choBandService, chorganisationService);
+
+        // GET CLAIM INFORMATION IF IT IS NEW CLAIM TO BE INSERTED 
+        if(!xmlParseResult.getIsClaimExist()){
+            // xmlParseResult = driverValidation.DriversSchemaValidation(xmlParseResult, root, doc);
+            // xmlParseResult = ClaimHeaderValidation.ClaimSchemaValidation(xmlParseResult, root, doc, vehicleClassService, insurerAlliasService, insurerChorganisationService);
+        }
+        
+        // xmlParseResult = repairValidation.RepairSchemaValidation(xmlParseResult, root, doc);
+        // xmlParseResult = vehicleValidation.RentalVehiclesSchemaValidation(xmlParseResult, root, doc, vehicleClassService);
+
+        if(xmlParseResult.getClaim().getInvoice()!=null){
+            xmlParseResult.setIsInvoiceExist(true);
+        }
+        
+        boolean isNewInvoice = false;
+        String oldClaimStatus = xmlParseResult.getClaim().getStatus();
+        
+        if(xmlParseResult.getIsClaimExist() 
+            && xmlParseResult.getClaim().getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)
+            && !xmlParseResult.getIsInvoiceExist()){
+            
+            isNewInvoice = true;
+            xmlParseResult = invoiceValidation.InvoicesSchemaValidation(xmlParseResult, root, doc);
+
+            // EXECUTE BRE RULE
+            if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){
+              
+                // CHECK INITIAL ENGINEERING REPORT
+                Boolean isEngReportExist = false;
+                if(xmlParseResult.getClaim().getEngineerReport()!=null){
+                    isEngReportExist = true;
+                }
+                
+                
+                // VehicleClass cust_VehicleClass = xmlParseResult.getClaim().getCustomer().getVehicleClass();
+                // VehicleClass thirdVehicleClass = xmlParseResult.getClaim().getThirdParty().getVehicleClass();
+                
+                // Claim BREClaim = constructeClaimForInvoiceValidation(xmlParseResult.getClaim());
+                // RulesEngineResponse validationResult = invoiceService.XMLUploaderInvoiceValidation(BREClaim);
+
+                // xmlParseResult.getClaim().getCustomer().setVehicleClass(cust_VehicleClass);
+                // xmlParseResult.getClaim().getThirdParty().setVehicleClass(thirdVehicleClass);
+                
+                // historyService.logInvoiceValidationErrorMsg(validationResult, BREClaim);
+
+                // String newClaimStatus = validationResult.getStatus().toString();                
+                // xmlParseResult.getClaim().setStatus(newClaimStatus);
+                
+                // if(!isEngReportExist){
+                    // xmlParseResult.getClaim().setEngineerReport(null);
+                // }
+
+                // if(validationResult.getResults().size()>0){
+                    // xmlParseResult = appendInvoiceValidationErrorMessage(xmlParseResult, validationResult.getResults());
+                // }
+            }
+            
+        }else{
+        
+            // VALIDATE CLAIM OR INVOICE IS UNIQUE
+            if(!xmlParseResult.getIsClaimExist()){
+                
+                // xmlParseResult = claimValidation.validateClaimInformation(xmlParseResult);
+                
+                if(xmlParseResult.getClaim().getThirdParty()!=null){
+                    if(xmlParseResult.getClaim().getThirdParty().getClaimReference()!=null){
+                        xmlParseResult.getClaim().setClaimNumber(xmlParseResult.getClaim().getThirdParty().getClaimReference());
+                    }
+                }
+            }
+        }
+        
+        if(xmlParseResult.getIsSchemaValid() && xmlParseResult.getIsDataValid()){            
+            xmlParseResult = saveXMLRecord(xmlParseResult, isNewInvoice, oldClaimStatus);
+        }
+        
+        xmlParseResult = UploadStatus.getUploadStatus(xmlParseResult);
+        return xmlParseResult;
+    }
+    
+    /*
+    private Claim constructeClaimForInvoiceValidation(Claim claim){
+        
+        // INTERFACE MAPPING WITH BRE - WHERE HIRE MONITORING NOT EXIST
+        Boolean isIsTotalLostCheck = false;
+        if(claim.getHireMonitoringDetail()!=null){
+            isIsTotalLostCheck = claim.getHireMonitoringDetail().isIsTotalLostCheck();
+        }
+        
+        claim.getVehicleHire().setIsTotalLoss(isIsTotalLostCheck);
+
+        // CONSTRUCTE DUMMY ENGINEERING REPORT WITH ALL VALUE IS ZERO WHEN ER NOT EXIST
+        if(claim.getEngineerReport()==null){
+            EngineerReport engineerreport = new EngineerReport();
+            engineerreport.setDays(0);
+            engineerreport.setLabourAmount(new BigDecimal("0.00"));
+            engineerreport.setTotalAmount(new BigDecimal("0.00"));
+            claim.setEngineerReport(engineerreport);
+        }
+        
+        if(claimService.getCountOfClaimByVRN(claim.getCustomer().getVehicleRegistration(), claim.getId())>0){
+           claim.getCustomer().setIsVehicleRegistrationExist(true);
+        }
+        
+        // SET VEHICLE CLASS TO NULL WHEN 
+        if(claim.getThirdParty().getVehicleClass()!=null){
+            if(claim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached") 
+                    || claim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("UNATTACHED")){
+                claim.getThirdParty().setVehicleClass(null);
+            }
+        }
+        
+        // SET VEHICLE CLASS TO NULL WHEN 
+        if(claim.getCustomer().getVehicleClass()!=null){
+            if(claim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")
+                    || claim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("UNATTACHED")){
+                claim.getCustomer().setVehicleClass(null);
+            }
+        }
+        
+        claim.setHireMonitoringEcd(hireMonitoringEcdService.getLatestHireMonitoringECDDate(claim));
+        
+        return claim;
+    }
+    */
+    
+    /*
+    private XMLParseResult appendInvoiceValidationErrorMessage(XMLParseResult xmlParseResult, List<RuleEvaluation> results){
+
+        for(int iCount=0; iCount<results.size(); iCount++){
+            
+            RuleEvaluation rv = results.get(iCount);
+            
+            if(rv.getIsVisibleToCHO() && rv.getResult()==RuleEvaluationResult.RuleFailed){
+                xmlParseResult.getDataValidationRemark().add(rv.toString());
+            }
+        }
+        
+        return xmlParseResult;
+    }
+    */
+    
+    
     
     public void setVehicleClassService(VehicleClassService vehicleClassService) { this.vehicleClassService = vehicleClassService; }
     public void setEngineerReportService(EngineerReportService engineerReportService) { this.engineerReportService = engineerReportService; }

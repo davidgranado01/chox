@@ -15,7 +15,7 @@ public class DocumentHelper {
     public static Document getDocumentFromFile(File file){
         
         Document doc = null;
-        
+            
         try {
             
             if(file.isFile()){

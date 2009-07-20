@@ -1,8 +1,9 @@
 package chox.xmlValidation.rules;
 
 import chox.Util.DocumentHelper;
-import chox.xmlValidation.result.ParseResult;
-import chox.xmlValidation.xmlInterface.fileValidationInterface;
+import chox.xmlValidation.model.BordereauResult;
+import chox.xmlValidation.model.ClaimResult;
+import chox.xmlValidation.model.status.ClaimParseStatus;
 import com.filesystemsoftware.utils.XMLUtils;
 import java.io.File;
 import java.io.IOException;
@@ -26,76 +27,68 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import org.apache.log4j.xml.SAXErrorHandler;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXParseException;
 
-public class xmlVersionValidation implements fileValidationInterface{
+public class BordereauVersionValidation{
     
     public static String W3C_XML_SCHEMA_NS_URI = "http://www.w3.org/2001/XMLSchema";
     public static String V_FILE_VERSION_ERROR = "Incorrect version";
     public static String V_SCHEMA_FILE = "C:/Project Workplace/Greefinch/Sherwood/testXML/xml-schema.xsd";
-    private boolean status = true;
     
-    public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException, DOMException, XPathExpressionException {
-        
-        String xmlFile = "C:/Project Workplace/Greefinch/Sherwood/testXML/DemoDataXMLTest-01.xml";
-        
-        try{
-
-            ParseResult parseResult = new ParseResult();
-            File file = new File(xmlFile);
-            
-            xmlVersionValidation ctrl = new xmlVersionValidation();
-            ctrl.doValidate(file, file.getName(), parseResult);
-
-        }catch (Exception ex) {
-            
-            System.out.println("<<<< NOT VALID >>>>");
-            System.out.println(ex.getMessage());
-            
-        }
-
-        
-    }
-    
-    public ParseResult doValidate(File file, String fileName, ParseResult parseResult){
+    public BordereauResult validate(
+            File file, 
+            String fileName, 
+            BordereauResult bordereauResult){
         
         try {
             
-            List<Element> rentals = new ArrayList<Element>();
-            
-            DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document document = parser.parse(file);
-            document.getDocumentElement().normalize();
+            Document document = DocumentHelper.getDocumentFromFile(file);
             Element root = document.getDocumentElement();
-        
+            List<ClaimResult> claimElements = new ArrayList<ClaimResult>();
+
             if (root != null && root.getTagName().equals("chox")) {
                 
-                rentals = XMLUtils.getElements(document, root, "rental");
+                List<Element> rentals = XMLUtils.getElements(document, root, "rental");
                 
                 if(rentals!=null && rentals.size()>0){
                     
                     for(Element e : rentals){
-                        System.out.println(">>> "+doSubValidation(e));
+                        
+                        ClaimResult claimResult = new ClaimResult();
+                        claimResult.setCheckDataValid(true);
+                        claimResult.setDataValid(true);
+                        claimResult.setValid(true);
+                        
+                        boolean isvalid = true;
+                        
+                        claimResult.setElement(e);
+                        
+                        if(!doElementValidation(e)){
+                            isvalid = false;
+                            claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
+                        }
+                        
+                        claimResult.setValid(isvalid);
+                        claimElements.add(claimResult);
                     }
-
                 }
-            
+                
             }else{
-                parseResult.setStatus(false);
-                parseResult.addMessage("Incorrect file");
+                bordereauResult.setValid(false);
+                bordereauResult.addMessage(V_FILE_VERSION_ERROR);
             }
             
+            bordereauResult.setClaimResult(claimElements);
+            
         } catch (Throwable t) {
-            parseResult.setStatus(false);
-            parseResult.addMessage("Parsing Error:" + ", Error Description: " + t.getLocalizedMessage());
+            bordereauResult.setValid(false);
+            bordereauResult.addMessage("Parsing Error:" + ", Error Description: " + t.getLocalizedMessage());
         }
         
-        return parseResult;
+        return bordereauResult;
     }
     
-    private boolean doSubValidation(Element element) throws SAXException, IOException{
+    private boolean doElementValidation(Element element) throws SAXException, IOException{
         
         boolean bFlag = true;
         
@@ -108,15 +101,35 @@ public class xmlVersionValidation implements fileValidationInterface{
             
         }catch (SAXParseException ex) {
             bFlag = false;
-            System.out.println(ex.getMessage());
         }catch (SAXException ex) {
             bFlag = false;
-            System.out.println(ex.getMessage());
         }
         
         return bFlag;
     }
     
+    
+    /*
+    public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException, DOMException, XPathExpressionException {
+        
+        String xmlFile = "C:/Project Workplace/Greefinch/Sherwood/testXML/DemoDataXMLTest-01.xml";
+        
+        try{
+
+            BordereauResult parseResult = new BordereauResult();
+            File file = new File(xmlFile);
+            
+            BordereauVersionValidattion ctrl = new BordereauVersionValidattion();
+            ctrl.validate(file, file.getName(), parseResult);
+
+        }catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+    }
+    */
+    
+    /*
     public ParseResult validate(File file, String fileName, ParseResult parseResult){
         
         try {
@@ -143,7 +156,8 @@ public class xmlVersionValidation implements fileValidationInterface{
         
         return parseResult;
     }
-
+    */
+    
     /*
     public ParseResult validate(File file, String fileName, ParseResult parseResult){
         
@@ -240,9 +254,7 @@ public class xmlVersionValidation implements fileValidationInterface{
         return map;
     }
     */
-    
-    public String getRuleId() {
-        return "F0001";
-    }
+
+   
     
 }
