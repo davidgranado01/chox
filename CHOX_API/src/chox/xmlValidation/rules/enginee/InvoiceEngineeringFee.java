@@ -56,7 +56,7 @@ public class InvoiceEngineeringFee extends SecureDataService implements rulesInt
             process();    
         }
         
-        doPrintResult(true);
+        doPrintResult(false);
         return claimResult;
     }
     

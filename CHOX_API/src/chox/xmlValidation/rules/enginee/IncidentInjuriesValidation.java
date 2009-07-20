@@ -11,6 +11,7 @@ import chox.xmlValidation.rules.Util.XmlHelper;
 import chox.xmlValidation.rules.rulesInterface;
 import com.filesystemsoftware.utils.XMLUtils;
 import java.util.ArrayList;
+import java.util.List;
 import javax.xml.xpath.XPathExpressionException;
 import org.w3c.dom.*;
 
@@ -85,23 +86,29 @@ public class IncidentInjuriesValidation extends SecureDataService implements rul
     
     private void process() throws DOMException, XPathExpressionException{ 
     
-        if(this.claimResult.getClaim().getIncident().getInjury()==null){
-            this.claimResult.getClaim().getIncident().setInjury(new Injury());
+        ArrayList<Injury> injuries = new ArrayList<Injury>();
+        if(this.claimResult.getInjuries()!=null){
+            injuries = this.claimResult.getInjuries();
         }
         
         for (Element e : this.injuryElements) {
+            
             Injury injury = setInjury(e);
             
             if(injury!=null){
+                     
+                injuries.add(injury);
                 
-                this.claimResult.getClaim().getIncident().setInjury(injury);       
-                
-                InjurySolicitorValidation InjurySolicitorValidation = new InjurySolicitorValidation(claimResult, dataValidationParameter, claimService, e);
+                InjurySolicitorValidation InjurySolicitorValidation = new InjurySolicitorValidation(claimResult, dataValidationParameter, claimService, e, injury);
                 this.claimResult = InjurySolicitorValidation.execute();   
                 
                 break;
             }
             
+        }
+        
+        if(injuries.size()>0){
+            this.claimResult.setInjuries(injuries);
         }
         
     }
@@ -141,17 +148,21 @@ public class IncidentInjuriesValidation extends SecureDataService implements rul
             System.out.println("-------");
             System.out.println("::: "+sectionName + "| Status :"+this.claimResult.isDataValid());
             
-            if(this.claimResult.getClaim().getIncident().getInjury()!=null){
-                System.out.println("::: "+sectionName + "| getDate :"+this.claimResult.getClaim().getIncident().getInjury().getName());
-                System.out.println("::: "+sectionName + "| getDate :"+this.claimResult.getClaim().getIncident().getInjury().getAddress1());
-                System.out.println("::: "+sectionName + "| getDate :"+this.claimResult.getClaim().getIncident().getInjury().getAddress2());
-                System.out.println("::: "+sectionName + "| getDate :"+this.claimResult.getClaim().getIncident().getInjury().getAddress3());
-                System.out.println("::: "+sectionName + "| getDate :"+this.claimResult.getClaim().getIncident().getInjury().getAddress4());
-                System.out.println("::: "+sectionName + "| getDate :"+this.claimResult.getClaim().getIncident().getInjury().getAddress5());
-                System.out.println("::: "+sectionName + "| getDate :"+this.claimResult.getClaim().getIncident().getInjury().getEmail());
-                System.out.println("::: "+sectionName + "| getDate :"+this.claimResult.getClaim().getIncident().getInjury().getPostcode());
-                System.out.println("::: "+sectionName + "| getDate :"+this.claimResult.getClaim().getIncident().getInjury().getTelephoneDay());
-                System.out.println("::: "+sectionName + "| getDate :"+this.claimResult.getClaim().getIncident().getInjury().getTelephoneEvening());     
+            if(this.claimResult.getInjuries().size()>0){
+                
+                for(Injury injury : this.claimResult.getInjuries()){
+                    System.out.println("::: "+sectionName + "| getDate :"+injury.getName());
+                    System.out.println("::: "+sectionName + "| getDate :"+injury.getAddress1());
+                    System.out.println("::: "+sectionName + "| getDate :"+injury.getAddress2());
+                    System.out.println("::: "+sectionName + "| getDate :"+injury.getAddress3());
+                    System.out.println("::: "+sectionName + "| getDate :"+injury.getAddress4());
+                    System.out.println("::: "+sectionName + "| getDate :"+injury.getAddress5());
+                    System.out.println("::: "+sectionName + "| getDate :"+injury.getEmail());
+                    System.out.println("::: "+sectionName + "| getDate :"+injury.getPostcode());
+                    System.out.println("::: "+sectionName + "| getDate :"+injury.getTelephoneDay());
+                    System.out.println("::: "+sectionName + "| getDate :"+injury.getTelephoneEvening());     
+                }
+                
             }else{
                 System.out.println(sectionName + "| NO INJURY OBJECT HAVE FOUND!!");
             }

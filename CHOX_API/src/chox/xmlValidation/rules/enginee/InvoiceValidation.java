@@ -55,7 +55,7 @@ public class InvoiceValidation extends SecureDataService implements rulesInterfa
             process();
         }
         
-        doPrintResult(true);
+        doPrintResult(false);
         return claimResult;
     }
     

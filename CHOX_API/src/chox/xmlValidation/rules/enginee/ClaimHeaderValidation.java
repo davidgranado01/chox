@@ -54,7 +54,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
             process();
         }
         
-        doPrintResult(true);
+        doPrintResult(false);
         return claimResult;
     }
     

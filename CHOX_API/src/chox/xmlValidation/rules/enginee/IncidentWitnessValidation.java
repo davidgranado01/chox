@@ -87,11 +87,11 @@ public class IncidentWitnessValidation extends SecureDataService implements rule
     
     private void process(){
         
-        if(this.claimResult.getClaim().getIncident().getWitness()==null){
-            this.claimResult.getClaim().getIncident().setWitness(new Witness());
+        ArrayList<Witness> witnesses = new ArrayList<Witness>();
+        if(this.claimResult.getWitnesses()!=null){
+            witnesses = this.claimResult.getWitnesses();
         }
         
-        ArrayList<Witness> witnesses = new ArrayList<Witness>();
         for (Element e : this.witnessElements) {
             Witness witness = setWitness(e);
             
@@ -101,7 +101,7 @@ public class IncidentWitnessValidation extends SecureDataService implements rule
         }
         
         if(witnesses.size()>0){
-            this.claimResult.getClaim().getIncident().setWitness(witnesses.get(0));
+            this.claimResult.setWitnesses(witnesses);
         }
     }
     
@@ -141,17 +141,21 @@ public class IncidentWitnessValidation extends SecureDataService implements rule
             System.out.println("::: -------");
             System.out.println("::: "+sectionName + "| Status :"+this.claimResult.isDataValid());
             
-            if(this.claimResult.getClaim().getIncident().getWitness()!=null){
-                System.out.println("::: "+sectionName + "| getName :"+this.claimResult.getClaim().getIncident().getWitness().getName());
-                System.out.println("::: "+sectionName + "| getAddress1 :"+this.claimResult.getClaim().getIncident().getWitness().getAddress1());
-                System.out.println("::: "+sectionName + "| getAddress2 :"+this.claimResult.getClaim().getIncident().getWitness().getAddress2());
-                System.out.println("::: "+sectionName + "| getAddress3 :"+this.claimResult.getClaim().getIncident().getWitness().getAddress3());
-                System.out.println("::: "+sectionName + "| getAddress4 :"+this.claimResult.getClaim().getIncident().getWitness().getAddress4());
-                System.out.println("::: "+sectionName + "| getAddress5 :"+this.claimResult.getClaim().getIncident().getWitness().getAddress5());
-                System.out.println("::: "+sectionName + "| getEmail :"+this.claimResult.getClaim().getIncident().getWitness().getEmail());
-                System.out.println("::: "+sectionName + "| getPostcode :"+this.claimResult.getClaim().getIncident().getWitness().getPostcode());
-                System.out.println("::: "+sectionName + "| getTelephoneDay :"+this.claimResult.getClaim().getIncident().getWitness().getTelephoneDay());
-                System.out.println("::: "+sectionName + "| getTelephoneEvening :"+this.claimResult.getClaim().getIncident().getWitness().getTelephoneEvening());
+            if(this.claimResult.getWitnesses().size()>0){
+                
+                for( Witness witness : this.claimResult.getWitnesses()){
+                    System.out.println("::: "+sectionName + "| getName :"+witness.getName());
+                    System.out.println("::: "+sectionName + "| getAddress1 :"+witness.getAddress1());
+                    System.out.println("::: "+sectionName + "| getAddress2 :"+witness.getAddress2());
+                    System.out.println("::: "+sectionName + "| getAddress3 :"+witness.getAddress3());
+                    System.out.println("::: "+sectionName + "| getAddress4 :"+witness.getAddress4());
+                    System.out.println("::: "+sectionName + "| getAddress5 :"+witness.getAddress5());
+                    System.out.println("::: "+sectionName + "| getEmail :"+witness.getEmail());
+                    System.out.println("::: "+sectionName + "| getPostcode :"+witness.getPostcode());
+                    System.out.println("::: "+sectionName + "| getTelephoneDay :"+witness.getTelephoneDay());
+                    System.out.println("::: "+sectionName + "| getTelephoneEvening :"+witness.getTelephoneEvening());
+                }
+                
             }else{
                 System.out.println(sectionName + "| NO WITNESS OBJECT HAVE FOUND!!");
             }

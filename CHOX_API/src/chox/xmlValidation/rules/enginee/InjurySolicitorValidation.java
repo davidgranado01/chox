@@ -1,5 +1,6 @@
 package chox.xmlValidation.rules.enginee;
 
+import chox.model.Injury;
 import chox.model.Solicitor;
 import chox.services.ClaimService;
 import chox.services.SecureDataService;
@@ -10,6 +11,7 @@ import chox.xmlValidation.rules.Util.NodeHelper;
 import chox.xmlValidation.rules.Util.XmlHelper;
 import chox.xmlValidation.rules.rulesInterface;
 import com.filesystemsoftware.utils.XMLUtils;
+import java.util.ArrayList;
 import javax.xml.xpath.XPathExpressionException;
 import org.w3c.dom.*;
 
@@ -20,11 +22,12 @@ public class InjurySolicitorValidation extends SecureDataService implements rule
     private ClaimService claimService;
     private ClaimResult claimResult;
     private Element rootElement;
+    private Injury injury;
     
     // THIS PAGE ONLY
     private Element element;
     
-
+    public void setInjury(Injury injury) { this.injury = injury; }
     public void setRootElement(Element rootElement) { this.rootElement = rootElement; }
     public void setClaimResult(ClaimResult claimResult) { this.claimResult = claimResult; }
     public void setClaimService(ClaimService claimService) { this.claimService = claimService; }
@@ -34,12 +37,14 @@ public class InjurySolicitorValidation extends SecureDataService implements rule
             ClaimResult claimResult, 
             DataValidationParameter dataValidationParameter, 
             ClaimService claimService, 
-            Element rootElement){
+            Element rootElement,
+            Injury injury){
         
             setClaimResult(claimResult);
             setDataValidationParameter(dataValidationParameter);
             setClaimService(claimService);
             setRootElement(rootElement);
+            setInjury(injury);
     }
     
     public ClaimResult execute() throws DOMException, XPathExpressionException{
@@ -81,11 +86,12 @@ public class InjurySolicitorValidation extends SecureDataService implements rule
     }
 
     private void process(){
-
-        if(this.claimResult.getClaim().getIncident().getInjury().getSolicitor()==null){
-            this.claimResult.getClaim().getIncident().getInjury().setSolicitor(new Solicitor());
+        
+        ArrayList<Solicitor> solicitors = new ArrayList<Solicitor>();
+        if(this.claimResult.getSolicitors()!=null){
+            solicitors = this.claimResult.getSolicitors();
         }
-
+        
         if(XmlHelper.isNotNull(XmlHelper.getNodeValue(this.element, "name"))
             || XmlHelper.isNotNull(XmlHelper.getNodeValue(this.element, "address1"))
             || XmlHelper.isNotNull(XmlHelper.getNodeValue(this.element, "address2"))
@@ -95,18 +101,26 @@ public class InjurySolicitorValidation extends SecureDataService implements rule
             || XmlHelper.isNotNull(XmlHelper.getNodeValue(this.element, "postcode"))
             || XmlHelper.isNotNull(XmlHelper.getNodeValue(this.element, "telephone"))
             || XmlHelper.isNotNull(XmlHelper.getNodeValue(this.element, "email"))){
+            
+            Solicitor solicitor = new Solicitor();
+            
+            solicitor.setInjury(this.injury);
+            solicitor.setAddress1(XmlHelper.getNodeValue(this.element, "address1"));
+            solicitor.setAddress2(XmlHelper.getNodeValue(this.element, "address2"));
+            solicitor.setAddress3(XmlHelper.getNodeValue(this.element, "address3"));
+            solicitor.setAddress4(XmlHelper.getNodeValue(this.element, "address4"));
+            solicitor.setAddress5(XmlHelper.getNodeValue(this.element, "address5"));
+            solicitor.setEmail(XmlHelper.getEmailAddressFromNode(this.element, "email"));
+            solicitor.setName(XmlHelper.getNodeValue(this.element, "name"));
+            solicitor.setPostcode(XmlHelper.getNodeValue(this.element, "postcode"));
+            solicitor.setTelephone(XmlHelper.getNodeValue(this.element, "telephone"));
+            
+            solicitors.add(solicitor);
 
-            this.claimResult.getClaim().getIncident().getInjury().getSolicitor().setInjury(this.claimResult.getClaim().getIncident().getInjury());
-            this.claimResult.getClaim().getIncident().getInjury().getSolicitor().setAddress1(XmlHelper.getNodeValue(this.element, "address1"));
-            this.claimResult.getClaim().getIncident().getInjury().getSolicitor().setAddress2(XmlHelper.getNodeValue(this.element, "address2"));
-            this.claimResult.getClaim().getIncident().getInjury().getSolicitor().setAddress3(XmlHelper.getNodeValue(this.element, "address3"));
-            this.claimResult.getClaim().getIncident().getInjury().getSolicitor().setAddress4(XmlHelper.getNodeValue(this.element, "address4"));
-            this.claimResult.getClaim().getIncident().getInjury().getSolicitor().setAddress5(XmlHelper.getNodeValue(this.element, "address5"));
-            this.claimResult.getClaim().getIncident().getInjury().getSolicitor().setEmail(XmlHelper.getEmailAddressFromNode(this.element, "email"));
-            this.claimResult.getClaim().getIncident().getInjury().getSolicitor().setName(XmlHelper.getNodeValue(this.element, "name"));
-            this.claimResult.getClaim().getIncident().getInjury().getSolicitor().setPostcode(XmlHelper.getNodeValue(this.element, "postcode"));
-            this.claimResult.getClaim().getIncident().getInjury().getSolicitor().setTelephone(XmlHelper.getNodeValue(this.element, "telephone"));
-
+        }
+        
+        if(solicitors.size()>0){
+            this.claimResult.setSolicitors(solicitors);
         }
 
     }
@@ -118,19 +132,23 @@ public class InjurySolicitorValidation extends SecureDataService implements rule
             System.out.println("-------");
             System.out.println("::: ::: "+sectionName + "| Status :"+this.claimResult.isDataValid());
             
-            if(this.claimResult.getClaim().getIncident().getInjury().getSolicitor()!=null){   
+            if(this.claimResult.getSolicitors()!=null){   
                 
-                System.out.println("::: ::: "+sectionName + "| getAddress1 :"+this.claimResult.getClaim().getIncident().getInjury().getSolicitor().getAddress1());
-                System.out.println("::: ::: "+sectionName + "| getAddress2 :"+this.claimResult.getClaim().getIncident().getInjury().getSolicitor().getAddress2());
-                System.out.println("::: ::: "+sectionName + "| getAddress3 :"+this.claimResult.getClaim().getIncident().getInjury().getSolicitor().getAddress3());
-                System.out.println("::: ::: "+sectionName + "| getAddress4 :"+this.claimResult.getClaim().getIncident().getInjury().getSolicitor().getAddress4());
-                System.out.println("::: ::: "+sectionName + "| getAddress5 :"+this.claimResult.getClaim().getIncident().getInjury().getSolicitor().getAddress5());
-                System.out.println("::: ::: "+sectionName + "| getEmail :"+this.claimResult.getClaim().getIncident().getInjury().getSolicitor().getEmail());
-                System.out.println("::: ::: "+sectionName + "| getName :"+this.claimResult.getClaim().getIncident().getInjury().getSolicitor().getName());
-                System.out.println("::: ::: "+sectionName + "| getPostcode :"+this.claimResult.getClaim().getIncident().getInjury().getSolicitor().getPostcode());
-                System.out.println("::: ::: "+sectionName + "| getTelephone :"+this.claimResult.getClaim().getIncident().getInjury().getSolicitor().getTelephone());
+                for(Solicitor obj : this.claimResult.getSolicitors()){
+                
+                    System.out.println("::: ::: "+sectionName + "| getAddress1 :"+obj.getAddress1());
+                    System.out.println("::: ::: "+sectionName + "| getAddress2 :"+obj.getAddress2());
+                    System.out.println("::: ::: "+sectionName + "| getAddress3 :"+obj.getAddress3());
+                    System.out.println("::: ::: "+sectionName + "| getAddress4 :"+obj.getAddress4());
+                    System.out.println("::: ::: "+sectionName + "| getAddress5 :"+obj.getAddress5());
+                    System.out.println("::: ::: "+sectionName + "| getEmail :"+obj.getEmail());
+                    System.out.println("::: ::: "+sectionName + "| getName :"+obj.getName());
+                    System.out.println("::: ::: "+sectionName + "| getPostcode :"+obj.getPostcode());
+                    System.out.println("::: ::: "+sectionName + "| getTelephone :"+obj.getTelephone());
+                }
+                
             }else{
-            System.out.println(sectionName + "| NO SOLICITOR OBJECT HAVE FOUND!!");
+                System.out.println(sectionName + "| NO SOLICITOR OBJECT HAVE FOUND!!");
             }
         }
         

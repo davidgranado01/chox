@@ -54,7 +54,7 @@ public class InvoiceRepairValidation extends SecureDataService implements rulesI
             process();
         }
         
-        doPrintResult(true);
+        doPrintResult(false);
         return this.claimResult;
     }
     

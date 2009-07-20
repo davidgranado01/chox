@@ -55,7 +55,7 @@ public class InvoiceVehiclesValidation extends SecureDataService implements rule
             process();
         }
         
-        doPrintResult(true);
+        doPrintResult(false);
         return this.claimResult;
     }
     

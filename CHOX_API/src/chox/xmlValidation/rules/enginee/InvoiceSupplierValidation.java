@@ -56,7 +56,7 @@ public class InvoiceSupplierValidation extends SecureDataService implements rule
             process();    
         }
         
-        doPrintResult(true);
+        doPrintResult(false);
         return this.claimResult;
     }
     

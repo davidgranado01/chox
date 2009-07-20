@@ -55,7 +55,7 @@ public class InvoiceStorageRecoveryValidation extends SecureDataService implemen
             process();
         }
         
-        doPrintResult(true);
+        doPrintResult(false);
         return this.claimResult;
     }
     
