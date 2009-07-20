@@ -6,14 +6,11 @@
 package chox.services;
 
 import chox.model.HireMonitoringDetail;
-import chox.model.XMLParseResult;
+import chox.xmlValidation.model.ClaimResult;
 
 public interface HireMonitoringDetailService {
     HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int id);
-    
     public HireMonitoringDetail getObject(int id);
-
     public void updateObject(HireMonitoringDetail engineerReport);
-    
-    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult);
+    public void saveObjectForXMLUploader(final ClaimResult claimResult);
 }

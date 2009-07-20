@@ -1,6 +1,6 @@
 package chox.services;
 
-import chox.model.XMLParseResult;
+import chox.xmlValidation.model.ClaimResult;
 import chox.model.Incident;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +32,14 @@ public class InjuryServiceImpl extends SecureDataService implements InjuryServic
         return injury;
     }
     
-    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
-        if ((xmlParseResult.getInjuries()) != null) {
-            for (Integer i = 0; i < (xmlParseResult.getInjuries()).size(); i++) {
-                save(((xmlParseResult.getInjuries()).get(i)));
+    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
+        
+        if ((claimResult.getInjuries()) != null) {
+            for (Integer i = 0; i < (claimResult.getInjuries()).size(); i++) {
+                save(((claimResult.getInjuries()).get(i)));
             }
-        }        
+        }
+        
     }
 
     public Injury getObject(int id) {

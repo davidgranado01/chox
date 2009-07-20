@@ -6,6 +6,7 @@ import chox.model.Claim;
 import chox.model.ClaimStatus;
 import chox.model.WebUser;
 import chox.model.XMLParseResult;
+import chox.xmlValidation.model.ClaimResult;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -352,20 +353,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return claim;
     }
 
-    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
+    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
 
-        Claim c = xmlParseResult.getClaim();
-        c.setCustomer(xmlParseResult.getClaim().getCustomer());
-        c.setThirdParty(xmlParseResult.getClaim().getThirdParty());
-        c.setInsurer(xmlParseResult.getClaim().getThirdParty().getInsurer());
-        c.setChorganisation(xmlParseResult.getClaim().getChorganisation());
-        c.setLineOfBusiness(xmlParseResult.getClaim().getLineOfBusiness());
-        c.setIncident(xmlParseResult.getClaim().getIncident());
-        c.setInvoice(xmlParseResult.getClaim().getInvoice());
-        c.setEngineerReport(xmlParseResult.getClaim().getEngineerReport());
-        c.setVehicleHire(xmlParseResult.getClaim().getVehicleHire());
+        Claim c = claimResult.getClaim();
+        c.setCustomer(claimResult.getClaim().getCustomer());
+        c.setThirdParty(claimResult.getClaim().getThirdParty());
+        c.setInsurer(claimResult.getClaim().getThirdParty().getInsurer());
+        c.setChorganisation(claimResult.getClaim().getChorganisation());
+        c.setLineOfBusiness(claimResult.getClaim().getLineOfBusiness());
+        c.setIncident(claimResult.getClaim().getIncident());
+        c.setInvoice(claimResult.getClaim().getInvoice());
+        c.setEngineerReport(claimResult.getClaim().getEngineerReport());
+        c.setVehicleHire(claimResult.getClaim().getVehicleHire());
 
-        save(xmlParseResult.getClaim());
+        save(claimResult.getClaim());
     }
 }
 

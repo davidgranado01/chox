@@ -5,13 +5,10 @@
 package chox.services;
 
 import chox.model.VehicleHire;
-import chox.model.XMLParseResult;
+import chox.xmlValidation.model.ClaimResult;
 
 public interface VehicleHireService {
-
-    public void  saveObjectForXMLUploader(final XMLParseResult xmlParseResult);
-
+    public void  saveObjectForXMLUploader(final ClaimResult claimResult);
     public VehicleHire getObject(int id);
-
     public void updateObject(VehicleHire vehicleHire);
 }

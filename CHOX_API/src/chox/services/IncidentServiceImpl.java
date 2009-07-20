@@ -1,12 +1,13 @@
 package chox.services;
 
 import chox.model.*;
+import chox.xmlValidation.model.ClaimResult;
 
 public class IncidentServiceImpl extends SecureDataService implements IncidentService {
 
-    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
+    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
 
-        Incident incident = xmlParseResult.getClaim().getIncident();
+        Incident incident = claimResult.getClaim().getIncident();
 
         if (incident != null) {
                 super.getHibernateTemplate().saveOrUpdate(incident);

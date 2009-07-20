@@ -4,6 +4,7 @@ import chox.model.*;
 import java.util.ArrayList;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import chox.xmlValidation.model.ClaimResult;
 
 public class WitnessServiceImpl extends SecureDataService implements WitnessService {
 
@@ -30,9 +31,9 @@ public class WitnessServiceImpl extends SecureDataService implements WitnessServ
         save(witness);
     }
 
-    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
+    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
 
-        ArrayList<Witness> witnesses = xmlParseResult.getWitnesses();
+        ArrayList<Witness> witnesses = claimResult.getWitnesses();
 
         if (witnesses != null) {
 

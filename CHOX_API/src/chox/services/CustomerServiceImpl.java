@@ -2,6 +2,7 @@
 package chox.services;
 
 import chox.model.*;
+import chox.xmlValidation.model.ClaimResult;
 
 public class CustomerServiceImpl extends SecureDataService implements CustomerService{
     
@@ -13,15 +14,10 @@ public class CustomerServiceImpl extends SecureDataService implements CustomerSe
         save(customer);
     }
 
-    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult){
-        
-        Customer customer = xmlParseResult.getClaim().getCustomer();
-        
+    public void saveObjectForXMLUploader(final ClaimResult claimResult){
+        Customer customer = claimResult.getClaim().getCustomer();
         if(customer!=null){       
-         
-            if (xmlParseResult.getIsDataValid() && xmlParseResult.getIsSchemaValid()) {                
-                    getHibernateTemplate().saveOrUpdate(customer);
-            }            
+            getHibernateTemplate().saveOrUpdate(customer);
         }
     }
 }

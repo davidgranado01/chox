@@ -1,8 +1,8 @@
 package chox.services;
 
-import chox.model.XMLParseResult;
 import chox.model.Injury;
 import chox.model.Solicitor;
+import chox.xmlValidation.model.ClaimResult;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.DetachedCriteria;
 
@@ -23,13 +23,13 @@ public class SolicitorServiceImpl  extends SecureDataService implements Solicito
         return solicitor;
     }
     
-    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
+    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
 
-        if ((xmlParseResult.getSolicitors()) != null) {
+        if ((claimResult.getSolicitors()) != null) {
 
-            for (Integer i = 0; i < (xmlParseResult.getSolicitors()).size(); i++) {
+            for (Integer i = 0; i < (claimResult.getSolicitors()).size(); i++) {
 
-                getHibernateTemplate().saveOrUpdate(((xmlParseResult.getSolicitors()).get(i)));
+                getHibernateTemplate().saveOrUpdate(((claimResult.getSolicitors()).get(i)));
 
             }
         }

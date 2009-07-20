@@ -5,13 +5,10 @@
 package chox.services;
 
 import chox.model.ThirdParty;
-import chox.model.XMLParseResult;
+import chox.xmlValidation.model.ClaimResult;
 
 public interface ThirdPartyService {
-
-    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult);
-
+    public void saveObjectForXMLUploader(final ClaimResult claimResult);
     public ThirdParty getObject(int id);
-
     public void updateObject(ThirdParty thirdParty);
 }

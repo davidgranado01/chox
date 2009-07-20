@@ -2,6 +2,7 @@ package chox.services;
 
 import chox.data.ClaimSearchCriteria;
 import chox.model.*;
+import chox.xmlValidation.model.ClaimResult;
 import java.util.List;
 
 public interface ClaimService {
@@ -22,6 +23,6 @@ public interface ClaimService {
     public void updateClaim(Claim claim);
     public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber);
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
-    public void  saveObjectForXMLUploader(final XMLParseResult xmlParseResult);
+    public void  saveObjectForXMLUploader(final ClaimResult claimResult);
     // public void updateClaimLastModified(int claimId);
 }

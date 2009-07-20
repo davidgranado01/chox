@@ -5,15 +5,13 @@
 package chox.services;
 
 import chox.model.EngineerReport;
-import chox.model.XMLParseResult;
+import chox.xmlValidation.model.ClaimResult;
 
 public interface EngineerReportService {
 
-    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult);
-    
+    public void saveObjectForXMLUploader(final ClaimResult claimResult);
     public EngineerReport getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
-
     public EngineerReport getObject(int id);
-
     public void updateObject(EngineerReport engineerReport);
+    
 }

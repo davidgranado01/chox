@@ -1,13 +1,14 @@
 package chox.services;
 
 import chox.model.*;
+import chox.xmlValidation.model.ClaimResult;
 
 public class VehicleHireServiceImpl extends SecureDataService implements VehicleHireService {
 
-    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
+    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
 
-        if ((xmlParseResult.getClaim().getVehicleHire()) != null) {
-            getHibernateTemplate().saveOrUpdate(xmlParseResult.getClaim().getVehicleHire());
+        if ((claimResult.getClaim().getVehicleHire()) != null) {
+            getHibernateTemplate().saveOrUpdate(claimResult.getClaim().getVehicleHire());
 
         }
     }

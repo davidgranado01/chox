@@ -2,15 +2,16 @@ package chox.services;
 
 import chox.model.EngineerReport;
 import chox.model.XMLParseResult;
+import chox.xmlValidation.model.ClaimResult;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
 public class EngineerReportServiceImpl extends SecureDataService implements EngineerReportService {
 
-    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
+    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
 
-        if ((xmlParseResult.getClaim().getEngineerReport()) != null) {
-             save(xmlParseResult.getClaim().getEngineerReport());              
+        if ((claimResult.getClaim().getEngineerReport()) != null) {
+             save(claimResult.getClaim().getEngineerReport());              
         }
     }
 

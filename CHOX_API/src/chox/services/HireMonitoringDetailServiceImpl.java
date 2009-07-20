@@ -5,7 +5,7 @@
 package chox.services;
 
 import chox.model.HireMonitoringDetail;
-import chox.model.XMLParseResult;
+import chox.xmlValidation.model.ClaimResult;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -32,9 +32,9 @@ public class HireMonitoringDetailServiceImpl extends SecureDataService implement
         this.save(hireMonitoringDetail);
     }
 
-    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
-        if (xmlParseResult.getClaim().getHireMonitoringDetail() != null) {
-            super.getHibernateTemplate().saveOrUpdate(xmlParseResult.getClaim().getHireMonitoringDetail());
+    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
+        if (claimResult.getClaim().getHireMonitoringDetail() != null) {
+            super.getHibernateTemplate().saveOrUpdate(claimResult.getClaim().getHireMonitoringDetail());
         }
     }
 }

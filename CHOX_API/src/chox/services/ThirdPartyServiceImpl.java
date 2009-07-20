@@ -1,15 +1,16 @@
 package chox.services;
 
 import chox.model.*;
+import chox.xmlValidation.model.ClaimResult;
 
 public class ThirdPartyServiceImpl extends SecureDataService implements ThirdPartyService {
 
-    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
+    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
 
-        ThirdParty thirdparty = xmlParseResult.getClaim().getThirdParty();
+        ThirdParty thirdparty = claimResult.getClaim().getThirdParty();
 
         if (thirdparty != null) {
-            getHibernateTemplate().saveOrUpdate(xmlParseResult.getClaim().getThirdParty());
+            getHibernateTemplate().saveOrUpdate(claimResult.getClaim().getThirdParty());
         }
     }
 

@@ -6,10 +6,10 @@
 package chox.services;
 
 import chox.model.Incident;
-import chox.model.XMLParseResult;
+import chox.xmlValidation.model.ClaimResult;
 
 public interface IncidentService {
-    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult);
+    public void saveObjectForXMLUploader(final ClaimResult claimResult);
     public void updateObject(Incident incident);
     public Incident getObject(int id);
 }

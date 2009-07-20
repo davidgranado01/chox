@@ -1,6 +1,7 @@
 package chox.services;
 
 import chox.model.*;
+import chox.xmlValidation.model.ClaimResult;
 import scsbre.engine.*;
 
 public class InvoiceServiceImpl extends SecureDataService implements InvoiceService {
@@ -12,10 +13,10 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
         return reponse;
     }
 
-    public void saveObjectForXMLUploader(final XMLParseResult xmlParseResult) {
+    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
 
-        if ((xmlParseResult.getClaim().getInvoice()) != null) {
-            getHibernateTemplate().saveOrUpdate((xmlParseResult.getClaim().getInvoice()));
+        if ((claimResult.getClaim().getInvoice()) != null) {
+            getHibernateTemplate().saveOrUpdate((claimResult.getClaim().getInvoice()));
         }
     }
 

@@ -5,11 +5,11 @@
 
 package chox.services;
 
-import chox.model.XMLParseResult;
 import chox.model.Customer;
+import chox.xmlValidation.model.ClaimResult;
 
 public interface CustomerService {
-    public void saveObjectForXMLUploader(XMLParseResult xmlParseResult);
+    public void saveObjectForXMLUploader(final ClaimResult claimResult);
     public Customer getObject(int id);
     public void updateObject(Customer customer);
 
