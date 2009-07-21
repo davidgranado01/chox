@@ -84,6 +84,7 @@ public class BusinessRuleEngProcess {
         RulesEngineResponse validationResult = invoiceService.XMLUploaderInvoiceValidation(breClaim);
         
         // historyService.logInvoiceValidationErrorMsg(validationResult, breClaim);
+        
         String oldStatus = this.claimResult.getClaim().getStatus();
         String newClaimStatus = validationResult.getStatus().toString();     
         

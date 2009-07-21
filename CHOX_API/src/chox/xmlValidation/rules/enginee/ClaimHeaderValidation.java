@@ -50,17 +50,15 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
 
         this.element = XMLUtils.getElement(claimResult.getElement(), "supplier");
         
-        if(validate()){
-            process();
-        }
+        validate();
+        process();
+        doPrintResult(true);
         
-        doPrintResult(false);
         return claimResult;
     }
     
-    private boolean validate(){
+    private void validate(){
         
-        boolean isAllowToReadData = true;
         this.claimResult.setCheckDataValid(true);
 
         this.claimResult = NodeHelper.nodeValidate(sectionName, "first-contact", claimResult.getElement(), claimResult, dataValidationParameter);
@@ -71,9 +69,6 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
         this.claimResult = NodeHelper.nodeValidate(sectionName, "supplier-name", this.element, claimResult, dataValidationParameter);
         this.claimResult = NodeHelper.nodeValidate(sectionName, "supplier-reference", this.element, claimResult, dataValidationParameter);
         
-        isAllowToReadData = this.claimResult.isCheckDataValid();
-
-        return isAllowToReadData;
     }
     
     private void process(){
@@ -91,21 +86,12 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
 
         Claim claim = new Claim();
         
-        
-        // System.out.println("");
-        // System.out.println(">>> Ref:"+choReferenceNumber+"|");
-        
         if(claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)){
-        
-            // System.out.println(">>> CHO REF IS EXIST");
             
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
-
-            // System.out.println(">>> CHECK CLAIM : "+claim.getChoReference());
             
             if(claim.getInvoice() != null){
 
-                // System.out.println(">>> INVOICE EXIST");
                 claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
                 claimResult.setValid(false);
                 
@@ -117,7 +103,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
                     claimResult.setClaimParseStatus(ClaimParseStatus.newInvoice);
                     ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(claim.getChorganisation().getId(), claim.getInsurer().getId());
                     claim.setChoband(choBand);
-                    
+
                 }else if(claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) ||
                     claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING) ||
                     claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_ACCEPTED)){
