@@ -1,8 +1,9 @@
 package chox.xmlValidation.model;
 import chox.model.Bordereau;
+import chox.model.WebUser;
 import chox.xmlValidation.model.status.BordereauParseStatus;
-import java.lang.String;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BordereauResult {
@@ -12,6 +13,25 @@ public class BordereauResult {
     protected List<String> message = new ArrayList<String>();
     protected List<ClaimResult> claimResult = new ArrayList<ClaimResult>();
     protected Bordereau bordereau;
+    
+    protected WebUser createdBy;
+    protected Date createdDate;
+
+    public WebUser getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(WebUser createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public Bordereau getBordereau() {
         return bordereau;
