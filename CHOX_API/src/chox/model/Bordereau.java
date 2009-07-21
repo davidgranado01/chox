@@ -3,12 +3,12 @@ package chox.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Bordereau implements Serializable,Auditable{
+public class Bordereau implements Serializable, Auditable{
     
     protected Integer id;
     protected byte[] fileBuffer;
-    protected String status;
     protected String fileName;
+    protected String status;
     protected String description;
     protected WebUser createdBy;
     protected Date createdDate;
