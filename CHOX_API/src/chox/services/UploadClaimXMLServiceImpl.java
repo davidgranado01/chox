@@ -11,6 +11,7 @@ import java.util.List;
 import chox.data.UploadStatus;
 import chox.xmlValidation.model.BordereauResult;
 import chox.xmlValidation.model.ClaimResult;
+import chox.xmlValidation.model.status.BordereauParseStatus;
 import chox.xmlValidation.model.status.ClaimParseStatus;
 import chox.xmlValidation.rules.BordereauDataValidation;
 import chox.xmlValidation.rules.BordereauFileValidation;
@@ -50,25 +51,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private HireMonitoringDetailService hireMonitoringDetailService;
     private InsurerChorganisationService insurerChorganisationService;
     private BordereauService bordereauService;
-    
-    private File file;
-    private String fileName;
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-    }
 
     public static void main(String[] args) {
 
@@ -135,31 +117,68 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         try {
             
             bordereauResult = new BordereauFileValidation().validate(file, fileName, bordereauResult);
+            String BordereauParseStatusDescription = "Error";
             
             if(bordereauResult.isValid()){
                 
                 bordereauResult = new BordereauVersionValidation().validate(file, fileName, bordereauResult);
-                bordereauResult = new BordereauDataValidation().validate(file, fileName, bordereauResult, claimService, chorganisationService, choBandService, vehicleClassService, insurerAlliasService, insurerChorganisationService, hireMonitoringEcdService, invoiceService, historyService);
+                
+                    if(bordereauResult.isValid()){
 
-                for(ClaimResult claimResult : bordereauResult.getClaimResult()){
+                        bordereauResult = new BordereauDataValidation().validate(file, fileName, bordereauResult, claimService, chorganisationService, choBandService, vehicleClassService, insurerAlliasService, insurerChorganisationService, hireMonitoringEcdService, invoiceService, historyService);
+
+                        int totalRecord = bordereauResult.getClaimResult().size();
+                        int totalProcessed = 0;
+
+                        for(ClaimResult claimResult : bordereauResult.getClaimResult()){
+
+                            System.out.println("========================================================================");
+                            System.out.println("END: is Claim Valid?: " + claimResult.isValid());
+                            System.out.println("END: is Claim Data valid?: " + claimResult.isDataValid());
+                            System.out.println("END: Claim Process Status: " + claimResult.getClaimParseStatus());
+                            System.out.println("END: Claim Cho Ref: " + claimResult.getClaim().getChoReference());
+                            System.out.println("END: Claim Status: " + claimResult.getClaim().getStatus());
+
+                            if(claimResult.isValid() && claimResult.isDataValid()){
+                                saveXMLRecord(claimResult);
+                                totalProcessed ++;
+                            }
+                        }
+
+                        if(totalProcessed >= totalRecord){
+                            bordereauResult.setBordereauStatus(BordereauParseStatus.allUploaded);
+                            BordereauParseStatusDescription = "All claims have uploaded";
+                        }else if(totalProcessed<totalRecord && totalProcessed!=0){
+                            bordereauResult.setBordereauStatus(BordereauParseStatus.partialUpload);
+                            BordereauParseStatusDescription = totalProcessed + " out of " + totalRecord + " claims have uploaded";
+                        }else if(totalProcessed==0){
+                            bordereauResult.setBordereauStatus(BordereauParseStatus.allRejected);
+                            BordereauParseStatusDescription = totalRecord + " of claims have rejected";
+                        }                    
                     
-                    if(claimResult.isValid() && claimResult.isDataValid()){
-                        System.out.println("========================================================================");
-                        System.out.println("*** is Claim Valid?: " + claimResult.isValid());
-                        System.out.println("*** is Claim Data valid?: " + claimResult.isDataValid());
-                        System.out.println("*** Claim Process Status: " + claimResult.getClaimParseStatus());
-                        System.out.println("*** Claim Cho Ref: " + claimResult.getClaim().getChoReference());
-                        System.out.println("*** Claim Status: " + claimResult.getClaim().getStatus());
-                        saveXMLRecord(claimResult);
+                    }else{
+                    
+                        bordereauResult.setBordereauStatus(BordereauParseStatus.error);
+                        BordereauParseStatusDescription = "Incorrect File Version";
+                        
                     }
+
+                    bordereauResult.setBordereau(doBordereau(file, fileName, bordereauResult.getBordereauStatus(), BordereauParseStatusDescription));
+                    bordereauService.saveObj(bordereauResult.getBordereau());
+
+                }else{
+                
+                    bordereauResult.setBordereauStatus(BordereauParseStatus.error);
+                    BordereauParseStatusDescription = "Error, Please try again";
+                    
                 }
-                
-                // bordereauResult.setBordereau(doBordereau(this.file, this.fileName, bordereauResult.getBordereauStatus().toString()));
-                
-                
-            }
+       
             
-        doCheck(bordereauResult);
+            System.out.println(">>>>>>>>>>>>> SAVE bordereau END ");
+            
+            
+            
+            doCheck(bordereauResult);
 
         } catch (Throwable t) {
             t.printStackTrace();
@@ -184,7 +203,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         public void doInTransactionWithoutResult(TransactionStatus status) {
                             
                             if (readOnlyXmlParseResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
-                                
                                 customerService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                                 thirdPartyService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                                 incidentService.saveObjectForXMLUploader(readOnlyXmlParseResult);
@@ -218,6 +236,33 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return claimResult;
     }
 
+    private Bordereau doBordereau(File file, String fileName, Object status, String BordereauParseStatusDescription) throws FileNotFoundException, IOException{
+        
+        System.out.println(">>> doBordereau 0001");
+        
+        Bordereau bordereau = new Bordereau();
+        FileInputStream streamIn = new FileInputStream(file);
+        byte fileContent[] = new byte[(int)file.length()];
+        streamIn.read(fileContent);
+        
+        System.out.println(">>> doBordereau 0002");
+        
+        bordereau.setFileName(fileName);  
+        if(status != null){
+            bordereau.setStatus(status.toString());  
+        }
+        
+        System.out.println(">>> doBordereau 0003");
+        
+        bordereau.setFileBuffer(fileContent);
+        bordereau.setDescription(BordereauParseStatusDescription);
+        // System.out.println("Bordereau File Name: "+bordereau.getFileName());
+        // System.out.println("Bordereau Status: "+bordereau.getStatus());
+        // System.out.println("Bordereau: "+bordereau.getFileBuffer().length);
+        System.out.println(">>> doBordereau 0004");
+        return bordereau;
+    }
+    
     /*
     private XMLParseResult saveXMLRecord(XMLParseResult xmlParseResult, final boolean isNewInvoice, final String oldClaimStatus){       
         
@@ -267,27 +312,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return xmlParseResult;
     }
     */
-    
-    private Bordereau doBordereau(File file, String fileName, Object status) throws FileNotFoundException, IOException{
-        
-            Bordereau bordereau = new Bordereau();
-            FileInputStream streamIn = new FileInputStream(file);
-            byte fileContent[] = new byte[(int)file.length()];
-            streamIn.read(fileContent);
-            
-            bordereau.setFileName(fileName);  
-            if(status != null){
-                bordereau.setStatus(status.toString());  
-            }
-            bordereau.setFileBuffer(fileContent);
-            
-            System.out.println("Bordereau File Name: "+bordereau.getFileName());
-            System.out.println("Bordereau Status: "+bordereau.getStatus());
-            System.out.println("Bordereau: "+bordereau.getFileBuffer().length);
-            
-            return bordereau;
-    }
-    
     
     private void doCheck(BordereauResult bordereauResult){
     
