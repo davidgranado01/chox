@@ -64,6 +64,7 @@
                 <value>chox/model/InsurerChorganisation.hbm.xml</value>
                 <value>chox/model/ReasonOfDelay.hbm.xml</value>
                 <value>chox/model/AttachmentType.hbm.xml</value>
+                <value>chox/model/Bordereau.hbm.xml</value>
             </list>
         </property>
         <property name="entityInterceptor" ref="auditInterceptor"/>
@@ -185,6 +186,9 @@
     <bean id="insurerChorganisationService" class="chox.services.InsurerChorganisationServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>    
+    <bean id="bordereauService" class="chox.services.BordereauServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="uploadClaimXMLService" class="chox.services.UploadClaimXMLServiceImpl" singleton="false">
         <property name="vehicleClassService" ref="vehicleClassService" />
         <property name="engineerReportService" ref="engineerReportService" />
@@ -204,5 +208,6 @@
         <property name="auditTrailService" ref="auditTrailService" />
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
+        <property name="bordereauService" ref="bordereauService"/>
     </bean>
 </beans>

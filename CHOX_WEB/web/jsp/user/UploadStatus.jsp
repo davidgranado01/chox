@@ -60,7 +60,7 @@
                     <s:else>
                         
 
-                            <div class="UploadStatusMessage">
+<div class="UploadStatusMessage">
                                 
                                 <div class="status-info">
                                     
@@ -76,54 +76,127 @@
                                     
                                 </div>
                                 
-                            </div>
+</div>
                             
-                            
+<div class="bordereauResultHolder">
+    
+    <table class="BordereauResultTable" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+            <td width="15%" class="titleLabel">Created Date</td><td width="35%"><s:property value="bordereauResult.CreatedDate" /></td>
+            <td width="15%" class="titleLabel">Created By</td><td width="35%"><s:property value="bordereauResult.CreatedBy.DisplayName" /></td>
+        </tr>
+        <tr>
+            <td width="15%" class="titleLabel">Status</td><td width="35%"><s:property value="bordereauStatus" /></td>
+            <td width="15%" class="titleLabel">Total Claims</td><td width="35%"><s:property value="totalClaim" /></td>
+        </tr>
+        <tr>
+            <td width="15%" class="titleLabel">Description</td>
+            <td colspan="3"><s:property value="bordereauStatusDesc" /></td>
+        </tr>
+        <tr>
+            <td width="15%" class="titleLabel">Messages</td>
+            <td colspan="3">
+                <ul class="bordereauErrorMessage">
+                <s:iterator id="bordereauMsg" value="bordereauResult.Message" status="stat">
+                    <li><s:property value="#bordereauMsg" /></li>
+                </s:iterator>
+                </ul>
+            </td>
+        </tr>                                
+    </table>
+    
+</div>
+<div class="bordereauResultHolder">
+    
                             <table class="UploadStatusTable" cellpadding="0" cellspacing="0" border="0">
+                                
                                 <tr>
-                                    <th width="40px"></th>
-                                    <th width="40px">Supplier Reference</th>
+                                    <th width="30px"></th>
+                                    <th width="1%" nowrap="true">Supplier Reference&nbsp;&nbsp;</th>
                                     <th>Upload Status</th>
                                     <th>Claim Status</th>
-                                    <th>Further Information</th>
+                                    <th>Uploaded?</th>
                                 </tr>
-                                <s:iterator id="next" value="results" status="stat">
-                                    <s:if test="%{#next.UploadStatusCode=='CLAIMUPLOADFAILED'}">
-                                        <tr class="ErrorRow" valign="top">
-                                    </s:if>
-                                    <s:elseif test="%{#next.UploadStatusCode=='INVOICEUPLOADFAILED'}">
-                                        <tr class="ErrorRow"   valign="top">
-                                    </s:elseif>
-                                    <s:elseif test="%{#next.UploadStatusCode=='INVOICEUPLOADEDSUCCESSFUL'}">
-                                        <tr class="<s:property value="#next.claim.status"/>"  valign="top">
-                                    </s:elseif>
-                                    <s:else>
-                                        <tr  valign="top">
-                                        </s:else>
+                                
+                                <s:iterator id="next" value="bordereauResult.ClaimResult" status="stat">
+
+<s:if test="%{#next.ClaimParseStatus.toString()=='newInvoice'}">
+    <tr class="<s:property value="#next.claim.status"/>" valign="top">
+</s:if>
+<s:elseif test="%{#next.ClaimParseStatus.toString()=='newClaim'}">
+    <tr class="<s:property value="#next.claim.status"/>" valign="top">
+</s:elseif>
+<s:elseif test="%{#next.ClaimParseStatus=='ClaimNotEditable'}">
+    <tr class="<s:property value="#next.claim.status"/>" valign="top">
+</s:elseif>                                    
+<s:elseif test="%{#next.ClaimParseStatus.toString()=='existClaim'}">
+    <tr class="<s:property value="#next.claim.status"/>" valign="top">
+</s:elseif>
+<s:elseif test="%{#next.ClaimParseStatus.toString()=='existInvoice'}">
+    <tr class="ErrorRow" valign="top">
+</s:elseif>
+<s:elseif test="%{#next.ClaimParseStatus.toString()=='invalidSchema'}">
+    <tr class="ErrorRow" valign="top">
+</s:elseif>                                    
+<s:else>
+    <tr valign="top">
+</s:else>
+                                    
                                         <td><s:property value="{#stat.index + 1}" /></td>
                                         <td><s:property value="#next.claim.choReference" /><span>&nbsp;</span></td>
-                                        <td><s:property value="#next.uploadStatus" /></td>
-                                        <td><s:property value="#next.claim.status" /><span>&nbsp;</span></td>
+                                        
+<s:if test="%{#next.ClaimParseStatus.toString()=='newInvoice'}">
+        <td>New Invoice</td>
+</s:if>
+<s:elseif test="%{#next.ClaimParseStatus.toString()=='newClaim'}">
+        <td>New Claim</td>
+</s:elseif>
+<s:elseif test="%{#next.ClaimParseStatus.toString()=='ClaimNotEditable'}">
+        <td>Claim Closed</td>
+</s:elseif>                                    
+<s:elseif test="%{#next.ClaimParseStatus.toString()=='existClaim'}">
+        <td>Claim Already Exist</td>
+</s:elseif>
+<s:elseif test="%{#next.ClaimParseStatus.toString()=='existInvoice'}">
+        <td>Invoice Already Exists</td>
+</s:elseif>
+<s:elseif test="%{#next.ClaimParseStatus.toString()=='invalidSchema'}">
+        <td>Error</td>
+</s:elseif>
+
+<td><s:property value="#next.claim.status" /><span>&nbsp;</span></td>
+<td><s:property value="(#next.DataValid && #next.Valid)" /><span>&nbsp;</span></td>
+
+                                        <!--
                                         <td>
                                             <ul>
-                                                <s:iterator id="remark" value="#next.DataValidationRemark">
+                                                <s:iterator id="remark" value="#next.Message">
                                                     <s:if test="#remark.length() > 0">
                                                         <li><s:property value="#remark" /></li>
                                                     </s:if>
                                                 </s:iterator>
                                             </ul>
                                             
-                                            <ul>
-                                                <s:iterator id="remark" value="#next.SchemaValidationRemark">
-                                                    <s:if test="#remark.length() > 0">
-                                                        <li><s:property value="#remark" /></li>
-                                                    </s:if>
-                                                </s:iterator>
-                                            </ul>
                                         <span>&nbsp;</span></td>
+                                        !-->
                                     </tr>
+                                    
+<s:if test="#next.Message.size() > 0">
+    <tr>
+        <td colspan="5">
+            <s:iterator id="remark" value="#next.Message">
+            <s:if test="#remark.length() > 0">
+                <li><s:property value="#remark" /></li>
+            </s:if>
+            </s:iterator>
+        </td>
+    </tr>
+</s:if>
+                                    
                                 </s:iterator>
                             </table>
+</div>                            
+                            
                         </s:else>
                     </div>
                 </div>

@@ -4,10 +4,14 @@
  */
 package chox.web.actions;
 
+import chox.Util.DateHelper;
 import chox.data.UploadStatus;
-import chox.model.ClaimStatus;
+import chox.model.Bordereau;
 import chox.model.XMLParseResult;
 import chox.services.UploadClaimXMLService;
+import chox.web.security.PermissionedUser;
+import chox.xmlValidation.model.BordereauResult;
+import chox.xmlValidation.model.status.BordereauParseStatus;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +27,43 @@ public class ProcessClaimsAction extends BaseAction {
     private String filename;
     private UploadClaimXMLService service;
     private List<XMLParseResult> result;
-    private String uploadType;
+    private String bordereauStatus;
+    private String bordereauStatusDesc;
+    private BordereauResult bordereauResult;
+    private Integer totalClaim;
 
+    public String getBordereauStatusDesc() {
+        return bordereauStatusDesc;
+    }
+
+    public void setBordereauStatusDesc(String bordereauStatusDesc) {
+        this.bordereauStatusDesc = bordereauStatusDesc;
+    }
+
+    public Integer getTotalClaim() {
+        return totalClaim;
+    }
+
+    public void setTotalClaim(Integer totalClaim) {
+        this.totalClaim = totalClaim;
+    }
+
+    public String getBordereauStatus() {
+        return bordereauStatus;
+    }
+
+    public void setBordereauStatus(String bordereauStatus) {
+        this.bordereauStatus = bordereauStatus;
+    }
+    
+    public BordereauResult getBordereauResult() {
+        return bordereauResult;
+    }
+
+    public void setBordereauResult(BordereauResult bordereauResult) {
+        this.bordereauResult = bordereauResult;
+    }
+    
     public void setUpload(File file) {
         this.file = file;
     }
@@ -39,14 +78,6 @@ public class ProcessClaimsAction extends BaseAction {
 
     public List<XMLParseResult> getResults() {
         return this.result;
-    }
-
-    public String getUploadType() {
-        return uploadType;
-    }
-
-    public void setUploadType(String uploadType) {
-        this.uploadType = uploadType;
     }
 
     private static String getExtention(String fileName) {
@@ -70,8 +101,38 @@ public class ProcessClaimsAction extends BaseAction {
             
             if (extention.matches("\\.xml")) {
                 
-                List<XMLParseResult> parseResult = this.service.processXML(this.file , true);
+                bordereauResult = this.service.processClaimXMLFile(this.file, this.filename.toLowerCase());
+
+                // SET CREATED BY USER AND CREATED DATE
+                PermissionedUser user = this.getAuthenticatedUser();
+                this.bordereauResult.setCreatedBy(user.getUser());
+                this.bordereauResult.setCreatedDate(DateHelper.getCurrentTimeStamp());
+
+                // SET STATUS
+                if(this.bordereauResult.getBordereauStatus().equals(BordereauParseStatus.allRejected)){
+                    bordereauStatus = "All Rejected";
+                }else if(this.bordereauResult.getBordereauStatus().equals(BordereauParseStatus.allUploaded)){
+                    bordereauStatus = "All Uploaded";
+                }else if(this.bordereauResult.getBordereauStatus().equals(BordereauParseStatus.partialUpload)){
+                    bordereauStatus = "Partially Uploaded";
+                }else if(this.bordereauResult.getBordereauStatus().equals(BordereauParseStatus.error)){
+                    bordereauStatus = "Error";
+                }
                 
+                // GET COUNT
+                totalClaim = this.bordereauResult.getClaimResult().size();
+                
+                // GET DESCRIPTION
+                bordereauStatusDesc = this.bordereauResult.getBordereau().getDescription();
+                        
+                if(bordereauResult==null){
+                    return ERROR;
+                }else{
+                    return SUCCESS;
+                }
+                
+                /*
+                List<XMLParseResult> parseResult = this.service.processXML(this.file , true);
                 if(parseResult.size()>1){
                     parseResult = doOrderXMLUploadResult(parseResult);
                 }
@@ -82,6 +143,8 @@ public class ProcessClaimsAction extends BaseAction {
                     this.result = parseResult;
                     return SUCCESS;
                 }
+                */
+                
             } else {
                 return ERROR;
             }
@@ -111,8 +174,6 @@ public class ProcessClaimsAction extends BaseAction {
         while (listIteratorName.hasNext()) {
             
             XMLParseResult nextElement = (XMLParseResult) listIteratorName.next();
-            
-            //System.out.println("CLAIM ID:"+nextElement.getClaim().getChoReference()+"|UPLOAD STATUS"+nextElement.getUploadStatus());
             
             if(nextElement.getUploadStatus().equalsIgnoreCase(strUpdateStatus)){
                 xmlNewParseResult.add(nextElement);
