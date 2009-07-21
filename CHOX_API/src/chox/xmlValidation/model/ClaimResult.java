@@ -1,6 +1,9 @@
 package chox.xmlValidation.model;
 
 import chox.model.Claim;
+import chox.model.Injury;
+import chox.model.Solicitor;
+import chox.model.Witness;
 import chox.xmlValidation.model.status.ClaimParseStatus;
 import org.w3c.dom.*;
 import java.util.ArrayList;
@@ -15,7 +18,36 @@ public class ClaimResult{
     private boolean dataValid;
     private boolean checkDataValid;
     private List<String> message = new ArrayList<String>();
+    
+    private ArrayList<Witness> witnesses;
+    private ArrayList<Injury> injuries;
+    private ArrayList<Solicitor> solicitors;
 
+    public ArrayList<Injury> getInjuries() {
+        return injuries;
+    }
+
+    public void setInjuries(ArrayList<Injury> injuries) {
+        this.injuries = injuries;
+    }
+
+    public ArrayList<Solicitor> getSolicitors() {
+        return solicitors;
+    }
+
+    public void setSolicitors(ArrayList<Solicitor> solicitors) {
+        this.solicitors = solicitors;
+    }
+
+    public ArrayList<Witness> getWitnesses() {
+        return witnesses;
+    }
+
+    public void setWitnesses(ArrayList<Witness> witnesses) {
+        this.witnesses = witnesses;
+    }
+
+    
     public boolean isCheckDataValid() {
         return checkDataValid;
     }
