@@ -38,7 +38,7 @@
                  email:{required:true, email: true},
                  firstName:{required:true},
                  lastName:{required:true},
-                 password:{required:true, regex: "^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$"},
+                 password:{required:true, regex: "^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$"},
                  confirmNewPassword:{equalTo: "#password"},
                  insurerId:{required:true},
                  supplierId:{required:true},
@@ -256,7 +256,7 @@
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">&nbsp;</label>
-                    <span class="column_remark">Must be at least 6 characters. Must contain at least one one lower case letter, one upper case letter, one digit and one special character (@#$%^&+=)</span>
+                    <span class="column_remark">Must be at least 6 characters. Must contain at least one one lower case letter, one upper case letter.</span>
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Re-enter Password<span class="mandatory">*</span></label>
