@@ -4,20 +4,28 @@
         
         var selectedPanel = 'UserMgmt';
         var lineOfBusinessId = $("#h_lineOfBusinessId").val();
+        var passwordValidateErrorMsg = "";
         
-        $(document).ready(function(){           
+        $(document).ready(function(){        
+
+        $.validator.addMethod(
+                "regex",
+                function(value, element, regexp) {
+                    var check = false;
+                    var re = new RegExp(regexp);
+                    return this.optional(element) || re.test(value);
+                },
+                "Please check your input."
+        );
             doUserSearchSelectOnChange();
             doFormValidation(); 
         }); 
         
         function getClaimHandlervalidation(){
-            
             var bFlag = false;
-            
             if($("#h_mode").val() =='Edit' && $("#h_isClaimHandler").val()=='true'){
                 bFlag = true;
             }
-            
             return bFlag;
         }
         
@@ -25,12 +33,12 @@
             
             var validateFlag = $("#formUpdateUserDetail").validate(
             {
-               errorLabelContainer: "#CDmessageBox",                
+               errorLabelContainer: "#CDmessageBox",
                rules: {
                  email:{required:true, email: true},
                  firstName:{required:true},
                  lastName:{required:true},
-                 password:{required:true},
+                 password:{required:true, regex: "^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$"},
                  confirmNewPassword:{equalTo: "#password"},
                  insurerId:{required:true},
                  supplierId:{required:true},
@@ -40,14 +48,13 @@
                  email:{required:"You must supply a value for 'Email'", email: "Incorrect email format"},
                  firstName:{required:"You must supply a value for 'First Name'"},
                  lastName:{required:"You must supply a value for 'Last Name'"},
-                 password:{required:"You must supply a value for 'Password'"},
+                 password:{required:"You must supply a value for 'Password'", regex: "Incorrect Password Format"},
                  confirmNewPassword:{equalTo: "Your passwords do not match"},
                  insurerId:{required:"Please select 'Insurer Company'"},
                  supplierId:{required:"Please select 'Credit Hire Organisation'"},
                  lineOfBusinessId:{required:"Please select 'Line of Business'"}
                },
                submitHandler: function(form) {
-                    
                }
             });
             
@@ -245,16 +252,20 @@
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>
-                    <input type="password" class="chox-ttxt" id="password" name="password" value="<s:property value="password" />" size="10" maxlength="8"/>
+                    <input type="password" class="chox-ttxt" id="password" name="password" value="<s:property value="password" />" size="10" maxlength="10"/>
+                </div>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">&nbsp;</label>
+                    <span class="column_remark">Must be at least 6 characters. Must contain at least one one lower case letter, one upper case letter, one digit and one special character (@#$%^&+=)</span>
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Re-enter Password<span class="mandatory">*</span></label>
-                    <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="8" value="<s:property value="password" />"/>
+                    <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="10" value="<s:property value="password" />"/>
                 </div>  
                 <div class="chox-form-item">
                         <label class="chox-form-std-label">&nbsp;</label>
                         <span class="column_remark">N.B. Passwords are case sensitive.</span>
-                    </div>
+                </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Active</label>
                     <s:checkbox name="status" value="status" />
