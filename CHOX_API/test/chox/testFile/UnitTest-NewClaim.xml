@@ -209,19 +209,19 @@
         </claim>
         <repair>
             <engineer-report>
-                <labour-amount><![CDATA[]]></labour-amount>
-                <total-amount><![CDATA[]]></total-amount>
-                <days><![CDATA[]]></days>
+                <labour-amount><![CDATA[23]]></labour-amount>
+                <total-amount><![CDATA[34]]></total-amount>
+                <days><![CDATA[12]]></days>
                 <usable>s</usable>
-                <name><![CDATA[]]></name>
-                <company><![CDATA[]]></company>
+                <name><![CDATA[sdd]]></name>
+                <company><![CDATA[s]]></company>
                 <address1><![CDATA[A0001]]></address1>
-                <address2><![CDATA[]]></address2>
-                <address3><![CDATA[]]></address3>
-                <address4><![CDATA[]]></address4>
-                <address5><![CDATA[]]></address5>
-                <postcode><![CDATA[]]></postcode>
-                <telephone><![CDATA[]]></telephone>
+                <address2><![CDATA[s]]></address2>
+                <address3><![CDATA[s]]></address3>
+                <address4><![CDATA[d]]></address4>
+                <address5><![CDATA[f]]></address5>
+                <postcode><![CDATA[f]]></postcode>
+                <telephone><![CDATA[f]]></telephone>
                 <email><![CDATA[]]></email>
             </engineer-report>
             <repair-details>

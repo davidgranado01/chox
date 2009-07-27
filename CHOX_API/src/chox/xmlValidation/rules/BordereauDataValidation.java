@@ -58,7 +58,7 @@ public class BordereauDataValidation {
                     // CHECK CUSTOMER / DRIVER DETAIL (NEW CLAIM ONLY)
                     CustomerValidation custVal = new CustomerValidation(claimResult, dataValidationParameter, claimService);
                     claimResult = custVal.execute();
-                                       
+                    
                     // CHECK CLAIM - CUSTOMER (NEW CLAIM ONLY)
                     ClaimCustomerValidation claimCustVal = new ClaimCustomerValidation(claimResult, dataValidationParameter, claimService, vehicleClassService);
                     claimResult = claimCustVal.execute();
@@ -93,10 +93,6 @@ public class BordereauDataValidation {
 
                 }
             }
-            
-            // System.out.println("");
-            // System.out.println("");
-            // System.out.println("");
             
         } catch (Exception ex) {
             bordereauResult.setValid(false);

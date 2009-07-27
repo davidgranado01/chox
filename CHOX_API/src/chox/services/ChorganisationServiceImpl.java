@@ -85,17 +85,11 @@ public class ChorganisationServiceImpl  extends SecureDataService implements Cho
         return object;
     }
     
-    
-
-    
-    
     public Chorganisation getCurrentCHOrganisation() {
-        
         Chorganisation chorg = new Chorganisation();
         WebUser thisUser = getCurrentUser();
         chorg.setId(thisUser.getChorganisation().getId());
         return chorg;
-        
     }
     
     public List<Chorganisation> getActiveChorganisation(){

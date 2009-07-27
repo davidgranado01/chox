@@ -24,6 +24,8 @@ public class FakeSecurityInforProvider implements SecurityInfoProvider  {
         currentUser.setId(999);
         currentUser.setFirstName("UnitTest");
         currentUser.setLastName("User");
+        
+        // SET CHORGANISATION
         Chorganisation chorganisation = new Chorganisation();
         chorganisation.setId(1006);
         currentUser.setChorganisation(chorganisation);

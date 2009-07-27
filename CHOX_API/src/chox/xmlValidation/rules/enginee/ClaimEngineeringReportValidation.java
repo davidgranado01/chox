@@ -1,9 +1,6 @@
 package chox.xmlValidation.rules.enginee;
 
 import chox.model.EngineerReport;
-import chox.services.ChoBandService;
-import chox.services.ChorganisationService;
-import chox.services.ClaimService;
 import chox.services.SecureDataService;
 import chox.xmlValidation.model.ClaimResult;
 import chox.xmlValidation.model.status.ClaimParseStatus;
@@ -96,24 +93,28 @@ public class ClaimEngineeringReportValidation extends SecureDataService implemen
             || XmlHelper.isNotNull(XmlHelper.getNodeValue(this.element, "usable"))
         ){
             
-            if(this.claimResult.getClaim().getEngineerReport() == null){
-               this.claimResult.getClaim().setEngineerReport(new EngineerReport()); 
+            EngineerReport engineerReport = new EngineerReport();
+            
+            if(this.claimResult.getClaim().getEngineerReport() != null){
+               engineerReport = this.claimResult.getClaim().getEngineerReport();
             } 
             
-            this.claimResult.getClaim().getEngineerReport().setDays(XmlHelper.getIntegerFromNode(this.element, "days"));
-            this.claimResult.getClaim().getEngineerReport().setLabourAmount(XmlHelper.getBigDecimalFromNode(this.element, "labour-amount"));
-            this.claimResult.getClaim().getEngineerReport().setTotalAmount(XmlHelper.getBigDecimalFromNode(this.element, "total-amount"));
-            this.claimResult.getClaim().getEngineerReport().setName(XmlHelper.getNodeValue(this.element, "name"));
-            this.claimResult.getClaim().getEngineerReport().setCompany(XmlHelper.getNodeValue(this.element, "company"));
-            this.claimResult.getClaim().getEngineerReport().setAddress1(XmlHelper.getNodeValue(this.element, "address1"));
-            this.claimResult.getClaim().getEngineerReport().setAddress2(XmlHelper.getNodeValue(this.element, "address2"));
-            this.claimResult.getClaim().getEngineerReport().setAddress3(XmlHelper.getNodeValue(this.element, "address3"));
-            this.claimResult.getClaim().getEngineerReport().setAddress4(XmlHelper.getNodeValue(this.element, "address4"));
-            this.claimResult.getClaim().getEngineerReport().setAddress5(XmlHelper.getNodeValue(this.element, "address5"));
-            this.claimResult.getClaim().getEngineerReport().setPostcode(XmlHelper.getNodeValue(this.element, "postcode"));
-            this.claimResult.getClaim().getEngineerReport().setTelephone(XmlHelper.getNodeValue(this.element, "telephone"));
-            this.claimResult.getClaim().getEngineerReport().setEmail(XmlHelper.getEmailAddressFromNode(this.element, "email"));
-            this.claimResult.getClaim().getEngineerReport().setIsUsable(XmlHelper.getBooleanFromNode(this.element, "usable"));
+            engineerReport.setDays(XmlHelper.getIntegerFromNode(this.element, "days"));
+            engineerReport.setLabourAmount(XmlHelper.getBigDecimalFromNode(this.element, "labour-amount"));
+            engineerReport.setTotalAmount(XmlHelper.getBigDecimalFromNode(this.element, "total-amount"));
+            engineerReport.setName(XmlHelper.getNodeValue(this.element, "name"));
+            engineerReport.setCompany(XmlHelper.getNodeValue(this.element, "company"));
+            engineerReport.setAddress1(XmlHelper.getNodeValue(this.element, "address1"));
+            engineerReport.setAddress2(XmlHelper.getNodeValue(this.element, "address2"));
+            engineerReport.setAddress3(XmlHelper.getNodeValue(this.element, "address3"));
+            engineerReport.setAddress4(XmlHelper.getNodeValue(this.element, "address4"));
+            engineerReport.setAddress5(XmlHelper.getNodeValue(this.element, "address5"));
+            engineerReport.setPostcode(XmlHelper.getNodeValue(this.element, "postcode"));
+            engineerReport.setTelephone(XmlHelper.getNodeValue(this.element, "telephone"));
+            engineerReport.setEmail(XmlHelper.getEmailAddressFromNode(this.element, "email"));
+            engineerReport.setIsUsable(XmlHelper.getBooleanFromNode(this.element, "usable"));
+            
+            this.claimResult.getClaim().setEngineerReport(engineerReport);
         } 
     
     }

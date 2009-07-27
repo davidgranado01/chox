@@ -1,7 +1,7 @@
 package chox.xmlValidation.rules.enginee;
+
 import chox.xmlValidation.rules.*;
 import chox.Util.DateHelper;
-import chox.Util.TextHelper;
 import chox.xmlValidation.rules.Util.XmlHelper;
 import org.w3c.dom.*;
 import com.filesystemsoftware.utils.XMLUtils;
@@ -9,16 +9,12 @@ import chox.model.*;
 import chox.services.ChoBandService;
 import chox.services.ChorganisationService;
 import chox.services.ClaimService;
-import chox.services.InsurerAlliasService;
-import chox.services.InsurerChorganisationService;
 import chox.services.SecureDataService;
-import chox.services.VehicleClassService;
 import chox.xmlValidation.model.ClaimResult;
 import chox.xmlValidation.model.status.ClaimParseStatus;
 import chox.xmlValidation.rules.Util.NodeHelper;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import javax.xml.xpath.XPathExpressionException;
 
 public class ClaimHeaderValidation extends SecureDataService implements rulesInterface{
@@ -72,14 +68,11 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
     
     private void process(){
         
-        
-        
         Boolean managingRepair = XmlHelper.getBooleanFromNode(claimResult.getElement(), "managing-repair");
         Timestamp firstContactDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "first-contact");
         Timestamp creditAgreementDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "agreement-signed");
         Timestamp gtaNoticeDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "gta-notice");
         String choReferenceNumber = XmlHelper.getNodeValue(this.element, "supplier-reference");
-        // String choName = XmlHelper.getNodeValue(this.element, "supplier-name");
         
         if(gtaNoticeDate==null){
             gtaNoticeDate = DateHelper.getCurrentTimeStamp();
@@ -98,9 +91,8 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
                 
             }else{
                 
-                // System.out.print(">>> INVOICE NOT EXIST");
                 if(claim.getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)){
-                    // System.out.println(">>> NEW INVOICE");
+                    
                     claimResult.setClaimParseStatus(ClaimParseStatus.newInvoice);
                     ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(claim.getChorganisation().getId(), claim.getInsurer().getId());
                     claim.setChoband(choBand);
@@ -108,19 +100,20 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
                 }else if(claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) ||
                     claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING) ||
                     claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_ACCEPTED)){
-                    // System.out.println(">>> NOT EDITABLE CLAIM");
+                    
                     // NOT EDITABNLE CLAIM
                     claimResult.setClaimParseStatus(ClaimParseStatus.ClaimNotEditable);
                     claimResult.setValid(false);
+                    
                 }else{
-                    // System.out.println(">>> EDITABLE CLAIM");
+                    
                     // EDITABLE CLAIM
                     claimResult.setClaimParseStatus(ClaimParseStatus.existClaim);
+                    
                 }
             }
             
        }else{
-            
             claimResult.setClaimParseStatus(ClaimParseStatus.newClaim);
             claim.setManagingRepair(managingRepair);
             claim.setPolicyHolderContactDate(firstContactDate);
@@ -130,12 +123,10 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
             claim.setGtaNoticeDate(gtaNoticeDate);
             claim.setIndemnityAmount(new BigDecimal("0.00"));
             claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
-            claim.setChorganisation(chorganisationService.getCurrentCHOrganisation());
-            
+            claim.setChorganisation(chorganisationService.getCurrentCHOrganisation());            
         }
         
         claimResult.setClaim(claim);
-                
     }
     
     
@@ -156,7 +147,6 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
                 System.out.println(sectionName + "| getGtaNoticeDate :"+this.claimResult.getClaim().getGtaNoticeDate());
                 System.out.println(sectionName + "| getIndemnityAmount :"+this.claimResult.getClaim().getIndemnityAmount());
                 System.out.println(sectionName + "| getPercentageLiabilityAccepted :"+this.claimResult.getClaim().getPercentageLiabilityAccepted());  
-                
             }
         }   
     }

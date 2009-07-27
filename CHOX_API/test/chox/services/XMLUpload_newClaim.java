@@ -47,7 +47,7 @@ public class XMLUpload_newClaim extends TestCase{
             
             // STATUS PASS
             assertEquals(true, parseResult.isValid());
-            // assertEquals(1, parseResult.getMessage().size());
+            assertEquals(1, parseResult.getMessage().size());
             
             for(String s : parseResult.getMessage()){
                 System.out.println("SSS"+s);
