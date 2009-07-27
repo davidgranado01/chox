@@ -48,40 +48,9 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         this.excelStream = excelStream;
     }
 
-    /*    
-    public static void main(String[] args)throws IOException {
-    
-    File thisFile = new File(".");
-    System.out.println("A:::::::::::::"+thisFile.getParent());
-    System.out.println("B:::::::::::::"+thisFile.getPath());
-    System.out.println("C:::::::::::::"+thisFile.getAbsolutePath());
-    System.out.println("D:::::::::::::"+thisFile.getCanonicalPath());
-    
-    String classPath = ExcelGeneratorAction.class.getClassLoader().getResource("claimTemplate.xls").getPath();
-    int dotIndex = classPath.lastIndexOf("claimTemplate.xls");
-    classPath = classPath.substring(0, classPath.lastIndexOf("claimTemplate.xls"));
-    System.out.println("AS:"+classPath);
-    
-    //System.out.println("E:"+classPath.lastIndexOf("claimTemplate.xls"));
-    //System.out.println("E:"+classPath.substring(0, classPath.lastIndexOf("claimTemplate.xls")));
-    
-    ClaimService cs = new ClaimServiceImpl();
-    List<Claim> claims = cs.listAllClaims();
-    ExcelGeneratorAction excelhelper = new ExcelGeneratorAction();
-    ByteArrayOutputStream buf = excelhelper.generateXML(claims);  
-    }
-     */
     public ByteArrayOutputStream doExportExcel() throws IOException {
 
         File thisFile = new File(".");
-        
-        /*
-        System.out.println("A:::::::::::::" + thisFile.getParent());
-        System.out.println("B:::::::::::::" + thisFile.getPath());
-        System.out.println("C:::::::::::::" + thisFile.getAbsolutePath());
-        System.out.println("D:::::::::::::" + thisFile.getCanonicalPath());
-        System.out.println("AS:" + FileHelper.getClassPath());
-        */
         
         ClaimSearchCriteria c = null;
         ByteArrayOutputStream buf = null;

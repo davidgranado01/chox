@@ -174,7 +174,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 }
        
             
-            System.out.println(">>>>>>>>>>>>> SAVE bordereau END ");
+            
             
             
             

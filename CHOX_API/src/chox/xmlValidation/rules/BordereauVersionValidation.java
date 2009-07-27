@@ -21,6 +21,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.xpath.XPathExpressionException;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
+import org.apache.struts2.ServletActionContext;
 
 
 import javax.xml.transform.stream.StreamSource;
@@ -33,7 +34,7 @@ public class BordereauVersionValidation{
     
     public static String W3C_XML_SCHEMA_NS_URI = "http://www.w3.org/2001/XMLSchema";
     public static String V_FILE_VERSION_ERROR = "Incorrect version";
-    public static String V_SCHEMA_FILE = "C:/Project Workplace/Greefinch/Sherwood/testXML/xml-schema.xsd";
+    public static String V_SCHEMA_FILE = "xml-schema.xsd";
     
     public BordereauResult validate(
             File file, 
@@ -94,8 +95,9 @@ public class BordereauVersionValidation{
         
         try{
 
+            String xmlValidationTemplate = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + V_SCHEMA_FILE);
             SchemaFactory factory = SchemaFactory.newInstance(W3C_XML_SCHEMA_NS_URI);
-            Schema schema = factory.newSchema(new StreamSource(new File(V_SCHEMA_FILE)));
+            Schema schema = factory.newSchema(new StreamSource(new File(xmlValidationTemplate)));
             Validator validator = schema.newValidator();
             validator.validate(new DOMSource(element));
             

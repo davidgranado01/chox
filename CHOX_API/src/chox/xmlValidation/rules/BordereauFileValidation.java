@@ -22,13 +22,6 @@ public class BordereauFileValidation{
                 bordereauResult.addMessage(V_FILE_ERROR);
             }
             
-            /*
-            if(!FileHelper.isFileTypeAllow(fileName, getAllowType())){
-                bordereauResult.setValid(false);
-                bordereauResult.addMessage(V_FILE_TYPR_ERROR);
-            }
-            */
-            
             int iResult = FileHelper.isFileSizeAllow(file);
             if(iResult==0){
                 bordereauResult.addMessage(V_FILE_ERROR);
