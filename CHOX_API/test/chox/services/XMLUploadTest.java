@@ -3,38 +3,59 @@ package chox.services;
 import chox.xmlValidation.model.BordereauResult;
 import java.io.File;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import junit.framework.Assert;
 import org.junit.Test;
+import junit.framework.TestCase;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class XMLUploadTest{
+public class XMLUploadTest extends TestCase{
     private ClassPathXmlApplicationContext ctx;
     private UploadClaimXMLService service = null;
     
     public XMLUploadTest() {
         String[] paths = {"applicationContext.xml"};
         ctx = new ClassPathXmlApplicationContext(paths);        
-    }
-    
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
+    } 
 
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    @Before
-    public void setUp() {
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
         service = (UploadClaimXMLService) ctx.getBean("uploadClaimXMLService");
     }
 
-    @After
-    public void tearDown() {
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        service = null;
     }
+
+    @Test
+    public void testCanInitUploadClaimXMLServiceFromSpring()
+    {
+        service.toString();
+        Assert.assertNotNull(service);
+    }
+
+    @Test
+    public void testFile() {
+
+        File testFile = new File("C:/Project Workplace/Greefinch/Sherwood/testXML/Demo Data XML.xml");
+
+        try
+        {
+
+            BordereauResult parseResult = service.processClaimXMLFile(testFile, testFile.getName());
+
+            // System.out.println(">>>"+parseResult.isStatus());
+            // ArrayList<XMLParseResult> parseResult = new ArrayList<XMLParseResult>();
+            // instance.processClaimXMLFile(claimFile, true);
+        }
+        catch(Exception ex)
+        {
+
+        }
+
+    }  
 /*
     @Test
     public void testFileValidation_corrupted_file() {
@@ -135,8 +156,7 @@ public class XMLUploadTest{
         assertEquals(expErrMsg.size(), oErrMsg.size());
         
     }
-     */
-    
+
     @Test
     public void testFile() {
         
@@ -164,4 +184,5 @@ public class XMLUploadTest{
             System.out.println(f + " >>>>>> "+s);
         }
     }
+     * */
 }
