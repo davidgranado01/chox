@@ -6,17 +6,18 @@
         var lineOfBusinessId = $("#h_lineOfBusinessId").val();
         var passwordValidateErrorMsg = "";
         
-        $(document).ready(function(){        
+        $(document).ready(function(){
 
-        $.validator.addMethod(
-                "regex",
-                function(value, element, regexp) {
-                    var check = false;
-                    var re = new RegExp(regexp);
-                    return this.optional(element) || re.test(value);
-                },
-                "Please check your input."
-        );
+            $.validator.addMethod(
+                    "regex",
+                    function(value, element, regexp) {
+                        var check = false;
+                        var re = new RegExp(regexp);
+                        return this.optional(element) || re.test(value);
+                    },
+                    "Please check your input."
+            );
+                
             doUserSearchSelectOnChange();
             doFormValidation(); 
         }); 

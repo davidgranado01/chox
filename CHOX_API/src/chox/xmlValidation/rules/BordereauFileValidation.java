@@ -16,10 +16,15 @@ public class BordereauFileValidation{
     public BordereauResult validate(File file, String fileName, BordereauResult bordereauResult){
         
         try {
-
+            
             if(!FileHelper.isFileValid(file)){
                 bordereauResult.setValid(false);
                 bordereauResult.addMessage(V_FILE_ERROR);
+            }
+            
+            if(!FileHelper.isFileTypeAllow(fileName, getAllowType())){
+                bordereauResult.addMessage(V_FILE_TYPR_ERROR);
+                bordereauResult.setValid(false);
             }
             
             int iResult = FileHelper.isFileSizeAllow(file);
@@ -33,8 +38,7 @@ public class BordereauFileValidation{
             
         } catch (Exception ex) {
             bordereauResult.setValid(false);
-            
-            bordereauResult.addMessage(ex.getLocalizedMessage());
+            //bordereauResult.addMessage(ex.getLocalizedMessage());
         }
         
         if(!bordereauResult.isValid()){

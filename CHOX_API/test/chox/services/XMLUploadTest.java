@@ -2,7 +2,6 @@ package chox.services;
 
 import chox.xmlValidation.model.BordereauResult;
 import java.io.File;
-import java.util.List;
 import junit.framework.Assert;
 import org.junit.Test;
 import junit.framework.TestCase;
@@ -43,7 +42,6 @@ public class XMLUploadTest extends TestCase{
 
         try
         {
-
             BordereauResult parseResult = service.processClaimXMLFile(testFile, testFile.getName());
 
             // System.out.println(">>>"+parseResult.isStatus());
@@ -56,7 +54,8 @@ public class XMLUploadTest extends TestCase{
         }
 
     }  
-/*
+    
+    /*
     @Test
     public void testFileValidation_corrupted_file() {
         
@@ -137,10 +136,8 @@ public class XMLUploadTest extends TestCase{
         // UploadClaimXMLServiceImpl instance = new UploadClaimXMLServiceImpl(testFile, testFile.getName());
         ParseResult parseResult = uploadClaimXMLService.processClaimXMLFile(testFile, testFile.getName());
         
-        
         //BordereauServiceImpl bordereauService = new BordereauServiceImpl();
        
-        
         // EXPECTED RESULT
         boolean expResult = true;
         List<String> expErrMsg = new ArrayList<String>();
@@ -184,5 +181,5 @@ public class XMLUploadTest extends TestCase{
             System.out.println(f + " >>>>>> "+s);
         }
     }
-     * */
+    */
 }

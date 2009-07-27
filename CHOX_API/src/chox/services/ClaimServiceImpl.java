@@ -326,15 +326,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber) {
 
         Boolean bFlag = false;
-
+        
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
         criteria.add(Restrictions.like("choReference", sClaimReferenceNumber.trim()).ignoreCase());
         List result = findByCriteria(criteria);
-
+        
         Integer totalCount = (Integer) result.get(0);
         bFlag = totalCount > 0;
-
+        
         return bFlag;
     }
 

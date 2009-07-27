@@ -60,7 +60,6 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
     private void validate(){
         
         this.claimResult.setCheckDataValid(true);
-
         this.claimResult = NodeHelper.nodeValidate(sectionName, "first-contact", claimResult.getElement(), claimResult, dataValidationParameter);
         this.claimResult = NodeHelper.nodeValidate(sectionName, "managing-repair", claimResult.getElement(), claimResult, dataValidationParameter);
         this.claimResult = NodeHelper.nodeValidate(sectionName, "agreement-signed", claimResult.getElement(), claimResult, dataValidationParameter);
@@ -72,14 +71,16 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
     }
     
     private void process(){
-            
+        
+        
+        
         Boolean managingRepair = XmlHelper.getBooleanFromNode(claimResult.getElement(), "managing-repair");
         Timestamp firstContactDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "first-contact");
         Timestamp creditAgreementDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "agreement-signed");
         Timestamp gtaNoticeDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "gta-notice");
         String choReferenceNumber = XmlHelper.getNodeValue(this.element, "supplier-reference");
         // String choName = XmlHelper.getNodeValue(this.element, "supplier-name");
-
+        
         if(gtaNoticeDate==null){
             gtaNoticeDate = DateHelper.getCurrentTimeStamp();
         }
@@ -119,8 +120,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
             }
             
        }else{
-       
-            // System.out.println(">>> CHO REF IS NOT EXIST");
+            
             claimResult.setClaimParseStatus(ClaimParseStatus.newClaim);
             claim.setManagingRepair(managingRepair);
             claim.setPolicyHolderContactDate(firstContactDate);
@@ -129,14 +129,12 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
             claim.setIndemnityAmount(new BigDecimal("0.00"));
-            claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));                    
+            claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
             claim.setChorganisation(chorganisationService.getCurrentCHOrganisation());
             
         }
         
         claimResult.setClaim(claim);
-        // System.out.println(">>> Ref:"+choReferenceNumber+"|Type:"+choName+"|ClaimProcessStatus:"+claimResult.getClaimParseStatus().toString());
-        // System.out.println("");
                 
     }
     
