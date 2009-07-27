@@ -109,18 +109,18 @@ public class ClaimRejectedReport implements Report {
         
         StringBuffer sb = new StringBuffer();
         sb.append("select ");
-        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between @pCreatedDateFrom and @pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as iTotal, ");
-        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between @pCreatedDateFrom and @pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and claim.status='ClaimRejectionAccepted') as iTotalRejected, ");
+        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as iTotal, ");
+        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and claim.status='ClaimRejectionAccepted') as iTotalRejected, ");
         
         for(ClaimRejectionLineItem cRejected : claimRejection.getClaimRejectionLineItem()){
             if(cRejected.getId()!=null){
                 
-                sb.append("(select count(*) from claim claim, (select distinct claim_id, new_status from audit_trail where new_status='ClaimRejectionAccepted' and claim_reason_of_rejection="+cRejected.getId()+") as audit_trail where (date_trunc('day', claim.created_date) between @pCreatedDateFrom and @pCreatedDateTo) and claim.id=audit_trail.claim_id and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_"+cRejected.getId()+", ");
+                sb.append("(select count(*) from claim claim, (select distinct claim_id, new_status from audit_trail where new_status='ClaimRejectionAccepted' and claim_reason_of_rejection="+cRejected.getId()+") as audit_trail where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.id=audit_trail.claim_id and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_"+cRejected.getId()+", ");
                 
                 if(isIns){
-                    sb.append("(select count(*) from claim claim, (select distinct claim_id, new_status from audit_trail where new_status='ClaimRejectionAccepted' and claim_reason_of_rejection="+cRejected.getId()+") as audit_trail where (date_trunc('day', claim.created_date) between @pCreatedDateFrom and @pCreatedDateTo) and claim.id=audit_trail.claim_id and claim.insurer_id=insurer_chorganisation.insurer_id) as REJ_PERC_"+cRejected.getId()+", ");
+                    sb.append("(select count(*) from claim claim, (select distinct claim_id, new_status from audit_trail where new_status='ClaimRejectionAccepted' and claim_reason_of_rejection="+cRejected.getId()+") as audit_trail where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.id=audit_trail.claim_id and claim.insurer_id=insurer_chorganisation.insurer_id) as REJ_PERC_"+cRejected.getId()+", ");
                 }else{
-                    sb.append("(select count(*) from claim claim, (select distinct claim_id, new_status from audit_trail where new_status='ClaimRejectionAccepted' and claim_reason_of_rejection="+cRejected.getId()+") as audit_trail where (date_trunc('day', claim.created_date) between @pCreatedDateFrom and @pCreatedDateTo) and claim.id=audit_trail.claim_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_PERC_"+cRejected.getId()+", ");
+                    sb.append("(select count(*) from claim claim, (select distinct claim_id, new_status from audit_trail where new_status='ClaimRejectionAccepted' and claim_reason_of_rejection="+cRejected.getId()+") as audit_trail where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.id=audit_trail.claim_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_PERC_"+cRejected.getId()+", ");
                 }
             }
         }
@@ -129,22 +129,31 @@ public class ClaimRejectedReport implements Report {
             sb.append("chorganisation.id, chorganisation.name ");
             sb.append("from insurer_chorganisation insurer_chorganisation ");
             sb.append("inner join chorganisation chorganisation on chorganisation.id=insurer_chorganisation.chorganisation_id ");
-            sb.append("where insurer_chorganisation.insurer_id=@pOrgId ");
+            sb.append("where insurer_chorganisation.insurer_id=:pOrgId ");
             sb.append("order by chorganisation.name asc "); 
         }else{
             sb.append("insurer.id, insurer.name ");
             sb.append("from insurer_chorganisation insurer_chorganisation ");
             sb.append("inner join insurer insurer on insurer.id=insurer_chorganisation.insurer_id ");
-            sb.append("where insurer_chorganisation.chorganisation_id=@pOrgId ");
+            sb.append("where insurer_chorganisation.chorganisation_id=:pOrgId ");
             sb.append("order by insurer.name asc "); 
         }
         
         String query = sb.toString();
-        query = query.replaceAll("@pOrgId", iOrgId.toString());
-        query = query.replaceAll("@pCreatedDateFrom", "'" + DateHelper.DBDateFormat.format(dataStart) + "'");
-        query = query.replaceAll("@pCreatedDateTo", "'" + DateHelper.DBDateFormat.format(dataEnd) + "'");
+        /*query = query.replaceAll(":pOrgId", iOrgId.toString());
+        query = query.replaceAll(":pCreatedDateFrom", "'" + DateHelper.DBDateFormat.format(dataStart) + "'");
+        query = query.replaceAll(":pCreatedDateTo", "'" + DateHelper.DBDateFormat.format(dataEnd) + "'");
+         * */
+        
+        //Emmanuel
+        //27-07-2009
+        //prevent SQL Injection
+        Map paramMap = new HashMap();
+        paramMap.put("pOrgId", iOrgId);
+        paramMap.put("pCreatedDateFrom", dataStart);
+        paramMap.put("pCreatedDateTo", dataEnd);
 
-        List result = dataService.externalQuery(query);
+        List result = dataService.externalQuery(query,paramMap);
         
         for (Object o : result) {
             
@@ -210,15 +219,15 @@ public class ClaimRejectedReport implements Report {
         
         StringBuffer sb = new StringBuffer();
         sb.append("select ");
-        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between @pCreatedDateFrom and @pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as iTotal, ");
-        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between @pCreatedDateFrom and @pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and claim.status='ClaimRejectionAccepted') as iTotalRejected, ");            
+        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as iTotal, ");
+        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and claim.status='ClaimRejectionAccepted') as iTotalRejected, ");
 
         if(isInsReport){
             
             sb.append("chorganisation.id, chorganisation.name ");
             sb.append("from insurer_chorganisation insurer_chorganisation ");
             sb.append("inner join chorganisation chorganisation on chorganisation.id=insurer_chorganisation.chorganisation_id ");
-            sb.append("where insurer_chorganisation.insurer_id=@pOrgId ");
+            sb.append("where insurer_chorganisation.insurer_id=:pOrgId ");
             sb.append("order by chorganisation.name asc "); 
             
         }else{
@@ -226,18 +235,27 @@ public class ClaimRejectedReport implements Report {
             sb.append("insurer.id, insurer.name ");
             sb.append("from insurer_chorganisation insurer_chorganisation ");
             sb.append("inner join insurer insurer on insurer.id=insurer_chorganisation.insurer_id ");
-            sb.append("where insurer_chorganisation.chorganisation_id=@pOrgId ");
+            sb.append("where insurer_chorganisation.chorganisation_id=:pOrgId ");
             sb.append("order by insurer.name asc "); 
             
         }
         
         String query = sb.toString();
-        query = query.replaceAll("@pOrgId", iOrgId.toString());
-        query = query.replaceAll("@pCreatedDateFrom", "'" + DateHelper.DBDateFormat.format(dataStart) + "'");
-        query = query.replaceAll("@pCreatedDateTo", "'" + DateHelper.DBDateFormat.format(dataEnd) + "'");        
+        /* query = query.replaceAll(":pOrgId", iOrgId.toString());
+        query = query.replaceAll(":pCreatedDateFrom", "'" + DateHelper.DBDateFormat.format(dataStart) + "'");
+        query = query.replaceAll(":pCreatedDateTo", "'" + DateHelper.DBDateFormat.format(dataEnd) + "'");*/
+        //List result = dataService.externalQuery(query);
         
-        List result = dataService.externalQuery(query);
-        
+        //Emmanuel
+        //27-07-2009
+        //prevent SQL Injection
+        Map paramMap = new HashMap();
+        paramMap.put("pOrgId", iOrgId);
+        paramMap.put("pCreatedDateFrom", dataStart);
+        paramMap.put("pCreatedDateTo", dataEnd);
+
+        List result = dataService.externalQuery(query,paramMap);       
+                
         Integer iClaimTotalCount = 0;
         Integer iClaimRejectedTotalCount = 0;
         

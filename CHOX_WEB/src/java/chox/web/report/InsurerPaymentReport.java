@@ -89,7 +89,7 @@ public class InsurerPaymentReport extends BaseAction implements Report{
             StringBuffer sb = new StringBuffer();
             sb.append("Select invoice.* from rpt_claim_invoice invoice ");
             sb.append("where invoice.status = 'AwaitingInvoicePayment' ");
-            sb.append("and insurer_id = @pInsurerId and chorganisation_id = @pChorganisationId ");
+            sb.append("and insurer_id = :pInsurerId and chorganisation_id = :pChorganisationId ");
             //sb.append("and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo ");
             sb.append("order by cho_reference asc");
             String query = sb.toString();
@@ -97,12 +97,23 @@ public class InsurerPaymentReport extends BaseAction implements Report{
             /*
             query = query.replaceAll("@pInvUploadDateFrom", "'" + DateHelper.DBDateFormat.format(dataStart) + "'");
             query = query.replaceAll("@pInvUploadDateTo", "'" + DateHelper.DBDateFormat.format(dataEnd) + "'");
-            */ 
+           
             
             query = query.replaceAll("@pChorganisationId", iSupplierId.toString());
             query = query.replaceAll("@pInsurerId", iInsurerId.toString());
             
             List result = dataService.externalQuery(query);
+             */
+
+             //Emmanuel
+            //27-07-2009
+            //prevent SQL Injection
+            Map paramMap = new HashMap();
+            paramMap.put("pChorganisationId", iSupplierId);
+            paramMap.put("pInsurerId", iInsurerId);
+
+            List result = dataService.externalQuery(query,paramMap);                           
+            
             List<PaymentReport> payments = new ArrayList<PaymentReport>();
             
             for (Object o : result) {
