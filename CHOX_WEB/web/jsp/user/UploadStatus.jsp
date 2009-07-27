@@ -17,8 +17,7 @@
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery-1.2.6.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.form.js"></script>    
         <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.blockUI.js"></script>
-        <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script> 
-        
+        <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
         <title>IDAS-CHOX</title > 
     </head>
     <body>
