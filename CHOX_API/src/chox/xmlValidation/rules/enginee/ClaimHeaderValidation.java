@@ -114,6 +114,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
             }
             
        }else{
+            
             claimResult.setClaimParseStatus(ClaimParseStatus.newClaim);
             claim.setManagingRepair(managingRepair);
             claim.setPolicyHolderContactDate(firstContactDate);
@@ -123,7 +124,8 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
             claim.setGtaNoticeDate(gtaNoticeDate);
             claim.setIndemnityAmount(new BigDecimal("0.00"));
             claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
-            claim.setChorganisation(chorganisationService.getCurrentCHOrganisation());            
+            claim.setChorganisation(chorganisationService.getCurrentCHOrganisation());
+            
         }
         
         claimResult.setClaim(claim);

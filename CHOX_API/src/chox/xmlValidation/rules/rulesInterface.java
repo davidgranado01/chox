@@ -5,6 +5,10 @@
 
 package chox.xmlValidation.rules;
 
+/**
+ *
+ * @author Carlson
+ */
 public interface rulesInterface {
 
 }

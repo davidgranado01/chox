@@ -2,19 +2,19 @@ package chox.xmlValidation.rules;
 
 import chox.Util.DocumentHelper;
 import chox.xmlValidation.model.NodeRuleModel;
-import com.filesystemsoftware.utils.XMLUtils;
+import org.apache.struts2.ServletActionContext;
 import java.io.File;
 import org.w3c.dom.*;
 
-
 public class DataValidationParameter {
 
-    protected String XMLDataValidateFile= "C:/Project Workplace/Greefinch/Sherwood/testXML/DataValidationTemplate.xml";
+    protected String XMLDataValidateFile= "DataValidationTemplate.xml";
     protected Document XMLDataValidateDocument;
     protected Element mainRoot;
     
     public DataValidationParameter(){
-        this.XMLDataValidateDocument = DocumentHelper.getDocumentFromFile(new File(XMLDataValidateFile));
+        String xmlValidationTemplate = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + XMLDataValidateFile);
+        this.XMLDataValidateDocument = DocumentHelper.getDocumentFromFile(new File(xmlValidationTemplate));
         this.mainRoot = XMLDataValidateDocument.getDocumentElement();
     }
     
