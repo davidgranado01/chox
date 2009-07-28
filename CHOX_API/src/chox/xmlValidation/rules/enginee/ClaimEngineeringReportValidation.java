@@ -12,7 +12,7 @@ import com.filesystemsoftware.utils.XMLUtils;
 import javax.xml.xpath.XPathExpressionException;
 import org.w3c.dom.*;
 
-public class ClaimEngineeringReportValidation extends SecureDataService implements rulesInterface{
+public class ClaimEngineeringReportValidation implements rulesInterface{
     
     protected static String sectionName = "Engineering Report";
     private DataValidationParameter dataValidationParameter;

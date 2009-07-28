@@ -4,7 +4,6 @@
  */
 package chox.services;
 
-import chox.data.FakeSecurityInfoProvider;
 import chox.data.SecurityInfoProvider;
 import chox.model.Chorganisation;
 import chox.model.SystemLog;
@@ -159,7 +158,7 @@ public class DataService extends HibernateDaoSupport {
                     public void doInTransactionWithoutResult(TransactionStatus status) {
                         getHibernateTemplate().delete(object);
                     }
-                });
+                }); 
     }
 
     public HibernateTransactionManager getTransactionManager() {

@@ -13,7 +13,8 @@ public class DataValidationParameter {
     protected Element mainRoot;
     
     public DataValidationParameter(){
-        String xmlValidationTemplate = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + XMLDataValidateFile);
+        //String xmlValidationTemplate = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + XMLDataValidateFile);
+        String xmlValidationTemplate = "c:/Greenfinch/Projects/CHOX/idaschox/trunk/CHOX_WEB/web/excelTemplate/"+XMLDataValidateFile;
         this.XMLDataValidateDocument = DocumentHelper.getDocumentFromFile(new File(xmlValidationTemplate));
         this.mainRoot = XMLDataValidateDocument.getDocumentElement();
     }

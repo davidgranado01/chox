@@ -5,7 +5,6 @@
 
 package chox.services;
 
-import chox.data.FakeSecurityInfoProvider;
 import chox.data.SecurityInfoProvider;
 import chox.model.WebUser;
 
@@ -60,9 +59,6 @@ public class SecureDataService extends DataService {
     }
     
     public SecurityInfoProvider getSecurityInfoProvider() {
-        if (this.securityInforProvider == null) {
-            setSecurityInfoProvider(new FakeSecurityInfoProvider());
-        }
         return this.securityInforProvider;
     }
 
