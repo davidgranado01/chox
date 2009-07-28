@@ -8,211 +8,10 @@ import org.w3c.dom.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import com.filesystemsoftware.utils.XMLUtils;
-import chox.model.*;
 
 public class XmlHelper {
     
-    // REGULAR EXPRESSION
-    public static final String REG_BIGDECIMAL = "^\\-?(\\d+)*\\.?\\d*$";
-    //public static final String REG_EMAIL = "^([0-9a-zA-Z]+([_.-]?[0-9a-zA-Z]+)*@[0-9a-zA-Z]+[0-9,a-z,A-Z,.,-]*(.){1}[a-zA-Z]{2,4})+$";
-    public static final String REG_EMAIL = "";
-    public static final String REG_INTEGER = "^[0-9]+$";
-    public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
-    public static final String REG_DATE = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])$";
-    //public static final String REG_VEHICLE_REG = "^((([A-Za-z, ]+[ ]{0,1}[0-9, ]+)|([0-9, ]+[ ]{0,1}[A-Za-z, ]+)))*$";
-    public static final String REG_VEHICLE_REG = "^(?=.*[a-zA-Z])(?=.*[0-9]).*$";
-    public static final String REG_PHONE = "";
-    public static final String REG_BOOLEAN = "^[ynYN]";
     
-    // CLAIM HEADER
-    // public static final Boolean isMAN_Driver_Primary_Driver = false;
-    // public static final Boolean isMAN_Supplier_Name= true;
-    // public static final Boolean isMAN_First_Contact= true;
-    // public static final Boolean isMAN_Status = true;
-    // public static final Boolean isMAN_Managing_Repair= true;
-    // public static final Boolean isMAN_Supplier_Reference= true;
-    // public static final Boolean isMAN_DateTimeCreditAgreementSigned = false;
-    // public static final Boolean isMAN_GTANoticeDate = false;
-    
-    // public static final Boolean isMAN_Driver_Address1= true;
-    // public static final Boolean isMAN_Driver_Address2= false;
-    // public static final Boolean isMAN_Driver_Address3= false;
-    // public static final Boolean isMAN_Driver_Address4= false;
-    // public static final Boolean isMAN_Driver_Address5= false;
-    // public static final Boolean isMAN_Claim_Customer_Insurer_claimReference= false;
-    // public static final Boolean isMAN_Claim_Customer_Insurer_comprehensive= true;
-    // public static final Boolean isMAN_Driver_Email= false;
-    // public static final Boolean isMAN_Driver_Firstnames= false;
-    // public static final Boolean isMAN_Claim_Customer_Insurer_name= true;
-    // public static final Boolean isMAN_Claim_Customer_Insurer_policyNumber= true;
-    // public static final Boolean isMAN_Driver_Postcode= true;
-    // public static final Boolean isMAN_Driver_Lastname= true;
-    // public static final Boolean isMAN_Driver_Telephone_day= false;
-    // public static final Boolean isMAN_Driver_Telephone_Evening= false;
-    // public static final Boolean isMAN_Driver_Title= true;
-    // public static final Boolean isMAN_Driver_Age= false;
-    // public static final Boolean isMAN_Driver_Occupation= false;
-    // public static final Boolean isMAN_Driver_PolicyUsage= false;
-    
-    // public static final Boolean isMAN_Claim_Customer_Vehicle_Class=true;
-    // public static final Boolean isMAN_Claim_Customer_Vehicle_Location= true;
-    // public static final Boolean isMAN_Claim_Customer_Vehicle_Manufacturer= true;
-    // public static final Boolean isMAN_Claim_Customer_Vehicle_Model= true;
-    // public static final Boolean isMAN_Claim_Customer_Vehicle_Registration= true;
-    // public static final Boolean isMAN_Claim_Customer_Vehicle_Damage= true;
-    // public static final Boolean isMAN_Claim_Customer_Vehicle_InitialEcd= false;
-    // public static final Boolean isMAN_Claim_Customer_Vehicle_TotalLoss= true;
-    // public static final Boolean isMAN_Claim_Customer_Vehicle_Usable= true;
-    
-    // public static final Boolean isMAN_Repair_engineerReport_address1= false;
-    // public static final Boolean isMAN_Repair_engineerReport_address2= false;
-    // public static final Boolean isMAN_Repair_engineerReport_address3= false;
-    // public static final Boolean isMAN_Repair_engineerReport_address4= false;
-    // public static final Boolean isMAN_Repair_engineerReport_address5= false;
-    // public static final Boolean isMAN_Repair_engineerReport_company= false;
-    // public static final Boolean isMAN_Repair_engineerReport_email= false;
-    // public static final Boolean isMAN_Repair_engineerReport_name= false;
-    // public static final Boolean isMAN_Repair_engineerReport_postcode= false;
-    // public static final Boolean isMAN_Repair_engineerReport_telephone= false;
-    // public static final Boolean isMAN_Repair_engineerReport_days= false;
-    // public static final Boolean isMAN_Repair_engineerReport_labour_Amount= false;
-    // public static final Boolean isMAN_Repair_engineerReport_total_Amount= false;
-    // public static final Boolean isMAN_Repair_engineerReport_usable= false;
-    
-    public static final Boolean isMAN_Invoice_Extras_Item_Cost= true;
-    public static final Boolean isMAN_Invoice_Extras_Quantity= true;
-    public static final Boolean isMAN_Invoice_Extras_Name= true;
-    
-    // public static final Boolean isMAN_RentalVehicles_Rental_End= true;
-    // public static final Boolean isMAN_RentalVehicles_Rental_Start= true;
-    // public static final Boolean isMAN_RentalVehicles_Vehicle_Manufacturer= true;
-    // public static final Boolean isMAN_RentalVehicles_Vehicle_Model= true;
-    // public static final Boolean isMAN_RentalVehicles_Rental_Days= true;
-    // public static final Boolean isMAN_RentalVehicles_CollectionReason= true;
-    // public static final Boolean isMAN_RentalVehicles_Vehicle_Registration= true;
-    // public static final Boolean isMAN_RentalVehicles_Vehicle_Class= true;
-    
-    // public static final Boolean isMAN_Claim_Incident_Date= true;
-    // public static final Boolean isMAN_Claim_Incident_Description= true;
-    // public static final Boolean isMAN_Claim_Incident_Location= true;
-    // public static final Boolean isMAN_Claim_Incident_PoliceInvolved= false;
-    
-    // public static final Boolean isMAN_Claim_Incident_Injury_address1= false;
-    // public static final Boolean isMAN_Claim_Incident_Injury_address2= false;
-    // public static final Boolean isMAN_Claim_Incident_Injury_address3= false;
-    // public static final Boolean isMAN_Claim_Incident_Injury_address4= false;
-    // public static final Boolean isMAN_Claim_Incident_Injury_address5= false;
-    // public static final Boolean isMAN_Claim_Incident_Injury_email= false;
-    // public static final Boolean isMAN_Claim_Incident_Injury_name= false;
-    // public static final Boolean isMAN_Claim_Incident_Injury_postcode= false;
-    // public static final Boolean isMAN_Claim_Incident_Injury_telephoneDay= false;
-    // public static final Boolean isMAN_Claim_Incident_Injury_telephoneEvening= false;
-    
-    // public static final Boolean isMAN_Claim_Incident_Solicitor_address1= false;
-    // public static final Boolean isMAN_Claim_Incident_Solicitor_address2= false;
-    // public static final Boolean isMAN_Claim_Incident_Solicitor_address3= false;
-    // public static final Boolean isMAN_Claim_Incident_Solicitor_address4= false;
-    // public static final Boolean isMAN_Claim_Incident_Solicitor_address5= false;
-    // public static final Boolean isMAN_Claim_Incident_Solicitor_email= false;
-    // public static final Boolean isMAN_Claim_Incident_Solicitor_name= false;
-    // public static final Boolean isMAN_Claim_Incident_Solicitor_postcode= false;
-    // public static final Boolean isMAN_Claim_Incident_Solicitor_telephone= false;
-    
-    public static final Boolean isMAN_Invoice_Supplier_HandlingInvoiceAmount= false;
-    public static final Boolean isMAN_Invoice_DateInvoiced= true;
-    public static final Boolean isMAN_Invoice_Engineer_Fee_Gross= true;
-    public static final Boolean isMAN_Invoice_Engineer_Fee_Net= true;
-    public static final Boolean isMAN_Invoice_Engineer_Fee_Vat= true;
-    public static final Boolean isMAN_Invoice_Vehicles_DayRate= true;
-    public static final Boolean isMAN_Invoice_Vehicles_Gross= true;
-    public static final Boolean isMAN_Invoice_Vehicles_Net= true;
-    public static final Boolean isMAN_Invoice_Vehicles_Vat= true;
-    
-    // public static final Boolean isMAN_Invoice_lessHandlingFee= true;
-    // public static final Boolean isMAN_Invoice_lessDiscount= true;
-    
-    public static final Boolean isMAN_Invoice_Repair_Gross= true;
-    public static final Boolean isMAN_Invoice_Repair_Net= true;
-    public static final Boolean isMAN_Invoice_Repair_Vat= true;
-    public static final Boolean isMAN_Invoice_Storage_Recovery_Gross= true;
-    public static final Boolean isMAN_Invoice_Storage_Recovery_Net= true;
-    public static final Boolean isMAN_Invoice_Storage_Recovery_Vat= true;
-    public static final Boolean isMAN_Invoice_Supplier_ClaimInvoiceNo= true;
-    public static final Boolean isMAN_Invoice_Supplier_ExceedCollected= false;
-    public static final Boolean isMAN_Invoice_Supplier_VatCollected= false;
-    public static final Boolean isMAN_Invoice_Supplier_HandlingInvoiceNo= false;
-    
-    // public static final Boolean isMAN_Invoice_Gross= true;
-    // public static final Boolean isMAN_Invoice_Net= true;
-    // public static final Boolean isMAN_Invoice_TotalToPay= true;
-    // public static final Boolean isMAN_Invoice_Vat = true;
-    
-    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Address1= false;
-    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Address2= false;
-    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Address3= false;
-    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Address4= false;
-    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Address5= false;
-    // public static final Boolean isMAN_Claim_ThirdParty_Insurer_ClaimReference= false;
-    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Email= false;
-    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Title= true;
-    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Firstnames= true;
-    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Lastname= true;
-    // public static final Boolean isMAN_Claim_ThirdParty_Insurer_Name= true;
-    // public static final Boolean isMAN_Claim_ThirdParty_Insurer_PolicyNumber= true;
-    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Postcode= false;
-    // public static final Boolean isMAN_Claim_ThirdParty_Driver_TelephoneDay= false;
-    // public static final Boolean isMAN_Claim_ThirdParty_Driver_TelephoneEvening= false;
-    // public static final Boolean isMAN_Claim_ThirdParty_Vehicle_class= false;
-    // public static final Boolean isMAN_Claim_ThirdParty_Vehicle_manufacturer= false;
-    // public static final Boolean isMAN_Claim_ThirdParty_Vehicle_model= false;
-    // public static final Boolean isMAN_Claim_ThirdParty_Vehicle_Registration= true;
-    
-    // public static final Boolean isMAN_Claim_Incident_Witness_address1= false;
-    // public static final Boolean isMAN_Claim_Incident_Witness_address2= false;
-    // public static final Boolean isMAN_Claim_Incident_Witness_address3= false;
-    // public static final Boolean isMAN_Claim_Incident_Witness_address4= false;
-    // public static final Boolean isMAN_Claim_Incident_Witness_address5= false;
-    // public static final Boolean isMAN_Claim_Incident_Witness_email= false;
-    // public static final Boolean isMAN_Claim_Incident_Witness_name= false;
-    // public static final Boolean isMAN_Claim_Incident_Witness_postcode= false;
-    // public static final Boolean isMAN_Claim_Incident_Witness_telephoneDay= false;
-    // public static final Boolean isMAN_Claim_Incident_Witness_telephoneEvening= false;
-    
-    public static final Boolean isMAN_RentalVehicles_Extras_Extra= true;
-
-    // REPAIR DETAIL
-    // public static final Boolean isMAN_RepairDetail_Repairer = false;
-    // public static final Boolean isMAN_RepairDetail_inspectionBookedDate = false;
-    // public static final Boolean isMAN_RepairDetail_InspectionDate = false;
-    // public static final Boolean isMAN_RepairDetail_RepairBookInDate = false;
-    // public static final Boolean isMAN_RepairDetail_RepairCompleteDate = false;
-    // public static final Boolean isMAN_RepairDetail_NameIme = false;
-    
-    public static Boolean isValidDataType(String dataValue, String regExpression, String nodeName){
-        Boolean bFlag = true;
-        
-        if(!regExpression.equalsIgnoreCase("")){
-
-            Pattern p = Pattern.compile(regExpression);
-            Matcher m = p.matcher(dataValue);
-                       
-            if(!m.find()){
-                bFlag = false;
-            }
-            
-            if(nodeName.equalsIgnoreCase("vehicle-registration")){
-                
-                String vehicleReg = TextHelper.trimWhiteSpace(dataValue);
-
-                if((vehicleReg.trim()).length()>8){
-                    bFlag = false;
-                }
-            }
-        }
-        return bFlag;
-    }
-    
-    // VALIDATION THE STRING PASSING IN IS NOT NULL AND EMPTY
     public static boolean isNotNull(String s){
         Boolean bFlag = false;
         if(s!=null && !s.equalsIgnoreCase("")){
@@ -229,39 +28,6 @@ public class XmlHelper {
         return sOutput.trim();
     }
     
-    /*
-     * No <Field Name> supplied for <Bordereur Section>. Please resubmit with this information
-     */
-    public static String contructureDataMandatoryErrorMessage(String strSectionName, String strFieldName){
-        String sMsg = String.format("No %s information supplied for %s. Please re-submit with this information.", strFieldName, strSectionName);
-        return sMsg; //XMLResultDelimeterContructor("", sMsg);
-    }
- 
-    public static String contructureIncorrectTypeErrorMessage(String strSectionName, String strFieldName){
-        String sMsg = String.format("Invalid or incorrect character in %s for %s", strSectionName, strFieldName);
-        return sMsg; //XMLResultDelimeterContructor("", sMsg);
-    }
-    
-    public static String contructureSchemaErrorMessage(String strSectionName, String nodeDesc){
-        
-        String sMsg = String.format("Incorrect XML Schema in %s for %s.", strSectionName, nodeDesc);
-        
-        if(nodeDesc.trim().length()<=0){
-            sMsg = String.format("Incorrect XML Schema in %s.", strSectionName);
-        }
-        
-        //String sMsg = String.format("Incorrect XML Schema in %s for %s.", strSectionName, nodeDesc, strSectionName);
-        return sMsg; //XMLResultDelimeterContructor("", sMsg);
-    }
-    
-    public static String XMLResultDelimeterContructor(String orgStr, String newStr){
-        String strReturn = "|" + newStr;
-        if(isNotNull(orgStr)){
-            strReturn = orgStr + strReturn;
-        }
-        return strReturn;
-    }
-        
     public static String getEmailAddressFromNode(Element thisElement, String thisNodeName){
         int iMaxEmailLenght = 64;
         
@@ -336,10 +102,223 @@ public class XmlHelper {
         c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(t.substring(11, 13)));
         c.set(Calendar.MINUTE, Integer.parseInt(t.substring(14, 16)));
         c.set(Calendar.SECOND, Integer.parseInt(t.substring(17)));
-
         return new Timestamp(c.getTimeInMillis());
     }    
     
+    // REGULAR EXPRESSION
+    /*
+    public static final String REG_BIGDECIMAL = "^\\-?(\\d+)*\\.?\\d*$";
+    public static final String REG_EMAIL = "";
+    public static final String REG_INTEGER = "^[0-9]+$";
+    public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
+    public static final String REG_DATE = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])$";
+    public static final String REG_VEHICLE_REG = "^(?=.*[a-zA-Z])(?=.*[0-9]).*$";
+    public static final String REG_PHONE = "";
+    public static final String REG_BOOLEAN = "^[ynYN]";
+    */
+    
+    // CLAIM HEADER
+    // public static final Boolean isMAN_Driver_Primary_Driver = false;
+    // public static final Boolean isMAN_Supplier_Name= true;
+    // public static final Boolean isMAN_First_Contact= true;
+    // public static final Boolean isMAN_Status = true;
+    // public static final Boolean isMAN_Managing_Repair= true;
+    // public static final Boolean isMAN_Supplier_Reference= true;
+    // public static final Boolean isMAN_DateTimeCreditAgreementSigned = false;
+    // public static final Boolean isMAN_GTANoticeDate = false;
+    // public static final Boolean isMAN_Driver_Address1= true;
+    // public static final Boolean isMAN_Driver_Address2= false;
+    // public static final Boolean isMAN_Driver_Address3= false;
+    // public static final Boolean isMAN_Driver_Address4= false;
+    // public static final Boolean isMAN_Driver_Address5= false;
+    // public static final Boolean isMAN_Claim_Customer_Insurer_claimReference= false;
+    // public static final Boolean isMAN_Claim_Customer_Insurer_comprehensive= true;
+    // public static final Boolean isMAN_Driver_Email= false;
+    // public static final Boolean isMAN_Driver_Firstnames= false;
+    // public static final Boolean isMAN_Claim_Customer_Insurer_name= true;
+    // public static final Boolean isMAN_Claim_Customer_Insurer_policyNumber= true;
+    // public static final Boolean isMAN_Driver_Postcode= true;
+    // public static final Boolean isMAN_Driver_Lastname= true;
+    // public static final Boolean isMAN_Driver_Telephone_day= false;
+    // public static final Boolean isMAN_Driver_Telephone_Evening= false;
+    // public static final Boolean isMAN_Driver_Title= true;
+    // public static final Boolean isMAN_Driver_Age= false;
+    // public static final Boolean isMAN_Driver_Occupation= false;
+    // public static final Boolean isMAN_Driver_PolicyUsage= false;
+    // public static final Boolean isMAN_Claim_Customer_Vehicle_Class=true;
+    // public static final Boolean isMAN_Claim_Customer_Vehicle_Location= true;
+    // public static final Boolean isMAN_Claim_Customer_Vehicle_Manufacturer= true;
+    // public static final Boolean isMAN_Claim_Customer_Vehicle_Model= true;
+    // public static final Boolean isMAN_Claim_Customer_Vehicle_Registration= true;
+    // public static final Boolean isMAN_Claim_Customer_Vehicle_Damage= true;
+    // public static final Boolean isMAN_Claim_Customer_Vehicle_InitialEcd= false;
+    // public static final Boolean isMAN_Claim_Customer_Vehicle_TotalLoss= true;
+    // public static final Boolean isMAN_Claim_Customer_Vehicle_Usable= true;
+    // public static final Boolean isMAN_Repair_engineerReport_address1= false;
+    // public static final Boolean isMAN_Repair_engineerReport_address2= false;
+    // public static final Boolean isMAN_Repair_engineerReport_address3= false;
+    // public static final Boolean isMAN_Repair_engineerReport_address4= false;
+    // public static final Boolean isMAN_Repair_engineerReport_address5= false;
+    // public static final Boolean isMAN_Repair_engineerReport_company= false;
+    // public static final Boolean isMAN_Repair_engineerReport_email= false;
+    // public static final Boolean isMAN_Repair_engineerReport_name= false;
+    // public static final Boolean isMAN_Repair_engineerReport_postcode= false;
+    // public static final Boolean isMAN_Repair_engineerReport_telephone= false;
+    // public static final Boolean isMAN_Repair_engineerReport_days= false;
+    // public static final Boolean isMAN_Repair_engineerReport_labour_Amount= false;
+    // public static final Boolean isMAN_Repair_engineerReport_total_Amount= false;
+    // public static final Boolean isMAN_Repair_engineerReport_usable= false;
+    // public static final Boolean isMAN_Invoice_Extras_Item_Cost= true;
+    // public static final Boolean isMAN_Invoice_Extras_Quantity= true;
+    // public static final Boolean isMAN_Invoice_Extras_Name= true;
+    // public static final Boolean isMAN_RentalVehicles_Rental_End= true;
+    // public static final Boolean isMAN_RentalVehicles_Rental_Start= true;
+    // public static final Boolean isMAN_RentalVehicles_Vehicle_Manufacturer= true;
+    // public static final Boolean isMAN_RentalVehicles_Vehicle_Model= true;
+    // public static final Boolean isMAN_RentalVehicles_Rental_Days= true;
+    // public static final Boolean isMAN_RentalVehicles_CollectionReason= true;
+    // public static final Boolean isMAN_RentalVehicles_Vehicle_Registration= true;
+    // public static final Boolean isMAN_RentalVehicles_Vehicle_Class= true;
+    // public static final Boolean isMAN_Claim_Incident_Date= true;
+    // public static final Boolean isMAN_Claim_Incident_Description= true;
+    // public static final Boolean isMAN_Claim_Incident_Location= true;
+    // public static final Boolean isMAN_Claim_Incident_PoliceInvolved= false;
+    // public static final Boolean isMAN_Claim_Incident_Injury_address1= false;
+    // public static final Boolean isMAN_Claim_Incident_Injury_address2= false;
+    // public static final Boolean isMAN_Claim_Incident_Injury_address3= false;
+    // public static final Boolean isMAN_Claim_Incident_Injury_address4= false;
+    // public static final Boolean isMAN_Claim_Incident_Injury_address5= false;
+    // public static final Boolean isMAN_Claim_Incident_Injury_email= false;
+    // public static final Boolean isMAN_Claim_Incident_Injury_name= false;
+    // public static final Boolean isMAN_Claim_Incident_Injury_postcode= false;
+    // public static final Boolean isMAN_Claim_Incident_Injury_telephoneDay= false;
+    // public static final Boolean isMAN_Claim_Incident_Injury_telephoneEvening= false;
+    // public static final Boolean isMAN_Claim_Incident_Solicitor_address1= false;
+    // public static final Boolean isMAN_Claim_Incident_Solicitor_address2= false;
+    // public static final Boolean isMAN_Claim_Incident_Solicitor_address3= false;
+    // public static final Boolean isMAN_Claim_Incident_Solicitor_address4= false;
+    // public static final Boolean isMAN_Claim_Incident_Solicitor_address5= false;
+    // public static final Boolean isMAN_Claim_Incident_Solicitor_email= false;
+    // public static final Boolean isMAN_Claim_Incident_Solicitor_name= false;
+    // public static final Boolean isMAN_Claim_Incident_Solicitor_postcode= false;
+    // public static final Boolean isMAN_Claim_Incident_Solicitor_telephone= false;
+    // public static final Boolean isMAN_Invoice_DateInvoiced= true;
+    // public static final Boolean isMAN_Invoice_Engineer_Fee_Gross= true;
+    // public static final Boolean isMAN_Invoice_Engineer_Fee_Net= true;
+    // public static final Boolean isMAN_Invoice_Engineer_Fee_Vat= true;
+    // public static final Boolean isMAN_Invoice_Vehicles_DayRate= true;
+    // public static final Boolean isMAN_Invoice_Vehicles_Gross= true;
+    // public static final Boolean isMAN_Invoice_Vehicles_Net= true;
+    // public static final Boolean isMAN_Invoice_Vehicles_Vat= true;
+    // public static final Boolean isMAN_Invoice_lessHandlingFee= true;
+    // public static final Boolean isMAN_Invoice_lessDiscount= true;
+    // public static final Boolean isMAN_Invoice_Repair_Gross= true;
+    // public static final Boolean isMAN_Invoice_Repair_Net= true;
+    // public static final Boolean isMAN_Invoice_Repair_Vat= true;
+    // public static final Boolean isMAN_Invoice_Storage_Recovery_Gross= true;
+    // public static final Boolean isMAN_Invoice_Storage_Recovery_Net= true;
+    // public static final Boolean isMAN_Invoice_Storage_Recovery_Vat= true;
+    // public static final Boolean isMAN_Invoice_Supplier_HandlingInvoiceAmount= false;
+    // public static final Boolean isMAN_Invoice_Supplier_ClaimInvoiceNo= true;
+    // public static final Boolean isMAN_Invoice_Supplier_ExceedCollected= false;
+    // public static final Boolean isMAN_Invoice_Supplier_VatCollected= false;
+    // public static final Boolean isMAN_Invoice_Supplier_HandlingInvoiceNo= false;
+    // public static final Boolean isMAN_Invoice_Gross= true;
+    // public static final Boolean isMAN_Invoice_Net= true;
+    // public static final Boolean isMAN_Invoice_TotalToPay= true;
+    // public static final Boolean isMAN_Invoice_Vat = true;
+    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Address1= false;
+    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Address2= false;
+    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Address3= false;
+    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Address4= false;
+    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Address5= false;
+    // public static final Boolean isMAN_Claim_ThirdParty_Insurer_ClaimReference= false;
+    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Email= false;
+    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Title= true;
+    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Firstnames= true;
+    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Lastname= true;
+    // public static final Boolean isMAN_Claim_ThirdParty_Insurer_Name= true;
+    // public static final Boolean isMAN_Claim_ThirdParty_Insurer_PolicyNumber= true;
+    // public static final Boolean isMAN_Claim_ThirdParty_Driver_Postcode= false;
+    // public static final Boolean isMAN_Claim_ThirdParty_Driver_TelephoneDay= false;
+    // public static final Boolean isMAN_Claim_ThirdParty_Driver_TelephoneEvening= false;
+    // public static final Boolean isMAN_Claim_ThirdParty_Vehicle_class= false;
+    // public static final Boolean isMAN_Claim_ThirdParty_Vehicle_manufacturer= false;
+    // public static final Boolean isMAN_Claim_ThirdParty_Vehicle_model= false;
+    // public static final Boolean isMAN_Claim_ThirdParty_Vehicle_Registration= true;
+    // public static final Boolean isMAN_Claim_Incident_Witness_address1= false;
+    // public static final Boolean isMAN_Claim_Incident_Witness_address2= false;
+    // public static final Boolean isMAN_Claim_Incident_Witness_address3= false;
+    // public static final Boolean isMAN_Claim_Incident_Witness_address4= false;
+    // public static final Boolean isMAN_Claim_Incident_Witness_address5= false;
+    // public static final Boolean isMAN_Claim_Incident_Witness_email= false;
+    // public static final Boolean isMAN_Claim_Incident_Witness_name= false;
+    // public static final Boolean isMAN_Claim_Incident_Witness_postcode= false;
+    // public static final Boolean isMAN_Claim_Incident_Witness_telephoneDay= false;
+    // public static final Boolean isMAN_Claim_Incident_Witness_telephoneEvening= false;
+    // public static final Boolean isMAN_RentalVehicles_Extras_Extra= true;
+    // public static final Boolean isMAN_RepairDetail_Repairer = false;
+    // public static final Boolean isMAN_RepairDetail_inspectionBookedDate = false;
+    // public static final Boolean isMAN_RepairDetail_InspectionDate = false;
+    // public static final Boolean isMAN_RepairDetail_RepairBookInDate = false;
+    // public static final Boolean isMAN_RepairDetail_RepairCompleteDate = false;
+    // public static final Boolean isMAN_RepairDetail_NameIme = false;
+    
+    
+    /*
+    public static Boolean isValidDataType(String dataValue, String regExpression, String nodeName){
+        Boolean bFlag = true;
+        
+        if(!regExpression.equalsIgnoreCase("")){
+
+            Pattern p = Pattern.compile(regExpression);
+            Matcher m = p.matcher(dataValue);
+                       
+            if(!m.find()){
+                bFlag = false;
+            }
+            
+            if(nodeName.equalsIgnoreCase("vehicle-registration")){
+                
+                String vehicleReg = TextHelper.trimWhiteSpace(dataValue);
+
+                if((vehicleReg.trim()).length()>8){
+                    bFlag = false;
+                }
+            }
+        }
+        return bFlag;
+    }
+
+    public static String contructureDataMandatoryErrorMessage(String strSectionName, String strFieldName){
+        String sMsg = String.format("No %s information supplied for %s. Please re-submit with this information.", strFieldName, strSectionName);
+        return sMsg; //XMLResultDelimeterContructor("", sMsg);
+    }
+
+    public static String contructureIncorrectTypeErrorMessage(String strSectionName, String strFieldName){
+        String sMsg = String.format("Invalid or incorrect character in %s for %s", strSectionName, strFieldName);
+        return sMsg; //XMLResultDelimeterContructor("", sMsg);
+    }
+
+    public static String contructureSchemaErrorMessage(String strSectionName, String nodeDesc){
+        
+        String sMsg = String.format("Incorrect XML Schema in %s for %s.", strSectionName, nodeDesc);
+        
+        if(nodeDesc.trim().length()<=0){
+            sMsg = String.format("Incorrect XML Schema in %s.", strSectionName);
+        }
+        
+        return sMsg;
+    }
+
+    public static String XMLResultDelimeterContructor(String orgStr, String newStr){
+        String strReturn = "|" + newStr;
+        if(isNotNull(orgStr)){
+            strReturn = orgStr + strReturn;
+        }
+        return strReturn;
+    }
+
     public static XMLParseResult setErrorMessage(XMLParseResult xmlParseResult, String errorMessage, Boolean isSchemaError){
                 
         if(isSchemaError){
@@ -354,7 +333,7 @@ public class XmlHelper {
         
         return xmlParseResult;
     }
-    
+
     public static XMLParseResult xmlNodeValidation(
             XMLParseResult xmlParseResult,
             Element root,
@@ -372,8 +351,7 @@ public class XmlHelper {
 
         return xmlParseResult;
     }
-    
-    // VALIDATE THE ELEMENT
+
     public static XMLParseResult xmlSchemaNodeValidation(
         XMLParseResult xmlParseResult, 
         Element root, 
@@ -453,7 +431,7 @@ public class XmlHelper {
         }
         return xmlParseResult;
     }     
-
+    */
 
     
 }

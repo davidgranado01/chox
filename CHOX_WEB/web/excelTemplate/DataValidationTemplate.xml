@@ -869,111 +869,112 @@
 	<invoice-less-discount>
 		<data-description>Less Discount</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoice-less-discount>
 
 	<invoice-total-to-pay>
 		<data-description>Total to Pay</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoice-total-to-pay>
+
 	<invoice-date-invoiced>
 		<data-description>Date Invoiced</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoice-date-invoiced>
 
 	<invoicevehicle-day-rate>
 		<data-description>Hire Rate Charged Per Day</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicevehicle-day-rate>
 
 	<invoicevehicle-net>
 		<data-description>Hire Net</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicevehicle-net>
 
 	<invoicevehicle-vat>
 		<data-description>Hire VAT</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicevehicle-vat>
 
 	<invoicevehicle-gross>
 		<data-description>Hire Gross</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicevehicle-gross>
 
 	<invoicerepair-net>
 		<data-description>Repair Net</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicerepair-net>
 
 	<invoicerepair-vat>
 		<data-description>Repair Vat</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicerepair-vat>
 
 	<invoicerepair-gross>
 		<data-description>Repair Gross</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicerepair-gross>
 
 	<invoicestoragerecovery-net>
 		<data-description>Storage Repair Net</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicestoragerecovery-net>
 
 	<invoicestoragerecovery-vat>
 		<data-description>Storage Repair Vat</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicestoragerecovery-vat>
 
 	<invoicestoragerecovery-gross>
 		<data-description>Storage Repair Gross</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicestoragerecovery-gross>
 
 	<invoiceengineeringfee-net>
 		<data-description>Engineering Fee Net</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoiceengineeringfee-net>
 
 	<invoiceengineeringfee-vat>
 		<data-description>Engineering Fee Vat</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoiceengineeringfee-vat>
 
 	<invoiceengineeringfee-gross>
 		<data-description>Engineering Fee Gross</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoiceengineeringfee-gross>
 
@@ -1008,28 +1009,28 @@
 	<invoicesupplier-claim-invoice-no>
 		<data-description>Supplier Claim Invoice Number</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicesupplier-claim-invoice-no>
 
 	<invoiceextra-name>
 		<data-description>Name</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoiceextra-name>
 
 	<invoiceextra-quantity>
 		<data-description>Quantity</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoiceextra-quantity>
 
 	<invoiceextra-item-cost>
 		<data-description>Cost</data-description>
 		<data-type></data-type>
-		<data-mandatory></data-mandatory>
+		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoiceextra-item-cost>
 
