@@ -4,18 +4,18 @@
         <first-contact><![CDATA[2008-01-01T00:00:00]]></first-contact>
         <supplier>
             <supplier-name><![CDATA[NEW CLAIM]]></supplier-name>
-            <supplier-reference><![CDATA[XXX988]]></supplier-reference>
+            <supplier-reference><![CDATA[XXX985]]></supplier-reference>
         </supplier>
-        <managing-repair><![CDATA[y]]></managing-repair>
+        <managing-repair><![CDATA[]]></managing-repair>
         <agreement-signed><![CDATA[2008-01-04T12:00:00]]></agreement-signed>
         <gta-notice><![CDATA[]]></gta-notice>
 		<invoice>
             <less-handling-fee><![CDATA[-100.00]]></less-handling-fee>
-            <net><![CDATA[130.80]]></net>
-            <vat><![CDATA[19.62]]></vat>
+            <net><![CDATA[]]></net>
+            <vat><![CDATA[]]></vat>
             <gross><![CDATA[150.42]]></gross>
-            <less-discount><![CDATA[.00]]></less-discount>
-            <total-to-pay><![CDATA[150.42]]></total-to-pay>
+            <less-discount><![CDATA[]]></less-discount>
+            <total-to-pay><![CDATA[]]></total-to-pay>
             <date-invoiced><![CDATA[2008-01-09T00:00:00]]></date-invoiced>
             <vehicles>
                 <day-rate><![CDATA[100.40]]></day-rate>

@@ -37,11 +37,21 @@
                 error: onSubmitError
             };
 
+            $.validator.addMethod(
+                    "regex",
+                    function(value, element, regexp) {
+                        var check = false;
+                        var re = new RegExp(regexp);
+                        return this.optional(element) || re.test(value);
+                    },
+                    "Please check your input."
+            );
+                
             $("#formChangePassword").validate(
             {
                 errorLabelContainer: "#errorMessageBox",                
                 rules: {
-                    newPassword: {required:true},
+                    newPassword: {required:true, regex: "^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$"},
                     confirmNewPassword: {
                         equalTo: "#newPassword"
                     }
@@ -50,7 +60,7 @@
                 messages: {
                 
                     newPassword: {
-                        required:"You must supply a value for 'New Password'"
+                        required:"You must supply a value for 'New Password'", regex: "Incorrect Password Format"
                     }, 
                     confirmNewPassword: {
                         equalTo:"Your passwords do not match"
@@ -69,8 +79,8 @@
         
         function onSubmitResponseReceived(responseText, statusText)  {      
             responseText = responseText.trim();
-            $('input[@name=newPassword]').val("");
-            $('input[@name=confirmNewPassword]').val("");
+            // $('input[@name=newPassword]').val("");
+            // $('input[@name=confirmNewPassword]').val("");
             $("#submitResult").text(responseText);
         }   
 
