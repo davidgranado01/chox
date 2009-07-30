@@ -5,13 +5,18 @@
 
 package chox.web.actions;
 
+import chox.model.WebUser;
 import chox.services.LookupService;
+import chox.services.UserService;
 import chox.web.security.PermissionedUser;
+import java.util.List;
+import org.acegisecurity.providers.encoding.PasswordEncoder;
 
 public class AdminAction extends BaseAction{
     
     private String adminPanelName;
     private String gridViewType;
+    private String actionResult;
     private int selectOrgTypeId=-1;
     private int selectOrgId=-1;
     private LookupService lookupService;
@@ -91,6 +96,63 @@ public class AdminAction extends BaseAction{
 
     public void setGridViewType(String gridViewType) {
         this.gridViewType = gridViewType;
-    }   
+    }
+
+
+    //Encode Password
+    public String loadEncodePasswordPage()
+    {
+        return SUCCESS;
+    }
+
+    public String encodeAllUserPassword()
+    {
+        if(super.getIsChoxAdmin())
+        {
+             List<WebUser> webUsers = userService.getUsers();
+
+            for(WebUser webUser : webUsers)
+            {
+                webUser.setPassword(encodePassword(webUser));
+                userService.updateObject(webUser);
+            }
+            setActionResult("Encode All user password operation successed.");
+        }
+       
+        return SUCCESS;
+    }
+
+     private String encodePassword(final WebUser webUser) {
+
+        PasswordEncoder passwordEncoder = new org.acegisecurity.providers.encoding.Md5PasswordEncoder();
+
+        return passwordEncoder.encodePassword(webUser.getPassword(), null);
+    }
+
+    private UserService userService;
+
+    /**
+     * @param userService the userService to set
+     */
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    /**
+     * @return the actionResult
+     */
+    public String getActionResult() {
+        return actionResult;
+    }
+
+    /**
+     * @param actionResult the actionResult to set
+     */
+    public void setActionResult(String actionResult) {
+        this.actionResult = actionResult;
+    }
+
+
+
     
 }

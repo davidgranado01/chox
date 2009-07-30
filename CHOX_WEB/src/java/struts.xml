@@ -936,7 +936,13 @@
         </action>    
         <action name="LineOfBusinessDropDownByIdAction" class="chox.web.actions.LineOfBusinessDropDownAction">
             <result>/jsp/user/p_search_dropdown_lineOfbusiness_id.jsp</result>
-        </action>         
+        </action>
+        <action name="LoadEncodePasswordPage" class="chox.web.actions.AdminAction" method="loadEncodePasswordPage">
+            <result>/jsp/user/EncodePassword.jsp</result>
+        </action>
+        <action name="encodeAllUserPassword" class="chox.web.actions.AdminAction" method="encodeAllUserPassword">
+            <result>/jsp/p_response.jsp</result>
+        </action>
     </package>
     <include file="config-browser.xml"/>
 </struts>
