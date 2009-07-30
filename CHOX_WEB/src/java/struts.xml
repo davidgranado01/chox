@@ -833,8 +833,10 @@
         </action>
         <action name="updateUserDetail" class="chox.web.actions.doUserAction" method="updateModel">
             <result name="success">/jsp/p_response.jsp</result>
-        </action>  
-        
+        </action>
+        <action name="updateUserPassword" class="chox.web.actions.doUserAction" method="updateUserPassword">
+            <result name="success">/jsp/p_response.jsp</result>
+        </action>
         <action name="getUserole" class="chox.web.actions.UserroleAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>

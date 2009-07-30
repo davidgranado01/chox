@@ -99,18 +99,21 @@
         </property>
     </bean>
 
-    <bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
+    <bean id="authenticationProcessingFilter" class="chox.web.security.CustomAuthenticationProcessingFilter">
         <property name="authenticationManager">
             <ref bean="authenticationManager"/>
         </property>
         <property name="authenticationFailureUrl">
-            <value>/login.action?login_error=1</value>
+            <value>/login.action</value>
         </property>
         <property name="defaultTargetUrl">
             <value>/user/inbox.action</value>
         </property>
         <property name="filterProcessesUrl">
             <value>/j_acegi_security_check</value>
+        </property>
+         <property name="passwordExpiredUrl">
+            <value>/user/openUserAccount.action</value>
         </property>
         <property name="alwaysUseDefaultTargetUrl">
             <value>true</value>

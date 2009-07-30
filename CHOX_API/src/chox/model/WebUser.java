@@ -67,6 +67,8 @@ public class WebUser implements Serializable
 	 */
 	protected Insurer insurer;
 
+    private Boolean isExpired;
+
 	/** 
 	 * This attribute represents the foreign key relationship to the web_user_role table.
 	 */
@@ -88,6 +90,7 @@ public class WebUser implements Serializable
 	 */
 	public WebUser()
 	{
+        isExpired = false;
 	}
 
 	/**
@@ -433,6 +436,20 @@ public class WebUser implements Serializable
 
     public void setLineOfBusiness(LineOfBusiness lineOfBusiness) {
         this.lineOfBusiness = lineOfBusiness;
+    }
+
+    /**
+     * @return the isExpired
+     */
+    public Boolean getIsExpired() {
+        return isExpired;
+    }
+
+    /**
+     * @param isExpired the isExpired to set
+     */
+    public void setIsExpired(Boolean isExpired) {
+        this.isExpired = isExpired;
     }
 
 }

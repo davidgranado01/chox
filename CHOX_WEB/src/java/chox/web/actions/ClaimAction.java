@@ -52,6 +52,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 
 /**
@@ -123,6 +124,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private Integer injurySolicitorId;
     private Map session;
     private Integer tab = -1;
+
+     static Logger log = Logger.getLogger(ClaimAction.class);
     
     public int getMaxFileSize() {
         return FileHelper.MAX_FILE_SIZE_ALLOW;
@@ -163,6 +166,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } else {
             claim = service.getClaim(id);
         }
+
+        log.error("test");
     }
 
     public List getStatuses() {
@@ -271,7 +276,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if(tab > 0)
         {
             session.put("tabIndex", tab);
-        }
+        }        
         return SUCCESS;
     }
 

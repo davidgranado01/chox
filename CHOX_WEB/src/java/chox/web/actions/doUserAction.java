@@ -16,6 +16,7 @@ import chox.web.security.PermissionedUser;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import java.util.List;
+import org.acegisecurity.providers.encoding.PasswordEncoder;
 
 public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Preparable {
 
@@ -37,16 +38,15 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     private Integer supplierId = -1;
     private Integer lineOfBusinessId = -1;
     private PermissionedUser currentUser = getAuthenticatedUser();
-    
     private boolean isOrgSelectable = false;
 
     public boolean isIsOrgSelectable() {
-        if(currentUser.getIsCHOXAdmin()){
+        if (currentUser.getIsCHOXAdmin()) {
             isOrgSelectable = true;
         }
         return isOrgSelectable;
     }
-    
+
     public String getActionResult() {
         return actionResult;
     }
@@ -54,7 +54,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     public void setActionResult(String actionResult) {
         this.actionResult = actionResult;
     }
-    
+
     public List getInsurers() {
         insurers = this.lookupService.getInsurers();
         return insurers;
@@ -67,23 +67,23 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     public void setLineOfBusinessId(Integer lineOfBusinessId) {
         this.lineOfBusinessId = lineOfBusinessId;
     }
-    
+
     public List getSuppliers() {
         suppliers = this.lookupService.getAllSuppliers();
         return suppliers;
     }
 
     public List getLineOfBusinesses() {
-        
-        if(orgTypeId.equalsIgnoreCase("2")){
+
+        if (orgTypeId.equalsIgnoreCase("2")) {
             lineOfBusinesses = this.lookupService.getLineOfBusinessesByInsurerId(model.getInsurer().getId());
         }
-        
-        for(Object o : lineOfBusinesses){
-                
+
+        for (Object o : lineOfBusinesses) {
+
             IdLookupItem data = (IdLookupItem) o;
         }
-        
+
         return lineOfBusinesses;
     }
 
@@ -96,11 +96,11 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     }
 
     public Integer getInsurerId() {
-        
-        if(!currentUser.getIsCHOXAdmin()){
+
+        if (!currentUser.getIsCHOXAdmin()) {
             insurerId = currentUser.getUser().getInsurer().getId();
         }
-        
+
         return insurerId;
     }
 
@@ -109,9 +109,9 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     }
 
     public Integer getSupplierId() {
-        if(!currentUser.getIsCHOXAdmin()){
+        if (!currentUser.getIsCHOXAdmin()) {
             supplierId = currentUser.getUser().getChorganisation().getId();
-        }        
+        }
         return supplierId;
     }
 
@@ -126,35 +126,35 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     public void setOrgTypeId(String orgTypeId) {
         this.orgTypeId = orgTypeId;
     }
-    
+
     public String getOrgTypeName() {
-        
+
         String orgTypeName = "N/A";
-        
-        if(this.orgTypeId.equalsIgnoreCase("1")){
+
+        if (this.orgTypeId.equalsIgnoreCase("1")) {
             orgTypeName = "Sherwood Organisation Users";
-        }else if(this.orgTypeId.equalsIgnoreCase("2")){
+        } else if (this.orgTypeId.equalsIgnoreCase("2")) {
             orgTypeName = "Insurer Organisation Users";
-        }else if(this.orgTypeId.equalsIgnoreCase("3")){    
+        } else if (this.orgTypeId.equalsIgnoreCase("3")) {
             orgTypeName = "Credit Hire Organisation Users";
         }
-        
+
         return orgTypeName;
     }
-    
+
     public String getOrgName() {
-        
+
         String sOutput = "N/A";
-        
-        if(this.orgTypeId.equalsIgnoreCase("1")){
+
+        if (this.orgTypeId.equalsIgnoreCase("1")) {
             sOutput = "Sherwood";
-        }else{
+        } else {
             sOutput = model.getOrganisationName();
         }
-        
+
         return sOutput;
     }
-    
+
     public WebUser getModel() {
         return model;
     }
@@ -170,155 +170,161 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     public void setObjectId(String objectId) {
         this.objectId = objectId;
     }
-    
-    public void setUserService(UserService service)
-    {
+
+    public void setUserService(UserService service) {
         this.service = service;
     }
 
-    public void setLookupService(LookupService lookupService)
-    {
+    public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
     }
-    
-    public void setInsurerService(InsurerService insurerService)
-    {
+
+    public void setInsurerService(InsurerService insurerService) {
         this.insurerService = insurerService;
     }
 
     public void setLineOfBusinessService(LineOfBusinessService lineOfBusinessService) {
         this.lineOfBusinessService = lineOfBusinessService;
     }
-    
-    public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService)
-    {
+
+    public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService) {
         this.webUserUserRoleService = webUserUserRoleService;
     }
-    
-    public void setChorganisationService(ChorganisationService chorganisationService)
-    {
+
+    public void setChorganisationService(ChorganisationService chorganisationService) {
         this.chorganisationService = chorganisationService;
     }
-    
-    public String triggerStatus() throws Exception{
+
+    public String triggerStatus() throws Exception {
 
         WebUser thisObject = this.service.getUsers(Integer.valueOf(objectId));
-        
-        if(thisObject.getStatus()){
-            
+
+        if (thisObject.getStatus()) {
+
             thisObject.setStatus(false);
-            
-        }else{
-            
-            if(thisObject.isClaimHandler() && thisObject.getLineOfBusiness()==null){
-               actionResult="1:"; 
-            }else{
+
+        } else {
+
+            if (thisObject.isClaimHandler() && thisObject.getLineOfBusiness() == null) {
+                actionResult = "1:";
+            } else {
                 thisObject.setStatus(true);
             }
-            
+
         }
-        
+
         try {
-            
+
             thisObject.setLastModifiedBy(this.getAuthenticatedUser().getUser());
             thisObject.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
             this.service.updateObject(thisObject);
-            
+
         } catch (Exception ex) {
-            throw ex; 
+            throw ex;
         }
-        
+
         return SUCCESS;
     }
 
-    public String doRenderActionPage(){
+    public String doRenderActionPage() {
         return SUCCESS;
-    }  
-    
+    }
+
     public String updateModel() throws Exception {
-        
+
         try {
-            
+
             model.setLastModifiedBy(this.getAuthenticatedUser().getUser());
-            model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());  
-            
+            model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+
             LineOfBusiness lineofbusiness = null;
-            
-            if(lineOfBusinessId!=null && lineOfBusinessId>0){   
+
+            if (lineOfBusinessId != null && lineOfBusinessId > 0) {
                 lineofbusiness = lineOfBusinessService.getObject(lineOfBusinessId);
                 model.setLineOfBusiness(lineofbusiness);
             }
 
-            if(mode.equalsIgnoreCase("New")){
+            if (mode.equalsIgnoreCase("New")) {
                 doAddNewObject();
-            }else{
-                
-                if((lineOfBusinessId == null || lineOfBusinessId<0) && orgTypeId.equalsIgnoreCase("2")){
+            } else {
+
+                if ((lineOfBusinessId == null || lineOfBusinessId < 0) && orgTypeId.equalsIgnoreCase("2")) {
                     model.setLineOfBusiness(null);
                 }
-                
-                this.service.updateObject(model);  
+
+                this.service.updateObject(model);
                 actionResult = "Your changes have been saved.";
             }
-            
+
         } catch (Exception ex) {
-            throw ex; 
+            throw ex;
         }
-        
+
         return SUCCESS;
     }
-    
-    private boolean doAddNewObject(){
-        
-        boolean bFlag  = false;
-        
-        if(!this.service.isEmailExist(model.getEmail())){
-                    
+
+    public String updateUserPassword() throws Exception {
+
+        PasswordEncoder passwordEncoder = new org.acegisecurity.providers.encoding.Md5PasswordEncoder();
+        model.setPassword(passwordEncoder.encodePassword(model.getPassword(), null));
+        model.setIsExpired(false);
+        this.service.updateObject(model);
+
+        return SUCCESS;
+
+    }
+
+    private boolean doAddNewObject() {
+
+        boolean bFlag = false;
+
+        if (!this.service.isEmailExist(model.getEmail())) {
+
             model.setCreatedBy(this.getAuthenticatedUser().getUser());
             model.setCreatedDate(DateHelper.getCurrentTimeStamp());
-            
-            if(insurerId>0){
+
+            if (insurerId > 0) {
                 Insurer selectInsurer = insurerService.getObject(insurerId);
                 model.setInsurer(selectInsurer);
             }
-            
-            if(supplierId>0){
+
+            if (supplierId > 0) {
                 Chorganisation selectChorganisation = chorganisationService.getObject(supplierId);
                 model.setChorganisation(selectChorganisation);
             }
-            
-            if(this.service.updateObject(model)){
-                
-                if(webUserUserRoleService.addBaseNewUserRole(model.getId(), Integer.valueOf(this.orgTypeId))){
+
+            if (this.service.updateObject(model)) {
+
+                if (webUserUserRoleService.addBaseNewUserRole(model.getId(), Integer.valueOf(this.orgTypeId))) {
                     bFlag = true;
-                    actionResult = "objectId:"+model.getId();
+                    actionResult = "objectId:" + model.getId();
                 }
-                
-            }else{
+
+            } else {
                 actionResult = "Please try again!";
             }
-            
-        }else{
-            actionResult = "Email Address already exist!";     
+
+        } else {
+            actionResult = "Email Address already exist!";
         }
-        
+
         return bFlag;
     }
-    
+
     public void prepare() throws Exception {
-        
+
         if (Integer.valueOf(objectId) <= 0) {
             model = new WebUser();
             model.setClaimHandler(false);
-            
-            
-                    
-                    
+
+
+
+
             mode = "New";
         } else {
             model = service.getUsers(Integer.valueOf(objectId));
             mode = "Edit";
-            
+
         }
-    }    
+    }
 }

@@ -11,6 +11,7 @@
     <many-to-one class="chox.model.LineOfBusiness" column="lineofbusiness_id" name="lineOfBusiness"/>
     <property column="password" name="password" not-null="true"/>
     <property column="status" name="status" not-null="true"/>
+    <property column="is_expired" name="isExpired"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
     <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

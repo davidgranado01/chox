@@ -42,7 +42,8 @@
                 {name:'statusDesc'},
                 {name:'createdBy'},
                 {name:'createdDate'},
-                {name:'role'}
+                {name:'role'},
+                {name:'isExpired'}
             ]
         });
 
@@ -73,9 +74,8 @@
                 {header: "Organisation", width: 80, dataIndex: 'orgName', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
-                {header: "Role", width: 650, dataIndex: 'role', sortable: true, resizable: true},
-                {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: false, resizable: true},
-                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: false, resizable: true}
+                {header: "Role", width: 150, dataIndex: 'role', sortable: true, resizable: true},
+                {header: "Is Password Expired", width: 140, dataIndex: 'isExpired', sortable: false, resizable: true}
             ],
             renderTo:'gridviewGrid',
                 width:615,

@@ -17,7 +17,6 @@ public class AcegiInterceptor extends AbstractInterceptor {
 
         Object action = invocation.getAction();
         Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        
         if (currentUser != null) {
             for (Method m : action.getClass().getDeclaredMethods()) {
                 if (m.getAnnotation(AcegiPrincipal.class) != null && currentUser.getPrincipal() instanceof PermissionedUser) {

@@ -125,7 +125,6 @@ public class AdminAction extends BaseAction{
      private String encodePassword(final WebUser webUser) {
 
         PasswordEncoder passwordEncoder = new org.acegisecurity.providers.encoding.Md5PasswordEncoder();
-
         return passwordEncoder.encodePassword(webUser.getPassword(), null);
     }
 
