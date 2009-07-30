@@ -1,18 +1,21 @@
 package chox.services;
 
+import chox.model.Bordereau;
 import chox.xmlValidation.model.BordereauResult;
+import chox.xmlValidation.model.ClaimResult;
 import java.io.File;
 import junit.framework.Assert;
 import org.junit.Test;
 import junit.framework.TestCase;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class XMLUpload_newClaim extends TestCase{
+public class XMLUpload_newClaim_02 extends TestCase{
     private ClassPathXmlApplicationContext ctx;
     private UploadClaimXMLService service = null;
+    private BordereauService bordereauService = null;
     private String testFilePath;
     
-    public XMLUpload_newClaim() {
+    public XMLUpload_newClaim_02() {
         testFilePath = new File("").getAbsolutePath()+"/test/chox/testFile/";
         String[] paths = {"applicationContext.xml"};
         ctx = new ClassPathXmlApplicationContext(paths);        
@@ -22,6 +25,7 @@ public class XMLUpload_newClaim extends TestCase{
     protected void setUp() throws Exception {
         super.setUp();
         service = (UploadClaimXMLService) ctx.getBean("uploadClaimXMLService");
+        bordereauService = (BordereauService) ctx.getBean("bordereauService");
     }
 
     @Override
@@ -37,28 +41,5 @@ public class XMLUpload_newClaim extends TestCase{
         Assert.assertNotNull(service);
     }
     
-    @Test
-    public void testFile() {
-
-        try
-        {
-            File testFile = new File(testFilePath+"UnitTest-NewClaim.xml");
-            BordereauResult parseResult = service.processClaimXMLFile(testFile, "UnitTest-NewClaim.xml");
-            
-            // STATUS PASS
-            assertEquals(true, parseResult.isValid());
-            assertEquals(1, parseResult.getMessage().size());
-            
-            for(String s : parseResult.getMessage()){
-                System.out.println("SSS"+s);
-            }
-            
-            // assertEquals(BordereauFileValidation.V_FILE_TYPR_ERROR, parseResult.getMessage().get(0));
-        }
-        catch(Exception ex)
-        {
-
-        }
-
-    }      
+      
 }

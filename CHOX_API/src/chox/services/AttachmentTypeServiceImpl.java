@@ -50,6 +50,25 @@ public class AttachmentTypeServiceImpl extends SecureDataService implements Atta
         return slist;
     }
     
+    public AttachmentType getAttachmentType(String code){
+        
+        AttachmentType attachmentType = new AttachmentType();
+        
+        try {
+            
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(AttachmentType.class);
+            criteria.add(Restrictions.eq("code", code));
+            attachmentType = (AttachmentType) getByCriteria(criteria);
+             
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        
+        return attachmentType;
+        
+    }
+    
     public List<AttachmentType> getAllAttachmentType() {
         
         List<AttachmentType> list = new ArrayList<AttachmentType>();

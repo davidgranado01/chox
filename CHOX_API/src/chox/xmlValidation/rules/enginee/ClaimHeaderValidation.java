@@ -56,6 +56,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
     private void validate(){
         
         this.claimResult.setCheckDataValid(true);
+        
         this.claimResult = NodeHelper.nodeValidate(sectionName, "first-contact", claimResult.getElement(), claimResult, dataValidationParameter);
         this.claimResult = NodeHelper.nodeValidate(sectionName, "managing-repair", claimResult.getElement(), claimResult, dataValidationParameter);
         this.claimResult = NodeHelper.nodeValidate(sectionName, "agreement-signed", claimResult.getElement(), claimResult, dataValidationParameter);
@@ -130,7 +131,6 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
         
         claimResult.setClaim(claim);
     }
-    
     
     private void doPrintResult(boolean isAllowed){
         

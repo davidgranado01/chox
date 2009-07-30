@@ -4,53 +4,53 @@
         <first-contact><![CDATA[2008-01-01T00:00:00]]></first-contact>
         <supplier>
             <supplier-name><![CDATA[NEW CLAIM]]></supplier-name>
-            <supplier-reference><![CDATA[UNITTG0001]]></supplier-reference>
+            <supplier-reference><![CDATA[UnitTestNewClaim002]]></supplier-reference>
         </supplier>
         <managing-repair><![CDATA[y]]></managing-repair>
         <agreement-signed><![CDATA[2008-01-04T12:00:00]]></agreement-signed>
-        <gta-notice><![CDATA[2008-01-04T12:00:00]]></gta-notice>
+        <gta-notice><![CDATA[]]></gta-notice>
 		<invoice>
-            <less-handling-fee><![CDATA[-100.00]]></less-handling-fee>
-            <net><![CDATA[130.80]]></net>
-            <vat><![CDATA[19.62]]></vat>
-            <gross><![CDATA[150.42]]></gross>
-            <less-discount><![CDATA[.00]]></less-discount>
-            <total-to-pay><![CDATA[150.42]]></total-to-pay>
-            <date-invoiced><![CDATA[2008-01-09T00:00:00]]></date-invoiced>
+            <less-handling-fee><![CDATA[]]></less-handling-fee>
+            <net><![CDATA[]]></net>
+            <vat><![CDATA[]]></vat>
+            <gross><![CDATA[]]></gross>
+            <less-discount><![CDATA[]]></less-discount>
+            <total-to-pay><![CDATA[]]></total-to-pay>
+            <date-invoiced><![CDATA[]]></date-invoiced>
             <vehicles>
-                <day-rate><![CDATA[100.40]]></day-rate>
-                <net><![CDATA[230.80]]></net>
-                <vat><![CDATA[34.62]]></vat>
-                <gross><![CDATA[265.42]]></gross>
+                <day-rate><![CDATA[]]></day-rate>
+                <net><![CDATA[]]></net>
+                <vat><![CDATA[]]></vat>
+                <gross><![CDATA[]]></gross>
             </vehicles>
             <extras>
                 <extra>
-                    <name><![CDATA[Admin]]></name>
-                    <quantity><![CDATA[1]]></quantity>
-                    <item-cost><![CDATA[30.00]]></item-cost>
+                    <name><![CDATA[]]></name>
+                    <quantity><![CDATA[]]></quantity>
+                    <item-cost><![CDATA[]]></item-cost>
                 </extra>
             </extras>
             <supplier>
-                <excess-collected><![CDATA[.00]]></excess-collected>
-                <vat-collected><![CDATA[.00]]></vat-collected>
-                <handling-invoice-no><![CDATA[1234566]]></handling-invoice-no>
-                <handling-invoice-amount><![CDATA[100.00]]></handling-invoice-amount>
-                <claim-invoice-no><![CDATA[98765]]></claim-invoice-no>
+                <excess-collected><![CDATA[]]></excess-collected>
+                <vat-collected><![CDATA[]]></vat-collected>
+                <handling-invoice-no><![CDATA[]]></handling-invoice-no>
+                <handling-invoice-amount><![CDATA[]]></handling-invoice-amount>
+                <claim-invoice-no><![CDATA[]]></claim-invoice-no>
             </supplier>
             <repair>
-                <net><![CDATA[.00]]></net>
-                <vat><![CDATA[.00]]></vat>
-                <gross><![CDATA[.00]]></gross>
+                <net><![CDATA[]]></net>
+                <vat><![CDATA[]]></vat>
+                <gross><![CDATA[]]></gross>
             </repair>
             <storage-recovery>
-                <net><![CDATA[.00]]></net>
-                <vat><![CDATA[.00]]></vat>
-                <gross><![CDATA[.00]]></gross>
+                <net><![CDATA[]]></net>
+                <vat><![CDATA[]]></vat>
+                <gross><![CDATA[]]></gross>
             </storage-recovery>
             <engineer-fee>
-                <net><![CDATA[.00]]></net>
-                <vat><![CDATA[.00]]></vat>
-                <gross><![CDATA[.00]]></gross>
+                <net><![CDATA[]]></net>
+                <vat><![CDATA[]]></vat>
+                <gross><![CDATA[]]></gross>
             </engineer-fee>
         </invoice>
         <rental-status><![CDATA[InProgress]]></rental-status>
@@ -63,7 +63,7 @@
                 <rental-start><![CDATA[2008-01-06T00:00:00]]></rental-start>
                 <rental-end><![CDATA[2008-01-07T00:00:00]]></rental-end>
                 <collection-reason><![CDATA[Repairs Complete]]></collection-reason>
-                <rental-days><![CDATA[2]]></rental-days>
+                <rental-days><![CDATA[A]]></rental-days>
                 <extras>
                 <extra>sss</extra>
                 <extra>A</extra>
@@ -88,7 +88,7 @@
                 <age><![CDATA[23]]></age>
                 <occupation><![CDATA[Student]]></occupation>
                 <policy-usage><![CDATA[s]]></policy-usage>
-                <primary-driver>s</primary-driver>
+                <primary-driver>y</primary-driver>
             </driver>
         </drivers>
 		<claim>
@@ -125,7 +125,7 @@
                 </vehicle>
                 <driver>
                     <title><![CDATA[Mr]]></title>
-                    <firstnames><![CDATA[Steve]]></firstnames>
+                    <firstnames><![CDATA[]]></firstnames>
                     <lastname><![CDATA[Campbell]]></lastname>
                     <address1><![CDATA[67 Borders Avenue]]></address1>
                     <address2><![CDATA[Gravesend]]></address2>
@@ -209,19 +209,19 @@
         </claim>
         <repair>
             <engineer-report>
-                <labour-amount><![CDATA[23]]></labour-amount>
-                <total-amount><![CDATA[34]]></total-amount>
-                <days><![CDATA[12]]></days>
-                <usable>s</usable>
-                <name><![CDATA[sdd]]></name>
-                <company><![CDATA[s]]></company>
+                <labour-amount><![CDATA[]]></labour-amount>
+                <total-amount><![CDATA[]]></total-amount>
+                <days><![CDATA[]]></days>
+                <usable>y</usable>
+                <name><![CDATA[]]></name>
+                <company><![CDATA[]]></company>
                 <address1><![CDATA[A0001]]></address1>
-                <address2><![CDATA[s]]></address2>
-                <address3><![CDATA[s]]></address3>
-                <address4><![CDATA[d]]></address4>
-                <address5><![CDATA[f]]></address5>
-                <postcode><![CDATA[f]]></postcode>
-                <telephone><![CDATA[f]]></telephone>
+                <address2><![CDATA[]]></address2>
+                <address3><![CDATA[]]></address3>
+                <address4><![CDATA[]]></address4>
+                <address5><![CDATA[]]></address5>
+                <postcode><![CDATA[]]></postcode>
+                <telephone><![CDATA[]]></telephone>
                 <email><![CDATA[]]></email>
             </engineer-report>
             <repair-details>

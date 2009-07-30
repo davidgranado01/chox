@@ -143,8 +143,6 @@ public boolean isActiveChorganisationWithBand(int choOrgid){
 
             bFlag = true;
             
-            System.out.println(">>>>>>>>>> deleteChoBandOrganisationByChorganisationId : "+iCount);
-            
         } catch (Throwable e) {
            e.printStackTrace();
         }

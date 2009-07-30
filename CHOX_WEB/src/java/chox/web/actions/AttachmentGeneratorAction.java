@@ -1,12 +1,13 @@
 package chox.web.actions;
 
 import chox.model.Attachment;
+import chox.model.AttachmentType;
 import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 import java.io.*;
-import chox.model.GlobalConfiguration;
 import chox.services.GlobalConfigurationService;
 import chox.services.AttachmentService;
+import chox.services.AttachmentTypeService;
 
 public class AttachmentGeneratorAction extends BaseAction implements SessionAware {
     
@@ -15,8 +16,18 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
     private Map session;
     private AttachmentService service;
     private GlobalConfigurationService globalConfigurationService;
+    private AttachmentTypeService attachmentTypeService;
     
     private String contentDisposition;
+    private String contentType;
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
 
     public String getContentDisposition() {
         return contentDisposition;
@@ -54,14 +65,12 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
         this.globalConfigurationService = globalConfigurationService;
     }
 
-    public void setSession(Map session) {
-        this.session = session;
+    public void setAttachmentTypeService(AttachmentTypeService attachmentTypeService) {
+        this.attachmentTypeService = attachmentTypeService;
     }
     
-    private String getFileDirectory(){
-        GlobalConfiguration gc = globalConfigurationService.getValueByParam("attachment_path");
-        String attachmentPath = gc.getValue();
-        return attachmentPath;
+    public void setSession(Map session) {
+        this.session = session;
     }
     
     private Attachment getAttachmentFileName(int fileId){
@@ -87,9 +96,15 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
         }
         
         fileStream = new ByteArrayInputStream(att.getFileBuffer());
-
         String strContentDisposition = "filename="+att.getFileName();
         this.setContentDisposition(strContentDisposition);
+        AttachmentType attachmentType = attachmentTypeService.getAttachmentType(att.getFileType());
+        
+        if(attachmentType!=null){
+            this.setContentType(attachmentType.getMimeType());
+        }else{
+            this.setContentType("text/html");            
+        }
         
         return SUCCESS;
     }

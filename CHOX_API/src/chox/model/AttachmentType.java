@@ -9,7 +9,16 @@ public class AttachmentType implements Serializable{
     protected String code;
     protected String description;
     protected boolean status;
+    protected String mimeType;
 
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+    
     public String getCode() {
         return code;
     }

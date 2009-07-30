@@ -30,4 +30,34 @@ public class BordereauServiceImpl extends DataService implements BordereauServic
     public Bordereau getObject(int id) {
         return (Bordereau) get(Bordereau.class, id);
     }
+    
+    public Bordereau getObject(String fileName) {
+        
+        Bordereau bordereau = new Bordereau();
+        
+        try {
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(Bordereau.class);
+            criteria.add(Restrictions.eq("fileName", fileName));
+            bordereau = (Bordereau) getByCriteria(criteria);
+
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
+        
+        return bordereau;
+    }  
+    
+    public boolean deleteObject(String fileName){
+        
+        boolean bFlag = false;
+        Bordereau  object = getObject(fileName);
+        if(object!=null){
+            bFlag = true;
+            delete(object);
+        }
+        
+        return bFlag;
+    }
+    
 }

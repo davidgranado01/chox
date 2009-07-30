@@ -133,8 +133,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 bordereauService.saveObj(bordereauResult.getBordereau());
 
             } else {
+                
                 bordereauResult.setBordereauStatus(BordereauParseStatus.error);
                 BordereauParseStatusDescription = "Error, Please try again";
+                
             }
 
             System.out.println(">>>>> 05 Status: " + bordereauResult.isValid() + "| Size: " + bordereauResult.getMessage().size());

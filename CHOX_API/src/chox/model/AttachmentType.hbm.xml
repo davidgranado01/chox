@@ -8,5 +8,6 @@
     <property column="code" name="code" not-null="true"/>
     <property column="description" name="description" not-null="true"/>
     <property column="status" name="status" not-null="true"/>
+    <property column="mime_type" name="mimeType" not-null="true"/>
   </class>
 </hibernate-mapping>

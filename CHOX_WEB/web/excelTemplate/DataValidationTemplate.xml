@@ -140,7 +140,7 @@
 
 	<customer-age>
 		<data-description>Driver age</data-description>
-		<data-type></data-type>
+		<data-type>int</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</customer-age>
@@ -161,7 +161,7 @@
 
 	<customer-primary-driver>
 		<data-description>Is primary driver?</data-description>
-		<data-type></data-type>
+		<data-type>char</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</customer-primary-driver>
@@ -200,7 +200,7 @@
 		<data-description>Customer's Vehicle Registration</data-description>
 		<data-type></data-type>
 		<data-mandatory>t</data-mandatory>
-		<reg-exp></reg-exp>
+		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
 	</customerdetail-vehicle-registration>
 
 	<customerdetail-vehicle-manufacturer>
@@ -254,7 +254,7 @@
 
 	<customerdetail-initial-ecd>
 		<data-description>initial-ecd</data-description>
-		<data-type></data-type>
+		<data-type>date</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</customerdetail-initial-ecd>
@@ -286,7 +286,7 @@
 		<data-description>Third Party's Vehicle Regisreation Number</data-description>
 		<data-type></data-type>
 		<data-mandatory>t</data-mandatory>
-		<reg-exp></reg-exp>
+		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
 	</thirdpartydetails-vehicle-registration>
 
 	<thirdpartydetails-vehicle-manufacturer>
@@ -631,28 +631,28 @@
 
 	<engineeringreport-labour-amount>
 		<data-description>Estimated Labour Amount</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</engineeringreport-labour-amount>
 
 	<engineeringreport-total-amount>
 		<data-description>Estimated Total Repair Amount</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</engineeringreport-total-amount>
 
 	<engineeringreport-days>
 		<data-description>Estimated Days Under Repair</data-description>
-		<data-type></data-type>
+		<data-type>int</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</engineeringreport-days>
 
 	<engineeringreport-usable>
 		<data-description>Usable</data-description>
-		<data-type></data-type>
+		<data-type>char</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</engineeringreport-usable>
@@ -777,7 +777,7 @@
 		<data-description>Registration</data-description>
 		<data-type></data-type>
 		<data-mandatory>t</data-mandatory>
-		<reg-exp></reg-exp>
+		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
 	</vehiclehiredetails-vehicle-registration>
 
 	<vehiclehiredetails-vehicle-manufacturer>
@@ -803,28 +803,28 @@
 
 	<vehiclehiredetails-rental-start>
 		<data-description>Hire Start</data-description>
-		<data-type></data-type>
+		<data-type>date</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</vehiclehiredetails-rental-start>
 
 	<vehiclehiredetails-rental-end>
 		<data-description>Hire End</data-description>
-		<data-type></data-type>
+		<data-type>date</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</vehiclehiredetails-rental-end>
 
 	<vehiclehiredetails-collection-reason>
-		<data-description>Number Days Hire</data-description>
+		<data-description>Reason For Collection</data-description>
 		<data-type></data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</vehiclehiredetails-collection-reason>
 
 	<vehiclehiredetails-rental-days>
-		<data-description>Reason For Collection</data-description>
-		<data-type></data-type>
+		<data-description>Number Days Hire</data-description>
+		<data-type>int</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</vehiclehiredetails-rental-days>
@@ -840,175 +840,175 @@
 
 	<invoice-less-handling-fee>
 		<data-description>Less Claims Handling Fee</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoice-less-handling-fee>
 
 	<invoice-net>
 		<data-description>Total Net</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoice-net>
 
 	<invoice-vat>
 		<data-description>Total VAT</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoice-vat>
 
 	<invoice-gross>
 		<data-description>Total Gross</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoice-gross>
 
 	<invoice-less-discount>
 		<data-description>Less Discount</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoice-less-discount>
 
 	<invoice-total-to-pay>
 		<data-description>Total to Pay</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoice-total-to-pay>
 
 	<invoice-date-invoiced>
 		<data-description>Date Invoiced</data-description>
-		<data-type></data-type>
+		<data-type>date</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoice-date-invoiced>
 
 	<invoicevehicle-day-rate>
 		<data-description>Hire Rate Charged Per Day</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicevehicle-day-rate>
 
 	<invoicevehicle-net>
 		<data-description>Hire Net</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicevehicle-net>
 
 	<invoicevehicle-vat>
 		<data-description>Hire VAT</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicevehicle-vat>
 
 	<invoicevehicle-gross>
 		<data-description>Hire Gross</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicevehicle-gross>
 
 	<invoicerepair-net>
 		<data-description>Repair Net</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicerepair-net>
 
 	<invoicerepair-vat>
 		<data-description>Repair Vat</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicerepair-vat>
 
 	<invoicerepair-gross>
 		<data-description>Repair Gross</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicerepair-gross>
 
 	<invoicestoragerecovery-net>
 		<data-description>Storage Repair Net</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicestoragerecovery-net>
 
 	<invoicestoragerecovery-vat>
 		<data-description>Storage Repair Vat</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicestoragerecovery-vat>
 
 	<invoicestoragerecovery-gross>
 		<data-description>Storage Repair Gross</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicestoragerecovery-gross>
 
 	<invoiceengineeringfee-net>
 		<data-description>Engineering Fee Net</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoiceengineeringfee-net>
 
 	<invoiceengineeringfee-vat>
 		<data-description>Engineering Fee Vat</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoiceengineeringfee-vat>
 
 	<invoiceengineeringfee-gross>
 		<data-description>Engineering Fee Gross</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoiceengineeringfee-gross>
 
 	<invoicesupplier-excess-collected>
 		<data-description>Excess Amount Collected From Policyholder</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicesupplier-excess-collected>
 
 	<invoicesupplier-vat-collected>
 		<data-description>VAT Amount Collected From Policyholder</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicesupplier-vat-collected>
 
 	<invoicesupplier-handling-invoice-no>
 		<data-description>Supplier Claims Handling Invoice Number</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicesupplier-handling-invoice-no>
 
 	<invoicesupplier-handling-invoice-amount>
 		<data-description>Claims Handling Invoice Amount</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicesupplier-handling-invoice-amount>
 
 	<invoicesupplier-claim-invoice-no>
 		<data-description>Supplier Claim Invoice Number</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicesupplier-claim-invoice-no>
@@ -1022,14 +1022,14 @@
 
 	<invoiceextra-quantity>
 		<data-description>Quantity</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoiceextra-quantity>
 
 	<invoiceextra-item-cost>
 		<data-description>Cost</data-description>
-		<data-type></data-type>
+		<data-type>numeric</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoiceextra-item-cost>

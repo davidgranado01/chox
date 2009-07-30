@@ -12,4 +12,5 @@ public interface AttachmentTypeService {
     public List<AttachmentType> getAttachmentType();
     public List<AttachmentType> getAllAttachmentType();
     public List<String> getAttachmentTypeCode();
+    public AttachmentType getAttachmentType(String code);
 }

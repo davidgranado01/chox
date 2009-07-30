@@ -33,7 +33,7 @@
             <ref local="passwordEncoder"/>
         </property>
     </bean>
-              
+
     <bean id="userDetailsService" class="chox.web.security.WebUserService" singleton="false">
         <property name="userService">
             <ref bean="userService" />
@@ -43,8 +43,8 @@
         </property>
     </bean>
       
-    <!-- Automatically receives AuthenticationEvent messages -->
     <bean id="loggerListener" class="org.acegisecurity.event.authentication.LoggerListener"/>
+    
     <bean id="basicProcessingFilter" class="org.acegisecurity.ui.basicauth.BasicProcessingFilter">
         <property name="authenticationManager">
             <ref local="authenticationManager"/>
@@ -53,11 +53,13 @@
             <ref local="basicProcessingFilterEntryPoint"/>
         </property>
     </bean>
+    
     <bean id="basicProcessingFilterEntryPoint" class="org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint">
         <property name="realmName">
             <value>Contacts Realm</value>
         </property>
     </bean>
+    
     <bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
         <property name="key">
             <value>foobar</value>
@@ -66,13 +68,16 @@
             <value>anonymousUser,ROLE_ANONYMOUS</value>
         </property>
     </bean>
+    
     <bean id="anonymousAuthenticationProvider" class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
         <property name="key">
             <value>foobar</value>
         </property>
     </bean>
+    
     <bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
     </bean>
+    
     <bean id="logoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
         <constructor-arg value="/login.action"/> <!-- URL redirected to after logout -->
         <constructor-arg>

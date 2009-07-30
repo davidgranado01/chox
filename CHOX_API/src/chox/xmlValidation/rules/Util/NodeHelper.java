@@ -28,6 +28,8 @@ public class NodeHelper {
     
     public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
     public static final String REG_BOOLEAN = "^[ynYN]";
+    public static final String REG_INTEGER = "^[0-9]+$";
+    public static final String REG_BIGDECIMAL = "^\\-?(\\d+)*\\.?\\d*$";
     
     private static String getNodeRuleName(String sectionName, String nodeName){
         return TextHelper.trimWhiteSpace(sectionName.toLowerCase()+"-"+nodeName);
@@ -220,14 +222,19 @@ public class NodeHelper {
                 regExpression = REG_TIMESTAMP;
             }else if(dataType.equalsIgnoreCase("char")){
                 regExpression = REG_BOOLEAN;
+            }else if(dataType.equalsIgnoreCase("int")){
+                regExpression = REG_INTEGER;
+            }else if(dataType.equalsIgnoreCase("numeric")){
+                regExpression = REG_BIGDECIMAL;
             }
+            
             
         }else{
             regExpression = regExp;
         }
 
         if(!regExpression.equalsIgnoreCase("")){
-
+            
             Pattern p = Pattern.compile(regExpression);
             Matcher m = p.matcher(dataValue);
                        

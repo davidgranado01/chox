@@ -68,12 +68,10 @@
         </action>
         <action name="doExportFile" method="execute" class="chox.web.actions.AttachmentGeneratorAction">
             <result name="success" type="stream">
-                <param name="inputName">fileStream
-                </param>
-                <param name="contentDisposition">${contentDisposition}
-                </param>
-                <param name="bufferSize">99999
-                </param>
+                <param name="inputName">fileStream</param>
+                <param name="contentDisposition">${contentDisposition}</param>
+                <param name="bufferSize">99999</param>
+                <param name="contentType">${contentType}</param>
             </result>
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp
             </result>
