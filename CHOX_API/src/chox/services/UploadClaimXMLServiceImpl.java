@@ -96,12 +96,12 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
                     for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
 
-                        System.out.println("========================================================================");
-                        System.out.println("END: is Claim Valid?: " + claimResult.isValid());
-                        System.out.println("END: is Claim Data valid?: " + claimResult.isDataValid());
-                        System.out.println("END: Claim Process Status: " + claimResult.getClaimParseStatus());
-                        System.out.println("END: Claim Cho Ref: " + claimResult.getClaim().getChoReference());
-                        System.out.println("END: Claim Status: " + claimResult.getClaim().getStatus());
+                        // System.out.println("========================================================================");
+                        // System.out.println("END: is Claim Valid?: " + claimResult.isValid());
+                        // System.out.println("END: is Claim Data valid?: " + claimResult.isDataValid());
+                        // System.out.println("END: Claim Process Status: " + claimResult.getClaimParseStatus());
+                        // System.out.println("END: Claim Cho Ref: " + claimResult.getClaim().getChoReference());
+                        // System.out.println("END: Claim Status: " + claimResult.getClaim().getStatus());
 
                         if (claimResult.isValid() && claimResult.isDataValid()) {
                             saveXMLRecord(claimResult);
@@ -127,7 +127,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
                 }
 
-                System.out.println(">>>>> 04 Status: " + bordereauResult.isValid() + "| Size: " + bordereauResult.getMessage().size());
+                // System.out.println(">>>>> 04 Status: " + bordereauResult.isValid() + "| Size: " + bordereauResult.getMessage().size());
 
                 bordereauResult.setBordereau(doBordereau(file, fileName, bordereauResult.getBordereauStatus(), BordereauParseStatusDescription));
                 bordereauService.saveObj(bordereauResult.getBordereau());
@@ -139,7 +139,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 
             }
 
-            System.out.println(">>>>> 05 Status: " + bordereauResult.isValid() + "| Size: " + bordereauResult.getMessage().size());
+            // System.out.println(">>>>> 05 Status: " + bordereauResult.isValid() + "| Size: " + bordereauResult.getMessage().size());
 
         } catch (Throwable t) {
             t.printStackTrace();

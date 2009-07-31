@@ -73,7 +73,7 @@ public class ClaimThirdPartyValidation extends SecureDataService implements rule
             
             isAllowToReadData = true;
             this.claimResult.setCheckDataValid(true);
-                    
+
             this.claimResult = NodeHelper.nodeinsurerAliasValidate(sectionName, "name", this.element, claimResult, dataValidationParameter, insurerAlliasService, insurerChorganisationService);
             this.claimResult = NodeHelper.nodeValidate(sectionName, "policy-number", this.element, claimResult, dataValidationParameter);
             this.claimResult = NodeHelper.nodeValidate(sectionName, "claim-reference", this.element, claimResult, dataValidationParameter);
@@ -93,7 +93,7 @@ public class ClaimThirdPartyValidation extends SecureDataService implements rule
             this.claimResult = NodeHelper.nodeValidate(sectionName, "telephone-day", this.element, claimResult, dataValidationParameter);
             this.claimResult = NodeHelper.nodeValidate(sectionName, "telephone-evening", this.element, claimResult, dataValidationParameter);
             this.claimResult = NodeHelper.nodeValidate(sectionName, "email", this.element, claimResult, dataValidationParameter);
-
+            
             isAllowToReadData = this.claimResult.isCheckDataValid();
 
         }
@@ -120,8 +120,10 @@ public class ClaimThirdPartyValidation extends SecureDataService implements rule
             this.claimResult.getClaim().getThirdParty().setInsurer(allias.getInsurer());
         }
         
+        String claimNumber = XmlHelper.getNodeValue(this.element, "claim-reference");
+        this.claimResult.getClaim().setClaimNumber(claimNumber);
         this.claimResult.getClaim().getThirdParty().setPolicyNumber(XmlHelper.getNodeValue(this.element, "policy-number"));
-        this.claimResult.getClaim().getThirdParty().setClaimReference(XmlHelper.getNodeValue(this.element, "claim-reference"));
+        this.claimResult.getClaim().getThirdParty().setClaimReference(claimNumber);
         this.claimResult.getClaim().getThirdParty().setVehicleRegistration(TextHelper.trimWhiteSpace(XmlHelper.getNodeValue(this.element, "vehicle-registration")));
         this.claimResult.getClaim().getThirdParty().setVehicleManufacturer(XmlHelper.getNodeValue(this.element, "vehicle-manufacturer"));
         this.claimResult.getClaim().getThirdParty().setVehicleModel(XmlHelper.getNodeValue(this.element, "vehicle-model"));

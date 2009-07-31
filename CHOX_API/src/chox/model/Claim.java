@@ -21,38 +21,37 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     private Date policyHolderContactDate;
     private String choReference;
     private String status;
-    private Integer reasonOfRejectionId;
-    private Date statusModifiedDate;
-    private String previousStatus;
-    private String claimNumber;
-    private Date creditAgreementDate;
-    private Date gtaNoticeDate;
-    private BigDecimal indemnityAmount;//indemnity
-    private BigDecimal percentageLiabilityAccepted;
-    private boolean isQuantumDispute;
-    private String engineerClaimReviewNotes;
-    private boolean isInvoiceReviewRequired;
-    private boolean isAnomalies;
-    private boolean isFnolReviewed;
-    //protected VehicleClass vehicleClass;
+    protected Insurer insurer;
+    protected Chorganisation chorganisation;
+    protected LineOfBusiness lineOfBusiness;
+    protected Customer customer;
+    protected Incident incident;
+    protected Invoice invoice;
+    protected ThirdParty thirdParty;
+    protected VehicleHire vehicleHire;
+    protected EngineerReport engineerReport;
     protected WebUser createdBy;
     protected Date createdDate;
     protected WebUser lastModifiedBy;
     protected Date lastModifiedDate;
-    protected Date hireMonitoringEcd;
-    
-    protected ChoBand choband;
-    protected Chorganisation chorganisation;
-    protected Customer customer;
-    protected EngineerReport engineerReport;
     protected HireMonitoringDetail hireMonitoringDetail;
-    protected Incident incident;
-    protected Insurer insurer;
-    protected Invoice invoice;
-    protected LineOfBusiness lineOfBusiness;
-    protected ThirdParty thirdParty;
-    protected VehicleHire vehicleHire;
+    private String claimNumber;
+    private BigDecimal indemnityAmount;
+    private BigDecimal percentageLiabilityAccepted;
+    private boolean isQuantumDispute;
+    private String engineerClaimReviewNotes;
+    private boolean isInvoiceReviewRequired;
+    private Date creditAgreementDate;
+    private Date gtaNoticeDate;
+    private boolean isAnomalies;
+    private boolean isFnolReviewed;
+    private Integer reasonOfRejectionId;
+    private Date statusModifiedDate;
+    private String previousStatus;
     
+    //protected VehicleClass vehicleClass;
+    protected Date hireMonitoringEcd;
+    protected ChoBand choband;
     
     public Claim() {
     }

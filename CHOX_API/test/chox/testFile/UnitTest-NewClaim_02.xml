@@ -63,7 +63,7 @@
                 <rental-start><![CDATA[2008-01-06T00:00:00]]></rental-start>
                 <rental-end><![CDATA[2008-01-07T00:00:00]]></rental-end>
                 <collection-reason><![CDATA[Repairs Complete]]></collection-reason>
-                <rental-days><![CDATA[A]]></rental-days>
+                <rental-days><![CDATA[9]]></rental-days>
                 <extras>
                 <extra>sss</extra>
                 <extra>A</extra>
@@ -79,8 +79,8 @@
                 <address1><![CDATA[12 Orsssssschard Rd]]></address1>
                 <address2><![CDATA[Kembreyshire]]></address2>
                 <address3><![CDATA[Swindon]]></address3>
-                <address4><![CDATA[]]></address4>
-                <address5><![CDATA[]]></address5>
+                <address4><![CDATA[Address4]]></address4>
+                <address5><![CDATA[Address5]]></address5>
                 <postcode><![CDATA[SN28UH]]></postcode>
                 <telephone-day><![CDATA[01987654736]]></telephone-day>
                 <telephone-evening><![CDATA[01987654736]]></telephone-evening>
@@ -101,7 +101,7 @@
                 </insurer>
                 <vehicle>
                     <vehicle-registration><![CDATA[X567XER]]></vehicle-registration>
-                    <vehicle-manufacturer><![CDATA[ass]]></vehicle-manufacturer>
+                    <vehicle-manufacturer><![CDATA[Manufat]]></vehicle-manufacturer>
                     <vehicle-model><![CDATA[Mondeo]]></vehicle-model>
                     <vehicle-class><![CDATA[F3]]></vehicle-class>
                     <location><![CDATA[Swindon]]></location>
@@ -125,7 +125,7 @@
                 </vehicle>
                 <driver>
                     <title><![CDATA[Mr]]></title>
-                    <firstnames><![CDATA[]]></firstnames>
+                    <firstnames><![CDATA[First name]]></firstnames>
                     <lastname><![CDATA[Campbell]]></lastname>
                     <address1><![CDATA[67 Borders Avenue]]></address1>
                     <address2><![CDATA[Gravesend]]></address2>
@@ -209,20 +209,20 @@
         </claim>
         <repair>
             <engineer-report>
-                <labour-amount><![CDATA[]]></labour-amount>
-                <total-amount><![CDATA[]]></total-amount>
-                <days><![CDATA[]]></days>
+                <labour-amount><![CDATA[2991]]></labour-amount>
+                <total-amount><![CDATA[234]]></total-amount>
+                <days><![CDATA[2]]></days>
                 <usable>y</usable>
-                <name><![CDATA[]]></name>
-                <company><![CDATA[]]></company>
+                <name><![CDATA[ER-Name]]></name>
+                <company><![CDATA[ER-Company]]></company>
                 <address1><![CDATA[A0001]]></address1>
-                <address2><![CDATA[]]></address2>
-                <address3><![CDATA[]]></address3>
-                <address4><![CDATA[]]></address4>
-                <address5><![CDATA[]]></address5>
-                <postcode><![CDATA[]]></postcode>
-                <telephone><![CDATA[]]></telephone>
-                <email><![CDATA[]]></email>
+                <address2><![CDATA[A0002]]></address2>
+                <address3><![CDATA[A0003]]></address3>
+                <address4><![CDATA[A0004]]></address4>
+                <address5><![CDATA[A0005]]></address5>
+                <postcode><![CDATA[01000]]></postcode>
+                <telephone><![CDATA[1203984]]></telephone>
+                <email><![CDATA[dfsdfsf@ss.d]]></email>
             </engineer-report>
             <repair-details>
                 <repairer><![CDATA[]]></repairer>
