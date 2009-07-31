@@ -39,7 +39,7 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
 
         super.onSuccessfulAuthentication(request, response, authResult);
         currentAuthentication = authResult;
-        
+
     }
 
     @Override
@@ -47,19 +47,20 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
             HttpServletResponse response,
             String targetUrl) throws IOException {
 
-        PermissionedUser user = (PermissionedUser) currentAuthentication.getPrincipal();
-
-        if (user.getUser().getIsExpired()) {
-            sendResponse(request, response, getRelativeUrl(request, getPasswordExpiredUrl()));
-        } else {
-            super.sendRedirect(request, response, targetUrl);
+        if (currentAuthentication != null) {
+            PermissionedUser user = (PermissionedUser) currentAuthentication.getPrincipal();
+            if (user.getUser().getIsExpired()) {
+                sendResponse(request, response, getRelativeUrl(request, getPasswordExpiredUrl()));
+                return;
+            }
         }
 
+        super.sendRedirect(request, response, targetUrl);
     }
 
     private void sendResponse(HttpServletRequest req,
             HttpServletResponse resp, String redirectUrl) throws IOException {
-        resp.sendRedirect(redirectUrl);
+            resp.sendRedirect(redirectUrl);
     }
 
     private String getRelativeUrl(HttpServletRequest request, String path) {

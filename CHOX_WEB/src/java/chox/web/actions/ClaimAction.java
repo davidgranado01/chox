@@ -166,8 +166,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } else {
             claim = service.getClaim(id);
         }
-
-        log.error("test");
     }
 
     public List getStatuses() {

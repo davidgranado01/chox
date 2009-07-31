@@ -81,15 +81,21 @@
             responseText = responseText.trim();
             // $('input[@name=newPassword]').val("");
             // $('input[@name=confirmNewPassword]').val("");
-            $("#submitResult").text(responseText);
-        }
+                <s:if test="isShowMessage">
+                      window.location= "user/inbox.action";
+                </s:if>
+                <s:else>
+                        $("#submitResult").text(responseText);
+                </s:else>
 
-        function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
-            responseText = responseText.trim();
-            $('input[@name=newPassword]').val("");
-            $('input[@name=confirmNewPassword]').val("");
-            $("#errorMessageBox").text(responseText);
-        }
+                    }
+
+                    function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
+                        responseText = responseText.trim();
+                        $('input[@name=newPassword]').val("");
+                        $('input[@name=confirmNewPassword]').val("");
+                        $("#errorMessageBox").text(responseText);
+                    }
 
 
     </script>
