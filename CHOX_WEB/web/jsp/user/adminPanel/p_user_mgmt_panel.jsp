@@ -75,7 +75,8 @@
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
                 {header: "Role", width: 150, dataIndex: 'role', sortable: true, resizable: true},
-                {header: "Is Password Expired", width: 140, dataIndex: 'isExpired', sortable: false, resizable: true}
+                {header: "Is Password Expired", width: 140, dataIndex: 'isExpired', sortable: false, resizable: true,renderer:function(value,p,r){
+                    return "<a href='#' class='highlightItem'>" + value + "</a>"}}
             ],
             renderTo:'gridviewGrid',
                 width:615,
@@ -95,6 +96,9 @@
             loadSelectedRecord(grid, rowIndex, columnIndex, e);
         }else if(columnIndex==3){
             triggerStatusUpdateRecord(gridView);
+        }
+        else if(columnIndex==5){
+            triggerIsExpiredUpdateRecord(gridView);
         }
     }
 
@@ -123,7 +127,7 @@
         {
             params:
             {
-                            start:0,
+                start:0,
                 limit:recordPerPage,
                 orgTypeId:orgTypeId,
                 orgId:orgId,
@@ -168,6 +172,25 @@
             }
     }
     
+    function triggerIsExpiredUpdateRecord(gridView){
+            
+            var aletMsg = "Are you sure you want to cancel the password expired status?";
+            if(gridView.get("isExpired") == "No"){
+                aletMsg = "Are you sure you want to mark this user password as expired?";
+            }
+            
+            var deleteAtt = confirm(aletMsg);
+            
+            if(deleteAtt){
+                var gridViewId = gridView.get("id");
+                
+                 $.ajax({
+                   url: "doTriggerPasswordExpiredStatus.action?objectId="+gridViewId,
+                   success: loadGridViewList
+                 });
+            }
+    }
+
     function onUpdateUserSubmitResult(responseText, statusText){
         
         responseText = responseText.trim();

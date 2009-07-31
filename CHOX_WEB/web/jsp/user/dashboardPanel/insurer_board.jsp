@@ -30,7 +30,8 @@
         
         function loadData(supplierId)
         {
-            $.get("showInsurerBoard.action?supplierId=" + supplierId, function(data){
+            var param = {"supplierId":supplierId};
+            $.get("showInsurerBoard.action",param, function(data){
                 $("#resultHolder").html(data);
             });
         }

@@ -38,7 +38,7 @@ public class UserAccountAction extends BaseAction {
         webUser = this.getAuthenticatedUser().getUser();
 
         PasswordEncoder passwordEncoder = new org.acegisecurity.providers.encoding.Md5PasswordEncoder();
-        webUser.setPassword(passwordEncoder.encodePassword(webUser.getPassword(), null));
+        webUser.setPassword(passwordEncoder.encodePassword(getNewPassword(), null));
         webUser.setIsExpired(false);
         userService.persist(webUser, webUser.getEmail());
         actionResult = "Your password has been changed.";

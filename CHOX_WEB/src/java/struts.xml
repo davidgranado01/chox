@@ -793,6 +793,10 @@
             <result name="success">/jsp/p_response.jsp
             </result>
         </action>
+        <action name="doTriggerPasswordExpiredStatus" class="chox.web.actions.doUserAction" method="triggerPasswordExpiredStatus">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
         <action name="doTriggerCreditHireAccountStatus" class="chox.web.actions.doChorganisationAction" method="triggerStatus">
             <result name="success">/jsp/p_response.jsp
             </result>

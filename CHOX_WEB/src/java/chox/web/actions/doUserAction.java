@@ -197,7 +197,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
     public String triggerStatus() throws Exception {
 
-        WebUser thisObject = this.service.getUsers(Integer.valueOf(objectId));
+        WebUser thisObject = model;
 
         if (thisObject.getStatus()) {
 
@@ -224,6 +224,14 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         }
 
         return SUCCESS;
+    }
+
+    public String triggerPasswordExpiredStatus() {
+        WebUser thisObject = model;
+        thisObject.setIsExpired(!thisObject.getIsExpired());
+        this.service.updateObject(thisObject);
+        return SUCCESS;
+
     }
 
     public String doRenderActionPage() {
