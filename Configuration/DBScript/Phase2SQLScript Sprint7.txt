@@ -93,14 +93,12 @@ ALTER TABLE bordereau OWNER TO postgres;
 
 -- -------------------------------------------------------------------------------------------
 
-
 --Emmanuel : Add new column into web_user table to indicate the user password is expired
 ALTER TABLE web_user ADD COLUMN is_expired boolean DEFAULT false;
 
-
 -- Emmanuel : Set All user account to isExpired = true
-UPDATE web_user
-   SET is_expired=true
+UPDATE web_user SET is_expired=true
+
 -- -------------------------------------------------------------------------------------------
 -- INSERT ATTACHMENT FILE
 
