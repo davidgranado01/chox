@@ -16,10 +16,27 @@ public class DateHelper {
     
     public static java.sql.Timestamp getCurrentTimeStamp() {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return Timestamp.valueOf(sdf.format(cal.getTime()));
+        SimpleDateFormat csdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return Timestamp.valueOf(csdf.format(cal.getTime()));
     }
-
+    
+    public static int getYear(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.YEAR);
+    }
+    
+    public static int getMonth(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.MONTH)+1;
+    }
+    
+    public static Date addMonth(Date date, int monthIntever) {
+        date.setMonth(date.getMonth()+1);
+        return date;
+    }
+    
     public static String getCurrentDate() {
         Calendar cal = Calendar.getInstance();
         return sdf.format(cal.getTime());

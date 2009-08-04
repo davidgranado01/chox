@@ -18,8 +18,8 @@ public class ReportAccessibility {
      private short claimRejectionAccessibility;
      private short insurerPaymentReportAccessibility;
      private short overviewSummaryAccessibility;
+     private short insurerAverageClaimSettlementReportAccessibility;
 
-    
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility,GrantedAuthority[] grantedAuthorities) {       
                
         invoiceSummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_SUMMARY, grantedAuthorities);
@@ -27,6 +27,7 @@ public class ReportAccessibility {
         claimRejectionAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_REJECTION, grantedAuthorities);     
         insurerPaymentReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_PAYMENT, grantedAuthorities);     
         overviewSummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OVERVIEW_SUMMARY, grantedAuthorities);
+        insurerAverageClaimSettlementReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_AVERAGE_SETTLEMENT, grantedAuthorities);
     }
 
     public short getInvoiceSummaryAccessibility() {
@@ -48,4 +49,9 @@ public class ReportAccessibility {
     public short getOverviewSummaryAccessibility(){
         return overviewSummaryAccessibility;
     }
+
+    public short getInsurerAverageClaimSettlementReportAccessibility() {
+        return insurerAverageClaimSettlementReportAccessibility;
+    }
+    
 }

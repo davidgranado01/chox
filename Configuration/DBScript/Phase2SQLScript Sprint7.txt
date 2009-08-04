@@ -163,3 +163,7 @@ update s_attachment_type set mime_type = 'image/jpeg' where code='jpg';
 update s_attachment_type set mime_type = 'image/jpeg' where code='jpeg';
 
 -- -------------------------------------------------------------------------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'report.AverageSettlementAmountReport');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'report.AverageSettlementAmountReport'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS', 1, (select id from accessibility where name = 'report.AverageSettlementAmountReport'), (select max(id)+1 from accessibility_item));

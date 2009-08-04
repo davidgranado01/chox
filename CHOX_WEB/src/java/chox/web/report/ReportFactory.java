@@ -15,6 +15,7 @@ public class ReportFactory {
     private static String CLAIM_REJECTED_RPT = "ClaimRejectedReport-Excel";
     private static String INSURER_PAYMENT_RPT = "PaymentReport-Excel";
     private static String OVERVIEW_SUMMARY_REPORT = "OverviewSummary-Excel";
+    private static String AVERAGE_SETTLEMENT_REPORT = "AverageSettlementAmount-Excel";
     
     public static Report getReportByName(String name) {
         Report report = null;
@@ -28,8 +29,9 @@ public class ReportFactory {
             report = new InsurerPaymentReport();
         } else if (name.equalsIgnoreCase(OVERVIEW_SUMMARY_REPORT)){
             report = new OverviewSummaryReport();
+        } else if (name.equalsIgnoreCase(AVERAGE_SETTLEMENT_REPORT)){
+            report = new AverageSettlementAmountReport();            
         }
-
         return report;
     }
 }

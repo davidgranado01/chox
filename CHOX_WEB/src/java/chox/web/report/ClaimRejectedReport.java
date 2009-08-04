@@ -140,14 +140,16 @@ public class ClaimRejectedReport implements Report {
         }
         
         String query = sb.toString();
-        /*query = query.replaceAll(":pOrgId", iOrgId.toString());
+        
+        /*
+        query = query.replaceAll(":pOrgId", iOrgId.toString());
         query = query.replaceAll(":pCreatedDateFrom", "'" + DateHelper.DBDateFormat.format(dataStart) + "'");
         query = query.replaceAll(":pCreatedDateTo", "'" + DateHelper.DBDateFormat.format(dataEnd) + "'");
-         * */
+        */
         
-        //Emmanuel
-        //27-07-2009
-        //prevent SQL Injection
+        // Emmanuel
+        // 27-07-2009
+        // prevent SQL Injection
         Map paramMap = new HashMap();
         paramMap.put("pOrgId", iOrgId);
         paramMap.put("pCreatedDateFrom", dataStart);

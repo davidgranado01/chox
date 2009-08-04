@@ -126,7 +126,6 @@ public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Repo
                     iInsurerId = Integer.parseInt(insurerId);
                     selectedOrgName = getInsurer(iInsurerId).getName();
                 }
-                
             }
             
             //user selected start and end date of report

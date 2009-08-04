@@ -68,6 +68,7 @@ public class ApplicationAccessibility {
     public static final String REPORT_CLAIM_REJECTION = "ClaimRejection";
     public static final String REPORT_INSURER_PAYMENT = "InsurerPayment";
     public static final String REPORT_OVERVIEW_SUMMARY = "OverviewSummary";
+    public static final String REPORT_AVERAGE_SETTLEMENT = "AverageSettlementAmountReport";
     
     public static final String ADMIN_INSURER_COMPANIES = "InsurerCompanies";
     public static final String ADMIN_CREDIT_HIRE_ORG = "CreditHireOrg";

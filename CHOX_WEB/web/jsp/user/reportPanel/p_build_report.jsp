@@ -50,7 +50,10 @@
                                 </s:if> 
                                 <s:if test="reportAccessibility.insurerPaymentReportAccessibility">                                
                                 <li><a href="javascript:renderParameterPanel('PaymentReport-Excel');">CHO Payment Bordereau</a></li>
-                                </s:if>                               
+                                </s:if>    
+                                <s:if test="reportAccessibility.insurerAverageClaimSettlementReportAccessibility">                                
+                                <li><a href="javascript:renderParameterPanel('AverageSettlementAmount-Excel');">Insurer - Average Claim Settlement Amount Report</a></li>
+                                </s:if>                             
                             </ul>
                         </div>
                     </div>  

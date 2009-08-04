@@ -4,12 +4,19 @@
  */
 package chox.web.report;
 
+import chox.Util.DateHelper;
+import chox.web.report.viewdata.AverageSettlementAmountViewData;
 import chox.web.report.viewdata.InvoiceSummary;
 import chox.web.report.viewdata.InvoiceSummaryReportObject;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import org.junit.After;
@@ -43,9 +50,43 @@ public class ReportTest {
     public void tearDown() {
     }
 
+        @Test
+    public void testBuildInvoiceSummaryReport() throws ParseException {
+        
+        final Date startDate = DateHelper.LocalDateFormat.parse("2/01/2009");
+        final Date endDate = DateHelper.LocalDateFormat.parse("01/07/2009");
+        
+        // DEFINE START DATE TO FIRST DAY OF START MONTH
+        Date tDateFrom = DateHelper.LocalDateFormat.parse("2/01/2009");
+        tDateFrom.setDate(1);
+
+        // DEFINE END DATE TO FIRST DAT OF NEXT MONTH
+        Date tDateTo = DateHelper.LocalDateFormat.parse("01/07/2009");
+        tDateTo = DateHelper.addMonth(tDateTo, 1);
+        tDateTo.setDate(1);
+        
+        do{
+            
+            System.out.println(">>>>>"+tDateFrom);
+            
+            int selectedMonth = DateHelper.getMonth(tDateFrom);
+            int selectedYear = DateHelper.getYear(tDateFrom);
+            
+            // DO SOMETHING
+            // SET VALUE
+            
+            AverageSettlementAmountViewData reportRow = new AverageSettlementAmountViewData();
+            reportRow.setMonth(selectedMonth);
+            reportRow.setYear(selectedYear);
+
+            System.out.println("mm-YYYY : "+reportRow.getLabelTitle());
+            
+            tDateFrom = DateHelper.addMonth(tDateFrom, 1);
+        }while(tDateFrom.before(tDateTo));
+
+    }
+
     /**
-     * Test of build method, of class Report.
-     */
     @Test
     public void testBuildInvoiceSummaryReport() {
 
@@ -111,14 +152,10 @@ public class ReportTest {
         invoiceSummaries.add(is2);
 
         InvoiceSummaryReportObject reportObject = new InvoiceSummaryReportObject();
-        /*
-        reportObject.setInvoiceUploadDateFrom("2008-11-01");
-        reportObject.setInvoiceUploadDateTo("2009-01-31");
-        reportObject.setCreatedDate("2009-01-31");
-        */
         reportParameters.put("invoiceSummaries", invoiceSummaries);
         reportParameters.put("reportObj", reportObject);
         reportParameters.put("insurerObj", reportObject);
         return reportParameters;
     }
+    */
 }
