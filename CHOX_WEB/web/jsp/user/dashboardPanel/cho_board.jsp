@@ -55,6 +55,11 @@
         <div class="form-container">
             <table cellpadding="0" cellspacing="0" class="dashboard" border="0">       
                 <tr><th nowrap><label id="tip0">Number of Active Users</label></th><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
+                <tr><th nowrap><label >Last Update Date</label></th><td colspan="2" nowrap="true"><label class="std-data-ro"><s:property value="lastProcessDate"/></label>
+<!--                
+&nbsp;<input type="button" value="Update" onclick="javascript:doUpdate();" />
+!-->
+</td></tr>
                 <tr>
                     <th nowrap><label>Insurer</label></th><td>
                         <s:select 

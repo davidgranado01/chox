@@ -13,6 +13,9 @@ import chox.services.UserService;
 import chox.web.dashboard.ChoDashboardBuilder;
 import chox.web.dashboard.InsurerDashboardBuilder;
 import chox.web.dashboard.viewdata.DashBoardViewData;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.struts2.interceptor.ParameterAware;
@@ -38,6 +41,29 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     private int insurerId;
     private int supplierId;
 
+    public String getLastProcessDate() {
+        
+        String query = "select to_char(max(process_date), 'YYYY-MM-DD HH24:MI:SS') as last_process_date from claim_summary_process";
+        List result = dataService.externalQuery(query, new HashMap());
+        
+        if (!result.isEmpty()) {
+            Map data = (Map) result.get(0);
+            return data.get("last_process_date".toLowerCase()).toString();
+        }
+        
+        return "";
+        
+    }
+    
+    public String updateDashBoardSummary(){
+        String query = "select * from SqlRunStatusReport("+this.getAuthenticatedUser().getUser().getId()+");";
+        dataService.externalQuery(query, new HashMap());
+        
+        
+        
+        return SUCCESS;
+    }
+    
     public String showInsurerBoardHeader() {
         Insurer currentInsurer = this.getAuthenticatedUser().getUser().getInsurer();
         numberOfActiveUser = userService.getNumInsActiveUser(currentInsurer.getId());
@@ -51,30 +77,28 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     }
 
     public String showInsurerBoard() {
+        
         try {
-            InsurerDashboardBuilder builder = new InsurerDashboardBuilder();
-            builder.setDataService(dataService);
-            builder.setExtParameters(extParameters);
+            
             Insurer currentInsurer = this.getAuthenticatedUser().getUser().getInsurer();
-            builder.setInsurer(currentInsurer);
+            InsurerDashboardBuilder builder = new InsurerDashboardBuilder(dataService, currentInsurer, extParameters);            
             monthToDateInsurerBoardViewData = builder.getMonthToDate();
             weekToDateInsurerBoardViewData = builder.getWeekToDate();
             cumulativeInsurerBoardViewData = builder.getCumulative();  
-
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        
         return SUCCESS;
     }
 
     public String showChoBoard() {
-        
+
         try {
-            ChoDashboardBuilder builder = new ChoDashboardBuilder();
-            builder.setDataService(dataService);
-            builder.setExtParameters(extParameters);
+            
             Chorganisation currentChorganisation = this.getAuthenticatedUser().getUser().getChorganisation();
-            builder.setChorganisation(currentChorganisation);
+            ChoDashboardBuilder builder = new ChoDashboardBuilder(dataService, currentChorganisation, extParameters);            
             monthToDateInsurerBoardViewData = builder.getMonthToDate();
             weekToDateInsurerBoardViewData = builder.getWeekToDate();
             cumulativeInsurerBoardViewData = builder.getCumulative();            
@@ -98,8 +122,6 @@ public class DashboardAction extends BaseAction implements ParameterAware {
 
     public List getSuppliers() {
         if (suppliers == null) {
-            // Insurer currentInsurer = this.getAuthenticatedUser().getUser().getInsurer();
-            // suppliers = this.lookupService.getSuppliers(currentInsurer.getId());
             suppliers = this.lookupService.getSuppliers();
         }
         return suppliers;
@@ -108,8 +130,6 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     public List getInsurers() {
          
         if (insurers == null) {
-            // Chorganisation currentCho = this.getAuthenticatedUser().getUser().getChorganisation();
-            // insurers = this.lookupService.getInsurers(currentCho.getId());
             insurers = this.lookupService.getInsurers();
         }
         return insurers;

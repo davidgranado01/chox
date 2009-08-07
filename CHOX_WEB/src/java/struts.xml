@@ -733,6 +733,12 @@
             <result name="empty">/jsp/p_response.jsp
             </result>
         </action>
+        
+        <action name="updateDashBoardSummary" class="chox.web.actions.DashboardAction" method="updateDashBoardSummary">
+            <result name="success">/jsp/p_response.jsp
+            </result>
+        </action>
+        
         <action name="showChoBoardHeader" class="chox.web.actions.DashboardAction" method="showChoBoardHeader">
             <result name="success">/jsp/user/dashboardPanel/cho_board.jsp
             </result>

@@ -40,20 +40,20 @@
                             <li class='reportTypeHeader'>Claim Reports</li>
                                 <s:if test="reportAccessibility.overviewSummaryAccessibility">                                
                                 <li><a href="javascript:renderParameterPanel('OverviewSummary-Excel');">Claim Overview Summary Report</a></li>
-                                </s:if>                                          
+                                </s:if>
                                 <s:if test="reportAccessibility.claimRejectionAccessibility">                                
                                 <li><a href="javascript:renderParameterPanel('ClaimRejectedReport-Excel');">Claim Rejection Report</a></li>
-                                </s:if>                                                
+                                </s:if>
                             <li class='reportTypeHeader'>Invoice Reports</li>
                                 <s:if test="reportAccessibility.invoiceSummaryAccessibility">
                                 <li><a href="javascript:renderParameterPanel('InvoiceSummaryReport-Excel');">Invoice Summary Report</a></li>
-                                </s:if> 
+                                </s:if>
                                 <s:if test="reportAccessibility.insurerPaymentReportAccessibility">                                
                                 <li><a href="javascript:renderParameterPanel('PaymentReport-Excel');">CHO Payment Bordereau</a></li>
-                                </s:if>    
+                                </s:if>
                                 <s:if test="reportAccessibility.insurerAverageClaimSettlementReportAccessibility">                                
-                                <li><a href="javascript:renderParameterPanel('AverageSettlementAmount-Excel');">Insurer - Average Claim Settlement Amount Report</a></li>
-                                </s:if>                             
+                                <li><a href="javascript:renderParameterPanel('AverageSettlementAmount-Excel');">Average Claim Settlement Amount Report</a></li>
+                                </s:if>
                             </ul>
                         </div>
                     </div>  

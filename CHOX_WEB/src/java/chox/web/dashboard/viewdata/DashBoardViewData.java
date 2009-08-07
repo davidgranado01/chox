@@ -6,13 +6,8 @@ package chox.web.dashboard.viewdata;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.DecimalFormat;
 import java.util.Map;
 
-/**
- *
- * @author Emmanuel
- */
 public class DashBoardViewData {
     private Integer noOfClaimNotificationsSubmitted;
     private Integer noOfClaimNotificationsAccepted;
@@ -41,30 +36,28 @@ public class DashBoardViewData {
     public static DashBoardViewData getObject(Map data)
     {
         DashBoardViewData viewData = new DashBoardViewData();
-        
-        viewData.noOfClaimNotificationsSubmitted = getIntegerValue(data.get("noOfClaimNotificationsSubmitted".toLowerCase()));
-        viewData.noOfClaimNotificationsAccepted = getIntegerValue(data.get("noOfClaimNotificationsAccepted".toLowerCase()));
-        viewData.noOfClaimNotificationsRejectedAccumulative = getIntegerValue(data.get("noOfClaimNotificationsRejectedAccumulative".toLowerCase()));
-        viewData.noOfClaimNotificationsAcceptedAccumulative = getIntegerValue(data.get("noOfClaimNotificationsAcceptedAccumulative".toLowerCase()));
-        viewData.noOfClaimNotificationsRejected = getIntegerValue(data.get("noOfClaimNotificationsRejected".toLowerCase()));
-        viewData.noOfClaimNotificationsPending = getIntegerValue(data.get("noOfClaimNotificationsPending".toLowerCase()));
-        viewData.noOfClaimNotificationsClosed = getIntegerValue(data.get("noOfClaimNotificationsClosed".toLowerCase()));
-        viewData.noOfInvoicesSubmitted = getIntegerValue(data.get("noOfInvoicesSubmitted".toLowerCase()));
-        viewData.valueOfInvoicesSubmitted = getDecimalValue(data.get("valueOfInvoicesSubmitted".toLowerCase()));
-        viewData.noOfInvoicesAccepted = getIntegerValue(data.get("noOfInvoicesAccepted".toLowerCase()));
-        viewData.valueOfInvoicesAccepted = getDecimalValue(data.get("valueOfInvoicesAccepted".toLowerCase()));
-        viewData.noOfInvoicesRejected = getIntegerValue(data.get("noOfInvoicesRejected".toLowerCase()));
-        viewData.valueOfInvoicesRejected = getDecimalValue(data.get("valueOfInvoicesRejected".toLowerCase()));
-        viewData.noOfInvoicesPending = getIntegerValue(data.get("noOfInvoicesPending".toLowerCase()));
-        viewData.valueOfInvoicesPending = getDecimalValue(data.get("valueOfInvoicesPending".toLowerCase()));
-        viewData.noOfInvoicesClosed = getIntegerValue(data.get("noOfInvoicesClosed".toLowerCase()));
-        viewData.valueOfInvoicesClosed = getDecimalValue(data.get("valueOfInvoicesClosed".toLowerCase()));
-        viewData.noOfInvoicesPaymentLogged = getIntegerValue(data.get("noOfInvoicesPaymentLogged".toLowerCase()));
-        viewData.valueOfInvoicesPaymentLogged = getDecimalValue(data.get("valueOfInvoicesPaymentLogged".toLowerCase()));        
-        viewData.noOfInvoicesPaymentReceived = getIntegerValue(data.get("noOfInvoicesPaymentReceived".toLowerCase()));
-        viewData.valueOfInvoicesPaymentReceived = getDecimalValue(data.get("valueOfInvoicesPaymentReceived".toLowerCase()));           
-        viewData.totalValueOfPenaltyChargesApplied = getDecimalValue(data.get("totalValueOfPenaltyChargesApplied".toLowerCase()));
-        
+        viewData.noOfClaimNotificationsSubmitted = getIntegerValue(data.get("n_ClaimNotificationsSubmitted".toLowerCase()));
+        viewData.noOfClaimNotificationsAccepted = getIntegerValue(data.get("n_ClaimNotificationsAccepted".toLowerCase()));
+        viewData.noOfClaimNotificationsRejectedAccumulative = getIntegerValue(data.get("n_ClaimNotificationsRejectedAcc".toLowerCase()));
+        viewData.noOfClaimNotificationsAcceptedAccumulative = getIntegerValue(data.get("n_ClaimNotificationsAcceptedAcc".toLowerCase()));
+        viewData.noOfClaimNotificationsRejected = getIntegerValue(data.get("n_ClaimNotificationsRejected".toLowerCase()));
+        viewData.noOfClaimNotificationsPending = getIntegerValue(data.get("n_ClaimNotificationsPending".toLowerCase()));
+        viewData.noOfClaimNotificationsClosed = getIntegerValue(data.get("n_ClaimNotificationsClosed".toLowerCase()));
+        viewData.noOfInvoicesSubmitted = getIntegerValue(data.get("n_InvoicesSubmitted".toLowerCase()));
+        viewData.valueOfInvoicesSubmitted = getDecimalValue(data.get("v_InvoicesSubmitted".toLowerCase()));
+        viewData.noOfInvoicesAccepted = getIntegerValue(data.get("n_InvoicesAccepted".toLowerCase()));
+        viewData.valueOfInvoicesAccepted = getDecimalValue(data.get("v_InvoicesAccepted".toLowerCase()));
+        viewData.noOfInvoicesRejected = getIntegerValue(data.get("n_InvoicesRejected".toLowerCase()));
+        viewData.valueOfInvoicesRejected = getDecimalValue(data.get("v_InvoicesRejected".toLowerCase()));
+        viewData.noOfInvoicesPending = getIntegerValue(data.get("n_InvoicesPending".toLowerCase()));
+        viewData.valueOfInvoicesPending = getDecimalValue(data.get("v_InvoicesPending".toLowerCase()));
+        viewData.noOfInvoicesClosed = getIntegerValue(data.get("n_InvoicesClosed".toLowerCase()));
+        viewData.valueOfInvoicesClosed = getDecimalValue(data.get("v_InvoicesClosed".toLowerCase()));
+        viewData.noOfInvoicesPaymentLogged = getIntegerValue(data.get("n_InvoicesPaymentLogged".toLowerCase()));
+        viewData.valueOfInvoicesPaymentLogged = getDecimalValue(data.get("v_InvoicesPaymentLogged".toLowerCase()));        
+        viewData.noOfInvoicesPaymentReceived = getIntegerValue(data.get("n_InvoicesPaymentReceived".toLowerCase()));
+        viewData.valueOfInvoicesPaymentReceived = getDecimalValue(data.get("v_InvoicesPaymentReceived".toLowerCase()));           
+        viewData.totalValueOfPenaltyChargesApplied = getDecimalValue(data.get("v_PenaltyChargesApplied".toLowerCase()));
         return viewData;
     }
     

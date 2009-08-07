@@ -11,7 +11,6 @@
             
             $("#dashboardSupplierId").change(onSelectChange);  
             loadData(-1);
-            
             new Ext.ToolTip({target: 'tip0',html: 'Description for Number of Active Users'});
             Ext.QuickTips.init();
             
@@ -35,9 +34,21 @@
                 $("#resultHolder").html(data);
             });
         }
-
+        
+        function doUpdate(){
+            
+            var selectedValue = '-1';
+            var selected = $("#dashboardSupplierId option:selected");           
+            if(selected.val() != ""){  
+                selectedValue = selected.val();
+            }     
+            
+            var param = {"supplierId":supplierId};
+            $.post("updateDashBoardSummary.action");
+            
+        }
+        
     </script>
-
 
 <div class="x-panel-bwrap chox-form-container">
     <fieldset class="x-fieldset">
@@ -53,6 +64,11 @@
         <div class="dashboard" class="form-container">
             <table cellpadding="0" cellspacing="0" class="dashboard" border="0">  
             <tr><th nowrap><label id="tip0">Number of Active Users</label></th><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
+            <tr><th nowrap><label >Last Update Date</label></th><td colspan="2" nowrap="true"><label class="std-data-ro"><s:property value="lastProcessDate"/></label>
+            <!--
+            &nbsp;<input type="button" value="Update" onclick="javascript:doUpdate();" />
+            !-->
+            </td></tr>
             <tr>
                 <th nowrap><label>Credit Hire Organisation</label></th><td colspan="2">
                 <s:select 

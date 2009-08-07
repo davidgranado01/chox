@@ -1,0 +1,677 @@
+-- -------------------------------------------------------------------------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'report.AverageSettlementAmountReport');
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'report.AverageSettlementAmountReport'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS', 1, (select id from accessibility where name = 'report.AverageSettlementAmountReport'), (select max(id)+1 from accessibility_item));
+
+-- -------------------------------------------------------------------------------------------
+
+CREATE TABLE claim_summary
+(
+	process_date timestamp without time zone NOT NULL,
+	insurer_id integer NOT NULL,
+	chorganisation_id integer NOT NULL,
+	status character varying(128),
+	w_count smallint NOT NULL DEFAULT 0,
+	m_count smallint NOT NULL DEFAULT 0,
+	a_count smallint NOT NULL DEFAULT 0,
+	w_inv_count smallint NOT NULL DEFAULT 0,
+	m_inv_count smallint NOT NULL DEFAULT 0,
+	a_inv_count smallint NOT NULL DEFAULT 0,
+	w_total_claim_count smallint NOT NULL DEFAULT 0,
+	w_total_inv_count smallint NOT NULL DEFAULT 0,
+	m_total_claim_count smallint NOT NULL DEFAULT 0,
+	m_total_inv_count smallint NOT NULL DEFAULT 0,
+	a_total_claim_count smallint NOT NULL DEFAULT 0,
+	a_total_inv_count smallint NOT NULL DEFAULT 0,
+	w_total_to_pay numeric(10,2) NOT NULL DEFAULT 0.00,
+	m_total_to_pay numeric(10,2) NOT NULL DEFAULT 0.00,
+	a_total_to_pay numeric(10,2) NOT NULL DEFAULT 0.00,
+	w_penalty_charge numeric(10,2) NOT NULL DEFAULT 0.00,
+	m_penalty_charge numeric(10,2) NOT NULL DEFAULT 0.00,
+	a_penalty_charge numeric(10,2) NOT NULL DEFAULT 0.00,
+	w_claim_created_count smallint NOT NULL DEFAULT 0,
+	m_claim_created_count smallint NOT NULL DEFAULT 0,
+	a_claim_created_count smallint NOT NULL DEFAULT 0,
+	w_inv_created_count smallint NOT NULL DEFAULT 0,
+	m_inv_created_count smallint NOT NULL DEFAULT 0,
+	a_inv_created_count smallint NOT NULL DEFAULT 0,
+	w_inv_created_amt numeric(10,2) NOT NULL DEFAULT 0.00,
+	m_inv_created_amt numeric(10,2) NOT NULL DEFAULT 0.00,
+	a_inv_created_amt numeric(10,2) NOT NULL DEFAULT 0.00,
+	created_by integer NOT NULL,
+	created_date timestamp without time zone NOT NULL DEFAULT now(),
+	CONSTRAINT "claim_summary_CHOrganisation_fkey" FOREIGN KEY (chorganisation_id)
+	REFERENCES chorganisation (id) MATCH SIMPLE
+	ON UPDATE NO ACTION ON DELETE NO ACTION,
+	CONSTRAINT "claim_summary_Insurer_fkey" FOREIGN KEY (insurer_id)
+	REFERENCES insurer (id) MATCH SIMPLE
+	ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (OIDS=FALSE);
+ALTER TABLE claim_summary OWNER TO postgres;
+
+-- -------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION SqlGetDayOfWeek() returns date as $$
+DECLARE
+firstDayOfWeekDate date;
+
+	BEGIN
+	select 
+	date(now()) - case when (date_part('dow', now())-1) = -1 then 6 else cast((date_part('dow', now())-1) as integer) end into firstDayOfWeekDate;
+	return firstDayOfWeekDate-1;
+	END;
+
+$$ LANGUAGE plpgsql;
+
+-- -------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION SqlGetDayOfMonth() returns date as $$
+DECLARE
+
+	BEGIN
+	return date('01/'||date_part('month', date(now()))||'/'||date_part('year', date(now())))-1;
+	END;
+
+$$ LANGUAGE plpgsql;
+
+-- -------------------------------------------------------------------------------------------
+
+create or replace view vw_claim_weekly_summary as 
+select SqlGetDayOfWeek() as start_date, date(now()) as end_date, 
+claim.insurer_id as insurer_id, claim.chorganisation_id as chorganisation_id, audit.new_status as status, 
+count(*) as w_count, 0 as m_count, 0 as a_count,
+count(invoice.id) as w_inv_count, 0 as m_inv_count, 0 as a_inv_count,
+case when sum(invoice.total_to_pay) is null then 0 else sum(invoice.total_to_pay) end as w_total_to_pay,
+0 as m_total_to_pay, 0 as a_total_to_pay, 
+case when sum(invoice.panalty_charge) is null then 0 else sum(invoice.panalty_charge) end as w_penalty_charge,
+0 as m_penalty_charge, 0 as a_penalty_charge
+from audit_trail audit
+inner join (select claim_id, max(update_date) as max_update_date from audit_trail a 
+where date(a.update_date) between SqlGetDayOfWeek() and date(now()) group by claim_id) max_audit 
+on audit.claim_id=max_audit.claim_id and audit.update_date=max_audit.max_update_date
+inner join claim claim on audit.claim_id = claim.id
+left outer join invoice invoice on claim.invoice_id = invoice.id
+group by claim.insurer_id, claim.chorganisation_id, audit.new_status;
+
+-- -------------------------------------------------------------------------------------------
+
+create or replace view vw_claim_monthly_summary as 
+select SqlGetDayOfMonth() as start_date, date(now()) as end_date, 
+claim.insurer_id as insurer_id, claim.chorganisation_id as chorganisation_id, audit.new_status as status, 
+0 as w_count, count(*) as m_count, 0 as a_count,
+0 as w_inv_count, count(invoice.id) as m_inv_count, 0 as a_inv_count,
+0 as w_total_to_pay, 
+case when sum(invoice.total_to_pay) is null then 0 else sum(invoice.total_to_pay) end as m_total_to_pay,
+0 as a_total_to_pay, 
+0 as w_penalty_charge, 
+case when sum(invoice.panalty_charge) is null then 0 else sum(invoice.panalty_charge) end as m_penalty_charge,
+0 as a_penalty_charge
+from audit_trail audit
+inner join (select claim_id, max(update_date) as max_update_date from audit_trail a 
+where date(a.update_date) between SqlGetDayOfMonth() and date(now()) group by claim_id) max_audit 
+on audit.claim_id=max_audit.claim_id and audit.update_date=max_audit.max_update_date
+inner join claim claim on audit.claim_id = claim.id
+left outer join invoice invoice on claim.invoice_id = invoice.id
+group by claim.insurer_id, claim.chorganisation_id, audit.new_status;
+
+-- -------------------------------------------------------------------------------------------
+
+CREATE TABLE claim_summary_process
+(
+	id serial NOT NULL,
+	process_date timestamp without time zone NOT NULL,
+	created_by integer NOT NULL,
+	created_date timestamp without time zone NOT NULL DEFAULT now(),
+	CONSTRAINT claim_summary_process_pkey PRIMARY KEY (id)
+)
+WITH (OIDS=FALSE);
+ALTER TABLE claim_summary_process OWNER TO postgres;
+
+insert into claim_summary_process (id, process_date, created_date, created_by) values (0, now(), now(), 999);
+
+-- -------------------------------------------------------------------------------------------
+
+-- DROP FUNCTION SqlRunStatusReport(int);
+
+CREATE OR REPLACE FUNCTION SqlRunStatusReport(int) returns boolean as $$
+
+DECLARE
+currDate timestamp; 
+isSuccess boolean;
+userId int;
+
+BEGIN
+currDate=now();
+isSuccess = false;
+userId=$1;
+
+	-- INSERT ALL RECORD PER INSURER / CH HIRE / STATUS
+	-- WITH TOTAL ACCEPT / REJECTED COUNT FOR {Accumulative Section}
+	BEGIN
+	
+		insert into claim_summary (process_date, insurer_id, chorganisation_id, status, a_total_claim_count, a_total_inv_count, created_by, created_date) 
+		select currDate as process_date, claim.insurer_id, claim.chorganisation_id, audit.new_status as status , 
+		count(distinct claim.id) as a_total_claim_count, count(distinct invoice.id) as a_total_inv_count, userId as created_by, currDate as created_date
+		from audit_trail audit
+		inner join claim claim on audit.claim_id=claim.id
+		left outer join invoice invoice on claim.invoice_id=invoice.id
+		group by claim.insurer_id, claim.chorganisation_id, audit.new_status;
+
+		isSuccess = true;
+		
+	END;
+
+	BEGIN
+	-- UPDATE TOTAL ACCEPT / REJECTED COUNT FOR {Week Section}
+
+		update claim_summary 
+		set 
+		w_total_claim_count = a.w_total_claim_count,
+		w_total_inv_count = a.w_total_inv_count 
+		from (
+			select claim.insurer_id as insurer_id, claim.chorganisation_id as chorganisation_id, audit.new_status as status,
+			count(distinct claim.id) as w_total_claim_count, count(distinct invoice.id) as w_total_inv_count
+			from audit_trail audit
+			inner join claim claim on audit.claim_id=claim.id
+			left outer join invoice invoice on claim.invoice_id=invoice.id
+			where date(audit.update_date) between SqlGetDayOfWeek() and date(now())
+			group by claim.insurer_id, claim.chorganisation_id, audit.new_status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+		
+		isSuccess = true;
+
+	END;
+
+	BEGIN
+	-- UPDATE TOTAL ACCEPT / REJECTED COUNT FOR {Month Section}
+
+		update claim_summary 
+		set 
+		m_total_claim_count = a.m_total_claim_count,
+		m_total_inv_count = a.m_total_inv_count 
+		from (
+			select claim.insurer_id as insurer_id, claim.chorganisation_id as chorganisation_id, audit.new_status as status,
+			count(distinct claim.id) as m_total_claim_count, count(distinct invoice.id) as m_total_inv_count
+			from audit_trail audit
+			inner join claim claim on audit.claim_id=claim.id
+			left outer join invoice invoice on claim.invoice_id=invoice.id
+			where date(audit.update_date) between SqlGetDayOfMonth() and date(now())
+			group by claim.insurer_id, claim.chorganisation_id, audit.new_status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+		
+		isSuccess = true;
+
+	END;
+		
+	-- ACCUMULATIVE
+	BEGIN
+
+		update claim_summary set 
+		a_count = a.a_count,
+		a_inv_count = a.a_inv_count,
+		a_total_to_pay = a.a_total_to_pay,
+		a_penalty_charge = a.a_penalty_charge
+		from (
+			select claim.insurer_id as insurer_id, claim.chorganisation_id as chorganisation_id, audit.new_status as status, 
+			count(*) as a_count,
+			count(invoice.id) as a_inv_count,
+			case when sum(invoice.total_to_pay) is null then 0 else sum(invoice.total_to_pay) end as a_total_to_pay, 
+			case when sum(invoice.panalty_charge) is null then 0 else sum(invoice.panalty_charge) end as a_penalty_charge
+			from audit_trail audit
+			inner join (select a.claim_id, max(a.update_date) as max_update_date from audit_trail a group by a.claim_id) max_audit on audit.claim_id=max_audit.claim_id and audit.update_date=max_audit.max_update_date
+			inner join claim claim on audit.claim_id = claim.id
+			left outer join invoice invoice on claim.invoice_id = invoice.id
+			group by claim.insurer_id, claim.chorganisation_id, audit.new_status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+
+		isSuccess = true;
+	
+	END;
+
+	-- WEEKLY
+	BEGIN
+
+		update claim_summary set 
+		w_count = vw_claim_weekly_summary.w_count,
+		w_inv_count = vw_claim_weekly_summary.w_inv_count,
+		w_total_to_pay = vw_claim_weekly_summary.w_total_to_pay,
+		w_penalty_charge = vw_claim_weekly_summary.w_penalty_charge
+		from vw_claim_weekly_summary 
+		where claim_summary.insurer_id=vw_claim_weekly_summary.insurer_id 
+		and claim_summary.chorganisation_id=vw_claim_weekly_summary.chorganisation_id
+		and claim_summary.status = vw_claim_weekly_summary.status;
+
+	END;
+
+	-- MONTH
+	BEGIN
+
+		update claim_summary set 
+		m_count = vw_claim_monthly_summary.m_count,
+		m_inv_count = vw_claim_monthly_summary.m_inv_count,
+		m_total_to_pay = vw_claim_monthly_summary.m_total_to_pay,
+		m_penalty_charge = vw_claim_monthly_summary.m_penalty_charge
+		from vw_claim_monthly_summary 
+		where claim_summary.insurer_id=vw_claim_monthly_summary.insurer_id 
+		and claim_summary.chorganisation_id=vw_claim_monthly_summary.chorganisation_id
+		and claim_summary.status = vw_claim_monthly_summary.status;
+
+	END;
+
+	/** UPDATE CLAIM CREATED INFORMATION - START **/
+
+	-- WEEKLY
+	BEGIN
+		update claim_summary set w_claim_created_count = a.claim_created_count
+		from (
+			select insurer_id, chorganisation_id, status, count(*) as claim_created_count
+			from claim
+			where date(created_date) between SqlGetDayOfWeek() and date(now())
+			group by insurer_id, chorganisation_id, status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+	END;
+
+	-- MONTH
+	BEGIN
+
+		update claim_summary set m_claim_created_count = a.claim_created_count
+		from (
+			select insurer_id, chorganisation_id, status, count(*) as claim_created_count
+			from claim
+			where date(created_date) between SqlGetDayOfMonth() and date(now())
+			group by insurer_id, chorganisation_id, status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+
+	END;
+
+	-- ACCUMULATE
+	BEGIN
+		update claim_summary set a_claim_created_count = a.claim_created_count
+		from (
+			select insurer_id, chorganisation_id, status, count(*) as claim_created_count
+			from claim
+			group by insurer_id, chorganisation_id, status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+	END;
+
+	/** UPDATE INVOICE CREATED INFORMATION - START **/
+	-- WEEKLY
+	BEGIN
+		update claim_summary 
+		set 
+		w_inv_created_count = a.inv_created_count,
+		w_inv_created_amt = a.inv_created_amt 
+		from (
+			select insurer_id, chorganisation_id, status, count(*) as inv_created_count, 
+			case when sum(total_to_pay-panalty_charge) is null then 0.00 else sum(total_to_pay-panalty_charge) end as inv_created_amt
+			from rpt_claim_invoice 
+			where date(created_date) between SqlGetDayOfWeek() and date(now())
+			group by insurer_id, chorganisation_id, status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+	
+	END;
+
+	-- MONTH
+	BEGIN
+		update claim_summary 
+		set 
+		m_inv_created_count = a.inv_created_count,
+		m_inv_created_amt = a.inv_created_amt 
+		from (
+			select insurer_id, chorganisation_id, status, count(*) as inv_created_count, 
+			case when sum(total_to_pay-panalty_charge) is null then 0.00 else sum(total_to_pay-panalty_charge) end as inv_created_amt
+			from rpt_claim_invoice 
+			where date(created_date) between SqlGetDayOfMonth() and date(now())
+			group by insurer_id, chorganisation_id, status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+	
+	END;
+	
+	BEGIN
+		update claim_summary 
+		set 
+		a_inv_created_count = a.inv_created_count,
+		a_inv_created_amt = a.inv_created_amt 
+		from (
+			select insurer_id, chorganisation_id, status, count(*) as inv_created_count, 
+			case when sum(total_to_pay-panalty_charge) is null then 0.00 else sum(total_to_pay-panalty_charge) end as inv_created_amt
+			from rpt_claim_invoice
+			group by insurer_id, chorganisation_id, status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+	
+	END;
+		
+	/** UPDATE INVOICE CREATED INFORMATION - END **/
+	
+	BEGIN
+	
+		insert into claim_summary_process (id, process_date, created_date, created_by) values ((select max(id)+1 from claim_summary_process), currDate, currDate, userId);
+
+	END;
+
+	BEGIN
+	
+		delete from claim_summary where process_date<currDate;
+
+	END;
+
+return isSuccess;
+
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- -------------------------------------------------------------------------------------------
+
+create type dashboard_result_type as (
+	n_ClaimNotificationsAcceptedAcc smallint,
+	n_ClaimNotificationsRejectedAcc smallint,
+	n_ClaimNotificationsSubmitted smallint,
+	n_ClaimNotificationsAccepted smallint,
+	n_ClaimNotificationsRejected smallint,
+	n_ClaimNotificationsPending smallint,
+	n_ClaimNotificationsClosed smallint,
+	n_InvoicesSubmitted smallint,
+	v_InvoicesSubmitted numeric,
+	n_InvoicesAccepted smallint,
+	v_InvoicesAccepted numeric,
+	n_InvoicesRejected smallint,
+	v_InvoicesRejected numeric,
+	n_InvoicesPending smallint,
+	v_InvoicesPending numeric,
+	n_InvoicesClosed smallint,
+	v_InvoicesClosed numeric,
+	n_InvoicesPaymentLogged smallint,
+	v_InvoicesPaymentLogged numeric,
+	n_InvoicesPaymentReceived smallint,
+	v_InvoicesPaymentReceived numeric,
+	v_PenaltyChargesApplied numeric
+);
+
+-- -------------------------------------------------------------------------------------------
+
+create view vw_claim_summary as
+select * from claim_summary where process_date = (select max(process_date) from claim_summary_process);
+
+-- -------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION SqlGetInsurerDashboardByType(integer, integer, integer) returns setof dashboard_result_type as $$ 
+
+DECLARE
+resultType integer; 
+insurerId integer; 
+chorganisationId integer; 
+r dashboard_result_type%rowtype;
+
+BEGIN
+resultType=$1;
+insurerId=$2;
+chorganisationId=$3;
+
+IF resultType = 0 THEN 
+
+	for r in 
+
+		select 
+		(select sum(w_total_claim_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status='AwaitingCarHireInfo') as n_ClaimNotificationsAcceptedAcc,
+		(select sum(w_total_claim_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status='ClaimRejectionAccepted') as n_ClaimNotificationsRejectedAcc,
+		(select sum(w_claim_created_count) as no_count from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id) as n_ClaimNotificationsSubmitted,
+		(select sum(w_count - w_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as n_ClaimNotificationsAccepted,
+		(select sum(w_count - w_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ClaimRejectionAccepted')) as n_ClaimNotificationsRejected,
+		(select sum(w_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ClaimPending','ClaimReferredToEngineer','ClaimReferredToFNOL','ClaimRejected','ClaimRejectionContested','ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnrouted','ClaimUpdatedByEngineer')) as n_ClaimNotificationsPending,
+		(select sum(w_count - w_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ClaimClosed')) as n_ClaimNotificationsClosed,
+		(select sum(w_inv_created_count) as no_count from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id) as n_InvoicesSubmitted,
+		(select sum(w_inv_created_amt) as no_count from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id) as v_InvoicesSubmitted,
+		(select sum(w_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('AwaitingInvoicePayment')) as n_InvoicesAccepted,
+		(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('AwaitingInvoicePayment')) as v_InvoicesAccepted,
+		(select sum(w_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('InvoiceRejectionAccepted')) as n_InvoicesRejected,
+		(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('InvoiceRejectionAccepted')) as v_InvoicesRejected,
+		(select sum(w_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler')) as n_InvoicesPending,
+		(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler')) as v_InvoicesPending,
+		(select sum(w_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ClaimClosed')) as n_InvoicesClosed,
+		(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ClaimClosed')) as v_InvoicesClosed,
+		(select sum(w_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('InvoicePaymentLogged')) as n_InvoicesPaymentLogged,
+		(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('InvoicePaymentLogged')) as v_InvoicesPaymentLogged,
+		(select sum(w_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('PaymentReceived')) as n_InvoicesPaymentReceived,
+		(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('PaymentReceived')) as v_InvoicesPaymentReceived,
+		(select sum(w_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id) as v_PenaltyChargesApplied
+		from insurer insurer where insurer.id=insurerId
+
+	loop
+	return next r;
+	end loop;
+
+ELSIF resultType = 1 THEN
+
+	for r in 
+
+		select 
+		(select sum(m_total_claim_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status='AwaitingCarHireInfo') as n_ClaimNotificationsAcceptedAcc,
+		(select sum(m_total_claim_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status='ClaimRejectionAccepted') as n_ClaimNotificationsRejectedAcc,
+		(select sum(m_claim_created_count) as no_count from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id) as n_ClaimNotificationsSubmitted,
+		(select sum(m_count - m_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as n_ClaimNotificationsAccepted,
+		(select sum(m_count - m_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ClaimRejectionAccepted')) as n_ClaimNotificationsRejected,
+		(select sum(m_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ClaimPending','ClaimReferredToEngineer','ClaimReferredToFNOL','ClaimRejected','ClaimRejectionContested','ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnrouted','ClaimUpdatedByEngineer')) as n_ClaimNotificationsPending,
+		(select sum(m_count - m_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ClaimClosed')) as n_ClaimNotificationsClosed,
+		(select sum(m_inv_created_count) as no_count from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id) as n_InvoicesSubmitted,
+		(select sum(m_inv_created_amt) as no_count from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id) as v_InvoicesSubmitted,		
+		(select sum(m_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('AwaitingInvoicePayment')) as n_InvoicesAccepted,
+		(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('AwaitingInvoicePayment')) as v_InvoicesAccepted,
+		(select sum(m_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('InvoiceRejectionAccepted')) as n_InvoicesRejected,
+		(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('InvoiceRejectionAccepted')) as v_InvoicesRejected,
+		(select sum(m_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler')) as n_InvoicesPending,
+		(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler')) as v_InvoicesPending,
+		(select sum(m_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ClaimClosed')) as n_InvoicesClosed,
+		(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ClaimClosed')) as v_InvoicesClosed,
+		(select sum(m_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('InvoicePaymentLogged')) as n_InvoicesPaymentLogged,
+		(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('InvoicePaymentLogged')) as v_InvoicesPaymentLogged,
+		(select sum(m_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('PaymentReceived')) as n_InvoicesPaymentReceived,
+		(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('PaymentReceived')) as v_InvoicesPaymentReceived,
+		(select sum(m_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id) as v_PenaltyChargesApplied
+		from insurer insurer where insurer.id=insurerId
+
+	loop
+	return next r;
+	end loop;
+	
+ELSE
+
+	for r in 
+
+		select 
+		(select sum(a_total_claim_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status='AwaitingCarHireInfo') as n_ClaimNotificationsAcceptedAcc,
+		(select sum(a_total_claim_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status='ClaimRejectionAccepted') as n_ClaimNotificationsRejectedAcc,
+		(select sum(a_claim_created_count) as no_count from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id) as n_ClaimNotificationsSubmitted,
+		(select sum(a_count - a_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as n_ClaimNotificationsAccepted,
+		(select sum(a_count - a_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ClaimRejectionAccepted')) as n_ClaimNotificationsRejected,
+		(select sum(a_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ClaimPending','ClaimReferredToEngineer','ClaimReferredToFNOL','ClaimRejected','ClaimRejectionContested','ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnrouted','ClaimUpdatedByEngineer')) as n_ClaimNotificationsPending,
+		(select sum(a_count - a_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ClaimClosed')) as n_ClaimNotificationsClosed,
+		(select sum(a_inv_created_count) as no_count from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id) as n_InvoicesSubmitted,
+		(select sum(a_inv_created_amt) as no_count from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id) as v_InvoicesSubmitted,
+		(select sum(a_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('AwaitingInvoicePayment')) as n_InvoicesAccepted,
+		(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('AwaitingInvoicePayment')) as v_InvoicesAccepted,
+		(select sum(a_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('InvoiceRejectionAccepted')) as n_InvoicesRejected,
+		(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('InvoiceRejectionAccepted')) as v_InvoicesRejected,
+		(select sum(a_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler')) as n_InvoicesPending,
+		(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler')) as v_InvoicesPending,
+		(select sum(a_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ClaimClosed')) as n_InvoicesClosed,
+		(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('ClaimClosed')) as v_InvoicesClosed,
+		(select sum(a_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('InvoicePaymentLogged')) as n_InvoicesPaymentLogged,
+		(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('InvoicePaymentLogged')) as v_InvoicesPaymentLogged,
+		(select sum(a_inv_count) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('PaymentReceived')) as n_InvoicesPaymentReceived,
+		(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id and status in ('PaymentReceived')) as v_InvoicesPaymentReceived,
+		(select sum(a_penalty_charge) from vw_claim_summary where (chorganisation_id = chorganisationId or chorganisationId < 0) and insurer_id = insurer.id) as v_PenaltyChargesApplied
+		from insurer insurer where insurer.id=insurerId
+
+	loop
+	return next r;
+	end loop;
+	
+END IF;	
+
+return;
+
+END;
+$$ LANGUAGE plpgsql;
+
+-- -------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION SqlGetCreditHireDashboardByType(integer, integer, integer) returns setof dashboard_result_type as $$ 
+
+DECLARE
+resultType integer; 
+insurerId integer; 
+chorganisationId integer; 
+r dashboard_result_type%rowtype;
+
+BEGIN
+resultType=$1;
+insurerId=$2;
+chorganisationId=$3;
+
+IF resultType = 0 THEN 
+
+	for r in 
+
+		select 
+		(select sum(w_total_claim_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status='AwaitingCarHireInfo') as n_ClaimNotificationsAcceptedAcc,
+		(select sum(w_total_claim_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status='ClaimRejectionAccepted') as n_ClaimNotificationsRejectedAcc,
+		(select sum(w_claim_created_count) as no_count from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id) as n_ClaimNotificationsSubmitted,
+		(select sum(w_count - w_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as n_ClaimNotificationsAccepted,
+		(select sum(w_count - w_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimRejectionAccepted')) as n_ClaimNotificationsRejected,
+		(select sum(w_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimPending','ClaimReferredToEngineer','ClaimReferredToFNOL','ClaimRejected','ClaimRejectionContested','ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnrouted','ClaimUpdatedByEngineer')) as n_ClaimNotificationsPending,
+		(select sum(w_count - w_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as n_ClaimNotificationsClosed,
+		(select sum(w_inv_created_count) as no_count from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id) as n_InvoicesSubmitted,
+		(select sum(w_inv_created_amt) as no_count from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id) as v_InvoicesSubmitted,
+		(select sum(w_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as n_InvoicesAccepted,
+		(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as v_InvoicesAccepted,
+		(select sum(w_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoiceRejectionAccepted')) as n_InvoicesRejected,
+		(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoiceRejectionAccepted')) as v_InvoicesRejected,
+		(select sum(w_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler')) as n_InvoicesPending,
+		(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler')) as v_InvoicesPending,
+		(select sum(w_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as n_InvoicesClosed,
+		(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as v_InvoicesClosed,
+		(select sum(w_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoicePaymentLogged')) as n_InvoicesPaymentLogged,
+		(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoicePaymentLogged')) as v_InvoicesPaymentLogged,
+		(select sum(w_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as n_InvoicesPaymentReceived,
+		(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as v_InvoicesPaymentReceived,
+		(select sum(w_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id) as v_PenaltyChargesApplied
+		from chorganisation chorganisation where chorganisation.id=chorganisationId
+
+	loop
+	return next r;
+	end loop;
+
+ELSIF resultType = 1 THEN
+
+	for r in 
+
+		select 
+		(select sum(m_total_claim_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status='AwaitingCarHireInfo') as n_ClaimNotificationsAcceptedAcc,
+		(select sum(m_total_claim_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status='ClaimRejectionAccepted') as n_ClaimNotificationsRejectedAcc,
+		(select sum(m_claim_created_count) as no_count from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id) as n_ClaimNotificationsSubmitted,
+		(select sum(m_count - m_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as n_ClaimNotificationsAccepted,
+		(select sum(m_count - m_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimRejectionAccepted')) as n_ClaimNotificationsRejected,
+		(select sum(m_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimPending','ClaimReferredToEngineer','ClaimReferredToFNOL','ClaimRejected','ClaimRejectionContested','ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnrouted','ClaimUpdatedByEngineer')) as n_ClaimNotificationsPending,
+		(select sum(m_count - m_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as n_ClaimNotificationsClosed,
+		(select sum(m_inv_created_count) as no_count from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id) as n_InvoicesSubmitted,
+		(select sum(m_inv_created_amt) as no_count from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id) as v_InvoicesSubmitted,		
+		(select sum(m_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as n_InvoicesAccepted,
+		(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as v_InvoicesAccepted,
+		(select sum(m_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoiceRejectionAccepted')) as n_InvoicesRejected,
+		(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoiceRejectionAccepted')) as v_InvoicesRejected,
+		(select sum(m_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler')) as n_InvoicesPending,
+		(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler')) as v_InvoicesPending,
+		(select sum(m_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as n_InvoicesClosed,
+		(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as v_InvoicesClosed,
+		(select sum(m_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoicePaymentLogged')) as n_InvoicesPaymentLogged,
+		(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoicePaymentLogged')) as v_InvoicesPaymentLogged,
+		(select sum(m_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as n_InvoicesPaymentReceived,
+		(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as v_InvoicesPaymentReceived,
+		(select sum(m_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id) as v_PenaltyChargesApplied
+		from chorganisation chorganisation where chorganisation.id=chorganisationId
+
+	loop
+	return next r;
+	end loop;
+	
+ELSE
+
+	for r in 
+
+		select 
+		(select sum(a_total_claim_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status='AwaitingCarHireInfo') as n_ClaimNotificationsAcceptedAcc,
+		(select sum(a_total_claim_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status='ClaimRejectionAccepted') as n_ClaimNotificationsRejectedAcc,
+		(select sum(a_claim_created_count) as no_count from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id) as n_ClaimNotificationsSubmitted,
+		(select sum(a_count - a_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as n_ClaimNotificationsAccepted,
+		(select sum(a_count - a_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimRejectionAccepted')) as n_ClaimNotificationsRejected,
+		(select sum(a_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimPending','ClaimReferredToEngineer','ClaimReferredToFNOL','ClaimRejected','ClaimRejectionContested','ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnrouted','ClaimUpdatedByEngineer')) as n_ClaimNotificationsPending,
+		(select sum(a_count - a_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as n_ClaimNotificationsClosed,
+		(select sum(a_inv_created_count) as no_count from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id) as n_InvoicesSubmitted,
+		(select sum(a_inv_created_amt) as no_count from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id) as v_InvoicesSubmitted,
+		(select sum(a_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as n_InvoicesAccepted,
+		(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as v_InvoicesAccepted,
+		(select sum(a_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoiceRejectionAccepted')) as n_InvoicesRejected,
+		(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoiceRejectionAccepted')) as v_InvoicesRejected,
+		(select sum(a_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler')) as n_InvoicesPending,
+		(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler')) as v_InvoicesPending,
+		(select sum(a_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as n_InvoicesClosed,
+		(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as v_InvoicesClosed,
+		(select sum(a_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoicePaymentLogged')) as n_InvoicesPaymentLogged,
+		(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoicePaymentLogged')) as v_InvoicesPaymentLogged,
+		(select sum(a_inv_count) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as n_InvoicesPaymentReceived,
+		(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as v_InvoicesPaymentReceived,
+		(select sum(a_penalty_charge) from vw_claim_summary where (insurer_id = InsurerId or insurerId < 0) and chorganisation_id = chorganisation.id) as v_PenaltyChargesApplied
+		from chorganisation chorganisation where chorganisation.id=chorganisationId
+
+	loop
+	return next r;
+	end loop;
+	
+END IF;	
+
+return;
+
+END;
+$$ LANGUAGE plpgsql;
+
+-- -------------------------------------------------------------------------------------------

@@ -96,7 +96,7 @@ public class AverageSettlementAmountReport extends BaseAction implements Report{
             Date tDateTo = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateEnd"))[0]);
             tDateTo = DateHelper.addMonth(tDateTo, 1);
             tDateTo.setDate(1);
-        
+
             List<AverageSettlementAmountViewData> reportRows = new ArrayList<AverageSettlementAmountViewData>();
             List<Chorganisation> chorg = getCreditHire(iInsurerId);
             
@@ -251,7 +251,7 @@ public class AverageSettlementAmountReport extends BaseAction implements Report{
         sb.append("from audit_trail audit, claim claim, invoice invoice where "); 
         sb.append("invoice.id=claim.invoice_id and claim.id=audit.claim_id "); 
         sb.append("and audit.new_status='PaymentReceived' and audit.original_status='InvoicePaymentLogged' "); 
-        sb.append("and claim.insurer_id=:pInsurerId "); 
+        sb.append("and claim.insurer_id=:pInsurerId and claim.status!='ClaimClosed' "); 
         sb.append("and audit.update_date between date(:pDateFrom) and date(:pDateTo) "); 
         sb.append("group by date_month, date_year, chorganisation_id) a "); 
         sb.append("where date_month=:pMonth and date_year=:pYear "); 
