@@ -182,7 +182,6 @@ public class InvoiceExtraValidation extends SecureDataService implements rulesIn
     }
     
     private void doPreInitialize(){
-    System.out.println(">>> InvoiceExtraValidation 001");
         this.claimResult.getClaim().getInvoice().setCdwFee(new BigDecimal("0.00"));
         this.claimResult.getClaim().getInvoice().setCdwQty(0);
         this.claimResult.getClaim().getInvoice().setAdminFee(new BigDecimal("0.00"));
@@ -205,7 +204,6 @@ public class InvoiceExtraValidation extends SecureDataService implements rulesIn
         this.claimResult.getClaim().getInvoice().setSatNavQty(0);  
         this.claimResult.getClaim().getInvoice().setTowBarsFee(new BigDecimal("0.00"));
         this.claimResult.getClaim().getInvoice().setTowBarsQty(0); 
-        System.out.println(">>> InvoiceExtraValidation 002");
     }
 
 }

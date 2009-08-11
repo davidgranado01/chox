@@ -13,17 +13,17 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailHelper {
     
-    /*
+    
     private static final String SMTP_HOST_NAME = "smtp.gmail.com";
     private static final String SMTP_PORT = "465";
     private static final boolean SMTP_authetication = true;
-    private static final String SMTP_authetication_user = "info@greenfinch.ie";
-    private static final String SMTP_authetication_password="Passwurd99.";
+    private static final String SMTP_authetication_user = "chox@idaschox.com";
+    private static final String SMTP_authetication_password="ch0x_3m4il";
     private static final String emailSubjectPrefix = "CHOX Support Email: ";
     private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
-    private static final String EMAIL_FROM = "info@greenfinch.ie";
-    */
+    private static final String EMAIL_FROM = "chox@idaschox.com";
     
+    /*
     private static final String SMTP_HOST_NAME = "relay.blacknight.com";
     private static final String SMTP_PORT = "25";
     private static final boolean SMTP_authetication = false;
@@ -32,7 +32,7 @@ public class EmailHelper {
     private static final String emailSubjectPrefix = "CHOX Support Email: ";
     private static final String SSL_FACTORY = "";
     private static final String EMAIL_FROM = "choxsupport@sherwoodcompliance.co.uk";
-    
+    */
     private Authenticator getAuthenticator(final String userName, final String password){
         
         Authenticator authenticator = new javax.mail.Authenticator() {
@@ -44,7 +44,7 @@ public class EmailHelper {
         return authenticator;
     }
     
-
+    /*
     public boolean postMail(String subject, String message, String[] recipients) 
         throws MessagingException, UnsupportedEncodingException {
         
@@ -56,8 +56,8 @@ public class EmailHelper {
         props.put("mail.debug", "true");
         props.put("mail.smtp.port", SMTP_PORT);
         props.put("mail.smtp.socketFactory.port", SMTP_PORT);
-        // props.put("mail.smtp.socketFactory.class", SSL_FACTORY);
-        // props.put("mail.smtp.socketFactory.fallback", "false");
+        props.put("mail.smtp.socketFactory.class", SSL_FACTORY);
+        props.put("mail.smtp.socketFactory.fallback", "false");
         
         Session session = null;
         
@@ -88,8 +88,9 @@ public class EmailHelper {
         return true;
         
     }
+    */
     
-    /*
+    
     public boolean postMail(String subject, String message, String[] recipients) 
         throws MessagingException, UnsupportedEncodingException {
         
@@ -133,5 +134,5 @@ public class EmailHelper {
         return true;
         
     }
-    */
+    
 }

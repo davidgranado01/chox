@@ -59,6 +59,7 @@
 <!--                
 &nbsp;<input type="button" value="Update" onclick="javascript:doUpdate();" />
 !-->
+
 </td></tr>
                 <tr>
                     <th nowrap><label>Insurer</label></th><td>

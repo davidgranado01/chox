@@ -18,6 +18,8 @@ public class RulesEngine {
 
     public RulesEngineResponse ResolveStatus() {
         
+        Integer iCount = 0;
+        
         RulesEngineResponse response = new RulesEngineResponse();
         response.addRuleEvaulation(new HasAllowedVehicleClass().applyToClaim(claim));
         response.addRuleEvaulation(new HasCalculatedCorrectDailyRate().applyToClaim(claim));
@@ -39,9 +41,13 @@ public class RulesEngine {
         response.addRuleEvaulation(new HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero().applyToClaim(claim));    
         response.addRuleEvaulation(new HasSuppliedCorrectTotalToPay().applyToClaim(claim));        
         response.addRuleEvaulation(new EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays().applyToClaim(claim)); 
+        
+        System.out.println("RulesEngineResponse: " + (iCount++));
+        
         response.addRuleEvaulation(new LabourCostBusinessRule().applyToClaim(claim)); 
-
-        // MUST RUN AT LAST
+        
+        System.out.println("RulesEngineResponse: " + (iCount++));
+        
         response.addRuleEvaulation(new validateUniqueVehicleRegistrationNumber().applyToClaim(claim)); 
         return response;
     }

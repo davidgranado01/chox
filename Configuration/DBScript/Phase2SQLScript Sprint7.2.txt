@@ -1,4 +1,7 @@
--- -------------------------------------------------------------------------------------------
+
+-- ############################################################################################
+-- START VERSION V2.7.2 - 
+-- ############################################################################################\
 
 insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'report.AverageSettlementAmountReport');
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name = 'report.AverageSettlementAmountReport'), (select max(id)+1 from accessibility_item));
@@ -60,7 +63,7 @@ firstDayOfWeekDate date;
 	BEGIN
 	select 
 	date(now()) - case when (date_part('dow', now())-1) = -1 then 6 else cast((date_part('dow', now())-1) as integer) end into firstDayOfWeekDate;
-	return firstDayOfWeekDate-1;
+	return firstDayOfWeekDate;
 	END;
 
 $$ LANGUAGE plpgsql;
@@ -71,7 +74,7 @@ CREATE OR REPLACE FUNCTION SqlGetDayOfMonth() returns date as $$
 DECLARE
 
 	BEGIN
-	return date('01/'||date_part('month', date(now()))||'/'||date_part('year', date(now())))-1;
+	return to_date(to_char(current_date,'MM')||'-01-'||to_char(current_date,'yyyy'), 'mm-dd-yyyy');
 	END;
 
 $$ LANGUAGE plpgsql;
@@ -403,26 +406,26 @@ $$ LANGUAGE plpgsql;
 -- -------------------------------------------------------------------------------------------
 
 create type dashboard_result_type as (
-	n_ClaimNotificationsAcceptedAcc smallint,
-	n_ClaimNotificationsRejectedAcc smallint,
-	n_ClaimNotificationsSubmitted smallint,
-	n_ClaimNotificationsAccepted smallint,
-	n_ClaimNotificationsRejected smallint,
-	n_ClaimNotificationsPending smallint,
-	n_ClaimNotificationsClosed smallint,
-	n_InvoicesSubmitted smallint,
+	n_ClaimNotificationsAcceptedAcc integer,
+	n_ClaimNotificationsRejectedAcc integer,
+	n_ClaimNotificationsSubmitted integer,
+	n_ClaimNotificationsAccepted integer,
+	n_ClaimNotificationsRejected integer,
+	n_ClaimNotificationsPending integer,
+	n_ClaimNotificationsClosed integer,
+	n_InvoicesSubmitted integer,
 	v_InvoicesSubmitted numeric,
-	n_InvoicesAccepted smallint,
+	n_InvoicesAccepted integer,
 	v_InvoicesAccepted numeric,
-	n_InvoicesRejected smallint,
+	n_InvoicesRejected integer,
 	v_InvoicesRejected numeric,
-	n_InvoicesPending smallint,
+	n_InvoicesPending integer,
 	v_InvoicesPending numeric,
-	n_InvoicesClosed smallint,
+	n_InvoicesClosed integer,
 	v_InvoicesClosed numeric,
-	n_InvoicesPaymentLogged smallint,
+	n_InvoicesPaymentLogged integer,
 	v_InvoicesPaymentLogged numeric,
-	n_InvoicesPaymentReceived smallint,
+	n_InvoicesPaymentReceived integer,
 	v_InvoicesPaymentReceived numeric,
 	v_PenaltyChargesApplied numeric
 );
@@ -673,5 +676,9 @@ return;
 
 END;
 $$ LANGUAGE plpgsql;
+
+-- -------------------------------------------------------------------------------------------
+
+update web_user set password='ff31cc74f746f81759bfedb89ed4f69e' where email='admin@chox.com';
 
 -- -------------------------------------------------------------------------------------------

@@ -181,13 +181,17 @@ public class ClaimCalcHelper {
             BigDecimal bAverageLabourRate =  new BigDecimal(claim.getChoBand().getAverageLabourRate());
             BigDecimal bLabourCostAverageRateDay = new BigDecimal(0.00);
             
-            // System.out.println("bLabourCost:"+bLabourCost.longValue());
-            // System.out.println("bAverageLabourRate:"+bAverageLabourRate.longValue());
-            // System.out.println("bAverageLabourHoursPerHireDay:"+bAverageLabourHoursPerHireDay.longValue());
+            // System.out.println("getLabourCostAverageRateDay:bLabourCost:"+bLabourCost.longValue());
+            // System.out.println("getLabourCostAverageRateDay:bAverageLabourRate:"+bAverageLabourRate.longValue());
+            // System.out.println("getLabourCostAverageRateDay:bAverageLabourHoursPerHireDay:"+bAverageLabourHoursPerHireDay.longValue());
             
-            bLabourCostAverageRateDay = (bLabourCost.divide(bAverageLabourRate)).divide(bAverageLabourHoursPerHireDay);
+            if(bLabourCost.doubleValue()>0 
+                    && bAverageLabourRate.doubleValue()>0 
+                    && bAverageLabourHoursPerHireDay.doubleValue()>0){
+                bLabourCostAverageRateDay = (bLabourCost.divide(bAverageLabourRate)).divide(bAverageLabourHoursPerHireDay);
+            }
             
-            // System.out.println("bLabourCostAverageRateDay:"+bLabourCostAverageRateDay);
+            // System.out.println("getLabourCostAverageRateDay:bLabourCostAverageRateDay:"+bLabourCostAverageRateDay);
 
             return mathHelper.getIntegerFromDecimalRound(bLabourCostAverageRateDay);
             

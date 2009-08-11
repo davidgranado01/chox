@@ -79,8 +79,6 @@ public class InvoiceValidation extends SecureDataService implements rulesInterfa
             
         }
         
-        
-        
         return isAllowToReadData;
     }
     

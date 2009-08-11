@@ -32,11 +32,13 @@ public class ChoDashboardBuilder {
     public DashBoardViewData getMonthToDate() {
         Map queryParameters = getQueryParameters();
         queryParameters.put("pQueryType", 1);
+        
         /*
         Date now = new Date();
         queryParameters.put("pSelectedStartDate", DateHelper.getFirstDateOfTheMonth(now));
         queryParameters.put("pSelectedEndDate", now);
         */
+        
         return build(queryParameters);
     }
 

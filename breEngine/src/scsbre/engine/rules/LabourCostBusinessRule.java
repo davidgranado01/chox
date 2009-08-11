@@ -25,10 +25,17 @@ public class LabourCostBusinessRule implements IBusinessRule {
         ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
         
         if(isRequiredToValidateByBRE(claim)){
-
+            
+            // System.out.println("LabourCostBusinessRule: -1" + cCalc.getNumberDayOfLabourCostWorthy());
+            // System.out.println("LabourCostBusinessRule: 00" + claim);
+            // System.out.println("LabourCostBusinessRule: 01" + claim.getHireDetail());
+            // System.out.println("LabourCostBusinessRule: 02" + claim.getHireDetail().getNumberOfHireDays());
+            
             int iNumberOfHireDay =claim.getHireDetail().getNumberOfHireDays();
             int iNumberDayOfLabourCostWorthy = cCalc.getNumberDayOfLabourCostWorthy();
 
+            // System.out.println("LabourCostBusinessRule: 03");
+            
             if(iNumberOfHireDay>=iNumberDayOfLabourCostWorthy){
                 success = false;
                 narrative = "The number of hire days billed is not relative to the number of expected hire days based on labour cost information.";

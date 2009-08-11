@@ -64,7 +64,6 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
         this.claimResult = NodeHelper.nodeValidate(sectionName, "rental-status", claimResult.getElement(), claimResult, dataValidationParameter);
         this.claimResult = NodeHelper.nodeValidate(sectionName, "supplier-name", this.element, claimResult, dataValidationParameter);
         this.claimResult = NodeHelper.nodeValidate(sectionName, "supplier-reference", this.element, claimResult, dataValidationParameter);
-        
     }
     
     private void process(){
@@ -78,13 +77,13 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
         if(gtaNoticeDate==null){
             gtaNoticeDate = DateHelper.getCurrentTimeStamp();
         }
-
-        Claim claim = new Claim();
         
+        Claim claim = new Claim();
+
         if(claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)){
             
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
-            
+             
             if(claim.getInvoice() != null){
 
                 claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
@@ -107,10 +106,8 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
                     claimResult.setValid(false);
                     
                 }else{
-                    
                     // EDITABLE CLAIM
                     claimResult.setClaimParseStatus(ClaimParseStatus.existClaim);
-                    
                 }
             }
             
@@ -136,7 +133,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
         
         if(isAllowed){
             
-            System.out.println("-------");
+            System.out.println("-STARTS------");
             System.out.println(sectionName + "| " + XmlHelper.getNodeValue(this.element, "supplier-name"));
             
             if(this.claimResult.getClaim()!=null){
@@ -150,6 +147,8 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
                 System.out.println(sectionName + "| getIndemnityAmount :"+this.claimResult.getClaim().getIndemnityAmount());
                 System.out.println(sectionName + "| getPercentageLiabilityAccepted :"+this.claimResult.getClaim().getPercentageLiabilityAccepted());  
             }
+            
+            System.out.println("-END------");
         }   
     }
     

@@ -50,7 +50,6 @@ public class BusinessRuleEngProcess {
         if(validate()){
             doPrintResult(true);
             process();
-            
         }
         
         return claimResult;
@@ -70,6 +69,8 @@ public class BusinessRuleEngProcess {
     
     private void process(){
         
+        Integer iCount = 0;
+        
         Boolean isEngReportExist = false;
         if(this.claimResult.getClaim().getEngineerReport()!=null){
             isEngReportExist = true;
@@ -78,13 +79,9 @@ public class BusinessRuleEngProcess {
         VehicleClass cust_VehicleClass = this.claimResult.getClaim().getCustomer().getVehicleClass();
         VehicleClass thirdVehicleClass = this.claimResult.getClaim().getThirdParty().getVehicleClass();
         
-        /** START BRE VALIDATION **/
-        
-        Claim breClaim = doConstructBreValidateObject(this.claimResult.getClaim());
+        Claim breClaim = doConstructBreValidateObject(this.claimResult.getClaim());        
         RulesEngineResponse validationResult = invoiceService.XMLUploaderInvoiceValidation(breClaim);
-        
-        // historyService.logInvoiceValidationErrorMsg(validationResult, breClaim);
-        
+
         String oldStatus = this.claimResult.getClaim().getStatus();
         String newClaimStatus = validationResult.getStatus().toString();     
         
@@ -94,16 +91,14 @@ public class BusinessRuleEngProcess {
         if(validationResult.getResults().size()>0){
             processBreErrorMessage(validationResult.getResults());
         }
-        
+
         /** END BRE VALIDATION **/
-        
         if(!isEngReportExist){
             this.claimResult.getClaim().setEngineerReport(null);
         }
-        
+
         this.claimResult.getClaim().getCustomer().setVehicleClass(cust_VehicleClass);
         this.claimResult.getClaim().getThirdParty().setVehicleClass(thirdVehicleClass);
-        
     }
     
     private void processBreErrorMessage(List<RuleEvaluation> results){
@@ -118,14 +113,14 @@ public class BusinessRuleEngProcess {
     }
     
     private Claim doConstructBreValidateObject(Claim claim){
-        
+
         Boolean isIsTotalLostCheck = false;
         if(claim.getHireMonitoringDetail()!=null){
             isIsTotalLostCheck = claim.getHireMonitoringDetail().isIsTotalLostCheck();
         }
         
         claim.getVehicleHire().setIsTotalLoss(isIsTotalLostCheck);
-        
+
         if(claim.getEngineerReport()==null){
             EngineerReport engineerreport = new EngineerReport();
             engineerreport.setDays(0);
@@ -133,11 +128,11 @@ public class BusinessRuleEngProcess {
             engineerreport.setTotalAmount(new BigDecimal("0.00"));
             claim.setEngineerReport(engineerreport);
         }
-        
+
         if(claimService.getCountOfClaimByVRN(claim.getCustomer().getVehicleRegistration(), claim.getId())>0){
            claim.getCustomer().setIsVehicleRegistrationExist(true);
         }
-        
+
         // SET VEHICLE CLASS TO NULL WHEN 
         if(claim.getThirdParty().getVehicleClass()!=null){
             if(claim.getThirdParty().getVehicleClass().getName().equalsIgnoreCase("Unattached") 
@@ -145,7 +140,7 @@ public class BusinessRuleEngProcess {
                 claim.getThirdParty().setVehicleClass(null);
             }
         }
-        
+
         // SET VEHICLE CLASS TO NULL WHEN 
         if(claim.getCustomer().getVehicleClass()!=null){
             if(claim.getCustomer().getVehicleClass().getName().equalsIgnoreCase("Unattached")
@@ -155,28 +150,25 @@ public class BusinessRuleEngProcess {
         }
         
         claim.setHireMonitoringEcd(hireMonitoringEcdService.getLatestHireMonitoringECDDate(claim));        
-        
         return claim;
     }
     
     private void doPrintResult(boolean isAllowed){
         
         if(isAllowed){
-            
             System.out.println("-------");
             System.out.println(sectionName + "| getChorganisation :"+this.claimResult.getClaim().getClaimNumber());
             System.out.println(sectionName + "| getChorganisation :"+this.claimResult.getClaim().getChorganisation());
             System.out.println(sectionName + "| getChoBand :"+this.claimResult.getClaim().getChoBand());
             System.out.println(sectionName + "| getCustomer :"+this.claimResult.getClaim().getCustomer());
-            System.out.println(sectionName + "| getEngineerReport :"+this.claimResult.getClaim().getEngineerReport().getAddress1());
-            System.out.println(sectionName + "| getHireMonitoringDetail :"+this.claimResult.getClaim().getHireMonitoringDetail().getNameOfIme());
-            System.out.println(sectionName + "| getIncident :"+this.claimResult.getClaim().getIncident().getLocation());
+            // System.out.println(sectionName + "| getEngineerReport :"+this.claimResult.getClaim().getEngineerReport().getAddress1());
+            // System.out.println(sectionName + "| getHireMonitoringDetail :"+this.claimResult.getClaim().getHireMonitoringDetail().getNameOfIme());
+            // System.out.println(sectionName + "| getIncident :"+this.claimResult.getClaim().getIncident().getLocation());
             System.out.println(sectionName + "| getInsurer :"+this.claimResult.getClaim().getInsurer());
             System.out.println(sectionName + "| getInvoice :"+this.claimResult.getClaim().getInvoice().getClaimInvoiceNo());
             System.out.println(sectionName + "| getLineOfBusiness :"+this.claimResult.getClaim().getLineOfBusiness());
             System.out.println(sectionName + "| getThirdParty :"+this.claimResult.getClaim().getThirdParty().getFirstName());
             System.out.println(sectionName + "| getVehicleHire :"+this.claimResult.getClaim().getVehicleHire().getIsTotalLoss());
-
         }
           
     }

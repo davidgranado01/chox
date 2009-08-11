@@ -36,6 +36,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     public void updateClaim(Claim claim) {
+        claim.setClaimNumber(claim.getClaimNumber().trim());
         save(claim);
     }
     
@@ -356,6 +357,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public void saveObjectForXMLUploader(final ClaimResult claimResult) {
 
         Claim c = claimResult.getClaim();
+        c.setClaimNumber(c.getClaimNumber().trim());
         c.setCustomer(claimResult.getClaim().getCustomer());
         c.setThirdParty(claimResult.getClaim().getThirdParty());
         c.setInsurer(claimResult.getClaim().getThirdParty().getInsurer());
