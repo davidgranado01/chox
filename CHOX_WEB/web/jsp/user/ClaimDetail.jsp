@@ -300,13 +300,15 @@
         }
         
         function loadHireMonitor(grid, rowIndex, columnIndex, e){
-            $("#hireMonitoringDetails").block({message: $("#hireMonitorTemplate"), css: { backgroundColor: '#FFFFFF', height:'160', width:'400px', top:'10px', padding:'10px', overflow: 'auto'}  });
             var hiremonitoringECD = ecdGrid.getStore().getAt(rowIndex);
-            var supportingNoteText = hiremonitoringECD.get("supportingNote");
-            $("#hireMonitorMessage").text(supportingNoteText);
-            setTimeout(function(){ $("#hireMonitoringDetails").unblock(); }, popupTimeUp);
-
-        }        
+            var supportingNoteText = "<br/><b>Supporting note</b>: <br/>"+hiremonitoringECD.get("supportingNote");
+            var EcdText = "<b>ECD Date</b>: "+hiremonitoringECD.get("ecdDate");
+            var ReasonText = "<b>Reason</b>: "+hiremonitoringECD.get("reason");
+            
+            var title = EcdText;
+            var msg = EcdText + "<br/>" + ReasonText + "<br/>" + supportingNoteText;
+            propmtMsg(title, msg);
+        }          
         
         /*
          * DESC: COMMENT
@@ -349,6 +351,29 @@
             });
         }
         
+        function loadComment(grid, rowIndex, columnIndex, e){            
+            var comment = commentsGrid.getStore().getAt(rowIndex);
+            var commentText = comment.get("comment");
+            
+            var title="Notes";
+            var msg = "<b>Created Date</b>: " + comment.get("createdDate") 
+                + "<br/><b>Created By</b>: " + comment.get("createdBy") 
+                + "<br/><br/><b>Message</b>: <br/>" + comment.get("comment");
+            
+            propmtMsg(title, msg);
+        }
+
+    function propmtMsg(title, msg){
+            
+            Ext.MessageBox.show({
+               title: title,
+               msg: msg,
+               width : 400,
+               buttons: Ext.MessageBox.OK
+           });
+    }  
+    
+        /*
         function loadComment(grid, rowIndex, columnIndex, e){
             $("#comments").block({message: $("#commentTemplate"), css: { backgroundColor: '#FFFFFF', height:'160', width:'400px', padding:'10px', overflow: 'auto'}  });
             var comment = commentsGrid.getStore().getAt(rowIndex);
@@ -356,8 +381,9 @@
             $("#commentMessage").text(commentText);
             setTimeout(function(){ $("#comments").unblock(); }, popupTimeUp);
         }
-
-        if(!auditTrailDisabled){
+        */
+       
+if(!auditTrailDisabled){
             
            auditTrailJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',   
@@ -376,7 +402,8 @@
                 reader:auditTrailJsonReader        
             });
 
-            var grid = new Ext.grid.GridPanel({
+            var auditGrid = new Ext.grid.GridPanel({
+                listeners:  {cellclick:loadAudit},
                 store: auditTrailData,
                 columns: [
                     {header: "Modified Date", width: 200, dataIndex: 'modifiedDate', sortable: false, resizable: true},
@@ -395,13 +422,30 @@
                 {
                     claimId : <s:property value="id" />
                 }
-            });    
+            });
             
-        }    
+        } 
+
+        function loadAudit(grid, rowIndex, columnIndex, e){            
+            var audit = auditGrid.getStore().getAt(rowIndex);
+            
+            var title = "Claim Cycle";
+            var msg = "<b>Modified Date</b>: " + audit.get("modifiedDate") 
+                + "<br/><b>Modified By</b>: " + audit.get("modifiedBy") 
+                + "<br/><b>Status</b>: " + audit.get("status")
+            
+            propmtMsg(title, msg);
+        }
         /*
          * DESC: HISTORY
          **/        
+         
+        var historyData;
+        var historyJsonReader;
+        var historyGrid; 
+    
         if(!historyDetailsDisabled){
+        
             historyJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',   
                 root: 'results', 
@@ -413,13 +457,14 @@
                 ]
             });
 
-            var historyData = new Ext.data.Store({
+            historyData = new Ext.data.Store({
                 proxy: new Ext.data.HttpProxy
                 ({url: 'user/getHistories.action',method:'GET'}),
                 reader:historyJsonReader        
             });            
 
-            var grid = new Ext.grid.GridPanel({
+            historyGrid = new Ext.grid.GridPanel({
+                listeners:  {cellclick:loadHistory },
                 store: historyData,
                 columns: [
                     {header: "Created On", width: 110, dataIndex: 'createdDate', sortable: false, resizable: true},
@@ -441,8 +486,18 @@
             });    
         }
 
+        function loadHistory(grid, rowIndex, columnIndex, e){
+            var historyItem = historyGrid.getStore().getAt(rowIndex);
+            
+            var title = "History";
+            var msg = "<b>Created Date</b>: " + historyItem.get("createdDate") 
+                + "<br/><b>Created By</b>: " + historyItem.get("createdBy") 
+                + "<br/><br/><b>Message</b>: <br/>" + historyItem.get("narrative")
+            
+            propmtMsg(title, msg);
+        }
         
-    });         
+    });          
 
     // LOAD COMMENT
     var commentsLoaded = false;
@@ -1137,9 +1192,6 @@
     </script>
    
     <div class="comments  x-panel-bwrap chox-form-container">
-
-<s:if test="!isClaimClosed"> 
-   
         <form id="fComments" action="user/createNewComment.action" method="post">
             <input type="hidden" name="claimId" value='<s:property value="id" />'>
             <fieldset class="x-fieldset">
@@ -1154,13 +1206,9 @@
                 </div>
                 </s:if>
                 <s:else><input name="isPublic" type="hidden" value="true"/></s:else>
-                <input type="submit" id="bAddComment" value="Add Note" onclick="javascript:return commentFormValidation();"/>
-                
-                
+                <input type="submit" id="bAddComment" value="Add Note" onclick="javascript: return commentFormValidation();"/>                
             </fieldset>
         </form>
-</s:if>
-
         <div class="errorBox" id="CmErrMsgBox" style="color:red;font-weight: bold;font-size: 10px;"></div>        
     </div>
 
