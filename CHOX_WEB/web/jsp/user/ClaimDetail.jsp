@@ -310,18 +310,21 @@
         }
         
         function loadHireMonitor(grid, rowIndex, columnIndex, e){
-            $("#hireMonitoringDetails").block({message: $("#hireMonitorTemplate"), css: { backgroundColor: '#FFFFFF', height:'160', width:'400px', top:'10px', padding:'10px', overflow: 'auto'}  });
             var hiremonitoringECD = ecdGrid.getStore().getAt(rowIndex);
-            var supportingNoteText = hiremonitoringECD.get("supportingNote");
-            $("#hireMonitorMessage").text(supportingNoteText);
-            setTimeout(function(){ $("#hireMonitoringDetails").unblock(); }, popupTimeUp);
-        }        
+            var supportingNoteText = "<br/><b>Supporting note</b>: <br/>"+hiremonitoringECD.get("supportingNote");
+            var EcdText = "<b>ECD Date</b>: "+hiremonitoringECD.get("ecdDate");
+            var ReasonText = "<b>Reason</b>: "+hiremonitoringECD.get("reason");
+            
+            var title = EcdText;
+            var msg = EcdText + "<br/>" + ReasonText + "<br/>" + supportingNoteText;
+            propmtMsg(title, msg);
+        }           
         
         /***********************************************************************************
          * COMMENT / NOTE
          ***********************************************************************************/
         
-        if(!commentsDisabled){
+                if(!commentsDisabled){
             
             commentsJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount', root: 'results', fields:[{name:'id'}, {name:'createdBy'}, {name:'createdDate'}, {name:'comment'}]
@@ -346,14 +349,20 @@
         function loadComment(grid, rowIndex, columnIndex, e){            
             var comment = commentsGrid.getStore().getAt(rowIndex);
             var commentText = comment.get("comment");
-            propmtMsg(commentText);
+            
+            var title="Notes";
+            var msg = "<b>Created Date</b>: " + comment.get("createdDate") 
+                + "<br/><b>Created By</b>: " + comment.get("createdBy") 
+                + "<br/><br/><b>Message</b>: <br/>" + comment.get("comment");
+            
+            propmtMsg(title, msg);
         }
 
         /***********************************************************************************
          * AUDIT TRAIL 
          ***********************************************************************************/
         
-        if(!auditTrailDisabled){
+                if(!auditTrailDisabled){
             
            auditTrailJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',   
@@ -372,7 +381,8 @@
                 reader:auditTrailJsonReader        
             });
 
-            var grid = new Ext.grid.GridPanel({
+            var auditGrid = new Ext.grid.GridPanel({
+                listeners:  {cellclick:loadAudit},
                 store: auditTrailData,
                 columns: [
                     {header: "Modified Date", width: 200, dataIndex: 'modifiedDate', sortable: false, resizable: true},
@@ -394,6 +404,18 @@
             });
             
         } 
+
+        function loadAudit(grid, rowIndex, columnIndex, e){            
+            var audit = auditGrid.getStore().getAt(rowIndex);
+            
+            var title = "Claim Cycle";
+            var msg = "<b>Modified Date</b>: " + audit.get("modifiedDate") 
+                + "<br/><b>Modified By</b>: " + audit.get("modifiedBy") 
+                + "<br/><b>Status</b>: " + audit.get("status")
+            
+            propmtMsg(title, msg);
+        }
+        
 
         /***********************************************************************************
          * HISTORY
@@ -447,11 +469,16 @@
 
         function loadHistory(grid, rowIndex, columnIndex, e){
             var historyItem = historyGrid.getStore().getAt(rowIndex);
-            var textMsg = historyItem.get("narrative");
-            propmtMsg(textMsg);
+            
+            var title = "History";
+            var msg = "<b>Created Date</b>: " + historyItem.get("createdDate") 
+                + "<br/><b>Created By</b>: " + historyItem.get("createdBy") 
+                + "<br/><br/><b>Message</b>: <br/>" + historyItem.get("narrative")
+            
+            propmtMsg(title, msg);
         }
         
-    });         
+    });               
 
     // LOAD COMMENT
     var commentsLoaded = false;
@@ -604,6 +631,16 @@
         setTimeout($.unblockUI, popupTimeUp);
     }
         
+    function propmtMsg(title, msg){
+            
+            Ext.MessageBox.show({
+               title: title,
+               msg: msg,
+               width : 400,
+               buttons: Ext.MessageBox.OK
+           });
+    }   
+    
 </script>        
         
     </head>    
@@ -1149,7 +1186,6 @@
 
         <div class="comments  x-panel-bwrap chox-form-container">
 
-            <s:if test="!isClaimClosed"> 
                 <form id="fComments" action="user/createNewComment.action" method="post">
                     <input type="hidden" name="claimId" value='<s:property value="id" />'>
                     <fieldset class="x-fieldset">
@@ -1167,7 +1203,6 @@
                         <input type="submit" id="bAddComment" value="Add Note" onclick="javascript:return commentFormValidation();"/>
                     </fieldset>
                 </form>
-            </s:if>
 
             <div class="errorBox" id="CmErrMsgBox" style="color:red;font-weight: bold;font-size: 10px;"></div>
 
