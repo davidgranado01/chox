@@ -107,4 +107,13 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
         }
         return bFlag;
     }
+    
+    public void saveHistories(List<History> histories) {
+        
+        for(History history : histories){
+            saveHistory(history);
+        }  
+
+    }
+    
 }

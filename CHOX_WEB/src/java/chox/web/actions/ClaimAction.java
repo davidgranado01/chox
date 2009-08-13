@@ -25,6 +25,7 @@ import java.util.Map;
 import org.acegisecurity.GrantedAuthority;
 import scsbre.engine.RulesEngineResponse;
 import chox.data.AttachmentCategory;
+import chox.model.AttachmentType;
 import chox.model.Chorganisation;
 import chox.model.Comment;
 import chox.model.Customer;
@@ -40,6 +41,7 @@ import chox.model.ThirdParty;
 import chox.model.VehicleHire;
 import chox.model.WebUser;
 import chox.model.Witness;
+import chox.services.AttachmentTypeService;
 import chox.services.AuditTrailService;
 import chox.services.CommentService;
 import chox.services.HireMonitoringEcdService;
@@ -91,6 +93,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private AuditTrailService auditTrailService;
     private ReasonOfRejectionService reasonOfRejectionService;
     private HireMonitoringEcdService hireMonitoringEcdService;
+    private AttachmentTypeService attachmentTypeService;
     private CommentService commentService;
     private String actionResult;
     private String actionResult2;
@@ -123,6 +126,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private Integer injurySolicitorId;
     private Map session;
     private Integer tab = -1;
+    
+    public String getAllowFileType(){
+        
+        String sAllowFileType = "";
+        
+        for(AttachmentType a : attachmentTypeService.getAllAttachmentType()){
+            sAllowFileType+= a.getDescription() + " (."+a.getCode()+"), ";
+        }
+        
+        if(sAllowFileType.length()>2){
+            sAllowFileType = sAllowFileType.substring(0, sAllowFileType.length()-2);
+        }
+        
+        return sAllowFileType;
+    }
     
     public int getMaxFileSize() {
         return FileHelper.MAX_FILE_SIZE_ALLOW;
@@ -578,12 +596,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String validationECDResult = validateHireMonitoringECDDetail();
         String validationLabourResult = validateHireMonitoringLabourDetail();
         
-        System.out.println("V:validationECDResult"+validationECDResult);
-        System.out.println("V:validationLabourResult"+validationLabourResult);
+        // System.out.println("V:validationECDResult"+validationECDResult);
+        // System.out.println("V:validationLabourResult"+validationLabourResult);
         
         if ((validationLabourResult.length()+validationECDResult.length()) <= 0) {
             
-            System.out.println("V:PASSED");
+            // System.out.println("V:PASSED");
             
             String newStatus = ClaimStatus.AWAITING_INVOICE_DATA;
             
@@ -607,7 +625,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             
         } else {
             
-            System.out.println("V:FAILED");
+            // System.out.println("V:FAILED");
             
             result = ERROR;
             
@@ -619,8 +637,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
         }
         
-        System.out.println("V:FAILED 1:"+this.actionResult);
-        System.out.println("V:FAILED 2:"+this.actionResult2);
+        // System.out.println("V:FAILED 1:"+this.actionResult);
+        // System.out.println("V:FAILED 2:"+this.actionResult2);
         
         return result;
     }
@@ -638,7 +656,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String validateHireMonitoringLabourDetail() {
 
-        String result = "";
         String sNonProvisionReasonDetailErrorMsg = "Error : In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required, if this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.";
         
         if(claim.getHireMonitoringDetail() == null){
@@ -1216,6 +1233,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.reasonOfRejectionService = reasonOfRejectionService;
     }
 
+    public void setAttachmentTypeService(AttachmentTypeService attachmentTypeService) {
+        this.attachmentTypeService = attachmentTypeService;
+    }
+    
     public String getStatusMsg() {
         return statusMsg;
     }

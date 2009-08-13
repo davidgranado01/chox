@@ -148,9 +148,9 @@
                 <s:if test="isShowMessage">
                     <div class="status-info"><s:property value="message" /></div>
                 </s:if>
+                
                 <fieldset class="x-fieldset">
                     <legend>User Details</legend>
-
                     <div class="form-container">
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">First Name</label>
@@ -167,24 +167,34 @@
                     </div>
                 </fieldset>
 
-
                 <fieldset class="x-fieldset">
                     <legend>Change Password</legend>
                     <form onsubmit="return true;" id="formChangePassword" action="user/changePassword.action" class="XXentity-form" method="post">
+                        
+                        <div class="status-info">
+                            N.B. Passwords are case sensitive. Must be at least 6 characters.<br/>
+                            Must contain at least one lower case letter, one upper case letter, and one number. 
+                        </div>
+    
                         <div class="form-container">
+                            
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">
                                 Choose a new password <span class="mandatory">*</span></label>
-                            <input type="password" class="chox-ttxt" label="Enter Password" name="newPassword" id="newPassword" size="10" maxlength="10" /></div>
+                            <input type="password" class="chox-ttxt" label="Enter Password" name="newPassword" id="newPassword" size="10" maxlength="10" />
+                            </div>
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">
                                 Re-enter new password<span class="mandatory">*</span></label>
-                            <input type="password" class="chox-ttxt" label="Enter Password" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="10" /> </div>
+                            <input type="password" class="chox-ttxt" label="Enter Password" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="10" />
+                            </div>
                             <div class="chox-form-button">
+                                <label class="chox-form-std-label">&nbsp;</label>
                                 <input type="submit" value="Save"/>
                             </div>
                             <div id="submitResult" class="chox-form-submit-result"></div>
                             <div class="errorBox" id="errorMessageBox"></div>
+                            
                         </div>
                     </form>
                 </fieldset>

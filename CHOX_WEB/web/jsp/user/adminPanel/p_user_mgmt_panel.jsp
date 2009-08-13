@@ -75,7 +75,7 @@
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
                 {header: "Role", width: 150, dataIndex: 'role', sortable: true, resizable: true},
-                {header: "Is Password Expired", width: 140, dataIndex: 'isExpired', sortable: false, resizable: true,renderer:function(value,p,r){
+                {header: "Has Password Expired?", width: 140, dataIndex: 'isExpired', sortable: false, resizable: true,renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}}
             ],
             renderTo:'gridviewGrid',
@@ -176,7 +176,7 @@
             
             var aletMsg = "Are you sure you want to cancel the password expired status?";
             if(gridView.get("isExpired") == "No"){
-                aletMsg = "Are you sure you want to mark this user password as expired?";
+                aletMsg = "Are you sure you want to mark this user's password as expired?";
             }
             
             var deleteAtt = confirm(aletMsg);

@@ -140,54 +140,25 @@
 <s:else>
     <tr valign="top">
 </s:else>
-                                    
-                                        <td><s:property value="{#stat.index + 1}" /></td>
-                                        <td><s:property value="#next.claim.choReference" /><span>&nbsp;</span></td>
-                                        
-<s:if test="%{#next.ClaimParseStatus.toString()=='newInvoice'}">
-        <td>New Invoice</td>
-</s:if>
-<s:elseif test="%{#next.ClaimParseStatus.toString()=='newClaim'}">
-        <td>New Claim</td>
-</s:elseif>
-<s:elseif test="%{#next.ClaimParseStatus.toString()=='ClaimNotEditable'}">
-        <td>Claim Closed</td>
-</s:elseif>                                    
-<s:elseif test="%{#next.ClaimParseStatus.toString()=='existClaim'}">
-        <td>Claim Already Exist</td>
-</s:elseif>
-<s:elseif test="%{#next.ClaimParseStatus.toString()=='existInvoice'}">
-        <td>Invoice Already Exists</td>
-</s:elseif>
-<s:elseif test="%{#next.ClaimParseStatus.toString()=='invalidSchema'}">
-        <td>Error</td>
-</s:elseif>
 
-<td><s:property value="#next.claim.status" /><span>&nbsp;</span></td>
-<td><s:property value="(#next.DataValid && #next.Valid)" /><span>&nbsp;</span></td>
+        <td><s:property value="{#stat.index + 1}" /></td>
+        <td><s:property value="#next.claim.choReference" /><span>&nbsp;</span></td>
+        <td><s:property value="#next.UploadedStatus" /><span>&nbsp;</span></td>
+        <td><s:property value="#next.claim.status" /><span>&nbsp;</span></td>
+        <td><s:property value="#next.ProcessStatus" /><span>&nbsp;</span></td>
 
-                                        <!--
-                                        <td>
-                                            <ul>
-                                                <s:iterator id="remark" value="#next.Message">
-                                                    <s:if test="#remark.length() > 0">
-                                                        <li><s:property value="#remark" /></li>
-                                                    </s:if>
-                                                </s:iterator>
-                                            </ul>
-                                            
-                                        <span>&nbsp;</span></td>
-                                        !-->
-                                    </tr>
-                                    
+    </tr>
+
 <s:if test="#next.Message.size() > 0">
     <tr>
         <td colspan="5">
+            <ul>
             <s:iterator id="remark" value="#next.Message">
             <s:if test="#remark.length() > 0">
                 <li><s:property value="#remark" /></li>
             </s:if>
             </s:iterator>
+            </ul>
         </td>
     </tr>
 </s:if>

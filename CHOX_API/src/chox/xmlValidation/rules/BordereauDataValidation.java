@@ -43,11 +43,13 @@ public class BordereauDataValidation {
             
             for(ClaimResult claimResult : bordereauResult.getClaimResult()){
                 
+                /*
                 System.out.println("========================================================================");
                 System.out.println("START: is Claim Valid?: " + claimResult.isValid());
                 System.out.println("START: is Claim Data valid?: " + claimResult.isDataValid());
                 System.out.println("START: Claim Process Status: " + claimResult.getClaimParseStatus());
                 System.out.println("START: Claim Process Msg Size: " + claimResult.getMessage().size());
+                */
                 
                 if(claimResult.isValid()){
                     

@@ -1026,6 +1026,9 @@
                         <s:if test="tabAccessibility.paymentPackTabAccessibility != 0">
                             <script language="JavaScript">
                                 
+                                var sucessColor = "#15428b";
+                                var warningColor = "red";
+                                
                                 $(document).ready(function() {
                                     var maxFileSize = "<s:property value="maxFileSize"/>";
                                     var options = { 
@@ -1035,11 +1038,25 @@
                                 });
                                 
                                 function showResponseAtt(responseText, statusText){ 
+                                    
+                                    var msg = "";
+                                    var cssColor = sucessColor;
+                                    
                                     if(statusText=="success"){
-                                        $("#AttMsgBox").text(responseText);
+                                        
+                                        if(responseText.length>=5 && responseText.substring(0, 5) == 'ERROR'){
+                                            cssColor = warningColor;   
+                                        }
+                                        
+                                        msg = responseText; // $("#AttMsgBox").text(responseText);
+                                        
                                     }else{
-                                        $("#AttMsgBox").text("Unknown Error Encountered, please try again.");
+                                        cssColor = warningColor;  
+                                        msg = "Unknown Error Encountered, please try again."; // $("#AttMsgBox").text("Unknown Error Encountered, please try again.");
                                     }
+                                    
+                                    $("#AttMsgBox").css("color",cssColor);
+                                    $("#AttMsgBox").text(msg);
                                     paymentPackLoaded = false;
                                     loadAttachments();
                                 }
@@ -1056,12 +1073,12 @@
 
                                     var remark = document.Attform.remark.value;
                                     if(remark.length<=0){
-                                        showMsg("Remark cannot be empty");
+                                        showMsg("Description cannot be empty");
                                         return false;
                                     }
                                     
                                     if(bFlag){
-                                        $("#AttMsgBox").css("color","#15428b");
+                                        $("#AttMsgBox").css("color",sucessColor);
                                         if((uploadFile.lastIndexOf("."))>0){
                                             var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
                                             document.Attform.uploadFileName.value = filename;
@@ -1072,7 +1089,7 @@
                                 }
                                 
                                 function showMsg(errorMsg){
-                                        $("#AttMsgBox").css("color","red");
+                                        $("#AttMsgBox").css("color",warningColor);
                                         $("#AttMsgBox").text(errorMsg);                                    
                                 }
                             </script>
@@ -1083,18 +1100,21 @@
                                     <input type="hidden" name="uploadFileName">
                                     <fieldset class="x-fieldset">
                                         <legend>Add a new Attachment&nbsp;</legend>
+<div>
+    <div class="status-info">
+    Maximum attachment size is <s:property value="maxFileSize/1000/1024"/> MB. <br/>
+    The following file formats can be uploaded:<br/><s:property value="AllowFileType"/>
+    </div>
+</div>                          
+<div style="padding-top:10px;">
                                         <table class="chox-form-item" cellpadding="0" cellspacing="0" border="0" width="100%">
                                             <tr>
                                                 <td width="200" align="right">
                                                     <label class="std-label-ro">File&nbsp;&nbsp;</label>
                                                 </td>
                                                 <td>
-                                                    <s:file id="fileUploader" name ="attachmentFile" label ="Attachment" size="40"/>   
+                                                    <s:file id="fileUploader" name ="attachmentFile" label ="Attachment" cssStyle="height: 20px;" size="40"/>   
                                                 </td>
-                                            </tr>
-                                            <tr>
-                                                <td width="200" align="right"></td>
-                                                <td><span class="column_remark">Maximum attachment size is <s:property value="maxFileSize/1000/1024"/> MB</span><br/><br/></td>
                                             </tr>
                                             <tr>
                                                 <td align="right"><label class="std-label-ro">Attachment Type&nbsp;&nbsp;</label></td>
@@ -1124,6 +1144,7 @@
                                                 <td align="left" valign="top"><div class="chox-form-submit-result" id="AttMsgBox" style="text-align: left;"/></td>
                                             </tr>
                                         </table>
+</div>                                        
                                     </fieldset>
                                 </form>
                             </div>

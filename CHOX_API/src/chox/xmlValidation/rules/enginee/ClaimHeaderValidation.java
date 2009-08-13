@@ -27,6 +27,13 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
     private ClaimResult claimResult;
     private Element element;
 
+    // PAGE PARAMETERS
+    Boolean managingRepair;
+    Timestamp firstContactDate;
+    Timestamp creditAgreementDate;
+    Timestamp gtaNoticeDate;
+    String choReferenceNumber;
+        
     public void setChoBandService(ChoBandService choBandService) { this.choBandService = choBandService; }
     public void setChorganisationService(ChorganisationService chorganisationService) { this.chorganisationService = chorganisationService; }
     public void setClaimResult(ClaimResult claimResult) { this.claimResult = claimResult; }
@@ -48,7 +55,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
         
         validate();
         process();
-        doPrintResult(true);
+        doPrintResult(false);
         
         return claimResult;
     }
@@ -64,20 +71,36 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
         this.claimResult = NodeHelper.nodeValidate(sectionName, "rental-status", claimResult.getElement(), claimResult, dataValidationParameter);
         this.claimResult = NodeHelper.nodeValidate(sectionName, "supplier-name", this.element, claimResult, dataValidationParameter);
         this.claimResult = NodeHelper.nodeValidate(sectionName, "supplier-reference", this.element, claimResult, dataValidationParameter);
-    }
-    
-    private void process(){
         
-        Boolean managingRepair = XmlHelper.getBooleanFromNode(claimResult.getElement(), "managing-repair");
-        Timestamp firstContactDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "first-contact");
-        Timestamp creditAgreementDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "agreement-signed");
-        Timestamp gtaNoticeDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "gta-notice");
-        String choReferenceNumber = XmlHelper.getNodeValue(this.element, "supplier-reference");
+        
+        if(NodeHelper.nodeValidateBoolean(sectionName, "first-contact", claimResult.getElement(), dataValidationParameter)){
+            firstContactDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "first-contact");
+        }
+        
+        if(NodeHelper.nodeValidateBoolean(sectionName, "managing-repair", claimResult.getElement(),  dataValidationParameter)){
+            managingRepair = XmlHelper.getBooleanFromNode(claimResult.getElement(), "managing-repair");
+        }
+        
+        if(NodeHelper.nodeValidateBoolean(sectionName, "agreement-signed", claimResult.getElement(),  dataValidationParameter)){
+            creditAgreementDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "agreement-signed");
+        }
+        
+        if(NodeHelper.nodeValidateBoolean(sectionName, "supplier-reference", claimResult.getElement(),  dataValidationParameter)){
+        choReferenceNumber = XmlHelper.getNodeValue(this.element, "supplier-reference");
+        }
+        
+        if(NodeHelper.nodeValidateBoolean(sectionName, "gta-notice", claimResult.getElement(), dataValidationParameter)){
+            gtaNoticeDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "gta-notice");
+        }
         
         if(gtaNoticeDate==null){
             gtaNoticeDate = DateHelper.getCurrentTimeStamp();
         }
         
+    }
+    
+    private void process(){
+       
         Claim claim = new Claim();
 
         if(claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)){
@@ -112,7 +135,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
             }
             
        }else{
-            
+
             claimResult.setClaimParseStatus(ClaimParseStatus.newClaim);
             claim.setManagingRepair(managingRepair);
             claim.setPolicyHolderContactDate(firstContactDate);
@@ -123,7 +146,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
             claim.setIndemnityAmount(new BigDecimal("0.00"));
             claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
             claim.setChorganisation(chorganisationService.getCurrentCHOrganisation());
-            
+
         }
         
         claimResult.setClaim(claim);

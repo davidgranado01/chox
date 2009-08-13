@@ -200,17 +200,13 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         WebUser thisObject = model;
 
         if (thisObject.getStatus()) {
-
             thisObject.setStatus(false);
-
         } else {
-
             if (thisObject.isClaimHandler() && thisObject.getLineOfBusiness() == null) {
                 actionResult = "1:";
             } else {
                 thisObject.setStatus(true);
             }
-
         }
 
         try {
@@ -253,15 +249,22 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
             }
 
             if (mode.equalsIgnoreCase("New")) {
+                
                 doAddNewObject();
+                
             } else {
 
                 if ((lineOfBusinessId == null || lineOfBusinessId < 0) && orgTypeId.equalsIgnoreCase("2")) {
                     model.setLineOfBusiness(null);
                 }
-
-                this.service.updateObject(model);
-                actionResult = "Your changes have been saved.";
+                
+                if (!this.service.isEmailExist(model.getEmail(), model.getId())) {
+                    this.service.updateObject(model);
+                    actionResult = "Your changes have been saved.";
+                }else{
+                    actionResult = "2:";
+                }
+                
             }
 
         } catch (Exception ex) {
@@ -271,15 +274,21 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         return SUCCESS;
     }
 
-    public String updateUserPassword() throws Exception {
-
+    private void encodePassword(){
         PasswordEncoder passwordEncoder = new org.acegisecurity.providers.encoding.Md5PasswordEncoder();
         model.setPassword(passwordEncoder.encodePassword(model.getPassword(), null));
-        model.setIsExpired(false);
+    }
+    
+    public String updateUserPassword() throws Exception {
+        
+        model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+        model.setLastModifiedBy(this.getAuthenticatedUser().getUser());
+        
+        encodePassword();
+        
         this.service.updateObject(model);
-
+        actionResult = "Your changes have been saved.";
         return SUCCESS;
-
     }
 
     private boolean doAddNewObject() {
@@ -290,7 +299,8 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
             model.setCreatedBy(this.getAuthenticatedUser().getUser());
             model.setCreatedDate(DateHelper.getCurrentTimeStamp());
-
+            model.setIsExpired(true);
+            
             if (insurerId > 0) {
                 Insurer selectInsurer = insurerService.getObject(insurerId);
                 model.setInsurer(selectInsurer);
@@ -300,7 +310,9 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
                 Chorganisation selectChorganisation = chorganisationService.getObject(supplierId);
                 model.setChorganisation(selectChorganisation);
             }
-
+            
+            encodePassword();
+            
             if (this.service.updateObject(model)) {
 
                 if (webUserUserRoleService.addBaseNewUserRole(model.getId(), Integer.valueOf(this.orgTypeId))) {
@@ -309,11 +321,13 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
                 }
 
             } else {
-                actionResult = "Please try again!";
+                // actionResult = "Please try again!";
+                actionResult = "3:";
             }
 
         } else {
-            actionResult = "Email Address already exist!";
+            // actionResult = "Email Address already exist!";
+            actionResult = "2:";
         }
 
         return bFlag;
@@ -324,10 +338,6 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         if (Integer.valueOf(objectId) <= 0) {
             model = new WebUser();
             model.setClaimHandler(false);
-
-
-
-
             mode = "New";
         } else {
             model = service.getUsers(Integer.valueOf(objectId));

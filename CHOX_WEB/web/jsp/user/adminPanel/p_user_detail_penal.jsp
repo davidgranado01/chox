@@ -9,17 +9,23 @@
     $(document).ready(function(){
 
         $.validator.addMethod(
-        "regex",
-        function(value, element, regexp) {
-            var check = false;
-            var re = new RegExp(regexp);
-            return this.optional(element) || re.test(value);
-        },
-        "Please check your input."
-    );
+            "regex",
+            function(value, element, regexp) {
+                var check = false;
+                var re = new RegExp(regexp);
+                return this.optional(element) || re.test(value);
+            },
+            "Please check your input."
+        );
 
         doUserSearchSelectOnChange();
-        doFormValidation();
+        
+        if($("#h_mode").val() =='Edit'){
+            doFormValidation();
+        }else{
+            doFormNewValidation();
+        }
+        
     });
 
     function getClaimHandlervalidation(){
@@ -31,7 +37,10 @@
     }
 
     function doFormValidation(){
-
+        
+        $("#CDmessageBox").html("");
+        $(".chox-form-submit-result").html("");
+        
         var validateFlag = $("#formUpdateUserDetail").validate(
         {
             errorLabelContainer: "#CDmessageBox",
@@ -58,11 +67,49 @@
         return validateFlag;
     }
 
-    function doPasswordFormValidation(){
+    function doFormNewValidation(){
 
-        var validateFlag = $("#formUpdatePassword").validate(
+        $("#CDmessageBox").html("");
+        $(".chox-form-submit-result").html("");
+        
+        var validateFlag = $("#formUpdateUserDetail").validate(
         {
             errorLabelContainer: "#CDmessageBox",
+            rules: {
+                email:{required:true, email: true},
+                firstName:{required:true},
+                lastName:{required:true},
+                insurerId:{required:true},
+                supplierId:{required:true},
+                password:{required:true, regex: "^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$"},
+                confirmNewPassword:{equalTo: "#password"},
+                lineOfBusinessId:{required:getClaimHandlervalidation()}
+            },
+            messages: {
+                email:{required:"You must supply a value for 'Email'", email: "Incorrect email format"},
+                firstName:{required:"You must supply a value for 'First Name'"},
+                lastName:{required:"You must supply a value for 'Last Name'"},
+                insurerId:{required:"Please select 'Insurer Company'"},
+                supplierId:{required:"Please select 'Credit Hire Organisation'"},
+                password:{required:"You must supply a value for 'Password'", regex: "Incorrect Password Format"},
+                confirmNewPassword:{equalTo: "Your passwords do not match"},                
+                lineOfBusinessId:{required:"Please select 'Line of Business'"}
+            },
+            submitHandler: function(form) {
+            }
+        });
+
+        return validateFlag;
+    }
+    
+    function doPasswordFormValidation(){
+        
+        $("#CDPswMessageBox").html("");
+        $("#chox-form-password-submit-result").html("");
+        
+        var validateFlag = $("#formUpdatePassword").validate(
+        {
+            errorLabelContainer: "#CDPswMessageBox",
             rules: {
                 password:{required:true, regex: "^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$"},
                 confirmNewPassword:{equalTo: "#password"}
@@ -85,18 +132,49 @@
 
         responseText = responseText.trim();
         var output = "Your changes have been saved.";
+        
+        $("#chox-form-submit-result").attr("class", "chox-form-submit-result")
+        
+        if(responseText != "" && responseText != "1:"){
+            
+            var testLenght = (responseText.trim()).length;
+            
+            if(testLenght>=9){
+                
+                if(responseText.substring(0,9) == 'objectId:'){
+                
+                    confirm("New user setup successful. Please assign a role(s) to the new user.");
+                    var newObjectId =  parseInt(responseText.substring(9,responseText.length));
+                    var orgTypeId = $("#orgTypeId").val();
+                    $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + newObjectId + "&orgTypeId=" + orgTypeId);                
+                
+                }else{
+                    
+                    output = responseText;
+                    $(".chox-form-submit-result").html(output);    
+                
+                }
+                
+            }else if(testLenght==2){
+                
+                if(responseText.substring(0,2) == '2:'){
+                    output = "Email Address already exist!";
+                }else if(responseText.substring(0,2) == '3:'){
+                    output = "Unknown Error encountered, Please try again!";
+                }
+                
+                $("#chox-form-submit-result").attr("class", "action-error-msg")
+                $("#chox-form-submit-result").html(output);  
+                
+            }else{
+                
+                output = responseText;
+                $(".chox-form-submit-result").html(output);   
+                    
+            }
 
-        if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
-            confirm("New user setup successful. Please assign a role(s) to the new user.");
-            var newObjectId =  parseInt(responseText.substring(9,responseText.length));
-            var orgTypeId = $("#orgTypeId").val();
-            $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + newObjectId + "&orgTypeId=" + orgTypeId);
-
-        }else{
-            output = responseText;
-            $(".chox-form-submit-result").html(output);
         }
-
+       
         $("#admin_param_panel").unblock();
     }
 
@@ -105,8 +183,15 @@
     }
 
     function doSubmit(){
+        
+        var isValid = false;
+        if($("#h_mode").val() =='Edit'){
+            isValid = doFormValidation().form();
+        }else{
+            isValid = doFormNewValidation().form();
+        }
 
-        if(doFormValidation().form()){
+        if(isValid){
 
             $("#admin_param_panel").block();
 
@@ -129,7 +214,7 @@
 
             var op = {
                 beforeSubmit:  onBeforeSubmit,
-                success:       onSubmitResponseReceived,
+                success:       onSubmitUpdatePasswordResponseReceived,
                 timeout: 3000,
                 error: onSubmitError
             };
@@ -138,7 +223,12 @@
         }
     }
 
-
+    function onSubmitUpdatePasswordResponseReceived(responseText, statusText){
+        responseText = responseText.trim();
+        $("#chox-form-password-submit-result").html(responseText);
+        $("#admin_param_panel").unblock();
+    }
+    
     function doCancelBack(){
         $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=" + selectedPanel + "&selectOrgTypeId="+<s:property value="orgTypeId"/>);
     }
@@ -191,7 +281,6 @@
                         <label class="chox-form-std-label">Email</label>
                         <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value="<s:property value="email" />"/>
                     </div>
-
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">&nbsp;</label>
                         <span class="column_remark">Please note this (Email) will be the user's Username</span>
@@ -204,7 +293,6 @@
                     <label class="chox-form-std-label">Email<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value="<s:property value="email" />"/>
                 </div>
-
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">&nbsp;</label>
                     <span class="column_remark">Please note this (Email) will be the user's Username</span>
@@ -284,10 +372,26 @@
                     <label class="chox-form-std-label">Last Name<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDLastName" name="lastName" value="<s:property value="lastName" />"/>
                 </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label">&nbsp;</label>
-                    <span class="column_remark">N.B. Passwords are case sensitive.</span>
-                </div>
+                
+                <s:if test="mode=='New'">
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>
+                        <input type="password" class="chox-ttxt" id="password" name="password" size="10" maxlength="10"/>
+                    </div>
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Re-enter Password<span class="mandatory">*</span></label>
+                        <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="10"/>
+                    </div>
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">&nbsp;</label>
+                        <span class="column_remark">N.B. Passwords are case sensitive.</span>
+                    </div>    
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">&nbsp;</label>
+                        <span class="column_remark">Must be at least 6 characters. <br/>Password must be at least 6 characters long, contain at least one upper case letter and at least one number.</span>
+                    </div>
+                </s:if>
+                
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Active</label>
                     <s:checkbox name="status" value="status" />
@@ -296,35 +400,42 @@
                     <input type="button" value="Save Changes" onclick="javascript: return doSubmit();"/>
                     <input type="button" value="Cancel" class="cancel" onclick="javascript: return doCancelBack();" />
                 </div>
-                <div class="chox-form-submit-result"></div>
+                <div class="chox-form-submit-result" id="chox-form-submit-result"></div>
             </div>
         </form>
+        <div id="CDmessageBox" style="text-align:center" class="errorBox"></div>
     </fieldset>
 
-    <fieldset class="x-fieldset">
-        <legend>Password</legend>
-        <form id="formUpdatePassword" action="user/updateUserPassword.action" class="XXentity-form" onsubmit="return true;" method="post">
-            <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
-            <input type="hidden" name="orgTypeId" id="orgTypeId" value='<s:property value="orgTypeId"/>'>
-            <div class="chox-form-item">
-                <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>
-                <input type="password" class="chox-ttxt" id="password" name="password" size="10" maxlength="10"/>
-            </div>
-            <div class="chox-form-item">
-                <label class="chox-form-std-label">&nbsp;</label>
-                <span class="column_remark">Must be at least 6 characters. Must contain at least one one lower case letter, one upper case letter.</span>
-            </div>
-            <div class="chox-form-item">
-                <label class="chox-form-std-label">Re-enter Password<span class="mandatory">*</span></label>
-                <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="10"/>
-            </div>
-            <div class="chox-form-button">
-                <input type="button" id="changePassword" value="Save Password" onclick="javascript:return doSubmitNewPassword();" />
-            </div>
-        </form>
-    </fieldset>
+    <s:if test="mode=='Edit'">
 
-    <div id="CDmessageBox" style="text-align:center" class="errorBox"></div>
+        <fieldset class="x-fieldset">
+            <legend>Password</legend>
+            <div class="status-info">
+                N.B. Passwords are case sensitive. Must be at least 6 characters.<br/>
+                Must contain at least one lower case letter, one upper case letter, and one number. 
+            </div>    
+            <div style="padding-top:20px;">
+            <form id="formUpdatePassword" action="user/updateUserPassword.action" class="XXentity-form" onsubmit="return true;" method="post">
+                <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
+                <input type="hidden" name="orgTypeId" id="orgTypeId" value='<s:property value="orgTypeId"/>'>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>
+                    <input type="password" class="chox-ttxt" id="password" name="password" size="10" maxlength="10"/>
+                </div>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">Re-enter Password<span class="mandatory">*</span></label>
+                    <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="10"/>
+                </div>
+                <div class="chox-form-button">
+                    <input type="button" id="changePassword" value="Save Password" onclick="javascript:return doSubmitNewPassword();" />
+                </div>
+                <div id="chox-form-password-submit-result" class="action_msg"></div>
+            </form>
+            </div> 
+            <div id="CDPswMessageBox" style="text-align:center" class="errorBox"></div>
+        </fieldset>
+
+    </s:if>
 
 </div>
 

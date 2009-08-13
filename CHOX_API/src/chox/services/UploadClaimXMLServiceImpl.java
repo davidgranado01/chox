@@ -127,8 +127,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
                 }
 
-                // System.out.println(">>>>> 04 Status: " + bordereauResult.isValid() + "| Size: " + bordereauResult.getMessage().size());
-
                 bordereauResult.setBordereau(doBordereau(file, fileName, bordereauResult.getBordereauStatus(), BordereauParseStatusDescription));
                 bordereauService.saveObj(bordereauResult.getBordereau());
 
@@ -138,8 +136,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 BordereauParseStatusDescription = "Error, Please try again";
                 
             }
-
-            // System.out.println(">>>>> 05 Status: " + bordereauResult.isValid() + "| Size: " + bordereauResult.getMessage().size());
 
         } catch (Throwable t) {
             t.printStackTrace();
@@ -183,6 +179,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
                             if (readOnlyXmlParseResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
                                 auditTrailService.logAuditLog(readOnlyXmlParseResult.getClaim().getStatus(), readOnlyXmlParseResult.getClaim().getPreviousStatus(), readOnlyXmlParseResult.getClaim());
+                                
+                                if(readOnlyXmlParseResult.getHistory().size()>0){
+                                    historyService.saveHistories(readOnlyXmlParseResult.getHistory());
+                                }
+                                
                             }
 
                         }

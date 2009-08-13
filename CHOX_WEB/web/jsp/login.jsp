@@ -34,12 +34,12 @@
                         <p class="password_entry">
                             <label for="name">
                                 Username:</label>
-                            <input type="text" name="j_username" />
+                            <input type="text" name="j_username" style="width:150px" />
                         </p>
                         <p class="password_entry">
                             <label for="password">
                                 Password:</label>
-                           <input type="password"  name="j_password" />
+                           <input type="password"  name="j_password" style="width:150px"/>
                             <!--<span class="note">(<a href="#">Forgotten Username/Password</a>)</span>-->
                         </p>
                         <!--

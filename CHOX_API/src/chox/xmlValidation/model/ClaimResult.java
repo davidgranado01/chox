@@ -1,6 +1,7 @@
 package chox.xmlValidation.model;
 
 import chox.model.Claim;
+import chox.model.History;
 import chox.model.Injury;
 import chox.model.Solicitor;
 import chox.model.Witness;
@@ -19,10 +20,12 @@ public class ClaimResult{
     private boolean checkDataValid;
     private List<String> message = new ArrayList<String>();
     
+    
     private ArrayList<Witness> witnesses;
     private ArrayList<Injury> injuries;
     private ArrayList<Solicitor> solicitors;
-
+    private List<History> history;
+    
     public ArrayList<Injury> getInjuries() {
         return injuries;
     }
@@ -96,12 +99,52 @@ public class ClaimResult{
         this.claimParseStatus = claimParseStatus;
     }
 
+    public List<History> getHistory() {
+        return history;
+    }
+
+    public void setHistory(List<History> history) {
+        this.history = history;
+    }
+
     public boolean isValid() {
         return valid;
     }
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+    
+    public String getProcessStatus(){
+        String processStatus = "No";
+        if(this.dataValid && this.valid){
+            processStatus = "Yes";
+        }
+        return processStatus;
+    }
+    
+    public String getUploadedStatus(){
+        
+        String sReturn = "";
+
+        if(this.claimParseStatus.equals(ClaimParseStatus.newInvoice)){
+            sReturn ="New Invoice";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.newClaim)){
+            sReturn ="New Claim";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.ClaimNotEditable)){
+            sReturn ="Claim Closed or Pending";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.existClaim)){
+            sReturn ="Claim Already Exist";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.existInvoice)){
+            sReturn ="Invoice Already Exists";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.invalidSchema)){
+            sReturn ="Error";
+        }else{
+            sReturn ="Error";
+        }
+                
+        
+        return sReturn;
     }
     
 }

@@ -16,8 +16,10 @@
             var uploadFile = document.form.upload.value;
             
             if(uploadFile==""){
+                
                 alert("No xml document selected for upload");
                 return false;
+                
             }else{
                 
                 if((uploadFile.lastIndexOf("."))>0){
@@ -34,8 +36,10 @@
                     return false;
                 }
                 
-                return true;
-            }        
+                
+            }  
+            
+            return true;
         }
 
     </script>    
@@ -76,25 +80,21 @@
                 </div>  
                 
                 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-                    <s:form action ="processClaimsAction" method ="POST" enctype="multipart/form-data" name="form">
-                        
-                        
-                        
+                    <s:form action ="processClaimsAction" method ="POST" enctype="multipart/form-data" name="form" onsubmit="return true;">
                         <fieldset class="x-fieldset">
-  
                             <div class="status-info">
                                 Please use the form below to upload claims to CHOX. For further information and assistance, please see the support documentation.
                             </div>                        
                             <table>
                                 <tr>
                                     <td>
-                                        <s:file id="fileUploader" name ="upload" label ="Claim XML File" size="55"/>   
+                                        <s:file id="fileUploader" name ="upload" label ="Claim XML File" size="55" cssStyle="height: 20px;"/>   
                                     </td>
                                 </tr>                
                                 <tr>
                                     <td>    
                                         <s:if test="uploadFlag">
-                                            <s:submit onclick="javascript:validateFile();" value="Upload Claims"/>
+                                            <s:submit onclick="javascript:return validateFile();" value="Upload Claims"/>
                                         </s:if>
                                         <s:else><br/>
                                             <div class="errorBox"><b>Please Contact Admin, BRE Engineer does not exists</b></div>

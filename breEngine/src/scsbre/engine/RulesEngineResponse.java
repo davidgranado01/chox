@@ -19,8 +19,10 @@ public class RulesEngineResponse {
 
     public ClaimStatus getStatus() {
         if (status == null) {
+            
             boolean foundInvoiceDataCalculationIncorrect = false;
             boolean foundFailedRule = false;
+            
             for (int i = 0; i < results.size(); i++) {
                 RuleEvaluation rev = results.get(i);
                 if (rev.getResult() == RuleEvaluationResult.RuleFailed) {
@@ -31,6 +33,7 @@ public class RulesEngineResponse {
                     }         
                 }
             }
+            
             if (foundFailedRule) {
                 if(foundInvoiceDataCalculationIncorrect){
                     status = ClaimStatus.InvoiceDataCalculationIncorrect;

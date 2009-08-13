@@ -5,15 +5,13 @@
 
 package chox.web.actions;
 
+import chox.Util.DateHelper;
 import chox.model.WebUser;
 import chox.services.UserService;
 import org.acegisecurity.providers.encoding.PasswordEncoder;
 import org.hibernate.util.StringHelper;
 
-/**
- *
- * @author Emmanuel
- */
+
 public class UserAccountAction extends BaseAction {
     
     private WebUser webUser;
@@ -35,8 +33,12 @@ public class UserAccountAction extends BaseAction {
 
     public String changePassword()
     {
+
         webUser = this.getAuthenticatedUser().getUser();
 
+        webUser.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+        webUser.setLastModifiedBy(this.getAuthenticatedUser().getUser());
+        
         PasswordEncoder passwordEncoder = new org.acegisecurity.providers.encoding.Md5PasswordEncoder();
         webUser.setPassword(passwordEncoder.encodePassword(getNewPassword(), null));
         webUser.setIsExpired(false);

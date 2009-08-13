@@ -52,11 +52,8 @@
                 renderTo:'repairCompletionDatePH'
             });                    
             
-            
-            //repairBookInDatePicker.render('repairBookInDatePlaceHolder');
-
             $("#formUpdateHireMonitoringDetail").validate(
-            {
+            {   
                 errorLabelContainer: "#HMmessageBox",                
                 rules: {
                     repairBookInDate:{
@@ -82,6 +79,9 @@
                     },
                     nonProvisionReason :{
                         required: isNonProvisionReasonRequired
+                    },
+                    date_compare_field:{
+                        required: isDateCorrect
                     }
                 },
                 messages: {
@@ -111,6 +111,9 @@
                     },
                     nonProvisionReason :{
                         required:"You must select 'Labour Information Non-Provision Reason' if 'Labour Rate', 'Labour Hours' or 'Total Labour Cost' cannot be provided"
+                    },
+                    date_compare_field:{
+                        required:"The 'Repair Completion Date' must be after the 'Repair Book In Date'"
                     }
                 },
                 submitHandler: function(form) {
@@ -118,6 +121,17 @@
                 }
             });
         }); 
+        
+        function isDateCorrect(){
+            
+            var bFlag = true;
+            
+            var repairBookInDt = $("#repairBookInDatePH :input").val();
+            var repairCompletionDt = $("#repairCompletionDatePH :input").val();
+            bFlag = (repairBookInDt <= repairCompletionDt);
+                    
+            return !bFlag;
+        }        
         
         function isNonProvisionReasonRequired(){
             
@@ -131,6 +145,8 @@
             }
             */
            
+           $(".chox-form-submit-result").html("");
+           
             return false;
         }
         
@@ -139,6 +155,8 @@
     <fieldset class="x-fieldset">
         <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
         <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
+        <input type="hidden" name="date_compare_field" value=''>
+        
         <legend>Hire Monitoring</legend>
         <div style="display:none" class="form-container">            
             <div class="chox-form-item">
@@ -176,7 +194,6 @@
                 Repair Completion Date</label>
             <span id="repairCompletionDatePH"></span></div>
             
-            
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">
                 Name of IME</label>
@@ -209,7 +226,7 @@
                 <input type="submit" value="Save Changes" />
             </div>
             
-            <div id="HMmessageBox" style="text-align:center"></div>            
+            <div id="HMmessageBox" style="text-align:center" class="action_msg"></div>            
             <div class="chox-form-submit-result">&nbsp;</div>   
             
             

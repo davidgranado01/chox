@@ -9,6 +9,7 @@ import chox.model.AttachmentType;
 import java.util.List;
 import java.util.ArrayList;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 public class AttachmentTypeServiceImpl extends SecureDataService implements AttachmentTypeService{
@@ -56,7 +57,6 @@ public class AttachmentTypeServiceImpl extends SecureDataService implements Atta
         
         try {
             
-
             DetachedCriteria criteria = DetachedCriteria.forClass(AttachmentType.class);
             criteria.add(Restrictions.eq("code", code));
             attachmentType = (AttachmentType) getByCriteria(criteria);
@@ -75,6 +75,7 @@ public class AttachmentTypeServiceImpl extends SecureDataService implements Atta
         
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(AttachmentType.class);
+            criteria.addOrder(Order.asc("code"));
             list = findByCriteria(criteria);   
         } catch (Throwable e) {
             e.printStackTrace();

@@ -2,6 +2,7 @@ package chox.xmlValidation.rules.enginee;
 
 import chox.model.Claim;
 import chox.model.EngineerReport;
+import chox.model.History;
 import chox.model.VehicleClass;
 import chox.services.ClaimService;
 import chox.services.HireMonitoringEcdService;
@@ -9,7 +10,9 @@ import chox.services.HistoryService;
 import chox.services.InvoiceService;
 import chox.xmlValidation.model.ClaimResult;
 import chox.xmlValidation.model.status.ClaimParseStatus;
+import chox.xmlValidation.rules.Util.HistoryHelper;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
@@ -69,8 +72,6 @@ public class BusinessRuleEngProcess {
     
     private void process(){
         
-        Integer iCount = 0;
-        
         Boolean isEngReportExist = false;
         if(this.claimResult.getClaim().getEngineerReport()!=null){
             isEngReportExist = true;
@@ -89,7 +90,7 @@ public class BusinessRuleEngProcess {
         this.claimResult.getClaim().setStatus(newClaimStatus);
         
         if(validationResult.getResults().size()>0){
-            processBreErrorMessage(validationResult.getResults());
+            this.claimResult.setHistory(processBreErrorMessage(validationResult.getResults()));
         }
 
         /** END BRE VALIDATION **/
@@ -101,15 +102,26 @@ public class BusinessRuleEngProcess {
         this.claimResult.getClaim().getThirdParty().setVehicleClass(thirdVehicleClass);
     }
     
-    private void processBreErrorMessage(List<RuleEvaluation> results){
-
+    private List<History> processBreErrorMessage(List<RuleEvaluation> results){
+        
+        List<History> histories = new ArrayList<History>();
+        
         for(int iCount=0; iCount<results.size(); iCount++){
+            
+            
+            
             RuleEvaluation rv = results.get(iCount);
             if(rv.getIsVisibleToCHO() && rv.getResult()==RuleEvaluationResult.RuleFailed){
                 this.claimResult.getMessage().add(rv.toString());
             }
+            
+            histories.add(HistoryHelper.createHistory(claimResult.getClaim(), rv));
         }
-
+        
+        System.out.println("BRE >>>>>> END" + histories.size());
+        
+        return histories;
+        
     }
     
     private Claim doConstructBreValidateObject(Claim claim){

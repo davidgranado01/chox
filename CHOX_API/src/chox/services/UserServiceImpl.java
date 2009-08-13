@@ -35,6 +35,21 @@ public class UserServiceImpl extends DataService implements UserService {
         return bFlag;
     }
     
+    public boolean isEmailExist(String email, int userId){
+        
+        boolean bFlag = true;
+        
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("email", email).ignoreCase());
+        criteria.add(Restrictions.ne("id", userId));
+        WebUser result = (WebUser) getByCriteria(criteria);
+        
+        if(result==null){
+            bFlag = false;
+        }
+        
+        return bFlag;
+    }
+    
     public void persist(WebUser user, String emailId) {
         this.save(user);
     }
@@ -125,11 +140,9 @@ public class UserServiceImpl extends DataService implements UserService {
     } 
     
     public boolean updateObject(WebUser object) {
-        
         boolean bFlag = false;
-        
         try {
-            
+            object.setEmail(object.getEmail().toLowerCase());
             save(object);
             bFlag = true;
             

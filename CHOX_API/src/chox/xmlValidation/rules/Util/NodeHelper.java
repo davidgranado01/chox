@@ -49,28 +49,34 @@ public class NodeHelper {
         InsurerAlliasService insurerAlliasService,
         InsurerChorganisationService insurerChorganisationService){
         
-        /*
         boolean isValid = true;
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         String value = XMLUtils.getElementValue(element, nodeName); 
 
         // CHECK MANDATORY - VALUE IN XML IS EMPTY
-        if(!value.trim().equalsIgnoreCase("")){
+        if(value.trim().equalsIgnoreCase("")){
+            
             isValid = false;
             claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
-        }
-        
-        // CHECK INSURER ALAIS
-        if(!value.trim().equalsIgnoreCase("")){
+            
+        }else{
+            
             InsurerAllias allias = insurerAlliasService.getInsurerByAlliasName(value);
             
             if(allias!=null){ 
+                
                 if(allias.getInsurer()!=null){
+                    
                     if(!insurerChorganisationService.isActiveObjectExist(allias.getInsurer().getId(), claimResult.getClaim().getChorganisation().getId())){
                         isValid = false;
                         claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value, sectionName));
                     }
+                    
+                }else{
+                    isValid = false;
+                    claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value, sectionName));                
                 }
+                
             }else{
                 isValid = false;
                 claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value, sectionName));
@@ -79,7 +85,6 @@ public class NodeHelper {
         }
         
         setStatus(claimResult, isValid);
-        */
         
         return claimResult;
         
@@ -93,7 +98,6 @@ public class NodeHelper {
         DataValidationParameter dataValidationParameter,
         VehicleClassService vehicleClassService){
         
-        /*
         boolean isValid = true;
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         String value = XMLUtils.getElementValue(element, nodeName); 
@@ -117,7 +121,6 @@ public class NodeHelper {
         }
         
         setStatus(claimResult, isValid);
-        */
         
         return claimResult;
         
@@ -134,6 +137,29 @@ public class NodeHelper {
         String value = XMLUtils.getElementValue(element, nodeName); 
         
         return coreNodevalidation(val, claimResult, value, sectionName);
+    }
+    
+    
+    public static boolean nodeValidateBoolean(
+            String sectionName, 
+            String nodeName, 
+            Element element,
+            DataValidationParameter dataValidationParameter){
+        
+        NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
+        String value = XMLUtils.getElementValue(element, nodeName); 
+        
+        boolean bFlag = true;
+        
+        if(val.isDataMandatory() && value.trim().equalsIgnoreCase("")){
+            bFlag = false;
+        }
+        
+        if(!value.trim().equalsIgnoreCase("") && !isValidDataType(value, val.getDataType(), val.getRegExp())){
+            bFlag = false;
+        }
+        
+        return bFlag;
     }
     
     public static ClaimResult nodeContentValidate(
