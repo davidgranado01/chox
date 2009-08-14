@@ -176,7 +176,7 @@
                             Must contain at least one lower case letter, one upper case letter, and one number. 
                         </div>
     
-                        <div class="form-container">
+                        <div class="form-container" style="padding-top:10px;">
                             
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">

@@ -80,6 +80,7 @@
             $('#iSubject').val("");
             $('#iMessage').val("");
             $.unblockUI();
+            location="~/user/inbox.action";
         }
         
         function getAcknowledgementMsg(){
