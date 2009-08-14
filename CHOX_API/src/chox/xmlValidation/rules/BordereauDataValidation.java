@@ -53,9 +53,13 @@ public class BordereauDataValidation {
                 
                 if(claimResult.isValid()){
                     
+                    // System.out.println(":::: 03 "+claimResult.isValid());
+                    
                     // CHECK CLAIM HEADER
                     ClaimHeaderValidation claimHeaderVal = new ClaimHeaderValidation(claimResult, dataValidationParameter, claimService, chorganisationService, choBandService);
                     claimResult = claimHeaderVal.execute();
+                    
+                    // System.out.println(":::: 04 "+claimResult.getClaim());
                     
                     // CHECK CUSTOMER / DRIVER DETAIL (NEW CLAIM ONLY)
                     CustomerValidation custVal = new CustomerValidation(claimResult, dataValidationParameter, claimService);

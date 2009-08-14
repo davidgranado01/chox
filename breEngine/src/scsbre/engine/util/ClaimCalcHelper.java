@@ -1,14 +1,7 @@
 package scsbre.engine.util;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import scsbre.model.IClaimInfo;
 
 public class ClaimCalcHelper {
@@ -116,14 +109,7 @@ public class ClaimCalcHelper {
             
             int iLabourCostAverageRateDay = getLabourCostAverageRateDay();
             int iDayBufferForEngineeringProcess = getDayBufferForEngineeringProcess();
-            
-            // System.out.println("iLabourCostAverageRateDay:"+iLabourCostAverageRateDay);
-            // System.out.println("iDayBufferForEngineeringProcess:"+iDayBufferForEngineeringProcess);
-            
             int iWeekedBuffer = getWeekedBuffer(iLabourCostAverageRateDay+iDayBufferForEngineeringProcess);
-            
-            // System.out.println("iWeekedBuffer:"+iWeekedBuffer);
-            
             return iLabourCostAverageRateDay + iWeekedBuffer + iDayBufferForEngineeringProcess;
         }
         
@@ -181,17 +167,11 @@ public class ClaimCalcHelper {
             BigDecimal bAverageLabourRate =  new BigDecimal(claim.getChoBand().getAverageLabourRate());
             BigDecimal bLabourCostAverageRateDay = new BigDecimal(0.00);
             
-            // System.out.println("getLabourCostAverageRateDay:bLabourCost:"+bLabourCost.longValue());
-            // System.out.println("getLabourCostAverageRateDay:bAverageLabourRate:"+bAverageLabourRate.longValue());
-            // System.out.println("getLabourCostAverageRateDay:bAverageLabourHoursPerHireDay:"+bAverageLabourHoursPerHireDay.longValue());
-            
             if(bLabourCost.doubleValue()>0 
                     && bAverageLabourRate.doubleValue()>0 
                     && bAverageLabourHoursPerHireDay.doubleValue()>0){
                 bLabourCostAverageRateDay = (bLabourCost.divide(bAverageLabourRate)).divide(bAverageLabourHoursPerHireDay);
             }
-            
-            // System.out.println("getLabourCostAverageRateDay:bLabourCostAverageRateDay:"+bLabourCostAverageRateDay);
 
             return mathHelper.getIntegerFromDecimalRound(bLabourCostAverageRateDay);
             
@@ -229,12 +209,10 @@ public class ClaimCalcHelper {
                 if (claim.getCustomerVehicleDamage().getIsUsable())
                 {
                     iDays += claim.getChoBand().getTakeVehicleToGarageDaysMobile();
-                    // System.out.println("getTakeVehicleToGarageDaysMobile:"+claim.getChoBand().getTakeVehicleToGarageDaysMobile());
                 }
                 else
                 {
                     iDays += claim.getChoBand().getTakeVehicleToGarageDaysNonMobile();
-                    // System.out.println("getTakeVehicleToGarageDaysNonMobile:"+claim.getChoBand().getTakeVehicleToGarageDaysNonMobile());
                 }
             }
             else
@@ -242,21 +220,15 @@ public class ClaimCalcHelper {
                 if (claim.getCustomerVehicleDamage().getIsUsable())
                 {
                     iDays += claim.getChoBand().getTakeVehicleToGarageDaysMobile();
-                    // System.out.println("getTakeVehicleToGarageDaysMobile:"+claim.getChoBand().getTakeVehicleToGarageDaysMobile());
                 }
                 else
                 {
                     iDays += claim.getChoBand().getTakeVehicleToGarageDaysNonMobile();
-                    // System.out.println("getTakeVehicleToGarageDaysNonMobile:"+claim.getChoBand().getTakeVehicleToGarageDaysNonMobile());
                 }
             }
             
             iDays += claim.getChoBand().getTakeVehicleOutDays();
             iDays += claim.getChoBand().getEngineerInspectionDelayDays();
-            
-            // System.out.println("getTakeVehicleOutDays:"+claim.getChoBand().getTakeVehicleOutDays());
-            // System.out.println("getEngineerInspectionDelayDays:"+claim.getChoBand().getEngineerInspectionDelayDays());
-            // System.out.println("TOTAL DAYS:"+iDays);
                     
             return iDays;
         }

@@ -18,9 +18,9 @@ public class DataValidationParameter {
         // String xmlValidationTemplate = "c:/Project Workplace/Greefinch/Sherwood/choxidas/trunk/CHOX_WEB/web/excelTemplate/"+XMLDataValidateFile;
         
         String xmlValidationTemplate = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + XMLDataValidateFile);
-        
         this.XMLDataValidateDocument = DocumentHelper.getDocumentFromFile(new File(xmlValidationTemplate));
         this.mainRoot = XMLDataValidateDocument.getDocumentElement();
+        
     }
     
     public NodeRuleModel getValidationElementByField(String nodeName){
@@ -35,8 +35,9 @@ public class DataValidationParameter {
             ruleModel.setDataMandatory(fieldNode.getChildNodes().item(5).getTextContent());
             ruleModel.setRegExp(fieldNode.getChildNodes().item(7).getTextContent());
             ruleModel.setNodeDesc(fieldNode.getChildNodes().item(1).getTextContent());
-
+            
         }catch(Exception ex){
+            
         }
         
         return ruleModel;

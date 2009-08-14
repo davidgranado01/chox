@@ -5,6 +5,8 @@
     <bean id="auditInterceptor" class="chox.data.DBInterceptor" singleton="false">
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
+    
+    <!--
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver">
         </property>
@@ -15,7 +17,8 @@
         <property name="password" value="GreenF1nCH">
         </property>
     </bean>
-    <!--
+    !-->
+    
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver">
         </property>
@@ -26,7 +29,7 @@
         <property name="password" value="chox">
         </property>
     </bean>    
-    !-->
+    
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource">
             <ref bean="dataSource" />

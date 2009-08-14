@@ -82,15 +82,21 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
             bordereauResult = new BordereauFileValidation().validate(file, fileName, bordereauResult);
             String BordereauParseStatusDescription = "Error";
-
+            
+            // System.out.println(":::: 00 "+bordereauResult.isValid());
+            
             if (bordereauResult.isValid()) {
 
                 bordereauResult = new BordereauVersionValidation().validate(file, fileName, bordereauResult);
-
+                
+                // System.out.println(":::: 02 "+bordereauResult.isValid());
+                
                 if (bordereauResult.isValid()) {
 
                     bordereauResult = new BordereauDataValidation().validate(file, fileName, bordereauResult, claimService, chorganisationService, choBandService, vehicleClassService, insurerAlliasService, insurerChorganisationService, hireMonitoringEcdService, invoiceService, historyService);
-
+                    
+                    // System.out.println(":::: 03 "+bordereauResult.isValid());
+                    
                     int totalRecord = bordereauResult.getClaimResult().size();
                     int totalProcessed = 0;
 
@@ -111,13 +117,13 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
                     if (totalProcessed >= totalRecord) {
                         bordereauResult.setBordereauStatus(BordereauParseStatus.allUploaded);
-                        BordereauParseStatusDescription = "All claims have uploaded";
+                        BordereauParseStatusDescription = "All claims have been uploaded successfully";
                     } else if (totalProcessed < totalRecord && totalProcessed != 0) {
                         bordereauResult.setBordereauStatus(BordereauParseStatus.partialUpload);
-                        BordereauParseStatusDescription = totalProcessed + " out of " + totalRecord + " claims have uploaded";
+                        BordereauParseStatusDescription = totalProcessed + " out of " + totalRecord + " claims have been uploaded";
                     } else if (totalProcessed == 0) {
                         bordereauResult.setBordereauStatus(BordereauParseStatus.allRejected);
-                        BordereauParseStatusDescription = totalRecord + " of claims have rejected";
+                        BordereauParseStatusDescription = "All " + totalRecord + " claims have been rejected";
                     }
 
                 } else {

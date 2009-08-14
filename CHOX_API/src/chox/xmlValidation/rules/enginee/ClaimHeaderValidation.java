@@ -72,7 +72,6 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
         this.claimResult = NodeHelper.nodeValidate(sectionName, "supplier-name", this.element, claimResult, dataValidationParameter);
         this.claimResult = NodeHelper.nodeValidate(sectionName, "supplier-reference", this.element, claimResult, dataValidationParameter);
         
-        
         if(NodeHelper.nodeValidateBoolean(sectionName, "first-contact", claimResult.getElement(), dataValidationParameter)){
             firstContactDate = XmlHelper.getTimeStampFromNode(claimResult.getElement(), "first-contact");
         }
@@ -86,7 +85,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
         }
         
         if(NodeHelper.nodeValidateBoolean(sectionName, "supplier-reference", claimResult.getElement(),  dataValidationParameter)){
-        choReferenceNumber = XmlHelper.getNodeValue(this.element, "supplier-reference");
+            choReferenceNumber = XmlHelper.getNodeValue(this.element, "supplier-reference");
         }
         
         if(NodeHelper.nodeValidateBoolean(sectionName, "gta-notice", claimResult.getElement(), dataValidationParameter)){
@@ -96,13 +95,12 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
         if(gtaNoticeDate==null){
             gtaNoticeDate = DateHelper.getCurrentTimeStamp();
         }
-        
     }
     
     private void process(){
        
         Claim claim = new Claim();
-
+        
         if(claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)){
             
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
@@ -137,7 +135,11 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
        }else{
 
             claimResult.setClaimParseStatus(ClaimParseStatus.newClaim);
-            claim.setManagingRepair(managingRepair);
+            
+            if(managingRepair!=null){
+                claim.setManagingRepair(managingRepair);
+            }
+            
             claim.setPolicyHolderContactDate(firstContactDate);
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
             claim.setChoReference(choReferenceNumber);
@@ -148,6 +150,8 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
             claim.setChorganisation(chorganisationService.getCurrentCHOrganisation());
 
         }
+        
+        System.out.println(":::: 03 A: " + claim);
         
         claimResult.setClaim(claim);
     }
