@@ -12,9 +12,18 @@ import java.sql.SQLException;
 
 public class DataService {
 
+    
+    final String databaseServer = "localhost:5432";
     final String databaseConnection = "chox";
     final String databaseUserName = "chox";
     final String databaseUserPsw= "chox";
+    
+    /*
+    final String databaseServer = "10.0.0.2:5432";
+    final String databaseConnection = "chox_test";
+    final String databaseUserName = "postgres";
+    final String databaseUserPsw= "GreenF1nCH";
+    */
     
     public Connection getConnection(){
 
@@ -23,7 +32,7 @@ public class DataService {
         try {
             
             if(isDriverExist()){
-                c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/" + databaseConnection, databaseUserName, databaseUserPsw);
+                c = DriverManager.getConnection("jdbc:postgresql://"+databaseServer+"/" + databaseConnection, databaseUserName, databaseUserPsw);
             }
             
         } catch (SQLException se) {
