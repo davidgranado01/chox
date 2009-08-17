@@ -6,7 +6,6 @@
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
     
-   
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver">
         </property>
@@ -30,6 +29,7 @@
         </property>
     </bean>    
     !-->
+    
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource">
             <ref bean="dataSource" />
