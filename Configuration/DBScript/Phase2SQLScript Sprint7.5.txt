@@ -1,0 +1,10 @@
+
+-- ############################################################################################
+-- START VERSION V2.7.5
+-- ############################################################################################\
+
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name = 'action.reviewByEngineer.ClaimReferredToEngineer';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name = 'action.claimPending.ClaimPending';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name = 'action.updateInvoiceReferredByEngineer.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name = 'action.updateClaimUpdatedByEngineer.ClaimUpdatedByEngineer';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name = 'action.approveContestedInvoiceToEng.InvoiceReferredToEngineer';
