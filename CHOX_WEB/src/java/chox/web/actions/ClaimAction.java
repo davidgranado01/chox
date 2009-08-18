@@ -132,7 +132,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String sAllowFileType = "";
         
         for(AttachmentType a : attachmentTypeService.getAllAttachmentType()){
-            sAllowFileType+= a.getDescription() + " (."+a.getCode()+"), ";
+            //sAllowFileType+= a.getDescription() + " (."+a.getCode()+"), ";
+            sAllowFileType+= "."+a.getCode()+", ";
         }
         
         if(sAllowFileType.length()>2){
@@ -140,6 +141,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         
         return sAllowFileType;
+    }
+    
+    public List<AttachmentType> getAllowFileTypes(){        
+        return  attachmentTypeService.getAllAttachmentType();
     }
     
     public int getMaxFileSize() {

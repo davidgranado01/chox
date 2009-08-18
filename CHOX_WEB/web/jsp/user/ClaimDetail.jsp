@@ -1092,6 +1092,35 @@
                                         $("#AttMsgBox").css("color",warningColor);
                                         $("#AttMsgBox").text(errorMsg);                                    
                                 }
+                                
+Ext.onReady(function(){
+    
+    var attachmentHtmlDesc = "";
+
+    attachmentHtmlDesc = "<table cellpadding='0' cellspacing='0' border='0' class='remarkTable'>";
+    attachmentHtmlDesc += "<tr><th width='28%'><b>Type</b></th><th width='70%'><b>Description</b></th></tr>";
+    
+    <s:iterator value="AllowFileTypes">
+        attachmentHtmlDesc += '<tr>';
+        attachmentHtmlDesc += '<td>.<s:property value="code"/></td>';
+        attachmentHtmlDesc += '<td><s:property value="description"/></td>';
+        attachmentHtmlDesc += '</tr>';
+    </s:iterator>
+
+    attachmentHtmlDesc += "</table>";
+
+    new Ext.ToolTip({
+        target: 'attachmentTypeSpan',
+        html: attachmentHtmlDesc,
+        title: 'Attachment Formats',
+        autoHide: false,
+        closable: true,
+        draggable:true
+    });
+    
+    Ext.QuickTips.init();
+
+});                                
                             </script>
                                 
                             <div class="attachments  x-panel-bwrap chox-form-container">
@@ -1100,13 +1129,6 @@
                                     <input type="hidden" name="uploadFileName">
                                     <fieldset class="x-fieldset">
                                         <legend>Add a new Attachment&nbsp;</legend>
-<div>
-    <div class="status-info">
-    Maximum attachment size is <s:property value="maxFileSize/1000/1024"/> MB. <br/>
-    The following file formats can be uploaded:<br/><s:property value="AllowFileType"/>
-    </div>
-</div>                          
-<div style="padding-top:10px;">
                                         <table class="chox-form-item" cellpadding="0" cellspacing="0" border="0" width="100%">
                                             <tr>
                                                 <td width="200" align="right">
@@ -1116,6 +1138,20 @@
                                                     <s:file id="fileUploader" name ="attachmentFile" label ="Attachment" cssStyle="height: 20px;" size="40"/>   
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td></td>
+                                                
+                                                <td>
+
+<div class="column_remark" style="padding:10 0 10 0;">
+    Maximum attachment size is <s:property value="maxFileSize/1000/1024"/> MB. <br/>
+    Currently, CHOX supports attachments in the following formats: <br/>
+    <s:property value="AllowFileType"/>&nbsp;&nbsp;<img src="../images/help.png" id="attachmentTypeSpan"/>
+</div>
+                                                </td>
+                                                
+                                            </tr>
+                                            
                                             <tr>
                                                 <td align="right"><label class="std-label-ro">Attachment Type&nbsp;&nbsp;</label></td>
                                                 <td>
@@ -1144,7 +1180,7 @@
                                                 <td align="left" valign="top"><div class="chox-form-submit-result" id="AttMsgBox" style="text-align: left;"/></td>
                                             </tr>
                                         </table>
-</div>                                        
+                      
                                     </fieldset>
                                 </form>
                             </div>

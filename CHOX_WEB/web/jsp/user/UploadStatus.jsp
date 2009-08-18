@@ -112,9 +112,9 @@
                                 <tr>
                                     <th width="30px"></th>
                                     <th width="1%" nowrap="true">Supplier Reference&nbsp;&nbsp;</th>
-                                    <th>Upload Status</th>
                                     <th>Claim Status</th>
-                                    <th>Uploaded?</th>
+                                    <th>Process Status</th>
+                                    <th>Remark</th>
                                 </tr>
                                 
                                 <s:iterator id="next" value="bordereauResult.ClaimResult" status="stat">
@@ -143,9 +143,9 @@
 
         <td><s:property value="{#stat.index + 1}" /></td>
         <td><s:property value="#next.claim.choReference" /><span>&nbsp;</span></td>
-        <td><s:property value="#next.UploadedStatus" /><span>&nbsp;</span></td>
-        <td><s:property value="#next.claim.status" /><span>&nbsp;</span></td>
+        <td><s:property value="#next.ClaimStatus" /><span>&nbsp;</span></td>
         <td><s:property value="#next.ProcessStatus" /><span>&nbsp;</span></td>
+        <td><s:property value="#next.UploadedStatus" /><span>&nbsp;</span></td>
 
     </tr>
 
