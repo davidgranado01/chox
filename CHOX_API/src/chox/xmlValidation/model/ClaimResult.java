@@ -116,11 +116,43 @@ public class ClaimResult{
     }
     
     public String getProcessStatus(){
-        String processStatus = "No";
+        
+        String processStatus = "Failed";
+        
         if(this.dataValid && this.valid){
-            processStatus = "Yes";
+            
+            processStatus = "Uploaded";
+            
+            if(this.claimParseStatus.equals(ClaimParseStatus.existClaim)){
+                processStatus = "Updated";
+            }
+            
         }
+        
         return processStatus;
+    }
+    
+    public String getClaimStatus(){
+        
+        String sReturn = "";
+        
+        if(this.claim!=null){
+            sReturn = this.claim.getStatus();
+        }
+        
+        if(this.claimParseStatus.equals(ClaimParseStatus.newClaim)
+            && (!this.dataValid || !this.valid)
+        ){
+            sReturn = "N/A";
+        }
+        
+        if(this.claimParseStatus.equals(ClaimParseStatus.invalidSchema)){
+            sReturn = "N/A";
+        }
+        
+        // System.out.println(">>>>>> ClaimStatus : " + sReturn);
+        
+        return sReturn;
     }
     
     public String getUploadedStatus(){
@@ -138,11 +170,10 @@ public class ClaimResult{
         }else if(this.claimParseStatus.equals(ClaimParseStatus.existInvoice)){
             sReturn ="Invoice Already Exists";
         }else if(this.claimParseStatus.equals(ClaimParseStatus.invalidSchema)){
-            sReturn ="Error";
+            sReturn ="Incorrect XML Structure";
         }else{
             sReturn ="Error";
         }
-                
         
         return sReturn;
     }

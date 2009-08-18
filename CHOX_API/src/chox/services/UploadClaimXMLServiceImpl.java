@@ -83,8 +83,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             bordereauResult = new BordereauFileValidation().validate(file, fileName, bordereauResult);
             String BordereauParseStatusDescription = "Error";
             
-            // System.out.println(":::: 00 "+bordereauResult.isValid());
-            
             if (bordereauResult.isValid()) {
 
                 bordereauResult = new BordereauVersionValidation().validate(file, fileName, bordereauResult);
@@ -95,7 +93,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
                     bordereauResult = new BordereauDataValidation().validate(file, fileName, bordereauResult, claimService, chorganisationService, choBandService, vehicleClassService, insurerAlliasService, insurerChorganisationService, hireMonitoringEcdService, invoiceService, historyService);
                     
-                    // System.out.println(":::: 03 "+bordereauResult.isValid());
+                    // System.out.println(":::: 03 - A: "+bordereauResult.isValid());
                     
                     int totalRecord = bordereauResult.getClaimResult().size();
                     int totalProcessed = 0;
@@ -127,7 +125,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     }
 
                 } else {
-
+                    
+                    // System.out.println(":::: 03 - B: "+bordereauResult.isValid());
+                    
                     bordereauResult.setBordereauStatus(BordereauParseStatus.error);
                     BordereauParseStatusDescription = "Incorrect File Version";
 
