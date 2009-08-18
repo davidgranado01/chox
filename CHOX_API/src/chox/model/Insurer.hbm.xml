@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="chox.model.Insurer" table="insurer">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <property column="name" name="name"/>
+    <property column="status" name="status"/>
+    <property column="address1" name="address1" not-null="true"/>
+    <property column="address2" name="address2" not-null="true"/>
+    <property column="address3" name="address3"/>
+    <property column="address4" name="address4"/>
+    <property column="address5" name="address5"/>
+    <property column="postcode" name="postcode" not-null="true"/>
+    <property column="phone" name="phone"/>
+    <property column="vat_no" name="vatNo" not-null="true"/>
+    <property column="company_no" name="companyNo" not-null="true"/>
+    <property column="admin_handling_charge" name="adminHandlingCharge"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+    <property column="created_date" name="createdDate"/>
+    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+  </class>
+</hibernate-mapping>
