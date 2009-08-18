@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="autodetect">
+    <bean id="securityInfoProvider" class="chox.web.data.WebSecurityInfoProvider" singleton="false"/>
+    <bean id="auditInterceptor" class="chox.data.DBInterceptor" singleton="false">
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver">
+        </property>
+        <property name="url" value="jdbc:postgresql://localhost:5432/chox_test">       
+        </property>
+        <property name="username" value="postgres">
+        </property>
+        <property name="password" value="GreenF1nCH">
+        </property>
+    </bean>
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource" />
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.autocommit">false</prop>
+            </props>
+        </property>
+        <property name="mappingResources">
+            <list>
+                <value>chox/model/GlobalConfiguration.hbm.xml</value>
+                <value>chox/model/History.hbm.xml</value>
+                <value>chox/model/WebUser.hbm.xml</value>
+                <value>chox/model/WebUserRole.hbm.xml</value>
+                <value>chox/model/ChoBandOrganisation.hbm.xml</value>
+                <value>chox/model/Chorganisation.hbm.xml</value>
+                <value>chox/model/Claim.hbm.xml</value>
+                <value>chox/model/Customer.hbm.xml</value>
+                <value>chox/model/EngineerReport.hbm.xml</value>
+                <value>chox/model/HireMonitoringDetail.hbm.xml</value>
+                <value>chox/model/Incident.hbm.xml</value>
+                <value>chox/model/Injury.hbm.xml</value>
+                <value>chox/model/Insurer.hbm.xml</value>
+                <value>chox/model/Invoice.hbm.xml</value>
+                <value>chox/model/LineOfBusiness.hbm.xml</value>
+                <value>chox/model/Solicitor.hbm.xml</value>
+                <value>chox/model/ThirdParty.hbm.xml</value>
+                <value>chox/model/VehicleClass.hbm.xml</value>
+                <value>chox/model/VehicleHire.hbm.xml</value>
+                <value>chox/model/Witness.hbm.xml</value>
+                <value>chox/model/ChoBand.hbm.xml</value>
+                <value>chox/model/InsurerAllias.hbm.xml</value>
+                <value>chox/model/Accessibility.hbm.xml</value>
+                <value>chox/model/AccessibilityItem.hbm.xml</value>
+                <value>chox/model/Comment.hbm.xml</value>
+                <value>chox/model/Attachment.hbm.xml</value>
+                <value>chox/model/HireMonitoringEcd.hbm.xml</value>
+                <value>chox/model/AuditTrail.hbm.xml</value>
+                <value>chox/model/ReasonOfRejection.hbm.xml</value>
+                <value>chox/model/SupportMessage.hbm.xml</value>
+                <value>chox/model/SystemLog.hbm.xml</value>
+                <value>chox/model/WebUserUserRole.hbm.xml</value>
+                <value>chox/model/InsurerChorganisation.hbm.xml</value>
+                <value>chox/model/ReasonOfDelay.hbm.xml</value>
+                <value>chox/model/AttachmentType.hbm.xml</value>
+                <value>chox/model/Bordereau.hbm.xml</value>
+            </list>
+        </property>
+        <property name="entityInterceptor" ref="auditInterceptor"/>
+    </bean>
+        <!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="claimService" class="chox.services.ClaimServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+    <bean id="lookupService" class="chox.services.LookupServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="accessibilityService" class="chox.services.AccessibilityServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="applicationAccessibility" class="chox.web.security.ApplicationAccessibility" singleton="true">
+        <property name="accessibilityService" ref="accessibilityService"/>
+    </bean>
+    <bean id="incidentService" class="chox.services.IncidentServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="commentService" class="chox.services.CommentServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="customerService" class="chox.services.CustomerServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="engineerReportService" class="chox.services.EngineerReportServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="hireMonitoringDetailService" class="chox.services.HireMonitoringDetailServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="historyService" class="chox.services.HistoryServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="invoiceService" class="chox.services.InvoiceServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="solicitorService" class="chox.services.SolicitorServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="injuryService" class="chox.services.InjuryServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="thirdPartyService" class="chox.services.ThirdPartyServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="vehicleHireService" class="chox.services.VehicleHireServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="vehicleClassService" class="chox.services.VehicleClassServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="witnessService" class="chox.services.WitnessServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="attachmentService" class="chox.services.AttachmentServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="insurerService" class="chox.services.InsurerServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="hireMonitoringEcdService" class="chox.services.HireMonitoringEcdServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="insurerAlliasService" class="chox.services.InsurerAlliasServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="reasonOfDelayService" class="chox.services.ReasonOfDelayServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>   
+    <bean id="attachmentTypeService" class="chox.services.AttachmentTypeServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>      
+    <bean id="chorganisationService" class="chox.services.ChorganisationServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+    <bean id="choBandOrganisationService" class="chox.services.ChoBandOrganisationServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+    <bean id="choBandService" class="chox.services.ChoBandServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="globalConfigurationService" class="chox.services.GlobalConfigurationServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="auditTrailService" class="chox.services.AuditTrailServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+    <bean id="userService" class="chox.services.UserServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="dataService" class="chox.services.SecureDataService" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>    
+    <bean id="reasonOfRejectionService" class="chox.services.ReasonOfRejectionServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>    
+    <bean id="supportMessageService" class="chox.services.SupportMessageServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean> 
+    <bean id="systemLogService" class="chox.services.SystemLogServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>     
+    <bean id="webUserUserRoleService" class="chox.services.WebUserUserRoleServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>  
+    <bean id="lineOfBusinessService" class="chox.services.LineOfBusinessServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="insurerChorganisationService" class="chox.services.InsurerChorganisationServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>    
+    <bean id="bordereauService" class="chox.services.BordereauServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>        
+    <bean id="uploadClaimXMLService" class="chox.services.UploadClaimXMLServiceImpl" singleton="false">
+        <property name="vehicleClassService" ref="vehicleClassService" />
+        <property name="engineerReportService" ref="engineerReportService" />
+        <property name="incidentService" ref="incidentService" />
+        <property name="injuryService" ref="injuryService" />
+        <property name="customerService" ref="customerService" />
+        <property name="claimService" ref="claimService" />
+        <property name="witnessService" ref="witnessService" />
+        <property name="thirdPartyService" ref="thirdPartyService" />
+        <property name="vehicleHireService" ref="vehicleHireService" />
+        <property name="solicitorService" ref="solicitorService" />
+        <property name="invoiceService" ref="invoiceService" />
+        <property name="insurerAlliasService" ref="insurerAlliasService" />
+        <property name="chorganisationService" ref="chorganisationService" />
+        <property name="choBandService" ref="choBandService" />
+        <property name="historyService" ref="historyService" />
+        <property name="auditTrailService" ref="auditTrailService" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+        <property name="bordereauService" ref="bordereauService"/>
+    </bean>
+</beans>
