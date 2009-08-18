@@ -14,14 +14,8 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.SchedulerException;
 
-
-/**
- *
- * @author Carlson
- */
 public class Main {
 
-    
     public static void main(String[] args) throws SchedulerException {
         
         /*
