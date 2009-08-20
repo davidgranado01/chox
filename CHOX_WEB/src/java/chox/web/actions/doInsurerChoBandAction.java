@@ -109,7 +109,7 @@ public class doInsurerChoBandAction extends BaseAction implements ModelDriven<Ch
                 return SUCCESS;
             }
             
-            actionResult = "Your changes have been saved. Click on the Cancel button to return to the BRE Band tab options.";   
+            actionResult = "";
             
             this.service.updateObject(model);
             

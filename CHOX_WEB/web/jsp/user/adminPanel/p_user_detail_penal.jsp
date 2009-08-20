@@ -143,7 +143,7 @@
                 
                 if(responseText.substring(0,9) == 'objectId:'){
                 
-                    confirm("New user setup successful. Please assign a role(s) to the new user.");
+                    alert("New user setup successful. Please assign a role(s) to the new user.");
                     var newObjectId =  parseInt(responseText.substring(9,responseText.length));
                     var orgTypeId = $("#orgTypeId").val();
                     $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + newObjectId + "&orgTypeId=" + orgTypeId);                
@@ -384,11 +384,8 @@
                     </div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">&nbsp;</label>
-                        <span class="column_remark">N.B. Passwords are case sensitive.</span>
-                    </div>    
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">&nbsp;</label>
-                        <span class="column_remark">Must be at least 6 characters. <br/>Password must be at least 6 characters long, contain at least one upper case letter and at least one number.</span>
+                        <span class="column_remark">N.B. Passwords are case sensitive. Must be at least 6 characters.<br/>
+                        Must contain at least one lower case letter, one upper case letter, and one number. </span>
                     </div>
                 </s:if>
                 
