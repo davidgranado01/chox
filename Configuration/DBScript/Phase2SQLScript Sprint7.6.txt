@@ -1,0 +1,2 @@
+update accessibility_item set access_right=1 where accessibility_id in (select id from accessibility where name like 'tab.PaymentPack%') and role='ALL';
+update accessibility_item set access_right = 0 where accessibility_id in (select id from accessibility where name = 'tab.HireMonitoring.ClaimReferredToFNOL');
