@@ -76,7 +76,7 @@ public class doInsurerAlliasAction extends BaseAction implements ModelDriven<Ins
             model.setInsurer(insurerService.getObject(insurerId));
             service.updateObject(model);
         }else{
-            actionResult = "'"+insurerAlliasName+"' already exists!";
+            actionResult = "Alias '"+insurerAlliasName+"' already exists";
         }
         
         return SUCCESS;

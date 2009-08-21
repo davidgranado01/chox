@@ -81,7 +81,7 @@ public class doInsurerLineOfBusinessAction extends BaseAction implements ModelDr
             model.setActive(true);
             service.updateObject(model);
         }else{
-            actionResult = "Line of business is already exists";
+            actionResult = "Line of business '"+lineOfBusinessName+"' already exists";
         }
         return SUCCESS;
     }
