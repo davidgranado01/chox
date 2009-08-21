@@ -135,7 +135,7 @@
         doParameterRefresh();
         
         if(selectBandId<=0){
-            alert("Please select a BRE band.");
+            alert("Please select a BRE Band");
             return;
         }
         
@@ -193,11 +193,11 @@
                 <tr><td colspan="2"><div id="CDChobandMappingMessageBox" class="errorBox"></div></td></tr>                
             <tr>
                 <td valign="top">
-                    <div class="girdViewLabel">Selected Credit Hire</div>
+                    <div class="girdViewLabel">Selected Credit Hire Organisations</div>
                     <div id="choband_s_gridviewGrid" class="girdViewObject"></div>
                 </td>
                 <td valign="top">
-                    <div class="girdViewLabel">Available Credit Hire</div>
+                    <div class="girdViewLabel">Available Credit Hire Organisations</div>
                     <div id="choband_a_gridviewGrid" class="girdViewObject"></div>
                 </td>
             </tr>

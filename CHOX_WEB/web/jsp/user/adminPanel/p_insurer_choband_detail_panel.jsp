@@ -9,8 +9,14 @@
         var selectedPanel = "InsurerChoBandMgmt"; 
         var selectOrgId = <s:property value="insurerId" />;
         var objectId = -1;
+        var isNew = false;
         
         $(document).ready(function(){
+            
+            if(<s:property value="objectId"/><0){
+                isNew = true;
+            }
+            
             doFormValidation();
         }); 
         
@@ -70,18 +76,28 @@
         
         function doInsurerChoBandSubmit(){
         
+            var confirmationMsg = "Are you sure you wish to save the changes made?";
+            
+            if(isNew){
+                confirmationMsg = "Are you sure you wish to add this BRE Band?";
+            }        
+        
             if(doFormValidation().form()){
             
-                $("#admin_param_panel").block();
-                
-                var op = { 
-                    beforeSubmit:  onBeforeSubmit,
-                    success:onSubmitResponseReceived,
-                    timeout: 3000,
-                    error: onSubmitError
-                };
-                
-               $("#formUpdateInsurerChoBandDetail").ajaxSubmit(op);
+                if(confirm(confirmationMsg)){
+
+                    $("#admin_param_panel").block();
+
+                    var op = { 
+                        beforeSubmit:  onBeforeSubmit,
+                        success:onSubmitResponseReceived,
+                        timeout: 3000,
+                        error: onSubmitError
+                    };
+
+                   $("#formUpdateInsurerChoBandDetail").ajaxSubmit(op);
+
+                }
            }
         }
         
@@ -127,25 +143,35 @@
             
             doLoadParameter();
             
+            var isError = false;
+            
             responseText = responseText.trim();
-            var output = "Your changes have been saved. Click on the Cancel button to return to the BRE Band tab options";
+            var output = "";
             
             if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
-                confirm("New BRE band has been created!");
-                var newObjectId =  parseInt(responseText.substring(9,responseText.length));
-                // $("#chobandDiv").load("updateInsurerChoBandDetailPanel.action?objectId=" + newObjectId + "&insurerId=" + selectOrgId);
-                $("#chobandDiv").load("loadAdminPanel.action?adminPanelName=InsurerChoBandMgmt&selectOrgId=" + selectOrgId);
+                
+               var newObjectId =  parseInt(responseText.substring(9,responseText.length));
+               $("#chobandDiv").load("loadAdminPanel.action?adminPanelName=InsurerChoBandMgmt&selectOrgId=" + selectOrgId);
+                
             }else{
-                output = responseText;
-                $(".chox-form-submit-result").html(output);
+                
+                if((responseText.trim()).length>0){
+                    isError = true;
+                    $(".chox-form-submit-result").html(responseText);
+                }
+                
             }
             
             $("#admin_param_panel").unblock();
+            
+            if(!isError){
+                doInsurerChoBandBack();
+            }
         }
 
         function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
             $("#admin_param_panel").unblock();
-            alert("Error");  
+            propmtMsg("Error","Error"); 
         }
         
         function doLoadParameter(){

@@ -33,7 +33,6 @@
         
         function doSelectBreDetail(tab){
             handleActivate(tab);
-            //$("#chobandDiv").load("loadAdminPanel.action?adminPanelName=InsurerChoBandMgmt&selectOrgId="+selectOrgId);
         }
         
         function handleActivate(tab){    

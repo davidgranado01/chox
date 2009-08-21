@@ -173,12 +173,11 @@
         <table width="100%">
             <tr>
             <td valign="top">
-                <div class="girdViewLabel">Selected Credit Hire</div>
+                <div class="girdViewLabel">Selected Credit Hire Organisations</div>
                 <div id="ins_cho_s_gridviewGrid" class="girdViewObject"></div>
-                
             </td>
             <td valign="top">
-                <div class="girdViewLabel">Available Credit Hire</div>
+                <div class="girdViewLabel">Available Credit Hire Organisations</div>
                 <div id="ins_cho_a_gridviewGrid" class="girdViewObject"></div>
             </td>
             </tr>

@@ -7,9 +7,30 @@
         
         var adminCurrentTabIndex = 0;
         var adminTabs;
+        var isNew = false;
         
+       
         $(document).ready(function(){
+
+            var objectId = <s:property value="objectId"/>;
+            
+            if(objectId<0){
+                isNew = true;
+            }
+            
+            $.validator.addMethod(
+                "regex",
+                function(value, element, regexp) {
+                    var check = false;
+                    var re = new RegExp(regexp);
+                    return this.optional(element) || re.test(value);
+                }, "Please check your input."
+            );
+            
             doFormValidation();
+            
+
+                
         }); 
         
         function doFormValidation(){
@@ -22,10 +43,10 @@
                      required:true
                  },
                  vatNo:{
-                     required:true
+                     required:true, number:true
                  },
                  companyNo:{
-                     required:true
+                     required:true, number:true
                  },
                  address1:{
                      required:true
@@ -34,14 +55,17 @@
                      required:true
                  },
                  address4:{
-                     required:true
+                     required:true, regex: "^\\s*[a-zA-Z.,\\s]+\\s*$"
                  },
                  address5:{
-                     required:true
+                     required:true, regex: "^\\s*[a-zA-Z.,\\s]+\\s*$"
                  },
                  postcode:{
                      required:true
-                 },                 
+                 },  
+                phone:{
+                    regex:"^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$"
+                },                 
                  adminHandlingCharge:{
                      required:true, number:true, min:0
                  }
@@ -56,10 +80,12 @@
                    min:"'Admin Handling Charge' cannot be less than zero"
                  },
                  vatNo:{
-                     required:"You must supply a value for 'VAT No.'"
+                     required:"You must supply a value for 'VAT No.'",
+                     number:"'VAT No.' must be number"
                  },
                  companyNo:{
-                     required:"You must supply a value for 'Company No.'"
+                     required:"You must supply a value for 'Company No.'",
+                     number:"'Company No' must be number"
                  },
                  address1:{
                      required:"You must supply a value for 'Address 1'"
@@ -68,19 +94,20 @@
                      required:"You must supply a value for 'Address 2'"
                  },
                  address4:{
-                     required:"You must supply a value for 'County'"
+                     required:"You must supply a value for 'County'", regex:"'County' must be letters only"
                  },
                  address5:{
-                     required:"You must supply a value for 'Country'"
+                     required:"You must supply a value for 'Country'", regex:"'Country' must be letters only"
                  },
                  postcode:{
                      required:"You must supply a value for 'Postcode'"
+                 },
+                 phone:{
+                     regex:"'Telephone Number' must be numeric"
                  }
                      
                },
-               submitHandler: function(form) {
-                    // $(form).ajaxSubmit(op);
-               }
+               submitHandler: function(form) {}
             });
             
             return validateFlag;
@@ -88,19 +115,27 @@
         
         function doInsurerSubmit(){
             
+            var confirmationMsg = "Do you wish to accept changes?";
+            
+            if(isNew){
+                confirmationMsg = "Are you sure you wish to add this insurer?";
+            }
+
             if(doFormValidation().form()){
             
-                $("#admin_param_panel").block();
-                
-                var op = { 
-                    beforeSubmit:  onBeforeSubmit,
-                    success:onSubmitResponseReceived,
-                    timeout: 3000,
-                    error: onSubmitError
-                };
-                
-                $("#formUpdateInsurerDetail").ajaxSubmit(op);
-                
+                if(confirm(confirmationMsg)){
+
+                    $("#admin_param_panel").block();
+
+                    var op = { 
+                        beforeSubmit:  onBeforeSubmit,
+                        success:onSubmitResponseReceived,
+                        timeout: 3000,
+                        error: onSubmitError
+                    };
+
+                    $("#formUpdateInsurerDetail").ajaxSubmit(op);
+                }
             }
         }
         
@@ -114,17 +149,19 @@
         function onSubmitResponseReceived(responseText, statusText){
             
             responseText = responseText.trim();
-            var output = "Your changes have been saved.";
+            var output = "Your changes have been saved";
             
             if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
-                confirm("New Insurer has been created!");
+                
+                alert("New Insurer has been created. Please create a BRE Band for this Insurer using the BRE Band tab and associate Credit Hire Organisations to this via the BRE Band Mapping tab.");
                 var newObjectId =  parseInt(responseText.substring(9,responseText.length));
                 $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + newObjectId);
                 
-                
             }else{
+                
                 output = responseText;
                 $(".chox-form-submit-result").html(output);
+                
             }
             
             $("#admin_param_panel").unblock();
@@ -271,7 +308,7 @@
                         <input type="text" class="chox-ttxt" id="CCDAddress5" name="address5" value="<s:property value="address5" />"/>
                     </div>
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">Phone</label>
+                        <label class="chox-form-std-label">Telephone Number</label>
                         <input type="text" maxlength="50" class="chox-ttxt" id="CCDPhone" name="phone" value="<s:property value="phone" />"/>
                     </div>              
                 <div class="chox-form-item">
@@ -283,10 +320,12 @@
                     <s:checkbox name="status" value="status" />
                 </div>                   
                 <div class="chox-form-button">
-                    <input type="button" value="Save Changes" onclick="javascript: doInsurerSubmit();"/>
-                    <input type="button" value="Cancel" class="cancel" onclick="javascript: doInsurerBack();" />
+                    
+                    <input type="button" value='Save Changes' onclick="javascript: return doInsurerSubmit();"/>
+                    <input type="button" value='Cancel' class="cancel" onclick="javascript: return doInsurerBack();" />
+                    
                 </div>
-                <div id="CDmessageBox" style="text-align:center"></div>  
+                <div id="CDmessageBox" style="text-align:center" class="errorBox"></div>  
                 <div class="chox-form-submit-result"></div>  
             </div>
     </form>        

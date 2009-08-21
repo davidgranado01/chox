@@ -3,8 +3,27 @@
 <script language="JavaScript">
         
         var selectedPanel = "CreditHireOrgMgmt";
+        var isNew = false;
 
         $(document).ready(function(){
+            
+            
+            var objectId = <s:property value="objectId"/>;
+            
+            if(objectId<0){
+                isNew = true;
+            }
+            
+            
+            $.validator.addMethod(
+                "regex",
+                function(value, element, regexp) {
+                    var check = false;
+                    var re = new RegExp(regexp);
+                    return this.optional(element) || re.test(value);
+                }, "Please check your input."
+            );
+                
             doFormValidation(); 
         }); 
         
@@ -18,10 +37,10 @@
                      required:true
                  },
                  vatNo:{
-                     required:true
+                     required:true, number:true
                  },
                  companyNo:{
-                     required:true
+                     required:true, number:true
                  },
                  address1:{
                      required:true
@@ -30,24 +49,29 @@
                      required:true
                  },
                  address4:{
-                     required:true
+                     required:true, regex: "^\\s*[a-zA-Z.,\\s]+\\s*$"
                  },
                  address5:{
-                     required:true
+                     required:true, regex: "^\\s*[a-zA-Z,.\\s]+\\s*$"
                  },
                  postcode:{
                      required:true
-                 }
+                 },  
+                phone:{
+                    regex:"^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$"
+                }
                },
                messages: {
                  name:{
                      required:"You must supply a value for 'Name'"
                  },
                  vatNo:{
-                     required:"You must supply a value for 'VAT No.'"
+                     required:"You must supply a value for 'VAT No.'",
+                     number:"'VAT No.' must be number"
                  },
                  companyNo:{
-                     required:"You must supply a value for 'Company No.'"
+                     required:"You must supply a value for 'Company No.'",
+                     number:"'Company No' must be number"
                  },
                  address1:{
                      required:"You must supply a value for 'Address 1'"
@@ -56,14 +80,19 @@
                      required:"You must supply a value for 'Address 2'"
                  },
                  address4:{
-                     required:"You must supply a value for 'County'"
+                     required:"You must supply a value for 'County'",
+                     regex:"'County' must be letters only"
                  },
                  address5:{
-                     required:"You must supply a value for 'Country'"
+                     required:"You must supply a value for 'Country'", 
+                     regex:"'Country' must be letters only"
                  },
                  postcode:{
                      required:"You must supply a value for 'Postcode'"
-                 }
+                 },  
+                phone:{
+                    regex:"'Telephone Number' must be numeric"
+                }
                      
                },
                submitHandler: function(form) {
@@ -76,18 +105,28 @@
         
         function doSubmit(){
             
+            var confirmationMsg = "Do you wish to accept changes?";
+            
+            if(isNew){
+                confirmationMsg = "Are you sure you wish to add this credit hire?";
+            }
+            
             if(doFormValidation().form()){
                 
-                $("#admin_param_panel").block();
+                if(confirm(confirmationMsg)){
                 
-                var op = { 
-                    beforeSubmit:  onBeforeSubmit,
-                    success:       onSubmitResponseReceived,
-                    timeout: 3000,
-                    error: onSubmitError
-                };
+                    $("#admin_param_panel").block();
 
-                $("#formUpdateChorganisationDetail").ajaxSubmit(op);
+                    var op = { 
+                        beforeSubmit:  onBeforeSubmit,
+                        success:       onSubmitResponseReceived,
+                        timeout: 3000,
+                        error: onSubmitError
+                    };
+
+                    $("#formUpdateChorganisationDetail").ajaxSubmit(op);
+                
+                }
             }
         }
         
@@ -104,13 +143,16 @@
             var output = "Your changes have been saved.";
             
             if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
-                confirm("New Credit Hire has been created!");
+                
+                alert("New credit hire organisation has been created");
                 var newObjectId =  parseInt(responseText.substring(9,responseText.length));
-                $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=CreditHireOrgMgmt&selectOrgId=" + newObjectId);
+                $("#admin_param_panel").load("updateChorganisationDetailPanel.action?objectId=" + newObjectId);
                 
             }else{
+                
                 output = responseText;
                 $(".chox-form-submit-result").html(output);
+                
             }
             $("#admin_param_panel").unblock();   
         }
@@ -118,7 +160,7 @@
         function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
             $("#admin_param_panel").unblock();
             alert("Error");  
-        }        
+        }
 
 </script>
 
@@ -165,7 +207,7 @@
                         <input type="text" class="chox-ttxt" id="CCDAddress5" name="address5" value="<s:property value="address5" />"/>
                     </div>
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">Phone</label>
+                        <label class="chox-form-std-label">Telephone Number</label>
                         <input type="text" maxlength="50" class="chox-ttxt" id="CCDPhone" name="phone" value="<s:property value="phone" />"/>
                     </div>                           
                     <div class="chox-form-item">

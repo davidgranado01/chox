@@ -171,11 +171,16 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
      * and Where the claim status is either AwaitingInvoiceData OR AwaitingCarHireInfo
      */
     public Boolean getIsECDFormVisible() {
+        
         Boolean bFlag = false;
-        Claim claim = claimService.getClaim(claimId);        
-        if(this.getIsCHO() 
-            && (claim.getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_CAR_HIRE_INFO)
-            || claim.getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA))
+        Claim claim = claimService.getClaim(claimId);
+        
+        if(this.getIsCHO()
+            && 
+            (
+            claim.getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_CAR_HIRE_INFO)
+            || claim.getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)
+            )
         ){
             bFlag = true;
         }
