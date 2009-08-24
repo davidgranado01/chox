@@ -3,12 +3,20 @@
     <data xmlns="http://www.netbeans.org/ns/profiler/1" version="0.4"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1">
         <file>
-            <url>src/java/struts.xml</url>
-            <line>0</line>
-        </file>
-        <file>
             <url>test/chox/web/security/ApplicationAccessibilityTest.java</url>
             <line>67</line>
         </file>
+        <file>
+            <url>src/java/struts.xml</url>
+            <line>0</line>
+        </file>
     </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/branches/V2.7.X/CHOX_WEB/src/java/chox/web/dashboard/ChoDashboardBuilder.java</file>
+        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/branches/V2.7.X/CHOX_WEB/src/java/chox/web/dashboard/InsurerDashboardBuilder.java</file>
+        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/branches/V2.7.X/CHOX_WEB/src/java/chox/web/dashboard/viewdata/DashBoardViewData.java</file>
+        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/branches/V2.7.X/CHOX_WEB/web/WEB-INF/applicationContext.xml</file>
+        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/branches/V2.7.X/CHOX_WEB/web/jsp/user/p_hire_monitoring_w.jsp</file>
+        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/branches/V2.7.X/CHOX_WEB/web/scripts/general.js</file>
+    </open-files>
 </project-private>

@@ -128,8 +128,13 @@
             
             var repairBookInDt = $("#repairBookInDatePH :input").val();
             var repairCompletionDt = $("#repairCompletionDatePH :input").val();
-            bFlag = (repairBookInDt <= repairCompletionDt);
-                    
+            
+            if(repairBookInDt!="" && repairCompletionDt!=""){
+            
+                bFlag = (repairBookInDt <= repairCompletionDt);
+                
+            }   
+            
             return !bFlag;
         }        
         
@@ -218,7 +223,7 @@
                 list="nonProvisionReasons" 
                 headerKey="" listKey="text" 
                 listValue="value"
-                headerValue="--- ALL ---" 
+                headerValue="--- Please Select ---" 
                 emptyOption="false" cssStyle="width:250px"></s:select>
             </div>
                 

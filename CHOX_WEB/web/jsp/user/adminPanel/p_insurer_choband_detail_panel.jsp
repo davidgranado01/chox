@@ -236,7 +236,7 @@
                     <input type="text" class="chox-ttxt" id="CCDAverageLabourHoursPerHireDay" name="averageLabourHoursPerHireDay" value="<s:property value="averageLabourHoursPerHireDay" />"/>
                 </div>            
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Inspection Delay Days<span class="mandatory">*</span></label>
+                    <label class="chox-form-std-label-longer">Total Loss Inspection Delay Days<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDInspectionDelayDays" name="inspectionDelayDays" value="<s:property value="inspectionDelayDays" />"/>
                 </div>
                 <div class="chox-form-item">

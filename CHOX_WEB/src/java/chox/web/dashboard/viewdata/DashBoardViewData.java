@@ -62,17 +62,30 @@ public class DashBoardViewData {
     }
     
     private static Integer getIntegerValue(Object v) {
-        if (v.getClass().equals(Integer.class)) {
-            return (Integer) v;
-        } else if (v.getClass().equals(BigInteger.class)) {
-            return ((BigInteger) v).intValue();
-        } else {
+        
+        if(v!=null){
+        
+            if (v.getClass().equals(Integer.class)) {
+                return (Integer) v;
+            } else if (v.getClass().equals(BigInteger.class)) {
+                return ((BigInteger) v).intValue();
+            } else {
+                return 0;
+            }
+            
+        }else{
             return 0;
         }
     }
     
     private static BigDecimal getDecimalValue(Object v) {
-        return (BigDecimal) v;        
+        
+        if(v!=null){
+            return (BigDecimal) v;        
+        }else{
+            return new BigDecimal("0.00");
+        }
+        
     }
 
     public Integer getNoOfClaimNotificationsSubmitted() {        
