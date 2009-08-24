@@ -11,7 +11,8 @@
             
             $("#dashboardSupplierId").change(onSelectChange);  
             loadData(-1);
-            new Ext.ToolTip({target: 'tip0',html: 'Description for Number of Active Users'});
+            new Ext.ToolTip({target: 'tip0',html: 'Number of users registered and using CHOX'});
+            new Ext.ToolTip({target: 'tipTitle',html: 'Selected Credit Hire Organisation(s) for dashboard data'});
             Ext.QuickTips.init();
             
         }); 
@@ -70,7 +71,7 @@
             !-->
             </td></tr>
             <tr>
-                <th nowrap><label>Credit Hire Organisation</label></th><td colspan="2">
+                <th nowrap><label id="tipTitle">Credit Hire Organisation</label></th><td colspan="2">
                 <s:select 
                 name="dashboardSupplierId" 
                 id="dashboardSupplierId" 

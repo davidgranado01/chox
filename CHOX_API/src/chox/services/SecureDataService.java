@@ -23,13 +23,20 @@ public class SecureDataService extends DataService {
         if (this.securityInforProvider != null) {
 
             if (!this.getSecurityInfoProvider().getIsCHOXAdmin()) {
+                
                 if (this.getSecurityInfoProvider().getIsCHO()) {
+                    
+                    // CREDIT HIRE USER
                     getCurrentSession().enableFilter("Claim_CHOFilter").setParameter("chorganisationId", this.getCurrentUser().getChorganisation().getId());
+                    
                 } else if (this.getSecurityInfoProvider().getIsINS()) {
+                    
+                    // INSURER USER
                     getCurrentSession().enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
                     getCurrentSession().enableFilter("LineOfBusiness_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
                     
                     if(isClaimHandlerOnly()){
+                        
                         int lineOfBusinessId = -1;
                         if(getCurrentUser().getLineOfBusiness()!=null){
                             lineOfBusinessId = getCurrentUser().getLineOfBusiness().getId();
@@ -37,6 +44,7 @@ public class SecureDataService extends DataService {
                         
                         getCurrentSession().enableFilter("LineOfBusiness_LineOfBusinessFilter").setParameter("lineOfBusinessId", lineOfBusinessId);
                         getCurrentSession().enableFilter("Claim_LineOfBusinessFilter").setParameter("lineOfBusinessId", lineOfBusinessId);
+                        
                     }
                 }
             }

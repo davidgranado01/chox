@@ -47,8 +47,14 @@ public class ClaimCalcHelper {
         
 	public int getHireDuration()
 	{
+            
             Date hireStart = claim.getHireDetail().getHireStart();
             Date initialEcd = claim.getHireMonitoringEcd();
+            
+            // System.out.println("hireStart?:"+hireStart);
+            // System.out.println("initialEcd?:"+initialEcd);
+            // System.out.println("getDaysBetweenDates?:"+CalcHelper.getDaysBetweenDates(hireStart, initialEcd));
+            
             return CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
 	}
         
@@ -76,30 +82,29 @@ public class ClaimCalcHelper {
 		//if (claim.getCustomerVehicleDamage().getInitialECD() == null) //no ecd
                 if (claim.getHireMonitoringEcd()==null) //no ecd
 		{
-			if (claim.getCustomerVehicleDamage().getIsUsable())
-			{
-				allowedDays += claim.getChoBand().getTakeVehicleToGarageDaysMobile();
-				allowedDays += claim.getChoBand().getIsMobileDayAllowance();
-			}
-			else
-			{
-				allowedDays += claim.getChoBand().getTakeVehicleToGarageDaysNonMobile();
-				allowedDays += claim.getChoBand().getIsNotMobileDayAllowance();
-			}
+                    if (claim.getCustomerVehicleDamage().getIsUsable())
+                    {
+                            allowedDays += claim.getChoBand().getTakeVehicleToGarageDaysMobile();
+                            allowedDays += claim.getChoBand().getIsMobileDayAllowance();
+                    }
+                    else
+                    {
+                            allowedDays += claim.getChoBand().getTakeVehicleToGarageDaysNonMobile();
+                            allowedDays += claim.getChoBand().getIsNotMobileDayAllowance();
+                    }
 		}
 		else //we have an ecd
 		{
-                    
-                    	// allowedDays += getHireDuration() + 1; CHANGE TO 2, as per requested by Andy
-			allowedDays += getHireDuration() + 2;
-			if (claim.getCustomerVehicleDamage().getIsUsable())
-			{
-				allowedDays += claim.getChoBand().getTakeVehicleToGarageDaysMobile();
-			}
-			else
-			{
-				allowedDays += claim.getChoBand().getTakeVehicleToGarageDaysNonMobile();
-			}
+                    allowedDays += getHireDuration() + 1;
+
+                    if (claim.getCustomerVehicleDamage().getIsUsable())
+                    {
+                        allowedDays += claim.getChoBand().getTakeVehicleToGarageDaysMobile();
+                    }
+                    else
+                    {
+                        allowedDays += claim.getChoBand().getTakeVehicleToGarageDaysNonMobile();
+                    }
 		}
                 
 		return allowedDays;

@@ -13,7 +13,9 @@
             $("#dashboardInsurerId").change(onSelectChange);  
             loadData(-1);
             
-            new Ext.ToolTip({target: 'tip0',html: 'Description for Number of Active Users'});
+            new Ext.ToolTip({target: 'tip0',html: 'Number of users registered and using CHOX'});
+            new Ext.ToolTip({target: 'tipTitle',html: 'Selected Insurer(s) for dashboard data'});
+            
             Ext.QuickTips.init();
             
         }); 
@@ -56,13 +58,9 @@
             <table cellpadding="0" cellspacing="0" class="dashboard" border="0">       
                 <tr><th nowrap><label id="tip0">Number of Active Users</label></th><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
                 <tr><th nowrap><label >Last Update Date</label></th><td colspan="2" nowrap="true"><label class="std-data-ro"><s:property value="lastProcessDate"/></label>
-<!--                
-&nbsp;<input type="button" value="Update" onclick="javascript:doUpdate();" />
-!-->
-
 </td></tr>
                 <tr>
-                    <th nowrap><label>Insurer</label></th><td>
+                    <th nowrap><label id="tipTitle">Insurer</label></th><td>
                         <s:select 
                         name="dashboardInsurerId" 
                         id="dashboardInsurerId" 

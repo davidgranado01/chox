@@ -301,10 +301,35 @@
             }
         }); 
         
+       var doInvoicePaymentReceivedAction = new Ext.Action
+        ({
+            text: 'Payments to be received',
+            handler: function(){
+                if(confirm('Are you sure you want to perform this action?'))
+                {
+                    var selectedRecords =  sm2.getSelections();  
+                    var selectedIDs = $.map(selectedRecords, function(n){
+                        return n.json.id;
+                    });
+
+                    var param = selectedIDs.join(",")
+
+                    $.ajax({
+                        url: "clearBREApprovedInvoicesForPayment.action?selectedClaimIds=" + param,
+                        success: function()
+                        {
+                            ds.reload();
+                            refreshFilterPanel();
+                        }
+                    });
+                }
+            }
+        }); 
+        
         var actionMenu = new Ext.Toolbar.MenuButton({
             text: 'More actions',            
             tooltip: {text:'', title:'More actions'},
-            menu : {items: [approvedInvoicesPaymentAction,clearBREApprovedInvoicesForPaymentAction]}
+            menu : {items: [approvedInvoicesPaymentAction,clearBREApprovedInvoicesForPaymentAction,doInvoicePaymentReceivedAction]}
         });
         
         actionMenu.on('arrowclick', function()

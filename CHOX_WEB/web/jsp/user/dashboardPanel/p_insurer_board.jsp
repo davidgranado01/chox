@@ -5,31 +5,30 @@
     
     Ext.onReady(function(){
         
-        new Ext.ToolTip({target: 'tip1',html: 'Description for Number of Claim Notifications Submitted'});
-        new Ext.ToolTip({target: 'tip2',html: 'Description for Total Claim Notifications Accepted'});
-        new Ext.ToolTip({target: 'tip3',html: 'Description for Total Claim Notifications Rejected'});
-        new Ext.ToolTip({target: 'tip4',html: 'Description for Number of Claim Notifications Closed'});
-        new Ext.ToolTip({target: 'tip5',html: 'Description for Number of Invoices Submitted'});
-        new Ext.ToolTip({target: 'tip6',html: 'Description for Value of Invoices Submitted'});
-        new Ext.ToolTip({target: 'tip7',html: 'Description for Number of Invoices Accepted'});
-        new Ext.ToolTip({target: 'tip8',html: 'Description for Value of Invoices Accepted'});
-        new Ext.ToolTip({target: 'tip9',html: 'Description for Number of Invoices Rejected'});
-        new Ext.ToolTip({target: 'tip10',html: 'Description for Value of Invoices Rejected'});
-        new Ext.ToolTip({target: 'tip11',html: 'Description for Number of Invoices Pending'});
-        new Ext.ToolTip({target: 'tip12',html: 'Description for Value of Invoices Pending'});
-        new Ext.ToolTip({target: 'tip13',html: 'Description for Number of Invoices Close'});
-        new Ext.ToolTip({target: 'tip14',html: 'Description for Value of Invoices Close'});
-        new Ext.ToolTip({target: 'tip15',html: 'Description for Number of Invoices Payment Logged'});
-        new Ext.ToolTip({target: 'tip16',html: 'Description for Value of Invoices Payment Logged'});        
-        new Ext.ToolTip({target: 'tip17',html: 'Description for Number of Invoices Payment Received'});
-        new Ext.ToolTip({target: 'tip18',html: 'Description for Value of Invoices Payment Received'});        
-        new Ext.ToolTip({target: 'tip19',html: 'Description for Total Value of Penalty Charges Applied'});  
-        new Ext.ToolTip({target: 'tip99',html: 'Description for Number of Pending Claims'});
+        new Ext.ToolTip({target: 'tip1',html: 'New claims uploaded by selected Credit Hire Organisation(s)'});
+        new Ext.ToolTip({target: 'tip2',html: 'Claims accepted on CHOX by Insurer'});
+        new Ext.ToolTip({target: 'tip3',html: 'Claims rejected on CHOX by Insurer'});
+        new Ext.ToolTip({target: 'tip4',html: 'Insurer not liable for hire bill e.g. vehicle not actually provided'});
+        new Ext.ToolTip({target: 'tip5',html: 'New invoices uploaded by selected Credit Hire Organisation'});
+        new Ext.ToolTip({target: 'tip6',html: 'Monetary value of invoices uploaded by selected Credit Hire Organisation(s)'});
+        new Ext.ToolTip({target: 'tip7',html: 'Number of invoices approved by Insurer following the result of the business rules'});
+        new Ext.ToolTip({target: 'tip8',html: 'Value of invoices approved by Insurer following the result of the business rules'});
+        new Ext.ToolTip({target: 'tip9',html: 'Number of invoices rejected by Insurer following the result of the business rules'});
+        new Ext.ToolTip({target: 'tip10',html: 'Value of invoices rejected by Insurer following the result of the business rules'});
+        new Ext.ToolTip({target: 'tip11',html: 'Number of invoices under review by Insurer '});
+        new Ext.ToolTip({target: 'tip12',html: 'Value of invoices under review by Insurer '});
+        new Ext.ToolTip({target: 'tip13',html: 'Number of invoices withdrawn by Credit Hire Organisation(s)'});
+        new Ext.ToolTip({target: 'tip14',html: 'Value of invoices withdrawn by Credit Hire Organisation(s)'});
+        new Ext.ToolTip({target: 'tip15',html: 'Number of claims where invoice payments have been made by Insurer'});
+        new Ext.ToolTip({target: 'tip16',html: 'Value of claims where invoice payments have been made by Insurer'});        
+        new Ext.ToolTip({target: 'tip17',html: 'Number of claims where payment has been received by Credit Hire Organisation(s)'});
+        new Ext.ToolTip({target: 'tip18',html: 'Value of claims where payment has been received by Credit Hire Organisation(s)'});        
+        new Ext.ToolTip({target: 'tip19',html: 'Value of penalty charges applied by Credit Hire Organisation(s)'});  
+        new Ext.ToolTip({target: 'tip99',html: 'Claims that have neither been accepted or rejected by Insurer'});
         
         Ext.QuickTips.init();
 });    
 
-        
         $(document).ready(function(){
         
             var thisList = $(".dbValue");

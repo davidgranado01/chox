@@ -10,7 +10,7 @@ insert into accessibility_item values ('ROLE_CHO_MNG', 1, (select id from access
 insert into accessibility_item values ('ROLE_CHO_MNG', 1, (select id from accessibility where name = 'tab.HireMonitoring.ClaimRejected'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item values ('ROLE_CHO_MNG', 1, (select id from accessibility where name = 'tab.HireMonitoring.ClaimRejectionAccepted'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item values ('ROLE_CHO_MNG', 1, (select id from accessibility where name = 'tab.HireMonitoring.ClaimRejectionContested'), (select max(id)+1 from accessibility_item));
-insert into accessibility_item values ('ROLE_CHO_MNG', 1, (select id from accessibility where name = 'tab.HireMonitoring.AwaitingCarHireInfo'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_CHO_MNG', 2, (select id from accessibility where name = 'tab.HireMonitoring.AwaitingCarHireInfo'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item values ('ROLE_CHO_MNG', 1, (select id from accessibility where name = 'tab.HireMonitoring.AwaitingInvoiceData'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item values ('ROLE_CHO_MNG', 1, (select id from accessibility where name = 'tab.HireMonitoring.InvoiceDataCalculationIncorrect'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item values ('ROLE_CHO_MNG', 1, (select id from accessibility where name = 'tab.HireMonitoring.InvoiceApprovedByBRE'), (select max(id)+1 from accessibility_item));
