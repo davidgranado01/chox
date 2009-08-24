@@ -939,7 +939,7 @@
                     </div>
                     <div id="hireMonitoringDetails" class="x-hide-display">
 
-<s:if test="tabAccessibility.hireMonitoringTabAccessibility != 0">                        
+<s:if test="tabAccessibility.hireMonitoringTabAccessibility != 0">
                         
                         <div class="x-panel-bwrap chox-form-container">
                             <table cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -956,6 +956,7 @@
                                          <s:action name="getHireMonitoringEcd" executeResult="true">
                                             <s:param name="claimId"><s:property value="id" /></s:param>                                         
                                             <s:param name="claimStatus"><s:property value="status" /></s:param> 
+                                            <s:param name="iECDFormAccessRight"><s:property value="tabAccessibility.hireMonitoringTabAccessibility" /></s:param> 
                                         </s:action>  
                                     </td>
                                 </tr>

@@ -12,11 +12,6 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
-        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/trunk/CHOX_WEB/src/java/chox/web/dashboard/viewdata/DashBoardViewData.java</file>
-        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/trunk/CHOX_WEB/web/jsp/user/ClaimDetail.jsp</file>
-        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/trunk/CHOX_WEB/web/jsp/user/p_customer_details_r.jsp</file>
-        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/trunk/CHOX_WEB/web/jsp/user/p_customer_details_w.jsp</file>
-        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/trunk/CHOX_WEB/web/jsp/user/p_third_party_r.jsp</file>
-        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/trunk/CHOX_WEB/web/jsp/user/p_third_party_w.jsp</file>
+        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/trunk/CHOX_WEB/src/java/chox/web/actions/BatchUpdateAction.java</file>
     </open-files>
 </project-private>

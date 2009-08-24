@@ -13,6 +13,7 @@ import chox.services.HireMonitoringEcdService;
 import chox.services.LookupService;
 import chox.services.ReasonOfDelayService;
 import chox.web.security.ApplicationAccessibility;
+import chox.web.security.TabAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import java.math.BigDecimal;
@@ -29,12 +30,20 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
     private HireMonitoringEcd model;
     private ReasonOfDelayService reasonOfDelayService;
     private HireMonitoringEcdService service;
-    private Boolean isECDFormVisible = false;
+    private Integer iECDFormAccessRight;
     private static double ecdDurationAllowPercentage = 0.5;
     private List reasonOfDelay;
     private LookupService lookupService;
     private int reasonOfDelayId = -1;
 
+    public Integer getIECDFormAccessRight() {
+        return iECDFormAccessRight;
+    }
+
+    public void setIECDFormAccessRight(Integer iECDFormAccessRight) {
+        this.iECDFormAccessRight = iECDFormAccessRight;
+    }
+    
     public int getReasonOfDelayId() {
         return reasonOfDelayId;
     }
@@ -171,8 +180,14 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
      * and Where the claim status is either AwaitingInvoiceData OR AwaitingCarHireInfo
      */
     public Boolean getIsECDFormVisible() {
-        
+
         Boolean bFlag = false;
+        
+        if(iECDFormAccessRight==2){
+            bFlag = true;
+        }
+        
+        /*
         Claim claim = claimService.getClaim(claimId);
         
         if(this.getIsCHO()
@@ -184,8 +199,11 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
         ){
             bFlag = true;
         }
+        */
         return bFlag;
-    }    
+ 
+    }
+    
     
     public void setReasonOfDelayService(ReasonOfDelayService reasonOfDelayService) { this.reasonOfDelayService = reasonOfDelayService; }    
     public void setLookupService(LookupService lookupService) { this.lookupService = lookupService; }    
