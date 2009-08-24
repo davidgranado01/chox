@@ -95,7 +95,27 @@ public class InvoiceValidation extends SecureDataService implements rulesInterfa
         invoice.setDateInvoiced(XmlHelper.getTimeStampFromNode(this.element, "date-invoiced"));
         invoice.setPenaltyAlertQty(0);
         invoice.setPenaltyCharge(BigDecimal.ZERO);
-        
+
+        // PRE-DEFINED
+        invoice.setHireGross(BigDecimal.ZERO);
+        invoice.setHireNet(BigDecimal.ZERO);
+        invoice.setHireVat(BigDecimal.ZERO);
+        invoice.setHireRateChargedPerDay(BigDecimal.ZERO);
+        invoice.setHandlingInvoiceNo("");
+        invoice.setClaimsHandlingInvoiceAmount(BigDecimal.ZERO);
+        invoice.setClaimInvoiceNo("");
+        invoice.setExcessAmountCollected(BigDecimal.ZERO);
+        invoice.setVatAmountCollected(BigDecimal.ZERO);
+        invoice.setRepairGross(BigDecimal.ZERO);
+        invoice.setRepairNet(BigDecimal.ZERO);
+        invoice.setRepairVat(BigDecimal.ZERO);
+        invoice.setStorageRecoveryGross(BigDecimal.ZERO);
+        invoice.setStorageRecoveryNet(BigDecimal.ZERO);
+        invoice.setStorageRecoveryVat(BigDecimal.ZERO);
+        invoice.setEngineerFeeGross(BigDecimal.ZERO);
+        invoice.setEngineerFeeNet(BigDecimal.ZERO);
+        invoice.setEngineerFeeVat(BigDecimal.ZERO);
+
         this.claimResult.getClaim().setInvoice(invoice);
         
         // VEHICLE

@@ -43,7 +43,6 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
     }
 
     public void updateObject(HireMonitoringEcd object) {
-        
         save(object);
     }
     

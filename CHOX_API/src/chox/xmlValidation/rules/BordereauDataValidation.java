@@ -92,7 +92,7 @@ public class BordereauDataValidation {
                     // ALL NEW INVOICE ONLY
                     InvoiceValidation invVal = new InvoiceValidation(claimResult, dataValidationParameter, claimService, chorganisationService, choBandService);
                     claimResult = invVal.execute();
-                    
+
                     // RUN BRE VALIDATION FOR ALL NEW INVOICE ONLY
                     BusinessRuleEngProcess brePrc = new BusinessRuleEngProcess(claimResult, claimService, hireMonitoringEcdService, invoiceService, historyService);
                     claimResult = brePrc.execute();
