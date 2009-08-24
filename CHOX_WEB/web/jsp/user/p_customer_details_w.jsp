@@ -159,7 +159,7 @@
                     <input type="text" class="chox-ttxt" id="CCDTeleponeDay" name="telephoneDay" value="<s:property value="telephoneDay" />" /></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                        Telepone Evening</label>
+                        Telephone Evening</label>
                     <input type="text" class="chox-ttxt" id="CCDTeleponeEvening" name="telephoneEvening"  value="<s:property value="telephoneEvening" />"/></div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">

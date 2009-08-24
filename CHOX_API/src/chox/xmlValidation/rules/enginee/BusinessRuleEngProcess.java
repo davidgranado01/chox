@@ -62,7 +62,8 @@ public class BusinessRuleEngProcess {
         
         boolean bFlag = false;
         
-        if(claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)){
+        if(claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)
+                && claimResult.isValid() && claimResult.isDataValid()){
             bFlag = true;            
         }
         
@@ -108,8 +109,6 @@ public class BusinessRuleEngProcess {
         
         for(int iCount=0; iCount<results.size(); iCount++){
             
-            
-            
             RuleEvaluation rv = results.get(iCount);
             if(rv.getIsVisibleToCHO() && rv.getResult()==RuleEvaluationResult.RuleFailed){
                 this.claimResult.getMessage().add(rv.toString());
@@ -117,8 +116,6 @@ public class BusinessRuleEngProcess {
             
             histories.add(HistoryHelper.createHistory(claimResult.getClaim(), rv));
         }
-        
-        System.out.println("BRE >>>>>> END" + histories.size());
         
         return histories;
         

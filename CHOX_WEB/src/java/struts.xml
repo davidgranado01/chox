@@ -381,6 +381,12 @@
         <action name="clearBREApprovedInvoicesForPayment" class="chox.web.actions.BatchUpdateAction" method="clearBREApprovedInvoicesForPayment">
             <result name="success">/jsp/p_response.jsp</result>
         </action>
+        <action name="doClaimRoutedAction" class="chox.web.actions.BatchUpdateAction" method="doClaimRoutedAction">
+            <result name="success">/jsp/p_response.jsp</result>
+        </action>
+        <action name="doInvoicePaymentReceivedAction" class="chox.web.actions.BatchUpdateAction" method="doInvoicePaymentReceivedAction">
+            <result name="success">/jsp/p_response.jsp</result>
+        </action>
         <action name="reviewByEngineer" class="chox.web.actions.ClaimAction" method="reviewByEngineer">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail

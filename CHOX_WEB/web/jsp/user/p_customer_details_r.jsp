@@ -56,7 +56,7 @@
             </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Telepone Evening</label>
+            Telephone Evening</label>
             <label class="std-data-ro"><s:property value="telephoneEvening" /></label>
             </div>
         <div class="chox-form-item">

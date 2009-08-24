@@ -303,7 +303,7 @@
         
        var doInvoicePaymentReceivedAction = new Ext.Action
         ({
-            text: 'Payments to be received',
+            text: 'Update Claim(s) to Payment Received',
             handler: function(){
                 if(confirm('Are you sure you want to perform this action?'))
                 {
@@ -315,7 +315,7 @@
                     var param = selectedIDs.join(",")
 
                     $.ajax({
-                        url: "clearBREApprovedInvoicesForPayment.action?selectedClaimIds=" + param,
+                        url: "doInvoicePaymentReceivedAction.action?selectedClaimIds=" + param,
                         success: function()
                         {
                             ds.reload();
@@ -326,19 +326,48 @@
             }
         }); 
         
+        var doClaimRoutedAction = new Ext.Action
+        ({
+            text: 'Route Claim(s)',
+            handler: function(){
+                if(confirm('Are you sure you want to perform this action?'))
+                {
+                    var selectedRecords =  sm2.getSelections();  
+                    var selectedIDs = $.map(selectedRecords, function(n){
+                        return n.json.id;
+                    });
+
+                    var param = selectedIDs.join(",");
+                    
+                    doShowPage();
+                    
+                    /*
+                    $.ajax({
+                        url: "doClaimRoutedAction.action?selectedClaimIds=" + param,
+                        success: function()
+                        {
+                            ds.reload();
+                            refreshFilterPanel();
+                        }
+                    });
+                    */
+                }
+            }
+        }); 
+        
         var actionMenu = new Ext.Toolbar.MenuButton({
             text: 'More actions',            
             tooltip: {text:'', title:'More actions'},
-            menu : {items: [approvedInvoicesPaymentAction,clearBREApprovedInvoicesForPaymentAction,doInvoicePaymentReceivedAction]}
+            menu : {items: [doClaimRoutedAction, clearBREApprovedInvoicesForPaymentAction, approvedInvoicesPaymentAction, doInvoicePaymentReceivedAction]}
         });
         
         actionMenu.on('arrowclick', function()
         {
 
             var selectedRecords = sm2.getSelections();
-                
-            <s:if test="IsApprovePaymentAccessibile"> 
-                    
+            
+            
+            <s:if test="IsApprovePaymentAccessibile">  
                 if(isSelectedRecordsMatchGivenStatus(selectedRecords,'AwaitingInvoicePayment'))
                 {   
                     approvedInvoicesPaymentAction.enable(); 
@@ -347,14 +376,12 @@
                 {
                     approvedInvoicesPaymentAction.disable(); 
                 }  
-                
             </s:if>
             <s:else>
-                
                 approvedInvoicesPaymentAction.disable();
                 
             </s:else>   
-
+            
             <s:if test="IsClearBREApprovedInvoicesForPaymentAccessibile"> 
                 if(isSelectedRecordsMatchGivenStatus(selectedRecords,'InvoiceApprovedByBRE'))
                 {   
@@ -368,6 +395,35 @@
             <s:else>
                 clearBREApprovedInvoicesForPaymentAction.disable();
             </s:else>
+
+            <s:if test="IsDoInvoicePaymentReceivedAccessibile"> 
+                if(isSelectedRecordsMatchGivenStatus(selectedRecords,'InvoicePaymentLogged'))
+                {   
+                    doInvoicePaymentReceivedAction.enable(); 
+                }
+                else
+                {
+                   doInvoicePaymentReceivedAction.disable(); 
+                }  
+            </s:if>
+            <s:else>
+                doInvoicePaymentReceivedAction.disable();
+            </s:else>                
+                
+            <s:if test="IsDoClaimRoutedAccessibile"> 
+                if(isSelectedRecordsMatchGivenStatus(selectedRecords,'ClaimUnacknowledgedUnrouted'))
+                {   
+                    doClaimRoutedAction.enable(); 
+                }
+                else
+                {
+                    doClaimRoutedAction.disable(); 
+                }  
+            </s:if>
+            <s:else>
+                doClaimRoutedAction.disable();
+            </s:else>  
+                
         }, this);
         
         var grid = new Ext.grid.GridPanel({
@@ -569,6 +625,7 @@
         
         loadDataFromSession();
     }); 
+    
     
 </script>
 

@@ -30,6 +30,31 @@ public class BatchUpdateAction extends BaseAction {
         return SUCCESS;
     }
 
+    // SPRINT 8
+    public String doInvoicePaymentReceivedAction() {
+
+        String oldStatus = ClaimStatus.INVOICE_PAYMENT_LOGGED;
+        String newStatus = ClaimStatus.INVOICE_PAYMENT_RECEIVED;
+        
+        for (Integer id : selectedClaimIds) {
+            Claim claim = claimService.getClaim(id);
+            updateCliamStatus(claim,oldStatus,newStatus);
+        }
+        return SUCCESS;
+    }
+
+    public String doClaimRoutedAction() {
+
+        String oldStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED;
+        String newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
+        
+        for (Integer id : selectedClaimIds) {
+            Claim claim = claimService.getClaim(id);
+            updateCliamStatus(claim, oldStatus, newStatus);
+        }
+        return SUCCESS;
+    }
+    
     public String clearBREApprovedInvoicesForPayment() {
 
         String oldStatus = ClaimStatus.INVOICE_APPROVED_BY_BRE;
