@@ -1,0 +1,9 @@
+
+-- ############################################################################################
+-- START VERSION V2.7.8
+-- ############################################################################################\
+
+update accessibility_item set access_right=2 where role in ('ROLE_CHO_MNG','ROLE_CHO_OPR')
+and accessibility_id in (select id from accessibility where name in ('tab.HireMonitoring.ClaimRejected', 'tab.HireMonitoring.ClaimRejectionContested',
+'tab.HireMonitoring.ClaimUnacknowledgedRouted', 'tab.HireMonitoring.ClaimPending','tab.HireMonitoring.ClaimUpdatedByEngineer', 'tab.HireMonitoring.ClaimReferredToEngineer', 
+'tab.HireMonitoring.ClaimReferredToFNOL'));
