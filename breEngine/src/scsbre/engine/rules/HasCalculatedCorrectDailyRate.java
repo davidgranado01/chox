@@ -22,7 +22,9 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
     
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         RuleEvaluation res = new RuleEvaluation();
+        
         if(claim.getVClass() != null){
+            
             ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
             IVehicleClassInfo customerVClass = claim.getVClass();
             

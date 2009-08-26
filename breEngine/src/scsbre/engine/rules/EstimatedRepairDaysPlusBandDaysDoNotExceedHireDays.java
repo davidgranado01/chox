@@ -56,6 +56,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
             maxDays += choBand.getTakeVehicleOutDays();
             maxDays += choBand.getEngineerInspectionDelayDays();
             boolean success = hireDays <= maxDays;
+            
             if(success){
                 narrative = "";
                 res.setResult(RuleEvaluationResult.RulePassed);

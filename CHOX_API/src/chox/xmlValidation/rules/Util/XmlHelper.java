@@ -50,11 +50,14 @@ public class XmlHelper {
     }
 
     public static BigDecimal getBigDecimalFromNode(Element thisElement, String thisNodeName){
+        
         BigDecimal bOutput = new BigDecimal("0.00");
         String sOutput = XMLUtils.getElementValue(thisElement, thisNodeName);
+        
         if(sOutput!=null && !sOutput.equalsIgnoreCase("") && sOutput.length()>0){
             bOutput = new BigDecimal(sOutput);
         }
+        
         return bOutput;
     }
     

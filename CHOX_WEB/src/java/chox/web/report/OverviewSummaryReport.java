@@ -88,15 +88,9 @@ public class OverviewSummaryReport implements Report {
             }
 
             String query = sb.toString();
-            /*query = query.replaceAll("@pUploadDateFrom", "'" + DateHelper.DBDateFormat.format(dataStart) + "'");
-            query = query.replaceAll("@pUploadDateTo", "'" + DateHelper.DBDateFormat.format(dataEnd) + "'");
-            query = query.replaceAll("@:pUserOrgId", userOrgId.toString());
 
-            List result = dataService.externalQuery(query);*/
-
-            //Emmanuel
-            //27-07-2009
-            //prevent SQL Injection
+            System.out.println(">>>"+query);
+            
             Map paramMap = new HashMap();
             paramMap.put("pUploadDateFrom", dataStart);
             paramMap.put("pUploadDateTo", dataEnd);

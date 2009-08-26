@@ -104,12 +104,14 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         // System.out.println("END: Claim Status: " + claimResult.getClaim().getStatus());
 
                         if (claimResult.isValid() && claimResult.isDataValid()) {
+                            
                             saveXMLRecord(claimResult);
                             totalProcessed++;
-                        }
-                        else
-                        {
+                            
+                        } else {
+
                             getHibernateTemplate().evict(claimResult.getClaim());
+                            
                         }
                     }
 
@@ -151,7 +153,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private ClaimResult saveXMLRecord(ClaimResult claimResult) {
 
         TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
-        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW );
+        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 
         try {
 
@@ -171,7 +173,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                                 solicitorService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                                 hireMonitoringDetailService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                             }
-
+                            
                             engineerReportService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                             vehicleHireService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                             invoiceService.saveObjectForXMLUploader(readOnlyXmlParseResult);
@@ -180,14 +182,14 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                             if (readOnlyXmlParseResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
                                 auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, "", readOnlyXmlParseResult.getClaim());
                             }
-
+                            
                             if (readOnlyXmlParseResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
                                 auditTrailService.logAuditLog(readOnlyXmlParseResult.getClaim().getStatus(), readOnlyXmlParseResult.getClaim().getPreviousStatus(), readOnlyXmlParseResult.getClaim());
                                 
                                 if(readOnlyXmlParseResult.getHistory().size()>0){
                                     historyService.saveHistories(readOnlyXmlParseResult.getHistory());
                                 }
-                                
+
                             }
 
                         }
