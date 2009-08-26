@@ -107,6 +107,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                             saveXMLRecord(claimResult);
                             totalProcessed++;
                         }
+                        else
+                        {
+                            getHibernateTemplate().evict(claimResult.getClaim());
+                        }
                     }
 
                     if (totalProcessed >= totalRecord) {
@@ -147,7 +151,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private ClaimResult saveXMLRecord(ClaimResult claimResult) {
 
         TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
-        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW );
 
         try {
 
