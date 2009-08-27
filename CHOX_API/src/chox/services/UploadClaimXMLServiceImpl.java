@@ -59,18 +59,19 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     public BordereauResult processClaimXMLFile(final File file, final String fileName) {
 
-        BordereauResult bordereauResult;
-        TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
-        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-        bordereauResult = (BordereauResult)transactionTemplate.execute(
-                new TransactionCallback() {
-
-                    public Object doInTransaction(TransactionStatus arg0) {
-                       return doProcessClaimXMLFile(file, fileName);
-                    }
-                });
-
-        return bordereauResult;
+//        BordereauResult bordereauResult;
+//        TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
+//        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+//        bordereauResult = (BordereauResult)transactionTemplate.execute(
+//                new TransactionCallback() {
+//
+//                    public Object doInTransaction(TransactionStatus arg0) {
+//                       return doProcessClaimXMLFile(file, fileName);
+//                    }
+//                });
+//
+//        return bordereauResult;
+        return doProcessClaimXMLFile(file, fileName);
 
     }
 
