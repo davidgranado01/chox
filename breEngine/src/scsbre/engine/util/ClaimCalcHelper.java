@@ -115,6 +115,11 @@ public class ClaimCalcHelper {
             int iLabourCostAverageRateDay = getLabourCostAverageRateDay();
             int iDayBufferForEngineeringProcess = getDayBufferForEngineeringProcess();
             int iWeekedBuffer = getWeekedBuffer(iLabourCostAverageRateDay+iDayBufferForEngineeringProcess);
+            
+            System.out.println("iLabourCostAverageRateDay:"+iLabourCostAverageRateDay);
+            System.out.println("iDayBufferForEngineeringProcess:"+iDayBufferForEngineeringProcess);
+            System.out.println("iWeekedBuffer:"+iWeekedBuffer);
+            
             return iLabourCostAverageRateDay + iWeekedBuffer + iDayBufferForEngineeringProcess;
         }
         

@@ -150,9 +150,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
             claim.setChorganisation(chorganisationService.getCurrentCHOrganisation());
 
         }
-        
-        System.out.println(":::: 03 A: " + claim);
-        
+                
         claimResult.setClaim(claim);
     }
     
