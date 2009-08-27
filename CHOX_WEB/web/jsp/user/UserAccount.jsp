@@ -85,7 +85,16 @@
                       window.location= "user/inbox.action";
                 </s:if>
                 <s:else>
-                        $("#submitResult").text(responseText);
+                        var response = eval('(' + responseText.trim() + ')');
+                        if(response.isValid)
+                        {
+                            $("#submitResult").text(response.result);
+                        }
+                        else
+                        {
+                            $("#submitResult").text(formErrors(data.errors));
+                        }
+
                 </s:else>
 
                     }

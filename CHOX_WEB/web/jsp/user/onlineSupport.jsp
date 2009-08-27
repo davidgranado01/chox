@@ -31,7 +31,7 @@
             
             var op = { 
                 beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
-                success:       getAcknowledgementMsg,  // post-submit callback 
+                success:       onSubmitResponseReceived,  // post-submit callback
                 timeout: 3000,
                 error: getAcknowledgementMsg
             };
@@ -65,15 +65,24 @@
             $.blockUI();
         }
         
-        /*
-        function onSubmitResponseReceived(responseText, statusText)  {  
-            getAcknowledgementMsg();
+        
+        function onSubmitResponseReceived(data, statusText)  {
+
+            var response = eval('(' + responseText.trim() + ')');
+            if(response.isValid)
+            {
+                getAcknowledgementMsg();
+            }
+            else
+            {
+                propmtErrors(response.errors);
+            }
         }
 
         function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
             getAcknowledgementMsg();
         }
-        */
+       
        
         function doFinalReset(){
             $('#iSupplierReference').val("");

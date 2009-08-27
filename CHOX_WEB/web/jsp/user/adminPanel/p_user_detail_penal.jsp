@@ -130,51 +130,35 @@
 
     function onSubmitResponseReceived(responseText, statusText){
 
-        responseText = responseText.trim();
+        var response = eval('(' + responseText.trim() + ')');
         var output = "Your changes have been saved.";
         
         $("#chox-form-submit-result").attr("class", "chox-form-submit-result")
         
-        if(responseText != "" && responseText != "1:"){
-            
-            var testLenght = (responseText.trim()).length;
-            
-            if(testLenght>=9){
-                
-                if(responseText.substring(0,9) == 'objectId:'){
-                
-                    alert("New user setup successful. Please assign a role(s) to the new user.");
-                    var newObjectId =  parseInt(responseText.substring(9,responseText.length));
+        if(response && response.isValid){
+                if(response.resultType == 'New' && response.result){
+                    var newObjectId =  parseInt(response.result);
                     var orgTypeId = $("#orgTypeId").val();
-                    $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + newObjectId + "&orgTypeId=" + orgTypeId);                
-                
-                }else{
-                    
-                    output = responseText;
-                    $(".chox-form-submit-result").html(output);    
-                
+                    $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + newObjectId + "&orgTypeId=" + orgTypeId);
+                    propmtMsg("New user setup successful","Please assign a role(s) to the new user.");
                 }
-                
-            }else if(testLenght==2){
-                
-                if(responseText.substring(0,2) == '2:'){
-                    output = "Email Address already exist!";
-                }else if(responseText.substring(0,2) == '3:'){
-                    output = "Unknown Error encountered, Please try again!";
+                else
+                {
+                    output = "Your changes have been saved.";
+                    $("#chox-form-submit-result").html(output);
                 }
-                
-                $("#chox-form-submit-result").attr("class", "action-error-msg")
-                $("#chox-form-submit-result").html(output);  
-                
-            }else{
-                
-                output = responseText;
-                $(".chox-form-submit-result").html(output);   
-                    
-            }
-
         }
-       
+        else if(response && response.errors){
+                output = formErrorMessage(response.errors);
+                $("#chox-form-submit-result").attr("class", "action-error-msg")
+                $("#chox-form-submit-result").html(output);
+        }
+        else
+        {
+                output = "Unknown Error Encountered, please try again.";
+                $("#chox-form-submit-result").attr("class", "action-error-msg")
+                
+        }
         $("#admin_param_panel").unblock();
     }
 
@@ -224,8 +208,23 @@
     }
 
     function onSubmitUpdatePasswordResponseReceived(responseText, statusText){
-        responseText = responseText.trim();
-        $("#chox-form-password-submit-result").html(responseText);
+        var response = eval('(' + responseText.trim() + ')');
+        
+        if(response && response.isValid)
+        {
+            $("#chox-form-password-submit-result").html(response.result);
+        }
+        else if(response && response.errors){
+                output = formErrorMessage(response.errors);
+                $("#chox-form-password-submit-result").attr("class", "action-error-msg")
+                $("#chox-form-password-submit-result").html(output);
+        }
+        else
+        {
+                output = "Unknown Error Encountered, please try again.";
+                $("#chox-form-password-submit-result").attr("class", "action-error-msg")
+                $("#chox-form-password-submit-result").html(output);
+        }
         $("#admin_param_panel").unblock();
     }
     

@@ -51,25 +51,25 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     public List getVehicleClasses() {
         DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClass.class).addOrder(Order.asc("name"));
-        return findByCriteria(criteria);
+        return findByCriteria(criteria,true);
     }
     
     public List getClaimRejectionReason(){
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("type", "Claim"));
-        return findByCriteria(criteria);
+        return findByCriteria(criteria,true);
     }
     
     public List getInsurerChoBand(int insurerId){
         DetachedCriteria criteria = DetachedCriteria.forClass(ChoBand.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("insurer.id", insurerId));
-        return findByCriteria(criteria);
+         return findByCriteria(criteria,true);
     }
     
     public List getInvoiceRejectionReason(){
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("type", "Invoice"));
-        return findByCriteria(criteria);
+         return findByCriteria(criteria,true);
     }
     
     public List getNonProvisionReason(){
@@ -112,7 +112,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfDelay.class);
         criteria.add(Restrictions.eq("status", true));
         criteria.addOrder(Order.asc("id"));  
-        return findByCriteria(criteria);
+         return findByCriteria(criteria,true);
     }
     
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -136,7 +136,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     public List getAllLineOfBusinesses() {
         DetachedCriteria criteria = DetachedCriteria.forClass(LineOfBusiness.class);
         criteria.addOrder(Order.asc("name"));  
-        return findByCriteria(criteria);
+         return findByCriteria(criteria,true);
     }
     
     public List getLineOfBusinessesByInsurerId(int insurerId) {
@@ -144,7 +144,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         criteria.add(Restrictions.eq("active", true));
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.addOrder(Order.asc("name"));  
-        return findByCriteria(criteria);
+         return findByCriteria(criteria,true);
     }
     
     /*
@@ -193,7 +193,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         if(currentUser.isCHOXAdmin()){
             DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
             criteria.add(Restrictions.eq("status", true));
-            return findByCriteria(criteria);            
+            return findByCriteria(criteria,true);
             
         }else{
             return getSuppliers(currentUser.getInsurer().getId());
@@ -234,7 +234,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     public List getAllSuppliers() {
         DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
-        return findByCriteria(criteria);            
+        return findByCriteria(criteria,true);
     }    
     
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -243,7 +243,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     
     public List getAllInsurers() {
         DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
-        return findByCriteria(criteria);
+        return findByCriteria(criteria,true);
     }
     
     public List getInsurers() {
@@ -253,7 +253,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         if(currentUser.isCHOXAdmin()){
             DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
             criteria.add(Restrictions.eq("status", true));
-            return findByCriteria(criteria);            
+            return findByCriteria(criteria,true);
         }else{
             return getInsurers(currentUser.getChorganisation().getId());
         }

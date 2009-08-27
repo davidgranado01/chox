@@ -30,7 +30,7 @@ public class AlertAction extends BaseAction {
         {
             isDuplicated = claimService.getClaimCountByClaimNumber(claimNumber, claimId) > 0;
         }
-        actionResult =  isDuplicated ? "yes" : "no";
+        this.getActionResponse().AssignYesNoResult(isDuplicated);
         return SUCCESS;
     }
 

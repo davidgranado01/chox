@@ -260,15 +260,16 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
                 
                 if (!this.service.isEmailExist(model.getEmail(), model.getId())) {
                     this.service.updateObject(model);
-                    actionResult = "Your changes have been saved.";
+                    this.getActionResponse().AssignMessageResult("Your changes have been saved.");
                 }else{
-                    actionResult = "2:";
+                    this.getActionResponse().AddError("Email Address already exist!");
                 }
                 
             }
 
         } catch (Exception ex) {
-            throw ex;
+            ex.printStackTrace();
+            this.getActionResponse().AddError(ex.getMessage());
         }
 
         return SUCCESS;
@@ -280,14 +281,19 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     }
     
     public String updateUserPassword() throws Exception {
-        
-        model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-        model.setLastModifiedBy(this.getAuthenticatedUser().getUser());
-        
-        encodePassword();
-        
-        this.service.updateObject(model);
-        actionResult = "Your changes have been saved.";
+
+        try{
+            model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+            model.setLastModifiedBy(this.getAuthenticatedUser().getUser());
+            encodePassword();
+            this.service.updateObject(model);
+            this.getActionResponse().AssignMessageResult("Your changes have been saved.");
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            this.getActionResponse().AddError(ex.getMessage());
+        }
         return SUCCESS;
     }
 
@@ -317,17 +323,17 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
                 if (webUserUserRoleService.addBaseNewUserRole(model.getId(), Integer.valueOf(this.orgTypeId))) {
                     bFlag = true;
-                    actionResult = "objectId:" + model.getId();
+                    this.getActionResponse().AssignNewIdResult(model.getId());
                 }
 
             } else {
                 // actionResult = "Please try again!";
-                actionResult = "3:";
+                this.getActionResponse().AddError("Please try again!");
             }
 
         } else {
             // actionResult = "Email Address already exist!";
-            actionResult = "2:";
+             this.getActionResponse().AddError("Email Address already exist!");
         }
 
         return bFlag;

@@ -148,22 +148,31 @@
 
         function onSubmitResponseReceived(responseText, statusText){
             
-            responseText = responseText.trim();
+            var response = eval('(' + responseText.trim() + ')');
             var output = "Your changes have been saved";
             
-            if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
-                
-                alert("New Insurer has been created. Please create a BRE Band for this Insurer using the BRE Band tab and associate Credit Hire Organisations to this via the BRE Band Mapping tab.");
-                var newObjectId =  parseInt(responseText.substring(9,responseText.length));
-                $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + newObjectId);
-                
-            }else{
-                
-                output = responseText;
-                $(".chox-form-submit-result").html(output);
-                
+            if(response && response.isValid){                
+
+                if(response.resultType == "New" && response.result)
+                {
+                    var newObjectId = parseInt(response.result);
+                    $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + newObjectId);
+                    propmtMsg("New Insurer has been created. Please create a BRE Band for this Insurer using the BRE Band tab and associate Credit Hire Organisations to this via the BRE Band Mapping tab.");
+                }
+                else
+                {
+                    output = "Your changes have been saved.";
+                }
             }
-            
+            else if(response && response.errors){
+                
+                output = formErrorMessage(response.errors); 
+            }
+            else
+            {
+                output = "Unknown Error Encountered, please try again.";
+            }
+            $(".chox-form-submit-result").html(output);
             $("#admin_param_panel").unblock();
         }
 

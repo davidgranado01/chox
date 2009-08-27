@@ -87,7 +87,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
     public List getSuppliers() {
         if (suppliers == null) {
-            suppliers = this.lookupService.getSuppliers();
+            suppliers = this.lookupService.getAllSuppliers();
         }
         return suppliers;
     }

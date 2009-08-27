@@ -68,37 +68,36 @@ public class AttachmentAction extends BaseModelAction implements ModelDriven<Att
 
     public String createNewAttachment() throws Exception {
 
-        try {
-            
+        try {            
             if(!FileHelper.isFileValid(this.attachmentFile)){
-                this.actionResult = "ERROR : Unknown File Format";
+                this.getActionResponse().AddError("Unknown File Format");
                 return SUCCESS;                
             }
             
             List<String> attTypes = attachmentTypeService.getAttachmentTypeCode();
             
             if(!FileHelper.isFileTypeAllow(this.uploadFileName, attTypes)){
-                this.actionResult = "ERROR : Invalid File Type";
+                this.getActionResponse().AddError("Invalid File Type");
                 return SUCCESS;
             }
             
             int iResult = FileHelper.isFileSizeAllow(this.attachmentFile);
             if(iResult==0){
-                this.actionResult = "ERROR : Invalid File";
+                this.getActionResponse().AddError("Invalid File");
                 return SUCCESS;        
             }else if(iResult<0){
-                this.actionResult = "ERROR : File Size is not allowed exceed "+FileHelper.maxFileSize("MB")+" MB";
+                this.getActionResponse().AddError("File Size is not allowed exceed "+FileHelper.maxFileSize("MB")+" MB");
                 return SUCCESS;
             }
             
             if(!processFile(this.attachmentFile)){
-                this.actionResult = "ERROR : Unknown Error occured, please try again.";
+                this.getActionResponse().AddError("Unknown Error occured, please try again.");
             }else{
-                this.actionResult = "File has been uploaded successfully";
+                this.getActionResponse().AssignMessageResult("File has been uploaded successfully");
             }
             
         } catch (Exception ex) {
-            this.actionResult = "ERROR :" + ex.getMessage();
+            this.getActionResponse().AddError(ex.getMessage());
         }
         
         return SUCCESS;

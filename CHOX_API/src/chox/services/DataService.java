@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
@@ -81,6 +82,17 @@ public class DataService extends HibernateDaoSupport {
         return q.setResultTransformer(Transformers.aliasToBean(entityClass)).list();
     }
 
+//    public List externalQuery(final String query, Map parameters, Class entityClass, Boolean cacheable ) {
+//
+//        Query q = this.getSession().createSQLQuery(query).setCacheable(cacheable);
+//        for (Object p : parameters.keySet()) {
+//            String parameterName = (String) p;
+//            q.setParameter(parameterName, parameters.get(parameterName));
+//
+//        }
+//        return q.setResultTransformer(Transformers.aliasToBean(entityClass)).list();
+//    }
+
     public Object getByCriteria(final DetachedCriteria c) {
 
         List result = getHibernateTemplate().findByCriteria(c);
@@ -106,19 +118,16 @@ public class DataService extends HibernateDaoSupport {
         return getHibernateTemplate().findByCriteria(c);
     }
 
-    public List findByCriteria(final DetachedCriteria dc, final Class c, final int start, final int limit) {
+     public List findByCriteria(final DetachedCriteria dc, Boolean cacheable) {
 
-        dc.setProjection(Projections.id());
-        Criteria outer = getCurrentSession().createCriteria(c);
-        outer.add(Subqueries.propertyIn("id", dc));
-        outer.setFirstResult(start);
-        outer.setMaxResults(limit);
-        return outer.list();
-    }
+        Criteria c = dc.getExecutableCriteria(getSession());
+        c.setCacheable(true);
+        return c.list();
+     }
 
     public void save(final Object object) {
         TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
-        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW );
         transactionTemplate.execute(
                 new TransactionCallbackWithoutResult() {
 
@@ -151,7 +160,7 @@ public class DataService extends HibernateDaoSupport {
     
     public void delete(final Object object) {
         TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
-        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW );
         transactionTemplate.execute(
                 new TransactionCallbackWithoutResult() {
 

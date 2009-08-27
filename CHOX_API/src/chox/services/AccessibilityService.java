@@ -5,9 +5,7 @@
 
 package chox.services;
 
-import chox.model.Accessibility;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  *
@@ -16,6 +14,4 @@ import java.util.List;
 public interface AccessibilityService {    
     
     public HashMap getAccessibilityMap();
-    public void AddNewAccessibility(List<Accessibility> aList,short right);
-
 }

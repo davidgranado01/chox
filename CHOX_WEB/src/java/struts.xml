@@ -77,7 +77,7 @@
             </result>
         </action>
         <action name="doDeleteFile" class="chox.web.actions.DeleteAttachmentAction">
-            <result name="success">/jsp/p_response.jsp
+            <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
         <action name="doUpdateAnomalies" class="chox.web.actions.ClaimAction" method="doUpdateAnomalies">
@@ -579,7 +579,7 @@
             </result>
         </action>
         <action name="updateHireMonitorDetail" class="chox.web.actions.HireMonitoringDetailAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp
+            <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
         <!-- End HireMonitoringDetail -->   
@@ -595,7 +595,7 @@
         </action>
         
         <action name="addNewHireMonitoringEcd" class="chox.web.actions.HireMonitoringEcdAction" method="addNewHireMonitoringEcd">
-            <result name="success">/jsp/p_response.jsp
+            <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
         <action name="getHireMonitoringEcds" class="chox.web.actions.GetHireMonitoringEcdsAction" method="getHireMonitoringEcds">
@@ -614,7 +614,7 @@
             </result>
         </action>
         <action name="updateEngineerReport" class="chox.web.actions.EngineerReportAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp
+            <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
         <!-- End EngineerReport Detail -->
@@ -629,7 +629,7 @@
             </result>
         </action>
         <action name="updateVehicleHire" class="chox.web.actions.VehicleHireAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp
+            <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
         <!-- End VehicleHire Detail -->
@@ -664,11 +664,11 @@
             </result>
         </action>
         <action name="createNewComment" class="chox.web.actions.CommentAction" method="createNewComment">
-            <result name="success">/jsp/p_response.jsp
+            <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
         <action name="createNewAttachment" class="chox.web.actions.AttachmentAction" method="createNewAttachment">
-            <result name="success">/jsp/p_response.jsp
+            <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
         <!-- End Comment Detail -->
@@ -765,7 +765,7 @@
         </action>
         
         <action name="checkIsClaimNumberDuplicated" class="chox.web.actions.AlertAction" method="checkIsClaimNumberDuplicated">
-            <result name="success">/jsp/p_response.jsp
+            <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
         
@@ -774,7 +774,7 @@
         </action>
         
         <action name="submitSupportMessage" class="chox.web.actions.OnlineSupportAction" method="saveMessage">
-            <result name="success">/jsp/p_response.jsp
+            <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
         
@@ -784,7 +784,7 @@
         </action>
         
         <action name="changePassword" class="chox.web.actions.UserAccountAction" method="changePassword">
-            <result name="success">/jsp/p_response.jsp
+            <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
         
@@ -803,19 +803,19 @@
         </action>
         
         <action name="doTriggerUserAccountStatus" class="chox.web.actions.doUserAction" method="triggerStatus">
-            <result name="success">/jsp/p_response.jsp
+            <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
         <action name="doTriggerPasswordExpiredStatus" class="chox.web.actions.doUserAction" method="triggerPasswordExpiredStatus">
-            <result name="success">/jsp/p_response.jsp
+            <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
         <action name="doTriggerCreditHireAccountStatus" class="chox.web.actions.doChorganisationAction" method="triggerStatus">
-            <result name="success">/jsp/p_response.jsp
+            <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
         <action name="doTriggerInsurerAccountStatus" class="chox.web.actions.doInsurerAction" method="triggerStatus">
-            <result name="success">/jsp/p_response.jsp
+            <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
         <action name="getInsurer" class="chox.web.actions.InsurerAction">
@@ -826,12 +826,9 @@
         </action>
         
         <action name="updateInsurerDetail" class="chox.web.actions.doInsurerAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp</result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
-        <action name="updateInsurerMapping" class="chox.web.actions.doInsurerAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp</result>
-        </action>
-
+       
         <action name="getChorganisation" class="chox.web.actions.ChorganisationAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
@@ -839,7 +836,7 @@
             <result name="success">/jsp/user/adminPanel/p_chorganisation_detail_penal.jsp</result>
         </action>
         <action name="updateChorganisationDetail" class="chox.web.actions.doChorganisationAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp</result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>  
       
         <action name="getUser" class="chox.web.actions.UserAction">
@@ -849,10 +846,10 @@
             <result name="success">/jsp/user/adminPanel/p_user_detail_penal.jsp</result>
         </action>
         <action name="updateUserDetail" class="chox.web.actions.doUserAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp</result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
         <action name="updateUserPassword" class="chox.web.actions.doUserAction" method="updateUserPassword">
-            <result name="success">/jsp/p_response.jsp</result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
         <action name="getUserole" class="chox.web.actions.UserroleAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
@@ -919,12 +916,9 @@
             <result name="success">/jsp/user/adminPanel/p_insurer_choband_detail_panel.jsp</result>
         </action>
         <action name="updateInsurerChoBandDetail" class="chox.web.actions.doInsurerChoBandAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp</result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
-        <action name="doTriggerCreditHireBandStatus" class="chox.web.actions.doInsurerChoBandAction" method="triggerStatus">
-            <result name="success">/jsp/p_response.jsp
-            </result>
-        </action>
+       
         <action name="doDeleteCreditHireBand" class="chox.web.actions.doInsurerChoBandAction" method="deleteChoBand">
             <result name="success">/jsp/p_response.jsp</result>
         </action>      

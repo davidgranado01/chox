@@ -38,10 +38,6 @@ public abstract class BaseModelAction extends BaseAction {
         return claimStatus;
     }
 
-    public String getActionResult() {
-        return actionResult;
-    }
-
     public void setClaimStatus(String claimStatus) {
         this.claimStatus = claimStatus;
     }

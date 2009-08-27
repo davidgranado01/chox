@@ -9,6 +9,7 @@ import chox.model.Claim;
 import chox.model.EngineerReport;
 import chox.services.EngineerReportService;
 import chox.web.security.ApplicationAccessibility;
+import chox.web.viewdata.ActionResponse;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import net.sf.json.JSONObject;
@@ -45,16 +46,15 @@ public class EngineerReportAction extends BaseModelAction implements ModelDriven
                 Claim c = claimService.getClaim(getClaimId());
                 c.setEngineerReport(model);
                 this.claimService.updateClaim(c);
-                this.actionResult = "new:" + model.getId();                 
+                this.getActionResponse().AssignNewIdResult(c.getId());
             }
             else
             {
                 this.service.updateObject(model);
-                this.actionResult = "";
             }        
         } 
         catch (Exception ex) {
-            this.actionResult = "ERROR :" + ex.getMessage();
+            this.getActionResponse().AddError(ex.getMessage());
         }
         return SUCCESS;
     }

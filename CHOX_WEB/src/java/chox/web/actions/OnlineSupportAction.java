@@ -76,7 +76,7 @@ public class OnlineSupportAction extends BaseAction{
             bFlag = emailHelper.postMail(message.getSubject(), emailMessage, recipients);        
         } catch (Exception ex) {
             ex.printStackTrace();
-            actionResult = "Please try again.";
+            this.getActionResponse().AddError("Please try again.");
             bFlag = false;
             sActionMsg = ex.getLocalizedMessage();
         } finally {
@@ -89,14 +89,14 @@ public class OnlineSupportAction extends BaseAction{
                 supportMessageService.updateObject(message);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                actionResult = "Please try again.";
+                this.getActionResponse().AddError("Please try again.");
                 bFlag = false;
                 sActionMsg = ex.getLocalizedMessage();
             } finally {
                 systemLogService.logSystemLog("OSF002", sActionMsg, bFlag, 2);
             }
             
-            actionResult = "Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.";
+            this.getActionResponse().AssignMessageResult("Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.");
         }
         
         return SUCCESS;      

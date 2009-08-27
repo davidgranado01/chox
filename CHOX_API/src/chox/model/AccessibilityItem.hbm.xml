@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-  <class name="chox.model.AccessibilityItem" table="accessibility_item">
-    <id column="id" name="id">
-      <generator class="increment"/>
-    </id>
-    <property column="role" name="role" not-null="true"/>
-    <property column="access_right" name="accessRight"/>
-    <many-to-one class="chox.model.Accessibility" column="accessibility_id" name="Accessibility" not-null="true"/>
-  </class>
+    <class name="chox.model.AccessibilityItem" table="accessibility_item">
+        <cache usage="read-write"/>
+        <id column="id" name="id">
+            <generator class="increment"/>
+        </id>
+        <property column="role" name="role" not-null="true"/>
+        <property column="access_right" name="accessRight"/>
+        <many-to-one class="chox.model.Accessibility" column="accessibility_id" name="Accessibility" not-null="true"/>
+    </class>
 </hibernate-mapping>

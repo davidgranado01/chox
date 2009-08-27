@@ -63,16 +63,15 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
         try {
             if (model.getId() > 0) {
                 this.service.updateObject(model);
-                this.actionResult = "";
             } else {
                 Claim c = claimService.getClaim(getClaimId());
                 c.setVehicleHire(model);
                 this.claimService.updateClaim(c);
-                this.actionResult = "new:" + model.getId();
+                this.getActionResponse().AssignNewIdResult(c.getId());
             }
 
         } catch (Exception ex) {
-            this.actionResult = "ERROR :" + ex.getMessage();
+            this.getActionResponse().AddError(ex.getMessage());
         }
         return SUCCESS;
     }

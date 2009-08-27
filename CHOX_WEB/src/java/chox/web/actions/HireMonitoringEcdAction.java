@@ -84,15 +84,13 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
                 model.setClaim(claim);
                 model.setReason(reasonOfDelayObject.getName());
                 
-                this.service.updateObject(model);
+                service.updateObject(model);
                 claimService.updateClaim(claim);
                 
-            }else{
-                this.actionResult = "";
             }
             
         } catch (Exception ex) {
-            this.actionResult = "ERROR :" + ex.getMessage();
+           this.getActionResponse().AddError(ex.getMessage());
         }
         
         return SUCCESS;

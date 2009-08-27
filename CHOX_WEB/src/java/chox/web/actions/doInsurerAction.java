@@ -96,13 +96,11 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
     public String updateModel() throws Exception {
         
         try {
-            
-            actionResult = "Your changes have been saved.";   
-            
+                      
             if(this.isNew){
                 
                 if(this.service.isInsurerNameExist(model.getName())){
-                    actionResult = "Insurer name already exist!"; 
+                    this.getActionResponse().AddError("Insurer name already exist!");
                     return SUCCESS;
                 }
             }
@@ -113,12 +111,13 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
                 lineOfBusinessService.createDefaultRecord(model);
                 insurerAlliasService.createDefaultRecord(model);
                 choBandService.createDefaultRecord(model);
-                actionResult = "objectId:"+model.getId();
+                this.getActionResponse().AssignNewIdResult(model.getId());
                 this.isNew = false;
             }
             
         } catch (Exception ex) {
-            throw ex; 
+            ex.printStackTrace();
+            this.getActionResponse().AddError(ex.getMessage());
         }
         
         return SUCCESS;

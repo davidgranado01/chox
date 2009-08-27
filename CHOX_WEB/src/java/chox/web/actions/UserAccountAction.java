@@ -33,17 +33,23 @@ public class UserAccountAction extends BaseAction {
 
     public String changePassword()
     {
+        try
+        {
+            webUser = this.getAuthenticatedUser().getUser();
 
-        webUser = this.getAuthenticatedUser().getUser();
+            webUser.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+            webUser.setLastModifiedBy(this.getAuthenticatedUser().getUser());
 
-        webUser.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-        webUser.setLastModifiedBy(this.getAuthenticatedUser().getUser());
-        
-        PasswordEncoder passwordEncoder = new org.acegisecurity.providers.encoding.Md5PasswordEncoder();
-        webUser.setPassword(passwordEncoder.encodePassword(getNewPassword(), null));
-        webUser.setIsExpired(false);
-        userService.persist(webUser, webUser.getEmail());
-        actionResult = "Your password has been changed.";
+            PasswordEncoder passwordEncoder = new org.acegisecurity.providers.encoding.Md5PasswordEncoder();
+            webUser.setPassword(passwordEncoder.encodePassword(getNewPassword(), null));
+            webUser.setIsExpired(false);
+            userService.persist(webUser, webUser.getEmail());
+            this.getActionResponse().AssignMessageResult("Your password has been changed.");
+        }
+        catch(Exception ex)
+        {
+            this.getActionResponse().AddError(ex.getMessage());
+        }
         return SUCCESS;
     }
 

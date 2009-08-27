@@ -5,6 +5,7 @@ import chox.model.WebUserRole;
 import chox.web.security.AcegiPrincipal;
 import com.opensymphony.xwork2.ActionSupport;
 import chox.web.security.PermissionedUser;
+import chox.web.viewdata.ActionResponse;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
 /**
@@ -14,6 +15,7 @@ import org.acegisecurity.context.SecurityContextHolder;
 public class BaseAction extends ActionSupport {
 
     private PermissionedUser user;
+     private ActionResponse actionResponse;
     
   
     @AcegiPrincipal
@@ -71,5 +73,16 @@ public class BaseAction extends ActionSupport {
         }
         
         return logInUserDesc;
+    }
+
+    /**
+     * @return the actionResponse
+     */
+    public ActionResponse getActionResponse() {
+        if(actionResponse == null)
+        {
+            actionResponse = new ActionResponse();
+        }
+        return actionResponse;
     }
 }

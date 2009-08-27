@@ -138,40 +138,44 @@
             }
             
         }
-        
-        function onSubmitResponseReceived(responseText, statusText){
-            
-            doLoadParameter();
-            
-            var isError = false;
-            
-            responseText = responseText.trim();
-            var output = "";
-            
-            if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
-                
-               var newObjectId =  parseInt(responseText.substring(9,responseText.length));
-               $("#chobandDiv").load("loadAdminPanel.action?adminPanelName=InsurerChoBandMgmt&selectOrgId=" + selectOrgId);
-                
-            }else{
-                
-                if((responseText.trim()).length>0){
-                    isError = true;
-                    $(".chox-form-submit-result").html(responseText);
+
+         function onSubmitResponseReceived(responseText, statusText)  {
+
+                doLoadParameter();
+                var isError = false;
+                response = eval('(' + responseText.trim() + ')');
+
+                if(response)
+                {
+                    if(response.isValid){
+
+                        if(response.resultType && response.resultType == 'New')
+                        {
+                            var newObjectId =  parseInt(response.result);
+                            $("#chobandDiv").load("loadAdminPanel.action?adminPanelName=InsurerChoBandMgmt&selectOrgId=" + newObjectId);
+                        }
+                    }
+                    else
+                    {
+                        isError = true;
+                        propmtErrors(response.errors);
+                    }
                 }
-                
-            }
-            
-            $("#admin_param_panel").unblock();
-            
-            if(!isError){
-                doInsurerChoBandBack();
-            }
-        }
+                else
+                {
+                    isError = true;
+                    propmtErrorMsg("Unknown Error Encountered, please try again.");
+                }
+
+               $("#admin_param_panel").unblock();
+                if(!isError){
+                    doInsurerChoBandBack();
+                }
+         }
 
         function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
             $("#admin_param_panel").unblock();
-            propmtMsg("Error","Error"); 
+            propmtErrorMsg("Error");
         }
         
         function doLoadParameter(){

@@ -48,10 +48,8 @@ public class CommentAction extends BaseModelAction implements ModelDriven<Commen
     public String createNewComment() {
         try {
             this.service.createNewObject(model);
-            // claimService.updateClaimLastModified(model.getClaim().getId());
-            this.actionResult = "";
         } catch (Exception ex) {
-            this.actionResult = "ERROR :" + ex.getMessage();
+            this.getActionResponse().AddError(ex.getMessage());
         }
         return SUCCESS;
     }

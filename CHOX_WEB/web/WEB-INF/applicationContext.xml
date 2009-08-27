@@ -9,7 +9,7 @@
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver">
         </property>
-        <property name="url" value="jdbc:postgresql://localhost:5432/chox_01">       
+        <property name="url" value="jdbc:postgresql://jupiter:5432/chox_dev_sprint8">
         </property>
         <property name="username" value="postgres">
         </property>
@@ -38,8 +38,10 @@
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect
                 </prop>
-                <prop key="hibernate.show_sql">false
+                <prop key="hibernate.show_sql">true
                 </prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
             </props>
         </property>
         <property name="mappingResources">
@@ -94,6 +96,7 @@
     </bean>
     <bean id="lookupService" class="chox.services.LookupServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
     <bean id="accessibilityService" class="chox.services.AccessibilityServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>

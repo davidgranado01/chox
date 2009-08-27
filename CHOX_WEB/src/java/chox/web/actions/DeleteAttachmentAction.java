@@ -4,6 +4,7 @@ import chox.model.Attachment;
 import chox.services.AttachmentService;
 import chox.services.GlobalConfigurationService;
 import chox.model.GlobalConfiguration;
+import chox.web.viewdata.ActionResponse;
 import java.io.File;
 import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
@@ -14,7 +15,7 @@ public class DeleteAttachmentAction extends BaseAction implements SessionAware {
     private GlobalConfigurationService globalConfigurationService;
     private Map session;
     private String claimid;
-
+   
     public String getClaimid() {
         return claimid;
     }
@@ -56,28 +57,32 @@ public class DeleteAttachmentAction extends BaseAction implements SessionAware {
     
     @Override
     public String execute() throws Exception {
-        
-        if(!fileId.equalsIgnoreCase("") && fileId!=null){
-            int ifileId = Integer.parseInt(fileId);
-            Attachment att = getAttachmentFile(ifileId);
-            
-            claimid = String.valueOf(att.getClaim().getId());
-            
-            if(!service.deleteAttachment(att)){
-                return "error";
-            }else{    
-                String filePath = getFileDirectory()+att.getFileName();
-                File thisFile = new File(filePath);
-                if(thisFile.exists()){
-                    thisFile.delete();
+
+        try {
+            if (!fileId.equalsIgnoreCase("") && fileId != null) {
+                int ifileId = Integer.parseInt(fileId);
+                Attachment att = getAttachmentFile(ifileId);
+
+                claimid = String.valueOf(att.getClaim().getId());
+
+                if (!service.deleteAttachment(att)) {
+                    return "error";
+                } else {
+                    String filePath = getFileDirectory() + att.getFileName();
+                    File thisFile = new File(filePath);
+                    if (thisFile.exists()) {
+                        thisFile.delete();
+                    }
                 }
             }
+        } catch (Exception ex) {
+             getActionResponse().AddError(ex.getMessage());
         }
-        
+
         return SUCCESS;
     }
 
     public void setSession(Map arg0) {
         this.session = session;
-    }
+    }    
 }

@@ -137,24 +137,34 @@
         function onBeforeSubmit(formData, jqForm, options) { 
         }
 
-        function onSubmitResponseReceived(responseText, statusText){
-            
-            responseText = responseText.trim();
-            var output = "Your changes have been saved.";
-            
-            if(responseText != "" && responseText != "1" && responseText.substring(0,9) == 'objectId:'){
-                
-                alert("New credit hire organisation has been created");
-                var newObjectId =  parseInt(responseText.substring(9,responseText.length));
-                $("#admin_param_panel").load("updateChorganisationDetailPanel.action?objectId=" + newObjectId);
-                
-            }else{
-                
-                output = responseText;
-                $(".chox-form-submit-result").html(output);
-                
+         function onSubmitResponseReceived(responseText, statusText){
+
+            var response = eval('(' + responseText.trim() + ')');
+            var output = "Your changes have been saved";
+
+            if(response && response.isValid){
+
+                if(response.resultType == "New" && response.result)
+                {
+                    var newObjectId = parseInt(response.result);
+                    $("#admin_param_panel").load("updateChorganisationDetailPanel.action?objectId=" + newObjectId);
+                     propmtMsg("New credit hire organisation has been created");
+                }
+                else
+                {
+                    output = "Your changes have been saved.";
+                }
             }
-            $("#admin_param_panel").unblock();   
+            else if(response && response.errors){
+                
+                output = formErrorMessage(response.errors);
+            }
+            else
+            {
+                output = "Unknown Error Encountered, please try again.";
+            }
+            $(".chox-form-submit-result").html(output);
+            $("#admin_param_panel").unblock();
         }
 
         function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {

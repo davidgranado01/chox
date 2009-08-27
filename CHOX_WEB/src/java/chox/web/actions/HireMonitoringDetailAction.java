@@ -12,6 +12,7 @@ import chox.services.CustomerService;
 import chox.services.HireMonitoringDetailService;
 import chox.services.LookupService;
 import chox.web.security.ApplicationAccessibility;
+import chox.web.viewdata.ActionResponse;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import java.util.List;
@@ -66,17 +67,16 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
         try {
             if (model.getId() > 0) {
                 this.service.updateObject(model);
-                this.actionResult = "";
             } else {
                 this.service.updateObject(model);
                 Claim c = claimService.getClaim(getClaimId());
                 c.setHireMonitoringDetail(model);
                 this.claimService.updateClaim(c);
-                this.actionResult = "new:" + model.getId(); 
+                getActionResponse().AssignNewIdResult(model.getId());
             }
             
         } catch (Exception ex) {
-            this.actionResult = "ERROR :" + ex.getMessage();
+            getActionResponse().AddError(ex.getMessage());
         }
         return SUCCESS;
     }
@@ -109,6 +109,5 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
         }
         
         return nonProvisionReasons;
-    }
-    
+    }        
 }
