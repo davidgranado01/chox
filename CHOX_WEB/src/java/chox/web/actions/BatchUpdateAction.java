@@ -6,6 +6,7 @@ package chox.web.actions;
 
 import chox.model.Claim;
 import chox.model.ClaimStatus;
+import chox.model.LineOfBusiness;
 import chox.services.AuditTrailService;
 import chox.services.ClaimService;
 import chox.services.SystemLogService;
@@ -22,7 +23,8 @@ public class BatchUpdateAction extends BaseAction {
     private SystemLogService systemLogService;
     private AuditTrailService auditTrailService;
     private String actionResult;
-    private List<Integer> selectedClaimIds;
+    private List<Integer> selectedClaimIdList;
+    private int lineOfBusinessId;
 
     @Override
     public String execute() throws Exception {
@@ -36,7 +38,7 @@ public class BatchUpdateAction extends BaseAction {
         String oldStatus = ClaimStatus.INVOICE_PAYMENT_LOGGED;
         String newStatus = ClaimStatus.INVOICE_PAYMENT_RECEIVED;
         
-        for (Integer id : selectedClaimIds) {
+        for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
             updateCliamStatus(claim,oldStatus,newStatus);
         }
@@ -48,8 +50,11 @@ public class BatchUpdateAction extends BaseAction {
         String oldStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED;
         String newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
         
-        for (Integer id : selectedClaimIds) {
+        for (Integer id : selectedClaimIdList)  {
             Claim claim = claimService.getClaim(id);
+            LineOfBusiness routeTo = new LineOfBusiness();
+            routeTo.setId(lineOfBusinessId);
+            claim.setLineOfBusiness(routeTo);
             updateCliamStatus(claim, oldStatus, newStatus);
         }
         return SUCCESS;
@@ -60,7 +65,7 @@ public class BatchUpdateAction extends BaseAction {
         String oldStatus = ClaimStatus.INVOICE_APPROVED_BY_BRE;
         String newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
         
-        for (Integer id : selectedClaimIds) {
+        for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
             updateCliamStatus(claim,oldStatus,newStatus);
         }
@@ -72,7 +77,7 @@ public class BatchUpdateAction extends BaseAction {
         String oldStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
         String newStatus = ClaimStatus.INVOICE_PAYMENT_LOGGED;
        
-        for (Integer id : selectedClaimIds) {
+        for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
             updateCliamStatus(claim,oldStatus,newStatus);
         }
@@ -105,17 +110,22 @@ public class BatchUpdateAction extends BaseAction {
         this.actionResult = actionResult;
     }
 
-    public void setSelectedClaimIds(String selectedClaimIds) {
-        String[] list = selectedClaimIds.split(",");
+    public void setSelectedClaimIds(String ids) {
+        String[] list = ids.split(",");
         
-        this.selectedClaimIds = new ArrayList<Integer>();
+        selectedClaimIdList = new ArrayList<Integer>();
         
         for(String s : list)
         {
-            Integer selectedClaimId = Integer.parseInt(s);
-            this.selectedClaimIds.add(selectedClaimId);
+            Integer id = Integer.parseInt(s.trim());
+            selectedClaimIdList.add(id);
         }
         
+    }
+
+    public void setLineOfBusiness(int id)
+    {
+        this.lineOfBusinessId = id;
     }
 
     public void setClaimService(ClaimService claimService) {

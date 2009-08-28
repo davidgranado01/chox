@@ -57,8 +57,6 @@
     });
     ds.setDefaultSort('created', 'desc');
      
-
-    
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';     
     
     function showClaimByStatus(status)
@@ -324,37 +322,98 @@
                     });
                 }
             }
-        }); 
-        
+        });
+
+        //Emm 28/08/2009
+        //route claim from menu
+        //only for user with role : Claim router
+
+       var lobSelectionDlg;
+
+       
         var doClaimRoutedAction = new Ext.Action
         ({
             text: 'Route Claim(s)',
-            handler: function(){
-                if(confirm('Are you sure you want to perform this action?'))
-                {
-                    var selectedRecords =  sm2.getSelections();  
-                    var selectedIDs = $.map(selectedRecords, function(n){
-                        return n.json.id;
-                    });
+            handler: function(){     
 
-                    var param = selectedIDs.join(",");
-                    
-                    doShowPage();
-                    
-                    /*
-                    $.ajax({
-                        url: "doClaimRoutedAction.action?selectedClaimIds=" + param,
-                        success: function()
-                        {
-                            ds.reload();
-                            refreshFilterPanel();
+                    if(!lobSelectionDlg)
+                    {
+                            lobSelectionDlg =  new Ext.Window({
+                                applyTo:'lobSelectionDlgHolder',
+                                width:410,
+                                modal: true,
+                                closeAction:'hide',
+                                plain: false,
+                                title: 'Route Claim(s)',
+                                resizable : false,
+                                items: new Ext.Panel({
+                                    applyTo: 'lobSelectionPanel'
+                                }),
+                                buttons: [{
+                                        text:'ok',
+                                        handler:function(){
+                                            var selectedRecords =  sm2.getSelections();
+                                            var selectedIDs = $.map(selectedRecords, function(n){
+                                                return n.json.id;
+                                            });
+                                            var param = selectedIDs.join(",");
+                                            $('form#routeClaimForm input[name="selectedClaimIds"]').val(param);
+                                            
+                                            $("form#routeClaimForm").validate(
+                                            {
+                                                errorLabelContainer: "#HMmessageBox",
+                                                rules: {
+                                                    lineOfBusiness:{
+                                                        required:true
+                                                    }
+                                                },
+                                                messages: {
+                                                    lineOfBusiness:{
+                                                        required:"You must select work grop.'"
+                                                    }
+                                                }
+                                            });
+                                            
+                                            if($('form#routeClaimForm').valid()){
+
+                                                var submitOption = {
+                                                    clearForm: true,
+                                                    success:function(){
+                                                    ds.reload();
+                                                    refreshFilterPanel();
+                                                    lobSelectionDlg.hide();
+                                                }};
+                                                $("form#routeClaimForm").ajaxSubmit(submitOption);
+                                                
+                                            }
+                                            else{
+                                                propmtErrorMsg('Work group could not be blank.');
+                                            }
+                                        }
+                                    },{
+                                        text: 'Close',
+                                        handler: function(){
+                                            lobSelectionDlg.hide();
+                                        }
+                                    }]
+                            });
+
+                            lobSelectionDlg.addListener('beforeshow',
+                                function(dialog){
+                                    $('div#lobSelectionHolder').load('user/LineOfBusinessDropDownAction.action');
+                                }
+                            );
                         }
-                    });
-                    */
-                }
+
+                    lobSelectionDlg.show(this);
+
+                    
+
             }
-        }); 
-        
+        });
+
+        //end route claim
+
         var actionMenu = new Ext.Toolbar.MenuButton({
             text: 'More actions',            
             tooltip: {text:'', title:'More actions'},
@@ -708,11 +767,34 @@
                 <div id="gridHolder"></div>
                 <div class="excel-export"><form name="thisForm">
                 <a href="javascript:doExportExcel();">Export To Excel</a></form></div>
+
+                <div id="lobSelectionDlgHolder" class="x-hidden">
+                    <div id="lobSelectionPanel">
+                    <form id="routeClaimForm" action="<%=request.getContextPath()%>/user/doClaimRoutedAction.action" class="XXentity-form">
+
+                        <input name="selectedClaimIds" type="hidden" />
+                        <table class="selectionForm" cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                                <th colspan="2"><label>Please select the group to which claim(s) should be routed.</label></th>
+                            </tr>
+                            <tr>
+                                <td><label>Work Group</label></td>
+                                <td><div id="lobSelectionHolder"></div></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> &nbsp;</td>
+                            </tr>
+                        </table>
+                    
+                    </form>
+                </div>
+                </div>
+                
+
             </div>
             
         </div>
-  
-
+        
 
     </div>
 

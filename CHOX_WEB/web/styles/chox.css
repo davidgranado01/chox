@@ -771,3 +771,28 @@ img.tip-target
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: .9em;
 }
+
+table.selectionForm
+{
+    width:100%;
+    border-collapse:collapse;
+    margin:24px;
+    height: 100%;
+}
+
+table.selectionForm th
+{
+    padding:4px;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px;
+    font-weight:bold;
+    width:16%;
+}
+
+table.selectionForm td
+{
+    padding:4px;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px;
+    width:16%;
+}
