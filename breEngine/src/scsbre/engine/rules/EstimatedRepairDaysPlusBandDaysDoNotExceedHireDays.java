@@ -14,18 +14,11 @@ import scsbre.model.IClaimInfo;
 import scsbre.model.ICustomerVehicleDamageInfo;
 import scsbre.model.IEngineerReportInfo;
 
-/**
- *
- * rule 20, order 12
- */
 public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusinessRule {
-
     
     private String narrative = "Number of hire days billed exceeds the allowable threshold (for repair hires) with the inclusion of the Engineer's Esimtated Days Under Repair.";
     
-    
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
-        
         
         ICustomerVehicleDamageInfo cvdamage = claim.getCustomerVehicleDamage();  
         ICHOBandInfo choBand = claim.getChoBand();
@@ -34,7 +27,6 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        
         
         if ( (claim.getHireDetail().getIsTotalLoss()) || (eReport.getEstimatedDaysUnderRepair() < 1)) {
             

@@ -24,20 +24,17 @@ public class ClaimCalcHelper {
             
             DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd");
 
-        
-		
-                
-        try {
-            Date hireStart = dfm.parse("2008-07-18 00:00:00");
-            Date initialEcd = dfm.parse("2008-08-03 00:00:00");
-            
-                System.out.println(">>>>>>>"+ hireStart);
-                System.out.println(">>>>>>>"+ initialEcd);
-		System.out.println(">>>>>>>"+ CalcHelper.getDaysBetweenDates(hireStart, initialEcd));
-                
-        } catch (ParseException ex) {
-            Logger.getLogger(ClaimCalcHelper.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            try {
+                Date hireStart = dfm.parse("2008-07-18 00:00:00");
+                Date initialEcd = dfm.parse("2008-08-03 00:00:00");
+
+                    System.out.println(">>>>>>>"+ hireStart);
+                    System.out.println(">>>>>>>"+ initialEcd);
+                    System.out.println(">>>>>>>"+ CalcHelper.getDaysBetweenDates(hireStart, initialEcd));
+
+            } catch (ParseException ex) {
+                Logger.getLogger(ClaimCalcHelper.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         }
         */
@@ -47,14 +44,8 @@ public class ClaimCalcHelper {
         
 	public int getHireDuration()
 	{
-            
             Date hireStart = claim.getHireDetail().getHireStart();
             Date initialEcd = claim.getHireMonitoringEcd();
-            
-            // System.out.println("hireStart?:"+hireStart);
-            // System.out.println("initialEcd?:"+initialEcd);
-            // System.out.println("getDaysBetweenDates?:"+CalcHelper.getDaysBetweenDates(hireStart, initialEcd));
-            
             return CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
 	}
         
@@ -66,7 +57,6 @@ public class ClaimCalcHelper {
 
 	public BigDecimal getDailyHireRateChargedWithToleranceDeduction()
 	{
-         
             BigDecimal tolerance = getDailyHireRateCharged().multiply(claim.getChoBand().getHireRateChargeTolerance());
             return getDailyHireRateCharged().subtract(tolerance);
 	}
@@ -180,6 +170,7 @@ public class ClaimCalcHelper {
             if(bLabourCost.doubleValue()>0 
                     && bAverageLabourRate.doubleValue()>0 
                     && bAverageLabourHoursPerHireDay.doubleValue()>0){
+                
                 bLabourCostAverageRateDay = (bLabourCost.divide(bAverageLabourRate)).divide(bAverageLabourHoursPerHireDay);
             }
 
@@ -202,10 +193,11 @@ public class ClaimCalcHelper {
             if((bLabourCost.compareTo(new BigDecimal(0.00))<1) && (iLabourHour>0)){
                 
                 if(bLabourRate.compareTo(new BigDecimal(0.00))<1){
-                    bLabourCost = new BigDecimal(claim.getChoBand().getAverageLabourHoursPerHireDay()*iLabourHour);
+                    bLabourCost = new BigDecimal(claim.getChoBand().getAverageLabourRate()*iLabourHour);
                 }else{
                     bLabourCost = bLabourRate.multiply(new BigDecimal(iLabourHour)); 
                 }
+                
             }
             return bLabourCost;
         }

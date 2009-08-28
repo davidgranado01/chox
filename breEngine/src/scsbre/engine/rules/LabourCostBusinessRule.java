@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package scsbre.engine.rules;
 
 import java.math.BigDecimal;
@@ -29,7 +24,7 @@ public class LabourCostBusinessRule implements IBusinessRule {
             int iNumberOfHireDay =claim.getHireDetail().getNumberOfHireDays();
             int iNumberDayOfLabourCostWorthy = cCalc.getNumberDayOfLabourCostWorthy();
             
-            if(iNumberOfHireDay>=iNumberDayOfLabourCostWorthy){
+            if(iNumberOfHireDay>iNumberDayOfLabourCostWorthy){
                 success = false;
                 narrative = "The number of hire days billed is not relative to the number of expected hire days based on labour cost information.";
             }

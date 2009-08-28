@@ -88,8 +88,6 @@ public class OverviewSummaryReport implements Report {
             }
 
             String query = sb.toString();
-
-            System.out.println(">>>"+query);
             
             Map paramMap = new HashMap();
             paramMap.put("pUploadDateFrom", dataStart);

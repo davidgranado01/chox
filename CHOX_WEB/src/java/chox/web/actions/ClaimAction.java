@@ -26,6 +26,7 @@ import org.acegisecurity.GrantedAuthority;
 import scsbre.engine.RulesEngineResponse;
 import chox.data.AttachmentCategory;
 import chox.model.AttachmentType;
+import chox.model.ChoBand;
 import chox.model.Chorganisation;
 import chox.model.Comment;
 import chox.model.Customer;
@@ -1111,8 +1112,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         Claim BREClaim = claim;
 
         // GET HARDCODDED CHOBAND        
-        claim.setChoband(choBandService.getDummyChoBand());
-
+        //claim.setChoband(choBandService.getDummyChoBand());
+        ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        claim.setChoband(choBand);
+                    
         // INTERFACE MAPPING WITH BRE - WHERE HIRE MONITORING NOT EXIST
         Boolean isIsTotalLostCheck = false;
         if (BREClaim.getHireMonitoringDetail() != null) {

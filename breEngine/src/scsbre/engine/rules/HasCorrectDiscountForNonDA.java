@@ -27,8 +27,6 @@ public class HasCorrectDiscountForNonDA implements IBusinessRule {
                 adminHandlingCharge = (insurer.getAdminHandlingCharge()).multiply(CalcHelper.VAT_RATE).negate();
             }
             
-            System.out.println("new adminHandlingCharge:" + adminHandlingCharge);
-            
             boolean success = CalcHelper.EqualTo(invoice.getDiscount(), adminHandlingCharge);
             
             if(success) narrative = "";
