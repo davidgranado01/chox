@@ -25,7 +25,6 @@ public class LineOfBusinessViewData {
     private boolean status;
     private String statusDesc;
 
-    
     public LineOfBusinessViewData(LineOfBusiness object) {
         
         this.id = object.getId();
