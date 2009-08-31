@@ -12,6 +12,7 @@ import chox.model.Invoice;
 import chox.model.LineOfBusiness;
 import chox.model.ThirdParty;
 import chox.model.WebUser;
+import chox.model.Workgroup;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
@@ -28,7 +29,8 @@ public class claimGridViewData {
     private String createdDate;
     private String lastModifiedDate;
     private String status;
-    private String lineOfBusiness;
+    // private String lineOfBusiness;
+    private String workgroup;
     private String cho;
     private String insurer;
     private String createdBy;
@@ -42,7 +44,8 @@ public class claimGridViewData {
         Customer customer = claim.getCustomer();
         Chorganisation c = claim.getChorganisation();
         Insurer i = claim.getInsurer();
-        LineOfBusiness lob = claim.getLineOfBusiness();
+        //LineOfBusiness lob = claim.getLineOfBusiness();
+        Workgroup wg = claim.getWorkgroup();
         Invoice ivc = claim.getInvoice();
         ThirdParty thirdParty = claim.getThirdParty();
         
@@ -51,7 +54,8 @@ public class claimGridViewData {
         this.invoiceAmount = ivc == null ? "" : currentcyFormat.format(ivc.getTotalToPay());
         //this.vehicleRegistration = customer == null ? "" : customer.getVehicleRegistration();
         this.vehicleRegistration = customer == null ? "" : thirdParty.getVehicleRegistration();
-        this.lineOfBusiness = lob == null ? "" : lob.getName();
+        // this.lineOfBusiness = lob == null ? "" : lob.getName();
+        this.workgroup = wg == null ? "" : wg.getName();
         this.claimNumber = claim.getClaimNumber();
         this.createdDate = dateFormat.format(claim.getCreatedDate());
         this.lastModifiedDate = dateTimeFormat.format(claim.getLastModifiedDate());
@@ -59,9 +63,11 @@ public class claimGridViewData {
         this.status = claim.getStatus();
         this.cho = c == null ? "" : c.getName();
         this.insurer = i == null ? "" : i.getName();//TODO : assign insurer
+        
         String orgName = "";
         WebUser user = claim.getCreatedBy();
         if (user != null) {
+            
             Chorganisation cho = user.getChorganisation();
             Insurer ins = user.getInsurer();
 
@@ -98,10 +104,16 @@ public class claimGridViewData {
         return status;
     }
 
+    public String getWorkgroup() {
+        return workgroup;
+    }
+
+    /*
     public String getLineOfBusiness() {
         return lineOfBusiness;
     }
-
+    */
+    
     public String getCho() {
         return cho;
     }

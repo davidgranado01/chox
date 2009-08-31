@@ -142,7 +142,6 @@ public class XMLUpload_newClaim_01 extends TestCase{
             /*
             protected Insurer insurer;
             protected Chorganisation chorganisation;
-            protected LineOfBusiness lineOfBusiness;
             protected Incident incident;
             protected Invoice invoice;
             protected ThirdParty thirdParty;

@@ -2,12 +2,78 @@
 
 <script language="JavaScript">
 
+    var userDetailPanelTabs;
+    var userDetailTabIndex = 0;
+    var isNew = true;
+    var isClaimHandler = false;
     var selectedPanel = 'UserMgmt';
-    var lineOfBusinessId = $("#h_lineOfBusinessId").val();
-    var passwordValidateErrorMsg = "";
+    var orgTypeId;
+    
+    function setupUserDetailPanels()
+    {  
+        var isWorkgroupDisabled = true;
+        
+        if(!isNew && isClaimHandler && orgTypeId=="2"){
+            isWorkgroupDisabled = false;
+        }
 
+       userDetailPanelTabs = new Ext.TabPanel({
+       renderTo: 'userDetailMainPanel',
+       height:660,
+       autoScroll :true,
+       activeTab: userDetailTabIndex,
+       items:[
+           {contentEl:'userDetailTab', title:'User Detail', listeners: {activate: handleActivate}},
+           {contentEl:'userPasswordTab', title:'Change Password', disabled:isNew, listeners: {activate: handleActivate}},
+           {contentEl:'userRoleTab', title:'User Roles', disabled:isNew, listeners: {activate: handleActivate}},
+           {contentEl:'userWorkgroupTab', title:'Workgroups', disabled:isWorkgroupDisabled, listeners: {activate: handleActivate}}
+       ]
+       });
+    }
+    
+    function handleActivate(tab){
+        userDetailTabIndex = 0;
+        if(userDetailPanelTabs) { userDetailTabIndex = userDetailPanelTabs.items.indexOf(userDetailPanelTabs.getActiveTab()); }
+    }
+    
+    // GET CLAIM DETAIL
+    function checkMode(){
+        var mode = "<s:property value="mode"/>";
+        if(mode!=null && mode!="" && mode=='Edit'){
+            isNew = false
+        }
+    }
+
+    function getTabIndex(){
+        var tabIndex = "<s:property value="tabIndex"/>";
+        if(tabIndex!=null && tabIndex!=""){
+            userDetailTabIndex = tabIndex;
+        }
+    }
+    
+    function checkClaimHandler(){
+        var inp = "<s:property value="claimHandler"/>";
+        if(inp!=null && inp!="" && inp=='true'){
+            isClaimHandler = true;
+        }
+    }
+    
+    function getOrgTypeId(){
+        var inp = "<s:property value="orgTypeId"/>";
+        if(inp!=null && inp!=""){
+            orgTypeId = inp;
+        }
+    }
+
+    // PAGE
     $(document).ready(function(){
-
+        
+        getOrgTypeId();
+        checkMode();
+        getTabIndex();
+        checkClaimHandler();
+        setupUserDetailPanels();
+        
         $.validator.addMethod(
             "regex",
             function(value, element, regexp) {
@@ -17,10 +83,8 @@
             },
             "Please check your input."
         );
-
-        doUserSearchSelectOnChange();
         
-        if($("#h_mode").val() =='Edit'){
+        if(!isNew){
             doFormValidation();
         }else{
             doFormNewValidation();
@@ -29,8 +93,9 @@
     });
 
     function getClaimHandlervalidation(){
+        
         var bFlag = false;
-        if($("#h_mode").val() =='Edit' && $("#h_isClaimHandler").val()=='true'){
+        if(!isNew && isClaimHandler){
             bFlag = true;
         }
         return bFlag;
@@ -49,16 +114,14 @@
                 firstName:{required:true},
                 lastName:{required:true},
                 insurerId:{required:true},
-                supplierId:{required:true},
-                lineOfBusinessId:{required:getClaimHandlervalidation()}
+                supplierId:{required:true}
             },
             messages: {
                 email:{required:"You must supply a value for 'Email'", email: "Incorrect email format"},
                 firstName:{required:"You must supply a value for 'First Name'"},
                 lastName:{required:"You must supply a value for 'Last Name'"},
                 insurerId:{required:"Please select 'Insurer Company'"},
-                supplierId:{required:"Please select 'Credit Hire Organisation'"},
-                lineOfBusinessId:{required:"Please select 'Line of Business'"}
+                supplierId:{required:"Please select 'Credit Hire Organisation'"}
             },
             submitHandler: function(form) {
             }
@@ -82,8 +145,7 @@
                 insurerId:{required:true},
                 supplierId:{required:true},
                 password:{required:true, regex: "^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$"},
-                confirmNewPassword:{equalTo: "#password"},
-                lineOfBusinessId:{required:getClaimHandlervalidation()}
+                confirmNewPassword:{equalTo: "#password"}
             },
             messages: {
                 email:{required:"You must supply a value for 'Email'", email: "Incorrect email format"},
@@ -92,8 +154,7 @@
                 insurerId:{required:"Please select 'Insurer Company'"},
                 supplierId:{required:"Please select 'Credit Hire Organisation'"},
                 password:{required:"You must supply a value for 'Password'", regex: "Incorrect Password Format"},
-                confirmNewPassword:{equalTo: "Your passwords do not match"},                
-                lineOfBusinessId:{required:"Please select 'Line of Business'"}
+                confirmNewPassword:{equalTo: "Your passwords do not match"}
             },
             submitHandler: function(form) {
             }
@@ -125,9 +186,6 @@
         return validateFlag;
     }
 
-    function onBeforeSubmit(formData, jqForm, options) {
-    }
-
     function onSubmitResponseReceived(responseText, statusText){
 
         var response = eval('(' + responseText.trim() + ')');
@@ -136,27 +194,31 @@
         $("#chox-form-submit-result").attr("class", "chox-form-submit-result")
         
         if(response && response.isValid){
-                if(response.resultType == 'New' && response.result){
-                    var newObjectId =  parseInt(response.result);
-                    var orgTypeId = $("#orgTypeId").val();
-                    $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + newObjectId + "&orgTypeId=" + orgTypeId);
-                    propmtMsg("New user setup successful","Please assign a role(s) to the new user.");
-                }
-                else
-                {
-                    output = "Your changes have been saved.";
-                    $("#chox-form-submit-result").html(output);
-                }
+            
+            if(response.resultType == 'New' && response.result){
+                var newObjectId =  parseInt(response.result);
+                var orgTypeId = $("#orgTypeId").val();
+                $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + newObjectId + "&orgTypeId=" + orgTypeId);
+                // propmtMsg("New user setup successful","Please assign a role(s) to the new user.");
+            }
+            else
+            {
+                output = "Your changes have been saved.";
+                $("#chox-form-submit-result").html(output);
+            }
+            
         }
         else if(response && response.errors){
-                output = formErrorMessage(response.errors);
-                $("#chox-form-submit-result").attr("class", "action-error-msg")
-                $("#chox-form-submit-result").html(output);
+            
+            output = formErrorMessage(response.errors);
+            $("#chox-form-submit-result").attr("class", "action-error-msg")
+            $("#chox-form-submit-result").html(output);
+            
         }
         else
         {
-                output = "Unknown Error Encountered, please try again.";
-                $("#chox-form-submit-result").attr("class", "action-error-msg")
+            output = "Unknown Error Encountered, please try again.";
+            $("#chox-form-submit-result").attr("class", "action-error-msg");
                 
         }
         $("#admin_param_panel").unblock();
@@ -169,7 +231,7 @@
     function doSubmit(){
         
         var isValid = false;
-        if($("#h_mode").val() =='Edit'){
+        if(!isNew){
             isValid = doFormValidation().form();
         }else{
             isValid = doFormNewValidation().form();
@@ -180,8 +242,7 @@
             $("#admin_param_panel").block();
 
             var op = {
-                beforeSubmit:  onBeforeSubmit,
-                success:       onSubmitResponseReceived,
+                success: onSubmitResponseReceived,
                 timeout: 3000,
                 error: onSubmitError
             };
@@ -197,7 +258,6 @@
             $("#admin_param_panel").block();
 
             var op = {
-                beforeSubmit:  onBeforeSubmit,
                 success:       onSubmitUpdatePasswordResponseReceived,
                 timeout: 3000,
                 error: onSubmitError
@@ -208,6 +268,7 @@
     }
 
     function onSubmitUpdatePasswordResponseReceived(responseText, statusText){
+        
         var response = eval('(' + responseText.trim() + ')');
         
         if(response && response.isValid)
@@ -232,32 +293,21 @@
         $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=" + selectedPanel + "&selectOrgTypeId="+<s:property value="orgTypeId"/>);
     }
 
-    function doUserSearchSelectOnChange(){
-
-        var selectedInsurerId = -1;
-
-        if($("#insurerId").val()!=null && $("#insurerId").val()!=''){
-            selectedInsurerId = $("#insurerId").val();
-        }
-
-        $("#userDetailScreenChobandDropDownDiv").load("LineOfBusinessDropDownByIdAction.action?orgId=" + selectedInsurerId);
-
-    }
-
-
 </script>
 
-<div>
+<div id="userDetailMainPanel" class="adminTabCss"></div>
 
+<div id="userDetailTab" class="x-hide-display">
+    
+    <div class="subAdminTabCss">
     <fieldset class="x-fieldset">
         <legend>User Details</legend>
         <form id="formUpdateUserDetail" action="user/updateUserDetail.action" class="XXentity-form" onsubmit="return true;" method="post">
+            
             <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
             <input type="hidden" name="orgTypeId" id="orgTypeId" value='<s:property value="orgTypeId"/>'>
-
             <input type="hidden" name="h_isClaimHandler" id="h_isClaimHandler" value='<s:property value="claimHandler"/>'>
-            <input type="hidden" name="h_mode" id="h_mode" value='<s:property value="mode"/>'>
-            <input type="hidden" name="h_lineOfBusinessId" id="h_lineOfBusinessId" value='<s:property value="lineOfBusiness.id" />'>
+            
             <div class="form-container">
 
                 <div class="chox-form-item">
@@ -309,7 +359,6 @@
                                       listValue="name"
                                       headerKey=""
                                       headerValue="--- ALL ---"
-                                      onchange="javascript: doUserSearchSelectOnChange();"
                                       emptyOption="false">
                             </s:select>
                         </div>
@@ -356,13 +405,6 @@
 
                 </s:else>
 
-                <s:if test="orgTypeId==2 && claimHandler">
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Line Of Business</label>
-                        <div id="userDetailScreenChobandDropDownDiv"></div>
-                    </div>
-                </s:if>
-
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">First Name<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDFirstName" name="firstName" value="<s:property value="firstName" />"/>
@@ -401,7 +443,11 @@
         </form>
         <div id="CDmessageBox" style="text-align:center" class="errorBox"></div>
     </fieldset>
+</div>
+</div>
 
+<div id="userPasswordTab" class="x-hide-display">
+    <div class="subAdminTabCss">
     <s:if test="mode=='Edit'">
 
         <fieldset class="x-fieldset">
@@ -432,14 +478,31 @@
         </fieldset>
 
     </s:if>
-
+    </div>
 </div>
 
-<s:if test="mode=='Edit'">
-    <div>
-        <s:action name="getUserroleMapping" executeResult="true">
-            <s:param name="webUserId"><s:property value="id" /></s:param>
-            <s:param name="orgTypeId"><s:property value="orgTypeId" /></s:param>
-        </s:action>
+<div id="userRoleTab" class="x-hide-display">
+    <div class="subAdminTabCss">
+    <s:if test="mode=='Edit'">
+        <div>
+            <s:action name="getUserroleMapping" executeResult="true">
+                <s:param name="webUserId"><s:property value="id" /></s:param>
+                <s:param name="orgTypeId"><s:property value="orgTypeId" /></s:param>
+            </s:action>
+        </div>
+    </s:if>
     </div>
-</s:if>
+</div>
+
+<div id="userWorkgroupTab" class="x-hide-display">
+    <div class="subAdminTabCss">
+    <s:if test="mode=='Edit'">
+        <div>
+            <s:action name="getUserWorkgroupMapping" executeResult="true">
+                <s:param name="webUserId"><s:property value="id" /></s:param>
+                <s:param name="orgTypeId"><s:property value="orgTypeId" /></s:param>
+            </s:action>
+        </div>
+    </s:if>
+    </div>
+</div>

@@ -117,7 +117,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
                     claimResult.setClaimParseStatus(ClaimParseStatus.newInvoice);
                     ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(claim.getChorganisation().getId(), claim.getInsurer().getId());
                     claim.setChoband(choBand);
-
+ 
                 }else if(claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) ||
                     claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING) ||
                     claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_ACCEPTED)){
@@ -150,9 +150,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
             claim.setChorganisation(chorganisationService.getCurrentCHOrganisation());
 
         }
-        
-        System.out.println(":::: 03 A: " + claim);
-        
+                
         claimResult.setClaim(claim);
     }
     

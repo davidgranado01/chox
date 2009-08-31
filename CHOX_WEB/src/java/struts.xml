@@ -794,7 +794,8 @@
             <result name="UserMgmt">/jsp/user/adminPanel/p_user_mgmt_panel.jsp</result>
             <result name="InsurerOrgMappingMgmt">/jsp/user/adminPanel/p_insurer_chorganisation_mapping.jsp</result>
             <result name="InsurerAlliasMappingMgmt">/jsp/user/adminPanel/p_insurer_allias_mapping.jsp</result>
-            <result name="InsurerLineOfBusinessMappingMgmt">/jsp/user/adminPanel/p_insurer_lob_mapping.jsp</result>
+            <!-- <result name="InsurerLineOfBusinessMappingMgmt">/jsp/user/adminPanel/p_insurer_lob_mapping.jsp</result> !-->
+            <result name="InsurerWorkgroupMappingMgmt">/jsp/user/adminPanel/p_insurer_workgroup_mapping.jsp</result>
             <result name="UserroleMapping">/jsp/user/adminPanel/p_user_role_mapping.jsp</result>
             <result name="InsurerChoBandMgmt">/jsp/user/adminPanel/p_insurer_choband_mgmt_panel.jsp</result>
             <result name="InsurerChoBandMappingMgmt">/jsp/user/adminPanel/p_insurer_choband_mapping.jsp</result>
@@ -820,11 +821,10 @@
         </action>
         <action name="getInsurer" class="chox.web.actions.InsurerAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>         
+        </action>
         <action name="updateInsurerDetailPanel" class="chox.web.actions.doInsurerAction" method="doRenderActionPage">
             <result name="success">/jsp/user/adminPanel/p_insurer_detail_panel.jsp</result>
         </action>
-        
         <action name="updateInsurerDetail" class="chox.web.actions.doInsurerAction" method="updateModel">
             <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
@@ -866,6 +866,11 @@
             </result>
         </action>
         
+        <!-- WORKGROUP !-->
+        <action name="getUserWorkgroupMapping" class="chox.web.actions.doUserWorkgroupAction" method="doRenderActionPage">
+            <result name="success">/jsp/user/adminPanel/p_user_role_mapping.jsp</result>
+        </action>
+        
         <action name="getInsurerAllias" class="chox.web.actions.InsurerAlliasAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
@@ -878,6 +883,20 @@
             </result>
         </action>        
         
+        <action name="getInsurerWorkgroup" class="chox.web.actions.InsurerWorkgroupAction">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action> 
+        <action name="triggerInsurerWorkgroup" class="chox.web.actions.doInsurerWorkgroupAction" method="triggerObject">
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
+        </action>
+        <action name="removeInsurerWorkgroup" class="chox.web.actions.doInsurerWorkgroupAction" method="removeObject">
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
+        </action>
+        <action name="addInsurerWorkgroup" class="chox.web.actions.doInsurerWorkgroupAction" method="addObject">
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
+        </action>
+        
+        <!--
         <action name="getInsurerLineOfBusiness" class="chox.web.actions.InsurerLineOfBusinessAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
@@ -889,10 +908,7 @@
             <result name="success">/jsp/p_response.jsp
             </result>
         </action>   
-        <action name="openInsurerLineOfBusinessDetail" class="chox.web.actions.ClaimAction">
-            <result name="success">/jsp/user/ClaimDetail.jsp
-            </result>
-        </action>
+        !-->
         
         <action name="getAvailableInsurerChorganisation" class="chox.web.actions.ChorganisationAction" method="getAvailableChorganisation">
             <result name="success">/jsp/p_jsonData.jsp</result>
@@ -948,6 +964,11 @@
         <action name="LineOfBusinessDropDownByIdAction" class="chox.web.actions.LineOfBusinessDropDownAction">
             <result>/jsp/user/p_search_dropdown_lineOfbusiness_id.jsp</result>
         </action>
+        
+        <action name="WorkgroupDropDownAction" class="chox.web.data.WorkgroupDropDownAction">
+            <result>/jsp/p_search_dropdown_workgroup.jsp</result>
+        </action>         
+        
         <action name="LoadEncodePasswordPage" class="chox.web.actions.AdminAction" method="loadEncodePasswordPage">
             <result>/jsp/user/EncodePassword.jsp</result>
         </action>

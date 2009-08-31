@@ -31,7 +31,10 @@
     <many-to-one cascade="save-update,delete" class="chox.model.Incident" column="incident_id" name="incident"/>
     <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer"/>
     <many-to-one cascade="save-update,delete" class="chox.model.Invoice" column="invoice_id" name="invoice"/>
+    <!--
     <many-to-one class="chox.model.LineOfBusiness" column="line_of_business_id" name="lineOfBusiness"/>
+    !-->
+    <many-to-one class="chox.model.Workgroup" column="workgroup_id" name="workgroup"/>
     <many-to-one cascade="save-update,delete" class="chox.model.ThirdParty" column="third_party_id" name="thirdParty"/>
     <many-to-one cascade="save-update,delete" class="chox.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire"/>
     <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

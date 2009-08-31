@@ -274,11 +274,6 @@ div.chox-form-submit-result
     text-align: center;
 }
 
-div.submit-error
-{
-    color:#ff0000;
-}
-
 div.excel-export
 {
     color: #15428b; 
@@ -480,9 +475,32 @@ div.errorBox
     font-family: tahoma,arial,verdana,sans-serif;
 }
 
+div.submit-error
+{
+    color: red;
+    padding-left:20px;
+    text-align:center;
+    font-weight:bold;
+    font-family: tahoma,arial,verdana,sans-serif;
+}
+
+div.submit-error ul li{
+    list-style: none;
+    color:inherit;
+    text-align:left;
+    font-family:inherit;
+}
+
+div.submit-acknowledge
+{
+    color: #15428b;
+    text-align:center;
+    font-weight:bold;
+    font-family: tahoma,arial,verdana,sans-serif;
+}
+
 div.action-message
 {
-    
     text-align:center;color: red; font-weight:bold;font-size:11px ; line-height:25px;
 }
 

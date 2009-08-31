@@ -97,7 +97,7 @@
                                             <s:submit onclick="javascript:return validateFile();" value="Upload Claims"/>
                                         </s:if>
                                         <s:else><br/>
-                                            <div class="errorBox"><b>Please Contact Admin, BRE Engineer does not exists</b></div>
+                                            <div class="errorBox"><b>A Credit Hire Mapping Relationship Does Not Exist. Please Contact CHOX Admin.</b></div>
                                         </s:else>                                        
                                     </td>
                                 </tr>

@@ -26,6 +26,7 @@ import org.acegisecurity.GrantedAuthority;
 import scsbre.engine.RulesEngineResponse;
 import chox.data.AttachmentCategory;
 import chox.model.AttachmentType;
+import chox.model.ChoBand;
 import chox.model.Chorganisation;
 import chox.model.Comment;
 import chox.model.Customer;
@@ -56,10 +57,6 @@ import java.util.Date;
 import java.util.Locale;
 import org.apache.struts2.interceptor.SessionAware;
 
-/**
- *  
- * @author Emmanuel
- */
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable, SessionAware {
 
     private static final String strPrefix = "Claim Review Note: ";
@@ -77,7 +74,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public static final String UPDATED_BY_ENG= "updatedByEng";
     private Claim claim = new Claim();
     private int id = -1;
-    private List lineOfBusinesses;
     private List vehicleClasses;
     private List reasonOfClaimRejections;
     private List reasonOfInvoiceRejections;
@@ -99,7 +95,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String actionResult2;
     private TabAccessibility tabAccessibility;
     private int vehicleClassId = -1;
-    private int lineOfBusinessId = -1;
     private int insurerId = -1;
     private String actionName;
     private List attachmentCategory;
@@ -127,12 +122,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private Map session;
     private Integer tab = -1;
     
+    // Carlson @ 20090831
+    // private int lineOfBusinessId = -1;    
+    // private List lineOfBusinesses;
+    private List workgroups;
+    private int workgroupId = -1;    
+    
     public String getAllowFileType(){
         
         String sAllowFileType = "";
         
         for(AttachmentType a : attachmentTypeService.getAllAttachmentType()){
-            //sAllowFileType+= a.getDescription() + " (."+a.getCode()+"), ";
             sAllowFileType+= "."+a.getCode()+", ";
         }
         
@@ -194,12 +194,41 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return statuses;
     }
-
+    
+    // Carlson @ 20090831
+    /*
     public List getLineOfBusinesses() {
         if (lineOfBusinesses == null) {
             lineOfBusinesses = lookupService.getLineOfBusinesses();
         }
         return lineOfBusinesses;
+    }
+    
+    public int getLineOfBusinessId() {
+        return lineOfBusinessId;
+    }
+
+    public void setLineOfBusinessId(int lineOfBusinessId) {
+        this.lineOfBusinessId = lineOfBusinessId;
+    }
+    */    
+    
+    public int getWorkgroupId() {
+        return workgroupId;
+    }
+    
+    public void setWorkgroupId(int workgroupId) {
+        this.workgroupId = workgroupId;
+    }
+    
+    public List getWorkgroups(){
+        
+        if(workgroups ==null){
+            workgroups = lookupService.getWorkgroups();
+        }
+        
+        return workgroups;
+        
     }
     
     public List getVehicleClasses() {
@@ -328,11 +357,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String sActionMsg = "";
         String result = SUCCESS;
         
-        if (this.getLineOfBusinesses() == null) {
-            this.actionResult = "ERROR : You need to provide line of business to route this claim.";
+        if (this.getWorkgroups() == null) {
+            
+            this.actionResult = "ERROR : You need to provide workgroup to route this claim.";
+            
         } else {
+            
             if (!claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)) {
+                
                 this.actionResult = "ERROR : Invalid operation!";
+                
             } else {
                 
                 try {
@@ -340,7 +374,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     String newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
                     
                     auditTrailService.logAuditLog(newStatus, claim, null, null);
-                    sActionMsg = "ClaimId:"+claim.getId()+"| LineOfBusiness:" + claim.getLineOfBusiness().getId();
+                    sActionMsg = "ClaimId:"+claim.getId()+"| LineOfBusiness:" + claim.getWorkgroup().getId();
                     
                     claim.setStatus(newStatus);
                     this.service.updateClaim(claim);
@@ -355,10 +389,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 }
             }
         }
+        
         return result;
     }
 
-    //Acknowledge
     public String acknowledge() {
 
         boolean bActionFlag = true;
@@ -1111,8 +1145,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         Claim BREClaim = claim;
 
         // GET HARDCODDED CHOBAND        
-        claim.setChoband(choBandService.getDummyChoBand());
-
+        //claim.setChoband(choBandService.getDummyChoBand());
+        ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        claim.setChoband(choBand);
+                    
         // INTERFACE MAPPING WITH BRE - WHERE HIRE MONITORING NOT EXIST
         Boolean isIsTotalLostCheck = false;
         if (BREClaim.getHireMonitoringDetail() != null) {
@@ -1170,14 +1206,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setInsurerId(int insurerId) {
         this.insurerId = insurerId;
-    }
-
-    public int getLineOfBusinessId() {
-        return lineOfBusinessId;
-    }
-
-    public void setLineOfBusinessId(int lineOfBusinessId) {
-        this.lineOfBusinessId = lineOfBusinessId;
     }
 
     public String getActionName() {
@@ -1279,7 +1307,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getAlertPanel() {
         String result = EMPTY;
-
 
         Invoice invoice = claim.getInvoice();
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);

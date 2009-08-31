@@ -9,7 +9,6 @@
         var adminTabs;
         var isNew = false;
         
-       
         $(document).ready(function(){
 
             var objectId = <s:property value="objectId"/>;
@@ -19,17 +18,13 @@
             }
             
             $.validator.addMethod(
-                "regex",
-                function(value, element, regexp) {
-                    var check = false;
+                "regex", function(value, element, regexp) {
                     var re = new RegExp(regexp);
                     return this.optional(element) || re.test(value);
                 }, "Please check your input."
             );
             
             doFormValidation();
-            
-
                 
         }); 
         
@@ -39,73 +34,28 @@
             {
                errorLabelContainer: "#CDmessageBox",                
                rules: {
-                 name:{
-                     required:true
-                 },
-                 vatNo:{
-                     required:true, number:true
-                 },
-                 companyNo:{
-                     required:true, number:true
-                 },
-                 address1:{
-                     required:true
-                 },
-                 address2:{
-                     required:true
-                 },
-                 address4:{
-                     required:true, regex: "^\\s*[a-zA-Z.,\\s]+\\s*$"
-                 },
-                 address5:{
-                     required:true, regex: "^\\s*[a-zA-Z.,\\s]+\\s*$"
-                 },
-                 postcode:{
-                     required:true
-                 },  
-                phone:{
-                    regex:"^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$"
-                },                 
-                 adminHandlingCharge:{
-                     required:true, number:true, min:0
-                 }
+                    name:{ required:true },
+                    vatNo:{ required:true, number:true },
+                    companyNo:{ required:true, number:true },
+                    address1:{ required:true },
+                    address2:{ required:true },
+                    address4:{ required:true, regex: "^\\s*[a-zA-Z.,\\s]+\\s*$" },
+                    address5:{ required:true, regex: "^\\s*[a-zA-Z.,\\s]+\\s*$" },
+                    postcode:{ required:true },  
+                    phone:{ regex:"^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$" },                 
+                    adminHandlingCharge:{ required:true, number:true, min:0 }
                },
                messages: {
-                 name: {
-                   required:"You must supply a value for 'Name'"
-                 }, 
-                 adminHandlingCharge: {
-                   required:"You must supply a value for 'Admin Handling Charge'",
-                   number:"'Admin Handling Charge' must be numeric",
-                   min:"'Admin Handling Charge' cannot be less than zero"
-                 },
-                 vatNo:{
-                     required:"You must supply a value for 'VAT No.'",
-                     number:"'VAT No.' must be number"
-                 },
-                 companyNo:{
-                     required:"You must supply a value for 'Company No.'",
-                     number:"'Company No' must be number"
-                 },
-                 address1:{
-                     required:"You must supply a value for 'Address 1'"
-                 },
-                 address2:{
-                     required:"You must supply a value for 'Address 2'"
-                 },
-                 address4:{
-                     required:"You must supply a value for 'County'", regex:"'County' must be letters only"
-                 },
-                 address5:{
-                     required:"You must supply a value for 'Country'", regex:"'Country' must be letters only"
-                 },
-                 postcode:{
-                     required:"You must supply a value for 'Postcode'"
-                 },
-                 phone:{
-                     regex:"'Telephone Number' must be numeric"
-                 }
-                     
+                 name: {required:"You must supply a value for 'Name'" }, 
+                 adminHandlingCharge: { required:"You must supply a value for 'Admin Handling Charge'", number:"'Admin Handling Charge' must be numeric", min:"'Admin Handling Charge' cannot be less than zero" },
+                 vatNo:{ required:"You must supply a value for 'VAT No.'", number:"'VAT No.' must be number" },
+                 companyNo:{ required:"You must supply a value for 'Company No.'", number:"'Company No' must be number" },
+                 address1:{ required:"You must supply a value for 'Address 1'" },
+                 address2:{ required:"You must supply a value for 'Address 2'" },
+                 address4:{ required:"You must supply a value for 'County'", regex:"'County' must be letters only" },
+                 address5:{ required:"You must supply a value for 'Country'", regex:"'Country' must be letters only" },
+                 postcode:{ required:"You must supply a value for 'Postcode'" },
+                 phone:{ regex:"'Telephone Number' must be numeric" }                     
                },
                submitHandler: function(form) {}
             });
@@ -116,10 +66,7 @@
         function doInsurerSubmit(){
             
             var confirmationMsg = "Do you wish to accept changes?";
-            
-            if(isNew){
-                confirmationMsg = "Are you sure you wish to add this insurer?";
-            }
+            if(isNew){ confirmationMsg = "Are you sure you wish to add this insurer?"; }
 
             if(doFormValidation().form()){
             
@@ -196,7 +143,8 @@
            items:[
                 {contentEl:'insurerDetailPanelTab', title:'Details',listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerAlliasPanelTab', title:'Alias', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
-                {contentEl:'insurerLobPanelTab', title:'Line Of Business', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
+                //{contentEl:'insurerLobPanelTab', title:'Line Of Business', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
+                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroup', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerBrePanelTab', title:'BRE Band', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: doBreMappingRefresh}}
@@ -246,10 +194,10 @@
     </div>
 </div>
 
-<div id="insurerLobPanelTab" class="x-hide-display">
+<div id="insurerWorkgroupPanelTab" class="x-hide-display">
     <div class="subAdminTabCss">
         <s:action name="loadAdminPanel" executeResult="true">
-            <s:param name="adminPanelName">InsurerLineOfBusinessMappingMgmt</s:param>
+            <s:param name="adminPanelName">InsurerWorkgroupMappingMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="objectId" /></s:param>
         </s:action> 
     </div>

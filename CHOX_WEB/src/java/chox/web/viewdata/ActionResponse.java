@@ -1,18 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chox.web.viewdata;
 
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONObject;
 
-/**
- *
- * @author emmanuel
- */
 public class ActionResponse {
 
     public static String RESULT_TYPE_NEW_ID = "New";

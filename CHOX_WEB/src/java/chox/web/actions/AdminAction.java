@@ -17,43 +17,48 @@ public class AdminAction extends BaseAction{
     private String adminPanelName;
     private String gridViewType;
     private String actionResult;
-    private int selectOrgTypeId=-1;
-    private int selectOrgId=-1;
-    private LookupService lookupService;
+    private int selectOrgTypeId = -1;
+    private int selectOrgId = -1;
+    
     private PermissionedUser currentUser = getAuthenticatedUser();
     
     private boolean isSelectable = false;
     
-    public boolean isIsSelectable() {
+    public boolean isIsSelectable(){
+        
         if(currentUser.getIsCHOXAdmin()){
             isSelectable = true;
         }
+        
         return isSelectable;
-    }
-    
-    public void setLookupService(LookupService lookupService)
-    {
-        this.lookupService = lookupService;
+        
     }
 
     public int getSelectOrgId() {
         
         if(!currentUser.getIsCHOXAdmin()){
+            
             if(currentUser.getIsCHO()){
+                
                 selectOrgId = currentUser.getUser().getChorganisation().getId();
+                
             }else if(currentUser.getIsINS()){
+                
                 selectOrgId = currentUser.getUser().getInsurer().getId();
+                
             }
+            
         }
         
         return selectOrgId;
     }
 
     public void setSelectOrgId(int selectOrgId) {
+        
         this.selectOrgId = selectOrgId;
+        
     }
 
-    
     public int getSelectOrgTypeId(){
         
         if(!currentUser.getIsCHOXAdmin()){
@@ -86,9 +91,6 @@ public class AdminAction extends BaseAction{
     public void setAdminPanelName(String adminPanelName) {
         this.adminPanelName = adminPanelName;
     }
-
-    public void getGridviewList(){
-    }
     
     public String getGridViewType() {
         return gridViewType;
@@ -98,8 +100,6 @@ public class AdminAction extends BaseAction{
         this.gridViewType = gridViewType;
     }
 
-
-    //Encode Password
     public String loadEncodePasswordPage()
     {
         return SUCCESS;
@@ -128,30 +128,17 @@ public class AdminAction extends BaseAction{
         return passwordEncoder.encodePassword(webUser.getPassword(), null);
     }
 
-    private UserService userService;
-
-    /**
-     * @param userService the userService to set
-     */
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    /**
-     * @return the actionResult
-     */
     public String getActionResult() {
         return actionResult;
     }
 
-    /**
-     * @param actionResult the actionResult to set
-     */
     public void setActionResult(String actionResult) {
         this.actionResult = actionResult;
     }
 
-
-
+    private UserService userService;
+    private LookupService lookupService;
     
+    public void setUserService(UserService userService) { this.userService = userService; }
+    public void setLookupService(LookupService lookupService) { this.lookupService = lookupService; }    
 }

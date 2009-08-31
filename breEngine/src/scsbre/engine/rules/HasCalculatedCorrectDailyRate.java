@@ -1,13 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
-//rule 2, order 2
-
-
-
 package scsbre.engine.rules;
 
 import scsbre.engine.IBusinessRule;
@@ -22,7 +12,9 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
     
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         RuleEvaluation res = new RuleEvaluation();
+        
         if(claim.getVClass() != null){
+            
             ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
             IVehicleClassInfo customerVClass = claim.getVClass();
             
@@ -30,11 +22,13 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
             
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);    
             if(success)narrative = "";
-        }
-        else{
+        
+        } else {
+            
             narrative = "Customer vehicle class is not specified.";
             res.setResult(RuleEvaluationResult.RuleSkipped);
         }
+        
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         return res;

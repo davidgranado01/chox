@@ -1,11 +1,8 @@
 package chox.services;
 
-import chox.Util.DateHelper;
 import chox.data.ClaimSearchCriteria;
 import chox.model.Claim;
 import chox.model.ClaimStatus;
-import chox.model.WebUser;
-import chox.model.XMLParseResult;
 import chox.xmlValidation.model.ClaimResult;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -155,7 +152,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
-        Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.lineOfBusiness", "lob", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
+        
+        // Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.lineOfBusiness", "lob", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
+        Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
 
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
             criteria.add(Restrictions.like("choReference", searchCriteria.getSupplierReference()).ignoreCase());
@@ -169,9 +168,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getSupplierId() > 0) {
             criteria.add(Restrictions.eq("cho.id", searchCriteria.getSupplierId()));
         }
+        /*
         if (searchCriteria.getLineOfBusinessId() > 0) {
             criteria.add(Restrictions.eq("lob.id", searchCriteria.getLineOfBusinessId()));
         }
+        */ 
+        if (searchCriteria.getWorkgroupId() > 0) {
+            criteria.add(Restrictions.eq("wg.id", searchCriteria.getWorkgroupId()));
+        }        
         if (searchCriteria.getIsAnomalies()) {
             criteria.add(Restrictions.eq("isAnomalies", true));
         }
@@ -287,8 +291,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 addSort(criteria, "status", dir);
             } else if (sort.equalsIgnoreCase("statusModifiedDate")) {
                 addSort(criteria, "statusModifiedDate", dir);
+            } else if (sort.equalsIgnoreCase("workgroup")) {
+                addSort(criteria, "wg.name", dir);                
+            /*
             } else if (sort.equalsIgnoreCase("lineOfBusiness")) {
                 addSort(criteria, "lob.name", dir);
+            */ 
             } else if (sort.equalsIgnoreCase("cho")) {
                 addSort(criteria, "cho.name", dir);
             } else if (sort.equalsIgnoreCase("insurer")) {
@@ -362,13 +370,35 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         c.setThirdParty(claimResult.getClaim().getThirdParty());
         c.setInsurer(claimResult.getClaim().getThirdParty().getInsurer());
         c.setChorganisation(claimResult.getClaim().getChorganisation());
-        c.setLineOfBusiness(claimResult.getClaim().getLineOfBusiness());
+        // c.setLineOfBusiness(claimResult.getClaim().getLineOfBusiness());
         c.setIncident(claimResult.getClaim().getIncident());
         c.setInvoice(claimResult.getClaim().getInvoice());
         c.setEngineerReport(claimResult.getClaim().getEngineerReport());
         c.setVehicleHire(claimResult.getClaim().getVehicleHire());
 
         save(claimResult.getClaim());
+    }
+    
+    public Boolean isObjectExist(int WorkgroupId){
+        
+        boolean isExist = false;
+        
+        try {
+            
+            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+
+            criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
+            
+            if(findByCriteria(criteria).size()>0){
+                isExist = true;
+            }
+            
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+         
+        return isExist;    
+        
     }
 }
 

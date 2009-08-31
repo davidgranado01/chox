@@ -40,7 +40,8 @@
             {name:'invoiceAmount'},
             {name:'vehicleRegistration'},
             {name:'policyNumber'},
-            {name:'lineOfBusiness'},
+            // {name:'lineOfBusiness'},
+            {name:'workgroup'},
             {name:'supplierReference'},
             {name:'claimNumber'}, 
             {name:'lastModifiedDate', type: 'string', dateFormat:'timestamp'},
@@ -76,7 +77,8 @@
             hireDateFrom : '',
             hireDateTo : '',          
             status : status,
-            lineOfBusinessId : -1,
+            //lineOfBusinessId : -1,
+            workgroupId : -1,
             isAnomalies : '',
             ispenaltyChargeApplied : ''
         }
@@ -107,7 +109,8 @@
             hireDateFrom : '',
             hireDateTo : '',          
             status : status,
-            lineOfBusinessId : -1,
+            //lineOfBusinessId : -1,
+            workgroupId : -1,
             isAnomalies : '',
             ispenaltyChargeApplied : ''
         }
@@ -137,7 +140,8 @@
             hireDateFrom : '',
             hireDateTo : '',         
             status : '',
-            lineOfBusinessId : -1,
+            //lineOfBusinessId : -1,
+            workgroupId : -1,
             isAnomalies : true,
             ispenaltyChargeApplied : ''
         }
@@ -167,7 +171,8 @@
             hireDateFrom : '',
             hireDateTo : '',          
             status : '',
-            lineOfBusinessId : -1,
+            // lineOfBusinessId : -1,
+            workgroupId : -1,
             isAnomalies : '',
             ispenaltyChargeApplied : true
         }
@@ -201,10 +206,10 @@
         var hireDateFrom = Ext.query('*[name$=hireDateFrom]')[0].value;
         var hireDateTo = Ext.query('*[name$=hireDateTo]')[0].value;    
         var status = Ext.query('*[name$=status]')[0].value;
-        var lineOfBusinessId = Ext.query('*[name$=lineOfBusiness]')[0].value;    
+        // var lineOfBusinessId = Ext.query('*[name$=lineOfBusiness]')[0].value;    
+        var workgroupId = Ext.query('*[name$=workgroup]')[0].value;    
         
         ds.baseParams = {
-            
             supplierReference : supplierReference,
             supplierId : supplierId,
             insurerId : insurerId,
@@ -218,9 +223,10 @@
             hireDateFrom : hireDateFrom,
             hireDateTo : hireDateTo,         
             status : status,
-            lineOfBusinessId : lineOfBusinessId,
+            // lineOfBusinessId : lineOfBusinessId,
             isAnomalies : '',
-            ispenaltyChargeApplied : ''
+            ispenaltyChargeApplied : '',
+            workgroupId: workgroupId
         }
         
         ds.load(
@@ -500,7 +506,8 @@
                 {header: "Last Modified", width: 250, sortable: true, dataIndex: 'lastModifiedDate'},
                 {header: "Status", width: 250, sortable: true, dataIndex: 'status'},
                 {header: "Created By", width: 250, sortable: true, dataIndex: 'createdBy'},
-                {header: "LOB", width: 250, sortable: true, dataIndex: 'lineOfBusiness'},
+                //{header: "LOB", width: 250, sortable: true, dataIndex: 'lineOfBusiness'},
+                {header: "Workgroup", width: 250, sortable: true, dataIndex: 'workgroup'},
                 {header: "CHO", width: 250, sortable: true, dataIndex: 'cho'},
                 {header: "Insurer", width: 150, sortable: true, dataIndex: 'insurer'},
                 {header: "Viewing", width: 150, sortable: false, dataIndex: 'id',renderer:function(value,p,r){

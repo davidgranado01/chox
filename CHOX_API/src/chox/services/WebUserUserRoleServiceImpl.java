@@ -233,7 +233,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         
 
         
-        
+        /*
         if(userObj.getLineOfBusiness()==null
             && getUserroleName(webUserRoleId).equalsIgnoreCase(WebUserRole.ROLE_CH)){
             
@@ -241,7 +241,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
                 userObj.setStatus(false);
                 userService.updateObject(userObj);
         }
-        
+        */
        
         
         return bFlag;

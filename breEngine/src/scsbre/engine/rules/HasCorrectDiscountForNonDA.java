@@ -1,6 +1,7 @@
 
 package scsbre.engine.rules;
 
+import java.math.BigDecimal;
 import scsbre.engine.IBusinessRule;
 import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
@@ -10,21 +11,23 @@ import scsbre.model.IClaimInfo;
 import scsbre.model.IInsurerInfo;
 import scsbre.model.IInvoiceInfo;
 
-/**
- * rule 15, order 9
- * @author Derm
- */
 public class HasCorrectDiscountForNonDA implements IBusinessRule {
 
     String narrative = "Discount calculation is incorrect";
     
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         RuleEvaluation res = new RuleEvaluation();
+        
         if(!claim.getCHOrg().getIsDelegatedAuthority()){
             IInvoiceInfo invoice = claim.getInvoice();
             IInsurerInfo insurer = claim.getInsurer();
-            boolean success = CalcHelper.EqualTo(invoice.getDiscount(),
-                (insurer.getAdminHandlingCharge()).multiply(CalcHelper.VAT_RATE).negate());
+            
+            BigDecimal adminHandlingCharge = new BigDecimal("0.00");
+            if(insurer.getAdminHandlingCharge().doubleValue()>0 && CalcHelper.VAT_RATE.doubleValue()>0){
+                adminHandlingCharge = (insurer.getAdminHandlingCharge()).multiply(CalcHelper.VAT_RATE).negate();
+            }
+            
+            boolean success = CalcHelper.EqualTo(invoice.getDiscount(), adminHandlingCharge);
             
             if(success) narrative = "";
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);    

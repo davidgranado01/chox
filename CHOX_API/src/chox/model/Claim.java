@@ -23,7 +23,7 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     private String status;
     protected Insurer insurer;
     protected Chorganisation chorganisation;
-    protected LineOfBusiness lineOfBusiness;
+    // protected LineOfBusiness lineOfBusiness;
     protected Customer customer;
     protected Incident incident;
     protected Invoice invoice;
@@ -48,6 +48,17 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     private Integer reasonOfRejectionId;
     private Date statusModifiedDate;
     private String previousStatus;
+    
+    // Carlson @ 20090831
+    protected Workgroup workgroup;
+
+    public Workgroup getWorkgroup() {
+        return workgroup;
+    }
+
+    public void setWorkgroup(Workgroup workgroup) {
+        this.workgroup = workgroup;
+    }
     
     //protected VehicleClass vehicleClass;
     protected Date hireMonitoringEcd;
@@ -185,7 +196,8 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
     }
-
+    
+    /*
     public LineOfBusiness getLineOfBusiness() {
         return lineOfBusiness;
     }
@@ -193,7 +205,8 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     public void setLineOfBusiness(LineOfBusiness lineOfBusiness) {
         this.lineOfBusiness = lineOfBusiness;
     }
-
+    */
+    
     public ThirdParty getThirdParty() {
         return thirdParty;
     }

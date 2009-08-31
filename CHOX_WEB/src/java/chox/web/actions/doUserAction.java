@@ -39,6 +39,15 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     private Integer lineOfBusinessId = -1;
     private PermissionedUser currentUser = getAuthenticatedUser();
     private boolean isOrgSelectable = false;
+    private String tabIndex;;
+
+    public String getTabIndex() {
+        return tabIndex;
+    }
+
+    public void setTabIndex(String tabIndex) {
+        this.tabIndex = tabIndex;
+    }
 
     public boolean isIsOrgSelectable() {
         if (currentUser.getIsCHOXAdmin()) {
@@ -76,7 +85,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     public List getLineOfBusinesses() {
 
         if (orgTypeId.equalsIgnoreCase("2")) {
-            lineOfBusinesses = this.lookupService.getLineOfBusinessesByInsurerId(model.getInsurer().getId());
+            // lineOfBusinesses = this.lookupService.getLineOfBusinessesByInsurerId(model.getInsurer().getId());
         }
 
         for (Object o : lineOfBusinesses) {
@@ -198,7 +207,9 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     public String triggerStatus() throws Exception {
 
         WebUser thisObject = model;
-
+        thisObject.setStatus(!thisObject.getStatus());
+        
+        /*
         if (thisObject.getStatus()) {
             thisObject.setStatus(false);
         } else {
@@ -208,7 +219,8 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
                 thisObject.setStatus(true);
             }
         }
-
+        */
+        
         try {
 
             thisObject.setLastModifiedBy(this.getAuthenticatedUser().getUser());
@@ -245,7 +257,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
             if (lineOfBusinessId != null && lineOfBusinessId > 0) {
                 lineofbusiness = lineOfBusinessService.getObject(lineOfBusinessId);
-                model.setLineOfBusiness(lineofbusiness);
+                // model.setLineOfBusiness(lineofbusiness);
             }
 
             if (mode.equalsIgnoreCase("New")) {
@@ -255,7 +267,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
             } else {
 
                 if ((lineOfBusinessId == null || lineOfBusinessId < 0) && orgTypeId.equalsIgnoreCase("2")) {
-                    model.setLineOfBusiness(null);
+                    // model.setLineOfBusiness(null);
                 }
                 
                 if (!this.service.isEmailExist(model.getEmail(), model.getId())) {

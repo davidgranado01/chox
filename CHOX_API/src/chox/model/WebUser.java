@@ -76,7 +76,7 @@ public class WebUser implements Serializable
         
         protected Set roles;
         protected String organisationName;
-        protected LineOfBusiness lineOfBusiness;
+        // protected LineOfBusiness lineOfBusiness;
         protected boolean claimHandler = false;
 
     public void setClaimHandler(boolean claimHandler) {
@@ -430,6 +430,7 @@ public class WebUser implements Serializable
             return typeIndex;
         }
 
+        /*
     public LineOfBusiness getLineOfBusiness() {
         return lineOfBusiness;
     }
@@ -437,7 +438,8 @@ public class WebUser implements Serializable
     public void setLineOfBusiness(LineOfBusiness lineOfBusiness) {
         this.lineOfBusiness = lineOfBusiness;
     }
-
+    */
+        
     /**
      * @return the isExpired
      */

@@ -82,6 +82,8 @@
                 <value>chox/model/ReasonOfDelay.hbm.xml</value>
                 <value>chox/model/AttachmentType.hbm.xml</value>
                 <value>chox/model/Bordereau.hbm.xml</value>
+                <value>chox/model/Workgroup.hbm.xml</value>
+                <value>chox/model/UserWorkgroup.hbm.xml</value>
             </list>
         </property>
         <property name="entityInterceptor" ref="auditInterceptor"/>
@@ -207,6 +209,12 @@
     <bean id="bordereauService" class="chox.services.BordereauServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="workgroupService" class="chox.services.WorkgroupServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="userWorkgroupService" class="chox.services.UserWorkgroupServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>    
     <bean id="uploadClaimXMLService" class="chox.services.UploadClaimXMLServiceImpl" singleton="false">
         <property name="vehicleClassService" ref="vehicleClassService" />
         <property name="engineerReportService" ref="engineerReportService" />

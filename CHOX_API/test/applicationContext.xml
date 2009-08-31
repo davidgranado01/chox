@@ -46,7 +46,9 @@
                 <value>chox/model/Injury.hbm.xml</value>
                 <value>chox/model/Insurer.hbm.xml</value>
                 <value>chox/model/Invoice.hbm.xml</value>
+                <!--
                 <value>chox/model/LineOfBusiness.hbm.xml</value>
+                !-->
                 <value>chox/model/Solicitor.hbm.xml</value>
                 <value>chox/model/ThirdParty.hbm.xml</value>
                 <value>chox/model/VehicleClass.hbm.xml</value>
@@ -181,9 +183,11 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
+    <!--
     <bean id="lineOfBusinessService" class="chox.services.LineOfBusinessServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    !-->
     <bean id="insurerChorganisationService" class="chox.services.InsurerChorganisationServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>

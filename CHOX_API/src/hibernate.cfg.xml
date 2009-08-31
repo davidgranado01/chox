@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.url">jdbc:postgresql://localhost:5432/chox_test
+        <property name="connection.url">jdbc:postgresql://localhost:5432/chox_01
         </property>
         <property name="connection.username">postgres
         </property>
@@ -48,5 +48,6 @@
         <mapping resource="chox/model/ReasonOfDelay.hbm.xml"/>
         <mapping resource="chox/model/SystemLog.hbm.xml"/>
         <mapping resource="chox/model/Bordereau.hbm.xml"/>
+        <mapping resource="chox/model/UserWorkgroup.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

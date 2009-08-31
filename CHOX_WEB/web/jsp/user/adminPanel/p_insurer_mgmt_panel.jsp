@@ -17,21 +17,28 @@
            height:660,
            autoScroll :true,
            activeTab: 0,
-           items:[{contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: doSelectBreDetail}},
-                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: doBreMappingRefresh}}]
+           items:[
+               {contentEl:'insurerWorkgroupPanelTab', title:'Workgroups', listeners: {activate: doSelectDetail}},
+               {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: doSelectDetail}},
+               {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: doBreMappingRefresh}}
+           ]
            });
         }
 
-        Ext.onReady(function(){        
+        Ext.onReady(function(){
             setupInsurerMainPanels();
-        }); 
+        });
 
         function doBreMappingRefresh(tab){
             handleActivate(tab);
             onChoBandPageRefresh();
         }
         
-        function doSelectBreDetail(tab){
+        function doSelectDetail(tab){
+            handleActivate(tab);
+        }
+        
+        function doSelectDetail(tab){
             handleActivate(tab);
         }
         
@@ -47,6 +54,14 @@
 
 <div id="InsurerMainPanel" class="adminTabCss"></div>
 
+<div id="insurerWorkgroupPanelTab" class="x-hide-display">
+    <div class="subAdminTabCss">
+        <s:action name="loadAdminPanel" executeResult="true">
+            <s:param name="adminPanelName">InsurerWorkgroupMappingMgmt</s:param>
+            <s:param name="selectOrgId"><s:property value="selectOrgId" /></s:param>
+        </s:action> 
+    </div>
+</div>
 
 <div id="insurerBrePanelTab" class="x-hide-display">
     <div class="subAdminTabCss">

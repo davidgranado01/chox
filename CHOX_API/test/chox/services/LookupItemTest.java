@@ -53,7 +53,7 @@ public class LookupItemTest {
              Assert.assertNotNull(result1);
         }      
     }
-
+/*
     @Test
     public void testCanGetAllLob() {
 
@@ -65,7 +65,7 @@ public class LookupItemTest {
              Assert.assertNotNull(result1);
         }
     }
-
+*/
     @Test
     public void testCanGetAllSupplier() {
 

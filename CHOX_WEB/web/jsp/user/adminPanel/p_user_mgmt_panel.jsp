@@ -17,8 +17,6 @@
     var selectOrgTypeId = <s:property value="selectOrgTypeId" />;
     var selectOrgId = <s:property value="selectOrgId" />;
     
-    
-    
     Ext.onReady(function(){
     
        if(selectOrgTypeId>0){
@@ -154,22 +152,24 @@
     
     function triggerStatusUpdateRecord(gridView){
             
-            var aletMsg = "Are you sure you want to inactivate this user?";
-            
-            if(!gridView.get("status")){
-                aletMsg = "Are you sure you want to activate this user?";
-            }
-            
-            var deleteAtt = confirm(aletMsg);
-            
-            if(deleteAtt){
-                var gridViewId = gridView.get("id");
-                
-                 $.ajax({
-                   url: "doTriggerUserAccountStatus.action?objectId="+gridViewId,
-                   success: onUpdateUserSubmitResult
-                 });
-            }
+        var aletMsg = "Are you sure you want to inactivate this user?";
+
+        if(!gridView.get("status")){
+            aletMsg = "Are you sure you want to activate this user?";
+        }
+
+        var deleteAtt = confirm(aletMsg);
+
+        if(deleteAtt){
+
+            var gridViewId = gridView.get("id");
+
+            $.ajax({
+                url: "doTriggerUserAccountStatus.action?objectId="+gridViewId,
+                success: onUpdateUserSubmitResult
+            });
+        }
+        
     }
     
     function triggerIsExpiredUpdateRecord(gridView){
@@ -217,7 +217,7 @@
             <table width="100%">
                 <tr>
                     <td><s:property value="orgTypeId" />
-                           
+
 <s:if test="isSelectable">
     <div class="label-block">
     <p class="std-label">Organisation Type: </p>
@@ -226,7 +226,7 @@
         <option value="2">Insurer Organisation</option>
         <option value="3">Credit Hire Organisation</option>
     </select>
-    </div>         
+    </div>
 </s:if>
 <s:else>
     <input name="orgTypeId" id="orgTypeId" type="hidden" value="<s:property value="orgTypeId" />">

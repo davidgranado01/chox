@@ -41,7 +41,7 @@
             store: gridviewData,
             loadMask: true,
             columns: [
-                {header: "Role", width: 300, dataIndex: 'webUserroleName', sortable: false, resizable: true},
+                {header: "Role", width: 250, dataIndex: 'webUserroleName', sortable: false, resizable: true},
                 {header: "Created By", width: 90, dataIndex: 'createdBy', sortable: false, resizable: true},
                 {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: false, resizable: true},
                 {header: "", width: 100, dataIndex: 'Remove', sortable: false, resizable: true, renderer:function(value,p,r){
@@ -138,7 +138,7 @@
     }
     
     function doRefreshPage(){
-        $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" />);
+        $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" /> + "&tabIndex="+userDetailTabIndex);
     }
     
 </script>
@@ -168,7 +168,7 @@
                     </td>
                     <td align="right"></td>
                 </tr>
-                <tr><td><div id="CDUserroleMessageBox" class="errorBox"></div></td></tr>
+                <tr><td><div id="CDUserroleMessageBox" class="submit-error"></div></td></tr>
             </table>
         </div>
         

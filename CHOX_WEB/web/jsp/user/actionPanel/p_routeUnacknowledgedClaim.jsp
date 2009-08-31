@@ -5,10 +5,10 @@
 <script language="JavaScript">
     function doValidation(){
         
-        var inp = document.getElementById("lineOfBusinessId");
+        var inp = document.getElementById("workgroupId");
         if(inp.value==1){
             $("#ClaimUnacknowledgeMessageBox").css("errorBox");
-            $("#ClaimUnacknowledgeMessageBox").text("Please select a Line of Business! ");
+            $("#ClaimUnacknowledgeMessageBox").text("Please select a Workgroup");
             return false;
         }
         return true;
@@ -21,7 +21,7 @@
         <div>
             
             <div class="status-info">
-                Please select the 'Line of Business' in order to route the claim to the relevant handling team.
+                Please select the 'Workgroup' in order to route the claim to the relevant handling team.
             </div>            
             <s:hidden name="id" />
             <div class="status-control-set">                     
@@ -30,18 +30,18 @@
                         <tr>
                             <td>
                                 <div class="no-format">
-                                    <label>Line of Business</label>
-                                    <s:select name="lineOfBusiness.id" id="lineOfBusinessId"
-                                    list="lineOfBusinesses" headerKey="1" 
+                                    <label>Workgroup</label>
+                                    <s:select name="workgroup.id" id="workgroupId"
+                                    list="workgroups" headerKey="1" 
                                     listKey="id" listValue="name" 
                                     headerValue="-- Please Select --"></s:select>
-                                    <input type="submit" value="Assign Line of Business" onclick="return doValidation()"/>
+                                    <input type="submit" value="Assign Workgroup" onclick="return doValidation()"/>
                                 </div>
                             </td>
                         </tr>
                     </table>
                 </div>
-                <div id="ClaimUnacknowledgeMessageBox" style="color:#FF0000; font-weight:bold" class="errorBox"></div>
+                <div id="ClaimUnacknowledgeMessageBox" class="submit-error"></div>
             </div>
         </div>
     </fieldset>

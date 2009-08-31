@@ -54,7 +54,7 @@ public class BatchUpdateAction extends BaseAction {
             Claim claim = claimService.getClaim(id);
             LineOfBusiness routeTo = new LineOfBusiness();
             routeTo.setId(lineOfBusinessId);
-            claim.setLineOfBusiness(routeTo);
+            // claim.setLineOfBusiness(routeTo);
             updateCliamStatus(claim, oldStatus, newStatus);
         }
         return SUCCESS;

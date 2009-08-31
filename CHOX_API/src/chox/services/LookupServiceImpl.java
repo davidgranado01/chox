@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package chox.services;
 
 import chox.model.ChoBand;
@@ -10,11 +6,12 @@ import chox.model.Chorganisation;
 import chox.model.ClaimStatus;
 import chox.model.IdLookupItem;
 import chox.model.Insurer;
-import chox.model.LineOfBusiness;
+//import chox.model.LineOfBusiness;
 import chox.model.LookupItem;
 import chox.model.ReasonOfDelay;
 import chox.model.VehicleClass;
 import chox.model.WebUser;
+import chox.model.Workgroup;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,22 +21,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-/**
- *
- * @author Emmanuel
- */
 public class LookupServiceImpl extends SecureDataService implements LookupService, Serializable {
-
-    /*
-    private WebUserUserRoleService webUserUserRoleService;
-    
-    public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService)
-    {
-        this.webUserUserRoleService = webUserUserRoleService;
-    }
-    */
-    
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
     public List getStatuses() {
         List items = new ArrayList<LookupItem>();
@@ -119,6 +101,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     // LINE OF BUSINESS LIST
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
+    /*
     public List getLineOfBusinesses() {
         
         WebUser currentUser = getCurrentUser();
@@ -127,7 +110,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             DetachedCriteria criteria = DetachedCriteria.forClass(LineOfBusiness.class);
             criteria.add(Restrictions.eq("active", true));
             criteria.addOrder(Order.asc("name"));  
-            return findByCriteria(criteria);
+            return findByCriteria(criteria,true);
         }else{
             return getLineOfBusinessesByInsurerId(currentUser.getInsurer().getId());
         }
@@ -146,41 +129,40 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         criteria.addOrder(Order.asc("name"));  
          return findByCriteria(criteria,true);
     }
+    */
     
-    /*
-    public List getLineOfBusinessesByCreditHireId(int chorganisationId) {
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // WORKGROUP LIST
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    
+    public List getWorkgroups() {
         
-        List<LineOfBusiness> results = new ArrayList<LineOfBusiness>();
-
-        try {
-
-            List result = new ArrayList();
-            
-            StringBuffer sb = new StringBuffer();
-            sb.append("select b.id as id, c.name ||' - '|| b.name as name from insurer_chorganisation a, line_of_business b, insurer c ");
-            sb.append("where a.insurer_id=b.insurer_id and a.insurer_id=c.id  ");
-            sb.append("and a.status=true and a.chorganisation_id=:pchorganisationId order by c.name asc, b.name asc ");
+        WebUser currentUser = getCurrentUser();
         
-            Map extParameters = new HashMap();
-            extParameters.put("pchorganisationId", chorganisationId);
-            result = externalQuery(sb.toString(), extParameters, IdLookupItem.class);
-            
-            for(Object o : result){
-                IdLookupItem data = (IdLookupItem) o;
-                LineOfBusiness item = new LineOfBusiness();
-                item.setId(data.getId());
-                item.setName(data.getName());
-                results.add(item);
-            }
-            
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if(currentUser.isCHOXAdmin()){
+            DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
+            criteria.add(Restrictions.eq("status", true));
+            criteria.addOrder(Order.asc("name"));
+            return findByCriteria(criteria,true);
+        }else{
+            return getWorkgroupsByInsurerId(currentUser.getInsurer().getId());
         }
 
-        return results;
-        
     }
-    */
+
+    public List getAllWorkgroups() {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
+        criteria.addOrder(Order.asc("name"));  
+         return findByCriteria(criteria,true);
+    }
+    
+    public List getWorkgroupsByInsurerId(int insurerId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
+        criteria.add(Restrictions.eq("status", true));
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
+        criteria.addOrder(Order.asc("name"));
+        return findByCriteria(criteria,true);
+    }
     
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // SUPPLIERS / CREDIT HIRES
@@ -293,4 +275,8 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     }
 
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // WORKGROUP
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    
 }

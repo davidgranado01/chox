@@ -25,4 +25,5 @@ public interface ClaimService {
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
     public void  saveObjectForXMLUploader(final ClaimResult claimResult);
     // public void updateClaimLastModified(int claimId);
+    public Boolean isObjectExist(int WorkgroupId);
 }

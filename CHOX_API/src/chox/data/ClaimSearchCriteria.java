@@ -12,6 +12,7 @@ import java.util.Date;
  *
  * @author Emmanuel
  */
+
 public class ClaimSearchCriteria implements Serializable {
 
     private String supplierReference;
@@ -29,13 +30,22 @@ public class ClaimSearchCriteria implements Serializable {
     private Date hireDateTo;
     private Date lastModifiedDateFrom;
     private Date lastModifiedDateTo;    
-    private int lineOfBusinessId;
+    // private int lineOfBusinessId;
+    private int workgroupId;
     private boolean isAnomalies;
     private boolean ispenaltyChargeApplied;
     private int start;
     private int limit;
     private String sort;
-    private String dir;  
+    private String dir;
+
+    public int getWorkgroupId() {
+        return workgroupId;
+    }
+
+    public void setWorkgroupId(int workgroupId) {
+        this.workgroupId = workgroupId;
+    }
 
     public String getSupplierReference() {
         return supplierReference;
@@ -152,7 +162,8 @@ public class ClaimSearchCriteria implements Serializable {
     public void setHireDateTo(Date hireDateTo) {
         this.hireDateTo = hireDateTo;
     }
-
+    
+    /*
     public int getLineOfBusinessId() {
         return lineOfBusinessId;
     }
@@ -160,7 +171,8 @@ public class ClaimSearchCriteria implements Serializable {
     public void setLineOfBusinessId(int lineOfBusinessId) {
         this.lineOfBusinessId = lineOfBusinessId;
     }
-
+    */
+    
     public boolean getIsAnomalies() {
         return isAnomalies;
     }

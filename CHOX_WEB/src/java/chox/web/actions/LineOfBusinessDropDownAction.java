@@ -37,10 +37,10 @@ public class LineOfBusinessDropDownAction extends BaseAction{
         
         if(!user.getIsCHOXAdmin() && user.getIsINS() ){
             user = getAuthenticatedUser();
-            lineofbusinesses = service.getLineOfBusinessesByInsurerId(user.getUser().getInsurer().getId());
+            // lineofbusinesses = service.getLineOfBusinessesByInsurerId(user.getUser().getInsurer().getId());
             
         }else{
-            lineofbusinesses = service.getLineOfBusinessesByInsurerId(getOrgId());
+            // lineofbusinesses = service.getLineOfBusinessesByInsurerId(getOrgId());
         }
         
         return SUCCESS;     

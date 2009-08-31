@@ -12,8 +12,6 @@
     var selectOrgId = <s:property value="selectOrgId" />;
     var selectBandId = -1;
     
-    choband_mapping_selectedPanel = 'InsurerLineOfBusinessMappingMgmt';
-    
     var choband_gridviewJsonReader;
     var choband_choGridviewJsonReader;
     

@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chox.web.actions;
 
 import chox.model.WebUserUserRole;
@@ -102,8 +97,6 @@ public class doUserroleAction extends AdminBaseModelAction{
         
         return SUCCESS;
     }
-    
-
     
     public String removeRoleMapping(){
         

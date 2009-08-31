@@ -26,19 +26,22 @@
                             <ul>
 
 <s:if test="adminAccessibility.isInsurerCompaniesAdminAccessibility">
-                                <li><a href="javascript:renderAdminParameterPanel('InsurerOrgMgmt');">Insurance Companies</a></li>
+    <li><a href="javascript:renderAdminParameterPanel('InsurerOrgMgmt');">Insurance Companies</a></li>
 </s:if>
+
 <s:if test="adminAccessibility.isCreditHireOrgAdminAccessibility">                            
-                                <li><a href="javascript:renderAdminParameterPanel('CreditHireOrgMgmt');">Credit Hire Organisations</a></li>
+    <li><a href="javascript:renderAdminParameterPanel('CreditHireOrgMgmt');">Credit Hire Organisations</a></li>
 </s:if> 
-<s:if test="adminAccessibility.isUserManagementAdminAccessibility">         
-<li><a href="javascript:renderAdminParameterPanel('UserMgmt');">User Management</a></li>
-</s:if>
+
 <s:if test="adminAccessibility.isInsurerBreManagementAdminAccessibility">         
-<li><a href="javascript:renderAdminParameterPanel('InsurerPanelMgmt');">Business Rule Engine</a></li>
+    <li><a href="javascript:renderAdminParameterPanel('InsurerPanelMgmt');">Insurer Detail</a></li>
 </s:if>
+
+<s:if test="adminAccessibility.isUserManagementAdminAccessibility">         
+    <li><a href="javascript:renderAdminParameterPanel('UserMgmt');">User Management</a></li>
+</s:if>
+
 </ul>
-                        
                     </div>
                 </fieldset>
             </td>

@@ -175,7 +175,6 @@ public class BusinessRuleEngProcess {
             // System.out.println(sectionName + "| getIncident :"+this.claimResult.getClaim().getIncident().getLocation());
             System.out.println(sectionName + "| getInsurer :"+this.claimResult.getClaim().getInsurer());
             System.out.println(sectionName + "| getInvoice :"+this.claimResult.getClaim().getInvoice().getClaimInvoiceNo());
-            System.out.println(sectionName + "| getLineOfBusiness :"+this.claimResult.getClaim().getLineOfBusiness());
             System.out.println(sectionName + "| getThirdParty :"+this.claimResult.getClaim().getThirdParty().getFirstName());
             System.out.println(sectionName + "| getVehicleHire :"+this.claimResult.getClaim().getVehicleHire().getIsTotalLoss());
         }

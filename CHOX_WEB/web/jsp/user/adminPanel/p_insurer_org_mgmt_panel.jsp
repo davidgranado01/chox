@@ -73,6 +73,7 @@
         }else if(columnIndex==3){
             triggerStatusUpdateRecord(gridView);
         }
+        
     }
     
     function loadSelectedRecord(grid, rowIndex, columnIndex, e){
@@ -87,14 +88,7 @@
     }
     
     function loadGridViewList(){
-        gridviewData.load(
-        {
-            params:
-            {
-                start:0,
-                limit:recordPerPage
-            }
-        });
+        gridviewData.load({ params: { start:0, limit:recordPerPage } });
     }
 
     function triggerStatusUpdateRecord(gridView){

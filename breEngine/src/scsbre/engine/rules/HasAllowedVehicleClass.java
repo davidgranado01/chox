@@ -5,10 +5,6 @@ import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
 import scsbre.model.*;
 
-
-//rule 1, order 1
-
-
 public class HasAllowedVehicleClass implements IBusinessRule {
 
     String narrative = "Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.";
@@ -20,8 +16,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
             boolean success = claim.getHireDetail().getVClass().getPrice().compareTo(claim.getVClass().getPrice()) <= 0;
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);   
             if(success) narrative = "";
-        }
-        else{
+        } else {
             narrative = "Customer vehicle class is not specified.";
             res.setResult(RuleEvaluationResult.RuleSkipped);
         }

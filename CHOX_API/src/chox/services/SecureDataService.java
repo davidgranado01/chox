@@ -33,17 +33,24 @@ public class SecureDataService extends DataService {
                     
                     // INSURER USER
                     getCurrentSession().enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
-                    getCurrentSession().enableFilter("LineOfBusiness_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
+                    //  getCurrentSession().enableFilter("LineOfBusiness_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
+                    getCurrentSession().enableFilter("Workgroup_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
                     
                     if(isClaimHandlerOnly()){
                         
                         int lineOfBusinessId = -1;
+                        int workgroupId = -1;
+                        
+                        /*
                         if(getCurrentUser().getLineOfBusiness()!=null){
                             lineOfBusinessId = getCurrentUser().getLineOfBusiness().getId();
+                            // workgroupId = getCurrentUser().getWorkgroup().getId();
                         }
+                        */
                         
-                        getCurrentSession().enableFilter("LineOfBusiness_LineOfBusinessFilter").setParameter("lineOfBusinessId", lineOfBusinessId);
-                        getCurrentSession().enableFilter("Claim_LineOfBusinessFilter").setParameter("lineOfBusinessId", lineOfBusinessId);
+                        // getCurrentSession().enableFilter("LineOfBusiness_LineOfBusinessFilter").setParameter("lineOfBusinessId", lineOfBusinessId);
+                        getCurrentSession().enableFilter("Workgroup_WorkgroupFilter").setParameter("lineOfBusinessId", lineOfBusinessId);
+                        // getCurrentSession().enableFilter("Claim_LineOfBusinessFilter").setParameter("WorkgroupId", workgroupId);
                         
                     }
                 }

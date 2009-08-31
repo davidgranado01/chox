@@ -18,9 +18,9 @@ public interface LookupService {
     public List getInvoiceRejectionReason();
     public List getNonProvisionReason();
     
-    public List getLineOfBusinesses();
-    public List getAllLineOfBusinesses();
-    public List getLineOfBusinessesByInsurerId(int insurerId);
+    // public List getLineOfBusinesses();
+    // public List getAllLineOfBusinesses();
+    // public List getLineOfBusinessesByInsurerId(int insurerId);
     // public List getLineOfBusinessesByCreditHireId(int chorganisationId);
     
     public List getAllSuppliers();
@@ -34,5 +34,7 @@ public interface LookupService {
     public List getInsurerChoBand(int insurerId);
     public List getReasonOfDelay();
     
-    
+    public List getWorkgroups();
+    public List getAllWorkgroups();
+    public List getWorkgroupsByInsurerId(int insurerId);
 }

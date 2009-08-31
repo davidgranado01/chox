@@ -26,7 +26,6 @@ public class InsurerLineOfBusinessAction extends AdminBaseModelAction {
         this.service = service;
     }
 
-
     @Override
     public String execute() {
         

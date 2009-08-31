@@ -12,7 +12,6 @@
         doInsuereSearchSelectOnChange();
     }); 
     
-    
     Ext.onReady(function(){                              
     
         var claimUploadDateFromPicker = new Ext.form.DateField({
@@ -85,11 +84,11 @@
             selectedInsurerId = $("#insurerId").val();
         }
         
-        $("#searchScreenChobandDropDownDiv").load("LineOfBusinessDropDownAction.action?orgId=" + selectedInsurerId);
+        // $("#searchScreenLineOfBusinessDropDownDiv").load("LineOfBusinessDropDownAction.action?orgId=" + selectedInsurerId);
+        $("#searchScreenWorkgroupDropDownDiv").load("WorkgroupDropDownAction.action?orgId=" + selectedInsurerId);
     }
-    
    
-   function clearForm(){
+    function clearForm(){
    
         $('#searchForm').contents().find(':input').each(function() {
                 var type = this.type;
@@ -191,9 +190,12 @@
                 <td></td>
             </s:else>
 
-            <td><label>Line of Business</label></td><td>
-                <div id="searchScreenChobandDropDownDiv"></div>   
-            </td> 
+            <td><label>Workgroup</label></td><td>
+                <!--
+                <div id="searchScreenLineOfBusinessDropDownDiv"></div>   
+                !-->
+                <div id="searchScreenWorkgroupDropDownDiv"></div>   
+            </td>
             
         </tr>        
     </table>

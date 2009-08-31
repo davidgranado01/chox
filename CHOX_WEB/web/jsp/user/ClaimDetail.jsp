@@ -693,28 +693,14 @@
                             <legend>Claim Summary</legend>
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <tr>
-                                    <!-- UPDATED BY CALRSON @ 2008-12-03 - START !-->
-                                    <td>
-                                        <label class="chox-claim-header-label">Third Party Insurer</label>
-                                    <label class="chox-claim-header-text"><s:property value="thirdParty.insurer.name" /></label></td>
-                                    <td>
-                                        <!-- UPDATED BY CALRSON @ 2008-12-03 - END !-->
-                                        <label class="chox-claim-header-label">
-                                    Credit-hire Organsation</label><label class="chox-claim-header-text"><s:property value="chorganisation.name" /></label></td>
-                                    <td>
-                                        <label class="chox-claim-header-label">
-                                    Created By</label><label class="chox-claim-header-text"><s:property value="createdByDesc" /></label></td>
+                                    <td><label class="chox-claim-header-label">Third Party Insurer</label><label class="chox-claim-header-text"><s:property value="thirdParty.insurer.name" /></label></td>
+                                    <td><label class="chox-claim-header-label">Credit-hire Organsation</label><label class="chox-claim-header-text"><s:property value="chorganisation.name" /></label></td>
+                                    <td><label class="chox-claim-header-label">Created By</label><label class="chox-claim-header-text"><s:property value="createdByDesc" /></label></td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <label class="chox-claim-header-label">
-                                    Supplier Reference</label><label class="chox-claim-header-text"><s:property value="choReference" /></label></td>
-                                    <td>
-                                        <label class="chox-claim-header-label">
-                                    Insurer Claim Number</label><label class="chox-claim-header-text"><s:property value="claimNumber" /></label></td>
-                                    <td>
-                                        <label class="chox-claim-header-label">
-                                    Created On</label><label class="chox-claim-header-text"><s:date name="createdDate" format="dd MMM yyyy kk:mm"  /></label></td>
+                                    <td><label class="chox-claim-header-label">Supplier Reference</label><label class="chox-claim-header-text"><s:property value="choReference" /></label></td>
+                                    <td><label class="chox-claim-header-label">Insurer Claim Number</label><label class="chox-claim-header-text"><s:property value="claimNumber" /></label></td>
+                                    <td><label class="chox-claim-header-label">Created On</label><label class="chox-claim-header-text"><s:date name="createdDate" format="dd MMM yyyy kk:mm"  /></label></td>
                                 </tr>
                                 <tr>
                                     <td><label class="chox-claim-header-label">Customer</label><label class="chox-claim-header-text"><span id="status"><s:property value="customer.formattedName" /></span></label></td>
@@ -727,16 +713,21 @@
 
                                     <s:if test="!isCHO">
                                         <td><label class="chox-claim-header-label">ECD Anomaly?</label><label class="chox-claim-header-text"><span id="status">
-                                                    <s:if test="isAnomalies">
-                                                        <s:property value="isAnomaliesDesc" /> ( <a href="javascript:updateAnomalies('<s:property value="id" />');">Remove from hire anomalies</a> )
-                                                    </s:if>
-                                                    <s:else>
-                                                        <s:property value="isAnomaliesDesc" />
-                                                    </s:else>
+                                            <s:if test="isAnomalies">
+                                                <s:property value="isAnomaliesDesc" /> ( <a href="javascript:updateAnomalies('<s:property value="id" />');">Remove from hire anomalies</a> )
+                                            </s:if>
+                                            <s:else>
+                                                <s:property value="isAnomaliesDesc" />
+                                            </s:else>
                                         </span></label></td>
                                     </s:if>
 
                                 </tr>
+                                <tr>
+                                    <td><label class="chox-claim-header-label">Workgroup</label><label class="chox-claim-header-text"><s:property value="workgroup.name" /></label></td>
+                                    <td></td>
+                                </tr>
+                                
                                 <s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">
                                     <tr>
                                         <td colspan="3">

@@ -77,13 +77,13 @@ public class InvoiceVehiclesValidation extends SecureDataService implements rule
                 this.claimResult.setValid(false);
                 this.claimResult.setDataValid(false);                 
             }
-
+            
         }
         
         return isAllowToReadData;
     }
     
-    private void process(){ 
+    private void process(){
         this.claimResult.getClaim().getInvoice().setHireGross(XmlHelper.getBigDecimalFromNode(this.element, "gross"));
         this.claimResult.getClaim().getInvoice().setHireNet(XmlHelper.getBigDecimalFromNode(this.element, "net"));
         this.claimResult.getClaim().getInvoice().setHireVat(XmlHelper.getBigDecimalFromNode(this.element, "vat"));
