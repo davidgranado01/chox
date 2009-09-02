@@ -20,7 +20,6 @@ public class ClaimResult{
     private boolean checkDataValid;
     private List<String> message = new ArrayList<String>();
     
-    
     private ArrayList<Witness> witnesses;
     private ArrayList<Injury> injuries;
     private ArrayList<Solicitor> solicitors;
