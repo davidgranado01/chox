@@ -28,6 +28,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public static final String NEW_CLAIM = "1st Notification";
     private Map<String, String> sortingMap;
 
+    public ClaimServiceImpl()
+    {
+        super();
+        return;
+    }
+
     public Claim getClaim(int id) {
         return (Claim) get(Claim.class, id);
     }

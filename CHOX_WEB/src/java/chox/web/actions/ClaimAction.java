@@ -323,8 +323,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if(tab > 0)
         {
             session.put("tabIndex", tab);
-        }        
-        return SUCCESS;
+        }
+        if(claim == null)
+        {
+            return "ClaimNotFound";
+        }
+        else
+        {
+            return SUCCESS;
+        }
     }
 
     public String getActionPanel() {

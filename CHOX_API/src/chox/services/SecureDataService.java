@@ -20,7 +20,7 @@ public class SecureDataService extends DataService {
 
     public void setSecurityInfoProvider(SecurityInfoProvider provider) {
         
-        this.securityInforProvider = provider;
+       this.securityInforProvider = provider;
         
         if (this.securityInforProvider != null) {
 
@@ -40,7 +40,7 @@ public class SecureDataService extends DataService {
                     
                     if(isClaimHandlerOnly() && this.getSecurityInfoProvider().getCurrentUser().getInsurer().isWorkgroupEnable()){
                         
-                        // getCurrentSession().enableFilter("Claim_WorkgroupFilter").setParameter("workgroupId", 48);
+                        getCurrentSession().enableFilter("Claim_WorkgroupFilter").setParameterList("workgroupIds", this.getCurrentUser().getWorkgroupIds());
 
                     }
                 }

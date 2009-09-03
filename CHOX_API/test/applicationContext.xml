@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-autowire="autodetect">
-    <bean id="securityInfoProvider" class="chox.fakeProviders.FakeSecurityInforProvider" singleton="false"/>
+    <bean id="securityInfoProvider" class="chox.web.data.WebSecurityInfoProvider" singleton="false"/>
     <bean id="auditInterceptor" class="chox.data.DBInterceptor" singleton="false">
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
+
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver">
         </property>
@@ -15,6 +16,20 @@
         <property name="password" value="GreenF1nCH">
         </property>
     </bean>
+
+    <!--
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver">
+        </property>
+        <property name="url" value="jdbc:postgresql://localhost:5432/chox">
+        </property>
+        <property name="username" value="chox">
+        </property>
+        <property name="password" value="chox">
+        </property>
+    </bean>
+    !-->
+
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource">
             <ref bean="dataSource" />
@@ -29,7 +44,6 @@
                 <prop key="hibernate.cache.use_query_cache">true</prop>
             </props>
         </property>
-
         <property name="mappingResources">
             <list>
                 <value>chox/model/GlobalConfiguration.hbm.xml</value>
@@ -46,9 +60,7 @@
                 <value>chox/model/Injury.hbm.xml</value>
                 <value>chox/model/Insurer.hbm.xml</value>
                 <value>chox/model/Invoice.hbm.xml</value>
-                <!--
                 <value>chox/model/LineOfBusiness.hbm.xml</value>
-                !-->
                 <value>chox/model/Solicitor.hbm.xml</value>
                 <value>chox/model/ThirdParty.hbm.xml</value>
                 <value>chox/model/VehicleClass.hbm.xml</value>
@@ -70,6 +82,8 @@
                 <value>chox/model/ReasonOfDelay.hbm.xml</value>
                 <value>chox/model/AttachmentType.hbm.xml</value>
                 <value>chox/model/Bordereau.hbm.xml</value>
+                <value>chox/model/Workgroup.hbm.xml</value>
+                <value>chox/model/UserWorkgroup.hbm.xml</value>
             </list>
         </property>
         <property name="entityInterceptor" ref="auditInterceptor"/>
@@ -88,6 +102,9 @@
     </bean>
     <bean id="accessibilityService" class="chox.services.AccessibilityServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="applicationAccessibility" class="chox.web.security.ApplicationAccessibility" singleton="true">
+        <property name="accessibilityService" ref="accessibilityService"/>
     </bean>
     <bean id="incidentService" class="chox.services.IncidentServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -183,15 +200,19 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
-    <!--
     <bean id="lineOfBusinessService" class="chox.services.LineOfBusinessServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    !-->
     <bean id="insurerChorganisationService" class="chox.services.InsurerChorganisationServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="bordereauService" class="chox.services.BordereauServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="workgroupService" class="chox.services.WorkgroupServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="userWorkgroupService" class="chox.services.UserWorkgroupServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="uploadClaimXMLService" class="chox.services.UploadClaimXMLServiceImpl" singleton="false">

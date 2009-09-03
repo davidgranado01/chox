@@ -184,6 +184,7 @@
         <action name="openClaimDetail" class="chox.web.actions.ClaimAction">
             <result name="success">/jsp/user/ClaimDetail.jsp
             </result>
+            <result name="ClaimNotFound">/jsp/p_claimNotFound.jsp</result>
         </action>
         <action name="UpdateClaimDetail" class="chox.web.actions.ClaimAction" method="updateClaimDetail">
             <result name="success" type="redirect">inbox.action

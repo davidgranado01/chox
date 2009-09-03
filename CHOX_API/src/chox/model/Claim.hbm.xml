@@ -44,7 +44,7 @@
     <!--
     <filter condition=":lineOfBusinessId = line_of_business_id" name="Claim_LineOfBusinessFilter"/>
     !-->
-    <filter condition=":workgroupId = workgroup_id" name="Claim_WorkgroupFilter"/>
+    <filter condition="workgroup_id IN (:workgroupIds)" name="Claim_WorkgroupFilter"/>
   </class>
   <filter-def name="Claim_CHOFilter">
     <filter-param name="chorganisationId" type="integer"/>
@@ -57,7 +57,7 @@
     <filter-param name="lineOfBusinessId" type="integer"/>
   </filter-def>
   !-->
-  <filter-def name="Claim_WorkgroupFilter" condition="READABLE_BY in (:subjectIdList)">
-    <filter-param name="workgroupId"  type="integer"/>
+  <filter-def name="Claim_WorkgroupFilter">
+    <filter-param name="workgroupIds"  type="integer"/>
   </filter-def>  
 </hibernate-mapping>

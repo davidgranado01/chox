@@ -42,7 +42,9 @@ public class DataService extends HibernateDaoSupport {
 
     public Object get(final Class c, final int id) {
 
-        return getHibernateTemplate().get(c, id);
+        DetachedCriteria dc = DetachedCriteria.forClass(c).add(Restrictions.eq("id", id));
+        List result =  getHibernateTemplate().findByCriteria(dc);
+        return (result != null && result.size() == 1) ? result.get(0) : null;
     }
 
     public List query(final String query) {

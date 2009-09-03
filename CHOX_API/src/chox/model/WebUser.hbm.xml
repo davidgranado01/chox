@@ -24,5 +24,9 @@
       <key column="web_user_id"/>
       <many-to-many class="chox.model.WebUserRole" column="wer_user_role_id"/>
     </set>
+    <set cascade="none" lazy="false" name="workgroups" table="user_workgroup">
+      <key column="user_id"/>
+      <many-to-many class="chox.model.Workgroup" column="workgroup_id"/>
+    </set>
   </class>
 </hibernate-mapping>
