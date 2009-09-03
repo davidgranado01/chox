@@ -8,10 +8,6 @@ package scsbre.engine.util;
 import java.math.BigDecimal;
 import scsbre.model.IExtrasInfo;
 
-/**
- *
- * @author Derm
- */
 public class ExtrasCalcHelper {
     
     private IExtrasInfo extras;
