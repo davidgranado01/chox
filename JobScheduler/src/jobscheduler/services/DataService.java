@@ -14,9 +14,9 @@ public class DataService {
 
     
     final String databaseServer = "localhost:5432";
-    final String databaseConnection = "chox";
-    final String databaseUserName = "chox";
-    final String databaseUserPsw= "chox";
+    final String databaseConnection = "choxidas_prod";
+    final String databaseUserName = "postgres";
+    final String databaseUserPsw= "GreenF1nCHPasswurd99.";
     
     /*
     final String databaseServer = "10.0.0.2:5432";

@@ -10,7 +10,7 @@ public class DataService {
     final String databaseServer = "localhost:5432";
     final String databaseConnection = "choxidas_prod";
     final String databaseUserName = "postgres";
-    final String databaseUserPsw= "GreenF1nCH";
+    final String databaseUserPsw= "GreenF1nCHPasswurd99.";
 
     public Connection getConnection(){
 
