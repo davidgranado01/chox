@@ -129,6 +129,7 @@ public class ClaimActionTest {
     /**
      * Test of getLineOfBusinesses method, of class ClaimAction.
      */
+    /*
     @Test
     public void testGetLineOfBusinesses() {
         System.out.println("getLineOfBusinesses");
@@ -139,7 +140,7 @@ public class ClaimActionTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
+*/
     /**
      * Test of getVehicleClasses method, of class ClaimAction.
      */
@@ -582,6 +583,7 @@ public class ClaimActionTest {
     /**
      * Test of getLineOfBusinessId method, of class ClaimAction.
      */
+    /*
     @Test
     public void testGetLineOfBusinessId() {
         System.out.println("getLineOfBusinessId");
@@ -592,10 +594,11 @@ public class ClaimActionTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
+*/
     /**
      * Test of setLineOfBusinessId method, of class ClaimAction.
      */
+    /*
     @Test
     public void testSetLineOfBusinessId() {
         System.out.println("setLineOfBusinessId");
@@ -605,7 +608,7 @@ public class ClaimActionTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
+*/
     /**
      * Test of getActionName method, of class ClaimAction.
      */
