@@ -127,7 +127,7 @@ public class DataService extends HibernateDaoSupport {
 
     public void save(final Object object) {
         TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
-        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW );
+        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED );
         transactionTemplate.execute(
                 new TransactionCallbackWithoutResult() {
 
@@ -160,7 +160,7 @@ public class DataService extends HibernateDaoSupport {
     
     public void delete(final Object object) {
         TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
-        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW );
+        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED );
         transactionTemplate.execute(
                 new TransactionCallbackWithoutResult() {
 

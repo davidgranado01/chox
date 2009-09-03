@@ -376,7 +376,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         c.setEngineerReport(claimResult.getClaim().getEngineerReport());
         c.setVehicleHire(claimResult.getClaim().getVehicleHire());
 
-        save(claimResult.getClaim());
+        save(c);
     }
     
     public Boolean isObjectExist(int WorkgroupId){
