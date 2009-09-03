@@ -53,7 +53,7 @@ public class migrateFile{
             if(bFlag){
                 
                 s = conn.createStatement();
-                s.execute("update attachment set file_buffer = temp.file_buffer from temp_attachment temp where isproceesed=true;");    
+                s.execute("update attachment as a set file_buffer = temp.file_buffer from temp_attachment temp where temp.id=a.id and temp.isproceesed=true;update attachment set file_type='pdf' where file_type in ('PDF', 'pdf', 'Pdf');");    
                 bFlag = true;
                 
             }
@@ -124,6 +124,30 @@ public class migrateFile{
         
     }
     
+    private String getFileLocation() throws SQLException{
+    
+        Statement s = null;
+        String sFileName = "";
+        
+        try{
+                
+            s = conn.createStatement();
+            ResultSet rs = s.executeQuery("select value from global_configuration where parameter='attachment_path'"); 
+
+            while (rs.next()) {
+                sFileName = rs.getString("value");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(migrateFile.class.getName()).log(Level.SEVERE, null, ex);   
+        }finally{
+            s.close();
+        }    
+        
+        return sFileName;
+        
+    }
+    
     private void processPhysicalFile() throws SQLException, FileNotFoundException, IOException{
         
         Statement s = null;
@@ -131,6 +155,8 @@ public class migrateFile{
         try{
             
             if(bFlag){
+                
+                String filerLocation = getFileLocation();
                 
                 s = conn.createStatement();
                 ResultSet rs = s.executeQuery("select * from temp_attachment where isProceesed = "+false); 
@@ -140,15 +166,15 @@ public class migrateFile{
                     String sFileName = rs.getString("file_name");
                     int attachmentId = Integer.parseInt(rs.getString("id"));
                     
-                    File file = new File("C:\\Chox Builld\\Runtime Backup\\attachment.20090902.1500\\attachment.20090902.1500\\attachment\\"+sFileName);
+                    File file = new File(filerLocation+sFileName);
                     
                     if(file.isFile() && file.canRead()){
                         
-                        // FileInputStream streamIn = new FileInputStream(file);
-                        // byte fileContent[] = new byte[(int)file.length()];
-                        // streamIn.read(fileContent);
+                        FileInputStream streamIn = new FileInputStream(file);
+                        byte fileContent[] = new byte[(int)file.length()];
+                        streamIn.read(fileContent);
                         
-                        flagFile(file, true, attachmentId);
+                        flagFile(fileContent, true, attachmentId);
 
                     }else{
                         
@@ -174,7 +200,7 @@ public class migrateFile{
     
     }
     
-    private void flagFile(File file, boolean isProcess, int attachmentId) throws SQLException, FileNotFoundException{
+    private void flagFile(byte[] obj, boolean isProcess, int attachmentId) throws SQLException{
         
         Statement s = null; 
         
@@ -185,15 +211,12 @@ public class migrateFile{
                 String sStatement = "";
                 PreparedStatement ps = null;
                 
-                if(isProcess){
-                    
-                    FileInputStream fis = new FileInputStream(file);
-                    
+                if(obj!=null && isProcess){
+
                     sStatement = "update temp_attachment set isProceesed=?, file_buffer=? where id=?;";
                     ps = conn.prepareStatement(sStatement);
                     ps.setBoolean(1, isProcess);
-                    //ps.setBytes(2, obj);
-                    ps.setBinaryStream(2, fis, (int)file.length());
+                    ps.setBytes(2, obj);
                     ps.setInt(3, attachmentId);
                     
                 }else{
