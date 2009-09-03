@@ -192,7 +192,7 @@
     }
 
     function onUpdateUserSubmitResult(responseText, statusText){
-        
+        /*
         responseText = responseText.trim();
         
         if(responseText != ""){
@@ -200,7 +200,7 @@
                 confirm("Please assign line of business to the user in order to activate the user!");
             }
         }
-        
+        */
         loadGridViewList();
     }
     

@@ -225,26 +225,21 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return items;
     }
     
-    public boolean validateUserWithRole(int webUserId, Integer webUserRoleId){
+    public boolean isClaimHandlerRole(int roleId){
         
-        boolean bFlag = false;
+        boolean isClaimHandler = false;
+        WebUserRole webUserRole = new WebUserRole();
         
-        WebUser userObj = userService.getUsers(webUserId);
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);  
+        criteria.add(Restrictions.eq("id", roleId));
+        criteria.add(Restrictions.eq("name", WebUserRole.ROLE_CH));
+        webUserRole = (WebUserRole) getByCriteria(criteria);
         
-
-        
-        /*
-        if(userObj.getLineOfBusiness()==null
-            && getUserroleName(webUserRoleId).equalsIgnoreCase(WebUserRole.ROLE_CH)){
-            
-                bFlag = true;
-                userObj.setStatus(false);
-                userService.updateObject(userObj);
+        if(webUserRole!=null){
+            isClaimHandler = true;
         }
-        */
-       
         
-        return bFlag;
+        return isClaimHandler;
     }
     
 }

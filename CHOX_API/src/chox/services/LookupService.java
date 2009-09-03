@@ -37,4 +37,5 @@ public interface LookupService {
     public List getWorkgroups();
     public List getAllWorkgroups();
     public List getWorkgroupsByInsurerId(int insurerId);
+    public List getAllWorkgroupsByInsurerId(int insurerId);
 }

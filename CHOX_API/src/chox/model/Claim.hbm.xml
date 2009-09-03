@@ -41,7 +41,10 @@
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <filter condition=":chorganisationId = chorganisation_id" name="Claim_CHOFilter"/>
     <filter condition=":insurerId = insurer_id" name="Claim_InsurerFilter"/>
+    <!--
     <filter condition=":lineOfBusinessId = line_of_business_id" name="Claim_LineOfBusinessFilter"/>
+    !-->
+    <filter condition=":workgroupId = workgroup_id" name="Claim_WorkgroupFilter"/>
   </class>
   <filter-def name="Claim_CHOFilter">
     <filter-param name="chorganisationId" type="integer"/>
@@ -49,7 +52,12 @@
   <filter-def name="Claim_InsurerFilter">
     <filter-param name="insurerId" type="integer"/>
   </filter-def>
+  <!--
   <filter-def name="Claim_LineOfBusinessFilter">
     <filter-param name="lineOfBusinessId" type="integer"/>
   </filter-def>
+  !-->
+  <filter-def name="Claim_WorkgroupFilter" condition="READABLE_BY in (:subjectIdList)">
+    <filter-param name="workgroupId"  type="integer"/>
+  </filter-def>  
 </hibernate-mapping>

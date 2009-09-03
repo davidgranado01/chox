@@ -42,14 +42,14 @@
             store: workgroup_gridviewData,
             loadMask: true,
             columns: [
-                {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
-                {header: "Workgroup", width: 180, dataIndex: 'name', sortable: true, resizable: true},
-                {header: "Active", width: 80, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
+                {header: "Insurer", width: 60, dataIndex: 'insurerName', sortable: true, resizable: true},
+                {header: "Workgroup", width: 100, dataIndex: 'name', sortable: true, resizable: true},
+                {header: "Active", width: 60, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
                 {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Remove</a>"}},       
-                {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
-                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
+                {header: "Created By", width: 80, dataIndex: 'createdBy', sortable: true, resizable: true},
+                {header: "Created Date", width: 120, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
             renderTo:'workgroup_gridviewGrid',
                 width:605,
@@ -96,20 +96,10 @@
     }
     
     function workgroup_triggerStatusAddRecord(){
-        /*
-        if(elementToBlock != undefined){
-            outputDiv = elementToBlock.find('#CDInsurerWorkgroupMessageBox');
-            outputDiv.text("");
-            outputDiv.removeClass("submit-error");
-        }
-        */
        
         var workgroupName = $("#workgroupName").val();
         
         if(workgroupName!=null && workgroupName!="" && selectOrgId!=null && selectOrgId>0){
-
-            // $("#CDInsurerWorkgroupMessageBox").html("");
-            // elementToBlock.block({ message: "Please wait.." });
             
             $.ajax({
                url: "addInsurerWorkgroup.action?insurerId="+selectOrgId+"&workgroupName="+workgroupName,
@@ -126,7 +116,7 @@
         var gridViewId = gridView.get("id");
 
         $.ajax({
-           url: "triggerInsurerWorkgroup.action?workgroupId="+gridViewId,
+           url: "triggerInsurerWorkgroup.action?insurerId="+selectOrgId+"&workgroupId="+gridViewId,
            success: workgroup_onSubmitResponseReceived
         });
     }
@@ -136,7 +126,7 @@
         var gridViewId = gridView.get("id");
 
         $.ajax({
-           url: "removeInsurerWorkgroup.action?workgroupId="+gridViewId,
+           url: "removeInsurerWorkgroup.action?insurerId="+selectOrgId+"&workgroupId="+gridViewId,
            success: workgroup_onSubmitResponseReceived
         });
     }

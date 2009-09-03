@@ -11,7 +11,6 @@
     var recordPerPage = 20;
     var selectedOrgTypeId = 1 ;
 
-   
     Ext.onReady(function(){
         
        gridviewJsonReader = new Ext.data.JsonReader({
@@ -92,22 +91,29 @@
     
     function triggerStatusRemoveRecord(gridView){
         
-        var deleteAtt = confirm("Are you sure you want to remove this role?");
-        
+        var webUserId = $("#webUserId").val();
+        var userroleid = gridView.get("webUserroleId");
+        var deleteAttMsg = "Are you sure you want to remove this role?";
         $("#CDUserroleMessageBox").html("");
         
-        if(deleteAtt){
+        if(userroleid==6 && !isWorkgroupDisabled){
+            deleteAttMsg = "Delete Claim Hanlder role will delete all workgroup associated as well. Are you sure you want to remove this role";
+        }  
+        
+        if(confirm(deleteAttMsg)){
+
             var gridViewId = gridView.get("id");
              $.ajax({
-               url: "removeRoleMapping.action?webUserUserRoleId="+gridViewId,
-               success: doRefreshPage
-             });
+               url: "removeRoleMapping.action?webUserUserRoleId="+gridViewId+"&webUserId="+webUserId,
+               success: onUserroleMappingSubmitResult
+             });            
+
         }
     }
     
     function triggerStatusAddRecord(){
 
-        var webUserId = $("#webUserId").val()
+        var webUserId = $("#webUserId").val();
         var webUserRoleId = $("#userrolesId").val();
         
         if(webUserRoleId!=null && webUserRoleId>0){
@@ -126,29 +132,32 @@
     
     function onUserroleMappingSubmitResult(responseText, statusText){
         
-        responseText = responseText.trim();
+        var response = eval('(' + responseText.trim() + ')');        
         
-        if(responseText != ""){
-            if(responseText.substring(0,2)=="1:"){
-                confirm("Please assign line of business to the user in order to activate the user!");
+        if(response && response.isValid){
+            
+            if(response.resultType && response.resultType == 'Message'){
+                propmtMsg("User Role", response.result);
             }
         }
         
         doRefreshPage();
     }
-    
+        
     function doRefreshPage(){
         $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" /> + "&tabIndex="+userDetailTabIndex);
     }
     
 </script>
 
+            <div class="status-info">
+                [ User Role Description ]
+            </div>    
+            
 <div>
     
     <input id="webUserId" name ="webUserId" type="hidden" value="<s:property value="id" />">
     
-<fieldset class="x-fieldset">
-    <legend>User Role</legend>
     <div id="organisationGird">
         <div class="gridViewHeader">
             <table width="100%">
@@ -174,5 +183,5 @@
         
         <div id="gridviewGrid"></div>
     </div>
-</fieldset>
+
 </div>

@@ -1,5 +1,6 @@
 package chox.web.actions;
 
+import chox.model.Insurer;
 import chox.model.Workgroup;
 import chox.services.InsurerService;
 import chox.services.WorkgroupService;
@@ -95,14 +96,43 @@ public class doInsurerWorkgroupAction extends BaseAction implements ModelDriven<
     }    
 
     public String triggerObject(){
-        model.setStatus(!model.isStatus());
-        service.updateObject(model);
+        
+        boolean isAllowedToChange = true;
+        String ackMsg = "";
+        Insurer insurer = insurerService.getObject(insurerId);
+        
+        // CHECK WORKGROUPS STATUS IF CHANGE FROM ACTIVE TO INACTIVE
+        // WORKGROUP FEATUERE IS ENABLE
+        // EXCEPT THE WORKGROUP ITSELF, DO NOT HAVE ANY ACTIVE WORKGROUP
+        if(insurer.isWorkgroupEnable() && model.isStatus() && !service.isWorkgroupAllowToInactive(insurerId, model.getId())){
+            isAllowedToChange = false;
+        }
+        
+        if(isAllowedToChange){
+            model.setStatus(!model.isStatus());
+            service.updateObject(model);
+        }else{
+            ackMsg = "Unable to inactive this workgroup. Must maintain atleast one active workgroup for this insurer.";
+            getActionResponse().AddError(ackMsg);            
+        }
+        
         return SUCCESS;
+        
     }
     
     public String removeObject(){
         
+        Insurer insurer = insurerService.getObject(insurerId);
+        
         String ackMsg = "";
+        
+        // WORKGROUP FEATUERE IS ENABLE
+        // EXCEPT THE WORKGROUP ITSELF, DO NOT HAVE ANY ACTIVE WORKGROUP        
+        if(insurer.isWorkgroupEnable() && !service.isWorkgroupAllowToInactive(insurerId, model.getId())){
+            ackMsg = "Unable to remove this workgroup. Must maintain atleast one active workgroup for this insurer.";
+            getActionResponse().AddError(ackMsg);                   
+            return SUCCESS;
+        }        
         
         if(service.isWorkgroupDeletable(model.getId())){
             

@@ -8,15 +8,11 @@
     var isClaimHandler = false;
     var selectedPanel = 'UserMgmt';
     var orgTypeId;
+    var isWorkgroupDisabled = true;
     
     function setupUserDetailPanels()
     {  
-        var isWorkgroupDisabled = true;
         
-        if(!isNew && isClaimHandler && orgTypeId=="2"){
-            isWorkgroupDisabled = false;
-        }
-
        userDetailPanelTabs = new Ext.TabPanel({
        renderTo: 'userDetailMainPanel',
        height:660,
@@ -72,6 +68,11 @@
         checkMode();
         getTabIndex();
         checkClaimHandler();
+        
+        if(!isNew && isClaimHandler && orgTypeId=="2" && <s:property value="workgroupEnabled"/>){
+            isWorkgroupDisabled = false;
+        }
+        
         setupUserDetailPanels();
         
         $.validator.addMethod(
@@ -199,7 +200,6 @@
                 var newObjectId =  parseInt(response.result);
                 var orgTypeId = $("#orgTypeId").val();
                 $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + newObjectId + "&orgTypeId=" + orgTypeId);
-                // propmtMsg("New user setup successful","Please assign a role(s) to the new user.");
             }
             else
             {
@@ -211,14 +211,14 @@
         else if(response && response.errors){
             
             output = formErrorMessage(response.errors);
-            $("#chox-form-submit-result").attr("class", "action-error-msg")
+            $("#chox-form-submit-result").attr("class", "submit-error")
             $("#chox-form-submit-result").html(output);
             
         }
         else
         {
             output = "Unknown Error Encountered, please try again.";
-            $("#chox-form-submit-result").attr("class", "action-error-msg");
+            $("#chox-form-submit-result").attr("class", "submit-error");
                 
         }
         $("#admin_param_panel").unblock();
@@ -300,8 +300,7 @@
 <div id="userDetailTab" class="x-hide-display">
     
     <div class="subAdminTabCss">
-    <fieldset class="x-fieldset">
-        <legend>User Details</legend>
+
         <form id="formUpdateUserDetail" action="user/updateUserDetail.action" class="XXentity-form" onsubmit="return true;" method="post">
             
             <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
@@ -441,8 +440,7 @@
                 <div class="chox-form-submit-result" id="chox-form-submit-result"></div>
             </div>
         </form>
-        <div id="CDmessageBox" style="text-align:center" class="errorBox"></div>
-    </fieldset>
+        <div id="CDmessageBox" class="submit-error"></div>
 </div>
 </div>
 
@@ -450,8 +448,6 @@
     <div class="subAdminTabCss">
     <s:if test="mode=='Edit'">
 
-        <fieldset class="x-fieldset">
-            <legend>Password</legend>
             <div class="status-info">
                 N.B. Passwords are case sensitive. Must be at least 6 characters.<br/>
                 Must contain at least one lower case letter, one upper case letter, and one number. 
@@ -475,8 +471,6 @@
             </form>
             </div> 
             <div id="CDPswMessageBox" style="text-align:center" class="errorBox"></div>
-        </fieldset>
-
     </s:if>
     </div>
 </div>
@@ -500,7 +494,7 @@
         <div>
             <s:action name="getUserWorkgroupMapping" executeResult="true">
                 <s:param name="webUserId"><s:property value="id" /></s:param>
-                <s:param name="orgTypeId"><s:property value="orgTypeId" /></s:param>
+                <s:param name="insurerId"><s:property value="insurer.id" /></s:param>
             </s:action>
         </div>
     </s:if>

@@ -1,5 +1,6 @@
 package chox.services;
 
+import chox.model.Insurer;
 import chox.model.Workgroup;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
                 criteria.add(Restrictions.eq("insurer.id", insurerId));
             }
             
+            criteria.add(Restrictions.eq("status", true));
             criteria.addOrder(Order.asc("name"));
             
             objects = findByCriteria(criteria);
@@ -43,6 +45,29 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         return objects;
     }
 
+    public List<Workgroup> getAllObjects(int insurerId) {
+        
+        List<Workgroup> objects = new ArrayList<Workgroup>();
+        
+        try {
+            
+            DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
+            
+            if(insurerId>0){
+                criteria.add(Restrictions.eq("insurer.id", insurerId));
+            }
+            
+            criteria.addOrder(Order.asc("name"));
+            
+            objects = findByCriteria(criteria);
+            
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        return objects;
+    }
+    
     public Workgroup getObject(int id) {
         return (Workgroup) get(Workgroup.class, id);
     }
@@ -107,4 +132,66 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
 
         return isExist;        
     }
+    
+    public boolean isWorkgroupAllowToInactive(int insurerId, int workgroupId){
+        
+        boolean isAllowed = false;
+        
+        try {        
+            
+            List<Workgroup> objects = new ArrayList<Workgroup>();
+            DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
+            criteria.add(Restrictions.eq("insurer.id", insurerId));
+            criteria.add(Restrictions.ne("id", workgroupId));
+            criteria.add(Restrictions.eq("status", true));
+            objects = findByCriteria(criteria);
+
+                // System.out.println("objects:"+objects);
+                // System.out.println("objects size:"+objects.size());
+                
+            if(objects.size()>0){
+                isAllowed = true;
+            }
+                
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        
+        return isAllowed;                
+    }
+    
+    public boolean isInsurerAllowToEnableWorkgroup(Insurer insurer){
+        
+        boolean isAllowed = false;
+    
+        try {
+            
+            if(insurer!=null){
+                
+                List<Workgroup> objects = new ArrayList<Workgroup>();
+                DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
+                criteria.add(Restrictions.eq("insurer.id", insurer.getId()));
+                criteria.add(Restrictions.eq("status", true));
+                objects = findByCriteria(criteria);
+                
+                if(objects.size()>0){
+                    isAllowed = true;
+                }
+            }
+            
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        
+        return isAllowed;
+    }
+    
+    public void createDefaultRecord(Insurer insurer){
+        Workgroup object = new Workgroup();
+        object.setInsurer(insurer);
+        object.setName(insurer.getName());
+        object.setStatus(true);
+        updateObject(object);
+    }
+    
 }

@@ -1,10 +1,13 @@
 package chox.web.actions;
 
 import chox.model.Insurer;
+import chox.model.Workgroup;
 import chox.services.ChoBandService;
 import chox.services.InsurerAlliasService;
 import chox.services.InsurerService;
 import chox.services.LineOfBusinessService;
+import chox.services.WorkgroupService;
+import chox.web.viewdata.ActionResponse;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
@@ -71,6 +74,22 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
         return SUCCESS;
     }  
     
+    public String triggerInsurerWorkgroupFeature() throws Exception {
+
+        Insurer thisObject = this.service.getObject(Integer.valueOf(objectId));
+
+        // ORIGINAL IS FALSE, CHANGE TO TRUE
+        if(!thisObject.isWorkgroupEnable() && !workgroupService.isInsurerAllowToEnableWorkgroup(thisObject)){
+            this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Please make sure there is atleast one active workgroup exist in order to enable workgroup function");
+            return SUCCESS;
+            
+        }
+        
+        thisObject.setWorkgroupEnable(!thisObject.isWorkgroupEnable());
+        this.service.updateObject(thisObject);
+        return SUCCESS;
+    }
+    
     public String updateModel() throws Exception {
 
         try {
@@ -82,12 +101,26 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
                     return SUCCESS;
                 }
                 
+            }else{
+                
+                System.out.println("A:"+model.isWorkgroupEnable());
+                System.out.println("B:"+workgroupService.isInsurerAllowToEnableWorkgroup(model));
+                
+                if(model.isWorkgroupEnable() && !workgroupService.isInsurerAllowToEnableWorkgroup(model)){
+                    this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Please make sure there is atleast one active workgroup exist in order to enable workgroup function");
+                    return SUCCESS;
+                }
+                
             }
-            
+
             model = this.service.updateObject(model);            
             
             if(this.isNew){
-                lineOfBusinessService.createDefaultRecord(model);
+                
+                if(model.isWorkgroupEnable()){
+                    workgroupService.createDefaultRecord(model);
+                }
+                
                 insurerAlliasService.createDefaultRecord(model);
                 choBandService.createDefaultRecord(model);
                 this.getActionResponse().AssignNewIdResult(model.getId());
@@ -113,13 +146,15 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
     }
     
     private InsurerAlliasService insurerAlliasService;
-    private LineOfBusinessService lineOfBusinessService;
+    // private LineOfBusinessService lineOfBusinessService;
+    private WorkgroupService workgroupService;
     private ChoBandService choBandService;
     private InsurerService service;
     
     public void setInsurerService(InsurerService service) { this.service = service; }
     public void setChoBandService(ChoBandService choBandService) { this.choBandService = choBandService; }
-    public void setLineOfBusinessService(LineOfBusinessService lineOfBusinessService) { this.lineOfBusinessService = lineOfBusinessService; }
+    public void setWorkgroupService(WorkgroupService workgroupService) { this.workgroupService = workgroupService; }
+    // public void setLineOfBusinessService(LineOfBusinessService lineOfBusinessService) { this.lineOfBusinessService = lineOfBusinessService; }
     public void setInsurerAlliasService(InsurerAlliasService insurerAlliasService) { this.insurerAlliasService = insurerAlliasService; }    
     
     

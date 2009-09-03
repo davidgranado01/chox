@@ -74,7 +74,27 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return doProcessClaimXMLFile(file, fileName);
 
     }
-
+    
+    public ClaimResult isWorkgroupEnable(ClaimResult claimResult){
+        
+        // System.out.println("isWorkgroupEnable: Claim Process Status: " + claimResult.getClaimParseStatus());
+        // System.out.println("isWorkgroupEnable: Claim Cho Ref: " + claimResult.getClaim().getChoReference());
+        // System.out.println("isWorkgroupEnable: OLD Claim Status: " + claimResult.getClaim().getStatus());
+        // System.out.println("isWorkgroupEnable: Insurer: " + claimResult.getClaim().getThirdParty().getInsurer());
+        
+        boolean isWorkgroupEnable = true;
+        
+        if(claimResult.getClaim().getThirdParty().getInsurer()!=null){
+            isWorkgroupEnable = claimResult.getClaim().getThirdParty().getInsurer().isWorkgroupEnable();
+        }
+        
+        if(claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) && !isWorkgroupEnable){
+            claimResult.getClaim().setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        }
+        
+        return claimResult;
+    }
+    
     public BordereauResult doProcessClaimXMLFile(final File file, final String fileName) {
 
         BordereauResult bordereauResult = new BordereauResult();
@@ -103,7 +123,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         // System.out.println("END: Claim Process Status: " + claimResult.getClaimParseStatus());
                         // System.out.println("END: Claim Cho Ref: " + claimResult.getClaim().getChoReference());
                         // System.out.println("END: Claim Status: " + claimResult.getClaim().getStatus());
-
+                        
+                        claimResult = isWorkgroupEnable(claimResult);
+                        
                         if (claimResult.isValid() && claimResult.isDataValid()) {
                             
                             saveXMLRecord(claimResult);
@@ -164,7 +186,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     new TransactionCallbackWithoutResult() {
 
                         public void doInTransactionWithoutResult(TransactionStatus status) {
-
+                            
                             if (readOnlyXmlParseResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
                                 customerService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                                 thirdPartyService.saveObjectForXMLUploader(readOnlyXmlParseResult);
@@ -179,9 +201,14 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                             vehicleHireService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                             invoiceService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                             claimService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-
+                            
                             if (readOnlyXmlParseResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
+                                
                                 auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, "", readOnlyXmlParseResult.getClaim());
+                                
+                                if(readOnlyXmlParseResult.getClaim().getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)){
+                                    auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, readOnlyXmlParseResult.getClaim());
+                                }
                             }
                             
                             if (readOnlyXmlParseResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
@@ -195,6 +222,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
                         }
                     });
+                    
         } catch (TransactionException e) {
             // xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
         }

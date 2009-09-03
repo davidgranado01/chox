@@ -29,6 +29,6 @@ public interface WebUserUserRoleService {
     public List getSelectedUserAvailableRoleLookupItem(int orgTypeId, Integer webUserId);
     public List getWebUserrolesLookupItem(int orgTypeId);
     public String getUserroleName(int id);
-    public boolean validateUserWithRole(int webUserId, Integer webUserRoleId);
+    public boolean isClaimHandlerRole(int roleId);
     
 }

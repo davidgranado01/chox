@@ -269,7 +269,6 @@ div.chox-form-submit-result
 {
     color: #15428b;
     font: bold 11px tahoma,arial,verdana,sans-serif;
-    line-height: 35px;
     margin-top: 5px;
     text-align: center;
 }
@@ -477,10 +476,11 @@ div.errorBox
 
 div.submit-error
 {
+    margin-top: 5px;    
     color: red;
-    padding-left:20px;
     text-align:center;
     font-weight:bold;
+    font-size:inherit;
     font-family: tahoma,arial,verdana,sans-serif;
 }
 
@@ -494,6 +494,7 @@ div.submit-error ul li{
 div.submit-acknowledge
 {
     color: #15428b;
+    font-size:inherit;
     text-align:center;
     font-weight:bold;
     font-family: tahoma,arial,verdana,sans-serif;
@@ -731,6 +732,7 @@ img.tip-target
     background:#dfe8f6;
     background-color:#dfe8f6;   
     height:570px;
+    font-size:12px;
 }
 
 .girdViewObject{

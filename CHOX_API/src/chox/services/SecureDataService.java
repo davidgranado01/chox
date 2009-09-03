@@ -7,6 +7,8 @@ package chox.services;
 
 import chox.data.SecurityInfoProvider;
 import chox.model.WebUser;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -25,33 +27,21 @@ public class SecureDataService extends DataService {
             if (!this.getSecurityInfoProvider().getIsCHOXAdmin()) {
                 
                 if (this.getSecurityInfoProvider().getIsCHO()) {
-                    
+
                     // CREDIT HIRE USER
                     getCurrentSession().enableFilter("Claim_CHOFilter").setParameter("chorganisationId", this.getCurrentUser().getChorganisation().getId());
                     
                 } else if (this.getSecurityInfoProvider().getIsINS()) {
                     
                     // INSURER USER
-                    getCurrentSession().enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
                     //  getCurrentSession().enableFilter("LineOfBusiness_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
+                    getCurrentSession().enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
                     getCurrentSession().enableFilter("Workgroup_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
                     
-                    if(isClaimHandlerOnly()){
+                    if(isClaimHandlerOnly() && this.getSecurityInfoProvider().getCurrentUser().getInsurer().isWorkgroupEnable()){
                         
-                        int lineOfBusinessId = -1;
-                        int workgroupId = -1;
-                        
-                        /*
-                        if(getCurrentUser().getLineOfBusiness()!=null){
-                            lineOfBusinessId = getCurrentUser().getLineOfBusiness().getId();
-                            // workgroupId = getCurrentUser().getWorkgroup().getId();
-                        }
-                        */
-                        
-                        // getCurrentSession().enableFilter("LineOfBusiness_LineOfBusinessFilter").setParameter("lineOfBusinessId", lineOfBusinessId);
-                        getCurrentSession().enableFilter("Workgroup_WorkgroupFilter").setParameter("lineOfBusinessId", lineOfBusinessId);
-                        // getCurrentSession().enableFilter("Claim_LineOfBusinessFilter").setParameter("WorkgroupId", workgroupId);
-                        
+                        // getCurrentSession().enableFilter("Claim_WorkgroupFilter").setParameter("workgroupId", 48);
+
                     }
                 }
             }

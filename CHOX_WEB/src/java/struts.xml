@@ -828,6 +828,9 @@
         <action name="updateInsurerDetail" class="chox.web.actions.doInsurerAction" method="updateModel">
             <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
+        <action name="triggerInsurerWorkgroupFeature" class="chox.web.actions.doInsurerAction" method="triggerInsurerWorkgroupFeature">
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
+        </action>       
        
         <action name="getChorganisation" class="chox.web.actions.ChorganisationAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
@@ -858,18 +861,26 @@
             <result name="success">/jsp/user/adminPanel/p_user_role_mapping.jsp</result>
         </action>
         <action name="removeRoleMapping" class="chox.web.actions.doUserroleAction" method="removeRoleMapping">
-            <result name="success">/jsp/p_response.jsp
-            </result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
         <action name="addNewRoleMapping" class="chox.web.actions.doUserroleAction" method="addNewRoleMapping">
-            <result name="success">/jsp/p_response.jsp
-            </result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
         
         <!-- WORKGROUP !-->
-        <action name="getUserWorkgroupMapping" class="chox.web.actions.doUserWorkgroupAction" method="doRenderActionPage">
-            <result name="success">/jsp/user/adminPanel/p_user_role_mapping.jsp</result>
+        <action name="getUserWorkgroup" class="chox.web.actions.UserWorkgroupAction">
+            <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
+        <action name="removeUserWorkgroupMapping" class="chox.web.actions.doUserWorkgroupAction" method="removeObject">
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
+        </action>
+        <action name="getUserWorkgroupMapping" class="chox.web.actions.doUserWorkgroupAction" method="doRenderActionPage">
+            <result name="success">/jsp/user/adminPanel/p_user_userworkgroup_mapping.jsp</result>
+        </action>
+        <action name="addUserWorkgroupMapping" class="chox.web.actions.doUserWorkgroupAction" method="addObject">
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
+        </action>        
+        
         
         <action name="getInsurerAllias" class="chox.web.actions.InsurerAlliasAction">
             <result name="success">/jsp/p_jsonData.jsp</result>

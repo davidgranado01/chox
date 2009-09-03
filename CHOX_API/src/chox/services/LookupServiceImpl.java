@@ -164,6 +164,13 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         return findByCriteria(criteria,true);
     }
     
+    public List getAllWorkgroupsByInsurerId(int insurerId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
+        criteria.addOrder(Order.asc("name"));
+        return findByCriteria(criteria,true);
+    }
+    
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // SUPPLIERS / CREDIT HIRES
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -233,11 +240,15 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         WebUser currentUser = getCurrentUser();
         
         if(currentUser.isCHOXAdmin()){
+            
             DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
             criteria.add(Restrictions.eq("status", true));
             return findByCriteria(criteria,true);
+            
         }else{
+            
             return getInsurers(currentUser.getChorganisation().getId());
+            
         }
     }
     

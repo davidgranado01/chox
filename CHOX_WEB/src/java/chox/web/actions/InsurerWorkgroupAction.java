@@ -41,7 +41,7 @@ public class InsurerWorkgroupAction extends AdminBaseModelAction {
         
         try{
             
-            List<Workgroup> workgroupDatas = this.workgroupService.getObjects(insurerId);
+            List<Workgroup> workgroupDatas = this.workgroupService.getAllObjects(insurerId);
             
             this.workgroups = new ArrayList<WorkgroupViewData>();
 

@@ -42,9 +42,9 @@ public class WorkgroupDropDownAction extends BaseAction{
         
         if(!user.getIsCHOXAdmin() && user.getIsINS() ){
             user = getAuthenticatedUser();
-            workgroups = service.getWorkgroupsByInsurerId(user.getUser().getInsurer().getId());
+            workgroups = service.getAllWorkgroupsByInsurerId(user.getUser().getInsurer().getId());
         }else{
-            workgroups = service.getWorkgroupsByInsurerId(getOrgId());
+            workgroups = service.getAllWorkgroupsByInsurerId(getOrgId());
         }
         
         return SUCCESS;     

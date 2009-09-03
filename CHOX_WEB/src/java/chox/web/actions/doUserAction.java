@@ -56,6 +56,17 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         return isOrgSelectable;
     }
 
+    public boolean isWorkgroupEnabled(){
+        
+        boolean isEnable = false;
+        
+        if(model.getInsurer()!=null){
+            Insurer insurer = insurerService.getObject(model.getInsurer().getId());
+            isEnable = insurer.isWorkgroupEnable();
+        }
+        return isEnable;
+    }
+    
     public String getActionResult() {
         return actionResult;
     }

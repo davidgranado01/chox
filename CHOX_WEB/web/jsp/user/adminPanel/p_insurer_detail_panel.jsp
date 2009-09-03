@@ -98,28 +98,38 @@
             var response = eval('(' + responseText.trim() + ')');
             var output = "Your changes have been saved";
             
+            $("#chox-form-submit-result").attr("class", "chox-form-submit-result")
+            $("#chox-form-submit-result").html("");
+            
             if(response && response.isValid){                
 
                 if(response.resultType == "New" && response.result)
                 {
                     var newObjectId = parseInt(response.result);
                     $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + newObjectId);
-                    propmtMsg("New Insurer has been created. Please create a BRE Band for this Insurer using the BRE Band tab and associate Credit Hire Organisations to this via the BRE Band Mapping tab.");
+                    propmtMsg("Insurer", "New Insurer has been created. Please create a BRE Band for this Insurer using the BRE Band tab and associate Credit Hire Organisations to this via the BRE Band Mapping tab.");
                 }
-                else
-                {
+                else if(response.resultType && response.resultType == 'Message'){
+                    $("#chox-form-submit-result").attr("class", "submit-error")
+                    $("#chox-form-submit-result").html(response.result);
+                }else{
                     output = "Your changes have been saved.";
+                    $("#chox-form-submit-result").html(output);                    
                 }
             }
             else if(response && response.errors){
                 
-                output = formErrorMessage(response.errors); 
+                output = formErrorMessage(response.errors);
+                $("#chox-form-submit-result").attr("class", "submit-error")
+                $("#chox-form-submit-result").html(output);
+                
             }
             else
             {
                 output = "Unknown Error Encountered, please try again.";
+                $("#chox-form-submit-result").attr("class", "submit-error");
             }
-            $(".chox-form-submit-result").html(output);
+            
             $("#admin_param_panel").unblock();
         }
 
@@ -143,7 +153,6 @@
            items:[
                 {contentEl:'insurerDetailPanelTab', title:'Details',listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerAlliasPanelTab', title:'Alias', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
-                //{contentEl:'insurerLobPanelTab', title:'Line Of Business', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerWorkgroupPanelTab', title:'Workgroup', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerBrePanelTab', title:'BRE Band', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
@@ -171,7 +180,36 @@
             }
             
         }
+        
+        /*
+        function doTriggerWorkgroup(){
+            
+             $.ajax({
+               url: "triggerInsurerWorkgroupFeature.action?objectId="+$("#objectId").val(),
+               success: insurer_triggerworkgroupSubmitResult
+             });
+             
+        }
+        
+        function insurer_triggerworkgroupSubmitResult(responseText, statusText){
+            
+            var response = eval('(' + responseText.trim() + ')');        
+            var isSuccess = true;
+            
+            if(response && response.isValid){
 
+                if(response.resultType && response.resultType == 'Message'){
+                    propmtMsg("Insurer", response.result);
+                    isSuccess = false;
+                }
+            }
+            
+            if(isSuccess){
+                $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + $("#objectId").val());
+            }
+        }
+        */
+       
 </script>
 
 <div id="mainPanel" class="adminTabCss"></div>
@@ -222,20 +260,23 @@
 </div>
 
 <div id="insurerDetailPanelTab" class="x-hide-display">
+    
     <div class="subAdminTabCss">
+        
     <form id="formUpdateInsurerDetail" action="user/updateInsurerDetail.action" class="XXentity-form" onsubmit="return true;">
     
     <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
-    
+        <fieldset class="x-fieldset">
+        <legend>Insurer Detail</legend>
             <div class="form-container">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Name<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
                 </div>
-<div class="chox-form-item">
+                    <div class="chox-form-item">
                         <label class="chox-form-std-label">VAT No.<span class="mandatory">*</span></label>
                         <input type="text" class="chox-ttxt" id="CCDVatNo" name="vatNo" value="<s:property value="vatNo" />"/>
-                    </div>        
+                    </div> 
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Company No.<span class="mandatory">*</span></label>
                         <input type="text" class="chox-ttxt" id="CCDCompanyNo" name="companyNo" value="<s:property value="companyNo" />"/>
@@ -273,6 +314,10 @@
                     <input type="text" class="chox-ttxt" id="CCDAdminHandlingCharge" name="adminHandlingCharge" value="<s:property value="adminHandlingCharge" />"/>
                 </div>
                 <div class="chox-form-item">
+                    <label class="chox-form-std-label">Workgroup Enable</label>
+                    <s:checkbox name="workgroupEnable" value="workgroupEnable" />
+                </div>
+                <div class="chox-form-item">
                     <label class="chox-form-std-label">Active</label>
                     <s:checkbox name="status" value="status" />
                 </div>                   
@@ -283,8 +328,15 @@
                     
                 </div>
                 <div id="CDmessageBox" style="text-align:center" class="errorBox"></div>  
-                <div class="chox-form-submit-result"></div>  
+                
             </div>
-    </form>        
+        <br/>
+        <div class="chox-form-submit-result" id="chox-form-submit-result"></div>
+        </fieldset>
+    </form>
+
     </div>
+    
+
+    
 </div>
