@@ -106,9 +106,9 @@ public class ClaimCalcHelper {
             int iDayBufferForEngineeringProcess = getDayBufferForEngineeringProcess();
             int iWeekedBuffer = getWeekedBuffer(iLabourCostAverageRateDay+iDayBufferForEngineeringProcess);
             
-            System.out.println("iLabourCostAverageRateDay:"+iLabourCostAverageRateDay);
-            System.out.println("iDayBufferForEngineeringProcess:"+iDayBufferForEngineeringProcess);
-            System.out.println("iWeekedBuffer:"+iWeekedBuffer);
+            // System.out.println("iLabourCostAverageRateDay:"+iLabourCostAverageRateDay);
+            // System.out.println("iDayBufferForEngineeringProcess:"+iDayBufferForEngineeringProcess);
+            // System.out.println("iWeekedBuffer:"+iWeekedBuffer);
             
             return iLabourCostAverageRateDay + iWeekedBuffer + iDayBufferForEngineeringProcess;
         }
@@ -174,7 +174,7 @@ public class ClaimCalcHelper {
                 bLabourCostAverageRateDay = (bLabourCost.divide(bAverageLabourRate)).divide(bAverageLabourHoursPerHireDay);
             }
 
-            return mathHelper.getIntegerFromDecimalRound(bLabourCostAverageRateDay);
+            return mathHelper.getIntegerFromDecimalRoundUp(bLabourCostAverageRateDay);
             
         }
         

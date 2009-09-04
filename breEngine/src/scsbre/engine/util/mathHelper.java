@@ -12,6 +12,12 @@ public class mathHelper {
         return oValue;
     }
     
+    public static int getIntegerFromDecimalRoundUp(BigDecimal bValue){
+        int oValue = 0;
+        oValue = bValue.setScale(0, RoundingMode.UP).intValue();
+        return oValue;
+    }
+    
     public static BigDecimal getNotNullDecimalValue(BigDecimal bValue){
         BigDecimal oValue = new BigDecimal(0.00);
         if(bValue!=null){

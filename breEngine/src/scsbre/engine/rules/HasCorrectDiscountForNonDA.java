@@ -19,6 +19,7 @@ public class HasCorrectDiscountForNonDA implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         
         if(!claim.getCHOrg().getIsDelegatedAuthority()){
+            
             IInvoiceInfo invoice = claim.getInvoice();
             IInsurerInfo insurer = claim.getInsurer();
             
@@ -31,11 +32,14 @@ public class HasCorrectDiscountForNonDA implements IBusinessRule {
             
             if(success) narrative = "";
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);    
-        }
-        else{
+        
+        }else{
+            
             res.setResult(RuleEvaluationResult.RuleSkipped);
             narrative = "Rule does not apply to CHOs in the DA scheme";
+            
         }
+        
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
         
