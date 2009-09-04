@@ -314,7 +314,7 @@
                     <input type="text" class="chox-ttxt" id="CCDAdminHandlingCharge" name="adminHandlingCharge" value="<s:property value="adminHandlingCharge" />"/>
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label">Workgroup Enable</label>
+                    <label class="chox-form-std-label">Enable Workgroup</label>
                     <s:checkbox name="workgroupEnable" value="workgroupEnable" />
                 </div>
                 <div class="chox-form-item">

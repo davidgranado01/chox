@@ -563,7 +563,6 @@ public class ClaimActionTest {
         int expResult = 0;
         int result = instance.getInsurerClassId();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -580,35 +579,6 @@ public class ClaimActionTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of getLineOfBusinessId method, of class ClaimAction.
-     */
-    /*
-    @Test
-    public void testGetLineOfBusinessId() {
-        System.out.println("getLineOfBusinessId");
-        ClaimAction instance = new ClaimAction();
-        int expResult = 0;
-        int result = instance.getLineOfBusinessId();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-*/
-    /**
-     * Test of setLineOfBusinessId method, of class ClaimAction.
-     */
-    /*
-    @Test
-    public void testSetLineOfBusinessId() {
-        System.out.println("setLineOfBusinessId");
-        int lineOfBusinessId = 0;
-        ClaimAction instance = new ClaimAction();
-        instance.setLineOfBusinessId(lineOfBusinessId);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-*/
     /**
      * Test of getActionName method, of class ClaimAction.
      */

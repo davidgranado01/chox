@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
-        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/trunk/breEngine/src/scsbre/engine/RulesEngine.java</file>
-        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/trunk/breEngine/src/scsbre/engine/rules/ActualHireDaysDoesNotExceedAllowableHireDays.java</file>
-        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/trunk/breEngine/src/scsbre/engine/rules/HasAllowedVehicleClass.java</file>
-        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/trunk/breEngine/src/scsbre/engine/rules/LabourCostBusinessRule.java</file>
-        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/trunk/breEngine/src/scsbre/engine/util/ClaimCalcHelper.java</file>
-        <file>file:/C:/Project%20Workplace/Greefinch/Sherwood/choxidas/trunk/breEngine/src/scsbre/model/IClaimInfo.java</file>
-    </open-files>
 </project-private>

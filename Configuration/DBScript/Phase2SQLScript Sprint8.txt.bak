@@ -81,3 +81,10 @@ insert into action (id, description) values ('ADM013', 'Add Workgroup and User M
 ALTER TABLE insurer ADD COLUMN is_workgroup_enable boolean;
 ALTER TABLE insurer ALTER COLUMN is_workgroup_enable SET STORAGE PLAIN;
 update insurer set is_workgroup_enable = true;
+
+-- -------------------------------------------------------------------------------------------
+
+insert into accessibility_item values ('ROLE_CHO_MNG', 2, (select id from accessibility where name ='tab.InvoiceDetail.InvoiceDataCalculationIncorrect'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_CHO_MNG', 2, (select id from accessibility where name ='tab.ClaimDetail.InvoiceDataCalculationIncorrect'), (select max(id)+1 from accessibility_item));
+
+-- -------------------------------------------------------------------------------------------

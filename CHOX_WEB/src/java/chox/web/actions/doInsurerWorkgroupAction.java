@@ -112,7 +112,7 @@ public class doInsurerWorkgroupAction extends BaseAction implements ModelDriven<
             model.setStatus(!model.isStatus());
             service.updateObject(model);
         }else{
-            ackMsg = "Unable to inactive this workgroup. Must maintain atleast one active workgroup for this insurer.";
+            ackMsg = "Unable to de-activate this workgroup. Must maintain at least one active workgroup for this insurer.";
             getActionResponse().AddError(ackMsg);            
         }
         
@@ -129,7 +129,7 @@ public class doInsurerWorkgroupAction extends BaseAction implements ModelDriven<
         // WORKGROUP FEATUERE IS ENABLE
         // EXCEPT THE WORKGROUP ITSELF, DO NOT HAVE ANY ACTIVE WORKGROUP        
         if(insurer.isWorkgroupEnable() && !service.isWorkgroupAllowToInactive(insurerId, model.getId())){
-            ackMsg = "Unable to remove this workgroup. Must maintain atleast one active workgroup for this insurer.";
+            ackMsg = "Unable to remove this workgroup. Must maintain at least one active workgroup for this insurer.";
             getActionResponse().AddError(ackMsg);                   
             return SUCCESS;
         }        
