@@ -39,6 +39,11 @@
     <many-to-one cascade="save-update,delete" class="chox.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire"/>
     <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+    <list inverse="true" lazy="true" name="hireMonitoringEcds">
+      <key column="claim_id"/>
+      <index column="created"/>
+      <one-to-many class="chox.model.HireMonitoringEcd"/>
+    </list>
     <filter condition=":chorganisationId = chorganisation_id" name="Claim_CHOFilter"/>
     <filter condition=":insurerId = insurer_id" name="Claim_InsurerFilter"/>
     <!--
@@ -58,6 +63,6 @@
   </filter-def>
   !-->
   <filter-def name="Claim_WorkgroupFilter">
-    <filter-param name="workgroupIds"  type="integer"/>
-  </filter-def>  
+    <filter-param name="workgroupIds" type="integer"/>
+  </filter-def>
 </hibernate-mapping>

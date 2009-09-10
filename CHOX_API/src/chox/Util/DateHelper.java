@@ -33,11 +33,29 @@ public class DateHelper {
     }
     
     public static Date addMonth(Date date, int monthIntever) {
-        date.setMonth(date.getMonth()+1);
-        return date;
+         Calendar c1 = Calendar.getInstance();
+
+        c1.setTime(date);
+        c1.add(Calendar.MONTH, monthIntever);
+
+        return c1.getTime();
+    }
+
+    public static Date addDay(Date date, int dayIntever) {
+        Calendar c1 = Calendar.getInstance();
+
+        c1.setTime(date);
+        c1.add(Calendar.DATE, dayIntever);
+
+        return c1.getTime();
+    }
+
+     public static Date getCurrentDate() {
+        Calendar cal = Calendar.getInstance();
+        return cal.getTime();
     }
     
-    public static String getCurrentDate() {
+    public static String getCurrentDateInString() {
         Calendar cal = Calendar.getInstance();
         return sdf.format(cal.getTime());
     }

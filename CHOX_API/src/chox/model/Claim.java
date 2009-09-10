@@ -13,6 +13,8 @@ import scsbre.model.IExtrasInfo;
 import scsbre.model.IHireInfo;
 import scsbre.model.IVehicleClassInfo;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Claim implements Serializable, Auditable, IClaimInfo{
 
@@ -48,6 +50,8 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     private Integer reasonOfRejectionId;
     private Date statusModifiedDate;
     private String previousStatus;
+    //emmanuel 2009-09-08
+    private List<HireMonitoringEcd> hireMonitoringEcds;
     
     // Carlson @ 20090831
     protected Workgroup workgroup;
@@ -410,6 +414,50 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
         Date lastStatusModified = this.getStatusModifiedDate();
         
         return DateHelper.daysBetween(lastStatusModified, now);
+    }
+
+    /**
+     * @return the hireMonitoringEcds
+     */
+    public List<HireMonitoringEcd> getHireMonitoringEcds() {
+        return hireMonitoringEcds;
+    }
+
+    /**
+     * @param hireMonitoringEcds the hireMonitoringEcds to set
+     */
+    public void setHireMonitoringEcds(List<HireMonitoringEcd> hireMonitoringEcds) {
+        this.hireMonitoringEcds = hireMonitoringEcds;
+    }
+
+    public void addHireMonitoringEcd(HireMonitoringEcd ecd)
+    {
+        if(hireMonitoringEcds == null)
+        {
+            hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
+        }
+        ecd.claim = this;
+        hireMonitoringEcds.add(ecd);
+    }
+
+    public Date getLatestHireMonitoringEcd()
+    {
+        List<HireMonitoringEcd> hireMonitoringEcds = getHireMonitoringEcds();
+        if(hireMonitoringEcds != null && hireMonitoringEcds.size() > 0)
+        {
+            //Emmanuel 08-09-2009
+            //the HireMonitoringEcd is sorted by "createdDate" when retrieving from daabase, see claim.hbm.xml
+            //so the last item must be the latest updated Ecd
+            HireMonitoringEcd latestEcd = hireMonitoringEcds.get( hireMonitoringEcds.size() -1);
+            return latestEcd.getEcdDate();
+        }
+        else if(customer != null)
+        {
+            //return the initial ecd if have no hireMonitoringEcd been added
+            return customer.getInitialECD();
+        }
+
+        return null;
     }
     
 }

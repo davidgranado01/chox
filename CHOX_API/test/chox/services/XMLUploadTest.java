@@ -2,47 +2,33 @@ package chox.services;
 
 import chox.xmlValidation.model.BordereauResult;
 import java.io.File;
-import junit.framework.Assert;
-import org.junit.Test;
-import junit.framework.TestCase;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.*;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-public class XMLUploadTest extends TestCase{
-    private ClassPathXmlApplicationContext ctx;
-    private UploadClaimXMLService service = null;
-    
-    public XMLUploadTest() {
-        String[] paths = {"applicationContext.xml"};
-        ctx = new ClassPathXmlApplicationContext(paths);        
-    } 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"classpath:applicationContext.xml"})
+public class XMLUploadTest{
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        service = (UploadClaimXMLService) ctx.getBean("uploadClaimXMLService");
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        service = null;
-    }
+    @Autowired
+    UploadClaimXMLService service;
 
     @Test
-    public void testCanInitUploadClaimXMLServiceFromSpring()
-    {
-        service.toString();
-        Assert.assertNotNull(service);
-    }
-
-    @Test
+    @Transactional
     public void testFile() {
 
-        File testFile = new File("C:/Project Workplace/Greefinch/Sherwood/testXML/Demo Data XML.xml");
+        //File testFile = new File("C:/Project Workplace/Greefinch/Sherwood/testXML/Demo Data XML.xml");
 
         try
         {
-            BordereauResult parseResult = service.processClaimXMLFile(testFile, testFile.getName());
+            String fileName = "20090824-BRETest1.xml";
+            String path = "/chox/testFile/20090824-BRETest1.xml";
+            File file = new ClassPathResource(path).getFile();
+            BordereauResult parseResult = service.processBordereau(file, file.getName());
 
             // System.out.println(">>>"+parseResult.isStatus());
             // ArrayList<XMLParseResult> parseResult = new ArrayList<XMLParseResult>();

@@ -18,6 +18,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import org.springframework.core.io.ClassPathResource;
 import org.xml.sax.SAXParseException;
 
 public class BordereauVersionValidation{
@@ -88,10 +89,10 @@ public class BordereauVersionValidation{
             
             // String xmlValidationTemplate = "c:/Greenfinch/Projects/CHOX/idaschox/trunk/CHOX_WEB/web/excelTemplate/"+V_SCHEMA_FILE;
             // String xmlValidationTemplate = "c:/Project Workplace/Greefinch/Sherwood/choxidas/trunk/CHOX_WEB/web/excelTemplate/"+V_SCHEMA_FILE;
-            String xmlValidationTemplate = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + V_SCHEMA_FILE);
-            
+            //String xmlValidationTemplate = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + V_SCHEMA_FILE);
+            File xmlValidationTemplate = new ClassPathResource("/excelTemplate/xml-schema.xsd").getFile();
             SchemaFactory factory = SchemaFactory.newInstance(W3C_XML_SCHEMA_NS_URI);
-            Schema schema = factory.newSchema(new StreamSource(new File(xmlValidationTemplate)));
+            Schema schema = factory.newSchema(new StreamSource(xmlValidationTemplate));
             Validator validator = schema.newValidator();
             validator.validate(new DOMSource(element));
             

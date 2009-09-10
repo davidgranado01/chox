@@ -2,8 +2,9 @@ package chox.xmlValidation.rules;
 
 import chox.Util.DocumentHelper;
 import chox.xmlValidation.model.NodeRuleModel;
-import org.apache.struts2.ServletActionContext;
 import java.io.File;
+import java.io.IOException;
+import org.springframework.core.io.ClassPathResource;
 import org.w3c.dom.*;
 
 public class DataValidationParameter {
@@ -12,13 +13,14 @@ public class DataValidationParameter {
     protected Document XMLDataValidateDocument;
     protected Element mainRoot;
     
-    public DataValidationParameter(){
+    public DataValidationParameter() throws IOException{
         
         // String xmlValidationTemplate = "c:/Greenfinch/Projects/CHOX/idaschox/trunk/CHOX_WEB/web/excelTemplate/"+XMLDataValidateFile;
         // String xmlValidationTemplate = "c:/Project Workplace/Greefinch/Sherwood/choxidas/trunk/CHOX_WEB/web/excelTemplate/"+XMLDataValidateFile;
-        
-        String xmlValidationTemplate = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + XMLDataValidateFile);
-        this.XMLDataValidateDocument = DocumentHelper.getDocumentFromFile(new File(xmlValidationTemplate));
+        String path = "/excelTemplate/DataValidationTemplate.xml";
+        File file = new ClassPathResource(path).getFile();
+        //String xmlValidationTemplate = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + XMLDataValidateFile);
+        this.XMLDataValidateDocument = DocumentHelper.getDocumentFromFile(file);
         this.mainRoot = XMLDataValidateDocument.getDocumentElement();
         
     }

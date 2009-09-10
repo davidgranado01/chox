@@ -12,6 +12,8 @@ import chox.xmlValidation.rules.BordereauVersionValidation;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.TransactionException;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -74,100 +76,111 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return doProcessClaimXMLFile(file, fileName);
 
     }
-    
-    public ClaimResult isWorkgroupEnable(ClaimResult claimResult){
-        
+
+    public BordereauResult processBordereau(final File file, final String fileName) {
+
+        return doProcessBordereauResult(file, fileName);
+
+    }
+
+    public ClaimResult isWorkgroupEnable(ClaimResult claimResult) {
+
         // System.out.println("isWorkgroupEnable: Claim Process Status: " + claimResult.getClaimParseStatus());
         // System.out.println("isWorkgroupEnable: Claim Cho Ref: " + claimResult.getClaim().getChoReference());
         // System.out.println("isWorkgroupEnable: OLD Claim Status: " + claimResult.getClaim().getStatus());
         // System.out.println("isWorkgroupEnable: Insurer: " + claimResult.getClaim().getThirdParty().getInsurer());
-        
+
         boolean isWorkgroupEnable = true;
-        
-        if(claimResult.getClaim().getThirdParty().getInsurer()!=null){
+
+        if (claimResult.getClaim().getThirdParty().getInsurer() != null) {
             isWorkgroupEnable = claimResult.getClaim().getThirdParty().getInsurer().isWorkgroupEnable();
         }
-        
-        if(claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) && !isWorkgroupEnable){
+
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) && !isWorkgroupEnable) {
             claimResult.getClaim().setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         }
-        
+
         return claimResult;
     }
-    
+
     public BordereauResult doProcessClaimXMLFile(final File file, final String fileName) {
+        try {
+            BordereauResult bordereauResult = doProcessBordereauResult(file, fileName);
+
+            for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
+
+                if (claimResult.isValid() && claimResult.isDataValid()) {
+                    saveXMLRecord(claimResult);
+                } else {
+                    getHibernateTemplate().evict(claimResult.getClaim());
+                }
+            }
+
+            bordereauResult.setBordereau(doBordereau(file, fileName, bordereauResult.getBordereauStatus(), bordereauResult.getBordereauParseStatusDescription()));
+            bordereauService.saveObj(bordereauResult.getBordereau());
+
+            return bordereauResult;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public BordereauResult doProcessBordereauResult(final File file, final String fileName) {
 
         BordereauResult bordereauResult = new BordereauResult();
 
-        try {
+        bordereauResult = new BordereauFileValidation().validate(file, fileName, bordereauResult);
 
-            bordereauResult = new BordereauFileValidation().validate(file, fileName, bordereauResult);
-            String BordereauParseStatusDescription = "Error";
-            
+        if (bordereauResult.isValid()) {
+
+            bordereauResult = new BordereauVersionValidation().validate(file, fileName, bordereauResult);
+
             if (bordereauResult.isValid()) {
 
-                bordereauResult = new BordereauVersionValidation().validate(file, fileName, bordereauResult);
-                
-                if (bordereauResult.isValid()) {
+                bordereauResult = new BordereauDataValidation().validate(file, fileName, bordereauResult, claimService, chorganisationService, choBandService, vehicleClassService, insurerAlliasService, insurerChorganisationService, hireMonitoringEcdService, invoiceService, historyService);
 
-                    bordereauResult = new BordereauDataValidation().validate(file, fileName, bordereauResult, claimService, chorganisationService, choBandService, vehicleClassService, insurerAlliasService, insurerChorganisationService, hireMonitoringEcdService, invoiceService, historyService);
-                    
-                    int totalRecord = bordereauResult.getClaimResult().size();
-                    int totalProcessed = 0;
+                int totalRecord = bordereauResult.getClaimResult().size();
+                int totalProcessed = 0;
 
-                    for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
+                for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
 
-                        // System.out.println("========================================================================");
-                        // System.out.println("END: is Claim Valid?: " + claimResult.isValid());
-                        // System.out.println("END: is Claim Data valid?: " + claimResult.isDataValid());
-                        // System.out.println("END: Claim Process Status: " + claimResult.getClaimParseStatus());
-                        // System.out.println("END: Claim Cho Ref: " + claimResult.getClaim().getChoReference());
-                        // System.out.println("END: Claim Status: " + claimResult.getClaim().getStatus());
-                        
-                        claimResult = isWorkgroupEnable(claimResult);
-                        
-                        if (claimResult.isValid() && claimResult.isDataValid()) {
-                            
-                            saveXMLRecord(claimResult);
-                            totalProcessed++;
-                            
-                        } else {
+                    // System.out.println("========================================================================");
+                    // System.out.println("END: is Claim Valid?: " + claimResult.isValid());
+                    // System.out.println("END: is Claim Data valid?: " + claimResult.isDataValid());
+                    // System.out.println("END: Claim Process Status: " + claimResult.getClaimParseStatus());
+                    // System.out.println("END: Claim Cho Ref: " + claimResult.getClaim().getChoReference());
+                    // System.out.println("END: Claim Status: " + claimResult.getClaim().getStatus());
 
-                            getHibernateTemplate().evict(claimResult.getClaim());
-                            
-                        }
+                    claimResult = isWorkgroupEnable(claimResult);
+
+                    if (claimResult.isValid() && claimResult.isDataValid()) {
+                        totalProcessed++;
                     }
-
-                    if (totalProcessed >= totalRecord) {
-                        bordereauResult.setBordereauStatus(BordereauParseStatus.allUploaded);
-                        BordereauParseStatusDescription = "All claims have been uploaded successfully";
-                    } else if (totalProcessed < totalRecord && totalProcessed != 0) {
-                        bordereauResult.setBordereauStatus(BordereauParseStatus.partialUpload);
-                        BordereauParseStatusDescription = totalProcessed + " out of " + totalRecord + " claims have been uploaded";
-                    } else if (totalProcessed == 0) {
-                        bordereauResult.setBordereauStatus(BordereauParseStatus.allRejected);
-                        BordereauParseStatusDescription = "All " + totalRecord + " claims have been rejected";
-                    }
-
-                } else {
-                                        
-                    bordereauResult.setBordereauStatus(BordereauParseStatus.error);
-                    BordereauParseStatusDescription = "Incorrect File Version";
-
                 }
 
-                bordereauResult.setBordereau(doBordereau(file, fileName, bordereauResult.getBordereauStatus(), BordereauParseStatusDescription));
-                bordereauService.saveObj(bordereauResult.getBordereau());
+                if (totalProcessed >= totalRecord) {
+                    bordereauResult.setBordereauStatus(BordereauParseStatus.allUploaded);
+                    bordereauResult.setBordereauParseStatusDescription("All claims have been uploaded successfully");
+                } else if (totalProcessed < totalRecord && totalProcessed != 0) {
+                    bordereauResult.setBordereauStatus(BordereauParseStatus.partialUpload);
+                    bordereauResult.setBordereauParseStatusDescription(totalProcessed + " out of " + totalRecord + " claims have been uploaded");
+                } else if (totalProcessed == 0) {
+                    bordereauResult.setBordereauStatus(BordereauParseStatus.allRejected);
+                    bordereauResult.setBordereauParseStatusDescription("All " + totalRecord + " claims have been rejected");
+                }
 
             } else {
-                
                 bordereauResult.setBordereauStatus(BordereauParseStatus.error);
-                BordereauParseStatusDescription = "Error, Please try again";
-                
+                bordereauResult.setBordereauParseStatusDescription("Incorrect File Version");
             }
 
-        } catch (Throwable t) {
-            t.printStackTrace();
+        } else {
+
+            bordereauResult.setBordereauStatus(BordereauParseStatus.error);
+            bordereauResult.setBordereauParseStatusDescription("Error, Please try again");
         }
 
         return bordereauResult;
@@ -186,7 +199,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     new TransactionCallbackWithoutResult() {
 
                         public void doInTransactionWithoutResult(TransactionStatus status) {
-                            
+
                             if (readOnlyXmlParseResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
                                 customerService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                                 thirdPartyService.saveObjectForXMLUploader(readOnlyXmlParseResult);
@@ -196,25 +209,25 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                                 solicitorService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                                 hireMonitoringDetailService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                             }
-                            
+
                             engineerReportService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                             vehicleHireService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                             invoiceService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                             claimService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-                            
+
                             if (readOnlyXmlParseResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
-                                
+
                                 auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, "", readOnlyXmlParseResult.getClaim());
-                                
-                                if(readOnlyXmlParseResult.getClaim().getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)){
+
+                                if (readOnlyXmlParseResult.getClaim().getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)) {
                                     auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, readOnlyXmlParseResult.getClaim());
                                 }
                             }
-                            
+
                             if (readOnlyXmlParseResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
                                 auditTrailService.logAuditLog(readOnlyXmlParseResult.getClaim().getStatus(), readOnlyXmlParseResult.getClaim().getPreviousStatus(), readOnlyXmlParseResult.getClaim());
-                                
-                                if(readOnlyXmlParseResult.getHistory().size()>0){
+
+                                if (readOnlyXmlParseResult.getHistory().size() > 0) {
                                     historyService.saveHistories(readOnlyXmlParseResult.getHistory());
                                 }
 
@@ -222,7 +235,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
                         }
                     });
-                    
+
         } catch (TransactionException e) {
             // xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
         }

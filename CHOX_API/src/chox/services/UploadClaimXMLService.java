@@ -10,4 +10,7 @@ import java.io.File;
 
 public interface UploadClaimXMLService {
     public BordereauResult processClaimXMLFile(File file, String fileName);
+
+    //return the BordereauResult without persist it to database
+    public BordereauResult processBordereau(File file, String fileName);
 }

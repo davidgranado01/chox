@@ -12,10 +12,10 @@ public class BordereauResult {
     protected BordereauParseStatus bordereauStatus;
     protected List<String> message = new ArrayList<String>();
     protected List<ClaimResult> claimResult = new ArrayList<ClaimResult>();
-    protected Bordereau bordereau;
-    
+    protected Bordereau bordereau;    
     protected WebUser createdBy;
     protected Date createdDate;
+    protected String bordereauParseStatusDescription;
 
     public WebUser getCreatedBy() {
         return createdBy;
@@ -75,6 +75,20 @@ public class BordereauResult {
 
     public void setClaimResult(List<ClaimResult> claimResult) {
         this.claimResult = claimResult;
+    }
+
+    /**
+     * @return the bordereauParseStatusDescription
+     */
+    public String getBordereauParseStatusDescription() {
+        return bordereauParseStatusDescription;
+    }
+
+    /**
+     * @param bordereauParseStatusDescription the bordereauParseStatusDescription to set
+     */
+    public void setBordereauParseStatusDescription(String bordereauParseStatusDescription) {
+        this.bordereauParseStatusDescription = bordereauParseStatusDescription;
     }
     
 }
