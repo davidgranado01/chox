@@ -787,6 +787,16 @@
                     This claim is currently being viewed and / or modified by the following user(s) : <span id="userViewingThisClaim"></span>
                 </div>
 
+                 <s:if test="isAnyIntelligentNotes">
+                    <div id="intelligentNotesDiv" class="status-warning">
+                        <ul>
+                            <s:iterator value="intelligentNotes">
+                              <li><s:property/></li>
+                            </s:iterator>
+                        </ul>
+                    </div>
+                 </s:if>
+
                 <script language="JavaScript">
 
                     $(document).ready(function() {

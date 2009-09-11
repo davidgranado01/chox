@@ -42,6 +42,7 @@ import chox.model.ThirdParty;
 import chox.model.VehicleHire;
 import chox.model.WebUser;
 import chox.model.Witness;
+import chox.model.intelligentNotes.IntelligentNoteDisplayEngine;
 import chox.services.AttachmentTypeService;
 import chox.services.AuditTrailService;
 import chox.services.CommentService;
@@ -126,7 +127,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // private int lineOfBusinessId = -1;    
     // private List lineOfBusinesses;
     private List workgroups;
-    private int workgroupId = -1;    
+    private int workgroupId = -1;
+    private List<String> intelligentNotes;
+    private IntelligentNoteDisplayEngine intelligentNoteDisplayEngine;
     
     public String getAllowFileType(){
         
@@ -1689,5 +1692,25 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setTab(Integer tab) {
         this.tab = tab;
+    }
+
+    //Emmanuel 10-09-2009
+    //Intelligent notes
+    public List<String> getIntelligentNotes()
+    {
+        if(intelligentNotes == null)
+        {
+            intelligentNotes = intelligentNoteDisplayEngine.getIntelligentNotes(claim);
+        }
+        return intelligentNotes;
+    }
+
+    public Boolean getIsAnyIntelligentNotes()
+    {
+        return getIntelligentNotes().size() > 0;
+    }
+
+    public void setIntelligentNoteDisplayEngine(IntelligentNoteDisplayEngine intelligentNoteDisplayEngine) {
+        this.intelligentNoteDisplayEngine = intelligentNoteDisplayEngine;
     }
 }

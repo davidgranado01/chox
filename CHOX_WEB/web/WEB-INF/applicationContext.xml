@@ -235,5 +235,5 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="bordereauService" ref="bordereauService"/>
-    </bean>
+    </bean>    
 </beans>

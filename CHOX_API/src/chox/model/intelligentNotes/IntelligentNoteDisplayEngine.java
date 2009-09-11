@@ -6,10 +6,8 @@
 package chox.model.intelligentNotes;
 
 import chox.data.SecurityInfoProvider;
-import chox.model.Claim;
-import chox.model.IntelligentNote;
-import java.util.ArrayList;
-import java.util.List;
+import chox.model.*;
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -27,15 +25,31 @@ public class IntelligentNoteDisplayEngine {
     {
         List<String> intelligentNotestes = new ArrayList<String>();
 
-        for(IntelligentNote intelligentNote : availableIntelligentNotes)
+        if(checkClaimStatus(c))
         {
-            if(intelligentNote.isShowingFor(c,getSecurityInfoProvider()))
+            for(IntelligentNote intelligentNote : availableIntelligentNotes)
             {
-                intelligentNotestes.add(intelligentNote.getNote());
+                if(intelligentNote.isShowingFor(c,getSecurityInfoProvider()))
+                {
+                    intelligentNotestes.add(intelligentNote.getNote());
+                }
             }
         }
 
         return intelligentNotestes;
+    }
+
+    //moved the claim status check from individual intelligent note object to display engine
+    //due to all of the intelligent notes
+    private Boolean checkClaimStatus(Claim c)
+    {
+         String[] statuses = {ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED,
+            ClaimStatus.CLAIM_PENDING,ClaimStatus.CLAIM_REJECTION_CONTESTED,
+            ClaimStatus.CLAIM_UPDATE_BY_ENG,ClaimStatus.CLAIM_REF_TO_ENG};
+
+        List<String> statusList  = Arrays.asList(statuses);
+
+        return statusList.contains(c.getStatus());
     }
 
     /**

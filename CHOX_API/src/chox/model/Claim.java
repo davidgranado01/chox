@@ -51,7 +51,7 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     private Date statusModifiedDate;
     private String previousStatus;
     //emmanuel 2009-09-08
-    private List<HireMonitoringEcd> hireMonitoringEcds;
+    private List<HireMonitoringEcd> hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
     
     // Carlson @ 20090831
     protected Workgroup workgroup;
@@ -443,7 +443,7 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     public Date getLatestHireMonitoringEcd()
     {
         List<HireMonitoringEcd> hireMonitoringEcds = getHireMonitoringEcds();
-        if(hireMonitoringEcds != null && hireMonitoringEcds.size() > 0)
+        if(hireMonitoringEcds != null && !hireMonitoringEcds.isEmpty())
         {
             //Emmanuel 08-09-2009
             //the HireMonitoringEcd is sorted by "createdDate" when retrieving from daabase, see claim.hbm.xml
