@@ -6,7 +6,6 @@
 package chox.services;
 
 import chox.model.Solicitor;
-import chox.xmlValidation.model.ClaimResult;
 import chox.model.Injury;
 
 public interface SolicitorService {

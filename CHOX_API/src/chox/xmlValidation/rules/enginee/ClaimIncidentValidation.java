@@ -5,7 +5,7 @@ import chox.services.ChoBandService;
 import chox.services.ChorganisationService;
 import chox.services.ClaimService;
 import chox.services.SecureDataService;
-import chox.xmlValidation.model.ClaimResult;
+import chox.services.ClaimResult;
 import chox.xmlValidation.model.status.ClaimParseStatus;
 import chox.xmlValidation.rules.DataValidationParameter;
 import chox.xmlValidation.rules.Util.NodeHelper;

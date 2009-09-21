@@ -1,5 +1,6 @@
 package chox.xmlValidation.rules;
 
+import chox.services.BusinessRulesEngService;
 import chox.xmlValidation.rules.enginee.ClaimHeaderValidation;
 import chox.services.ChoBandService;
 import chox.services.ChorganisationService;
@@ -11,8 +12,7 @@ import chox.services.InsurerChorganisationService;
 import chox.services.InvoiceService;
 import chox.services.VehicleClassService;
 import chox.xmlValidation.model.BordereauResult;
-import chox.xmlValidation.model.ClaimResult;
-import chox.xmlValidation.rules.enginee.BusinessRuleEngProcess;
+import chox.services.ClaimResult;
 import chox.xmlValidation.rules.enginee.ClaimCustomerValidation;
 import chox.xmlValidation.rules.enginee.ClaimEngineeringReportValidation;
 import chox.xmlValidation.rules.enginee.ClaimHireMonitoringDetailValidation;
@@ -35,7 +35,8 @@ public class BordereauDataValidation {
             InsurerChorganisationService insurerChorganisationService,
             HireMonitoringEcdService hireMonitoringEcdService,
             InvoiceService invoiceService,
-            HistoryService historyService){
+            HistoryService historyService,
+            BusinessRulesEngService businessRuleEngService){
         
         try {
             
@@ -89,9 +90,8 @@ public class BordereauDataValidation {
                     InvoiceValidation invVal = new InvoiceValidation(claimResult, dataValidationParameter, claimService, chorganisationService, choBandService);
                     claimResult = invVal.execute();
 
-                    // RUN BRE VALIDATION FOR ALL NEW INVOICE ONLY
-                    BusinessRuleEngProcess brePrc = new BusinessRuleEngProcess(claimResult, claimService, hireMonitoringEcdService, invoiceService, historyService);
-                    claimResult = brePrc.execute();
+                    // RUN BRE VALIDATION FOR ALL NEW INVOICE ONLY                    
+                    claimResult = businessRuleEngService.execute(claimResult);
 
                 }
             }

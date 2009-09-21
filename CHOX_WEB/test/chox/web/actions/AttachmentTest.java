@@ -29,7 +29,7 @@ public class AttachmentTest extends TestCase {
     
     
     public AttachmentTest() {
-        String[] paths = {"applicationContext.xml"};
+        String[] paths = {"applicationContext.xml","applicationContext-services.xml"};
         ctx = new ClassPathXmlApplicationContext(paths);
     }
 

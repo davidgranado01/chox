@@ -20,7 +20,7 @@ public class RulesEngine {
         RulesEngineResponse response = new RulesEngineResponse();
         response.addRuleEvaulation(new HasAllowedVehicleClass().applyToClaim(claim));
         response.addRuleEvaulation(new HasCalculatedCorrectDailyRate().applyToClaim(claim));
-        response.addRuleEvaulation(new HireNetDoesNotExceedBandHireNetCeiling().applyToClaim(claim));
+        response.addRuleEvaulation(new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim));
         response.addRuleEvaulation(new HireDayCountDoesNotExceedBandHireDayCeiling().applyToClaim(claim));
         response.addRuleEvaulation(new HasCorrectHireGrossCalculation().applyToClaim(claim));
         response.addRuleEvaulation(new ActualHireDaysDoesNotExceedAllowableHireDays().applyToClaim(claim));
@@ -40,6 +40,8 @@ public class RulesEngine {
         response.addRuleEvaulation(new EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays().applyToClaim(claim)); 
         response.addRuleEvaulation(new LabourCostBusinessRule().applyToClaim(claim)); 
         response.addRuleEvaulation(new validateUniqueVehicleRegistrationNumber().applyToClaim(claim)); 
+        //Emmanuel 18-09-2009
+        response.addRuleEvaulation(new RepairNetDoesNotExceedVehicleClassRepairNetCeiling().applyToClaim(claim));
         return response;
     }
 

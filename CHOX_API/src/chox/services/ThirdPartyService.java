@@ -5,7 +5,6 @@
 package chox.services;
 
 import chox.model.ThirdParty;
-import chox.xmlValidation.model.ClaimResult;
 
 public interface ThirdPartyService {
     public void saveObjectForXMLUploader(final ClaimResult claimResult);

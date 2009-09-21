@@ -4,15 +4,15 @@
  */
 package chox.web.actions;
 
-import chox.Util.DateHelper;
 import chox.model.Claim;
 import chox.model.Customer;
 import chox.model.HireMonitoringDetail;
+import chox.model.notifications.ClaimAnomalousChecker;
+import chox.model.notifications.HireUpdatedNotification;
 import chox.services.CustomerService;
 import chox.services.HireMonitoringDetailService;
 import chox.services.LookupService;
 import chox.web.security.ApplicationAccessibility;
-import chox.web.viewdata.ActionResponse;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import java.util.List;
@@ -31,6 +31,8 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
     private int customerId;
     private List nonProvisionReasons;
     private LookupService lookupService;
+    private ClaimAnomalousChecker hireMonitoringDetailUpdatedChecker;
+    private Boolean isUpdateInsurer;
 
     public void setHireMonitoringDetailService(HireMonitoringDetailService service) {
         this.service = service;
@@ -43,7 +45,7 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
     public void setLookupService(LookupService service) {
         this.lookupService = service;
     }
-    
+
     public HireMonitoringDetail getModel() {
         return model;
     }
@@ -65,16 +67,18 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
 
     public String updateModel() {
         try {
-            if (model.getId() > 0) {
-                this.service.updateObject(model);
-            } else {
-                this.service.updateObject(model);
-                Claim c = claimService.getClaim(getClaimId());
-                c.setHireMonitoringDetail(model);
-                this.claimService.updateClaim(c);
+            boolean isNewHireMonitoringDetail = model.getId() <= 0;
+            Claim c = claimService.getClaim(getClaimId());
+            c.setHireMonitoringDetail(model);
+            c.AddNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(c));
+            if(isUpdateInsurer){c.AddNotification(new HireUpdatedNotification());}
+            claimService.updateClaim(c);
+
+            if (isNewHireMonitoringDetail) {
                 getActionResponse().AssignNewIdResult(model.getId());
             }
-            
+            claimService.updateClaim(c);
+
         } catch (Exception ex) {
             getActionResponse().AddError(ex.getMessage());
         }
@@ -102,12 +106,33 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
     public Customer getCustomer() {
         return customer;
     }
-    
+
     public List getNonProvisionReasons() {
         if (nonProvisionReasons == null) {
             nonProvisionReasons = this.lookupService.getNonProvisionReason();
         }
-        
+
         return nonProvisionReasons;
-    }        
+    }
+
+    /**
+     * @param hireMonitoringDetailUpdatedChecker the hireMonitoringDetailUpdatedChecker to set
+     */
+    public void setHireMonitoringDetailUpdatedChecker(ClaimAnomalousChecker hireMonitoringDetailUpdatedChecker) {
+        this.hireMonitoringDetailUpdatedChecker = hireMonitoringDetailUpdatedChecker;
+    }
+
+    /**
+     * @return the isUpdateInsurer
+     */
+    public Boolean getIsUpdateInsurer() {
+        return isUpdateInsurer;
+    }
+
+    /**
+     * @param isUpdateInsurer the isUpdateInsurer to set
+     */
+    public void setIsUpdateInsurer(Boolean isUpdateInsurer) {
+        this.isUpdateInsurer = isUpdateInsurer;
+    }
 }

@@ -1,4 +1,4 @@
-package chox.xmlValidation.model;
+package chox.services;
 
 import chox.model.Claim;
 import chox.model.History;

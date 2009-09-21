@@ -6,6 +6,8 @@ public interface IClaimInfo {
 
     public ICHOBandInfo getChoBand();
 
+    public IVehicleClassCellingInfo getVehicleClassCellingInfo();
+
     public ICHOrganisationInfo getCHOrg();
 
     public IInvoiceInfo getInvoice();
@@ -15,7 +17,7 @@ public interface IClaimInfo {
     public IHireInfo getHireDetail();
 
     public IHireMonitoringDetail getHireMonitoringDetail();
-    
+
     public ICustomerVehicleDamageInfo getCustomerVehicleDamage();
 
     public IInsurerInfo getInsurer();
@@ -27,7 +29,6 @@ public interface IClaimInfo {
     public Date getPolicyHolderContactDate();
 
     public IVehicleClassInfo getVClass();
-    
-    public Date getHireMonitoringEcd();
 
+    public Date getHireMonitoringEcd();
 }

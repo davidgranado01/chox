@@ -229,6 +229,7 @@
                 
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
+                <s:checkbox name="isUpdateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
             </div>
             
             <div id="HMmessageBox" style="text-align:center" class="action_msg"></div>            

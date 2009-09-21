@@ -2,7 +2,6 @@ package chox.services;
 
 import chox.model.EngineerReport;
 import chox.model.XMLParseResult;
-import chox.xmlValidation.model.ClaimResult;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package chox.model;
 
 import java.io.Serializable;
@@ -12,19 +11,13 @@ import java.util.Date;
  *
  * @author Carlson
  */
-public class AuditTrail implements Serializable,Auditable{
+public class AuditTrail extends AuditableEntity implements Serializable {
 
-    
-    protected Integer id;
     protected Date updateDate;
     protected String originalStatus;
     protected String newStatus;
     protected WebUser user;
     protected Claim claim;
-    protected WebUser createdBy;
-    protected Date createdDate;
-    protected WebUser lastModifiedBy;
-    protected Date lastModifiedDate;
     protected Integer claimReasonOfRejection;
     protected Integer invoiceReasonOfRejection;
 
@@ -34,14 +27,6 @@ public class AuditTrail implements Serializable,Auditable{
 
     public void setClaim(Claim claim) {
         this.claim = claim;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getNewStatus() {
@@ -75,38 +60,6 @@ public class AuditTrail implements Serializable,Auditable{
     public void setUser(WebUser user) {
         this.user = user;
     }
-    
-    public WebUser getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(WebUser lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public java.util.Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public WebUser getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(WebUser createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public java.util.Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
 
     public Integer getClaimReasonOfRejection() {
         return claimReasonOfRejection;
@@ -123,6 +76,4 @@ public class AuditTrail implements Serializable,Auditable{
     public void setInvoiceReasonOfRejection(Integer invoiceReasonOfRejection) {
         this.invoiceReasonOfRejection = invoiceReasonOfRejection;
     }
-
-    
 }

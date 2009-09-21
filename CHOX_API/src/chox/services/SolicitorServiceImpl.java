@@ -2,7 +2,6 @@ package chox.services;
 
 import chox.model.Injury;
 import chox.model.Solicitor;
-import chox.xmlValidation.model.ClaimResult;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.DetachedCriteria;
 

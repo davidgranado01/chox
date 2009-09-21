@@ -8,6 +8,7 @@ import chox.data.SecurityInfoProvider;
 import chox.model.Chorganisation;
 import chox.model.SystemLog;
 import chox.model.WebUser;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,17 @@ public class DataService extends HibernateDaoSupport {
         List result =  getHibernateTemplate().findByCriteria(dc);
         return (result != null && result.size() == 1) ? result.get(0) : null;
     }
+    
+    public Object get(final Class c, final Serializable id) {
+
+        return getHibernateTemplate().get(c, id);
+    }
+
+    public void Evict(Object object)
+    {
+        getHibernateTemplate().evict(object);
+    }
+    
 
     public List query(final String query) {
 

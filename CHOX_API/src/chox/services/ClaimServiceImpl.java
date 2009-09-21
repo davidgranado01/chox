@@ -3,7 +3,7 @@ package chox.services;
 import chox.data.ClaimSearchCriteria;
 import chox.model.Claim;
 import chox.model.ClaimStatus;
-import chox.xmlValidation.model.ClaimResult;
+import chox.model.VehicleClassCelling;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,8 +28,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public static final String NEW_CLAIM = "1st Notification";
     private Map<String, String> sortingMap;
 
-    public ClaimServiceImpl()
-    {
+    public ClaimServiceImpl() {
         super();
         return;
     }
@@ -42,17 +41,16 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         claim.setClaimNumber(claim.getClaimNumber().trim());
         save(claim);
     }
-    
+
     /*
     public void updateClaimLastModified(int id) {
-        WebUser user = getCurrentUser();            
-        Claim claim = (Claim) get(Claim.class, id);
-        claim.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-        claim.setLastModifiedBy(user);
-        save(claim);
+    WebUser user = getCurrentUser();
+    Claim claim = (Claim) get(Claim.class, id);
+    claim.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+    claim.setLastModifiedBy(user);
+    save(claim);
     }
-    */
-    
+     */
     public Long getCountByStatus(String status) {
         String q = "select count(*) from Claim where status = '" + status + "'";
         return getCount(q);
@@ -61,23 +59,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public Long getNonDEPaymentLogCount() {
         return (long) 0;
     }
-    
+
     public Long getPenaltyChargeAppliedCount() {
 
-        String q = "select count(*) from Claim as c inner join c.invoice as iv where " 
-                + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_LOGGED 
-                + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_REJECTED_ACCEPTED 
-                + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_RECEIVED 
-                + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT 
-                + "' AND " + "c.status <> '" + ClaimStatus.CLAIM_CLOSED + "' " 
-                + "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.createdDate) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
-                //+ "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.dateInvoiced) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
+        String q = "select count(*) from Claim as c inner join c.invoice as iv where " + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_LOGGED + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_REJECTED_ACCEPTED + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_RECEIVED + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT + "' AND " + "c.status <> '" + ClaimStatus.CLAIM_CLOSED + "' " + "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.createdDate) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
+        //+ "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.dateInvoiced) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
 
         return getCount(q);
-    }   
+    }
 
-    public Long getHireUpdateAnomaliesCountNumber() {
-        String q = "select count(*) from Claim where is_anomalies = true";
+    public Long getHireUpdateWarningCountNumber() {
+        String q = "select count(*) from Claim c where size(c.notifications) > 0";
         return getCount(q);
     }
 
@@ -90,12 +82,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         String q = "select count(*) from Claim where claimNumber = '" + claimNumber + "' And id != '" + claimId + "'";
         return getCount(q);
     }
-    
+
     public List getOtherClaimsByClaimNumber(String claimNumber, int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("claimNumber", claimNumber));
         criteria.add(Restrictions.ne("id", claimId));
-        List result  = this.findByCriteria(criteria);
+        List result = this.findByCriteria(criteria);
         return result;
     }
 
@@ -158,7 +150,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
-        
+
         // Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.lineOfBusiness", "lob", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
         Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
 
@@ -176,12 +168,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         /*
         if (searchCriteria.getLineOfBusinessId() > 0) {
-            criteria.add(Restrictions.eq("lob.id", searchCriteria.getLineOfBusinessId()));
+        criteria.add(Restrictions.eq("lob.id", searchCriteria.getLineOfBusinessId()));
         }
-        */ 
+         */
         if (searchCriteria.getWorkgroupId() > 0) {
             criteria.add(Restrictions.eq("wg.id", searchCriteria.getWorkgroupId()));
-        }        
+        }
         if (searchCriteria.getIsAnomalies()) {
             criteria.add(Restrictions.eq("isAnomalies", true));
         }
@@ -256,7 +248,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 criteria.add(Expression.ge("vh.rentalStart", d)).add(Expression.le("vh.rentalEnd", d));
             }
         }
-        
+
         if (searchCriteria.getLastModifiedDateFrom() != null || searchCriteria.getLastModifiedDateTo() != null) {
             if (searchCriteria.getLastModifiedDateFrom() != null) {
                 Date d = searchCriteria.getLastModifiedDateFrom();
@@ -274,7 +266,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 criteria.add(Expression.le("lastModifiedDate", d));
             }
         }
-        
+
         criteria.setProjection(Projections.rowCount());
 
         List totalCountResult = criteria.list();
@@ -298,11 +290,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             } else if (sort.equalsIgnoreCase("statusModifiedDate")) {
                 addSort(criteria, "statusModifiedDate", dir);
             } else if (sort.equalsIgnoreCase("workgroup")) {
-                addSort(criteria, "wg.name", dir);                
-            /*
-            } else if (sort.equalsIgnoreCase("lineOfBusiness")) {
+                addSort(criteria, "wg.name", dir);
+                /*
+                } else if (sort.equalsIgnoreCase("lineOfBusiness")) {
                 addSort(criteria, "lob.name", dir);
-            */ 
+                 */
             } else if (sort.equalsIgnoreCase("cho")) {
                 addSort(criteria, "cho.name", dir);
             } else if (sort.equalsIgnoreCase("insurer")) {
@@ -341,15 +333,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber) {
 
         Boolean bFlag = false;
-        
+
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
         criteria.add(Restrictions.like("choReference", sClaimReferenceNumber.trim()).ignoreCase());
         List result = findByCriteria(criteria);
-        
+
         Integer totalCount = (Integer) result.get(0);
         bFlag = totalCount > 0;
-        
+
         return bFlag;
     }
 
@@ -384,27 +376,43 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         save(c);
     }
-    
-    public Boolean isObjectExist(int WorkgroupId){
-        
+
+    public Boolean isObjectExist(int WorkgroupId) {
+
         boolean isExist = false;
-        
+
         try {
-            
+
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
 
             criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
-            
-            if(findByCriteria(criteria).size()>0){
+
+            if (findByCriteria(criteria).size() > 0) {
                 isExist = true;
             }
-            
+
         } catch (Throwable e) {
             e.printStackTrace();
         }
-         
-        return isExist;    
-        
+
+        return isExist;
+
+    }
+
+    public VehicleClassCelling getVechileClassCellingForClaim(Claim claim)
+    {        
+        VehicleClassCelling vehicleClassCelling = null;
+        try {
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassCelling.class);
+            criteria.add(Restrictions.eq("insurer", claim.getInsurer()));
+            criteria.add(Restrictions.eq("vehicleClass", claim.getCustomer().getVehicleClass()));
+            vehicleClassCelling = (VehicleClassCelling) getByCriteria(criteria);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return vehicleClassCelling;
     }
 }
 

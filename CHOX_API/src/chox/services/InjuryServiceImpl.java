@@ -1,6 +1,5 @@
 package chox.services;
 
-import chox.xmlValidation.model.ClaimResult;
 import chox.model.Incident;
 import java.util.ArrayList;
 import java.util.List;

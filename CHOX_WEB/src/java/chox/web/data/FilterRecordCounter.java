@@ -40,7 +40,7 @@ public class FilterRecordCounter {
     }
 
     public long getHireUpdateAnomaliesCount() {
-       return service.getHireUpdateAnomaliesCountNumber();
+       return service.getHireUpdateWarningCountNumber();
     }
 
     public long getNewClaimsToBeroutedCount() {

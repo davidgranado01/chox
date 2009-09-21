@@ -87,41 +87,41 @@
     
     function getReasonDescription(id){
         
-        <s:iterator value="reasonOfDelay">
+    <s:iterator value="reasonOfDelay">
             
             if(id=="<s:property value="id"/>"){
                 return "<s:property value="description"/>";
             }
 
-        </s:iterator>
+    </s:iterator>
         
-    }
+        }
     
 </script>
 
 <form id="formAddNewHireMonitoringEcd" action="user/addNewHireMonitoringEcd.action" name="formAddNewHireMonitoringEcd" class="XXentity-form">
-   <input type="hidden" name="objectId" value='<s:property value="id"/>'>
-   <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
+    <input type="hidden" name="objectId" value='<s:property value="id"/>'>
+    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset">
         <legend>New/Revised ECD</legend>
         <div style="display:none" class="form-container">           
-                <s:if test="isECDFormVisible">
+            <s:if test="isECDFormVisible">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label" style="width:150px;">New ECD</label>
                     <span id="ecdDatePH"></span>
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label" style="width:150px;">Reason for Delay</label>
-                    
+
                     <s:select 
-                    name="reasonOfDelayId" 
-                    id="reasonOfDelayId"
-                    list="reasonOfDelay" 
-                    listKey="id" 
-                    listValue="name" 
-                    headerKey=""
-                    headerValue="--- SELECT ---"
-                    emptyOption="false" onchange="doPopulateNote();">
+                        name="reasonOfDelayId"
+                        id="reasonOfDelayId"
+                        list="reasonOfDelay"
+                        listKey="id"
+                        listValue="name"
+                        headerKey=""
+                        headerValue="--- SELECT ---"
+                        emptyOption="false" onchange="doPopulateNote();">
                     </s:select>
 
                 </div>
@@ -129,20 +129,21 @@
                     <label class="chox-form-std-label" style="width:150px;">Supporting Note</label>
                     <textarea class="chox-tta" id="ECDSupportingNote" cols="30" rows="5" name="supportingNote"><s:property value="supportingNote" /></textarea>
                 </div>
-                
+
                 <div class="chox-form-button">
-                    <input type="submit" value="Add New ECD" readonly="<s:property value="isECDFormVisible"/>" />
+                    <input type="submit" value="Save Changes" />
+                    <s:checkbox name="isUpdateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
                 </div>
-            <div class="errorBox" id="ECDMessageBox"></div>
-            <div class="chox-form-submit-result">&nbsp;</div>                
-                </s:if>
-                <s:else>
-                    <span id="ecdDatePH" style="visibility:hidden;"></span>
-                    <input type="hidden" name="reason"/>
-                    <input id="ECDSupportingNote" name="supportingNote" type="hidden"/>
-                </s:else>
+                <div class="errorBox" id="ECDMessageBox"></div>
+                <div class="chox-form-submit-result">&nbsp;</div>
+            </s:if>
+            <s:else>
+                <span id="ecdDatePH" style="visibility:hidden;"></span>
+                <input type="hidden" name="reason"/>
+                <input id="ECDSupportingNote" name="supportingNote" type="hidden"/>
+            </s:else>
 
             <div id="ecdGridHolder"></div>
         </div>
-        
+
     </fieldset></form>

@@ -2,9 +2,12 @@ package chox.Util;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DateHelper {
     
@@ -30,6 +33,18 @@ public class DateHelper {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal.get(Calendar.MONTH)+1;
+    }
+
+     public static int getDate(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.DATE);
+    }
+
+      public static int getDay(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.DAY_OF_WEEK);
     }
     
     public static Date addMonth(Date date, int monthIntever) {
@@ -127,5 +142,16 @@ public class DateHelper {
         }
         return a;
 
+    }
+
+    //format: dd/MM/yyyy
+    public static Date Parse(String source)
+    {
+        try {
+            return LocalDateFormat.parse(source);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 }

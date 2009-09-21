@@ -4,21 +4,17 @@
  */
 package chox.web.actions;
 
-import chox.Util.DateHelper;
 import chox.model.Claim;
-import chox.model.ClaimStatus;
 import chox.model.HireMonitoringEcd;
 import chox.model.ReasonOfDelay;
-import chox.services.HireMonitoringEcdService;
+import chox.model.notifications.ClaimAnomalousChecker;
+import chox.model.notifications.EcdUpdatedNotification;
 import chox.services.LookupService;
 import chox.services.ReasonOfDelayService;
 import chox.web.security.ApplicationAccessibility;
-import chox.web.security.TabAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,12 +25,12 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
 
     private HireMonitoringEcd model;
     private ReasonOfDelayService reasonOfDelayService;
-    private HireMonitoringEcdService service;
-    private Integer iECDFormAccessRight;
-    private static double ecdDurationAllowPercentage = 0.5;
+    private Integer iECDFormAccessRight;    
     private List reasonOfDelay;
     private LookupService lookupService;
     private int reasonOfDelayId = -1;
+    private ClaimAnomalousChecker newECDAddedChecker;
+    private boolean isUpdateInsurer;
 
     public Integer getIECDFormAccessRight() {
         return iECDFormAccessRight;
@@ -51,11 +47,7 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
     public void setReasonOfDelayId(int reasonOfDelayId) {
         this.reasonOfDelayId = reasonOfDelayId;
     }
-    
-    public void setHireMonitoringEcdService(HireMonitoringEcdService service)
-    {
-        this.service = service;
-    }
+     
 
     @Override
     String getTabName() {
@@ -77,14 +69,16 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
             if(reasonOfDelayId>0){
             
                 ReasonOfDelay reasonOfDelayObject = reasonOfDelayService.getObject(reasonOfDelayId);
-                
-                Claim claim = claimService.getClaim(claimId);
-                claim.setIsAnomalies(getAnomaliesValidation(claim, model));
-
-                model.setClaim(claim);
                 model.setReason(reasonOfDelayObject.getName());
                 
-                service.updateObject(model);
+                Claim claim = claimService.getClaim(claimId);
+                claim.addHireMonitoringEcd(model);
+
+                List notifications = newECDAddedChecker.getAnomalousNotifications(claim);
+                claim.AddNotifications(notifications);
+
+                if(isIsUpdateInsurer()){claim.AddNotification(new EcdUpdatedNotification());}
+
                 claimService.updateClaim(claim);
                 
             }
@@ -123,56 +117,6 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
     }
     
     /* Edited by: Carlson
-     * Edited Date: 20081222
-     * Description: Check new added ECD and latest ECD, calculate %
-     */
-    public Boolean getAnomaliesValidation(Claim claim, HireMonitoringEcd monitoringecd) {
-        
-        Boolean bFlag = false;
-        
-        Date policyHolderDate = claim.getPolicyHolderContactDate();
-        List<HireMonitoringEcd> ecds = service.getHireMonitoringEcdsByClaimIdFilter(claim.getId(), true, "createdDate");
-        
-        if(claim.getCustomer().getInitialECD()!=null){
-            
-            Date FirstEstimateECD = claim.getCustomer().getInitialECD();
-            bFlag = isClaimAnomalies(policyHolderDate, monitoringecd.getEcdDate(), FirstEstimateECD);
-            return bFlag;                
-         
-        }else{
-            
-            if(ecds.size()>0){
-
-                HireMonitoringEcd thisECD = ecds.get(0);
-                Date FirstEstimateECD = thisECD.getEcdDate();
-                bFlag = isClaimAnomalies(policyHolderDate, monitoringecd.getEcdDate(), FirstEstimateECD);
-                return bFlag;
-            }
-            
-        }
-        
-        return false;
-    }
-    
-    private Boolean isClaimAnomalies(Date policyHolderDate, Date newECDDate, Date firstECD){
-        
-        Long iTotalDelayDays = DateHelper.daysBetween(firstECD, newECDDate);
-        Long iMD = DateHelper.daysBetween(policyHolderDate, firstECD);
-        
-        if(iMD>0){
-            
-            int iMDRate = (int)java.lang.Math.round(iMD * ecdDurationAllowPercentage);
-            
-            if((iTotalDelayDays > iMDRate)){
-                return true;
-            }
-            
-        }
-        
-        return false;
-    }
-    
-    /* Edited by: Carlson
      * Edited Date: 20081216
      * Source: According to Emm, the NEW ECD only can be added by CHO 
      * and Where the claim status is either AwaitingInvoiceData OR AwaitingCarHireInfo
@@ -184,25 +128,33 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
         if(iECDFormAccessRight==2){
             bFlag = true;
         }
-        
-        /*
-        Claim claim = claimService.getClaim(claimId);
-        
-        if(this.getIsCHO()
-            && 
-            (
-            claim.getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_CAR_HIRE_INFO)
-            || claim.getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)
-            )
-        ){
-            bFlag = true;
-        }
-        */
+       
         return bFlag;
  
     }
     
     
     public void setReasonOfDelayService(ReasonOfDelayService reasonOfDelayService) { this.reasonOfDelayService = reasonOfDelayService; }    
-    public void setLookupService(LookupService lookupService) { this.lookupService = lookupService; }    
+    public void setLookupService(LookupService lookupService) { this.lookupService = lookupService; }
+
+    /**
+     * @param claimAnomalousChecker the claimAnomalousChecker to set
+     */
+    public void setNewECDAddedChecker(ClaimAnomalousChecker claimAnomalousChecker) {
+        this.newECDAddedChecker = claimAnomalousChecker;
+    }
+
+    /**
+     * @return the isUpdateInsurer
+     */
+    public boolean isIsUpdateInsurer() {
+        return isUpdateInsurer;
+    }
+
+    /**
+     * @param isUpdateInsurer the isUpdateInsurer to set
+     */
+    public void setIsUpdateInsurer(boolean isUpdateInsurer) {
+        this.isUpdateInsurer = isUpdateInsurer;
+    }
 }

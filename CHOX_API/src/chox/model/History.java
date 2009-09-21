@@ -4,257 +4,133 @@ import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.util.Date;
 
-public class History implements Serializable,Auditable
-{
-	/** 
-	 * This attribute maps to the column id in the history table.
-	 */
-	protected int id;
-        protected String ruleId;
-        protected boolean isSystem;
-        protected Claim claim;
-        
-	/** 
-	 * This attribute maps to the column created_by in the history table.
-	 */
-	protected WebUser createdBy;
+public class History extends AuditableEntity implements Serializable {
 
-	/** 
-	 * This attribute maps to the column created_date in the history table.
-	 */
-	protected Date createdDate;
+    /**
+     * This attribute maps to the column id in the history table.
+     */
+    protected String ruleId;
+    protected boolean isSystem;
+    protected Claim claim;
+    /**
+     * This attribute maps to the column narrative in the history table.
+     */
+    protected String narrative;
+    /**
+     * This attribute maps to the column process_date in the history table.
+     */
+    protected Date processDate;
+    /**
+     * This attribute maps to the column is_public in the history table.
+     */
+    protected boolean isPublic;
+    /**
+     * This attribute maps to the column type in the history table.
+     */
+    protected String type;
 
-	/** 
-	 * This attribute maps to the column last_modified_by in the history table.
-	 */
-	protected WebUser lastModifiedBy;
-
-	/** 
-	 * This attribute maps to the column last_modified_date in the history table.
-	 */
-	protected Date lastModifiedDate;
-
-	/** 
-	 * This attribute maps to the column narrative in the history table.
-	 */
-	protected String narrative;
-
-	/** 
-	 * This attribute maps to the column process_date in the history table.
-	 */
-	protected Date processDate;
-
-	/** 
-	 * This attribute maps to the column is_public in the history table.
-	 */
-	protected boolean isPublic;
-
-	/** 
-	 * This attribute maps to the column type in the history table.
-	 */
-	protected String type;
-
-	/**
-	 * Method 'History'
-	 * 
-	 */
-	public History()
-	{
-	}
-
-	/**
-	 * Method 'getId'
-	 * 
-	 * @return int
-	 */
-	public int getId()
-	{
-		return id;
-	}
-
-	/**
-	 * Method 'setId'
-	 * 
-	 * @param id
-	 */
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-    public WebUser getCreatedBy() {
-        return createdBy;
+    /**
+     * Method 'History'
+     *
+     */
+    public History() {
     }
 
-    public void setCreatedBy(WebUser createdBy) {
-        this.createdBy = createdBy;
+    /**
+     * Method 'getNarrative'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getNarrative() {
+        return narrative;
     }
 
-	/**
-	 * Method 'getCreatedDate'
-	 * 
-	 * @return java.util.Date
-	 */
-	public java.util.Date getCreatedDate()
-	{
-		return createdDate;
-	}
+    /**
+     * Method 'setNarrative'
+     *
+     * @param narrative
+     */
+    public void setNarrative(java.lang.String narrative) {
+        this.narrative = narrative;
+    }
 
-	/**
-	 * Method 'setCreatedDate'
-	 * 
-	 * @param createdDate
-	 */
-	public void setCreatedDate(java.util.Date createdDate)
-	{
-		this.createdDate = createdDate;
-	}
+    /**
+     * Method 'getProcessDate'
+     *
+     * @return java.util.Date
+     */
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public java.util.Date getProcessDate() {
+        return processDate;
+    }
 
-	/**
-	 * Method 'getLastModifiedBy'
-	 * 
-	 * @return int
-	 */
-	public WebUser getLastModifiedBy()
-	{
-		return lastModifiedBy;
-	}
+    /**
+     * Method 'setProcessDate'
+     *
+     * @param processDate
+     */
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public void setProcessDate(java.util.Date processDate) {
+        this.processDate = processDate;
+    }
 
-	/**
-	 * Method 'setLastModifiedBy'
-	 * 
-	 * @param lastModifiedBy
-	 */
-	public void setLastModifiedBy(WebUser lastModifiedBy)
-	{
-		this.lastModifiedBy = lastModifiedBy;
-	}
+    /**
+     * Method 'getIsPublic'
+     *
+     * @return short
+     */
+    public boolean getIsPublic() {
+        return isPublic;
+    }
 
-	/**
-	 * Method 'getLastModifiedDate'
-	 * 
-	 * @return java.util.Date
-	 */
-	public java.util.Date getLastModifiedDate()
-	{
-		return lastModifiedDate;
-	}
+    /**
+     * Method 'setIsPublic'
+     *
+     * @param isPublic
+     */
+    public void setIsPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
 
-	/**
-	 * Method 'setLastModifiedDate'
-	 * 
-	 * @param lastModifiedDate
-	 */
-	public void setLastModifiedDate(java.util.Date lastModifiedDate)
-	{
-		this.lastModifiedDate = lastModifiedDate;
-	}
+    /**
+     * Method 'getType'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getType() {
+        return type;
+    }
 
-	/**
-	 * Method 'getNarrative'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getNarrative()
-	{
-		return narrative;
-	}
+    /**
+     * Method 'setType'
+     *
+     * @param type
+     */
+    public void setType(java.lang.String type) {
+        this.type = type;
+    }
 
-	/**
-	 * Method 'setNarrative'
-	 * 
-	 * @param narrative
-	 */
-	public void setNarrative(java.lang.String narrative)
-	{
-		this.narrative = narrative;
-	}
+    public String getRuleId() {
+        return ruleId;
+    }
 
-	/**
-	 * Method 'getProcessDate'
-	 * 
-	 * @return java.util.Date
-	 */
-        @TypeConversion(converter = "chox.data.DateConverter")
-	public java.util.Date getProcessDate()
-	{
-		return processDate;
-	}
+    public void setRuleId(String ruleId) {
+        this.ruleId = ruleId;
+    }
 
-	/**
-	 * Method 'setProcessDate'
-	 * 
-	 * @param processDate
-	 */
-        @TypeConversion(converter = "chox.data.DateConverter")
-	public void setProcessDate(java.util.Date processDate)
-	{
-		this.processDate = processDate;
-	}
+    public boolean isIsSystem() {
+        return isSystem;
+    }
 
-	/**
-	 * Method 'getIsPublic'
-	 * 
-	 * @return short
-	 */
-	public boolean getIsPublic()
-	{
-		return isPublic;
-	}
+    public void setIsSystem(boolean isSystem) {
+        this.isSystem = isSystem;
+    }
 
-	/**
-	 * Method 'setIsPublic'
-	 * 
-	 * @param isPublic
-	 */
-	public void setIsPublic(boolean isPublic)
-	{
-		this.isPublic = isPublic;
-	}
+    public Claim getClaim() {
+        return claim;
+    }
 
-	/**
-	 * Method 'getType'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getType()
-	{
-		return type;
-	}
-
-	/**
-	 * Method 'setType'
-	 * 
-	 * @param type
-	 */
-	public void setType(java.lang.String type)
-	{
-		this.type = type;
-	}
-
-        public String getRuleId() {
-            return ruleId;
-        }
-
-        public void setRuleId(String ruleId) {
-            this.ruleId = ruleId;
-        }
-
-        public boolean isIsSystem() {
-            return isSystem;
-        }
-
-        public void setIsSystem(boolean isSystem) {
-            this.isSystem = isSystem;
-        }
-
-        public Claim getClaim() {
-            return claim;
-        }
-
-        public void setClaim(Claim claim) {
-            this.claim = claim;
-        }
-
-        
+    public void setClaim(Claim claim) {
+        this.claim = claim;
+    }
 }

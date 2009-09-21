@@ -5,7 +5,6 @@
 package chox.services;
 
 import chox.model.VehicleHire;
-import chox.xmlValidation.model.ClaimResult;
 
 public interface VehicleHireService {
     public void  saveObjectForXMLUploader(final ClaimResult claimResult);

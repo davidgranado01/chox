@@ -6,7 +6,6 @@
 package chox.services;
 
 import chox.model.HireMonitoringDetail;
-import chox.xmlValidation.model.ClaimResult;
 
 public interface HireMonitoringDetailService {
     HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int id);

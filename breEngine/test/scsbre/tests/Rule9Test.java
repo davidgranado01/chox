@@ -5,8 +5,8 @@
 
 package scsbre.tests;
 
-
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -19,17 +19,55 @@ import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
 import scsbre.engine.RulesEngine;
 import scsbre.engine.RulesEngineResponse;
+import scsbre.engine.util.mathHelper;
 import scsbre.model.*;
 import scsbre.tests.sample.*;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author Derm
+ *  numberOfHireDay = 15 
+ * 
+ *  LabourCost = 0
+ *  LabourHour = 4
+ *  LabourRate = 0
+ * 
+ *  AverageLabourHoursPerHireDay = 4
+ *  AverageLabourrate = 40
+ * 
+ *  DayIntoGarage = 3
+ *  DayOutFromGarage = 1
+ *  EngineerInspectionDelay = 2
+ *  Total = 6
+ * 
+ *  >> LabourCose <= 0
+ *  Applied Rule 2 to get new Labour Cost the Rule 1
+ *  
+ *  RULE 2
+ *  NewLabourCost = AverageLabourHoursPerHireDay * LabourHour
+ *  NewLabourCost = 4 * 4
+ *  NewLabourCost = 16
+ * 
+ *  RULE 1
+ *  Y = (LabourCost / AverageLabourRate / AverageLabourHour) 
+ *  Y = 16 / 40 / 4
+ *  Y = 0.1
+ *  Y = 0
+ * 
+ *  Weekend Buffer
+ *  X = 2 (Becuase Y + DayIntoGarage + DayOutFromGarage + EngineerInspectionDelay is 6)
+ * 
+ *  Z = Y + X + DayIntoGarage + DayOutFromGarage + EngineerInspectionDelay
+ *  Z = 0 + 2 + 3 + 1 + 2
+ *  Z = 8
+ * 
+ *  RULE is FAILED because (LOGIC: numberOfHireDay < Z = PASSES)
+ *  
+ *  15 < 8 is FALSE
  */
-public class RulesTest3 {
 
-    public RulesTest3() {
+public class Rule9Test {
+
+    public Rule9Test() {
     }
 
     @BeforeClass
@@ -47,51 +85,50 @@ public class RulesTest3 {
     @After
     public void tearDown() {
     }
-
     
     @Test
     public void TestDefaultCase(){
         
+        
         IClaimInfo claim = getClaim();
         RulesEngine engine = RulesEngine.getInstance(claim);
         RulesEngineResponse res =  engine.ResolveStatus();
-        
-       // System.out.println(res.getResults().size());
-        
         List<RuleEvaluation> results = res.getResults();
-        for(int i = 0; i <= results.size()-1; i++){
-            
+        
+        
+        for(int i = 0; i < results.size(); i++){
             
             RuleEvaluation res1 = results.get(i);
             
-            System.out.println(res1.toString());
-            
+            System.out.println(res1.getRelatedRule().getRuleId() + ":"+res1.getResult().toString());
             
         }
         
         assertTrue(results.get(0).getResult() == RuleEvaluationResult.RulePassed);
-        assertTrue(results.get(1).getResult() == RuleEvaluationResult.RuleFailed);
-        assertTrue(results.get(2).getResult() == RuleEvaluationResult.RuleFailed);
+        
+        assertTrue(results.get(0).getResult() == RuleEvaluationResult.RulePassed);
+        assertTrue(results.get(1).getResult() == RuleEvaluationResult.RulePassed);
+        //assertTrue(results.get(2).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(3).getResult() == RuleEvaluationResult.RuleFailed);
-        assertTrue(results.get(4).getResult() == RuleEvaluationResult.RuleFailed);
-        assertTrue(results.get(5).getResult() == RuleEvaluationResult.RuleSkipped);
-        assertTrue(results.get(6).getResult() == RuleEvaluationResult.RulePassed);
+        //assertTrue(results.get(4).getResult() == RuleEvaluationResult.RulePassed);
+        //assertTrue(results.get(5).getResult() == RuleEvaluationResult.RuleFailed);
+        assertTrue(results.get(6).getResult() == RuleEvaluationResult.RuleSkipped);
         assertTrue(results.get(7).getResult() == RuleEvaluationResult.RulePassed);
-        assertTrue(results.get(8).getResult() == RuleEvaluationResult.RuleFailed);
+        assertTrue(results.get(8).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(9).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(10).getResult() == RuleEvaluationResult.RulePassed);
-        assertTrue(results.get(11).getResult() == RuleEvaluationResult.RuleFailed);
-        assertTrue(results.get(12).getResult() == RuleEvaluationResult.RuleFailed);
-        assertTrue(results.get(13).getResult() == RuleEvaluationResult.RuleFailed);
-        assertTrue(results.get(14).getResult() == RuleEvaluationResult.RuleSkipped);
-        assertTrue(results.get(15).getResult() == RuleEvaluationResult.RuleSkipped);
-        assertTrue(results.get(16).getResult() == RuleEvaluationResult.RulePassed);
+        assertTrue(results.get(11).getResult() == RuleEvaluationResult.RulePassed);
+        assertTrue(results.get(12).getResult() == RuleEvaluationResult.RulePassed);
+        assertTrue(results.get(13).getResult() == RuleEvaluationResult.RulePassed);
+        assertTrue(results.get(14).getResult() == RuleEvaluationResult.RuleFailed);
+        assertTrue(results.get(15).getResult() == RuleEvaluationResult.RulePassed);
+        assertTrue(results.get(16).getResult() == RuleEvaluationResult.RuleSkipped);
         assertTrue(results.get(17).getResult() == RuleEvaluationResult.RulePassed);
-        assertTrue(results.get(18).getResult() == RuleEvaluationResult.RuleFailed);
+        //assertTrue(results.get(18).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(19).getResult() == RuleEvaluationResult.RuleSkipped);
-        
-        
-        assertTrue(res.getStatus() == ClaimStatus.InvoiceDataCalculationIncorrect);
+        assertTrue(results.get(20).getResult() == RuleEvaluationResult.RuleFailed);
+        assertTrue(results.get(20).getRelatedRule().getNarrative().equalsIgnoreCase("The number of hire days billed is not relative to the number of expected hire days based on labour cost information."));
+        assertTrue(results.get(21).getResult() == RuleEvaluationResult.RulePassed);
         
     }
     
@@ -110,8 +147,11 @@ public class RulesTest3 {
     }
     
     private static Date getDefaultDate(){
-        
         return getDateFromString("01/01/2001");
+    }
+    
+    private static Date getDefaultDatePlusSeven(){
+        return getDateFromString("08/01/2001");
     }
     
     private static IVehicleClassInfo F1(){
@@ -122,6 +162,7 @@ public class RulesTest3 {
         return vc;
     }
 
+    
     private IEngineerReportInfo getEngineerReport(){
         
         EngineerReportInfo eReport = new EngineerReportInfo();
@@ -136,9 +177,10 @@ public class RulesTest3 {
         
         InvoiceInfo inv = new InvoiceInfo();
         
-        inv.setHireNet(new BigDecimal(23456));
-        inv.setHireVat(BigDecimal.ZERO);
-        inv.setHireGross(BigDecimal.ZERO);
+        inv.setHireNet(new BigDecimal(301));
+        inv.setHireVat(new BigDecimal(45.15));
+        inv.setHireGross(new BigDecimal(345.4));
+
         inv.setRepairNet(BigDecimal.ZERO);
         inv.setRepairVat(BigDecimal.ZERO);
         inv.setRepairGross(BigDecimal.ZERO);
@@ -147,18 +189,19 @@ public class RulesTest3 {
         inv.setEngineerFeeNet(BigDecimal.ZERO);
         inv.setEngineerFeeGross(BigDecimal.ZERO);
 
-        inv.setStorageRecoveryGross(BigDecimal.ZERO);
-        inv.setStorageRecoveryNet(BigDecimal.ZERO);
-        inv.setStorageRecoveryVat(BigDecimal.ZERO);
+        inv.setStorageRecoveryNet(new BigDecimal(100));
+        inv.setStorageRecoveryVat(new BigDecimal(15));
+        inv.setStorageRecoveryGross(new BigDecimal(115));
 
-        inv.setTotalNet(BigDecimal.ZERO);
-        inv.setTotalVat(BigDecimal.ZERO);
-        inv.setTotalGross(BigDecimal.ZERO);
+        inv.setTotalNet(new BigDecimal(401));
+        inv.setTotalVat(new BigDecimal(60.15));
+        inv.setTotalGross(new BigDecimal(461.15));
 
         inv.setClaimsHandlingInvoiceAmount(BigDecimal.ZERO);
         inv.setDeductionForClaimsHandlingFee(BigDecimal.ZERO);
         inv.setDiscount(BigDecimal.ZERO);
         inv.setTotalToPay(BigDecimal.ZERO);
+        inv.setPenaltyCharge(BigDecimal.ZERO);
 
         return inv;
     }
@@ -167,16 +210,16 @@ public class RulesTest3 {
         
         CHOBandInfo band = new CHOBandInfo();
 
-        band.setHireNetCeiling(new BigDecimal(100));
+        
         band.setHireDayCeiling(0);
-        band.setMaxRepairValue(BigDecimal.ZERO);
+        
 
         band.setTakeVehicleToGarageDaysMobile(1);
         band.setTakeVehicleToGarageDaysNonMobile(3);        
         
         band.setWeekendBufferDays(0);
-        band.setTakeVehicleOutDays(0);
-        band.setEngineerInspectionDelayDays(0);
+        band.setTakeVehicleOutDays(1);
+        band.setEngineerInspectionDelayDays(2);
 
         band.setIsMobileDayAllowance(2);
         band.setIsNotMobileDayAllowance(9);
@@ -186,8 +229,18 @@ public class RulesTest3 {
         band.setInspectionDelayDays(4);
         band.setHireRateChargeTolerance(new BigDecimal(0.01));
 
+        band.setAverageLabourHoursPerHireDay(4);
+        band.setAverageLabourRate(40);
         return band;
         
+    }
+
+    private IVehicleClassCellingInfo getVehicleClassCelling() {
+        VehicleClassCellingInfo vehicleClassCelling = new VehicleClassCellingInfo();
+        vehicleClassCelling.setHireNetCelling(BigDecimal.ZERO);
+        vehicleClassCelling.setRepairNetCelling(BigDecimal.ZERO);
+
+        return vehicleClassCelling;
     }
     
     private IExtrasInfo getExtras(){
@@ -212,17 +265,22 @@ public class RulesTest3 {
     
     private IHireInfo getHireInfo(){
         
-        
         HireInfo hireDetail = new HireInfo();
         hireDetail.setHireStart(getDefaultDate());        
-        hireDetail.setHireEnd(getDefaultDate());
-        hireDetail.setNumberOfHireDays(10);
-
+        hireDetail.setHireEnd(getDefaultDatePlusSeven());
+        hireDetail.setNumberOfHireDays(15);
         hireDetail.setVClass(F1());
-        hireDetail.setIsTotalLoss(true);
-
+        hireDetail.setIsTotalLoss(false);
         return hireDetail;
         
+    }
+    
+    private IHireMonitoringDetail getHireMonitoringDetail(){
+        HireMonitoringDetail hireMonitoringDetail = new HireMonitoringDetail();
+        hireMonitoringDetail.setLabourCost(new BigDecimal(0));
+        hireMonitoringDetail.setLabourHour(4);
+        hireMonitoringDetail.setLabourRate(new BigDecimal(0));
+        return hireMonitoringDetail;
     }
     
     private IClaimInfo getClaim(){
@@ -232,43 +290,27 @@ public class RulesTest3 {
         c.setVClass(F1());
         
         InsurerInfo ins = new InsurerInfo(); 
-        ins.setAdminHandlingCharge(new BigDecimal(1));
+        ins.setAdminHandlingCharge(new BigDecimal(100));
         c.setInsurer(ins);
         
         CHOrganisationInfo org = new CHOrganisationInfo();
-        org.setIsDelegatedAuthority(true);
+        org.setIsDelegatedAuthority(false);
         c.setCHOrganisation(org);
-        
-        
         c.setCustomerVehicleDamage(getCVD());
         c.setChoBand(getCHOBand());
         c.setExtras(getExtras());
         c.setHireDetail(getHireInfo());
         c.setInvoice(getInvoice());
         c.setClaimEngineeringReport(getEngineerReport());
-        
+        c.setHireMonitoringDetail(getHireMonitoringDetail());
+        c.setVehicleClassCellingInfo(getVehicleClassCelling());
         return c;
-        
     }
     
     private ICustomerVehicleDamageInfo getCVD(){
-        
         CustomerVehicleDamageInfo cvd = new CustomerVehicleDamageInfo();
         cvd.setInitialECD(getDefaultDate());
         cvd.setIsUsable(false);
         return cvd;
-        
     }
-    
-    
-    
-   
-    
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
-
 }

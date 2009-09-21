@@ -6,7 +6,6 @@
 package chox.services;
 
 import chox.model.Customer;
-import chox.xmlValidation.model.ClaimResult;
 
 public interface CustomerService {
     public void saveObjectForXMLUploader(final ClaimResult claimResult);

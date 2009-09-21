@@ -4,7 +4,9 @@
  */
 package chox.web.actions;
 
+import chox.model.Claim;
 import chox.model.HireMonitoringEcd;
+import chox.services.ClaimService;
 import chox.services.HireMonitoringEcdService;
 import chox.web.security.ApplicationAccessibility;
 import chox.web.viewdata.HireMonitoringEcdViewData;
@@ -18,12 +20,7 @@ import net.sf.json.JSONArray;
  */
 public class GetHireMonitoringEcdsAction extends BaseModelAction {
 
-    private HireMonitoringEcdService service;
     private List<HireMonitoringEcdViewData> hireMonitoringEcds;
-
-    public void setHireMonitoringEcdService(HireMonitoringEcdService service) {
-        this.service = service;
-    }
 
     public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.hireMonitoringEcds);
@@ -38,7 +35,9 @@ public class GetHireMonitoringEcdsAction extends BaseModelAction {
     }
 
     public String getHireMonitoringEcds() {
-        List<HireMonitoringEcd> hireMonitoringEcdsData = this.service.getHireMonitoringEcdsByClaimId(claimId);
+
+        Claim c = claimService.getClaim(claimId);
+        List<HireMonitoringEcd> hireMonitoringEcdsData = c.getHireMonitoringEcds();
 
         hireMonitoringEcds = new ArrayList<HireMonitoringEcdViewData>();
         int seq = 1;

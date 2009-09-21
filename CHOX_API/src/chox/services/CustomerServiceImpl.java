@@ -2,7 +2,6 @@
 package chox.services;
 
 import chox.model.*;
-import chox.xmlValidation.model.ClaimResult;
 
 public class CustomerServiceImpl extends SecureDataService implements CustomerService{
     

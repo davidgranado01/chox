@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package scsbre.tests;
 
 import java.math.BigDecimal;
@@ -28,9 +27,9 @@ import static org.junit.Assert.*;
  *
  * @author Derm
  */
-public class RulesTest8 {
+public class Rule8Test {
 
-    public RulesTest8() {
+    public Rule8Test() {
     }
 
     @BeforeClass
@@ -48,24 +47,24 @@ public class RulesTest8 {
     @After
     public void tearDown() {
     }
-    
+
     @Test
-    public void TestDefaultCase(){
-        
-        
+    public void TestDefaultCase() {
+
+
         IClaimInfo claim = getClaim();
         RulesEngine engine = RulesEngine.getInstance(claim);
-        RulesEngineResponse res =  engine.ResolveStatus();
+        RulesEngineResponse res = engine.ResolveStatus();
         List<RuleEvaluation> results = res.getResults();
-        
-        
-        for(int i = 0; i < results.size(); i++){
-            
+
+
+        for (int i = 0; i < results.size(); i++) {
+
             RuleEvaluation res1 = results.get(i);
-            System.out.println(res1.getRelatedRule().getRuleId() + ":"+res1.getResult().toString());
-            
+            System.out.println(res1.getRelatedRule().getRuleId() + ":" + res1.getResult().toString());
+
         }
-        
+
         assertTrue(results.get(0).getResult() == RuleEvaluationResult.RulePassed);
         assertTrue(results.get(1).getResult() == RuleEvaluationResult.RulePassed);
         //assertTrue(results.get(2).getResult() == RuleEvaluationResult.RulePassed);
@@ -88,54 +87,51 @@ public class RulesTest8 {
         assertTrue(results.get(19).getResult() == RuleEvaluationResult.RuleSkipped);
         assertTrue(results.get(20).getResult() == RuleEvaluationResult.RuleSkipped);
         assertTrue(results.get(21).getResult() == RuleEvaluationResult.RulePassed);
-        
+
     }
-    
-    
-    private static Date getDateFromString(String inp){
-        
-          SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yyyy" );
-          try{
+
+    private static Date getDateFromString(String inp) {
+
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        try {
             return df.parse(inp);
-          }
-          catch(Exception e){
-              
-              return null;
-          }
-        
+        } catch (Exception e) {
+
+            return null;
+        }
+
     }
-    
-    private static Date getDefaultDate(){
+
+    private static Date getDefaultDate() {
         return getDateFromString("01/01/2001");
     }
-    
-    private static Date getDefaultDatePlusSeven(){
+
+    private static Date getDefaultDatePlusSeven() {
         return getDateFromString("08/01/2001");
     }
-    
-    private static IVehicleClassInfo F1(){
-        
-        VehicleClassInfo vc = new  VehicleClassInfo();
+
+    private static IVehicleClassInfo F1() {
+
+        VehicleClassInfo vc = new VehicleClassInfo();
         vc.setCode("F1");
         vc.setPrice(new BigDecimal(86.94));
         return vc;
     }
 
-    
-    private IEngineerReportInfo getEngineerReport(){
-        
+    private IEngineerReportInfo getEngineerReport() {
+
         EngineerReportInfo eReport = new EngineerReportInfo();
         eReport.setEstimatedDaysUnderRepair(0);
         eReport.setEstimatedLabourAmount(BigDecimal.ZERO);
         eReport.setEstimatedTotalRepairAmount(BigDecimal.ZERO);
-        
+
         return eReport;
     }
-    
-    private IInvoiceInfo getInvoice(){
-        
+
+    private IInvoiceInfo getInvoice() {
+
         InvoiceInfo inv = new InvoiceInfo();
-        
+
         inv.setHireNet(new BigDecimal(301));
         inv.setHireVat(new BigDecimal(45.15));
         inv.setHireGross(new BigDecimal(345.4));
@@ -161,21 +157,22 @@ public class RulesTest8 {
         inv.setDiscount(BigDecimal.ZERO);
         inv.setTotalToPay(BigDecimal.ZERO);
         inv.setPenaltyCharge(BigDecimal.ZERO);
+        
 
         return inv;
     }
-    
-    private ICHOBandInfo getCHOBand(){
-        
+
+    private ICHOBandInfo getCHOBand() {
+
         CHOBandInfo band = new CHOBandInfo();
 
-        band.setHireNetCeiling(BigDecimal.ZERO);
+
         band.setHireDayCeiling(0);
-        band.setMaxRepairValue(BigDecimal.ZERO);
+
 
         band.setTakeVehicleToGarageDaysMobile(1);
-        band.setTakeVehicleToGarageDaysNonMobile(3);        
-        
+        band.setTakeVehicleToGarageDaysNonMobile(3);
+
         band.setWeekendBufferDays(0);
         band.setTakeVehicleOutDays(1);
         band.setEngineerInspectionDelayDays(2);
@@ -191,64 +188,72 @@ public class RulesTest8 {
         band.setAverageLabourHoursPerHireDay(4);
         band.setAverageLabourRate(40);
         return band;
-        
+
     }
-    
-    private IExtrasInfo getExtras(){
-        
+
+    private IVehicleClassCellingInfo getVehicleClassCelling() {
+        VehicleClassCellingInfo vehicleClassCelling = new VehicleClassCellingInfo();
+        vehicleClassCelling.setHireNetCelling(BigDecimal.ZERO);
+        vehicleClassCelling.setRepairNetCelling(BigDecimal.ZERO);
+
+        return vehicleClassCelling;
+    }
+
+    private IExtrasInfo getExtras() {
+
         ExtrasInfo xtra = new ExtrasInfo();
 
-        xtra.setAdminFee (BigDecimal.ZERO);
-        xtra.setAutomaticFee (BigDecimal.ZERO);
-        xtra.setBabySeatFee (BigDecimal.ZERO);
-        xtra.setCdwFee (BigDecimal.ZERO);
-        xtra.setDeliveryCollectionFee (BigDecimal.ZERO);
-        xtra.setDualControlFee (BigDecimal.ZERO);
-        xtra.setEstateFee (BigDecimal.ZERO);
-        xtra.setNonStandardInsurancePremiumFee (BigDecimal.ZERO);
+        xtra.setAdminFee(BigDecimal.ZERO);
+        xtra.setAutomaticFee(BigDecimal.ZERO);
+        xtra.setBabySeatFee(BigDecimal.ZERO);
+        xtra.setCdwFee(BigDecimal.ZERO);
+        xtra.setDeliveryCollectionFee(BigDecimal.ZERO);
+        xtra.setDualControlFee(BigDecimal.ZERO);
+        xtra.setEstateFee(BigDecimal.ZERO);
+        xtra.setNonStandardInsurancePremiumFee(BigDecimal.ZERO);
         xtra.setRoofRackFee(BigDecimal.ZERO);
-        xtra.setSatNavFee (BigDecimal.ZERO);
+        xtra.setSatNavFee(BigDecimal.ZERO);
         xtra.setTowBarsFee(BigDecimal.ZERO);
 
         return xtra;
-        
+
     }
-    
-    private IHireInfo getHireInfo(){
-        
+
+    private IHireInfo getHireInfo() {
+
         HireInfo hireDetail = new HireInfo();
-        hireDetail.setHireStart(getDefaultDate());        
+        hireDetail.setHireStart(getDefaultDate());
         hireDetail.setHireEnd(getDefaultDatePlusSeven());
         hireDetail.setNumberOfHireDays(15);
         hireDetail.setVClass(F1());
         hireDetail.setIsTotalLoss(false);
         return hireDetail;
-        
+
     }
-    
-    private IHireMonitoringDetail getHireMonitoringDetail(){
+
+    private IHireMonitoringDetail getHireMonitoringDetail() {
         HireMonitoringDetail hireMonitoringDetail = new HireMonitoringDetail();
         hireMonitoringDetail.setLabourCost(new BigDecimal(0));
         hireMonitoringDetail.setLabourHour(0);
         hireMonitoringDetail.setLabourRate(new BigDecimal(19.2));
         return hireMonitoringDetail;
     }
-    
-    private IClaimInfo getClaim(){
-        
+
+    private IClaimInfo getClaim() {
+
         ClaimInfo c = new ClaimInfo();
-       
+
         c.setVClass(F1());
-        
-        InsurerInfo ins = new InsurerInfo(); 
+
+        InsurerInfo ins = new InsurerInfo();
         ins.setAdminHandlingCharge(new BigDecimal(100));
         c.setInsurer(ins);
-        
+
         CHOrganisationInfo org = new CHOrganisationInfo();
         org.setIsDelegatedAuthority(false);
         c.setCHOrganisation(org);
-        
-        
+
+
         c.setCustomerVehicleDamage(getCVD());
         c.setChoBand(getCHOBand());
         c.setExtras(getExtras());
@@ -256,17 +261,17 @@ public class RulesTest8 {
         c.setInvoice(getInvoice());
         c.setClaimEngineeringReport(getEngineerReport());
         c.setHireMonitoringDetail(getHireMonitoringDetail());
+        c.setVehicleClassCellingInfo(getVehicleClassCelling());
         return c;
-        
+
     }
-    
-    private ICustomerVehicleDamageInfo getCVD(){
-        
+
+    private ICustomerVehicleDamageInfo getCVD() {
+
         CustomerVehicleDamageInfo cvd = new CustomerVehicleDamageInfo();
         cvd.setInitialECD(getDefaultDate());
         cvd.setIsUsable(false);
         return cvd;
-        
+
     }
-   
 }

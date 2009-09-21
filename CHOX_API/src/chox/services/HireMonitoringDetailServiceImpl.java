@@ -5,7 +5,6 @@
 package chox.services;
 
 import chox.model.HireMonitoringDetail;
-import chox.xmlValidation.model.ClaimResult;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 

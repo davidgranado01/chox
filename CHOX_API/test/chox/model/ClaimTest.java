@@ -8,7 +8,7 @@ import chox.Util.DateHelper;
 import chox.services.ClaimService;
 import chox.services.UploadClaimXMLService;
 import chox.xmlValidation.model.BordereauResult;
-import chox.xmlValidation.model.ClaimResult;
+import chox.services.ClaimResult;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Emmanuel
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:applicationContext.xml")
+@ContextConfiguration(locations = {"classpath:applicationContext.xml","classpath:applicationContext-services.xml"})
 public class ClaimTest {
 
     @Autowired
@@ -56,7 +56,7 @@ public class ClaimTest {
 
         Claim savedClaim = claimService.getClaim(c.getId());
         Assert.assertNotNull(savedClaim);
-      
+
         HireMonitoringEcd ecd = new HireMonitoringEcd();
         ecd.setEcdDate(DateHelper.getCurrentDate());
         savedClaim.addHireMonitoringEcd(ecd);
@@ -66,12 +66,18 @@ public class ClaimTest {
         Claim savedClaim2 = claimService.getClaim(c.getId());
         Assert.assertNotNull(savedClaim2);
 
-        Assert.assertEquals(1,savedClaim2.getHireMonitoringEcds().size());
+        Assert.assertEquals(1, savedClaim2.getHireMonitoringEcds().size());
         Assert.assertNotNull(savedClaim2.getLatestHireMonitoringEcd());
 
 
 
 
     }
+//    @Test
+//    public void ExportSchema()
+//    {
+//        SchemaExport schemaExport = new SchemaExport(sessionFactory.getConfiguration());
+//        schemaExport.create(true, false);
+//    }
 }
 

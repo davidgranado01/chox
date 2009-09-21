@@ -12,6 +12,7 @@ import scsbre.model.IHireInfo;
 import scsbre.model.IHireMonitoringDetail;
 import scsbre.model.IInsurerInfo;
 import scsbre.model.IInvoiceInfo;
+import scsbre.model.IVehicleClassCellingInfo;
 import scsbre.model.IVehicleClassInfo;
 
 public class ClaimInfo implements IClaimInfo {
@@ -29,6 +30,7 @@ public class ClaimInfo implements IClaimInfo {
     private IVehicleClassInfo vClass;
     private IHireMonitoringDetail hireMonitoringDetail;
     private Date hireMonitoringEcd;
+    private IVehicleClassCellingInfo vehicleClassCellingInfo;
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#getClaimChoBand()
      */
@@ -194,5 +196,19 @@ public class ClaimInfo implements IClaimInfo {
 
     public IHireMonitoringDetail getHireMonitoringDetail() {
         return hireMonitoringDetail;
+    }
+
+    /**
+     * @return the vehicleClassCellingInfo
+     */
+    public IVehicleClassCellingInfo getVehicleClassCellingInfo() {
+        return vehicleClassCellingInfo;
+    }
+
+    /**
+     * @param vehicleClassCellingInfo the vehicleClassCellingInfo to set
+     */
+    public void setVehicleClassCellingInfo(IVehicleClassCellingInfo vehicleClassCellingInfo) {
+        this.vehicleClassCellingInfo = vehicleClassCellingInfo;
     }
 }

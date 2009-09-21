@@ -15,28 +15,15 @@ import scsbre.model.IVehicleClassInfo;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import scsbre.model.IVehicleClassCellingInfo;
 
-public class Claim implements Serializable, Auditable, IClaimInfo{
+public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
 
-    private int id;
+    // <editor-fold defaultstate="collapsed" desc=" Member Variables ">
     private boolean managingRepair;
     private Date policyHolderContactDate;
     private String choReference;
     private String status;
-    protected Insurer insurer;
-    protected Chorganisation chorganisation;
-    // protected LineOfBusiness lineOfBusiness;
-    protected Customer customer;
-    protected Incident incident;
-    protected Invoice invoice;
-    protected ThirdParty thirdParty;
-    protected VehicleHire vehicleHire;
-    protected EngineerReport engineerReport;
-    protected WebUser createdBy;
-    protected Date createdDate;
-    protected WebUser lastModifiedBy;
-    protected Date lastModifiedDate;
-    protected HireMonitoringDetail hireMonitoringDetail;
     private String claimNumber;
     private BigDecimal indemnityAmount;
     private BigDecimal percentageLiabilityAccepted;
@@ -45,40 +32,46 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     private boolean isInvoiceReviewRequired;
     private Date creditAgreementDate;
     private Date gtaNoticeDate;
-    private boolean isAnomalies;
     private boolean isFnolReviewed;
     private Integer reasonOfRejectionId;
     private Date statusModifiedDate;
     private String previousStatus;
-    //emmanuel 2009-09-08
-    private List<HireMonitoringEcd> hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
-    
-    // Carlson @ 20090831
-    protected Workgroup workgroup;
+    private Date hireMonitoringEcd;
+    // </editor-fold>
 
-    public Workgroup getWorkgroup() {
-        return workgroup;
-    }
+    // <editor-fold defaultstate="collapsed" desc=" Composite Objects ">
+    private Insurer insurer;
+    private Chorganisation chorganisation;
+    private Customer customer;
+    private Incident incident;
+    private Invoice invoice;
+    private ThirdParty thirdParty;
+    private VehicleHire vehicleHire;
+    private EngineerReport engineerReport;
+    private HireMonitoringDetail hireMonitoringDetail;
+    private Workgroup workgroup;
+// </editor-fold>
 
-    public void setWorkgroup(Workgroup workgroup) {
-        this.workgroup = workgroup;
-    }
-    
-    //protected VehicleClass vehicleClass;
-    protected Date hireMonitoringEcd;
-    protected ChoBand choband;
-    
+    // <editor-fold defaultstate="collapsed" desc=" Composite Collections ">
+    private List<HireMonitoringEcd> hireMonitoringEcds;
+    private List<Notification> notifications;
+// </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc=" BRE Values ">
+    //BRE values are values required for BRE engine that related with the claim
+    // It need to be set explicitly before pass the claim object into BRE engine
+
+    private ICHOBandInfo choband;
+    private IVehicleClassCellingInfo vehicleClassCelling;
+    // </editor-fold>   
+
     public Claim() {
+        //initial member collections
+        hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
+        notifications = new ArrayList<Notification>();
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    // <editor-fold defaultstate="collapsed" desc="Public Properties">
     public boolean isManagingRepair() {
         return managingRepair;
     }
@@ -111,38 +104,6 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
 
     public void setStatus(java.lang.String status) {
         this.status = status;
-    }
-
-    public WebUser getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(WebUser createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public java.util.Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(java.util.Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public WebUser getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(WebUser lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public java.util.Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(java.util.Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
     }
 
     public Chorganisation getChorganisation() {
@@ -200,17 +161,15 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
     }
-    
-    /*
-    public LineOfBusiness getLineOfBusiness() {
-        return lineOfBusiness;
+
+    public Workgroup getWorkgroup() {
+        return workgroup;
     }
 
-    public void setLineOfBusiness(LineOfBusiness lineOfBusiness) {
-        this.lineOfBusiness = lineOfBusiness;
+    public void setWorkgroup(Workgroup workgroup) {
+        this.workgroup = workgroup;
     }
-    */
-    
+
     public ThirdParty getThirdParty() {
         return thirdParty;
     }
@@ -227,53 +186,8 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
         this.vehicleHire = vehicleHire;
     }
 
-    public ICHOrganisationInfo getCHOrg() {
-        return this.chorganisation;
-    }
-
-    public IHireInfo getHireDetail() {
-        return this.getVehicleHire();
-    }
-
-    public IEngineerReportInfo getEngineeringReport() {
-        return this.getEngineerReport();
-    }
-
     public boolean getManagingRepair() {
         return this.managingRepair;
-    }
-    
-    /*
-    public VehicleClass getVehicleClass() {
-        return vehicleClass;
-    }
-
-    public void setVehicleClass(VehicleClass vehicleClass) {
-        this.vehicleClass = vehicleClass;
-    }
-    */
-    
-    // NO VEHICLE CLASS DIRECT ASSIGN TO CLAIM, ONLY TO VEHICLE
-    public IVehicleClassInfo getVClass() {
-        return this.getCustomer().getVehicleClass();
-    }
-    
-    // ICustomerVehicleDamageInfo IS PART OF CUSTOMER DETAIL
-    public ICustomerVehicleDamageInfo getCustomerVehicleDamage() {
-        return this.getCustomer();
-    }
-    
-    // getExtras IS PART OF INVOICE DETAIL
-    public IExtrasInfo getExtras() {
-        return this.getInvoice();
-    }
-
-    public void setChoband(ChoBand choband) {
-        this.choband = choband;
-    }
-
-    public ICHOBandInfo getChoBand() {
-        return choband;
     }
 
     public String getClaimNumber() {
@@ -342,36 +256,11 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
     }
-    
-    public String getIsManagingRepairDesc() {
-        return managingRepair ? "Yes" : "No";
-    }
-        
-    public String getIsInvoiceReviewRequiredDesc()
-    {
-        return isInvoiceReviewRequired ? "Yes" : "No";
-    }
-    
-    public String getIsQuantumDisputeDesc() {
-        return isQuantumDispute ? "Yes" : "No";
-    }
 
-    public boolean isIsAnomalies() {
-        return isAnomalies;
-    }
-
-    public void setIsAnomalies(boolean isAnomalies) {
-        this.isAnomalies = isAnomalies;
-    }
-    
-    public String getIsAnomaliesDesc() {
-        return isAnomalies ? "Yes" : "No";
-    }
-    
-    public void setHireMonitoringEcd(Date d){
+    public void setHireMonitoringEcd(Date d) {
         this.hireMonitoringEcd = d;
     }
-    
+
     public Date getHireMonitoringEcd() {
         return this.hireMonitoringEcd;
     }
@@ -407,57 +296,177 @@ public class Claim implements Serializable, Auditable, IClaimInfo{
     public void setPreviousStatus(String previousStatus) {
         this.previousStatus = previousStatus;
     }
+    // </editor-fold>
     
-    public Long getDaysInStatus()
-    {
+    // <editor-fold defaultstate="collapsed" desc="BRE Properties ">
+    public IHireInfo getHireDetail() {
+        return this.getVehicleHire();
+    }
+
+    public IEngineerReportInfo getEngineeringReport() {
+        return this.getEngineerReport();
+    }
+
+    // NO VEHICLE CLASS DIRECT ASSIGN TO CLAIM, ONLY TO VEHICLE
+    public IVehicleClassInfo getVClass() {
+        return this.getCustomer().getVehicleClass();
+    }
+
+    // ICustomerVehicleDamageInfo IS PART OF CUSTOMER DETAIL
+    public ICustomerVehicleDamageInfo getCustomerVehicleDamage() {
+        return this.getCustomer();
+    }
+
+    // getExtras IS PART OF INVOICE DETAIL
+    public IExtrasInfo getExtras() {
+        return this.getInvoice();
+    }
+
+    public void setChoband(ICHOBandInfo choband) {
+        this.choband = choband;
+    }
+
+    public ICHOBandInfo getChoBand() {
+        return choband;
+    }
+
+     public IVehicleClassCellingInfo getVehicleClassCellingInfo() {
+         if(vehicleClassCelling == null)
+         {
+             vehicleClassCelling = new VehicleClassCelling(new BigDecimal(100000),new BigDecimal(100000));
+         }
+        return vehicleClassCelling;
+    }
+
+    public void setVehicleClassCellingInfo(IVehicleClassCellingInfo vehicleClassCelling) {
+        this.vehicleClassCelling = vehicleClassCelling;
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc=" Logic Methods ">
+
+    public String getIsManagingRepairDesc() {
+        return managingRepair ? "Yes" : "No";
+    }
+
+    public String getIsInvoiceReviewRequiredDesc() {
+        return isInvoiceReviewRequired ? "Yes" : "No";
+    }
+
+    public String getIsQuantumDisputeDesc() {
+        return isQuantumDispute ? "Yes" : "No";
+    }
+
+    public boolean getIsIsAnomalies() {
+        return notifications != null ? notifications.size() > 0 : false;
+    }
+
+    public String getIsAnomaliesDesc() {
+        return getIsIsAnomalies() ? "Yes" : "No";
+    }
+
+    public Long getDaysInStatus() {
         Date now = new Date();
         Date lastStatusModified = this.getStatusModifiedDate();
-        
+
         return DateHelper.daysBetween(lastStatusModified, now);
     }
 
-    /**
-     * @return the hireMonitoringEcds
-     */
+    public ICHOrganisationInfo getCHOrg() {
+        return this.chorganisation;
+    }
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc=" HireMonitoringEcd ">
     public List<HireMonitoringEcd> getHireMonitoringEcds() {
         return hireMonitoringEcds;
     }
 
-    /**
-     * @param hireMonitoringEcds the hireMonitoringEcds to set
-     */
     public void setHireMonitoringEcds(List<HireMonitoringEcd> hireMonitoringEcds) {
         this.hireMonitoringEcds = hireMonitoringEcds;
     }
 
-    public void addHireMonitoringEcd(HireMonitoringEcd ecd)
-    {
-        if(hireMonitoringEcds == null)
-        {
-            hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
-        }
+    public void addHireMonitoringEcd(HireMonitoringEcd ecd) {
         ecd.claim = this;
         hireMonitoringEcds.add(ecd);
     }
 
-    public Date getLatestHireMonitoringEcd()
-    {
-        List<HireMonitoringEcd> hireMonitoringEcds = getHireMonitoringEcds();
-        if(hireMonitoringEcds != null && !hireMonitoringEcds.isEmpty())
-        {
+    public Date getLatestHireMonitoringEcd() {
+        if (hireMonitoringEcds != null && !hireMonitoringEcds.isEmpty()) {
             //Emmanuel 08-09-2009
             //the HireMonitoringEcd is sorted by "createdDate" when retrieving from daabase, see claim.hbm.xml
             //so the last item must be the latest updated Ecd
-            HireMonitoringEcd latestEcd = hireMonitoringEcds.get( hireMonitoringEcds.size() -1);
+            HireMonitoringEcd latestEcd = hireMonitoringEcds.get(hireMonitoringEcds.size() - 1);
             return latestEcd.getEcdDate();
-        }
-        else if(customer != null)
-        {
+        } else if (customer != null) {
             //return the initial ecd if have no hireMonitoringEcd been added
             return customer.getInitialECD();
         }
 
         return null;
     }
-    
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc=" Notification ">
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    private void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    //Add a list of  notification to claim
+    //the isAnomalies will automatic mark as true
+    public void AddNotifications(List<Notification> notifications) {
+        if (notifications != null) {
+
+            for (Notification notification : notifications) {
+                AddNotification(notification);
+            }
+        }
+    }
+
+    public void AddNotification(Notification notification) {
+        if (notification != null && !isSameTypeOfNotificationExist(notification)) {
+            if (this.notifications == null) {
+                this.notifications = new ArrayList<Notification>();
+            }
+
+            notification.setClaim(this);
+            notifications.add(notification);
+        }
+    }
+
+    public boolean isSameTypeOfNotificationExist(Notification notification) {
+        if (this.notifications != null) {
+            for (Notification n : notifications) {
+                if (n.getType().equals(notification.getType())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    //remove notification from  claim
+    //the isAnomalies will automatic mark as false if notification list is empty after this
+    public void RemoveNotifications(Notification notification) {
+        notifications.remove(notification);
+    }
+
+    public Notification GetNotificationById(int id) {
+        for (Notification notification : notifications) {
+            if (notification.getId() == id) {
+                return notification;
+            }
+        }
+        return null;
+    }
+
+    // </editor-fold>  
+   
 }

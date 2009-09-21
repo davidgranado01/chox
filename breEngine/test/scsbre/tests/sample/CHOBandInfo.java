@@ -6,9 +6,7 @@ import scsbre.model.ICHOBandInfo;
 
 public class CHOBandInfo implements ICHOBandInfo {
 
-    private BigDecimal hireNetCeiling;
     private int hireDayCeiling;
-    private BigDecimal maxRepairValue;
     private int weekendBufferDays;
     private int takeVehicleOutDays;
     private int engineerInspectionDelayDays;
@@ -20,8 +18,8 @@ public class CHOBandInfo implements ICHOBandInfo {
     private int isNotMobileDayAllowance;
     private int takeVehicleToGarageDaysMobile;
     private int takeVehicleToGarageDaysNonMobile;
-        protected int averageLabourRate;
-        protected int averageLabourHoursPerHireDay;
+    protected int averageLabourRate;
+    protected int averageLabourHoursPerHireDay;
 
     public void setAverageLabourHoursPerHireDay(int averageLabourHoursPerHireDay) {
         this.averageLabourHoursPerHireDay = averageLabourHoursPerHireDay;
@@ -44,24 +42,10 @@ public class CHOBandInfo implements ICHOBandInfo {
     public void setHireDayCeiling(int hireDayCeiling) {
         this.hireDayCeiling = hireDayCeiling;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.ICHOBandInfo#getMaxRepairValue()
-     */
 
-    public BigDecimal getMaxRepairValue() {
-        return maxRepairValue;
-    }
-    /* (non-Javadoc)
-     * @see scsbre.model.ICHOBandInfo#setMaxRepairValue(java.math.BigDecimal)
-     */
-
-    public void setMaxRepairValue(BigDecimal maxRepairValue) {
-        this.maxRepairValue = maxRepairValue;
-    }
     /* (non-Javadoc)
      * @see scsbre.model.ICHOBandInfo#getWeekendBufferDays()
      */
-
     public int getWeekendBufferDays() {
         return weekendBufferDays;
     }
@@ -219,17 +203,9 @@ public class CHOBandInfo implements ICHOBandInfo {
      * @see scsbre.model.ICHOBandInfo#getHireNetCeiling()
      */
 
-    public BigDecimal getHireNetCeiling() {
-        return hireNetCeiling;
-    }
     /* (non-Javadoc)
      * @see scsbre.model.ICHOBandInfo#setHireNetCeiling(java.math.BigDecimal)
      */
-
-    public void setHireNetCeiling(BigDecimal hireNetCeiling) {
-        this.hireNetCeiling = hireNetCeiling;
-    }
-
     public int getAverageLabourRate() {
         return averageLabourRate;
     }

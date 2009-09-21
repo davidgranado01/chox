@@ -11,7 +11,7 @@ import chox.model.VehicleClass;
 import chox.services.InsurerAlliasService;
 import chox.services.InsurerChorganisationService;
 import chox.services.VehicleClassService;
-import chox.xmlValidation.model.ClaimResult;
+import chox.services.ClaimResult;
 import chox.xmlValidation.model.NodeRuleModel;
 import chox.xmlValidation.rules.DataValidationParameter;
 import com.filesystemsoftware.utils.XMLUtils;

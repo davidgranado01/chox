@@ -17,7 +17,6 @@
     <property column="indeminty_amount" name="indemnityAmount"/>
     <property column="percentage_liability_accepted" name="percentageLiabilityAccepted"/>
     <property column="is_quantum_dispute" name="isQuantumDispute"/>
-    <property column="is_anomalies" name="isAnomalies"/>
     <property column="is_fnol_reviewed" name="isFnolReviewed"/>
     <property column="engineer_claim_review_notes" name="engineerClaimReviewNotes"/>
     <property column="is_invoice_review_required" name="isInvoiceReviewRequired"/>
@@ -31,24 +30,21 @@
     <many-to-one cascade="save-update,delete" class="chox.model.Incident" column="incident_id" name="incident"/>
     <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer"/>
     <many-to-one cascade="save-update,delete" class="chox.model.Invoice" column="invoice_id" name="invoice"/>
-    <!--
-    <many-to-one class="chox.model.LineOfBusiness" column="line_of_business_id" name="lineOfBusiness"/>
-    !-->
     <many-to-one class="chox.model.Workgroup" column="workgroup_id" name="workgroup"/>
     <many-to-one cascade="save-update,delete" class="chox.model.ThirdParty" column="third_party_id" name="thirdParty"/>
     <many-to-one cascade="save-update,delete" class="chox.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire"/>
     <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
-    <list inverse="true" lazy="extra" name="hireMonitoringEcds">
+    <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="hireMonitoringEcds" order-by="created_date asc">
       <key column="claim_id"/>
-      <index column="id"/>
       <one-to-many class="chox.model.HireMonitoringEcd"/>
-    </list>
+    </bag>
+    <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="notifications">
+      <key column="claim_id"/>
+      <one-to-many class="chox.model.Notification"/>
+    </bag>
     <filter condition=":chorganisationId = chorganisation_id" name="Claim_CHOFilter"/>
     <filter condition=":insurerId = insurer_id" name="Claim_InsurerFilter"/>
-    <!--
-    <filter condition=":lineOfBusinessId = line_of_business_id" name="Claim_LineOfBusinessFilter"/>
-    !-->
     <filter condition="workgroup_id IN (:workgroupIds)" name="Claim_WorkgroupFilter"/>
   </class>
   <filter-def name="Claim_CHOFilter">
@@ -57,11 +53,6 @@
   <filter-def name="Claim_InsurerFilter">
     <filter-param name="insurerId" type="integer"/>
   </filter-def>
-  <!--
-  <filter-def name="Claim_LineOfBusinessFilter">
-    <filter-param name="lineOfBusinessId" type="integer"/>
-  </filter-def>
-  !-->
   <filter-def name="Claim_WorkgroupFilter">
     <filter-param name="workgroupIds" type="integer"/>
   </filter-def>

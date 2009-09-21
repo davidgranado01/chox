@@ -1,4 +1,5 @@
 package chox.xmlValidation.model;
+import chox.services.ClaimResult;
 import chox.model.Bordereau;
 import chox.model.WebUser;
 import chox.xmlValidation.model.status.BordereauParseStatus;

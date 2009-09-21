@@ -650,6 +650,11 @@
                 $("#popGeneralTemplateClose").click(function(){ $.unblockUI();});
             });
 
+            function removeNotification(notificationId,claimId)
+            {
+                $("div#notificationNotesDiv").load('removeNotification.action',{"notificationId" : notificationId,"id": claimId});
+            }
+
 
         </script>
 
@@ -677,7 +682,7 @@
                                         <div id="m2" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
                                             <a href="javascript:openFile('<%= request.getContextPath()%>','Support');">Support Procedure</a>
                                             <a href="<s:url action="onlineSupport"/>">Online Support Form</a>
-                                    </div></li>
+                                        </div></li>
                                     <li><a href="javascript:onOpenAbout();">|&nbsp;About CHOX&nbsp;</a></li>
                                     <li><a href="<%=request.getContextPath()%>/j_acegi_logout" >|&nbsp;<b><s:property value="CurrentUserDesc" /></b> ( Log Off )</a></li>
                                 </ul>
@@ -686,7 +691,6 @@
                         </tr>
                     </table>
                 </div>
-
                 <div style="width:960px">
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">
                         <fieldset class="x-fieldset">
@@ -713,21 +717,21 @@
 
                                     <s:if test="!isCHO">
                                         <td><label class="chox-claim-header-label">ECD Anomaly?</label><label class="chox-claim-header-text"><span id="status">
-                                            <s:if test="isAnomalies">
-                                                <s:property value="isAnomaliesDesc" /> ( <a href="javascript:updateAnomalies('<s:property value="id" />');">Remove from hire anomalies</a> )
+                                                    <s:if test="isAnomalies">
+                                                        <s:property value="isAnomaliesDesc" /> ( <a href="javascript:updateAnomalies('<s:property value="id" />');">Remove from hire anomalies</a> )
+                                                    </s:if>
+                                                    <s:else>
+                                                        <s:property value="isAnomaliesDesc" />
+                                                    </s:else>
+                                                </span></label></td>
                                             </s:if>
-                                            <s:else>
-                                                <s:property value="isAnomaliesDesc" />
-                                            </s:else>
-                                        </span></label></td>
-                                    </s:if>
 
                                 </tr>
                                 <tr>
                                     <td><label class="chox-claim-header-label">Workgroup</label><label class="chox-claim-header-text"><s:property value="workgroup.name" /></label></td>
                                     <td></td>
                                 </tr>
-                                
+
                                 <s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">
                                     <tr>
                                         <td colspan="3">
@@ -787,15 +791,26 @@
                     This claim is currently being viewed and / or modified by the following user(s) : <span id="userViewingThisClaim"></span>
                 </div>
 
-                 <s:if test="isAnyIntelligentNotes">
-                    <div id="intelligentNotesDiv" class="status-warning">
-                        <ul>
-                            <s:iterator value="intelligentNotes">
-                              <li><s:property/></li>
-                            </s:iterator>
-                        </ul>
+                <s:if test="isAnyIntelligentNotes">
+                    <div class="chox-claim-header x-panel-bwrap chox-form-container">
+                        <fieldset class="x-fieldset">
+                            <legend>Additional Notes</legend>
+                            <div id="intelligentNotesDiv" class="status-warning listContainer">
+                                <ul>
+                                    <s:iterator value="intelligentNotes">
+                                        <li><s:property/></li>
+                                    </s:iterator>
+                                </ul>
+                            </div>
+                        </fieldset>
                     </div>
-                 </s:if>
+                </s:if>
+
+                <div id="notificationNotesDiv">
+                    <s:action executeResult="true" name="renderNotifications">
+                     <s:param name="id"><s:property value="id" /></s:param>
+                    </s:action>
+                </div>
 
                 <script language="JavaScript">
 
@@ -818,6 +833,8 @@
                     });
 
                 </script>
+
+
                 <div class="chox-claim-header x-panel-bwrap chox-form-container" id="generalActionPanel" style="display: none;">
                     <s:action name="getActionPanel" executeResult="true" />
                     <div class="action-message"><s:property value="actionResult" /></div>
@@ -868,7 +885,7 @@
                                     <s:action name="getUpdateInsurerClaimNumberAction" executeResult="true"></s:action>
                                     <div class="action-message"><s:property value="actionResult" /></div>
                                 </div>
-                        </td></tr>
+                            </td></tr>
                     </table>
                 </div>
 
@@ -1080,8 +1097,8 @@
 
                                     if(response){
                                         if(response.isValid){
-                                               msg = response.result;
-                                               loadAttachments();
+                                            msg = response.result;
+                                            loadAttachments();
                                         }
                                         else{
                                             cssColor = warningColor;
@@ -1138,27 +1155,27 @@
                                     attachmentHtmlDesc = "<table cellpadding='0' cellspacing='0' border='0' class='remarkTable'>";
                                     attachmentHtmlDesc += "<tr><th width='28%'><b>Type</b></th><th width='70%'><b>Description</b></th></tr>";
 
-    <s:iterator value="AllowFileTypes">
-            attachmentHtmlDesc += '<tr>';
-            attachmentHtmlDesc += '<td>.<s:property value="code"/></td>';
-            attachmentHtmlDesc += '<td><s:property value="description"/></td>';
-            attachmentHtmlDesc += '</tr>';
-    </s:iterator>
+                                <s:iterator value="AllowFileTypes">
+                                    attachmentHtmlDesc +=     '<tr>';
+                                    attachmentHtmlDesc += '<td>.<s:property value="code"/>    </td>';
+                                        attachmentHtmlDesc += '<td><s:property value="description"/></td>';
+                                        attachmentHtmlDesc += '</tr>';
+                                </s:iterator>
 
-            attachmentHtmlDesc += "</table>";
+                                        attachmentHtmlDesc += "</table>";
 
-            new Ext.ToolTip({
-                target: 'attachmentTypeSpan',
-                html: attachmentHtmlDesc,
-                title: 'Attachment Formats',
-                autoHide: false,
-                closable: true,
-                draggable:true
-            });
+                                        new Ext.ToolTip({
+                                            target: 'attachmentTypeSpan',
+                                            html: attachmentHtmlDesc,
+                                            title: 'Attachment Formats',
+                                            autoHide: false,
+                                            closable: true,
+                                            draggable:true
+                                        });
 
-            Ext.QuickTips.init();
+                                        Ext.QuickTips.init();
 
-        });
+                                    });
                             </script>
 
                             <div class="attachments  x-panel-bwrap chox-form-container">

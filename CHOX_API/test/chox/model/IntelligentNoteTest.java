@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author emmanuel
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-IntelligentNote.xml", "classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext-IntelligentNote.xml", "classpath:applicationContext.xml","classpath:applicationContext-services.xml"})
 public class IntelligentNoteTest {
 
     @Autowired
@@ -79,7 +79,7 @@ public class IntelligentNoteTest {
 
         //test if initial ecd > 5 days from policy holder contact date, VehicleClassCheckNote should not be displayed
         claim.setPolicyHolderContactDate(DateHelper.getCurrentDate());
-        claim.setHireMonitoringEcd(DateHelper.addDay(DateHelper.getCurrentDate(), 6));
+        claim.getCustomer().setInitialECD(DateHelper.addDay(DateHelper.getCurrentDate(), 6));
 
         Assert.assertEquals(0, vehicleClassCheckNoteOnlyDisplayEngine.getIntelligentNotes(claim).size());
 

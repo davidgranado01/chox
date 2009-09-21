@@ -6,7 +6,6 @@
 package chox.services;
 
 import chox.model.Incident;
-import chox.xmlValidation.model.ClaimResult;
 
 public interface IncidentService {
     public void saveObjectForXMLUploader(final ClaimResult claimResult);

@@ -1,418 +1,256 @@
 package chox.model;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.io.Serializable;
-import java.util.Date;
 
-public class Solicitor implements Serializable,Auditable
-{
-	/** 
-	 * This attribute maps to the column id in the solicitor table.
-	 */
-	protected int id;
+public class Solicitor extends AuditableEntity implements Serializable {
 
-	/** 
-	 * This attribute maps to the column name in the solicitor table.
-	 */
-	protected String name;
+    /**
+     * This attribute maps to the column name in the solicitor table.
+     */
+    protected String name;
+    /**
+     * This attribute maps to the column address1 in the solicitor table.
+     */
+    protected String address1;
+    /**
+     * This attribute maps to the column address2 in the solicitor table.
+     */
+    protected String address2;
+    /**
+     * This attribute maps to the column address3 in the solicitor table.
+     */
+    protected String address3;
+    /**
+     * This attribute maps to the column address4 in the solicitor table.
+     */
+    protected String address4;
+    /**
+     * This attribute maps to the column address5 in the solicitor table.
+     */
+    protected String address5;
+    /**
+     * This attribute maps to the column postcode in the solicitor table.
+     */
+    protected String postcode;
+    /**
+     * This attribute maps to the column telephone in the solicitor table.
+     */
+    protected String telephone;
+    /**
+     * This attribute maps to the column email in the solicitor table.
+     */
+    protected String email;
+    /**
+     * This attribute maps to the column is_appointed in the solicitor table.
+     */
+    protected boolean isAppointed;
+    /**
+     * This attribute represents the foreign key relationship to the injury table.
+     */
+    protected Injury injury;
 
-	/** 
-	 * This attribute maps to the column address1 in the solicitor table.
-	 */
-	protected String address1;
+    /**
+     * Method 'Solicitor'
+     *
+     */
+    public Solicitor() {
+    }
 
-	/** 
-	 * This attribute maps to the column address2 in the solicitor table.
-	 */
-	protected String address2;
+    /**
+     * Method 'getName'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getName() {
+        return name;
+    }
 
-	/** 
-	 * This attribute maps to the column address3 in the solicitor table.
-	 */
-	protected String address3;
+    /**
+     * Method 'setName'
+     *
+     * @param name
+     */
+    public void setName(java.lang.String name) {
+        this.name = name;
+    }
 
-	/** 
-	 * This attribute maps to the column address4 in the solicitor table.
-	 */
-	protected String address4;
+    /**
+     * Method 'getAddress1'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getAddress1() {
+        return address1;
+    }
 
-	/** 
-	 * This attribute maps to the column address5 in the solicitor table.
-	 */
-	protected String address5;
+    /**
+     * Method 'setAddress1'
+     *
+     * @param address1
+     */
+    public void setAddress1(java.lang.String address1) {
+        this.address1 = address1;
+    }
 
-	/** 
-	 * This attribute maps to the column postcode in the solicitor table.
-	 */
-	protected String postcode;
+    /**
+     * Method 'getAddress2'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getAddress2() {
+        return address2;
+    }
 
-	/** 
-	 * This attribute maps to the column telephone in the solicitor table.
-	 */
-	protected String telephone;
+    /**
+     * Method 'setAddress2'
+     *
+     * @param address2
+     */
+    public void setAddress2(java.lang.String address2) {
+        this.address2 = address2;
+    }
 
-	/** 
-	 * This attribute maps to the column email in the solicitor table.
-	 */
-	protected String email;
+    /**
+     * Method 'getAddress3'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getAddress3() {
+        return address3;
+    }
 
-	/** 
-	 * This attribute maps to the column created_by in the solicitor table.
-	 */
-	protected WebUser createdBy;
+    /**
+     * Method 'setAddress3'
+     *
+     * @param address3
+     */
+    public void setAddress3(java.lang.String address3) {
+        this.address3 = address3;
+    }
 
-	/** 
-	 * This attribute maps to the column created_date in the solicitor table.
-	 */
-	protected Date createdDate;
+    /**
+     * Method 'getAddress4'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getAddress4() {
+        return address4;
+    }
 
-	/** 
-	 * This attribute maps to the column last_modified_by in the solicitor table.
-	 */
-	protected WebUser lastModifiedBy;
+    /**
+     * Method 'setAddress4'
+     *
+     * @param address4
+     */
+    public void setAddress4(java.lang.String address4) {
+        this.address4 = address4;
+    }
 
-	/** 
-	 * This attribute maps to the column last_modified_date in the solicitor table.
-	 */
-	protected Date lastModifiedDate;
+    /**
+     * Method 'getAddress5'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getAddress5() {
+        return address5;
+    }
 
-	/** 
-	 * This attribute maps to the column is_appointed in the solicitor table.
-	 */
-	protected boolean isAppointed;
+    /**
+     * Method 'setAddress5'
+     *
+     * @param address5
+     */
+    public void setAddress5(java.lang.String address5) {
+        this.address5 = address5;
+    }
 
-	/** 
-	 * This attribute represents the foreign key relationship to the injury table.
-	 */
-	protected Injury injury;
+    /**
+     * Method 'getPostcode'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getPostcode() {
+        return postcode;
+    }
 
-	/**
-	 * Method 'Solicitor'
-	 * 
-	 */
-	public Solicitor()
-	{
-	}
+    /**
+     * Method 'setPostcode'
+     *
+     * @param postcode
+     */
+    public void setPostcode(java.lang.String postcode) {
+        this.postcode = postcode;
+    }
 
-	/**
-	 * Method 'getId'
-	 * 
-	 * @return int
-	 */
-	public int getId()
-	{
-		return id;
-	}
+    /**
+     * Method 'getTelephone'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getTelephone() {
+        return telephone;
+    }
 
-	/**
-	 * Method 'setId'
-	 * 
-	 * @param id
-	 */
-	public void setId(int id)
-	{
-		this.id = id;
-	}
+    /**
+     * Method 'setTelephone'
+     *
+     * @param telephone
+     */
+    public void setTelephone(java.lang.String telephone) {
+        this.telephone = telephone;
+    }
 
-	/**
-	 * Method 'getName'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getName()
-	{
-		return name;
-	}
+    /**
+     * Method 'getEmail'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getEmail() {
+        return email;
+    }
 
-	/**
-	 * Method 'setName'
-	 * 
-	 * @param name
-	 */
-	public void setName(java.lang.String name)
-	{
-		this.name = name;
-	}
+    /**
+     * Method 'setEmail'
+     *
+     * @param email
+     */
+    public void setEmail(java.lang.String email) {
+        this.email = email;
+    }
 
-	/**
-	 * Method 'getAddress1'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getAddress1()
-	{
-		return address1;
-	}
+    /**
+     * Method 'isIsAppointed'
+     *
+     * @return boolean
+     */
+    public boolean isIsAppointed() {
+        return isAppointed;
+    }
 
-	/**
-	 * Method 'setAddress1'
-	 * 
-	 * @param address1
-	 */
-	public void setAddress1(java.lang.String address1)
-	{
-		this.address1 = address1;
-	}
+    /**
+     * Method 'setIsAppointed'
+     *
+     * @param isAppointed
+     */
+    public void setIsAppointed(boolean isAppointed) {
+        this.isAppointed = isAppointed;
+    }
 
-	/**
-	 * Method 'getAddress2'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getAddress2()
-	{
-		return address2;
-	}
+    /**
+     * Method 'getInjury'
+     *
+     * @return Injury
+     */
+    public Injury getInjury() {
+        return injury;
+    }
 
-	/**
-	 * Method 'setAddress2'
-	 * 
-	 * @param address2
-	 */
-	public void setAddress2(java.lang.String address2)
-	{
-		this.address2 = address2;
-	}
-
-	/**
-	 * Method 'getAddress3'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getAddress3()
-	{
-		return address3;
-	}
-
-	/**
-	 * Method 'setAddress3'
-	 * 
-	 * @param address3
-	 */
-	public void setAddress3(java.lang.String address3)
-	{
-		this.address3 = address3;
-	}
-
-	/**
-	 * Method 'getAddress4'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getAddress4()
-	{
-		return address4;
-	}
-
-	/**
-	 * Method 'setAddress4'
-	 * 
-	 * @param address4
-	 */
-	public void setAddress4(java.lang.String address4)
-	{
-		this.address4 = address4;
-	}
-
-	/**
-	 * Method 'getAddress5'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getAddress5()
-	{
-		return address5;
-	}
-
-	/**
-	 * Method 'setAddress5'
-	 * 
-	 * @param address5
-	 */
-	public void setAddress5(java.lang.String address5)
-	{
-		this.address5 = address5;
-	}
-
-	/**
-	 * Method 'getPostcode'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getPostcode()
-	{
-		return postcode;
-	}
-
-	/**
-	 * Method 'setPostcode'
-	 * 
-	 * @param postcode
-	 */
-	public void setPostcode(java.lang.String postcode)
-	{
-		this.postcode = postcode;
-	}
-
-	/**
-	 * Method 'getTelephone'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getTelephone()
-	{
-		return telephone;
-	}
-
-	/**
-	 * Method 'setTelephone'
-	 * 
-	 * @param telephone
-	 */
-	public void setTelephone(java.lang.String telephone)
-	{
-		this.telephone = telephone;
-	}
-
-	/**
-	 * Method 'getEmail'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getEmail()
-	{
-		return email;
-	}
-
-	/**
-	 * Method 'setEmail'
-	 * 
-	 * @param email
-	 */
-	public void setEmail(java.lang.String email)
-	{
-		this.email = email;
-	}
-
-	/**
-	 * Method 'getCreatedBy'
-	 * 
-	 * @return int
-	 */
-	public WebUser getCreatedBy()
-	{
-		return createdBy;
-	}
-
-	/**
-	 * Method 'setCreatedBy'
-	 * 
-	 * @param createdBy
-	 */
-	public void setCreatedBy(WebUser createdBy)
-	{
-		this.createdBy = createdBy;
-	}
-
-	/**
-	 * Method 'getCreatedDate'
-	 * 
-	 * @return java.util.Date
-	 */
-	public java.util.Date getCreatedDate()
-	{
-		return createdDate;
-	}
-
-	/**
-	 * Method 'setCreatedDate'
-	 * 
-	 * @param createdDate
-	 */
-	public void setCreatedDate(java.util.Date createdDate)
-	{
-		this.createdDate = createdDate;
-	}
-
-	/**
-	 * Method 'getLastModifiedBy'
-	 * 
-	 * @return int
-	 */
-	public WebUser getLastModifiedBy()
-	{
-		return lastModifiedBy;
-	}
-
-	/**
-	 * Method 'setLastModifiedBy'
-	 * 
-	 * @param lastModifiedBy
-	 */
-	public void setLastModifiedBy(WebUser lastModifiedBy)
-	{
-		this.lastModifiedBy = lastModifiedBy;
-	}
-
-	/**
-	 * Method 'getLastModifiedDate'
-	 * 
-	 * @return java.util.Date
-	 */
-	public java.util.Date getLastModifiedDate()
-	{
-		return lastModifiedDate;
-	}
-
-	/**
-	 * Method 'setLastModifiedDate'
-	 * 
-	 * @param lastModifiedDate
-	 */
-	public void setLastModifiedDate(java.util.Date lastModifiedDate)
-	{
-		this.lastModifiedDate = lastModifiedDate;
-	}
-
-	/**
-	 * Method 'isIsAppointed'
-	 * 
-	 * @return boolean
-	 */
-	public boolean isIsAppointed()
-	{
-		return isAppointed;
-	}
-
-	/**
-	 * Method 'setIsAppointed'
-	 * 
-	 * @param isAppointed
-	 */
-	public void setIsAppointed(boolean isAppointed)
-	{
-		this.isAppointed = isAppointed;
-	}
-
-	/**
-	 * Method 'getInjury'
-	 * 
-	 * @return Injury
-	 */
-	public Injury getInjury()
-	{
-		return injury;
-	}
-
-	/**
-	 * Method 'setInjury'
-	 * 
-	 * @param injury
-	 */
-	public void setInjury(Injury injury)
-	{
-		this.injury = injury;
-	}
-
+    /**
+     * Method 'setInjury'
+     *
+     * @param injury
+     */
+    public void setInjury(Injury injury) {
+        this.injury = injury;
+    }
 }

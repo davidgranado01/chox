@@ -1,17 +1,8 @@
 package chox.services;
 
 import chox.model.*;
-import chox.xmlValidation.model.ClaimResult;
-import scsbre.engine.*;
 
 public class InvoiceServiceImpl extends SecureDataService implements InvoiceService {
-
-    public RulesEngineResponse XMLUploaderInvoiceValidation(Claim claim) {
-
-        RulesEngine r = RulesEngine.getInstance(claim);
-        RulesEngineResponse reponse = r.ResolveStatus();
-        return reponse;
-    }
 
     public void saveObjectForXMLUploader(final ClaimResult claimResult) {
 

@@ -2,7 +2,6 @@ package chox.services;
 
 import chox.model.*;
 import chox.xmlValidation.model.BordereauResult;
-import chox.xmlValidation.model.ClaimResult;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -15,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml","classpath:applicationContext-services.xml"})
 public class XMLUpload_newClaim_01 {
 
     @Autowired
@@ -138,7 +137,7 @@ public class XMLUpload_newClaim_01 {
         Assert.assertEquals(false, claim.getIsQuantumDispute());
         Assert.assertEquals(null, claim.getEngineerClaimReviewNotes());
         Assert.assertEquals(false, claim.getIsInvoiceReviewRequired());
-        Assert.assertEquals(false, claim.isIsAnomalies());
+        Assert.assertEquals(false, claim.getIsIsAnomalies());
         Assert.assertEquals(false, claim.isIsFnolReviewed());
         Assert.assertEquals(null, claim.getReasonOfRejectionId());
 

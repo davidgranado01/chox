@@ -1,105 +1,46 @@
 package chox.model;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.io.Serializable;
-import java.util.Date;
 
-public class SupportMessage implements Serializable,Auditable
-{
+public class SupportMessage extends AuditableEntity implements Serializable {
 
-	protected int id;
-	protected int claimId;
-        protected String supplierReference;
-	protected String subject;
-	protected String message;
-	protected WebUser createdBy;
-	protected Date createdDate;
-	protected WebUser lastModifiedBy;
-	protected Date lastModifiedDate;
+    protected int claimId;
+    protected String supplierReference;
+    protected String subject;
+    protected String message;
 
-	public SupportMessage()
-	{
-	}
+    public SupportMessage() {
+    }
 
-        public int getClaimId() {
-            return claimId;
-        }
+    public int getClaimId() {
+        return claimId;
+    }
 
-        public void setClaimId(int claimId) {
-            this.claimId = claimId;
-        }
+    public void setClaimId(int claimId) {
+        this.claimId = claimId;
+    }
 
-        public String getSupplierReference() {
-            return supplierReference;
-        }
+    public String getSupplierReference() {
+        return supplierReference;
+    }
 
-        public void setSupplierReference(String supplierReference) {
-            this.supplierReference = supplierReference;
-        }
+    public void setSupplierReference(String supplierReference) {
+        this.supplierReference = supplierReference;
+    }
 
-        public int getId() {
-            return id;
-        }
+    public String getMessage() {
+        return message;
+    }
 
-        public void setId(int id) {
-            this.id = id;
-        }
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-        public String getMessage() {
-            return message;
-        }
+    public String getSubject() {
+        return subject;
+    }
 
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        public String getSubject() {
-            return subject;
-        }
-
-        public void setSubject(String subject) {
-            this.subject = subject;
-        }
-
-        public WebUser getCreatedBy()
-	{
-            return createdBy;
-	}
-
-	public void setCreatedBy(WebUser createdBy)
-	{
-            this.createdBy = createdBy;
-	}
-
-	public java.util.Date getCreatedDate()
-	{
-            return createdDate;
-	}
-
-	public void setCreatedDate(java.util.Date createdDate)
-	{
-            this.createdDate = createdDate;
-	}
-
-	public WebUser getLastModifiedBy()
-	{
-            return lastModifiedBy;
-	}
-
-	public void setLastModifiedBy(WebUser lastModifiedBy)
-	{
-            this.lastModifiedBy = lastModifiedBy;
-	}
-
-	public java.util.Date getLastModifiedDate()
-	{
-            return lastModifiedDate;
-	}
-
-	public void setLastModifiedDate(java.util.Date lastModifiedDate)
-	{
-            this.lastModifiedDate = lastModifiedDate;
-	}
-
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 }

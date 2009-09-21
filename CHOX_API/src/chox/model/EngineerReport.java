@@ -1,510 +1,341 @@
 package chox.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.math.BigDecimal;
 import scsbre.model.IEngineerReportInfo;
 
-public class EngineerReport implements Serializable,Auditable,IEngineerReportInfo
-{
-	/** 
-	 * This attribute maps to the column id in the engineer_report table.
-	 */
-	protected int id;
+public class EngineerReport extends AuditableEntity implements Serializable, IEngineerReportInfo {
 
-	/** 
-	 * This attribute maps to the column days in the engineer_report table.
-	 */
-	protected Integer days;
+    /**
+     * This attribute maps to the column days in the engineer_report table.
+     */
+    protected Integer days;
+    /**
+     * This attribute maps to the column name in the engineer_report table.
+     */
+    protected String name;
+    /**
+     * This attribute maps to the column company in the engineer_report table.
+     */
+    protected String company;
+    /**
+     * This attribute maps to the column address1 in the engineer_report table.
+     */
+    protected String address1;
+    /**
+     * This attribute maps to the column address2 in the engineer_report table.
+     */
+    protected String address2;
+    /**
+     * This attribute maps to the column address3 in the engineer_report table.
+     */
+    protected String address3;
+    /**
+     * This attribute maps to the column address4 in the engineer_report table.
+     */
+    protected String address4;
+    /**
+     * This attribute maps to the column address5 in the engineer_report table.
+     */
+    protected String address5;
+    /**
+     * This attribute maps to the column postcode in the engineer_report table.
+     */
+    protected String postcode;
+    /**
+     * This attribute maps to the column telephone in the engineer_report table.
+     */
+    protected String telephone;
+    /**
+     * This attribute maps to the column email in the engineer_report table.
+     */
+    protected String email;
+    /**
+     * This attribute maps to the column is_usable in the engineer_report table.
+     */
+    protected boolean isUsable;
+    /**
+     * This attribute maps to the column labour_amount in the engineer_report table.
+     */
+    protected BigDecimal labourAmount;
+    /**
+     * This attribute maps to the column total_amount in the engineer_report table.
+     */
+    protected BigDecimal totalAmount;
 
-	/** 
-	 * This attribute maps to the column name in the engineer_report table.
-	 */
-	protected String name;
+    /**
+     * Method 'EngineerReport'
+     *
+     */
+    public EngineerReport() {
+    }
 
-	/** 
-	 * This attribute maps to the column company in the engineer_report table.
-	 */
-	protected String company;
+    /**
+     * Method 'getDays'
+     *
+     * @return java.lang.Integer
+     */
+    public java.lang.Integer getDays() {
+        return days;
+    }
 
-	/** 
-	 * This attribute maps to the column address1 in the engineer_report table.
-	 */
-	protected String address1;
+    /**
+     * Method 'setDays'
+     *
+     * @param days
+     */
+    public void setDays(java.lang.Integer days) {
+        this.days = days;
+    }
 
-	/** 
-	 * This attribute maps to the column address2 in the engineer_report table.
-	 */
-	protected String address2;
+    /**
+     * Method 'getName'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getName() {
+        return name;
+    }
 
-	/** 
-	 * This attribute maps to the column address3 in the engineer_report table.
-	 */
-	protected String address3;
+    /**
+     * Method 'setName'
+     *
+     * @param name
+     */
+    public void setName(java.lang.String name) {
+        this.name = name;
+    }
 
-	/** 
-	 * This attribute maps to the column address4 in the engineer_report table.
-	 */
-	protected String address4;
+    /**
+     * Method 'getCompany'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getCompany() {
+        return company;
+    }
 
-	/** 
-	 * This attribute maps to the column address5 in the engineer_report table.
-	 */
-	protected String address5;
+    /**
+     * Method 'setCompany'
+     *
+     * @param company
+     */
+    public void setCompany(java.lang.String company) {
+        this.company = company;
+    }
 
-	/** 
-	 * This attribute maps to the column postcode in the engineer_report table.
-	 */
-	protected String postcode;
+    /**
+     * Method 'getAddress1'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getAddress1() {
+        return address1;
+    }
 
-	/** 
-	 * This attribute maps to the column telephone in the engineer_report table.
-	 */
-	protected String telephone;
+    /**
+     * Method 'setAddress1'
+     *
+     * @param address1
+     */
+    public void setAddress1(java.lang.String address1) {
+        this.address1 = address1;
+    }
 
-	/** 
-	 * This attribute maps to the column email in the engineer_report table.
-	 */
-	protected String email;
+    /**
+     * Method 'getAddress2'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getAddress2() {
+        return address2;
+    }
 
-	/** 
-	 * This attribute maps to the column created_by in the engineer_report table.
-	 */
-	protected WebUser createdBy;
+    /**
+     * Method 'setAddress2'
+     *
+     * @param address2
+     */
+    public void setAddress2(java.lang.String address2) {
+        this.address2 = address2;
+    }
 
-	/** 
-	 * This attribute maps to the column created_date in the engineer_report table.
-	 */
-	protected Date createdDate;
+    /**
+     * Method 'getAddress3'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getAddress3() {
+        return address3;
+    }
 
-	/** 
-	 * This attribute maps to the column last_modified_by in the engineer_report table.
-	 */
-	protected WebUser lastModifiedBy;
+    /**
+     * Method 'setAddress3'
+     *
+     * @param address3
+     */
+    public void setAddress3(java.lang.String address3) {
+        this.address3 = address3;
+    }
 
-	/** 
-	 * This attribute maps to the column last_modified_date in the engineer_report table.
-	 */
-	protected Date lastModifiedDate;
+    /**
+     * Method 'getAddress4'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getAddress4() {
+        return address4;
+    }
 
-	/** 
-	 * This attribute maps to the column is_usable in the engineer_report table.
-	 */
-	protected boolean isUsable;
+    /**
+     * Method 'setAddress4'
+     *
+     * @param address4
+     */
+    public void setAddress4(java.lang.String address4) {
+        this.address4 = address4;
+    }
 
-	/** 
-	 * This attribute maps to the column labour_amount in the engineer_report table.
-	 */
-	protected BigDecimal labourAmount;
+    /**
+     * Method 'getAddress5'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getAddress5() {
+        return address5;
+    }
 
-	/** 
-	 * This attribute maps to the column total_amount in the engineer_report table.
-	 */
-	protected BigDecimal totalAmount;
+    /**
+     * Method 'setAddress5'
+     *
+     * @param address5
+     */
+    public void setAddress5(java.lang.String address5) {
+        this.address5 = address5;
+    }
 
-	/**
-	 * Method 'EngineerReport'
-	 * 
-	 */
-	public EngineerReport()
-	{
-	}
+    /**
+     * Method 'getPostcode'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getPostcode() {
+        return postcode;
+    }
 
-	/**
-	 * Method 'getId'
-	 * 
-	 * @return int
-	 */
-	public int getId()
-	{
-		return id;
-	}
+    /**
+     * Method 'setPostcode'
+     *
+     * @param postcode
+     */
+    public void setPostcode(java.lang.String postcode) {
+        this.postcode = postcode;
+    }
 
-	/**
-	 * Method 'setId'
-	 * 
-	 * @param id
-	 */
-	public void setId(int id)
-	{
-		this.id = id;
-	}
+    /**
+     * Method 'getTelephone'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getTelephone() {
+        return telephone;
+    }
 
-	/**
-	 * Method 'getDays'
-	 * 
-	 * @return java.lang.Integer
-	 */
-	public java.lang.Integer getDays()
-	{
-		return days;
-	}
+    /**
+     * Method 'setTelephone'
+     *
+     * @param telephone
+     */
+    public void setTelephone(java.lang.String telephone) {
+        this.telephone = telephone;
+    }
 
-	/**
-	 * Method 'setDays'
-	 * 
-	 * @param days
-	 */
-	public void setDays(java.lang.Integer days)
-	{
-		this.days = days;
-	}
+    /**
+     * Method 'getEmail'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getEmail() {
+        return email;
+    }
 
-	/**
-	 * Method 'getName'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getName()
-	{
-		return name;
-	}
+    /**
+     * Method 'setEmail'
+     *
+     * @param email
+     */
+    public void setEmail(java.lang.String email) {
+        this.email = email;
+    }
 
-	/**
-	 * Method 'setName'
-	 * 
-	 * @param name
-	 */
-	public void setName(java.lang.String name)
-	{
-		this.name = name;
-	}
+    /**
+     * Method 'isIsUsable'
+     *
+     * @return boolean
+     */
+    public boolean isIsUsable() {
+        return isUsable;
+    }
 
-	/**
-	 * Method 'getCompany'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getCompany()
-	{
-		return company;
-	}
+    /**
+     * Method 'setIsUsable'
+     *
+     * @param isUsable
+     */
+    public void setIsUsable(boolean isUsable) {
+        this.isUsable = isUsable;
+    }
 
-	/**
-	 * Method 'setCompany'
-	 * 
-	 * @param company
-	 */
-	public void setCompany(java.lang.String company)
-	{
-		this.company = company;
-	}
+    /**
+     * Method 'getLabourAmount'
+     *
+     * @return java.math.BigDecimal
+     */
+    public java.math.BigDecimal getLabourAmount() {
+        return labourAmount;
+    }
 
-	/**
-	 * Method 'getAddress1'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getAddress1()
-	{
-		return address1;
-	}
+    /**
+     * Method 'setLabourAmount'
+     *
+     * @param labourAmount
+     */
+    public void setLabourAmount(java.math.BigDecimal labourAmount) {
+        this.labourAmount = labourAmount;
+    }
 
-	/**
-	 * Method 'setAddress1'
-	 * 
-	 * @param address1
-	 */
-	public void setAddress1(java.lang.String address1)
-	{
-		this.address1 = address1;
-	}
+    /**
+     * Method 'getTotalAmount'
+     *
+     * @return java.math.BigDecimal
+     */
+    public java.math.BigDecimal getTotalAmount() {
+        return this.totalAmount;
+    }
 
-	/**
-	 * Method 'getAddress2'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getAddress2()
-	{
-		return address2;
-	}
+    /**
+     * Method 'setTotalAmount'
+     *
+     * @param totalAmount
+     */
+    public void setTotalAmount(java.math.BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
+    }
 
-	/**
-	 * Method 'setAddress2'
-	 * 
-	 * @param address2
-	 */
-	public void setAddress2(java.lang.String address2)
-	{
-		this.address2 = address2;
-	}
+    public BigDecimal getEstimatedLabourAmount() {
+        return this.labourAmount;
+    }
 
-	/**
-	 * Method 'getAddress3'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getAddress3()
-	{
-		return address3;
-	}
+    public BigDecimal getEstimatedTotalRepairAmount() {
+        return this.totalAmount;
+    }
 
-	/**
-	 * Method 'setAddress3'
-	 * 
-	 * @param address3
-	 */
-	public void setAddress3(java.lang.String address3)
-	{
-		this.address3 = address3;
-	}
+    public int getEstimatedDaysUnderRepair() {
+        return this.days;
+    }
 
-	/**
-	 * Method 'getAddress4'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getAddress4()
-	{
-		return address4;
-	}
+    public String getIsUsableDesc() {
+        return this.isIsUsable() ? "Yes" : "No";
 
-	/**
-	 * Method 'setAddress4'
-	 * 
-	 * @param address4
-	 */
-	public void setAddress4(java.lang.String address4)
-	{
-		this.address4 = address4;
-	}
-
-	/**
-	 * Method 'getAddress5'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getAddress5()
-	{
-		return address5;
-	}
-
-	/**
-	 * Method 'setAddress5'
-	 * 
-	 * @param address5
-	 */
-	public void setAddress5(java.lang.String address5)
-	{
-		this.address5 = address5;
-	}
-
-	/**
-	 * Method 'getPostcode'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getPostcode()
-	{
-		return postcode;
-	}
-
-	/**
-	 * Method 'setPostcode'
-	 * 
-	 * @param postcode
-	 */
-	public void setPostcode(java.lang.String postcode)
-	{
-		this.postcode = postcode;
-	}
-
-	/**
-	 * Method 'getTelephone'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getTelephone()
-	{
-		return telephone;
-	}
-
-	/**
-	 * Method 'setTelephone'
-	 * 
-	 * @param telephone
-	 */
-	public void setTelephone(java.lang.String telephone)
-	{
-		this.telephone = telephone;
-	}
-
-	/**
-	 * Method 'getEmail'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getEmail()
-	{
-		return email;
-	}
-
-	/**
-	 * Method 'setEmail'
-	 * 
-	 * @param email
-	 */
-	public void setEmail(java.lang.String email)
-	{
-		this.email = email;
-	}
-
-	/**
-	 * Method 'getCreatedBy'
-	 * 
-	 * @return int
-	 */
-	public WebUser getCreatedBy()
-	{
-		return createdBy;
-	}
-
-	/**
-	 * Method 'setCreatedBy'
-	 * 
-	 * @param createdBy
-	 */
-	public void setCreatedBy(WebUser createdBy)
-	{
-		this.createdBy = createdBy;
-	}
-
-	/**
-	 * Method 'getCreatedDate'
-	 * 
-	 * @return java.util.Date
-	 */
-	public java.util.Date getCreatedDate()
-	{
-		return createdDate;
-	}
-
-	/**
-	 * Method 'setCreatedDate'
-	 * 
-	 * @param createdDate
-	 */
-	public void setCreatedDate(java.util.Date createdDate)
-	{
-		this.createdDate = createdDate;
-	}
-
-	/**
-	 * Method 'getLastModifiedBy'
-	 * 
-	 * @return int
-	 */
-	public WebUser getLastModifiedBy()
-	{
-		return lastModifiedBy;
-	}
-
-	/**
-	 * Method 'setLastModifiedBy'
-	 * 
-	 * @param lastModifiedBy
-	 */
-	public void setLastModifiedBy(WebUser lastModifiedBy)
-	{
-		this.lastModifiedBy = lastModifiedBy;
-	}
-
-	/**
-	 * Method 'getLastModifiedDate'
-	 * 
-	 * @return java.util.Date
-	 */
-	public java.util.Date getLastModifiedDate()
-	{
-		return lastModifiedDate;
-	}
-
-	/**
-	 * Method 'setLastModifiedDate'
-	 * 
-	 * @param lastModifiedDate
-	 */
-	public void setLastModifiedDate(java.util.Date lastModifiedDate)
-	{
-		this.lastModifiedDate = lastModifiedDate;
-	}
-
-	/**
-	 * Method 'isIsUsable'
-	 * 
-	 * @return boolean
-	 */
-	public boolean isIsUsable()
-	{
-		return isUsable;
-	}
-
-	/**
-	 * Method 'setIsUsable'
-	 * 
-	 * @param isUsable
-	 */
-	public void setIsUsable(boolean isUsable)
-	{
-		this.isUsable = isUsable;
-	}
-
-	/**
-	 * Method 'getLabourAmount'
-	 * 
-	 * @return java.math.BigDecimal
-	 */
-	public java.math.BigDecimal getLabourAmount()
-	{
-		return labourAmount;
-	}
-
-	/**
-	 * Method 'setLabourAmount'
-	 * 
-	 * @param labourAmount
-	 */
-	public void setLabourAmount(java.math.BigDecimal labourAmount)
-	{
-		this.labourAmount = labourAmount;
-	}
-
-	/**
-	 * Method 'getTotalAmount'
-	 * 
-	 * @return java.math.BigDecimal
-	 */
-	public java.math.BigDecimal getTotalAmount()
-	{
-		return this.totalAmount;
-	}
-
-	/**
-	 * Method 'setTotalAmount'
-	 * 
-	 * @param totalAmount
-	 */
-	public void setTotalAmount(java.math.BigDecimal totalAmount)
-	{
-		this.totalAmount = totalAmount;
-	}
-
-        public BigDecimal getEstimatedLabourAmount() {
-            return this.labourAmount;
-        }
-
-        public BigDecimal getEstimatedTotalRepairAmount() {
-            return this.totalAmount;
-        }
-
-        public int getEstimatedDaysUnderRepair() {
-            return this.days;
-        }
-        
-        
-        public String getIsUsableDesc(){
-            return this.isIsUsable() ? "Yes" : "No";
-
-        }
+    }
 }

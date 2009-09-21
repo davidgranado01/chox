@@ -2,7 +2,6 @@ package chox.services;
 
 import chox.data.ClaimSearchCriteria;
 import chox.model.*;
-import chox.xmlValidation.model.ClaimResult;
 import java.util.List;
 
 public interface ClaimService {
@@ -11,7 +10,7 @@ public interface ClaimService {
     public Long getCountByStatus(String status);
     public Long getNonDEPaymentLogCount();
     public Long getPenaltyChargeAppliedCount();
-    public Long getHireUpdateAnomaliesCountNumber();
+    public Long getHireUpdateWarningCountNumber();
     public Long getClaimCountByClaimNumber(String claimNumber, int claimId);
     public List getOtherClaimsByClaimNumber(String claimNumber, int claimId);
     public Long getECDCountByClaimId(int claimId);
@@ -26,4 +25,5 @@ public interface ClaimService {
     public void  saveObjectForXMLUploader(final ClaimResult claimResult);
     // public void updateClaimLastModified(int claimId);
     public Boolean isObjectExist(int WorkgroupId);
+    public VehicleClassCelling getVechileClassCellingForClaim(Claim claim);
 }

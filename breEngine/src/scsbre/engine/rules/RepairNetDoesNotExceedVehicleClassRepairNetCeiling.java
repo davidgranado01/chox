@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package scsbre.engine.rules;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import scsbre.engine.IBusinessRule;
 import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
@@ -17,35 +19,38 @@ import scsbre.model.IClaimInfo;
  * rule 3, order 13
  * 
  */
-public class HireNetDoesNotExceedBandHireNetCeiling implements IBusinessRule {
+public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusinessRule {
 
+    String narrative = "";
+    String narrativeTemplate = "The Repair Net billed %s exceeds the Repair Net ceiling of %s for vehicle class %s.";
 
-    
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
 
-        boolean success = claim.getInvoice().getHireNet().compareTo(claim.getChoBand().getHireNetCeiling()) <= 0;
-        
+        BigDecimal repairNet = claim.getInvoice().getRepairNet();
+        BigDecimal repairNetCelling = claim.getVehicleClassCellingInfo().getRepairNetCelling();
+        boolean success = repairNet.compareTo(repairNetCelling) <= 0;
+
         RuleEvaluation res = new RuleEvaluation();
         res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        
+
+        DecimalFormat moneyFormat = new DecimalFormat("£0.00");
+        narrative = String.format(narrativeTemplate, moneyFormat.format(repairNet.doubleValue()), moneyFormat.format(repairNetCelling.doubleValue()), claim.getVClass().getCode());
+
         return res;
 
-    }       
+    }
 
     public String getNarrative() {
-        return "Hire Net billed exceeds the CHO's Hire Net ceiling.";
+        return narrative;
     }
 
     public String getRuleId() {
         return "003";
     }
-    
+
     public ClaimStatus getStatusAfterFailure() {
         return ClaimStatus.InvoiceEscalated;
-    }    
-    
-    
-
+    }
 }

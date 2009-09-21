@@ -3,7 +3,6 @@ package chox.services;
 import java.io.File;
 import chox.model.*;
 import chox.xmlValidation.model.BordereauResult;
-import chox.xmlValidation.model.ClaimResult;
 import chox.xmlValidation.model.status.BordereauParseStatus;
 import chox.xmlValidation.model.status.ClaimParseStatus;
 import chox.xmlValidation.rules.BordereauDataValidation;
@@ -12,12 +11,9 @@ import chox.xmlValidation.rules.BordereauVersionValidation;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.hibernate.TransactionException;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -43,6 +39,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private HireMonitoringDetailService hireMonitoringDetailService;
     private InsurerChorganisationService insurerChorganisationService;
     private BordereauService bordereauService;
+    private BusinessRulesEngService businessRulesEngService;
 
     public static void main(String[] args) {
 
@@ -140,7 +137,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
             if (bordereauResult.isValid()) {
 
-                bordereauResult = new BordereauDataValidation().validate(file, fileName, bordereauResult, claimService, chorganisationService, choBandService, vehicleClassService, insurerAlliasService, insurerChorganisationService, hireMonitoringEcdService, invoiceService, historyService);
+                bordereauResult = new BordereauDataValidation().validate(file, fileName, bordereauResult, claimService, chorganisationService, choBandService, vehicleClassService, insurerAlliasService, insurerChorganisationService, hireMonitoringEcdService, invoiceService, historyService,businessRulesEngService);
 
                 int totalRecord = bordereauResult.getClaimResult().size();
                 int totalProcessed = 0;
@@ -339,4 +336,19 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     public void setBordereauService(BordereauService bordereauService) {
         this.bordereauService = bordereauService;
     }
+
+    /**
+     * @return the businessRulesEngService
+     */
+    public BusinessRulesEngService getBusinessRulesEngService() {
+        return businessRulesEngService;
+    }
+
+    /**
+     * @param businessRulesEngService the businessRulesEngService to set
+     */
+    public void setBusinessRulesEngService(BusinessRulesEngService businessRulesEngService) {
+        this.businessRulesEngService = businessRulesEngService;
+    }
+
 }

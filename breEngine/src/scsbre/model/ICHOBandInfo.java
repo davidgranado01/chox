@@ -4,9 +4,7 @@ import java.math.BigDecimal;
 
 public interface ICHOBandInfo {
 
-    public int getHireDayCeiling();
-
-    public BigDecimal getMaxRepairValue();
+    public int getHireDayCeiling();    
 
     public int getWeekendBufferDays();
 
@@ -30,7 +28,9 @@ public interface ICHOBandInfo {
 
     public int getTakeVehicleToGarageDaysNonMobile();
 
-    public BigDecimal getHireNetCeiling();
+    //public BigDecimal getHireNetCeiling();
+
+    //public BigDecimal getMaxRepairValue();
 
     public int getAverageLabourRate();
     public int getAverageLabourHoursPerHireDay();

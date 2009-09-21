@@ -5,7 +5,6 @@
 package chox.services;
 
 import chox.model.EngineerReport;
-import chox.xmlValidation.model.ClaimResult;
 
 public interface EngineerReportService {
 

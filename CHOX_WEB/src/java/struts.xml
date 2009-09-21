@@ -987,6 +987,13 @@
         <action name="encodeAllUserPassword" class="chox.web.actions.AdminAction" method="encodeAllUserPassword">
             <result>/jsp/p_response.jsp</result>
         </action>
+        <action name="removeNotification" class="chox.web.actions.ClaimAction" method="removeNotification">
+            <result>/jsp/user/p_notificationList.jsp</result>
+        </action>
+        <action name="renderNotifications" class="chox.web.actions.ClaimAction" method="renderNotifications">
+            <result>/jsp/user/p_notificationList.jsp</result>
+        </action>
+
     </package>
     <include file="config-browser.xml"/>
 </struts>

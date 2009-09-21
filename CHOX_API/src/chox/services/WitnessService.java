@@ -7,8 +7,7 @@ package chox.services;
 
 import chox.model.Incident;
 import chox.model.Witness;
-import chox.model.XMLParseResult;import chox.xmlValidation.model.ClaimResult;
-public interface WitnessService {
+import chox.model.XMLParseResult;public interface WitnessService {
     public void saveObjectForXMLUploader(final ClaimResult claimResult);
     public Witness getObject(int id);
     public void updateObject(Witness Witness);

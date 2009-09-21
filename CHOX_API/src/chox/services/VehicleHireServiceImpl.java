@@ -1,7 +1,6 @@
 package chox.services;
 
 import chox.model.*;
-import chox.xmlValidation.model.ClaimResult;
 
 public class VehicleHireServiceImpl extends SecureDataService implements VehicleHireService {
 

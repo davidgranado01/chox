@@ -206,10 +206,18 @@ td.chox-claim-command
 }
 div.chox-form-button
 {
-    padding-left: 230px;
+    font-family:tahoma,arial,helvetica,sans-serif;
+    font-size:12px;
+    font-size-adjust:none;
+    font-style:normal;
+    font-variant:normal;
+    font-weight:normal;
+    line-height:normal;
 }
+
 div.chox-form-button input
 {
+    margin: 4px;
 }
 div.chox-claim-header label
 {
@@ -815,4 +823,10 @@ table.selectionForm td
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 12px;
     width:16%;
+}
+
+div.listContainer ul
+{
+    margin: 8px;
+    list-style-type: disc;
 }

@@ -2,7 +2,7 @@ package chox.xmlValidation.rules;
 
 import chox.Util.DocumentHelper;
 import chox.xmlValidation.model.BordereauResult;
-import chox.xmlValidation.model.ClaimResult;
+import chox.services.ClaimResult;
 import chox.xmlValidation.model.status.ClaimParseStatus;
 import com.filesystemsoftware.utils.XMLUtils;
 import java.io.File;

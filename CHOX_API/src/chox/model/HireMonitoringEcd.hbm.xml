@@ -13,6 +13,6 @@
     <property column="sequence" name="sequence"/>
     <property column="reason" name="reason"/>
     <property column="supporting_note" name="supportingNote"/>
-    <many-to-one class="chox.model.Claim" column="claim_id" name="claim"/>
+    <many-to-one class="chox.model.Claim" column="claim_id" name="claim" not-null="true"/>
   </class>
 </hibernate-mapping>

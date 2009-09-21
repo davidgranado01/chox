@@ -9,7 +9,7 @@ import chox.services.InsurerAlliasService;
 import chox.services.InsurerChorganisationService;
 import chox.services.SecureDataService;
 import chox.services.VehicleClassService;
-import chox.xmlValidation.model.ClaimResult;
+import chox.services.ClaimResult;
 import chox.xmlValidation.model.status.ClaimParseStatus;
 import chox.xmlValidation.rules.DataValidationParameter;
 import chox.xmlValidation.rules.Util.NodeHelper;
