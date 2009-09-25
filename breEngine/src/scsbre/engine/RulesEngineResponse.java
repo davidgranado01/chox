@@ -34,8 +34,8 @@ public class RulesEngineResponse {
                 }
             }
             
-            System.out.println("foundFailedRule:"+foundFailedRule);
-            System.out.println("foundInvoiceDataCalculationIncorrect:"+foundInvoiceDataCalculationIncorrect);
+            // System.out.println("foundFailedRule:"+foundFailedRule);
+            // System.out.println("foundInvoiceDataCalculationIncorrect:"+foundInvoiceDataCalculationIncorrect);
 
             if (foundFailedRule) {
                 if(foundInvoiceDataCalculationIncorrect){
