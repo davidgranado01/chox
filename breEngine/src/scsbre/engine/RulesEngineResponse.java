@@ -24,19 +24,14 @@ public class RulesEngineResponse {
             boolean foundFailedRule = false;
             
             for (int i = 0; i < results.size(); i++) {
-
                 RuleEvaluation rev = results.get(i);
-
                 if (rev.getResult() == RuleEvaluationResult.RuleFailed) {
-
                     foundFailedRule = true;
-                    
-                    if (rev.getRelatedRule().getStatusAfterFailure()
+                    if (rev.getRelatedRule().getStatusAfterFailure() 
                             == ClaimStatus.InvoiceDataCalculationIncorrect) {
                         foundInvoiceDataCalculationIncorrect = true;
                     }         
                 }
-
             }
             
             if (foundFailedRule) {

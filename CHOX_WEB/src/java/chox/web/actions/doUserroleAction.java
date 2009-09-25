@@ -98,13 +98,18 @@ public class doUserroleAction extends AdminBaseModelAction{
         try{
             
             WebUser user = userService.getObject(webUserId);
-            Insurer insurer = insurerService.getObject(user.getInsurer().getId());
             
             this.service.addNewUserRole(webUserId, webUserRoleId);
-            
-            if(service.isClaimHandlerRole(webUserRoleId) && insurer.isWorkgroupEnable()){
-                String ackMsg = "Please add workgroups to this claim handler's user";
-                getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);
+
+            if(user.getOrganisationType() == 2){
+
+                Insurer insurer = insurerService.getObject(user.getInsurer().getId());
+
+                if(service.isClaimHandlerRole(webUserRoleId) && insurer.isWorkgroupEnable()){
+                    String ackMsg = "Please add workgroups to this claim handler's user";
+                    getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);
+                }
+
             }
             
             bActionFlag = true;

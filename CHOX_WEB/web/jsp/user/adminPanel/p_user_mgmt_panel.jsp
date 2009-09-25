@@ -16,7 +16,8 @@
     
     var selectOrgTypeId = <s:property value="selectOrgTypeId" />;
     var selectOrgId = <s:property value="selectOrgId" />;
-    
+    var isCHOXAdmin = <s:property value="isCHOXAdmin" />;
+
     Ext.onReady(function(){
     
        if(selectOrgTypeId>0){
@@ -50,16 +51,6 @@
             ({url: 'user/getUser.action',method:'GET'}),
             reader:gridviewJsonReader      
         });
-        
-        /*
-        var pagingBar = new Ext.PagingToolbar({
-            pageSize: recordPerPage,
-            store: gridviewData,
-            displayInfo: true,
-            displayMsg: 'Displaying users {0} - {1} of {2}',
-            emptyMsg: "No user to display"
-        });
-        */
        
         gridviewGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:recordOnclick },
@@ -101,9 +92,17 @@
     }
 
     function getParameters(){
+
+        orgId ="";
+        userRoleId = -1;
+        
         orgTypeId = $("#orgTypeId").val();
         orgId = $("#orgId").val();
         userRoleId = $("#userrolesId").val();
+
+        if(isOrgShow()){
+            orgId = $("#organisationId").val();
+        }
     }
     
     function loadSelectedRecord(grid, rowIndex, columnIndex, e){
@@ -114,8 +113,8 @@
     }
 
     function createNewRecord(){
-         var gridViewId = -1;
-         getParameters();
+        var gridViewId = -1;
+        getParameters();
         $("#admin_param_panel").load("updateUserDetailPanel.action?mode=New&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId);
     }
     
@@ -135,14 +134,20 @@
     }
     
     function doSelectChange(){
+        
+        $("#organisationId").val("");
+        $("#userrolesId").val("");
+        
         pageRefresh();
     }
     
     function pageRefresh(){
+        
         getParameters();
-        userRoleId = -1;
         showUserroleDropDown();
+        showOrganisationDropDownDiv();
         loadGridViewList();
+        
     }
     
     function doUseroleSelected(){
@@ -192,22 +197,34 @@
     }
 
     function onUpdateUserSubmitResult(responseText, statusText){
-        /*
-        responseText = responseText.trim();
-        
-        if(responseText != ""){
-            if(responseText.substring(0,2)=="1:"){
-                confirm("Please assign line of business to the user in order to activate the user!");
-            }
-        }
-        */
         loadGridViewList();
     }
     
     function showUserroleDropDown() {
         $("#userroleDropDownDiv").load("UserroleDropDownAction.action?orgTypeId=" + orgTypeId);
     }
-    
+
+    function showOrganisationDropDownDiv() {
+        
+        if(isOrgShow()){
+            $("#organisationDropDownDiv").load("OrganisationDropDownAction.action?orgTypeId=" + orgTypeId);
+        }else{
+            $("#organisationDropDownDiv").html("");
+        }
+        
+    }
+
+    function isOrgShow(){
+
+        var isAllow = false;
+
+        if(isCHOXAdmin && (orgTypeId==2 || orgTypeId==3)){
+            isAllow = true;
+        }
+
+        return isAllow;
+    }
+
 </script>
 
 <fieldset class="x-fieldset">
@@ -218,30 +235,31 @@
                 <tr>
                     <td><s:property value="orgTypeId" />
 
-<s:if test="isSelectable">
-    <div class="label-block">
-    <p class="std-label">Organisation Type: </p>
-    <select id="orgTypeId" onchange="javascript:doSelectChange()">
-        <option value="1">Sherwood Organisation</option>
-        <option value="2">Insurer Organisation</option>
-        <option value="3">Credit Hire Organisation</option>
-    </select>
-    </div>
-</s:if>
-<s:else>
-    <input name="orgTypeId" id="orgTypeId" type="hidden" value="<s:property value="orgTypeId" />">
-</s:else>
-
+    <s:if test="isSelectable">
+        <div class="label-block">
+        <p class="std-label">Organisation Type: </p>
+        <select id="orgTypeId" onchange="javascript:doSelectChange()">
+            <option value="1">Sherwood Organisation</option>
+            <option value="2">Insurer Organisation</option>
+            <option value="3">Credit Hire Organisation</option>
+        </select>
+        </div>
+    </s:if>
+    <s:else>
+        <input name="orgTypeId" id="orgTypeId" type="hidden" value="<s:property value="orgTypeId" />">
+    </s:else>
+    
+<div id="organisationDropDownDiv" class="label-block"></div>
 <div id="userroleDropDownDiv" class="label-block"></div>
 
 <input name="orgId" id="orgId" type="hidden" value="<s:property value="orgId" />">
 
                     </td>
-                    <td align="right" width="50%"><button type="button" onclick="javascript:createNewRecord();" style="white-space: nowrap;">Add New User</button></td>
+                    <td align="right" valign="bottom" width="50%"><button type="button" onclick="javascript:createNewRecord();" style="white-space: nowrap;">Add New User</button></td>
                 </tr>
             </table>
 
         </div>
-        <div id="gridviewGrid" style="height:567px; overflow:auto;"></div>
+        <div id="gridviewGrid" style="height:542px; overflow:auto;"></div>
     </div>
 </fieldset>

@@ -53,6 +53,10 @@ public class AdminAction extends BaseAction{
         return selectOrgId;
     }
 
+    public boolean getIsCHOXAdmin(){
+        return currentUser.getIsCHOXAdmin();
+    }
+    
     public void setSelectOrgId(int selectOrgId) {
         
         this.selectOrgId = selectOrgId;

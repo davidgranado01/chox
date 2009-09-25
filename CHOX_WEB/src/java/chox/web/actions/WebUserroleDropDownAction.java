@@ -27,11 +27,8 @@ public class WebUserroleDropDownAction extends BaseAction{
     }
     
     private void getUserroleList(String id) {
-        
         this.userroleList = new ArrayList();
         this.userroleList = service.getWebUserrolesLookupItem(Integer.valueOf(id));
-        
-        System.out.println("WebUserroleDropDownAction > getUserroleList" + userroleList.size());
     }
 
     public String getOrgTypeId() {

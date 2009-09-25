@@ -963,7 +963,10 @@
         <action name="doRemoveBandChorganisationMapping" class="chox.web.actions.doInsurerChoBandMappingAction" method="removeObject">
             <result name="success">/jsp/p_response.jsp</result>
         </action>
-        
+
+        <action name="OrganisationDropDownAction" class="chox.web.actions.OrganisationDropDownAction">
+            <result>/jsp/user/adminPanel/p_dropdown_organisation.jsp</result>
+        </action>
         <action name="UserroleDropDownAction" class="chox.web.actions.WebUserroleDropDownAction">
             <result>/jsp/user/adminPanel/p_dropdown_userrole.jsp</result>
         </action>

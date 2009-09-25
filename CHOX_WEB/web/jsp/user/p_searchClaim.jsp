@@ -12,6 +12,7 @@
         doInsuereSearchSelectOnChange();
     }); 
     
+    
     Ext.onReady(function(){                              
     
         var claimUploadDateFromPicker = new Ext.form.DateField({

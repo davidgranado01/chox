@@ -63,7 +63,8 @@
                                 
                                 <div class="status-info">
 Please carefully review the infomation provided below, as it contains important information regarding the claims you have uploaded.
-<br/>If the XML file that you have supplied contains errors, please correct any errors in accordance with the information specified beneath the specifc claim.
+<br/><br/>
+If the XML file that you have supplied contains errors, please correct any errors in accordance with the information given beneath the specifc claim.
 
                                     <p style="text-align:center">
                                         <s:url id="goBackToInbox" action="inbox" />

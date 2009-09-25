@@ -329,6 +329,7 @@
                         <label class="chox-form-std-label">Email</label>
                         <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value="<s:property value="email" />"/>
                     </div>
+
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">&nbsp;</label>
                         <span class="column_remark">Please note this (Email) will be the user's Username</span>

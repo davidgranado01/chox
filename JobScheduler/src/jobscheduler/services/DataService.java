@@ -12,7 +12,6 @@ import java.sql.SQLException;
 
 public class DataService {
 
-    
     final String databaseServer = "localhost:5432";
     final String databaseConnection = "choxidas_prod";
     final String databaseUserName = "postgres";

@@ -11,10 +11,6 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-/**
- *
- * @author Emmanuel
- */
 public class AccessibilityServiceImpl extends HibernateDaoSupport implements AccessibilityService {
 
     public HashMap getAccessibilityMap() {

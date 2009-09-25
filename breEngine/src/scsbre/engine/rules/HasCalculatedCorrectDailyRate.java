@@ -1,5 +1,6 @@
 package scsbre.engine.rules;
 
+import java.math.BigDecimal;
 import scsbre.engine.IBusinessRule;
 import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
@@ -18,7 +19,12 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
             ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
             IVehicleClassInfo customerVClass = claim.getVClass();
             
-            boolean success = cCalc.getDailyHireRateChargedWithToleranceDeduction().compareTo(customerVClass.getPrice()) <= 0;
+            BigDecimal allowedDailyRate = new BigDecimal(0.00);
+            allowedDailyRate = customerVClass.getPrice().add(claim.getChoBand().getHireRateChargeTolerance());
+
+            // LESS THAN OR EQUAL TO THE TRUE
+            // boolean success = cCalc.getDailyHireRateChargedWithToleranceDeduction().compareTo(customerVClass.getPrice()) <= 0;
+            boolean success = cCalc.getDailyHireRateCharged().compareTo(allowedDailyRate) <= 0;
             
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);    
             if(success)narrative = "";

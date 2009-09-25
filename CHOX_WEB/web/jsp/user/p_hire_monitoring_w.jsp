@@ -130,13 +130,16 @@
             var repairCompletionDt = $("#repairCompletionDatePH :input").val();
             
             if(repairBookInDt!="" && repairCompletionDt!=""){
-            
-                bFlag = (repairBookInDt <= repairCompletionDt);
-                
+               var dRepairBookInDt = getDate(repairBookInDt);
+               var dRepairCompletionDt = getDate(repairCompletionDt);
+               bFlag = (dRepairBookInDt <= dRepairCompletionDt);
             }   
             
+           
             return !bFlag;
         }        
+        
+
         
         function isNonProvisionReasonRequired(){
             

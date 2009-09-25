@@ -392,16 +392,23 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
         hireMonitoringEcds.add(ecd);
     }
 
-    public Date getLatestHireMonitoringEcd() {
+	public Date getLatestHireMonitoringEcd() {
+    
         if (hireMonitoringEcds != null && !hireMonitoringEcds.isEmpty()) {
-            //Emmanuel 08-09-2009
-            //the HireMonitoringEcd is sorted by "createdDate" when retrieving from daabase, see claim.hbm.xml
-            //so the last item must be the latest updated Ecd
+
+
+            // Emmanuel 08-09-2009
+            // the HireMonitoringEcd is sorted by "createdDate" when retrieving from daabase, see claim.hbm.xml
+            // so the last item must be the latest updated Ecd
+
             HireMonitoringEcd latestEcd = hireMonitoringEcds.get(hireMonitoringEcds.size() - 1);
             return latestEcd.getEcdDate();
+
         } else if (customer != null) {
-            //return the initial ecd if have no hireMonitoringEcd been added
+            
+			//return the initial ecd if have no hireMonitoringEcd been added
             return customer.getInitialECD();
+
         }
 
         return null;

@@ -17,9 +17,7 @@
         {
             errorLabelContainer: "#ActionPanelMessageBox",                
             rules: {
-                
                 actionName:{required:true}
-                
             },
             messages: {
                 
