@@ -88,10 +88,14 @@ insert into accessibility_item values ('ROLE_CHO_MNG', 2, (select id from access
 insert into accessibility_item values ('ROLE_CHO_MNG', 2, (select id from accessibility where name ='tab.ClaimDetail.InvoiceDataCalculationIncorrect'), (select max(id)+1 from accessibility_item));
 
 -- -------------------------------------------------------------------------------------------
-
 -- emmanuel 15-09-2009
+
 create table notification (id serial not null, type varchar(255), message varchar(255), claim_id int4, primary key (id));
 alter table notification add constraint FK237A88EBDF101435 foreign key (claim_id) references claim;
+
+-- -------------------------------------------------------------------------------------------
+-- emmanuel 15-09-2009
+
 
 CREATE SEQUENCE notification_id_seq
   INCREMENT 1
@@ -100,20 +104,42 @@ CREATE SEQUENCE notification_id_seq
   START 1
   CACHE 1;
 
- create table vehicle_class_celling (
+-- -------------------------------------------------------------------------------------------
+-- emmanuel 15-09-2009
+
+
+Create table vehicle_class_celling (
  insurer_id integer not null, 
  vehicle_class_id integer not null, 
  created_by integer, created_date timestamp, 
  last_modified_by integer, 
  last_modified_date timestamp, 
- primary key (insurer_id, vehicle_class_id))
+ primary key (insurer_id, vehicle_class_id));
   
+-- -------------------------------------------------------------------------------------------
+-- emmanuel 15-09-2009
+
+
+alter table vehicle_class add constraint FK58908AA5EF9D5388 foreign key (created_by) references web_user;
+alter table vehicle_class add constraint FK58908AA5DC88F7DE foreign key (last_modified_by) references web_user;
+alter table vehicle_class_celling add constraint FKF098B7A6EF9D5388 foreign key (created_by) references web_user;
+alter table vehicle_class_celling add constraint FKF098B7A650F077F5 foreign key (insurer_id) references insurer;
+alter table vehicle_class_celling add constraint FKF098B7A6A373B246 foreign key (vehicle_class_id) references vehicle_class;
+alter table vehicle_class_celling add constraint FKF098B7A6DC88F7DE foreign key (last_modified_by) references web_use;
   
-alter table vehicle_class add constraint FK58908AA5EF9D5388 foreign key (created_by) references web_user
-alter table vehicle_class add constraint FK58908AA5DC88F7DE foreign key (last_modified_by) references web_user
-alter table vehicle_class_celling add constraint FKF098B7A6EF9D5388 foreign key (created_by) references web_user
-alter table vehicle_class_celling add constraint FKF098B7A650F077F5 foreign key (insurer_id) references insurer
-alter table vehicle_class_celling add constraint FKF098B7A6A373B246 foreign key (vehicle_class_id) references vehicle_class
-alter table vehicle_class_celling add constraint FKF098B7A6DC88F7DE foreign key (last_modified_by) references web_use
-  
-  
+-- -------------------------------------------------------------------------------------------
+-- Carlson 28-09-2009
+
+insert into accessibility values ((select max(id)+1 from accessibility), 'report.InvoiceSavingSummaryReport');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name = 'report.InvoiceSavingSummaryReport'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name = 'report.InvoiceSavingSummaryReport'), (select max(id)+1 from accessibility_item));
+
+-- -------------------------------------------------------------------------------------------
+-- Carlson 28-09-2009
+
+ALTER TABLE invoice ADD COLUMN original_total_to_pay numeric(10,2);
+UPDATE invoice set original_total_to_pay = total_to_pay;
+ALTER TABLE invoice ALTER COLUMN original_total_to_pay SET STORAGE MAIN;
+ALTER TABLE invoice ALTER COLUMN original_total_to_pay SET NOT NULL;
+ALTER TABLE invoice ALTER COLUMN original_total_to_pay SET DEFAULT 0;
+
