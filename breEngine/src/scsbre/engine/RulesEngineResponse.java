@@ -34,9 +34,6 @@ public class RulesEngineResponse {
                 }
             }
             
-            // System.out.println("foundFailedRule:"+foundFailedRule);
-            // System.out.println("foundInvoiceDataCalculationIncorrect:"+foundInvoiceDataCalculationIncorrect);
-
             if (foundFailedRule) {
                 if(foundInvoiceDataCalculationIncorrect){
                     status = ClaimStatus.InvoiceDataCalculationIncorrect;
@@ -48,9 +45,6 @@ public class RulesEngineResponse {
             else{
                 status = ClaimStatus.InvoiceApprovedByBRE;
             }
-
-            System.out.println("status:"+status);
-            
         }
         return status;
     }

@@ -80,6 +80,7 @@ public class BusinessRuleEngProcess {
         
         VehicleClass cust_VehicleClass = this.claimResult.getClaim().getCustomer().getVehicleClass();
         VehicleClass thirdVehicleClass = this.claimResult.getClaim().getThirdParty().getVehicleClass();
+        VehicleClass Vehicle_HireClass = this.claimResult.getClaim().getVehicleHire().getVehicleClass();
         
         Claim breClaim = doConstructBreValidateObject(this.claimResult.getClaim());        
         RulesEngineResponse validationResult = invoiceService.XMLUploaderInvoiceValidation(breClaim);
@@ -101,6 +102,7 @@ public class BusinessRuleEngProcess {
 
         this.claimResult.getClaim().getCustomer().setVehicleClass(cust_VehicleClass);
         this.claimResult.getClaim().getThirdParty().setVehicleClass(thirdVehicleClass);
+        this.claimResult.getClaim().getVehicleHire().setVehicleClass(Vehicle_HireClass);
     }
     
     private List<History> processBreErrorMessage(List<RuleEvaluation> results){
@@ -157,7 +159,17 @@ public class BusinessRuleEngProcess {
                 claim.getCustomer().setVehicleClass(null);
             }
         }
-        
+
+        // Mantis id: 630
+        // Change to read vehicleHire's Vehicle Class
+        // SET VEHICLE CLASS TO NULL WHEN
+        if(claim.getVehicleHire().getVehicleClass()!=null){
+            if(claim.getVehicleHire().getVehicleClass().getName().equalsIgnoreCase("Unattached")
+                    || claim.getVehicleHire().getVehicleClass().getName().equalsIgnoreCase("UNATTACHED")){
+                claim.getVehicleHire().setVehicleClass(null);
+            }
+        }
+
         claim.setHireMonitoringEcd(hireMonitoringEcdService.getLatestHireMonitoringECDDate(claim));        
         return claim;
     }
@@ -176,9 +188,8 @@ public class BusinessRuleEngProcess {
             System.out.println(sectionName + "| getInsurer :"+this.claimResult.getClaim().getInsurer());
             System.out.println(sectionName + "| getInvoice :"+this.claimResult.getClaim().getInvoice().getClaimInvoiceNo());
             System.out.println(sectionName + "| getThirdParty :"+this.claimResult.getClaim().getThirdParty().getFirstName());
-            System.out.println(sectionName + "| getVehicleHire :"+this.claimResult.getClaim().getVehicleHire().getIsTotalLoss());
+            System.out.println(sectionName + "| getVehicleHire :"+this.claimResult.getClaim().getVehicleHire().getVehicleClass().getCode());
         }
-          
     }
 }
 

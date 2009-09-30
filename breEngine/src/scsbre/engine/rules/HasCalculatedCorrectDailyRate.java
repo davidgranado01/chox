@@ -17,7 +17,14 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
         if(claim.getVClass() != null){
             
             ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
-            IVehicleClassInfo customerVClass = claim.getVClass();
+
+            // Mantis id: 630
+            // Change to read vehicleHire's Vehicle Class
+            // IVehicleClassInfo customerVClass = claim.getVClass();
+            IVehicleClassInfo customerVClass = claim.getHireDetail().getVClass();
+            // System.out.println("BRE CHECK ******************** ");
+            // System.out.println("BRE VEHICLE CLASS CODE: "+customerVClass.getCode());
+            // System.out.println("BRE VEHICLE CLASS PRICE: "+customerVClass.getPrice());
             
             BigDecimal allowedDailyRate = new BigDecimal(0.00);
             allowedDailyRate = customerVClass.getPrice().add(claim.getChoBand().getHireRateChargeTolerance());
@@ -28,7 +35,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
             
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);    
             if(success)narrative = "";
-        
+            
         } else {
             
             narrative = "Customer vehicle class is not specified.";

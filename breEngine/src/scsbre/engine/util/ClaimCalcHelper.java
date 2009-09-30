@@ -55,14 +55,14 @@ public class ClaimCalcHelper {
             return hireNetMinusExtras.divide(new BigDecimal(claim.getHireDetail().getNumberOfHireDays()), 4, 1);
 	}
         
-        /*
+    /*
 	public BigDecimal getDailyHireRateChargedWithToleranceDeduction()
 	{
             BigDecimal tolerance = getDailyHireRateCharged().multiply(claim.getChoBand().getHireRateChargeTolerance());            
             return getDailyHireRateCharged().subtract(tolerance);
 	}
-        */
-        
+    */
+
 	public int getAllowedDays()
 	{
 		int allowedDays = 0;
