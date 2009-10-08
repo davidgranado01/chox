@@ -235,24 +235,24 @@
                 <tr>
                     <td><s:property value="orgTypeId" />
 
-    <s:if test="isSelectable">
-        <div class="label-block">
-        <p class="std-label">Organisation Type: </p>
-        <select id="orgTypeId" onchange="javascript:doSelectChange()">
-            <option value="1">Sherwood Organisation</option>
-            <option value="2">Insurer Organisation</option>
-            <option value="3">Credit Hire Organisation</option>
-        </select>
-        </div>
-    </s:if>
-    <s:else>
-        <input name="orgTypeId" id="orgTypeId" type="hidden" value="<s:property value="orgTypeId" />">
-    </s:else>
+        <s:if test="isSelectable">
+            <div class="label-block">
+            <p class="std-label">Organisation Type: </p>
+            <select id="orgTypeId" onchange="javascript:doSelectChange()">
+                <option value="1">Sherwood Organisation</option>
+                <option value="2">Insurer Organisation</option>
+                <option value="3">Credit Hire Organisation</option>
+            </select>
+            </div>
+        </s:if>
+        <s:else>
+            <input name="orgTypeId" id="orgTypeId" type="hidden" value="<s:property value="orgTypeId" />">
+        </s:else>
     
-<div id="organisationDropDownDiv" class="label-block"></div>
-<div id="userroleDropDownDiv" class="label-block"></div>
-
-<input name="orgId" id="orgId" type="hidden" value="<s:property value="orgId" />">
+    <div id="organisationDropDownDiv" class="label-block"></div>
+    <div id="userroleDropDownDiv" class="label-block"></div>
+    
+    <input name="orgId" id="orgId" type="hidden" value="<s:property value="orgId" />">
 
                     </td>
                     <td align="right" valign="bottom" width="50%"><button type="button" onclick="javascript:createNewRecord();" style="white-space: nowrap;">Add New User</button></td>

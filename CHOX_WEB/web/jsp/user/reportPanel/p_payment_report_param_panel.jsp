@@ -107,7 +107,7 @@
     listKey="id" 
     listValue="name"
     headerKey=""
-    headerValue="--- Select ---"
+    headerValue="- Please Select -"
     emptyOption="false">
     </s:select>
 </td>

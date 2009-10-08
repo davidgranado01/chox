@@ -606,12 +606,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String validationECDResult = validateHireMonitoringECDDetail();
         String validationLabourResult = validateHireMonitoringLabourDetail();
 
-        // System.out.println("V:validationECDResult"+validationECDResult);
-        // System.out.println("V:validationLabourResult"+validationLabourResult);
-
         if ((validationLabourResult.length() + validationECDResult.length()) <= 0) {
-
-            // System.out.println("V:PASSED");
 
             String newStatus = ClaimStatus.AWAITING_INVOICE_DATA;
 
@@ -635,8 +630,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         } else {
 
-            // System.out.println("V:FAILED");
-
             result = ERROR;
 
             if (validationECDResult.length() > 0) {
@@ -646,9 +639,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 this.actionResult = validationLabourResult;
             }
         }
-
-        // System.out.println("V:FAILED 1:"+this.actionResult);
-        // System.out.println("V:FAILED 2:"+this.actionResult2);
 
         return result;
     }
@@ -692,9 +682,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         boolean bActionFlag = true;
         String result = SUCCESS;
         String sActionMsg = "";
-
-        claim = businessRulesEngService.constructBreValidateObject(claim);
-        RulesEngineResponse reponse = businessRulesEngService.validate(claim);
+        
+        // claim = businessRulesEngService.constructBreValidateObject(claim);
+        RulesEngineResponse reponse = businessRulesEngService.processResubmitInvoice(claim);
         historyService.logInvoiceValidationErrorMsg(reponse, claim);
         String repStatus = reponse.getStatus().name();
 
@@ -727,6 +717,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             this.actionResult = "ERROR : Invoice data calculation incorrect";
             result = ERROR;
+            
         }
 
         return result;
@@ -1043,8 +1034,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (this.actionName.equalsIgnoreCase(REJECT)) {
 
-            claim = businessRulesEngService.constructBreValidateObject(claim);
-            RulesEngineResponse reponse = businessRulesEngService.validate(claim);
+            //TODO
+            // claim = businessRulesEngService.constructBreValidateObject(claim);
+            // RulesEngineResponse reponse = businessRulesEngService.validate(claim);
+            // historyService.logInvoiceValidationErrorMsg(reponse, claim);
+
+            RulesEngineResponse reponse = businessRulesEngService.processResubmitInvoice(claim);
             historyService.logInvoiceValidationErrorMsg(reponse, claim);
 
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_INS;
@@ -1185,6 +1180,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.attachmentTypeService = attachmentTypeService;
     }
 
+    public void setBusinessRulesEngService(BusinessRulesEngService businessRulesEngService) {
+        this.businessRulesEngService = businessRulesEngService;
+    }
+    
     public String getStatusMsg() {
         return statusMsg;
     }
@@ -1219,6 +1218,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 //        }
 //        return result;
 //    }
+    
     public String getAlertPanel() {
         String result = EMPTY;
 

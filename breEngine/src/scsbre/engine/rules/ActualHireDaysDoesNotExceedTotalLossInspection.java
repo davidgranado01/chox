@@ -22,7 +22,7 @@ import scsbre.model.IClaimInfo;
 public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusinessRule {
 
     
-    String narrative = "Number of hire days billed exceeds the allowable threshold (for total loss hires).";
+    String narrative = "Number of hire days billed by the CHO exceeds the allowable days threshold for total loss hires.";
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
         RuleEvaluation res = new RuleEvaluation();

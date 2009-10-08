@@ -97,7 +97,7 @@ ALTER TABLE bordereau OWNER TO postgres;
 ALTER TABLE web_user ADD COLUMN is_expired boolean DEFAULT false;
 
 -- Emmanuel : Set All user account to isExpired = true
-UPDATE web_user SET is_expired=true
+UPDATE web_user SET is_expired=true;
 
 -- -------------------------------------------------------------------------------------------
 

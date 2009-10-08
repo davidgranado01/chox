@@ -209,17 +209,14 @@
             
         }
         else if(response && response.errors){
-            
             output = formErrorMessage(response.errors);
             $("#chox-form-submit-result").attr("class", "submit-error")
             $("#chox-form-submit-result").html(output);
-            
         }
         else
         {
             output = "Unknown Error Encountered, please try again.";
             $("#chox-form-submit-result").attr("class", "submit-error");
-                
         }
         $("#admin_param_panel").unblock();
     }
@@ -354,12 +351,8 @@
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">Insurer Company<span class="mandatory">*</span></label>
                             <s:select id="insurerId" name="insurerId"
-                                      list="insurers"
-                                      listKey="id"
-                                      listValue="name"
-                                      headerKey=""
-                                      headerValue="--- ALL ---"
-                                      emptyOption="false">
+                                      list="insurers" listKey="id" listValue="name"
+                                      headerKey="" headerValue="--- ALL ---" emptyOption="false">
                             </s:select>
                         </div>
 
@@ -417,11 +410,11 @@
                 <s:if test="mode=='New'">
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>
-                        <input type="password" class="chox-ttxt" id="password" name="password" size="10" maxlength="10"/>
+                        <input type="password" class="chox-ttxt" id="password" name="password" size="20" maxlength="20"/>
                     </div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Re-enter Password<span class="mandatory">*</span></label>
-                        <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="10"/>
+                        <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20"/>
                     </div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">&nbsp;</label>
@@ -459,11 +452,11 @@
                 <input type="hidden" name="orgTypeId" id="orgTypeId" value='<s:property value="orgTypeId"/>'>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>
-                    <input type="password" class="chox-ttxt" id="password" name="password" size="10" maxlength="10"/>
+                    <input type="password" class="chox-ttxt" id="password" name="password" size="20" maxlength="20"/>
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Re-enter Password<span class="mandatory">*</span></label>
-                    <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="10"/>
+                    <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20"/>
                 </div>
                 <div class="chox-form-button">
                     <input type="button" id="changePassword" value="Save Password" onclick="javascript:return doSubmitNewPassword();" />

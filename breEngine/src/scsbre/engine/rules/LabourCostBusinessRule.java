@@ -26,7 +26,7 @@ public class LabourCostBusinessRule implements IBusinessRule {
             
             if(iNumberOfHireDay>iNumberDayOfLabourCostWorthy){
                 success = false;
-                narrative = "The number of hire days billed is not relative to the number of expected hire days based on labour cost information.";
+                narrative = "The number of hire days billed by the CHO is not relative to the number of expected hire days based on the labour information provided.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);

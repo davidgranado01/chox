@@ -165,7 +165,7 @@ public class ClaimResult{
         }else if(this.claimParseStatus.equals(ClaimParseStatus.ClaimNotEditable)){
             sReturn ="Claim Closed or Pending";
         }else if(this.claimParseStatus.equals(ClaimParseStatus.existClaim)){
-            sReturn ="Claim Already Exist";
+            sReturn ="Claim Already Exists";
         }else if(this.claimParseStatus.equals(ClaimParseStatus.existInvoice)){
             sReturn ="Invoice Already Exists";
         }else if(this.claimParseStatus.equals(ClaimParseStatus.invalidSchema)){

@@ -8,16 +8,17 @@ import chox.web.security.PermissionedUser;
 import chox.web.viewdata.ActionResponse;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
+
 /**
  * @author Emmanuel Kong
  * @version 
  */
+
 public class BaseAction extends ActionSupport {
 
     private PermissionedUser user;
-     private ActionResponse actionResponse;
-    
-  
+    private ActionResponse actionResponse;
+   
     @AcegiPrincipal
     public void setAuthenticatedUser(PermissionedUser user) {
         this.user = user;
@@ -37,6 +38,34 @@ public class BaseAction extends ActionSupport {
         return user;
     }
     
+    public Integer getRoleTypeForHelpFile(){
+
+        /*
+        1: // NORMAL INSURER ROLE
+        2: // INSURER MANAGER ROLE
+        3: // NORMAL CREDIT HIRE ROLE
+        4: // CREDIT HIRE MANAGER ROLE
+        */
+
+        Integer iRoleType = null;
+
+        if(getIsInsurer()){
+            iRoleType = 1;
+            if(getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG)){
+                iRoleType = 2;
+            }
+        }
+        
+        if(getIsCHO()){
+            iRoleType = 3;
+            if(getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CH_MNG)){
+                iRoleType = 4;
+            }
+        }
+
+        return iRoleType;
+    }
+
     public boolean getIsCHO()
     {
         return getAuthenticatedUser().getIsCHO();
@@ -85,4 +114,5 @@ public class BaseAction extends ActionSupport {
         }
         return actionResponse;
     }
+    
 }

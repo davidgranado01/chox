@@ -48,8 +48,8 @@
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
                 {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Remove</a>"}},       
-                {header: "Created By", width: 80, dataIndex: 'createdBy', sortable: true, resizable: true},
-                {header: "Created Date", width: 120, dataIndex: 'createdDate', sortable: true, resizable: true}
+                {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
+                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
             renderTo:'workgroup_gridviewGrid',
                 width:605,
@@ -57,6 +57,7 @@
                 enableHdMenu:false
             });
 
+            /*
             var pagingBar = new Ext.PagingToolbar({
                 pageSize: workgroup_recordPerPage,
                 store: workgroup_gridviewData,
@@ -64,6 +65,7 @@
                 displayMsg: 'Displaying records {0} - {1} of {2}',
                 emptyMsg: "No record to display"
             });    
+            */
             
             workgroup_loadGridViewList()
 
@@ -193,24 +195,23 @@
     
 </script>
 
-<div>
-
     <div id="organisationGird">
+        
         <div class="gridViewHeader">
+            
             <table width="100%">
-                <tr>
-                </tr>
                 <tr><td>
-                        <div class="label-block">
-                    <p class="std-label">Workgroup: </p> <input name="workgroupName" id="workgroupName" type="text">
+                    <div class="label-block">
+                    <p class="std-label">Workgroup: </p><input name="workgroupName" id="workgroupName" type="text">
                     <input type="button" onclick="javascript:return workgroup_triggerStatusAddRecord();" value="Add"/>
                     </div>
                     </td></tr>
-                    <tr><td><b><div id="CDInsurerWorkgroupMessageBox" class="acknowledgeBox"/></b></td></tr>                
+                <tr><td><div id="CDInsurerWorkgroupMessageBox"></div></td></tr>
             </table>
 
         </div>
-        <div id="workgroup_gridviewGrid" style="height:540px; overflow:auto;"></div>
+        
+        <div id="workgroup_gridviewGrid" style="height:482px; overflow:auto;"></div>
+        
     </div>
 
-</div>

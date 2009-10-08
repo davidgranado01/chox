@@ -13,9 +13,13 @@ import scsbre.engine.RulesEngineResponse;
  */
 public interface BusinessRulesEngService {
 
+    // XML UPLOAD
     ClaimResult execute(ClaimResult claimResult);
+    
+    // RulesEngineResponse validate(Claim claim);
+    // Claim constructBreValidateObject(Claim claim);
 
-    RulesEngineResponse validate(Claim claim);
+    // INVOICE RESUBMIT
+    RulesEngineResponse processResubmitInvoice(Claim claim);
 
-    Claim constructBreValidateObject(Claim claim);
 }

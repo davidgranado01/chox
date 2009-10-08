@@ -710,7 +710,8 @@
             <result name="ClaimRejectedReport-Excel">/jsp/user/reportPanel/p_claim_rejected_report_param_panel.jsp</result>            
             <result name="PaymentReport-Excel">/jsp/user/reportPanel/p_payment_report_param_panel.jsp</result> 
             <result name="OverviewSummary-Excel">/jsp/user/reportPanel/p_overview_summary_report_param_panel.jsp</result> 
-            <result name="AverageSettlementAmount-Excel">/jsp/user/reportPanel/p_insurer_avegare_settlement_report.jsp</result> 
+            <result name="AverageSettlementAmount-Excel">/jsp/user/reportPanel/p_insurer_average_settlement_report.jsp</result>
+            <result name="InvoiceSavingSummaryReport-Excel">/jsp/user/reportPanel/p_insurer_saving_summary_report.jsp</result>
         </action>
         
         <action name="exportExcelReport" class="chox.web.actions.ReportAction" method="exportReport">

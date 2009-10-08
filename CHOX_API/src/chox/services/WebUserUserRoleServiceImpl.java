@@ -1,11 +1,11 @@
 package chox.services;
 
 import chox.model.IdLookupItem;
-import chox.model.WebUser;
 import chox.model.WebUserRole;
 import chox.model.WebUserUserRole;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -232,7 +232,11 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);  
         criteria.add(Restrictions.eq("id", roleId));
-        criteria.add(Restrictions.eq("name", WebUserRole.ROLE_CH));
+        
+        Criterion chCriterion = Restrictions.eq("name", WebUserRole.ROLE_CH);
+        Criterion chtlCriterion = Restrictions.eq("name", WebUserRole.ROLE_CHTL);
+        criteria.add(Restrictions.or(chCriterion, chtlCriterion));
+        
         webUserRole = (WebUserRole) getByCriteria(criteria);
         
         if(webUserRole!=null){
@@ -240,6 +244,5 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         }
         
         return isClaimHandler;
-    }
-    
+    }   
 }

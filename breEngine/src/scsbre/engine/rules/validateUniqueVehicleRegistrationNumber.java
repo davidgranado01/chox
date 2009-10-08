@@ -28,7 +28,7 @@ public class validateUniqueVehicleRegistrationNumber implements IBusinessRule {
     }
 
     public String getNarrative() {
-        return "The Vehicle Registration Number supplied already exists in the system.";
+        return "The Customer's Vehicle Registration Number supplied already exists in the system.";
     }
 
     public String getRuleId() {

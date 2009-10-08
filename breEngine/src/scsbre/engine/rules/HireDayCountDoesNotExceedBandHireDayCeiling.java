@@ -37,7 +37,7 @@ public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRul
     }       
 
     public String getNarrative() {
-        return "Number of hire days billed exceeds the CHO's hire days ceiling.";
+        return "Number of hire days billed by the CHO exceeds the CHO's hire days ceiling.";
     }
 
     public String getRuleId() {

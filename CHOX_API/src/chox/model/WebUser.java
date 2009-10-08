@@ -351,9 +351,10 @@ public class WebUser implements Serializable {
             Iterator itr = roles.iterator();
 
             while (itr.hasNext()) {
+                
                 WebUserRole webUserrole = (WebUserRole) itr.next();
 
-                if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CH)) {
+                if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CH) || webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHTL)) {
                     bFlag = true;
                     break;
                 }
@@ -363,7 +364,7 @@ public class WebUser implements Serializable {
         return bFlag;
 
     }
-
+    
     public String getDisplayName() {
         return String.format("%1$s %2$s", this.getFirstName(), this.getLastName());
     }

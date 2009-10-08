@@ -54,6 +54,9 @@
                                 <s:if test="reportAccessibility.insurerAverageClaimSettlementReportAccessibility">                                
                                 <li><a href="javascript:renderParameterPanel('AverageSettlementAmount-Excel');">Average Claim Settlement Amount Report</a></li>
                                 </s:if>
+                                <s:if test="reportAccessibility.invoiceSavingSummaryReportAccessibility">
+                                <li><a href="javascript:renderParameterPanel('InvoiceSavingSummaryReport-Excel');">CHO Invoice Saving Summary</a></li>
+                                </s:if>
                             </ul>
                         </div>
                     </div>  

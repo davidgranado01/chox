@@ -198,6 +198,8 @@ public class Invoice extends AuditableEntity implements Serializable, IInvoiceIn
     protected Integer reasonOfRejectionId;
     protected Date penaltyChargeAppliedDate;
 
+    protected BigDecimal originalTotalToPay;
+
     /**
      * Method 'Invoice'
      *
@@ -1092,4 +1094,14 @@ public class Invoice extends AuditableEntity implements Serializable, IInvoiceIn
     public void setPenaltyChargeAppliedDate(Date penaltyChargeAppliedDate) {
         this.penaltyChargeAppliedDate = penaltyChargeAppliedDate;
     }
+
+    public BigDecimal getOriginalTotalToPay() {
+        return originalTotalToPay;
+    }
+
+    public void setOriginalTotalToPay(BigDecimal originalTotalToPay) {
+        this.originalTotalToPay = originalTotalToPay;
+    }
+
+
 }

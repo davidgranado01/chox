@@ -74,7 +74,6 @@
     </bean>      
     <bean id="chorganisationService" class="chox.services.ChorganisationServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
     <bean id="choBandOrganisationService" class="chox.services.ChoBandOrganisationServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>

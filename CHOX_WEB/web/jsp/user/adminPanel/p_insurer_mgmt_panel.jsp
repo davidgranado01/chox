@@ -14,9 +14,9 @@
            
            InsurerMainPanelTabs = new Ext.TabPanel({
            renderTo: 'InsurerMainPanel',
-           height:660,
            autoScroll :true,
            activeTab: 0,
+           Height:550,
            items:[
                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroups', listeners: {activate: doSelectDetail}},
                {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: doSelectDetail}},

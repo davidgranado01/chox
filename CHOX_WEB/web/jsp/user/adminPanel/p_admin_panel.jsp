@@ -1,11 +1,10 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <head>        
-    
+    <title></title>
     <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.validate.min.js"></script> 
     <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script> 
-    
-    <script>
+    <script type="text/javascript">
         
         function renderAdminParameterPanel(selectedPanel)
         {
@@ -15,14 +14,18 @@
     </script>
 </head>
 
-<div class="x-panel-bwrap chox-form-container" id="xPenalMainRight">
+<div class="x-panel-bwrap chox-form-container" id="xPenalMainRight" style="height:610px;">
     
-    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <table cellpadding="0" cellspacing="0" width="100%" style="height:100%;">
+        
         <tr valign="top">
-            <td class="chox-admin-form-left-col">
-                <fieldset class="x-fieldset">
+            
+            <td class="chox-admin-form-left-col" width="200px">
+                
+                <fieldset class="x-fieldset" style="height:95%;">
                     <legend>Admin Panel</legend>
-                        <div style="height:620px;" class="x-panel-bwrap chox-form-container" width="200px" >
+                    <div class="x-panel-bwrap chox-form-container" >
+
                             <ul>
 
 <s:if test="adminAccessibility.isInsurerCompaniesAdminAccessibility">
@@ -42,12 +45,16 @@
 </s:if>
 
 </ul>
+
                     </div>
                 </fieldset>
+                
             </td>
-            <td class="chox-form-right-col" style="height:620px;">
+
+            <td class="chox-form-right-col">
                 <div id="admin_param_panel"></div>
             </td>
+
         </tr>
     </table>
     

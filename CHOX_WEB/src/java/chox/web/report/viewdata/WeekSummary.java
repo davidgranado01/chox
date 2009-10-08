@@ -13,8 +13,11 @@ public class WeekSummary {
     private String weekCycleDate;
     private Integer claimsBFwd = 0;
     private Integer claimsNotification = 0;
+    private Integer reopenClaims = 0;
     private Integer claimsOutOfScope = 0;
+    private Integer rejectedClaims = 0;
     private Integer nonThisInsurerClaims = 0;
+    private Integer insurerClaimsClosed = 0;
     private Integer claimsPaid = 0;
     private Integer claimsNotificationContestedByInsurer = 0;
     private BigDecimal claimsContestedAsPercentageOfChox = new BigDecimal(0.00);
@@ -38,8 +41,14 @@ public class WeekSummary {
         result.setWeekCycleDate(data.get("weekCycleDate").toString());
         result.setClaimsBFwd(getIntegerValue(data.get("claimsBFwd".toLowerCase())));
         result.setClaimsNotification(getIntegerValue(data.get("claimsNotification".toLowerCase())));
+        // Added by Calrson @ 20091001
+        result.setReopenClaims(getIntegerValue(data.get("reopenClaims".toLowerCase())));
         result.setClaimsOutOfScope(getIntegerValue(data.get("claimsOutOfScope".toLowerCase())));
+        // Added by Carlson @ 20091001
+        result.setRejectedClaims(getIntegerValue(data.get("rejectedClaims".toLowerCase())));
         result.setNonThisInsurerClaims(getIntegerValue(data.get("nonThisInsurerClaims".toLowerCase())));
+        // Added by Carlson @ 20091001
+        result.setInsurerClaimsClosed(getIntegerValue(data.get("insurerClaimsClosed".toLowerCase())));
         result.setClaimsPaid(getIntegerValue(data.get("claimsPaid".toLowerCase())));
         result.setClaimsNotificationContestedByInsurer(getIntegerValue(data.get("claimsNotificationContestedByInsurer".toLowerCase())));
         result.setClaimsPendingByInsurer(getIntegerValue(data.get("claimsPendingByInsurer".toLowerCase())));
@@ -116,6 +125,36 @@ public class WeekSummary {
         }
     }
 
+    // Added by Carlson @ 20091001
+    public Integer getReopenClaims() {
+        return reopenClaims;
+    }
+
+    // Added by Carlson @ 20091001
+    public void setReopenClaims(Integer reopenClaims) {
+        this.reopenClaims = reopenClaims;
+    }
+
+    // Added by Carlson @ 20091001
+    public Integer getRejectedClaims() {
+        return rejectedClaims;
+    }
+
+    // Added by Carlson @ 20091001
+    public void setRejectedClaims(Integer rejectedClaims) {
+        this.rejectedClaims = rejectedClaims;
+    }
+
+    // Added by Carlson @ 20091001
+    public Integer getInsurerClaimsClosed() {
+        return insurerClaimsClosed;
+    }
+
+    // Added by Carlson @ 20091001
+    public void setInsurerClaimsClosed(Integer insurerClaimsClosed) {
+        this.insurerClaimsClosed = insurerClaimsClosed;
+    }
+
     public Integer getClaimsBFwd() {
         return claimsBFwd;
     }
@@ -125,7 +164,9 @@ public class WeekSummary {
     }
 
     public Integer getClaimsCFwd() {
-        return claimsBFwd + claimsNotification - claimsOutOfScope - nonThisInsurerClaims - claimsPaid;
+        // return claimsBFwd + claimsNotification - claimsOutOfScope - nonThisInsurerClaims - claimsPaid;
+        // Added by Carlson @ 20091001
+        return claimsBFwd + claimsNotification + reopenClaims - claimsOutOfScope - rejectedClaims - nonThisInsurerClaims - insurerClaimsClosed - claimsPaid;
     }
     
     public void setClaimsContestedAsPercentageOfChox(BigDecimal claimsContestedAsPercentageOfChox) {

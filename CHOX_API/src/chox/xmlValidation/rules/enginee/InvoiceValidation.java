@@ -90,6 +90,7 @@ public class InvoiceValidation extends SecureDataService implements rulesInterfa
         invoice.setTotalNet(XmlHelper.getBigDecimalFromNode(this.element, "net"));
         invoice.setTotalVat(XmlHelper.getBigDecimalFromNode(this.element, "vat"));
         invoice.setTotalToPay(XmlHelper.getBigDecimalFromNode(this.element, "total-to-pay"));
+        invoice.setOriginalTotalToPay(invoice.getTotalToPay());
         invoice.setDiscount(XmlHelper.getBigDecimalFromNode(this.element, "less-discount"));
         invoice.setDeductionForClaimsHandlingFee(XmlHelper.getBigDecimalFromNode(this.element, "less-handling-fee"));
         invoice.setDateInvoiced(XmlHelper.getTimeStampFromNode(this.element, "date-invoiced"));

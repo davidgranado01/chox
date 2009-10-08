@@ -95,7 +95,9 @@
 </script>
 
 <div id="chobandDiv" name="chobandDiv">
+    
         <div id="organisationGird">
+            
             <div class="gridViewHeader">
                 
                 <table width="100%">
@@ -105,6 +107,9 @@
                     </tr>
                 </table>
             </div>
-            <div id="choband_gridviewGrid"></div>
+            
+            <div id="choband_gridviewGrid" style="height:520px; overflow:auto;"></div>
+            
         </div>
+    
 </div>

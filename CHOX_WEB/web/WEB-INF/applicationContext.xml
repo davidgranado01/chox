@@ -5,7 +5,7 @@
     <bean id="auditInterceptor" class="chox.data.DBInterceptor" singleton="false">
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
-    
+
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver">
         </property>
@@ -21,11 +21,11 @@
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver">
         </property>
-        <property name="url" value="jdbc:postgresql://localhost:5432/chox">       
+        <property name="url" value="jdbc:postgresql://localhost:5432/20091001_test_mi">
         </property>
-        <property name="username" value="chox">
+        <property name="username" value="postgres">
         </property>
-        <property name="password" value="chox">
+        <property name="password" value="GreenF1nCH">
         </property>
     </bean>    
     !-->

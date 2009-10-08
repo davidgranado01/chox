@@ -17,10 +17,22 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
         if(claim.getVClass() != null){
             
             ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
-            IVehicleClassInfo customerVClass = claim.getVClass();
+
+            // Mantis id: 630
+            // Change to read vehicleHire's Vehicle Class
+            // IVehicleClassInfo customerVClass = claim.getVClass();
+            IVehicleClassInfo vehickeHireVClass = claim.getHireDetail().getVClass();
+            // System.out.println("BRE CHECK ******************** ");
+
+            /*
+            System.out.println("BRE VEHICLE CLASS CODE: "+vehickeHireVClass.getCode());
+            System.out.println("BRE VEHICLE CLASS PRICE: "+vehickeHireVClass.getPrice());
+            System.out.println("getHireRateChargeTolerance: "+claim.getChoBand().getHireRateChargeTolerance());
+            */
             
+            // TODO:BUGs
             BigDecimal allowedDailyRate = new BigDecimal(0.00);
-            allowedDailyRate = customerVClass.getPrice().add(claim.getChoBand().getHireRateChargeTolerance());
+            allowedDailyRate = vehickeHireVClass.getPrice().add(claim.getChoBand().getHireRateChargeTolerance());
 
             // LESS THAN OR EQUAL TO THE TRUE
             // boolean success = cCalc.getDailyHireRateChargedWithToleranceDeduction().compareTo(customerVClass.getPrice()) <= 0;
@@ -28,10 +40,10 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
             
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);    
             if(success)narrative = "";
-        
+            
         } else {
             
-            narrative = "Customer vehicle class is not specified.";
+            narrative = "Vehicle Hire vehicle class is not specified.";
             res.setResult(RuleEvaluationResult.RuleSkipped);
         }
         

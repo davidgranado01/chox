@@ -70,6 +70,13 @@ public class UserServiceImpl extends DataService implements UserService {
         return user;
     }
 
+    public WebUser getLatestObject(int id) {
+        UserCacheManager cacheManager = UserCacheManager.getInstance();
+        WebUser user = (WebUser) get(WebUser.class, id);
+        cacheManager.putUserToCache(user);
+        return user;
+    }
+
     public Long getNumChoActiveUser(Integer choId) {
         String q = "select count(*) from WebUser where status = true and chorganisation.id = " + choId.toString();
         return getCount(q);

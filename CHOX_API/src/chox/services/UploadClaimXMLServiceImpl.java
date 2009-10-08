@@ -137,7 +137,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
             if (bordereauResult.isValid()) {
 
-                bordereauResult = new BordereauDataValidation().validate(file, fileName, bordereauResult, claimService, chorganisationService, choBandService, vehicleClassService, insurerAlliasService, insurerChorganisationService, hireMonitoringEcdService, invoiceService, historyService,businessRulesEngService);
+                bordereauResult = new BordereauDataValidation().validate(file, fileName, bordereauResult, claimService, chorganisationService, choBandService, vehicleClassService, insurerAlliasService, insurerChorganisationService, hireMonitoringEcdService, invoiceService, historyService, businessRulesEngService);
 
                 int totalRecord = bordereauResult.getClaimResult().size();
                 int totalProcessed = 0;

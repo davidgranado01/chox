@@ -7,7 +7,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-public class ChorganisationServiceImpl  extends SecureDataService implements ChorganisationService{
+public class ChorganisationServiceImpl extends SecureDataService implements ChorganisationService{
     
     protected InsurerChorganisationService insurerChorganisationService;
     protected ChoBandOrganisationService choBandOrganisationService;

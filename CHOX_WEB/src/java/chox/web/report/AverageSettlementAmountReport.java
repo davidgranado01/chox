@@ -6,6 +6,7 @@ import chox.model.IdLookupItem;
 import chox.model.Insurer;
 import chox.services.ChorganisationService;
 import chox.services.DataService;
+import chox.services.InsurerService;
 import chox.web.actions.BaseAction;
 import chox.web.report.viewdata.AverageSettlementAmountDtlViewData;
 import chox.web.report.viewdata.AverageSettlementAmountReportObject;
@@ -27,7 +28,6 @@ public class AverageSettlementAmountReport extends BaseAction implements Report{
     Map externalParameter;
     List<String> reportParameterNames;
     private DataService dataService;
-    private ChorganisationService chorganisationService;
 
     public AverageSettlementAmountReport() {
         reportParameterNames = new ArrayList<String>();
@@ -40,24 +40,6 @@ public class AverageSettlementAmountReport extends BaseAction implements Report{
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }
-    
-    private Insurer getInsurer(int orgId){
-        Insurer ins = new Insurer();
-     
-        try {
-            
-            DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
-            criteria.add(Restrictions.eq("id", orgId));
-            ins = (Insurer)dataService.getByCriteria(criteria);
-            
-        } catch (Throwable e) {
-           e.printStackTrace();
-        } 
-        
-        return ins;
-    }
-    
-    
     
     public HashMap getReportParameters() {
         
@@ -77,10 +59,13 @@ public class AverageSettlementAmountReport extends BaseAction implements Report{
             Integer iInsurerId = -1;       
             
             Insurer ins = new Insurer();
+            ReportHelper reportHelper = new ReportHelper();
             
             if(!insurerId.equalsIgnoreCase("")){
+                
                 iInsurerId = Integer.valueOf(insurerId);
-                ins = getInsurer(iInsurerId);
+                ins = reportHelper.getInsurer(iInsurerId, this.dataService);
+                
             }else{
                 ins = currentUser.getUser().getInsurer();
                 iInsurerId = ins.getId();
@@ -274,6 +259,7 @@ public class AverageSettlementAmountReport extends BaseAction implements Report{
 
         return rows;
     }
+
     
     public InputStream build() {
         ReportBuilder builder = getReportBuilder();
@@ -286,10 +272,6 @@ public class AverageSettlementAmountReport extends BaseAction implements Report{
 
     public void setDataService(DataService dataService) {
         this.dataService = dataService;
-    }
-
-    public void setChorganisationService(ChorganisationService chorganisationService) {
-        this.chorganisationService = chorganisationService;
     }
     
     public String getReportCode() {

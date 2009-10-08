@@ -1,5 +1,6 @@
 package chox.services;
 
+import chox.model.ChoBand;
 import chox.model.Claim;
 import chox.model.EngineerReport;
 import chox.model.History;
@@ -21,40 +22,26 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
     private HireMonitoringEcdService hireMonitoringEcdService;
     private InvoiceService invoiceService;
     private HistoryService historyService;
-
+    private ChoBandService choBandService;
+    
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
     }
-
     public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) {
         this.hireMonitoringEcdService = hireMonitoringEcdService;
     }
-
     public void setInvoiceService(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
     }
-
     public void setHistoryService(HistoryService historyService) {
         this.historyService = historyService;
     }
-
-    public ClaimResult execute(ClaimResult claimResult) {
-
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) && claimResult.isValid() && claimResult.isDataValid()) {
-            //doPrintResult(claimResult);//disabled debug print function
-            process(claimResult);
-        }
-
-        return claimResult;
+    public void setChoBandService(ChoBandService choBandService) {
+        this.choBandService = choBandService;
     }
-
-    public RulesEngineResponse validate(Claim claim) {
-        RulesEngine r = RulesEngine.getInstance(claim);
-        RulesEngineResponse reponse = r.ResolveStatus();
-        return reponse;
-    }
-
-    public Claim constructBreValidateObject(Claim claim) {
+    
+    /**** GENERAL **********************************************************************************************************/
+    private Claim constructBreValidateObject(Claim claim) {
 
         Boolean isIsTotalLostCheck = false;
         if (claim.getHireMonitoringDetail() != null) {
@@ -89,8 +76,33 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
             }
         }
 
+        // Mantis id: 630
+        // Change to read vehicleHire's Vehicle Class
+        // SET VEHICLE CLASS TO NULL WHEN
+        if(claim.getVehicleHire().getVehicleClass()!=null){
+            if(claim.getVehicleHire().getVehicleClass().getName().equalsIgnoreCase("Unattached") || claim.getVehicleHire().getVehicleClass().getName().equalsIgnoreCase("UNATTACHED")){
+                claim.getVehicleHire().setVehicleClass(null);
+            }
+        }
+
         claim.setHireMonitoringEcd(hireMonitoringEcdService.getLatestHireMonitoringECDDate(claim));
         return claim;
+    }
+
+    private RulesEngineResponse validate(Claim claim) {
+        RulesEngine r = RulesEngine.getInstance(claim);
+        RulesEngineResponse reponse = r.ResolveStatus();
+        return reponse;
+    }
+    
+    /**** XML UPLOAD **********************************************************************************************************/
+    public ClaimResult execute(ClaimResult claimResult) {
+
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) && claimResult.isValid() && claimResult.isDataValid()) {
+            process(claimResult);
+        }
+
+        return claimResult;
     }
 
     private void process(ClaimResult claimResult) {
@@ -102,6 +114,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
         VehicleClass cust_VehicleClass = claimResult.getClaim().getCustomer().getVehicleClass();
         VehicleClass thirdVehicleClass = claimResult.getClaim().getThirdParty().getVehicleClass();
+        VehicleClass vehicle_HireClass = claimResult.getClaim().getVehicleHire().getVehicleClass();
 
         Claim breClaim = constructBreValidateObject(claimResult.getClaim());
         RulesEngineResponse validationResult = validate(breClaim);
@@ -123,6 +136,49 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
         claimResult.getClaim().getCustomer().setVehicleClass(cust_VehicleClass);
         claimResult.getClaim().getThirdParty().setVehicleClass(thirdVehicleClass);
+        claimResult.getClaim().getVehicleHire().setVehicleClass(vehicle_HireClass);
+    }
+
+    public RulesEngineResponse processResubmitInvoice(Claim breClaim){
+
+        // SET CHO BAND
+        ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(breClaim.getChorganisation().getId(), breClaim.getInsurer().getId());
+        breClaim.setChoband(choBand);
+        
+        Boolean isEngReportExist = false;
+        if (breClaim.getEngineerReport() != null) {
+            isEngReportExist = true;
+        }
+
+        // GET CURRENT RECORDS
+        VehicleClass cust_VehicleClass = breClaim.getCustomer().getVehicleClass();
+        VehicleClass thirdVehicleClass = breClaim.getThirdParty().getVehicleClass();
+        VehicleClass vehicle_HireClass = breClaim.getVehicleHire().getVehicleClass();
+        String oldStatus = breClaim.getStatus();
+
+        breClaim = constructBreValidateObject(breClaim);
+        RulesEngineResponse validationResult = validate(breClaim);
+        String newClaimStatus = validationResult.getStatus().toString();
+
+        breClaim.setPreviousStatus(oldStatus);
+        breClaim.setStatus(newClaimStatus);
+
+        /*
+        if (validationResult.getResults().size() > 0) {
+            //claimResult.setHistory(processBreErrorMessage(validationResult.getResults(), claimResult));
+        }
+        */
+        
+        /** END BRE VALIDATION */
+        if (!isEngReportExist) {
+            breClaim.setEngineerReport(null);
+        }
+
+        breClaim.getCustomer().setVehicleClass(cust_VehicleClass);
+        breClaim.getThirdParty().setVehicleClass(thirdVehicleClass);
+        breClaim.getVehicleHire().setVehicleClass(vehicle_HireClass);
+
+        return validationResult;
     }
 
     private List<History> processBreErrorMessage(List<RuleEvaluation> results, ClaimResult claimResult) {

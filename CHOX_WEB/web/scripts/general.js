@@ -36,24 +36,52 @@ $.blockUI.defaults = {
 var timeout	= 500;
 var closetimer	= 0;
 var ddmenuitem	= 0;
+
+function openHelpFile(url, helpFileRoleType){
+
+    var folderPath = url;
+    var fileName = "";
+
     
-function openFile(url, name)
+    switch(helpFileRoleType)
+    {
+        case 1: // NORMAL INSURER ROLE
+          fileName = '/download/iDAS_CHOX_INS_UG.pdf';
+          break;
+        case 2: // INSURER MANAGER ROLE
+          fileName = '/download/iDAS_CHOX_INS_MNG_UG.pdf';
+          break;
+        case 3: // NORMAL CREDIT HIRE ROLE
+          fileName = '/download/iDAS_CHOX_CHO_UG.pdf';
+          break;
+        case 4: // CREDIT HIRE MANAGER ROLE
+          fileName = '/download/iDAS_CHOX_CHO_MNG_UG.pdf';
+          break;
+    }
+
+    if(fileName.length>0){
+        openFile(folderPath+fileName);
+    }
+}
+
+function openSupportFile(url)
 {
     var folderPath = url;
-    if(name=='ChoHelp'){
-        folderPath = folderPath + '/download/iDAS_CHOX_CHO_UG_1.1-1.pdf';
-    }else if(name=='InsHelp'){
-        folderPath = folderPath + '/download/iDAS_CHOX_IUG_1.0-1.pdf';
-    }else if(name=='Support'){
-        folderPath = folderPath + '/jsp/chox_support.jsp';
-    }
-        
+    folderPath = folderPath + '/jsp/chox_support.jsp';
+    openFile(folderPath);
+
+}
+
+function openFile(folderPath){
+
     newwindow=window.open(folderPath, 'IDASCHOX');
     if (window.focus) {
         newwindow.focus()
     }
+    
 }
-       
+
+
 function getTodayDate(){
     var now = new Date();
     return now.format(strDateFormat);
@@ -79,9 +107,9 @@ function onOpenAbout(){
         
     var msg = "<span class='aboutProductName'>Product Name: iDAS CHOX</span><br/><br/>";
     msg = msg + "<span class='acountCopyright'>Copyright Message: ©2009 Sherwood Compliance Services Ltd</span><br/><br/>";
-    msg = msg + "<span class='acountVersionNumber'>V2.7.11.2 - 20090821</span><br/><br/>";
+    msg = msg + "<span class='acountVersionNumber'>V2.8.2 - 20091001</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
-        
+
     $.blockUI({
         message: $(msg),
         css: {

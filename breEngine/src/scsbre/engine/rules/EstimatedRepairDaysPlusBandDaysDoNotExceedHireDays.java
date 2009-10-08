@@ -8,6 +8,7 @@ package scsbre.engine.rules;
 import scsbre.engine.IBusinessRule;
 import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
+import scsbre.engine.util.ClaimCalcHelper;
 import scsbre.model.ClaimStatus;
 import scsbre.model.ICHOBandInfo;
 import scsbre.model.IClaimInfo;
@@ -16,7 +17,7 @@ import scsbre.model.IEngineerReportInfo;
 
 public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusinessRule {
     
-    private String narrative = "Number of hire days billed exceeds the allowable threshold (for repair hires) with the inclusion of the Engineer's Esimtated Days Under Repair.";
+    private String narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Esimtated Days Under Repair.";
     
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
@@ -32,30 +33,37 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
             
             narrative = "Claim is a Total Loss or Estimated Days Under Repair is less than 1";
             res.setResult(RuleEvaluationResult.RuleSkipped);
-        }
-        else{
+
+        }else{
+
+            // EDITED by CARLSON @ 20091007
+            ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
             
             int hireDays = claim.getHireDetail().getNumberOfHireDays();
             int takeVehicleToGarageDays = cvdamage.getIsUsable()
                     ? choBand.getTakeVehicleToGarageDaysMobile()
                     : choBand.getTakeVehicleToGarageDaysNonMobile();
 
-
             int maxDays = eReport.getEstimatedDaysUnderRepair();
 
             maxDays += takeVehicleToGarageDays;
-            maxDays += choBand.getWeekendBufferDays();
+            
+            // TODO
+            //maxDays += choBand.getWeekendBufferDays();
+            maxDays += cCalc.getWeekendBuffer();
             maxDays += choBand.getTakeVehicleOutDays();
             maxDays += choBand.getEngineerInspectionDelayDays();
             boolean success = hireDays <= maxDays;
             
             if(success){
+                
                 narrative = "";
                 res.setResult(RuleEvaluationResult.RulePassed);
-            }
-            else{
+
+            }else{
         
                 res.setResult(RuleEvaluationResult.RuleFailed);
+                
             }
             
         }

@@ -2,6 +2,7 @@ package chox.web.actions;
 
 import chox.model.Insurer;
 import chox.model.WebUser;
+import chox.model.WebUserRole;
 import chox.model.WebUserUserRole;
 import chox.services.InsurerService;
 import chox.services.UserService;
@@ -127,22 +128,20 @@ public class doUserroleAction extends AdminBaseModelAction{
     public String removeRoleMapping(){
         
         WebUserUserRole object = this.service.getObject(webUserUserRoleId);
-        WebUser user = userService.getObject(webUserId);
+                
+        this.service.DeleteObject(object);
+        WebUser user = userService.getLatestObject(webUserId);
         Insurer insurer = insurerService.getObject(user.getInsurer().getId());
         
-        if(object.getWebUserRole().getId()==6){
+        if(!user.isClaimHandler() && insurer.isWorkgroupEnable()
+                && (
+                    object.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_CH)
+                    || object.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_CHTL))){
             
             Integer recordDeleted = userWorkgroupService.DeleteObject(object.getWebUser().getId());
-            
-            if(insurer.isWorkgroupEnable()){
-                String ackMsg = recordDeleted + " Workgroup(s) have been deleted";
-                getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);
-            }
-            
+            String ackMsg = recordDeleted + " Workgroup(s) have been deleted";
+            getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);
         }
-        
-        this.service.DeleteObject(object);
-        
         
         return SUCCESS;
         

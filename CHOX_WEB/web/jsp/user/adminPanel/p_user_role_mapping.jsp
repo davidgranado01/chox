@@ -92,13 +92,18 @@
     function triggerStatusRemoveRecord(gridView){
         
         var webUserId = $("#webUserId").val();
-        var userroleid = gridView.get("webUserroleId");
+        var userrolecode = gridView.get("webUserroleRole");
+        var userrolename = gridView.get("webUserroleName");
+
         var deleteAttMsg = "Are you sure you want to remove this role?";
         $("#CDUserroleMessageBox").html("");
         
-        if(userroleid==6 && !isWorkgroupDisabled){
-            deleteAttMsg = "Delete Claim Hanlder role will delete all workgroup associated as well. Are you sure you want to remove this role";
-        }  
+        var bFlag = isClaimHandlerGroup();
+
+        
+        if((userrolecode=='ROLE_INS_CH'||userrolecode=='ROLE_INS_CH_TL') && bFlag && !isWorkgroupDisabled){
+            deleteAttMsg = "Delete '"+userrolename+"' role will delete all workgroup associated as well. Are you sure you want to remove this role";
+        }
         
         if(confirm(deleteAttMsg)){
 
@@ -106,9 +111,32 @@
              $.ajax({
                url: "removeRoleMapping.action?webUserUserRoleId="+gridViewId+"&webUserId="+webUserId,
                success: onUserroleMappingSubmitResult
-             });            
+             });
+        }   
+    }
+
+    function isClaimHandlerGroup(){
+
+        var totalRecord = gridviewGrid.getStore().getCount();
+        
+        var iClaimHandlerCount = 0;
+        
+        
+        for (var iCount=0; iCount<totalRecord; iCount++){
+            
+            var userrolecode = gridviewGrid.getStore().getAt(iCount).get("webUserroleRole");
+
+            if(userrolecode=='ROLE_INS_CH'||userrolecode=='ROLE_INS_CH_TL'){
+                iClaimHandlerCount++;
+            }
 
         }
+        
+        if(iClaimHandlerCount==1){
+            return true;
+        }
+
+        return false;
     }
     
     function triggerStatusAddRecord(){
@@ -126,7 +154,9 @@
             });
             
         }else{
+
             $("#CDUserroleMessageBox").html("Please select user role.");
+            
         }
     }  
     

@@ -67,7 +67,9 @@ public class ClaimCalcHelper {
 	{
 		int allowedDays = 0;
 
-		allowedDays += claim.getChoBand().getWeekendBufferDays();
+                //TODO
+		// allowedDays += claim.getChoBand().getWeekendBufferDays();
+                allowedDays += getWeekendBuffer();
 		allowedDays += claim.getChoBand().getTakeVehicleOutDays();
 		allowedDays += claim.getChoBand().getEngineerInspectionDelayDays();
 
@@ -106,7 +108,7 @@ public class ClaimCalcHelper {
             
             int iLabourCostAverageRateDay = getLabourCostAverageRateDay();
             int iDayBufferForEngineeringProcess = getDayBufferForEngineeringProcess();
-            int iWeekedBuffer = getWeekedBuffer(iLabourCostAverageRateDay+iDayBufferForEngineeringProcess);
+            int iWeekedBuffer = getWeekendBuffer();
             
             // System.out.println("iLabourCostAverageRateDay:"+iLabourCostAverageRateDay);
             // System.out.println("iDayBufferForEngineeringProcess:"+iDayBufferForEngineeringProcess);
@@ -114,11 +116,16 @@ public class ClaimCalcHelper {
             
             return iLabourCostAverageRateDay + iWeekedBuffer + iDayBufferForEngineeringProcess;
         }
-        
-        public int getWeekedBuffer(int iLabourCostTotalDay){
-            
+
+        public int getWeekendBuffer(){
+
             int iWeekendBufferDay = 0;
+
+            int iLabourCostAverageRateDay = getLabourCostAverageRateDay();
+            int iDayBufferForEngineeringProcess = getDayBufferForEngineeringProcess();
             
+            int iLabourCostTotalDay = iLabourCostAverageRateDay + iDayBufferForEngineeringProcess;
+                    
             if(iLabourCostTotalDay<5){ iWeekendBufferDay = 0;
             }else if(iLabourCostTotalDay>=5 && iLabourCostTotalDay<12){ iWeekendBufferDay = 2;
             }else if(iLabourCostTotalDay>=12 && iLabourCostTotalDay<19){ iWeekendBufferDay = 4;

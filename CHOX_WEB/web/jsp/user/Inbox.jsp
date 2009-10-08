@@ -705,17 +705,17 @@
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr valign="middle">
                         <td>
-                            <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left" />
+                            <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left" alt="" />
                         </td>
                         <td width="100%" align="right">
 <ul id="top-menu">
     <li><a href="<s:url action="inbox"/>">&nbsp;Home&nbsp;</a></li>
     <li><a href="<s:url action="openUserAccount" />">|&nbsp;Settings&nbsp;</a></li>
     <s:if test="isCHO"><li><a href='<s:url action="uploadClaims"/>'>|&nbsp;XML Uploads&nbsp;</a></li></s:if>
-    <li><s:if test="isCHO"><a href="javascript:openFile('<%= request.getContextPath()%>','ChoHelp');">|&nbsp;Help&nbsp;</a></s:if><s:else><a href="javascript:openFile('<%= request.getContextPath()%>','InsHelp');">|&nbsp;Help&nbsp;</a></s:else></li>
+    <s:if test="!isChoxAdmin"><li><a href="javascript:openHelpFile('<%= request.getContextPath()%>',<s:property value="roleTypeForHelpFile" />);">|&nbsp;Help&nbsp;</a></li></s:if>
     <li><a href="#" onmouseover="mopen('m2')" onmouseout="mclosetime()">|&nbsp;Support&nbsp;</a>
         <div id="m2" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
-        <a href="javascript:openFile('<%= request.getContextPath()%>','Support');">Support Procedure</a>
+        <a href="javascript:openSupportFile('<%= request.getContextPath()%>');">Support Procedure</a>
         <a href="<s:url action="onlineSupport"/>">Online Support Form</a>
         </div></li>
     <li><a href="javascript:onOpenAbout();">|&nbsp;About CHOX&nbsp;</a></li>
