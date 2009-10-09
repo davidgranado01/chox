@@ -376,11 +376,11 @@
                 <s:if test="mode=='New'">
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>
-                        <input type="password" class="chox-ttxt" id="password" name="password" size="10" maxlength="10"/>
+                        <input type="password" class="chox-ttxt" id="password" name="password" size="20" maxlength="20"/>
                     </div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Re-enter Password<span class="mandatory">*</span></label>
-                        <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="10"/>
+                        <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20"/>
                     </div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">&nbsp;</label>
@@ -417,11 +417,11 @@
                 <input type="hidden" name="orgTypeId" id="orgTypeId" value='<s:property value="orgTypeId"/>'>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>
-                    <input type="password" class="chox-ttxt" id="password" name="password" size="10" maxlength="10"/>
+                    <input type="password" class="chox-ttxt" id="password" name="password" size="20" maxlength="20"/>
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Re-enter Password<span class="mandatory">*</span></label>
-                    <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="10"/>
+                    <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20"/>
                 </div>
                 <div class="chox-form-button">
                     <input type="button" id="changePassword" value="Save Password" onclick="javascript:return doSubmitNewPassword();" />

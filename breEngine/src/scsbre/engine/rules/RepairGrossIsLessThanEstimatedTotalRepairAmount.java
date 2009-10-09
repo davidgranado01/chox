@@ -41,7 +41,7 @@ public class RepairGrossIsLessThanEstimatedTotalRepairAmount implements IBusines
         
         RuleEvaluation res = new RuleEvaluation();
         
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RulePassed);
+        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         

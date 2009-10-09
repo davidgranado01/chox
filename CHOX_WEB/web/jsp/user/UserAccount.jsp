@@ -181,12 +181,12 @@
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">
                                 Choose a new password <span class="mandatory">*</span></label>
-                            <input type="password" class="chox-ttxt" label="Enter Password" name="newPassword" id="newPassword" size="10" maxlength="10" />
+                            <input type="password" class="chox-ttxt" label="Enter Password" name="newPassword" id="newPassword" size="20" maxlength="20" />
                             </div>
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">
                                 Re-enter new password<span class="mandatory">*</span></label>
-                            <input type="password" class="chox-ttxt" label="Enter Password" name="confirmNewPassword" id="confirmNewPassword" size="10" maxlength="10" />
+                            <input type="password" class="chox-ttxt" label="Enter Password" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20" />
                             </div>
                             <div class="chox-form-button">
                                 <label class="chox-form-std-label">&nbsp;</label>
