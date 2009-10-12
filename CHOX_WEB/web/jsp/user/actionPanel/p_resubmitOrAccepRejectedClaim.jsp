@@ -11,7 +11,7 @@
 
 
 
-<form onsubmit="return true;" action="user/resubmitOrAcceptContestedInvoice.action" method="post" 
+<form onsubmit="return true;" action="resubmitOrAcceptContestedInvoice.action" method="post" 
       id="resubmitOrAcceptContestedInvoice" name="resubmitOrAcceptContestedInvoice">
     <fieldset class="x-fieldset">
         <legend>Contested Invoice - Action Required</legend>

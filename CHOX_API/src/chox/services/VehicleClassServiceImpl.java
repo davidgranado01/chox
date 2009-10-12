@@ -5,6 +5,7 @@ import chox.xmlValidation.rules.Util.XmlHelper;
 import chox.model.VehicleClass;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.w3c.dom.*;
 
@@ -47,6 +48,7 @@ public class VehicleClassServiceImpl  extends SecureDataService implements Vehic
     public List getAllVehicleClass()
     {
         DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClass.class);
+        criteria.addOrder(Order.asc("name"));
         return this.findByCriteria(criteria);
     }
 }

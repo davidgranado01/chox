@@ -14,7 +14,7 @@
     </script>
 </head>
 
-<div class="x-panel-bwrap chox-form-container" id="xPenalMainRight" style="height:610px;">
+<div class="x-panel-bwrap chox-form-container" id="xPenalMainRight" style="height:680px;">
     
     <table cellpadding="0" cellspacing="0" width="100%" style="height:100%;">
         

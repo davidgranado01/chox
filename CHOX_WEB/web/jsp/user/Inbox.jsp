@@ -40,7 +40,6 @@
             {name:'invoiceAmount'},
             {name:'vehicleRegistration'},
             {name:'policyNumber'},
-            // {name:'lineOfBusiness'},
             {name:'workgroup'},
             {name:'supplierReference'},
             {name:'claimNumber'}, 

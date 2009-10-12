@@ -182,8 +182,6 @@
         <div class="gridViewHeader">
            <table width="100%">
                 <tr>
-                </tr>
-                <tr>
                     <td colspan="2">
                         <div id="chobandDropDownDiv" class="label-block"></div> 
                     </td>

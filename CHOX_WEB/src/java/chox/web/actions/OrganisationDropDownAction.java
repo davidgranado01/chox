@@ -37,8 +37,6 @@ public class OrganisationDropDownAction extends BaseAction{
         }
         
         // this.userroleList = service.getWebUserrolesLookupItem(Integer.valueOf(id));
-
-        System.out.println(id + ": OrganisationDropDownAction > getOrganisationList" + organisationList.size());
     }
     
     public String getOrgTypeId() {

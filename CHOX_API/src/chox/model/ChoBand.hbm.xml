@@ -28,5 +28,6 @@
     <property column="is_not_mobile_day_allowance" name="isNotMobileDayAllowance" not-null="true"/>
     <property column="average_labour_hours_per_hire_day" name="averageLabourHoursPerHireDay" not-null="true"/>
     <property column="average_labour_rate" name="averageLabourRate" not-null="true"/>
+    <property column="is_vehicle_class_celling_enable" name="vehicleClassCellingEnable"/>
   </class>
 </hibernate-mapping>

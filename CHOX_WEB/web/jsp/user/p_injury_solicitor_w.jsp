@@ -20,7 +20,7 @@
 
 </script>
 
-<form id="formupdateSolicitor" action="user/updateSolicitor.action" class="XXentity-form" name="formupdateSolicitor">
+<form id="formupdateSolicitor" action="updateSolicitor.action" class="XXentity-form" name="formupdateSolicitor">
    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>
     <fieldset class="x-fieldset">

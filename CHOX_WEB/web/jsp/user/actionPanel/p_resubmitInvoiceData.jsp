@@ -5,10 +5,7 @@
 
 
 
-<form onsubmit="return true;" action="user/reSubmitRejectedClaim.action" method="post" id="route" name="route">
-    
-    
-    
+<form onsubmit="return true;" action="reSubmitRejectedClaim.action" method="post" id="route" name="route">
     
     <fieldset class="x-fieldset"><legend>Claim Data - Action Required</legend>                
         

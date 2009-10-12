@@ -67,7 +67,7 @@ public class ClaimCalcHelper {
 	{
 		int allowedDays = 0;
 
-                //TODO
+                // Basecamp: S8019
 		// allowedDays += claim.getChoBand().getWeekendBufferDays();
                 allowedDays += getWeekendBuffer();
 		allowedDays += claim.getChoBand().getTakeVehicleOutDays();

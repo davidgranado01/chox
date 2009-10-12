@@ -1,7 +1,9 @@
 package chox.services;
 
+import chox.model.Claim;
 import chox.xmlValidation.rules.Util.XmlHelper;
 import chox.model.Insurer;
+import chox.model.VehicleClassCelling;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
@@ -79,5 +81,23 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
         
         return object;
     }  
+
+    public VehicleClassCelling getVechileClassCellingForClaim(Claim claim)
+    {
+        VehicleClassCelling vehicleClassCelling = null;
+
+        try {
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassCelling.class);
+            criteria.add(Restrictions.eq("insurer", claim.getInsurer()));
+            criteria.add(Restrictions.eq("vehicleClass", claim.getCustomer().getVehicleClass()));
+            vehicleClassCelling = (VehicleClassCelling) getByCriteria(criteria);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        
+        return vehicleClassCelling;
+    }
     
 }

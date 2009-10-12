@@ -5,8 +5,10 @@
 
 package chox.services;
 
+import chox.model.Claim;
 import org.w3c.dom.Element;
 import chox.model.Insurer;
+import chox.model.VehicleClassCelling;
 import java.util.List;
 
 public interface InsurerService {
@@ -16,4 +18,5 @@ public interface InsurerService {
     public Insurer getObject(int id);
     public List<Insurer> getInsurers();
     public Insurer updateObject(Insurer object);
+    public VehicleClassCelling getVechileClassCellingForClaim(Claim claim);
 }

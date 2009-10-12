@@ -38,6 +38,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
             if (success) {
                 narrative = "";
             }
+            
         } else {
            res.setResult(RuleEvaluationResult.RuleSkipped);
            narrative = "Claim is total loss OR a non-zero value has been supplied for Estimated Days Under Repair";

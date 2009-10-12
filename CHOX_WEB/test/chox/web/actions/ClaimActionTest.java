@@ -55,7 +55,7 @@ public class ClaimActionTest {
         List expResult = null;
         List result = instance.getAttachmentCategory();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -69,7 +69,7 @@ public class ClaimActionTest {
         int expResult = 0;
         int result = instance.getId();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        
         fail("The test case is a prototype.");
     }
 
@@ -82,7 +82,7 @@ public class ClaimActionTest {
         int id = 0;
         ClaimAction instance = new ClaimAction();
         instance.setId(id);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -108,7 +108,7 @@ public class ClaimActionTest {
         System.out.println("prepare");
         ClaimAction instance = new ClaimAction();
         instance.prepare();
-        // TODO review the generated test code and remove the default call to fail.
+        
         fail("The test case is a prototype.");
     }
 
@@ -122,7 +122,7 @@ public class ClaimActionTest {
         List expResult = null;
         List result = instance.getStatuses();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        
         fail("The test case is a prototype.");
     }
 
@@ -137,7 +137,7 @@ public class ClaimActionTest {
         List expResult = null;
         List result = instance.getLineOfBusinesses();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 */
@@ -151,7 +151,7 @@ public class ClaimActionTest {
         List expResult = null;
         List result = instance.getVehicleClasses();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        
         fail("The test case is a prototype.");
     }
 
@@ -165,7 +165,7 @@ public class ClaimActionTest {
         List expResult = null;
         List result = instance.getInsurers();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -179,7 +179,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.getActionResult();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -193,7 +193,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.updateClaimDetail();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -207,7 +207,7 @@ public class ClaimActionTest {
         MenuAccessibility expResult = null;
         // MenuAccessibility result = instance.getTabAccessibility();
         // assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -221,7 +221,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.execute();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -235,7 +235,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.getActionPanel();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -249,7 +249,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.route();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -263,7 +263,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.acknowledge();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -280,7 +280,7 @@ public class ClaimActionTest {
         Map result = instance.getAcknowledgeClaimActions();
         assertEquals(expResult, result);
         */
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -294,7 +294,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.contestOrAcceptRejectedClaim();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -310,7 +310,7 @@ public class ClaimActionTest {
         Map result = instance.getContestOrAcceptRejectedClaimActions();
         assertEquals(expResult, result);
          * */
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -324,7 +324,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.approveContestedClaim();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -340,7 +340,7 @@ public class ClaimActionTest {
         Map result = instance.getApproveContestedClaimActions();
         assertEquals(expResult, result);
         */
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -354,7 +354,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.submitHireMonitoringDetail();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -368,7 +368,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.reSubmitRejectedClaim();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -382,7 +382,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.contestOrAcceptRejectedInvoice();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -396,7 +396,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.approveBREPassedClaim();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -410,7 +410,7 @@ public class ClaimActionTest {
         Map expResult = null;
         // Map result = instance.getApproveBREPassedClaimActions();
         // assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -424,7 +424,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.approveEscalatedInvoice();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -438,7 +438,7 @@ public class ClaimActionTest {
         Map expResult = null;
         // Map result = instance.getApproveEscalatedInvoiceActions();
         // assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -452,7 +452,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.approveContestedInvoice();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -466,7 +466,7 @@ public class ClaimActionTest {
         Map expResult = null;
         // Map result = instance.getApproveContestedInvoiceActions();
         // assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -480,7 +480,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.resubmitOrAcceptContestedInvoice();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -494,7 +494,7 @@ public class ClaimActionTest {
         Map expResult = null;
         // Map result = instance.getResubmitOrAcceptContestedInvoiceActions();
         // assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -508,7 +508,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.logInvoicePayment();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -522,7 +522,7 @@ public class ClaimActionTest {
         boolean expResult = false;
         // boolean result = instance.validateHireMonitoringDetail();
         // assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -536,7 +536,7 @@ public class ClaimActionTest {
         int expResult = 0;
         int result = instance.getVehicleClassId();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -549,7 +549,7 @@ public class ClaimActionTest {
         int vehicleClassId = 0;
         ClaimAction instance = new ClaimAction();
         instance.setVehicleClassId(vehicleClassId);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -575,7 +575,7 @@ public class ClaimActionTest {
         int insurerId = 0;
         ClaimAction instance = new ClaimAction();
         instance.setInsurerId(insurerId);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -589,7 +589,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.getActionName();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -603,7 +603,7 @@ public class ClaimActionTest {
         String expResult = "";
         String result = instance.getCreatedByDesc();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -616,7 +616,7 @@ public class ClaimActionTest {
         String actionName = "";
         ClaimAction instance = new ClaimAction();
         instance.setActionName(actionName);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -630,7 +630,7 @@ public class ClaimActionTest {
         int expResult = 0;
         int result = instance.getHireMonitoringDetailId();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -643,7 +643,7 @@ public class ClaimActionTest {
         InvoiceService invoiceService = null;
         ClaimAction instance = new ClaimAction();
         instance.setInvoiceService(invoiceService);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
@@ -656,7 +656,7 @@ public class ClaimActionTest {
         ChoBandService choBandService = null;
         ClaimAction instance = new ClaimAction();
         instance.setChoBandService(choBandService);
-        // TODO review the generated test code and remove the default call to fail.
+        // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
   

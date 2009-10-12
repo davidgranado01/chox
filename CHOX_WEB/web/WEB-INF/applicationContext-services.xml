@@ -123,6 +123,9 @@
     <bean id="userWorkgroupService" class="chox.services.UserWorkgroupServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="vehicleClassCellingService" class="chox.services.VehicleClassCellingServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="businessRulesEngService" class="chox.services.BusinessRulesEngServiceImpl" singleton="false">
         <property name="claimService" ref="claimService" />
         <property name="hireMonitoringEcdService" ref="hireMonitoringEcdService" />

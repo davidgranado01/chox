@@ -6,6 +6,7 @@ package chox.web.actions;
 
 import chox.services.ClaimService;
 import chox.web.security.ApplicationAccessibility;
+import chox.web.viewdata.ActionResponse;
 import org.acegisecurity.GrantedAuthority;
 
 /**
@@ -24,6 +25,19 @@ public abstract class BaseModelAction extends BaseAction {
     protected ClaimService claimService;
     private ApplicationAccessibility applicationAccessibility;
 
+    private ActionResponse actionResponse;
+
+        /**
+     * @return the actionResponse
+     */
+    public ActionResponse getActionResponse() {
+        if(actionResponse == null)
+        {
+            actionResponse = new ActionResponse();
+        }
+        return actionResponse;
+    }
+    
     abstract String getTabName();
 
     public int getObjectId() {

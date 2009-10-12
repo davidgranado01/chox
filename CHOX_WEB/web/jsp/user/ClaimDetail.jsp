@@ -109,10 +109,9 @@
             }
 
             function onSubmitResponseReceived(responseText, statusText)  {
+
                 elementToBlock.unblock();
-
                 response = eval('(' + responseText.trim() + ')');
-
                 var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
                 outputDiv.html('');//clear out the response message holder
 
@@ -530,7 +529,9 @@
 
             // LOAD PAYMENT PACK / ATTACHMENT
             var paymentPackLoaded = false;
+            
             function loadAttachments(){
+
                 if(!paymentPackDisabled){
                     if(!paymentPackLoaded){
 
@@ -1098,6 +1099,8 @@
                                     if(response){
                                         if(response.isValid){
                                             msg = response.result;
+                                            paymentPackLoaded = false;
+                                            paymentPackDisabled = false;
                                             loadAttachments();
                                         }
                                         else{
@@ -1179,7 +1182,7 @@
                             </script>
 
                             <div class="attachments  x-panel-bwrap chox-form-container">
-                                <form id="fAttachment" action="user/createNewAttachment.action" method="POST" enctype="multipart/form-data" name="Attform">
+                                <form id="fAttachment" action="createNewAttachment.action" method="POST" enctype="multipart/form-data" name="Attform">
                                     <input type="hidden" name="claimId" value='<s:property value="id" />'>
                                     <input type="hidden" name="uploadFileName">
                                     <fieldset class="x-fieldset">

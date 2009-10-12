@@ -6,7 +6,7 @@ public interface IClaimInfo {
 
     public ICHOBandInfo getChoBand();
 
-    public IVehicleClassCellingInfo getVehicleClassCellingInfo();
+    // public IVehicleClassCellingInfo getVehicleClassCellingInfo();
 
     public ICHOrganisationInfo getCHOrg();
 

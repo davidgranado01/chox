@@ -213,4 +213,20 @@ public class CHOBandInfo implements ICHOBandInfo {
     public int getAverageLabourHoursPerHireDay() {
         return averageLabourHoursPerHireDay;
     }
+
+    public BigDecimal getHireNetCeiling() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public BigDecimal getMaxRepairValue() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public BigDecimal getMaxHireNetCeiling() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public BigDecimal getMaxRepairValueCelling() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

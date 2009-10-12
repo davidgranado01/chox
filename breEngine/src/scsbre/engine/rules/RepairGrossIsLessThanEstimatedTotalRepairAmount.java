@@ -22,11 +22,8 @@ import scsbre.model.IInvoiceInfo;
  * rule 8, order 17
  */
 public class RepairGrossIsLessThanEstimatedTotalRepairAmount implements IBusinessRule {
-
-
     
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
-
 
         IEngineerReportInfo eReport = claim.getEngineeringReport();    
         IInvoiceInfo invoice = claim.getInvoice();
@@ -36,12 +33,10 @@ public class RepairGrossIsLessThanEstimatedTotalRepairAmount implements IBusines
             success =  invoice.getRepairGross().compareTo(eReport.getEstimatedTotalRepairAmount()) <= 0;
         } else {
             success = CalcHelper.EqualTo(invoice.getRepairGross(), BigDecimal.ZERO);
-            //return invoice.getRepairGross().compareTo(BigDecimal.ZERO) == 0;
         }
-        
+
         RuleEvaluation res = new RuleEvaluation();
-        
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RulePassed);
+        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         

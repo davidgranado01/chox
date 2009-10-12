@@ -16,11 +16,12 @@
            renderTo: 'InsurerMainPanel',
            autoScroll :true,
            activeTab: 0,
-           Height:550,
+           Height:500,
            items:[
                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroups', listeners: {activate: doSelectDetail}},
                {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: doSelectDetail}},
-               {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: doBreMappingRefresh}}
+               {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: doBreMappingRefresh}},
+               {contentEl:'insurerVehicleClassCellingTab', title:'Vehicle Class Cellings', listeners: {activate: doSelectDetail}}
            ]
            });
         }
@@ -55,7 +56,7 @@
 <div id="InsurerMainPanel" class="adminTabCss"></div>
 
 <div id="insurerWorkgroupPanelTab" class="x-hide-display">
-    <div class="subAdminTabCss">
+    <div class="subInsAdminTabCss">
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerWorkgroupMappingMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="selectOrgId" /></s:param>
@@ -64,7 +65,7 @@
 </div>
 
 <div id="insurerBrePanelTab" class="x-hide-display">
-    <div class="subAdminTabCss">
+    <div class="subInsAdminTabCss">
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerChoBandMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="selectOrgId" /></s:param>        
@@ -73,10 +74,20 @@
 </div>
 
 <div id="insurerBreMappingPanelTab" class="x-hide-display">
-    <div class="subAdminTabCss">
+    <div class="subInsAdminTabCss">
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerChoBandMappingMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="selectOrgId" /></s:param>        
         </s:action>
     </div>
+</div>
+
+<div id="insurerVehicleClassCellingTab" class="x-hide-display">
+    <div class="subInsAdminTabCss">
+        <s:action name="loadAdminPanel" executeResult="true">
+            <s:param name="adminPanelName">InsurerVehicleClassCelling</s:param>
+            <s:param name="selectOrgId"><s:property value="selectOrgId" /></s:param>
+        </s:action>
+
+     </div>
 </div>

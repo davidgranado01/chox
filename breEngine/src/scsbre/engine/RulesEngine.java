@@ -39,9 +39,9 @@ public class RulesEngine {
         response.addRuleEvaulation(new HasSuppliedCorrectTotalToPay().applyToClaim(claim));        
         response.addRuleEvaulation(new EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays().applyToClaim(claim)); 
         response.addRuleEvaulation(new LabourCostBusinessRule().applyToClaim(claim)); 
-        response.addRuleEvaulation(new validateUniqueVehicleRegistrationNumber().applyToClaim(claim)); 
         //Emmanuel 18-09-2009
         response.addRuleEvaulation(new RepairNetDoesNotExceedVehicleClassRepairNetCeiling().applyToClaim(claim));
+        response.addRuleEvaulation(new validateUniqueVehicleRegistrationNumber().applyToClaim(claim));
         return response;
     }
 

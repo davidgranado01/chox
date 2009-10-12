@@ -399,9 +399,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    /*
+    // MOVED TO INSURER SERVICES
     public VehicleClassCelling getVechileClassCellingForClaim(Claim claim)
     {        
         VehicleClassCelling vehicleClassCelling = null;
+        
         try {
 
             DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassCelling.class);
@@ -414,6 +417,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         return vehicleClassCelling;
     }
+    */
 }
 
 

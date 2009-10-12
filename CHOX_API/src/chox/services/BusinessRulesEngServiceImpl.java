@@ -5,6 +5,7 @@ import chox.model.Claim;
 import chox.model.EngineerReport;
 import chox.model.History;
 import chox.model.VehicleClass;
+import chox.model.VehicleClassCelling;
 import chox.xmlValidation.model.status.ClaimParseStatus;
 import chox.xmlValidation.rules.Util.HistoryHelper;
 import java.math.BigDecimal;
@@ -23,6 +24,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
     private InvoiceService invoiceService;
     private HistoryService historyService;
     private ChoBandService choBandService;
+    private InsurerService insurerService;
     
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
@@ -39,10 +41,36 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
     public void setChoBandService(ChoBandService choBandService) {
         this.choBandService = choBandService;
     }
-    
+    public void setInsurerService(InsurerService insurerService) {
+        this.insurerService = insurerService;
+    }
+
     /**** GENERAL **********************************************************************************************************/
     private Claim constructBreValidateObject(Claim claim) {
 
+        VehicleClassCelling vehicleClassCelling = insurerService.getVechileClassCellingForClaim(claim);
+
+        /*
+        System.out.println("> maxRepairValue 1 >>"+maxRepairValue);
+        System.out.println("> vehicleClassCellingEnable >>"+vehicleClassCellingEnable);
+        System.out.println("> vehicleClassCelling >>"+vehicleClassCelling);
+
+        if(vehicleClassCellingEnable && vehicleClassCelling!=null){
+
+            maxRepairValue = vehicleClassCelling.getRepairNetCelling();
+            System.out.println("> maxRepairValue 2 >>"+maxRepairValue);
+
+        }
+
+        System.out.println("> maxRepairValue 3 >>"+maxRepairValue);
+        System.out.println("");
+        */
+        
+         // SET CHO BAND
+        ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        choBand.setVehicleClassCelling(vehicleClassCelling);
+        claim.setChoband(choBand);
+        
         Boolean isIsTotalLostCheck = false;
         if (claim.getHireMonitoringDetail() != null) {
             isIsTotalLostCheck = claim.getHireMonitoringDetail().isIsTotalLostCheck();
@@ -141,10 +169,6 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
     public RulesEngineResponse processResubmitInvoice(Claim breClaim){
 
-        // SET CHO BAND
-        ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(breClaim.getChorganisation().getId(), breClaim.getInsurer().getId());
-        breClaim.setChoband(choBand);
-        
         Boolean isEngReportExist = false;
         if (breClaim.getEngineerReport() != null) {
             isEngReportExist = true;

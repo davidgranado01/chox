@@ -130,7 +130,7 @@ public class Insurer extends AuditableEntity implements Serializable, IInsurerIn
     public void setWorkgroupEnable(boolean workgroupEnable) {
         this.workgroupEnable = workgroupEnable;
     }
-
+    
     /**
      * @return the vehicleClassCellings
      */

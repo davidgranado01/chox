@@ -1034,7 +1034,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (this.actionName.equalsIgnoreCase(REJECT)) {
 
-            //TODO
             // claim = businessRulesEngService.constructBreValidateObject(claim);
             // RulesEngineResponse reponse = businessRulesEngService.validate(claim);
             // historyService.logInvoiceValidationErrorMsg(reponse, claim);

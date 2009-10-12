@@ -99,7 +99,7 @@
     
 </script>
 
-<form id="formAddNewHireMonitoringEcd" action="user/addNewHireMonitoringEcd.action" name="formAddNewHireMonitoringEcd" class="XXentity-form">
+<form id="formAddNewHireMonitoringEcd" action="addNewHireMonitoringEcd.action" name="formAddNewHireMonitoringEcd" class="XXentity-form">
     <input type="hidden" name="objectId" value='<s:property value="id"/>'>
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset">

@@ -156,7 +156,8 @@
                 {contentEl:'insurerWorkgroupPanelTab', title:'Workgroup', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerBrePanelTab', title:'BRE Band', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
-                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: doBreMappingRefresh}}
+                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: doBreMappingRefresh}},
+                {contentEl:'insurerVehicleClassCellingTab', title:'Vehicle Class Cellings', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}}
             ]
            });
         }
@@ -257,6 +258,16 @@
             <s:param name="selectOrgId"><s:property value="objectId" /></s:param>        
         </s:action>
     </div>
+</div>
+
+<div id="insurerVehicleClassCellingTab" class="x-hide-display">
+    <div class="subAdminTabCss">
+        <s:action name="loadAdminPanel" executeResult="true">
+            <s:param name="adminPanelName">InsurerVehicleClassCelling</s:param>
+            <s:param name="selectOrgId"><s:property value="objectId" /></s:param>
+        </s:action>
+            
+     </div>
 </div>
 
 <div id="insurerDetailPanelTab" class="x-hide-display">

@@ -62,7 +62,7 @@ public class claimGridViewData {
         // this.lastModifiedDate = claim.getLastModifiedDate().toString();
         this.status = claim.getStatus();
         this.cho = c == null ? "" : c.getName();
-        this.insurer = i == null ? "" : i.getName();//TODO : assign insurer
+        this.insurer = i == null ? "" : i.getName();
         
         String orgName = "";
         WebUser user = claim.getCreatedBy();

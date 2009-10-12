@@ -16,8 +16,19 @@
         <property name="password" value="GreenF1nCH">
         </property>
     </bean>
-    
     <!--
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver">
+        </property>
+        <property name="url" value="jdbc:postgresql://localhost:5432/chox_sprint8">
+        </property>
+        <property name="username" value="chox">
+        </property>
+        <property name="password" value="chox">
+        </property>
+    </bean>
+    
+
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver">
         </property>

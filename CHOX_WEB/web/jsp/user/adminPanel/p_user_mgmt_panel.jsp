@@ -260,6 +260,6 @@
             </table>
 
         </div>
-        <div id="gridviewGrid" style="height:542px; overflow:auto;"></div>
+        <div id="gridviewGrid" style="height:570px; overflow:auto;"></div>
     </div>
 </fieldset>

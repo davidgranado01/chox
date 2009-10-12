@@ -193,7 +193,7 @@
         var output = "Your changes have been saved.";
         
         $("#chox-form-submit-result").attr("class", "chox-form-submit-result")
-        
+
         if(response && response.isValid){
             
             if(response.resultType == 'New' && response.result){

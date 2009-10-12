@@ -48,8 +48,8 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
 
             maxDays += takeVehicleToGarageDays;
             
-            // TODO
-            //maxDays += choBand.getWeekendBufferDays();
+            // Basecamp : S8019
+            // maxDays += choBand.getWeekendBufferDays();
             maxDays += cCalc.getWeekendBuffer();
             maxDays += choBand.getTakeVehicleOutDays();
             maxDays += choBand.getEngineerInspectionDelayDays();

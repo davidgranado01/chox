@@ -25,5 +25,5 @@ public interface ClaimService {
     public void  saveObjectForXMLUploader(final ClaimResult claimResult);
     // public void updateClaimLastModified(int claimId);
     public Boolean isObjectExist(int WorkgroupId);
-    public VehicleClassCelling getVechileClassCellingForClaim(Claim claim);
+    // public VehicleClassCelling getVechileClassCellingForClaim(Claim claim);
 }

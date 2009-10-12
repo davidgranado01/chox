@@ -417,13 +417,9 @@
             </result>
         </action>
         <action name="updateCustomer" class="chox.web.actions.CustomerAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp
-            </result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>   
         <!-- End Customer Detail --> 
-        
-        
-        
         
         <!-- Start Injury Detail -->
         <action name="getInjury" class="chox.web.actions.InjuryAction">
@@ -435,8 +431,7 @@
             </result>
         </action>
         <action name="updateInjury" class="chox.web.actions.InjuryAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp
-            </result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
         <!-- End Injury Detail -->
         
@@ -454,8 +449,7 @@
             </result>
         </action>
         <action name="updateIncident" class="chox.web.actions.IncidentAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp
-            </result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
         <!-- End Incident Detail -->
         
@@ -472,8 +466,7 @@
             </result>
         </action>
         <action name="updateSolicitor" class="chox.web.actions.SolicitorAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp
-            </result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
         <!-- End Solicitor Detail -->        
         
@@ -493,8 +486,7 @@
             </result>
         </action>
         <action name="updateThirdParty" class="chox.web.actions.ThirdPartyAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp
-            </result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
         <!-- End ThirdPary Detail -->        
         
@@ -511,8 +503,7 @@
             </result>
         </action>
         <action name="updateWitness" class="chox.web.actions.WitnessAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp
-            </result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
         
         <!-- End Witness Detail -->                
@@ -531,8 +522,7 @@
             </result>
         </action>
         <action name="updateInvoice" class="chox.web.actions.InvoiceAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp
-            </result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
         <!-- End Invoice Detail -->
         
@@ -546,8 +536,7 @@
             </result>
         </action>
         <action name="updateCustomerVehicleDamage" class="chox.web.actions.CustomerVehicleDamageAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp
-            </result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
         <!-- End CustomerVehicleDamage Detail -->
         
@@ -563,8 +552,7 @@
             </result>
         </action>
         <action name="updateExtra" class="chox.web.actions.ExtraAction" method="updateModel">
-            <result name="success">/jsp/p_response.jsp
-            </result>
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
         <!-- End Extra Detail -->
         
@@ -802,6 +790,7 @@
             <result name="InsurerChoBandMgmt">/jsp/user/adminPanel/p_insurer_choband_mgmt_panel.jsp</result>
             <result name="InsurerChoBandMappingMgmt">/jsp/user/adminPanel/p_insurer_choband_mapping.jsp</result>
             <result name="InsurerPanelMgmt">/jsp/user/adminPanel/p_insurer_mgmt_panel.jsp</result>
+            <result name="InsurerVehicleClassCelling">/jsp/user/adminPanel/p_insurer_vehicle_class_celling.jsp</result>
             <result name="NONE">/jsp/p_response.jsp</result>
         </action>
         
@@ -833,7 +822,11 @@
         <action name="triggerInsurerWorkgroupFeature" class="chox.web.actions.doInsurerAction" method="triggerInsurerWorkgroupFeature">
             <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>       
-       
+
+        <action name="vehicleClassCellingDetail" class="chox.web.actions.doVehicleClassCellingAction" method="updateModel">
+            <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
+        </action>
+        
         <action name="getChorganisation" class="chox.web.actions.ChorganisationAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
@@ -964,7 +957,14 @@
         <action name="doRemoveBandChorganisationMapping" class="chox.web.actions.doInsurerChoBandMappingAction" method="removeObject">
             <result name="success">/jsp/p_response.jsp</result>
         </action>
+        <action name="doRemoveVehicleClassCellingMapping" class="chox.web.actions.doVehicleClassCellingAction" method="removeObject">
+            <result name="success">/jsp/p_response.jsp</result>
+        </action>
 
+        <action name="getSelectedInsurerVehicleClassCelling" class="chox.web.actions.VehicleClassCellingAction" method="getSelectedInsurerVehicleClassCelling">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        
         <action name="OrganisationDropDownAction" class="chox.web.actions.OrganisationDropDownAction">
             <result>/jsp/user/adminPanel/p_dropdown_organisation.jsp</result>
         </action>
@@ -973,17 +973,20 @@
         </action>
         <action name="ChoBandDropDownAction" class="chox.web.actions.ChoBandDropDownAction">
             <result>/jsp/user/adminPanel/p_dropdown_bre.jsp</result>
-        </action>  
+        </action>
+        <action name="VehicleClassDropDownAction" class="chox.web.actions.VehicleClassDropDownAction">
+            <result>/jsp/user/adminPanel/p_dropdown_vehicle_class.jsp</result>
+        </action>
+
         <action name="LineOfBusinessDropDownAction" class="chox.web.actions.LineOfBusinessDropDownAction">
             <result>/jsp/user/p_search_dropdown_lineOfbusiness.jsp</result>
         </action>    
         <action name="LineOfBusinessDropDownByIdAction" class="chox.web.actions.LineOfBusinessDropDownAction">
             <result>/jsp/user/p_search_dropdown_lineOfbusiness_id.jsp</result>
         </action>
-        
         <action name="WorkgroupDropDownAction" class="chox.web.data.WorkgroupDropDownAction">
             <result>/jsp/p_search_dropdown_workgroup.jsp</result>
-        </action>         
+        </action>
         
         <action name="LoadEncodePasswordPage" class="chox.web.actions.AdminAction" method="loadEncodePasswordPage">
             <result>/jsp/user/EncodePassword.jsp</result>

@@ -66,7 +66,7 @@
 
 
 
-<form id="formUpdateThirdParty" action="user/updateThirdParty.action" class="XXentity-form">
+<form id="formUpdateThirdParty" action="updateThirdParty.action" class="XXentity-form">
     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset">

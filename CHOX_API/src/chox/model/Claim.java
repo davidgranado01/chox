@@ -297,7 +297,6 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
         this.previousStatus = previousStatus;
     }
     // </editor-fold>
-    
     // <editor-fold defaultstate="collapsed" desc="BRE Properties ">
     public IHireInfo getHireDetail() {
         return this.getVehicleHire();
@@ -329,7 +328,8 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
     public ICHOBandInfo getChoBand() {
         return choband;
     }
-
+    
+    /*
      public IVehicleClassCellingInfo getVehicleClassCellingInfo() {
          if(vehicleClassCelling == null)
          {
@@ -341,6 +341,8 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
     public void setVehicleClassCellingInfo(IVehicleClassCellingInfo vehicleClassCelling) {
         this.vehicleClassCelling = vehicleClassCelling;
     }
+    */
+    
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc=" Logic Methods ">
@@ -438,6 +440,7 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
 
     public void AddNotification(Notification notification) {
         if (notification != null && !isSameTypeOfNotificationExist(notification)) {
+            
             if (this.notifications == null) {
                 this.notifications = new ArrayList<Notification>();
             }

@@ -279,7 +279,7 @@ public class Rule4Test {
         return cvd;
 
     }
-    // TODO add test methods here.
+
     // The methods must be annotated with annotation @Test. For example:
     //
     // @Test

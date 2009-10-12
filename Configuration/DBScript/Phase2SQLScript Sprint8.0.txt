@@ -142,7 +142,11 @@ ALTER TABLE invoice ALTER COLUMN original_total_to_pay SET STORAGE MAIN;
 ALTER TABLE invoice ALTER COLUMN original_total_to_pay SET NOT NULL;
 ALTER TABLE invoice ALTER COLUMN original_total_to_pay SET DEFAULT 0;
 
--- -------------------------------------------------------------------------------------------
+
+-- ############################################################################################
+-- START VERSION V2.8.1.1
+-- ############################################################################################\
+
 -- Carlson 29-09-2009
 -- Mantis Id: 678
 
@@ -283,3 +287,43 @@ insert into accessibility_item select 'ROLE_INS_CH_TL' as role, access_right, ac
 insert into accessibility_item select 'ROLE_INS_CH_TL' as role, access_right, accessibility_id, (select max(id)+1 from accessibility_item) from accessibility_item where role='ROLE_INS_CH' and id=538;
 
 --- ---------------------------------------------------
+
+ALTER TABLE vehicle_class_celling ADD COLUMN hire_net_celling numeric(10,2);
+UPDATE vehicle_class_celling set hire_net_celling = 0.00;
+ALTER TABLE vehicle_class_celling ALTER COLUMN hire_net_celling SET STORAGE MAIN;
+ALTER TABLE vehicle_class_celling ALTER COLUMN hire_net_celling SET NOT NULL;
+ALTER TABLE vehicle_class_celling ALTER COLUMN hire_net_celling SET DEFAULT 0;
+
+ALTER TABLE vehicle_class_celling ADD COLUMN repair_net_celling numeric(10,2);
+UPDATE vehicle_class_celling set repair_net_celling = 0.00;
+ALTER TABLE vehicle_class_celling ALTER COLUMN repair_net_celling SET STORAGE MAIN;
+ALTER TABLE vehicle_class_celling ALTER COLUMN repair_net_celling SET NOT NULL;
+ALTER TABLE vehicle_class_celling ALTER COLUMN repair_net_celling SET DEFAULT 0;
+
+--- ---------------------------------------------------
+
+ALTER TABLE cho_band ADD COLUMN is_vehicle_class_celling_enable boolean;
+ALTER TABLE cho_band ALTER COLUMN is_vehicle_class_celling_enable SET STORAGE PLAIN;
+update cho_band set is_vehicle_class_celling_enable = false;
+
+--- ---------------------------------------------------
+
+CREATE SEQUENCE vehicle_class_celling_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE vehicle_class_celling_seq OWNER TO postgres;
+
+ALTER TABLE vehicle_class_celling ADD COLUMN id integer;
+ALTER TABLE vehicle_class_celling ALTER COLUMN id SET STORAGE PLAIN;
+ALTER TABLE vehicle_class_celling ALTER COLUMN id SET NOT NULL;
+ALTER TABLE vehicle_class_celling ALTER COLUMN id SET DEFAULT nextval('vehicle_class_celling_seq'::regclass);
+
+--- ---------------------------------------------------
+
+insert into vehicle_class_celling select insurer.id, vehicle_class.id, 999, now(), 999, now(), 0.00, 0.00 from insurer insurer, vehicle_class vehicle_class;
+
+--- ---------------------------------------------------
+

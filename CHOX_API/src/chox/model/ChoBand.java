@@ -24,7 +24,9 @@ public class ChoBand extends AuditableEntity implements Serializable, ICHOBandIn
     protected int isNotMobileDayAllowance;
     protected int averageLabourRate;
     protected int averageLabourHoursPerHireDay;
+    protected boolean vehicleClassCellingEnable;
     protected String name;
+    protected VehicleClassCelling vehicleClassCelling;
 
     public ChoBand() {
     }
@@ -42,6 +44,7 @@ public class ChoBand extends AuditableEntity implements Serializable, ICHOBandIn
      *
      * @return boolean
      */
+    
     public boolean isIsActive() {
         return isActive;
     }
@@ -138,14 +141,6 @@ public class ChoBand extends AuditableEntity implements Serializable, ICHOBandIn
         this.hireRateChargeTolerance = hireRateChargeTolerance;
     }
 
-    public java.math.BigDecimal getHireNetCeiling() {
-        if (hireNetCeiling == null) {
-            hireNetCeiling = new BigDecimal(0.00);
-        }
-
-        return hireNetCeiling;
-    }
-
     public void setHireNetCeiling(java.math.BigDecimal hireNetCeiling) {
         this.hireNetCeiling = hireNetCeiling;
     }
@@ -158,17 +153,11 @@ public class ChoBand extends AuditableEntity implements Serializable, ICHOBandIn
         this.hireDayCeiling = hireDayCeiling;
     }
 
-    public java.math.BigDecimal getMaxRepairValue() {
-        if (maxRepairValue == null) {
-            maxRepairValue = new BigDecimal(0.00);
-        }
-        return maxRepairValue;
-    }
 
     public void setMaxRepairValue(java.math.BigDecimal maxRepairValue) {
         this.maxRepairValue = maxRepairValue;
     }
-
+    
     public int getIsNotMobileDayAllowance() {
         return isNotMobileDayAllowance;
     }
@@ -200,4 +189,65 @@ public class ChoBand extends AuditableEntity implements Serializable, ICHOBandIn
     public void setName(String name) {
         this.name = name;
     }
+
+    public boolean isVehicleClassCellingEnable() {
+        return vehicleClassCellingEnable;
+    }
+
+    public void setVehicleClassCellingEnable(boolean vehicleClassCellingEnable) {
+        this.vehicleClassCellingEnable = vehicleClassCellingEnable;
+    }
+
+    public void setVehicleClassCelling(VehicleClassCelling vehicleClassCelling) {
+        this.vehicleClassCelling = vehicleClassCelling;
+    }
+
+    public java.math.BigDecimal getMaxRepairValue() {
+
+        if (maxRepairValue == null) {
+            maxRepairValue = new BigDecimal(0.00);
+        }
+        
+        return maxRepairValue;
+    }
+
+    public java.math.BigDecimal getHireNetCeiling() {
+        if (hireNetCeiling == null) {
+            hireNetCeiling = new BigDecimal(0.00);
+        }
+        return hireNetCeiling;
+    }
+
+
+    public java.math.BigDecimal getMaxRepairValueCelling() {
+
+        BigDecimal maxRepairNetCeiling = maxRepairValue;
+        
+        if(vehicleClassCellingEnable){
+
+            maxRepairNetCeiling = new BigDecimal(100000);
+
+            if(vehicleClassCelling!=null){
+                maxRepairNetCeiling = vehicleClassCelling.getRepairNetCelling();
+            }
+            
+        }
+        
+        return maxRepairNetCeiling;
+    }
+    
+    public java.math.BigDecimal getMaxHireNetCeiling() {
+        
+        BigDecimal maxHireNetCeiling = hireNetCeiling;
+        
+        if(vehicleClassCellingEnable){
+            maxHireNetCeiling = new BigDecimal(100000);
+            if(vehicleClassCelling!=null){
+                maxHireNetCeiling = vehicleClassCelling.getHireNetCelling();
+            }
+        }
+
+        return maxHireNetCeiling;
+    }
+
 }

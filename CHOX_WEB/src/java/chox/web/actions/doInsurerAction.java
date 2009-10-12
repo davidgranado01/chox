@@ -103,9 +103,6 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
                 
             }else{
                 
-                System.out.println("A:"+model.isWorkgroupEnable());
-                System.out.println("B:"+workgroupService.isInsurerAllowToEnableWorkgroup(model));
-                
                 if(model.isWorkgroupEnable() && !workgroupService.isInsurerAllowToEnableWorkgroup(model)){
                     this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Please make sure there is atleast one active workgroup exist in order to enable workgroup function");
                     return SUCCESS;

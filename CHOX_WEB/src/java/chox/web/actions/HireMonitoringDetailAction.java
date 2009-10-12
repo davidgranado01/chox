@@ -71,7 +71,11 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
             Claim c = claimService.getClaim(getClaimId());
             c.setHireMonitoringDetail(model);
             c.AddNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(c));
-            if(isUpdateInsurer){c.AddNotification(new HireUpdatedNotification());}
+            
+            if(isUpdateInsurer){
+                c.AddNotification(new HireUpdatedNotification());
+            }
+
             claimService.updateClaim(c);
 
             if (isNewHireMonitoringDetail) {

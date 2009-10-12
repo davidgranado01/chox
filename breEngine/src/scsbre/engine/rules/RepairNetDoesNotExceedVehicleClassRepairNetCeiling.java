@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package scsbre.engine.rules;
 
 import java.math.BigDecimal;
@@ -12,13 +8,6 @@ import scsbre.engine.RuleEvaluationResult;
 import scsbre.model.ClaimStatus;
 import scsbre.model.IClaimInfo;
 
-/**
- *
- * @author Derm
- * 
- * rule 3, order 13
- * 
- */
 public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusinessRule {
 
     String narrative = "";
@@ -27,7 +16,7 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
 
         BigDecimal repairNet = claim.getInvoice().getRepairNet();
-        BigDecimal repairNetCelling = claim.getVehicleClassCellingInfo().getRepairNetCelling();
+        BigDecimal repairNetCelling = claim.getChoBand().getMaxRepairValueCelling();
         boolean success = repairNet.compareTo(repairNetCelling) <= 0;
 
         RuleEvaluation res = new RuleEvaluation();
@@ -47,10 +36,12 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
     }
 
     public String getRuleId() {
-        return "003";
+        return "023";
     }
 
     public ClaimStatus getStatusAfterFailure() {
         return ClaimStatus.InvoiceEscalated;
+        // TODO: CHECK STATUS
+        // return ClaimStatus.InvoiceEscalatedToHandler;
     }
 }

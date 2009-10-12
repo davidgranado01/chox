@@ -16,10 +16,8 @@ import chox.services.VehicleClassService;
 import chox.model.VehicleClass;
 import chox.model.Insurer;
 import java.util.List;
-/**
- *
- * @author Emmanuel
- */
+import chox.web.viewdata.ActionResponse;
+
 public class CustomerAction extends BaseModelAction implements ModelDriven<Customer>, Preparable {
 
     private CustomerService service;
@@ -74,9 +72,11 @@ public class CustomerAction extends BaseModelAction implements ModelDriven<Custo
            model.setInsurer(this.insurerService.getObject(insurerId));
         }
         */
+        
         try {
             this.service.updateObject(model);
             this.actionResult = "";
+            
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }

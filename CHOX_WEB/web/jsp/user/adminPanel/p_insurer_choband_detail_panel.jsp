@@ -354,14 +354,18 @@
     <form id="formUpdateInsurerChoBandDetail" action="user/updateInsurerChoBandDetail.action" class="XXentity-form" onsubmit="return true;">
     <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
     <input type="hidden" name="insurerId" id="insurerId" value='<s:property value="insurerId"/>'>
-    
+
             <div class="form-container">
 
-                <div class="label-block" style="height:20px;">
+                <div class="label-block">
                     <label class="chox-form-std-label-longer">Name<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
                 </div>
-
+                <div class="label-block">
+                    <label class="chox-form-std-label-longer">Enable Vehicle Class Celling</label>
+                    <s:checkbox name="vehicleClassCellingEnable" value="vehicleClassCellingEnable" />
+                </div>
+                
                 <div style="height:500px; overflow:auto; padding-right:10px;" >
 
                     <div class="chox-form-button">
@@ -399,7 +403,7 @@
 (((Labour Cost/Current Average Labour Rate Per Hour)/Productive Labour Hours in Garage Per Hire Day) + Take Mobile Vehicle To Garage Variable or Take Non-Mobile Vehicle to Garage Variable (Depending on Mobile/Non-Mobile Vehicle) + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends))
 <br/><br/>
 <b>Labour Hours Calculation:</b><br/>
-(((Labour Hours/Productive Labour Hours in Garage Per Hire Day) + Take Mobile Vehicle to Garage or Take Non-Mobile Vehicle to Garage (Depending on Mobile/Non Mobile Vehicle) + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends))
+((Labour Hours/Productive Labour Hours in Garage Per Hire Day) + Take Mobile Vehicle to Garage or Take Non-Mobile Vehicle to Garage (Depending on Mobile/Non Mobile Vehicle) + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends))
 </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Take Mobile Vehicle To Garage Variable (Days)<span class="mandatory">*</span></label>
@@ -536,7 +540,7 @@ N.B Where No ECD is provided by the CHO the ECD variable is used, acting as an a
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Weekend Buffer (Days)</label>
-                            <input type="text" class="chox-ttxt" id="iWeekendBufferDays_nmwoecd" name="iWeekendBufferDays_nmwoecd" value="4" onchange="javascript:doRefreshCalculation();"/>
+                            <input type="text" class="chox-ttxt-readonly" id="iWeekendBufferDays_nmwoecd" name="iWeekendBufferDays_nmwoecd" value="4" onchange="javascript:doRefreshCalculation();"/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer"><b>Ttl Allowable Days for Non-Mobile Vehicle Without ECD</b></label>
@@ -550,7 +554,7 @@ N.B Where No ECD is provided by the CHO the ECD variable is used, acting as an a
                             <input type="text" class="chox-ttxt" id="CCDHireDayCeiling" name="hireDayCeiling" value="<s:property value="hireDayCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireDayCeiling" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Maximum Hire Day Ceiling (£)<span class="mandatory">*</span></label>
+                            <label class="chox-form-std-label-longer">Maximum Hire Net Ceiling (£)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDHireNetCeiling" name="hireNetCeiling" value="<s:property value="hireNetCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireNetCeiling" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/>
                         </div>
                         <div class="chox-form-item">
