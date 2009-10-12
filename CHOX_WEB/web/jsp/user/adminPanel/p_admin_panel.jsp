@@ -35,7 +35,7 @@
 <li><a href="javascript:renderAdminParameterPanel('UserMgmt');">User Management</a></li>
 </s:if>
 <s:if test="adminAccessibility.isInsurerBreManagementAdminAccessibility">         
-<li><a href="javascript:renderAdminParameterPanel('InsurerPanelMgmt');">Business Rule Engine</a></li>
+<li><a href="javascript:renderAdminParameterPanel('InsurerPanelMgmt');">Business Rules Engine</a></li>
 </s:if>
 </ul>
                         
