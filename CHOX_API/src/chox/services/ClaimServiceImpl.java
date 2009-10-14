@@ -175,7 +175,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.eq("wg.id", searchCriteria.getWorkgroupId()));
         }
         if (searchCriteria.getIsAnomalies()) {
-            criteria.add(Restrictions.eq("isAnomalies", true));
+            criteria.add(Restrictions.sizeGt("notifications", 0));
         }
         if (searchCriteria.getIspenaltyChargeApplied()) {
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));

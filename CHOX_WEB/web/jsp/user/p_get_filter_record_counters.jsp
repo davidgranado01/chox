@@ -23,7 +23,7 @@
         <li><a href="javascript:showClaimByStatusWithSort('ClaimPending','statusModifiedDate');" >Claim Pending (<s:property value="filterRecordCounter.ClaimPendingCount" />)</a></li>
     </s:if>                        
     <s:if test="filterAccessibility.isHireUpdateAnomaliesAccessible">
-        <li><a href="javascript:showClaimIsAnomalies();" >Hire Update Anomalies (<s:property value="filterRecordCounter.hireUpdateAnomaliesCount" />)</a></li>
+        <li><a href="javascript:showClaimIsAnomalies();" >Hire Update Notifications/Warnings (<s:property value="filterRecordCounter.hireUpdateAnomaliesCount" />)</a></li>
     </s:if>
     <s:if test="filterAccessibility.isClaimReferredToEngineerAccessible">
         <li><a href="javascript:showClaimByStatus('ClaimReferredToEngineer');" >Claim Referred To Engineer (<s:property value="filterRecordCounter.ClaimReferredToEngineerCount" />)</a></li>

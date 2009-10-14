@@ -715,23 +715,9 @@
                                 <tr>
                                     <td><label class="chox-claim-header-label">Percentage Liability Accepted</label><label class="chox-claim-header-text"><span id="status"><s:property value="percentageLiabilityAccepted" />%</span></label></td>
                                     <td><label class="chox-claim-header-label">Indemnity</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
-
-                                    <s:if test="!isCHO">
-                                        <td><label class="chox-claim-header-label">ECD Anomaly?</label><label class="chox-claim-header-text"><span id="status">
-                                                    <s:if test="isAnomalies">
-                                                        <s:property value="isAnomaliesDesc" /> ( <a href="javascript:updateAnomalies('<s:property value="id" />');">Remove from hire anomalies</a> )
-                                                    </s:if>
-                                                    <s:else>
-                                                        <s:property value="isAnomaliesDesc" />
-                                                    </s:else>
-                                                </span></label></td>
-                                            </s:if>
-
-                                </tr>
-                                <tr>
                                     <td><label class="chox-claim-header-label">Workgroup</label><label class="chox-claim-header-text"><s:property value="workgroup.name" /></label></td>
-                                    <td></td>
                                 </tr>
+                               
 
                                 <s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">
                                     <tr>
