@@ -355,9 +355,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     this.actionResult = "ERROR : " + ex.getMessage();
                     bActionFlag = false;
                     sActionMsg = ex.getLocalizedMessage();
-                } finally {
-                    systemLogService.logSystemLog("ACT001", sActionMsg, bActionFlag, 3);
-                }
+                } 
             }
         }
 
@@ -411,8 +409,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 bActionFlag = false;
                 sActionMsg = ex.getLocalizedMessage();
 
-            } finally {
-                systemLogService.logSystemLog("ACT002", sActionMsg, bActionFlag, 3);
             }
         }
 
@@ -449,8 +445,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 this.actionResult = "ERROR : " + ex.getMessage();
                 bActionFlag = false;
                 sActionMsg = ex.getLocalizedMessage();
-            } finally {
-                systemLogService.logSystemLog("ACT003", sActionMsg, bActionFlag, 3);
             }
 
         }
@@ -501,10 +495,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             sActionMsg = ex.getLocalizedMessage();
             this.actionResult = "ERROR : " + ex.getMessage();
 
-        } finally {
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
-            systemLogService.logSystemLog("ACT004", sActionMsg, bActionFlag, 3);
-        }
+        } 
 
         return result;
     }
@@ -540,9 +531,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             this.actionResult = "ERROR : " + ex.getMessage();
             bActionFlag = false;
             sActionMsg = this.actionResult;
-        } finally {
-            systemLogService.logSystemLog("ACT005", sActionMsg, bActionFlag, 3);
-        }
+        } 
 
         return result;
     }
@@ -589,9 +578,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 bActionFlag = false;
                 sActionMsg = this.actionResult;
 
-            } finally {
-                systemLogService.logSystemLog("ACT006", sActionMsg, bActionFlag, 3);
-            }
+            } 
         }
 
         return result;
@@ -624,9 +611,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 bActionFlag = false;
                 sActionMsg = this.actionResult;
 
-            } finally {
-                systemLogService.logSystemLog("ACT007", sActionMsg, bActionFlag, 3);
-            }
+            } 
 
         } else {
 
@@ -707,9 +692,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 result = ERROR;
                 sActionMsg = this.actionResult;
 
-            } finally {
-                systemLogService.logSystemLog("ACT008", sActionMsg, bActionFlag, 3);
-            }
+            } 
 
             result = SUCCESS;
 
@@ -752,9 +735,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             bActionFlag = false;
             sActionMsg = this.actionResult;
 
-        } finally {
-            systemLogService.logSystemLog("ACT009", sActionMsg, bActionFlag, 3);
-        }
+        } 
 
         return result;
     }
@@ -794,8 +775,36 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             bActionFlag = false;
             sActionMsg = this.actionResult;
 
-        } finally {
-            systemLogService.logSystemLog("ACT010", sActionMsg, bActionFlag, 3);
+        } 
+
+        return result;
+    }
+
+public String approveBREPassedByClaimHandler() {
+
+        String result = SUCCESS;
+        String newStatus;
+
+        if (this.actionName.equalsIgnoreCase(ACCEPT)) {
+            newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
+        } else if (this.actionName.equalsIgnoreCase(INV_REFER_ENG)) {
+            newStatus = ClaimStatus.INVOICE_REF_TO_ENG;
+        } else {
+            newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
+            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
+        }
+
+        try {
+
+            auditTrailService.logAuditLog(newStatus, claim, null, null);
+
+            this.claim.setStatus(newStatus);
+            this.service.updateClaim(claim);
+
+        } catch (Exception ex) {
+
+            result = ERROR;
+            this.actionResult = "ERROR : " + ex.getMessage();
         }
 
         return result;
@@ -807,8 +816,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         String newStatus;
-        boolean bActionFlag = true;
-        String sActionMsg = "";
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
@@ -816,14 +823,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             newStatus = ClaimStatus.INVOICE_REF_TO_ENG;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejection:" + claim.getInvoice().getReasonOfRejectionId();
             logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
         }
 
         try {
 
             auditTrailService.logAuditLog(newStatus, claim, null, null);
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
 
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
@@ -832,12 +837,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
-            bActionFlag = false;
-            sActionMsg = this.actionResult;
-
-        } finally {
-            systemLogService.logSystemLog("ACT011", sActionMsg, bActionFlag, 3);
-        }
+        } 
 
         return result;
     }
@@ -845,41 +845,33 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String updateInsurerClaimNumber() {
 
         String result = SUCCESS;
-        boolean bActionFlag = true;
-        String sActionMsg = "";
 
         try {
 
             this.service.updateClaim(claim);
-            sActionMsg = "ClaimId:" + claim.getId() + "| ClaimNumber:" + claim.getClaimNumber();
 
         } catch (Exception ex) {
 
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
-            bActionFlag = false;
-            sActionMsg = this.actionResult;
 
-        } finally {
-            systemLogService.logSystemLog("CLM001", sActionMsg, bActionFlag, 3);
-        }
+        } 
 
         return result;
     }
 
     public String updatePaymentReceived() {
 
-        boolean bActionFlag = true;
         String result = SUCCESS;
         String newStatus = "";
-        String sActionMsg = "";
+        
 
         try {
 
             newStatus = ClaimStatus.INVOICE_PAYMENT_RECEIVED;
 
             auditTrailService.logAuditLog(newStatus, claim, null, null);
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
+
 
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
@@ -888,12 +880,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
-            bActionFlag = false;
-            sActionMsg = this.actionResult;
 
-        } finally {
-            systemLogService.logSystemLog("ACT012", sActionMsg, bActionFlag, 3);
-        }
+        } 
 
         return result;
     }
@@ -902,20 +890,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // CHECK THE INVOICE    
     public String approveEscalatedInvoice() {
 
-        boolean bActionFlag = true;
         String result = SUCCESS;
         String newStatus;
-        String sActionMsg = "";
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(REFER_CH)) {
             newStatus = ClaimStatus.INVOICE_REF_TO_CH;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejection:" + claim.getInvoice().getReasonOfRejectionId();
             logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
         }
 
@@ -930,13 +913,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
-            bActionFlag = false;
-            sActionMsg = this.actionResult;
 
-        } finally {
-            systemLogService.logSystemLog("ACT013", sActionMsg, bActionFlag, 3);
-        }
-
+        } 
         return result;
     }
 
@@ -946,18 +924,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         String newStatus;
-        boolean bActionFlag = true;
-        String sActionMsg = "";
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(INV_REFER_ENG)) {
             newStatus = ClaimStatus.INVOICE_REF_TO_ENG;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejection:" + claim.getInvoice().getReasonOfRejectionId();
             logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
         }
 
@@ -972,12 +945,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
-            bActionFlag = false;
-            sActionMsg = this.actionResult;
 
-        } finally {
-            systemLogService.logSystemLog("ACT014", sActionMsg, bActionFlag, 3);
-        }
+        } 
 
         return result;
     }
@@ -986,18 +955,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         String newStatus;
-        boolean bActionFlag = true;
-        String sActionMsg = "";
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(REFER_CH)) {
             newStatus = ClaimStatus.INVOICE_REF_TO_CH;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejection:" + claim.getInvoice().getReasonOfRejectionId();
             logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
         }
 
@@ -1009,16 +973,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             this.service.updateClaim(claim);
 
         } catch (Exception ex) {
-
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
-            bActionFlag = false;
-            sActionMsg = this.actionResult;
-
-        } finally {
-            systemLogService.logSystemLog("ACT014", sActionMsg, bActionFlag, 3);
         }
-
+        
         return result;
     }
 
@@ -1029,9 +987,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String result = SUCCESS;
         String newStatus;
         Integer invoiceReasonOfRejectionId = null;
-        boolean bActionFlag = true;
-        String sActionMsg = "";
-
+        
         if (this.actionName.equalsIgnoreCase(REJECT)) {
 
             // claim = businessRulesEngService.constructBreValidateObject(claim);
@@ -1043,13 +999,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_INS;
 
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
-
         } else {
 
             newStatus = ClaimStatus.INVOICE_REJECTED_ACCEPTED;
             invoiceReasonOfRejectionId = claim.getInvoice().getReasonOfRejectionId();
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejection:" + invoiceReasonOfRejectionId;
 
         }
 
@@ -1064,12 +1017,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
-            bActionFlag = false;
-            sActionMsg = this.actionResult;
 
-        } finally {
-            systemLogService.logSystemLog("ACT015", sActionMsg, bActionFlag, 3);
-        }
+        } 
 
         return result;
 
@@ -1078,12 +1027,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String logInvoicePayment() {
 
         String newStatus = ClaimStatus.INVOICE_PAYMENT_LOGGED;
-        boolean bActionFlag = true;
-        String sActionMsg = "";
+
         try {
 
             auditTrailService.logAuditLog(newStatus, claim, null, null);
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
 
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
@@ -1091,13 +1038,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } catch (Exception ex) {
 
             this.actionResult = "ERROR : " + ex.getMessage();
-            bActionFlag = false;
-            sActionMsg = this.actionResult;
 
-        } finally {
-            systemLogService.logSystemLog("ACT016", sActionMsg, bActionFlag, 3);
-        }
-
+        } 
         return SUCCESS;
     }
 
@@ -1122,9 +1064,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getCreatedByDesc() {
+        
         String desc = "";
         String orgName = "";
         WebUser user = claim.getCreatedBy();
+        
         if (user != null) {
             Chorganisation cho = user.getChorganisation();
             Insurer ins = user.getInsurer();
@@ -1212,8 +1156,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 //            bActionFlag = false;
 //            sActionMsg = this.actionResult;
 //
-//        }finally {
-//            systemLogService.logSystemLog("ACT017", sActionMsg, bActionFlag, 3);
 //        }
 //        return result;
 //    }
@@ -1237,9 +1179,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String doApplyPenaltyCharge() {
+
         String result = SUCCESS;
-        boolean bActionFlag = true;
-        String sActionMsg = "";
 
         try {
 
@@ -1263,26 +1204,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             invoice.setPenaltyChargeAppliedDate(DateHelper.getCurrentTimeStamp());
             this.invoiceService.updateObject(invoice);
 
-            sActionMsg = "ClaimId:" + claim.getId();
-
         } catch (Exception ex) {
 
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
-            bActionFlag = false;
-            sActionMsg = this.actionResult;
 
-        } finally {
-            systemLogService.logSystemLog("ACT018", sActionMsg, bActionFlag, 3);
-        }
+        } 
 
         return result;
     }
 
     public String doUpdateClaimStatus() {
         String result = SUCCESS;
-        boolean bActionFlag = true;
-        String sActionMsg = "";
 
         try {
 
@@ -1290,7 +1223,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             String newStatus = ClaimStatus.CLAIM_CLOSED;
 
             auditTrailService.logAuditLog(newStatus, claim, null, null);
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
 
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
@@ -1299,20 +1231,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
-            bActionFlag = false;
-            sActionMsg = this.actionResult;
 
-        } finally {
-            systemLogService.logSystemLog("ACT019", sActionMsg, bActionFlag, 3);
-        }
+        } 
         return result;
     }
 
     public String doReopenClaimStatus() {
 
         String result = SUCCESS;
-        boolean bActionFlag = true;
-        String sActionMsg = "";
 
         try {
 
@@ -1320,7 +1246,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             String newStatus = claim.getPreviousStatus();
 
             auditTrailService.logAuditLog(newStatus, claim, null, null);
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
 
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
@@ -1329,12 +1254,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
-            bActionFlag = false;
-            sActionMsg = this.actionResult;
 
-        } finally {
-            systemLogService.logSystemLog("ACT020", sActionMsg, bActionFlag, 3);
-        }
+        } 
         return result;
     }
 

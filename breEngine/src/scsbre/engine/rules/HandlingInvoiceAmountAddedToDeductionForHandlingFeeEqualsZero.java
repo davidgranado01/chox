@@ -48,7 +48,10 @@ public class HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero imple
     }
 
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.InvoiceEscalated;
+        // HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero().applyToClaim(claim)) STATUS = InvoiceDataCalculationIncorrect;
+        // CARLSON @ 20091012
+        // return ClaimStatus.InvoiceEscalated;
+        return ClaimStatus.InvoiceDataCalculationIncorrect;
     }
 
 }

@@ -1,16 +1,14 @@
 package chox.web.actions;
 
-import chox.model.ChoBandOrganisation;
 import chox.model.VehicleClassCelling;
 import chox.services.InsurerService;
 import chox.services.VehicleClassCellingService;
-import chox.web.viewdata.ChoBandChorganisationViewData;
 import chox.web.viewdata.VehicleClassCellingViewData;
 import java.util.ArrayList;
 import net.sf.json.JSONArray;
 import java.util.List;
 
-public class VehicleClassCellingAction extends AdminBaseModelAction {
+public class VehicleClassCellingAction extends BaseAction {
 
     private List<VehicleClassCellingViewData> vehicleClassCellingViewData;
     private InsurerService insurerService;
@@ -57,7 +55,7 @@ public class VehicleClassCellingAction extends AdminBaseModelAction {
             }
 
         } catch (Exception ex) {
-
+            ex.printStackTrace();
         }
 
         return SUCCESS;

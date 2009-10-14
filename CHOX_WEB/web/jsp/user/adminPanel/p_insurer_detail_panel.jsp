@@ -66,6 +66,7 @@
         function doInsurerSubmit(){
             
             var confirmationMsg = "Do you wish to accept changes?";
+            
             if(isNew){ confirmationMsg = "Are you sure you wish to add this insurer?"; }
 
             if(doFormValidation().form()){

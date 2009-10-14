@@ -1,8 +1,6 @@
 package chox.services;
 
-import chox.model.IdLookupItem;
 import chox.model.UserWorkgroup;
-import chox.model.Workgroup;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;

@@ -6,14 +6,12 @@ import chox.model.Claim;
 import chox.model.SupportMessage;
 import chox.services.ClaimService;
 import chox.services.SupportMessageService;
-import chox.services.SystemLogService;
 
 public class OnlineSupportAction extends BaseAction{
     
     private String[] recipients = {"choxsupport@sherwoodcompliance.co.uk", "info@greenfinch.ie"};
     
     private SupportMessageService supportMessageService;
-    private SystemLogService systemLogService;
     private ClaimService claimService;
     private String iSupplierReference;
     private String iSubject;
@@ -68,7 +66,6 @@ public class OnlineSupportAction extends BaseAction{
         }
         
         boolean bFlag = true;
-        String sActionMsg = "";
         
         try{
             EmailHelper emailHelper = new EmailHelper();
@@ -78,10 +75,7 @@ public class OnlineSupportAction extends BaseAction{
             ex.printStackTrace();
             this.getActionResponse().AddError("Please try again.");
             bFlag = false;
-            sActionMsg = ex.getLocalizedMessage();
-        } finally {
-            systemLogService.logSystemLog("OSF001", sActionMsg, bFlag, 2);
-        }
+        } 
         
         if(bFlag){
             
@@ -91,10 +85,7 @@ public class OnlineSupportAction extends BaseAction{
                 ex.printStackTrace();
                 this.getActionResponse().AddError("Please try again.");
                 bFlag = false;
-                sActionMsg = ex.getLocalizedMessage();
-            } finally {
-                systemLogService.logSystemLog("OSF002", sActionMsg, bFlag, 2);
-            }
+            } 
             
             this.getActionResponse().AssignMessageResult("Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.");
         }
@@ -132,10 +123,6 @@ public class OnlineSupportAction extends BaseAction{
     
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
-    }
-    
-    public void setSystemLogService(SystemLogService systemLogService){
-        this.systemLogService = systemLogService;
     }
     
     @Override

@@ -125,55 +125,34 @@
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
-        
+
         <!-- ACTION PANEL VALIDATION By Carlson !-->
         <action name="getActionPanel" class="chox.web.actions.ClaimAction" method="getActionPanel">
-            <result name="updateclaimlineofbusiness">/jsp/user/actionPanel/p_routeUnacknowledgedClaim.jsp
-            </result>
-            <result name="updateclaiminsurerdetail">/jsp/user/actionPanel/p_acknowledgeClaim.jsp
-            </result>
-            <result name="contestOrAcceptRejectedClaim">/jsp/user/actionPanel/p_contestOrAcceptRejectedClaim.jsp
-            </result>
-            <result name="approveContestedClaim">/jsp/user/actionPanel/p_approveContestedClaim.jsp
-            </result>
-            <result name="updateclaimcarhiredetail">/jsp/user/actionPanel/p_updateCarHireInfo.jsp
-            </result>
-            <result name="uploadInvoiceData">/jsp/user/actionPanel/p_uploadInvoiceData.jsp
-            </result>
-            <result name="updateinvoicedtailforcalculationincorrect">/jsp/user/actionPanel/p_resubmitInvoiceData.jsp
-            </result>
-            <result name="updateinvoicedtailbyinsurer">/jsp/user/actionPanel/p_approveContestedInvoice.jsp
-            </result>
-            <result name="updateinvoicedtailbycho">/jsp/user/actionPanel/p_resubmitOrAcceptContestedInvoice.jsp
-            </result>
-            <result name="approveBREPassedClaim">/jsp/user/actionPanel/p_approveBREPassedClaim.jsp
-            </result>
-            <result name="approveEscalatedInvoice">/jsp/user/actionPanel/p_approveEscalatedInvoice.jsp
-            </result>
-            <result name="approveContestedInvoice">/jsp/user/actionPanel/p_approveContestedInvoice.jsp
-            </result>
-            <result name="approveContestedInvoiceToEng">/jsp/user/actionPanel/p_approveContestedInvoiceToEng.jsp
-            </result>
-            <result name="resubmitOrAcceptContestedInvoice">/jsp/user/actionPanel/p_resubmitOrAcceptContestedInvoice.jsp
-            </result>
-            <result name="logInvoicePayment">/jsp/user/actionPanel/p_logInvoicePayment.jsp
-            </result>
-            <result name="reviewByEngineer">/jsp/user/actionPanel/p_reviewByEngineer.jsp
-            </result>
-            <result name="registeredclaimbyfnol">/jsp/user/actionPanel/p_registeredclaimbyfnol.jsp
-            </result>
-            <result name="claimPending">/jsp/user/actionPanel/p_pendingClaim.jsp
-            </result>
-            <result name="updateInvoiceReferredByEngineer">/jsp/user/actionPanel/p_approveInvoiceReferredByEngineer.jsp
-            </result>
-            <result name="updatePaymentReceived">/jsp/user/actionPanel/p_updatePaymentReceived.jsp
-            </result>
-            <result name="updateClaimUpdatedByEngineer">/jsp/user/actionPanel/p_updateClaimUpdatedByEngineer.jsp
-            </result>            
-            <result name="empty">/jsp/p_blank.jsp
-            </result>
-        </action>      
-        
+            <result name="updateclaimlineofbusiness">/jsp/user/actionPanel/p_routeUnacknowledgedClaim.jsp</result>
+            <result name="updateclaiminsurerdetail">/jsp/user/actionPanel/p_acknowledgeClaim.jsp</result>
+            <result name="contestOrAcceptRejectedClaim">/jsp/user/actionPanel/p_contestOrAcceptRejectedClaim.jsp</result>
+            <result name="approveContestedClaim">/jsp/user/actionPanel/p_approveContestedClaim.jsp</result>
+            <result name="updateclaimcarhiredetail">/jsp/user/actionPanel/p_updateCarHireInfo.jsp</result>
+            <result name="uploadInvoiceData">/jsp/user/actionPanel/p_uploadInvoiceData.jsp</result>
+            <result name="updateinvoicedtailforcalculationincorrect">/jsp/user/actionPanel/p_resubmitInvoiceData.jsp</result>
+            <result name="updateinvoicedtailbyinsurer">/jsp/user/actionPanel/p_approveContestedInvoice.jsp</result>
+            <result name="updateinvoicedtailbycho">/jsp/user/actionPanel/p_resubmitOrAcceptContestedInvoice.jsp</result>
+            <result name="approveBREPassedClaim">/jsp/user/actionPanel/p_approveBREPassedClaim.jsp</result>
+            <result name="approveEscalatedInvoice">/jsp/user/actionPanel/p_approveEscalatedInvoice.jsp</result>
+            <result name="approveContestedInvoice">/jsp/user/actionPanel/p_approveContestedInvoice.jsp</result>
+            <result name="approveContestedInvoiceToEng">/jsp/user/actionPanel/p_approveContestedInvoiceToEng.jsp</result>
+            <result name="resubmitOrAcceptContestedInvoice">/jsp/user/actionPanel/p_resubmitOrAcceptContestedInvoice.jsp</result>
+            <result name="logInvoicePayment">/jsp/user/actionPanel/p_logInvoicePayment.jsp</result>
+            <result name="reviewByEngineer">/jsp/user/actionPanel/p_reviewByEngineer.jsp</result>
+            <result name="approveBREPassedByClaimHandler">/jsp/user/actionPanel/p_approveBREPassedByClaimHandler.jsp</result>
+            <result name="registeredclaimbyfnol">/jsp/user/actionPanel/p_registeredclaimbyfnol.jsp</result>
+            <result name="claimPending">/jsp/user/actionPanel/p_pendingClaim.jsp</result>
+            <result name="updateInvoiceReferredByEngineer">/jsp/user/actionPanel/p_approveInvoiceReferredByEngineer.jsp</result>
+            <result name="updatePaymentReceived">/jsp/user/actionPanel/p_updatePaymentReceived.jsp</result>
+            <result name="updateClaimUpdatedByEngineer">/jsp/user/actionPanel/p_updateClaimUpdatedByEngineer.jsp</result>            
+            <result name="empty">/jsp/p_blank.jsp</result>
+        </action>
+
         <action name="getUpdateInsurerClaimNumberAction" class="chox.web.actions.ClaimAction" method="getUpdateInsurerClaimNumberAction">
             <result name="updateInsurerClaimNumber">/jsp/user/actionPanel/p_updateInsurerClaimNumber.jsp</result>
             <result name="empty">/jsp/p_blank.jsp
@@ -288,7 +267,20 @@
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
-        
+
+        <action name="approveBREPassedByClaimHandler" class="chox.web.actions.ClaimAction" method="approveBREPassedByClaimHandler">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
+
         <action name="updateInsurerClaimNumber" class="chox.web.actions.ClaimAction" method="updateInsurerClaimNumber">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail

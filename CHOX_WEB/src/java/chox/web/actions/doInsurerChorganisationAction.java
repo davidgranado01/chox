@@ -12,7 +12,7 @@ import chox.services.InsurerService;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
-public class doInsurerChorganisationAction extends AdminBaseModelAction implements ModelDriven<InsurerChorganisation>, Preparable {
+public class doInsurerChorganisationAction extends BaseAction implements ModelDriven<InsurerChorganisation>, Preparable {
 
     private InsurerChorganisation model;
     private int objectId=-1;
@@ -84,30 +84,20 @@ public class doInsurerChorganisationAction extends AdminBaseModelAction implemen
     }
 
     public String removeObject(){
-        
-        String sActionMsg = "";
-        boolean bActionFlag = false;
          
         try{          
             
             service.triggerStatus(model);
-        
-            bActionFlag = true;
-            sActionMsg = getSystemLogService().getObjectActionLogMsg("DELETE", "InsurerChorganisationId:"+model.getId());
-            
+
         } catch (Exception ex) {
-            sActionMsg = ex.getMessage();
+            ex.printStackTrace();
         }
-        
-        getSystemLogService().logSystemLog("ADM009", sActionMsg, bActionFlag, 3);         
+            
         return SUCCESS;
     }
     
     public String addObject(){
-        
-        String sActionMsg = "";
-        boolean bActionFlag = false;
-        
+
         try{ 
             
             if(!service.isInactiveObjectExist(insurerId, chorganisationId)){
@@ -120,14 +110,9 @@ public class doInsurerChorganisationAction extends AdminBaseModelAction implemen
                 service.triggerStatus(model);
             }
         
-            bActionFlag = true;
-            sActionMsg = getSystemLogService().getObjectActionLogMsg("ADD", "InsurerChorganisationId:"+model.getId());
-            
         } catch (Exception ex) {
-            sActionMsg = ex.getMessage();
+            ex.printStackTrace();
         }
-        
-        getSystemLogService().logSystemLog("ADM010", sActionMsg, bActionFlag, 3); 
         
         return SUCCESS;
     }

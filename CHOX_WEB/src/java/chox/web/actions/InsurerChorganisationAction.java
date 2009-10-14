@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import net.sf.json.JSONArray;
 import java.util.List;
 
-public class InsurerChorganisationAction extends AdminBaseModelAction {
+public class InsurerChorganisationAction extends BaseAction {
 
     protected int insurerId;
     protected List<InsurerChorganisationViewData> insurerChorganisations;
@@ -51,23 +51,15 @@ public class InsurerChorganisationAction extends AdminBaseModelAction {
     
     // INSURER v.s CREDIT HIRE -- NEED ACTIVE ONLY 
     public String getSelectedChorganisation(){
-        
-        String sActionMsg = "";
-        boolean bActionFlag = false;
-        
+
         try{
             
             List<InsurerChorganisation> chorganisationsData = this.service.getObjects(insurerId, null);
             insurerChorganisations = getChoViewDataList(chorganisationsData);
-            
-            bActionFlag = true;
-            sActionMsg = getSystemLogService().getListingLogMsg(insurerChorganisations.size(), "InsurerId:"+insurerId);
-            
+
         } catch (Exception ex) {
-            sActionMsg = ex.getMessage();
+            ex.printStackTrace();
         }
-        
-        getSystemLogService().logSystemLog("ADM004", sActionMsg, bActionFlag, 0);  
         
         return SUCCESS;
     }

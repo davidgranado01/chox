@@ -11,7 +11,7 @@ import chox.services.WebUserUserRoleService;
 import chox.web.viewdata.ActionResponse;
 import java.util.List;
 
-public class doUserroleAction extends AdminBaseModelAction{
+public class doUserroleAction extends BaseAction{
 
     private List userroles;
     private int orgTypeId;
@@ -92,9 +92,7 @@ public class doUserroleAction extends AdminBaseModelAction{
     }  
     
     public String addNewRoleMapping(){
-        
-        String sActionMsg = "";
-        boolean bActionFlag = false;
+
         
         try{
             
@@ -113,14 +111,9 @@ public class doUserroleAction extends AdminBaseModelAction{
 
             }
             
-            bActionFlag = true;
-            sActionMsg = getSystemLogService().getObjectActionLogMsg("ADD", "webUserId:"+webUserId+"|webUserRoleId:"+webUserRoleId);
-            
         } catch (Exception ex) {
-            sActionMsg = ex.getMessage();
+            ex.printStackTrace();
         }
-        
-        getSystemLogService().logSystemLog("ADM011", sActionMsg, bActionFlag, 3);
         
         return SUCCESS;
     }

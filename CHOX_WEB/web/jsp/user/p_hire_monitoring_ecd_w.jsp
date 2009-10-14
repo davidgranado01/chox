@@ -76,7 +76,8 @@
     }
     
     function doResetForm(){
-        document.formAddNewHireMonitoringEcd.reason.value = "";
+        document.formAddNewHireMonitoringEcd.ecdDate.value = "";
+        document.formAddNewHireMonitoringEcd.reasonOfDelayId.value = "";
         document.formAddNewHireMonitoringEcd.supportingNote.value = "";
     }
     

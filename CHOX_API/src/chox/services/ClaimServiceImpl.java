@@ -50,7 +50,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     claim.setLastModifiedBy(user);
     save(claim);
     }
-     */
+    */
+    
     public Long getCountByStatus(String status) {
         String q = "select count(*) from Claim where status = '" + status + "'";
         return getCount(q);
@@ -157,26 +158,34 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
             criteria.add(Restrictions.like("choReference", searchCriteria.getSupplierReference()).ignoreCase());
         }
+
         if (searchCriteria.getStatus() != null && !searchCriteria.getStatus().isEmpty()) {
             criteria.add(Restrictions.eq("status", searchCriteria.getStatus()));
         }
+
         if (searchCriteria.getInsurerId() > 0) {
             criteria.add(Restrictions.eq("ins.id", searchCriteria.getInsurerId()));
         }
+
         if (searchCriteria.getSupplierId() > 0) {
             criteria.add(Restrictions.eq("cho.id", searchCriteria.getSupplierId()));
         }
+
         /*
         if (searchCriteria.getLineOfBusinessId() > 0) {
         criteria.add(Restrictions.eq("lob.id", searchCriteria.getLineOfBusinessId()));
         }
-         */
+        */
+        
         if (searchCriteria.getWorkgroupId() > 0) {
             criteria.add(Restrictions.eq("wg.id", searchCriteria.getWorkgroupId()));
         }
+
+        // S8003
         if (searchCriteria.getIsAnomalies()) {
             criteria.add(Restrictions.sizeGt("notifications", 0));
         }
+
         if (searchCriteria.getIspenaltyChargeApplied()) {
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
             criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
@@ -187,12 +196,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.created_date) + 1 >(iv1_.panalty_alert_qty+1)*30"));
             // criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.date_invoiced) + 1 >(iv1_.panalty_alert_qty+1)*30"));
         }
+        
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {
             criteria.add(Restrictions.like("iv.claimInvoiceNo", searchCriteria.getInvoiceNumber()).ignoreCase());
         }
+
         if (searchCriteria.getClaimNumber() != null && !searchCriteria.getClaimNumber().isEmpty()) {
             criteria.add(Restrictions.like("claimNumber", searchCriteria.getClaimNumber()).ignoreCase());
         }
+
         if (searchCriteria.getVrn() != null && !searchCriteria.getVrn().isEmpty()) {
             String vrn = searchCriteria.getVrn().replaceAll(" ", "");
             criteria.add(Restrictions.like("tp.vehicleRegistration", vrn).ignoreCase());
@@ -205,6 +217,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             d.setSeconds(0);
             criteria.add(Expression.ge("createdDate", d));
         }
+
         if (searchCriteria.getClaimUploadDateTo() != null) {
             Date d = searchCriteria.getClaimUploadDateTo();
             d.setDate(d.getDate() + 1);
@@ -213,7 +226,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             d.setSeconds(0);
             criteria.add(Expression.le("createdDate", d));
         }
+
         if (searchCriteria.getInvoiceUploadDateFrom() != null || searchCriteria.getInvoiceUploadDateTo() != null) {
+
             if (searchCriteria.getInvoiceUploadDateFrom() != null) {
                 Date d = searchCriteria.getInvoiceUploadDateFrom();
                 d.setHours(0);
@@ -221,6 +236,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 d.setSeconds(0);
                 criteria.add(Expression.ge("iv.createdDate", d));
             }
+
             if (searchCriteria.getInvoiceUploadDateTo() != null) {
                 Date d = searchCriteria.getInvoiceUploadDateTo();
                 d.setDate(d.getDate() + 1);
@@ -229,9 +245,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 d.setSeconds(0);
                 criteria.add(Expression.le("iv.createdDate", d));
             }
+            
         }
 
         if (searchCriteria.getHireDateFrom() != null || searchCriteria.getHireDateTo() != null) {
+            
             if (searchCriteria.getHireDateFrom() != null) {
                 Date d = searchCriteria.getHireDateFrom();
                 d.setHours(0);
@@ -239,6 +257,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 d.setSeconds(0);
                 criteria.add(Expression.ge("vh.rentalStart", d)).add(Expression.le("vh.rentalEnd", d));
             }
+
             if (searchCriteria.getHireDateTo() != null) {
                 Date d = searchCriteria.getHireDateTo();
                 d.setDate(d.getDate() + 1);
@@ -247,6 +266,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 d.setSeconds(0);
                 criteria.add(Expression.ge("vh.rentalStart", d)).add(Expression.le("vh.rentalEnd", d));
             }
+            
         }
 
         if (searchCriteria.getLastModifiedDateFrom() != null || searchCriteria.getLastModifiedDateTo() != null) {

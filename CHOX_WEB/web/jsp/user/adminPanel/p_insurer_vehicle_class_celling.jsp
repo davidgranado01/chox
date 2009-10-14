@@ -108,9 +108,9 @@
                 $(".form-container").block();
 
                 var op = {
-                    success:onSubmitResponseReceived,
+                    success:onVehicleClassCellingSubmitResponseReceived,
                     timeout: 3000,
-                    error: onSubmitError
+                    error: onVehicleClassCellingSubmitError
                 };
 
                 $("#formVehicleClassCellingDetail").ajaxSubmit(op);
@@ -140,12 +140,12 @@
         return validateFlag;
     }
     
-    function onSubmitResponseReceived(){
+    function onVehicleClassCellingSubmitResponseReceived(){
         onVehicleClassPageRefresh();
         $(".form-container").unblock();
     }
 
-    function onSubmitError(){
+    function onVehicleClassCellingSubmitError(){
         alert("Unexpected Error has been encountered, please try again.");
         $(".form-container").unblock();
     }

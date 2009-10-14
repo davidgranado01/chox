@@ -59,6 +59,10 @@ public class FilterRecordCounter {
         return service.getCountByStatus(ClaimStatus.INVOICE_ESCALATED);
     }
 
+    public long getEscalatedInvoicesToHandlerCount() {
+        return service.getCountByStatus(ClaimStatus.INVOICE_ESCALATED_TO_CH);
+    }
+
     public long getContestedInvoicesReferredToInsurerCount() {
         return service.getCountByStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
     }

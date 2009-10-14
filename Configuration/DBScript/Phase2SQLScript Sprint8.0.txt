@@ -325,5 +325,64 @@ ALTER TABLE vehicle_class_celling ALTER COLUMN id SET DEFAULT nextval('vehicle_c
 
 insert into vehicle_class_celling select insurer.id, vehicle_class.id, 999, now(), 999, now(), 0.00, 0.00 from insurer insurer, vehicle_class vehicle_class;
 
+
+-- ############################################################################################
+-- START VERSION V2.8.1.2
+-- ############################################################################################\
+
+update vehicle_class set name='B1' where name='BI';
+
 --- ---------------------------------------------------
 
+insert into accessibility select (select max(id)+1 from accessibility), 'filter.InvoiceEscalatedToHandler';
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 1, (select id from accessibility where name ='filter.InvoiceEscalatedToHandler'), (select max(id)+1 from accessibility_item));
+
+--- ---------------------------------------------------
+
+insert into accessibility select (select max(id)+1 from accessibility), 'tab.InvoiceDetail.InvoiceEscalatedToHandler';
+insert into accessibility select (select max(id)+1 from accessibility), 'tab.History.InvoiceEscalatedToHandler';
+insert into accessibility select (select max(id)+1 from accessibility), 'tab.PaymentPack.InvoiceEscalatedToHandler';
+insert into accessibility select (select max(id)+1 from accessibility), 'tab.HireMonitoring.InvoiceEscalatedToHandler';
+insert into accessibility select (select max(id)+1 from accessibility), 'tab.Notes.InvoiceEscalatedToHandler';
+insert into accessibility select (select max(id)+1 from accessibility), 'tab.ClaimDetail.InvoiceEscalatedToHandler';
+insert into accessibility select (select max(id)+1 from accessibility), 'tab.AuditTrail.InvoiceEscalatedToHandler';
+
+--- ---------------------------------------------------
+
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.InvoiceDetail.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.History.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.PaymentPack.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.Notes.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.ClaimDetail.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.AuditTrail.InvoiceEscalatedToHandler';
+
+--- ---------------------------------------------------
+
+insert into accessibility values ((select max(id)+1 from accessibility), 'action.approveBREPassedByClaimHandler.InvoiceEscalatedToHandler');
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name like 'action.approveBREPassedByClaimHandler.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name like 'action.approveBREPassedByClaimHandler.InvoiceEscalatedToHandler';
+
+--- ---------------------------------------------------
+
+drop view vw_system_log ;
+drop table system_log;
+drop table action;
+
+--- ---------------------------------------------------
+
+ALTER TABLE notification ADD COLUMN created_by integer;
+UPDATE notification set created_by = 999;
+ALTER TABLE notification ALTER COLUMN created_by SET STORAGE PLAIN;
+ALTER TABLE notification ALTER COLUMN created_by SET NOT NULL;
+
+ALTER TABLE notification ADD COLUMN created_date timestamp without time zone DEFAULT now();
+ALTER TABLE notification ALTER COLUMN created_date SET STORAGE PLAIN;
+
+ALTER TABLE notification ADD COLUMN last_modified_by integer;
+UPDATE notification set last_modified_by = 999;
+ALTER TABLE notification ALTER COLUMN last_modified_by SET STORAGE PLAIN;
+ALTER TABLE notification ALTER COLUMN last_modified_by SET NOT NULL;
+
+ALTER TABLE notification ADD COLUMN last_modified_date timestamp without time zone DEFAULT now();
+ALTER TABLE notification ALTER COLUMN last_modified_date SET STORAGE PLAIN;

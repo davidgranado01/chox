@@ -20,7 +20,6 @@ import java.util.List;
 public class BatchUpdateAction extends BaseAction {
 
     private ClaimService claimService;
-    private SystemLogService systemLogService;
     private AuditTrailService auditTrailService;
     private String actionResult;
     private List<Integer> selectedClaimIdList;
@@ -86,23 +85,16 @@ public class BatchUpdateAction extends BaseAction {
     
     private void updateCliamStatus(Claim claim,String oldStatus,String newStatus)
     {
-        boolean bActionFlag = true;
-        String sActionMsg = "";
-        
+
         if (claim.getStatus().equalsIgnoreCase(oldStatus)) {
                 try {
 
                     auditTrailService.logAuditLog(newStatus, claim, null, null);
-                    sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
                     claim.setStatus(newStatus);
                     claimService.updateClaim(claim);
                 } catch (Exception ex) {
                     setActionResult("ERROR : " + ex.getMessage());
-                    bActionFlag = false;
-                    sActionMsg = getActionResult();
-                } finally {
-                    systemLogService.logSystemLog("ACT016", sActionMsg, bActionFlag, 3);
-                }
+                } 
             }
     }        
 
@@ -130,10 +122,6 @@ public class BatchUpdateAction extends BaseAction {
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
-    }
-
-    public void setSystemLogService(SystemLogService systemLogService) {
-        this.systemLogService = systemLogService;
     }
 
     public void setAuditTrailService(AuditTrailService auditTrailService) {

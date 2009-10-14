@@ -42,6 +42,7 @@ public class ApplicationAccessibility {
     public static final String FILTER_CLAIM_AWAITING_CLAIM_HANDLING_PAYMENT = "ClaimsAwaitingClaimsHandlingPayment";
     public static final String FILTER_APPROVED_INVOICE_AWAITING_PAYMENT = "ApprovedInvoicesAwaitingPayment";
     public static final String FILTER_ESCALATED_INVOICE = "EscalatedInvoices";
+    public static final String FILTER_ESCALATED_INVOICE_TO_CH = "InvoiceEscalatedToHandler";
     public static final String FILTER_CONTESTED_INVOICE_REF_INS = "ContestedInvoicesReferredToInsurer";
     public static final String FILTER_INVOICE_APPROVED_BY_BRE = "InvoicesApprovedByBRE";
     public static final String FILTER_CLAIM_REF_ENG = "ClaimReferredToEngineer";

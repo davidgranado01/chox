@@ -25,7 +25,10 @@ public class ComprehensiveCoverCheckNote implements IntelligentNote {
 
         //1. If ‘Comprehensive’ field is N/No/False/F
         showing = !c.getCustomer().isComprehensive();
-       
+
+        // AND
+        showing &= securityInfoProvider.getIsINS();
+        
         return showing;
     }
 

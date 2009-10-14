@@ -81,7 +81,10 @@ public class LabourCostBusinessRule implements IBusinessRule {
     }
 
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.InvoiceEscalated;
+        // CARLSON @ 20091012
+        // LabourCostBusinessRule().applyToClaim(claim)) STATUS = InvoiceEscalatedToHandler;
+        // return ClaimStatus.InvoiceEscalated;
+        return ClaimStatus.InvoiceEscalatedToHandler;
     }
 
 }

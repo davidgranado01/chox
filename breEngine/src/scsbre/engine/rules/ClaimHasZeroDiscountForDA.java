@@ -52,7 +52,10 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule{
     }
 
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.InvoiceEscalated;
+        // CARLSON @ 20091012
+        // ClaimHasZeroDiscountForDA().applyToClaim(claim)) STATUS = InvoiceDataCalculationIncorrect; 
+        //return ClaimStatus.InvoiceEscalated;
+        return ClaimStatus.InvoiceDataCalculationIncorrect;
     }
 
 }

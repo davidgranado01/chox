@@ -11,9 +11,8 @@ import chox.web.viewdata.ActionResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class doUserWorkgroupAction extends AdminBaseModelAction{
+public class doUserWorkgroupAction extends BaseAction{
     
-    private List workgroups;
     private int userWorkgroupId;
     private int webUserId;
     private int workgroupId;
@@ -111,22 +110,15 @@ public class doUserWorkgroupAction extends AdminBaseModelAction{
     }
     
     public String addObject(){
-        
-        String sActionMsg = "";
-        boolean bActionFlag = false;
-        
+                
         try{
             
             Workgroup selectedWorkgroup = workgroupService.getObject(workgroupId);
             WebUser webuser = this.userService.getObject(webUserId);
-                    
-            System.out.println("workgroupId:"+workgroupId);
-            System.out.println("webUserId:"+webUserId);
             
             if(this.service.isObjectExist(webUserId, workgroupId)){
                 
-                sActionMsg = "Selected workgroup '"+selectedWorkgroup.getName()+"' is already exist";
-                getActionResponse().AddError(sActionMsg);
+                getActionResponse().AddError("Selected workgroup '"+selectedWorkgroup.getName()+"' is already exist");
                 
             }else{
                 
@@ -134,18 +126,15 @@ public class doUserWorkgroupAction extends AdminBaseModelAction{
                 userworkgroup.setUser(webuser);
                 userworkgroup.setWorkgroup(selectedWorkgroup);
             
-                bActionFlag = this.service.AddObject(userworkgroup);
-                sActionMsg = getSystemLogService().getObjectActionLogMsg("ADD", "webUserId:"+webUserId+"|workgroupId:"+workgroupId);                
+                this.service.AddObject(userworkgroup);
             }
 
         } catch (Exception ex) {
             
-            sActionMsg = ex.getMessage();
-            getActionResponse().AddError(sActionMsg);
+            ex.printStackTrace();
             
         }
         
-        getSystemLogService().logSystemLog("ADM013", sActionMsg, bActionFlag, 3);
         
         return SUCCESS;
     }    

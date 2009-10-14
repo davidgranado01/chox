@@ -11,7 +11,7 @@ import chox.services.ChoBandService;
 import chox.services.ChorganisationService;
 
 
-public class doInsurerChoBandMappingAction extends AdminBaseModelAction {
+public class doInsurerChoBandMappingAction extends BaseAction {
     
     private Integer objectId = -1;
     private Integer chorganisationId = -1;
@@ -59,23 +59,16 @@ public class doInsurerChoBandMappingAction extends AdminBaseModelAction {
     }
     
     public String removeObject(){
-        
-        String sActionMsg = "";
-        boolean bActionFlag = false;
          
         try{       
         
             ChoBandOrganisation object = service.getObject(objectId);
             service.deleteObject(object);
-            
-            bActionFlag = true;
-            sActionMsg = getSystemLogService().getObjectActionLogMsg("DELETE", "ChoBandOrganisationId:"+objectId);
-            
+
         } catch (Exception ex) {
-            sActionMsg = ex.getMessage();
+            ex.printStackTrace();
         }
         
-        getSystemLogService().logSystemLog("ADM007", sActionMsg, bActionFlag, 3); 
         return SUCCESS;
     }
     
@@ -91,14 +84,10 @@ public class doInsurerChoBandMappingAction extends AdminBaseModelAction {
             object.setChorganisation(chorganisationService.getObject(chorganisationId));
             service.updateObject(object);
 
-            bActionFlag = true;
-            sActionMsg = getSystemLogService().getObjectActionLogMsg("ADD", "chobandId:"+chobandId+"|chorganisationId:"+chorganisationId);
-            
         } catch (Exception ex) {
-            sActionMsg = ex.getMessage();
+            ex.printStackTrace();
         }
-        
-        getSystemLogService().logSystemLog("ADM008", sActionMsg, bActionFlag, 3); 
+
         return SUCCESS;
     }
     

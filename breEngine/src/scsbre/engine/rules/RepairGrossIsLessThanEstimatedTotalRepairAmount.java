@@ -55,5 +55,4 @@ public class RepairGrossIsLessThanEstimatedTotalRepairAmount implements IBusines
     public ClaimStatus getStatusAfterFailure() {
         return ClaimStatus.InvoiceEscalated;
     }    
-
 }

@@ -15,6 +15,7 @@ public class ClaimStatus {
     public static final String INVOICE_DATA_CALCULATION_INCORRECT = "InvoiceDataCalculationIncorrect";
     public static final String INVOICE_APPROVED_BY_BRE = "InvoiceApprovedByBRE";
     public static final String INVOICE_ESCALATED = "InvoiceEscalated";
+    public static final String INVOICE_ESCALATED_TO_CH = "InvoiceEscalatedToHandler";
     public static final String CONTESTED_INVOICE_REF_TO_INS = "ContestedInvoiceReferredToInsurer";
     public static final String CONTESTED_INVOICE_REF_TO_CHO = "ContestedInvoiceReferredToCHO";
     public static final String INVOICE_REJECTED_ACCEPTED = "InvoiceRejectionAccepted";
@@ -41,6 +42,7 @@ public class ClaimStatus {
         status.add(INVOICE_DATA_CALCULATION_INCORRECT);
         status.add(INVOICE_APPROVED_BY_BRE);
         status.add(INVOICE_ESCALATED);
+        status.add(INVOICE_ESCALATED_TO_CH);
         status.add(CONTESTED_INVOICE_REF_TO_INS);
         status.add(CONTESTED_INVOICE_REF_TO_CHO);
         status.add(INVOICE_REF_TO_ENG);

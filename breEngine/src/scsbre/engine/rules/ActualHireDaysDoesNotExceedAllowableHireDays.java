@@ -56,7 +56,10 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
     }
 
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.InvoiceEscalated;
+        // CARLSON @ 20091012
+        // ActualHireDaysDoesNotExceedAllowableHireDays().applyToClaim(claim)) STATUS = InvoiceEscalatedToHandler;
+        // return ClaimStatus.InvoiceEscalated;
+        return ClaimStatus.InvoiceEscalatedToHandler;
     }
     
 

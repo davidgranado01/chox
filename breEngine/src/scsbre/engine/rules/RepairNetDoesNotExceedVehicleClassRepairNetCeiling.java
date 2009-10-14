@@ -40,8 +40,7 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
     }
 
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.InvoiceEscalated;
-        // TODO: CHECK STATUS
-        // return ClaimStatus.InvoiceEscalatedToHandler;
+        // return ClaimStatus.InvoiceEscalated;
+        return ClaimStatus.InvoiceEscalatedToHandler;
     }
 }

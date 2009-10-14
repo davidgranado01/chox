@@ -18,11 +18,19 @@ import scsbre.model.IVehicleClassInfo;
 public class VehicleClassCheckNote implements IntelligentNote {
 
     public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
+
         Boolean showing = false;
 
-        IVehicleClassInfo vclass = c.getVClass();
-        //1. Customer Vehicle Class field is P1,P2,P3,P4,P5,P6,P7,P8,P9,P10,P11,P12,SP1,SP2,SP3,SP4,SP5,SP6,SP7,SP8,SP9,SP10,SP11,SP12,SP13
-        showing |= vclass.getCode().toLowerCase().startsWith("p");
+        /*
+            IVehicleClassInfo vclass = c.getVClass();
+            showing |= vclass.getCode().toLowerCase().startsWith("p");
+        */
+        
+        // EDITED BY CARLSON TO EXLUCED PV Vehicle Class
+        // 1. Customer Vehicle Class field is P1,P2,P3,P4,P5,P6,P7,P8,P9,P10,P11,P12,SP1,SP2,SP3,SP4,SP5,SP6,SP7,SP8,SP9,SP10,SP11,SP12,SP13
+
+        IVehicleClassInfo vclass = c.getCustomer().getVehicleClass();
+        showing |= (vclass.getCode().toLowerCase().startsWith("p") && !vclass.getCode().toLowerCase().startsWith("pv"));
         showing |= vclass.getCode().toLowerCase().startsWith("sp");
 
         //AND
@@ -40,6 +48,9 @@ public class VehicleClassCheckNote implements IntelligentNote {
         {
             showing = false;
         }
+
+        // AND
+        showing &= securityInfoProvider.getIsINS();        
 
         return showing;
     }

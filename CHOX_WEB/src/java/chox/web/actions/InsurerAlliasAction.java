@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 
-public class InsurerAlliasAction extends AdminBaseModelAction {
+public class InsurerAlliasAction extends BaseAction {
 
     protected int insurerId;
     protected List<InsurerAlliasViewData> insurerAlliases;
@@ -34,8 +34,6 @@ public class InsurerAlliasAction extends AdminBaseModelAction {
     @Override
     public String execute() {
 
-        String sActionMsg = "";
-        boolean bActionFlag = false;
         
         try{
             
@@ -47,14 +45,11 @@ public class InsurerAlliasAction extends AdminBaseModelAction {
                 insurerAlliases.add(new InsurerAlliasViewData(h));
             }
 
-            bActionFlag = true;
-            sActionMsg = getSystemLogService().getListingLogMsg(insurerAlliases.size(), "InsurerId:"+insurerId);
-        
         } catch (Exception ex) {
-            sActionMsg = ex.getMessage();
+            ex.printStackTrace();
         }
         
-        getSystemLogService().logSystemLog("ADM002", sActionMsg, bActionFlag, 0);
+
         
         return SUCCESS;
     }     

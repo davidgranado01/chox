@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import net.sf.json.JSONArray;
 import java.util.List;
 
-public class InsurerLineOfBusinessAction extends AdminBaseModelAction {
+public class InsurerLineOfBusinessAction extends BaseAction {
 
     protected int insurerId;
     protected List<LineOfBusinessViewData> lineOfBusinesses;
@@ -29,9 +29,6 @@ public class InsurerLineOfBusinessAction extends AdminBaseModelAction {
     @Override
     public String execute() {
         
-        String sActionMsg = "";
-        boolean bActionFlag = false;
-        
         try{   
             
             List<LineOfBusiness> lineOfBusinessData = this.service.getInsurerLineOfBusiness(insurerId);
@@ -43,20 +40,16 @@ public class InsurerLineOfBusinessAction extends AdminBaseModelAction {
                 lineOfBusinesses.add(new LineOfBusinessViewData(h));
             }
             
-            bActionFlag = true;
-            sActionMsg = getSystemLogService().getListingLogMsg(lineOfBusinesses.size(), "InsurerId:"+insurerId);
-            
         } catch (Exception ex) {
-            sActionMsg = ex.getMessage();
+            ex.printStackTrace();
         }
-        
-        getSystemLogService().logSystemLog("ADM005", sActionMsg, bActionFlag, 0);
-        
+                
         return SUCCESS;
     }     
     
     public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.lineOfBusinesses);
         return "{totalCount:" + this.lineOfBusinesses.size() + ",results:" + jObject.toString() + "}";
-    }    
+    }
+
 }

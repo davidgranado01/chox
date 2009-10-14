@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 
-public class ChorganisationAction extends AdminBaseModelAction {
+public class ChorganisationAction extends BaseAction {
 
     private List<ChorganisationViewData> credithireorganisation;
     private ChoBandOrganisationService choBandOrganisationService;
@@ -91,15 +91,11 @@ public class ChorganisationAction extends AdminBaseModelAction {
 
                 }
             }
-
-            bActionFlag = true;
-            sActionMsg = getSystemLogService().getListingLogMsg(credithireorganisation.size(), "InsurerId:"+insurerId);
-            
+    
         } catch (Exception ex) {
-            sActionMsg = ex.getMessage();
+            ex.printStackTrace();
         }
-        
-        getSystemLogService().logSystemLog("ADM003", sActionMsg, bActionFlag, 0);          
+             
         return SUCCESS;
     } 
     

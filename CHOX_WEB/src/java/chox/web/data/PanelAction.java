@@ -24,6 +24,7 @@ public class PanelAction {
     public static final String ACTION_updatePaymentReceived = "updatePaymentReceived";
     public static final String ACTION_updateClaimUpdatedByEngineer = "updateClaimUpdatedByEngineer";
     public static final String ACTION_approveContestedInvoiceToEng = "approveContestedInvoiceToEng";
+    public static final String ACTION_approveBREPassedByClaimHandler = "approveBREPassedByClaimHandler";
     
     public static List<String> getPanelActions() {
         List<String> action = new ArrayList<String>();
@@ -46,6 +47,7 @@ public class PanelAction {
         action.add(ACTION_updatePaymentReceived);
         action.add(ACTION_updateClaimUpdatedByEngineer);
         action.add(ACTION_approveContestedInvoiceToEng);
+        action.add(ACTION_approveBREPassedByClaimHandler);
         return action;
     }
 }

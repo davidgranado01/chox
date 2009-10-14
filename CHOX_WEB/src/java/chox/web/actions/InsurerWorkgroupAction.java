@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import net.sf.json.JSONArray;
 import java.util.List;
 
-public class InsurerWorkgroupAction extends AdminBaseModelAction {
+public class InsurerWorkgroupAction extends BaseAction {
 
     protected int insurerId;
     protected List<WorkgroupViewData> workgroups;
@@ -35,9 +35,7 @@ public class InsurerWorkgroupAction extends AdminBaseModelAction {
     
     @Override
     public String execute() {
-        
-        String sActionMsg = "";
-        boolean bActionFlag = false;
+
         
         try{
             
@@ -49,15 +47,11 @@ public class InsurerWorkgroupAction extends AdminBaseModelAction {
             {    
                 this.workgroups.add(new WorkgroupViewData(h));
             }
-                    
-            bActionFlag = true;
-            sActionMsg = getSystemLogService().getListingLogMsg(this.workgroups.size(), "InsurerId:"+insurerId);
-            
+
+
         } catch (Exception ex) {
-            sActionMsg = ex.getMessage();
+            ex.printStackTrace();
         }
-        
-        getSystemLogService().logSystemLog("ADM012", sActionMsg, bActionFlag, 0);
         
         return SUCCESS;
     }     

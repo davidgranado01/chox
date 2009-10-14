@@ -20,8 +20,6 @@ import scsbre.model.IClaimInfo;
  */
 public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRule{
 
-
-    
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
 
@@ -45,9 +43,10 @@ public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRul
     }
     
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.InvoiceEscalated;
+        // CARLSON @ 20091012
+        // return ClaimStatus.InvoiceEscalated;
+        // HireDayCountDoesNotExceedBandHireDayCeiling().applyToClaim(claim)) STATUS = InvoiceEscalatedToHandler;
+        return ClaimStatus.InvoiceEscalatedToHandler;
     }
-    
-    
 
 }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 
-public class InsurerChoBandAction extends AdminBaseModelAction {
+public class InsurerChoBandAction extends BaseAction {
 
     private List<InsurerChoBandViewData> insurerChoBand;
     private ChoBandService service;
@@ -34,8 +34,6 @@ public class InsurerChoBandAction extends AdminBaseModelAction {
     @Override
     public String execute() {
 
-        String sActionMsg = "";
-        boolean bActionFlag = false;
         
         try{
             
@@ -48,15 +46,10 @@ public class InsurerChoBandAction extends AdminBaseModelAction {
                 insurerChoBand.add(new InsurerChoBandViewData(h));
             }
 
-
-            bActionFlag = true;
-            sActionMsg = getSystemLogService().getListingLogMsg(insurerChoBand.size(), "InsurerId:"+insurerId);
-        
         } catch (Exception ex) {
-            sActionMsg = ex.getMessage();
+            ex.printStackTrace();
         }
-        
-        getSystemLogService().logSystemLog("ADM002", sActionMsg, bActionFlag, 0);
+
         
         return SUCCESS;
     }         

@@ -326,19 +326,25 @@ public class WebUser implements Serializable {
 
         boolean bFlag = false;
 
-        if (this.roles.size() > 0) {
-            Iterator itr = roles.iterator();
+        if(this.roles!=null){
+            
+            if (this.roles.size() > 0) {
 
-            while (itr.hasNext()) {
-                WebUserRole webUserrole = (WebUserRole) itr.next();
+                Iterator itr = roles.iterator();
 
-                if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHOX)) {
-                    bFlag = true;
-                    break;
+                while (itr.hasNext()) {
+
+                    WebUserRole webUserrole = (WebUserRole) itr.next();
+
+                    if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHOX)) {
+                        bFlag = true;
+                        break;
+                    }
+
                 }
             }
         }
-
+        
         return bFlag;
 
     }

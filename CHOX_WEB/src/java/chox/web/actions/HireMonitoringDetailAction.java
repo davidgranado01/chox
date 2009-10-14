@@ -66,7 +66,9 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
     }
 
     public String updateModel() {
+        
         try {
+            
             boolean isNewHireMonitoringDetail = model.getId() <= 0;
             Claim c = claimService.getClaim(getClaimId());
             c.setHireMonitoringDetail(model);
@@ -86,6 +88,7 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
         } catch (Exception ex) {
             getActionResponse().AddError(ex.getMessage());
         }
+        
         return SUCCESS;
     }
 

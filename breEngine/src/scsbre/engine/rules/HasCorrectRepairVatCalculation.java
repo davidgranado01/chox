@@ -53,6 +53,5 @@ public class HasCorrectRepairVatCalculation implements IBusinessRule{
     
     public ClaimStatus getStatusAfterFailure() {
         return ClaimStatus.InvoiceDataCalculationIncorrect;
-    }    
-
+    }
 }

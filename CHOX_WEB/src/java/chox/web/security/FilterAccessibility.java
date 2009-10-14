@@ -23,6 +23,7 @@ public class FilterAccessibility {
     private boolean claimsAwaitingClaimsHandlingPaymentAccessible;
     private boolean approvedInvoicesAwaitingPaymentAccessible;
     private boolean escalatedInvoicesAccessible;
+    private boolean invoiceEscalatedToHandlerAccessible;
     private boolean contestedInvoicesReferredToInsurerAccessible;
     private boolean invoicesApprovedByBREAccessible;
     private boolean claimReferredToEngineerAccessible;
@@ -48,6 +49,7 @@ public class FilterAccessibility {
         claimsAwaitingClaimsHandlingPaymentAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_AWAITING_CLAIM_HANDLING_PAYMENT, grantedAuthorities) > 0;
         approvedInvoicesAwaitingPaymentAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_APPROVED_INVOICE_AWAITING_PAYMENT, grantedAuthorities) > 0;
         escalatedInvoicesAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_ESCALATED_INVOICE, grantedAuthorities) > 0;
+        invoiceEscalatedToHandlerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_ESCALATED_INVOICE_TO_CH, grantedAuthorities) > 0;
         contestedInvoicesReferredToInsurerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CONTESTED_INVOICE_REF_INS, grantedAuthorities) > 0;
         invoicesApprovedByBREAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_APPROVED_BY_BRE, grantedAuthorities) > 0;
         claimReferredToEngineerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_REF_ENG, grantedAuthorities) > 0;
@@ -104,6 +106,10 @@ public class FilterAccessibility {
         return escalatedInvoicesAccessible;
     }
 
+    public boolean getIsInvoiceEscalatedToHandlerAccessible() {
+        return invoiceEscalatedToHandlerAccessible;
+    }
+    
     public boolean getIsContestedInvoicesReferredToInsurerAccessible() {
         return contestedInvoicesReferredToInsurerAccessible;
     }

@@ -139,7 +139,6 @@
             hireDateFrom : '',
             hireDateTo : '',         
             status : '',
-            //lineOfBusinessId : -1,
             workgroupId : -1,
             isAnomalies : true,
             ispenaltyChargeApplied : ''

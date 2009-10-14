@@ -52,7 +52,10 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
     }
 
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.InvoiceEscalated;
+        // CARLSON @ 20091012
+        // HandlingAmountAndDeductionBothEqualZeroForNonDA().applyToClaim(claim)) STATUS = InvoiceDataCalculationIncorrect;
+        // return ClaimStatus.InvoiceEscalated;
+        return ClaimStatus.InvoiceDataCalculationIncorrect;
     }
 
 }

@@ -1,5 +1,5 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<form id="formUpdateHireMonitoringDetail" action="user/updateHireMonitorDetail.action" class="XXentity-form">
+
     
     
     <script language="JavaScript">
@@ -154,18 +154,22 @@
             */
            
            $(".chox-form-submit-result").html("");
-           
-            return false;
+           return false;
         }
         
     </script>
-    
+
+<form id="formUpdateHireMonitoringDetail" action="user/updateHireMonitorDetail.action" class="XXentity-form">
+    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
+    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
+    <input type="hidden" name="date_compare_field" value=''>
+
     <fieldset class="x-fieldset">
-        <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
-        <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-        <input type="hidden" name="date_compare_field" value=''>
-        
+
         <legend>Hire Monitoring</legend>
+        
+
+        
         <div style="display:none" class="form-container">            
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">
@@ -215,10 +219,12 @@
                 <label class="chox-form-std-label2">
                 Labour Hours</label>
             <input type="text" class="chox-ttxt" name="labourHour" id="labourHour" value="<s:property value="labourHour" />"/></div>
+
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">
                 Total Labour Cost</label>
-            <input type="text" class="chox-ttxt" name="labourCost" id="labourCost" value="<s:property value="labourCost" />"/></div>
+            <input type="text" class="chox-ttxt" name="labourCost" id="labourCost" value="<s:property value="labourCost" />"/>
+            </div>
             
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">Labour Information <br/>Non-Provision Reason</label>
@@ -229,16 +235,15 @@
                 headerValue="--- Please Select ---" 
                 emptyOption="false" cssStyle="width:250px"></s:select>
             </div>
-                
+
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes" />
-                <s:checkbox name="isUpdateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
+                <input type="submit" value="Save Changes" /><s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
             </div>
             
             <div id="HMmessageBox" style="text-align:center" class="action_msg"></div>            
             <div class="chox-form-submit-result">&nbsp;</div>   
             
-            
         </div>
+            
     </fieldset>
 </form>

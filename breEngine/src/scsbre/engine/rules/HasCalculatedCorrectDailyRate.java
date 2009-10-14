@@ -60,7 +60,10 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
     }
     
     public ClaimStatus getStatusAfterFailure() {
-        return ClaimStatus.InvoiceEscalated;
+        // CARLSON @ 20091012
+        // HasCalculatedCorrectDailyRate().applyToClaim(claim)) STATUS = InvoiceEscalatedToHandler;
+        // return ClaimStatus.InvoiceEscalated;
+        return ClaimStatus.InvoiceEscalatedToHandler;
     }    
 
 
