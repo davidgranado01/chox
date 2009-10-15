@@ -29,5 +29,43 @@
     <property column="average_labour_hours_per_hire_day" name="averageLabourHoursPerHireDay" not-null="true"/>
     <property column="average_labour_rate" name="averageLabourRate" not-null="true"/>
     <property column="is_vehicle_class_celling_enable" name="vehicleClassCellingEnable"/>
+    <property column="automatic_charge_check" name="automaticChargeCheck"/>
+    <property column="estate_charge_check" name="estateChargeCheck"/>
+    <property column="non_standard_risk_insurance_premium_check" name="nonStandardRiskInsurancePremiumCheck"/>
+    <property column="cdw_charge_check" name="cdwChargeCheck"/>
+    <property column="satellite_navigation_charge_check" name="satelliteNavigationChargeCheck"/>
+    <property column="baby_seat_charge_check" name="babySeatChargeCheck"/>
+    <property column="tow_bars_charge_check" name="towBarsChargeCheck"/>
+    <property column="roof_rack_charge_check" name="roofRackChargeCheck"/>
+    <property column="delivery_or_collection_charge_check" name="deliveryOrCollectionChargeCheck"/>
+    <property column="dual_control_charge_check" name="dualControlChargeCheck"/>
+    <property column="has_allowed_vehicle_class" name="hasAllowedVehicleClass"/>
+    <property column="has_calculated_correct_daily_rate" name="hasCalculatedCorrectDailyRate"/>
+    <property column="hire_net_does_not_exceed_vehicle_class_hire_net_ceiling" name="hireNetDoesNotExceedVehicleClassHireNetCeiling"/>
+    <property column="hire_day_count_does_not_exceed_band_hire_day_ceiling" name="hireDayCountDoesNotExceedBandHireDayCeiling"/>
+    <property column="has_correct_hire_gross_calculation" name="hasCorrectHireGrossCalculation"/>
+    <property column="actual_hire_days_does_not_exceed_allowable_hire_days" name="actualHireDaysDoesNotExceedAllowableHireDays"/>
+    <property column="actualhire_days_does_not_exceed_total_loss_inspection" name="actualHireDaysDoesNotExceedTotalLossInspection"/>
+    <property column="repair_gross_is_less_than_estimated_total_repair_amount" name="repairGrossIsLessThanEstimatedTotalRepairAmount"/>
+    <property column="has_correct_hire_vat_calculation" name="hasCorrectHireVatCalculation"/>
+    <property column="has_correct_repair_vat_calculation" name="hasCorrectRepairVatCalculation"/>
+    <property column="has_correct_repair_gross_calculation" name="hasCorrectRepairGrossCalculation"/>
+    <property column="has_correct_total_net" name="hasCorrectTotalNet"/>
+    <property column="has_correct_total_vat" name="hasCorrectTotalVat"/>
+    <property column="has_calculated_total_gross_equal_supplied_total_gross" name="hasCalculatedTotalGrossEqualSuppliedTotalGross"/>
+    <property column="has_correct_discount_for_non_da" name="hasCorrectDiscountForNonDA"/>
+    <property column="handling_amount_and_deduction_both_equal_zero_for_non_da" name="handlingAmountAndDeductionBothEqualZeroForNonDA"/>
+    <property column="claim_has_zero_discount_for_da" name="claimHasZeroDiscountForDA"/>
+    <property column="handling_invoice_amount_added_todeduction_for_handling_fee_equa" name="handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero"/>
+    <property column="has_supplied_correct_total_to_pay" name="hasSuppliedCorrectTotalToPay"/>
+    <property column="estimated_repair_days_plus_band_days_do_not_exceed_hire_days" name="estimatedRepairDaysPlusBandDaysDoNotExceedHireDays"/>
+    <property column="validate_unique_vehicle_registration_number" name="validateUniqueVehicleRegistrationNumber"/>
+    <property column="labour_cost_business_rule" name="labourCostBusinessRule"/>
+    <property column="repair_net_does_not_exceed_vehicle_class_repair_net_ceiling" name="repairNetDoesNotExceedVehicleClassRepairNetCeiling"/>
+    <property column="number_of_hire_days_reconcile" name="numberOfHireDaysReconcile"/>
+    <property column="corrent_admin_fee" name="correntAdminFee"/>
+    <property column="repair_booked_in_date" name="repairBookedInDate"/>
+    <property column="flagged_for_manual_invoice_review" name="flaggedForManualInvoiceReview"/>
+
   </class>
 </hibernate-mapping>

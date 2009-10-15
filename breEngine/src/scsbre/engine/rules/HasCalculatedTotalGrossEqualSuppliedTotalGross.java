@@ -18,24 +18,37 @@ import scsbre.model.IInvoiceInfo;
  */
 public class HasCalculatedTotalGrossEqualSuppliedTotalGross implements IBusinessRule {
 
+    private String narrative = "Total Gross calculation is incorrect.";
+    
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
 
         RuleEvaluation res = new RuleEvaluation();
-
-        IInvoiceInfo invoice = claim.getInvoice();
-        InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
-        boolean success = CalcHelper.EqualTo(invoice.getTotalGross(), iCalc.getCalculatedTotalGross());
-
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
 
+        if(claim.getChoBand().isHasCalculatedTotalGrossEqualSuppliedTotalGross()){
+            
+            IInvoiceInfo invoice = claim.getInvoice();
+            InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
+            boolean success = CalcHelper.EqualTo(invoice.getTotalGross(), iCalc.getCalculatedTotalGross());
+
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+            if(success){narrative="";}
+
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
+        
         return res;
 
     }
 
     public String getNarrative() {
-        return "Total Gross calculation is incorrect.";
+        return narrative;
     }
 
     public String getRuleId() {

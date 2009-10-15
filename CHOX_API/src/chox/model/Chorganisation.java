@@ -236,14 +236,6 @@ public class Chorganisation extends AuditableEntity implements Serializable, ICH
         this.delegatedAuthority = delegatedAuthority;
     }
 
-    public boolean getIsDelegatedAuthority() {
-        return this.delegatedAuthority;
-    }
-
-    public void setIsDelegatedAuthority(boolean isDelegatedAuthority) {
-        this.delegatedAuthority = isDelegatedAuthority;
-    }
-
     public boolean isStatus() {
         return status;
     }

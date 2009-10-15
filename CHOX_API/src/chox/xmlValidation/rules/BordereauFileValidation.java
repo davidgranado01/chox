@@ -38,7 +38,6 @@ public class BordereauFileValidation{
             
         } catch (Exception ex) {
             bordereauResult.setValid(false);
-            //bordereauResult.addMessage(ex.getLocalizedMessage());
         }
         
         if(!bordereauResult.isValid()){

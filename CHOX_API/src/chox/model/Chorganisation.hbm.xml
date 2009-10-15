@@ -17,7 +17,7 @@
     <property column="vat_no" name="vatNo" not-null="true"/>
     <property column="company_no" name="companyNo" not-null="true"/>
     <property column="status" name="status" not-null="true"/>
-    <property column="is_delegated_authority" name="isDelegatedAuthority" not-null="true"/>
+    <property column="is_delegated_authority" name="delegatedAuthority" not-null="true"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
     <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

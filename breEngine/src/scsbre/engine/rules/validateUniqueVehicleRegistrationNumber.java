@@ -14,21 +14,38 @@ import scsbre.model.ICustomerVehicleDamageInfo;
 
 public class validateUniqueVehicleRegistrationNumber implements IBusinessRule {
     
+    private String narrative = "The Customer's Vehicle Registration Number supplied already exists in the system.";
+
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
-        
-        ICustomerVehicleDamageInfo Icust = claim.getCustomerVehicleDamage();
-        Boolean success = Icust.isVehicleRegistrationExist();
-        
+
         RuleEvaluation res = new RuleEvaluation();
-        res.setResult(success ? RuleEvaluationResult.RuleFailed : RuleEvaluationResult.RulePassed);
         res.setIsVisibleToCHO(false);
-        res.setRelatedRule(this);   
+        res.setRelatedRule(this);
+        
+        if(claim.getChoBand().isValidateUniqueVehicleRegistrationNumber()){
+            
+            ICustomerVehicleDamageInfo Icust = claim.getCustomerVehicleDamage();
+            Boolean success = Icust.isVehicleRegistrationExist();
+
+            res.setResult(success ? RuleEvaluationResult.RuleFailed : RuleEvaluationResult.RulePassed);
+
+            if(success){
+            narrative = "";
+            }
+
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
+        
         return res;
 
     }
 
     public String getNarrative() {
-        return "The Customer's Vehicle Registration Number supplied already exists in the system.";
+        return narrative;
     }
 
     public String getRuleId() {

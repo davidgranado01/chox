@@ -6,8 +6,6 @@ public interface IClaimInfo {
 
     public ICHOBandInfo getChoBand();
 
-    // public IVehicleClassCellingInfo getVehicleClassCellingInfo();
-
     public ICHOrganisationInfo getCHOrg();
 
     public IInvoiceInfo getInvoice();
@@ -31,4 +29,6 @@ public interface IClaimInfo {
     public IVehicleClassInfo getVClass();
 
     public Date getHireMonitoringEcd();
+
+    public boolean getIsInvoiceReviewRequired();
 }

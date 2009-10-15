@@ -89,7 +89,8 @@ public class BordereauVersionValidation{
             
             // String xmlValidationTemplate = "c:/Greenfinch/Projects/CHOX/idaschox/trunk/CHOX_WEB/web/excelTemplate/"+V_SCHEMA_FILE;
             // String xmlValidationTemplate = "c:/Project Workplace/Greefinch/Sherwood/choxidas/trunk/CHOX_WEB/web/excelTemplate/"+V_SCHEMA_FILE;
-            //String xmlValidationTemplate = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + V_SCHEMA_FILE);
+            // String xmlValidationTemplate = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + V_SCHEMA_FILE);
+            
             File xmlValidationTemplate = new ClassPathResource("/excelTemplate/xml-schema.xsd").getFile();
             SchemaFactory factory = SchemaFactory.newInstance(W3C_XML_SCHEMA_NS_URI);
             Schema schema = factory.newSchema(new StreamSource(xmlValidationTemplate));

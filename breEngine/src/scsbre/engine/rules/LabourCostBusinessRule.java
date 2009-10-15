@@ -14,33 +14,41 @@ public class LabourCostBusinessRule implements IBusinessRule {
     
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
 
-        boolean success = true;
-        
         RuleEvaluation res = new RuleEvaluation();
-        ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
-        
-        if(isRequiredToValidateByBRE(claim)){
-            
-            int iNumberOfHireDay =claim.getHireDetail().getNumberOfHireDays();
-            int iNumberDayOfLabourCostWorthy = cCalc.getNumberDayOfLabourCostWorthy();
-            
-            if(iNumberOfHireDay>iNumberDayOfLabourCostWorthy){
-                success = false;
-                narrative = "The number of hire days billed by the CHO is not relative to the number of expected hire days based on the labour information provided.";
-            }
-
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
-            
-        }else{
-            
-            res.setResult(RuleEvaluationResult.RuleSkipped);
-            narrative = "Insufficient information to perform labour cost rule.";
-            
-        }
-        
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        
+
+        if(claim.getChoBand().isLabourCostBusinessRule()){
+            
+            boolean success = true;
+            ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
+
+            if(isRequiredToValidateByBRE(claim)){
+
+                int iNumberOfHireDay =claim.getHireDetail().getDays();
+                int iNumberDayOfLabourCostWorthy = cCalc.getNumberDayOfLabourCostWorthy();
+
+                if(iNumberOfHireDay>iNumberDayOfLabourCostWorthy){
+                    success = false;
+                    narrative = "The number of hire days billed by the CHO is not relative to the number of expected hire days based on the labour information provided.";
+                }
+
+                res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+            }else{
+
+                narrative = "Insufficient information to perform labour cost rule.";
+                res.setResult(RuleEvaluationResult.RuleSkipped);
+                
+            }
+
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
+
         return res;
     }
     

@@ -2,7 +2,7 @@ package scsbre.model;
 
 public interface ICHOrganisationInfo {
 
-    public boolean getIsDelegatedAuthority();
+    public boolean isDelegatedAuthority();
 
-    public void setIsDelegatedAuthority(boolean isDelegatedAuthority);
+    public void setDelegatedAuthority(boolean isDelegatedAuthority);
 }

@@ -15,18 +15,29 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
 
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
 
-        BigDecimal hireNet = claim.getInvoice().getHireNet();
-        BigDecimal hireNetCelling = claim.getChoBand().getMaxHireNetCeiling();
-        boolean success = hireNet.compareTo(hireNetCelling) <= 0;
-
         RuleEvaluation res = new RuleEvaluation();
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        
+        if(claim.getChoBand().isHireNetDoesNotExceedVehicleClassHireNetCeiling()){
 
-        DecimalFormat moneyFormat = new DecimalFormat("£0.00");
-        narrative = String.format(narrativeTemplate, moneyFormat.format(hireNet.doubleValue()), moneyFormat.format(hireNetCelling.doubleValue()), claim.getVClass().getCode());
+            BigDecimal hireNet = claim.getInvoice().getHireNet();
+            BigDecimal hireNetCelling = claim.getChoBand().getMaxHireNetCeiling();
+            boolean success = hireNet.compareTo(hireNetCelling) <= 0;
 
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+            if(!success){
+                DecimalFormat moneyFormat = new DecimalFormat("£0.00");
+                narrative = String.format(narrativeTemplate, moneyFormat.format(hireNet.doubleValue()), moneyFormat.format(hireNetCelling.doubleValue()), claim.getVClass().getCode());
+            }
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
+        
         return res;
 
     }

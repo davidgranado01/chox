@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package scsbre.engine.rules;
 
 import scsbre.engine.IBusinessRule;
@@ -14,33 +9,36 @@ import scsbre.model.ClaimStatus;
 import scsbre.model.IClaimInfo;
 import scsbre.model.IInvoiceInfo;
 
-/**
- *
- * @author Derm
- * 
- * rule 19, order 8;
- * 
- */
 public class HasSuppliedCorrectTotalToPay implements IBusinessRule {
 
+    private String narrative = "Total to Pay calculation is incorrect.";
+    
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
         RuleEvaluation res = new RuleEvaluation();
-        
-        IInvoiceInfo invoice = claim.getInvoice();
-        InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
-        boolean success = CalcHelper.LessThanOrEqualTo(invoice.getTotalToPay(), iCalc.getCalculatedTotalToPay());
-        
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+
+        if(claim.getChoBand().isHasSuppliedCorrectTotalToPay()){
+
+            IInvoiceInfo invoice = claim.getInvoice();
+            InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
+            boolean success = CalcHelper.LessThanOrEqualTo(invoice.getTotalToPay(), iCalc.getCalculatedTotalToPay());
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
         
         return res;
 
     }
 
     public String getNarrative() {
-        return "Total to Pay calculation is incorrect.";
+        return narrative;
     }
 
     public String getRuleId() {

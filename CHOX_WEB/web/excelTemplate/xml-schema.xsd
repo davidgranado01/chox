@@ -61,9 +61,9 @@
 	<xs:element name="extra" maxOccurs="unbounded">
 	<xs:complexType>
 	<xs:sequence>
-	<xs:element name="name"/>
-	<xs:element name="quantity"/>
-	<xs:element name="item-cost"/>
+	<xs:element name="name" maxOccurs="unbounded" minOccurs="0"/>
+	<xs:element name="quantity" maxOccurs="unbounded" minOccurs="0"/>
+	<xs:element name="item-cost" maxOccurs="unbounded" minOccurs="0"/>
 	</xs:sequence>
 	</xs:complexType>
 	</xs:element>
@@ -129,7 +129,7 @@
 	<xs:element name="extras">
 	<xs:complexType>
 	<xs:sequence>
-	<xs:element name="extra" maxOccurs="unbounded"/>
+	<xs:element name="extra" maxOccurs="unbounded" minOccurs="0"/>
 	</xs:sequence>
 	</xs:complexType>
 	</xs:element>

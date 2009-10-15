@@ -386,3 +386,246 @@ ALTER TABLE notification ALTER COLUMN last_modified_by SET NOT NULL;
 
 ALTER TABLE notification ADD COLUMN last_modified_date timestamp without time zone DEFAULT now();
 ALTER TABLE notification ALTER COLUMN last_modified_date SET STORAGE PLAIN;
+
+
+--- ---------------------------------------------------
+
+ALTER TABLE cho_band ADD COLUMN automatic_charge_check boolean DEFAULT false;
+UPDATE cho_band set automatic_charge_check = false;
+ALTER TABLE cho_band ALTER COLUMN automatic_charge_check SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN automatic_charge_check SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN estate_charge_check boolean DEFAULT false;
+UPDATE cho_band set estate_charge_check = false;
+ALTER TABLE cho_band ALTER COLUMN estate_charge_check SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN estate_charge_check SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN non_standard_risk_insurance_premium_check boolean DEFAULT false;
+UPDATE cho_band set non_standard_risk_insurance_premium_check = false;
+ALTER TABLE cho_band ALTER COLUMN non_standard_risk_insurance_premium_check SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN non_standard_risk_insurance_premium_check SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN cdw_charge_check boolean DEFAULT false;
+UPDATE cho_band set cdw_charge_check = false;
+ALTER TABLE cho_band ALTER COLUMN cdw_charge_check SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN cdw_charge_check SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN satellite_navigation_charge_check boolean DEFAULT false;
+UPDATE cho_band set satellite_navigation_charge_check = false;
+ALTER TABLE cho_band ALTER COLUMN satellite_navigation_charge_check SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN satellite_navigation_charge_check SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN baby_seat_charge_check boolean DEFAULT false;
+UPDATE cho_band set baby_seat_charge_check = false;
+ALTER TABLE cho_band ALTER COLUMN baby_seat_charge_check SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN baby_seat_charge_check SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN tow_bars_charge_check boolean DEFAULT false;
+UPDATE cho_band set tow_bars_charge_check = false;
+ALTER TABLE cho_band ALTER COLUMN tow_bars_charge_check SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN tow_bars_charge_check SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN roof_rack_charge_check boolean DEFAULT false;
+UPDATE cho_band set roof_rack_charge_check = false;
+ALTER TABLE cho_band ALTER COLUMN roof_rack_charge_check SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN roof_rack_charge_check SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN delivery_or_collection_charge_check boolean DEFAULT false;
+UPDATE cho_band set delivery_or_collection_charge_check = false;
+ALTER TABLE cho_band ALTER COLUMN delivery_or_collection_charge_check SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN delivery_or_collection_charge_check SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN dual_control_charge_check boolean DEFAULT false;
+UPDATE cho_band set dual_control_charge_check = false;
+ALTER TABLE cho_band ALTER COLUMN dual_control_charge_check SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN dual_control_charge_check SET NOT NULL;
+
+-- ------------------------------------
+
+ALTER TABLE cho_band ADD COLUMN has_allowed_vehicle_class boolean DEFAULT false;
+UPDATE cho_band set has_allowed_vehicle_class = false;
+ALTER TABLE cho_band ALTER COLUMN has_allowed_vehicle_class SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN has_allowed_vehicle_class SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN has_calculated_correct_daily_rate boolean DEFAULT false;
+UPDATE cho_band set has_calculated_correct_daily_rate = false;
+ALTER TABLE cho_band ALTER COLUMN has_calculated_correct_daily_rate SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN has_calculated_correct_daily_rate SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN hire_net_does_not_exceed_vehicle_class_hire_net_ceiling boolean DEFAULT false;
+UPDATE cho_band set hire_net_does_not_exceed_vehicle_class_hire_net_ceiling = false;
+ALTER TABLE cho_band ALTER COLUMN hire_net_does_not_exceed_vehicle_class_hire_net_ceiling SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN hire_net_does_not_exceed_vehicle_class_hire_net_ceiling SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN hire_day_count_does_not_exceed_band_hire_day_ceiling boolean DEFAULT false;
+UPDATE cho_band set hire_day_count_does_not_exceed_band_hire_day_ceiling = false;
+ALTER TABLE cho_band ALTER COLUMN hire_day_count_does_not_exceed_band_hire_day_ceiling SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN hire_day_count_does_not_exceed_band_hire_day_ceiling SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN has_correct_hire_gross_calculation boolean DEFAULT false;
+UPDATE cho_band set has_correct_hire_gross_calculation = false;
+ALTER TABLE cho_band ALTER COLUMN has_correct_hire_gross_calculation SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN has_correct_hire_gross_calculation SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN actual_hire_days_does_not_exceed_allowable_hire_days boolean DEFAULT false;
+UPDATE cho_band set actual_hire_days_does_not_exceed_allowable_hire_days = false;
+ALTER TABLE cho_band ALTER COLUMN actual_hire_days_does_not_exceed_allowable_hire_days SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN actual_hire_days_does_not_exceed_allowable_hire_days SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN actualhire_days_does_not_exceed_total_loss_inspection boolean DEFAULT false;
+UPDATE cho_band set actualhire_days_does_not_exceed_total_loss_inspection = false;
+ALTER TABLE cho_band ALTER COLUMN actualhire_days_does_not_exceed_total_loss_inspection SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN actualhire_days_does_not_exceed_total_loss_inspection SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN repair_gross_is_less_than_estimated_total_repair_amount boolean DEFAULT false;
+UPDATE cho_band set repair_gross_is_less_than_estimated_total_repair_amount = false;
+ALTER TABLE cho_band ALTER COLUMN repair_gross_is_less_than_estimated_total_repair_amount SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN repair_gross_is_less_than_estimated_total_repair_amount SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN has_correct_hire_vat_calculation boolean DEFAULT false;
+UPDATE cho_band set has_correct_hire_vat_calculation = false;
+ALTER TABLE cho_band ALTER COLUMN has_correct_hire_vat_calculation SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN has_correct_hire_vat_calculation SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN has_correct_repair_vat_calculation boolean DEFAULT false;
+UPDATE cho_band set has_correct_repair_vat_calculation = false;
+ALTER TABLE cho_band ALTER COLUMN has_correct_repair_vat_calculation SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN has_correct_repair_vat_calculation SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN has_correct_repair_gross_calculation boolean DEFAULT false;
+UPDATE cho_band set has_correct_repair_gross_calculation = false;
+ALTER TABLE cho_band ALTER COLUMN has_correct_repair_gross_calculation SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN has_correct_repair_gross_calculation SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN has_correct_total_net boolean DEFAULT false;
+UPDATE cho_band set has_correct_total_net = false;
+ALTER TABLE cho_band ALTER COLUMN has_correct_total_net SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN has_correct_total_net SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN has_correct_total_vat boolean DEFAULT false;
+UPDATE cho_band set has_correct_total_vat = false;
+ALTER TABLE cho_band ALTER COLUMN has_correct_total_vat SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN has_correct_total_vat SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN has_calculated_total_gross_equal_supplied_total_gross boolean DEFAULT false;
+UPDATE cho_band set has_calculated_total_gross_equal_supplied_total_gross = false;
+ALTER TABLE cho_band ALTER COLUMN has_calculated_total_gross_equal_supplied_total_gross SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN has_calculated_total_gross_equal_supplied_total_gross SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN has_correct_discount_for_non_da boolean DEFAULT false;
+UPDATE cho_band set has_correct_discount_for_non_da = false;
+ALTER TABLE cho_band ALTER COLUMN has_correct_discount_for_non_da SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN has_correct_discount_for_non_da SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN handling_amount_and_deduction_both_equal_zero_for_non_da boolean DEFAULT false;
+UPDATE cho_band set handling_amount_and_deduction_both_equal_zero_for_non_da = false;
+ALTER TABLE cho_band ALTER COLUMN handling_amount_and_deduction_both_equal_zero_for_non_da SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN handling_amount_and_deduction_both_equal_zero_for_non_da SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN claim_has_zero_discount_for_da boolean DEFAULT false;
+UPDATE cho_band set claim_has_zero_discount_for_da = false;
+ALTER TABLE cho_band ALTER COLUMN claim_has_zero_discount_for_da SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN claim_has_zero_discount_for_da SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN handling_invoice_amount_added_todeduction_for_handling_fee_equa boolean DEFAULT false;
+UPDATE cho_band set handling_invoice_amount_added_todeduction_for_handling_fee_equa = false;
+ALTER TABLE cho_band ALTER COLUMN handling_invoice_amount_added_todeduction_for_handling_fee_equa SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN handling_invoice_amount_added_todeduction_for_handling_fee_equa SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN has_supplied_correct_total_to_pay boolean DEFAULT false;
+UPDATE cho_band set has_supplied_correct_total_to_pay = false;
+ALTER TABLE cho_band ALTER COLUMN has_supplied_correct_total_to_pay SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN has_supplied_correct_total_to_pay SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN estimated_repair_days_plus_band_days_do_not_exceed_hire_days boolean DEFAULT false;
+UPDATE cho_band set estimated_repair_days_plus_band_days_do_not_exceed_hire_days = false;
+ALTER TABLE cho_band ALTER COLUMN estimated_repair_days_plus_band_days_do_not_exceed_hire_days SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN estimated_repair_days_plus_band_days_do_not_exceed_hire_days SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN validate_unique_vehicle_registration_number boolean DEFAULT false;
+UPDATE cho_band set validate_unique_vehicle_registration_number = false;
+ALTER TABLE cho_band ALTER COLUMN validate_unique_vehicle_registration_number SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN validate_unique_vehicle_registration_number SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN labour_cost_business_rule boolean DEFAULT false;
+UPDATE cho_band set labour_cost_business_rule = false;
+ALTER TABLE cho_band ALTER COLUMN labour_cost_business_rule SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN labour_cost_business_rule SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN repair_net_does_not_exceed_vehicle_class_repair_net_ceiling boolean DEFAULT false;
+UPDATE cho_band set repair_net_does_not_exceed_vehicle_class_repair_net_ceiling = false;
+ALTER TABLE cho_band ALTER COLUMN repair_net_does_not_exceed_vehicle_class_repair_net_ceiling SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN repair_net_does_not_exceed_vehicle_class_repair_net_ceiling SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN number_of_hire_days_reconcile boolean DEFAULT false;
+UPDATE cho_band set number_of_hire_days_reconcile = false;
+ALTER TABLE cho_band ALTER COLUMN number_of_hire_days_reconcile SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN number_of_hire_days_reconcile SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN corrent_admin_fee boolean DEFAULT false;
+UPDATE cho_band set corrent_admin_fee = false;
+ALTER TABLE cho_band ALTER COLUMN corrent_admin_fee SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN corrent_admin_fee SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN repair_booked_in_date boolean DEFAULT false;
+UPDATE cho_band set repair_booked_in_date = false;
+ALTER TABLE cho_band ALTER COLUMN repair_booked_in_date SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN repair_booked_in_date SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN flagged_for_manual_invoice_review boolean DEFAULT false;
+UPDATE cho_band set flagged_for_manual_invoice_review = false;
+ALTER TABLE cho_band ALTER COLUMN flagged_for_manual_invoice_review SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN flagged_for_manual_invoice_review SET NOT NULL;
+
+-- ------------------------------------
+
+ALTER TABLE cho_band ALTER COLUMN automatic_charge_check SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN estate_charge_check SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN non_standard_risk_insurance_premium_check SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN cdw_charge_check SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN satellite_navigation_charge_check SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN baby_seat_charge_check SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN tow_bars_charge_check SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN roof_rack_charge_check SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN delivery_or_collection_charge_check SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN dual_control_charge_check SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN has_allowed_vehicle_class SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN has_calculated_correct_daily_rate SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN hire_net_does_not_exceed_vehicle_class_hire_net_ceiling SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN hire_day_count_does_not_exceed_band_hire_day_ceiling SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN has_correct_hire_gross_calculation SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN actual_hire_days_does_not_exceed_allowable_hire_days SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN actualhire_days_does_not_exceed_total_loss_inspection SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN repair_gross_is_less_than_estimated_total_repair_amount SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN has_correct_hire_vat_calculation SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN has_correct_repair_vat_calculation SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN has_correct_repair_gross_calculation SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN has_correct_total_net SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN has_correct_total_vat SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN has_calculated_total_gross_equal_supplied_total_gross SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN has_correct_discount_for_non_da SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN handling_amount_and_deduction_both_equal_zero_for_non_da SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN claim_has_zero_discount_for_da SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN handling_invoice_amount_added_todeduction_for_handling_fee_equa SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN has_supplied_correct_total_to_pay SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN estimated_repair_days_plus_band_days_do_not_exceed_hire_days SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN validate_unique_vehicle_registration_number SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN labour_cost_business_rule SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN repair_net_does_not_exceed_vehicle_class_repair_net_ceiling SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN number_of_hire_days_reconcile SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN corrent_admin_fee SET DEFAULT true;
+ALTER TABLE cho_band ALTER COLUMN repair_booked_in_date SET DEFAULT true;
+
+-- ------------------------------------
+
+update cho_band set automatic_charge_check = true, estate_charge_check = true, non_standard_risk_insurance_premium_check = true,
+cdw_charge_check = true, satellite_navigation_charge_check = true, baby_seat_charge_check = true, tow_bars_charge_check = true,
+roof_rack_charge_check = true, delivery_or_collection_charge_check = true, dual_control_charge_check = true, has_allowed_vehicle_class = true,
+has_calculated_correct_daily_rate = true, hire_net_does_not_exceed_vehicle_class_hire_net_ceiling = true, hire_day_count_does_not_exceed_band_hire_day_ceiling = true,
+has_correct_hire_gross_calculation = true, actual_hire_days_does_not_exceed_allowable_hire_days = true, actualhire_days_does_not_exceed_total_loss_inspection = true,
+repair_gross_is_less_than_estimated_total_repair_amount = true, has_correct_hire_vat_calculation = true, has_correct_repair_vat_calculation = true,
+has_correct_repair_gross_calculation = true, has_correct_total_net = true, has_correct_total_vat = true, has_calculated_total_gross_equal_supplied_total_gross = true,
+has_correct_discount_for_non_da = true, handling_amount_and_deduction_both_equal_zero_for_non_da = true, claim_has_zero_discount_for_da = true,
+handling_invoice_amount_added_todeduction_for_handling_fee_equa = true, has_supplied_correct_total_to_pay = true, estimated_repair_days_plus_band_days_do_not_exceed_hire_days = true,
+validate_unique_vehicle_registration_number = true, labour_cost_business_rule = true, repair_net_does_not_exceed_vehicle_class_repair_net_ceiling = true,
+number_of_hire_days_reconcile = true, corrent_admin_fee = true, repair_booked_in_date = true, flagged_for_manual_invoice_review = true

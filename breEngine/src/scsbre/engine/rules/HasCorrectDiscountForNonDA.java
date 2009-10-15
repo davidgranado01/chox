@@ -16,32 +16,41 @@ public class HasCorrectDiscountForNonDA implements IBusinessRule {
     String narrative = "Discount calculation is incorrect";
     
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
+        
         RuleEvaluation res = new RuleEvaluation();
-        
-        if(!claim.getCHOrg().getIsDelegatedAuthority()){
-            
-            IInvoiceInfo invoice = claim.getInvoice();
-            IInsurerInfo insurer = claim.getInsurer();
-            
-            BigDecimal adminHandlingCharge = new BigDecimal("0.00");
-            if(insurer.getAdminHandlingCharge().doubleValue()>0 && CalcHelper.VAT_RATE.doubleValue()>0){
-                adminHandlingCharge = (insurer.getAdminHandlingCharge()).multiply(CalcHelper.VAT_RATE).negate();
-            }
-            
-            boolean success = CalcHelper.EqualTo(invoice.getDiscount(), adminHandlingCharge);
-            
-            if(success) narrative = "";
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);    
-        
-        }else{
-            
-            res.setResult(RuleEvaluationResult.RuleSkipped);
-            narrative = "Rule does not apply to CHOs in the DA scheme";
-            
-        }
-        
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+
+        if(claim.getChoBand().isHasCorrectDiscountForNonDA()){
+            
+            if(!claim.getCHOrg().isDelegatedAuthority()){
+
+                IInvoiceInfo invoice = claim.getInvoice();
+                IInsurerInfo insurer = claim.getInsurer();
+
+                BigDecimal adminHandlingCharge = new BigDecimal("0.00");
+                if(insurer.getAdminHandlingCharge().doubleValue()>0 && CalcHelper.VAT_RATE.doubleValue()>0){
+                    adminHandlingCharge = (insurer.getAdminHandlingCharge()).multiply(CalcHelper.VAT_RATE).negate();
+                }
+
+                boolean success = CalcHelper.EqualTo(invoice.getDiscount(), adminHandlingCharge);
+
+                if(success) narrative = "";
+                res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+            }else{
+
+                res.setResult(RuleEvaluationResult.RuleSkipped);
+                narrative = "Rule does not apply to CHOs in the DA scheme";
+
+            }
+        
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
         
         return res;
 

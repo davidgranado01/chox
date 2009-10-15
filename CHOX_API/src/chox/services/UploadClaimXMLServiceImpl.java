@@ -85,18 +85,21 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         // System.out.println("isWorkgroupEnable: Claim Process Status: " + claimResult.getClaimParseStatus());
         // System.out.println("isWorkgroupEnable: Claim Cho Ref: " + claimResult.getClaim().getChoReference());
         // System.out.println("isWorkgroupEnable: OLD Claim Status: " + claimResult.getClaim().getStatus());
-        // System.out.println("isWorkgroupEnable: Insurer: " + claimResult.getClaim().getThirdParty().getInsurer());
-
+        
         boolean isWorkgroupEnable = true;
 
-        if (claimResult.getClaim().getThirdParty().getInsurer() != null) {
-            isWorkgroupEnable = claimResult.getClaim().getThirdParty().getInsurer().isWorkgroupEnable();
+        if (claimResult.getClaim() != null ){
+            if (claimResult.getClaim().getThirdParty() != null ){
+                if (claimResult.getClaim().getThirdParty().getInsurer() != null) {
+                    isWorkgroupEnable = claimResult.getClaim().getThirdParty().getInsurer().isWorkgroupEnable();
+                }
+            }
         }
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) && !isWorkgroupEnable) {
             claimResult.getClaim().setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         }
-
+        
         return claimResult;
     }
 

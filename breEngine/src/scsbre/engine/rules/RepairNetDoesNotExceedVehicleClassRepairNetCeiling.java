@@ -15,18 +15,30 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
 
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
 
-        BigDecimal repairNet = claim.getInvoice().getRepairNet();
-        BigDecimal repairNetCelling = claim.getChoBand().getMaxRepairValueCelling();
-        boolean success = repairNet.compareTo(repairNetCelling) <= 0;
-
         RuleEvaluation res = new RuleEvaluation();
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        DecimalFormat moneyFormat = new DecimalFormat("£0.00");
-        narrative = String.format(narrativeTemplate, moneyFormat.format(repairNet.doubleValue()), moneyFormat.format(repairNetCelling.doubleValue()), claim.getVClass().getCode());
+        if(claim.getChoBand().isRepairNetDoesNotExceedVehicleClassRepairNetCeiling()){
 
+            BigDecimal repairNet = claim.getInvoice().getRepairNet();
+            BigDecimal repairNetCelling = claim.getChoBand().getMaxRepairValueCelling();
+            boolean success = repairNet.compareTo(repairNetCelling) <= 0;
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+            DecimalFormat moneyFormat = new DecimalFormat("£0.00");
+            narrative = String.format(narrativeTemplate, moneyFormat.format(repairNet.doubleValue()), moneyFormat.format(repairNetCelling.doubleValue()), claim.getVClass().getCode());
+
+            if(success){
+                narrative = "";
+            }
+
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
+        
         return res;
 
     }

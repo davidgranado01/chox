@@ -22,26 +22,34 @@ import scsbre.model.IInvoiceInfo;
  */
 public class HasCorrectRepairGrossCalculation implements IBusinessRule {
 
-
+    private String narrative = "Repair Gross calculation is incorrect.";
     
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
         RuleEvaluation res = new RuleEvaluation();
-        
-        IInvoiceInfo invoice = claim.getInvoice();
-        InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
-        boolean success = CalcHelper.EqualTo(invoice.getRepairGross(), iCalc.getCalculatedRepairGross());
-        
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+        
+        if(claim.getChoBand().isHasCorrectRepairGrossCalculation()){
+
+            IInvoiceInfo invoice = claim.getInvoice();
+            InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
+            boolean success = CalcHelper.EqualTo(invoice.getRepairGross(), iCalc.getCalculatedRepairGross());
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
         
         return res;
 
     }     
 
     public String getNarrative() {
-        return "Repair Gross calculation is incorrect.";
+        return narrative;
     }
 
     public String getRuleId() {

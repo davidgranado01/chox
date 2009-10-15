@@ -21,31 +21,38 @@ import scsbre.model.IInvoiceInfo;
  */
 public class HasCorrectHireVatCalculation implements IBusinessRule {
 
-
+    private String narrative = "Hire VAT calculation is incorrect.";
     
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
         RuleEvaluation res = new RuleEvaluation();
-        
-        IInvoiceInfo invoice = claim.getInvoice();
-        InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
-        
-        BigDecimal actual = invoice.getHireVat();
-        BigDecimal expected = iCalc.getCalculatedHireVat();
-        
-        boolean success = CalcHelper.EqualTo(actual, expected);
-        
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
         
+        if(claim.getChoBand().isHasCorrectHireVatCalculation()){
 
+            IInvoiceInfo invoice = claim.getInvoice();
+            InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
+
+            BigDecimal actual = invoice.getHireVat();
+            BigDecimal expected = iCalc.getCalculatedHireVat();
+
+            boolean success = CalcHelper.EqualTo(actual, expected);
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
+        
         return res;
 
     }    
     
     public String getNarrative() {
-        return "Hire VAT calculation is incorrect.";
+        return narrative;
     }
 
     public boolean isVisibleToCHO() {

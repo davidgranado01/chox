@@ -21,51 +21,59 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
     
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
-        ICustomerVehicleDamageInfo cvdamage = claim.getCustomerVehicleDamage();  
-        ICHOBandInfo choBand = claim.getChoBand();
-        IEngineerReportInfo eReport = claim.getEngineeringReport();
-        
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+
+        if(claim.getChoBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays()){
+
+            ICustomerVehicleDamageInfo cvdamage = claim.getCustomerVehicleDamage();
+            ICHOBandInfo choBand = claim.getChoBand();
+            IEngineerReportInfo eReport = claim.getEngineeringReport();
         
-        if ( (claim.getHireDetail().getIsTotalLoss()) || (eReport.getEstimatedDaysUnderRepair() < 1)) {
-            
-            narrative = "Claim is a Total Loss or Estimated Days Under Repair is less than 1";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
+            if ( (claim.getHireDetail().getIsTotalLoss()) || (eReport.getEstimatedDaysUnderRepair() < 1)) {
+
+                narrative = "Claim is a Total Loss or Estimated Days Under Repair is less than 1";
+                res.setResult(RuleEvaluationResult.RuleSkipped);
+
+            }else{
+
+                ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
+
+                int hireDays = claim.getHireDetail().getDays();
+                int takeVehicleToGarageDays = cvdamage.getIsUsable()
+                        ? choBand.getTakeVehicleToGarageDaysMobile()
+                        : choBand.getTakeVehicleToGarageDaysNonMobile();
+
+                int maxDays = eReport.getEstimatedDaysUnderRepair();
+
+                maxDays += takeVehicleToGarageDays;
+
+                // Basecamp : S8019
+                // maxDays += choBand.getWeekendBufferDays();
+                maxDays += cCalc.getWeekendBuffer();
+                maxDays += choBand.getTakeVehicleOutDays();
+                maxDays += choBand.getEngineerInspectionDelayDays();
+                boolean success = hireDays <= maxDays;
+
+                if(success){
+
+                    narrative = "";
+                    res.setResult(RuleEvaluationResult.RulePassed);
+
+                }else{
+
+                    res.setResult(RuleEvaluationResult.RuleFailed);
+
+                }
+
+            }
 
         }else{
 
-            // EDITED by CARLSON @ 20091007
-            ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
-            
-            int hireDays = claim.getHireDetail().getNumberOfHireDays();
-            int takeVehicleToGarageDays = cvdamage.getIsUsable()
-                    ? choBand.getTakeVehicleToGarageDaysMobile()
-                    : choBand.getTakeVehicleToGarageDaysNonMobile();
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
 
-            int maxDays = eReport.getEstimatedDaysUnderRepair();
-
-            maxDays += takeVehicleToGarageDays;
-            
-            // Basecamp : S8019
-            // maxDays += choBand.getWeekendBufferDays();
-            maxDays += cCalc.getWeekendBuffer();
-            maxDays += choBand.getTakeVehicleOutDays();
-            maxDays += choBand.getEngineerInspectionDelayDays();
-            boolean success = hireDays <= maxDays;
-            
-            if(success){
-                
-                narrative = "";
-                res.setResult(RuleEvaluationResult.RulePassed);
-
-            }else{
-        
-                res.setResult(RuleEvaluationResult.RuleFailed);
-                
-            }
-            
         }
         
         return res;

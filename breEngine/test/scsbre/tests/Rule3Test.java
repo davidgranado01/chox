@@ -212,17 +212,14 @@ public class Rule3Test {
 
     }
 
-    private IHireInfo getHireInfo() {
-
+    private IHireInfo getHireInfo(){
 
         HireInfo hireDetail = new HireInfo();
-        hireDetail.setHireStart(getDefaultDate());
-        hireDetail.setHireEnd(getDefaultDate());
-        hireDetail.setNumberOfHireDays(10);
-
-        hireDetail.setVClass(F1());
-        hireDetail.setIsTotalLoss(true);
-
+        hireDetail.setRentalStart(getDefaultDate());
+        // hireDetail.setRentalEnd(getDefaultDatePlusSeven());
+        hireDetail.setDays(15);
+        // hireDetail.setVehicleClass(F1());
+        hireDetail.setIsTotalLoss(false);
         return hireDetail;
 
     }
@@ -231,24 +228,24 @@ public class Rule3Test {
 
         ClaimInfo c = new ClaimInfo();
 
-        c.setVClass(F1());
+        //c.setVClass(F1());
 
         InsurerInfo ins = new InsurerInfo();
         ins.setAdminHandlingCharge(new BigDecimal(1));
         c.setInsurer(ins);
 
         CHOrganisationInfo org = new CHOrganisationInfo();
-        org.setIsDelegatedAuthority(true);
+        //org.setIsDelegatedAuthority(true);
         c.setCHOrganisation(org);
 
 
         c.setCustomerVehicleDamage(getCVD());
-        c.setChoBand(getCHOBand());
-        c.setExtras(getExtras());
-        c.setHireDetail(getHireInfo());
-        c.setInvoice(getInvoice());
-        c.setClaimEngineeringReport(getEngineerReport());
-        c.setVehicleClassCellingInfo(getVehicleClassCelling());
+        //c.setChoBand(getCHOBand());
+       // c.setExtras(getExtras());
+        //c.setHireDetail(getHireInfo());
+        //c.setInvoice(getInvoice());
+        //c.setClaimEngineeringReport(getEngineerReport());
+        //c.setVehicleClassCellingInfo(getVehicleClassCelling());
         return c;
 
     }

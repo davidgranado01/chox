@@ -3,8 +3,8 @@ package scsbre.model;
 import java.math.BigDecimal;
 
 public interface ICHOBandInfo {
-    public int getHireDayCeiling();    
-    public int getWeekendBufferDays();
+    
+    public int getHireDayCeiling();
     public int getTakeVehicleOutDays();
     public int getEngineerInspectionDelayDays();
     public int getOfferMadeDays();
@@ -19,9 +19,43 @@ public interface ICHOBandInfo {
     public BigDecimal getMaxRepairValue();
     public int getAverageLabourRate();
     public int getAverageLabourHoursPerHireDay();
-
     public BigDecimal getMaxHireNetCeiling();
     public BigDecimal getMaxRepairValueCelling();
-
-    
+    public boolean isAutomaticChargeCheck();
+    public boolean isBabySeatChargeCheck();
+    public boolean isCdwChargeCheck();
+    public boolean isDeliveryOrCollectionChargeCheck();
+    public boolean isDualControlChargeCheck();
+    public boolean isEstateChargeCheck();
+    public boolean isNonStandardRiskInsurancePremiumCheck();
+    public boolean isRoofRackChargeCheck();
+    public boolean isSatelliteNavigationChargeCheck();
+    public boolean isTowBarsChargeCheck();
+    public boolean isHasAllowedVehicleClass();
+    public boolean isHasCalculatedCorrectDailyRate();
+    public boolean isHireNetDoesNotExceedVehicleClassHireNetCeiling();
+    public boolean isHireDayCountDoesNotExceedBandHireDayCeiling();
+    public boolean isHasCorrectHireGrossCalculation();
+    public boolean isActualHireDaysDoesNotExceedAllowableHireDays();
+    public boolean isActualHireDaysDoesNotExceedTotalLossInspection();
+    public boolean isRepairGrossIsLessThanEstimatedTotalRepairAmount();
+    public boolean isHasCorrectHireVatCalculation();
+    public boolean isHasCorrectRepairVatCalculation();
+    public boolean isHasCorrectRepairGrossCalculation();
+    public boolean isHasCorrectTotalNet();
+    public boolean isHasCorrectTotalVat();
+    public boolean isHasCalculatedTotalGrossEqualSuppliedTotalGross();
+    public boolean isHasCorrectDiscountForNonDA();
+    public boolean isHandlingAmountAndDeductionBothEqualZeroForNonDA();
+    public boolean isClaimHasZeroDiscountForDA();
+    public boolean isHandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero();
+    public boolean isHasSuppliedCorrectTotalToPay();
+    public boolean isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays();
+    public boolean isValidateUniqueVehicleRegistrationNumber();
+    public boolean isLabourCostBusinessRule();
+    public boolean isRepairNetDoesNotExceedVehicleClassRepairNetCeiling();
+    public boolean isNumberOfHireDaysReconcile();
+    public boolean isCorrentAdminFee();
+    public boolean isRepairBookedInDate();
+    public boolean isFlaggedForManualInvoiceReview();
 }

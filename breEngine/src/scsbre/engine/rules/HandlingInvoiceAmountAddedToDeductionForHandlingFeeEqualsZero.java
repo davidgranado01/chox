@@ -22,25 +22,36 @@ import scsbre.model.IInvoiceInfo;
  */
 public class HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero implements IBusinessRule {
 
+    String narrative = "The sum of Claims Handling Invoice Amount and Less Claims Handling Fee does not equate to 0.";
+
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
         RuleEvaluation res = new RuleEvaluation();
-        IInvoiceInfo invoice = claim.getInvoice();
-        
-        BigDecimal sum = invoice.getClaimsHandlingInvoiceAmount().add(invoice.getDeductionForClaimsHandlingFee());
-
-        boolean success = CalcHelper.EqualTo(sum, BigDecimal.ZERO);        
-        
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+        
+        if(claim.getChoBand().isHandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero()){
+
+            IInvoiceInfo invoice = claim.getInvoice();
+            BigDecimal sum = invoice.getClaimsHandlingInvoiceAmount().add(invoice.getDeductionForClaimsHandlingFee());
+            boolean success = CalcHelper.EqualTo(sum, BigDecimal.ZERO);
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+            if(success){ narrative=""; }
+
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
         
         return res;
 
     } 
 
     public String getNarrative() {
-        return "The sum of Claims Handling Invoice Amount and Less Claims Handling Fee does not equate to 0.";
+        return narrative;
     }
 
     public String getRuleId() {

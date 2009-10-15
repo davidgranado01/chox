@@ -22,22 +22,32 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule{
     
     String narrative = "CHO is on DA scheme. Discount should be 0.";
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
+        
         RuleEvaluation res = new RuleEvaluation();
-        
         res.setIsVisibleToCHO(true);
-        
-        if(claim.getCHOrg().getIsDelegatedAuthority()){
-            boolean success = CalcHelper.EqualTo(claim.getInvoice().getDiscount(), BigDecimal.ZERO);
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
-            if(success) narrative = "";
-            res.setIsVisibleToCHO(false);
-        }
-        else{
-            narrative = "Rule does not apply to CHOs not in the DA scheme";
-            res.setResult(RuleEvaluationResult.RuleSkipped);
-        }
-        
         res.setRelatedRule(this);
+        
+        if(claim.getChoBand().isClaimHasZeroDiscountForDA()){
+            
+            if(claim.getCHOrg().isDelegatedAuthority()){
+                
+                boolean success = CalcHelper.EqualTo(claim.getInvoice().getDiscount(), BigDecimal.ZERO);
+                res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+                if(success) narrative = "";
+
+            }else{
+                
+                narrative = "Rule does not apply to CHOs not in the DA scheme";
+                res.setResult(RuleEvaluationResult.RuleSkipped);
+                
+            }
+
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
         
         return res;
 

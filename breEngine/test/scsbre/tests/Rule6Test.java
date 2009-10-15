@@ -218,20 +218,20 @@ public class Rule6Test {
 
     }
 
-    private IHireInfo getHireInfo() {
+    private IHireInfo getHireInfo(){
 
         HireInfo hireDetail = new HireInfo();
-        hireDetail.setHireStart(getDefaultDate());
-        hireDetail.setHireEnd(getDefaultDatePlusSeven());
-        hireDetail.setNumberOfHireDays(15);
-        hireDetail.setVClass(F1());
+        hireDetail.setRentalStart(getDefaultDate());
+        hireDetail.setRentalEnd(getDefaultDatePlusSeven());
+        hireDetail.setDays(15);
+        // hireDetail.setVehicleClass(F1());
         hireDetail.setIsTotalLoss(false);
         return hireDetail;
 
     }
 
     private IHireMonitoringDetail getHireMonitoringDetail() {
-        HireMonitoringDetail hireMonitoringDetail = new HireMonitoringDetail();
+        HireMonitoringDetailInfo hireMonitoringDetail = new HireMonitoringDetailInfo();
         hireMonitoringDetail.setLabourCost(new BigDecimal(1000));
         hireMonitoringDetail.setLabourHour(4);
         hireMonitoringDetail.setLabourRate(new BigDecimal(19.2));
@@ -242,25 +242,25 @@ public class Rule6Test {
 
         ClaimInfo c = new ClaimInfo();
 
-        c.setVClass(F1());
+        //c.setVClass(F1());
 
         InsurerInfo ins = new InsurerInfo();
         ins.setAdminHandlingCharge(new BigDecimal(100));
         c.setInsurer(ins);
 
         CHOrganisationInfo org = new CHOrganisationInfo();
-        org.setIsDelegatedAuthority(false);
+        //org.setIsDelegatedAuthority(false);
         c.setCHOrganisation(org);
 
 
         c.setCustomerVehicleDamage(getCVD());
-        c.setChoBand(getCHOBand());
-        c.setExtras(getExtras());
-        c.setHireDetail(getHireInfo());
-        c.setInvoice(getInvoice());
-        c.setClaimEngineeringReport(getEngineerReport());
+        //c.setChoBand(getCHOBand());
+        //c.setExtras(getExtras());
+        //c.setHireDetail(getHireInfo());
+        //c.setInvoice(getInvoice());
+        //c.setClaimEngineeringReport(getEngineerReport());
         // c.setHireMonitoringDetail(getHireMonitoringDetail());
-        c.setVehicleClassCellingInfo(getVehicleClassCelling());
+        ///c.setVehicleClassCellingInfo(getVehicleClassCelling());
         return c;
 
     }

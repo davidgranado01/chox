@@ -24,26 +24,34 @@ import scsbre.model.IInvoiceInfo;
 
 public class HasCorrectRepairVatCalculation implements IBusinessRule{
 
-
-
+    private String narrative = "Repair VAT calculation is incorrect.";
     
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
         RuleEvaluation res = new RuleEvaluation();
-        
-        IInvoiceInfo invoice = claim.getInvoice();
-        InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
-        boolean success = CalcHelper.EqualTo(invoice.getRepairVat(), iCalc.getCalculatedRepairVat());
-        
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+        
+        if(claim.getChoBand().isHasCorrectRepairVatCalculation()){
+
+            IInvoiceInfo invoice = claim.getInvoice();
+            InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
+            boolean success = CalcHelper.EqualTo(invoice.getRepairVat(), iCalc.getCalculatedRepairVat());
+
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
         
         return res;
 
     }     
     public String getNarrative() {
-        return "Repair VAT calculation is incorrect.";
+        return narrative;
     }
 
 

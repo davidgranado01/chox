@@ -4,101 +4,38 @@ import java.io.Serializable;
 import java.util.Date;
 import scsbre.model.IHireInfo;
 import scsbre.model.IVehicleClassInfo;
-import chox.services.HireMonitoringDetailService;
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 
 public class VehicleHire extends AuditableEntity implements Serializable, IHireInfo {
 
-    private HireMonitoringDetailService service;
     protected boolean IsTotalLoss;
+    protected String vehicleRegistration;
+    protected String vehicleManufacturer;
+    protected String vehicleModel;
+    protected Date rentalStart;
+    protected Date rentalEnd;
+    protected String collectionReason;
+    protected Integer days;
+    protected boolean cdwFee;
+    protected boolean automaticFee;
+    protected boolean satNavFee;
+    protected boolean estateFee;
+    protected boolean babySeatFee;
+    protected boolean towBarsFee;
+    protected boolean nonStandardInsurancePremiumFee;
+    protected boolean adminFee;
+    protected boolean roofRackFee;
+    protected boolean dualControlFee;
+    protected boolean deliveryCollectionFee;
+    protected VehicleClass vehicleClass;
+
+    public VehicleHire() {
+    }
 
     public void setIsTotalLoss(boolean IsTotalLoss) {
         this.IsTotalLoss = IsTotalLoss;
     }
-    /**
-     * This attribute maps to the column vehicle_registration in the vehicle_hire table.
-     */
-    protected String vehicleRegistration;
-    /**
-     * This attribute maps to the column vehicle_manufacturer in the vehicle_hire table.
-     */
-    protected String vehicleManufacturer;
-    /**
-     * This attribute maps to the column vehicle_model in the vehicle_hire table.
-     */
-    protected String vehicleModel;
-    /**
-     * This attribute maps to the column rental_start in the vehicle_hire table.
-     */
-    protected Date rentalStart;
-    /**
-     * This attribute maps to the column rental_end in the vehicle_hire table.
-     */
-    protected Date rentalEnd;
-    /**
-     * This attribute maps to the column collection_reason in the vehicle_hire table.
-     */
-    protected String collectionReason;
-    /**
-     * This attribute maps to the column days in the vehicle_hire table.
-     */
-    protected Integer days;
-    /**
-     * This attribute maps to the column cdw_fee in the vehicle_hire table.
-     */
-    protected boolean cdwFee;
-    /**
-     * This attribute maps to the column automatic_fee in the vehicle_hire table.
-     */
-    protected boolean automaticFee;
-    /**
-     * This attribute maps to the column sat_nav_fee in the vehicle_hire table.
-     */
-    protected boolean satNavFee;
-    /**
-     * This attribute maps to the column estate_fee in the vehicle_hire table.
-     */
-    protected boolean estateFee;
-    /**
-     * This attribute maps to the column baby_seat_fee in the vehicle_hire table.
-     */
-    protected boolean babySeatFee;
-    /**
-     * This attribute maps to the column tow_bars_fee in the vehicle_hire table.
-     */
-    protected boolean towBarsFee;
-    /**
-     * This attribute maps to the column non_standard_insurance_premium_fee in the vehicle_hire table.
-     */
-    protected boolean nonStandardInsurancePremiumFee;
-    /**
-     * This attribute maps to the column admin_fee in the vehicle_hire table.
-     */
-    protected boolean adminFee;
-    /**
-     * This attribute maps to the column roof_rack_fee in the vehicle_hire table.
-     */
-    protected boolean roofRackFee;
-    /**
-     * This attribute maps to the column dual_control_fee in the vehicle_hire table.
-     */
-    protected boolean dualControlFee;
-    /**
-     * This attribute maps to the column delivery_collection_fee in the vehicle_hire table.
-     */
-    protected boolean deliveryCollectionFee;
-    /**
-     * This attribute represents the foreign key relationship to the vehicle_class table.
-     */
-    protected VehicleClass vehicleClass;
-
-    /**
-     * Method 'VehicleHire'
-     *
-     */
-    public VehicleHire() {
-    }
-
+    
     /**
      * Method 'getVehicleRegistration'
      *
@@ -211,38 +148,18 @@ public class VehicleHire extends AuditableEntity implements Serializable, IHireI
         this.collectionReason = collectionReason;
     }
 
-    /**
-     * Method 'getDays'
-     *
-     * @return java.math.BigDecimal
-     */
-    public Integer getDays() {
+    public int getDays() {
         return days;
     }
 
-    /**
-     * Method 'setDays'
-     *
-     * @param days
-     */
     public void setDays(Integer days) {
         this.days = days;
     }
 
-    /**
-     * Method 'isCdwFee'
-     *
-     * @return boolean
-     */
     public boolean isCdwFee() {
         return cdwFee;
     }
 
-    /**
-     * Method 'setCdwFee'
-     *
-     * @param cdwFee
-     */
     public void setCdwFee(boolean cdwFee) {
         this.cdwFee = cdwFee;
     }
@@ -337,11 +254,6 @@ public class VehicleHire extends AuditableEntity implements Serializable, IHireI
         this.towBarsFee = towBarsFee;
     }
 
-    /**
-     * Method 'isNonStandardInsurancePremiumFee'
-     *
-     * @return boolean
-     */
     public boolean isNonStandardInsurancePremiumFee() {
         return nonStandardInsurancePremiumFee;
     }
@@ -382,65 +294,30 @@ public class VehicleHire extends AuditableEntity implements Serializable, IHireI
         return roofRackFee;
     }
 
-    /**
-     * Method 'setRoofRackFee'
-     *
-     * @param roofRackFee
-     */
     public void setRoofRackFee(boolean roofRackFee) {
         this.roofRackFee = roofRackFee;
     }
 
-    /**
-     * Method 'isDualControlFee'
-     *
-     * @return boolean
-     */
     public boolean isDualControlFee() {
         return dualControlFee;
     }
 
-    /**
-     * Method 'setDualControlFee'
-     *
-     * @param dualControlFee
-     */
     public void setDualControlFee(boolean dualControlFee) {
         this.dualControlFee = dualControlFee;
     }
 
-    /**
-     * Method 'isDeliveryCollectionFee'
-     *
-     * @return boolean
-     */
     public boolean isDeliveryCollectionFee() {
         return deliveryCollectionFee;
     }
 
-    /**
-     * Method 'setDeliveryCollectionFee'
-     *
-     * @param deliveryCollectionFee
-     */
     public void setDeliveryCollectionFee(boolean deliveryCollectionFee) {
         this.deliveryCollectionFee = deliveryCollectionFee;
     }
 
-    /**
-     * Method 'getVehicleClass'
-     *
-     * @return VehicleClass
-     */
     public VehicleClass getVehicleClass() {
         return vehicleClass;
     }
 
-    /**
-     * Method 'setVehicleClass'
-     *
-     * @param vehicleClass
-     */
     public void setVehicleClass(VehicleClass vehicleClass) {
         this.vehicleClass = vehicleClass;
     }
@@ -463,14 +340,6 @@ public class VehicleHire extends AuditableEntity implements Serializable, IHireI
     @TypeConversion(converter = "chox.data.DateConverter")
     public void setHireEnd(Date hireEnd) {
         this.rentalEnd = hireEnd;
-    }
-
-    public int getNumberOfHireDays() {
-        return this.days;
-    }
-
-    public void setNumberOfHireDays(int numberOfHireDays) {
-        this.days = numberOfHireDays;
     }
 
     public IVehicleClassInfo getVClass() {

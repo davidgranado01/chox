@@ -2,107 +2,68 @@ package scsbre.tests.sample;
 
 import java.util.Date;
 
-import scsbre.model.ICHOBandInfo;
 import scsbre.model.ICHOrganisationInfo;
 import scsbre.model.IClaimInfo;
 import scsbre.model.ICustomerVehicleDamageInfo;
-import scsbre.model.IEngineerReportInfo;
-import scsbre.model.IExtrasInfo;
-import scsbre.model.IHireInfo;
 import scsbre.model.IHireMonitoringDetail;
 import scsbre.model.IInsurerInfo;
-import scsbre.model.IInvoiceInfo;
-import scsbre.model.IVehicleClassCellingInfo;
-import scsbre.model.IVehicleClassInfo;
 
 public class ClaimInfo implements IClaimInfo {
 
-    private ICHOBandInfo claimChoBand;
+    private CHOBandInfo claimChoBand;
     private ICHOrganisationInfo claimCHOrganisation;
-    private IInvoiceInfo claimInvoice;
-    private IExtrasInfo claimExtras;
-    private IHireInfo claimHireDetail;
+    private InvoiceInfo claimInvoice;
+    private ExtrasInfo claimExtras;
+    private HireInfo claimHireDetail;
     private ICustomerVehicleDamageInfo claimCustomerVehicleDamage;
     private IInsurerInfo claimInsurer;
-    private IEngineerReportInfo claimEngineeringReport;
+    private EngineerReportInfo claimEngineeringReport;
     private boolean managingRepair;
     private Date policyHolderContactDate;
-    private IVehicleClassInfo vClass;
-    private IHireMonitoringDetail hireMonitoringDetail;
+    private VehicleClassInfo vClass;
+    private HireMonitoringDetailInfo hireMonitoringDetail;
     private Date hireMonitoringEcd;
-    private IVehicleClassCellingInfo vehicleClassCellingInfo;
-    /* (non-Javadoc)
-     * @see scsbre.model.IClaimInfo#getClaimChoBand()
-     */
-    public ICHOBandInfo getChoBand() {
+    private boolean isInvoiceReviewRequired;
+
+    public CHOBandInfo getChoBand() {
         return claimChoBand;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IClaimInfo#setClaimChoBand(scsbre.model.CHOBandInfo)
-     */
 
-    public void setChoBand(ICHOBandInfo claimChoBand) {
+    public void setChoBand(CHOBandInfo claimChoBand) {
         this.claimChoBand = claimChoBand;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IClaimInfo#getClaimCHOrganisation()
-     */
 
     public ICHOrganisationInfo getCHOrg() {
         return claimCHOrganisation;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IClaimInfo#setClaimCHOrganisation(scsbre.model.CHOrganisationInfo)
-     */
 
     public void setCHOrganisation(ICHOrganisationInfo claimCHOrganisation) {
         this.claimCHOrganisation = claimCHOrganisation;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IClaimInfo#getClaimInvoice()
-     */
 
-    public IInvoiceInfo getInvoice() {
+    public InvoiceInfo getInvoice() {
         return claimInvoice;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IClaimInfo#setClaimInvoice(scsbre.model.InvoiceInfo)
-     */
 
-    public void setInvoice(IInvoiceInfo claimInvoice) {
+    public void setInvoice(InvoiceInfo claimInvoice) {
         this.claimInvoice = claimInvoice;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IClaimInfo#getClaimExtras()
-     */
 
-    public IExtrasInfo getExtras() {
+    public ExtrasInfo getExtras() {
         return claimExtras;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IClaimInfo#setClaimExtras(scsbre.model.ExtrasInfo)
-     */
 
-    public void setExtras(IExtrasInfo claimExtras) {
+    public void setExtras(ExtrasInfo claimExtras) {
         this.claimExtras = claimExtras;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IClaimInfo#getClaimHireDetail()
-     */
 
-    public IHireInfo getHireDetail() {
+    public HireInfo getHireDetail() {
         return claimHireDetail;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IClaimInfo#setClaimHireDetail(scsbre.model.HireInfo)
-     */
 
-    public void setHireDetail(IHireInfo claimHireDetail) {
+    public void setHireDetail(HireInfo claimHireDetail) {
         this.claimHireDetail = claimHireDetail;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IClaimInfo#getClaimCustomerVehicleDamage()
-     */
 
     public ICustomerVehicleDamageInfo getCustomerVehicleDamage() {
         return claimCustomerVehicleDamage;
@@ -133,14 +94,14 @@ public class ClaimInfo implements IClaimInfo {
      * @see scsbre.model.IClaimInfo#getClaimEngineeringReport()
      */
 
-    public IEngineerReportInfo getEngineeringReport() {
+    public EngineerReportInfo getEngineeringReport() {
         return claimEngineeringReport;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#setClaimEngineeringReport(scsbre.model.EngineerReportInfo)
      */
 
-    public void setClaimEngineeringReport(IEngineerReportInfo claimEngineeringReport) {
+    public void setClaimEngineeringReport(EngineerReportInfo claimEngineeringReport) {
         this.claimEngineeringReport = claimEngineeringReport;
     }
     /* (non-Javadoc)
@@ -175,14 +136,14 @@ public class ClaimInfo implements IClaimInfo {
      * @see scsbre.model.IClaimInfo#getVClass()
      */
 
-    public IVehicleClassInfo getVClass() {
+    public VehicleClassInfo getVClass() {
         return vClass;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#setVClass(scsbre.model.VehicleClassInfo)
      */
 
-    public void setVClass(IVehicleClassInfo class1) {
+    public void setVClass(VehicleClassInfo class1) {
         vClass = class1;
     }
 
@@ -190,25 +151,19 @@ public class ClaimInfo implements IClaimInfo {
         return hireMonitoringEcd;
     }
 
-    public void setHireMonitoringDetail(IHireMonitoringDetail hireMonitoringDetail) {
+    public void setHireMonitoringDetail(HireMonitoringDetailInfo hireMonitoringDetail) {
         this.hireMonitoringDetail = hireMonitoringDetail;
     }
 
-    public IHireMonitoringDetail getHireMonitoringDetail() {
+    public HireMonitoringDetailInfo getHireMonitoringDetail() {
         return hireMonitoringDetail;
     }
 
-    /**
-     * @return the vehicleClassCellingInfo
-     */
-    public IVehicleClassCellingInfo getVehicleClassCellingInfo() {
-        return vehicleClassCellingInfo;
+    public void setIsInvoiceReviewRequired(boolean isInvoiceReviewRequired) {
+        this.isInvoiceReviewRequired =  isInvoiceReviewRequired;
     }
-
-    /**
-     * @param vehicleClassCellingInfo the vehicleClassCellingInfo to set
-     */
-    public void setVehicleClassCellingInfo(IVehicleClassCellingInfo vehicleClassCellingInfo) {
-        this.vehicleClassCellingInfo = vehicleClassCellingInfo;
+    
+    public boolean getIsInvoiceReviewRequired() {
+        return isInvoiceReviewRequired;
     }
 }

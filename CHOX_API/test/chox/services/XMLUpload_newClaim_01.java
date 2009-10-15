@@ -136,7 +136,7 @@ public class XMLUpload_newClaim_01 {
         Assert.assertEquals(new BigDecimal("0.00"), claim.getPercentageLiabilityAccepted());
         Assert.assertEquals(false, claim.getIsQuantumDispute());
         Assert.assertEquals(null, claim.getEngineerClaimReviewNotes());
-        Assert.assertEquals(false, claim.getIsInvoiceReviewRequired());
+        // Assert.assertEquals(false, claim.getIsInvoiceReviewRequired());
         Assert.assertEquals(false, claim.getIsIsAnomalies());
         Assert.assertEquals(false, claim.isIsFnolReviewed());
         Assert.assertEquals(null, claim.getReasonOfRejectionId());

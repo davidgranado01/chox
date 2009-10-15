@@ -7,79 +7,188 @@ import scsbre.model.IVehicleClassInfo;
 
 public class HireInfo implements IHireInfo {
 
-    private IVehicleClassInfo vClass;
-    private Date hireStart;
-    private Date hireEnd;
-    private int numberOfHireDays;
-    private boolean isTotalLoss;
+    protected boolean IsTotalLoss;
+    protected String vehicleRegistration;
+    protected String vehicleManufacturer;
+    protected String vehicleModel;
+    protected Date rentalStart;
+    protected Date rentalEnd;
+    protected String collectionReason;
+    protected Integer days;
+    protected boolean cdwFee;
+    protected boolean automaticFee;
+    protected boolean satNavFee;
+    protected boolean estateFee;
+    protected boolean babySeatFee;
+    protected boolean towBarsFee;
+    protected boolean nonStandardInsurancePremiumFee;
+    protected boolean adminFee;
+    protected boolean roofRackFee;
+    protected boolean dualControlFee;
+    protected boolean deliveryCollectionFee;
+    protected VehicleClassInfo vehicleClass;
 
-    /* (non-Javadoc)
-     * @see scsbre.model.IHireInfo#getVClass()
-     */
-    public IVehicleClassInfo getVClass() {
-        return vClass;
+    public void setIsTotalLoss(boolean IsTotalLoss) {
+        this.IsTotalLoss = IsTotalLoss;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IHireInfo#setVClass(scsbre.model.VehicleClassInfo)
-     */
 
-    public void setVClass(IVehicleClassInfo class1) {
-        vClass = class1;
+    public java.lang.String getVehicleRegistration() {
+        return vehicleRegistration;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IHireInfo#getHireStart()
-     */
 
-    public Date getHireStart() {
-        return hireStart;
+    public void setVehicleRegistration(java.lang.String vehicleRegistration) {
+        this.vehicleRegistration = vehicleRegistration;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IHireInfo#setHireStart(java.util.Date)
-     */
 
-    public void setHireStart(Date hireStart) {
-        this.hireStart = hireStart;
+    public java.lang.String getVehicleManufacturer() {
+        return vehicleManufacturer;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IHireInfo#getHireEnd()
-     */
 
-    public Date getHireEnd() {
-        return hireEnd;
+    public void setVehicleManufacturer(java.lang.String vehicleManufacturer) {
+        this.vehicleManufacturer = vehicleManufacturer;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IHireInfo#setHireEnd(java.util.Date)
-     */
 
-    public void setHireEnd(Date hireEnd) {
-        this.hireEnd = hireEnd;
+    public java.lang.String getVehicleModel() {
+        return vehicleModel;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IHireInfo#getNumberOfHireDays()
-     */
 
-    public int getNumberOfHireDays() {
-        return numberOfHireDays;
+    public void setVehicleModel(java.lang.String vehicleModel) {
+        this.vehicleModel = vehicleModel;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IHireInfo#setNumberOfHireDays(int)
-     */
 
-    public void setNumberOfHireDays(int numberOfHireDays) {
-        this.numberOfHireDays = numberOfHireDays;
+    public java.util.Date getRentalStart() {
+        return rentalStart;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IHireInfo#getIsTotalLoss()
-     */
+
+    public void setRentalStart(java.util.Date rentalStart) {
+        this.rentalStart = rentalStart;
+    }
+
+    public java.util.Date getRentalEnd() {
+        return rentalEnd;
+    }
+
+    public void setRentalEnd(java.util.Date rentalEnd) {
+        this.rentalEnd = rentalEnd;
+    }
+
+    public java.lang.String getCollectionReason() {
+        return collectionReason;
+    }
+
+    public void setCollectionReason(java.lang.String collectionReason) {
+        this.collectionReason = collectionReason;
+    }
+
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(Integer days) {
+        this.days = days;
+    }
+
+    public boolean isCdwFee() {
+        return cdwFee;
+    }
+
+    public void setCdwFee(boolean cdwFee) {
+        this.cdwFee = cdwFee;
+    }
+
+    public boolean isAutomaticFee() {
+        return automaticFee;
+    }
+
+    public void setAutomaticFee(boolean automaticFee) {
+        this.automaticFee = automaticFee;
+    }
+
+    public boolean isSatNavFee() {
+        return satNavFee;
+    }
+
+    public void setSatNavFee(boolean satNavFee) {
+        this.satNavFee = satNavFee;
+    }
+
+    public boolean isEstateFee() {
+        return estateFee;
+    }
+
+    public void setEstateFee(boolean estateFee) {
+        this.estateFee = estateFee;
+    }
+
+    public boolean isBabySeatFee() {
+        return babySeatFee;
+    }
+
+    public void setBabySeatFee(boolean babySeatFee) {
+        this.babySeatFee = babySeatFee;
+    }
+
+    public boolean isTowBarsFee() {
+        return towBarsFee;
+    }
+
+    public void setTowBarsFee(boolean towBarsFee) {
+        this.towBarsFee = towBarsFee;
+    }
+
+    public boolean isNonStandardInsurancePremiumFee() {
+        return nonStandardInsurancePremiumFee;
+    }
+
+    public void setNonStandardInsurancePremiumFee(boolean nonStandardInsurancePremiumFee) {
+        this.nonStandardInsurancePremiumFee = nonStandardInsurancePremiumFee;
+    }
+
+    public boolean isAdminFee() {
+        return adminFee;
+    }
+
+    public void setAdminFee(boolean adminFee) {
+        this.adminFee = adminFee;
+    }
+
+    public boolean isRoofRackFee() {
+        return roofRackFee;
+    }
+
+    public void setRoofRackFee(boolean roofRackFee) {
+        this.roofRackFee = roofRackFee;
+    }
+
+    public boolean isDualControlFee() {
+        return dualControlFee;
+    }
+
+    public void setDualControlFee(boolean dualControlFee) {
+        this.dualControlFee = dualControlFee;
+    }
+
+    public boolean isDeliveryCollectionFee() {
+        return deliveryCollectionFee;
+    }
+
+    public void setDeliveryCollectionFee(boolean deliveryCollectionFee) {
+        this.deliveryCollectionFee = deliveryCollectionFee;
+    }
+
+    public VehicleClassInfo getVehicleClass() {
+        return vehicleClass;
+    }
+
+    public void setVehicleClass(VehicleClassInfo vehicleClass) {
+        this.vehicleClass = vehicleClass;
+    }
+
+    public VehicleClassInfo getVClass() {
+        return this.vehicleClass;
+    }
 
     public boolean getIsTotalLoss() {
-        return isTotalLoss;
-    }
-    /* (non-Javadoc)
-     * @see scsbre.model.IHireInfo#setIsTotalLoss(java.lang.Boolean)
-     */
-
-    public void setIsTotalLoss(Boolean isTotalLoss) {
-        this.isTotalLoss = isTotalLoss;
+        return this.IsTotalLoss;
     }
 }

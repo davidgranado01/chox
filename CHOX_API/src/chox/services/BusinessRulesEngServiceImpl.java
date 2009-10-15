@@ -49,22 +49,6 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
     private Claim constructBreValidateObject(Claim claim) {
 
         VehicleClassCelling vehicleClassCelling = insurerService.getVechileClassCellingForClaim(claim);
-
-        /*
-        System.out.println("> maxRepairValue 1 >>"+maxRepairValue);
-        System.out.println("> vehicleClassCellingEnable >>"+vehicleClassCellingEnable);
-        System.out.println("> vehicleClassCelling >>"+vehicleClassCelling);
-
-        if(vehicleClassCellingEnable && vehicleClassCelling!=null){
-
-            maxRepairValue = vehicleClassCelling.getRepairNetCelling();
-            System.out.println("> maxRepairValue 2 >>"+maxRepairValue);
-
-        }
-
-        System.out.println("> maxRepairValue 3 >>"+maxRepairValue);
-        System.out.println("");
-        */
         
          // SET CHO BAND
         ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(claim.getChorganisation().getId(), claim.getInsurer().getId());

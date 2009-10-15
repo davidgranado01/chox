@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package scsbre.engine.rules;
 
 import scsbre.engine.IBusinessRule;
@@ -14,35 +9,37 @@ import scsbre.model.ClaimStatus;
 import scsbre.model.IClaimInfo;
 import scsbre.model.IInvoiceInfo;
 
-/**
- *
- * @author Derm
- * 
- * rule 12, order 5
- * 
- */
 public class HasCorrectTotalNet implements IBusinessRule {
 
-
+    private String narrative = "Total Net calculation is incorrect.";
     
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
         RuleEvaluation res = new RuleEvaluation();
-        
-        IInvoiceInfo invoice = claim.getInvoice();
-        InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
-        boolean success = CalcHelper.EqualTo(invoice.getTotalNet(), iCalc.getCalculatedTotalNet());
-        
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+
+        if(claim.getChoBand().isHasCorrectTotalNet()){
+            
+            IInvoiceInfo invoice = claim.getInvoice();
+            InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
+            boolean success = CalcHelper.EqualTo(invoice.getTotalNet(), iCalc.getCalculatedTotalNet());
+
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
         
         return res;
 
     }     
 
     public String getNarrative() {
-        return "Total Net calculation is incorrect.";
+        return narrative;
     }
 
     public String getRuleId() {

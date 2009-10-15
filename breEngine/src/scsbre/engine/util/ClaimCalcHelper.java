@@ -44,7 +44,7 @@ public class ClaimCalcHelper {
         
 	public int getHireDuration()
 	{
-            Date hireStart = claim.getHireDetail().getHireStart();
+            Date hireStart = claim.getHireDetail().getRentalStart();
             Date initialEcd = claim.getHireMonitoringEcd();
             return CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
 	}
@@ -52,7 +52,7 @@ public class ClaimCalcHelper {
 	public BigDecimal getDailyHireRateCharged()
 	{
             BigDecimal hireNetMinusExtras = claim.getInvoice().getHireNet().subtract(exCalcHelper.getTotalExtras());
-            return hireNetMinusExtras.divide(new BigDecimal(claim.getHireDetail().getNumberOfHireDays()), 4, 1);
+            return hireNetMinusExtras.divide(new BigDecimal(claim.getHireDetail().getDays()), 4, 1);
 	}
         
     /*

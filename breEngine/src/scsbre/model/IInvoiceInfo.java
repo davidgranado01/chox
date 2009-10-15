@@ -47,4 +47,16 @@ public interface IInvoiceInfo {
     
     public BigDecimal getPenaltyCharge();
 
+    public BigDecimal getAdminFee();
+    public BigDecimal getAutomaticFee();
+    public BigDecimal getEstateFee();
+    public BigDecimal getNonStandardInsurancePremiumFee();
+    public BigDecimal getCdwFee();
+    public BigDecimal getSatNavFee();
+    public BigDecimal getBabySeatFee();
+    public BigDecimal getTowBarsFee();
+    public BigDecimal getRoofRackFee();
+    public BigDecimal getDeliveryCollectionFee();
+    public BigDecimal getDualControlFee();
+
 }

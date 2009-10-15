@@ -20,22 +20,36 @@ import scsbre.model.IClaimInfo;
  */
 public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRule{
 
+    private String narrative = "Number of hire days billed by the CHO exceeds the CHO's hire days ceiling.";
+    
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
-
-        boolean success = claim.getHireDetail().getNumberOfHireDays() <= claim.getChoBand().getHireDayCeiling();
-        
         RuleEvaluation res = new RuleEvaluation();
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        
+
+        if(claim.getChoBand().isHireDayCountDoesNotExceedBandHireDayCeiling()){
+
+            boolean success = claim.getHireDetail().getDays() <= claim.getChoBand().getHireDayCeiling();
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+            if(success){
+                narrative = "";
+            }
+
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
+
         return res;
 
     }       
 
     public String getNarrative() {
-        return "Number of hire days billed by the CHO exceeds the CHO's hire days ceiling.";
+        return narrative;
     }
 
     public String getRuleId() {

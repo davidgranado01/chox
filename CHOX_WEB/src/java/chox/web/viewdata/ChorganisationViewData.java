@@ -26,7 +26,7 @@ public class ChorganisationViewData {
         this.createdDate = DateHelper.GridViewDateFormat.format(chorganisation.getCreatedDate());            
         this.status = chorganisation.isStatus();
         
-        if(chorganisation.getIsDelegatedAuthority()){
+        if(chorganisation.isDelegatedAuthority()){
             this.authoritiyDelegated = "Yes";
         }else{
             this.authoritiyDelegated = "No";

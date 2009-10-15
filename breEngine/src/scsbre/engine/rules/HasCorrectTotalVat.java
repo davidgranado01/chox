@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package scsbre.engine.rules;
 
 import scsbre.engine.IBusinessRule;
@@ -14,34 +9,36 @@ import scsbre.model.ClaimStatus;
 import scsbre.model.IClaimInfo;
 import scsbre.model.IInvoiceInfo;
 
-/**
- *
- * @author Derm
- * 
- * rule 13 order 6
- * 
- */
 public class HasCorrectTotalVat implements IBusinessRule{
 
+    private String narrative = "Total VAT calculation is incorrect.";
 
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
         RuleEvaluation res = new RuleEvaluation();
-        
-        IInvoiceInfo invoice = claim.getInvoice();
-        InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
-        boolean success = CalcHelper.EqualTo(invoice.getTotalVat(), iCalc.getCalculatedTotalVat());
-        
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+
+        if(claim.getChoBand().isHasCorrectTotalVat()){
+
+            IInvoiceInfo invoice = claim.getInvoice();
+            InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
+            boolean success = CalcHelper.EqualTo(invoice.getTotalVat(), iCalc.getCalculatedTotalVat());
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
         
         return res;
 
     }     
 
     public String getNarrative() {
-        return "Total VAT calculation is incorrect.";
+        return narrative;
     }
 
     public String getRuleId() {

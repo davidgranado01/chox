@@ -20,26 +20,38 @@ import scsbre.model.ClaimStatus;
  */
 public class HasCorrectHireGrossCalculation implements IBusinessRule {
 
+    private String narrative = "Hire Gross calculation is incorrect.";
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
         
         RuleEvaluation res = new RuleEvaluation();
-        
-        InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
-        boolean success = CalcHelper.EqualTo(claim.getInvoice().getHireGross(), iCalc.getCalculatedHireGross());
-        
-        res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
-        
 
+        if(claim.getChoBand().isHasCorrectHireGrossCalculation()){
+
+            InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
+            boolean success = CalcHelper.EqualTo(claim.getInvoice().getHireGross(), iCalc.getCalculatedHireGross());
+
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+            if(success){
+                narrative = "";
+            }
+
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
+        
         return res;
 
     }
 
     public String getNarrative() {
-        return "Hire Gross calculation is incorrect.";
+        return narrative;
     }
-
 
     public String getRuleId() {
        return "005";
@@ -48,7 +60,5 @@ public class HasCorrectHireGrossCalculation implements IBusinessRule {
     public ClaimStatus getStatusAfterFailure() {
         return ClaimStatus.InvoiceDataCalculationIncorrect;
     }
-
-
 
 }
