@@ -26,10 +26,15 @@ public class RepairGrossIsLessThanEstimatedTotalRepairAmount implements IBusines
             IInvoiceInfo invoice = claim.getInvoice();
 
             boolean success;
+            
             if (eReport.getEstimatedTotalRepairAmount().compareTo(BigDecimal.ZERO) > 0) {
                 success =  invoice.getRepairGross().compareTo(eReport.getEstimatedTotalRepairAmount()) <= 0;
             } else {
                 success = CalcHelper.EqualTo(invoice.getRepairGross(), BigDecimal.ZERO);
+            }
+
+            if(success){
+            narrative = "";
             }
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);

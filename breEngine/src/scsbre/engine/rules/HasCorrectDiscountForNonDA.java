@@ -35,14 +35,15 @@ public class HasCorrectDiscountForNonDA implements IBusinessRule {
 
                 boolean success = CalcHelper.EqualTo(invoice.getDiscount(), adminHandlingCharge);
 
-                if(success) narrative = "";
+                
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+                if(success){ narrative = "";}
 
             }else{
 
-                res.setResult(RuleEvaluationResult.RuleSkipped);
                 narrative = "Rule does not apply to CHOs in the DA scheme";
-
+                res.setResult(RuleEvaluationResult.RuleSkipped);
             }
         
         }else{

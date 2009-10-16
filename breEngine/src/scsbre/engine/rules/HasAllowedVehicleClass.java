@@ -8,6 +8,7 @@ import scsbre.model.*;
 public class HasAllowedVehicleClass implements IBusinessRule {
 
     String narrative = "Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.";
+    
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
 
         RuleEvaluation res = new RuleEvaluation();

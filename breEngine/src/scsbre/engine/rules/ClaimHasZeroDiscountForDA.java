@@ -33,7 +33,8 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule{
                 
                 boolean success = CalcHelper.EqualTo(claim.getInvoice().getDiscount(), BigDecimal.ZERO);
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
-                if(success) narrative = "";
+                
+                if(success) {narrative = "";}
 
             }else{
                 

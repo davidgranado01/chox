@@ -41,6 +41,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
                 ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
 
                 int hireDays = claim.getHireDetail().getDays();
+                
                 int takeVehicleToGarageDays = cvdamage.getIsUsable()
                         ? choBand.getTakeVehicleToGarageDaysMobile()
                         : choBand.getTakeVehicleToGarageDaysNonMobile();
@@ -54,10 +55,10 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
                 maxDays += cCalc.getWeekendBuffer();
                 maxDays += choBand.getTakeVehicleOutDays();
                 maxDays += choBand.getEngineerInspectionDelayDays();
+                
                 boolean success = hireDays <= maxDays;
 
                 if(success){
-
                     narrative = "";
                     res.setResult(RuleEvaluationResult.RulePassed);
 

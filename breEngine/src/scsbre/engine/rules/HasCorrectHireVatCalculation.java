@@ -40,6 +40,8 @@ public class HasCorrectHireVatCalculation implements IBusinessRule {
             boolean success = CalcHelper.EqualTo(actual, expected);
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
+            if(success){narrative = "";}
+
         }else{
 
             narrative = "";

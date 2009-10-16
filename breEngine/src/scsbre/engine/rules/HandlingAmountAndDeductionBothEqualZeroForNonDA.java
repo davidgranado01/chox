@@ -27,7 +27,7 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
                 boolean success = CalcHelper.EqualTo(invoice.getClaimsHandlingInvoiceAmount(), BigDecimal.ZERO);
                 success = success && CalcHelper.EqualTo(invoice.getDeductionForClaimsHandlingFee(), BigDecimal.ZERO);
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
-                if(success) narrative = "";
+                if(success) {narrative = "";}
 
             }else{
 

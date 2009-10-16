@@ -26,6 +26,8 @@ public class HasCorrectTotalVat implements IBusinessRule{
             boolean success = CalcHelper.EqualTo(invoice.getTotalVat(), iCalc.getCalculatedTotalVat());
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
+            if(success){narrative = "";}
+
         }else{
 
             narrative = "";

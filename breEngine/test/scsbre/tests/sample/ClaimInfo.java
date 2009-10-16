@@ -11,12 +11,12 @@ import scsbre.model.IInsurerInfo;
 public class ClaimInfo implements IClaimInfo {
 
     private CHOBandInfo claimChoBand;
-    private ICHOrganisationInfo claimCHOrganisation;
+    private CHOrganisationInfo claimCHOrganisation;
     private InvoiceInfo claimInvoice;
     private ExtrasInfo claimExtras;
     private HireInfo claimHireDetail;
-    private ICustomerVehicleDamageInfo claimCustomerVehicleDamage;
-    private IInsurerInfo claimInsurer;
+    private CustomerVehicleDamageInfo claimCustomerVehicleDamage;
+    private InsurerInfo claimInsurer;
     private EngineerReportInfo claimEngineeringReport;
     private boolean managingRepair;
     private Date policyHolderContactDate;
@@ -33,11 +33,11 @@ public class ClaimInfo implements IClaimInfo {
         this.claimChoBand = claimChoBand;
     }
 
-    public ICHOrganisationInfo getCHOrg() {
+    public CHOrganisationInfo getCHOrg() {
         return claimCHOrganisation;
     }
 
-    public void setCHOrganisation(ICHOrganisationInfo claimCHOrganisation) {
+    public void setCHOrganisation(CHOrganisationInfo claimCHOrganisation) {
         this.claimCHOrganisation = claimCHOrganisation;
     }
 
@@ -65,7 +65,7 @@ public class ClaimInfo implements IClaimInfo {
         this.claimHireDetail = claimHireDetail;
     }
 
-    public ICustomerVehicleDamageInfo getCustomerVehicleDamage() {
+    public CustomerVehicleDamageInfo getCustomerVehicleDamage() {
         return claimCustomerVehicleDamage;
     }
     /* (non-Javadoc)
@@ -73,21 +73,21 @@ public class ClaimInfo implements IClaimInfo {
      */
 
     public void setCustomerVehicleDamage(
-            ICustomerVehicleDamageInfo claimCustomerVehicleDamage) {
+            CustomerVehicleDamageInfo claimCustomerVehicleDamage) {
         this.claimCustomerVehicleDamage = claimCustomerVehicleDamage;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#getClaimInsurer()
      */
 
-    public IInsurerInfo getInsurer() {
+    public InsurerInfo getInsurer() {
         return claimInsurer;
     }
     /* (non-Javadoc)
      * @see scsbre.model.IClaimInfo#setClaimInsurer(scsbre.model.InsurerInfo)
      */
 
-    public void setInsurer(IInsurerInfo claimInsurer) {
+    public void setInsurer(InsurerInfo claimInsurer) {
         this.claimInsurer = claimInsurer;
     }
     /* (non-Javadoc)
@@ -97,17 +97,11 @@ public class ClaimInfo implements IClaimInfo {
     public EngineerReportInfo getEngineeringReport() {
         return claimEngineeringReport;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IClaimInfo#setClaimEngineeringReport(scsbre.model.EngineerReportInfo)
-     */
-
+    
     public void setClaimEngineeringReport(EngineerReportInfo claimEngineeringReport) {
         this.claimEngineeringReport = claimEngineeringReport;
     }
-    /* (non-Javadoc)
-     * @see scsbre.model.IClaimInfo#getManagingRepair()
-     */
-
+    
     public boolean getManagingRepair() {
         return managingRepair;
     }
@@ -149,6 +143,10 @@ public class ClaimInfo implements IClaimInfo {
 
     public Date getHireMonitoringEcd() {
         return hireMonitoringEcd;
+    }
+
+    public void setHireMonitoringEcd(Date hireMonitoringEcd) {
+        this.hireMonitoringEcd = hireMonitoringEcd;
     }
 
     public void setHireMonitoringDetail(HireMonitoringDetailInfo hireMonitoringDetail) {

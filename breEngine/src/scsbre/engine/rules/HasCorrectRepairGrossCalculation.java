@@ -37,6 +37,8 @@ public class HasCorrectRepairGrossCalculation implements IBusinessRule {
             boolean success = CalcHelper.EqualTo(invoice.getRepairGross(), iCalc.getCalculatedRepairGross());
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
+            if(success){narrative = "";}
+
         }else{
 
             narrative = "";

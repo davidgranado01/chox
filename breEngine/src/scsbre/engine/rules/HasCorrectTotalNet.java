@@ -27,6 +27,8 @@ public class HasCorrectTotalNet implements IBusinessRule {
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
+            if(success){narrative = "";}
+
         }else{
 
             narrative = "";

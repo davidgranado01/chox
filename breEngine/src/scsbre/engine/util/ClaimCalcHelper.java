@@ -165,7 +165,6 @@ public class ClaimCalcHelper {
         
         public int getLabourCostAverageRateDay(){
             
-            
             BigDecimal bLabourCost = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourCost());
             
             if(bLabourCost.compareTo(new BigDecimal(0.00))<1){
@@ -174,6 +173,7 @@ public class ClaimCalcHelper {
             
             BigDecimal bAverageLabourHoursPerHireDay = new BigDecimal(claim.getChoBand().getAverageLabourHoursPerHireDay());
             BigDecimal bAverageLabourRate =  new BigDecimal(claim.getChoBand().getAverageLabourRate());
+            
             BigDecimal bLabourCostAverageRateDay = new BigDecimal(0.00);
             
             if(bLabourCost.doubleValue()>0 
@@ -194,9 +194,11 @@ public class ClaimCalcHelper {
             int iLabourHour = 0;
             
             if(claim.getHireMonitoringDetail()!=null){
+
                 bLabourCost = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourCost());
                 bLabourRate = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourRate());
                 iLabourHour = mathHelper.getNotNullIntValue(claim.getHireMonitoringDetail().getLabourHour());
+                
             }
             
             if((bLabourCost.compareTo(new BigDecimal(0.00))<1) && (iLabourHour>0)){
@@ -208,6 +210,7 @@ public class ClaimCalcHelper {
                 }
                 
             }
+            
             return bLabourCost;
         }
         

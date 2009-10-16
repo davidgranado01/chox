@@ -8,6 +8,15 @@ public class CustomerVehicleDamageInfo implements ICustomerVehicleDamageInfo {
 
     protected Date initialECD;
     protected boolean isUsable;
+    protected Boolean vehicleRegistrationExist;
+
+    public Boolean isVehicleRegistrationExist() {
+        return vehicleRegistrationExist;
+    }
+
+    public void setVehicleRegistrationExist(Boolean vehicleRegistrationExist) {
+        this.vehicleRegistrationExist = vehicleRegistrationExist;
+    }
 
     /* (non-Javadoc)
      * @see scsbre.model.ICustomerVehicleDamageInfo#getIsUsable()
@@ -41,7 +50,4 @@ public class CustomerVehicleDamageInfo implements ICustomerVehicleDamageInfo {
         return "ABC1234";
     }
 
-    public Boolean isVehicleRegistrationExist() {
-        return false;
-    }
 }
