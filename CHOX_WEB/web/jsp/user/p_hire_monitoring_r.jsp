@@ -4,6 +4,11 @@
 <fieldset class="x-fieldset">
     <legend>Hire Monitoring</legend>
     <div style="display:none" class="form-container">
+
+        <div class="chox-form-item">
+            <label class="std-label-ro">Next Review Date</label>
+        <label class="std-data-ro"><s:date format="dd/MM/yyyy" name="nextReviewDate" /></label></div>
+        
         <div class="chox-form-item">
             <label class="std-label-ro">
             Original ECD</label>
@@ -25,6 +30,7 @@
             <label class="std-label-ro">
             Inspection Date</label>
         <label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionDate" /></label></div>
+
         <div class="chox-form-item">
             <label class="std-label-ro">
             Total Loss Check</label>

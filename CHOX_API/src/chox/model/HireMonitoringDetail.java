@@ -16,6 +16,7 @@ public class HireMonitoringDetail extends AuditableEntity implements Serializabl
      * This attribute maps to the column repair_book_in_date in the hire_monitoring_detail table.
      */
     protected Date repairBookInDate;
+
     /** 
      * This attribute maps to the column inspection_booked_date in the hire_monitoring_detail table.
      */
@@ -47,6 +48,7 @@ public class HireMonitoringDetail extends AuditableEntity implements Serializabl
     private Integer labourHour;
     private BigDecimal labourCost;
     private String nonProvisionReason;
+    protected Date nextReviewDate;
 
     /**
      * Method 'HireMonitoringDetail'
@@ -241,5 +243,15 @@ public class HireMonitoringDetail extends AuditableEntity implements Serializabl
 
     public void setNonProvisionReason(String nonProvisionReason) {
         this.nonProvisionReason = nonProvisionReason;
+    }
+
+@TypeConversion(converter = "chox.data.DateConverter")
+    public Date getNextReviewDate() {
+        return nextReviewDate;
+    }
+
+@TypeConversion(converter = "chox.data.DateConverter")
+    public void setNextReviewDate(Date nextReviewDate) {
+        this.nextReviewDate = nextReviewDate;
     }
 }

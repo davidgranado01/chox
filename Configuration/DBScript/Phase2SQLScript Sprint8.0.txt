@@ -628,4 +628,9 @@ has_correct_repair_gross_calculation = true, has_correct_total_net = true, has_c
 has_correct_discount_for_non_da = true, handling_amount_and_deduction_both_equal_zero_for_non_da = true, claim_has_zero_discount_for_da = true,
 handling_invoice_amount_added_todeduction_for_handling_fee_equa = true, has_supplied_correct_total_to_pay = true, estimated_repair_days_plus_band_days_do_not_exceed_hire_days = true,
 validate_unique_vehicle_registration_number = true, labour_cost_business_rule = true, repair_net_does_not_exceed_vehicle_class_repair_net_ceiling = true,
-number_of_hire_days_reconcile = true, corrent_admin_fee = true, repair_booked_in_date = true, flagged_for_manual_invoice_review = true
+number_of_hire_days_reconcile = true, corrent_admin_fee = true, repair_booked_in_date = true, flagged_for_manual_invoice_review = true;
+
+-- ------------------------------------
+
+ALTER TABLE hire_monitoring_detail ADD COLUMN next_review_date timestamp without time zone DEFAULT null;
+ALTER TABLE hire_monitoring_detail ALTER COLUMN next_review_date SET STORAGE PLAIN;

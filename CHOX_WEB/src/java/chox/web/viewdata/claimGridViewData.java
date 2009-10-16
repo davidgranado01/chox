@@ -29,8 +29,8 @@ public class claimGridViewData {
     private String createdDate;
     private String lastModifiedDate;
     private String status;
-    // private String lineOfBusiness;
     private String workgroup;
+    private String reviewDate;
     private String cho;
     private String insurer;
     private String createdBy;
@@ -44,7 +44,6 @@ public class claimGridViewData {
         Customer customer = claim.getCustomer();
         Chorganisation c = claim.getChorganisation();
         Insurer i = claim.getInsurer();
-        //LineOfBusiness lob = claim.getLineOfBusiness();
         Workgroup wg = claim.getWorkgroup();
         Invoice ivc = claim.getInvoice();
         ThirdParty thirdParty = claim.getThirdParty();
@@ -52,18 +51,21 @@ public class claimGridViewData {
         this.id = claim.getId();
         this.supplierReference = claim.getChoReference();
         this.invoiceAmount = ivc == null ? "" : currentcyFormat.format(ivc.getTotalToPay());
-        //this.vehicleRegistration = customer == null ? "" : customer.getVehicleRegistration();
         this.vehicleRegistration = customer == null ? "" : thirdParty.getVehicleRegistration();
-        // this.lineOfBusiness = lob == null ? "" : lob.getName();
         this.workgroup = wg == null ? "" : wg.getName();
         this.claimNumber = claim.getClaimNumber();
         this.createdDate = dateFormat.format(claim.getCreatedDate());
         this.lastModifiedDate = dateTimeFormat.format(claim.getLastModifiedDate());
-        // this.lastModifiedDate = claim.getLastModifiedDate().toString();
         this.status = claim.getStatus();
         this.cho = c == null ? "" : c.getName();
         this.insurer = i == null ? "" : i.getName();
-        
+
+        if(claim.getHireMonitoringDetail()!=null){
+            if(claim.getHireMonitoringDetail().getNextReviewDate()!=null){
+                this.reviewDate = dateFormat.format(claim.getHireMonitoringDetail().getNextReviewDate());
+            }
+        }
+
         String orgName = "";
         WebUser user = claim.getCreatedBy();
         if (user != null) {
@@ -108,11 +110,14 @@ public class claimGridViewData {
         return workgroup;
     }
 
-    /*
-    public String getLineOfBusiness() {
-        return lineOfBusiness;
+    public String getReviewDate() {
+        return reviewDate;
     }
-    */
+
+    public void setReviewDate(String reviewDate) {
+        this.reviewDate = reviewDate;
+    }
+
     
     public String getCho() {
         return cho;

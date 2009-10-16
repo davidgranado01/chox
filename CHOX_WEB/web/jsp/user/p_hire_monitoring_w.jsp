@@ -39,7 +39,19 @@
                 validationEvent : false,
                 value: '<s:date format="dd/MM/yyyy" name="inspectionDate" />',
                 renderTo:'inspectionDatePH'
-            });              
+            });
+
+            var nextReviewDatePicker = new Ext.form.DateField({
+                name: 'nextReviewDate',
+                width: 100,
+                allowBlank: true,
+                format: 'd/m/Y',
+                showWeekNumber: true,
+                validationEvent : false,
+                value: '<s:date format="dd/MM/yyyy" name="nextReviewDate" />',
+                renderTo:'nextReviewDatePH'
+            });
+            
                  
             var repairCompletionDateDatePicker = new Ext.form.DateField({
                 name: 'repairCompletionDate',
@@ -66,6 +78,9 @@
                         date:true
                     },
                     repairCompletionDate:{
+                        date:true
+                    },
+                    nextReviewDate:{
                         date:true
                     },
                     labourRate :{
@@ -96,7 +111,10 @@
                     },
                     inspectionDate: {
                         date:"Invalid date format for 'Inspection Date'"
-                    },  
+                    },
+                    nextReviewDate: {
+                        date:"Invalid date format for 'Next Review Date'"
+                    },
                     repairCompletionDate: {
                         date:"Invalid date format for 'Repair Completion Date'"
                     },    
@@ -170,7 +188,14 @@
         
 
         
-        <div style="display:none" class="form-container">            
+        <div style="display:none" class="form-container">
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">
+                Next Review Date</label>
+                <span id="nextReviewDatePH"></span>
+            </div>
+            
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">
             Original ECD</label><label class="std-data-ro"><s:property value="customer.InitialECDDesc" /></label></div>

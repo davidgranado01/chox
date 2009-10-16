@@ -30,7 +30,6 @@ public class ClaimSearchCriteria implements Serializable {
     private Date hireDateTo;
     private Date lastModifiedDateFrom;
     private Date lastModifiedDateTo;    
-    // private int lineOfBusinessId;
     private int workgroupId;
     private boolean isAnomalies;
     private boolean ispenaltyChargeApplied;
@@ -38,6 +37,28 @@ public class ClaimSearchCriteria implements Serializable {
     private int limit;
     private String sort;
     private String dir;
+    private Date reviewRequiredDateFrom;
+    private Date reviewRequiredDateTo;
+
+    @TypeConversion(converter = "chox.web.data.DateConverter")
+    public Date getReviewRequiredDateFrom() {
+        return reviewRequiredDateFrom;
+    }
+
+    @TypeConversion(converter = "chox.web.data.DateConverter")
+    public void setReviewRequiredDateFrom(Date reviewRequiredDateFrom) {
+        this.reviewRequiredDateFrom = reviewRequiredDateFrom;
+    }
+
+    @TypeConversion(converter = "chox.web.data.DateConverter")
+    public Date getReviewRequiredDateTo() {
+        return reviewRequiredDateTo;
+    }
+
+    @TypeConversion(converter = "chox.web.data.DateConverter")
+    public void setReviewRequiredDateTo(Date reviewRequiredDateTo) {
+        this.reviewRequiredDateTo = reviewRequiredDateTo;
+    }
 
     public int getWorkgroupId() {
         return workgroupId;

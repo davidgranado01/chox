@@ -44,6 +44,7 @@
             {name:'supplierReference'},
             {name:'claimNumber'}, 
             {name:'lastModifiedDate', type: 'string', dateFormat:'timestamp'},
+            {name:'reviewDate', type: 'string', dateFormat:'timestamp'},
             {name:'insurer'},
             {name:'cho'}
         ]
@@ -79,7 +80,9 @@
             //lineOfBusinessId : -1,
             workgroupId : -1,
             isAnomalies : '',
-            ispenaltyChargeApplied : ''
+            ispenaltyChargeApplied : '',
+            reviewRequiredDateFrom:'',
+            reviewRequiredDateTo:''
         }
         ds.load(
         {
@@ -111,7 +114,9 @@
             //lineOfBusinessId : -1,
             workgroupId : -1,
             isAnomalies : '',
-            ispenaltyChargeApplied : ''
+            ispenaltyChargeApplied : '',
+            reviewRequiredDateFrom:'',
+            reviewRequiredDateTo:''
         }
         ds.load(
         {
@@ -141,7 +146,9 @@
             status : '',
             workgroupId : -1,
             isAnomalies : true,
-            ispenaltyChargeApplied : ''
+            ispenaltyChargeApplied : '',
+            reviewRequiredDateFrom:'',
+            reviewRequiredDateTo:''
         }
         ds.load(
         {
@@ -172,7 +179,9 @@
             // lineOfBusinessId : -1,
             workgroupId : -1,
             isAnomalies : '',
-            ispenaltyChargeApplied : true
+            ispenaltyChargeApplied : true,
+            reviewRequiredDateFrom:'',
+            reviewRequiredDateTo:''
         }
         ds.load(
         {
@@ -203,10 +212,11 @@
         var invoiceUploadDateTo = Ext.query('*[name$=invoiceUploadDateTo]')[0].value;
         var hireDateFrom = Ext.query('*[name$=hireDateFrom]')[0].value;
         var hireDateTo = Ext.query('*[name$=hireDateTo]')[0].value;    
-        var status = Ext.query('*[name$=status]')[0].value;
-        // var lineOfBusinessId = Ext.query('*[name$=lineOfBusiness]')[0].value;    
-        var workgroupId = Ext.query('*[name$=workgroup]')[0].value;    
-        
+        var status = Ext.query('*[name$=status]')[0].value;  
+        var workgroupId = Ext.query('*[name$=workgroup]')[0].value;
+        var reviewRequiredDateFrom = Ext.query('*[name$=reviewRequiredDateFrom]')[0].value;
+        var reviewRequiredDateTo = Ext.query('*[name$=reviewRequiredDateTo]')[0].value;
+
         ds.baseParams = {
             supplierReference : supplierReference,
             supplierId : supplierId,
@@ -221,10 +231,11 @@
             hireDateFrom : hireDateFrom,
             hireDateTo : hireDateTo,         
             status : status,
-            // lineOfBusinessId : lineOfBusinessId,
             isAnomalies : '',
             ispenaltyChargeApplied : '',
-            workgroupId: workgroupId
+            workgroupId: workgroupId,
+            reviewRequiredDateFrom : reviewRequiredDateFrom,
+            reviewRequiredDateTo : reviewRequiredDateTo
         }
         
         ds.load(
@@ -498,17 +509,17 @@
                 {id:'Id', header: "Supplier Reference", width: 150, sortable: true, dataIndex: 'supplierReference', 
                     renderer:function(value,p,r){
                         return '<a href="openClaimDetail.action?id=' + r.data['id'] + '&tab=' + currentTabIndex + '">' + value + '</a>'}},               
-                {header: "Insurer's VRN", width: 250, sortable: true, dataIndex: 'vehicleRegistration'},
+                {header: "Insurer's VRN", width: 230, sortable: true, dataIndex: 'vehicleRegistration'},
                 {header: "Claim Number", width: 250, sortable: true, dataIndex: 'claimNumber'}, 
                 {header: "Invoice Amount", width: 250, sortable: true, dataIndex: 'invoiceAmount'},  
-                {header: "Last Modified", width: 250, sortable: true, dataIndex: 'lastModifiedDate'},
+                {header: "Last Modified", width: 230, sortable: true, dataIndex: 'lastModifiedDate'},
                 {header: "Status", width: 250, sortable: true, dataIndex: 'status'},
                 {header: "Created By", width: 250, sortable: true, dataIndex: 'createdBy'},
-                //{header: "LOB", width: 250, sortable: true, dataIndex: 'lineOfBusiness'},
                 {header: "Workgroup", width: 250, sortable: true, dataIndex: 'workgroup'},
                 {header: "CHO", width: 250, sortable: true, dataIndex: 'cho'},
                 {header: "Insurer", width: 150, sortable: true, dataIndex: 'insurer'},
-                {header: "Viewing", width: 150, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
+                {header: "Review Date", width: 150, sortable: true, dataIndex: 'reviewDate'},
+                {header: "Viewing", width: 120, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
                         return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '" class="std-label-ro">-</label>'}}
             ],
             sm:sm2,
@@ -517,7 +528,8 @@
             autoHeight:true,
             enableHdMenu:false,
             title:'Claims', 
-			viewConfig:{forceFit:true},bbar: pagingBar,
+            viewConfig:{forceFit:true},
+            bbar: pagingBar,
             tbar:[actionMenu]
             
         });
@@ -686,9 +698,25 @@
         if(!<s:property value="isChoxAdmin"/>){
             refreshViewingStatus();
         }
-        
+
+        checkSearchPanelHeight();
         loadDataFromSession();
-    }); 
+    });
+
+    function checkSearchPanelHeight(){
+        
+        var panelHeight = "280px"
+
+        if(<s:property value="isInsurer || isChoxAdmin" />){
+           panelHeight = "250px"
+        }
+        
+        if(<s:property value="isCHO" />){
+           panelHeight = "280px"
+        }
+        
+        $("#searchPanelTab").css("height", panelHeight);
+    }
     
     
 </script>
@@ -746,7 +774,7 @@
                 </div>
             </div>
               
-            <div id="searchPanelTab" style="height:250px; background: #dfe8f6;" class="x-hide-display">
+            <div id="searchPanelTab" style="background: #dfe8f6;" class="x-hide-display">
                 <div id="searchPanel">
                     <s:action name="searchClaim" namespace="/user" executeResult="true" /> 
                 </div>
@@ -770,7 +798,8 @@
             
             <div id="gridPanel">
                 <div id="gridHolder"></div>
-                <div class="excel-export"><form name="thisForm">
+                <div class="excel-export">
+                    <form name="thisForm">
                 <a href="javascript:doExportExcel();">Export To Excel</a></form></div>
 
                 <div id="lobSelectionDlgHolder" class="x-hidden">

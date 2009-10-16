@@ -153,7 +153,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
 
         // Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.lineOfBusiness", "lob", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
-        Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
+        Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
 
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
             criteria.add(Restrictions.like("choReference", searchCriteria.getSupplierReference()).ignoreCase());
@@ -227,6 +227,37 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Expression.le("createdDate", d));
         }
 
+        if (searchCriteria.getReviewRequiredDateFrom() != null || searchCriteria.getReviewRequiredDateTo() != null) {
+            
+            System.out.println("getReviewRequiredDateFrom"+searchCriteria.getReviewRequiredDateFrom());
+
+            if (searchCriteria.getReviewRequiredDateFrom() != null) {
+
+                System.out.println("getReviewRequiredDateFrom: IN");
+                
+                Date d = searchCriteria.getReviewRequiredDateFrom();
+                d.setHours(0);
+                d.setMinutes(0);
+                d.setSeconds(0);
+                criteria.add(Expression.ge("hmd.nextReviewDate", d));
+            }
+
+            System.out.println("getReviewRequiredDateTo"+searchCriteria.getReviewRequiredDateTo());
+
+            if (searchCriteria.getReviewRequiredDateTo() != null) {
+
+                System.out.println("getReviewRequiredDateTo: IN");
+                
+                Date d = searchCriteria.getReviewRequiredDateTo();
+                d.setDate(d.getDate() + 1);
+                d.setHours(0);
+                d.setMinutes(0);
+                d.setSeconds(0);
+                criteria.add(Expression.le("hmd.nextReviewDate", d));
+            }
+            
+        }
+        
         if (searchCriteria.getInvoiceUploadDateFrom() != null || searchCriteria.getInvoiceUploadDateTo() != null) {
 
             if (searchCriteria.getInvoiceUploadDateFrom() != null) {

@@ -68,13 +68,39 @@
             value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
             showWeekNumber: true
         });
+
+        var reviewRequiredDateFromPicker = new Ext.form.DateField({
+            name: 'reviewRequiredDateFrom',
+            width: 120,
+            allowBlank: true,
+            format: 'd/m/Y',
+            value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
+            showWeekNumber: true
+        });
         
+        var reviewRequiredDateToPicker = new Ext.form.DateField({
+            name: 'reviewRequiredDateTo',
+            width: 120,
+            allowBlank: true,
+            format: 'd/m/Y',
+            value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
+            showWeekNumber: true
+        });
+
+        reviewRequiredDateFromPicker.on('change', onReveiwDateChange);
+        reviewRequiredDateToPicker.on('change', onReveiwDateChange);
+
         claimUploadDateFromPicker.render('claimUploadDateFromDiv');
         claimUploadDateToPicker.render('claimUploadDateToDiv');
         invoiceUploadDateFromPicker.render('invoiceUploadDateFromDiv');
         invoiceUploadDateToPicker.render('invoiceUploadDateToDiv');
         hireDateFromPicker.render('hireDateFromDiv');
-        hireDateToPicker.render('hireDateToDiv');       
+        hireDateToPicker.render('hireDateToDiv');
+
+        if(<s:property value="isCHO" />){
+            reviewRequiredDateFromPicker.render('reviewRequiredDateFromDiv');
+            reviewRequiredDateToPicker.render('reviewRequiredDateToDiv');
+        }
         
     }); 
     
@@ -85,7 +111,6 @@
             selectedInsurerId = $("#insurerId").val();
         }
         
-        // $("#searchScreenLineOfBusinessDropDownDiv").load("LineOfBusinessDropDownAction.action?orgId=" + selectedInsurerId);
         $("#searchScreenWorkgroupDropDownDiv").load("WorkgroupDropDownAction.action?orgId=" + selectedInsurerId);
     }
    
@@ -104,6 +129,19 @@
 
     }
 
+    function statusChange(){
+
+
+        if(($('#status :selected').val()!="AwaitingCarHireInfo") && <s:property value="isCHO" />){
+            $("input[name='reviewRequiredDateTo']").val("");
+            $("input[name='reviewRequiredDateFrom']").val("");
+        }
+
+    }
+    
+    function onReveiwDateChange(){
+        $("#status").val("AwaitingCarHireInfo");
+    }
     
 </script>
 <div>
@@ -127,15 +165,28 @@
             <td nowrap><label>Claim Upload Date From</label></td><td><div id="claimUploadDateFromDiv" /></td>
             <td nowrap><label>Claim Upload Date To</label></td><td><div id="claimUploadDateToDiv" /></td>
         </tr>
+
         <tr>
             <td nowrap><label>Invoice Upload Date From</label></td><td><div id="invoiceUploadDateFromDiv" /></td>
             <td nowrap><label>Invoice Upload Date To</label></td><td><div id="invoiceUploadDateToDiv" /></td>
         </tr>                        
+
         <tr>
             <td nowrap><label>Hire Date From</label></td><td><div id="hireDateFromDiv" /></td>
             <td nowrap><label>Hire Date To</label></td><td><div id="hireDateToDiv"/></td>
         </tr>
-
+        
+        <s:if test="isCHO">
+        <tr>
+            <td nowrap><label>Hire Monitoring Review Required Date From</label></td><td><div id="reviewRequiredDateFromDiv" /></td>
+            <td nowrap><label>Hire Monitoring Review Required Date To</label></td><td><div id="reviewRequiredDateToDiv" /></td>
+        </tr>
+        </s:if>
+        <s:else>
+            <input type="hidden" name="reviewRequiredDateFrom" id="reviewRequiredDateFrom">
+            <input type="hidden" name="reviewRequiredDateTo" id="reviewRequiredDateTo">
+            
+        </s:else>
         <tr>
             <s:if test="isInsurer || isChoxAdmin">
                 <td><label>Supplier Name</label></td>
@@ -165,12 +216,11 @@
                     listValue="text"
                     headerValue="--- ALL ---" headerKey=""
                     emptyOption="false" 
-                    value="status">
+                    value="status" onchange="javascript: statusChange();">
                 </s:select></td>            
             
         </tr>
-<tr>
-            
+        <tr>
             <s:if test="isCHO || isChoxAdmin">
                 <td><label>Insurer Name</label></td>
                 <td>
@@ -192,13 +242,11 @@
             </s:else>
 
             <td><label>Workgroup</label></td><td>
-                <!--
-                <div id="searchScreenLineOfBusinessDropDownDiv"></div>   
-                !-->
                 <div id="searchScreenWorkgroupDropDownDiv"></div>   
             </td>
             
-        </tr>        
+        </tr>
+        
     </table>
     <div class="buttonPanel">
         <div>
