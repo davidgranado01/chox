@@ -16,7 +16,7 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        
+
         if(claim.getChoBand().isActualHireDaysDoesNotExceedTotalLossInspection()){
 
             if(claim.getHireDetail().getIsTotalLoss()){

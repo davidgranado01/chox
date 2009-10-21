@@ -49,10 +49,6 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
     @Test
     public void testSkipped_OnOffFlag() throws IOException {
 
-        /*
-         * CHO Control Flag is OFF
-         */
-
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setLabourCostBusinessRule(false);
         RuleEvaluation rv = new LabourCostBusinessRule().applyToClaim(claim);

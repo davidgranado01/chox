@@ -48,10 +48,6 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
     @Test
     public void testSkipped_OnOffFlag() throws IOException {
 
-        /*
-         * CHO Control Flag is OFF
-         */
-
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setActualHireDaysDoesNotExceedAllowableHireDays(false);
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedAllowableHireDays().applyToClaim(claim);
@@ -103,7 +99,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
     public void testSkipped_Both() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setActualHireDaysDoesNotExceedAllowableHireDays(false);
+        claim.getChoBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
 
         claim.getHireDetail().setIsTotalLoss(true);
         claim.getEngineeringReport().setEstimatedDaysUnderRepair(2);
@@ -111,7 +107,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedAllowableHireDays().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Claim is total loss OR a non-zero value has been supplied for Estimated Days Under Repair"));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
         assertFalse(rv.getIsVisibleToCHO());
 

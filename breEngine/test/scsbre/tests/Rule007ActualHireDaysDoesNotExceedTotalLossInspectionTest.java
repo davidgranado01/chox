@@ -48,10 +48,6 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
     @Test
     public void testSkipped_OnOffFlag() throws IOException {
 
-        /*
-         * CHO Control Flag is OFF
-         */
-
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setActualHireDaysDoesNotExceedTotalLossInspection(false);
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
@@ -63,6 +59,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
 
     }
 
+    
     @Test
     public void testSkipped_TotalLossIsFalse() throws IOException {
 

@@ -76,7 +76,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
             res.setResult(RuleEvaluationResult.RuleSkipped);
 
         }
-        
+
         return res;
 
     }

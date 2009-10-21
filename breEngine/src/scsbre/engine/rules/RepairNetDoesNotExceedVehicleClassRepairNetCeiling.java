@@ -38,7 +38,7 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
             res.setResult(RuleEvaluationResult.RuleSkipped);
 
         }
-        
+
         return res;
 
     }

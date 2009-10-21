@@ -59,10 +59,6 @@ public class Rule023RepairNetDoesNotExceedVehicleClassRepairNetCeilingTest exten
     @Test
     public void testSkipped_OnOffFlag() throws IOException {
 
-        /*
-         * CHO Control Flag is OFF
-         */
-
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setRepairNetDoesNotExceedVehicleClassRepairNetCeiling(false);
         RuleEvaluation rv = new RepairNetDoesNotExceedVehicleClassRepairNetCeiling().applyToClaim(claim);
@@ -74,6 +70,7 @@ public class Rule023RepairNetDoesNotExceedVehicleClassRepairNetCeilingTest exten
 
     }
 
+    
     @Test
     public void testPassed_VehicleClassCellingEnable() throws IOException {
 

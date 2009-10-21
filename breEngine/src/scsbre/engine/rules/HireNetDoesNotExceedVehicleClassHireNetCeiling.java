@@ -18,7 +18,7 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        
+
         if(claim.getChoBand().isHireNetDoesNotExceedVehicleClassHireNetCeiling()){
 
             BigDecimal hireNet = claim.getInvoice().getHireNet();
@@ -31,13 +31,16 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
                 DecimalFormat moneyFormat = new DecimalFormat("£0.00");
                 narrative = String.format(narrativeTemplate, moneyFormat.format(hireNet.doubleValue()), moneyFormat.format(hireNetCelling.doubleValue()), claim.getVClass().getCode());
             }
+            
+
         }else{
 
             narrative = "";
             res.setResult(RuleEvaluationResult.RuleSkipped);
 
         }
-        
+
+
         return res;
 
     }

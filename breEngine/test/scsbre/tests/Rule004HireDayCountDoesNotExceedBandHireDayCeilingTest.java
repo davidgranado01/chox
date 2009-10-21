@@ -50,10 +50,6 @@ public class Rule004HireDayCountDoesNotExceedBandHireDayCeilingTest extends Test
     @Test
     public void testSkipped() throws IOException {
 
-        /*
-         * CHO Control Flag is OFF
-         */
-
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setHireDayCountDoesNotExceedBandHireDayCeiling(false);
         RuleEvaluation rv = new HireDayCountDoesNotExceedBandHireDayCeiling().applyToClaim(claim);

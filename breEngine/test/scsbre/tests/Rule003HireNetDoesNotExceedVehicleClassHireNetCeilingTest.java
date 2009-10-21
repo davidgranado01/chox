@@ -80,6 +80,7 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
 
     }
 
+    
     @Test
     public void testPassed_VehicleClassCellingEnable() throws IOException {
 

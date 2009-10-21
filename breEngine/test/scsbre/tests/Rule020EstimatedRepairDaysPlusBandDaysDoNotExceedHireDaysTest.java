@@ -65,10 +65,6 @@ public class Rule020EstimatedRepairDaysPlusBandDaysDoNotExceedHireDaysTest exten
     @Test
     public void testSkipped_OnOffFlag() throws IOException {
 
-        /*
-         * CHO Control Flag is OFF
-         */
-
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays(false);
         RuleEvaluation rv = new EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays().applyToClaim(claim);
