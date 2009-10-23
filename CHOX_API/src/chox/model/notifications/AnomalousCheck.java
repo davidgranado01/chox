@@ -6,6 +6,7 @@
 package chox.model.notifications;
 
 import chox.model.Claim;
+import chox.model.Notification;
 
 /**
  *
@@ -14,5 +15,6 @@ import chox.model.Claim;
     public interface AnomalousCheck {
 
         boolean check(Claim c);
+        Notification BuildNotification();
 
 }

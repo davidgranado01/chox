@@ -22,8 +22,7 @@ public class ClaimAnomalousChecker {
 
         for (AnomalousCheck anomalousCheck : anomalousChecks) {
             if (anomalousCheck.check(c)) {
-                Notification n = (Notification)anomalousCheck;
-                notifications.add(n);
+                notifications.add(anomalousCheck.BuildNotification());
             }
         }
 
