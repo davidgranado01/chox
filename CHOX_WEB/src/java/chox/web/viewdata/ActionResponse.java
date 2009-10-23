@@ -47,7 +47,9 @@ public class ActionResponse {
 
     public void AddError(final String errorMessage)
     {
-        errors.add(errorMessage);
+        if(errorMessage!=null){
+            errors.add(errorMessage);
+        }
     }
 
     public void AssignResult(final String type,final Object result)

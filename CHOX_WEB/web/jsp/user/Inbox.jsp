@@ -345,7 +345,6 @@
 
        var lobSelectionDlg;
 
-       
         var doClaimRoutedAction = new Ext.Action
         ({
             text: 'Route Claim(s)',
@@ -356,6 +355,7 @@
                             lobSelectionDlg =  new Ext.Window({
                                 applyTo:'lobSelectionDlgHolder',
                                 width:410,
+                                height:280,
                                 modal: true,
                                 closeAction:'hide',
                                 plain: false,
@@ -365,12 +365,13 @@
                                     applyTo: 'lobSelectionPanel'
                                 }),
                                 buttons: [{
-                                        text:'ok',
+                                        text:'Ok',
                                         handler:function(){
                                             var selectedRecords =  sm2.getSelections();
                                             var selectedIDs = $.map(selectedRecords, function(n){
                                                 return n.json.id;
                                             });
+                                            
                                             var param = selectedIDs.join(",");
                                             $('form#routeClaimForm input[name="selectedClaimIds"]').val(param);
                                             
@@ -378,13 +379,14 @@
                                             {
                                                 errorLabelContainer: "#HMmessageBox",
                                                 rules: {
-                                                    lineOfBusiness:{
-                                                        required:true
+                                                    workgroup:{
+                                                        required:true, min:1
                                                     }
                                                 },
                                                 messages: {
-                                                    lineOfBusiness:{
-                                                        required:"You must select work grop.'"
+                                                    workgroup:{
+                                                        required:"You must select 'Workgroup'",
+                                                        min:"You must select 'Workgroup'"
                                                     }
                                                 }
                                             });
@@ -402,7 +404,7 @@
                                                 
                                             }
                                             else{
-                                                propmtErrorMsg('Work group could not be blank.');
+                                                propmtErrorMsg('Workgroup could not be blank.');
                                             }
                                         }
                                     },{
@@ -415,7 +417,7 @@
 
                             lobSelectionDlg.addListener('beforeshow',
                                 function(dialog){
-                                    $('div#lobSelectionHolder').load('user/LineOfBusinessDropDownAction.action');
+                                    $('div#lobSelectionHolder').load('user/GetWorkgroupDropDownActionByUser.action');
                                 }
                             );
                         }
@@ -426,8 +428,6 @@
 
             }
         });
-
-        //end route claim
 
         var actionMenu = new Ext.Toolbar.MenuButton({
             text: 'More actions',            
@@ -484,7 +484,8 @@
                 doInvoicePaymentReceivedAction.disable();
             </s:else>                
                 
-            <s:if test="IsDoClaimRoutedAccessibile"> 
+            <s:if test="IsDoClaimRoutedAccessibile">
+                
                 if(isSelectedRecordsMatchGivenStatus(selectedRecords,'ClaimUnacknowledgedUnrouted'))
                 {   
                     doClaimRoutedAction.enable(); 
@@ -492,7 +493,8 @@
                 else
                 {
                     doClaimRoutedAction.disable(); 
-                }  
+                }
+                
             </s:if>
             <s:else>
                 doClaimRoutedAction.disable();
@@ -506,19 +508,19 @@
             width: 960,
             columns: [
                 sm2,
-                {id:'Id', header: "Supplier Reference", width: 150, sortable: true, dataIndex: 'supplierReference', 
+                {id:'Id', header: "Supplier Ref", width: 180, sortable: true, dataIndex: 'supplierReference',
                     renderer:function(value,p,r){
                         return '<a href="openClaimDetail.action?id=' + r.data['id'] + '&tab=' + currentTabIndex + '">' + value + '</a>'}},               
-                {header: "Insurer's VRN", width: 230, sortable: true, dataIndex: 'vehicleRegistration'},
-                {header: "Claim Number", width: 250, sortable: true, dataIndex: 'claimNumber'}, 
-                {header: "Invoice Amount", width: 250, sortable: true, dataIndex: 'invoiceAmount'},  
-                {header: "Last Modified", width: 230, sortable: true, dataIndex: 'lastModifiedDate'},
-                {header: "Status", width: 250, sortable: true, dataIndex: 'status'},
-                {header: "Created By", width: 250, sortable: true, dataIndex: 'createdBy'},
-                {header: "Workgroup", width: 250, sortable: true, dataIndex: 'workgroup'},
-                {header: "CHO", width: 250, sortable: true, dataIndex: 'cho'},
-                {header: "Insurer", width: 150, sortable: true, dataIndex: 'insurer'},
-                {header: "Review Date", width: 150, sortable: true, dataIndex: 'reviewDate'},
+                {header: "Insurer's VRN", width: 180, sortable: true, dataIndex: 'vehicleRegistration'},
+                {header: "Insurer's Policy No", width: 200, sortable: true, dataIndex: 'policyNumber'},
+                {header: "Claim No", width: 220, sortable: true, dataIndex: 'claimNumber'},
+                {header: "Status", width: 400, sortable: true, dataIndex: 'status'},
+                {header: "Workgroup", width: 150, sortable: true, dataIndex: 'workgroup'},
+                {header: "CHO", width: 80, sortable: true, dataIndex: 'cho'},
+                {header: "Insurer", width: 80, sortable: true, dataIndex: 'insurer'},
+                {header: "Last Modified", width: 180, sortable: true, dataIndex: 'lastModifiedDate'},
+                {header: "Review Date", width: 180, sortable: true, dataIndex: 'reviewDate'},
+                {header: "Invoice Amount", width: 200, sortable: true, dataIndex: 'invoiceAmount'},
                 {header: "Viewing", width: 120, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
                         return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '" class="std-label-ro">-</label>'}}
             ],
@@ -699,25 +701,8 @@
             refreshViewingStatus();
         }
 
-        checkSearchPanelHeight();
         loadDataFromSession();
     });
-
-    function checkSearchPanelHeight(){
-        
-        var panelHeight = "280px"
-
-        if(<s:property value="isInsurer || isChoxAdmin" />){
-           panelHeight = "250px"
-        }
-        
-        if(<s:property value="isCHO" />){
-           panelHeight = "280px"
-        }
-        
-        $("#searchPanelTab").css("height", panelHeight);
-    }
-    
     
 </script>
 
@@ -774,7 +759,7 @@
                 </div>
             </div>
               
-            <div id="searchPanelTab" style="background: #dfe8f6;" class="x-hide-display">
+            <div id="searchPanelTab" style="background: #dfe8f6; Height:280px;" class="x-hide-display">
                 <div id="searchPanel">
                     <s:action name="searchClaim" namespace="/user" executeResult="true" /> 
                 </div>
@@ -800,26 +785,22 @@
                 <div id="gridHolder"></div>
                 <div class="excel-export">
                     <form name="thisForm">
-                <a href="javascript:doExportExcel();">Export To Excel</a></form></div>
+                <a href="javascript:doExportExcel();">Export To Excel</a></form>
+                </div>
 
                 <div id="lobSelectionDlgHolder" class="x-hidden">
                     <div id="lobSelectionPanel">
                     <form id="routeClaimForm" action="<%=request.getContextPath()%>/user/doClaimRoutedAction.action" class="XXentity-form">
-
                         <input name="selectedClaimIds" type="hidden" />
                         <table class="selectionForm" cellspacing="0" cellpadding="0" border="0">
                             <tr>
-                                <th colspan="2"><label>Please select the group to which claim(s) should be routed.</label></th>
+                                <th colspan="2"><label>Please select the 'Workgroup' in order to route the claim(s) to the relevant handling team.</label></th>
                             </tr>
                             <tr>
-                                <td><label>Work Group</label></td>
+                                <td><label>Workgroup</label></td>
                                 <td><div id="lobSelectionHolder"></div></td>
                             </tr>
-                            <tr>
-                                <td colspan="2"> &nbsp;</td>
-                            </tr>
                         </table>
-                    
                     </form>
                 </div>
                 </div>

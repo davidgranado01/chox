@@ -60,7 +60,7 @@ public class ClaimHireMonitoringDetailValidation extends SecureDataService imple
             this.claimResult = NodeHelper.nodeValidate(sectionName, "repair-book-in-date", this.element, claimResult, dataValidationParameter);
             this.claimResult = NodeHelper.nodeValidate(sectionName, "repair-complete-date", this.element, claimResult, dataValidationParameter);
             this.claimResult = NodeHelper.nodeValidate(sectionName, "name-ime", this.element, claimResult, dataValidationParameter);
-        
+
             if(!this.claimResult.isCheckDataValid()){
                 isAllowToReadData = false;
                 this.claimResult.setValid(false);
@@ -98,6 +98,7 @@ public class ClaimHireMonitoringDetailValidation extends SecureDataService imple
         if(XmlHelper.isNotNull(XmlHelper.getNodeValue(this.element, "repair-book-in-date"))){
             isNotEmpty = true;
             hireMonitoringdtl.setRepairBookInDate(XmlHelper.getTimeStampFromNode(this.element, "repair-book-in-date"));
+            hireMonitoringdtl.setOriginalRepairBookInDate(XmlHelper.getTimeStampFromNode(this.element, "repair-book-in-date"));
         }
 
         if(XmlHelper.isNotNull(XmlHelper.getNodeValue(this.element, "repair-complete-date"))){

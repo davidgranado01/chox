@@ -21,7 +21,7 @@ public class EcdAnomalousNotification extends Notification implements AnomalousC
     public EcdAnomalousNotification()
     {
         super();
-        setMessage("ECD Anomaly");
+        setMessage("Significant Delay To Hire Duration Due To New ECD");
     }
 
     public boolean check(Claim c) {

@@ -450,6 +450,12 @@
             <form id="formUpdatePassword" action="user/updateUserPassword.action" class="XXentity-form" onsubmit="return true;" method="post">
                 <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
                 <input type="hidden" name="orgTypeId" id="orgTypeId" value='<s:property value="orgTypeId"/>'>
+
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">User: </label>
+                    <b><s:property value="displayName" /></b>
+                </div>
+                                
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>
                     <input type="password" class="chox-ttxt" id="password" name="password" size="20" maxlength="20"/>

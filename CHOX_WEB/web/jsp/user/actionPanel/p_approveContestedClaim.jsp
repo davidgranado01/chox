@@ -14,19 +14,23 @@
         registeAction('reject');
         
         if(doFormValidation().form()){
+            
             if(confirm('Are you sure you want to reject this claim?')){
-                var sClaimNumber = $("#claimNumber").val();                
+                
+                var sClaimNumber = $("#claimNumber").val();
+                
                 if(sClaimNumber.length > 0)
-                {       
+                {
                     var sClaimId = $("#claimId").val();
-                    var form = $("#formAcknowledgeAction");
-                    checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form);
+                    var form = $("#formApproveContestedAcknowledgeAction");
+                    checkAndConfirmClaimNumberDuplication(sClaimNumber, sClaimId, form);
                 }
                 else
                 {
-                    $("#formAcknowledgeAction").submit();
+                    $("#formApproveContestedAcknowledgeAction").submit();
                 }
             }
+            
         }                
     }
     
@@ -96,7 +100,7 @@
     function doFormValidation(){
 
             
-        var validateFlag = $("#formAcknowledgeAction").validate(
+        var validateFlag = $("#formApproveContestedAcknowledgeAction").validate(
         {
             errorLabelContainer: "#ActionPanelMessageBox",                
             rules: {
@@ -157,18 +161,17 @@
         if(doFormValidation().form()){
             var sClaimNumber = $("#claimNumber").val();
             var sClaimId = $("#claimId").val();
-            var form = $("#formAcknowledgeAction");
-            checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form);                       
-        }                    
-    }                
+            var form = $("#formApproveContestedAcknowledgeAction");
+            checkAndConfirmClaimNumberDuplication(sClaimNumber, sClaimId, form);
+        }
+    }
     
 </script>
 
-<form onsubmit="return true;" action="user/approveContestedClaim.action" method="post" 
-      id="formAcknowledgeAction" name="formAcknowledgeAction">
+<form action="approveContestedClaim.action" method="post" id="formApproveContestedAcknowledgeAction" name="formApproveContestedAcknowledgeAction">
+
     <fieldset class="x-fieldset">
         <legend>Contested Claim - Action Required</legend>
-        <s:hidden name="id" />
         <s:hidden id="claimId" name="id" />
         <s:hidden id="actionName" name="actionName" />
         <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>

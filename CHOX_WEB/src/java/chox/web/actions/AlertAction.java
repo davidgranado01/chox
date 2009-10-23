@@ -7,10 +7,6 @@ package chox.web.actions;
 import chox.services.ClaimService;
 import java.util.List;
 
-/**
- *
- * @author Emmanuel
- */
 public class AlertAction extends BaseAction {
 
     private ClaimService claimService;

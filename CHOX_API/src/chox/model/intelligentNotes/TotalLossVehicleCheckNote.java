@@ -27,7 +27,7 @@ public class TotalLossVehicleCheckNote implements IntelligentNote {
         showing |= c.getCustomer().getIsTotalLoss();
 
         //2.  Insurer roles only
-        showing &= securityInfoProvider.getIsINS();
+        // showing &= securityInfoProvider.getIsINS();
 
         return showing;
     }

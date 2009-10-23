@@ -32,30 +32,30 @@ public class ClaimStatus {
 
     public static List<String> getStatus() {
         List<String> status = new ArrayList<String>();
-        status.add(CLAIM_UNACKNOWLEDGED_UNROUTED);
-        status.add(CLAIM_UNACKNOWLEDGED_ROUTED);
+        status.add(AWAITING_CAR_HIRE_INFO);
+        status.add(AWAITING_INVOICE_DATA);
+        status.add(AWAITING_INVOICE_PAYMENT);
+        status.add(CLAIM_CLOSED);
+        status.add(CLAIM_PENDING);
+        status.add(CLAIM_REF_TO_ENG);
+        status.add(CLAIM_REFERRED_TO_FNOL);
         status.add(CLAIM_REJECTED);
         status.add(CLAIM_REJECTION_ACCEPTED);
         status.add(CLAIM_REJECTION_CONTESTED);
-        status.add(AWAITING_CAR_HIRE_INFO);
-        status.add(AWAITING_INVOICE_DATA);
-        status.add(INVOICE_DATA_CALCULATION_INCORRECT);
+        status.add(CLAIM_UNACKNOWLEDGED_UNROUTED);
+        status.add(CLAIM_UNACKNOWLEDGED_ROUTED);
+        status.add(CLAIM_UPDATE_BY_ENG);
+        status.add(CONTESTED_INVOICE_REF_TO_CHO);
+        status.add(CONTESTED_INVOICE_REF_TO_INS);
         status.add(INVOICE_APPROVED_BY_BRE);
+        status.add(INVOICE_DATA_CALCULATION_INCORRECT);
         status.add(INVOICE_ESCALATED);
         status.add(INVOICE_ESCALATED_TO_CH);
-        status.add(CONTESTED_INVOICE_REF_TO_INS);
-        status.add(CONTESTED_INVOICE_REF_TO_CHO);
+        status.add(INVOICE_PAYMENT_LOGGED);
+        status.add(INVOICE_REF_TO_CH);
         status.add(INVOICE_REF_TO_ENG);
         status.add(INVOICE_REJECTED_ACCEPTED);
-        status.add(AWAITING_INVOICE_PAYMENT);
-        status.add(INVOICE_PAYMENT_LOGGED);
-        status.add(CLAIM_REF_TO_ENG);
-        status.add(CLAIM_REFERRED_TO_FNOL);
-        status.add(CLAIM_CLOSED);
-        status.add(CLAIM_PENDING);
-        status.add(INVOICE_REF_TO_CH);
         status.add(INVOICE_PAYMENT_RECEIVED);
-        status.add(CLAIM_UPDATE_BY_ENG);
         return status;
     }    
 }

@@ -14,7 +14,7 @@
                 {
                     var sClaimId = $("#claimId").val();
                     var form = $("#formAcknowledgeAction");
-                    checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form);  
+                    checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
                 }
                 else
                 {
@@ -163,7 +163,7 @@
             var sClaimNumber = $("#claimNumber").val();
             var sClaimId = $("#claimId").val();
             var form = $("#formAcknowledgeAction");
-            checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form);                        
+            checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
         }                    
     }
           
@@ -173,7 +173,6 @@
     <fieldset class="x-fieldset">
         <legend>Claim Pending - Action Required</legend>
         <div>
-            <s:hidden name="id" />
             <s:hidden id="claimId" name="id" />
             <s:hidden id="actionName" name="actionName" />
             <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>

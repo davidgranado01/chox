@@ -124,7 +124,7 @@ alter table vehicle_class add constraint FK58908AA5DC88F7DE foreign key (last_mo
 alter table vehicle_class_celling add constraint FKF098B7A6EF9D5388 foreign key (created_by) references web_user;
 alter table vehicle_class_celling add constraint FKF098B7A650F077F5 foreign key (insurer_id) references insurer;
 alter table vehicle_class_celling add constraint FKF098B7A6A373B246 foreign key (vehicle_class_id) references vehicle_class;
-alter table vehicle_class_celling add constraint FKF098B7A6DC88F7DE foreign key (last_modified_by) references web_use;
+alter table vehicle_class_celling add constraint FKF098B7A6DC88F7DE foreign key (last_modified_by) references web_user;
   
 -- -------------------------------------------------------------------------------------------
 -- Carlson 28-09-2009
@@ -339,6 +339,10 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 
 --- ---------------------------------------------------
 
+update vehicle_class set created_by=999, last_modified_by=999;
+
+--- ---------------------------------------------------
+
 insert into accessibility select (select max(id)+1 from accessibility), 'tab.InvoiceDetail.InvoiceEscalatedToHandler';
 insert into accessibility select (select max(id)+1 from accessibility), 'tab.History.InvoiceEscalatedToHandler';
 insert into accessibility select (select max(id)+1 from accessibility), 'tab.PaymentPack.InvoiceEscalatedToHandler';
@@ -440,7 +444,10 @@ UPDATE cho_band set dual_control_charge_check = false;
 ALTER TABLE cho_band ALTER COLUMN dual_control_charge_check SET STORAGE PLAIN;
 ALTER TABLE cho_band ALTER COLUMN dual_control_charge_check SET NOT NULL;
 
--- ------------------------------------
+-- ############################################################################################
+-- START VERSION V2.8.2.2
+-- ############################################################################################\
+
 
 ALTER TABLE cho_band ADD COLUMN has_allowed_vehicle_class boolean DEFAULT false;
 UPDATE cho_band set has_allowed_vehicle_class = false;
@@ -634,3 +641,517 @@ number_of_hire_days_reconcile = true, corrent_admin_fee = true, repair_booked_in
 
 ALTER TABLE hire_monitoring_detail ADD COLUMN next_review_date timestamp without time zone DEFAULT null;
 ALTER TABLE hire_monitoring_detail ALTER COLUMN next_review_date SET STORAGE PLAIN;
+
+-- ------------------------------------
+
+delete from vehicle_class_celling;
+
+-- ############################################################################################
+-- START VERSION V2.8.2.3
+-- ############################################################################################\
+
+
+insert into accessibility values ((select max(id)+1 from accessibility),'action.doInvoicePaymentReceived.InvoicePaymentLogged');
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name like '%doInvoicePaymentReceived%';
+insert into accessibility_item select 'ROLE_CHO_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name like '%doInvoicePaymentReceived%';
+insert into accessibility_item select 'ROLE_CHO_OPR', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name like '%doInvoicePaymentReceived%';
+
+insert into accessibility values ((select max(id)+1 from accessibility),'action.routeClaims.ClaimUnacknowledgedUnrouted');
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name like 'action.routeClaims.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ROLE_INS_CR', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name like 'action.routeClaims.ClaimUnacknowledgedUnrouted';
+
+-- ############################################################################################
+-- START VERSION V2.8.2.4
+-- ############################################################################################\
+
+DROP VIEW rpt_claim_invoice;
+
+CREATE OR REPLACE VIEW rpt_claim_invoice AS 
+
+ SELECT invoice.id, invoice.date_invoiced, invoice.handling_invoice_no, invoice.claim_invoice_no, invoice.cdw_qty, invoice.automatic_qty, invoice.sat_nav_qty, invoice.estate_qty, invoice.baby_seat_qty, invoice.tow_bars_qty, 
+ invoice.non_standard_insurance_premium_qty, invoice.admin_qty, invoice.roof_rack_qty, invoice.dual_control_qty, invoice.delivery_collection_qty, invoice.created_by, invoice.created_date, 
+ invoice.last_nodified_by, invoice.last_modified_date, invoice.hire_net, invoice.hire_vat, invoice.hire_gross, invoice.repair_net, invoice.repair_vat, invoice.repair_gross, invoice.engineer_fee_net, 
+ invoice.engineer_fee_vat, invoice.engineer_fee_gross, invoice.storage_recovery_net, invoice.storage_recovery_vat, invoice.storage_recovery_gross, invoice.total_net, invoice.total_vat, 
+ invoice.total_gross, invoice.claims_handling_invoice_amount, invoice.deduction_for_claims_handling_fee, invoice.discount, invoice.total_to_pay, invoice.cdw_fee, invoice.automatic_fee, 
+ invoice.sat_nav_fee, invoice.estate_fee, invoice.baby_seat_fee, invoice.tow_bars_fee, invoice.non_standard_insurance_premium_fee, invoice.admin_fee, invoice.roof_rack_fee, invoice.dual_control_fee, 
+ invoice.delivery_collection_fee, invoice.is_payment_mode, invoice.is_engineer_decision_approved, invoice.engineer_invoice_review_notes, invoice.rejection_reason, invoice.hire_rate_charged_per_day, 
+ invoice.excess_amount_collected, invoice.vat_amount_collected, invoice.panalty_charge, invoice.panalty_alert_qty, invoice.penalty_charge_applied_date, claim.id AS claim_id, claim.status, claim.cho_reference, 
+ claim.claim_number, claim.insurer_id, claim.chorganisation_id, third_party.first_name AS policy_holder_first_name, third_party.last_name AS policy_holder_surname_name, 
+ third_party.vehicle_registration AS vehicle_registration_number, line_of_business.name AS line_of_business, claim.created_date AS claim_created_date, claim.vehicle_hire_id AS claim_vehicle_hire_id, workgroup.name AS workgroup
+   FROM claim claim
+   JOIN invoice invoice ON claim.invoice_id = invoice.id
+   LEFT JOIN line_of_business line_of_business ON line_of_business.id = claim.line_of_business_id
+   LEFT JOIN workgroup workgroup ON workgroup.id = claim.workgroup_id
+   LEFT JOIN third_party third_party ON third_party.id = claim.third_party_id;
+
+ALTER TABLE rpt_claim_invoice OWNER TO postgres;
+
+-- ------------------------------------
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name like 'action.routeClaims.ClaimUnacknowledgedUnrouted';
+
+-- ############################################################################################
+-- START VERSION V2.8.2.6
+-- ############################################################################################\
+
+delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'notification%');
+delete from accessibility where name like 'notification%';
+
+/*****************************
+ * CLAIM NUMBER
+ ******************************/
+
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.ClaimUnacknowledgedUnrouted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.ClaimUnacknowledgedRouted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.ClaimRejected');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.ClaimRejectionAccepted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.ClaimRejectionContested');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.AwaitingCarHireInfo');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.AwaitingInvoiceData');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.InvoiceDataCalculationIncorrect');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.InvoiceApprovedByBRE');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.InvoiceEscalated');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.InvoiceEscalatedToHandler');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.ContestedInvoiceReferredToInsurer');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.ContestedInvoiceReferredToCHO');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.InvoiceRejectionAccepted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.AwaitingInvoicePayment');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.InvoicePaymentLogged');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.ClaimReferredToEngineer');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.ClaimReferredToFNOL');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.ClaimClosed');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.ClaimPending');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.InvoiceReferredToClaimsHandler');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.PaymentReceived');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.ClaimUpdatedByEngineer');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.InvoiceReferredToEngineer');
+
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.ClaimRejected';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.ClaimRejectionAccepted';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.AwaitingInvoiceData';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.InvoiceDataCalculationIncorrect';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.InvoiceApprovedByBRE';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.InvoiceEscalated';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.ContestedInvoiceReferredToCHO';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.InvoiceRejectionAccepted';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.AwaitingInvoicePayment';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.InvoicePaymentLogged';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.ClaimReferredToFNOL';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.ClaimClosed';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.ClaimPending';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.PaymentReceived';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.ClaimUpdatedByEngineer';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.ClaimNumberNotification.InvoiceReferredToEngineer';
+
+/*****************************
+ * USER VIEWING
+ ******************************/
+
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.ClaimUnacknowledgedUnrouted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.ClaimUnacknowledgedRouted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.ClaimRejected');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.ClaimRejectionAccepted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.ClaimRejectionContested');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.AwaitingCarHireInfo');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.AwaitingInvoiceData');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.InvoiceDataCalculationIncorrect');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.InvoiceApprovedByBRE');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.InvoiceEscalated');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.InvoiceEscalatedToHandler');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.ContestedInvoiceReferredToInsurer');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.ContestedInvoiceReferredToCHO');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.InvoiceRejectionAccepted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.AwaitingInvoicePayment');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.InvoicePaymentLogged');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.ClaimReferredToEngineer');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.ClaimReferredToFNOL');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.ClaimClosed');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.ClaimPending');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.InvoiceReferredToClaimsHandler');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.PaymentReceived');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.ClaimUpdatedByEngineer');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.UserViewingNotification.InvoiceReferredToEngineer');
+
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.ClaimRejected';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.ClaimRejectionAccepted';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.AwaitingInvoiceData';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.InvoiceDataCalculationIncorrect';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.InvoiceApprovedByBRE';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.InvoiceEscalated';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.ContestedInvoiceReferredToCHO';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.InvoiceRejectionAccepted';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.AwaitingInvoicePayment';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.InvoicePaymentLogged';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.ClaimReferredToFNOL';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.ClaimClosed';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.ClaimPending';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.PaymentReceived';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.ClaimUpdatedByEngineer';
+insert into accessibility_item select 'ALL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.UserViewingNotification.InvoiceReferredToEngineer';
+
+/*****************************
+ * INTELLIGENT NOTE
+ ******************************/
+
+ insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.ClaimUnacknowledgedUnrouted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.ClaimUnacknowledgedRouted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.ClaimRejected');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.ClaimRejectionAccepted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.ClaimRejectionContested');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.AwaitingCarHireInfo');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.AwaitingInvoiceData');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.InvoiceDataCalculationIncorrect');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.InvoiceApprovedByBRE');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.InvoiceEscalated');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.InvoiceEscalatedToHandler');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.ContestedInvoiceReferredToInsurer');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.ContestedInvoiceReferredToCHO');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.InvoiceRejectionAccepted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.AwaitingInvoicePayment');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.InvoicePaymentLogged');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.ClaimReferredToEngineer');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.ClaimReferredToFNOL');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.ClaimClosed');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.ClaimPending');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.InvoiceReferredToClaimsHandler');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.PaymentReceived');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.ClaimUpdatedByEngineer');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.IntelligentNotesNotification.InvoiceReferredToEngineer');
+
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimRejected';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimRejectionAccepted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.AwaitingInvoiceData';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.InvoiceDataCalculationIncorrect';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.InvoiceApprovedByBRE';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.InvoiceEscalated';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ContestedInvoiceReferredToCHO';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.InvoiceRejectionAccepted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.AwaitingInvoicePayment';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.InvoicePaymentLogged';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimReferredToFNOL';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimClosed';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimPending';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.PaymentReceived';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimUpdatedByEngineer';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.InvoiceReferredToEngineer';
+
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimRejected';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimReferredToFNOL';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimPending';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimUpdatedByEngineer';
+
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimRejected';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimReferredToFNOL';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimPending';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimUpdatedByEngineer';
+
+insert into accessibility_item select 'ROLE_INS_SCR', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ROLE_INS_SCR', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ROLE_INS_SCR', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimRejected';
+insert into accessibility_item select 'ROLE_INS_SCR', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS_SCR', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ROLE_INS_SCR', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ROLE_INS_SCR', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ROLE_INS_SCR', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimReferredToFNOL';
+insert into accessibility_item select 'ROLE_INS_SCR', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimPending';
+insert into accessibility_item select 'ROLE_INS_SCR', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimUpdatedByEngineer';
+
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimRejected';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimReferredToFNOL';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimPending';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.IntelligentNotesNotification.ClaimUpdatedByEngineer';
+
+/*****************************
+ * NOTIFICATION NOTE
+ ******************************/
+
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.ClaimUnacknowledgedUnrouted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.ClaimUnacknowledgedRouted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.ClaimRejected');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.ClaimRejectionAccepted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.ClaimRejectionContested');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.AwaitingCarHireInfo');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.AwaitingInvoiceData');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.InvoiceApprovedByBRE');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.InvoiceEscalated');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.InvoiceEscalatedToHandler');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.InvoiceRejectionAccepted');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.AwaitingInvoicePayment');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.InvoicePaymentLogged');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.ClaimReferredToEngineer');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.ClaimReferredToFNOL');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.ClaimClosed');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.ClaimPending');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.PaymentReceived');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.ClaimUpdatedByEngineer');
+insert into accessibility values ((select max(id)+1 from accessibility), 'notification.NotificationNotesNotification.InvoiceReferredToEngineer');
+
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejected';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionAccepted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoiceData';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceApprovedByBRE';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalated';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceRejectionAccepted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoicePayment';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoicePaymentLogged';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToFNOL';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimClosed';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimPending';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.PaymentReceived';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUpdatedByEngineer';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToEngineer';
+
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejected';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoiceData';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceApprovedByBRE';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalated';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoicePayment';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoicePaymentLogged';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToFNOL';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimClosed';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimPending';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.PaymentReceived';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUpdatedByEngineer';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToEngineer';
+
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejected';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoiceData';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceApprovedByBRE';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalated';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoicePayment';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoicePaymentLogged';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToFNOL';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimClosed';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimPending';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.PaymentReceived';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUpdatedByEngineer';
+insert into accessibility_item select 'ROLE_INS_CH_TL', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToEngineer';
+
+
+-- ############################################################################################
+-- START VERSION V2.8.2.6
+-- ############################################################################################\
+
+delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'notification.NotificationNotesNotification%');
+
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejected';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionAccepted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoiceData';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceApprovedByBRE';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalated';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceRejectionAccepted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoicePayment';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoicePaymentLogged';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToFNOL';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimClosed';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimPending';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.PaymentReceived';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUpdatedByEngineer';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToEngineer';
+
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejected';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoiceData';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceApprovedByBRE';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalated';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoicePayment';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoicePaymentLogged';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToFNOL';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimClosed';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimPending';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.PaymentReceived';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUpdatedByEngineer';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToEngineer';
+
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejected';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoiceData';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceApprovedByBRE';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalated';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoicePayment';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoicePaymentLogged';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToFNOL';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimClosed';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimPending';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.PaymentReceived';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUpdatedByEngineer';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToEngineer';
+
+-- ############################################################################################
+-- START VERSION V2.8.2.7.1
+-- ############################################################################################\
+
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='filter.InvoiceEscalatedToHandler';
+
+--------------------
+
+ALTER TABLE hire_monitoring_detail ADD COLUMN original_repair_book_in_date timestamp without time zone;
+UPDATE hire_monitoring_detail set original_repair_book_in_date = repair_book_in_date;
+ALTER TABLE hire_monitoring_detail ALTER COLUMN original_repair_book_in_date SET STORAGE PLAIN;
+
+-- ############################################################################################
+-- START VERSION V2.8.2.7.2
+-- ############################################################################################\
+
+delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'notification.NotificationNotesNotification%');
+
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejected';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionAccepted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoiceData';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceApprovedByBRE';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalated';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceRejectionAccepted';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoicePayment';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoicePaymentLogged';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToFNOL';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimClosed';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimPending';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.PaymentReceived';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUpdatedByEngineer';
+insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToEngineer';
+
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejected';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoiceData';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceApprovedByBRE';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalated';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoicePayment';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoicePaymentLogged';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToFNOL';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimClosed';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimPending';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.PaymentReceived';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUpdatedByEngineer';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToEngineer';

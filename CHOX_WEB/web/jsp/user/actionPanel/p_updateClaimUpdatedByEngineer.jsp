@@ -15,7 +15,7 @@
                                 {
                                     var sClaimId = $("#claimId").val();
                                     var form = $("#formAcknowledgeAction");
-                                    checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form);
+                                    checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
                                 }
                                 else
                                 {
@@ -162,7 +162,7 @@
                         var sClaimNumber = $("#claimNumber").val();
                         var sClaimId = $("#claimId").val();
                         var form = $("#formAcknowledgeAction");
-                        checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form);                      
+                        checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
                     }                    
                 }               
                     

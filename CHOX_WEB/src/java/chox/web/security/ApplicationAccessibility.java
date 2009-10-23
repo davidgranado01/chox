@@ -27,7 +27,15 @@ public class ApplicationAccessibility {
     public static final String TAB_HISTORY = "History";
     public static final String TAB_NOTES = "Notes"; 
     public static final String TAB_AUDIT_TRAIL = "AuditTrail"; 
-    
+
+    // ***************************************
+    // NOTIFICATION
+    // ***************************************
+    public static final String NOTE_CLAIM_NUMBER = "ClaimNumberNotification";
+    public static final String NOTE_CLAIM_VIEWING = "UserViewingNotification";
+    public static final String NOTE_CLAIM_INTELLIGENT_NOTE = "IntelligentNotesNotification";
+    public static final String NOTE_CLAIM_NOTES = "NotificationNotesNotification";
+
     // ***************************************
     // FILTER
     // ***************************************
@@ -87,6 +95,11 @@ public class ApplicationAccessibility {
     {
         return new TabAccessibility(this,grantedAuthorities,claimStatus);
     }        
+
+    public NotificationAccessibility getNotificationAccessibility(GrantedAuthority[] grantedAuthorities,String claimStatus)
+    {
+        return new NotificationAccessibility(this,grantedAuthorities,claimStatus);
+    }
     
     public PanelAccessibility getPanelAccessibility(GrantedAuthority[] grantedAuthorities)
     {
@@ -115,7 +128,6 @@ public class ApplicationAccessibility {
     
     public Short checkTabAccessibility(String tabName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
 
-        //accessibilityMap = getAccessibilityMap();
         String accessibilityKey = getTabAccessibilityKey(tabName, claimStatus);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
@@ -125,9 +137,20 @@ public class ApplicationAccessibility {
         return Declined;
     }
 
+    public Short checkNotificationAccessibility(String notificationName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+
+        String accessibilityKey = getNotificationAccessibilityKey(notificationName, claimStatus);
+       
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            return checkAccebility(roleMap, grantedAuthorities);
+        }
+
+        return Declined;
+    }
+    
     public Short checkFilterAccessibility(String filterName, GrantedAuthority[] grantedAuthorities) {
 
-        //accessibilityMap = getAccessibilityMap();
         String accessibilityKey = getFilterAccessibilityKey(filterName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
@@ -139,7 +162,6 @@ public class ApplicationAccessibility {
     
     public Short checkPanelAccessibility(String filterName, GrantedAuthority[] grantedAuthorities) {
 
-        //accessibilityMap = getAccessibilityMap();
         String accessibilityKey = getPanelAccessibilityKey(filterName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
@@ -207,6 +229,10 @@ public class ApplicationAccessibility {
         return String.format("tab.%1$s.%2$s", tabName, claimStatus);
     }
 
+    private String getNotificationAccessibilityKey(String notificationName, String claimStatus) {
+        return String.format("notification.%1$s.%2$s", notificationName, claimStatus);
+    }
+    
     private String getActionAccessibilityKey(String actionName, String claimStatus) {
         return String.format("action.%1$s.%2$s", actionName, claimStatus);
     }

@@ -1,6 +1,7 @@
 package chox.xmlValidation.rules.enginee;
 
 import chox.Util.TextHelper;
+import chox.model.HireMonitoringDetail;
 import chox.model.VehicleClass;
 import chox.services.ClaimService;
 import chox.services.SecureDataService;
@@ -80,7 +81,7 @@ public class ClaimCustomerValidation extends SecureDataService implements rulesI
             this.claimResult = NodeHelper.nodeValidate(sectionName, "usable", this.element, this.claimResult, dataValidationParameter);
             this.claimResult = NodeHelper.nodeValidate(sectionName, "total-loss", this.element, this.claimResult, dataValidationParameter);
             this.claimResult = NodeHelper.nodeValidate(sectionName, "initial-ecd", this.element, this.claimResult, dataValidationParameter);
-                        
+
             // CHECK VEHICLE CLASS            
             isAllowToReadData = this.claimResult.isCheckDataValid();
             
@@ -112,6 +113,7 @@ public class ClaimCustomerValidation extends SecureDataService implements rulesI
             this.claimResult.getClaim().getCustomer().setDamage(XmlHelper.getNodeValue(this.element, "damage"));
             this.claimResult.getClaim().getCustomer().setInitialECD(XmlHelper.getTimeStampFromNode(this.element, "initial-ecd"));
             this.claimResult.getClaim().getCustomer().setIsTotalLoss(XmlHelper.getBooleanFromNode(this.element, "total-loss"));
+
         }
     }
     

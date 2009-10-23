@@ -181,9 +181,9 @@
 </script>
 
             <div class="status-info">
-                [ User Role Description ]
+Assign one or more user roles against this user by using the 'Add New Role' button below. The assignment of roles will dictate which work queues the user will see as well the user's access/permission rights.
             </div>    
-            
+                
 <div>
     
     <input id="webUserId" name ="webUserId" type="hidden" value="<s:property value="id" />">
@@ -191,6 +191,9 @@
     <div id="organisationGird">
         <div class="gridViewHeader">
             <table width="100%">
+                <tr>
+                    <td>User: <b><s:property value="displayName" /></b></td>
+                </tr>
                 <tr>
                     <td>
                         <s:select

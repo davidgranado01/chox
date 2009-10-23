@@ -11,6 +11,7 @@
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="name_of_repairer" name="nameOfRepairer"/>
     <property column="repair_book_in_date" name="repairBookInDate"/>
+    <property column="original_repair_book_in_date" name="originalRepairBookInDate"/>
     <property column="inspection_booked_date" name="inspectionBookedDate"/>
     <property column="inspection_date" name="inspectionDate"/>
     <property column="name_of_ime" name="nameOfIme"/>

@@ -9,7 +9,8 @@ public class PaymentReport {
     private String supplierClaimInvoiceNo;
     private String claimNo;
     private String vehicleRegistrationNo;
-    private String lineOfBusiness;
+    // private String lineOfBusiness;
+    private String workgroup;
     private String policyHolderFirstname;
     private String policyHolderSurname;
     private BigDecimal hireNet = new BigDecimal(0.00);
@@ -33,7 +34,8 @@ public class PaymentReport {
         result.setSupplierClaimInvoiceNo((String)data.get("cho_reference".toLowerCase()));
         result.setClaimNo((String)data.get("claim_number".toLowerCase()));
         result.setVehicleRegistrationNo((String)data.get("vehicle_registration_number".toLowerCase()));
-        result.setLineOfBusiness((String)data.get("line_of_business".toLowerCase()));
+        // result.setLineOfBusiness((String)data.get("line_of_business".toLowerCase()));
+        result.setWorkgroup((String)data.get("workgroup".toLowerCase()));
         result.setPolicyHolderFirstname((String)data.get("policy_holder_first_name".toLowerCase()));
         result.setPolicyHolderSurname((String)data.get("policy_holder_surname_name".toLowerCase()));
         result.setHireNet((BigDecimal) data.get("hire_net".toLowerCase())); 
@@ -118,6 +120,14 @@ public class PaymentReport {
         this.lessVATCollected = lessVATCollected;
     }
 
+    public String getWorkgroup() {
+        return workgroup;
+    }
+
+    public void setWorkgroup(String workgroup) {
+        this.workgroup = workgroup;
+    }
+    /*
     public String getLineOfBusiness() {
         return lineOfBusiness;
     }
@@ -125,7 +135,8 @@ public class PaymentReport {
     public void setLineOfBusiness(String lineOfBusiness) {
         this.lineOfBusiness = lineOfBusiness;
     }
-
+*/
+    
     public String getPolicyHolderFirstname() {
         return policyHolderFirstname;
     }

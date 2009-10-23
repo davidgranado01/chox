@@ -31,6 +31,8 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 BigDecimal allowedDailyRate = new BigDecimal(0.00);
                 allowedDailyRate = vehickeHireVClass.getPrice().add(claim.getChoBand().getHireRateChargeTolerance());
                 
+                System.out.println("allowedDailyRate:"+allowedDailyRate);
+
                 // LESS THAN OR EQUAL TO THE TRUE
                 // boolean success = cCalc.getDailyHireRateChargedWithToleranceDeduction().compareTo(customerVClass.getPrice()) <= 0;
                 boolean success = cCalc.getDailyHireRateCharged().compareTo(allowedDailyRate) <= 0;

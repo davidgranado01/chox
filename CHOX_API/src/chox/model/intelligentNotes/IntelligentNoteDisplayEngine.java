@@ -10,10 +10,6 @@ import chox.model.*;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- *
- * @author emmanuel
- */
 public class IntelligentNoteDisplayEngine {
 
     @Autowired

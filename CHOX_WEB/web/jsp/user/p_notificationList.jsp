@@ -13,7 +13,7 @@
             <div class="status-warning listContainer">
                 <ul>
                     <s:iterator value="notifications">
-                        <li><s:property value="message"/> (<a href='javascript:removeNotification(<s:property value="id"/>,<s:property value="claim.id"/>);'>remove from hire update queue</a>)</li>
+                        <li><s:property value="message"/> (<a href='javascript:removeNotification(<s:property value="id"/>,<s:property value="claim.id"/>);'>Remove note from list</a>)</li>
                     </s:iterator>
                 </ul>
             </div>

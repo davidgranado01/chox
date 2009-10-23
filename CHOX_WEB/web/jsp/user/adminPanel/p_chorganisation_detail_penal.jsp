@@ -14,7 +14,6 @@
                 isNew = true;
             }
             
-            
             $.validator.addMethod(
                 "regex",
                 function(value, element, regexp) {

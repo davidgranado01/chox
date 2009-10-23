@@ -16,6 +16,7 @@ public class HireMonitoringDetail extends AuditableEntity implements Serializabl
      * This attribute maps to the column repair_book_in_date in the hire_monitoring_detail table.
      */
     protected Date repairBookInDate;
+    protected Date originalRepairBookInDate;
 
     /** 
      * This attribute maps to the column inspection_booked_date in the hire_monitoring_detail table.
@@ -171,6 +172,16 @@ public class HireMonitoringDetail extends AuditableEntity implements Serializabl
     @TypeConversion(converter = "chox.data.DateConverter")
     public void setRepairCompletionDate(java.util.Date repairCompletionDate) {
         this.repairCompletionDate = repairCompletionDate;
+    }
+
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public java.util.Date getOriginalRepairBookInDate() {
+        return originalRepairBookInDate;
+    }
+
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public void setOriginalRepairBookInDate(java.util.Date originalRepairBookInDate) {
+        this.originalRepairBookInDate = originalRepairBookInDate;
     }
 
     /**

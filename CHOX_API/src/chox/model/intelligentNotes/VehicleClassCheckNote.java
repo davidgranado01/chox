@@ -22,8 +22,8 @@ public class VehicleClassCheckNote implements IntelligentNote {
         Boolean showing = false;
 
         /*
-            IVehicleClassInfo vclass = c.getVClass();
-            showing |= vclass.getCode().toLowerCase().startsWith("p");
+        IVehicleClassInfo vclass = c.getVClass();
+        showing |= vclass.getCode().toLowerCase().startsWith("p");
         */
         
         // EDITED BY CARLSON TO EXLUCED PV Vehicle Class
@@ -32,8 +32,6 @@ public class VehicleClassCheckNote implements IntelligentNote {
         IVehicleClassInfo vclass = c.getCustomer().getVehicleClass();
         showing |= (vclass.getCode().toLowerCase().startsWith("p") && !vclass.getCode().toLowerCase().startsWith("pv"));
         showing |= vclass.getCode().toLowerCase().startsWith("sp");
-
-        //AND
         
         //2. ECD is less than 5 days from Policy Holder Contact Date
         Date latestEcdDate= c.getLatestHireMonitoringEcd();
@@ -50,7 +48,7 @@ public class VehicleClassCheckNote implements IntelligentNote {
         }
 
         // AND
-        showing &= securityInfoProvider.getIsINS();        
+        // showing &= securityInfoProvider.getIsINS();
 
         return showing;
     }

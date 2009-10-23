@@ -15,7 +15,7 @@
                                 {
                                     var sClaimId = $("#claimId").val();
                                     var form = $("#formAcknowledgeAction");
-                                    checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form);
+                                    checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
                                 }
                                 else
                                 {
@@ -162,13 +162,14 @@
                         var sClaimNumber = $("#claimNumber").val();
                         var sClaimId = $("#claimId").val();
                         var form = $("#formAcknowledgeAction");
-                        checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form);                      
+                        checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
                     }                    
-                }               
+                }
                     
 </script>
 
 <form action="user/acknowledge.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
+    
     <fieldset class="x-fieldset">
         <legend>Claim Acknowledgement - Action Required</legend>
         <div>

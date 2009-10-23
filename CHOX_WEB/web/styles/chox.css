@@ -95,6 +95,8 @@ div#chox-menu
 #tabContainer
 {
 }
+
+
 .chox-form-container
 {
     background: #dfe8f6;
@@ -164,6 +166,7 @@ fieldset div
 {
     width: 60px;
 }
+
 .chox-form-item
 {
     display: block;
@@ -172,6 +175,7 @@ fieldset div
     padding-bottom: 3px;
     zoom: 1;
 }
+
 
 /*
 .chox-ttxt
@@ -204,15 +208,35 @@ fieldset div
 .chox-form-checkboxitem .chox-form-checkbox
 {
     display:inline;
-    margin-right: 10px;
+    margin-right: 2px;
     width:20px;
 }
 
 .chox-form-checkboxitem .chox-form-check-label
 {
     display:inline;
-    margin-right: 10px;
+    margin-right: 5px;
     text-align: left;
+    white-space: nowrap;
+    font-size:0.9em;
+    font-weight: bold;
+}
+
+.chox-form-checkboxitem .chox-form-check-description
+{
+    margin:0px 0px 3px 30px;
+    color:#181818;
+    font-size:0.85em;
+}
+
+.chox-form-item .chox-form-pop
+{
+
+    display: block;
+    float: left;
+    margin-right: 10px;
+    text-align: right;
+    width: 140px;
     white-space: nowrap;
 }
 
@@ -897,8 +921,9 @@ table.selectionForm
 {
     width:100%;
     border-collapse:collapse;
-    margin:24px;
-    height: 100%;
+    margin:40px 0 80px 0;
+    background-color:inherit;
+    height:100px;
 }
 
 table.selectionForm th
@@ -907,7 +932,7 @@ table.selectionForm th
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 12px;
     font-weight:bold;
-    width:16%;
+    text-align:center;
 }
 
 table.selectionForm td
@@ -915,7 +940,7 @@ table.selectionForm td
     padding:4px;
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 12px;
-    width:16%;
+    text-align:center;
 }
 
 div.listContainer ul
@@ -926,4 +951,9 @@ div.listContainer ul
 
 img.help-icon{
     padding-left:2px;
+}
+
+#vccSelectionPanel{
+    padding:20px 10px 20px 10px;
+    background: #dfe8f6;
 }

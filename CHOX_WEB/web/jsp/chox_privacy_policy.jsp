@@ -39,20 +39,17 @@
 
 <span class="line_page_header">iDAS CHOX Privacy Policy</span>
 
-<span class="line_item_css">Your use of this exchange service indicates to us that you have read and accept our privacy practices, as outlined in this Privacy Statement.<br/><br/>
-Sherwood Compliance Services Ltd (SCS) is committed to protecting the rights and privacy of individuals with regard to the processing of personal data.</span>
+<span class="line_item_css">Your use of this exchange service indicates to us that you have read and accepted our privacy policies, as outlined in this Privacy Statement.<br/><br/>Sherwood Compliance Services Limited (SCS) is committed to protecting the rights and privacy of individuals with regard to the processing of personal data.</span>
 
 
 <span class="line_header">1. DATA SECURITY </span>
 <span class="line_item_css">
-Reasonable steps are taken to maintain the security of data that we collect, including restricting the number of individuals 
-who have physical access to our database servers, as well as installing electronic security systems that guard against unauthorised access. 
-This being said, no data transmission over the World Wide Web can be guaranteed to be completely secure. Additionally, SCS cannot ensure or 
-warrant the security of any information that you transmit to us, so you do so at your own risk. 
+Reasonable steps are taken to maintain the security of data that we collect, including restricting the number of individuals who have physical access to our database servers, as well as installing electronic security systems that guard against unauthorised access. This being said, no data transmission over the World Wide Web can be guaranteed to be completely secure. Additionally, SCS cannot ensure or warrant the security of any information that you transmit to us, so you do so at your own risk.
 </span>
 
 <span class="line_header">2. DATA ACCURACY </span>
-<span class="line_item_css">SCS are committed to keeping accurate, up-to-date records to help ensure the integrity of the information maintained.  SCS will on its own initiative, or at your request, free of charge, replenish, rectify or erase any incomplete, inaccurate or outdated personal data retained by SCS in connection with the operation of this exchange service. 
+<span class="line_item_css">
+SCS are committed to keeping accurate, up-to-date records to help ensure the integrity of the information maintained.  SCS will on its own initiative, or at your request, free of charge, replenish, rectify or erase any incomplete, inaccurate or outdated personal data retained by SCS in connection with the operation of this exchange service.
 </span>
 
 <span class="line_header">3. DATA PROTECTION</span>
@@ -60,16 +57,20 @@ warrant the security of any information that you transmit to us, so you do so at
 </span>
 
 <span class="line_header">4. COOKIES</span>
-<span class="line_item_css">Cookies are pieces of data created when you visit a site, and contain a unique, anonymous number. They do not contain any personal information about you and cannot be used to identify an individual user.  The use of cookies provides benefits to you, such as eliminating the need for you to enter your password frequently during a session. <br/><br/>
-You can disable cookies on your computer by accessing the options menus in your browser. You should consult your web browser's provider if you have any questions regarding cookies. 
+<span class="line_item_css">
+Cookies are pieces of data created when you visit a site, and contain a unique, anonymous number. They do not contain any personal information about you and cannot be used to identify an individual user.  The use of cookies provides benefits to you, such as eliminating the need for you to enter your password frequently during a session.
+<br/><br/>
+You can disable cookies on your computer by accessing the options menus in your browser. You should consult your web browser's provider if you have any questions regarding cookies.
 </span>
 
 <span class="line_header">5. CHANGES TO THIS PRIVACY POLICY</span>
-<span class="line_item_css">If SCS make any changes to this Privacy Policy these changes will be detailed on this page in order to ensure that you are fully aware of changes to SCS’s Privacy Policy at any point in time. Updates or modifications will be effective upon posting to this page.
+<span class="line_item_css">
+SCS may, from time to time, make changes to this Privacy Policy.  Any such changes will be detailed on this page.  In order to ensure that you are fully aware of changes to SCS's Privacy Policy at any point in time you should ensure that you periodically visit this page. Updates or modifications will be effective upon publication of this page.
 </span>
 
 <span class="line_header">6. CONSENT</span>
-<span class="line_item_css">Any information you submit to SCS is provided on a voluntary basis. When you access this exchange service, the collection, use, and distribution of your information will be handled according to the terms and policies outlined in this Privacy Policy. If you object to any of the policies outlined in this Policy, SCS ask that you do not submit information to the exchange. 
+<span class="line_item_css">
+Any information you submit to SCS is provided on a voluntary basis. When you access this exchange service, the collection, use, and distribution of your information will be handled as detailed herein.  If you object to any of the statements outlined in this Policy, SCS request that you do not submit information to the exchange.
 </span>
 
     </div>

@@ -6,7 +6,7 @@
     function doValidation(){
         
         var inp = document.getElementById("workgroupId");
-        if(inp.value==1){
+        if(inp.value=="-1"){
             $("#ClaimUnacknowledgeMessageBox").css("errorBox");
             $("#ClaimUnacknowledgeMessageBox").text("Please select a Workgroup");
             return false;
@@ -32,7 +32,7 @@
                                 <div class="no-format">
                                     <label>Workgroup</label>
                                     <s:select name="workgroup.id" id="workgroupId"
-                                    list="workgroups" headerKey="1" 
+                                    list="workgroups" headerKey="-1"
                                     listKey="id" listValue="name" 
                                     headerValue="-- Please Select --"></s:select>
                                     <input type="submit" value="Assign Workgroup" onclick="return doValidation()"/>

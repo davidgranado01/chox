@@ -158,7 +158,7 @@
                 {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerBrePanelTab', title:'BRE Band', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: doBreMappingRefresh}},
-                {contentEl:'insurerVehicleClassCellingTab', title:'Vehicle Class Cellings', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}}
+                {contentEl:'insurerVehicleClassCellingTab', title:'Vehicle Class Ceilings', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}}
             ]
            });
         }

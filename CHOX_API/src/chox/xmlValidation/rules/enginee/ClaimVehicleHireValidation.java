@@ -118,12 +118,24 @@ public class ClaimVehicleHireValidation extends SecureDataService implements rul
             this.claimResult.getClaim().getVehicleHire().setVehicleModel(XmlHelper.getNodeValue(this.element, "vehicle-model"));
             this.claimResult.getClaim().getVehicleHire().setRentalStart(XmlHelper.getTimeStampFromNode(this.element, "rental-start"));
             this.claimResult.getClaim().getVehicleHire().setRentalEnd(XmlHelper.getTimeStampFromNode(this.element, "rental-end"));
-            this.claimResult.getClaim().getVehicleHire().setDays(XmlHelper.getIntegerFromNode(this.element, "rental-days"));
+
+            int rentalDays = 0;
+            
+            if(XmlHelper.getIntegerFromNode(this.element, "rental-days")!=null){
+                rentalDays = XmlHelper.getIntegerFromNode(this.element, "rental-days").intValue();
+            }
+            
+            // this.claimResult.getClaim().getVehicleHire().setDays(XmlHelper.getIntegerFromNode(this.element, "rental-days"));
+            this.claimResult.getClaim().getVehicleHire().setDays(rentalDays);
             this.claimResult.getClaim().getVehicleHire().setCollectionReason(XmlHelper.getNodeValue(this.element, "collection-reason"));
-            
-            ClaimVehicleHireExtraValidation vehicleHireExtraVal = new ClaimVehicleHireExtraValidation(claimResult, dataValidationParameter, this.element);
-            this.claimResult = vehicleHireExtraVal.execute();
-            
+
+            // ONLY CHECK VEHICLE CLASS DETAIL WHEN IT IS NEW INVOICE
+            /*
+            if(claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)){
+                ClaimVehicleHireExtraValidation vehicleHireExtraVal = new ClaimVehicleHireExtraValidation(claimResult, dataValidationParameter, this.element);
+                this.claimResult = vehicleHireExtraVal.execute();
+            }
+            */
         }
     }
 

@@ -23,9 +23,15 @@ public class RepairBookedInOnFridayNotification extends Notification implements 
     public boolean check(Claim c) {
 
         //Check reapair book in date is Firday.
-        return c.getHireMonitoringDetail() != null 
-                && c.getHireMonitoringDetail().getRepairBookInDate() != null
-                && DateHelper.getDay(c.getHireMonitoringDetail().getRepairBookInDate()) == Calendar.FRIDAY;
+        boolean bFlag = false;
+
+        if(c.getHireMonitoringDetail() != null){
+            if(c.getHireMonitoringDetail().getRepairBookInDate() != null){
+                bFlag = DateHelper.getDay(c.getHireMonitoringDetail().getRepairBookInDate()) == Calendar.FRIDAY;
+            }
+        }
+
+        return bFlag;
 
     }
 }

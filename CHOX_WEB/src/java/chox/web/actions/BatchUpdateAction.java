@@ -6,10 +6,11 @@ package chox.web.actions;
 
 import chox.model.Claim;
 import chox.model.ClaimStatus;
-import chox.model.LineOfBusiness;
+import chox.model.Workgroup;
 import chox.services.AuditTrailService;
 import chox.services.ClaimService;
 import chox.services.SystemLogService;
+import chox.services.WorkgroupService;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,8 @@ public class BatchUpdateAction extends BaseAction {
     private AuditTrailService auditTrailService;
     private String actionResult;
     private List<Integer> selectedClaimIdList;
-    private int lineOfBusinessId;
+    private int workgroup;
+    private WorkgroupService workgroupService;
 
     @Override
     public String execute() throws Exception {
@@ -49,11 +51,15 @@ public class BatchUpdateAction extends BaseAction {
         String oldStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED;
         String newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
         
+        Workgroup workgroupDBA = new Workgroup();
+        workgroupDBA = workgroupService.getObject(this.workgroup);
+
         for (Integer id : selectedClaimIdList)  {
             Claim claim = claimService.getClaim(id);
-            LineOfBusiness routeTo = new LineOfBusiness();
-            routeTo.setId(lineOfBusinessId);
+            // LineOfBusiness routeTo = new LineOfBusiness();
+            // routeTo.setId(lineOfBusinessId);
             // claim.setLineOfBusiness(routeTo);
+            claim.setWorkgroup(workgroupDBA);
             updateCliamStatus(claim, oldStatus, newStatus);
         }
         return SUCCESS;
@@ -115,9 +121,9 @@ public class BatchUpdateAction extends BaseAction {
         
     }
 
-    public void setLineOfBusiness(int id)
+    public void setWorkgroup(int id)
     {
-        this.lineOfBusinessId = id;
+        this.workgroup = id;
     }
 
     public void setClaimService(ClaimService claimService) {
@@ -128,6 +134,10 @@ public class BatchUpdateAction extends BaseAction {
         this.auditTrailService = auditTrailService;
     }
 
+    public void setWorkgroupService(WorkgroupService workgroupService) {
+        this.workgroupService = workgroupService;
+    }
+    
     public String getActionResult() {
         return actionResult;
     }

@@ -20,15 +20,15 @@ public class CorrentAdminFee implements IBusinessRule {
         if(claim.getChoBand().isCorrentAdminFee()){
 
             boolean success = true;
-            BigDecimal adminFee = new BigDecimal("30.00");
+            BigDecimal adminFee = new BigDecimal("40.00");
 
             if(claim.getManagingRepair()){
-                adminFee = new BigDecimal("50.00");
+                adminFee = new BigDecimal("60.00");
             }
 
-            if(!claim.getInvoice().getAdminFee().equals(adminFee)){
+            if(claim.getInvoice().getAdminFee().compareTo(adminFee)>=1){
                 success = false;
-                narrative = "The Admin Fee billed is too high.";
+                narrative = "The Admin Fee billed is incorrect.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);

@@ -121,7 +121,7 @@
 </script>
 
             <div class="status-info">
-                [ User Workgroup Description ]
+Assign one or more workgroups against this user by using the 'Add New Workgroup' button below. The assignment of workgroups will control claim visibility/permissions, only claims that have been assigned to a workgroup that has been assigned to the said user will be seen by the said user.
             </div>    
             
 <div>
@@ -130,6 +130,9 @@
     <div>
         <div class="gridViewHeader">
             <table width="100%">
+                <tr>
+                    <td>User: <b><s:property value="displayName" /></b></td>
+                </tr>
                 <tr>
                     <td>
                         <s:select

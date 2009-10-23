@@ -24,7 +24,7 @@ public class UnroadworthyVehicleCheckNote implements IntelligentNote {
         //1. If the ‘Is Usable’ field has an N/No
         showing |= !c.getCustomerVehicleDamage().getIsUsable();
         //2. if user is Insurer
-        showing &= securityInfoProvider.getIsINS();
+        // showing &= securityInfoProvider.getIsINS();
 
         return showing;
     }

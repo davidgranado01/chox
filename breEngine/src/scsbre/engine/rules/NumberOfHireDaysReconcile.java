@@ -23,7 +23,7 @@ public class NumberOfHireDaysReconcile implements IBusinessRule {
 
             Integer dayDif = (CalcHelper.getDaysBetweenDates(claim.getHireDetail().getRentalStart(), claim.getHireDetail().getRentalEnd())+1);
 
-            if(claim.getHireDetail().getDays() > dayDif){
+            if(claim.getHireDetail().getDays() != dayDif){
                 success =false;
                 narrative = "The number of Hire Days billed does not reconcile with the Hire Start and Hire End dates provided";
             }

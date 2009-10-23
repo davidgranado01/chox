@@ -11,18 +11,17 @@ import java.sql.SQLException;
 
 
 public class DataService {
-
+    /*
     final String databaseServer = "localhost:5432";
     final String databaseConnection = "choxidas_prod";
     final String databaseUserName = "postgres";
     final String databaseUserPsw= "GreenF1nCHPasswurd99.";
-    
-    /*
-    final String databaseServer = "10.0.0.2:5432";
-    final String databaseConnection = "chox_test";
-    final String databaseUserName = "postgres";
-    final String databaseUserPsw= "GreenF1nCH";
     */
+    
+    final String databaseServer = "localhost:5432";
+    final String databaseConnection = "test_sprint8";
+    final String databaseUserName = "chox";
+    final String databaseUserPsw= "chox";
     
     public Connection getConnection(){
 

@@ -595,39 +595,42 @@
                 document.location = "doUpdateAnomalies.action?id="+a;
             }
 
-            function closeClaimStatus(a){
+            function closeClaimStatus(){
 
                 if(!confirm('Are you sure you want to close this claim?')){
                     return false;
                 }else{
-                    document.location = "doUpdateClaimStatus.action?id="+a;
+                    document.location = 'doUpdateClaimStatus.action?id=<s:property value="id" />';
                 }
 
                 return true;
             }
 
-            function reopenClaimStatus(a){
+            function reopenClaimStatus(){
 
                 if(!confirm('Are you sure you want to re-open this claim?')){
                     return false;
                 }else{
-                    document.location = "doReopenClaimStatus.action?id="+a;
+                    document.location = 'doReopenClaimStatus.action?id=<s:property value="id" />';
                 }
                 return true;
             }
 
-            function checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form)
+            function checkAndConfirmClaimNumberDuplication(sClaimNumber, sClaimId, form)
             {
+                
                 if(sClaimNumber && sClaimNumber != null)
                 {
                     $.getJSON("checkIsClaimNumberDuplicated.action", { claimNumber: sClaimNumber, claimId: sClaimId },
+                    
                     function(data){
+
                         if(data.isValid)
                         {
                             if(data.result && data.result == "yes"){
                                 if(confirm("The claim number you have supplied is already associated with another claim(s). Do you wish to continue?"))
                                 {
-                                    form.submit();
+                                   form.submit();
                                 }
                             }
                             else{
@@ -635,7 +638,7 @@
                             }
                         }
                         else
-                        {                           
+                        {
                             propmtErrors(data.errors);
                         }
                     });
@@ -671,7 +674,7 @@
                     <table cellpadding="0" cellspacing="0" border="0" width="100%">
                         <tr valign="middle">
                             <td>
-                                <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left" />
+                                <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left" alt=""/>
                             </td>
                             <td width="100%" align="right">
                                 <ul id="top-menu">
@@ -692,8 +695,10 @@
                         </tr>
                     </table>
                 </div>
+
                 <div style="width:960px">
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">
+                        
                         <fieldset class="x-fieldset">
                             <legend>Claim Summary</legend>
                             <table cellpadding="0" cellspacing="0" border="0">
@@ -724,24 +729,25 @@
                                         <td colspan="3">
                                             <div class="status-info">This claim has been reviewed by an FNOL Handler, please review notes that may have been added before proceeding.</div>
                                         </td>
-                                    </tr><br/>
+                                    </tr>
                                 </s:if>
 
                                 <s:if test="!isClaimClosed && isCHO">
                                     <tr>
-                                        <td colspan="3" align="right"><input value="Close Claim" type="button" onclick="javascript:return closeClaimStatus('<s:property value="id" />');"/></td>
+                                        <td colspan="3" align="right"><input value="Close Claim" type="button" onclick="javascript: return closeClaimStatus();"/></td>
                                     </tr>
                                 </s:if>
+                                    
                                 <s:elseif test="isClaimClosed && isCHO">
                                     <tr>
-                                        <td colspan="3" align="right"><input value="Re-Open Claim" type="button" onclick="javascript:return reopenClaimStatus('<s:property value="id" />');"/></td>
+                                        <td colspan="3" align="right"><input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/></td>
                                     </tr>
                                 </s:elseif>
-
 
                             </table>
                         </fieldset>
 
+                        <table cellpadding="0" cellspacing="0" border="0">
                         <tr>
                             <td style="padding-right:136px;">
                                 <a href="<s:url action="inbox"/>">« Back to Search Results</a>
@@ -763,22 +769,25 @@
                                 </s:if>
                             </td>
                         </tr>
-
+                        </table>
+                            
                     </div>
                 </div>
 
-                <s:if test="isClaimNumberDuplicated">
+                <s:if test="isClaimNumberDuplicated && notificationAccessibility.claimNumberNotificationAccessibility">
                     <s:action name="getDuplicatedClaimAlert" executeResult="true">
                         <s:param name="claimId"><s:property value="id" /></s:param>
                         <s:param name="claimNumber"><s:property value="claimNumber" /></s:param>
                     </s:action>
                 </s:if>
 
+                <s:if test="notificationAccessibility.userViewingNotificationAccessibility">
                 <div id="userViewingThisClaimDiv" class="status-warning" style="display:none;">
                     This claim is currently being viewed and / or modified by the following user(s) : <span id="userViewingThisClaim"></span>
                 </div>
+                </s:if>
 
-                <s:if test="isAnyIntelligentNotes">
+                <s:if test="isAnyIntelligentNotes && notificationAccessibility.intelligentNotesNotificationAccessibility">
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">
                         <fieldset class="x-fieldset">
                             <legend>Additional Notes</legend>
@@ -793,13 +802,15 @@
                     </div>
                 </s:if>
 
+                <s:if test="notificationAccessibility.notificationNotesNotificationAccessibility">
                 <div id="notificationNotesDiv">
                     <s:action executeResult="true" name="renderNotifications">
                      <s:param name="id"><s:property value="id" /></s:param>
                     </s:action>
                 </div>
+                </s:if>
 
-                <script language="JavaScript">
+                <script type="text/javascript">
 
                     $(document).ready(function() {
 
@@ -834,7 +845,7 @@
                     </div>
                 </s:if>
 
-                <script language="JavaScript">
+                <script type="text/javascript">
 
                     $(document).ready(function() {
                         $("#extraAction").val("");
@@ -929,9 +940,7 @@
                                                 </div>
                                             </fieldset>
 
-                                            <s:if test="!isCHO">
-                                            </s:if>
-                                            <s:else>
+                                            <s:if test="isCHO">
                                                 <fieldset class="x-fieldset">
                                                     <legend>Claim Reviews</legend>
                                                     <div style="display:none" class="form-container">
@@ -945,7 +954,7 @@
                                                         </div>
                                                     </div>
                                                 </fieldset>
-                                            </s:else>
+                                            </s:if>
 
 
                                             <s:action name="getIncident" executeResult="true">
@@ -975,6 +984,7 @@
 
                         </s:if>
                     </div>
+                    
                     <div id="hireMonitoringDetails" class="x-hide-display">
 
                         <s:if test="tabAccessibility.hireMonitoringTabAccessibility != 0">
@@ -1009,6 +1019,7 @@
 
                         </s:if>
                     </div>
+                    
                     <div id="invoiceDetails" class="x-hide-display">
 
                         <s:if test="tabAccessibility.invoiceDetailTabAccessibility != 0">
@@ -1063,13 +1074,13 @@
 
                     <div id="paymentPack" class="x-hide-display">
                         <s:if test="tabAccessibility.paymentPackTabAccessibility != 0">
-                            <script language="JavaScript">
+                            <script type="text/javascript">
 
                                 var sucessColor = "#15428b";
                                 var warningColor = "red";
 
                                 $(document).ready(function() {
-                                    var maxFileSize = "<s:property value="maxFileSize"/>";
+                                    var maxFileSize = <s:property value="maxFileSize"/>;
                                     var options = {
                                         success: showResponseAtt
                                     };
@@ -1184,16 +1195,13 @@
                                             </tr>
                                             <tr>
                                                 <td></td>
-
                                                 <td>
-
-                                                    <div class="column_remark" style="padding:10 0 10 0;">
+                                                    <div class="column_remark" style="padding:10px 0 10px 0;">
                                                         Maximum attachment size is <s:property value="maxFileSize/1000/1024"/> MB. <br/>
                                                         Currently, CHOX supports attachments in the following formats: <br/>
-                                                        <s:property value="AllowFileType"/>&nbsp;&nbsp;<img src="../images/help.png" id="attachmentTypeSpan"/>
+                                                        <s:property value="AllowFileType"/>&nbsp;&nbsp;<img src="../images/help.png" id="attachmentTypeSpan" alt=""/>
                                                     </div>
                                                 </td>
-
                                             </tr>
 
                                             <tr>
@@ -1228,6 +1236,7 @@
                                     </fieldset>
                                 </form>
                             </div>
+
                             <a name="attachmentlisting"></a>
                             <div id="paymentPackGrid"></div>
                         </s:if>
@@ -1252,7 +1261,7 @@
 
                         <s:if test="tabAccessibility.notesTabAccessibility != 0">
 
-                            <script language="JavaScript">
+                            <script type="text/javascript">
 
                                 $(document).ready(function() {
 
@@ -1325,6 +1334,7 @@
                     <div class="popUpViewDiv" id="popGeneralTemplate"><input type="button" value="Close" id="popGeneralTemplateClose"><br/><br/><div id="popGeneralTemplateMessage"></div></div>
 
                 </div>
+
             </div>
 
             <!-- ************************ PAGE FOOTER *************************** !-->

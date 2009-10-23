@@ -11,6 +11,8 @@ import chox.xmlValidation.rules.BordereauVersionValidation;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.TransactionException;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -105,14 +107,30 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     public BordereauResult doProcessClaimXMLFile(final File file, final String fileName) {
         try {
+            
             BordereauResult bordereauResult = doProcessBordereauResult(file, fileName);
 
-            for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
+            List<ClaimResult> claimResults = new ArrayList<ClaimResult>();
 
+            for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
+                if (claimResult.isValid() && claimResult.isDataValid()) {
+                    claimResults.add(claimResult);
+                }else{
+                    getHibernateTemplate().evict(claimResult.getClaim());
+                }
+            }
+
+            for (ClaimResult claimResult : claimResults) {
+
+                // System.out.println("========================================================================");
+                // System.out.println("END: is Claim Valid?: " + claimResult.isValid());
+                // System.out.println("END: is Claim Data valid?: " + claimResult.isDataValid());
+                // System.out.println("END: Claim Process Status: " + claimResult.getClaimParseStatus());
+                // System.out.println("END: Claim Cho Ref: " + claimResult.getClaim().getChoReference());
+                // System.out.println("END: Claim Status: " + claimResult.getClaim().getStatus());
+                
                 if (claimResult.isValid() && claimResult.isDataValid()) {
                     saveXMLRecord(claimResult);
-                } else {
-                    getHibernateTemplate().evict(claimResult.getClaim());
                 }
             }
 
@@ -146,13 +164,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 int totalProcessed = 0;
 
                 for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
-
-                    // System.out.println("========================================================================");
-                    // System.out.println("END: is Claim Valid?: " + claimResult.isValid());
-                    // System.out.println("END: is Claim Data valid?: " + claimResult.isDataValid());
-                    // System.out.println("END: Claim Process Status: " + claimResult.getClaimParseStatus());
-                    // System.out.println("END: Claim Cho Ref: " + claimResult.getClaim().getChoReference());
-                    // System.out.println("END: Claim Status: " + claimResult.getClaim().getStatus());
 
                     claimResult = isWorkgroupEnable(claimResult);
 

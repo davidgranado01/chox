@@ -105,7 +105,7 @@ public class doUserroleAction extends BaseAction{
                 Insurer insurer = insurerService.getObject(user.getInsurer().getId());
 
                 if(service.isClaimHandlerRole(webUserRoleId) && insurer.isWorkgroupEnable()){
-                    String ackMsg = "Please add workgroups to this claim handler's user";
+                    String ackMsg = "Please assign one or more workgroup(s) to this user";
                     getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);
                 }
 

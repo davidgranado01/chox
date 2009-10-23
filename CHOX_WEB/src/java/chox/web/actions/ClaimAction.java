@@ -13,6 +13,7 @@ import chox.services.*;
 import chox.web.data.*;
 import chox.web.security.ApplicationAccessibility;
 import chox.web.security.TabAccessibility;
+import chox.web.security.NotificationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import java.math.BigDecimal;
@@ -61,6 +62,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String actionResult;
     private String actionResult2;
     private TabAccessibility tabAccessibility;
+    private NotificationAccessibility notificationAccessibility;
     private int vehicleClassId = -1;
     private int insurerId = -1;
     private String actionName;
@@ -180,7 +182,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setLineOfBusinessId(int lineOfBusinessId) {
     this.lineOfBusinessId = lineOfBusinessId;
     }
-     */
+    */
+
     public int getWorkgroupId() {
         return workgroupId;
     }
@@ -285,6 +288,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return tabAccessibility;
     }
 
+    public NotificationAccessibility getNotificationAccessibility() {
+
+        if (notificationAccessibility == null) {
+            notificationAccessibility = applicationAccessibility.getNotificationAccessibility(getAuthenticatedUser().getAuthorities(), claim.getStatus());
+        }
+        return notificationAccessibility;
+    }
+            
     @Override
     public String execute() throws Exception {
 
@@ -364,27 +375,27 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String acknowledge() {
 
-        boolean bActionFlag = true;
-        String sActionMsg = "";
+        // boolean bActionFlag = true;
+        // String sActionMsg = "";
 
         String result = SUCCESS;
         String newStatus = "";
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_CAR_HIRE_INFO;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
+            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(REFER)) {
             newStatus = ClaimStatus.CLAIM_REF_TO_ENG;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
+            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(REFER_FNOL)) {
             newStatus = ClaimStatus.CLAIM_REFERRED_TO_FNOL;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
+            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(PENDING)) {
             newStatus = ClaimStatus.CLAIM_PENDING;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
+            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else {
             newStatus = ClaimStatus.CLAIM_REJECTED;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejectionId:" + claim.getReasonOfRejectionId();
+            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejectionId:" + claim.getReasonOfRejectionId();
             logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
         }
 
@@ -406,8 +417,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                 result = ERROR;
                 this.actionResult = "ERROR : " + ex.getMessage();
-                bActionFlag = false;
-                sActionMsg = ex.getLocalizedMessage();
+                // bActionFlag = false;
+                // sActionMsg = ex.getLocalizedMessage();
 
             }
         }
@@ -538,30 +549,35 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String approveContestedClaim() {
 
+        System.out.println("approveContestedClaim : 0000");
+        
         String result = SUCCESS;
         String newStatus = "";
-        boolean bActionFlag = true;
-        String sActionMsg = "";
+
+        System.out.println("approveContestedClaim : 0001" + this.actionName);
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_CAR_HIRE_INFO;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
+            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(REFER)) {
             newStatus = ClaimStatus.CLAIM_REF_TO_ENG;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
+            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(REFER_FNOL)) {
             newStatus = ClaimStatus.CLAIM_REFERRED_TO_FNOL;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
+            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(PENDING)) {
             newStatus = ClaimStatus.CLAIM_PENDING;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
+            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else {
             newStatus = ClaimStatus.CLAIM_REJECTED;
             logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejection:" + claim.getReasonOfRejectionId();
+            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejection:" + claim.getReasonOfRejectionId();
         }
 
+        // System.out.println("approveContestedClaim : 0009" + result);
+
         if (!result.equalsIgnoreCase(ERROR)) {
+            
             try {
 
                 createNewNote(claim.getEngineerClaimReviewNotes(), false, strPrefix);
@@ -575,13 +591,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                 result = ERROR;
                 this.actionResult = "ERROR : " + ex.getMessage();
-                bActionFlag = false;
-                sActionMsg = this.actionResult;
-
             } 
         }
 
         return result;
+
     }
 
     public String submitHireMonitoringDetail() {

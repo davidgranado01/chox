@@ -76,9 +76,9 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
 
                 List notifications = newECDAddedChecker.getAnomalousNotifications(claim);
                 claim.AddNotifications(notifications);
-
+                
                 if(isIsUpdateInsurer()){claim.AddNotification(new EcdUpdatedNotification());}
-
+                
                 claimService.updateClaim(claim);
                 
             }

@@ -70,12 +70,13 @@ public class InvoiceExtraValidation extends SecureDataService implements rulesIn
     private boolean validate() throws DOMException, XPathExpressionException{
         
         boolean isAllowToReadData = false;
+        boolean isAdminFeeExist = false;
         
         if((claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice))
                 && ((XMLUtils.getElement(this.element, "extra").getTextContent()).trim().length()>0)){
             
-            isAllowToReadData = true; 
-            
+            isAllowToReadData = true;
+
             for (Element ee : this.elements) {
 
                 String strExtraName = XmlHelper.getNodeValue(ee, "name");
@@ -85,6 +86,11 @@ public class InvoiceExtraValidation extends SecureDataService implements rulesIn
                 this.claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "name", this.element, claimResult, dataValidationParameter, strExtraName);
                 this.claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "quantity", this.element, claimResult, dataValidationParameter, strExtraQty);
                 this.claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "item-cost", this.element, claimResult, dataValidationParameter, strExtraFee);
+
+                if(strExtraName.equalsIgnoreCase("Admin")){
+                    isAdminFeeExist = true;
+                }
+                
             }
             
             if(!this.claimResult.isCheckDataValid()){
@@ -94,6 +100,14 @@ public class InvoiceExtraValidation extends SecureDataService implements rulesIn
             }
         }
 
+        /** CHECK INVOICE ADMIN FEE **/
+        if(!isAdminFeeExist && claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)){
+            claimResult.getMessage().add("No Admin Fee information supplied for 'Invoice'. Please re-submit with this information.");
+            claimResult.setCheckDataValid(false);
+            claimResult.setDataValid(false);
+            claimResult.setValid(false);
+        }
+        
         return isAllowToReadData;
     }
     

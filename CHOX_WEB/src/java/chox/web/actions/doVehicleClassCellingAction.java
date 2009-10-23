@@ -12,6 +12,7 @@ import chox.services.VehicleClassCellingService;
 import chox.services.VehicleClassService;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import java.math.BigDecimal;
 
 /**
  *
@@ -26,7 +27,27 @@ public class doVehicleClassCellingAction extends BaseAction implements ModelDriv
     private InsurerService insurerService;
     private VehicleClassCellingService vehicleClassCellingService;
 
+    // EDIT
+    private BigDecimal hireNetCeiling;
+    private BigDecimal repairNetCeiling;
+
     private String vehicleClassCellingId;
+
+    public BigDecimal getHireNetCeiling() {
+        return hireNetCeiling;
+    }
+
+    public void setHireNetCeiling(BigDecimal hireNetCeiling) {
+        this.hireNetCeiling = hireNetCeiling;
+    }
+
+    public BigDecimal getRepairNetCeiling() {
+        return repairNetCeiling;
+    }
+
+    public void setRepairNetCeiling(BigDecimal repairNetCeiling) {
+        this.repairNetCeiling = repairNetCeiling;
+    }
 
     public String getVehicleClassCellingId() {
         return vehicleClassCellingId;
@@ -70,6 +91,16 @@ public class doVehicleClassCellingAction extends BaseAction implements ModelDriv
 
     public void setVehicleClassId(Integer vehicleClassId) {
         this.vehicleClassId = vehicleClassId;
+    }
+
+    public String updateVehicleClassCeiling(){
+        
+        VehicleClassCelling vehicleClassCellingObj = vehicleClassCellingService.getObject(Integer.valueOf(vehicleClassCellingId));
+        vehicleClassCellingObj.setHireNetCelling(hireNetCeiling);
+        vehicleClassCellingObj.setRepairNetCelling(repairNetCeiling);
+        vehicleClassCellingService.updateObject(vehicleClassCellingObj);
+        
+        return SUCCESS;
     }
 
     public String updateModel() throws Exception {

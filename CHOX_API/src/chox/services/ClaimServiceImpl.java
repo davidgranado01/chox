@@ -65,7 +65,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         String q = "select count(*) from Claim as c inner join c.invoice as iv where " + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_LOGGED + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_REJECTED_ACCEPTED + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_RECEIVED + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT + "' AND " + "c.status <> '" + ClaimStatus.CLAIM_CLOSED + "' " + "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.createdDate) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
         //+ "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.dateInvoiced) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
-
         return getCount(q);
     }
 
@@ -170,12 +169,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getSupplierId() > 0) {
             criteria.add(Restrictions.eq("cho.id", searchCriteria.getSupplierId()));
         }
-
-        /*
-        if (searchCriteria.getLineOfBusinessId() > 0) {
-        criteria.add(Restrictions.eq("lob.id", searchCriteria.getLineOfBusinessId()));
-        }
-        */
         
         if (searchCriteria.getWorkgroupId() > 0) {
             criteria.add(Restrictions.eq("wg.id", searchCriteria.getWorkgroupId()));
@@ -229,30 +222,26 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (searchCriteria.getReviewRequiredDateFrom() != null || searchCriteria.getReviewRequiredDateTo() != null) {
             
-            System.out.println("getReviewRequiredDateFrom"+searchCriteria.getReviewRequiredDateFrom());
+            // System.out.println("getReviewRequiredDateFrom"+searchCriteria.getReviewRequiredDateFrom() +"-"+ searchCriteria.getReviewRequiredDateTo());
 
             if (searchCriteria.getReviewRequiredDateFrom() != null) {
-
-                System.out.println("getReviewRequiredDateFrom: IN");
                 
                 Date d = searchCriteria.getReviewRequiredDateFrom();
                 d.setHours(0);
                 d.setMinutes(0);
                 d.setSeconds(0);
+                System.out.println("getReviewRequiredDateFrom: "+d);
                 criteria.add(Expression.ge("hmd.nextReviewDate", d));
             }
 
-            System.out.println("getReviewRequiredDateTo"+searchCriteria.getReviewRequiredDateTo());
-
             if (searchCriteria.getReviewRequiredDateTo() != null) {
 
-                System.out.println("getReviewRequiredDateTo: IN");
-                
                 Date d = searchCriteria.getReviewRequiredDateTo();
-                d.setDate(d.getDate() + 1);
+                d.setDate(d.getDate());
                 d.setHours(0);
                 d.setMinutes(0);
                 d.setSeconds(0);
+                System.out.println("getReviewRequiredDateTo: "+d);
                 criteria.add(Expression.le("hmd.nextReviewDate", d));
             }
             
@@ -342,10 +331,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 addSort(criteria, "statusModifiedDate", dir);
             } else if (sort.equalsIgnoreCase("workgroup")) {
                 addSort(criteria, "wg.name", dir);
-                /*
-                } else if (sort.equalsIgnoreCase("lineOfBusiness")) {
-                addSort(criteria, "lob.name", dir);
-                 */
             } else if (sort.equalsIgnoreCase("cho")) {
                 addSort(criteria, "cho.name", dir);
             } else if (sort.equalsIgnoreCase("insurer")) {

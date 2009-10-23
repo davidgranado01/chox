@@ -33,7 +33,7 @@
 
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Total Loss Check</label>
+            Is Total Loss?</label>
         <label class="std-data-ro"><s:property value="isTotalLossDesc" /></label></div>            
         <div class="chox-form-item">
             <label class="std-label-ro">

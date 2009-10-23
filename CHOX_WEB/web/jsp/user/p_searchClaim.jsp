@@ -111,7 +111,7 @@
             selectedInsurerId = $("#insurerId").val();
         }
         
-        $("#searchScreenWorkgroupDropDownDiv").load("WorkgroupDropDownAction.action?orgId=" + selectedInsurerId);
+        $("#searchScreenWorkgroupDropDownDiv").load("SearchWorkgroupDropDownAction.action?orgId=" + selectedInsurerId);
     }
    
     function clearForm(){

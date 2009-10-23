@@ -71,7 +71,7 @@
                 var sClaimNumber = $("#claimNumber").val();
                 var sClaimId = $("#claimId").val();
                 var form = $("#formUpdateInsurerClaimNumber");
-                checkAndConfirClaimNumberDuplication(sClaimNumber,sClaimId,form);                       
+                checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
             }                    
         }                
        

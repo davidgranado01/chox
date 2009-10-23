@@ -1,4 +1,4 @@
-package chox.web.data;
+package chox.web.dropdown;
 
 import chox.model.LookupItem;
 import chox.services.LookupService;
@@ -32,6 +32,26 @@ public class WorkgroupDropDownAction extends BaseAction{
     public void setWorkgroups(List workgroups) {
         this.workgroups = workgroups;
     }
+
+    public String ClaimSearch() throws Exception {
+
+        PermissionedUser user = getAuthenticatedUser();
+
+        workgroups = new ArrayList<LookupItem>();
+
+        if(!user.getIsCHOXAdmin() && user.getIsINS()){
+
+            user = getAuthenticatedUser();
+            workgroups = service.getAllWorkgroupsByInsurerId(user.getUser().getInsurer().getId());
+
+        }else{
+
+            workgroups = service.getAllWorkgroupsByInsurerId(getOrgId());
+
+        }
+
+        return SUCCESS;
+    }
     
     @Override
     public String execute() throws Exception {
@@ -40,11 +60,15 @@ public class WorkgroupDropDownAction extends BaseAction{
         
         workgroups = new ArrayList<LookupItem>();
         
-        if(!user.getIsCHOXAdmin() && user.getIsINS() ){
+        if(!user.getIsCHOXAdmin() && user.getIsINS()){
+            
             user = getAuthenticatedUser();
-            workgroups = service.getAllWorkgroupsByInsurerId(user.getUser().getInsurer().getId());
+            workgroups = service.getWorkgroupsByInsurerId(user.getUser().getInsurer().getId());
+            
         }else{
-            workgroups = service.getAllWorkgroupsByInsurerId(getOrgId());
+            
+            workgroups = service.getWorkgroupsByInsurerId(getOrgId());
+            
         }
         
         return SUCCESS;     

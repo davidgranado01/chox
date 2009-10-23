@@ -68,22 +68,26 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
     public String updateModel() {
         
         try {
+
+            boolean isNewHireMonitoringDetail = false;
             
-            boolean isNewHireMonitoringDetail = model.getId() <= 0;
+            if(model.getId()==null){
+                isNewHireMonitoringDetail = true;
+            }
+
             Claim c = claimService.getClaim(getClaimId());
             c.setHireMonitoringDetail(model);
             c.AddNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(c));
-            
+             
             if(isUpdateInsurer){
                 c.AddNotification(new HireUpdatedNotification());
             }
-
+            
             claimService.updateClaim(c);
 
             if (isNewHireMonitoringDetail) {
-                getActionResponse().AssignNewIdResult(model.getId());
+                this.getActionResponse().AssignNewIdResult(model.getId());
             }
-            claimService.updateClaim(c);
 
         } catch (Exception ex) {
             getActionResponse().AddError(ex.getMessage());

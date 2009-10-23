@@ -34,6 +34,7 @@ public class claimGridViewData {
     private String cho;
     private String insurer;
     private String createdBy;
+    private String policyNumber;
 
     public claimGridViewData(Claim claim) {       
               
@@ -59,6 +60,7 @@ public class claimGridViewData {
         this.status = claim.getStatus();
         this.cho = c == null ? "" : c.getName();
         this.insurer = i == null ? "" : i.getName();
+        this.policyNumber = claim.getThirdParty().getPolicyNumber();
 
         if(claim.getHireMonitoringDetail()!=null){
             if(claim.getHireMonitoringDetail().getNextReviewDate()!=null){
@@ -80,6 +82,14 @@ public class claimGridViewData {
             }
             this.createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
         }
+    }
+
+    public String getPolicyNumber() {
+        return policyNumber;
+    }
+
+    public void setPolicyNumber(String policyNumber) {
+        this.policyNumber = policyNumber;
     }
 
     public String getSupplierReference() {

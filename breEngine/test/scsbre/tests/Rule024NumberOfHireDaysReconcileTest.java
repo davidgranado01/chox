@@ -62,7 +62,7 @@ public class Rule024NumberOfHireDaysReconcileTest extends TestCase {
 
     }
 
-    public void testPassed_lessThan() throws IOException {
+    public void testFailled_lessThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setNumberOfHireDaysReconcile(true);
@@ -71,8 +71,8 @@ public class Rule024NumberOfHireDaysReconcileTest extends TestCase {
 
         RuleEvaluation rv = new NumberOfHireDaysReconcile().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The number of Hire Days billed does not reconcile with the Hire Start and Hire End dates provided"));
 
     }
 

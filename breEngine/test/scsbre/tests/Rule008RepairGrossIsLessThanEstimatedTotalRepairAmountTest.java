@@ -81,32 +81,10 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
 
         // System.out.println(">>>" + (claim.getEngineeringReport().getEstimatedTotalRepairAmount().compareTo(BigDecimal.ZERO) > 0));
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        // assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
-    }
-
-    @Test
-    public void testPassed_EstimatedTotalRepairAmountNotZero() throws IOException {
-
-        ClaimInfo claim = getTestClaim();
-
-        // SET BRE BAND
-        claim.getChoBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
-
-        // SET ENGINEERING REPORT
-        claim.getEngineeringReport().setEstimatedTotalRepairAmount(new BigDecimal("100.00"));
-
-        // SET INVOICE
-        claim.getInvoice().setRepairGross(new BigDecimal("100.00"));
-        
-        RuleEvaluation rv = new RepairGrossIsLessThanEstimatedTotalRepairAmount().applyToClaim(claim);
-
-        // System.out.println(">>>" + (claim.getEngineeringReport().getEstimatedTotalRepairAmount().compareTo(BigDecimal.ZERO) > 0));
-        
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        
     }
     
     @Test
@@ -125,13 +103,13 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
         
         RuleEvaluation rv = new RepairGrossIsLessThanEstimatedTotalRepairAmount().applyToClaim(claim);
         
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Repair Gross is higher than the Estimated Total Repair Amount."));
+        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
     }
 
     @Test
-    public void testFailled_EstimatedTotalRepairAmountNoZero() throws IOException {
+    public void testFailled_EstimatedTotalRepairAmountNoZero_morethan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
 
@@ -149,5 +127,52 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Repair Gross is higher than the Estimated Total Repair Amount."));
         
+    }
+
+    @Test
+    public void testPassed_EstimatedTotalRepairAmountNotZero_equals() throws IOException {
+
+        ClaimInfo claim = getTestClaim();
+
+        // SET BRE BAND
+        claim.getChoBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
+
+        // SET ENGINEERING REPORT
+        claim.getEngineeringReport().setEstimatedTotalRepairAmount(new BigDecimal("100.00"));
+
+        // SET INVOICE
+        claim.getInvoice().setRepairGross(new BigDecimal("100.00"));
+
+        RuleEvaluation rv = new RepairGrossIsLessThanEstimatedTotalRepairAmount().applyToClaim(claim);
+
+        // System.out.println(">>>" + (claim.getEngineeringReport().getEstimatedTotalRepairAmount().compareTo(BigDecimal.ZERO) > 0));
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+
+    @Test
+    public void testPassed_EstimatedTotalRepairAmountNotZero_lessthan() throws IOException {
+
+        ClaimInfo claim = getTestClaim();
+
+        // SET BRE BAND
+        claim.getChoBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
+
+        // SET ENGINEERING REPORT
+        claim.getEngineeringReport().setEstimatedTotalRepairAmount(new BigDecimal("100.00"));
+
+        // SET INVOICE
+        claim.getInvoice().setRepairGross(new BigDecimal("90.00"));
+
+        RuleEvaluation rv = new RepairGrossIsLessThanEstimatedTotalRepairAmount().applyToClaim(claim);
+
+        // System.out.println(">>>" + (claim.getEngineeringReport().getEstimatedTotalRepairAmount().compareTo(BigDecimal.ZERO) > 0));
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
     }
 }

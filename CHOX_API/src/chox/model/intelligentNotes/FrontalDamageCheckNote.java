@@ -31,7 +31,7 @@ public class FrontalDamageCheckNote implements IntelligentNote {
         showing |= c.getCustomer().getDamage().toLowerCase().contains("front");
        
         //2. if user is Insurer
-        showing &= securityInfoProvider.getIsINS();
+        // showing &= securityInfoProvider.getIsINS();
 
         return showing;
     }

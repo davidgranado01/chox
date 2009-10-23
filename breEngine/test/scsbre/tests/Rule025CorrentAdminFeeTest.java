@@ -42,7 +42,7 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
         claim.setInvoice(testClaim.getTestInvoice());
         claim.setVClass(testClaim.getTestVehicleClass());
 
-        claim.getInvoice().setAdminFee(new BigDecimal("30.00"));
+        claim.getInvoice().setAdminFee(new BigDecimal("40.00"));
                 
         return claim;
     }
@@ -65,7 +65,22 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
 
     }
 
-    public void testPassed_managingRepairIsTrue() throws IOException {
+    public void testPassed_managingRepairIsTrue_equals() throws IOException {
+
+        ClaimInfo claim = getTestClaim();
+        claim.getChoBand().setCorrentAdminFee(true);
+
+        claim.setManagingRepair(true);
+        claim.getInvoice().setAdminFee(new BigDecimal("60.00"));
+
+        RuleEvaluation rv = new CorrentAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+    public void testPassed_managingRepairIsTrue_lessthan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setCorrentAdminFee(true);
@@ -80,7 +95,37 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
 
     }
 
-    public void testPassed_managingRepairIsFalse() throws IOException {
+    public void testPassed_managingRepairIsTrue_lessthan_2() throws IOException {
+
+        ClaimInfo claim = getTestClaim();
+        claim.getChoBand().setCorrentAdminFee(true);
+
+        claim.setManagingRepair(true);
+        claim.getInvoice().setAdminFee(new BigDecimal("30.00"));
+
+        RuleEvaluation rv = new CorrentAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+    
+    public void testPassed_managingRepairIsFalse_equals() throws IOException {
+
+        ClaimInfo claim = getTestClaim();
+        claim.getChoBand().setCorrentAdminFee(true);
+
+        claim.setManagingRepair(false);
+        claim.getInvoice().setAdminFee(new BigDecimal("40.00"));
+
+        RuleEvaluation rv = new CorrentAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+    public void testPassed_managingRepairIsFalse_lessthan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setCorrentAdminFee(true);
@@ -101,12 +146,12 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
         claim.getChoBand().setCorrentAdminFee(true);
 
         claim.setManagingRepair(true);
-        claim.getInvoice().setAdminFee(new BigDecimal("30.00"));
+        claim.getInvoice().setAdminFee(new BigDecimal("61.00"));
 
         RuleEvaluation rv = new CorrentAdminFee().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Admin Fee billed is too high."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Admin Fee billed is incorrect."));
 
     }
 
@@ -116,12 +161,12 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
         claim.getChoBand().setCorrentAdminFee(true);
 
         claim.setManagingRepair(false);
-        claim.getInvoice().setAdminFee(new BigDecimal("50.00"));
+        claim.getInvoice().setAdminFee(new BigDecimal("41.00"));
 
         RuleEvaluation rv = new CorrentAdminFee().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Admin Fee billed is too high."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Admin Fee billed is incorrect."));
 
     }
 }

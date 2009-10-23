@@ -44,7 +44,7 @@
         <li><a href="javascript:showClaimByStatus('InvoiceEscalated');" >Escalated Invoices (<s:property value="filterRecordCounter.escalatedInvoicesCount" />)</a></li>
     </s:if>
     <s:if test="filterAccessibility.isInvoiceEscalatedToHandlerAccessible">
-        <li><a href="javascript:showClaimByStatus('InvoiceEscalatedToHandler');" >Escalated Invoices (<s:property value="filterRecordCounter.escalatedInvoicesToHandlerCount" />)</a></li>
+        <li><a href="javascript:showClaimByStatus('InvoiceEscalatedToHandler');" >Escalated Invoices To Handler (<s:property value="filterRecordCounter.escalatedInvoicesToHandlerCount" />)</a></li>
     </s:if>
     <s:if test="filterAccessibility.isContestedInvoicesReferredToInsurerAccessible">
         <li><a href="javascript:showClaimByStatus('ContestedInvoiceReferredToInsurer');" >Contested Invoices Referred To Insurer (<s:property value="filterRecordCounter.contestedInvoicesReferredToInsurerCount" />)</a></li>

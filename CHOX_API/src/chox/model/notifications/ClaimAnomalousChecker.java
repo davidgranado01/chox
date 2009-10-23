@@ -17,6 +17,7 @@ public class ClaimAnomalousChecker {
     private List<AnomalousCheck> anomalousChecks;
 
     public List<Notification> getAnomalousNotifications(Claim c) {
+
         List<Notification> notifications = new ArrayList<Notification>();
 
         for (AnomalousCheck anomalousCheck : anomalousChecks) {
@@ -25,6 +26,9 @@ public class ClaimAnomalousChecker {
                 notifications.add(n);
             }
         }
+
+       
+        
         return notifications;
     }
 

@@ -37,7 +37,7 @@
 </s:if> 
 
 <s:if test="adminAccessibility.isInsurerBreManagementAdminAccessibility">         
-    <li><a href="javascript:renderAdminParameterPanel('InsurerPanelMgmt');">Insurer Detail</a></li>
+    <li><a href="javascript:renderAdminParameterPanel('InsurerPanelMgmt');">CHOX Administration</a></li>
 </s:if>
 
 <s:if test="adminAccessibility.isUserManagementAdminAccessibility">         

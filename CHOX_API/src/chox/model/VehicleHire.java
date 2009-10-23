@@ -152,7 +152,7 @@ public class VehicleHire extends AuditableEntity implements Serializable, IHireI
         return days;
     }
 
-    public void setDays(Integer days) {
+    public void setDays(int days) {
         this.days = days;
     }
 

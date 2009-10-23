@@ -13,6 +13,7 @@ import chox.services.InvoiceService;
 import chox.services.VehicleClassService;
 import chox.xmlValidation.model.BordereauResult;
 import chox.services.ClaimResult;
+import chox.xmlValidation.model.status.ClaimParseStatus;
 import chox.xmlValidation.rules.enginee.ClaimCustomerValidation;
 import chox.xmlValidation.rules.enginee.ClaimEngineeringReportValidation;
 import chox.xmlValidation.rules.enginee.ClaimHireMonitoringDetailValidation;
@@ -89,6 +90,11 @@ public class BordereauDataValidation {
                     // ALL NEW INVOICE ONLY
                     InvoiceValidation invVal = new InvoiceValidation(claimResult, dataValidationParameter, claimService, chorganisationService, choBandService);
                     claimResult = invVal.execute();
+
+                    /* MANTIS : 719 */
+                    if(claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)){
+                        claimResult.getClaim().getHireMonitoringDetail().setIsTotalLostCheck(claimResult.getClaim().getCustomer().getIsTotalLoss());
+                    }
 
                     // RUN BRE VALIDATION FOR ALL NEW INVOICE ONLY                    
                     claimResult = businessRuleEngService.execute(claimResult);
