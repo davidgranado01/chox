@@ -29,6 +29,7 @@ public class ClaimStatus {
     public static final String INVOICE_PAYMENT_RECEIVED = "PaymentReceived";
     public static final String CLAIM_UPDATE_BY_ENG = "ClaimUpdatedByEngineer";
     public static final String INVOICE_REF_TO_ENG = "InvoiceReferredToEngineer";
+    public static final String CLAIM_UNACKNOWLEDGED_UNASSIGNED = "ClaimUnacknowledgedUnassigned";
 
     public static List<String> getStatus() {
         List<String> status = new ArrayList<String>();
@@ -42,6 +43,7 @@ public class ClaimStatus {
         status.add(CLAIM_REJECTED);
         status.add(CLAIM_REJECTION_ACCEPTED);
         status.add(CLAIM_REJECTION_CONTESTED);
+        status.add(CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         status.add(CLAIM_UNACKNOWLEDGED_UNROUTED);
         status.add(CLAIM_UNACKNOWLEDGED_ROUTED);
         status.add(CLAIM_UPDATE_BY_ENG);

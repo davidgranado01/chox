@@ -5,6 +5,7 @@
 
 package chox.services;
 
+import chox.model.WebUser;
 import java.util.List;
 
 /**
@@ -33,9 +34,9 @@ public interface LookupService {
     
     public List getInsurerChoBand(int insurerId);
     public List getReasonOfDelay();
+
+    public List getWorkgroups(WebUser user, boolean isActiveOnly);
+    public List getWorkgroupsByInsurerId(int insurerId, boolean isActiveOnly);
+
     
-    public List getWorkgroups();
-    public List getAllWorkgroups();
-    public List getWorkgroupsByInsurerId(int insurerId);
-    public List getAllWorkgroupsByInsurerId(int insurerId);
 }

@@ -1101,8 +1101,141 @@ UPDATE hire_monitoring_detail set original_repair_book_in_date = repair_book_in_
 ALTER TABLE hire_monitoring_detail ALTER COLUMN original_repair_book_in_date SET STORAGE PLAIN;
 
 -- ############################################################################################
--- START VERSION V2.8.2.7.2
+-- START VERSION V2.8.2.8
 -- ############################################################################################\
+
+ALTER TABLE insurer ADD COLUMN is_auto_routing_enable boolean DEFAULT false;
+UPDATE insurer set is_auto_routing_enable = false;
+ALTER TABLE insurer ALTER COLUMN is_auto_routing_enable SET STORAGE PLAIN;
+
+--------------------
+
+CREATE SEQUENCE automatic_routing_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE automatic_routing_id_seq OWNER TO postgres;
+
+CREATE TABLE automatic_routing
+(
+	id integer NOT NULL DEFAULT nextval('automatic_routing_id_seq'::regclass),
+	insurer_id integer NOT NULL DEFAULT (-1),
+	workgroup_id integer NOT NULL DEFAULT (-1),
+	expression character varying(100) NOT NULL,
+	created_by integer,
+	created_date timestamp without time zone DEFAULT now(),
+	last_modified_by integer,
+	last_modified_date timestamp without time zone DEFAULT now(),
+	CONSTRAINT automatic_routing_pkey PRIMARY KEY (id),
+	CONSTRAINT insurer_id FOREIGN KEY (insurer_id) REFERENCES insurer (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+	CONSTRAINT workgroup_id FOREIGN KEY (workgroup_id) REFERENCES workgroup (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (OIDS=FALSE);
+ALTER TABLE automatic_routing OWNER TO postgres;
+
+
+-- ############################################################################################
+-- START VERSION V2.8.2.9
+-- ############################################################################################\
+
+ALTER TABLE insurer ADD COLUMN is_claim_ownership_enable boolean DEFAULT false;
+UPDATE insurer set is_claim_ownership_enable = false;
+ALTER TABLE insurer ALTER COLUMN is_claim_ownership_enable SET STORAGE PLAIN;
+
+--------------------
+
+insert into web_user_role (id, name, created_by, created_date, last_modified_by, last_modified_date, description, type_id) values ((select max(id)+1 from web_user_role), 'ROLE_INS_COM', 999, now(), 999, now(), 'Insurer Claim Ownership Manager',2);
+
+--------------------
+
+insert into accessibility values ((select max(id)+1 from accessibility), 'filter.ClaimUnacknowledgedUnassigned');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='filter.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='filter.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='filter.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_CHO_MNG', 1, (select id from accessibility where name ='filter.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+
+--------------------
+
+insert into accessibility values ((select max(id)+1 from accessibility), 'action.assignClaimOwnership.ClaimUnacknowledgedUnassigned');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='action.assignClaimOwnership.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='action.assignClaimOwnership.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_CHO_MNG', 1, (select id from accessibility where name ='action.assignClaimOwnership.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+
+--------------------
+
+insert into accessibility values ((select max(id)+1 from accessibility), 'tab.InvoiceDetail.ClaimUnacknowledgedUnassigned');
+insert into accessibility values ((select max(id)+1 from accessibility), 'tab.ClaimDetail.ClaimUnacknowledgedUnassigned');
+insert into accessibility values ((select max(id)+1 from accessibility), 'tab.History.ClaimUnacknowledgedUnassigned');
+insert into accessibility values ((select max(id)+1 from accessibility), 'tab.PaymentPack.ClaimUnacknowledgedUnassigned');
+insert into accessibility values ((select max(id)+1 from accessibility), 'tab.HireMonitoring.ClaimUnacknowledgedUnassigned');
+insert into accessibility values ((select max(id)+1 from accessibility), 'tab.Notes.ClaimUnacknowledgedUnassigned');
+insert into accessibility values ((select max(id)+1 from accessibility), 'tab.AuditTrail.ClaimUnacknowledgedUnassigned');
+
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='tab.InvoiceDetail.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ALL', 1, (select id from accessibility where name ='tab.ClaimDetail.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='tab.History.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ALL', 1, (select id from accessibility where name ='tab.PaymentPack.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ALL', 1, (select id from accessibility where name ='tab.HireMonitoring.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ALL', 1, (select id from accessibility where name ='tab.Notes.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ALL', 1, (select id from accessibility where name ='tab.AuditTrail.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+
+--------------------
+
+ALTER TABLE claim ADD COLUMN claim_owner_id integer;
+ALTER TABLE claim ALTER COLUMN claim_owner_id SET STORAGE PLAIN;
+
+-- ############################################################################################
+-- START VERSION V2.8.2.10
+-- ############################################################################################\
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'action.claimOwnership.ClaimUnacknowledgedUnassigned');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='action.claimOwnership.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='action.claimOwnership.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+
+-- GRAND PAYMENT CLARK ROLE TO CREDIT HIRE
+insert into accessibility_item values ('ROLE_INS_CH', 1, (select id from accessibility where name ='filter.ClaimsAwaitingClaimsHandlingPayment'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_CH', 1, (select id from accessibility where name ='filter.ApprovedInvoicesAwaitingPayment'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_CH', 1, (select id from accessibility where name ='action.logInvoicePayment.AwaitingInvoicePayment'), (select max(id)+1 from accessibility_item));
+
+--------------------
+
+delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'tab.HireMonitoring%') and role like 'ROLE_INS%';
+
+--------------------
+
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.ClaimRejected';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.ClaimRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.ClaimRejectionContested';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.AwaitingCarHireInfo';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.AwaitingInvoiceData';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.InvoiceDataCalculationIncorrect';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.InvoiceApprovedByBRE';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.InvoiceEscalated';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.ContestedInvoiceReferredToCHO';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.InvoiceRejectionAccepted';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.AwaitingInvoicePayment';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.InvoicePaymentLogged';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.ClaimReferredToEngineer';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.ClaimReferredToFNOL';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.ClaimClosed';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.ClaimPending';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.InvoiceReferredToClaimsHandler';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.PaymentReceived';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.ClaimUpdatedByEngineer';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.InvoiceReferredToEngineer';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.InvoiceEscalatedToHandler';
+insert into accessibility_item select 'ROLE_INS', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='tab.HireMonitoring.ClaimUnacknowledgedUnassigned';
+
+------------------------------------
+
+insert into accessibility_item values ('ROLE_INS_CH', 1, (select id from accessibility where name ='filter.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+
+------------------------------------
 
 delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'notification.NotificationNotesNotification%');
 
@@ -1131,27 +1264,119 @@ insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from acces
 insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUpdatedByEngineer';
 insert into accessibility_item select 'ALL', 0, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToEngineer';
 
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedUnrouted';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedRouted';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejected';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionAccepted';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionContested';
 insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingCarHireInfo';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoiceData';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceApprovedByBRE';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalated';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalatedToHandler';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceRejectionAccepted';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoicePayment';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoicePaymentLogged';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToEngineer';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToFNOL';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimClosed';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedRouted';
 insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimPending';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.PaymentReceived';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToEngineer';
 insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUpdatedByEngineer';
-insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToEngineer';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejected';
+insert into accessibility_item select 'ROLE_INS_CH', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToFNOL';
+
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.AwaitingCarHireInfo';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedRouted';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimPending';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToEngineer';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimUpdatedByEngineer';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionContested';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimRejected';
+insert into accessibility_item select 'ROLE_INS_MNG', 1, id, (select max(id)+1 from accessibility_item) from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToFNOL';
+
+-- ############################################################################################
+-- START VERSION V2.8.2.11
+-- ############################################################################################\
+
+delete from accessibility_item where accessibility_id=(select id from accessibility where name = 'filter.ClaimUnacknowledgedUnassigned') and role='ROLE_INS_CH';
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.escalateUnassignedClaim.ClaimUnacknowledgedUnassigned');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.escalateUnassignedClaim.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.escalateUnassignedClaim.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.AwaitingCarHireInfo');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.AwaitingCarHireInfo'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.AwaitingCarHireInfo'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.AwaitingInvoiceData');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.AwaitingInvoiceData'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.AwaitingInvoiceData'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.ClaimReferredToEngineer');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.ClaimReferredToEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.ClaimReferredToEngineer'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.ClaimReferredToFNOL');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.ClaimReferredToFNOL'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.ClaimReferredToFNOL'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.ClaimRejected');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.ClaimRejected'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.ClaimRejected'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.ClaimRejectionContested');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.ClaimRejectionContested'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.ClaimRejectionContested'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.ContestedInvoiceReferredToCHO');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.ContestedInvoiceReferredToCHO'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.ContestedInvoiceReferredToCHO'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.ContestedInvoiceReferredToInsurer');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.ContestedInvoiceReferredToInsurer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.ContestedInvoiceReferredToInsurer'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.InvoiceApprovedByBRE');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceApprovedByBRE'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceApprovedByBRE'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.InvoiceDataCalculationIncorrect');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceDataCalculationIncorrect'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceDataCalculationIncorrect'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.InvoiceEscalated');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceEscalated'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceEscalated'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.InvoiceEscalatedToHandler');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceEscalatedToHandler'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceEscalatedToHandler'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.InvoicePaymentLogged');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoicePaymentLogged'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoicePaymentLogged'), (select max(id)+1 from accessibility_item));
+
+
+-- ############################################################################################
+-- START VERSION V2.8.2.12
+-- ############################################################################################\
+
+update web_user_role set description='Insurer Payments Clerk' where name='ROLE_INS_PC';
+
+-----------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.ClaimUnacknowledgedRouted');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.ClaimUnacknowledgedRouted'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.ClaimUnacknowledgedRouted'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.AwaitingInvoicePayment');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.AwaitingInvoicePayment'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.AwaitingInvoicePayment'), (select max(id)+1 from accessibility_item));
+
+---------------------------
+
+update chorganisation set name='Drive Assist UK Ltd', address1='Tamworth House',
+address2='Ventura Park Road.', address3='Bitterscote', address4='Tamworth',
+address5='UK', postcode='B78 3LY', vat_no='580508147',	
+company_no='2737288' where id=1006;
+
+update chorganisation set name='Enterprise Rent-A-Car',	
+address1='Enterprise Rent-A-Car UK Limited', address2='Enterprise House',
+address3='Delta Way, Egham', address4='Surrey', address5='UK',
+postcode='TW20 8RX', vat_no='641634450', company_no='02946689'
+where id=1007;
+
+update insurer set name='Royal and Sun Alliance', vat_no='165000801',
+company_no='00093792', address1='Royal and Sun Alliance Insurance Plc',
+address2='St Marks Court', address3='Chart Way, Horsham', address4='West Sussex',
+address5='UK', postcode='RH12 1XL' where id=3;
+
+---------------------------

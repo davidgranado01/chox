@@ -9,7 +9,6 @@ import org.hibernate.criterion.Restrictions;
 
 public class UserServiceImpl extends DataService implements UserService {
 
-            
     public UserServiceImpl() {
     }
 
@@ -103,8 +102,42 @@ public class UserServiceImpl extends DataService implements UserService {
         
         return users;
     } 
+
+    public List<WebUser> getClaimHanldersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable){
+
+        List<WebUser> users = new ArrayList<WebUser>();
+
+        try {
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
+            criteria.add(Restrictions.eq("insurer.id", insurerId));
+            criteria.add(Restrictions.eq("status", true));
+            criteria.addOrder(Order.asc("firstName"));
+            users = findByCriteria(criteria);
+
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
+        
+        List<WebUser> claimHandlers = new ArrayList<WebUser>();
+
+        if(!workgroupEnable){
+            
+            claimHandlers = users;
+            
+        }else{
+            
+            for(WebUser wu : users){
+                if(wu.isClaimHandler() && wu.getWorkgroupIds().contains(selectedWorkgroupId)){
+                    claimHandlers.add(wu);
+                }
+            }
+            
+        }
+        
+        return claimHandlers;
+    }
     
-   
     public List<WebUser> getUsers(int orgTypeId, int orgId){
         
         List<WebUser> users = new ArrayList<WebUser>();
@@ -140,7 +173,6 @@ public class UserServiceImpl extends DataService implements UserService {
         return users;
     } 
     
-
     public WebUser getUsers(int id){
         
         return (WebUser) get(WebUser.class, id);

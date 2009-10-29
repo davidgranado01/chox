@@ -149,15 +149,28 @@
             <result name="claimPending">/jsp/user/actionPanel/p_pendingClaim.jsp</result>
             <result name="updateInvoiceReferredByEngineer">/jsp/user/actionPanel/p_approveInvoiceReferredByEngineer.jsp</result>
             <result name="updatePaymentReceived">/jsp/user/actionPanel/p_updatePaymentReceived.jsp</result>
-            <result name="updateClaimUpdatedByEngineer">/jsp/user/actionPanel/p_updateClaimUpdatedByEngineer.jsp</result>            
+            <result name="assignClaimOwnership">/jsp/user/actionPanel/p_assignClaimOwnership.jsp</result>
+            <result name="updateClaimUpdatedByEngineer">/jsp/user/actionPanel/p_updateClaimUpdatedByEngineer.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
 
-        <action name="getUpdateInsurerClaimNumberAction" class="chox.web.actions.ClaimAction" method="getUpdateInsurerClaimNumberAction">
-            <result name="updateInsurerClaimNumber">/jsp/user/actionPanel/p_updateInsurerClaimNumber.jsp</result>
+        <action name="getUpdateInsurerClaimNumber" class="chox.web.actions.ClaimAction" method="getUpdateInsurerClaimNumber">
+            <result name="success">/jsp/user/actionPanel/p_updateInsurerClaimNumber.jsp</result>
             <result name="empty">/jsp/p_blank.jsp
             </result>
         </action> 
+
+        <action name="getUpdateClaimOwnership" class="chox.web.actions.ClaimAction" method="getUpdateClaimOwnership">
+            <result name="success">/jsp/user/actionPanel/p_updateClaimOwnership.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp
+            </result>
+        </action>
+
+        <action name="getEscalateUnassignedClaim" class="chox.web.actions.ClaimAction" method="getEscalateUnassignedClaim">
+            <result name="success">/jsp/user/actionPanel/p_escalateUnassignedClaimToOtherWorkgroup.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp
+            </result>
+        </action>
         
         <!-- Start Claim Detail -->
         <action name="openClaimDetail" class="chox.web.actions.ClaimAction">
@@ -189,6 +202,28 @@
                 </param>
                 <param name="statusMsg">${statusMsg}
                 </param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
+        <action name="ownershipAssignment" class="chox.web.actions.ClaimAction" method="ownershipAssignment">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">If you have been incorrectly assigned this claim in your workgroup, please click on the 'Remove Workgroup Mapping' button to send it back to a Claims Router, who will then select the correct workgroup for this claim.</param>
+            </result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
+        <action name="updateOwnershipAssignment" class="chox.web.actions.ClaimAction" method="ownershipAssignment">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}</param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -294,6 +329,12 @@
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
+
+        <action name="UpdateClaimWorkgroupAssignment" class="chox.web.actions.ClaimAction" method="UpdateClaimWorkgroupAssignment">
+            <result name="success" type="redirect">inbox.action</result>
+            <result name="error">/jsp/user/ClaimDetail.jsp
+            </result>
+        </action>
         
         <action name="updatePaymentReceived" class="chox.web.actions.ClaimAction" method="updatePaymentReceived">
             <result name="success" type="redirect-action">
@@ -376,6 +417,9 @@
             <result name="success">/jsp/p_response.jsp</result>
         </action>
         <action name="doClaimRoutedAction" class="chox.web.actions.BatchUpdateAction" method="doClaimRoutedAction">
+            <result name="success">/jsp/p_response.jsp</result>
+        </action>
+        <action name="doClaimOwnershipAction" class="chox.web.actions.BatchUpdateAction" method="doClaimOwnershipAction">
             <result name="success">/jsp/p_response.jsp</result>
         </action>
         <action name="doInvoicePaymentReceivedAction" class="chox.web.actions.BatchUpdateAction" method="doInvoicePaymentReceivedAction">
@@ -983,11 +1027,22 @@
         <action name="GetWorkgroupDropDownActionByUser" class="chox.web.dropdown.WorkgroupDropDownAction">
             <result>/jsp/user/dropdown/p_search_dropdown_workgroup.jsp</result>
         </action>
+
+        <action name="GetWorkgroupDropDownActionByUserOnChange" class="chox.web.dropdown.WorkgroupDropDownAction">
+            <result>/jsp/user/dropdown/p_dropdown_workgroup.jsp</result>
+        </action>
         
         <action name="SearchWorkgroupDropDownAction" class="chox.web.dropdown.WorkgroupDropDownAction" method="ClaimSearch">
             <result>/jsp/user/dropdown/p_search_dropdown_workgroup.jsp</result>
         </action>
-        
+
+        <action name="ClaimHandlerRoleUserDropDownAction" class="chox.web.dropdown.ClaimHandlerRoleUserDropDownAction">
+            <result>/jsp/user/dropdown/p_search_dropdown_claimHandlerUser.jsp</result>
+        </action>
+        <action name="GetClaimHandlerRoleUserDropDownAction" class="chox.web.dropdown.ClaimHandlerRoleUserDropDownAction">
+            <result>/jsp/user/dropdown/p_dropdown_claimHandlerUser.jsp</result>
+        </action>
+
         <action name="LoadEncodePasswordPage" class="chox.web.actions.AdminAction" method="loadEncodePasswordPage">
             <result>/jsp/user/EncodePassword.jsp</result>
         </action>

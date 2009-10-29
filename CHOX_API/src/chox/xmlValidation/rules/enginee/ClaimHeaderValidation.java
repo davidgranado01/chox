@@ -33,6 +33,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
     Timestamp creditAgreementDate;
     Timestamp gtaNoticeDate;
     String choReferenceNumber;
+    boolean isUpdateManagingRepair = false;
         
     public void setChoBandService(ChoBandService choBandService) { this.choBandService = choBandService; }
     public void setChorganisationService(ChorganisationService chorganisationService) { this.chorganisationService = chorganisationService; }
@@ -78,6 +79,12 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
         
         if(NodeHelper.nodeValidateBoolean(sectionName, "managing-repair", claimResult.getElement(),  dataValidationParameter)){
             managingRepair = XmlHelper.getBooleanFromNode(claimResult.getElement(), "managing-repair");
+            
+            if(!XMLUtils.getElementValue(claimResult.getElement(), "managing-repair").equalsIgnoreCase("")
+                    && XMLUtils.getElementValue(claimResult.getElement(), "managing-repair")!=null){
+                isUpdateManagingRepair = true;
+            }
+
         }
         
         if(NodeHelper.nodeValidateBoolean(sectionName, "agreement-signed", claimResult.getElement(),  dataValidationParameter)){
@@ -117,7 +124,11 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
                     claimResult.setClaimParseStatus(ClaimParseStatus.newInvoice);
                     ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(claim.getChorganisation().getId(), claim.getInsurer().getId());
                     claim.setChoband(choBand);
- 
+
+                    if(isUpdateManagingRepair && managingRepair!=null){
+                        claim.setManagingRepair(managingRepair);
+                    }
+                    
                 }else if(claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) ||
                     claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING) ||
                     claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_ACCEPTED)){
@@ -127,8 +138,10 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
                     claimResult.setValid(false);
                     
                 }else{
+                    
                     // EDITABLE CLAIM
                     claimResult.setClaimParseStatus(ClaimParseStatus.existClaim);
+                    
                 }
             }
             
@@ -150,7 +163,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
             claim.setChorganisation(chorganisationService.getCurrentCHOrganisation());
 
         }
-                
+
         claimResult.setClaim(claim);
     }
     

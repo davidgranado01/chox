@@ -20,7 +20,7 @@ public class ChoBand extends AuditableEntity implements Serializable, ICHOBandIn
     protected BigDecimal hireRateChargeTolerance;
     protected BigDecimal hireNetCeiling;
     protected int hireDayCeiling;
-    protected BigDecimal maxRepairValue;
+    protected BigDecimal repairNetCeiling;
     protected int isNotMobileDayAllowance;
     protected int averageLabourRate;
     protected int averageLabourHoursPerHireDay;
@@ -37,33 +37,33 @@ public class ChoBand extends AuditableEntity implements Serializable, ICHOBandIn
     protected boolean roofRackChargeCheck;
     protected boolean deliveryOrCollectionChargeCheck;
     protected boolean dualControlChargeCheck;
-protected boolean hasAllowedVehicleClass;
-protected boolean hasCalculatedCorrectDailyRate;
-protected boolean hireNetDoesNotExceedVehicleClassHireNetCeiling;
-protected boolean hireDayCountDoesNotExceedBandHireDayCeiling;
-protected boolean hasCorrectHireGrossCalculation;
-protected boolean actualHireDaysDoesNotExceedAllowableHireDays;
-protected boolean actualHireDaysDoesNotExceedTotalLossInspection;
-protected boolean repairGrossIsLessThanEstimatedTotalRepairAmount;
-protected boolean hasCorrectHireVatCalculation;
-protected boolean hasCorrectRepairVatCalculation;
-protected boolean hasCorrectRepairGrossCalculation;
-protected boolean hasCorrectTotalNet;
-protected boolean hasCorrectTotalVat;
-protected boolean hasCalculatedTotalGrossEqualSuppliedTotalGross;
-protected boolean hasCorrectDiscountForNonDA;
-protected boolean handlingAmountAndDeductionBothEqualZeroForNonDA;
-protected boolean claimHasZeroDiscountForDA;
-protected boolean handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero;
-protected boolean hasSuppliedCorrectTotalToPay;
-protected boolean estimatedRepairDaysPlusBandDaysDoNotExceedHireDays;
-protected boolean validateUniqueVehicleRegistrationNumber;
-protected boolean labourCostBusinessRule;
-protected boolean repairNetDoesNotExceedVehicleClassRepairNetCeiling;
-protected boolean numberOfHireDaysReconcile;
-protected boolean correntAdminFee;
-protected boolean repairBookedInDate;
-protected boolean flaggedForManualInvoiceReview;
+    protected boolean hasAllowedVehicleClass;
+    protected boolean hasCalculatedCorrectDailyRate;
+    protected boolean hireNetDoesNotExceedVehicleClassHireNetCeiling;
+    protected boolean hireDayCountDoesNotExceedBandHireDayCeiling;
+    protected boolean hasCorrectHireGrossCalculation;
+    protected boolean actualHireDaysDoesNotExceedAllowableHireDays;
+    protected boolean actualHireDaysDoesNotExceedTotalLossInspection;
+    protected boolean repairGrossIsLessThanEstimatedTotalRepairAmount;
+    protected boolean hasCorrectHireVatCalculation;
+    protected boolean hasCorrectRepairVatCalculation;
+    protected boolean hasCorrectRepairGrossCalculation;
+    protected boolean hasCorrectTotalNet;
+    protected boolean hasCorrectTotalVat;
+    protected boolean hasCalculatedTotalGrossEqualSuppliedTotalGross;
+    protected boolean hasCorrectDiscountForNonDA;
+    protected boolean handlingAmountAndDeductionBothEqualZeroForNonDA;
+    protected boolean claimHasZeroDiscountForDA;
+    protected boolean handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero;
+    protected boolean hasSuppliedCorrectTotalToPay;
+    protected boolean estimatedRepairDaysPlusBandDaysDoNotExceedHireDays;
+    protected boolean validateUniqueVehicleRegistrationNumber;
+    protected boolean labourCostBusinessRule;
+    protected boolean repairNetDoesNotExceedVehicleClassRepairNetCeiling;
+    protected boolean numberOfHireDaysReconcile;
+    protected boolean correntAdminFee;
+    protected boolean repairBookedInDate;
+    protected boolean flaggedForManualInvoiceReview;
 
     public ChoBand() {
     }
@@ -180,8 +180,8 @@ protected boolean flaggedForManualInvoiceReview;
     }
 
 
-    public void setMaxRepairValue(java.math.BigDecimal maxRepairValue) {
-        this.maxRepairValue = maxRepairValue;
+    public void setRepairNetCeiling(java.math.BigDecimal repairNetCeiling) {
+        this.repairNetCeiling = repairNetCeiling;
     }
     
     public int getIsNotMobileDayAllowance() {
@@ -228,13 +228,13 @@ protected boolean flaggedForManualInvoiceReview;
         this.vehicleClassCelling = vehicleClassCelling;
     }
 
-    public java.math.BigDecimal getMaxRepairValue() {
+    public java.math.BigDecimal getRepairNetCeiling() {
 
-        if (maxRepairValue == null) {
-            maxRepairValue = new BigDecimal(0.00);
+        if (repairNetCeiling == null) {
+            repairNetCeiling = new BigDecimal(0.00);
         }
         
-        return maxRepairValue;
+        return repairNetCeiling;
     }
 
     public java.math.BigDecimal getHireNetCeiling() {
@@ -245,29 +245,25 @@ protected boolean flaggedForManualInvoiceReview;
     }
 
 
-    public java.math.BigDecimal getMaxRepairValueCelling() {
+    public java.math.BigDecimal getMaxRepairNetCelling() {
 
-        BigDecimal maxRepairNetCeiling = maxRepairValue;
+        BigDecimal maxRepairNetCelling = new BigDecimal(100000);
         
         if(vehicleClassCellingEnable){
-
-            maxRepairNetCeiling = new BigDecimal(100000);
-
             if(vehicleClassCelling!=null){
-                maxRepairNetCeiling = vehicleClassCelling.getRepairNetCelling();
+                maxRepairNetCelling = vehicleClassCelling.getRepairNetCelling();
             }
-            
         }
         
-        return maxRepairNetCeiling;
+        return maxRepairNetCelling;
     }
     
     public java.math.BigDecimal getMaxHireNetCeiling() {
         
-        BigDecimal maxHireNetCeiling = hireNetCeiling;
+        BigDecimal maxHireNetCeiling = new BigDecimal(100000);
         
         if(vehicleClassCellingEnable){
-            maxHireNetCeiling = new BigDecimal(100000);
+
             if(vehicleClassCelling!=null){
                 maxHireNetCeiling = vehicleClassCelling.getHireNetCelling();
             }

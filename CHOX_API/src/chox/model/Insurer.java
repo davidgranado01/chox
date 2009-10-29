@@ -21,6 +21,8 @@ public class Insurer extends AuditableEntity implements Serializable, IInsurerIn
     protected String companyNo;
     protected String phone;
     protected boolean workgroupEnable;
+    protected boolean autoRoutingEnable;
+    protected boolean claimOwnershipEnable;
     protected List<VehicleClassCelling> vehicleClassCellings;
 
     public Insurer() {
@@ -152,4 +154,21 @@ public class Insurer extends AuditableEntity implements Serializable, IInsurerIn
             this.vehicleClassCellings.add(vehicleClassCelling);
         }
     }
+
+    public boolean isAutoRoutingEnable() {
+        return autoRoutingEnable;
+    }
+
+    public void setAutoRoutingEnable(boolean autoRoutingEnable) {
+        this.autoRoutingEnable = autoRoutingEnable;
+    }
+
+    public boolean isClaimOwnershipEnable() {
+        return claimOwnershipEnable;
+    }
+
+    public void setClaimOwnershipEnable(boolean claimOwnershipEnable) {
+        this.claimOwnershipEnable = claimOwnershipEnable;
+    }
+
 }

@@ -106,5 +106,10 @@ public class FilterRecordCounter {
     public long getContestedInvoiceReferToEngAccessibleCount()
     {
         return service.getCountByStatus(ClaimStatus.INVOICE_REF_TO_ENG);
-    }         
+    }  
+
+    public long getClaimUnacknowledgedUnassignedAccessible()
+    {
+        return service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+    }
 }

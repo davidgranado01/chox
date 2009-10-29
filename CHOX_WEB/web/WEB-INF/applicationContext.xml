@@ -22,7 +22,7 @@
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver">
         </property>
-        <property name="url" value="jdbc:postgresql://localhost:5432/chox_sprint8_build2_6">
+        <property name="url" value="jdbc:postgresql://localhost:5432/chox_sprint8_build2">
         </property>
         <property name="username" value="postgres">
         </property>
@@ -99,6 +99,7 @@
                 <value>chox/model/UserWorkgroup.hbm.xml</value>
                 <value>chox/model/Notification.hbm.xml</value>
                 <value>chox/model/VehicleClassCelling.hbm.xml</value>
+                <value>chox/model/AutomaticRouting.hbm.xml</value>
             </list>
         </property>
         <property name="entityInterceptor" ref="auditInterceptor"/>

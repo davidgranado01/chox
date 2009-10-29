@@ -11,8 +11,10 @@ import scsbre.model.IClaimInfo;
 public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusinessRule {
 
     String narrative = "";
+    ClaimStatus statusAfterFailure = ClaimStatus.InvoiceEscalated;
     String narrativeTemplate = "The Repair Net billed %s exceeds the Repair Net ceiling of %s for vehicle class %s.";
-
+    DecimalFormat moneyFormat = new DecimalFormat("£0.00");
+    
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -22,14 +24,36 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
         if(claim.getChoBand().isRepairNetDoesNotExceedVehicleClassRepairNetCeiling()){
 
             BigDecimal repairNet = claim.getInvoice().getRepairNet();
-            BigDecimal repairNetCelling = claim.getChoBand().getMaxRepairValueCelling();
-            boolean success = repairNet.compareTo(repairNetCelling) <= 0;
-            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
-            DecimalFormat moneyFormat = new DecimalFormat("£0.00");
-            narrative = String.format(narrativeTemplate, moneyFormat.format(repairNet.doubleValue()), moneyFormat.format(repairNetCelling.doubleValue()), claim.getVClass().getCode());
 
+            // CHECK BRE BAND > REPAIR NET
+            BigDecimal repairNetCeiling = claim.getChoBand().getRepairNetCeiling();
+            boolean success = repairNet.compareTo(repairNetCeiling) <= 0;
+            
             if(success){
-                narrative = "";
+
+                res.setResult(RuleEvaluationResult.RulePassed);
+
+                // CHECK VEHICLE CLASS CEILLING > REPAIR NET
+                if(claim.getChoBand().isVehicleClassCellingEnable()){
+                    
+                    repairNetCeiling = claim.getChoBand().getMaxRepairNetCelling();                    
+                    success = repairNet.compareTo(repairNetCeiling) <= 0;
+                    res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+                    if(!success){
+                        statusAfterFailure = ClaimStatus.InvoiceEscalatedToHandler;
+                    }
+                    
+                }
+
+            }else{
+                narrativeTemplate = "The Repair Net billed %s exceeds the Repair Net ceiling of %s";
+                res.setResult(RuleEvaluationResult.RuleFailed);
+                
+            }
+
+            if(!success){
+                narrative = String.format(narrativeTemplate, moneyFormat.format(repairNet.doubleValue()), moneyFormat.format(repairNetCeiling.doubleValue()), claim.getVClass().getCode());
             }
 
         }else{
@@ -53,6 +77,7 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
 
     public ClaimStatus getStatusAfterFailure() {
         // return ClaimStatus.InvoiceEscalated;
-        return ClaimStatus.InvoiceEscalatedToHandler;
+        // return ClaimStatus.InvoiceEscalatedToHandler;
+        return statusAfterFailure;
     }
 }

@@ -45,10 +45,10 @@ public class Rule023RepairNetDoesNotExceedVehicleClassRepairNetCeilingTest exten
 
         // SET VEHICLE CLASS CELLING
         VehicleClassCellingInfo vehicleClassCelling = new VehicleClassCellingInfo();
-        vehicleClassCelling.setRepairNetCelling(new BigDecimal("500.00"));
+        vehicleClassCelling.setRepairNetCelling(new BigDecimal("300.00"));
         
         // SET CHOBAND
-        claim.getChoBand().setMaxRepairValue(new BigDecimal("400.00"));
+        claim.getChoBand().setRepairNetCeiling(new BigDecimal("400.00"));
         claim.getChoBand().setVehicleClassCelling(vehicleClassCelling);
         
         claim.getInvoice().setRepairNet(new BigDecimal("400.00"));
@@ -65,105 +65,135 @@ public class Rule023RepairNetDoesNotExceedVehicleClassRepairNetCeilingTest exten
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
 
-    
     @Test
-    public void testPassed_VehicleClassCellingEnable() throws IOException {
+    public void testPassed_VehicleClassCellingDisabled_LessThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setVehicleClassCellingEnable(true);
-        claim.getInvoice().setRepairNet(new BigDecimal("499.99"));
+        claim.getChoBand().setRepairNetDoesNotExceedVehicleClassRepairNetCeiling(true);
+        claim.getChoBand().setVehicleClassCellingEnable(false);
+        claim.getInvoice().setRepairNet(new BigDecimal("399.99"));
+
+        // CEILLING > 300
+        // BRE BAND > CEILING > 400
 
         RuleEvaluation rv = new RepairNetDoesNotExceedVehicleClassRepairNetCeiling().applyToClaim(claim);
 
-        /*
-        boolean success = (claim.getInvoice().getHireNet()).compareTo(claim.getChoBand().getMaxHireNetCeiling()) <= 0;
-        System.out.println("HIRE NET: "+claim.getInvoice().getHireNet());
-        System.out.println("HIRE NET CELLING: "+claim.getChoBand().getMaxHireNetCeiling());
-        System.out.println("RESULT: "+success);
-        System.out.println("RESULT: "+rv.getRelatedRule().getNarrative());
-        */
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+        assertFalse(rv.getIsVisibleToCHO());
+
+    }
+
+    @Test
+    public void testPassed_VehicleClassCellingDisabled_Equals() throws IOException {
+
+        ClaimInfo claim = getTestClaim();
+        claim.getChoBand().setRepairNetDoesNotExceedVehicleClassRepairNetCeiling(true);
+        claim.getChoBand().setVehicleClassCellingEnable(false);
+        claim.getInvoice().setRepairNet(new BigDecimal("400.00"));
+
+        RuleEvaluation rv = new RepairNetDoesNotExceedVehicleClassRepairNetCeiling().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+        assertFalse(rv.getIsVisibleToCHO());
+
+    }
+
+    @Test
+    public void testFailed_VehicleClassCellingDisabled_MoreThan() throws IOException {
+
+        ClaimInfo claim = getTestClaim();
+        claim.getChoBand().setRepairNetDoesNotExceedVehicleClassRepairNetCeiling(true);
+        claim.getChoBand().setVehicleClassCellingEnable(false);
+        claim.getInvoice().setRepairNet(new BigDecimal("400.50"));
+
+        // CEILLING > 300
+        // BRE BAND > CEILING > 400
+
+        RuleEvaluation rv = new RepairNetDoesNotExceedVehicleClassRepairNetCeiling().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Repair Net billed £400.50 exceeds the Repair Net ceiling of £400.00"));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalated);
+        assertFalse(rv.getIsVisibleToCHO());
+
+    }
+
+    @Test
+    public void testPassed_VehicleClassCellingEnabled_LessThan() throws IOException {
+
+        ClaimInfo claim = getTestClaim();
+
+        claim.getChoBand().setRepairNetDoesNotExceedVehicleClassRepairNetCeiling(true);
+        claim.getChoBand().setVehicleClassCellingEnable(true);
         
+        claim.getInvoice().setRepairNet(new BigDecimal("299.00"));
 
+        // CEILLING > 300
+        // BRE BAND > CEILING > 400
+
+        RuleEvaluation rv = new RepairNetDoesNotExceedVehicleClassRepairNetCeiling().applyToClaim(claim);
+        
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
 
     @Test
-    public void testFailed_VehicleClassCellingEnable() throws IOException {
+    public void testPassed_VehicleClassCellingEnabled_Equals() throws IOException {
 
         ClaimInfo claim = getTestClaim();
+
+        claim.getChoBand().setRepairNetDoesNotExceedVehicleClassRepairNetCeiling(true);
         claim.getChoBand().setVehicleClassCellingEnable(true);
-        claim.getInvoice().setRepairNet(new BigDecimal("500.01"));
+
+        claim.getInvoice().setRepairNet(new BigDecimal("300.00"));
+
+        // CEILLING > 300
+        // BRE BAND > CEILING > 400
 
         RuleEvaluation rv = new RepairNetDoesNotExceedVehicleClassRepairNetCeiling().applyToClaim(claim);
-
-        /*
-        boolean success = (claim.getInvoice().getHireNet()).compareTo(claim.getChoBand().getMaxHireNetCeiling()) <= 0;
-        System.out.println("HIRE NET: "+claim.getInvoice().getHireNet());
-        System.out.println("HIRE NET CELLING: "+claim.getChoBand().getMaxHireNetCeiling());
-        System.out.println("RESULT: "+success);
-        System.out.println("RESULT: "+rv.getRelatedRule().getNarrative());
-        */
-
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Repair Net billed £500.01 exceeds the Repair Net ceiling of £500.00 for vehicle class SP1."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
-        assertFalse(rv.getIsVisibleToCHO());
-
-    }
-
-    @Test
-    public void testPassed_VehicleClassCellingDisable() throws IOException {
-
-        ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setVehicleClassCellingEnable(false);
-        claim.getInvoice().setRepairNet(new BigDecimal("400"));
-
-        RuleEvaluation rv = new RepairNetDoesNotExceedVehicleClassRepairNetCeiling().applyToClaim(claim);
-
-        /*
-        boolean success = (claim.getInvoice().getHireNet()).compareTo(claim.getChoBand().getMaxHireNetCeiling()) <= 0;
-        System.out.println("HIRE NET: "+claim.getInvoice().getHireNet());
-        System.out.println("HIRE NET CELLING: "+claim.getChoBand().getMaxHireNetCeiling());
-        System.out.println("RESULT: "+success);
-        */
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
 
     @Test
-    public void testFailed_VehicleClassCellingDisable() throws IOException {
+    public void testFailed_VehicleClassCellingEnabled_MoreThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setVehicleClassCellingEnable(false);
-        claim.getInvoice().setRepairNet(new BigDecimal("400.01"));
+
+        claim.getChoBand().setRepairNetDoesNotExceedVehicleClassRepairNetCeiling(true);
+        claim.getChoBand().setVehicleClassCellingEnable(true);
+
+        claim.getInvoice().setRepairNet(new BigDecimal("350.00"));
+
+        // CEILLING > 300
+        // BRE BAND > CEILING > 400
 
         RuleEvaluation rv = new RepairNetDoesNotExceedVehicleClassRepairNetCeiling().applyToClaim(claim);
-
         /*
-        boolean success = (claim.getInvoice().getHireNet()).compareTo(claim.getChoBand().getMaxHireNetCeiling()) <= 0;
-        System.out.println("HIRE NET: "+claim.getInvoice().getHireNet());
-        System.out.println("HIRE NET CELLING: "+claim.getChoBand().getMaxHireNetCeiling());
-        System.out.println("RESULT: "+success);
+        boolean success = (claim.getInvoice().getRepairNet()).compareTo(claim.getChoBand().getMaxRepairNetCelling()) <= 0;
+        System.out.println("REPAIR NET: "+claim.getInvoice().getRepairNet());
+        System.out.println("REPAIR NET CELLING: "+claim.getChoBand().getRepairNetCeiling());
+        System.out.println("REPAIR MAX NET CELLING: "+claim.getChoBand().getMaxRepairNetCelling());
+        System.out.println(success+"RESULT: "+rv.getResult());
         System.out.println("RESULT: "+rv.getRelatedRule().getNarrative());
+        System.out.println("RESULT: "+rv.getRelatedRule().getStatusAfterFailure());
         */
-
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Repair Net billed £400.01 exceeds the Repair Net ceiling of £400.00 for vehicle class SP1."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Repair Net billed £350.00 exceeds the Repair Net ceiling of £300.00 for vehicle class SP1."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
+
 }

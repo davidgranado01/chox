@@ -21,7 +21,7 @@
                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroups', listeners: {activate: doSelectDetail}},
                {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: doSelectDetail}},
                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: doBreMappingRefresh}},
-               {contentEl:'insurerVehicleClassCellingTab', title:'Vehicle Class Cellings', listeners: {activate: doSelectDetail}}
+               {contentEl:'insurerVehicleClassCellingTab', title:'Vehicle Class Ceilings', listeners: {activate: doSelectDetail}}
            ]
            });
         }

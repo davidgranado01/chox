@@ -13,6 +13,8 @@ import java.util.List;
 public interface AuditTrailService {
     AuditTrail getObject(int id);
     public Boolean logAuditLog(String newStatus,String oldStatus, Claim thisClaim);
+    public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim, Integer secInteval);
     public Boolean logAuditLog(String newStatus, Claim thisClaim, Integer claimReasonOfRejection, Integer invoiceReasonOfRejection);
+    public Boolean logAuditLog(String newStatus, Claim thisClaim, Integer claimReasonOfRejection, Integer invoiceReasonOfRejection, Integer secInteval);
     public List<AuditTrail> getAuditTrailByClaim(int claimId);
 }

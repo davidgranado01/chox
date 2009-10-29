@@ -8,14 +8,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
-import scsbre.engine.rules.RepairBookedInDate;
+import scsbre.engine.rules.RepairBookedInDateOnSaturday;
 import scsbre.engine.util.DateHelper;
 import scsbre.model.ClaimStatus;
 import scsbre.tests.data.TestClaim;
 import scsbre.tests.sample.*;
 
 
-public class Rule026RepairBookedInDateTest extends TestCase {
+public class Rule038RepairBookedInDateOnSaturdayTest extends TestCase {
 
     TestClaim testClaim = new TestClaim();
 
@@ -55,7 +55,7 @@ public class Rule026RepairBookedInDateTest extends TestCase {
 
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setRepairBookedInDate(false);
-        RuleEvaluation rv = new RepairBookedInDate().applyToClaim(claim);
+        RuleEvaluation rv = new RepairBookedInDateOnSaturday().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -69,10 +69,10 @@ public class Rule026RepairBookedInDateTest extends TestCase {
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setRepairBookedInDate(true);
 
-        // SET TO NOT FRIDAY
-        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.getDateFromString("08/10/2009"));
+        // SET TO NOT SATURDAY
+        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.getDateFromString("09/10/2009"));
 
-        RuleEvaluation rv = new RepairBookedInDate().applyToClaim(claim);
+        RuleEvaluation rv = new RepairBookedInDateOnSaturday().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -86,13 +86,13 @@ public class Rule026RepairBookedInDateTest extends TestCase {
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setRepairBookedInDate(true);
 
-        // SET TO FRIDAY
-        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.getDateFromString("09/10/2009"));
+        // SET TO SATURDAY
+        claim.getHireMonitoringDetail().setRepairBookInDate(DateHelper.getDateFromString("10/10/2009"));
 
-        RuleEvaluation rv = new RepairBookedInDate().applyToClaim(claim);
+        RuleEvaluation rv = new RepairBookedInDateOnSaturday().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Repair was booked in on a Friday."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Repair was booked in on a Saturday."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
         assertFalse(rv.getIsVisibleToCHO());
 

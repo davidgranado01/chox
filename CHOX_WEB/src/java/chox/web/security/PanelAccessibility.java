@@ -1,16 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chox.web.security;
 
 import org.acegisecurity.GrantedAuthority;
 
-/**
- *
- * @author Emmanuel
- */
 public class PanelAccessibility {
     
     private boolean fnolReviewedPanelAccessible;

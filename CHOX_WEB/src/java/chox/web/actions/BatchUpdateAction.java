@@ -6,10 +6,12 @@ package chox.web.actions;
 
 import chox.model.Claim;
 import chox.model.ClaimStatus;
+import chox.model.WebUser;
 import chox.model.Workgroup;
 import chox.services.AuditTrailService;
 import chox.services.ClaimService;
 import chox.services.SystemLogService;
+import chox.services.UserService;
 import chox.services.WorkgroupService;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +23,15 @@ import java.util.List;
 public class BatchUpdateAction extends BaseAction {
 
     private ClaimService claimService;
+    private UserService userService;
     private AuditTrailService auditTrailService;
     private String actionResult;
     private List<Integer> selectedClaimIdList;
     private int workgroup;
+    private Integer workgroupId; // CLAIM OWNERSHIP
+    private Integer claimOwnerId;
     private WorkgroupService workgroupService;
+
 
     @Override
     public String execute() throws Exception {
@@ -41,7 +47,7 @@ public class BatchUpdateAction extends BaseAction {
         
         for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
-            updateCliamStatus(claim,oldStatus,newStatus);
+            updateCliamStatus(claim, oldStatus, newStatus,0);
         }
         return SUCCESS;
     }
@@ -49,19 +55,51 @@ public class BatchUpdateAction extends BaseAction {
     public String doClaimRoutedAction() {
 
         String oldStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED;
-        String newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
         
         Workgroup workgroupDBA = new Workgroup();
         workgroupDBA = workgroupService.getObject(this.workgroup);
 
         for (Integer id : selectedClaimIdList)  {
+            
             Claim claim = claimService.getClaim(id);
-            // LineOfBusiness routeTo = new LineOfBusiness();
-            // routeTo.setId(lineOfBusinessId);
-            // claim.setLineOfBusiness(routeTo);
             claim.setWorkgroup(workgroupDBA);
-            updateCliamStatus(claim, oldStatus, newStatus);
+            updateCliamStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
+
+            if(claim.getInsurer().isClaimOwnershipEnable()){
+                updateCliamStatus(claim, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, 1);
+            }
         }
+        return SUCCESS;
+    }
+
+    public String doClaimOwnershipAction() {
+
+        String oldStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED;
+
+        // WORKGROUP
+        Workgroup workgroupDBA = new Workgroup();
+        if(this.workgroupId!=null && this.workgroupId>0){
+            workgroupDBA = workgroupService.getObject(this.workgroupId);
+        }
+
+        // CLAIM OWNERSHIP
+        WebUser claimOwnerDBA = new WebUser();
+        claimOwnerDBA = userService.getObject(this.claimOwnerId);
+
+        // UPDATE CLAIMS(s)
+        for (Integer id : selectedClaimIdList)  {
+
+            Claim claim = claimService.getClaim(id);
+
+            if(this.workgroupId!=null && this.workgroupId>0){
+                claim.setWorkgroup(workgroupDBA);
+            }
+            
+            claim.setClaimOwner(claimOwnerDBA);
+            updateCliamStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
+
+        }
+
         return SUCCESS;
     }
     
@@ -72,7 +110,7 @@ public class BatchUpdateAction extends BaseAction {
         
         for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
-            updateCliamStatus(claim,oldStatus,newStatus);
+            updateCliamStatus(claim,oldStatus,newStatus, 0);
         }
         return SUCCESS;
     }
@@ -84,25 +122,23 @@ public class BatchUpdateAction extends BaseAction {
        
         for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
-            updateCliamStatus(claim,oldStatus,newStatus);
+            updateCliamStatus(claim,oldStatus,newStatus, 0);
         }
         return SUCCESS;
     }
     
-    private void updateCliamStatus(Claim claim,String oldStatus,String newStatus)
+    private void updateCliamStatus(Claim claim,String oldStatus,String newStatus, Integer secInterval)
     {
-
         if (claim.getStatus().equalsIgnoreCase(oldStatus)) {
-                try {
-
-                    auditTrailService.logAuditLog(newStatus, claim, null, null);
-                    claim.setStatus(newStatus);
-                    claimService.updateClaim(claim);
-                } catch (Exception ex) {
-                    setActionResult("ERROR : " + ex.getMessage());
-                } 
+            try {
+                auditTrailService.logAuditLog(newStatus, claim, null, null, secInterval);
+                claim.setStatus(newStatus);
+                claimService.updateClaim(claim);
+            } catch (Exception ex) {
+                setActionResult("ERROR : " + ex.getMessage());
             }
-    }        
+        }
+    }
 
     public void setActionResult(String actionResult) {
         this.actionResult = actionResult;
@@ -126,12 +162,24 @@ public class BatchUpdateAction extends BaseAction {
         this.workgroup = id;
     }
 
+    public Integer getWorkgroupId() {
+        return workgroupId;
+    }
+
+    public void setWorkgroupId(Integer workgroupId) {
+        this.workgroupId = workgroupId;
+    }
+
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
     }
 
     public void setAuditTrailService(AuditTrailService auditTrailService) {
         this.auditTrailService = auditTrailService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     public void setWorkgroupService(WorkgroupService workgroupService) {
@@ -141,4 +189,14 @@ public class BatchUpdateAction extends BaseAction {
     public String getActionResult() {
         return actionResult;
     }
+
+    public Integer getClaimOwnerId() {
+        return claimOwnerId;
+    }
+
+    public void setClaimOwnerId(Integer claimOwnerId) {
+        this.claimOwnerId = claimOwnerId;
+    }
+
+    
 }

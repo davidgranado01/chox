@@ -8,6 +8,7 @@ import chox.xmlValidation.model.status.ClaimParseStatus;
 import chox.xmlValidation.rules.BordereauDataValidation;
 import chox.xmlValidation.rules.BordereauFileValidation;
 import chox.xmlValidation.rules.BordereauVersionValidation;
+import chox.xmlValidation.rules.Util.NodeHelper;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -42,6 +43,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private InsurerChorganisationService insurerChorganisationService;
     private BordereauService bordereauService;
     private BusinessRulesEngService businessRulesEngService;
+    private AutomaticRoutingService automaticRoutingService;
 
     public static void main(String[] args) {
 
@@ -59,47 +61,88 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     }
 
     public BordereauResult processClaimXMLFile(final File file, final String fileName) {
-
-//        BordereauResult bordereauResult;
-//        TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
-//        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-//        bordereauResult = (BordereauResult)transactionTemplate.execute(
-//                new TransactionCallback() {
-//
-//                    public Object doInTransaction(TransactionStatus arg0) {
-//                       return doProcessClaimXMLFile(file, fileName);
-//                    }
-//                });
-//
-//        return bordereauResult;
         return doProcessClaimXMLFile(file, fileName);
-
     }
 
     public BordereauResult processBordereau(final File file, final String fileName) {
-
         return doProcessBordereauResult(file, fileName);
-
     }
 
-    public ClaimResult isWorkgroupEnable(ClaimResult claimResult) {
-
-        // System.out.println("isWorkgroupEnable: Claim Process Status: " + claimResult.getClaimParseStatus());
-        // System.out.println("isWorkgroupEnable: Claim Cho Ref: " + claimResult.getClaim().getChoReference());
-        // System.out.println("isWorkgroupEnable: OLD Claim Status: " + claimResult.getClaim().getStatus());
+    public ClaimResult claimRouting(ClaimResult claimResult){
         
-        boolean isWorkgroupEnable = true;
+        if(claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)){
 
-        if (claimResult.getClaim() != null ){
-            if (claimResult.getClaim().getThirdParty() != null ){
-                if (claimResult.getClaim().getThirdParty().getInsurer() != null) {
-                    isWorkgroupEnable = claimResult.getClaim().getThirdParty().getInsurer().isWorkgroupEnable();
+            if (claimResult.getClaim() != null ){
+                if (claimResult.getClaim().getThirdParty() != null ){
+                    if (claimResult.getClaim().getThirdParty().getInsurer() != null) {
+
+                        // CHECK WORKGROUP ENABLE
+                        if(claimResult.getClaim().getThirdParty().getInsurer().isWorkgroupEnable()){
+                            // >> WORKGROUP ENABLED
+
+                            // CHECK AUTOMATIC ENABLE
+                            if(claimResult.getClaim().getThirdParty().getInsurer().isAutoRoutingEnable()){
+                                claimResult = doAutomaticClaimRoutingEnable(claimResult);
+                            }
+
+                        }else{
+                            
+                            // >> NOT WORKGROUP ENABLED
+                            claimResult = doWorkgroupDisable(claimResult);
+
+                        }
+
+                        doClaimOwnership(claimResult);
+                        
+                    }
                 }
             }
+
+        }
+        return claimResult;
+    }
+
+    public ClaimResult doAutomaticClaimRoutingEnable(ClaimResult claimResult) {
+
+        int insurerId = claimResult.getClaim().getThirdParty().getInsurer().getId();
+        List<AutomaticRouting> automaticRoutingMapping = automaticRoutingService.getObjects(insurerId);
+        
+        if(automaticRoutingMapping.size()>0){
+
+            String policyNumber = claimResult.getClaim().getThirdParty().getPolicyNumber().trim();
+            
+            if(policyNumber!=null && !policyNumber.equalsIgnoreCase("")){
+                
+                for(AutomaticRouting automaticRouting : automaticRoutingMapping){
+                    
+                    NodeHelper nodeHelper = new NodeHelper();
+                    if(nodeHelper.isRegularExpressionCheckPass(automaticRouting.getExpression(), policyNumber.toUpperCase())){
+
+                        claimResult.getClaim().setWorkgroup(automaticRouting.getWorkgroup());
+                        claimResult.getClaim().setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                        break;
+                    }
+                }
+            }
+        
+        }else{
+             claimResult.setValid(false);
+             claimResult.getMessage().add("Automatic Routing Mapping is Not Defined, Please contact CHOX Admin");
         }
 
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) && !isWorkgroupEnable) {
-            claimResult.getClaim().setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        return claimResult;
+    }
+
+    private ClaimResult doWorkgroupDisable(ClaimResult claimResult) {
+        claimResult.getClaim().setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        return claimResult;
+    }
+
+    private ClaimResult doClaimOwnership(ClaimResult claimResult) {
+        
+        if(claimResult.getClaim().getThirdParty().getInsurer().isClaimOwnershipEnable()
+                && claimResult.getClaim().getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)){
+            claimResult.getClaim().setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         }
         
         return claimResult;
@@ -165,7 +208,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
                 for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
 
-                    claimResult = isWorkgroupEnable(claimResult);
+                    // OTHER BUSINESS LOGIC
+                    claimResult = claimRouting(claimResult);
 
                     if (claimResult.isValid() && claimResult.isDataValid()) {
                         totalProcessed++;
@@ -231,7 +275,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                                 auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, "", readOnlyXmlParseResult.getClaim());
 
                                 if (readOnlyXmlParseResult.getClaim().getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)) {
-                                    auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, readOnlyXmlParseResult.getClaim());
+                                    auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, readOnlyXmlParseResult.getClaim(),1);
+                                }else if (readOnlyXmlParseResult.getClaim().getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
+                                    auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, readOnlyXmlParseResult.getClaim(),1);
+                                    auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, readOnlyXmlParseResult.getClaim(),2);
                                 }
                             }
 
@@ -364,5 +411,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     public void setBusinessRulesEngService(BusinessRulesEngService businessRulesEngService) {
         this.businessRulesEngService = businessRulesEngService;
     }
+
+    public void setAutomaticRoutingService(AutomaticRoutingService automaticRoutingService) {
+        this.automaticRoutingService = automaticRoutingService;
+    }
+
+
 
 }

@@ -35,6 +35,7 @@
     <many-to-one cascade="save-update,delete" class="chox.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire"/>
     <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+    <many-to-one class="chox.model.WebUser" column="claim_owner_id" name="claimOwner"/>
     <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="hireMonitoringEcds" order-by="created_date asc">
       <key column="claim_id"/>
       <one-to-many class="chox.model.HireMonitoringEcd"/>
@@ -45,6 +46,7 @@
     </bag>
     <filter condition=":chorganisationId = chorganisation_id" name="Claim_CHOFilter"/>
     <filter condition=":insurerId = insurer_id" name="Claim_InsurerFilter"/>
+    <filter condition=":claimOwnershipId = claim_owner_id" name="Claim_OwnershipFilter"/>
     <filter condition="workgroup_id IN (:workgroupIds)" name="Claim_WorkgroupFilter"/>
   </class>
   <filter-def name="Claim_CHOFilter">
@@ -55,5 +57,8 @@
   </filter-def>
   <filter-def name="Claim_WorkgroupFilter">
     <filter-param name="workgroupIds" type="integer"/>
+  </filter-def>
+  <filter-def name="Claim_OwnershipFilter">
+    <filter-param name="claimOwnershipId" type="integer"/>
   </filter-def>
 </hibernate-mapping>

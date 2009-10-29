@@ -1,5 +1,6 @@
 package chox.web.dropdown;
 
+import chox.Util.RoleHelper;
 import chox.model.LookupItem;
 import chox.services.LookupService;
 import chox.web.actions.BaseAction;
@@ -39,17 +40,12 @@ public class WorkgroupDropDownAction extends BaseAction{
 
         workgroups = new ArrayList<LookupItem>();
 
-        if(!user.getIsCHOXAdmin() && user.getIsINS()){
-
-            user = getAuthenticatedUser();
-            workgroups = service.getAllWorkgroupsByInsurerId(user.getUser().getInsurer().getId());
-
+        if(RoleHelper.isCreditHireUser(user.getUser())){
+            workgroups = service.getWorkgroupsByInsurerId(getOrgId(), false);
         }else{
-
-            workgroups = service.getAllWorkgroupsByInsurerId(getOrgId());
-
+            workgroups = service.getWorkgroups(user.getUser(), false);
         }
-
+        
         return SUCCESS;
     }
     
@@ -57,20 +53,7 @@ public class WorkgroupDropDownAction extends BaseAction{
     public String execute() throws Exception {
         
         PermissionedUser user = getAuthenticatedUser();
-        
-        workgroups = new ArrayList<LookupItem>();
-        
-        if(!user.getIsCHOXAdmin() && user.getIsINS()){
-            
-            user = getAuthenticatedUser();
-            workgroups = service.getWorkgroupsByInsurerId(user.getUser().getInsurer().getId());
-            
-        }else{
-            
-            workgroups = service.getWorkgroupsByInsurerId(getOrgId());
-            
-        }
-        
+        workgroups = service.getWorkgroups(user.getUser(), true);
         return SUCCESS;     
     }  
     

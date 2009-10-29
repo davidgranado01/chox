@@ -93,7 +93,6 @@ public class doUserroleAction extends BaseAction{
     
     public String addNewRoleMapping(){
 
-        
         try{
             
             WebUser user = userService.getObject(webUserId);
@@ -129,7 +128,8 @@ public class doUserroleAction extends BaseAction{
         if(!user.isClaimHandler() && insurer.isWorkgroupEnable()
                 && (
                     object.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_CH)
-                    || object.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_CHTL))){
+                    || object.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_COM)
+                    )){
             
             Integer recordDeleted = userWorkgroupService.DeleteObject(object.getWebUser().getId());
             String ackMsg = recordDeleted + " Workgroup(s) have been deleted";

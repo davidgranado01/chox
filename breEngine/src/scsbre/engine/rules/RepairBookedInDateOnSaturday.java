@@ -7,7 +7,7 @@ import scsbre.engine.util.DateHelper;
 import scsbre.model.ClaimStatus;
 import scsbre.model.IClaimInfo;
 
-public class RepairBookedInDate implements IBusinessRule {
+public class RepairBookedInDateOnSaturday implements IBusinessRule {
 
     private String narrative = "";
 
@@ -16,16 +16,16 @@ public class RepairBookedInDate implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-            
+
         if(claim.getChoBand().isRepairBookedInDate()){
 
             boolean success = true;
 
             if(claim.getHireMonitoringDetail().getRepairBookInDate()!=null){
 
-                if(DateHelper.getDayOfWeek(claim.getHireMonitoringDetail().getRepairBookInDate())==6){
+                if(DateHelper.getDayOfWeek(claim.getHireMonitoringDetail().getRepairBookInDate())==7){
                     success = false;
-                    narrative = "Repair was booked in on a Friday.";
+                    narrative = "Repair was booked in on a Saturday.";
                 }
 
             }
@@ -47,7 +47,7 @@ public class RepairBookedInDate implements IBusinessRule {
     }
 
     public String getRuleId() {
-        return "026";
+        return "038";
     }
 
     public ClaimStatus getStatusAfterFailure() {

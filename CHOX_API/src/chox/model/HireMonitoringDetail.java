@@ -256,13 +256,26 @@ public class HireMonitoringDetail extends AuditableEntity implements Serializabl
         this.nonProvisionReason = nonProvisionReason;
     }
 
-@TypeConversion(converter = "chox.data.DateConverter")
+    @TypeConversion(converter = "chox.data.DateConverter")
     public Date getNextReviewDate() {
         return nextReviewDate;
     }
 
-@TypeConversion(converter = "chox.data.DateConverter")
+    @TypeConversion(converter = "chox.data.DateConverter")
     public void setNextReviewDate(Date nextReviewDate) {
         this.nextReviewDate = nextReviewDate;
+    }
+
+    // FOR ONLY RepairBookedInOnFridayNotificationChecker ONLY
+    protected Date notificationRepairBookInDate;
+    
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public Date getNotificationRepairBookInDate() {
+        return notificationRepairBookInDate;
+    }
+
+    @TypeConversion(converter = "chox.data.DateConverter")
+    public void setNotificationRepairBookInDate(Date notificationRepairBookInDate) {
+        this.notificationRepairBookInDate = notificationRepairBookInDate;
     }
 }

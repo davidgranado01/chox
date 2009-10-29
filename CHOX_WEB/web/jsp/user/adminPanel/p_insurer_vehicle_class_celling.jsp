@@ -107,7 +107,8 @@
             store: vehicleClassCelling_gridviewData,
             loadMask: true,
             columns: [
-                {header: "Vehicle Class", width: 180, dataIndex: 'vehicleClassName', sortable: true, resizable: true},
+                {header: "Vehicle Class", width: 180, dataIndex: 'vehicleClassName', sortable: true, resizable: true, renderer:function(value,p,r){
+                    return "<a href='#' class='highlightItem'>"+value+"</a>" }},
                 {header: "Hire Net Ceiling", width: 150, dataIndex: 'hireNetCelling', sortable: true, resizable: true},
                 {header: "Repair Net Ceiling", width: 150, dataIndex: 'repairNetCelling', sortable: true, resizable: true},
                 {header: "", width: 90, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
@@ -158,7 +159,7 @@
                success: onVehicleClassPageRefresh
             });
             
-        }else{
+        }else if(columnIndex==0){
             showEditVehicleClassCeiling(gridView);
         }
     }

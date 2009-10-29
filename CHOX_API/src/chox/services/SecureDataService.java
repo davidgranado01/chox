@@ -1,19 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chox.services;
 
+import chox.Util.RoleHelper;
 import chox.data.SecurityInfoProvider;
 import chox.model.WebUser;
-import java.util.ArrayList;
-import java.util.List;
+import chox.model.WebUserRole;
+import java.util.Set;
+import java.util.Iterator;
+import java.util.Set;
 
-/**
- *
- * @author Emmanuel
- */
 public class SecureDataService extends DataService {
     
     private SecurityInfoProvider securityInforProvider;
@@ -33,15 +27,16 @@ public class SecureDataService extends DataService {
                     
                 } else if (this.getSecurityInfoProvider().getIsINS()) {
                     
-                    // INSURER USER
-                    //  getCurrentSession().enableFilter("LineOfBusiness_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
                     getCurrentSession().enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
                     getCurrentSession().enableFilter("Workgroup_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
                     
-                    if(isClaimHandlerOnly() && this.getSecurityInfoProvider().getCurrentUser().getInsurer().isWorkgroupEnable()){
-                        
+                    if(RoleHelper.isOwnWorkgroupRolesOnly(getCurrentUser()) && this.getSecurityInfoProvider().getCurrentUser().getInsurer().isWorkgroupEnable()){
                         getCurrentSession().enableFilter("Claim_WorkgroupFilter").setParameterList("workgroupIds", this.getCurrentUser().getWorkgroupIds());
+                    }
 
+                    if(RoleHelper.isClaimHandlerRoleOnly(getCurrentUser()) && this.getSecurityInfoProvider().getCurrentUser().getInsurer().isClaimOwnershipEnable()){
+                        System.out.println(">> FILTER BY OWNERSHIP");
+                        getCurrentSession().enableFilter("Claim_OwnershipFilter").setParameter("claimOwnershipId", this.getCurrentUser().getId());
                     }
                 }
             }
@@ -52,17 +47,6 @@ public class SecureDataService extends DataService {
         return getSecurityInfoProvider().getCurrentUser();
     }
 
-    public boolean isClaimHandlerOnly(){
-        
-        boolean bFlag = false;
-        
-        WebUser user = getCurrentUser();
-        if(user.isClaimHandler() && (user.getRoles().size()<=2)){
-            bFlag = true;
-        }
-        return bFlag;
-    }
-    
     public SecurityInfoProvider getSecurityInfoProvider() {
         return this.securityInforProvider;
     }

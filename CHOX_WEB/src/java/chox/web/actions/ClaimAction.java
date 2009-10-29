@@ -31,6 +31,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public static final String REFER_FNOL = "referFNOL";
     public static final String REJECT = "reject";
     public static final String ACCEPT = "accept";
+    public static final String ASSIGNED = "assigned";
+    public static final String ASSIGNED_PROCESS = "assigned_routed";
     public static final String REFER = "refer";
     public static final String EMPTY = "empty";
     public static final String REGISTER_FNOL = "registerFNOL";
@@ -50,12 +52,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private ClaimService service;
     private LookupService lookupService;
     private InvoiceService invoiceService;
-    private ChoBandService choBandService;
-    private HistoryService historyService;
-    private SystemLogService systemLogService;
     private AuditTrailService auditTrailService;
+    private HistoryService historyService;
     private ReasonOfRejectionService reasonOfRejectionService;
-    private HireMonitoringEcdService hireMonitoringEcdService;
+    private WorkgroupService workgroupService;
+    private UserService userService;
     private AttachmentTypeService attachmentTypeService;
     private BusinessRulesEngService businessRulesEngService;
     private CommentService commentService;
@@ -95,9 +96,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // private int lineOfBusinessId = -1;    
     // private List lineOfBusinesses;
     private List workgroups;
+    private List insurerWorkgroups;
     private int workgroupId = -1;
     private List<String> intelligentNotes;
     private IntelligentNoteDisplayEngine intelligentNoteDisplayEngine;
+    private int claimOwnerId = -1;
+
+    
+    public int getClaimOwnerId() {
+        return claimOwnerId;
+    }
+
+    public void setClaimOwnerId(int claimOwnerId) {
+        this.claimOwnerId = claimOwnerId;
+    }
 
     public String getAllowFileType() {
 
@@ -195,13 +207,23 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public List getWorkgroups() {
 
         if (workgroups == null) {
-            workgroups = lookupService.getWorkgroups();
+            workgroups = lookupService.getWorkgroups(this.getAuthenticatedUser().getUser(), true);
         }
 
         return workgroups;
 
     }
 
+    public List getInsurerWorkgroups() {
+
+        if (insurerWorkgroups == null) {
+            insurerWorkgroups = lookupService.getWorkgroupsByInsurerId(this.getAuthenticatedUser().getUser().getInsurer().getId(), true);
+        }
+
+        return insurerWorkgroups;
+
+    }
+    
     public List getVehicleClasses() {
         if (vehicleClasses == null) {
             vehicleClasses = lookupService.getVehicleClasses();
@@ -236,30 +258,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public List getExtraActionList() {
 
         GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
-        List<String> actions = chox.web.data.ExtraAction.getExtraActions();
-
-        List items = new ArrayList<LookupItem>();
-
+        List<String> actions = AdditionalAction.getExtraActions();
+        
+        extraActionList = new ArrayList<LookupItem>();
+        
         for (String action : actions) {
+
             short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, grantedAuthorities, claim.getStatus());
 
-            if (accessRight > 1) {
-                String extraActionDescription = getExtraActionName(action);
-                items.add(new LookupItem(action, extraActionDescription));
+            if (accessRight >= 1){
+                String extraActionDescription = AdditionalAction.getExtraActionName(action);
+                extraActionList.add(new LookupItem(action, extraActionDescription));
             }
+            
         }
 
-        extraActionList = items;
         return extraActionList;
-    }
-
-    public String getExtraActionName(String extraAction) {
-        String returnStr = "";
-        if (extraAction.equalsIgnoreCase("updateInsurerClaimNumber")) {
-            returnStr = "Update Insurer Claim Number";
-        }
-
-        return returnStr;
     }
 
     public String getActionResult() {
@@ -316,18 +330,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (String action : actions) {
 
             short accessRight = applicationAccessibility.checkActionAccessibility(action, grantedAuthorities, claim.getStatus());
-
+            
             if (accessRight > 0) {
                 return action;
             }
+
+            
         }
 
         return EMPTY;
     }
 
-    public String getUpdateInsurerClaimNumberAction() {
-        return "updateInsurerClaimNumber";
-    }
+
 
     public String getPaymentReceivedAction() {
         return "updatePaymentReceived";
@@ -335,14 +349,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String route() {
 
-        boolean bActionFlag = true;
-        String sActionMsg = "";
         String result = SUCCESS;
 
         if (this.getWorkgroups() == null) {
-
+            
             this.actionResult = "ERROR : You need to provide workgroup to route this claim.";
-
+            
         } else {
 
             if (!claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)) {
@@ -354,18 +366,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 try {
 
                     String newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
-
                     auditTrailService.logAuditLog(newStatus, claim, null, null);
-                    sActionMsg = "ClaimId:" + claim.getId() + "| LineOfBusiness:" + claim.getWorkgroup().getId();
-
                     claim.setStatus(newStatus);
                     this.service.updateClaim(claim);
+
+                    if(claim.getInsurer().isClaimOwnershipEnable()){
+                        
+                        newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED;
+                        auditTrailService.logAuditLog(newStatus, claim, null, null, 1);
+                        claim.setStatus(newStatus);
+                        this.service.updateClaim(claim);
+                        
+                    }
 
                 } catch (Exception ex) {
                     result = ERROR;
                     this.actionResult = "ERROR : " + ex.getMessage();
-                    bActionFlag = false;
-                    sActionMsg = ex.getLocalizedMessage();
                 } 
             }
         }
@@ -417,29 +433,63 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                 result = ERROR;
                 this.actionResult = "ERROR : " + ex.getMessage();
-                // bActionFlag = false;
-                // sActionMsg = ex.getLocalizedMessage();
-
             }
         }
 
         return result;
     }
 
+    public String ownershipAssignment() {
+
+        String result = SUCCESS;
+        String newStatus = "";
+        
+        if(this.claimOwnerId>0){
+
+            if (this.actionName.equalsIgnoreCase(ASSIGNED_PROCESS)) {
+                newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
+                claim.setStatus(newStatus);
+            }
+
+            if (!result.equalsIgnoreCase(ERROR)) {
+
+                try {
+
+                    if(workgroupId>0){
+                        claim.setWorkgroup(workgroupService.getObject(workgroupId));
+                    }
+
+                    claim.setClaimOwner(userService.getObject(claimOwnerId));
+                    this.service.updateClaim(claim);
+
+                    if(this.actionName.equalsIgnoreCase(ASSIGNED_PROCESS)) {
+                        auditTrailService.logAuditLog(newStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim);
+                    }
+                    
+                    
+
+                } catch (Exception ex) {
+                    result = ERROR;
+                    this.actionResult = "ERROR : " + ex.getMessage();
+                }
+            }
+        }
+        
+        return result;
+    }
+
     public String registerFNOL() {
 
-        boolean bActionFlag = true;
-        String sActionMsg = "";
         String result = SUCCESS;
         String newStatus = "";
 
         if (this.actionName.equalsIgnoreCase(REGISTER_FNOL)) {
             newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
+            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
             claim.setIsFnolReviewed(true);
         } else if (this.actionName.equalsIgnoreCase(REJECT_FNOL)) {
             newStatus = ClaimStatus.CLAIM_REJECTED;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejectionId:" + claim.getReasonOfRejectionId();
+            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejectionId:" + claim.getReasonOfRejectionId();
         }
 
         createNewNote(reasonForRejection, false, strPrefix);
@@ -454,8 +504,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             } catch (Exception ex) {
                 this.actionResult = "ERROR : " + ex.getMessage();
-                bActionFlag = false;
-                sActionMsg = ex.getLocalizedMessage();
+                // bActionFlag = false;
+                // sActionMsg = ex.getLocalizedMessage();
             }
 
         }
@@ -682,7 +732,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String result = SUCCESS;
         String sActionMsg = "";
         
-        // claim = businessRulesEngService.constructBreValidateObject(claim);
         RulesEngineResponse reponse = businessRulesEngService.processResubmitInvoice(claim);
         historyService.logInvoiceValidationErrorMsg(reponse, claim);
         String repStatus = reponse.getStatus().name();
@@ -874,6 +923,36 @@ public String approveBREPassedByClaimHandler() {
         return result;
     }
 
+    public String UpdateClaimWorkgroupAssignment() {
+
+        String result = SUCCESS;
+        String newStatus = "";
+
+        newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED;
+
+        try {
+
+            claim.setWorkgroup(null);
+            claim.setClaimOwner(null);
+            claim.setStatus(newStatus);
+            this.service.updateClaim(claim);
+            auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim);
+
+        } catch (Exception ex) {
+            result = ERROR;
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+
+        return result;
+    }
+
+    public String updateClaimOwnership() {
+
+        String result = SUCCESS;
+
+        return result;
+    }
+    
     public String updatePaymentReceived() {
 
         String result = SUCCESS;
@@ -1109,26 +1188,22 @@ public String approveBREPassedByClaimHandler() {
         this.auditTrailService = auditTrailService;
     }
 
-    public void setChoBandService(ChoBandService choBandService) {
-        this.choBandService = choBandService;
-    }
-
     public void setHistoryService(HistoryService historyService) {
         this.historyService = historyService;
     }
 
-    public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) {
-        this.hireMonitoringEcdService = hireMonitoringEcdService;
+    public void setUserService(UserService userService){
+        this.userService = userService;
     }
 
+    public void setWorkgroupService(WorkgroupService workgroupService) {
+        this.workgroupService = workgroupService;
+    }
+        
     public void setCommentService(CommentService commentService) {
         this.commentService = commentService;
     }
-
-    public void setSystemLogService(SystemLogService systemLogService) {
-        this.systemLogService = systemLogService;
-    }
-
+    
     public void setReasonOfRejectionService(ReasonOfRejectionService reasonOfRejectionService) {
         this.reasonOfRejectionService = reasonOfRejectionService;
     }
@@ -1144,7 +1219,7 @@ public String approveBREPassedByClaimHandler() {
     public String getStatusMsg() {
         return statusMsg;
     }
-
+    
     public void setReasonForRejection(String s) {
         this.reasonForRejection = s;
     }
@@ -1563,4 +1638,18 @@ public String approveBREPassedByClaimHandler() {
     public void setIntelligentNoteDisplayEngine(IntelligentNoteDisplayEngine intelligentNoteDisplayEngine) {
         this.intelligentNoteDisplayEngine = intelligentNoteDisplayEngine;
     }
+    
+    public String getUpdateInsurerClaimNumber() {
+        return SUCCESS;
+    }
+
+    public String getUpdateClaimOwnership() {
+        return SUCCESS;
+    }
+    
+    public String getEscalateUnassignedClaim() {
+        return SUCCESS;
+    }
+    
+    
 }

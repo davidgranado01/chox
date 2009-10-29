@@ -4,18 +4,14 @@
  */
 package chox.web.actions;
 
-import chox.model.Claim;
 import chox.model.ClaimStatus;
 import chox.services.ClaimService;
-import chox.web.data.FilterRecordCounter;
 import chox.web.security.ApplicationAccessibility;
-import chox.web.security.FilterAccessibility;
 import chox.web.security.MenuAccessibility;
 import chox.web.security.ReportAccessibility;
 import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 import chox.services.AuditTrailService;
-import chox.services.SystemLogService;
 import chox.web.security.AdminAccessibility;
 
 /**
@@ -31,7 +27,6 @@ public class InboxAction extends BaseAction implements SessionAware {
     private MenuAccessibility menuAccessibility;
     private AdminAccessibility adminAccessibility;
     private AuditTrailService auditTrailService;
-    private SystemLogService systemLogService;
     private String actionResult;
 
     public void setClaimService(ClaimService service) {
@@ -92,6 +87,11 @@ public class InboxAction extends BaseAction implements SessionAware {
         return accessRight > 0;
     }
     
+    public boolean getIsDoClaimOwnershipAccessibile()
+    {
+        short accessRight = applicationAccessibility.checkActionAccessibility("claimOwnership", super.getAuthenticatedUser().getAuthorities(), ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        return accessRight > 0;
+    }
     
     public void setSession(Map arg0) {
         this.session = arg0;
@@ -132,8 +132,5 @@ public class InboxAction extends BaseAction implements SessionAware {
         this.actionResult = actionResult;
     }
 
-    public void setSystemLogService(SystemLogService systemLogService) {
-        this.systemLogService = systemLogService;
-    }
 }
 

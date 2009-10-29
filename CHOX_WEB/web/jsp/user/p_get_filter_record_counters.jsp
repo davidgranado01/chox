@@ -63,6 +63,9 @@
     </s:if>  
     <s:if test="filterAccessibility.isContestedInvoiceReferToEngAccessible">
         <li><a href="javascript:showClaimByStatus('InvoiceReferredToEngineer');" >Invoice Referred By Claim Handler (<s:property value="filterRecordCounter.ContestedInvoiceReferToEngAccessibleCount" />)</a></li>
+    </s:if>
+    <s:if test="filterAccessibility.isClaimUnacknowledgedUnassignedAccessible">
+        <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedUnassigned');" >New Claims to be Assigned (<s:property value="filterRecordCounter.ClaimUnacknowledgedUnassignedAccessible" />)</a></li>
     </s:if> 
 </ul>                            
 

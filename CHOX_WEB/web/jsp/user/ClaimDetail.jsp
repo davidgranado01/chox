@@ -28,7 +28,6 @@
 
         <script type="text/javascript">
 
-
             var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
             var invoiceDetailTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
             var hireMonitoringTabAccessibility = <s:property value="tabAccessibility.hireMonitoringTabAccessibility" />;
@@ -618,7 +617,7 @@
 
             function checkAndConfirmClaimNumberDuplication(sClaimNumber, sClaimId, form)
             {
-                
+
                 if(sClaimNumber && sClaimNumber != null)
                 {
                     $.getJSON("checkIsClaimNumberDuplicated.action", { claimNumber: sClaimNumber, claimId: sClaimId },
@@ -697,6 +696,7 @@
                 </div>
 
                 <div style="width:960px">
+                    
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">
                         
                         <fieldset class="x-fieldset">
@@ -722,7 +722,11 @@
                                     <td><label class="chox-claim-header-label">Indemnity</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
                                     <td><label class="chox-claim-header-label">Workgroup</label><label class="chox-claim-header-text"><s:property value="workgroup.name" /></label></td>
                                 </tr>
-                               
+                                <tr>
+                                    <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="claimOwner.displayName" /></span></label></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
 
                                 <s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">
                                     <tr>
@@ -747,13 +751,11 @@
                             </table>
                         </fieldset>
 
-                        <table cellpadding="0" cellspacing="0" border="0">
-                        <tr>
-                            <td style="padding-right:136px;">
+                        <div id="claim-detail-extra">
+                            <div>
                                 <a href="<s:url action="inbox"/>">« Back to Search Results</a>
-                            </td>
-                            <td>&nbsp;</td>
-                            <td align="left">
+                            </div>
+                            <div>
                                 <s:if test="extraActionList.size()>0">
                                     <s:select
                                         name="extraAction"
@@ -767,10 +769,9 @@
                                         onchange="javascript:extraActionChange();">
                                     </s:select>
                                 </s:if>
-                            </td>
-                        </tr>
-                        </table>
-                            
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -849,7 +850,6 @@
 
                     $(document).ready(function() {
                         $("#extraAction").val("");
-
                     });
 
                     function doShowHideExtraAction(a, b){
@@ -865,6 +865,7 @@
                     }
 
                     function extraActionChange(){
+                        
                         var selectedAction = $("#extraAction").val();
                         $(".extraActionClass").slideUp();
                         $(".extraActionClass").css("display:", "none");
@@ -880,10 +881,32 @@
                     <table width="100%">
                         <tr><td>
                                 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-                                    <s:action name="getUpdateInsurerClaimNumberAction" executeResult="true"></s:action>
+                                    <s:action name="getUpdateInsurerClaimNumber" executeResult="true"></s:action>
                                     <div class="action-message"><s:property value="actionResult" /></div>
                                 </div>
                             </td></tr>
+                    </table>
+                </div>
+
+                <div id="updateClaimOwner" class="extraActionClass" style="display: none;">
+                    <table width="100%">
+                        <tr><td>
+                                <div class="chox-claim-header x-panel-bwrap chox-form-container">
+                                    <s:action name="getUpdateClaimOwnership" executeResult="true"></s:action>
+                                    <div class="action-message"><s:property value="actionResult" /></div>
+                                </div>
+                            </td></tr>
+                    </table>
+                </div>
+
+                <div id="escalateUnassignedClaim" class="extraActionClass" style="display: none;">
+                    <table width="100%">
+                        <tr><td>
+                        <div class="chox-claim-header x-panel-bwrap chox-form-container">
+                            <s:action name="getEscalateUnassignedClaim" executeResult="true"></s:action>
+                            <div class="action-message"><s:property value="actionResult" /></div>
+                        </div>
+                        </td></tr>
                     </table>
                 </div>
 

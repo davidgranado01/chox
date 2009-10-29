@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chox.model.intelligentNotes;
 
 import chox.Util.DateHelper;
@@ -10,10 +5,10 @@ import chox.data.SecurityInfoProvider;
 import chox.model.*;
 import java.util.Calendar;
 
-public class RepairBookInDateCheck implements IntelligentNote {
+public class RepairBookInDateisSundayCheck implements IntelligentNote {
 
     public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
-        
+
         Boolean showing = false;
 
         Boolean isStatus = false;
@@ -25,19 +20,20 @@ public class RepairBookInDateCheck implements IntelligentNote {
             isStatus = true;
         }
 
-        showing = isStatus;
-
+        Boolean isSunday = false;
         if(c.getHireMonitoringDetail()!=null){
             if(c.getHireMonitoringDetail().getOriginalRepairBookInDate()!=null){
-                showing &= DateHelper.getDay(c.getHireMonitoringDetail().getOriginalRepairBookInDate()) == Calendar.FRIDAY;
+                isSunday = DateHelper.getDay(c.getHireMonitoringDetail().getOriginalRepairBookInDate()) == Calendar.SUNDAY;
             }
         }
-        
+
+        showing = isStatus;
+        showing &= isSunday;
         return showing;
     }
 
     public String getNote() {
-        return "The repair book in date is on a Friday";
+        return "The repair book in date is on a Sunday";
     }
 
 }

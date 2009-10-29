@@ -26,4 +26,5 @@ public interface ClaimService {
     // public void updateClaimLastModified(int claimId);
     public Boolean isObjectExist(int WorkgroupId);
     // public VehicleClassCelling getVechileClassCellingForClaim(Claim claim);
+    public boolean isUserHasOpenClaim(int userId);
 }

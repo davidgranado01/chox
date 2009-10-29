@@ -21,13 +21,12 @@ public class ClaimAnomalousChecker {
         List<Notification> notifications = new ArrayList<Notification>();
 
         for (AnomalousCheck anomalousCheck : anomalousChecks) {
+
             if (anomalousCheck.check(c)) {
                 notifications.add(anomalousCheck.BuildNotification());
             }
         }
 
-       
-        
         return notifications;
     }
 

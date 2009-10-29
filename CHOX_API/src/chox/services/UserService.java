@@ -18,5 +18,6 @@ public interface UserService {
     public boolean updateObject(WebUser object);
     public boolean isEmailExist(String email);
     public boolean isEmailExist(String email, int userId);
+    public List<WebUser> getClaimHanldersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable);
     
 }

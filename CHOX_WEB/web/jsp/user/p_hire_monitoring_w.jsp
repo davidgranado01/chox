@@ -5,10 +5,10 @@
 <script type="text/javascript">
         
         $(document).ready(function(){
-            
-            
+
             var repairBookInDatePicker = new Ext.form.DateField({
                 name: 'repairBookInDate',
+                id: 'repairBookInDate',
                 width: 100,
                 allowBlank: true,
                 format: 'd/m/Y',
@@ -137,12 +137,15 @@
                     $(form).ajaxSubmit(globalEntityFormOptions);
                 }
             });
+
+            var repairBookDt = $("#repairBookInDate").val();
+            $("#notificationRepairBookInDate").val(repairBookDt);
+
         }); 
         
         function isDateCorrect(){
             
             var bFlag = true;
-            
             var repairBookInDt = $("#repairBookInDatePH :input").val();
             var repairCompletionDt = $("#repairCompletionDatePH :input").val();
             
@@ -150,28 +153,14 @@
                var dRepairBookInDt = getDate(repairBookInDt);
                var dRepairCompletionDt = getDate(repairCompletionDt);
                bFlag = (dRepairBookInDt <= dRepairCompletionDt);
-            }   
-            
+            }
            
             return !bFlag;
         }        
         
-
-        
-        function isNonProvisionReasonRequired(){
-            
-            /*
-            var sLabourRate = $("#labourCost").val();
-            var sLabourHour = $("#labourHour").val();
-            var sLabourCost = $("#labourCost").val();
-
-            if(sLabourRate.length<=0 && sLabourHour.length<=0 && sLabourCost.length<=0){
-                return true;
-            }
-            */
-           
-           $(".chox-form-submit-result").html("");
-           return false;
+        function isNonProvisionReasonRequired(){           
+            $(".chox-form-submit-result").html("");
+            return false;
         }
         
     </script>
@@ -180,6 +169,7 @@
     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <input type="hidden" name="date_compare_field" value=''>
+    <s:hidden value="notificationRepairBookInDate" id="notificationRepairBookInDate" name="notificationRepairBookInDate"/>
 
     <fieldset class="x-fieldset">
 

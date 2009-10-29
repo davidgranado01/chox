@@ -24,7 +24,7 @@
     <property column="hire_rate_charge_tolerance" name="hireRateChargeTolerance" not-null="true"/>
     <property column="hire_net_ceiling" name="hireNetCeiling" not-null="true"/>
     <property column="hire_day_ceiling" name="hireDayCeiling" not-null="true"/>
-    <property column="max_repair_value" name="maxRepairValue" not-null="true"/>
+    <property column="max_repair_value" name="repairNetCeiling" not-null="true"/>
     <property column="is_not_mobile_day_allowance" name="isNotMobileDayAllowance" not-null="true"/>
     <property column="average_labour_hours_per_hire_day" name="averageLabourHoursPerHireDay" not-null="true"/>
     <property column="average_labour_rate" name="averageLabourRate" not-null="true"/>
@@ -66,6 +66,5 @@
     <property column="corrent_admin_fee" name="correntAdminFee"/>
     <property column="repair_booked_in_date" name="repairBookedInDate"/>
     <property column="flagged_for_manual_invoice_review" name="flaggedForManualInvoiceReview"/>
-
   </class>
 </hibernate-mapping>

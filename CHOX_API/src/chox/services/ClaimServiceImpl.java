@@ -41,16 +41,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         claim.setClaimNumber(claim.getClaimNumber().trim());
         save(claim);
     }
-
-    /*
-    public void updateClaimLastModified(int id) {
-    WebUser user = getCurrentUser();
-    Claim claim = (Claim) get(Claim.class, id);
-    claim.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-    claim.setLastModifiedBy(user);
-    save(claim);
-    }
-    */
     
     public Long getCountByStatus(String status) {
         String q = "select count(*) from Claim where status = '" + status + "'";
@@ -435,6 +425,31 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    public boolean isUserHasOpenClaim(int userId){
+
+        boolean isExist = false;
+
+        try {
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+            criteria.add(Restrictions.eq("claimOwner.id", userId));
+            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
+            criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
+            criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_REJECTION_ACCEPTED));
+            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_REJECTED_ACCEPTED));
+
+            if (findByCriteria(criteria).size() > 0) {
+                isExist = true;
+            }
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        return isExist;
+
+    }
+    
     /*
     // MOVED TO INSURER SERVICES
     public VehicleClassCelling getVechileClassCellingForClaim(Claim claim)

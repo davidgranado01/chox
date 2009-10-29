@@ -40,31 +40,15 @@ public class WebUser implements Serializable {
      * This attribute maps to the column created_date in the web_user table.
      */
     protected Date createdDate;
-    /**
-     * This attribute maps to the column last_modified_by in the web_user table.
-     */
     protected WebUser lastModifiedBy;
-    /**
-     * This attribute maps to the column last_modified_date in the web_user table.
-     */
     protected Date lastModifiedDate;
-    /**
-     * This attribute represents the foreign key relationship to the chorganisation table.
-     */
     protected Chorganisation chorganisation;
-    /**
-     * This attribute represents the foreign key relationship to the insurer table.
-     */
     protected Insurer insurer;
     private Boolean isExpired;
-    /**
-     * This attribute represents the foreign key relationship to the web_user_role table.
-     */
     protected WebUserRole webUserRole;
     protected Set roles;
     private Set workgroups;
     protected String organisationName;
-    // protected LineOfBusiness lineOfBusiness;
     protected boolean claimHandler = false;
 
     public void setClaimHandler(boolean claimHandler) {
@@ -360,7 +344,8 @@ public class WebUser implements Serializable {
                 
                 WebUserRole webUserrole = (WebUserRole) itr.next();
 
-                if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CH) || webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHTL)) {
+                if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CH) 
+                        || webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_COM)) {
                     bFlag = true;
                     break;
                 }

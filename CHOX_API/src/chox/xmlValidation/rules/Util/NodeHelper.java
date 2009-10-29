@@ -254,7 +254,6 @@ public class NodeHelper {
                 regExpression = REG_BIGDECIMAL;
             }
             
-            
         }else{
             regExpression = regExp;
         }
@@ -270,5 +269,26 @@ public class NodeHelper {
         }
         
         return bFlag;
-    }    
+    }
+
+    public boolean isRegularExpressionCheckPass(String regExpression, String value){
+        
+        boolean bFlag = false;
+
+        System.out.print(regExpression + " v.s. " + value + ":");
+                                        
+        if(!regExpression.equalsIgnoreCase("")){
+
+            Pattern p = Pattern.compile(regExpression);
+            Matcher m = p.matcher(value);
+
+            if(m.find()){
+                bFlag = true;
+            }
+        }
+
+        System.out.println(bFlag);
+                        
+        return bFlag;
+    }
 }

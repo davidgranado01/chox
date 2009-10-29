@@ -100,8 +100,7 @@
         
         var bFlag = isClaimHandlerGroup();
 
-        
-        if((userrolecode=='ROLE_INS_CH'||userrolecode=='ROLE_INS_CH_TL') && bFlag && !isWorkgroupDisabled){
+        if((userrolecode=='ROLE_INS_CH'|| userrolecode=='ROLE_INS_COM') && bFlag && !isWorkgroupDisabled){
             deleteAttMsg = "Delete '"+userrolename+"' role will delete all workgroup associated as well. Are you sure you want to remove this role";
         }
         
@@ -126,7 +125,7 @@
             
             var userrolecode = gridviewGrid.getStore().getAt(iCount).get("webUserroleRole");
 
-            if(userrolecode=='ROLE_INS_CH'||userrolecode=='ROLE_INS_CH_TL'){
+            if(userrolecode=='ROLE_INS_CH'||userrolecode=='ROLE_INS_COM'){
                 iClaimHandlerCount++;
             }
 

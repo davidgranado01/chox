@@ -47,13 +47,6 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
     /**** GENERAL **********************************************************************************************************/
     private Claim constructBreValidateObject(Claim claim) {
-
-        VehicleClassCelling vehicleClassCelling = insurerService.getVechileClassCellingForClaim(claim);
-        
-         // SET CHO BAND
-        ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(claim.getChorganisation().getId(), claim.getInsurer().getId());
-        choBand.setVehicleClassCelling(vehicleClassCelling);
-        claim.setChoband(choBand);
         
         Boolean isIsTotalLostCheck = false;
         if (claim.getHireMonitoringDetail() != null) {
@@ -119,40 +112,64 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
     private void process(ClaimResult claimResult) {
 
-        Boolean isEngReportExist = false;
-        if (claimResult.getClaim().getEngineerReport() != null) {
-            isEngReportExist = true;
+        ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId());
+
+        System.out.println("getInsurer:"+claimResult.getClaim().getInsurer().getId());
+        System.out.println("getChorganisation:"+claimResult.getClaim().getChorganisation().getId());
+        System.out.println("choBand:"+choBand.getId());
+
+        if(choBand.getId()!=null){
+
+            VehicleClassCelling vehicleClassCelling = insurerService.getVechileClassCellingForClaim(claimResult.getClaim());
+            choBand.setVehicleClassCelling(vehicleClassCelling);
+            claimResult.getClaim().setChoband(choBand);
+            
+            Boolean isEngReportExist = false;
+            if (claimResult.getClaim().getEngineerReport() != null) {
+                isEngReportExist = true;
+            }
+
+            VehicleClass cust_VehicleClass = claimResult.getClaim().getCustomer().getVehicleClass();
+            VehicleClass thirdVehicleClass = claimResult.getClaim().getThirdParty().getVehicleClass();
+            VehicleClass vehicle_HireClass = claimResult.getClaim().getVehicleHire().getVehicleClass();
+
+            Claim breClaim = constructBreValidateObject(claimResult.getClaim());
+            RulesEngineResponse validationResult = validate(breClaim);
+
+            String oldStatus = claimResult.getClaim().getStatus();
+            String newClaimStatus = validationResult.getStatus().toString();
+
+            claimResult.getClaim().setPreviousStatus(oldStatus);
+            claimResult.getClaim().setStatus(newClaimStatus);
+
+            if (validationResult.getResults().size() > 0) {
+                claimResult.setHistory(processBreErrorMessage(validationResult.getResults(), claimResult));
+            }
+
+            /** END BRE VALIDATION **/
+            if (!isEngReportExist) {
+                claimResult.getClaim().setEngineerReport(null);
+            }
+
+            claimResult.getClaim().getCustomer().setVehicleClass(cust_VehicleClass);
+            claimResult.getClaim().getThirdParty().setVehicleClass(thirdVehicleClass);
+            claimResult.getClaim().getVehicleHire().setVehicleClass(vehicle_HireClass);
+            
+        }else{
+            
+            claimResult.setValid(false);
+            claimResult.getMessage().add("BRE Band is Not Defined, Please contact CHOX Admin");
+            
         }
-
-        VehicleClass cust_VehicleClass = claimResult.getClaim().getCustomer().getVehicleClass();
-        VehicleClass thirdVehicleClass = claimResult.getClaim().getThirdParty().getVehicleClass();
-        VehicleClass vehicle_HireClass = claimResult.getClaim().getVehicleHire().getVehicleClass();
-
-        Claim breClaim = constructBreValidateObject(claimResult.getClaim());
-        RulesEngineResponse validationResult = validate(breClaim);
-
-        String oldStatus = claimResult.getClaim().getStatus();
-        String newClaimStatus = validationResult.getStatus().toString();
-
-        claimResult.getClaim().setPreviousStatus(oldStatus);
-        claimResult.getClaim().setStatus(newClaimStatus);
-
-        if (validationResult.getResults().size() > 0) {
-            claimResult.setHistory(processBreErrorMessage(validationResult.getResults(), claimResult));
-        }
-
-        /** END BRE VALIDATION **/
-        if (!isEngReportExist) {
-            claimResult.getClaim().setEngineerReport(null);
-        }
-
-        claimResult.getClaim().getCustomer().setVehicleClass(cust_VehicleClass);
-        claimResult.getClaim().getThirdParty().setVehicleClass(thirdVehicleClass);
-        claimResult.getClaim().getVehicleHire().setVehicleClass(vehicle_HireClass);
     }
 
     public RulesEngineResponse processResubmitInvoice(Claim breClaim){
 
+        ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(breClaim.getChorganisation().getId(), breClaim.getInsurer().getId());
+        VehicleClassCelling vehicleClassCelling = insurerService.getVechileClassCellingForClaim(breClaim);
+        choBand.setVehicleClassCelling(vehicleClassCelling);
+        breClaim.setChoband(choBand);
+            
         Boolean isEngReportExist = false;
         if (breClaim.getEngineerReport() != null) {
             isEngReportExist = true;
@@ -173,7 +190,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
         /*
         if (validationResult.getResults().size() > 0) {
-            //claimResult.setHistory(processBreErrorMessage(validationResult.getResults(), claimResult));
+            claimResult.setHistory(processBreErrorMessage(validationResult.getResults(), claimResult));
         }
         */
         

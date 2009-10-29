@@ -8,6 +8,7 @@ package chox.services;
 import chox.Util.DateHelper;
 import chox.model.AuditTrail;
 import chox.model.Claim;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
@@ -34,6 +35,30 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return bFlag;
                
     } 
+
+    public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim, Integer secInteval){
+
+        Boolean bFlag = false;
+
+        if(!oldStatus.trim().equalsIgnoreCase(newStatus.trim())){
+
+            AuditTrail thisAuditTrail = new AuditTrail();
+            thisAuditTrail.setClaim(thisClaim);
+            thisAuditTrail.setNewStatus(newStatus);
+            thisAuditTrail.setOriginalStatus(oldStatus);
+
+            Timestamp currentDate = DateHelper.getCurrentTimeStamp();
+            int sec = DateHelper.getCurrentTimeStamp().getSeconds();
+            currentDate.setSeconds(sec+secInteval);
+
+            thisAuditTrail.setUpdateDate(currentDate);
+            thisAuditTrail.setUser(getCurrentUser());
+            save(thisAuditTrail);
+            bFlag = true;
+        }
+        return bFlag;
+
+    }
     
     public Boolean logAuditLog(String newStatus, Claim thisClaim, Integer claimReasonOfRejection, Integer invoiceReasonOfRejection){
        
@@ -62,7 +87,40 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return bFlag;
                
     } 
-        
+
+
+    public Boolean logAuditLog(String newStatus, Claim thisClaim, Integer claimReasonOfRejection, Integer invoiceReasonOfRejection, Integer secInteval){
+
+        Boolean bFlag = false;
+
+        if(!thisClaim.getStatus().trim().equalsIgnoreCase(newStatus.trim())){
+
+            Timestamp currentDate = DateHelper.getCurrentTimeStamp();
+            int sec = DateHelper.getCurrentTimeStamp().getSeconds();
+            currentDate.setSeconds(sec+secInteval);
+
+            AuditTrail thisAuditTrail = new AuditTrail();
+            thisAuditTrail.setClaim(thisClaim);
+            thisAuditTrail.setNewStatus(newStatus);
+            thisAuditTrail.setOriginalStatus(thisClaim.getStatus());
+            thisAuditTrail.setUpdateDate(currentDate);
+            thisAuditTrail.setUser(getCurrentUser());
+
+            if(claimReasonOfRejection!=null){
+                thisAuditTrail.setClaimReasonOfRejection(claimReasonOfRejection);
+            }
+
+            if(invoiceReasonOfRejection!=null){
+                thisAuditTrail.setInvoiceReasonOfRejection(invoiceReasonOfRejection);
+            }
+
+            save(thisAuditTrail);
+            bFlag = true;
+        }
+        return bFlag;
+
+    }
+    
     public AuditTrail getObject(int id) {
         return (AuditTrail) get(AuditTrail.class, id);
     }  

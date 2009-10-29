@@ -109,7 +109,6 @@ public class XMLUpload_newClaim_01 {
         checkEngineeringReport(claim.getEngineerReport().getId());
         checkVehicleHire(claim.getVehicleHire().getId());
 
-
         /*
         protected Insurer insurer;
         protected Chorganisation chorganisation;

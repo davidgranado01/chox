@@ -1,5 +1,6 @@
 package chox.services;
 
+import chox.Util.RoleHelper;
 import chox.model.ChoBand;
 import chox.model.ReasonOfRejection;
 import chox.model.Chorganisation;
@@ -9,6 +10,7 @@ import chox.model.Insurer;
 //import chox.model.LineOfBusiness;
 import chox.model.LookupItem;
 import chox.model.ReasonOfDelay;
+import chox.model.UserWorkgroup;
 import chox.model.VehicleClass;
 import chox.model.WebUser;
 import chox.model.Workgroup;
@@ -63,28 +65,6 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         items.add(new LookupItem("Update Obtained By Other Source", "Update Obtained By Other Source"));    
         return items;
     }
-
-    /*
-    public List getSelectedUserAvailableRole(int orgTypeId, int webUserId){
-        
-        List items = new ArrayList<IdLookupItem>();
-        List<WebUserRole> webUserroles = webUserUserRoleService.getWebUserroles(orgTypeId);
-        List<WebUserUserRole> selectedWebUserroles = webUserUserRoleService.getUserRoleMapping(webUserId, null);
-        List<Integer> selectedList = new ArrayList<Integer>();
-        
-        for (WebUserUserRole o : selectedWebUserroles) {
-            selectedList.add(o.getWebUserRole().getId());
-        }
-        
-        for (WebUserRole s : webUserroles) {
-            if(!selectedList.contains(s.getId())){            
-                items.add(new IdLookupItem(s.getId(), s.getDescription()));
-            }
-        }
-        
-        return items;
-    }
-    */
     
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // LINE OF REASON OF DELAY
@@ -96,79 +76,86 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         criteria.addOrder(Order.asc("id"));  
          return findByCriteria(criteria,true);
     }
-    
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // LINE OF BUSINESS LIST
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    
-    /*
-    public List getLineOfBusinesses() {
-        
-        WebUser currentUser = getCurrentUser();
-        
-        if(currentUser.isCHOXAdmin()){
-            DetachedCriteria criteria = DetachedCriteria.forClass(LineOfBusiness.class);
-            criteria.add(Restrictions.eq("active", true));
-            criteria.addOrder(Order.asc("name"));  
-            return findByCriteria(criteria,true);
-        }else{
-            return getLineOfBusinessesByInsurerId(currentUser.getInsurer().getId());
-        }
-    }
 
-    public List getAllLineOfBusinesses() {
-        DetachedCriteria criteria = DetachedCriteria.forClass(LineOfBusiness.class);
-        criteria.addOrder(Order.asc("name"));  
-         return findByCriteria(criteria,true);
-    }
-    
-    public List getLineOfBusinessesByInsurerId(int insurerId) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(LineOfBusiness.class);
-        criteria.add(Restrictions.eq("active", true));
-        criteria.add(Restrictions.eq("insurer.id", insurerId));
-        criteria.addOrder(Order.asc("name"));  
-         return findByCriteria(criteria,true);
-    }
-    */
-    
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // WORKGROUP LIST
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    
-    public List getWorkgroups() {
+
+    public List getWorkgroups(WebUser user, boolean isActiveOnly){
         
-        WebUser currentUser = getCurrentUser();
-        
-        if(currentUser.isCHOXAdmin()){
-            DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
-            criteria.add(Restrictions.eq("status", true));
-            criteria.addOrder(Order.asc("name"));
-            return findByCriteria(criteria,true);
+        List workgroups = new ArrayList();
+
+        if(RoleHelper.isChoxAdmin(user)){
+            workgroups = getAllWorkgroup(isActiveOnly);
         }else{
-            return getWorkgroupsByInsurerId(currentUser.getInsurer().getId());
+            
+            if(RoleHelper.isInsurerUser(user)){
+                
+                if(RoleHelper.isOwnWorkgroupRolesOnly(user) && user.getInsurer().isWorkgroupEnable()){
+                    
+                    workgroups = getWorkgroupsByUserId(user.getId(), isActiveOnly);
+                    
+                }else{
+                    
+                    workgroups = getWorkgroupsByInsurerId(user.getInsurer().getId(), isActiveOnly);
+                    
+                }
+            }
+        }
+        
+        return workgroups;
+
+    }
+
+    private List getAllWorkgroup(boolean isActiveOnly){
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
+
+        if(isActiveOnly){
+            criteria.add(Restrictions.eq("status", true));
         }
 
+        criteria.addOrder(Order.asc("name"));
+        return findByCriteria(criteria,true);
+            
     }
 
-    public List getAllWorkgroups() {
+    public List getWorkgroupsByInsurerId(int insurerId, boolean isActiveOnly) {
+        
         DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
-        criteria.addOrder(Order.asc("name"));  
-         return findByCriteria(criteria,true);
-    }
-    
-    public List getWorkgroupsByInsurerId(int insurerId) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
-        criteria.add(Restrictions.eq("status", true));
+
+        if(isActiveOnly){
+            criteria.add(Restrictions.eq("status", true));
+        }
+
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.addOrder(Order.asc("name"));
         return findByCriteria(criteria,true);
     }
-    
-    public List getAllWorkgroupsByInsurerId(int insurerId) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
-        criteria.add(Restrictions.eq("insurer.id", insurerId));
-        criteria.addOrder(Order.asc("name"));
-        return findByCriteria(criteria,true);
+
+    private List getWorkgroupsByUserId(int userId, boolean isActiveOnly){
+
+        List workgroup = new ArrayList();
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(UserWorkgroup.class);
+        criteria.add(Restrictions.eq("user.id", userId));
+
+        List result = findByCriteria(criteria,true);
+
+        for (Object o : result) {
+            
+            UserWorkgroup a = (UserWorkgroup) o;
+
+            if(isActiveOnly){
+                if(a.getWorkgroup().isStatus()){
+                    workgroup.add((Workgroup)a.getWorkgroup());
+                }
+            }else{
+                workgroup.add((Workgroup)a.getWorkgroup());
+            }
+        }
+
+        return workgroup;
     }
     
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -286,8 +273,4 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     }
 
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // WORKGROUP
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    
 }

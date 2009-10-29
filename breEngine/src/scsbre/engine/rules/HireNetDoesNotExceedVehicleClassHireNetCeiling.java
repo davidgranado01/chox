@@ -11,14 +11,17 @@ import scsbre.model.IClaimInfo;
 public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusinessRule {
 
     String narrative = "";
+    ClaimStatus statusAfterFailure = ClaimStatus.InvoiceEscalated;
     String narrativeTemplate = "The Hire Net billed %s exceeds the Hire Net ceiling of %s for vehicle class %s.";
+    DecimalFormat moneyFormat = new DecimalFormat("£0.00");
 
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
 
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-
+        
+        /*
         if(claim.getChoBand().isHireNetDoesNotExceedVehicleClassHireNetCeiling()){
 
             BigDecimal hireNet = claim.getInvoice().getHireNet();
@@ -39,7 +42,50 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
             res.setResult(RuleEvaluationResult.RuleSkipped);
 
         }
+        */
 
+        if(claim.getChoBand().isHireNetDoesNotExceedVehicleClassHireNetCeiling()){
+
+            BigDecimal hireNet = claim.getInvoice().getHireNet();
+
+            // CHECK BRE BAND > HIRE NET
+            BigDecimal hireNetCeiling = claim.getChoBand().getHireNetCeiling();
+            boolean success = hireNet.compareTo(hireNetCeiling) <= 0;
+
+            if(success){
+
+                res.setResult(RuleEvaluationResult.RulePassed);
+
+                // CHECK VEHICLE CLASS CEILLING > HIRE NET
+                if(claim.getChoBand().isVehicleClassCellingEnable()){
+
+                    hireNetCeiling = claim.getChoBand().getMaxHireNetCeiling();
+                    success = hireNet.compareTo(hireNetCeiling) <= 0;
+                    res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+                    if(!success){
+                        statusAfterFailure = ClaimStatus.InvoiceEscalatedToHandler;
+                    }
+
+                }
+
+            }else{
+
+                res.setResult(RuleEvaluationResult.RuleFailed);
+                narrativeTemplate = "The Hire Net billed %s exceeds the Hire Net ceiling of %s";
+
+            }
+
+            if(!success){
+                narrative = String.format(narrativeTemplate, moneyFormat.format(hireNet.doubleValue()), moneyFormat.format(hireNetCeiling.doubleValue()), claim.getVClass().getCode());
+            }
+
+        }else{
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
 
         return res;
 
@@ -55,6 +101,7 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
 
     public ClaimStatus getStatusAfterFailure() {
         // return ClaimStatus.InvoiceEscalated;
-        return ClaimStatus.InvoiceEscalatedToHandler;
+        // return ClaimStatus.InvoiceEscalatedToHandler;
+        return statusAfterFailure;
     }
 }

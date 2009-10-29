@@ -20,7 +20,7 @@ public class CHOBandInfo implements ICHOBandInfo {
     protected BigDecimal hireRateChargeTolerance;
     protected BigDecimal hireNetCeiling;
     protected int hireDayCeiling;
-    protected BigDecimal maxRepairValue;
+    protected BigDecimal repairNetCeiling;
     protected int isNotMobileDayAllowance;
     protected int averageLabourRate;
     protected int averageLabourHoursPerHireDay;
@@ -177,8 +177,8 @@ public class CHOBandInfo implements ICHOBandInfo {
     }
 
 
-    public void setMaxRepairValue(java.math.BigDecimal maxRepairValue) {
-        this.maxRepairValue = maxRepairValue;
+    public void setRepairNetCeiling(java.math.BigDecimal repairNetCeiling) {
+        this.repairNetCeiling = repairNetCeiling;
     }
 
     public int getIsNotMobileDayAllowance() {
@@ -225,13 +225,13 @@ public class CHOBandInfo implements ICHOBandInfo {
         this.vehicleClassCelling = vehicleClassCelling;
     }
 
-    public java.math.BigDecimal getMaxRepairValue() {
+    public java.math.BigDecimal getRepairNetCeiling() {
 
-        if (maxRepairValue == null) {
-            maxRepairValue = new BigDecimal(0.00);
+        if (repairNetCeiling == null) {
+            repairNetCeiling = new BigDecimal(0.00);
         }
 
-        return maxRepairValue;
+        return repairNetCeiling;
     }
 
     public java.math.BigDecimal getHireNetCeiling() {
@@ -242,9 +242,9 @@ public class CHOBandInfo implements ICHOBandInfo {
     }
 
 
-    public java.math.BigDecimal getMaxRepairValueCelling() {
+    public java.math.BigDecimal getMaxRepairNetCelling() {
 
-        BigDecimal maxRepairNetCeiling = maxRepairValue;
+        BigDecimal maxRepairNetCeiling = new BigDecimal(100000);
 
         if(vehicleClassCellingEnable){
 
@@ -261,10 +261,9 @@ public class CHOBandInfo implements ICHOBandInfo {
 
     public java.math.BigDecimal getMaxHireNetCeiling() {
 
-        BigDecimal maxHireNetCeiling = hireNetCeiling;
+        BigDecimal maxHireNetCeiling = new BigDecimal(100000);
 
         if(vehicleClassCellingEnable){
-            maxHireNetCeiling = new BigDecimal(100000);
             if(vehicleClassCelling!=null){
                 maxHireNetCeiling = vehicleClassCelling.getHireNetCelling();
             }

@@ -154,4 +154,21 @@ public class DateHelper {
             return null;
         }
     }
+
+    public static boolean DateCompare(Date date1, Date date2)
+    {
+        boolean bFlag = false;
+
+        try {
+
+            if(date1.compareTo(date2) == 0){
+                bFlag = true;
+            }
+
+        } catch (Exception ex) {
+            bFlag = false;
+        }
+
+        return bFlag;
+    }
 }

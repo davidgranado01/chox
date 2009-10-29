@@ -1,6 +1,7 @@
 package chox.services;
 
 import chox.model.IdLookupItem;
+import chox.model.WebUser;
 import chox.model.WebUserRole;
 import chox.model.WebUserUserRole;
 import java.util.ArrayList;
@@ -234,8 +235,8 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         criteria.add(Restrictions.eq("id", roleId));
         
         Criterion chCriterion = Restrictions.eq("name", WebUserRole.ROLE_CH);
-        Criterion chtlCriterion = Restrictions.eq("name", WebUserRole.ROLE_CHTL);
-        criteria.add(Restrictions.or(chCriterion, chtlCriterion));
+        Criterion comCriterion = Restrictions.eq("name", WebUserRole.ROLE_COM);
+        criteria.add(Restrictions.or(chCriterion, comCriterion));
         
         webUserRole = (WebUserRole) getByCriteria(criteria);
         
@@ -244,5 +245,6 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         }
         
         return isClaimHandler;
-    }   
+    }
+
 }

@@ -126,6 +126,9 @@
     <bean id="vehicleClassCellingService" class="chox.services.VehicleClassCellingServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="automaticRoutingService" class="chox.services.AutomaticRoutingServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="businessRulesEngService" class="chox.services.BusinessRulesEngServiceImpl" singleton="false">
         <property name="claimService" ref="claimService" />
         <property name="hireMonitoringEcdService" ref="hireMonitoringEcdService" />
@@ -153,6 +156,7 @@
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="bordereauService" ref="bordereauService"/>
         <property name="businessRulesEngService" ref="businessRulesEngService"/>
+        <property name="automaticRoutingService" ref="automaticRoutingService"/>
     </bean>
     
 </beans>

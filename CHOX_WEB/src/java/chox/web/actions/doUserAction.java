@@ -7,6 +7,7 @@ import chox.model.Insurer;
 import chox.model.LineOfBusiness;
 import chox.model.WebUser;
 import chox.services.ChorganisationService;
+import chox.services.ClaimService;
 import chox.services.InsurerService;
 import chox.services.LineOfBusinessService;
 import chox.services.LookupService;
@@ -17,6 +18,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import java.util.List;
 import org.acegisecurity.providers.encoding.PasswordEncoder;
+import chox.web.viewdata.ActionResponse;
 
 public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Preparable {
 
@@ -27,13 +29,12 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     private String mode;
     private List insurers;
     private List suppliers;
-    private List lineOfBusinesses = null;
     private LookupService lookupService;
     private InsurerService insurerService;
     private ChorganisationService chorganisationService;
     private WebUserUserRoleService webUserUserRoleService;
-    private LineOfBusinessService lineOfBusinessService;
-    private String actionResult;
+    // private LineOfBusinessService lineOfBusinessService;
+    private ClaimService claimService;
     private Integer insurerId = -1;
     private Integer supplierId = -1;
     private Integer lineOfBusinessId = -1;
@@ -67,14 +68,6 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         return isEnable;
     }
     
-    public String getActionResult() {
-        return actionResult;
-    }
-
-    public void setActionResult(String actionResult) {
-        this.actionResult = actionResult;
-    }
-
     public List getInsurers() {
         insurers = this.lookupService.getInsurers();
         return insurers;
@@ -91,20 +84,6 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     public List getSuppliers() {
         suppliers = this.lookupService.getAllSuppliers();
         return suppliers;
-    }
-
-    public List getLineOfBusinesses() {
-
-        if (orgTypeId.equalsIgnoreCase("2")) {
-            // lineOfBusinesses = this.lookupService.getLineOfBusinessesByInsurerId(model.getInsurer().getId());
-        }
-
-        for (Object o : lineOfBusinesses) {
-
-            IdLookupItem data = (IdLookupItem) o;
-        }
-
-        return lineOfBusinesses;
     }
 
     public String getMode() {
@@ -202,11 +181,16 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     public void setInsurerService(InsurerService insurerService) {
         this.insurerService = insurerService;
     }
-
+    /*
     public void setLineOfBusinessService(LineOfBusinessService lineOfBusinessService) {
         this.lineOfBusinessService = lineOfBusinessService;
     }
+    */
 
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+    
     public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService) {
         this.webUserUserRoleService = webUserUserRoleService;
     }
@@ -217,27 +201,25 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
     public String triggerStatus() throws Exception {
 
-        WebUser thisObject = model;
-        thisObject.setStatus(!thisObject.getStatus());
-        
-        /*
-        if (thisObject.getStatus()) {
-            thisObject.setStatus(false);
-        } else {
-            if (thisObject.isClaimHandler() && thisObject.getLineOfBusiness() == null) {
-                actionResult = "1:";
-            } else {
-                thisObject.setStatus(true);
-            }
-        }
-        */
-        
         try {
 
-            thisObject.setLastModifiedBy(this.getAuthenticatedUser().getUser());
-            thisObject.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-            this.service.updateObject(thisObject);
+            WebUser thisObject = model;
+            thisObject.setStatus(!thisObject.getStatus());
+        
+            boolean isAllowUpdate = true;
 
+            if(!thisObject.getStatus() && claimService.isUserHasOpenClaim(thisObject.getId())){
+                String ackMsg = "This user currently has assigned claims. Please reassign these claims before de-activating this user account";
+                getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);
+                isAllowUpdate = false;
+            }       
+
+            if(isAllowUpdate){
+                thisObject.setLastModifiedBy(this.getAuthenticatedUser().getUser());
+                thisObject.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+                this.service.updateObject(thisObject);
+            }
+            
         } catch (Exception ex) {
             throw ex;
         }
@@ -264,13 +246,15 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
             model.setLastModifiedBy(this.getAuthenticatedUser().getUser());
             model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
 
+            /*
             LineOfBusiness lineofbusiness = null;
 
             if (lineOfBusinessId != null && lineOfBusinessId > 0) {
-                lineofbusiness = lineOfBusinessService.getObject(lineOfBusinessId);
+                // lineofbusiness = lineOfBusinessService.getObject(lineOfBusinessId);
                 // model.setLineOfBusiness(lineofbusiness);
             }
-
+            */
+            
             if (mode.equalsIgnoreCase("New")) {
                 
                 doAddNewObject();

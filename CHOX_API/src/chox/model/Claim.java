@@ -37,6 +37,7 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
     private Date statusModifiedDate;
     private String previousStatus;
     private Date hireMonitoringEcd;
+    private WebUser claimOwner;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc=" Composite Objects ">
@@ -66,7 +67,6 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
     // </editor-fold>   
 
     public Claim() {
-        //initial member collections
         hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
         notifications = new ArrayList<Notification>();
     }
@@ -297,6 +297,7 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
         this.previousStatus = previousStatus;
     }
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="BRE Properties ">
     public IHireInfo getHireDetail() {
         return this.getVehicleHire();
@@ -439,6 +440,7 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
     }
 
     public void AddNotification(Notification notification) {
+        
         if (notification != null && !isSameTypeOfNotificationExist(notification)) {
             
             if (this.notifications == null) {
@@ -477,6 +479,15 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
         return null;
     }
 
+    public WebUser getClaimOwner() {
+        return claimOwner;
+    }
+
+    public void setClaimOwner(WebUser claimOwner) {
+        this.claimOwner = claimOwner;
+    }
+
     // </editor-fold>  
-   
+
+    
 }

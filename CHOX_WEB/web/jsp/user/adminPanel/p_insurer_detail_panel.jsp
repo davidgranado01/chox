@@ -183,34 +183,6 @@
             
         }
         
-        /*
-        function doTriggerWorkgroup(){
-            
-             $.ajax({
-               url: "triggerInsurerWorkgroupFeature.action?objectId="+$("#objectId").val(),
-               success: insurer_triggerworkgroupSubmitResult
-             });
-             
-        }
-        
-        function insurer_triggerworkgroupSubmitResult(responseText, statusText){
-            
-            var response = eval('(' + responseText.trim() + ')');        
-            var isSuccess = true;
-            
-            if(response && response.isValid){
-
-                if(response.resultType && response.resultType == 'Message'){
-                    propmtMsg("Insurer", response.result);
-                    isSuccess = false;
-                }
-            }
-            
-            if(isSuccess){
-                $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + $("#objectId").val());
-            }
-        }
-        */
        
 </script>
 
@@ -328,6 +300,14 @@
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Enable Workgroup</label>
                     <s:checkbox name="workgroupEnable" value="workgroupEnable" />
+                </div>
+                 <div class="chox-form-item">
+                    <label class="chox-form-std-label">Enable Automatic Claim Routing</label>
+                    <s:checkbox name="autoRoutingEnable" value="autoRoutingEnable" />
+                </div>
+                 <div class="chox-form-item">
+                    <label class="chox-form-std-label">Enable Claim Ownership</label>
+                    <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" />
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Active</label>

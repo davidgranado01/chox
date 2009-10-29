@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="chox.model.VehicleClassCelling" table="vehicle_class_celling">
-        <cache usage="read-write"/>
-        <id column="id" name="id">
-            <generator class="increment"/>
-        </id>
-        <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer"/>
-        <many-to-one class="chox.model.VehicleClass" column="vehicle_class_id" name="vehicleClass"/>
-        <property column="hire_net_celling" name="hireNetCelling" not-null="true"/>
-        <property column="repair_net_celling" name="repairNetCelling" not-null="true"/>
-        <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
-        <property column="created_date" name="createdDate"/>
-        <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
-        <property column="last_modified_date" name="lastModifiedDate"/>
-    </class>
+  <class name="chox.model.VehicleClassCelling" table="vehicle_class_celling">
+    <cache usage="read-write"/>
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer"/>
+    <many-to-one class="chox.model.VehicleClass" column="vehicle_class_id" name="vehicleClass"/>
+    <property column="hire_net_celling" name="hireNetCelling" not-null="true"/>
+    <property column="repair_net_celling" name="repairNetCelling" not-null="true"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+    <property column="created_date" name="createdDate"/>
+    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+  </class>
 </hibernate-mapping>

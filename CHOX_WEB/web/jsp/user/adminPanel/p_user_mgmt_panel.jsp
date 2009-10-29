@@ -197,6 +197,28 @@
     }
 
     function onUpdateUserSubmitResult(responseText, statusText){
+
+                var response = eval('(' + responseText.trim() + ')');
+                // var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
+                // outputDiv.html('');//clear out the response message holder
+
+                if(response)
+                {
+                    if(response.isValid){
+
+                        if(response.resultType && response.resultType == 'Message')
+                        {
+                            propmtMsg("", response.result)
+                        }
+                        
+                    }
+                }
+                else
+                {
+                    propmtErrorMsg("Unknown Error Encountered, please try again.");
+                }
+
+        
         loadGridViewList();
     }
     

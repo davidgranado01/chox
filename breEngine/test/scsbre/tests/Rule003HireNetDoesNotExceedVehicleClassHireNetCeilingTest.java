@@ -15,7 +15,6 @@ import scsbre.tests.sample.*;
 
 public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends TestCase {
 
-   
     /*
      * COMPARE
      * INVOICE HIRE NET
@@ -54,10 +53,10 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
         
         // SET VEHICLE CLASS CELLING
         VehicleClassCellingInfo vehicleClassCelling = new VehicleClassCellingInfo();
-        vehicleClassCelling.setHireNetCelling(new BigDecimal("500.00"));
+        vehicleClassCelling.setHireNetCelling(new BigDecimal("300.00"));
 
         // SET CHOBAND
-        claim.getChoBand().setHireNetCeiling(new BigDecimal(400.00));
+        claim.getChoBand().setHireNetCeiling(new BigDecimal("400.00"));
         claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
         claim.getChoBand().setVehicleClassCelling(vehicleClassCelling);
 
@@ -65,8 +64,7 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
     }
 
     @Test
-    public void testSkipped_1() throws IOException {
-
+    public void testSkipped_OnOffFlag() throws IOException {
 
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(false);
@@ -75,102 +73,105 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
 
-    
     @Test
-    public void testPassed_VehicleClassCellingEnable() throws IOException {
+    public void testPassed_VehicleClassCellingDisabled_LessThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setVehicleClassCellingEnable(true);
-        claim.getInvoice().setHireNet(new BigDecimal("499.99"));
+        claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
+        claim.getChoBand().setVehicleClassCellingEnable(false);
+        claim.getInvoice().setHireNet(new BigDecimal("399.99"));
 
         RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
 
-        /*
-        boolean success = (claim.getInvoice().getHireNet()).compareTo(claim.getChoBand().getMaxHireNetCeiling()) <= 0;
-        System.out.println("HIRE NET: "+claim.getInvoice().getHireNet());
-        System.out.println("HIRE NET CELLING: "+claim.getChoBand().getMaxHireNetCeiling());
-        System.out.println("RESULT: "+success);
-        System.out.println("RESULT: "+rv.getRelatedRule().getNarrative());
-        */
-        
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalated);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
 
     @Test
-    public void testFailed_VehicleClassCellingEnable() throws IOException {
+    public void testPassed_VehicleClassCellingDisabled_Equals() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setVehicleClassCellingEnable(true);
-        claim.getInvoice().setHireNet(new BigDecimal("500.01"));
-
-        RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
-
-        /*
-        boolean success = (claim.getInvoice().getHireNet()).compareTo(claim.getChoBand().getMaxHireNetCeiling()) <= 0;
-        System.out.println("HIRE NET: "+claim.getInvoice().getHireNet());
-        System.out.println("HIRE NET CELLING: "+claim.getChoBand().getMaxHireNetCeiling());
-        System.out.println("RESULT: "+success);
-        System.out.println("RESULT: "+rv.getRelatedRule().getNarrative());
-        */
-        
-        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Hire Net billed £500.01 exceeds the Hire Net ceiling of £500.00 for vehicle class SP1."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
-        assertFalse(rv.getIsVisibleToCHO());
-
-    }
-
-    @Test
-    public void testPassed_VehicleClassCellingDisable() throws IOException {
-
-        ClaimInfo claim = getTestClaim();
+        claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
         claim.getChoBand().setVehicleClassCellingEnable(false);
-        claim.getInvoice().setHireNet(new BigDecimal("400"));
+        claim.getInvoice().setHireNet(new BigDecimal("400.00"));
 
         RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
 
-        /*
-        boolean success = (claim.getInvoice().getHireNet()).compareTo(claim.getChoBand().getMaxHireNetCeiling()) <= 0;
-        System.out.println("HIRE NET: "+claim.getInvoice().getHireNet());
-        System.out.println("HIRE NET CELLING: "+claim.getChoBand().getMaxHireNetCeiling());
-        System.out.println("RESULT: "+success);
-        */
-        
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalated);
         assertFalse(rv.getIsVisibleToCHO());
-        
+
     }
 
     @Test
-    public void testFailed_VehicleClassCellingDisable() throws IOException {
+    public void testFailed_VehicleClassCellingDisabled_MoreThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
+        claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
         claim.getChoBand().setVehicleClassCellingEnable(false);
-        claim.getInvoice().setHireNet(new BigDecimal("400.01"));
+        claim.getInvoice().setHireNet(new BigDecimal("440.00"));
+
+        RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
+        
+        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Hire Net billed £440.00 exceeds the Hire Net ceiling of £400.00"));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalated);
+        assertFalse(rv.getIsVisibleToCHO());
+
+    }
+
+    @Test
+    public void testPassed_VehicleClassCellingEnabled_LessThan() throws IOException {
+
+        ClaimInfo claim = getTestClaim();
+        claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
+        claim.getChoBand().setVehicleClassCellingEnable(true);
+        claim.getInvoice().setHireNet(new BigDecimal("299.00"));
 
         RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
 
-        /*
-        boolean success = (claim.getInvoice().getHireNet()).compareTo(claim.getChoBand().getMaxHireNetCeiling()) <= 0;
-        System.out.println("HIRE NET: "+claim.getInvoice().getHireNet());
-        System.out.println("HIRE NET CELLING: "+claim.getChoBand().getMaxHireNetCeiling());
-        System.out.println("RESULT: "+success);
-        System.out.println("RESULT: "+rv.getRelatedRule().getNarrative());
-        */
-        
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+        assertFalse(rv.getIsVisibleToCHO());
+
+    }
+
+    @Test
+    public void testPassed_VehicleClassCellingEnabled_Equals() throws IOException {
+
+        ClaimInfo claim = getTestClaim();
+        claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
+        claim.getChoBand().setVehicleClassCellingEnable(true);
+        claim.getInvoice().setHireNet(new BigDecimal("300.00"));
+
+        RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+        assertFalse(rv.getIsVisibleToCHO());
+
+    }
+
+    @Test
+    public void testFailed_VehicleClassCellingEnabled_MoreThan() throws IOException {
+
+        ClaimInfo claim = getTestClaim();
+        claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
+        claim.getChoBand().setVehicleClassCellingEnable(true);
+        claim.getInvoice().setHireNet(new BigDecimal("340.00"));
+
+        RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
+
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Hire Net billed £400.01 exceeds the Hire Net ceiling of £400.00 for vehicle class SP1."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Hire Net billed £340.00 exceeds the Hire Net ceiling of £300.00 for vehicle class SP1."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
         assertFalse(rv.getIsVisibleToCHO());
 

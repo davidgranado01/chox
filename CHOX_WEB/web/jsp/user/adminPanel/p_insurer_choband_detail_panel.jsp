@@ -4,7 +4,7 @@
 <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
 <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
 
-<script language="JavaScript">
+<script type="text/javascript">
         
         var selectedPanel = "InsurerChoBandMgmt"; 
         var selectOrgId = <s:property value="insurerId" />;
@@ -99,7 +99,7 @@
                     hireRateChargeTolerance:{required:true, number:true, min:0},
                     hireNetCeiling:{required:true, number:true, min:0},
                     hireDayCeiling:{required:true, number:true, min:0},
-                    maxRepairValue:{required:true, number:true, min:0},
+                    repairNetCeiling:{required:true, number:true, min:0},
                     averageLabourRate:{required:true, number:true, min:0},
                     averageLabourHoursPerHireDay:{required:true, number:true, min:0},
                     takeVehicleOutDays:{required:true, number:true, min:0}
@@ -118,7 +118,7 @@
                     hireRateChargeTolerance: {required:"You must supply a value for 'Hire Rate Charge Tolerance'", number:"'Hire Rate Charge Tolerance' must be numeric", min:"'Hire Rate Charge Tolerance' cannot be less than zero"},
                     hireNetCeiling: {required:"You must supply a value for 'Hire Net Ceiling'", number:"'Hire Net Ceiling' must be numeric", min:"'Hire Net Ceiling' cannot be less than zero"},
                     hireDayCeiling: {required:"You must supply a value for 'Hire Day Ceiling'", number:"'Hire Day Ceiling' must be numeric", min:"'Hire Day Ceiling' cannot be less than zero"},
-                    maxRepairValue: {required:"You must supply a value for 'Max Repair Value'", number:"'Max Repair Value' must be numeric", min:"'Max Repair Value' cannot be less than zero"},
+                    repairNetCeiling: {required:"You must supply a value for 'Max Repair Value'", number:"'Max Repair Value' must be numeric", min:"'Max Repair Value' cannot be less than zero"},
                     averageLabourRate: {required:"You must supply a value for 'Average Labour Rate'", number:"'Average Labour Rate' must be numeric", min:"'Average Labour Rate' cannot be less than zero"},
                     averageLabourHoursPerHireDay: {required:"You must supply a value for 'Average Labour Hours Per Hire Day'", number:"'Average Labour Hours Per Hire Day' must be numeric", min:"'Average Labour Hours Per Hire Day' cannot be less than zero"},
                     takeVehicleOutDays: {required:"You must supply a value for 'Take Vehicle Out Days'", number:"'Take Vehicle Out Days' must be numeric", min:"'Take Vehicle Out Days' cannot be less than zero"}
@@ -617,7 +617,7 @@ Engineer's Estimated Days Under Repair + Take Mobile Vehicle To Garage Variable 
                     <fieldset class="x-fieldset"><legend>Repair Tolerances</legend>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Maximum Repair Net Ceiling (£)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDMaxRepairValue" name="maxRepairValue" value="<s:property value="maxRepairValue" />" onchange="javascript:doRefreshCalculation();"/><img id="help-maxRepairValue" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/>
+                            <input type="text" class="chox-ttxt" id="CCDRepairNetCeiling" name="repairNetCeiling" value="<s:property value="repairNetCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-maxRepairValue" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/>
                         </div>
                     </fieldset>
 
@@ -726,7 +726,7 @@ Engineer's Estimated Days Under Repair + Take Mobile Vehicle To Garage Variable 
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDate" value="repairBookedInDate" /></div><label class="chox-form-check-label">Repair booked in date Check</label>
-                            <div class="chox-form-check-description">If the repair has been booked into a garage on a Friday or Bank Holiday then the invoice will be flagged for review.</div>
+                            <div class="chox-form-check-description">If the repair has been booked into a garage on a Friday, Saturday, Sunday, or Bank Holiday then the invoice will be flagged for review.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="flaggedForManualInvoiceReview" value="flaggedForManualInvoiceReview" /></div><label class="chox-form-check-label">Invoiced flagged for manual invoice review</label>

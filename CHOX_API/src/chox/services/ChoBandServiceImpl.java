@@ -15,7 +15,6 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 
-
 public class ChoBandServiceImpl extends SecureDataService implements ChoBandService{
 
     private ChoBandOrganisationService chobandorganisaionservice;
@@ -118,7 +117,7 @@ public class ChoBandServiceImpl extends SecureDataService implements ChoBandServ
         choband.setInspectionDelayDays(4);
         choband.setIsMobileDayAllowance(2);
         choband.setIsNotMobileDayAllowance(9);
-        choband.setMaxRepairValue(new BigDecimal("1500.00"));
+        choband.setRepairNetCeiling(new BigDecimal("1500.00"));
         choband.setOfferMadeDays(7);
         choband.setReceiptOfFinalStatementChequeDays(10);
         choband.setTakeVehicleOutDays(1);

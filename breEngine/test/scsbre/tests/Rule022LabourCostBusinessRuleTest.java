@@ -55,7 +55,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalated);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -72,7 +72,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Insufficient information to perform labour cost rule."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalated);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -90,7 +90,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Insufficient information to perform labour cost rule."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalated);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -124,7 +124,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalated);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -156,7 +156,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalated);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -188,7 +188,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The number of hire days billed by the CHO is not relative to the number of expected hire days based on the labour information provided."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalated);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
