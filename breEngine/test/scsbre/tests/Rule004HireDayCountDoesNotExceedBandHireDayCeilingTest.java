@@ -65,7 +65,7 @@ public class Rule004HireDayCountDoesNotExceedBandHireDayCeilingTest extends Test
 
         /*
          * A : HIRE DETAIL > HIRE DAY
-         * B : BRE BAND > HIRE DAY CELLING
+         * B : BRE BAND > HIRE DAY CEILING
          * A EQUALS TO B > PASSED
          */
         
@@ -89,7 +89,7 @@ public class Rule004HireDayCountDoesNotExceedBandHireDayCeilingTest extends Test
 
         /*
          * A : HIRE DETAIL > HIRE DAY
-         * B : BRE BAND > HIRE DAY CELLING
+         * B : BRE BAND > HIRE DAY CEILING
          * A LESS TO B > PASSED
          */
 
@@ -113,7 +113,7 @@ public class Rule004HireDayCountDoesNotExceedBandHireDayCeilingTest extends Test
 
         /*
          * A : HIRE DETAIL > HIRE DAY
-         * B : BRE BAND > HIRE DAY CELLING
+         * B : BRE BAND > HIRE DAY CEILING
          * A MORE THAN B > PASSED
          */
 

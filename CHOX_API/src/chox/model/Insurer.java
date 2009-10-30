@@ -23,10 +23,10 @@ public class Insurer extends AuditableEntity implements Serializable, IInsurerIn
     protected boolean workgroupEnable;
     protected boolean autoRoutingEnable;
     protected boolean claimOwnershipEnable;
-    protected List<VehicleClassCelling> vehicleClassCellings;
+    protected List<VehicleClassCeiling> vehicleClassCeilings;
 
     public Insurer() {
-        vehicleClassCellings = new ArrayList<VehicleClassCelling>();
+        vehicleClassCeilings = new ArrayList<VehicleClassCeiling>();
     }
 
     public BigDecimal getAdminHandlingCharge() {
@@ -133,25 +133,19 @@ public class Insurer extends AuditableEntity implements Serializable, IInsurerIn
         this.workgroupEnable = workgroupEnable;
     }
     
-    /**
-     * @return the vehicleClassCellings
-     */
-    public List<VehicleClassCelling> getVehicleClassCellings() {
-        return vehicleClassCellings;
+    public List<VehicleClassCeiling> getVehicleClassCeilings() {
+        return vehicleClassCeilings;
     }
 
-    /**
-     * @param vehicleClassCellings the vehicleClassCellings to set
-     */
-    public void setVehicleClassCellings(List<VehicleClassCelling> vehicleClassCellings) {
-        this.vehicleClassCellings = vehicleClassCellings;
+    public void setVehicleClassCeilings(List<VehicleClassCeiling> vehicleClassCeilings) {
+        this.vehicleClassCeilings = vehicleClassCeilings;
     }
 
-    public void AddVehicleClassCelling(VehicleClassCelling vehicleClassCelling)
+    public void AddVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling)
     {
-        if(!this.vehicleClassCellings.contains(vehicleClassCelling))
+        if(!this.vehicleClassCeilings.contains(vehicleClassCeiling))
         {
-            this.vehicleClassCellings.add(vehicleClassCelling);
+            this.vehicleClassCeilings.add(vehicleClassCeiling);
         }
     }
 

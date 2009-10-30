@@ -21,10 +21,10 @@ public class InsurerInfo implements IInsurerInfo {
     protected String companyNo;
     protected String phone;
     protected boolean workgroupEnable;
-    protected List<VehicleClassCellingInfo> vehicleClassCellings;
+    protected List<VehicleClassCeilingInfo> vehicleClassCeilings;
 
     public InsurerInfo() {
-        vehicleClassCellings = new ArrayList<VehicleClassCellingInfo>();
+        vehicleClassCeilings = new ArrayList<VehicleClassCeilingInfo>();
     }
 
     public BigDecimal getAdminHandlingCharge() {
@@ -131,19 +131,19 @@ public class InsurerInfo implements IInsurerInfo {
         this.workgroupEnable = workgroupEnable;
     }
 
-    public List<VehicleClassCellingInfo> getVehicleClassCellings() {
-        return vehicleClassCellings;
+    public List<VehicleClassCeilingInfo> getVehicleClassCeilings() {
+        return vehicleClassCeilings;
     }
 
-    public void setVehicleClassCellings(List<VehicleClassCellingInfo> vehicleClassCellings) {
-        this.vehicleClassCellings = vehicleClassCellings;
+    public void setVehicleClassCeilings(List<VehicleClassCeilingInfo> vehicleClassCeilings) {
+        this.vehicleClassCeilings = vehicleClassCeilings;
     }
 
-    public void AddVehicleClassCelling(VehicleClassCellingInfo vehicleClassCelling)
+    public void AddVehicleClassCeiling(VehicleClassCeilingInfo vehicleClassCeiling)
     {
-        if(!this.vehicleClassCellings.contains(vehicleClassCelling))
+        if(!this.vehicleClassCeilings.contains(vehicleClassCeiling))
         {
-            this.vehicleClassCellings.add(vehicleClassCelling);
+            this.vehicleClassCeilings.add(vehicleClassCeiling);
         }
     }
 }

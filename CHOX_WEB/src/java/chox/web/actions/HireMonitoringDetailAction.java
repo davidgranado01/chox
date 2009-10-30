@@ -77,8 +77,8 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
 
             Claim c = claimService.getClaim(getClaimId());
             c.setHireMonitoringDetail(model);
-            c.AddNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(c));
-             
+            c.AddNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousChecks(), hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(c));
+
             if(isUpdateInsurer){
                 c.AddNotification(new HireUpdatedNotification());
             }
@@ -126,23 +126,14 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
         return nonProvisionReasons;
     }
 
-    /**
-     * @param hireMonitoringDetailUpdatedChecker the hireMonitoringDetailUpdatedChecker to set
-     */
     public void setHireMonitoringDetailUpdatedChecker(ClaimAnomalousChecker hireMonitoringDetailUpdatedChecker) {
         this.hireMonitoringDetailUpdatedChecker = hireMonitoringDetailUpdatedChecker;
     }
 
-    /**
-     * @return the isUpdateInsurer
-     */
     public Boolean getIsUpdateInsurer() {
         return isUpdateInsurer;
     }
 
-    /**
-     * @param isUpdateInsurer the isUpdateInsurer to set
-     */
     public void setIsUpdateInsurer(Boolean isUpdateInsurer) {
         this.isUpdateInsurer = isUpdateInsurer;
     }

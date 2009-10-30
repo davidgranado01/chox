@@ -5,7 +5,7 @@ import chox.model.Claim;
 import chox.model.EngineerReport;
 import chox.model.History;
 import chox.model.VehicleClass;
-import chox.model.VehicleClassCelling;
+import chox.model.VehicleClassCeiling;
 import chox.xmlValidation.model.status.ClaimParseStatus;
 import chox.xmlValidation.rules.Util.HistoryHelper;
 import java.math.BigDecimal;
@@ -114,14 +114,14 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
         ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId());
 
-        System.out.println("getInsurer:"+claimResult.getClaim().getInsurer().getId());
-        System.out.println("getChorganisation:"+claimResult.getClaim().getChorganisation().getId());
-        System.out.println("choBand:"+choBand.getId());
+        // System.out.println("getInsurer:"+claimResult.getClaim().getInsurer().getId());
+        // System.out.println("getChorganisation:"+claimResult.getClaim().getChorganisation().getId());
+        // System.out.println("choBand:"+choBand.getId());
 
         if(choBand.getId()!=null){
 
-            VehicleClassCelling vehicleClassCelling = insurerService.getVechileClassCellingForClaim(claimResult.getClaim());
-            choBand.setVehicleClassCelling(vehicleClassCelling);
+            VehicleClassCeiling vehicleClassCeiling = insurerService.getVechileClassCeilingForClaim(claimResult.getClaim());
+            choBand.setVehicleClassCeiling(vehicleClassCeiling);
             claimResult.getClaim().setChoband(choBand);
             
             Boolean isEngReportExist = false;
@@ -166,8 +166,8 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
     public RulesEngineResponse processResubmitInvoice(Claim breClaim){
 
         ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(breClaim.getChorganisation().getId(), breClaim.getInsurer().getId());
-        VehicleClassCelling vehicleClassCelling = insurerService.getVechileClassCellingForClaim(breClaim);
-        choBand.setVehicleClassCelling(vehicleClassCelling);
+        VehicleClassCeiling vehicleClassCeiling = insurerService.getVechileClassCeilingForClaim(breClaim);
+        choBand.setVehicleClassCeiling(vehicleClassCeiling);
         breClaim.setChoband(choBand);
             
         Boolean isEngReportExist = false;

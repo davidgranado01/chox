@@ -1379,4 +1379,19 @@ company_no='00093792', address1='Royal and Sun Alliance Insurance Plc',
 address2='St Marks Court', address3='Chart Way, Horsham', address4='West Sussex',
 address5='UK', postcode='RH12 1XL' where id=3;
 
----------------------------
+---- Build 1 -----------------------
+
+delete from web_user_user_role where wer_user_role_id in (select id from web_user_role where name ='ROLE_INS_CH_TL');
+delete from web_user_role where name ='ROLE_INS_CH_TL';
+delete from accessibility_item where role='ROLE_INS_CH_TL';
+
+-- ############################################################################################
+-- START VERSION V2.8.2.13
+-- ############################################################################################\
+
+ALTER TABLE web_user_user_role RENAME COLUMN wer_user_role_id TO web_user_role_id;
+ALTER TABLE vehicle_class_celling RENAME COLUMN hire_net_celling TO hire_net_ceiling;
+ALTER TABLE vehicle_class_celling RENAME COLUMN repair_net_celling TO repair_net_ceiling;
+ALTER TABLE vehicle_class_celling RENAME TO vehicle_class_ceiling
+
+ALTER TABLE cho_band RENAME COLUMN is_vehicle_class_celling_enable TO is_vehicle_class_ceiling_enable;

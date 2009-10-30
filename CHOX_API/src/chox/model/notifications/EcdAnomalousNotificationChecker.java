@@ -43,7 +43,7 @@ public class EcdAnomalousNotificationChecker implements AnomalousCheck {
             lastECD = c.getHireMonitoringEcds().get(numberOfEcd - 1).getEcdDate();
         }
 
-        return isClaimAnomalies(policyHolderDate,firstECD,lastECD);
+        return isClaimAnomalies(policyHolderDate, firstECD, lastECD);
     }
 
     private Boolean isClaimAnomalies(Date policyHolderDate, Date firstECD,Date lastECD){
@@ -61,12 +61,17 @@ public class EcdAnomalousNotificationChecker implements AnomalousCheck {
                 }
             }
         }
-
+        
         return false;
+        
     }
 
     public Notification BuildNotification() {
         return new EcdAnomalousNotification();
+    }
+
+    public boolean isRefreshRequired() {
+        return true;
     }
 
 }

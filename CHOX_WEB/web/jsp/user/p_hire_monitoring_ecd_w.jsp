@@ -79,6 +79,7 @@
         document.formAddNewHireMonitoringEcd.ecdDate.value = "";
         document.formAddNewHireMonitoringEcd.reasonOfDelayId.value = "";
         document.formAddNewHireMonitoringEcd.supportingNote.value = "";
+        document.formAddNewHireMonitoringEcd.isUpdateInsurer.checked = false;
     }
     
     function doPopulateNote(){

@@ -4,7 +4,6 @@ package chox.model.notifications;
 import chox.Util.DateHelper;
 import chox.model.Claim;
 import chox.model.Notification;
-import chox.services.InsurerService;
 import java.util.Calendar;
 
 public class RepairBookedInOnFridayNotificationChecker implements AnomalousCheck {
@@ -33,5 +32,9 @@ public class RepairBookedInOnFridayNotificationChecker implements AnomalousCheck
 
     public Notification BuildNotification() {
         return new RepairBookedInOnFridayNotification();
+    }
+
+    public boolean isRefreshRequired() {
+        return true;
     }
 }

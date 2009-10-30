@@ -4,13 +4,13 @@
 <script type="text/javascript">
 
     var selectOrgId = <s:property value="selectOrgId" />;
-    var vehicleClassCellingJsonReader;
-    var vehicleClassCelling_gridviewData;
-    var vehicleClassCelling_gridviewGrid;
+    var vehicleClassCeilingJsonReader;
+    var vehicleClassCeiling_gridviewData;
+    var vehicleClassCeiling_gridviewGrid;
     var vehicleCeilingEditSelectionDlg;
     
     $(document).ready(function(){
-        doVehicleClassCellingFormValidation();
+        doVehicleClassCeilingFormValidation();
     });
 
     Ext.onReady(function(){
@@ -34,29 +34,29 @@
                         
                         handler:function(){
 
-                            $("form#editVehicleClassCellingDetail").validate(
+                            $("form#editVehicleClassCeilingDetail").validate(
                             {
                                 errorLabelContainer: "#HMmessageBox",
                                 rules: {
                                     editVehicleClassId:{min:0 },
-                                    editHireNetCelling:{ required:true, number:true, min:0.01 },
-                                    editRepairNetCelling:{ required:true, number:true, min:0.01 }
+                                    editHireNetCeiling:{ required:true, number:true, min:0.01 },
+                                    editRepairNetCeiling:{ required:true, number:true, min:0.01 }
                                 },
                                 messages: {
                                      editVehicleClassId: {min:"You must select a 'Vehicle Class'" },
-                                     editHireNetCelling: { required:"You must supply a value for 'Hire Net Ceiling'", number:"'Hire Net Ceiling' must be numeric", min:"'Hire Net Ceiling' cannot be less than zero" },
-                                     editRepairNetCelling: { required:"You must supply a value for 'Repair Net Ceiling'", number:"'Repair Net Ceiling' must be numeric", min:"'Repair Net Ceiling' cannot be less than zero" }
+                                     editHireNetCeiling: { required:"You must supply a value for 'Hire Net Ceiling'", number:"'Hire Net Ceiling' must be numeric", min:"'Hire Net Ceiling' cannot be less than zero" },
+                                     editRepairNetCeiling: { required:"You must supply a value for 'Repair Net Ceiling'", number:"'Repair Net Ceiling' must be numeric", min:"'Repair Net Ceiling' cannot be less than zero" }
                                 }
                             });
 
-                            if($('form#editVehicleClassCellingDetail').valid()){
+                            if($('form#editVehicleClassCeilingDetail').valid()){
 
-                                var parameter = "?vehicleClassCellingId="+$("#editVehicleClassId").val();
-                                parameter += "&hireNetCeiling="+$("#editHireNetCelling").val();
-                                parameter += "&repairNetCeiling="+$("#editRepairNetCelling").val();
+                                var parameter = "?vehicleClassCeilingId="+$("#editVehicleClassId").val();
+                                parameter += "&hireNetCeiling="+$("#editHireNetCeiling").val();
+                                parameter += "&repairNetCeiling="+$("#editRepairNetCeiling").val();
 
                                 $.ajax({
-                                   url: "editVehicleClassCellingDetail.action"+parameter,
+                                   url: "editVehicleClassCeilingDetail.action"+parameter,
                                    success: vehicleClassCeilingUpdateSuccess,
                                    error: vehicleClassCeilingUpdateError
                                 });
@@ -81,7 +81,7 @@
             vehicleCeilingEditSelectionDlg.hide();
         }
 
-       vehicleClassCelling_JsonReader = new Ext.data.JsonReader({
+       vehicleClassCeiling_JsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
             fields:
@@ -89,32 +89,32 @@
                 {name:'id'},
                 {name:'vehicleClassId'},
                 {name:'vehicleClassName'},
-		{name:'hireNetCelling'},
-                {name:'repairNetCelling'},
+		{name:'hireNetCeiling'},
+                {name:'repairNetCeiling'},
                 {name:'createdBy'},
                 {name:'createdDate'}
             ]
         });
 
-        vehicleClassCelling_gridviewData = new Ext.data.Store({
+        vehicleClassCeiling_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: 'getSelectedInsurerVehicleClassCelling.action',method:'GET'}),
-            reader:vehicleClassCelling_JsonReader
+            ({url: 'getSelectedInsurerVehicleClassCeiling.action',method:'GET'}),
+            reader:vehicleClassCeiling_JsonReader
         });
 
-        vehicleClassCelling_gridviewGrid = new Ext.grid.GridPanel({
+        vehicleClassCeiling_gridviewGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:vehicleClass_recordOnclick },
-            store: vehicleClassCelling_gridviewData,
+            store: vehicleClassCeiling_gridviewData,
             loadMask: true,
             columns: [
                 {header: "Vehicle Class", width: 180, dataIndex: 'vehicleClassName', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>"+value+"</a>" }},
-                {header: "Hire Net Ceiling", width: 150, dataIndex: 'hireNetCelling', sortable: true, resizable: true},
-                {header: "Repair Net Ceiling", width: 150, dataIndex: 'repairNetCelling', sortable: true, resizable: true},
+                {header: "Hire Net Ceiling", width: 150, dataIndex: 'hireNetCeiling', sortable: true, resizable: true},
+                {header: "Repair Net Ceiling", width: 150, dataIndex: 'repairNetCeiling', sortable: true, resizable: true},
                 {header: "", width: 90, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Remove</a>"}}
             ],
-            renderTo:'vehicleClassCelling_gridviewGrid',
+            renderTo:'vehicleClassCeiling_gridviewGrid',
                 width:590,
                 autoHeight:true,
                 enableHdMenu:false
@@ -126,19 +126,19 @@
 
     function onVehicleClassPageRefresh(){
         showVehicleClassDropDown();
-        vehicleClassCelling_loadGridViewList();
+        vehicleClassCeiling_loadGridViewList();
         refreshForm();
     }
 
     function refreshForm(){
         $("#vehicleClassId").val("");
-        $("#hireNetCelling").val("0.00");
-        $("#repairNetCelling").val("0.00");
+        $("#hireNetCeiling").val("0.00");
+        $("#repairNetCeiling").val("0.00");
     }
 
-    function vehicleClassCelling_loadGridViewList(){
+    function vehicleClassCeiling_loadGridViewList(){
 
-        vehicleClassCelling_gridviewData.load(
+        vehicleClassCeiling_gridviewData.load(
         {
             params:
             {
@@ -149,13 +149,13 @@
 
     function vehicleClass_recordOnclick(grid, rowIndex, columnIndex, e){
         
-        var gridView = vehicleClassCelling_gridviewGrid.getStore().getAt(rowIndex);
+        var gridView = vehicleClassCeiling_gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
 
         if(columnIndex==3){
             
             $.ajax({
-               url: "doRemoveVehicleClassCellingMapping.action?vehicleClassCellingId="+gridViewId,
+               url: "doRemoveVehicleClassCeilingMapping.action?vehicleClassCeilingId="+gridViewId,
                success: onVehicleClassPageRefresh
             });
             
@@ -170,8 +170,8 @@
 
         $("#editVehicleClassId").val(gridView.get("id"));
         $("#editVehicleClassName").html(gridView.get("vehicleClassName"));
-        $("#editHireNetCelling").val(gridView.get("hireNetCelling"));
-        $("#editRepairNetCelling").val(gridView.get("repairNetCelling"));
+        $("#editHireNetCeiling").val(gridView.get("hireNetCeiling"));
+        $("#editRepairNetCeiling").val(gridView.get("repairNetCeiling"));
 
     }
     
@@ -180,38 +180,38 @@
         $("#breBandId").val(-1);
     }
 
-    function doVehicleClassCellingSubmit(){
+    function doVehicleClassCeilingSubmit(){
 
-         if(doVehicleClassCellingFormValidation().form()){
+         if(doVehicleClassCeilingFormValidation().form()){
 
                 $(".form-container").block();
 
                 var op = {
-                    success:onVehicleClassCellingSubmitResponseReceived,
+                    success:onVehicleClassCeilingSubmitResponseReceived,
                     timeout: 3000,
-                    error: onVehicleClassCellingSubmitError
+                    error: onVehicleClassCeilingSubmitError
                 };
 
-                $("#formVehicleClassCellingDetail").ajaxSubmit(op);
+                $("#formVehicleClassCeilingDetail").ajaxSubmit(op);
                     
          }
 
     }
 
-    function doVehicleClassCellingFormValidation(){
+    function doVehicleClassCeilingFormValidation(){
 
-        var validateFlag = $("#formVehicleClassCellingDetail").validate(
+        var validateFlag = $("#formVehicleClassCeilingDetail").validate(
         {
-           errorLabelContainer: "#CDVehicleClassCellingMessageBox",
+           errorLabelContainer: "#CDVehicleClassCeilingMessageBox",
            rules: {
                 vehicleClassId:{min:0 },
-                hireNetCelling:{ required:true, number:true, min:0.01 },
-                repairNetCelling:{ required:true, number:true, min:0.01 }
+                hireNetCeiling:{ required:true, number:true, min:0.01 },
+                repairNetCeiling:{ required:true, number:true, min:0.01 }
            },
            messages: {
              vehicleClassId: {min:"You must select a 'Vehicle Class'" },
-             hireNetCelling: { required:"You must supply a value for 'Hire Net Ceiling'", number:"'Hire Net Ceiling' must be numeric", min:"'Hire Net Ceiling' cannot be less than zero" },
-             repairNetCelling: { required:"You must supply a value for 'Repair Net Ceiling'", number:"'Repair Net Ceiling' must be numeric", min:"'Repair Net Ceiling' cannot be less than zero" }
+             hireNetCeiling: { required:"You must supply a value for 'Hire Net Ceiling'", number:"'Hire Net Ceiling' must be numeric", min:"'Hire Net Ceiling' cannot be less than zero" },
+             repairNetCeiling: { required:"You must supply a value for 'Repair Net Ceiling'", number:"'Repair Net Ceiling' must be numeric", min:"'Repair Net Ceiling' cannot be less than zero" }
            },
            submitHandler: function(form) {}
         });
@@ -219,12 +219,12 @@
         return validateFlag;
     }
     
-    function onVehicleClassCellingSubmitResponseReceived(){
+    function onVehicleClassCeilingSubmitResponseReceived(){
         onVehicleClassPageRefresh();
         $(".form-container").unblock();
     }
 
-    function onVehicleClassCellingSubmitError(){
+    function onVehicleClassCeilingSubmitError(){
         alert("Unexpected Error has been encountered, please try again.");
         $(".form-container").unblock();
     }
@@ -232,30 +232,30 @@
 </script>
 
 <div>
-    <div id="VehicleClassCellingorganisationGird">
+    <div id="VehicleClassCeilingorganisationGird">
         <div class="gridViewHeader">
            <table width="100%">
             <tr>
                 <td>
                     <fieldset class="x-fieldset"><legend>Add New Vehicle Class Ceiling</legend>
                         <div class="form-container">
-                            <form id="formVehicleClassCellingDetail" action="vehicleClassCellingDetail.action" class="XXentity-form" onsubmit="return true;">
+                            <form id="formVehicleClassCeilingDetail" action="vehicleClassCeilingDetail.action" class="XXentity-form" onsubmit="return true;">
 
                                 <input type="hidden" name="selectOrgId" value='<s:property value="selectOrgId"/>'>
 
                             <div id="vehicleClassDropDownDiv" class="chox-form-item"></div>
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">Hire Net Ceiling</label>
-                                <input id="hireNetCelling" name="hireNetCelling" value="<s:property value="hireNetCelling" />"/>
+                                <input id="hireNetCeiling" name="hireNetCeiling" value="<s:property value="hireNetCeiling" />"/>
                             </div>
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">Repair Net Ceiling</label>
-                                <input id="repairNetCelling" name="repairNetCelling" value="<s:property value="repairNetCelling" />"/>
+                                <input id="repairNetCeiling" name="repairNetCeiling" value="<s:property value="repairNetCeiling" />"/>
                             </div>
                             <div class="chox-form-button">
-                                <input type="button" value='Add' onclick="javascript: return doVehicleClassCellingSubmit();"/>
+                                <input type="button" value='Add' onclick="javascript: return doVehicleClassCeilingSubmit();"/>
                             </div>
-                            <div id="CDVehicleClassCellingMessageBox" class="errorBox"></div>
+                            <div id="CDVehicleClassCeilingMessageBox" class="errorBox"></div>
                             </form>
                         </div>
                     </fieldset>
@@ -266,7 +266,7 @@
             <tr>
                 <td valign="top">
                 <div class="girdViewLabel">Vehicle Class Ceiling</div>
-                <div id="vehicleClassCelling_gridviewGrid" style="height:360px; overflow:auto;"></div>
+                <div id="vehicleClassCeiling_gridviewGrid" style="height:360px; overflow:auto;"></div>
                 </td>
             </tr>
             </table>
@@ -279,7 +279,7 @@
 
                         <div class="form-container" style="height:300px">
                             
-                            <form id="editVehicleClassCellingDetail" class="XXentity-form" action="">
+                            <form id="editVehicleClassCeilingDetail" class="XXentity-form" action="">
                                 <input id="editVehicleClassId" name="editVehicleClassId" type="hidden"/>
                                 <div class="chox-form-item">
                                     <label class="chox-form-pop">Vehicle Class</label>
@@ -287,11 +287,11 @@
                                 </div>
                                 <div class="chox-form-item">
                                     <label class="chox-form-pop">Hire Net Ceiling</label>
-                                    <input id="editHireNetCelling" name="editHireNetCelling"/>
+                                    <input id="editHireNetCeiling" name="editHireNetCeiling"/>
                                 </div>
                                 <div class="chox-form-item">
                                     <label class="chox-form-pop">Repair Net Ceiling</label>
-                                    <input id="editRepairNetCelling" name="editRepairNetCelling"/>
+                                    <input id="editRepairNetCeiling" name="editRepairNetCeiling"/>
                                 </div>
                             </form>
 

@@ -20,7 +20,7 @@ public interface ICHOBandInfo {
     public int getAverageLabourRate();
     public int getAverageLabourHoursPerHireDay();
     public BigDecimal getMaxHireNetCeiling();
-    public BigDecimal getMaxRepairNetCelling();
+    public BigDecimal getMaxRepairNetCeiling();
     public boolean isAutomaticChargeCheck();
     public boolean isBabySeatChargeCheck();
     public boolean isCdwChargeCheck();
@@ -58,5 +58,5 @@ public interface ICHOBandInfo {
     public boolean isCorrentAdminFee();
     public boolean isRepairBookedInDate();
     public boolean isFlaggedForManualInvoiceReview();
-    public boolean isVehicleClassCellingEnable();
+    public boolean isVehicleClassCeilingEnable();
 }

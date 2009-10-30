@@ -1593,8 +1593,6 @@ public String approveBREPassedByClaimHandler() {
         this.tab = tab;
     }
 
-    //Emmanuel 10-09-2009
-    //Intelligent notes
     public List<String> getIntelligentNotes() {
         if (intelligentNotes == null) {
             intelligentNotes = intelligentNoteDisplayEngine.getIntelligentNotes(claim);
@@ -1614,18 +1612,26 @@ public String approveBREPassedByClaimHandler() {
         return claim.getNotifications();
     }
 
-    /**
-     * @param notificationId the notificationId to set
-     */
     public void setNotificationId(Integer notificationId) {
         this.notificationId = notificationId;
     }
 
     public String removeNotification() {
-        Notification notification = claim.GetNotificationById(notificationId);
-        if (notification != null) {
-            claim.RemoveNotifications(notification);
+
+        if(notificationId>0){
+
+            Notification notification = claim.GetNotificationById(notificationId);
+            if (notification != null) {
+                claim.RemoveNotifications(notification);
+                service.updateClaim(claim);
+            }
+
+        }else{
+
+            System.out.println("REMOVE ALL");
+            claim.RemoveAllNotifications();
             service.updateClaim(claim);
+            
         }
 
         return SUCCESS;
@@ -1650,6 +1656,5 @@ public String approveBREPassedByClaimHandler() {
     public String getEscalateUnassignedClaim() {
         return SUCCESS;
     }
-    
     
 }

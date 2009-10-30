@@ -138,9 +138,6 @@
                 }
             });
 
-            var repairBookDt = $("#repairBookInDate").val();
-            $("#notificationRepairBookInDate").val(repairBookDt);
-
         }); 
         
         function isDateCorrect(){
@@ -169,7 +166,6 @@
     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <input type="hidden" name="date_compare_field" value=''>
-    <s:hidden value="notificationRepairBookInDate" id="notificationRepairBookInDate" name="notificationRepairBookInDate"/>
 
     <fieldset class="x-fieldset">
 

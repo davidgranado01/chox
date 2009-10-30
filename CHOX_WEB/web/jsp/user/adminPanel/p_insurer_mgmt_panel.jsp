@@ -21,7 +21,7 @@
                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroups', listeners: {activate: doSelectDetail}},
                {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: doSelectDetail}},
                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: doBreMappingRefresh}},
-               {contentEl:'insurerVehicleClassCellingTab', title:'Vehicle Class Ceilings', listeners: {activate: doSelectDetail}}
+               {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', listeners: {activate: doSelectDetail}}
            ]
            });
         }
@@ -82,10 +82,10 @@
     </div>
 </div>
 
-<div id="insurerVehicleClassCellingTab" class="x-hide-display">
+<div id="insurerVehicleClassCeilingTab" class="x-hide-display">
     <div class="subInsAdminTabCss">
         <s:action name="loadAdminPanel" executeResult="true">
-            <s:param name="adminPanelName">InsurerVehicleClassCelling</s:param>
+            <s:param name="adminPanelName">InsurerVehicleClassCeiling</s:param>
             <s:param name="selectOrgId"><s:property value="selectOrgId" /></s:param>
         </s:action>
 

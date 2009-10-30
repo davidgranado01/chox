@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-autowire="autodetect">
+
     <bean id="securityInfoProvider" class="chox.web.data.WebSecurityInfoProvider" singleton="false"/>
+    
     <bean id="auditInterceptor" class="chox.data.DBInterceptor" singleton="false">
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
-
-    <!--
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver">
-        </property>
-        <property name="url" value="jdbc:postgresql://jupiter:5432/chox_dev_sprint8">
-        </property>
-        <property name="username" value="postgres">
-        </property>
-        <property name="password" value="GreenF1nCH">
-        </property>
-    </bean>
-    !-->
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver">
@@ -29,20 +18,7 @@
         <property name="password" value="GreenF1nCH">
         </property>
     </bean>
-    
-    <!--
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver">
-        </property>
-        <property name="url" value="jdbc:postgresql://localhost:5432/20091001_test_mi">
-        </property>
-        <property name="username" value="postgres">
-        </property>
-        <property name="password" value="GreenF1nCH">
-        </property>
-    </bean>    
-    !-->
-    
+
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource">
             <ref bean="dataSource" />
@@ -98,7 +74,7 @@
                 <value>chox/model/Workgroup.hbm.xml</value>
                 <value>chox/model/UserWorkgroup.hbm.xml</value>
                 <value>chox/model/Notification.hbm.xml</value>
-                <value>chox/model/VehicleClassCelling.hbm.xml</value>
+                <value>chox/model/VehicleClassCeiling.hbm.xml</value>
                 <value>chox/model/AutomaticRouting.hbm.xml</value>
             </list>
         </property>

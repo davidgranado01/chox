@@ -3,7 +3,7 @@ package chox.services;
 import chox.data.ClaimSearchCriteria;
 import chox.model.Claim;
 import chox.model.ClaimStatus;
-import chox.model.VehicleClassCelling;
+import chox.model.VehicleClassCeiling;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -450,25 +450,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
     
-    /*
-    // MOVED TO INSURER SERVICES
-    public VehicleClassCelling getVechileClassCellingForClaim(Claim claim)
-    {        
-        VehicleClassCelling vehicleClassCelling = null;
-        
-        try {
-
-            DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassCelling.class);
-            criteria.add(Restrictions.eq("insurer", claim.getInsurer()));
-            criteria.add(Restrictions.eq("vehicleClass", claim.getCustomer().getVehicleClass()));
-            vehicleClassCelling = (VehicleClassCelling) getByCriteria(criteria);
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return vehicleClassCelling;
-    }
-    */
 }
 
 

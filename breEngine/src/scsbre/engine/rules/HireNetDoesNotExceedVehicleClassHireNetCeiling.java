@@ -25,14 +25,14 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
         if(claim.getChoBand().isHireNetDoesNotExceedVehicleClassHireNetCeiling()){
 
             BigDecimal hireNet = claim.getInvoice().getHireNet();
-            BigDecimal hireNetCelling = claim.getChoBand().getMaxHireNetCeiling();
-            boolean success = hireNet.compareTo(hireNetCelling) <= 0;
+            BigDecimal hireNetCeiling = claim.getChoBand().getMaxHireNetCeiling();
+            boolean success = hireNet.compareTo(hireNetCeiling) <= 0;
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
             if(!success){
                 DecimalFormat moneyFormat = new DecimalFormat("£0.00");
-                narrative = String.format(narrativeTemplate, moneyFormat.format(hireNet.doubleValue()), moneyFormat.format(hireNetCelling.doubleValue()), claim.getVClass().getCode());
+                narrative = String.format(narrativeTemplate, moneyFormat.format(hireNet.doubleValue()), moneyFormat.format(hireNetCeiling.doubleValue()), claim.getVClass().getCode());
             }
             
 
@@ -57,7 +57,7 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
                 res.setResult(RuleEvaluationResult.RulePassed);
 
                 // CHECK VEHICLE CLASS CEILLING > HIRE NET
-                if(claim.getChoBand().isVehicleClassCellingEnable()){
+                if(claim.getChoBand().isVehicleClassCeilingEnable()){
 
                     hireNetCeiling = claim.getChoBand().getMaxHireNetCeiling();
                     success = hireNet.compareTo(hireNetCeiling) <= 0;

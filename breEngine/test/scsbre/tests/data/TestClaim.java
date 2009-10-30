@@ -22,7 +22,7 @@ public class TestClaim {
         insurer.setPostcode("POSTCODE");
         insurer.setStatus(true);
         insurer.setVatNo("VAT NO");
-        insurer.setVehicleClassCellings(null);
+        insurer.setVehicleClassCeilings(null);
         insurer.setWorkgroupEnable(true);
         
         return insurer;
@@ -74,8 +74,8 @@ public class TestClaim {
         // band.setHireNetCeiling(new BigDecimal("1500"));
         // band.setMaxRepairValue(BigDecimal.ZERO);
         
-        band.setVehicleClassCelling(null);
-        band.setVehicleClassCellingEnable(true);
+        band.setVehicleClassCeiling(null);
+        band.setVehicleClassCeilingEnable(true);
         
         // ON / OFF FLAG
         band.setHireDayCountDoesNotExceedBandHireDayCeiling(true);

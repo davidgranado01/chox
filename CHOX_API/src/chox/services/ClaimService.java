@@ -23,8 +23,6 @@ public interface ClaimService {
     public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber);
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
     public void  saveObjectForXMLUploader(final ClaimResult claimResult);
-    // public void updateClaimLastModified(int claimId);
     public Boolean isObjectExist(int WorkgroupId);
-    // public VehicleClassCelling getVechileClassCellingForClaim(Claim claim);
     public boolean isUserHasOpenClaim(int userId);
 }

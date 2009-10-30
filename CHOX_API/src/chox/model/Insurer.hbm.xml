@@ -24,9 +24,9 @@
     <property column="is_workgroup_enable" name="workgroupEnable"/>
     <property column="is_auto_routing_enable" name="autoRoutingEnable"/>
     <property column="is_claim_ownership_enable" name="claimOwnershipEnable"/>
-    <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="vehicleClassCellings">
+    <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="vehicleClassCeilings">
       <key column="insurer_id"/>
-      <one-to-many class="chox.model.VehicleClassCelling"/>
+      <one-to-many class="chox.model.VehicleClassCeiling"/>
     </bag>
   </class>
 </hibernate-mapping>

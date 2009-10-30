@@ -827,7 +827,7 @@
             <result name="InsurerChoBandMgmt">/jsp/user/adminPanel/p_insurer_choband_mgmt_panel.jsp</result>
             <result name="InsurerChoBandMappingMgmt">/jsp/user/adminPanel/p_insurer_choband_mapping.jsp</result>
             <result name="InsurerPanelMgmt">/jsp/user/adminPanel/p_insurer_mgmt_panel.jsp</result>
-            <result name="InsurerVehicleClassCelling">/jsp/user/adminPanel/p_insurer_vehicle_class_celling.jsp</result>
+            <result name="InsurerVehicleClassCeiling">/jsp/user/adminPanel/p_insurer_vehicle_class_ceiling.jsp</result>
             <result name="NONE">/jsp/p_response.jsp</result>
         </action>
         
@@ -859,10 +859,10 @@
         <action name="triggerInsurerWorkgroupFeature" class="chox.web.actions.doInsurerAction" method="triggerInsurerWorkgroupFeature">
             <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>       
-        <action name="editVehicleClassCellingDetail" class="chox.web.actions.doVehicleClassCellingAction" method="updateVehicleClassCeiling">
+        <action name="editVehicleClassCeilingDetail" class="chox.web.actions.doVehicleClassCeilingAction" method="updateVehicleClassCeiling">
             <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
-        <action name="vehicleClassCellingDetail" class="chox.web.actions.doVehicleClassCellingAction" method="updateModel">
+        <action name="vehicleClassCeilingDetail" class="chox.web.actions.doVehicleClassCeilingAction" method="updateModel">
             <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
         
@@ -996,11 +996,11 @@
         <action name="doRemoveBandChorganisationMapping" class="chox.web.actions.doInsurerChoBandMappingAction" method="removeObject">
             <result name="success">/jsp/p_response.jsp</result>
         </action>
-        <action name="doRemoveVehicleClassCellingMapping" class="chox.web.actions.doVehicleClassCellingAction" method="removeObject">
+        <action name="doRemoveVehicleClassCeilingMapping" class="chox.web.actions.doVehicleClassCeilingAction" method="removeObject">
             <result name="success">/jsp/p_response.jsp</result>
         </action>
 
-        <action name="getSelectedInsurerVehicleClassCelling" class="chox.web.actions.VehicleClassCellingAction" method="getSelectedInsurerVehicleClassCelling">
+        <action name="getSelectedInsurerVehicleClassCeiling" class="chox.web.actions.VehicleClassCeilingAction" method="getSelectedInsurerVehicleClassCeiling">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         

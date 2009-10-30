@@ -1,17 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package chox.model.notifications;
 
 import chox.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author emmanuel
- */
 public class ClaimAnomalousChecker {
 
     private List<AnomalousCheck> anomalousChecks;
@@ -30,16 +22,10 @@ public class ClaimAnomalousChecker {
         return notifications;
     }
 
-    /**
-     * @return the anomalousChecks
-     */
     public List<AnomalousCheck> getAnomalousChecks() {
         return anomalousChecks;
     }
 
-    /**
-     * @param anomalousChecks the anomalousChecks to set
-     */
     public void setAnomalousChecks(List<AnomalousCheck> anomalousChecks) {
         this.anomalousChecks = anomalousChecks;
     }

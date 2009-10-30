@@ -22,7 +22,7 @@
     <many-to-one class="chox.model.Insurer" column="insurer_id" lazy="false" name="insurer"/>
     <set cascade="none" lazy="false" name="roles" table="web_user_user_role">
       <key column="web_user_id"/>
-      <many-to-many class="chox.model.WebUserRole" column="wer_user_role_id"/>
+      <many-to-many class="chox.model.WebUserRole" column="web_user_role_id"/>
     </set>
     <set cascade="none" lazy="false" name="workgroups" table="user_workgroup">
       <key column="user_id"/>

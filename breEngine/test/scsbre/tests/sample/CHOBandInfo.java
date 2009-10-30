@@ -24,9 +24,9 @@ public class CHOBandInfo implements ICHOBandInfo {
     protected int isNotMobileDayAllowance;
     protected int averageLabourRate;
     protected int averageLabourHoursPerHireDay;
-    protected boolean vehicleClassCellingEnable;
+    protected boolean vehicleClassCeilingEnable;
     protected String name;
-    protected VehicleClassCellingInfo vehicleClassCelling;
+    protected VehicleClassCeilingInfo vehicleClassCeiling;
     protected boolean automaticChargeCheck;
     protected boolean estateChargeCheck;
     protected boolean nonStandardRiskInsurancePremiumCheck;
@@ -213,16 +213,16 @@ public class CHOBandInfo implements ICHOBandInfo {
         this.name = name;
     }
 
-    public boolean isVehicleClassCellingEnable() {
-        return vehicleClassCellingEnable;
+    public boolean isVehicleClassCeilingEnable() {
+        return vehicleClassCeilingEnable;
     }
 
-    public void setVehicleClassCellingEnable(boolean vehicleClassCellingEnable) {
-        this.vehicleClassCellingEnable = vehicleClassCellingEnable;
+    public void setVehicleClassCeilingEnable(boolean vehicleClassCeilingEnable) {
+        this.vehicleClassCeilingEnable = vehicleClassCeilingEnable;
     }
 
-    public void setVehicleClassCelling(VehicleClassCellingInfo vehicleClassCelling) {
-        this.vehicleClassCelling = vehicleClassCelling;
+    public void setVehicleClassCeiling(VehicleClassCeilingInfo vehicleClassCeiling) {
+        this.vehicleClassCeiling = vehicleClassCeiling;
     }
 
     public java.math.BigDecimal getRepairNetCeiling() {
@@ -242,16 +242,16 @@ public class CHOBandInfo implements ICHOBandInfo {
     }
 
 
-    public java.math.BigDecimal getMaxRepairNetCelling() {
+    public java.math.BigDecimal getMaxRepairNetCeiling() {
 
         BigDecimal maxRepairNetCeiling = new BigDecimal(100000);
 
-        if(vehicleClassCellingEnable){
+        if(vehicleClassCeilingEnable){
 
             maxRepairNetCeiling = new BigDecimal(100000);
 
-            if(vehicleClassCelling!=null){
-                maxRepairNetCeiling = vehicleClassCelling.getRepairNetCelling();
+            if(vehicleClassCeiling!=null){
+                maxRepairNetCeiling = vehicleClassCeiling.getRepairNetCeiling();
             }
 
         }
@@ -263,9 +263,9 @@ public class CHOBandInfo implements ICHOBandInfo {
 
         BigDecimal maxHireNetCeiling = new BigDecimal(100000);
 
-        if(vehicleClassCellingEnable){
-            if(vehicleClassCelling!=null){
-                maxHireNetCeiling = vehicleClassCelling.getHireNetCelling();
+        if(vehicleClassCeilingEnable){
+            if(vehicleClassCeiling!=null){
+                maxHireNetCeiling = vehicleClassCeiling.getHireNetCeiling();
             }
         }
 
@@ -352,8 +352,8 @@ public class CHOBandInfo implements ICHOBandInfo {
         this.towBarsChargeCheck = towBarsChargeCheck;
     }
 
-    public VehicleClassCellingInfo getVehicleClassCelling() {
-        return vehicleClassCelling;
+    public VehicleClassCeilingInfo getVehicleClassCeiling() {
+        return vehicleClassCeiling;
     }
 
     public void setActualHireDaysDoesNotExceedAllowableHireDays(boolean actualHireDaysDoesNotExceedAllowableHireDays) {

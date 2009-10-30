@@ -330,7 +330,6 @@ public class WebUser implements Serializable {
         }
         
         return bFlag;
-
     }
 
     public boolean isClaimHandler() {
@@ -380,32 +379,14 @@ public class WebUser implements Serializable {
         return typeIndex;
     }
 
-    /*
-    public LineOfBusiness getLineOfBusiness() {
-    return lineOfBusiness;
-    }
-
-    public void setLineOfBusiness(LineOfBusiness lineOfBusiness) {
-    this.lineOfBusiness = lineOfBusiness;
-    }
-     */
-    /**
-     * @return the isExpired
-     */
     public Boolean getIsExpired() {
         return isExpired;
     }
 
-    /**
-     * @param isExpired the isExpired to set
-     */
     public void setIsExpired(Boolean isExpired) {
         this.isExpired = isExpired;
     }
 
-    /**
-     * @return the workgroups
-     */
     public Set getWorkgroups() {
         return workgroups;
     }
@@ -421,9 +402,6 @@ public class WebUser implements Serializable {
         return ids;
     }
 
-    /**
-     * @param workgroups the workgroups to set
-     */
     public void setWorkgroups(Set workgroups) {
         this.workgroups = workgroups;
     }

@@ -400,7 +400,7 @@
 
                     <fieldset class="x-fieldset"><legend>Vehicle Class Ceilings</legend>
                     <div class="chox-form-checkboxitem">
-                        <div class="chox-form-checkbox"><s:checkbox name="vehicleClassCellingEnable" value="vehicleClassCellingEnable" /></div><label class="chox-form-check-label">Enable Vehicle Class Ceilings</label>
+                        <div class="chox-form-checkbox"><s:checkbox name="vehicleClassCeilingEnable" value="vehicleClassCeilingEnable" /></div><label class="chox-form-check-label">Enable Vehicle Class Ceilings</label>
                     </div>
                     </fieldset>
 

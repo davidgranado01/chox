@@ -653,12 +653,11 @@
                 $("#popGeneralTemplateClose").click(function(){ $.unblockUI();});
             });
 
-            function removeNotification(notificationId,claimId)
+            function removeNotification(notificationId)
             {
-                $("div#notificationNotesDiv").load('removeNotification.action',{"notificationId" : notificationId,"id": claimId});
+                $("div#notificationNotesDiv").load('removeNotification.action',{"notificationId" : notificationId,"id": <s:property value="id" />});
             }
-
-
+            
         </script>
 
     </head>

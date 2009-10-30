@@ -1,24 +1,24 @@
 package chox.web.viewdata;
 
 import chox.Util.DateHelper;
-import chox.model.VehicleClassCelling;
+import chox.model.VehicleClassCeiling;
 import java.math.BigDecimal;
 
-public class VehicleClassCellingViewData {
+public class VehicleClassCeilingViewData {
     private int id;
     private int vehicleClassId;
     private String vehicleClassName;
-    private BigDecimal hireNetCelling;
-    private BigDecimal repairNetCelling;
+    private BigDecimal hireNetCeiling;
+    private BigDecimal repairNetCeiling;
     private String createdBy;
     private String createdDate;
 
-    public VehicleClassCellingViewData(VehicleClassCelling object) {
+    public VehicleClassCeilingViewData(VehicleClassCeiling object) {
         this.id = object.getId();
         this.vehicleClassId = object.getVehicleClass().getId();
         this.vehicleClassName = object.getVehicleClass().getName();
-        this.hireNetCelling = object.getHireNetCelling();
-        this.repairNetCelling = object.getRepairNetCelling();
+        this.hireNetCeiling = object.getHireNetCeiling();
+        this.repairNetCeiling = object.getRepairNetCeiling();
         this.createdBy =object.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.GridViewDateFormat.format(object.getCreatedDate());
     }
@@ -39,12 +39,12 @@ public class VehicleClassCellingViewData {
         this.createdDate = createdDate;
     }
 
-    public BigDecimal getHireNetCelling() {
-        return hireNetCelling;
+    public BigDecimal getHireNetCeiling() {
+        return hireNetCeiling;
     }
 
-    public void setHireNetCelling(BigDecimal hireNetCelling) {
-        this.hireNetCelling = hireNetCelling;
+    public void setHireNetCeiling(BigDecimal hireNetCeiling) {
+        this.hireNetCeiling = hireNetCeiling;
     }
 
     public int getId() {
@@ -55,12 +55,12 @@ public class VehicleClassCellingViewData {
         this.id = id;
     }
 
-    public BigDecimal getRepairNetCelling() {
-        return repairNetCelling;
+    public BigDecimal getRepairNetCeiling() {
+        return repairNetCeiling;
     }
 
-    public void setRepairNetCelling(BigDecimal repairNetCelling) {
-        this.repairNetCelling = repairNetCelling;
+    public void setRepairNetCeiling(BigDecimal repairNetCeiling) {
+        this.repairNetCeiling = repairNetCeiling;
     }
 
     public int getVehicleClassId() {

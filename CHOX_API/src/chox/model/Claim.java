@@ -1,6 +1,7 @@
 package chox.model;
 
 import chox.Util.DateHelper;
+import chox.model.notifications.AnomalousCheck;
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.util.Date;
@@ -15,7 +16,7 @@ import scsbre.model.IVehicleClassInfo;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import scsbre.model.IVehicleClassCellingInfo;
+import scsbre.model.IVehicleClassCeilingInfo;
 
 public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
 
@@ -63,7 +64,7 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
     // It need to be set explicitly before pass the claim object into BRE engine
 
     private ICHOBandInfo choband;
-    private IVehicleClassCellingInfo vehicleClassCelling;
+    private IVehicleClassCeilingInfo vehicleClassCeiling;
     // </editor-fold>   
 
     public Claim() {
@@ -329,21 +330,7 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
     public ICHOBandInfo getChoBand() {
         return choband;
     }
-    
-    /*
-     public IVehicleClassCellingInfo getVehicleClassCellingInfo() {
-         if(vehicleClassCelling == null)
-         {
-             vehicleClassCelling = new VehicleClassCelling(new BigDecimal(100000),new BigDecimal(100000));
-         }
-        return vehicleClassCelling;
-    }
-
-    public void setVehicleClassCellingInfo(IVehicleClassCellingInfo vehicleClassCelling) {
-        this.vehicleClassCelling = vehicleClassCelling;
-    }
-    */
-    
+        
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc=" Logic Methods ">
@@ -430,11 +417,33 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
 
     //Add a list of  notification to claim
     //the isAnomalies will automatic mark as true
-    public void AddNotifications(List<Notification> notifications) {
-        if (notifications != null) {
+    public void AddNotifications(List<AnomalousCheck> anomalousChecks, List<Notification> notifications) {
 
+        RemoveNotification(anomalousChecks);
+
+        if (notifications != null) {
             for (Notification notification : notifications) {
                 AddNotification(notification);
+            }
+        }
+        
+    }
+
+    private void RemoveNotification(List<AnomalousCheck> anomalousChecks){
+
+        if(this.notifications.size()>0){
+
+            for(AnomalousCheck anc : anomalousChecks){
+                
+                if(anc.isRefreshRequired()){
+                    
+                    Notification notificationToBeRemoved = GetNotificationByType(anc.BuildNotification().getType());
+
+                    if(notificationToBeRemoved!=null){
+
+                        RemoveNotifications(notificationToBeRemoved);
+                    }
+                }
             }
         }
     }
@@ -453,6 +462,7 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
     }
 
     public boolean isSameTypeOfNotificationExist(Notification notification) {
+        
         if (this.notifications != null) {
             for (Notification n : notifications) {
                 if (n.getType().equals(notification.getType())) {
@@ -464,10 +474,24 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
         return false;
     }
 
-    //remove notification from  claim
-    //the isAnomalies will automatic mark as false if notification list is empty after this
+    public void RemoveAllNotifications(){
+        notifications.clear();
+    }
+    
     public void RemoveNotifications(Notification notification) {
         notifications.remove(notification);
+    }
+
+    private Notification GetNotificationByType(String type) {
+        for (Notification notification : notifications) {
+       
+            if (notification.getType().equalsIgnoreCase(type)){
+                return notification;
+            }
+
+        }
+        
+        return null;
     }
 
     public Notification GetNotificationById(int id) {

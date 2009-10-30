@@ -72,7 +72,7 @@
                 <value>chox/model/Workgroup.hbm.xml</value>
                 <value>chox/model/UserWorkgroup.hbm.xml</value>
                 <value>chox/model/Notification.hbm.xml</value>
-                <value>chox/model/VehicleClassCelling.hbm.xml</value>
+                <value>chox/model/VehicleClassCeiling.hbm.xml</value>
             </list>
         </property>
         <property name="entityInterceptor" ref="auditInterceptor"/>

@@ -31,15 +31,16 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
         return comments;
     }
      
-    public List<Comment> getCommentByClaimIdFilterByOrg(int claimId, boolean isInsurer) {
+    public List<Comment> getCommentByClaimIdFilterByOrg(int claimId, boolean isCreditHire) {
 
         List comments = new ArrayList<Comment>();
 
         try {
+            
             DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);
             criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
             
-            if(!isInsurer){
+            if(isCreditHire){
                 criteria.add(Restrictions.eq("isPublic", true));
             }
             

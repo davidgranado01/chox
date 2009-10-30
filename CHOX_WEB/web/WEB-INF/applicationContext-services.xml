@@ -123,7 +123,7 @@
     <bean id="userWorkgroupService" class="chox.services.UserWorkgroupServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="vehicleClassCellingService" class="chox.services.VehicleClassCellingServiceImpl" singleton="false">
+    <bean id="vehicleClassCeilingService" class="chox.services.VehicleClassCeilingServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="automaticRoutingService" class="chox.services.AutomaticRoutingServiceImpl" singleton="false">

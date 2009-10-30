@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml","classpath:applicationContext-services.xml"})
-public class VehicleClassCellingTest {
+public class VehicleClassCeilingTest {
 
     @Autowired
     UploadClaimXMLService uploadClaimXMLService;
@@ -45,17 +45,17 @@ public class VehicleClassCellingTest {
         Assert.assertNotNull(RSA);
         Assert.assertNotNull(P1);
 
-        VehicleClassCelling vehicleClassCelling = new VehicleClassCelling(new BigDecimal(1000),new BigDecimal(1000));
-        vehicleClassCelling.setInsurer(RSA);
-        vehicleClassCelling.setVehicleClass(P1);
-        RSA.AddVehicleClassCelling(vehicleClassCelling);
+        VehicleClassCeiling vehicleClassCeiling = new VehicleClassCeiling(new BigDecimal(1000),new BigDecimal(1000));
+        vehicleClassCeiling.setInsurer(RSA);
+        vehicleClassCeiling.setVehicleClass(P1);
+        RSA.AddVehicleClassCeiling(vehicleClassCeiling);
 
         insurerService.updateObject(RSA);
 
-        Insurer insurerWithVehicleClassCelling = insurerService.getObject(RSA.getId());
-        Assert.assertNotNull(insurerWithVehicleClassCelling);
+        Insurer insurerWithVehicleClassCeiling = insurerService.getObject(RSA.getId());
+        Assert.assertNotNull(insurerWithVehicleClassCeiling);
 
-        Assert.assertEquals(1,insurerWithVehicleClassCelling.getVehicleClassCellings().size());
+        Assert.assertEquals(1, insurerWithVehicleClassCeiling.getVehicleClassCeilings().size());
 
     }
 }

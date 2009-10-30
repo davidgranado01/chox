@@ -1,6 +1,8 @@
 package chox.services;
 
+import chox.Util.RoleHelper;
 import chox.model.WebUser;
+import chox.model.WebUserRole;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
@@ -128,11 +130,10 @@ public class UserServiceImpl extends DataService implements UserService {
         }else{
             
             for(WebUser wu : users){
-                if(wu.isClaimHandler() && wu.getWorkgroupIds().contains(selectedWorkgroupId)){
+                if(RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_CH) && wu.getWorkgroupIds().contains(selectedWorkgroupId)){
                     claimHandlers.add(wu);
                 }
             }
-            
         }
         
         return claimHandlers;

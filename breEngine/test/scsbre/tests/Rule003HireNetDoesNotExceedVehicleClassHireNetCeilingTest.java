@@ -18,8 +18,8 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
     /*
      * COMPARE
      * INVOICE HIRE NET
-     * VEHICLE CLASS CELLING VALUE
-     * PASSED RULE IF "INVOICE HIRE NET" LESS THAN OR EQUAL TO "HIRE NET CELLING VALUE"
+     * VEHICLE CLASS CEILING VALUE
+     * PASSED RULE IF "INVOICE HIRE NET" LESS THAN OR EQUAL TO "HIRE NET CEILING VALUE"
      */
     
     TestClaim testClaim = new TestClaim();
@@ -51,14 +51,14 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
         // SET INVOICE
         claim.getInvoice().setHireNet(new BigDecimal(400.00));
         
-        // SET VEHICLE CLASS CELLING
-        VehicleClassCellingInfo vehicleClassCelling = new VehicleClassCellingInfo();
-        vehicleClassCelling.setHireNetCelling(new BigDecimal("300.00"));
+        // SET VEHICLE CLASS CEiLING
+        VehicleClassCeilingInfo vehicleClassCeiling = new VehicleClassCeilingInfo();
+        vehicleClassCeiling.setHireNetCeiling(new BigDecimal("300.00"));
 
         // SET CHOBAND
         claim.getChoBand().setHireNetCeiling(new BigDecimal("400.00"));
         claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
-        claim.getChoBand().setVehicleClassCelling(vehicleClassCelling);
+        claim.getChoBand().setVehicleClassCeiling(vehicleClassCeiling);
 
         return claim;
     }
@@ -78,11 +78,11 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
     }
 
     @Test
-    public void testPassed_VehicleClassCellingDisabled_LessThan() throws IOException {
+    public void testPassed_VehicleClassCeilingDisabled_LessThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
-        claim.getChoBand().setVehicleClassCellingEnable(false);
+        claim.getChoBand().setVehicleClassCeilingEnable(false);
         claim.getInvoice().setHireNet(new BigDecimal("399.99"));
 
         RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
@@ -95,11 +95,11 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
     }
 
     @Test
-    public void testPassed_VehicleClassCellingDisabled_Equals() throws IOException {
+    public void testPassed_VehicleClassCeilingDisabled_Equals() throws IOException {
 
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
-        claim.getChoBand().setVehicleClassCellingEnable(false);
+        claim.getChoBand().setVehicleClassCeilingEnable(false);
         claim.getInvoice().setHireNet(new BigDecimal("400.00"));
 
         RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
@@ -112,11 +112,11 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
     }
 
     @Test
-    public void testFailed_VehicleClassCellingDisabled_MoreThan() throws IOException {
+    public void testFailed_VehicleClassCeilingDisabled_MoreThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
-        claim.getChoBand().setVehicleClassCellingEnable(false);
+        claim.getChoBand().setVehicleClassCeilingEnable(false);
         claim.getInvoice().setHireNet(new BigDecimal("440.00"));
 
         RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
@@ -129,11 +129,11 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
     }
 
     @Test
-    public void testPassed_VehicleClassCellingEnabled_LessThan() throws IOException {
+    public void testPassed_VehicleClassCeilingEnabled_LessThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
-        claim.getChoBand().setVehicleClassCellingEnable(true);
+        claim.getChoBand().setVehicleClassCeilingEnable(true);
         claim.getInvoice().setHireNet(new BigDecimal("299.00"));
 
         RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
@@ -145,11 +145,11 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
     }
 
     @Test
-    public void testPassed_VehicleClassCellingEnabled_Equals() throws IOException {
+    public void testPassed_VehicleClassCeilingEnabled_Equals() throws IOException {
 
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
-        claim.getChoBand().setVehicleClassCellingEnable(true);
+        claim.getChoBand().setVehicleClassCeilingEnable(true);
         claim.getInvoice().setHireNet(new BigDecimal("300.00"));
 
         RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
@@ -161,11 +161,11 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
     }
 
     @Test
-    public void testFailed_VehicleClassCellingEnabled_MoreThan() throws IOException {
+    public void testFailed_VehicleClassCeilingEnabled_MoreThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
         claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
-        claim.getChoBand().setVehicleClassCellingEnable(true);
+        claim.getChoBand().setVehicleClassCeilingEnable(true);
         claim.getInvoice().setHireNet(new BigDecimal("340.00"));
 
         RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);

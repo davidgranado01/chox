@@ -2,9 +2,9 @@ package chox.web.actions;
 
 import chox.model.Insurer;
 import chox.model.VehicleClass;
-import chox.model.VehicleClassCelling;
+import chox.model.VehicleClassCeiling;
 import chox.services.InsurerService;
-import chox.services.VehicleClassCellingService;
+import chox.services.VehicleClassCeilingService;
 import chox.services.VehicleClassService;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class VehicleClassDropDownAction extends BaseAction{
     private Integer orgId;
     private InsurerService insurerService;
     private VehicleClassService vehicleClassService;
-    private VehicleClassCellingService vehicleClassCellingService;
+    private VehicleClassCeilingService vehicleClassCeilingService;
 
     public Integer getOrgId() {
         return orgId;
@@ -33,8 +33,8 @@ public class VehicleClassDropDownAction extends BaseAction{
         this.insurerService = insurerService;
     }
 
-    public void setVehicleClassCellingService(VehicleClassCellingService vehicleClassCellingService) {
-        this.vehicleClassCellingService = vehicleClassCellingService;
+    public void setVehicleClassCeilingService(VehicleClassCeilingService vehicleClassCeilingService) {
+        this.vehicleClassCeilingService = vehicleClassCeilingService;
     }
 
     public List getVehicleClasses() {
@@ -45,12 +45,12 @@ public class VehicleClassDropDownAction extends BaseAction{
     public String execute() throws Exception {
         
         List<VehicleClass> vehicleClassesList = vehicleClassService.getAllVehicleClass();
-        List<VehicleClassCelling> vehicleClassCellings = vehicleClassCellingService.getVehicleClassCellingByInsurer(insurerService.getObject(orgId));
+        List<VehicleClassCeiling> vehicleClassCeilings = vehicleClassCeilingService.getVehicleClassCeilingByInsurer(insurerService.getObject(orgId));
         List<VehicleClass> newVehicleClasses = new ArrayList<VehicleClass>();
         
         for(VehicleClass v : vehicleClassesList)
         {
-            if(!isVehicleClassCellingExist(vehicleClassCellings, v.getId())){
+            if(!isVehicleClassCeilingExist(vehicleClassCeilings, v.getId())){
                 newVehicleClasses.add(v);
             }   
         }
@@ -59,11 +59,11 @@ public class VehicleClassDropDownAction extends BaseAction{
         return SUCCESS;
     }
 
-    private boolean isVehicleClassCellingExist(List<VehicleClassCelling> vehicleClassCellings, int vehicleClassId){
+    private boolean isVehicleClassCeilingExist(List<VehicleClassCeiling> vehicleClassCeilings, int vehicleClassId){
 
         boolean bFlag = false;
 
-        for(VehicleClassCelling vc : vehicleClassCellings){
+        for(VehicleClassCeiling vc : vehicleClassCeilings){
 
             if(vc.getVehicleClass().getId()==vehicleClassId){
                 bFlag = true;

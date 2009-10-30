@@ -6,32 +6,28 @@
 package chox.web.actions;
 
 import chox.model.VehicleClass;
-import chox.model.VehicleClassCelling;
+import chox.model.VehicleClassCeiling;
 import chox.services.InsurerService;
-import chox.services.VehicleClassCellingService;
+import chox.services.VehicleClassCeilingService;
 import chox.services.VehicleClassService;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import java.math.BigDecimal;
 
-/**
- *
- * @author Carlson
- */
-public class doVehicleClassCellingAction extends BaseAction implements ModelDriven<VehicleClassCelling>, Preparable {
+public class doVehicleClassCeilingAction extends BaseAction implements ModelDriven<VehicleClassCeiling>, Preparable {
 
     private String selectOrgId;
-    private VehicleClassCelling model;
+    private VehicleClassCeiling model;
     private Integer vehicleClassId;
     private VehicleClassService vehicleClassService;
     private InsurerService insurerService;
-    private VehicleClassCellingService vehicleClassCellingService;
+    private VehicleClassCeilingService vehicleClassCeilingService;
 
     // EDIT
     private BigDecimal hireNetCeiling;
     private BigDecimal repairNetCeiling;
 
-    private String vehicleClassCellingId;
+    private String vehicleClassCeilingId;
 
     public BigDecimal getHireNetCeiling() {
         return hireNetCeiling;
@@ -49,16 +45,16 @@ public class doVehicleClassCellingAction extends BaseAction implements ModelDriv
         this.repairNetCeiling = repairNetCeiling;
     }
 
-    public String getVehicleClassCellingId() {
-        return vehicleClassCellingId;
+    public String getVehicleClassCeilingId() {
+        return vehicleClassCeilingId;
     }
 
-    public void setVehicleClassCellingId(String vehicleClassCellingId) {
-        this.vehicleClassCellingId = vehicleClassCellingId;
+    public void setVehicleClassCeilingId(String vehicleClassCeilingId) {
+        this.vehicleClassCeilingId = vehicleClassCeilingId;
     }
     
-    public void setVehicleClassCellingService(VehicleClassCellingService vehicleClassCellingService) {
-        this.vehicleClassCellingService = vehicleClassCellingService;
+    public void setVehicleClassCeilingService(VehicleClassCeilingService vehicleClassCeilingService) {
+        this.vehicleClassCeilingService = vehicleClassCeilingService;
     }
         
     public void setVehicleClassService(VehicleClassService vehicleClassService) {
@@ -69,11 +65,11 @@ public class doVehicleClassCellingAction extends BaseAction implements ModelDriv
         this.insurerService = insurerService;
     }
     
-    public VehicleClassCelling getModel() {
+    public VehicleClassCeiling getModel() {
         return model;
     }
 
-    public void setModel(VehicleClassCelling model) {
+    public void setModel(VehicleClassCeiling model) {
         this.model = model;
     }
 
@@ -95,10 +91,10 @@ public class doVehicleClassCellingAction extends BaseAction implements ModelDriv
 
     public String updateVehicleClassCeiling(){
         
-        VehicleClassCelling vehicleClassCellingObj = vehicleClassCellingService.getObject(Integer.valueOf(vehicleClassCellingId));
-        vehicleClassCellingObj.setHireNetCelling(hireNetCeiling);
-        vehicleClassCellingObj.setRepairNetCelling(repairNetCeiling);
-        vehicleClassCellingService.updateObject(vehicleClassCellingObj);
+        VehicleClassCeiling vehicleClassCeilingObj = vehicleClassCeilingService.getObject(Integer.valueOf(vehicleClassCeilingId));
+        vehicleClassCeilingObj.setHireNetCeiling(hireNetCeiling);
+        vehicleClassCeilingObj.setRepairNetCeiling(repairNetCeiling);
+        vehicleClassCeilingService.updateObject(vehicleClassCeilingObj);
         
         return SUCCESS;
     }
@@ -109,7 +105,7 @@ public class doVehicleClassCellingAction extends BaseAction implements ModelDriv
 
             model.setVehicleClass(vehicleClassService.getObject(vehicleClassId));
             model.setInsurer(insurerService.getObject(Integer.parseInt(selectOrgId)));
-            vehicleClassCellingService.updateObject(model);
+            vehicleClassCeilingService.updateObject(model);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -120,17 +116,17 @@ public class doVehicleClassCellingAction extends BaseAction implements ModelDriv
     }
 
     public void prepare() throws Exception {
-        model = new VehicleClassCelling();
+        model = new VehicleClassCeiling();
     }
 
     public String removeObject() throws Exception {
 
         try {
             
-            if(!vehicleClassCellingId.equalsIgnoreCase("")){
+            if(!vehicleClassCeilingId.equalsIgnoreCase("")){
                 
-                VehicleClassCelling vehicleClassCelling = vehicleClassCellingService.getObject(Integer.parseInt(vehicleClassCellingId));
-                vehicleClassCellingService.deleteObject(vehicleClassCelling);
+                VehicleClassCeiling vehicleClassCeiling = vehicleClassCeilingService.getObject(Integer.parseInt(vehicleClassCeilingId));
+                vehicleClassCeilingService.deleteObject(vehicleClassCeiling);
             }
 
         } catch (Exception ex) {

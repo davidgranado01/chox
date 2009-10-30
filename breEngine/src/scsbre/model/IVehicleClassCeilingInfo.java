@@ -10,9 +10,9 @@ import java.math.BigDecimal;
  *
  * @author emmanuel
  */
-public interface IVehicleClassCellingInfo {
+public interface IVehicleClassCeilingInfo {
 
-    public BigDecimal getHireNetCelling();
+    public BigDecimal getHireNetCeiling();
 
-    public BigDecimal getRepairNetCelling();
+    public BigDecimal getRepairNetCeiling();
 }

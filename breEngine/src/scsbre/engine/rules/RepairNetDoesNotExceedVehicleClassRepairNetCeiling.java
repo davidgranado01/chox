@@ -34,9 +34,9 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
                 res.setResult(RuleEvaluationResult.RulePassed);
 
                 // CHECK VEHICLE CLASS CEILLING > REPAIR NET
-                if(claim.getChoBand().isVehicleClassCellingEnable()){
+                if(claim.getChoBand().isVehicleClassCeilingEnable()){
                     
-                    repairNetCeiling = claim.getChoBand().getMaxRepairNetCelling();                    
+                    repairNetCeiling = claim.getChoBand().getMaxRepairNetCeiling();
                     success = repairNet.compareTo(repairNetCeiling) <= 0;
                     res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
