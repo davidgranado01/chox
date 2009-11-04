@@ -112,7 +112,7 @@
                 elementToBlock.unblock();
                 response = eval('(' + responseText.trim() + ')');
                 var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
-                outputDiv.html('');//clear out the response message holder
+                outputDiv.html('');
 
                 if(response)
                 {
@@ -260,7 +260,7 @@
                             {header: "Category", width: 150, dataIndex: 'category', sortable: true, resizable: true},
                             {header: "Description", width: 300, dataIndex: 'remarks', sortable: true, resizable: true},
                             {header: "Created Date", width: 150, dataIndex: 'modifiedDate', sortable: true, resizable: true},
-                            {header: "", width: 60, dataIndex: 'delete', sortable: false, resizable: false, renderer:function(value,p,r){
+                            {header: "", width: 60, dataIndex: 'delete', sortable: false, hidden:(paymentPackTabAccessibility!=2), resizable: false, renderer:function(value,p,r){
                                     return "<a href='#attachmentlisting'>" + value + "</a>"}}
                         ],
                         renderTo:'paymentPackGrid',
@@ -271,8 +271,23 @@
                     loadAttachments();
                 }
 
+                function loadAttachment(grid, rowIndex, columnIndex, e){
+
+                    var attachment = paymentPackGrid.getStore().getAt(rowIndex);
+                    var fileId = attachment.get("id");
+                    
+                    if(columnIndex!=4){
+                        var link = "doExportFile.action?fileId=" + fileId;
+                        window.open(link,"","width=600,height=400,status=yes,menubar=no");
+                    }else{
+                        deleteAttachment(fileId);
+                    }
+                }
+
                 function deleteAttachment(a){
-                    var deleteAtt = confirm("Are you sure you want to delete this attachment?")
+
+                    var deleteAtt = confirm("Are you sure you want to delete this attachment?");
+
                     if(deleteAtt){
                         paymentPackLoaded = false;
                         $.ajax({
@@ -280,19 +295,8 @@
                             success: loadAttachments
                         });
                     }
+
                     doCleanResult();
-                }
-
-                function loadAttachment(grid, rowIndex, columnIndex, e){
-
-                    var attachment = paymentPackGrid.getStore().getAt(rowIndex);
-                    var fileId = attachment.get("id");
-                    if(columnIndex!=4){
-                        var link = "doExportFile.action?fileId=" + fileId;
-                        window.open(link,"","width=600,height=400,status=yes,menubar=no");
-                    }else{
-                        deleteAttachment(fileId);
-                    }
                 }
 
                 /***********************************************************************************
@@ -330,7 +334,7 @@
                             {header: "Supporting Note", width: 280, dataIndex: 'supportingNote', sortable: false, resizable: true}
                         ],
                         renderTo:'ecdGridHolder',
-                        width:460,
+                        width:445,
                         autoHeight:true,
                         enableHdMenu:false
                     });
@@ -338,6 +342,24 @@
                     loadEcds();
                 }
 
+                var ecdsLoaded = false;
+                function loadEcds(){
+
+                    if(!hireMonitoringDetailsDisabled){
+
+                        if(!ecdsLoaded)
+                        {
+                            ecdDataStore.load(
+                            {
+                                params:
+                                    {
+                                    claimId : <s:property value="id" />
+                                }
+                            });
+                        }
+                    }
+                }
+    
                 function loadHireMonitor(grid, rowIndex, columnIndex, e){
                     var hiremonitoringECD = ecdGrid.getStore().getAt(rowIndex);
                     var supportingNoteText = "<br/><b>Supporting note</b>: <br/>"+hiremonitoringECD.get("supportingNote");
@@ -531,29 +553,31 @@
             
             function loadAttachments(){
 
-                if(!paymentPackDisabled){
-                    if(!paymentPackLoaded){
+                if(!paymentPackDisabled && !paymentPackLoaded){
+                    
+                    paymentPackDataStore.load(
+                    {
+                        params:
+                            {
+                            claimId : <s:property value="id" />
+                        }
+                    });
 
-                        paymentPackDataStore.load(
-                        {
-                            params:
-                                {
-                                claimId : <s:property value="id" />
-                            }
-                        });
-                        paymentPackLoaded = true;
-                        resetAttachmentForm();
-                    }
+                    paymentPackLoaded = true;
+                    resetAttachmentForm();
                 }
             }
 
             function resetAttachmentForm(){
+                
+                if(paymentPackTabAccessibility>=2){
+                    $("#fAttachment").each(function(){
+                        this.reset();
+                    });
+                }
 
-                $("#fAttachment").each(function(){
-                    this.reset();
-                });
             }
-
+            
             function registeAction(val)
             {
                 $("#actionName").val(val);
@@ -657,7 +681,8 @@
             {
                 $("div#notificationNotesDiv").load('removeNotification.action',{"notificationId" : notificationId,"id": <s:property value="id" />});
             }
-            
+
+
         </script>
 
     </head>
@@ -832,7 +857,6 @@
 
                 </script>
 
-
                 <div class="chox-claim-header x-panel-bwrap chox-form-container" id="generalActionPanel" style="display: none;">
                     <s:action name="getActionPanel" executeResult="true" />
                     <div class="action-message"><s:property value="actionResult" /></div>
@@ -910,6 +934,8 @@
                 </div>
 
                 <div id="tabContainer">
+
+                    <!-- ************************ CLAIM DETAIL  ************************ !-->
                     <div id="claimDetails">
 
                         <s:if test="tabAccessibility.claimDetailTabAccessibility != 0">
@@ -1002,11 +1028,10 @@
                                 </table>
                             </div>
 
-
-
                         </s:if>
                     </div>
-                    
+
+                    <!-- ************************ HIRE MONITORING  ********************* !-->
                     <div id="hireMonitoringDetails" class="x-hide-display">
 
                         <s:if test="tabAccessibility.hireMonitoringTabAccessibility != 0">
@@ -1040,12 +1065,13 @@
                             </div>
 
                         </s:if>
+
                     </div>
-                    
+
+                    <!-- ************************ INVOICE  ***************************** !-->
                     <div id="invoiceDetails" class="x-hide-display">
 
                         <s:if test="tabAccessibility.invoiceDetailTabAccessibility != 0">
-
 
                             <div class="x-panel-bwrap chox-form-container">
 
@@ -1092,23 +1118,31 @@
                             </div>
 
                         </s:if>
+
                     </div>
 
+                    <!-- ************************ PAYMENT PACK / ATTACHMENT  *********** !-->
                     <div id="paymentPack" class="x-hide-display">
+                        
                         <s:if test="tabAccessibility.paymentPackTabAccessibility != 0">
-                            <script type="text/javascript">
-
+                            
+                        <s:if test="tabAccessibility.paymentPackTabAccessibility >= 2">
+                            
+                        <script type="text/javascript">
+                            
                                 var sucessColor = "#15428b";
                                 var warningColor = "red";
 
                                 $(document).ready(function() {
-                                    var maxFileSize = <s:property value="maxFileSize"/>;
+                                    
                                     var options = {
                                         success: showResponseAtt
                                     };
+                                    
                                     $('#fAttachment').ajaxForm(options);
+                                    
                                 });
-
+                            
                                 function showResponseAtt(responseText, statusText){
 
                                     var msg = "";
@@ -1137,20 +1171,20 @@
                                     paymentPackLoaded = false;
                                     
                                 }
-
+                                
                                 function fileValidation(){
 
                                     var bFlag = true;
                                     var uploadFile = document.Attform.attachmentFile.value;
 
                                     if(uploadFile==""){
-                                        showMsg("Please select file to upload");
+                                        showPaymentProcessMsg("Please select file to upload");
                                         return false;
                                     }
 
                                     var remark = document.Attform.remark.value;
                                     if(remark.length<=0){
-                                        showMsg("Description cannot be empty");
+                                        showPaymentProcessMsg("Description cannot be empty");
                                         return false;
                                     }
 
@@ -1165,8 +1199,8 @@
                                     return bFlag;
                                 }
 
-                                function showMsg(errorMsg){
-                                    $("#AttMsgBox").css("color",warningColor);
+                                function showPaymentProcessMsg(errorMsg){
+                                    $("#AttMsgBox").css("color", warningColor);
                                     $("#AttMsgBox").text(errorMsg);
                                 }
 
@@ -1177,35 +1211,40 @@
                                     attachmentHtmlDesc = "<table cellpadding='0' cellspacing='0' border='0' class='remarkTable'>";
                                     attachmentHtmlDesc += "<tr><th width='28%'><b>Type</b></th><th width='70%'><b>Description</b></th></tr>";
 
-                                <s:iterator value="AllowFileTypes">
-                                    attachmentHtmlDesc +=     '<tr>';
-                                    attachmentHtmlDesc += '<td>.<s:property value="code"/>    </td>';
+                                    <s:iterator value="AllowFileTypes">
+                                        attachmentHtmlDesc +=     '<tr>';
+                                        attachmentHtmlDesc += '<td>.<s:property value="code"/>    </td>';
                                         attachmentHtmlDesc += '<td><s:property value="description"/></td>';
                                         attachmentHtmlDesc += '</tr>';
-                                </s:iterator>
+                                    </s:iterator>
 
-                                        attachmentHtmlDesc += "</table>";
+                                    attachmentHtmlDesc += "</table>";
 
-                                        new Ext.ToolTip({
-                                            target: 'attachmentTypeSpan',
-                                            html: attachmentHtmlDesc,
-                                            title: 'Attachment Formats',
-                                            autoHide: false,
-                                            closable: true,
-                                            draggable:true
-                                        });
-
-                                        Ext.QuickTips.init();
-
+                                    new Ext.ToolTip({
+                                        target: 'attachmentTypeSpan',
+                                        html: attachmentHtmlDesc,
+                                        title: 'Attachment Formats',
+                                        autoHide: false,
+                                        closable: true,
+                                        draggable:true
                                     });
+
+                                    Ext.QuickTips.init();
+
+                                });
+                                
                             </script>
 
-                            <div class="attachments  x-panel-bwrap chox-form-container">
-                                <form id="fAttachment" action="createNewAttachment.action" method="POST" enctype="multipart/form-data" name="Attform">
+                        <div class="attachments  x-panel-bwrap chox-form-container">
+
+                        <form id="fAttachment" action="createNewAttachment.action" method="POST" enctype="multipart/form-data" name="Attform">
                                     <input type="hidden" name="claimId" value='<s:property value="id" />'>
                                     <input type="hidden" name="uploadFileName">
+
                                     <fieldset class="x-fieldset">
+                                        
                                         <legend>Add a new Attachment&nbsp;</legend>
+
                                         <table class="chox-form-item" cellpadding="0" cellspacing="0" border="0" width="100%">
                                             <tr>
                                                 <td width="200" align="right">
@@ -1256,33 +1295,38 @@
                                         </table>
 
                                     </fieldset>
-                                </form>
-                            </div>
+                        </form>
+                    </div>
 
-                            <a name="attachmentlisting"></a>
-                            <div id="paymentPackGrid"></div>
+                        </s:if>
+
+                        <a name="attachmentlisting"></a>
+                        <div id="paymentPackGrid"></div>
+
                         </s:if>
                     </div>
 
-                    <!-- ************************ HISTORY  ****************************** !-->
+                    <!-- ************************ HISTORY  ***************************** !-->
                     <div id="historyDetails" class="x-hide-display">
                         <s:if test="tabAccessibility.historyTabAccessibility != 0">
                             <div id="historyGrid"></div>
                         </s:if>
                     </div>
 
-                    <!-- ************************ AUDIT TRAIL  ************************** !-->
+                    <!-- ************************ AUDIT TRAIL  ************************* !-->
                     <div id="auditTrailDetails" class="x-hide-display">
                         <s:if test="tabAccessibility.auditTrailTabAccessibility != 0">
                             <div id="auditTrailGrid"></div>
                         </s:if>
                     </div>
 
-                    <!-- ************************ COMMENT / NOTE (START) **************** !-->
+                    <!-- ************************ COMMENT / NOTE (START) *************** !-->
                     <div id="comments" class="x-hide-display">
 
                         <s:if test="tabAccessibility.notesTabAccessibility != 0">
 
+                            <s:if test="tabAccessibility.notesTabAccessibility >= 2">
+                                
                             <script type="text/javascript">
 
                                 $(document).ready(function() {
@@ -1345,13 +1389,15 @@
 
                             </div>
 
+                            </s:if>
+                            
                             <div id="commentsGrid"></div>
 
                         </s:if>
 
                     </div>
 
-                    <!-- ************************************************* !-->
+                    <!-- *************************************************************** !-->
 
                     <div class="popUpViewDiv" id="popGeneralTemplate"><input type="button" value="Close" id="popGeneralTemplateClose"><br/><br/><div id="popGeneralTemplateMessage"></div></div>
 

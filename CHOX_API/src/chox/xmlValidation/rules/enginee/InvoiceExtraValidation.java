@@ -51,7 +51,7 @@ public class InvoiceExtraValidation extends SecureDataService implements rulesIn
             setChoBandService(choBandService);    
     }
     
-    public ClaimResult execute() throws DOMException, XPathExpressionException{
+    public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{
         
         Element root = XMLUtils.getElement(this.claimResult.getElement(), "invoice");
         this.element = XMLUtils.getElement(root, "extras");
@@ -67,7 +67,7 @@ public class InvoiceExtraValidation extends SecureDataService implements rulesIn
         return claimResult;
     }
     
-    private boolean validate() throws DOMException, XPathExpressionException{
+    private boolean validate() throws DOMException, XPathExpressionException, Exception{
         
         boolean isAllowToReadData = false;
         boolean isAdminFeeExist = false;

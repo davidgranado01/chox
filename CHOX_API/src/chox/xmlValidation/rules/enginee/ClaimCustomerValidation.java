@@ -1,7 +1,6 @@
 package chox.xmlValidation.rules.enginee;
 
 import chox.Util.TextHelper;
-import chox.model.HireMonitoringDetail;
 import chox.model.VehicleClass;
 import chox.services.ClaimService;
 import chox.services.SecureDataService;
@@ -44,7 +43,7 @@ public class ClaimCustomerValidation extends SecureDataService implements rulesI
             setVehicleClassService(vehicleClassService);
     }
     
-    public ClaimResult execute() throws DOMException, XPathExpressionException{
+    public ClaimResult execute() throws DOMException, XPathExpressionException, Exception {
  
         this.element = XMLUtils.getElement(XMLUtils.getElement(claimResult.getElement(), "claim"), "customer");
         
@@ -56,7 +55,7 @@ public class ClaimCustomerValidation extends SecureDataService implements rulesI
         return claimResult;
     }
     
-    private boolean validate(){
+    private boolean validate() throws Exception {
         
         boolean isAllowToReadData = false;
         

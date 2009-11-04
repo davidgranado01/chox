@@ -1,15 +1,14 @@
 package chox.services;
 
+import chox.Util.RoleHelper;
 import chox.data.ClaimSearchCriteria;
 import chox.model.Claim;
 import chox.model.ClaimStatus;
-import chox.model.VehicleClassCeiling;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -26,7 +25,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public static final String COMPLETE = "Complete";
     public static final String CANCELLED = "Cancelled";
     public static final String NEW_CLAIM = "1st Notification";
-    private Map<String, String> sortingMap;
+    // private Map<String, String> sortingMap;
 
     public ClaimServiceImpl() {
         super();
@@ -42,8 +41,23 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         save(claim);
     }
     
-    public Long getCountByStatus(String status) {
+    public Long getCountByStatus(String status, boolean isCHQueue) {
+
         String q = "select count(*) from Claim where status = '" + status + "'";
+
+        if(isCHQueue){
+            
+            // WORKGROUP FILTER
+            if(RoleHelper.isEditableByWorkgroupRole(getCurrentUser())){
+                q += " And workgroup.id in (select workgroup.id from UserWorkgroup Where user.id="+getCurrentUser().getId()+")";
+            }
+
+            if(RoleHelper.isEditableByOwnership(getCurrentUser())){
+                q += " And claimOwner.id ="+getCurrentUser().getId();
+            }
+            
+        }
+
         return getCount(q);
     }
 
@@ -52,14 +66,28 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     public Long getPenaltyChargeAppliedCount() {
-
         String q = "select count(*) from Claim as c inner join c.invoice as iv where " + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_LOGGED + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_REJECTED_ACCEPTED + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_RECEIVED + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT + "' AND " + "c.status <> '" + ClaimStatus.CLAIM_CLOSED + "' " + "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.createdDate) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
-        //+ "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.dateInvoiced) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
         return getCount(q);
     }
 
-    public Long getHireUpdateWarningCountNumber() {
-        String q = "select count(*) from Claim c where size(c.notifications) > 0";
+    public Long getHireUpdateWarningCountNumber(boolean isCHQueue) {
+        
+        String q = "select count(*) from Claim c where size(c.notifications) > 0 ";
+        q += "And c.status = ''";
+        
+        if(isCHQueue){
+
+            // WORKGROUP
+            if(RoleHelper.isEditableByWorkgroupRole(getCurrentUser())){
+                q += " And workgroup.id in (select workgroup.id from UserWorkgroup Where user.id="+getCurrentUser().getId()+")";
+            }
+
+            if(RoleHelper.isEditableByOwnership(getCurrentUser())){
+                q += " And claimOwner.id ="+getCurrentUser().getId();
+            }
+            
+        }
+        
         return getCount(q);
     }
 
@@ -142,8 +170,36 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
 
         // Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.lineOfBusiness", "lob", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
-        Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
+        Criteria criteria = getSession().createCriteria(Claim.class)
+                .createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
 
+        // QUEUE
+        if(searchCriteria.getIsCHQueue()){
+            
+            if(RoleHelper.isEditableByWorkgroupRole(getCurrentUser())){
+                System.out.println(" >>>>>>>>>> FILTER BY WORKGROUP");
+                criteria.add(Restrictions.sqlRestriction("workgroup_id in (select workgroup_id from user_workgroup where user_id ="+getCurrentUser().getId()+")"));
+            }
+
+            if(RoleHelper.isEditableByOwnership(getCurrentUser())){
+                System.out.println(" >>>>>>>>>> FILTER BY OWNERSHIP A");
+                criteria.add(Restrictions.eq("claimOwner.id", getCurrentUser().getId()));
+            }
+            
+        }
+
+        if (searchCriteria.getClaimOwnerId() > 0) {
+            System.out.println(" >>>>>>>>>> FILTER BY OWNERSHIP B");
+            criteria.add(Restrictions.eq("claimOwner.id", searchCriteria.getClaimOwnerId()));
+        }
+        
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
             criteria.add(Restrictions.like("choReference", searchCriteria.getSupplierReference()).ignoreCase());
         }
@@ -177,7 +233,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
             criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.created_date) + 1 >(iv1_.panalty_alert_qty+1)*30"));
-            // criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.date_invoiced) + 1 >(iv1_.panalty_alert_qty+1)*30"));
         }
         
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {

@@ -46,7 +46,7 @@ public class InvoiceStorageRecoveryValidation extends SecureDataService implemen
             setChoBandService(choBandService);    
     }
     
-    public ClaimResult execute() throws DOMException, XPathExpressionException{
+    public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{
         
         Element root = XMLUtils.getElement(claimResult.getElement(), "invoice");
         this.element = XMLUtils.getElement(root, "storage-recovery");
@@ -59,7 +59,7 @@ public class InvoiceStorageRecoveryValidation extends SecureDataService implemen
         return this.claimResult;
     }
     
-    private boolean validate() throws DOMException, XPathExpressionException{
+    private boolean validate() throws DOMException, XPathExpressionException, Exception{
         
         boolean isAllowToReadData = false;
         

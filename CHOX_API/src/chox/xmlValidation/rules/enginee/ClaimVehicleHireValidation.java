@@ -37,7 +37,7 @@ public class ClaimVehicleHireValidation extends SecureDataService implements rul
             setVehicleClassService(vehicleClassService);
     }
     
-    public ClaimResult execute() throws DOMException, XPathExpressionException{
+    public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{
  
         this.element = XMLUtils.getElement(claimResult.getElement(), "rental-vehicle");
                 
@@ -49,7 +49,7 @@ public class ClaimVehicleHireValidation extends SecureDataService implements rul
         return claimResult;
     }
     
-    private boolean validate() throws DOMException, XPathExpressionException{
+    private boolean validate() throws DOMException, XPathExpressionException, Exception{
         
         boolean isAllowToReadData = false;
 

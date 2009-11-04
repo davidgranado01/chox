@@ -47,7 +47,7 @@ public class InvoiceValidation extends SecureDataService implements rulesInterfa
             setChoBandService(choBandService);    
     }
     
-    public ClaimResult execute() throws DOMException, XPathExpressionException{
+    public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{
         
         this.element = XMLUtils.getElement(claimResult.getElement(), "invoice");
         
@@ -59,7 +59,7 @@ public class InvoiceValidation extends SecureDataService implements rulesInterfa
         return claimResult;
     }
     
-    private boolean validate() throws DOMException, XPathExpressionException{
+    private boolean validate() throws DOMException, XPathExpressionException, Exception{
         
         boolean isAllowToReadData = false;
         
@@ -82,7 +82,7 @@ public class InvoiceValidation extends SecureDataService implements rulesInterfa
         return isAllowToReadData;
     }
     
-    private void process() throws DOMException, XPathExpressionException{ 
+    private void process() throws DOMException, XPathExpressionException, Exception{
         
         Invoice invoice = new Invoice();
         

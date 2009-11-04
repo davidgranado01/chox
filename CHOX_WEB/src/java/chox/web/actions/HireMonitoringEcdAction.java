@@ -25,10 +25,11 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
 
     private HireMonitoringEcd model;
     private ReasonOfDelayService reasonOfDelayService;
-    private Integer iECDFormAccessRight;    
+    private Integer iECDFormAccessRight;
     private List reasonOfDelay;
     private LookupService lookupService;
     private int reasonOfDelayId = -1;
+    
     private ClaimAnomalousChecker newECDAddedChecker;
     private boolean isUpdateInsurer;
 
@@ -48,7 +49,6 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
         this.reasonOfDelayId = reasonOfDelayId;
     }
      
-
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_HIRE_MONITORING;

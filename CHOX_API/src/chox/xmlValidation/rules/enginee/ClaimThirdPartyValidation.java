@@ -53,7 +53,7 @@ public class ClaimThirdPartyValidation extends SecureDataService implements rule
             setInsurerChorganisationService(insurerChorganisationService);
     }
     
-    public ClaimResult execute() throws DOMException, XPathExpressionException{
+    public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{
         
         this.element = XMLUtils.getElement(XMLUtils.getElement(claimResult.getElement(), "claim"), "third-party");
         
@@ -65,7 +65,7 @@ public class ClaimThirdPartyValidation extends SecureDataService implements rule
         return claimResult;
     }
     
-    private boolean validate(){
+    private boolean validate() throws DOMException, XPathExpressionException, Exception{
         
         boolean isAllowToReadData = false;
         

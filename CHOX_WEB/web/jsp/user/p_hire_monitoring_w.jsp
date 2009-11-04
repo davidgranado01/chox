@@ -86,7 +86,7 @@
                         number:true
                     },
                     labourHour :{
-                        number:true
+                        digits:true
                     },
                     labourCost :{
                         number:true
@@ -116,12 +116,12 @@
                     },
                     repairCompletionDate: {
                         date:"Invalid date format for 'Repair Completion Date'"
-                    },    
+                    },
                     labourRate :{
                         number:"You must supply a numeric value for 'Labour Rate'"
                     },
                     labourHour :{
-                        number:"You must supply a numeric value for 'Labour Hours'"
+                        digits:"You must supply a digit value for 'Labour Hours'"
                     }, 
                     labourCost :{ 
                         number:"You must supply a numeric value for 'Total Labour Cost'"
@@ -134,9 +134,20 @@
                     }
                 },
                 submitHandler: function(form) {
-                    $(form).ajaxSubmit(globalEntityFormOptions);
+
+                    var HireMonitoringEntityFormOptions = {
+                        beforeSubmit:  onBeforeSubmit,  // pre-submit callback
+                        success:       onHireMonitoringSubmitResponseReceived,  // post-submit callback
+                        timeout: 3000,
+                        error: onSubmitError
+                    };
+            
+                    $(form).ajaxSubmit(HireMonitoringEntityFormOptions);
                 }
             });
+
+            var repairBookDt = $("#repairBookInDate").val();
+            $("#notificationRepairBookInDate").val(repairBookDt);
 
         }); 
         
@@ -151,7 +162,7 @@
                var dRepairCompletionDt = getDate(repairCompletionDt);
                bFlag = (dRepairBookInDt <= dRepairCompletionDt);
             }
-           
+            
             return !bFlag;
         }        
         
@@ -160,12 +171,23 @@
             return false;
         }
         
+        function onHireMonitoringSubmitResponseReceived(responseText, statusText){
+
+            onSubmitResponseReceived(responseText, statusText);
+                
+            var repairBookDt = $("#repairBookInDate").val();
+            $("#notificationRepairBookInDate").val(repairBookDt);
+            
+            return true;
+        }
+
     </script>
 
 <form id="formUpdateHireMonitoringDetail" action="user/updateHireMonitorDetail.action" class="XXentity-form">
     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <input type="hidden" name="date_compare_field" value=''>
+    <s:hidden value="notificationRepairBookInDate" id="notificationRepairBookInDate" name="notificationRepairBookInDate"/>
 
     <fieldset class="x-fieldset">
 
@@ -247,7 +269,7 @@
             </div>
 
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes" /><s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
+                <input type="submit" value="Save Changes"/><s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
             </div>
             
             <div id="HMmessageBox" style="text-align:center" class="action_msg"></div>            

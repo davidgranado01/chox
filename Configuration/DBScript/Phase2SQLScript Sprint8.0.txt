@@ -1395,3 +1395,28 @@ ALTER TABLE vehicle_class_celling RENAME COLUMN repair_net_celling TO repair_net
 ALTER TABLE vehicle_class_celling RENAME TO vehicle_class_ceiling
 
 ALTER TABLE cho_band RENAME COLUMN is_vehicle_class_celling_enable TO is_vehicle_class_ceiling_enable;
+
+-- ############################################################################################
+-- START VERSION V2.8.2.13
+-- ############################################################################################\
+
+ALTER TABLE cho_band ADD COLUMN hire_net_does_not_exceed_band_hire_net_ceiling boolean DEFAULT true;
+UPDATE cho_band set hire_net_does_not_exceed_band_hire_net_ceiling = true;
+ALTER TABLE cho_band ALTER COLUMN hire_net_does_not_exceed_band_hire_net_ceiling SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN hire_net_does_not_exceed_band_hire_net_ceiling SET NOT NULL;
+
+ALTER TABLE cho_band ADD COLUMN repair_net_does_not_exceed_band_repair_net_ceiling boolean DEFAULT true;
+UPDATE cho_band set repair_net_does_not_exceed_band_repair_net_ceiling = true;
+ALTER TABLE cho_band ALTER COLUMN repair_net_does_not_exceed_band_repair_net_ceiling SET STORAGE PLAIN;
+ALTER TABLE cho_band ALTER COLUMN repair_net_does_not_exceed_band_repair_net_ceiling SET NOT NULL;
+
+ALTER TABLE cho_band DROP COLUMN is_vehicle_class_ceiling_enable;
+
+-- ############################################################################################
+-- START VERSION V2.8.2.14
+-- ############################################################################################\
+
+update accessibility_item set access_right=2 where accessibility_id in (select id from accessibility where name like 'tab.Note%');
+delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'tab.Note%') and role!='ALL';
+
+update accessibility_item set access_right=2 where accessibility_id in (select id from accessibility where name like 'tab.PaymentPack.%');

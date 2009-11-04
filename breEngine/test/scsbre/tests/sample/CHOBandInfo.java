@@ -24,7 +24,6 @@ public class CHOBandInfo implements ICHOBandInfo {
     protected int isNotMobileDayAllowance;
     protected int averageLabourRate;
     protected int averageLabourHoursPerHireDay;
-    protected boolean vehicleClassCeilingEnable;
     protected String name;
     protected VehicleClassCeilingInfo vehicleClassCeiling;
     protected boolean automaticChargeCheck;
@@ -64,6 +63,8 @@ public class CHOBandInfo implements ICHOBandInfo {
     protected boolean correntAdminFee;
     protected boolean repairBookedInDate;
     protected boolean flaggedForManualInvoiceReview;
+    protected boolean repairNetDoesNotExceedBandRepairNetCeiling;
+    protected boolean hireNetDoesNotExceedBandHireNetCeiling;
 
     public InsurerInfo getInsurer() {
         return insurer;
@@ -213,14 +214,6 @@ public class CHOBandInfo implements ICHOBandInfo {
         this.name = name;
     }
 
-    public boolean isVehicleClassCeilingEnable() {
-        return vehicleClassCeilingEnable;
-    }
-
-    public void setVehicleClassCeilingEnable(boolean vehicleClassCeilingEnable) {
-        this.vehicleClassCeilingEnable = vehicleClassCeilingEnable;
-    }
-
     public void setVehicleClassCeiling(VehicleClassCeilingInfo vehicleClassCeiling) {
         this.vehicleClassCeiling = vehicleClassCeiling;
     }
@@ -246,7 +239,7 @@ public class CHOBandInfo implements ICHOBandInfo {
 
         BigDecimal maxRepairNetCeiling = new BigDecimal(100000);
 
-        if(vehicleClassCeilingEnable){
+
 
             maxRepairNetCeiling = new BigDecimal(100000);
 
@@ -254,7 +247,7 @@ public class CHOBandInfo implements ICHOBandInfo {
                 maxRepairNetCeiling = vehicleClassCeiling.getRepairNetCeiling();
             }
 
-        }
+
 
         return maxRepairNetCeiling;
     }
@@ -263,11 +256,11 @@ public class CHOBandInfo implements ICHOBandInfo {
 
         BigDecimal maxHireNetCeiling = new BigDecimal(100000);
 
-        if(vehicleClassCeilingEnable){
+
             if(vehicleClassCeiling!=null){
                 maxHireNetCeiling = vehicleClassCeiling.getHireNetCeiling();
             }
-        }
+
 
         return maxHireNetCeiling;
     }
@@ -570,6 +563,22 @@ public class CHOBandInfo implements ICHOBandInfo {
 
     public boolean isFlaggedForManualInvoiceReview() {
         return this.flaggedForManualInvoiceReview;
+    }
+
+    public boolean isRepairNetDoesNotExceedBandRepairNetCeiling() {
+        return this.repairNetDoesNotExceedBandRepairNetCeiling;
+    }
+
+    public boolean isHireNetDoesNotExceedBandHireNetCeiling() {
+        return this.hireNetDoesNotExceedBandHireNetCeiling;
+    }
+
+    public void setHireNetDoesNotExceedBandHireNetCeiling(boolean hireNetDoesNotExceedBandHireNetCeiling) {
+        this.hireNetDoesNotExceedBandHireNetCeiling = hireNetDoesNotExceedBandHireNetCeiling;
+    }
+
+    public void setRepairNetDoesNotExceedBandRepairNetCeiling(boolean repairNetDoesNotExceedBandRepairNetCeiling) {
+        this.repairNetDoesNotExceedBandRepairNetCeiling = repairNetDoesNotExceedBandRepairNetCeiling;
     }
 
 }

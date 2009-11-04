@@ -8,10 +8,10 @@ import scsbre.engine.RuleEvaluationResult;
 import scsbre.model.ClaimStatus;
 import scsbre.model.IClaimInfo;
 
-public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusinessRule {
+public class RepairNetDoesNotExceedRepairNetCeiling implements IBusinessRule {
 
     String narrative = "";
-    String narrativeTemplate = "The Repair Net billed %s exceeds the Repair Net ceiling of %s for vehicle class %s.";
+    String narrativeTemplate = "The Repair Net billed %s exceeds the Repair Net ceiling of %s.";
     DecimalFormat moneyFormat = new DecimalFormat("£0.00");
 
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
@@ -20,20 +20,18 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isRepairNetDoesNotExceedVehicleClassRepairNetCeiling()){
+        if(claim.getChoBand().isRepairNetDoesNotExceedBandRepairNetCeiling()){
 
             BigDecimal repairNet = claim.getInvoice().getRepairNet();
-            BigDecimal repairNetCeiling = claim.getChoBand().getMaxRepairNetCeiling();
+            BigDecimal repairNetCeiling = claim.getChoBand().getRepairNetCeiling();
             boolean success = repairNet.compareTo(repairNetCeiling) <= 0;
-
+            
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
             if(!success){
-
                 narrative = String.format(narrativeTemplate,
                         moneyFormat.format(repairNet.doubleValue()),
-                        moneyFormat.format(repairNetCeiling.doubleValue()),
-                        claim.getVClass().getCode());
+                        moneyFormat.format(repairNetCeiling.doubleValue()));
             }
 
         }else{
@@ -52,7 +50,7 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
     }
 
     public String getRuleId() {
-        return "023";
+        return "041";
     }
 
     public ClaimStatus getStatusAfterFailure() {

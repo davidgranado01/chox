@@ -47,7 +47,7 @@ public class InjurySolicitorValidation extends SecureDataService implements rule
             setInjury(injury);
     }
     
-    public ClaimResult execute() throws DOMException, XPathExpressionException{
+    public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{
         
         this.element = XMLUtils.getElement(rootElement, "solicitor");
         
@@ -59,7 +59,7 @@ public class InjurySolicitorValidation extends SecureDataService implements rule
         return this.claimResult;
     }
     
-    private boolean validate() throws DOMException, XPathExpressionException{
+    private boolean validate() throws DOMException, XPathExpressionException, Exception{
         
         boolean isAllowToReadData = false;
         

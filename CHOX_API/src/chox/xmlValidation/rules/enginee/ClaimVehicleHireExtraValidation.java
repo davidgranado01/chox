@@ -41,7 +41,7 @@ public class ClaimVehicleHireExtraValidation extends SecureDataService implement
             setRootElement(rootElement);
     }
     
-    public ClaimResult execute() throws DOMException, XPathExpressionException{
+    public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{
 
         this.elements = XMLUtils.getElements(this.rootElement.getOwnerDocument(), this.rootElement, "extra");        
         
@@ -56,7 +56,7 @@ public class ClaimVehicleHireExtraValidation extends SecureDataService implement
         return claimResult;
     }
     
-    private boolean validate() throws DOMException, XPathExpressionException{
+    private boolean validate() throws DOMException, XPathExpressionException, Exception{
         
         boolean isAllowToReadData = false;
    

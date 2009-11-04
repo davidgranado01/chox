@@ -28,7 +28,6 @@
     <property column="is_not_mobile_day_allowance" name="isNotMobileDayAllowance" not-null="true"/>
     <property column="average_labour_hours_per_hire_day" name="averageLabourHoursPerHireDay" not-null="true"/>
     <property column="average_labour_rate" name="averageLabourRate" not-null="true"/>
-    <property column="is_vehicle_class_ceiling_enable" name="vehicleClassCeilingEnable"/>
     <property column="automatic_charge_check" name="automaticChargeCheck"/>
     <property column="estate_charge_check" name="estateChargeCheck"/>
     <property column="non_standard_risk_insurance_premium_check" name="nonStandardRiskInsurancePremiumCheck"/>
@@ -66,5 +65,7 @@
     <property column="corrent_admin_fee" name="correntAdminFee"/>
     <property column="repair_booked_in_date" name="repairBookedInDate"/>
     <property column="flagged_for_manual_invoice_review" name="flaggedForManualInvoiceReview"/>
+    <property column="hire_net_does_not_exceed_band_hire_net_ceiling" name="hireNetDoesNotExceedBandHireNetCeiling"/>
+    <property column="repair_net_does_not_exceed_band_repair_net_ceiling" name="repairNetDoesNotExceedBandRepairNetCeiling"/>
   </class>
 </hibernate-mapping>

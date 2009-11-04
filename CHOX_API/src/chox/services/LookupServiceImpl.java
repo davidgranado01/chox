@@ -91,14 +91,10 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             
             if(RoleHelper.isInsurerUser(user)){
                 
-                if(RoleHelper.isOwnWorkgroupRolesOnly(user) && user.getInsurer().isWorkgroupEnable()){
-                    
+                if(RoleHelper.isGlobalFilterByWorkgroup(user)){
                     workgroups = getWorkgroupsByUserId(user.getId(), isActiveOnly);
-                    
                 }else{
-                    
                     workgroups = getWorkgroupsByInsurerId(user.getInsurer().getId(), isActiveOnly);
-                    
                 }
             }
         }

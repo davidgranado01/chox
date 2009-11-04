@@ -13,11 +13,13 @@
             <div class="status-warning listContainer">
                 <ul>
                     <s:iterator value="notifications">
-                        <li><s:property value="message"/> (<a href='javascript:removeNotification(<s:property value="id"/>);'>Remove note from list</a>)</li>
+                        <li><s:property value="message"/> <s:if test="isClaimEditable">(<a href='javascript:removeNotification(<s:property value="id"/>);'>Remove note from list</a>)</s:if></li>
                     </s:iterator>
                 </ul>
             </div>
+            <s:if test="isClaimEditable">
             <input type="button" value="Remove All" onclick='javascript:removeNotification(-1);' />
+            </s:if>
         </fieldset>
     </div>
 </s:if>

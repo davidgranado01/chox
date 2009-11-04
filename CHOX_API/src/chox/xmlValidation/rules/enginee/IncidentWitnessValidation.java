@@ -41,7 +41,7 @@ public class IncidentWitnessValidation extends SecureDataService implements rule
             setClaimService(claimService);
     }
     
-    public ClaimResult execute() throws DOMException, XPathExpressionException{
+    public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{
  
         this.element = XMLUtils.getElement(XMLUtils.getElement(XMLUtils.getElement(claimResult.getElement(), "claim"), "incident"), "witnesses");
         this.witnessElements = XMLUtils.getElements(this.element.getOwnerDocument(), this.element, "witness");
@@ -54,7 +54,7 @@ public class IncidentWitnessValidation extends SecureDataService implements rule
         return claimResult;
     }
     
-    private boolean validate() throws DOMException, XPathExpressionException{
+    private boolean validate() throws DOMException, XPathExpressionException, Exception{
         
         boolean isAllowToReadData = false;
         

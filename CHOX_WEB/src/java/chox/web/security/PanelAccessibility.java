@@ -7,9 +7,7 @@ public class PanelAccessibility {
     private boolean fnolReviewedPanelAccessible;
     
     public PanelAccessibility(ApplicationAccessibility accessibility,GrantedAuthority[] grantedAuthorities) {
-       
-        fnolReviewedPanelAccessible = accessibility.checkPanelAccessibility(ApplicationAccessibility.PANEL_FNOL_REVIEWED,
-                grantedAuthorities) > 0;
+        fnolReviewedPanelAccessible = accessibility.checkPanelAccessibility(ApplicationAccessibility.PANEL_FNOL_REVIEWED, grantedAuthorities) > 0;
     }
 
     public boolean getFnolReviewedPanelAccessible() {

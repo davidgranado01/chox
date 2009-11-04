@@ -24,7 +24,6 @@ public class ChoBand extends AuditableEntity implements Serializable, ICHOBandIn
     protected int isNotMobileDayAllowance;
     protected int averageLabourRate;
     protected int averageLabourHoursPerHireDay;
-    protected boolean vehicleClassCeilingEnable;
     protected String name;
     protected VehicleClassCeiling vehicleClassCeiling;
     protected boolean automaticChargeCheck;
@@ -64,6 +63,8 @@ public class ChoBand extends AuditableEntity implements Serializable, ICHOBandIn
     protected boolean correntAdminFee;
     protected boolean repairBookedInDate;
     protected boolean flaggedForManualInvoiceReview;
+    protected boolean hireNetDoesNotExceedBandHireNetCeiling;
+    protected boolean repairNetDoesNotExceedBandRepairNetCeiling;
 
     public ChoBand() {
     }
@@ -216,14 +217,6 @@ public class ChoBand extends AuditableEntity implements Serializable, ICHOBandIn
         this.name = name;
     }
 
-    public boolean isVehicleClassCeilingEnable() {
-        return vehicleClassCeilingEnable;
-    }
-
-    public void setVehicleClassCeilingEnable(boolean vehicleClassCeilingEnable) {
-        this.vehicleClassCeilingEnable = vehicleClassCeilingEnable;
-    }
-
     public void setVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling) {
         this.vehicleClassCeiling = vehicleClassCeiling;
     }
@@ -248,13 +241,11 @@ public class ChoBand extends AuditableEntity implements Serializable, ICHOBandIn
     public java.math.BigDecimal getMaxRepairNetCeiling() {
 
         BigDecimal maxRepairNetCeiling = new BigDecimal(100000);
-        
-        if(vehicleClassCeilingEnable){
-            if(vehicleClassCeiling!=null){
-                maxRepairNetCeiling = vehicleClassCeiling.getRepairNetCeiling();
-            }
+
+        if(vehicleClassCeiling!=null){
+            maxRepairNetCeiling = vehicleClassCeiling.getRepairNetCeiling();
         }
-        
+
         return maxRepairNetCeiling;
     }
     
@@ -262,11 +253,8 @@ public class ChoBand extends AuditableEntity implements Serializable, ICHOBandIn
         
         BigDecimal maxHireNetCeiling = new BigDecimal(100000);
         
-        if(vehicleClassCeilingEnable){
-
-            if(vehicleClassCeiling!=null){
-                maxHireNetCeiling = vehicleClassCeiling.getHireNetCeiling();
-            }
+        if(vehicleClassCeiling!=null){
+            maxHireNetCeiling = vehicleClassCeiling.getHireNetCeiling();
         }
 
         return maxHireNetCeiling;
@@ -566,6 +554,22 @@ public class ChoBand extends AuditableEntity implements Serializable, ICHOBandIn
 
     public void setValidateUniqueVehicleRegistrationNumber(boolean validateUniqueVehicleRegistrationNumber) {
         this.validateUniqueVehicleRegistrationNumber = validateUniqueVehicleRegistrationNumber;
+    }
+
+    public boolean isHireNetDoesNotExceedBandHireNetCeiling() {
+        return hireNetDoesNotExceedBandHireNetCeiling;
+    }
+
+    public void setHireNetDoesNotExceedBandHireNetCeiling(boolean hireNetDoesNotExceedBandHireNetCeiling) {
+        this.hireNetDoesNotExceedBandHireNetCeiling = hireNetDoesNotExceedBandHireNetCeiling;
+    }
+
+    public boolean isRepairNetDoesNotExceedBandRepairNetCeiling() {
+        return repairNetDoesNotExceedBandRepairNetCeiling;
+    }
+
+    public void setRepairNetDoesNotExceedBandRepairNetCeiling(boolean repairNetDoesNotExceedBandRepairNetCeiling) {
+        this.repairNetDoesNotExceedBandRepairNetCeiling = repairNetDoesNotExceedBandRepairNetCeiling;
     }
 
 }

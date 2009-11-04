@@ -46,7 +46,7 @@ public class InvoiceRepairValidation extends SecureDataService implements rulesI
             setChoBandService(choBandService);    
     }
     
-    public ClaimResult execute() throws DOMException, XPathExpressionException{
+    public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{
         Element root = XMLUtils.getElement(claimResult.getElement(), "invoice");
         this.element = XMLUtils.getElement(root, "repair");
         
@@ -58,7 +58,7 @@ public class InvoiceRepairValidation extends SecureDataService implements rulesI
         return this.claimResult;
     }
     
-    private boolean validate() throws DOMException, XPathExpressionException{
+    private boolean validate() throws DOMException, XPathExpressionException, Exception{
         
         boolean isAllowToReadData = false;
         

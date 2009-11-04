@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package chox.web.actions;
 
 import java.util.*;
@@ -28,6 +24,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     private static final String strPrefix = "Claim Review Note: ";
     private static final String statusMsg = "Your action has been recorded";
+
+    private TabAccessibility tabAccessibility;
+    private NotificationAccessibility notificationAccessibility;
+
+    private Map session;
+    private Integer tab = -1;
+
+    private String actionResult;
+    private String actionResult2;
+    
+    // <editor-fold defaultstate="collapsed" desc="DECLARE ACTION NAME">
     public static final String REFER_FNOL = "referFNOL";
     public static final String REJECT = "reject";
     public static final String ACCEPT = "accept";
@@ -41,14 +48,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public static final String REFER_CH = "referCH";
     public static final String INV_REFER_ENG = "InvReferEng";
     public static final String UPDATED_BY_ENG = "updatedByEng";
-    private Claim claim = new Claim();
-    private int id = -1;
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="DECLARE DROP DOWN LIST OBJECTS">
     private List vehicleClasses;
     private List reasonOfClaimRejections;
     private List reasonOfInvoiceRejections;
     private List extraActionList;
     private List insurers;
     private List statuses;
+    private List workgroups;
+    private List insurerWorkgroups;
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="DECLARE SERVICES OBJECTS">
     private ClaimService service;
     private LookupService lookupService;
     private InvoiceService invoiceService;
@@ -60,10 +73,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private AttachmentTypeService attachmentTypeService;
     private BusinessRulesEngService businessRulesEngService;
     private CommentService commentService;
-    private String actionResult;
-    private String actionResult2;
-    private TabAccessibility tabAccessibility;
-    private NotificationAccessibility notificationAccessibility;
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="DECLARE CLAIM OBJECT PARAMETERS">
+    
+    private Claim claim = new Claim();
+    private int id = -1;
     private int vehicleClassId = -1;
     private int insurerId = -1;
     private String actionName;
@@ -90,224 +105,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private Integer injuryId;
     private Integer injurySolicitorId;
     private Integer notificationId;
-    private Map session;
-    private Integer tab = -1;
-    // Carlson @ 20090831
-    // private int lineOfBusinessId = -1;    
-    // private List lineOfBusinesses;
-    private List workgroups;
-    private List insurerWorkgroups;
     private int workgroupId = -1;
     private List<String> intelligentNotes;
     private IntelligentNoteDisplayEngine intelligentNoteDisplayEngine;
     private int claimOwnerId = -1;
-
     
-    public int getClaimOwnerId() {
-        return claimOwnerId;
-    }
+    // </editor-fold>
 
-    public void setClaimOwnerId(int claimOwnerId) {
-        this.claimOwnerId = claimOwnerId;
-    }
-
-    public String getAllowFileType() {
-
-        String sAllowFileType = "";
-
-        for (AttachmentType a : attachmentTypeService.getAllAttachmentType()) {
-            sAllowFileType += "." + a.getCode() + ", ";
-        }
-
-        if (sAllowFileType.length() > 2) {
-            sAllowFileType = sAllowFileType.substring(0, sAllowFileType.length() - 2);
-        }
-
-        return sAllowFileType;
-    }
-
-    public List<AttachmentType> getAllowFileTypes() {
-        return attachmentTypeService.getAllAttachmentType();
-    }
-
-    public int getMaxFileSize() {
-        return FileHelper.MAX_FILE_SIZE_ALLOW;
-    }
-
-    public List getAttachmentCategory() {
-        List items = new ArrayList<LookupItem>();
-        for (String s : AttachmentCategory.getAttachmentCategory()) {
-            items.add(new LookupItem(s, s));
-        }
-        attachmentCategory = items;
-        return attachmentCategory;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setClaimService(ClaimService service) {
-        this.service = service;
-    }
-
-    public void setLookupService(LookupService service) {
-        this.lookupService = service;
-    }
-
-    public Claim getModel() {
-        return claim;
-    }
-
+    // <editor-fold defaultstate="collapsed" desc="MODEL DRIVEN OBJECT">
+    
     public void prepare() throws Exception {
         if (id <= 0) {
             claim = new Claim();
         } else {
             claim = service.getClaim(id);
         }
-    }
-
-    public List getStatuses() {
-        if (statuses == null) {
-            statuses = this.lookupService.getStatuses();
-        }
-        return statuses;
-    }
-
-    // Carlson @ 20090831
-    /*
-    public List getLineOfBusinesses() {
-    if (lineOfBusinesses == null) {
-    lineOfBusinesses = lookupService.getLineOfBusinesses();
-    }
-    return lineOfBusinesses;
-    }
-    
-    public int getLineOfBusinessId() {
-    return lineOfBusinessId;
-    }
-
-    public void setLineOfBusinessId(int lineOfBusinessId) {
-    this.lineOfBusinessId = lineOfBusinessId;
-    }
-    */
-
-    public int getWorkgroupId() {
-        return workgroupId;
-    }
-
-    public void setWorkgroupId(int workgroupId) {
-        this.workgroupId = workgroupId;
-    }
-
-    public List getWorkgroups() {
-
-        if (workgroups == null) {
-            workgroups = lookupService.getWorkgroups(this.getAuthenticatedUser().getUser(), true);
-        }
-
-        return workgroups;
-
-    }
-
-    public List getInsurerWorkgroups() {
-
-        if (insurerWorkgroups == null) {
-            insurerWorkgroups = lookupService.getWorkgroupsByInsurerId(this.getAuthenticatedUser().getUser().getInsurer().getId(), true);
-        }
-
-        return insurerWorkgroups;
-
-    }
-    
-    public List getVehicleClasses() {
-        if (vehicleClasses == null) {
-            vehicleClasses = lookupService.getVehicleClasses();
-        }
-        return vehicleClasses;
-    }
-
-    public List getInsurers() {
-
-        if (insurers == null) {
-            Chorganisation currentCho = this.getAuthenticatedUser().getUser().getChorganisation();
-            insurers = this.lookupService.getInsurers(currentCho.getId());
-        }
-
-        return insurers;
-    }
-
-    public List getReasonOfClaimRejections() {
-        if (reasonOfClaimRejections == null) {
-            reasonOfClaimRejections = lookupService.getClaimRejectionReason();
-        }
-        return reasonOfClaimRejections;
-    }
-
-    public List getReasonOfInvoiceRejections() {
-        if (reasonOfInvoiceRejections == null) {
-            reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason();
-        }
-        return reasonOfInvoiceRejections;
-    }
-
-    public List getExtraActionList() {
-
-        GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
-        List<String> actions = AdditionalAction.getExtraActions();
-        
-        extraActionList = new ArrayList<LookupItem>();
-        
-        for (String action : actions) {
-
-            short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, grantedAuthorities, claim.getStatus());
-
-            if (accessRight >= 1){
-                String extraActionDescription = AdditionalAction.getExtraActionName(action);
-                extraActionList.add(new LookupItem(action, extraActionDescription));
-            }
-            
-        }
-
-        return extraActionList;
-    }
-
-    public String getActionResult() {
-        return actionResult;
-    }
-
-    public String getActionResult2() {
-        return actionResult2;
-    }
-
-    public String getExtraActionName() {
-        return extraActionName;
-    }
-
-    public String updateClaimDetail() {
-        this.service.updateClaim(claim);
-        this.actionResult = "Claim Updated!";
-        return SUCCESS;
-    }
-
-    public TabAccessibility getTabAccessibility() {
-
-        if (tabAccessibility == null) {
-            tabAccessibility = applicationAccessibility.getTabAccessibility(getAuthenticatedUser().getAuthorities(), claim.getStatus());
-        }
-        return tabAccessibility;
-    }
-
-    public NotificationAccessibility getNotificationAccessibility() {
-
-        if (notificationAccessibility == null) {
-            notificationAccessibility = applicationAccessibility.getNotificationAccessibility(getAuthenticatedUser().getAuthorities(), claim.getStatus());
-        }
-        return notificationAccessibility;
     }
             
     @Override
@@ -322,27 +134,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return SUCCESS;
         }
     }
+    
+    // </editor-fold>
 
-    public String getActionPanel() {
-        GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
-        List<String> actions = PanelAction.getPanelActions();
+    // <editor-fold defaultstate="collapsed" desc="CLAIM PANEL ACTION">
 
-        for (String action : actions) {
-
-            short accessRight = applicationAccessibility.checkActionAccessibility(action, grantedAuthorities, claim.getStatus());
-            
-            if (accessRight > 0) {
-                return action;
-            }
-
-            
-        }
-
-        return EMPTY;
+    public String updateClaimDetail() {
+        this.service.updateClaim(claim);
+        this.actionResult = "Claim Updated!";
+        return SUCCESS;
     }
-
-
-
+    
     public String getPaymentReceivedAction() {
         return "updatePaymentReceived";
     }
@@ -390,9 +192,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String acknowledge() {
-
-        // boolean bActionFlag = true;
-        // String sActionMsg = "";
 
         String result = SUCCESS;
         String newStatus = "";
@@ -530,8 +329,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String reviewByEngineer() {
 
-        boolean bActionFlag = true;
-        String sActionMsg = "";
         String result = SUCCESS;
         String newStatus = "";
 
@@ -552,8 +349,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         } catch (Exception ex) {
 
-            bActionFlag = false;
-            sActionMsg = ex.getLocalizedMessage();
             this.actionResult = "ERROR : " + ex.getMessage();
 
         } 
@@ -565,8 +360,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         String newStatus;
-        boolean bActionFlag = true;
-        String sActionMsg = "";
 
         Integer iClaimRejectionReasonId = null;
 
@@ -582,7 +375,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
 
             auditTrailService.logAuditLog(newStatus, claim, iClaimRejectionReasonId, null);
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
 
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
@@ -590,8 +382,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } catch (Exception ex) {
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
-            bActionFlag = false;
-            sActionMsg = this.actionResult;
         } 
 
         return result;
@@ -608,23 +398,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_CAR_HIRE_INFO;
-            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(REFER)) {
             newStatus = ClaimStatus.CLAIM_REF_TO_ENG;
-            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(REFER_FNOL)) {
             newStatus = ClaimStatus.CLAIM_REFERRED_TO_FNOL;
-            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(PENDING)) {
             newStatus = ClaimStatus.CLAIM_PENDING;
-            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else {
             newStatus = ClaimStatus.CLAIM_REJECTED;
             logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
-            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejection:" + claim.getReasonOfRejectionId();
         }
-
-        // System.out.println("approveContestedClaim : 0009" + result);
 
         if (!result.equalsIgnoreCase(ERROR)) {
             
@@ -651,8 +434,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String submitHireMonitoringDetail() {
 
         String result = SUCCESS;
-        boolean bActionFlag = true;
-        String sActionMsg = "";
 
         String validationECDResult = validateHireMonitoringECDDetail();
         String validationLabourResult = validateHireMonitoringLabourDetail();
@@ -664,7 +445,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             try {
 
                 auditTrailService.logAuditLog(newStatus, claim, null, null);
-                sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
 
                 this.claim.setStatus(newStatus);
                 this.service.updateClaim(claim);
@@ -672,8 +452,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             } catch (Exception ex) {
 
                 this.actionResult = "ERROR : " + ex.getMessage();
-                bActionFlag = false;
-                sActionMsg = this.actionResult;
 
             } 
 
@@ -843,7 +621,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
 
-public String approveBREPassedByClaimHandler() {
+    public String approveBREPassedByClaimHandler() {
 
         String result = SUCCESS;
         String newStatus;
@@ -1136,26 +914,6 @@ public String approveBREPassedByClaimHandler() {
         return SUCCESS;
     }
 
-    public int getVehicleClassId() {
-        return vehicleClassId;
-    }
-
-    public void setVehicleClassId(int vehicleClassId) {
-        this.vehicleClassId = vehicleClassId;
-    }
-
-    public int getInsurerClassId() {
-        return insurerId;
-    }
-
-    public void setInsurerId(int insurerId) {
-        this.insurerId = insurerId;
-    }
-
-    public String getActionName() {
-        return actionName;
-    }
-
     public String getCreatedByDesc() {
         
         String desc = "";
@@ -1176,79 +934,6 @@ public String approveBREPassedByClaimHandler() {
         return desc;
     }
 
-    public void setActionName(String actionName) {
-        this.actionName = actionName;
-    }
-
-    public void setInvoiceService(InvoiceService invoiceService) {
-        this.invoiceService = invoiceService;
-    }
-
-    public void setAuditTrailService(AuditTrailService auditTrailService) {
-        this.auditTrailService = auditTrailService;
-    }
-
-    public void setHistoryService(HistoryService historyService) {
-        this.historyService = historyService;
-    }
-
-    public void setUserService(UserService userService){
-        this.userService = userService;
-    }
-
-    public void setWorkgroupService(WorkgroupService workgroupService) {
-        this.workgroupService = workgroupService;
-    }
-        
-    public void setCommentService(CommentService commentService) {
-        this.commentService = commentService;
-    }
-    
-    public void setReasonOfRejectionService(ReasonOfRejectionService reasonOfRejectionService) {
-        this.reasonOfRejectionService = reasonOfRejectionService;
-    }
-
-    public void setAttachmentTypeService(AttachmentTypeService attachmentTypeService) {
-        this.attachmentTypeService = attachmentTypeService;
-    }
-
-    public void setBusinessRulesEngService(BusinessRulesEngService businessRulesEngService) {
-        this.businessRulesEngService = businessRulesEngService;
-    }
-    
-    public String getStatusMsg() {
-        return statusMsg;
-    }
-    
-    public void setReasonForRejection(String s) {
-        this.reasonForRejection = s;
-    }
-
-//    public String doUpdateAnomalies() {
-//
-//        String result = SUCCESS;
-//        boolean bActionFlag = true;
-//        String sActionMsg = "";
-//
-//        try {
-//
-//            claim = service.getClaim(id);
-//            claim.setIsAnomalies(false);
-//            this.service.updateClaim(claim);
-//
-//            sActionMsg = "ClaimId:"+claim.getId();
-//
-//        } catch (Exception ex) {
-//
-//            result = ERROR;
-//            this.actionResult = "ERROR : " + ex.getMessage();
-//            bActionFlag = false;
-//            sActionMsg = this.actionResult;
-//
-//        }
-//        return result;
-//    }
-    
     public String getAlertPanel() {
         String result = EMPTY;
 
@@ -1280,13 +965,9 @@ public String approveBREPassedByClaimHandler() {
             Boolean isPenaltyAlertNotUsed = getIsRemovePenaltyAlert();
 
             if (isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) {
-                //long dateDiff = DateHelper.daysBetween(invoice.getDateInvoiced(), new Date());
                 long dateDiff = DateHelper.daysBetween(invoice.getCreatedDate(), new Date());
                 int newpenaltyAlertQty = (int) (dateDiff / 30);
-                //if penaltyAlertQty > 3 mean it already reach the limit and alert not showing anymore, set it to -1
                 newpenaltyAlertQty = newpenaltyAlertQty >= 3 ? -1 : newpenaltyAlertQty;
-
-
                 invoice.setPenaltyAlertQty(newpenaltyAlertQty);
             }
 
@@ -1375,6 +1056,285 @@ public String approveBREPassedByClaimHandler() {
         return result;
     }
 
+    public boolean getIsClaimClosed() {
+        boolean bFlag = false;
+
+        if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)) {
+            bFlag = true;
+        }
+
+        return bFlag;
+    }
+
+    public boolean getIsClaimNumberDuplicated() {
+        boolean bFlag = false;
+
+        if (!claim.getClaimNumber().isEmpty()) {
+            if (service.getClaimCountByClaimNumber(claim.getClaimNumber(), claim.getId()) > 0) {
+                bFlag = true;
+            }
+        }
+
+        return bFlag;
+    }
+
+    public void logNewCommentForRejection(Integer reasonOfRejectionId, boolean isPublic) {
+
+        if (reasonOfRejectionId != null) {
+            ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+            createNewNote(reasonOfRejection.getName(), isPublic, "Reason For Rejection: ");
+        }
+    }
+    
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="STRUCT RENDER PAGE">
+    public String getUpdateInsurerClaimNumber() {
+        return SUCCESS;
+    }
+
+    public String getUpdateClaimOwnership() {
+        return SUCCESS;
+    }
+
+    public String getEscalateUnassignedClaim() {
+        return SUCCESS;
+    }
+
+    public String getExtraActionName() {
+        return extraActionName;
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY CONTROL">
+
+    public TabAccessibility getTabAccessibility() {
+
+        if (tabAccessibility == null) {
+            tabAccessibility = applicationAccessibility.getTabAccessibility(getAuthenticatedUser().getAuthorities(), claim);
+        }
+        return tabAccessibility;
+    }
+
+    public NotificationAccessibility getNotificationAccessibility() {
+
+        if (notificationAccessibility == null) {
+            notificationAccessibility = applicationAccessibility.getNotificationAccessibility(getAuthenticatedUser().getAuthorities(), claim.getStatus());
+        }
+        return notificationAccessibility;
+    }
+    
+    public PanelAccessibility getPanelAccessibility() {
+        if (panelAccessibility == null) {
+            panelAccessibility = applicationAccessibility.getPanelAccessibility(getAuthenticatedUser().getAuthorities());
+        }
+        return panelAccessibility;
+    }
+
+    public ApplicationAccessibility getApplicationAccessibility() {
+        return applicationAccessibility;
+    }
+
+    public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
+        this.applicationAccessibility = applicationAccessibility;
+    }
+
+    public String getActionPanel() {
+        
+        GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
+        List<String> actions = PanelAction.getPanelActions();
+
+        for (String action : actions) {
+
+            short accessRight = applicationAccessibility.checkActionAccessibility(action, grantedAuthorities, claim.getStatus());
+
+            if (accessRight > 0) {
+                
+                if(!getIsClaimEditable()){
+                    action = EMPTY;
+                }
+                return action;
+                
+            }
+        }
+
+        return EMPTY;
+    }
+
+    public boolean getIsClaimEditable(){
+
+        // CHECK THIS USER IS CH OR COM WITH WORKGROUP ENABLE
+        // CHECK THIS USER IS CH OR COM WITH OWNERSHIP ENABLE
+        
+        boolean bFlag = true;
+
+        if(!getIsClaimEditableByWorkgroupCheck() || !getIsClaimEditableByOwnerCheck()){
+            bFlag = false;
+        }
+
+        return bFlag;
+    }
+
+    private boolean getIsClaimEditableByWorkgroupCheck(){
+
+        WebUser user = getAuthenticatedUser().getUser();
+        
+        boolean bFlag = true;
+
+        if(RoleHelper.isClaimEditableCheckByWorkgroupEnabled(user)){
+            if(!AccessibilityHelper.isClaimWorkgroupOwnByUser(user, this.claim)){
+                bFlag = false;
+            }
+        }
+        
+        return bFlag;
+
+    }
+    
+    private boolean getIsClaimEditableByOwnerCheck(){
+
+        WebUser user = getAuthenticatedUser().getUser();
+
+        boolean bFlag = true;
+
+        if(RoleHelper.isClaimEditableCheckByOwnerEnabled(user)){
+            if(!AccessibilityHelper.isClaimOwnByUser(user, this.claim)){
+                bFlag = false;
+            }
+        }
+
+        return bFlag;
+
+    }
+
+    public List getExtraActionList() {
+
+        GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
+        List<String> actions = AdditionalAction.getExtraActions();
+
+        extraActionList = new ArrayList<LookupItem>();
+
+        for (String action : actions) {
+
+            short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, grantedAuthorities, claim.getStatus());
+
+            if (accessRight >= 1){
+                if(getIsClaimEditable()){
+                    String extraActionDescription = AdditionalAction.getExtraActionName(action);
+                    extraActionList.add(new LookupItem(action, extraActionDescription));
+                }
+            }
+        }
+
+        return extraActionList;
+    }
+    
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="NOTIFICATION">
+
+    public List<Notification> getNotifications() {
+        return claim.getNotifications();
+    }
+
+    public void setNotificationId(Integer notificationId) {
+        this.notificationId = notificationId;
+    }
+
+    public String removeNotification() {
+
+        if(notificationId>0){
+
+            Notification notification = claim.GetNotificationById(notificationId);
+            if (notification != null) {
+                claim.RemoveNotifications(notification);
+                service.updateClaim(claim);
+            }
+
+        }else{
+
+            claim.RemoveAllNotifications();
+            service.updateClaim(claim);
+            
+        }
+
+        return SUCCESS;
+    }
+
+    public String renderNotifications() {
+        return SUCCESS;
+    }
+
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="GET SET">
+
+    public List<String> getIntelligentNotes() {
+        if (intelligentNotes == null) {
+            intelligentNotes = intelligentNoteDisplayEngine.getIntelligentNotes(claim);
+        }
+        return intelligentNotes;
+    }
+    
+    public Boolean getIsAnyIntelligentNotes() {
+        return getIntelligentNotes().size() > 0;
+    }
+
+    public Boolean getIsClaimAnomalous() {
+        return claim.getIsIsAnomalies();
+    }
+
+    public void setIntelligentNoteDisplayEngine(IntelligentNoteDisplayEngine intelligentNoteDisplayEngine) {
+        this.intelligentNoteDisplayEngine = intelligentNoteDisplayEngine;
+    }
+    
+    public List getStatuses() {
+        if (statuses == null) {
+            statuses = this.lookupService.getStatuses();
+        }
+        return statuses;
+    }
+    
+    public String getAllowFileType() {
+
+        String sAllowFileType = "";
+
+        for (AttachmentType a : attachmentTypeService.getAllAttachmentType()) {
+            sAllowFileType += "." + a.getCode() + ", ";
+        }
+
+        if (sAllowFileType.length() > 2) {
+            sAllowFileType = sAllowFileType.substring(0, sAllowFileType.length() - 2);
+        }
+
+        return sAllowFileType;
+    }
+
+    public List<AttachmentType> getAllowFileTypes() {
+        return attachmentTypeService.getAllAttachmentType();
+    }
+
+    public int getMaxFileSize() {
+        return FileHelper.MAX_FILE_SIZE_ALLOW;
+    }
+
+    public List getAttachmentCategory() {
+        List items = new ArrayList<LookupItem>();
+        for (String s : AttachmentCategory.getAttachmentCategory()) {
+            items.add(new LookupItem(s, s));
+        }
+        attachmentCategory = items;
+        return attachmentCategory;
+    }
+
+    public void setSession(Map arg0) {
+        this.session = arg0;
+    }
+
+    public void setTab(Integer tab) {
+        this.tab = tab;
+    }
+    
     public BigDecimal getTotalAmountToPayBeforeNewPenaltyCharge() {
         return totalAmountToPayBeforeNewPenaltyCharge;
     }
@@ -1434,20 +1394,77 @@ public String approveBREPassedByClaimHandler() {
     public boolean getIsFnolPanelVisible() {
         return getPanelAccessibility().getFnolReviewedPanelAccessible();
     }
-
-    public PanelAccessibility getPanelAccessibility() {
-        if (panelAccessibility == null) {
-            panelAccessibility = applicationAccessibility.getPanelAccessibility(getAuthenticatedUser().getAuthorities());
-        }
-        return panelAccessibility;
+    
+    public int getId() {
+        return id;
     }
 
-    public ApplicationAccessibility getApplicationAccessibility() {
-        return applicationAccessibility;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
-        this.applicationAccessibility = applicationAccessibility;
+    public Claim getModel() {
+        return claim;
+    }
+
+    public int getWorkgroupId() {
+        return workgroupId;
+    }
+
+    public void setWorkgroupId(int workgroupId) {
+        this.workgroupId = workgroupId;
+    }
+
+    public String getActionResult() {
+        return actionResult;
+    }
+
+    public String getActionResult2() {
+        return actionResult2;
+    }
+
+    public String getActionName() {
+        return actionName;
+    }
+    
+    public void setActionName(String actionName) {
+        this.actionName = actionName;
+    }
+
+    public String getStatusMsg() {
+        return statusMsg;
+    }
+
+    public void setReasonForRejection(String s) {
+        this.reasonForRejection = s;
+    }
+
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="GET SUB OBJECT ID">
+
+    public int getClaimOwnerId() {
+        return claimOwnerId;
+    }
+
+    public void setClaimOwnerId(int claimOwnerId) {
+        this.claimOwnerId = claimOwnerId;
+    }
+
+    public int getVehicleClassId() {
+        return vehicleClassId;
+    }
+
+    public void setVehicleClassId(int vehicleClassId) {
+        this.vehicleClassId = vehicleClassId;
+    }
+
+    public int getInsurerClassId() {
+        return insurerId;
+    }
+
+    public void setInsurerId(int insurerId) {
+        this.insurerId = insurerId;
     }
 
     public int getHireMonitoringDetailId() {
@@ -1555,106 +1572,109 @@ public String approveBREPassedByClaimHandler() {
         return injurySolicitorId;
     }
 
-    public boolean getIsClaimClosed() {
-        boolean bFlag = false;
+    // </editor-fold>
 
-        if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)) {
-            bFlag = true;
+    // <editor-fold defaultstate="collapsed" desc="SERVICES">
+
+    public void setClaimService(ClaimService service) {
+        this.service = service;
+    }
+
+    public void setLookupService(LookupService service) {
+        this.lookupService = service;
+    }
+
+    public void setInvoiceService(InvoiceService invoiceService) {
+        this.invoiceService = invoiceService;
+    }
+
+    public void setAuditTrailService(AuditTrailService auditTrailService) {
+        this.auditTrailService = auditTrailService;
+    }
+
+    public void setHistoryService(HistoryService historyService) {
+        this.historyService = historyService;
+    }
+
+    public void setUserService(UserService userService){
+        this.userService = userService;
+    }
+
+    public void setWorkgroupService(WorkgroupService workgroupService) {
+        this.workgroupService = workgroupService;
+    }
+
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
+    }
+
+    public void setReasonOfRejectionService(ReasonOfRejectionService reasonOfRejectionService) {
+        this.reasonOfRejectionService = reasonOfRejectionService;
+    }
+
+    public void setAttachmentTypeService(AttachmentTypeService attachmentTypeService) {
+        this.attachmentTypeService = attachmentTypeService;
+    }
+
+    public void setBusinessRulesEngService(BusinessRulesEngService businessRulesEngService) {
+        this.businessRulesEngService = businessRulesEngService;
+    }
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="GET DROP DOWN LIST">
+
+    public List getWorkgroups() {
+
+        if (workgroups == null) {
+            workgroups = lookupService.getWorkgroups(this.getAuthenticatedUser().getUser(), true);
         }
 
-        return bFlag;
+        return workgroups;
+
     }
 
-    public boolean getIsClaimNumberDuplicated() {
-        boolean bFlag = false;
+    public List getInsurerWorkgroups() {
 
-        if (!claim.getClaimNumber().isEmpty()) {
-            if (service.getClaimCountByClaimNumber(claim.getClaimNumber(), claim.getId()) > 0) {
-                bFlag = true;
-            }
+        if (insurerWorkgroups == null) {
+            insurerWorkgroups = lookupService.getWorkgroupsByInsurerId(this.getAuthenticatedUser().getUser().getInsurer().getId(), true);
         }
 
-        return bFlag;
+        return insurerWorkgroups;
+
     }
 
-    public void logNewCommentForRejection(Integer reasonOfRejectionId, boolean isPublic) {
-
-        if (reasonOfRejectionId != null) {
-            ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
-            createNewNote(reasonOfRejection.getName(), isPublic, "Reason For Rejection: ");
+    public List getVehicleClasses() {
+        if (vehicleClasses == null) {
+            vehicleClasses = lookupService.getVehicleClasses();
         }
+        return vehicleClasses;
     }
 
-    public void setSession(Map arg0) {
-        this.session = arg0;
-    }
+    public List getInsurers() {
 
-    public void setTab(Integer tab) {
-        this.tab = tab;
-    }
-
-    public List<String> getIntelligentNotes() {
-        if (intelligentNotes == null) {
-            intelligentNotes = intelligentNoteDisplayEngine.getIntelligentNotes(claim);
-        }
-        return intelligentNotes;
-    }
-
-    public Boolean getIsAnyIntelligentNotes() {
-        return getIntelligentNotes().size() > 0;
-    }
-
-    public Boolean getIsClaimAnomalous() {
-        return claim.getIsIsAnomalies();
-    }
-
-    public List<Notification> getNotifications() {
-        return claim.getNotifications();
-    }
-
-    public void setNotificationId(Integer notificationId) {
-        this.notificationId = notificationId;
-    }
-
-    public String removeNotification() {
-
-        if(notificationId>0){
-
-            Notification notification = claim.GetNotificationById(notificationId);
-            if (notification != null) {
-                claim.RemoveNotifications(notification);
-                service.updateClaim(claim);
-            }
-
-        }else{
-
-            System.out.println("REMOVE ALL");
-            claim.RemoveAllNotifications();
-            service.updateClaim(claim);
-            
+        if (insurers == null) {
+            Chorganisation currentCho = this.getAuthenticatedUser().getUser().getChorganisation();
+            insurers = this.lookupService.getInsurers(currentCho.getId());
         }
 
-        return SUCCESS;
+        return insurers;
     }
 
-    public String renderNotifications() {
-        return SUCCESS;
+    public List getReasonOfClaimRejections() {
+        if (reasonOfClaimRejections == null) {
+            reasonOfClaimRejections = lookupService.getClaimRejectionReason();
+        }
+        return reasonOfClaimRejections;
     }
 
-    public void setIntelligentNoteDisplayEngine(IntelligentNoteDisplayEngine intelligentNoteDisplayEngine) {
-        this.intelligentNoteDisplayEngine = intelligentNoteDisplayEngine;
-    }
-    
-    public String getUpdateInsurerClaimNumber() {
-        return SUCCESS;
+    public List getReasonOfInvoiceRejections() {
+        if (reasonOfInvoiceRejections == null) {
+            reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason();
+        }
+        return reasonOfInvoiceRejections;
     }
 
-    public String getUpdateClaimOwnership() {
-        return SUCCESS;
-    }
-    
-    public String getEscalateUnassignedClaim() {
-        return SUCCESS;
-    }
-    
+    // </editor-fold>
+
 }

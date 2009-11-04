@@ -1,8 +1,3 @@
-<%-- 
-    Document   : Inbox
-    Created on : 10-Nov-2008, 22:13:54
-    Author     : Emmanuel
---%>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
@@ -21,7 +16,7 @@
     <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script> 
 </head>
 
-<script >
+<script type="text/javascript">
     
     var currentTabIndex;
     var tabs;
@@ -60,8 +55,9 @@
      
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';     
     
-    function showClaimByStatus(status)
-    {     
+    function showClaimByStatus(status, isClaimHandlerQueue)
+    {
+
         ds.baseParams = {
             
             supplierReference : '',
@@ -81,8 +77,13 @@
             isAnomalies : '',
             ispenaltyChargeApplied : '',
             reviewRequiredDateFrom:'',
-            reviewRequiredDateTo:''
+            reviewRequiredDateTo:'',
+            isCHQueue:isClaimHandlerQueue,
+            claimOwnerId:-1
         }
+
+        doDataLoad(0, recordPerPage);
+        /*
         ds.load(
         {
             params:
@@ -91,9 +92,11 @@
                 limit:recordPerPage
             }
         });
+        */
+        // alert("A");
     }  
     
-    function showClaimByStatusWithSort(status,sort)
+    function showClaimByStatusWithSort(status, sort, isClaimHandlerQueue)
     {     
         ds.setDefaultSort(sort, 'status');
         ds.baseParams = {            
@@ -114,8 +117,13 @@
             isAnomalies : '',
             ispenaltyChargeApplied : '',
             reviewRequiredDateFrom:'',
-            reviewRequiredDateTo:''
+            reviewRequiredDateTo:'',
+            isCHQueue:isClaimHandlerQueue,
+            claimOwnerId:-1
         }
+
+        doDataLoad(0, recordPerPage);
+        /*
         ds.load(
         {
             params:
@@ -124,9 +132,11 @@
                 limit:recordPerPage
             }
         });
+        */
+        // alert("b");
     }  
     
-    function showClaimIsAnomalies()
+    function showClaimIsAnomalies(isClaimHandlerQueue)
     {  
         ds.baseParams = {
             supplierReference : '',
@@ -146,8 +156,13 @@
             isAnomalies : true,
             ispenaltyChargeApplied : '',
             reviewRequiredDateFrom:'',
-            reviewRequiredDateTo:''
+            reviewRequiredDateTo:'',
+            isCHQueue:isClaimHandlerQueue,
+            claimOwnerId:-1
         }
+
+        doDataLoad(0, recordPerPage);
+        /*
         ds.load(
         {
             params:
@@ -156,6 +171,8 @@
                 limit:recordPerPage
             }
         });
+        */
+        // alert("c");
     }   
     
     function showClaimIspenaltyChargeApplied()
@@ -178,8 +195,13 @@
             isAnomalies : '',
             ispenaltyChargeApplied : true,
             reviewRequiredDateFrom:'',
-            reviewRequiredDateTo:''
+            reviewRequiredDateTo:'',
+            isCHQueue:false,
+            claimOwnerId:-1
         }
+
+        doDataLoad(0, recordPerPage);
+        /*
         ds.load(
         {
             params:
@@ -188,6 +210,9 @@
                 limit:recordPerPage
             }
         });
+        */
+       
+        // alert("d");
         
     }  
     
@@ -213,6 +238,7 @@
         var workgroupId = Ext.query('*[name$=workgroup]')[0].value;
         var reviewRequiredDateFrom = Ext.query('*[name$=reviewRequiredDateFrom]')[0].value;
         var reviewRequiredDateTo = Ext.query('*[name$=reviewRequiredDateTo]')[0].value;
+        var claimOwnerId = Ext.query('*[name$=claimOwnerId]')[0].value;
 
         ds.baseParams = {
             supplierReference : supplierReference,
@@ -232,9 +258,11 @@
             ispenaltyChargeApplied : '',
             workgroupId: workgroupId,
             reviewRequiredDateFrom : reviewRequiredDateFrom,
-            reviewRequiredDateTo : reviewRequiredDateTo
+            reviewRequiredDateTo : reviewRequiredDateTo,
+            isCHQueue : false,
+            claimOwnerId : claimOwnerId
         }
-        
+        /*
         ds.load(
         {
             params:
@@ -243,6 +271,9 @@
                 limit:recordPerPage
             }
         });
+        */
+       doDataLoad(0, recordPerPage);
+       // alert("e");
         
     }
     
@@ -417,10 +448,10 @@
             }
         });
 
-        var coSelectionDlg;
+       var coSelectionDlg;
        var doClaimOwnerAction = new Ext.Action({
 
-            text: 'Update Claim(s) Ownership',
+            text: 'Assign Claim(s) Owner',
             handler: function(){
 
                 if(!coSelectionDlg)
@@ -447,6 +478,7 @@
                                         });
 
                                         var param = selectedIDs.join(",");
+                                        alert(param);
                                         $('form#ownershipClaimForm input[name="selectedClaimIds"]').val(param);
 
                                         $("form#ownershipClaimForm").validate(
@@ -738,6 +770,8 @@
             var start = parseInt(data.trim());            
             if(start >= 0)
             {
+                doDataLoad(start, recordPerPage);
+                /*
                 ds.load(
                 {
                     params:
@@ -746,6 +780,7 @@
                         limit:recordPerPage
                     }
                 });
+                */
             }  
         }); 
     }
@@ -755,8 +790,11 @@
         $("#gridPanel").hide();
         
         if(tab.title == 'Inbox' || tab.title == 'Search'){
-            ds.load({ params:{start:0,limit:0}});
-            $("#gridPanel").show();         
+
+            // ds.load({ params:{start:0,limit:0}});
+            doDataLoad(0, 0);
+
+            $("#gridPanel").show();
         }
 
         if(tabs)
@@ -802,6 +840,19 @@
            
         }); 
     }
+    
+    function doDataLoad(start, recordPerPage){
+        
+        ds.load(
+        {
+            params:
+                {
+                start:start,
+                limit:recordPerPage
+            }
+        });
+        
+    }
 
     Ext.onReady(function(){
         
@@ -830,20 +881,23 @@
                             <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left" alt="" />
                         </td>
                         <td width="100%" align="right">
-<ul id="top-menu">
-    <li><a href="<s:url action="inbox"/>">&nbsp;Home&nbsp;</a></li>
-    <li><a href="<s:url action="openUserAccount" />">|&nbsp;Settings&nbsp;</a></li>
-    <s:if test="isCHO"><li><a href='<s:url action="uploadClaims"/>'>|&nbsp;XML Uploads&nbsp;</a></li></s:if>
-    <s:if test="!isChoxAdmin"><li><a href="javascript:openHelpFile('<%= request.getContextPath()%>',<s:property value="roleTypeForHelpFile" />);">|&nbsp;Help&nbsp;</a></li></s:if>
-    <li><a href="#" onmouseover="mopen('m2')" onmouseout="mclosetime()">|&nbsp;Support&nbsp;</a>
-        <div id="m2" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
-        <a href="javascript:openSupportFile('<%= request.getContextPath()%>');">Support Procedure</a>
-        <a href="<s:url action="onlineSupport"/>">Online Support Form</a>
-        </div></li>
-    <li><a href="javascript:onOpenAbout();">|&nbsp;About CHOX&nbsp;</a></li>
-    <li><a href="<%=request.getContextPath()%>/j_acegi_logout" >|&nbsp;<b><s:property value="CurrentUserDesc" /></b> ( Log Off )</a></li>
-</ul>
-<div style="clear:both"></div>
+                            
+                            <ul id="top-menu">
+                                <li><a href="<s:url action="inbox"/>">&nbsp;Home&nbsp;</a></li>
+                                <li><a href="<s:url action="openUserAccount" />">|&nbsp;Settings&nbsp;</a></li>
+                                <s:if test="isCHO"><li><a href='<s:url action="uploadClaims"/>'>|&nbsp;XML Uploads&nbsp;</a></li></s:if>
+                                <s:if test="!isChoxAdmin"><li><a href="javascript:openHelpFile('<%= request.getContextPath()%>',<s:property value="roleTypeForHelpFile" />);">|&nbsp;Help&nbsp;</a></li></s:if>
+                                <li><a href="#" onmouseover="mopen('m2')" onmouseout="mclosetime()">|&nbsp;Support&nbsp;</a>
+                                    <div id="m2" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
+                                    <a href="javascript:openSupportFile('<%= request.getContextPath()%>');">Support Procedure</a>
+                                    <a href="<s:url action="onlineSupport"/>">Online Support Form</a>
+                                    </div></li>
+                                <li><a href="javascript:onOpenAbout();">|&nbsp;About CHOX&nbsp;</a></li>
+                                <li><a href="<%=request.getContextPath()%>/j_acegi_logout" >|&nbsp;<b><s:property value="CurrentUserDesc" /></b> ( Log Off )</a></li>
+                            </ul>
+
+                            <div style="clear:both"></div>
+                        
                         </td>
                     </tr>
                 </table>   
@@ -947,12 +1001,11 @@
             
         </div>
         
-
     </div>
 
-<div class="footerText">
-©2009 Sherwood Compliance Services Ltd | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','Copyright');" class="footerText">Copyright</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','PrivacyPolicy');" class="footerText">Privacy Policy</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','TermsOfService');" class="footerText">Terms of Service</a>
-</div>
+    <div class="footerText">
+        ©2009 Sherwood Compliance Services Ltd | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','Copyright');" class="footerText">Copyright</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','PrivacyPolicy');" class="footerText">Privacy Policy</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','TermsOfService');" class="footerText">Terms of Service</a>
+    </div>
 
 </body>
 

@@ -30,12 +30,11 @@ public class SecureDataService extends DataService {
                     getCurrentSession().enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
                     getCurrentSession().enableFilter("Workgroup_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
                     
-                    if(RoleHelper.isOwnWorkgroupRolesOnly(getCurrentUser()) && this.getSecurityInfoProvider().getCurrentUser().getInsurer().isWorkgroupEnable()){
+                    if(RoleHelper.isGlobalFilterByWorkgroup(getCurrentUser())){
                         getCurrentSession().enableFilter("Claim_WorkgroupFilter").setParameterList("workgroupIds", this.getCurrentUser().getWorkgroupIds());
                     }
 
-                    if(RoleHelper.isClaimHandlerRoleOnly(getCurrentUser()) && this.getSecurityInfoProvider().getCurrentUser().getInsurer().isClaimOwnershipEnable()){
-                        System.out.println(">> FILTER BY OWNERSHIP");
+                    if(RoleHelper.isGlobalFilterByOwnership(getCurrentUser())){
                         getCurrentSession().enableFilter("Claim_OwnershipFilter").setParameter("claimOwnershipId", this.getCurrentUser().getId());
                     }
                 }

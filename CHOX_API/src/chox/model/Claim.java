@@ -437,11 +437,31 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
                 
                 if(anc.isRefreshRequired()){
                     
-                    Notification notificationToBeRemoved = GetNotificationByType(anc.BuildNotification().getType());
+                    boolean isDeletable = true;
 
-                    if(notificationToBeRemoved!=null){
+                    // DO NOT DELETE DAY CHECK WHEN THE RepairBookInDate Doesn't Changed
+                    if((anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnFridayNotification")
+                            || anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnSaturdayNotification")
+                            || anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnSundayNotification"))
+                            && DateHelper.DateCompare(this.getHireMonitoringDetail().getRepairBookInDate(), this.getHireMonitoringDetail().getNotificationRepairBookInDate())
+                            ){
 
-                        RemoveNotifications(notificationToBeRemoved);
+                            isDeletable = false;
+
+                            // System.out.println("BuildNotification TYPE:"+anc.BuildNotification().getType());
+                            // System.out.println("RepairBookInDate:"+this.getHireMonitoringDetail().getRepairBookInDate());
+                            // System.out.println("NotificationRepairBookInDate:"+this.getHireMonitoringDetail().getNotificationRepairBookInDate());
+                            // System.out.println("");
+                    }
+                    
+                    if(isDeletable){
+                        
+                        Notification notificationToBeRemoved = GetNotificationByType(anc.BuildNotification().getType());
+
+                        if(notificationToBeRemoved!=null){
+                            RemoveNotifications(notificationToBeRemoved);
+                        }
+                        
                     }
                 }
             }
@@ -483,6 +503,7 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
     }
 
     private Notification GetNotificationByType(String type) {
+        
         for (Notification notification : notifications) {
        
             if (notification.getType().equalsIgnoreCase(type)){

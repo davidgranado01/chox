@@ -15,8 +15,10 @@ import chox.services.ClaimResult;
 import chox.xmlValidation.model.NodeRuleModel;
 import chox.xmlValidation.rules.DataValidationParameter;
 import com.filesystemsoftware.utils.XMLUtils;
+import java.io.UnsupportedEncodingException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import org.w3c.dom.*;
 
 public class NodeHelper {
@@ -131,7 +133,7 @@ public class NodeHelper {
             String nodeName, 
             Element element,
             ClaimResult claimResult, 
-            DataValidationParameter dataValidationParameter){
+            DataValidationParameter dataValidationParameter)throws Exception {
         
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         String value = XMLUtils.getElementValue(element, nodeName); 
@@ -144,7 +146,7 @@ public class NodeHelper {
             String sectionName, 
             String nodeName, 
             Element element,
-            DataValidationParameter dataValidationParameter){
+            DataValidationParameter dataValidationParameter)throws Exception {
         
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         String value = XMLUtils.getElementValue(element, nodeName); 
@@ -167,7 +169,7 @@ public class NodeHelper {
             String nodeName, 
             Element element,
             ClaimResult claimResult, 
-            DataValidationParameter dataValidationParameter){
+            DataValidationParameter dataValidationParameter)throws Exception {
         
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         String value = element.getTextContent();
@@ -180,7 +182,7 @@ public class NodeHelper {
             Element element,
             ClaimResult claimResult, 
             DataValidationParameter dataValidationParameter,
-            boolean newMandatory){
+            boolean newMandatory)throws Exception {
 
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         if(newMandatory){
@@ -198,7 +200,7 @@ public class NodeHelper {
             Element element,
             ClaimResult claimResult, 
             DataValidationParameter dataValidationParameter,
-            String nodeDescription){
+            String nodeDescription) throws Exception {
 
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         if(!nodeDescription.trim().equalsIgnoreCase("")){
@@ -209,7 +211,7 @@ public class NodeHelper {
         return coreNodevalidation(val, claimResult, value, sectionName);
     } 
     
-    private static ClaimResult coreNodevalidation(NodeRuleModel val, ClaimResult claimResult, String value, String sectionName){
+    private static ClaimResult coreNodevalidation(NodeRuleModel val, ClaimResult claimResult, String value, String sectionName) throws Exception {
         
         boolean isValid = true;
         
@@ -236,36 +238,42 @@ public class NodeHelper {
         return claimResult;
     }
     
-    public static Boolean isValidDataType(String dataValue, String dataType, String regExp){
+    public static Boolean isValidDataType(String dataValue, String dataType, String regExp) throws Exception {
         
         Boolean bFlag = true;
         
-        String regExpression = "";
-        
-        if(regExp.trim().equalsIgnoreCase("")){
-            
-            if(dataType.equalsIgnoreCase("date")){
-                regExpression = REG_TIMESTAMP;
-            }else if(dataType.equalsIgnoreCase("char")){
-                regExpression = REG_BOOLEAN;
-            }else if(dataType.equalsIgnoreCase("int")){
-                regExpression = REG_INTEGER;
-            }else if(dataType.equalsIgnoreCase("numeric")){
-                regExpression = REG_BIGDECIMAL;
-            }
-            
-        }else{
-            regExpression = regExp;
-        }
+        try{
 
-        if(!regExpression.equalsIgnoreCase("")){
-            
-            Pattern p = Pattern.compile(regExpression);
-            Matcher m = p.matcher(dataValue);
-                       
-            if(!m.find()){
-                bFlag = false;
+            String regExpression = "";
+
+            if(regExp.trim().equalsIgnoreCase("")){
+
+                if(dataType.equalsIgnoreCase("date")){
+                    regExpression = REG_TIMESTAMP;
+                }else if(dataType.equalsIgnoreCase("char")){
+                    regExpression = REG_BOOLEAN;
+                }else if(dataType.equalsIgnoreCase("int")){
+                    regExpression = REG_INTEGER;
+                }else if(dataType.equalsIgnoreCase("numeric")){
+                    regExpression = REG_BIGDECIMAL;
+                }
+
+            }else{
+                regExpression = regExp;
             }
+
+            if(!regExpression.equalsIgnoreCase("")){
+
+                Pattern p = Pattern.compile(regExpression);
+                Matcher m = p.matcher(dataValue);
+
+                if(!m.find()){
+                    bFlag = false;
+                }
+            }
+            
+        } catch (PatternSyntaxException e) {
+            bFlag = false;
         }
         
         return bFlag;
@@ -274,8 +282,6 @@ public class NodeHelper {
     public boolean isRegularExpressionCheckPass(String regExpression, String value){
         
         boolean bFlag = false;
-
-        System.out.print(regExpression + " v.s. " + value + ":");
                                         
         if(!regExpression.equalsIgnoreCase("")){
 
@@ -287,8 +293,9 @@ public class NodeHelper {
             }
         }
 
-        System.out.println(bFlag);
+
                         
         return bFlag;
     }
+
 }

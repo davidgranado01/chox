@@ -42,7 +42,7 @@ public class CustomerValidation extends SecureDataService implements rulesInterf
         setClaimService(claimService); 
     }
     
-    public ClaimResult execute() throws DOMException, XPathExpressionException{
+    public ClaimResult execute() throws DOMException, XPathExpressionException, Exception {
         
         Element rootElement = XMLUtils.getElement(claimResult.getElement(), "drivers");
         this.element = XMLUtils.getElement(rootElement, "driver");
@@ -55,7 +55,7 @@ public class CustomerValidation extends SecureDataService implements rulesInterf
         return claimResult;
     }
     
-    private boolean validate(){
+    private boolean validate() throws Exception {
         
         boolean isAllowToReadData = false;
         

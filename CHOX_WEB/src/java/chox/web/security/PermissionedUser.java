@@ -27,7 +27,6 @@ public class PermissionedUser implements UserDetails {
 
     //we currently support single user single role only
     public GrantedAuthority[] getAuthorities() {
-        //String securityRole = getIsCHOXAdmin() ? "ROLE_ADMIN" : "ROLE_USER";
 
         if (authorities == null) {
 

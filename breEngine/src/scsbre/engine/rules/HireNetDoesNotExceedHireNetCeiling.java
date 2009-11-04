@@ -8,11 +8,11 @@ import scsbre.engine.RuleEvaluationResult;
 import scsbre.model.ClaimStatus;
 import scsbre.model.IClaimInfo;
 
-public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusinessRule {
+public class HireNetDoesNotExceedHireNetCeiling implements IBusinessRule {
 
     String narrative = "";
     ClaimStatus statusAfterFailure = ClaimStatus.InvoiceEscalatedToHandler;
-    String narrativeTemplate = "The Hire Net billed %s exceeds the Hire Net ceiling of %s for vehicle class %s.";
+    String narrativeTemplate = "The Hire Net billed %s exceeds the Hire Net ceiling of %s";
     DecimalFormat moneyFormat = new DecimalFormat("£0.00");
 
     public RuleEvaluation applyToClaim(IClaimInfo claim) {
@@ -20,22 +20,17 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-
-        if(claim.getChoBand().isHireNetDoesNotExceedVehicleClassHireNetCeiling()){
-
-            BigDecimal hireNet = claim.getInvoice().getHireNet();
-
-            BigDecimal hireNetCeiling = claim.getChoBand().getMaxHireNetCeiling();
-            boolean success = hireNet.compareTo(hireNetCeiling) <= 0;
-
+        
+        if(claim.getChoBand().isHireNetDoesNotExceedBandHireNetCeiling()){
+        
+            boolean success = claim.getInvoice().getHireNet().compareTo(claim.getChoBand().getHireNetCeiling()) <= 0;
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
-            
+
             if(!success){
                 
                 narrative = String.format(narrativeTemplate,
-                        moneyFormat.format(hireNet.doubleValue()),
-                        moneyFormat.format(hireNetCeiling.doubleValue()),
-                        claim.getVClass().getCode());
+                        moneyFormat.format(claim.getInvoice().getHireNet().doubleValue()),
+                        moneyFormat.format(claim.getChoBand().getHireNetCeiling().doubleValue()));
             }
             
         }else{
@@ -54,10 +49,10 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
     }
 
     public String getRuleId() {
-        return "003";
+        return "040";
     }
 
     public ClaimStatus getStatusAfterFailure() {
         return ClaimStatus.InvoiceEscalatedToHandler;
-    }
+    }    
 }

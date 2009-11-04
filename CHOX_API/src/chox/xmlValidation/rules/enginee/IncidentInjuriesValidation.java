@@ -40,7 +40,7 @@ public class IncidentInjuriesValidation extends SecureDataService implements rul
             setClaimService(claimService);
     }
     
-    public ClaimResult execute() throws DOMException, XPathExpressionException{
+    public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{
  
         this.element = XMLUtils.getElement(XMLUtils.getElement(XMLUtils.getElement(claimResult.getElement(), "claim"), "incident"), "injuries");
         this.injuryElements = XMLUtils.getElements(this.element.getOwnerDocument(), this.element, "injury");
@@ -53,7 +53,7 @@ public class IncidentInjuriesValidation extends SecureDataService implements rul
         return claimResult;
     }
     
-    private boolean validate() throws DOMException, XPathExpressionException{
+    private boolean validate() throws DOMException, XPathExpressionException, Exception{
         
         boolean isAllowToReadData = false;
         
@@ -84,7 +84,7 @@ public class IncidentInjuriesValidation extends SecureDataService implements rul
         return isAllowToReadData;
     }
     
-    private void process() throws DOMException, XPathExpressionException{ 
+    private void process() throws DOMException, XPathExpressionException, Exception{
     
         ArrayList<Injury> injuries = new ArrayList<Injury>();
         if(this.claimResult.getInjuries()!=null){

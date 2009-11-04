@@ -212,7 +212,7 @@
                 </param>
                 <param name="id">${id}
                 </param>
-                <param name="statusMsg">If you have been incorrectly assigned this claim in your workgroup, please click on the 'Remove Workgroup Mapping' button to send it back to a Claims Router, who will then select the correct workgroup for this claim.</param>
+                <param name="statusMsg">${statusMsg}</param>
             </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
@@ -592,9 +592,7 @@
             <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
         <!-- End Extra Detail -->
-        
-        
-        
+
         <!-- Start HireMonitoringDetail -->
         <action name="getHireMonitoringDetail" class="chox.web.actions.HireMonitoringDetailAction">
             <result name="r">/jsp/user/p_hire_monitoring_r.jsp
@@ -604,13 +602,14 @@
             <result name="decline">/jsp/p_accessDeclined.jsp
             </result>
         </action>
+        
         <action name="updateHireMonitorDetail" class="chox.web.actions.HireMonitoringDetailAction" method="updateModel">
             <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
         <!-- End HireMonitoringDetail -->   
         
-          <!-- Start HireMonitoringEcd -->
+        <!-- Start HireMonitoringEcd -->
         <action name="getHireMonitoringEcd" class="chox.web.actions.HireMonitoringEcdAction">
             <result name="r">/jsp/user/p_hire_monitoring_ecd_w.jsp
             </result>
@@ -1050,10 +1049,10 @@
             <result>/jsp/p_response.jsp</result>
         </action>
         <action name="removeNotification" class="chox.web.actions.ClaimAction" method="removeNotification">
-            <result>/jsp/user/p_notificationList.jsp</result>
+            <result>/jsp/user/p_notification_list.jsp</result>
         </action>
         <action name="renderNotifications" class="chox.web.actions.ClaimAction" method="renderNotifications">
-            <result>/jsp/user/p_notificationList.jsp</result>
+            <result>/jsp/user/p_notification_list.jsp</result>
         </action>
 
     </package>

@@ -50,7 +50,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
             setChoBandService(choBandService);    
     }
     
-    public ClaimResult execute() throws DOMException, XPathExpressionException{
+    public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{
 
         this.element = XMLUtils.getElement(claimResult.getElement(), "supplier");
         
@@ -61,7 +61,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
         return claimResult;
     }
     
-    private void validate(){
+    private void validate() throws DOMException, XPathExpressionException, Exception{
         
         this.claimResult.setCheckDataValid(true);
         
@@ -138,17 +138,15 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
                     claimResult.setValid(false);
                     
                 }else{
-                    
                     // EDITABLE CLAIM
                     claimResult.setClaimParseStatus(ClaimParseStatus.existClaim);
-                    
                 }
             }
             
        }else{
 
             claimResult.setClaimParseStatus(ClaimParseStatus.newClaim);
-            
+
             if(managingRepair!=null){
                 claim.setManagingRepair(managingRepair);
             }

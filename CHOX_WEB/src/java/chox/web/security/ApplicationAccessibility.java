@@ -1,25 +1,21 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package chox.web.security;
 
+import chox.model.Claim;
 import chox.services.AccessibilityService;
 import java.util.HashMap;
 import org.acegisecurity.GrantedAuthority;
 
-/**
- *
- * @author Emmanuel
- */
 public class ApplicationAccessibility {
 
     //Access Right
     public static final Short Declined = 0;
     public static final Short ReadOnly = 1;
     public static final Short Editable = 2;
-    
-    //Tab Name
+
+    // <editor-fold defaultstate="collapsed" desc="TAB">
+    // ***************************************
+    // TAB
+    // ***************************************
     public static final String TAB_CLAIM_DETAIL = "ClaimDetail";
     public static final String TAB_INVOICE_DETAIL = "InvoiceDetail";
     public static final String TAB_HIRE_MONITORING = "HireMonitoring";
@@ -27,7 +23,9 @@ public class ApplicationAccessibility {
     public static final String TAB_HISTORY = "History";
     public static final String TAB_NOTES = "Notes"; 
     public static final String TAB_AUDIT_TRAIL = "AuditTrail"; 
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="NOTIFICATION">
     // ***************************************
     // NOTIFICATION
     // ***************************************
@@ -35,7 +33,9 @@ public class ApplicationAccessibility {
     public static final String NOTE_CLAIM_VIEWING = "UserViewingNotification";
     public static final String NOTE_CLAIM_INTELLIGENT_NOTE = "IntelligentNotesNotification";
     public static final String NOTE_CLAIM_NOTES = "NotificationNotesNotification";
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="FILTER">
     // ***************************************
     // FILTER
     // ***************************************
@@ -62,17 +62,28 @@ public class ApplicationAccessibility {
     public static final String FILTER_CLAIM_UPDATED_BY_ENGINEER = "ClaimUpdatedByEngineer";
     public static final String FILTER_CONTESTED_INVOICE_REF_ENF = "ContestedInvoicesReferredToEngineer";
     public static final String FILTER_CLAIM_OWNERSHIP = "ClaimUnacknowledgedUnassigned";
-    
-    
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="PANEL">
     // ***************************************
     // PANEL
     // ***************************************
     public static final String PANEL_FNOL_REVIEWED  = "FNOLReviewed";
+    // </editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="MENU">
+    // ***************************************
+    // MENU
+    // ***************************************
     public static final String MENU_DASHBOARD  = "Dashboard";
     public static final String MENU_REPORT  = "Report";
     public static final String MENU_ADMIN  = "Admin";
-    
+// </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="REPORT">
+    // ***************************************
+    // REPORT
+    // ***************************************
     public static final String REPORT_INVOICE_SUMMARY = "InvoiceSummary";
     public static final String REPORT_INS_WEEKLY_SUMMARY = "InsurerWeeklySummary";
     public static final String REPORT_CLAIM_REJECTION = "ClaimRejection";
@@ -80,21 +91,25 @@ public class ApplicationAccessibility {
     public static final String REPORT_OVERVIEW_SUMMARY = "OverviewSummary";
     public static final String REPORT_AVERAGE_SETTLEMENT = "AverageSettlementAmountReport";
     public static final String REPORT_INVOICE_SAVING_SUMMARY = "InvoiceSavingSummaryReport";
-    
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="ADMIN">
+    // ***************************************
+    // ADMIN
+    // ***************************************
     public static final String ADMIN_INSURER_COMPANIES = "InsurerCompanies";
     public static final String ADMIN_CREDIT_HIRE_ORG = "CreditHireOrg";
     public static final String ADMIN_USER_MANAGEMENT = "UserManagement";
     public static final String ADMIN_INSURER_BRE_MANAGEMENT = "InsurerBreManagement";
+    // </editor-fold>
     
     private HashMap accessibilityMap;
     private AccessibilityService accessibilityService;
-    
-    public ApplicationAccessibility() {
-    }
-    
-    public TabAccessibility getTabAccessibility(GrantedAuthority[] grantedAuthorities,String claimStatus)
+
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY OBJECT">
+    public TabAccessibility getTabAccessibility(GrantedAuthority[] grantedAuthorities, Claim claim)
     {
-        return new TabAccessibility(this,grantedAuthorities,claimStatus);
+        return new TabAccessibility(this, grantedAuthorities, claim);
     }        
 
     public NotificationAccessibility getNotificationAccessibility(GrantedAuthority[] grantedAuthorities,String claimStatus)
@@ -126,7 +141,10 @@ public class ApplicationAccessibility {
     {
         return new AdminAccessibility(this,grantedAuthorities);
     }
-    
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY CHECK">
     public Short checkTabAccessibility(String tabName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
 
         String accessibilityKey = getTabAccessibilityKey(tabName, claimStatus);
@@ -134,7 +152,7 @@ public class ApplicationAccessibility {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             return checkAccebility(roleMap, grantedAuthorities);
         }
-
+        
         return Declined;
     }
 
@@ -193,7 +211,6 @@ public class ApplicationAccessibility {
     
     public Short checkMenuAccessibility(String menuName, GrantedAuthority[] grantedAuthorities) {
 
-        //accessibilityMap = getAccessibilityMap();
         String accessibilityKey = getMenuAccessibilityKey(menuName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
@@ -216,7 +233,6 @@ public class ApplicationAccessibility {
 
     public Short checkAdminAccessibility(String adminName, GrantedAuthority[] grantedAuthorities) {
 
-        //accessibilityMap = getAccessibilityMap();
         String accessibilityKey = getAdminAccessibilityKey(adminName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
@@ -225,7 +241,9 @@ public class ApplicationAccessibility {
 
         return Declined;
     }
+    // </editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY KEY">
     private String getTabAccessibilityKey(String tabName, String claimStatus) {
         return String.format("tab.%1$s.%2$s", tabName, claimStatus);
     }
@@ -257,11 +275,13 @@ public class ApplicationAccessibility {
     private String getReportAccessibilityKey(String reportName) {
         return String.format("report.%1$s", reportName);
     }
-
+    // </editor-fold>
+    
     private Short checkAccebility(HashMap roleMap, GrantedAuthority[] grantedAuthorities) {
 
         short right = 0;
         boolean isRoleSpecified = false;
+        
         //1. if rolemap did't defined, decline as request
         if (roleMap == null) {
             return Declined;
@@ -284,10 +304,10 @@ public class ApplicationAccessibility {
             return (Short) roleMap.get("ALL");
         }
 
-        //4 decline to all non-specified accessibility
         return right;
     }
 
+    // <editor-fold defaultstate="collapsed" desc="GET SET">
     private HashMap getAccessibilityMap() {
 
         if (accessibilityMap == null) {
@@ -304,18 +324,8 @@ public class ApplicationAccessibility {
         this.accessibilityService = accessibilityService;
     }
     
-    
     private String getAdminAccessibilityKey(String adminName) {
         return String.format("admin.%1$s", adminName);
     }
-    
+    // </editor-fold>
 }
-
-
-
-
-
-
-
-
-

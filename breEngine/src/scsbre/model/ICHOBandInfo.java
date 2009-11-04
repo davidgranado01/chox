@@ -58,5 +58,6 @@ public interface ICHOBandInfo {
     public boolean isCorrentAdminFee();
     public boolean isRepairBookedInDate();
     public boolean isFlaggedForManualInvoiceReview();
-    public boolean isVehicleClassCeilingEnable();
+    public boolean isRepairNetDoesNotExceedBandRepairNetCeiling();
+    public boolean isHireNetDoesNotExceedBandHireNetCeiling();
 }

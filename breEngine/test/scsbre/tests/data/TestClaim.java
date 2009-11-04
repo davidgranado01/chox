@@ -75,7 +75,6 @@ public class TestClaim {
         // band.setMaxRepairValue(BigDecimal.ZERO);
         
         band.setVehicleClassCeiling(null);
-        band.setVehicleClassCeilingEnable(true);
         
         // ON / OFF FLAG
         band.setHireDayCountDoesNotExceedBandHireDayCeiling(true);
@@ -114,6 +113,8 @@ public class TestClaim {
         band.setValidateUniqueVehicleRegistrationNumber(true);
         band.setNonStandardRiskInsurancePremiumCheck(true);
         band.setNumberOfHireDaysReconcile(true);
+        band.setRepairNetDoesNotExceedBandRepairNetCeiling(true);
+        band.setHireNetDoesNotExceedBandHireNetCeiling(true);
         
         return band;
 

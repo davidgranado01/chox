@@ -8,12 +8,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
-import scsbre.engine.rules.HireNetDoesNotExceedVehicleClassHireNetCeiling;
+import scsbre.engine.rules.RepairNetDoesNotExceedRepairNetCeiling;
 import scsbre.model.ClaimStatus;
 import scsbre.tests.data.TestClaim;
 import scsbre.tests.sample.*;
 
-public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends TestCase {
+public class Rule041RepairNetDoesNotExceedBandRepairNetCeilingTest extends TestCase {
 
     TestClaim testClaim = new TestClaim();
 
@@ -41,17 +41,16 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
         claim.setInvoice(testClaim.getTestInvoice());
         claim.setVClass(testClaim.getTestVehicleClass());
 
-        // SET INVOICE
-        claim.getInvoice().setHireNet(new BigDecimal(400.00));
-        
-        // SET VEHICLE CLASS CEiLING
+
+        // SET VEHICLE CLASS CEILING
         VehicleClassCeilingInfo vehicleClassCeiling = new VehicleClassCeilingInfo();
-        vehicleClassCeiling.setHireNetCeiling(new BigDecimal("300.00"));
+        vehicleClassCeiling.setRepairNetCeiling(new BigDecimal("10000.00"));
 
         // SET CHOBAND
-        claim.getChoBand().setHireNetCeiling(new BigDecimal("400.00"));
-        claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
+        claim.getChoBand().setRepairNetCeiling(new BigDecimal("100.00"));
         claim.getChoBand().setVehicleClassCeiling(vehicleClassCeiling);
+
+        claim.getInvoice().setRepairNet(new BigDecimal("400.00"));
 
         return claim;
     }
@@ -60,9 +59,8 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
     public void testSkipped_OnOffFlag() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(false);
-        
-        RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
+        claim.getChoBand().setRepairNetDoesNotExceedBandRepairNetCeiling(false);
+        RuleEvaluation rv = new RepairNetDoesNotExceedRepairNetCeiling().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -74,11 +72,11 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
     public void testPassed_LessThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
-        
-        claim.getInvoice().setHireNet(new BigDecimal("299.00"));
+        claim.getChoBand().setRepairNetDoesNotExceedBandRepairNetCeiling(true);
 
-        RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
+        claim.getInvoice().setRepairNet(new BigDecimal("99.00"));
+
+        RuleEvaluation rv = new RepairNetDoesNotExceedRepairNetCeiling().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -90,10 +88,11 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
     public void testPassed_Equals() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
-        claim.getInvoice().setHireNet(new BigDecimal("300.00"));
+        claim.getChoBand().setRepairNetDoesNotExceedBandRepairNetCeiling(true);
 
-        RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
+        claim.getInvoice().setRepairNet(new BigDecimal("100.00"));
+
+        RuleEvaluation rv = new RepairNetDoesNotExceedRepairNetCeiling().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -105,16 +104,25 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
     public void testFailed_MoreThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
-        claim.getInvoice().setHireNet(new BigDecimal("340.00"));
+        claim.getChoBand().setRepairNetDoesNotExceedBandRepairNetCeiling(true);
 
-        RuleEvaluation rv = new HireNetDoesNotExceedVehicleClassHireNetCeiling().applyToClaim(claim);
+        claim.getInvoice().setRepairNet(new BigDecimal("100.50"));
 
+        RuleEvaluation rv = new RepairNetDoesNotExceedRepairNetCeiling().applyToClaim(claim);
+        /*
+        boolean success = (claim.getInvoice().getRepairNet()).compareTo(claim.getChoBand().getMaxRepairNetCeiling()) <= 0;
+        System.out.println("REPAIR NET: "+claim.getInvoice().getRepairNet());
+        System.out.println("REPAIR NET CELIING: "+claim.getChoBand().getRepairNetCeiling());
+        System.out.println("REPAIR MAX NET CEILING: "+claim.getChoBand().getMaxRepairNetCeiling());
+        System.out.println(success+"RESULT: "+rv.getResult());
+        System.out.println("RESULT: "+rv.getRelatedRule().getNarrative());
+        System.out.println("RESULT: "+rv.getRelatedRule().getStatusAfterFailure());
+        */
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Hire Net billed £340.00 exceeds the Hire Net ceiling of £300.00 for vehicle class SP1."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalatedToHandler);
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Repair Net billed £100.50 exceeds the Repair Net ceiling of £100.00."));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.InvoiceEscalated);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
-    
+
 }

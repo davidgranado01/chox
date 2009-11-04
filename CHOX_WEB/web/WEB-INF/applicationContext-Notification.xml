@@ -12,6 +12,8 @@
         <property name="anomalousChecks">
             <list>
                 <bean class="chox.model.notifications.RepairBookedInOnFridayNotificationChecker"></bean>
+                <bean class="chox.model.notifications.RepairBookedInOnSaturdayNotificationChecker"></bean>
+                <bean class="chox.model.notifications.RepairBookedInOnSundayNotificationChecker"></bean>
             </list>
         </property>
     </bean>

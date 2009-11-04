@@ -47,7 +47,7 @@ public class InvoiceEngineeringFee extends SecureDataService implements rulesInt
             setChoBandService(choBandService);    
     }
     
-    public ClaimResult execute() throws DOMException, XPathExpressionException{
+    public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{
         
         Element root = XMLUtils.getElement(claimResult.getElement(), "invoice");
         this.element = XMLUtils.getElement(root, "engineer-fee");
@@ -60,7 +60,7 @@ public class InvoiceEngineeringFee extends SecureDataService implements rulesInt
         return claimResult;
     }
     
-    private boolean validate() throws DOMException, XPathExpressionException{
+    private boolean validate() throws DOMException, XPathExpressionException, Exception{
         
         boolean isAllowToReadData = false;
         

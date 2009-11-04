@@ -30,7 +30,7 @@ public class ClaimHireMonitoringDetailValidation extends SecureDataService imple
             setDataValidationParameter(dataValidationParameter);  
     }
     
-    public ClaimResult execute() throws DOMException, XPathExpressionException{
+    public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{
  
         this.element = XMLUtils.getElement(claimResult.getElement(), "repair-details");
         
@@ -42,7 +42,7 @@ public class ClaimHireMonitoringDetailValidation extends SecureDataService imple
         return claimResult;
     }
     
-    private boolean validate() throws DOMException, XPathExpressionException{
+    private boolean validate() throws DOMException, XPathExpressionException, Exception{
         
         boolean isAllowToReadData = false;
         

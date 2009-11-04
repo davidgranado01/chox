@@ -96,17 +96,6 @@ public class DataService extends HibernateDaoSupport {
         return q.setResultTransformer(Transformers.aliasToBean(entityClass)).list();
     }
 
-//    public List externalQuery(final String query, Map parameters, Class entityClass, Boolean cacheable ) {
-//
-//        Query q = this.getSession().createSQLQuery(query).setCacheable(cacheable);
-//        for (Object p : parameters.keySet()) {
-//            String parameterName = (String) p;
-//            q.setParameter(parameterName, parameters.get(parameterName));
-//
-//        }
-//        return q.setResultTransformer(Transformers.aliasToBean(entityClass)).list();
-//    }
-
     public Object getByCriteria(final DetachedCriteria c) {
 
         List result = getHibernateTemplate().findByCriteria(c);

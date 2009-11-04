@@ -42,17 +42,18 @@ public class BordereauDataValidation {
         try {
             
             DataValidationParameter dataValidationParameter = new DataValidationParameter();
-            
+
+            // COLLECT ALL CHO REFERENCE
+            // List<String> choReferences = new ArrayList<String>();
+
             for(ClaimResult claimResult : bordereauResult.getClaimResult()){
-                
-                /*
-                System.out.println("========================================================================");
+
+                System.out.println("********************");
                 System.out.println("START: is Claim Valid?: " + claimResult.isValid());
                 System.out.println("START: is Claim Data valid?: " + claimResult.isDataValid());
                 System.out.println("START: Claim Process Status: " + claimResult.getClaimParseStatus());
                 System.out.println("START: Claim Process Msg Size: " + claimResult.getMessage().size());
-                */
-                
+
                 if(claimResult.isValid()){
                     
                     // CHECK CLAIM HEADER
@@ -90,10 +91,17 @@ public class BordereauDataValidation {
                     // ALL NEW INVOICE ONLY
                     InvoiceValidation invVal = new InvoiceValidation(claimResult, dataValidationParameter, claimService, chorganisationService, choBandService);
                     claimResult = invVal.execute();
-
+                    
                     /* MANTIS : 719 */
                     if(claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)){
-                        claimResult.getClaim().getHireMonitoringDetail().setIsTotalLostCheck(claimResult.getClaim().getCustomer().getIsTotalLoss());
+                        
+                        if(claimResult.getClaim().getHireMonitoringDetail()!=null
+                                && claimResult.getClaim().getCustomer()!=null
+                                && claimResult.getClaim().getCustomer().getIsTotalLoss()!=null){
+                            
+                            claimResult.getClaim().getHireMonitoringDetail().setIsTotalLostCheck(claimResult.getClaim().getCustomer().getIsTotalLoss());
+                        }
+                        
                     }
 
                     // RUN BRE VALIDATION FOR ALL NEW INVOICE ONLY                    

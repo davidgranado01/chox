@@ -220,6 +220,7 @@ fieldset div
     white-space: nowrap;
     font-size:0.9em;
     font-weight: bold;
+    text-transform:capitalize;
 }
 
 .chox-form-checkboxitem .chox-form-check-description
@@ -985,4 +986,11 @@ div#claim-detail-extra div{
     display:inline;
     font-size:1.2em;
     padding-right:20px;
+}
+
+.hm-reason-drop-down{
+    width:160px;
+    padding:0;
+    margin:0;
+    display: block;
 }

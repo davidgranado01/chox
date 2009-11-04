@@ -7,11 +7,16 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script language="JavaScript">  
+
+    var isClaimHandlerOnly = false;
+    var insurerId = -1;
+    var claimOwnerId = -1;
     
     $(document).ready(function(){
-        doInsuereSearchSelectOnChange();
+        doInsurerSearchSelectOnChange();
+         isClaimHandlerOnly = <s:property value="isClaimHandlerOnly"/>;
+         doShowClaimHandler(-1, -1);
     }); 
-    
     
     Ext.onReady(function(){                              
     
@@ -104,7 +109,7 @@
         
     }); 
     
-    function doInsuereSearchSelectOnChange(){
+    function doInsurerSearchSelectOnChange(){
         var selectedInsurerId = -1;
         
         if($("#insurerId").val()!=null){
@@ -113,8 +118,14 @@
         
         $("#searchScreenWorkgroupDropDownDiv").load("SearchWorkgroupDropDownAction.action?orgId=" + selectedInsurerId);
     }
-   
-    function clearForm(){
+
+   function doShowClaimHandler(selectedWorkgroupId, insurerId){
+       if(!isClaimHandlerOnly){
+            $('#searchScreenClaimhandlerDownDiv').load("user/GetClaimHandlerRoleUserDropDownAction.action?workgroupId="+selectedWorkgroupId+"&insurerId="+insurerId);
+       }
+   }
+
+   function clearForm(){
    
         $('#searchForm').contents().find(':input').each(function() {
                 var type = this.type;
@@ -231,19 +242,24 @@
                     listValue="name" 
                     headerKey="-1"
                     headerValue="--- ALL ---"
-                    onchange="javascript: doInsuereSearchSelectOnChange();"
+                    onchange="javascript: doInsurerSearchSelectOnChange();"
                     emptyOption="false">
                     </s:select>
                 </td>
-            </s:if>   
+                <td><label></label></td><td></td>
+                <input type="hidden" name="workgroup" id="workgroup" value="-1"/>
+                <input type="hidden" name="claimOwnerId" id="claimOwnerId" value="-1"/>
+            </s:if>
             <s:else>
-                 <td><label></label></td>
-                <td></td>
+                 <td><label>Workgroup</label></td><td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
+                 <s:if test="!isClaimHandlerOnly">
+                    <td><label>Claim Handler</label></td><td><div id="searchScreenClaimhandlerDownDiv"></div></td>
+                 </s:if>
+                 <s:else>
+                    <td><label></label></td><td></td>
+                    <input type="hidden" name="claimOwnerId" id="claimOwnerId" value="-1"/>
+                 </s:else>
             </s:else>
-
-            <td><label>Workgroup</label></td><td>
-                <div id="searchScreenWorkgroupDropDownDiv"></div>   
-            </td>
             
         </tr>
         

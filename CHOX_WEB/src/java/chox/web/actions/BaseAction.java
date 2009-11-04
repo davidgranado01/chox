@@ -1,5 +1,6 @@
 package chox.web.actions;
 
+import chox.Util.RoleHelper;
 import chox.model.WebUserRole;
 import chox.web.security.AcegiPrincipal;
 import com.opensymphony.xwork2.ActionSupport;
@@ -7,11 +8,6 @@ import chox.web.security.PermissionedUser;
 import chox.web.viewdata.ActionResponse;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
-
-/**
- * @author Emmanuel Kong
- * @version 
- */
 
 public class BaseAction extends ActionSupport {
 
@@ -85,6 +81,10 @@ public class BaseAction extends ActionSupport {
         
         return isChoxAdmin;
     }
+
+    public boolean getIsClaimHandlerOnly(){
+        return RoleHelper.isClaimHandlerOnly(getAuthenticatedUser().getUser());
+    }
     
     public String getCurrentUserDesc(){
         String logInUserDesc = user.getUser().getFirstName() + " " + user.getUser().getLastName();
@@ -103,9 +103,6 @@ public class BaseAction extends ActionSupport {
         return logInUserDesc;
     }
 
-    /**
-     * @return the actionResponse
-     */
     public ActionResponse getActionResponse() {
         if(actionResponse == null)
         {

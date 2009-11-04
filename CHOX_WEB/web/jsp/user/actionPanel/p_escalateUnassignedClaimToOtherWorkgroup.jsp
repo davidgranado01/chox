@@ -8,7 +8,7 @@
             <s:hidden id="actionName" name="actionName" value="assigned" />
             <div>
                 <div class="status-info">
-                {NOTE]
+                If you have been incorrectly assigned this claim in your workgroup, please click on the 'Remove Workgroup Mapping' button to send it back to a Claims Router, who will then select the correct workgroup for this claim.
                 </div>
                 <div class="status-control-set">
                     <table class="status-table" width="100%">

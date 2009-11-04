@@ -1,13 +1,5 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<%
-String statusMsg = request.getParameter("statusMsg");
-if(statusMsg==null){
-    statusMsg = "";
-}
-
-%>
-
 <script type="text/javascript">
 
     var insurerId = <s:property value="insurer.id"/>;
@@ -161,9 +153,7 @@ if(statusMsg==null){
                         </tr>
 
                     </table>
-
                     <div class="errorBox" id="OwnershipMessageBox"></div>
-                    <div id="ownership-submit-result" class="action_msg"><%= statusMsg%></div>
                 </div>
             </div>
 

@@ -56,6 +56,8 @@ public class RulesEngine {
         response.addRuleEvaulation(new DualControlChargeCheck().applyToClaim(claim));               // RULE 037
         response.addRuleEvaulation(new RepairBookedInDateOnSaturday().applyToClaim(claim));         // RULE 038
         response.addRuleEvaulation(new RepairBookedInDateOnSunday().applyToClaim(claim));           // RULE 039
+        response.addRuleEvaulation(new HireNetDoesNotExceedHireNetCeiling().applyToClaim(claim));       // RULE 040
+        response.addRuleEvaulation(new RepairNetDoesNotExceedRepairNetCeiling().applyToClaim(claim));   // RULE 041
         response.addRuleEvaulation(new validateUniqueVehicleRegistrationNumber().applyToClaim(claim));
         return response;
     }   

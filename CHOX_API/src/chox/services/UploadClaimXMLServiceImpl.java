@@ -68,11 +68,32 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return doProcessBordereauResult(file, fileName);
     }
 
-    public ClaimResult claimRouting(ClaimResult claimResult){
+    public ClaimResult claimRouting(List<String> choReferences, ClaimResult claimResult){
+
+                System.out.println("========================================================================");
+                System.out.println("END: is Claim Valid?: " + claimResult.isValid());
+                System.out.println("END: is Claim Data valid?: " + claimResult.isDataValid());
+                System.out.println("END: Claim Process Status: " + claimResult.getClaimParseStatus());
+                System.out.println("END: Claim Cho Ref: " + claimResult.getClaim().getChoReference());
+                System.out.println("END: Claim Status: " + claimResult.getClaim().getStatus());
+                
         
+
         if(claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)){
 
             if (claimResult.getClaim() != null ){
+
+                // CHECK DUPLICATE
+                if(!claimResult.getClaim().getChoReference().equalsIgnoreCase("") && claimResult.getClaim().getChoReference()!=null){
+
+                    if(choReferences.contains(claimResult.getClaim().getChoReference().toLowerCase().trim())){
+                        claimResult.setValid(false);
+                        claimResult.getMessage().add("Supplier Reference is already exist");
+                    }
+                    
+                }
+                
+                // CHECK AUTOMATIC ROUTING AND OWNERSHIP
                 if (claimResult.getClaim().getThirdParty() != null ){
                     if (claimResult.getClaim().getThirdParty().getInsurer() != null) {
 
@@ -93,7 +114,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         }
 
                         doClaimOwnership(claimResult);
-                        
+
                     }
                 }
             }
@@ -206,12 +227,16 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 int totalRecord = bordereauResult.getClaimResult().size();
                 int totalProcessed = 0;
 
+                // CHECK DUPLICATE CHO REFERENCE PER XML
+                List<String> choReferences = new ArrayList<String>();
+
                 for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
 
                     // OTHER BUSINESS LOGIC
-                    claimResult = claimRouting(claimResult);
+                    claimResult = claimRouting(choReferences, claimResult);
 
                     if (claimResult.isValid() && claimResult.isDataValid()) {
+                        choReferences.add(claimResult.getClaim().getChoReference().toLowerCase().trim());
                         totalProcessed++;
                     }
                 }
