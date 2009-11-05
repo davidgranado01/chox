@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -41,17 +43,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         save(claim);
     }
     
-    public Long getCountByStatus(String status, boolean isCHQueue) {
+    public Long getCountByStatus(String status, boolean isCheckWorkGroup, boolean isCheckOwnership) {
 
         String q = "select count(*) from Claim where status = '" + status + "'";
 
-        if(isCHQueue){
+        if(isCheckWorkGroup){
             
             // WORKGROUP FILTER
             if(RoleHelper.isEditableByWorkgroupRole(getCurrentUser())){
                 q += " And workgroup.id in (select workgroup.id from UserWorkgroup Where user.id="+getCurrentUser().getId()+")";
             }
-
+        }
+        
+        if(isCheckOwnership){
+            
             if(RoleHelper.isEditableByOwnership(getCurrentUser())){
                 q += " And claimOwner.id ="+getCurrentUser().getId();
             }
@@ -70,24 +75,36 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return getCount(q);
     }
 
-    public Long getHireUpdateWarningCountNumber(boolean isCHQueue) {
+    public Long getHireUpdateWarningCountNumber(boolean isCheckWorkGroup, boolean isCheckOwnership) {
         
         String q = "select count(*) from Claim c where size(c.notifications) > 0 ";
-        q += "And c.status = ''";
-        
-        if(isCHQueue){
+        q += "And (c.status = 'ClaimReferredToEngineer' ";
+        q += "Or c.status = 'ClaimReferredToFNOL' ";
+        q += "Or c.status = 'ClaimRejectionContested' ";
+        q += "Or c.status = 'ClaimPending' ";
+        q += "Or c.status = 'AwaitingCarHireInfo' ";
+        q += "Or c.status = 'ClaimRejected' ";
+        q += "Or c.status = 'ClaimUpdatedByEngineer' ";
+        q += "Or c.status = 'ClaimUnacknowledgedRouted') ";
+
+        if(isCheckWorkGroup){
 
             // WORKGROUP
             if(RoleHelper.isEditableByWorkgroupRole(getCurrentUser())){
                 q += " And workgroup.id in (select workgroup.id from UserWorkgroup Where user.id="+getCurrentUser().getId()+")";
             }
+        }
 
+        if(isCheckOwnership){
+            
             if(RoleHelper.isEditableByOwnership(getCurrentUser())){
                 q += " And claimOwner.id ="+getCurrentUser().getId();
             }
             
         }
         
+        System.out.println("QUERY:"+q);
+
         return getCount(q);
     }
 
@@ -181,13 +198,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
 
         // QUEUE
-        if(searchCriteria.getIsCHQueue()){
+        if(searchCriteria.getIsWorkgroupCheck()){
             
             if(RoleHelper.isEditableByWorkgroupRole(getCurrentUser())){
                 System.out.println(" >>>>>>>>>> FILTER BY WORKGROUP");
                 criteria.add(Restrictions.sqlRestriction("workgroup_id in (select workgroup_id from user_workgroup where user_id ="+getCurrentUser().getId()+")"));
             }
-
+        }
+        
+        if(searchCriteria.getIsOwnerShipCheck()){
             if(RoleHelper.isEditableByOwnership(getCurrentUser())){
                 System.out.println(" >>>>>>>>>> FILTER BY OWNERSHIP A");
                 criteria.add(Restrictions.eq("claimOwner.id", getCurrentUser().getId()));
@@ -222,7 +241,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         // S8003
         if (searchCriteria.getIsAnomalies()) {
+
+            Set AnomaliesStatus = new HashSet();
+            AnomaliesStatus.add(ClaimStatus.CLAIM_REF_TO_ENG);
+            AnomaliesStatus.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
+            AnomaliesStatus.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+            AnomaliesStatus.add(ClaimStatus.CLAIM_PENDING);
+            AnomaliesStatus.add(ClaimStatus.AWAITING_CAR_HIRE_INFO);
+            AnomaliesStatus.add(ClaimStatus.CLAIM_REJECTED);
+            AnomaliesStatus.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
+            AnomaliesStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+            
             criteria.add(Restrictions.sizeGt("notifications", 0));
+            criteria.add(Restrictions.in("status", AnomaliesStatus));
+
         }
 
         if (searchCriteria.getIspenaltyChargeApplied()) {

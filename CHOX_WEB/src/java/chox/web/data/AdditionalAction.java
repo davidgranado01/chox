@@ -30,7 +30,7 @@ public class AdditionalAction extends BaseAction{
         }else if (extraAction.equalsIgnoreCase("updateClaimOwner")) {
             returnStr = "Update Claim Ownership";
         }else if (extraAction.equalsIgnoreCase("escalateUnassignedClaim")) {
-            returnStr = "Remove Workgroup Mapping";
+            returnStr = "Re-assign Workgroup";
         }
 
         return returnStr;

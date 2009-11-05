@@ -1,9 +1,10 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <script type="text/javascript">
+    
     function doSearchSelectWorkgroup(){
 
-        insurerId = <s:property value="AuthenticatedUser.user.insurer.id"/>;
+        insurerId = <s:property value="orgId"/>;
 
         var selectedWorkgroupId = -1;
 
@@ -12,7 +13,9 @@
         }
 
         doShowClaimHandler(selectedWorkgroupId, insurerId);
+
     }
+    
     </script>
 <s:select
     id="workgroup"                                 

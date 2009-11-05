@@ -1,8 +1,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
     
-    
-<script type="text/javascript">
+<script language="JavaScript">
         
         $(document).ready(function(){
 
@@ -51,7 +50,6 @@
                 renderTo:'nextReviewDatePH'
             });
             
-                 
             var repairCompletionDateDatePicker = new Ext.form.DateField({
                 name: 'repairCompletionDate',
                 width: 100,
@@ -61,7 +59,7 @@
                 validationEvent : false,
                 value: '<s:date format="dd/MM/yyyy" name="repairCompletionDate" />',
                 renderTo:'repairCompletionDatePH'
-            });                    
+            });
             
             $("#formUpdateHireMonitoringDetail").validate(
             {   
@@ -144,6 +142,7 @@
             
                     $(form).ajaxSubmit(HireMonitoringEntityFormOptions);
                 }
+                
             });
 
             var repairBookDt = $("#repairBookInDate").val();
@@ -181,9 +180,13 @@
             return true;
         }
 
+
+
     </script>
 
-<form id="formUpdateHireMonitoringDetail" action="user/updateHireMonitorDetail.action" class="XXentity-form">
+<form onsubmit="return true;" id="formUpdateHireMonitoringDetail" name="formUpdateHireMonitoringDetail"
+      action="user/updateHireMonitorDetail.action" method="post">
+    
     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <input type="hidden" name="date_compare_field" value=''>
@@ -192,8 +195,6 @@
     <fieldset class="x-fieldset">
 
         <legend>Hire Monitoring</legend>
-        
-
         
         <div style="display:none" class="form-container">
 
@@ -269,7 +270,7 @@
             </div>
 
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes"/><s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
+                <input type="submit" value="Save Changes" /><s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
             </div>
             
             <div id="HMmessageBox" style="text-align:center" class="action_msg"></div>            

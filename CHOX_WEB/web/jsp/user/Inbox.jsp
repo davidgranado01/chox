@@ -54,8 +54,10 @@
     ds.setDefaultSort('created', 'desc');
      
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';     
-    
-    function showClaimByStatus(status, isClaimHandlerQueue)
+
+
+
+    function showClaimByStatus(status, isWorkgroupCheck, isOwnerShipCheck)
     {
 
         ds.baseParams = {
@@ -78,25 +80,16 @@
             ispenaltyChargeApplied : '',
             reviewRequiredDateFrom:'',
             reviewRequiredDateTo:'',
-            isCHQueue:isClaimHandlerQueue,
+            isWorkgroupCheck:isWorkgroupCheck,
+            isOwnerShipCheck:isOwnerShipCheck,
             claimOwnerId:-1
         }
 
         doDataLoad(0, recordPerPage);
-        /*
-        ds.load(
-        {
-            params:
-                {            
-                start:0,
-                limit:recordPerPage
-            }
-        });
-        */
-        // alert("A");
+
     }  
     
-    function showClaimByStatusWithSort(status, sort, isClaimHandlerQueue)
+    function showClaimByStatusWithSort(status, sort, isWorkgroupCheck, isOwnerShipCheck)
     {     
         ds.setDefaultSort(sort, 'status');
         ds.baseParams = {            
@@ -118,26 +111,17 @@
             ispenaltyChargeApplied : '',
             reviewRequiredDateFrom:'',
             reviewRequiredDateTo:'',
-            isCHQueue:isClaimHandlerQueue,
+            isWorkgroupCheck:isWorkgroupCheck,
+            isOwnerShipCheck:isOwnerShipCheck,
             claimOwnerId:-1
         }
 
         doDataLoad(0, recordPerPage);
-        /*
-        ds.load(
-        {
-            params:
-                {            
-                start:0,
-                limit:recordPerPage
-            }
-        });
-        */
-        // alert("b");
+
     }  
     
-    function showClaimIsAnomalies(isClaimHandlerQueue)
-    {  
+    function showClaimIsAnomalies(isWorkgroupCheck, isOwnerShipCheck)
+    {   
         ds.baseParams = {
             supplierReference : '',
             supplierId : -1,
@@ -157,22 +141,13 @@
             ispenaltyChargeApplied : '',
             reviewRequiredDateFrom:'',
             reviewRequiredDateTo:'',
-            isCHQueue:isClaimHandlerQueue,
+            isWorkgroupCheck:isWorkgroupCheck,
+            isOwnerShipCheck:isOwnerShipCheck,
             claimOwnerId:-1
         }
 
         doDataLoad(0, recordPerPage);
-        /*
-        ds.load(
-        {
-            params:
-                {            
-                start:0,
-                limit:recordPerPage
-            }
-        });
-        */
-        // alert("c");
+
     }   
     
     function showClaimIspenaltyChargeApplied()
@@ -196,23 +171,12 @@
             ispenaltyChargeApplied : true,
             reviewRequiredDateFrom:'',
             reviewRequiredDateTo:'',
-            isCHQueue:false,
+            isWorkgroupCheck:false,
+            isOwnerShipCheck:false,
             claimOwnerId:-1
         }
 
         doDataLoad(0, recordPerPage);
-        /*
-        ds.load(
-        {
-            params:
-                {            
-                start:0,
-                limit:recordPerPage
-            }
-        });
-        */
-       
-        // alert("d");
         
     }  
     
@@ -259,21 +223,12 @@
             workgroupId: workgroupId,
             reviewRequiredDateFrom : reviewRequiredDateFrom,
             reviewRequiredDateTo : reviewRequiredDateTo,
-            isCHQueue : false,
+            isWorkgroupCheck:false,
+            isOwnerShipCheck:false,
             claimOwnerId : claimOwnerId
         }
-        /*
-        ds.load(
-        {
-            params:
-                {
-                start:0,
-                limit:recordPerPage
-            }
-        });
-        */
-       doDataLoad(0, recordPerPage);
-       // alert("e");
+
+        doDataLoad(0, recordPerPage);
         
     }
     
@@ -478,7 +433,7 @@
                                         });
 
                                         var param = selectedIDs.join(",");
-                                        alert(param);
+
                                         $('form#ownershipClaimForm input[name="selectedClaimIds"]').val(param);
 
                                         $("form#ownershipClaimForm").validate(
@@ -771,16 +726,6 @@
             if(start >= 0)
             {
                 doDataLoad(start, recordPerPage);
-                /*
-                ds.load(
-                {
-                    params:
-                        {
-                        start:start,
-                        limit:recordPerPage
-                    }
-                });
-                */
             }  
         }); 
     }
@@ -791,7 +736,6 @@
         
         if(tab.title == 'Inbox' || tab.title == 'Search'){
 
-            // ds.load({ params:{start:0,limit:0}});
             doDataLoad(0, 0);
 
             $("#gridPanel").show();
@@ -808,29 +752,6 @@
             
         $('.x-grid3-hd-checker').removeClass('x-grid3-hd-checker-on');
     }
-    
-    /*
-    function clearForm(form) {
-        // iterate over all of the inputs for the form
-        // element that was passed in
-        $(':input', form).each(function() {
-            var type = this.type;
-            var tag = this.tagName.toLowerCase(); // normalize case
-            // it's ok to reset the value attr of text inputs,
-            // password inputs, and textareas
-            if (type == 'text' || type == 'password' || tag == 'textarea')
-                this.value = "";
-            // checkboxes and radios need to have their checked state cleared
-            // but should *not* have their 'value' changed
-            else if (type == 'checkbox' || type == 'radio')
-                this.checked = false;
-            // select elements need to have their 'selectedIndex' property set to -1
-            // (this works for both single and multiple select elements)
-            else if (tag == 'select')
-                this.selectedIndex = -1;
-        });
-    };
-    */
    
     function refreshFilterPanel()
     {
@@ -851,7 +772,6 @@
                 limit:recordPerPage
             }
         });
-        
     }
 
     Ext.onReady(function(){
@@ -980,7 +900,7 @@
 
                         <table class="selectionForm" cellspacing="0" cellpadding="0" border="0" width="100%">
                             <tr>
-                                <th colspan="2"><label>[Action Required]</label></th>
+                                <th colspan="2"><label>Please assign the claim(s) with a Claim Owner.</label></th>
                             </tr>
                             <s:if test="AuthenticatedUser.user.insurer.workgroupEnable">
                             <tr>

@@ -9,6 +9,7 @@
 <script language="JavaScript">  
 
     var isClaimHandlerOnly = false;
+    var isChoxAdmin = false
     var insurerId = -1;
     var claimOwnerId = -1;
     
@@ -110,13 +111,19 @@
     }); 
     
     function doInsurerSearchSelectOnChange(){
-        var selectedInsurerId = -1;
-        
-        if($("#insurerId").val()!=null){
-            selectedInsurerId = $("#insurerId").val();
+
+        if(!<s:property value="AuthenticatedUser.IsCHO"/>){
+            
+            var selectedInsurerId = -1;
+
+            if($("#insurerId").val()!=null){
+                selectedInsurerId = $("#insurerId").val();
+            }
+            
+            $("#searchScreenWorkgroupDropDownDiv").load("SearchWorkgroupDropDownAction.action?orgId=" + selectedInsurerId);
+
         }
         
-        $("#searchScreenWorkgroupDropDownDiv").load("SearchWorkgroupDropDownAction.action?orgId=" + selectedInsurerId);
     }
 
    function doShowClaimHandler(selectedWorkgroupId, insurerId){
@@ -199,70 +206,79 @@
             
         </s:else>
         <tr>
-            <s:if test="isInsurer || isChoxAdmin">
-                <td><label>Supplier Name</label></td>
-                <td>
-                        <s:select 
-                        name="supplierId" 
-                        list="suppliers"
-                        listKey="id"
-                        listValue="name"
-                        headerKey="-1"
-                        headerValue="--- ALL ---"
-                        emptyOption="false">
-                        </s:select>
-                    </td>
-            </s:if>
-            <s:else>
-                <td><label></label></td>
-                <td></td>
-            </s:else>
-            
-            <td><label>Status</label></td><td>
-                <s:select 
-                    name="status" 
-                    list="statuses" 
-                    headerKey="" 
-                    listKey="value" 
-                    listValue="text"
-                    headerValue="--- ALL ---" headerKey=""
-                    emptyOption="false" 
-                    value="status" onchange="javascript: statusChange();">
-                </s:select></td>            
-            
-        </tr>
-        <tr>
             <s:if test="isCHO || isChoxAdmin">
+                
                 <td><label>Insurer Name</label></td>
                 <td>
-                    <s:select 
-                    name="insurerId" 
-                    list="insurers" 
-                    listKey="id" 
-                    listValue="name" 
+                    <s:select
+                    name="insurerId"
+                    list="insurers"
+                    listKey="id"
+                    listValue="name"
                     headerKey="-1"
                     headerValue="--- ALL ---"
                     onchange="javascript: doInsurerSearchSelectOnChange();"
                     emptyOption="false">
                     </s:select>
                 </td>
-                <td><label></label></td><td></td>
-                <input type="hidden" name="workgroup" id="workgroup" value="-1"/>
-                <input type="hidden" name="claimOwnerId" id="claimOwnerId" value="-1"/>
+            </s:if>
+            <s:elseif test="isInsurer">
+                <td><label>Supplier Name</label></td>
+                <td>
+                    <s:select
+                    name="supplierId"
+                    list="suppliers"
+                    listKey="id"
+                    listValue="name"
+                    headerKey="-1"
+                    headerValue="--- ALL ---"
+                    emptyOption="false">
+                    </s:select>
+                </td>
+            </s:elseif>
+            <td><label>Status</label></td><td>
+                <s:select
+                    name="status"
+                    list="statuses"
+                    headerKey=""
+                    listKey="value"
+                    listValue="text"
+                    headerValue="--- ALL ---" headerKey=""
+                    emptyOption="false"
+                    value="status" onchange="javascript: statusChange();">
+                </s:select>
+            </td>
+        </tr>
+        <tr>
+            <s:if test="isInsurer || isChoxAdmin">
+                 <td><label>Workgroup</label></td>
+                 <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
+                 <td><label>Claim Handler</label></td>
+                 <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
             </s:if>
             <s:else>
-                 <td><label>Workgroup</label></td><td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
-                 <s:if test="!isClaimHandlerOnly">
-                    <td><label>Claim Handler</label></td><td><div id="searchScreenClaimhandlerDownDiv"></div></td>
-                 </s:if>
-                 <s:else>
-                    <td><label></label></td><td></td>
-                    <input type="hidden" name="claimOwnerId" id="claimOwnerId" value="-1"/>
-                 </s:else>
+                <input type="hidden" name="workgroup" id="workgroup" value="-1"/>
+                <input type="hidden" name="claimOwnerId" id="claimOwnerId" value="-1"/>
             </s:else>
-            
         </tr>
-        
+        <tr>
+            <s:if test="isChoxAdmin">
+                <td><label>Supplier Name</label></td>
+                <td>
+                    <s:select
+                    name="supplierId"
+                    list="suppliers"
+                    listKey="id"
+                    listValue="name"
+                    headerKey="-1"
+                    headerValue="--- ALL ---"
+                    emptyOption="false">
+                    </s:select>
+                </td>
+                 <td><label></label></td><td></td>
+            </s:if>
+        </tr>
+
     </table>
     <div class="buttonPanel">
         <div>

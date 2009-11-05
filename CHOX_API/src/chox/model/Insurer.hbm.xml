@@ -17,6 +17,8 @@
     <property column="vat_no" name="vatNo" not-null="true"/>
     <property column="company_no" name="companyNo" not-null="true"/>
     <property column="admin_handling_charge" name="adminHandlingCharge"/>
+    <property column="cho_agreed_benefit_value" name="choAgreedBenefitValue"/>
+    <property column="scs_agreed_benefit_share_value" name="scsAgreedBenefitShareValue"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
     <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

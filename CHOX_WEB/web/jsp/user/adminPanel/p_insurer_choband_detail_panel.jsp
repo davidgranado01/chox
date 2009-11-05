@@ -30,29 +30,6 @@
             new Ext.ToolTip({ target: 'help-hireNetCeiling', html: 'Maximum amount allowed to be charged for hire only.'});
             new Ext.ToolTip({ target: 'help-hireRateChargeTolerance', html: 'A figure allowing small deviations to the price charged per day for the hire based on the vehicle class.'});
             new Ext.ToolTip({ target: 'help-maxRepairValue', html: 'Maximum amount allowed to be charged for repair of vehicle.'});
-
-            /*
-            new Ext.ToolTip({ target: 'help-hasCalculatedCorrectDailyRate', html: 'Check against the allowed daily rate for the vehicle class in question (according to the GTA or specific CHO agreement) and the daily rate billed by the CHO.'});
-            new Ext.ToolTip({ target: 'help-hasCorrectDiscountForNonDA', html: 'Check on CHOs not participating in the Delegated Authority scheme apply correct VAT discount off the Total to Pay.'});
-            new Ext.ToolTip({ target: 'help-handlingAmountAndDeductionBothEqualZeroForNonDA', html: 'Check to ensure that the CHO who is not participating in the Delegated Authority scheme is not trying to charge for Claims Handling services twice.'});
-            new Ext.ToolTip({ target: 'help-claimHasZeroDiscountForDA', html: 'Check on CHOs participating in the Delegated Authority scheme do not include a flat VAT discount off the Total to Pay.'});
-            new Ext.ToolTip({ target: 'help-handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero', html: 'Check on CHOs participating in the Delegated Authority scheme deduct the correct amount off the hire invoice for Claims Handling services.'});
-            new Ext.ToolTip({ target: 'help-validateUniqueVehicleRegistrationNumber', html: "Check on CHO's Client's vehicle registration number, if a claim already exists in CHOX against the same vehicle registration the invoice will be flagged."});
-            new Ext.ToolTip({ target: 'help-automaticChargeCheck', html: "Invoice will be flagged if the CHO is charging for this extra."});
-            new Ext.ToolTip({ target: 'help-numberOfHireDaysReconcile', html: "Check to ensure that the number of hire days billed matches the hire start and hire end data provided."});
-            new Ext.ToolTip({ target: 'help-correntAdminFee', html: "Check to ensure that the correct administration fee is being charged based on the nature of the service provided, either management of the repair or hire only."});
-            new Ext.ToolTip({ target: 'help-repairBookedInDate', html: "If the repair has been booked into a garage on a Friday or Bank Holiday then the invoice will be flagged for review."});
-            new Ext.ToolTip({ target: 'help-flaggedForManualInvoiceReview', html: "If the claim has been manually flagged at the front of the claim cycle, the invoice will be flagged for review."});
-            new Ext.ToolTip({ target: 'help-estateChargeCheck', html: "Invoice will be flagged if the CHO is charging for this extra."});
-            new Ext.ToolTip({ target: 'help-nonStandardRiskInsurancePremiumCheck', html: "Invoice will be flagged if the CHO is charging for this extra."});
-            new Ext.ToolTip({ target: 'help-cdwChargeCheck', html: "Invoice will be flagged if the CHO is charging for this extra."});
-            new Ext.ToolTip({ target: 'help-satelliteNavigationChargeCheck', html: "Invoice will be flagged if the CHO is charging for this extra."});
-            new Ext.ToolTip({ target: 'help-babySeatChargeCheck', html: "Invoice will be flagged if the CHO is charging for this extra"});
-            new Ext.ToolTip({ target: 'help-towBarsChargeCheck', html: "Invoice will be flagged if the CHO is charging for this extra."});
-            new Ext.ToolTip({ target: 'help-roofRackChargeCheck', html: "Invoice will be flagged if the CHO is charging for this extra."});
-            new Ext.ToolTip({ target: 'help-deliveryOrCollectionChargeCheck', html: "Invoice will be flagged if the CHO is charging for this extra."});
-            new Ext.ToolTip({ target: 'help-dualControlChargeCheck', html: "Invoice will be flagged if the CHO is charging for this extra."});
-            */
         }
 
         function doRefreshCalculation(){
@@ -616,6 +593,8 @@ Engineer's Estimated Days Under Repair + Take Mobile Vehicle To Garage Variable 
                     </fieldset>
 
                     <fieldset class="x-fieldset"><legend>Additional Invoice Validations</legend>
+
+
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasAllowedVehicleClass" value="hasAllowedVehicleClass" /></div>
                             <label class="chox-form-check-label">Like for like vehicle class hire provision Check</label>
@@ -624,7 +603,7 @@ Engineer's Estimated Days Under Repair + Take Mobile Vehicle To Garage Variable 
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCalculatedCorrectDailyRate" value="hasCalculatedCorrectDailyRate" /></div>
                             <label class="chox-form-check-label">Vehicle class daily rate charge Check</label>
-                            <div class="chox-form-check-description">Check against the allowed daily rate for the vehicle class in question (according to the GTA or specific CHO agreement) and the daily rate billed by the CHO.</div>
+                            <div class="chox-form-check-description">Check against the allowed daily rate for the vehicle class of the replacement hire vehicle (according to the GTA or specific CHO agreement) and the daily rate billed by the CHO.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireNetDoesNotExceedBandHireNetCeiling" value="hireNetDoesNotExceedBandHireNetCeiling" /></div><label class="chox-form-check-label">Hire Net Ceiling Check</label>
@@ -635,12 +614,16 @@ Engineer's Estimated Days Under Repair + Take Mobile Vehicle To Garage Variable 
                             <div class="chox-form-check-description">Check to ensure the Hire Net billed by the CHO does not exceed the specified Hire Net ceiling for the replacement hire vehicle’s vehicle class.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="hireDayCountDoesNotExceedBandHireDayCeiling" value="hireDayCountDoesNotExceedBandHireDayCeiling" /></div><label class="chox-form-check-label">Hire Day Ceiling Check</label>
-                            <div class="chox-form-check-description">Check to ensure the number of hire days billed by the CHO does not exceed the CHO's specified hire days ceiling.</div>
+                            <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedBandRepairNetCeiling" value="repairNetDoesNotExceedBandRepairNetCeiling" /></div><label class="chox-form-check-label">Repair Net Ceiling Check</label>
+                            <div class="chox-form-check-description">Check to ensure the Repair Net billed by the CHO does not exceed the CHO's specified Repair Net ceiling (this Repair Net ceiling is enforced regardless of vehicle class of replacement hire vehicle).</div>
                         </div>
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="hasCorrectHireGrossCalculation" value="hasCorrectHireGrossCalculation" /></div><label class="chox-form-check-label">Hire Gross Calculation Check</label>
-                            <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Hire Gross amount.</div>
+                            <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedVehicleClassRepairNetCeiling" value="repairNetDoesNotExceedVehicleClassRepairNetCeiling" /></div><label class="chox-form-check-label">Vehicle Class Repair Net Ceiling Check</label>
+                            <div class="chox-form-check-description">Check to ensure the Repair Net billed by the CHO does not exceed the specified Repair Net ceiling for the replacement hire vehicle's vehicle class.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hireDayCountDoesNotExceedBandHireDayCeiling" value="hireDayCountDoesNotExceedBandHireDayCeiling" /></div><label class="chox-form-check-label">Hire Day Ceiling Check</label>
+                            <div class="chox-form-check-description">Check to ensure the number of hire days billed by the CHO does not exceed the CHO's specified hire days ceiling.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="actualHireDaysDoesNotExceedAllowableHireDays" value="actualHireDaysDoesNotExceedAllowableHireDays" /></div><label class="chox-form-check-label">Repair Duration Rules</label>
@@ -655,8 +638,56 @@ Engineer's Estimated Days Under Repair + Take Mobile Vehicle To Garage Variable 
                             <div class="chox-form-check-description">Check the Engineer's estimated Total Repair Amount against the Repair Gross amount billed by the CHO. If the Repair Gross billed amount is higher than the Engineer's estimated amount then the invoice will be flagged.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="estimatedRepairDaysPlusBandDaysDoNotExceedHireDays" value="estimatedRepairDaysPlusBandDaysDoNotExceedHireDays" /></div><label class="chox-form-check-label">Engineer's Estimated Repair Days Check</label>
+                            <div class="chox-form-check-description">This checks the Engineer's estimated number of repair days (with the addition of several variables) against the number of hire days billed by the CHO, if the number of hire days billed is greater than the estimation then the invoice will be flagged. Please review the 'Engineer Estimation Rule' further up this screen for more information.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="labourCostBusinessRule" value="labourCostBusinessRule" /></div><label class="chox-form-check-label">Labour Cost/Hours Check</label>
+                            <div class="chox-form-check-description">This check looks at either the labour cost for the repair or the number of labour hours exerted by the repairer during the repair process.  Using the formula as detailed in the 'Labour Cost/hours' rule further up this screen, an acceptable/expected number of hire days based on the labour information provided is calculated.  This calculated number of days is compared against the number of hire days billed by the CHO, if the billed days are greater than the acceptable/expected number of hire days the invoice will be flagged.</div>
+                        </div>                            
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="correntAdminFee" value="correntAdminFee" /></div><label class="chox-form-check-label">Correct Administration Fee Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the correct administration fee is being charged based on the nature of the service provided, either management of the repair or hire only.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDate" value="repairBookedInDate" /></div><label class="chox-form-check-label">Repair booked in date Check</label>
+                            <div class="chox-form-check-description">If the repair has been booked into a garage on a Friday, Saturday, Sunday, or Bank Holiday then the invoice will be flagged for review.</div>
+                        </div>                            
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="validateUniqueVehicleRegistrationNumber" value="validateUniqueVehicleRegistrationNumber" /></div><label class="chox-form-check-label">CHO's Client's Vehicle Registration Duplication Check</label>
+                            <div class="chox-form-check-description">Check on CHO's Client's vehicle registration number, if a claim already exists in CHOX against the same vehicle registration the invoice will be flagged.</div>
+                        </div>                            
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="flaggedForManualInvoiceReview" value="flaggedForManualInvoiceReview" /></div><label class="chox-form-check-label">Invoiced Flagged For Manual Invoice Review</label>
+                            <div class="chox-form-check-description">If the claim has been manually flagged at the front of the claim cycle for review, the invoice will be flagged for review upon invoice upload.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasCorrectDiscountForNonDA" value="hasCorrectDiscountForNonDA" /></div><label class="chox-form-check-label">CHO not participating in the Delegated Authority scheme discount Check</label>
+                            <div class="chox-form-check-description">Check on CHOs not participating in the Delegated Authority scheme apply correct VAT discount off the Total to Pay.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="handlingAmountAndDeductionBothEqualZeroForNonDA" value="handlingAmountAndDeductionBothEqualZeroForNonDA" /></div><label class="chox-form-check-label">CHO not participating in the Delegated Authority scheme Claims Handling charge check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO who is not participating in the Delegated Authority scheme is not trying to charge for Claims Handling services twice.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="claimHasZeroDiscountForDA" value="claimHasZeroDiscountForDA" /></div><label class="chox-form-check-label">CHO participating in the Delegated Authority scheme discount Check</label>
+                            <div class="chox-form-check-description">Check on CHOs participating in the Delegated Authority scheme do not include a flat VAT discount off the Total to Pay.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero" value="handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero" /></div><label class="chox-form-check-label">CHO participating in the Delegated Authority scheme Claims Handling charge reconciliation Check</label>
+                            <div class="chox-form-check-description">Check on CHOs participating in the Delegated Authority scheme deduct the correct amount off the hire invoice for Claims Handling services.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="numberOfHireDaysReconcile" value="numberOfHireDaysReconcile" /></div><label class="chox-form-check-label">Hire days billed Reconciliation Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the number of hire days billed matches the hire start and hire end data provided.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectHireVatCalculation" value="hasCorrectHireVatCalculation" /></div><label class="chox-form-check-label">Hire VAT Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Hire Net.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasCorrectHireGrossCalculation" value="hasCorrectHireGrossCalculation" /></div><label class="chox-form-check-label">Hire Gross Calculation Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Hire Gross amount.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectRepairVatCalculation" value="hasCorrectRepairVatCalculation" /></div><label class="chox-form-check-label">Repair VAT Calculation Check</label>
@@ -679,60 +710,8 @@ Engineer's Estimated Days Under Repair + Take Mobile Vehicle To Garage Variable 
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total Gross amount.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="hasCorrectDiscountForNonDA" value="hasCorrectDiscountForNonDA" /></div><label class="chox-form-check-label">CHO not participating in the Delegated Authority scheme discount Check</label>
-                            <div class="chox-form-check-description">Check on CHOs not participating in the Delegated Authority scheme apply correct VAT discount off the Total to Pay.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="handlingAmountAndDeductionBothEqualZeroForNonDA" value="handlingAmountAndDeductionBothEqualZeroForNonDA" /></div><label class="chox-form-check-label">CHO not participating in the Delegated Authority scheme Claims Handling charge check</label>
-                            <div class="chox-form-check-description">Check to ensure that the CHO who is not participating in the Delegated Authority scheme is not trying to charge for Claims Handling services twice.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="claimHasZeroDiscountForDA" value="claimHasZeroDiscountForDA" /></div><label class="chox-form-check-label">CHO participating in the Delegated Authority scheme discount Check</label>
-                            <div class="chox-form-check-description">Check on CHOs participating in the Delegated Authority scheme do not include a flat VAT discount off the Total to Pay.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero" value="handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero" /></div><label class="chox-form-check-label">CHO participating in the Delegated Authority scheme Claims Handling charge reconciliation Check</label>
-                            <div class="chox-form-check-description">Check on CHOs participating in the Delegated Authority scheme deduct the correct amount off the hire invoice for Claims Handling services.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasSuppliedCorrectTotalToPay" value="hasSuppliedCorrectTotalToPay" /></div><label class="chox-form-check-label">Total To Pay Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total To Pay amount.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="estimatedRepairDaysPlusBandDaysDoNotExceedHireDays" value="estimatedRepairDaysPlusBandDaysDoNotExceedHireDays" /></div><label class="chox-form-check-label">Engineer's Estimated Repair Days Check</label>
-                            <div class="chox-form-check-description">This checks the Engineer's estimated number of repair days (with the addition of several variables) against the number of hire days billed by the CHO, if the number of hire days billed is greater than the estimation then the invoice will be flagged. Please review the 'Engineer Estimation Rule' further up this screen for more information.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="validateUniqueVehicleRegistrationNumber" value="validateUniqueVehicleRegistrationNumber" /></div><label class="chox-form-check-label">CHO's Client's Vehicle Registration Duplication Check</label>
-                            <div class="chox-form-check-description">Check on CHO's Client's vehicle registration number, if a claim already exists in CHOX against the same vehicle registration the invoice will be flagged.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="labourCostBusinessRule" value="labourCostBusinessRule" /></div><label class="chox-form-check-label">Labour Cost/Hours Check</label>
-                            <div class="chox-form-check-description">This check looks at either the labour cost for the repair or the number of labour hours exerted by the repairer during the repair process.  Using the formula as detailed in the 'Labour Cost/hours' rule further up this screen, an acceptable/expected number of hire days based on the labour information provided is calculated.  This calculated number of days is compared against the number of hire days billed by the CHO, if the billed days are greater than the acceptable/expected number of hire days the invoice will be flagged.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedBandRepairNetCeiling" value="repairNetDoesNotExceedBandRepairNetCeiling" /></div><label class="chox-form-check-label">Repair Net Ceiling Check</label>
-                            <div class="chox-form-check-description">Check to ensure the Repair Net billed by the CHO does not exceed the CHO's specified Repair Net ceiling (this Repair Net ceiling is enforced regardless of vehicle class of replacement hire vehicle).</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedVehicleClassRepairNetCeiling" value="repairNetDoesNotExceedVehicleClassRepairNetCeiling" /></div><label class="chox-form-check-label">Vehicle Class Repair Net Ceiling Check</label>
-                            <div class="chox-form-check-description">Check to ensure the Repair Net billed by the CHO does not exceed the specified Repair Net ceiling for the replacement hire vehicle's vehicle class.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="numberOfHireDaysReconcile" value="numberOfHireDaysReconcile" /></div><label class="chox-form-check-label">Hire days billed Reconciliation Check</label>
-                            <div class="chox-form-check-description">Check to ensure that the number of hire days billed matches the hire start and hire end data provided.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="correntAdminFee" value="correntAdminFee" /></div><label class="chox-form-check-label">Correct Administration Fee Check</label>
-                            <div class="chox-form-check-description">Check to ensure that the correct administration fee is being charged based on the nature of the service provided, either management of the repair or hire only.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDate" value="repairBookedInDate" /></div><label class="chox-form-check-label">Repair booked in date Check</label>
-                            <div class="chox-form-check-description">If the repair has been booked into a garage on a Friday, Saturday, Sunday, or Bank Holiday then the invoice will be flagged for review.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="flaggedForManualInvoiceReview" value="flaggedForManualInvoiceReview" /></div><label class="chox-form-check-label">Invoiced Flagged For Manual Invoice Review</label>
-                            <div class="chox-form-check-description">If the claim has been manually flagged at the front of the claim cycle for review, the invoice will be flagged for review upon invoice upload.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="automaticChargeCheck" value="automaticChargeCheck" /></div><label class="chox-form-check-label">Automatic Charge Check</label>

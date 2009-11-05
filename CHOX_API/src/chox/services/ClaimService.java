@@ -7,10 +7,10 @@ import java.util.List;
 public interface ClaimService {
     
     public Claim getClaim(int id);
-    public Long getCountByStatus(String status, boolean isWorkgroups);
+    public Long getCountByStatus(String status, boolean isCheckWorkGroup, boolean isCheckOwnership);
     public Long getNonDEPaymentLogCount();
     public Long getPenaltyChargeAppliedCount();
-    public Long getHireUpdateWarningCountNumber(boolean isWorkgroupQueue);
+    public Long getHireUpdateWarningCountNumber(boolean isCheckWorkGroup, boolean isCheckOwnership);
     public Long getClaimCountByClaimNumber(String claimNumber, int claimId);
     public List getOtherClaimsByClaimNumber(String claimNumber, int claimId);
     public Long getECDCountByClaimId(int claimId);

@@ -149,15 +149,10 @@ if(statusMsg==null){
                         <td><div id="claimHandlerRoleUserDropDownDiv"></div></td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            <div class="no-format"><span>Please specify how you wish to proceed &nbsp;&nbsp;</span></div>
+                        <td colspan="2" class="choice" nowrap>
+                            <input id="assignAndProcess" type="submit" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit('assigned_routed');"/>
                         </td>
                     </tr>
-                        <tr>
-                            <td colspan="2" class="choice" nowrap>
-                                <input id="assignAndProcess" type="submit" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit('assigned_routed');"/>
-                            </td>
-                        </tr>
                         
                     </table>
 

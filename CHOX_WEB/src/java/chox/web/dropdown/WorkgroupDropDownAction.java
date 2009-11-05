@@ -13,8 +13,19 @@ public class WorkgroupDropDownAction extends BaseAction{
     private List workgroups = null;
     private Integer orgId;
     private LookupService service;
+    
+    public LookupService getService() {
+        return service;
+    }
+
+    public void setService(LookupService service) {
+        this.service = service;
+    }
 
     public Integer getOrgId() {
+        if(getIsInsurer()){
+            orgId = getAuthenticatedUser().getUser().getInsurer().getId();
+        }
         return orgId;
     }
 
@@ -35,26 +46,15 @@ public class WorkgroupDropDownAction extends BaseAction{
     }
 
     public String ClaimSearch() throws Exception {
-
-        PermissionedUser user = getAuthenticatedUser();
-
-        workgroups = new ArrayList<LookupItem>();
-
-        if(RoleHelper.isCreditHireUser(user.getUser())){
-            workgroups = service.getWorkgroupsByInsurerId(getOrgId(), false);
-        }else{
-            workgroups = service.getWorkgroups(user.getUser(), false);
-        }
-        
+        workgroups = new ArrayList<LookupItem>();        
+        workgroups = service.getWorkgroupsByInsurerId(getOrgId(), false);
         return SUCCESS;
     }
     
     @Override
     public String execute() throws Exception {
-        
         PermissionedUser user = getAuthenticatedUser();
         workgroups = service.getWorkgroups(user.getUser(), true);
-        return SUCCESS;     
+        return SUCCESS;
     }  
-    
 }

@@ -72,13 +72,11 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
     
     protected String getReportTemplatePath(String reportTemplateName) {
         String reportDefinationFilePath = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + reportTemplateName);
-        //String reportDefinationFilePath = "C:\\Greenfinch\\Projects\\CHOX\\reports\\" + reportTemplateName;
         return reportDefinationFilePath;
     }
 
     public ByteArrayOutputStream generateXML(List claims) throws IOException {
 
-        //InputStream templateIS = ExcelGeneratorAction.class.getClassLoader().getResourceAsStream("claimTemplate.xls");
         InputStream templateIS = new FileInputStream(getReportTemplatePath("claimTemplate.xls"));
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -93,6 +91,8 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
             ExcelClaim ec = new ExcelClaim();
             ExcelInvoice ev = new ExcelInvoice();
             ec.setClaim(claim);
+
+
 
             if (claim.getInvoice() != null) {
 

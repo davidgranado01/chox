@@ -8,7 +8,9 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <html>
+    
     <head>
+        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>IDAS-CHOX</title>
         <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>
@@ -341,24 +343,6 @@
 
                     loadEcds();
                 }
-
-                var ecdsLoaded = false;
-                function loadEcds(){
-
-                    if(!hireMonitoringDetailsDisabled){
-
-                        if(!ecdsLoaded)
-                        {
-                            ecdDataStore.load(
-                            {
-                                params:
-                                    {
-                                    claimId : <s:property value="id" />
-                                }
-                            });
-                        }
-                    }
-                }
     
                 function loadHireMonitor(grid, rowIndex, columnIndex, e){
                     var hiremonitoringECD = ecdGrid.getStore().getAt(rowIndex);
@@ -682,6 +666,23 @@
                 $("div#notificationNotesDiv").load('removeNotification.action',{"notificationId" : notificationId,"id": <s:property value="id" />});
             }
 
+            var ecdsLoaded = false;
+            function loadEcds(){
+
+                if(!hireMonitoringDetailsDisabled){
+
+                    if(!ecdsLoaded)
+                    {
+                        ecdDataStore.load(
+                        {
+                            params:
+                                {
+                                claimId : <s:property value="id" />
+                            }
+                        });
+                    }
+                }
+            }
 
         </script>
 
@@ -869,6 +870,8 @@
                     </div>
                 </s:if>
 
+                <s:if test="IsInsurer">
+
                 <script type="text/javascript">
 
                     $(document).ready(function() {
@@ -932,6 +935,8 @@
                         </td></tr>
                     </table>
                 </div>
+
+                </s:if>
 
                 <div id="tabContainer">
 
@@ -1126,8 +1131,6 @@
                         
                         <s:if test="tabAccessibility.paymentPackTabAccessibility != 0">
                             
-                        <s:if test="tabAccessibility.paymentPackTabAccessibility >= 2">
-                            
                         <script type="text/javascript">
                             
                                 var sucessColor = "#15428b";
@@ -1298,8 +1301,6 @@
                         </form>
                     </div>
 
-                        </s:if>
-
                         <a name="attachmentlisting"></a>
                         <div id="paymentPackGrid"></div>
 
@@ -1324,8 +1325,6 @@
                     <div id="comments" class="x-hide-display">
 
                         <s:if test="tabAccessibility.notesTabAccessibility != 0">
-
-                            <s:if test="tabAccessibility.notesTabAccessibility >= 2">
                                 
                             <script type="text/javascript">
 
@@ -1388,8 +1387,6 @@
                                 <div class="errorBox" id="CmErrMsgBox" style="color:red;font-weight: bold;font-size: 10px;"></div>
 
                             </div>
-
-                            </s:if>
                             
                             <div id="commentsGrid"></div>
 

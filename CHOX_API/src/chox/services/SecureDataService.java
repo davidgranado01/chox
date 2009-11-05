@@ -29,7 +29,8 @@ public class SecureDataService extends DataService {
                     
                     getCurrentSession().enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
                     getCurrentSession().enableFilter("Workgroup_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
-                    
+
+                    /*
                     if(RoleHelper.isGlobalFilterByWorkgroup(getCurrentUser())){
                         getCurrentSession().enableFilter("Claim_WorkgroupFilter").setParameterList("workgroupIds", this.getCurrentUser().getWorkgroupIds());
                     }
@@ -37,6 +38,7 @@ public class SecureDataService extends DataService {
                     if(RoleHelper.isGlobalFilterByOwnership(getCurrentUser())){
                         getCurrentSession().enableFilter("Claim_OwnershipFilter").setParameter("claimOwnershipId", this.getCurrentUser().getId());
                     }
+                    */
                 }
             }
         }

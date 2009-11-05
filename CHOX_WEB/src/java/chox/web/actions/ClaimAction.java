@@ -24,13 +24,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     private static final String strPrefix = "Claim Review Note: ";
     private static final String statusMsg = "Your action has been recorded";
-
     private TabAccessibility tabAccessibility;
     private NotificationAccessibility notificationAccessibility;
-
     private Map session;
     private Integer tab = -1;
-
     private String actionResult;
     private String actionResult2;
     
@@ -59,6 +56,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private List statuses;
     private List workgroups;
     private List insurerWorkgroups;
+    private List otherWorkgroups;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="DECLARE SERVICES OBJECTS">
@@ -109,6 +107,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private List<String> intelligentNotes;
     private IntelligentNoteDisplayEngine intelligentNoteDisplayEngine;
     private int claimOwnerId = -1;
+    private int escalateWorkgroupId = -1;
     
     // </editor-fold>
 
@@ -704,18 +703,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String UpdateClaimWorkgroupAssignment() {
 
         String result = SUCCESS;
-        String newStatus = "";
-
-        newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED;
 
         try {
 
-            claim.setWorkgroup(null);
-            claim.setClaimOwner(null);
-            claim.setStatus(newStatus);
-            this.service.updateClaim(claim);
-            auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim);
+            if(escalateWorkgroupId>0){
 
+                claim.setWorkgroup(workgroupService.getObject(escalateWorkgroupId));
+                claim.setClaimOwner(null);
+                this.service.updateClaim(claim);
+            }
+            
         } catch (Exception ex) {
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
@@ -1153,9 +1150,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 if(!getIsClaimEditable()){
                     action = EMPTY;
                 }
+                
                 return action;
                 
             }
+
         }
 
         return EMPTY;
@@ -1269,6 +1268,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     
     // <editor-fold defaultstate="collapsed" desc="GET SET">
 
+    public int getEscalateWorkgroupId() {
+        return escalateWorkgroupId;
+    }
+
+    public void setEscalateWorkgroupId(int escalateWorkgroupId) {
+        this.escalateWorkgroupId = escalateWorkgroupId;
+    }
+    
     public List<String> getIntelligentNotes() {
         if (intelligentNotes == null) {
             intelligentNotes = intelligentNoteDisplayEngine.getIntelligentNotes(claim);
@@ -1624,6 +1631,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     // <editor-fold defaultstate="collapsed" desc="GET DROP DOWN LIST">
 
+    public List getOtherWorkgroups() {
+
+        if (otherWorkgroups == null) {
+            otherWorkgroups = lookupService.getNotMyWorkgroups(this.getAuthenticatedUser().getUser(), true);
+        }
+        
+        return otherWorkgroups;
+    }
+    
     public List getWorkgroups() {
 
         if (workgroups == null) {

@@ -119,7 +119,7 @@
 
             <div>
                 <div class="status-info">
-                {NOTE}
+                Re-assign the Claim Owner by selecting the relevant Workgroup and Claims Handler from the selections below.
                 </div>
                 <div class="status-control-set">
                     <table class="status-table" width="100%">
@@ -142,15 +142,10 @@
                         <td><div id="claimHandlerRoleUserDropDownDiv"></div></td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            <div class="no-format"><span>Please specify how you wish to proceed &nbsp;&nbsp;</span></div>
+                        <td colspan="2" class="choice" nowrap>
+                            <input id="assign" type="submit" value="Update Owner" onclick="javascript:return doUpdateOwnershipSubmit('assigned');"/>
                         </td>
                     </tr>
-                        <tr>
-                            <td colspan="2" class="choice" nowrap>
-                                <input id="assign" type="submit" value="Update Owner" onclick="javascript:return doUpdateOwnershipSubmit('assigned');"/>
-                            </td>
-                        </tr>
 
                     </table>
                     <div class="errorBox" id="OwnershipMessageBox"></div>

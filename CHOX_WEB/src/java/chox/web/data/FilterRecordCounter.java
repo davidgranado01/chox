@@ -17,23 +17,23 @@ public class FilterRecordCounter {
     }
 
     public long getRejectedClaimsCount() {
-        return service.getCountByStatus(ClaimStatus.CLAIM_REJECTED, false);
+        return service.getCountByStatus(ClaimStatus.CLAIM_REJECTED, false, false);
     }
 
     public long getIncorrectInvoiceDataCalculationsCount() {
-        return service.getCountByStatus(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT, false);
+        return service.getCountByStatus(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT, false, false);
     }
 
     public long getContestedInvoicesReferredToCHOCount() {
-        return service.getCountByStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO, false);
+        return service.getCountByStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO, false, false);
     }
 
     public long getClaimsAwaitingHireMonitoringInformationCount() {
-        return service.getCountByStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO, false);
+        return service.getCountByStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO, false, false);
     }
 
     public long getNewClaimsToBeroutedCount() {
-       return service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, false);
+       return service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, false, false);
     }
 
     public long getClaimsAwaitingClaimsHandlingPaymentCount() {
@@ -41,15 +41,15 @@ public class FilterRecordCounter {
     }
 
     public long getEscalatedInvoicesCount() {
-        return service.getCountByStatus(ClaimStatus.INVOICE_ESCALATED, false);
+        return service.getCountByStatus(ClaimStatus.INVOICE_ESCALATED, false, false);
     }
     
     public long getClaimReferredToEngineerCount() {
-        return service.getCountByStatus(ClaimStatus.CLAIM_REF_TO_ENG, false);
+        return service.getCountByStatus(ClaimStatus.CLAIM_REF_TO_ENG, false, false);
     }
     
     public long getClaimReferredToFNOLCount() {
-        return service.getCountByStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL, false);
+        return service.getCountByStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL, false, false);
     }    
     
     public long getPenaltyChargesAppliedCount() {
@@ -58,66 +58,66 @@ public class FilterRecordCounter {
     
     public long getInvoicePaymentLoggedCount()
     {
-        return service.getCountByStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED, false);
+        return service.getCountByStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED, false, false);
     }     
     
     public long getContestedInvoiceReferToEngAccessibleCount()
     {
-        return service.getCountByStatus(ClaimStatus.INVOICE_REF_TO_ENG, false);
+        return service.getCountByStatus(ClaimStatus.INVOICE_REF_TO_ENG, false, false);
     }  
+
+    public long getClaimUnacknowledgedUnassignedAccessible()
+    {
+        return service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, true, false);
+    }
 
     /***********************************************
      * CREDIT HIRE AND CLAIM OWNERSHIP QUEUE
      ***********************************************/
 
-    boolean isWorkgroupQueue = true;
+    boolean isCheckWorkGroup = true;
+    boolean isCheckOwnership = true;
 
     public long getClaimsAwaitingAcknowledgementCount() {
-        return service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, isWorkgroupQueue);
+        return service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, isCheckWorkGroup, isCheckOwnership);
     }
 
     public long getReSubmittedClaimsAwaitingAcknowledgementCount() {
-        return service.getCountByStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED, isWorkgroupQueue);
+        return service.getCountByStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED, isCheckWorkGroup, isCheckOwnership);
     }
 
     public long getClaimPendingCount()
     {
-        return service.getCountByStatus(ClaimStatus.CLAIM_PENDING, isWorkgroupQueue);
+        return service.getCountByStatus(ClaimStatus.CLAIM_PENDING, isCheckWorkGroup, isCheckOwnership);
     }
 
     public long getClaimUpdatedByEngineerCount()
     {
-        return service.getCountByStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG, isWorkgroupQueue);
+        return service.getCountByStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG, isCheckWorkGroup, isCheckOwnership);
     }
 
     public long getApprovedInvoicesAwaitingPaymentCount() {
-        return service.getCountByStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT, isWorkgroupQueue);
+        return service.getCountByStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT, isCheckWorkGroup, isCheckOwnership);
     }
 
     public long getContestedInvoicesReferredToInsurerCount() {
-        return service.getCountByStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS, isWorkgroupQueue);
+        return service.getCountByStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS, isCheckWorkGroup, isCheckOwnership);
     }
 
     public long getInvoicesApprovedByBRECount() {
-        return service.getCountByStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE, isWorkgroupQueue);
+        return service.getCountByStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE, isCheckWorkGroup, isCheckOwnership);
     }
     
     public long getEscalatedInvoicesToHandlerCount() {
-        return service.getCountByStatus(ClaimStatus.INVOICE_ESCALATED_TO_CH, isWorkgroupQueue);
+        return service.getCountByStatus(ClaimStatus.INVOICE_ESCALATED_TO_CH, isCheckWorkGroup, isCheckOwnership);
     }
 
-    public long getInvoiceReferredToClaimsHandlerCount()
-    {
-        return service.getCountByStatus(ClaimStatus.INVOICE_REF_TO_CH, isWorkgroupQueue);
-    }
-
-    public long getClaimUnacknowledgedUnassignedAccessible()
-    {
-        return service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, isWorkgroupQueue);
+    public long getInvoiceReferredToClaimsHandlerCount() {
+        return service.getCountByStatus(ClaimStatus.INVOICE_REF_TO_CH, isCheckWorkGroup, isCheckOwnership);
     }
 
     public long getHireUpdateAnomaliesCount() {
-       return service.getHireUpdateWarningCountNumber(isWorkgroupQueue);
+       return service.getHireUpdateWarningCountNumber(isCheckWorkGroup, isCheckOwnership);
     }
 
 }

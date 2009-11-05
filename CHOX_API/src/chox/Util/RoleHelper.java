@@ -71,7 +71,7 @@ public class RoleHelper {
         boolean bFlag = false;
 
         if(isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_CH)
-                && user.getInsurer().isClaimOwnershipEnable()
+            && user.getInsurer().isClaimOwnershipEnable()
         ){
             bFlag = true;
         }
@@ -240,7 +240,5 @@ public class RoleHelper {
         return bFlag;
 
     }
-
-   
 
 }

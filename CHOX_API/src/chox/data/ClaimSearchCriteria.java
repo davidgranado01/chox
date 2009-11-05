@@ -39,9 +39,11 @@ public class ClaimSearchCriteria implements Serializable {
     private String dir;
     private Date reviewRequiredDateFrom;
     private Date reviewRequiredDateTo;
-    private boolean isCHQueue;
+    
     private int claimOwnerId;
 
+    private boolean isWorkgroupCheck;
+    private boolean isOwnerShipCheck;
 
     @TypeConversion(converter = "chox.web.data.DateConverter")
     public Date getReviewRequiredDateFrom() {
@@ -265,12 +267,20 @@ public class ClaimSearchCriteria implements Serializable {
         this.lastModifiedDateTo = lastModifiedDateTo;
     }
 
-    public boolean getIsCHQueue() {
-        return isCHQueue;
+    public boolean getIsOwnerShipCheck() {
+        return isOwnerShipCheck;
     }
 
-    public void setIsCHQueue(boolean isCHQueue) {
-        this.isCHQueue = isCHQueue;
+    public void setIsOwnerShipCheck(boolean isOwnerShipCheck) {
+        this.isOwnerShipCheck = isOwnerShipCheck;
+    }
+
+    public boolean getIsWorkgroupCheck() {
+        return isWorkgroupCheck;
+    }
+
+    public void setIsWorkgroupCheck(boolean isWorkgroupCheck) {
+        this.isWorkgroupCheck = isWorkgroupCheck;
     }
 
     public int getClaimOwnerId() {

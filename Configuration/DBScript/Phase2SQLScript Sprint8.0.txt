@@ -1158,6 +1158,7 @@ insert into accessibility_item values ('ROLE_CHO_MNG', 1, (select id from access
 
 --------------------
 
+-- PATCH UPDATE
 insert into accessibility values ((select max(id)+1 from accessibility), 'action.assignClaimOwnership.ClaimUnacknowledgedUnassigned');
 insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='action.assignClaimOwnership.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='action.assignClaimOwnership.ClaimUnacknowledgedUnassigned'), (select max(id)+1 from accessibility_item));
@@ -1418,5 +1419,95 @@ ALTER TABLE cho_band DROP COLUMN is_vehicle_class_ceiling_enable;
 
 update accessibility_item set access_right=2 where accessibility_id in (select id from accessibility where name like 'tab.Note%');
 delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'tab.Note%') and role!='ALL';
-
 update accessibility_item set access_right=2 where accessibility_id in (select id from accessibility where name like 'tab.PaymentPack.%');
+
+-- ############################################################################################
+-- START VERSION V2.8.2.15
+-- ############################################################################################\
+
+-- ############################################################################################
+-- START VERSION V2.8.2.16
+-- ############################################################################################\
+
+-- UPDATE CLAIM NUMBER --
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.InvoiceEscalatedToHandler');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.PaymentReceived');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.ClaimPending');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.ClaimReferredToEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.ClaimUpdatedByEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.ClaimRejected');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateInsurerClaimNumber.ClaimRejectionAccepted');
+
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ALL', 0, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.InvoiceEscalatedToHandler'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ALL', 0, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.PaymentReceived'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ALL', 0, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimPending'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ALL', 0, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimReferredToEngineer'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ALL', 0, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimUpdatedByEngineer'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ALL', 0, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimRejected'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ALL', 0, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimRejectionAccepted'));
+
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_CH', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.InvoiceEscalatedToHandler'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_CH', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.PaymentReceived'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_CH', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimPending'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_CH', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimReferredToEngineer'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_CH', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimUpdatedByEngineer'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_CH', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimRejected'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_CH', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimRejectionAccepted'));
+
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_FNOL', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.InvoiceEscalatedToHandler'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_FNOL', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.PaymentReceived'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_FNOL', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimPending'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_FNOL', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimReferredToEngineer'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_FNOL', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimUpdatedByEngineer'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_FNOL', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimRejected'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_FNOL', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimRejectionAccepted'));
+
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_MNG', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.InvoiceEscalatedToHandler'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_MNG', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.PaymentReceived'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_MNG', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimPending'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_MNG', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimReferredToEngineer'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_MNG', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimUpdatedByEngineer'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_MNG', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimRejected'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_MNG', 2, (select id from accessibility where name='extraAction.updateInsurerClaimNumber.ClaimRejectionAccepted'));
+
+-- UPDATE CLAIM OWNER --
+
+delete from accessibility_item where id in (select id from accessibility where name='extraAction.updateClaimOwner.ClaimUnacknowledgedUnassigned');
+delete from accessibility where name='extraAction.updateClaimOwner.ClaimUnacknowledgedUnassigned';
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateClaimOwner.ClaimPending');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateClaimOwner.ClaimUpdatedByEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateClaimOwner.PaymentReceived');
+
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ALL', 0, (select id from accessibility where name='extraAction.updateClaimOwner.ClaimPending'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ALL', 0, (select id from accessibility where name='extraAction.updateClaimOwner.ClaimUpdatedByEngineer'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ALL', 0, (select id from accessibility where name='extraAction.updateClaimOwner.PaymentReceived'));
+
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_COM', 1, (select id from accessibility where name='extraAction.updateClaimOwner.ClaimPending'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_COM', 1, (select id from accessibility where name='extraAction.updateClaimOwner.ClaimUpdatedByEngineer'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_COM', 1, (select id from accessibility where name='extraAction.updateClaimOwner.PaymentReceived'));
+
+-- INSURER TABLE --
+
+ALTER TABLE insurer ADD COLUMN cho_agreed_benefit_value numeric(10,2);
+UPDATE insurer set cho_agreed_benefit_value = 0.00;
+ALTER TABLE insurer ALTER COLUMN cho_agreed_benefit_value SET STORAGE MAIN;
+ALTER TABLE insurer ALTER COLUMN cho_agreed_benefit_value SET NOT NULL;
+ALTER TABLE insurer ALTER COLUMN cho_agreed_benefit_value SET DEFAULT 0.00;
+
+ALTER TABLE insurer ADD COLUMN scs_agreed_benefit_share_value numeric(10,2);
+UPDATE insurer set scs_agreed_benefit_share_value = 0.00;
+ALTER TABLE insurer ALTER COLUMN scs_agreed_benefit_share_value SET STORAGE MAIN;
+ALTER TABLE insurer ALTER COLUMN scs_agreed_benefit_share_value SET NOT NULL;
+ALTER TABLE insurer ALTER COLUMN scs_agreed_benefit_share_value SET DEFAULT 0.00;
+
+-- DO NOT ASSIGN CHO MNG TO ASSIGN CLAIM OWNER -- 
+delete from accessibility_item where accessibility_id = (select id from accessibility where name='action.assignClaimOwnership.ClaimUnacknowledgedUnassigned') and role='ROLE_CHO_MNG';
+
+-- ASSIGN INS MNG TO ASSIGN CLAIM OWNER -- 
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_MNG', 1, (select id from accessibility where name='action.assignClaimOwnership.ClaimUnacknowledgedUnassigned'));
+
+-- DO NOT ASSIGN INS MNG TO ASSIGN CLAIM OWNER (BATCH UPDATE) -- 
+delete from accessibility_item where accessibility_id = (select id from accessibility where name='action.claimOwnership.ClaimUnacknowledgedUnassigned') and role='ROLE_INS_MNG';
+

@@ -209,25 +209,25 @@ fieldset div
 {
     display:inline;
     margin-right: 2px;
-    width:20px;
+    width:15px;
 }
 
 .chox-form-checkboxitem .chox-form-check-label
 {
     display:inline;
-    margin-right: 5px;
     text-align: left;
-    white-space: nowrap;
-    font-size:0.9em;
+    font-size:0.88em;
     font-weight: bold;
     text-transform:capitalize;
+    vertical-align:top;
 }
 
 .chox-form-checkboxitem .chox-form-check-description
 {
-    margin:0px 0px 3px 30px;
+    margin:0px 0px 3px 20px;
     color:#181818;
     font-size:0.85em;
+
 }
 
 .chox-form-item .chox-form-pop

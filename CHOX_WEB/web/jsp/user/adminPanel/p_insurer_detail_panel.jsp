@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
@@ -43,7 +44,9 @@
                     address5:{ required:true, regex: "^\\s*[a-zA-Z.,\\s]+\\s*$" },
                     postcode:{ required:true },  
                     phone:{ regex:"^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$" },                 
-                    adminHandlingCharge:{ required:true, number:true, min:0 }
+                    adminHandlingCharge:{ required:true, number:true, min:0 },
+                    choAgreedBenefitValue:{ required:true, number:true, min:0 },
+                    scsAgreedBenefitShareValue:{ required:true, number:true, min:0, max:100 }
                },
                messages: {
                  name: {required:"You must supply a value for 'Name'" }, 
@@ -55,7 +58,9 @@
                  address4:{ required:"You must supply a value for 'County'", regex:"'County' must be letters only" },
                  address5:{ required:"You must supply a value for 'Country'", regex:"'Country' must be letters only" },
                  postcode:{ required:"You must supply a value for 'Postcode'" },
-                 phone:{ regex:"'Telephone Number' must be numeric" }                     
+                 phone:{ regex:"'Telephone Number' must be numeric" },
+                 choAgreedBenefitValue:{ required:"You must supply a value for 'Agreed Benefit Value'", number:"'Agreed Benefit Value' must be numeric", min:"'Agreed Benefit Value' cannot be less than zero" },
+                 scsAgreedBenefitShareValue:{ required:"You must supply a value for 'SCS Agreed Benefit Share'", number:"'SCS Agreed Benefit Share' must be numeric", min:"'SCS Agreed Benefit Share' cannot be less than zero", max:"'SCS Agreed Benefit Share' cannot be higher than 100%" }
                },
                submitHandler: function(form) {}
             });
@@ -293,8 +298,16 @@
                         <input type="text" maxlength="50" class="chox-ttxt" id="CCDPhone" name="phone" value="<s:property value="phone" />"/>
                     </div>              
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label">Admin Handling Charge<span class="mandatory">*</span></label>
+                    <label class="chox-form-std-label">Admin Handling Charge (£)<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDAdminHandlingCharge" name="adminHandlingCharge" value="<s:property value="adminHandlingCharge" />"/>
+                </div>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">Agreed Benefit Value (£)<span class="mandatory">*</span></label>
+                    <input type="text" class="chox-ttxt" id="CCDAhoAgreedBenefitValue" name="choAgreedBenefitValue" value="<s:property value="choAgreedBenefitValue" />"/>
+                </div>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">SCS Agreed Benefit Share (%)<span class="mandatory">*</span></label>
+                    <input type="text" class="chox-ttxt" id="CCDScsAgreedBenefitShareValue" name="scsAgreedBenefitShareValue" value="<s:property value="scsAgreedBenefitShareValue" />"/>
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Enable Workgroup</label>

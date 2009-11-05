@@ -10,6 +10,8 @@ public class Insurer extends AuditableEntity implements Serializable, IInsurerIn
 
     protected String name;
     protected BigDecimal adminHandlingCharge;
+    protected BigDecimal choAgreedBenefitValue;
+    protected BigDecimal scsAgreedBenefitShareValue;
     protected boolean status;
     protected String address1;
     protected String address2;
@@ -27,6 +29,22 @@ public class Insurer extends AuditableEntity implements Serializable, IInsurerIn
 
     public Insurer() {
         vehicleClassCeilings = new ArrayList<VehicleClassCeiling>();
+    }
+
+    public BigDecimal getChoAgreedBenefitValue() {
+        return choAgreedBenefitValue;
+    }
+
+    public void setChoAgreedBenefitValue(BigDecimal choAgreedBenefitValue) {
+        this.choAgreedBenefitValue = choAgreedBenefitValue;
+    }
+
+    public BigDecimal getScsAgreedBenefitShareValue() {
+        return scsAgreedBenefitShareValue;
+    }
+
+    public void setScsAgreedBenefitShareValue(BigDecimal scsAgreedBenefitShareValue) {
+        this.scsAgreedBenefitShareValue = scsAgreedBenefitShareValue;
     }
 
     public BigDecimal getAdminHandlingCharge() {

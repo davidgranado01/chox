@@ -7,7 +7,6 @@ import chox.model.Chorganisation;
 import chox.model.ClaimStatus;
 import chox.model.IdLookupItem;
 import chox.model.Insurer;
-//import chox.model.LineOfBusiness;
 import chox.model.LookupItem;
 import chox.model.ReasonOfDelay;
 import chox.model.UserWorkgroup;
@@ -19,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -131,7 +131,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     private List getWorkgroupsByUserId(int userId, boolean isActiveOnly){
 
-        List workgroup = new ArrayList();
+        List workgroups = new ArrayList();
 
         DetachedCriteria criteria = DetachedCriteria.forClass(UserWorkgroup.class);
         criteria.add(Restrictions.eq("user.id", userId));
@@ -144,16 +144,38 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
             if(isActiveOnly){
                 if(a.getWorkgroup().isStatus()){
-                    workgroup.add((Workgroup)a.getWorkgroup());
+                    workgroups.add((Workgroup)a.getWorkgroup());
                 }
             }else{
-                workgroup.add((Workgroup)a.getWorkgroup());
+                workgroups.add((Workgroup)a.getWorkgroup());
             }
         }
 
-        return workgroup;
+        return workgroups;
     }
     
+    public List getNotMyWorkgroups(WebUser user, boolean isActiveOnly){
+
+        List allWorkgroupsByIns = getWorkgroupsByInsurerId(user.getInsurer().getId(), isActiveOnly);
+        Set workgroupIds = user.getWorkgroupIds();
+
+        List workgroups = new ArrayList();
+
+        for (Object o : allWorkgroupsByIns) {
+            
+            Workgroup wg = (Workgroup) o;
+
+            if(!workgroupIds.contains(wg.getId())){
+                workgroups.add(wg);
+            }
+
+        }
+        
+        return workgroups;
+        
+    }
+
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // SUPPLIERS / CREDIT HIRES
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

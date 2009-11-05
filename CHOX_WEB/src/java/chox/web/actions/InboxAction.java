@@ -74,7 +74,6 @@ public class InboxAction extends BaseAction implements SessionAware {
         return accessRight > 0;
     }
 
-    // SPRINT 8
     public boolean getIsDoInvoicePaymentReceivedAccessibile()
     {
         short accessRight = applicationAccessibility.checkActionAccessibility("doInvoicePaymentReceived", super.getAuthenticatedUser().getAuthorities(), ClaimStatus.INVOICE_PAYMENT_LOGGED);
