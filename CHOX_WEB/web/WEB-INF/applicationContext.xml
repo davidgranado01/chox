@@ -49,7 +49,6 @@
                 <value>chox/model/Injury.hbm.xml</value>
                 <value>chox/model/Insurer.hbm.xml</value>
                 <value>chox/model/Invoice.hbm.xml</value>
-                <value>chox/model/LineOfBusiness.hbm.xml</value>
                 <value>chox/model/Solicitor.hbm.xml</value>
                 <value>chox/model/ThirdParty.hbm.xml</value>
                 <value>chox/model/VehicleClass.hbm.xml</value>
@@ -76,6 +75,7 @@
                 <value>chox/model/Notification.hbm.xml</value>
                 <value>chox/model/VehicleClassCeiling.hbm.xml</value>
                 <value>chox/model/AutomaticRouting.hbm.xml</value>
+                <value>chox/model/AccessibilityEditable.hbm.xml</value>
             </list>
         </property>
         <property name="entityInterceptor" ref="auditInterceptor"/>

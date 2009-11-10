@@ -62,11 +62,12 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
             for (Object obj : results) {
                 Claim c = (Claim) obj;
-                viewData.add(new claimGridViewData(c));
+                viewData.add(new claimGridViewData(c, getAuthenticatedUser().getUser()));
             }
 
             JSONArray jsonArray = JSONArray.fromObject(viewData);
             return "{totalCount:" + this.getTotalCount() + ",results:" + jsonArray.toString() + "}";
+            
         } catch (Exception ex) {
             return null;
         }

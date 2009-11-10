@@ -34,7 +34,7 @@
 
         }
 
-        doShowClaimHandler(selectedWorkgroupId);
+        doUpdateOwnershipShowClaimHandler(selectedWorkgroupId, insurerId);
         doUpdateOwnershipFormValidation();
 
     });
@@ -85,12 +85,12 @@
         }
 
         claimOwnerId = -1;
-        doShowClaimHandler(selectedWorkgroupId);
+        doUpdateOwnershipShowClaimHandler(selectedWorkgroupId, insurerId);
 
     }
 
-    function doShowClaimHandler(selectedWorkgroupId){
-        $("#claimHandlerRoleUserDropDownDiv").load("ClaimHandlerRoleUserDropDownAction.action?workgroupId=" + selectedWorkgroupId + "&insurerId="+insurerId);
+    function doUpdateOwnershipShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
+        $("#claimHandlerRoleUserDropDownDiv").load("ClaimHandlerRoleUserDropDownAction.action?workgroupId=" + selectedWorkgroupId + "&insurerId="+selectedInsurerId);
     }
 
     function doUpdateOwnershipSubmit(a){

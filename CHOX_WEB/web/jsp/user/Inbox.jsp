@@ -41,7 +41,10 @@
             {name:'lastModifiedDate', type: 'string', dateFormat:'timestamp'},
             {name:'reviewDate', type: 'string', dateFormat:'timestamp'},
             {name:'insurer'},
-            {name:'cho'}
+            {name:'cho'},
+            {name:'isWorkgroupEditable', type:'boolean'},
+            {name:'isOwnershipEditable', type:'boolean'},
+            {name:'ownerName'}
         ]
     });
     
@@ -52,10 +55,8 @@
         remoteSort: true
     });
     ds.setDefaultSort('created', 'desc');
-     
+
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';     
-
-
 
     function showClaimByStatus(status, isWorkgroupCheck, isOwnerShipCheck)
     {
@@ -185,7 +186,7 @@
     }
     
     function searchClaim()
-    {        
+    {   
         var supplierReference = Ext.query('*[name$=supplierReference]')[0].value;
         var supplierId = Ext.query('*[name$=supplierId]').length > 0 ? Ext.query('*[name$=supplierId]')[0].value : -1;
         var insurerId = Ext.query('*[name$=insurerId]').length > 0 ? Ext.query('*[name$=insurerId]')[0].value : -1;
@@ -246,28 +247,65 @@
             displayMsg: 'Displaying claims {0} - {1} of {2}',
             emptyMsg: "No claim to display"
         });
-        
+
+        function getErrorClaims(selectedRecords, isWorkgroupCheck, isOwnershipCheck){
+
+            var isWgValid = true;
+            var isOwValid = true;
+                
+            var selectedNotMyClaimsIDs = $.map(selectedRecords, function(n){
+
+                isWgValid = true;
+                isOwValid = true;
+                
+                if(isWorkgroupCheck && !n.json.isWorkgroupEditable){
+                    isWgValid = false;
+                }
+
+                if(isOwnershipCheck && !n.json.isOwnershipEditable){
+                    isOwValid = false;
+                }
+
+                if(!isWgValid || !isOwValid){
+                    return n.json.supplierReference;
+                }
+                
+            });
+
+            if(selectedNotMyClaimsIDs.length>0){
+                propmtMsg("", selectedNotMyClaimsIDs.join(", ") + " are not belong to you, please de-select them");
+            }
+
+            return selectedNotMyClaimsIDs;
+        }
+
         var approvedInvoicesPaymentAction = new Ext.Action
         ({
             text: 'Update Claim(s) To Invoice Payment Logged',
             handler: function(){
+                
                 if(confirm('Are you sure you want to perform this action?'))
                 {
-                    var selectedRecords =  sm2.getSelections();  
-                    var selectedIDs = $.map(selectedRecords, function(n){
-                        return n.json.id;
-                    });
+                    var selectedRecords =  sm2.getSelections();
+                    var selectedNotMyClaimsIDs = getErrorClaims(selectedRecords, true, true);
 
-                    var param = selectedIDs.join(",")
+                    if(selectedNotMyClaimsIDs.length<=0){
 
-                    $.ajax({
-                        url: "logInvoicePayments.action?selectedClaimIds=" + param,
-                        success: function()
-                        {
-                            ds.reload();
-                            refreshFilterPanel();
-                        }
-                    });
+                        var selectedIDs = $.map(selectedRecords, function(n){
+                            return n.json.id;
+                        });
+                        
+                        var param = selectedIDs.join(",")
+
+                        $.ajax({
+                            url: "logInvoicePayments.action?selectedClaimIds=" + param,
+                            success: function()
+                            {
+                                ds.reload();
+                                refreshFilterPanel();
+                            }
+                        });
+                    }
                 }
             }
         }); 
@@ -278,21 +316,26 @@
             handler: function(){
                 if(confirm('Are you sure you want to perform this action?'))
                 {
-                    var selectedRecords =  sm2.getSelections();  
-                    var selectedIDs = $.map(selectedRecords, function(n){
-                        return n.json.id;
-                    });
+                    var selectedRecords =  sm2.getSelections();
+                    var selectedNotMyClaimsIDs = getErrorClaims(selectedRecords, true, true);
 
-                    var param = selectedIDs.join(",")
+                    if(selectedNotMyClaimsIDs.length<=0){
+                    
+                        var selectedIDs = $.map(selectedRecords, function(n){
+                            return n.json.id;
+                        });
 
-                    $.ajax({
-                        url: "clearBREApprovedInvoicesForPayment.action?selectedClaimIds=" + param,
-                        success: function()
-                        {
-                            ds.reload();
-                            refreshFilterPanel();
-                        }
-                    });
+                        var param = selectedIDs.join(",")
+
+                        $.ajax({
+                            url: "clearBREApprovedInvoicesForPayment.action?selectedClaimIds=" + param,
+                            success: function()
+                            {
+                                ds.reload();
+                                refreshFilterPanel();
+                            }
+                        });
+                    }
                 }
             }
         }); 
@@ -303,24 +346,30 @@
             handler: function(){
                 if(confirm('Are you sure you want to perform this action?'))
                 {
-                    var selectedRecords =  sm2.getSelections();  
-                    var selectedIDs = $.map(selectedRecords, function(n){
-                        return n.json.id;
-                    });
+                    var selectedRecords =  sm2.getSelections();
+                    var selectedNotMyClaimsIDs = getErrorClaims(selectedRecords, true, true);
 
-                    var param = selectedIDs.join(",")
+                    if(selectedNotMyClaimsIDs.length<=0){
+                        
+                        var selectedIDs = $.map(selectedRecords, function(n){
+                            return n.json.id;
+                        });
 
-                    $.ajax({
-                        url: "doInvoicePaymentReceivedAction.action?selectedClaimIds=" + param,
-                        success: function()
-                        {
-                            ds.reload();
-                            refreshFilterPanel();
-                        }
-                    });
+                        var param = selectedIDs.join(",")
+
+                        $.ajax({
+                            url: "doInvoicePaymentReceivedAction.action?selectedClaimIds=" + param,
+                            success: function()
+                            {
+                                ds.reload();
+                                refreshFilterPanel();
+                            }
+                        });
+                        
+                    }
                 }
             }
-        });
+       });
 
        var wgSelectionDlg;
        var doClaimRoutedAction = new Ext.Action({
@@ -328,78 +377,84 @@
             text: 'Route Claim(s)',
             handler: function(){
 
-                if(!wgSelectionDlg)
-                {
-                        wgSelectionDlg =  new Ext.Window({
-                            applyTo:'wgSelectionDlgHolder',
-                            width:410,
-                            height:280,
-                            modal: true,
-                            closeAction:'hide',
-                            plain: false,
-                            title: 'Route Claim(s)',
-                            resizable : false,
-                            items: new Ext.Panel({
-                                applyTo: 'wgSelectionPanel'
-                            }),
-                            buttons: [{
-                                    text:'Ok',
-                                    handler:function(){
-                                        var selectedRecords =  sm2.getSelections();
-                                        var selectedIDs = $.map(selectedRecords, function(n){
-                                            return n.json.id;
-                                        });
+                var selectedRecords =  sm2.getSelections();
+                var selectedNotMyClaimsIDs = getErrorClaims(sm2.getSelections(), false, false);
 
-                                        var param = selectedIDs.join(",");
-                                        $('form#routeClaimForm input[name="selectedClaimIds"]').val(param);
+                if(selectedNotMyClaimsIDs.length<=0){
 
-                                        $("form#routeClaimForm").validate(
-                                        {
-                                            errorLabelContainer: "#HMmessageBox",
-                                            rules: {
-                                                workgroup:{
-                                                    required:true, min:1
+                    if(!wgSelectionDlg)
+                    {
+                            wgSelectionDlg =  new Ext.Window({
+                                applyTo:'wgSelectionDlgHolder',
+                                width:410,
+                                height:280,
+                                modal: true,
+                                closeAction:'hide',
+                                plain: false,
+                                title: 'Route Claim(s)',
+                                resizable : false,
+                                items: new Ext.Panel({
+                                    applyTo: 'wgSelectionPanel'
+                                }),
+                                buttons: [{
+                                        text:'Ok',
+                                        handler:function(){
+
+                                            $("form#routeClaimForm").validate(
+                                            {
+                                                errorLabelContainer: "#HMmessageBox",
+                                                rules: {
+                                                    workgroup:{
+                                                        required:true, min:1
+                                                    }
+                                                },
+                                                messages: {
+                                                    workgroup:{
+                                                        required:"You must select 'Workgroup'",
+                                                        min:"You must select 'Workgroup'"
+                                                    }
                                                 }
-                                            },
-                                            messages: {
-                                                workgroup:{
-                                                    required:"You must select 'Workgroup'",
-                                                    min:"You must select 'Workgroup'"
-                                                }
+                                            });
+
+                                            if($('form#routeClaimForm').valid()){
+
+                                                var selectedIDs = $.map(selectedRecords, function(n){
+                                                    return n.json.id;
+                                                });
+
+                                                var param = selectedIDs.join(",");
+                                                $('form#routeClaimForm input[name="selectedClaimIds"]').val(param);
+
+                                                var submitOption = {
+                                                    clearForm: true,
+                                                    success:function(){
+                                                    ds.reload();
+                                                    refreshFilterPanel();
+                                                    wgSelectionDlg.hide();
+                                                }};
+                                                $("form#routeClaimForm").ajaxSubmit(submitOption);
+
                                             }
-                                        });
-
-                                        if($('form#routeClaimForm').valid()){
-
-                                            var submitOption = {
-                                                clearForm: true,
-                                                success:function(){
-                                                ds.reload();
-                                                refreshFilterPanel();
-                                                wgSelectionDlg.hide();
-                                            }};
-                                            $("form#routeClaimForm").ajaxSubmit(submitOption);
-
+                                            else{
+                                                propmtErrorMsg('Workgroup could not be blank.');
+                                            }
                                         }
-                                        else{
-                                            propmtErrorMsg('Workgroup could not be blank.');
+                                    },{
+                                        text: 'Close',
+                                        handler: function(){
+                                            wgSelectionDlg.hide();
                                         }
-                                    }
-                                },{
-                                    text: 'Close',
-                                    handler: function(){
-                                        wgSelectionDlg.hide();
-                                    }
-                                }]
-                        });
+                                    }]
+                            });
 
-                        wgSelectionDlg.addListener('beforeshow',
-                            function(dialog){
-                                $('div#wgSelectionHolder').load('user/GetWorkgroupDropDownActionByUser.action');
-                            }
-                        );
+                            wgSelectionDlg.addListener('beforeshow',
+                                function(dialog){
+                                    $('div#wgSelectionHolder').load('user/GetWorkgroupDropDownActionByInsurer.action');
+                                }
+                            );
+                    }
+                    wgSelectionDlg.show(this);
                 }
-                wgSelectionDlg.show(this);
             }
         });
 
@@ -409,8 +464,13 @@
             text: 'Assign Claim(s) Owner',
             handler: function(){
 
-                if(!coSelectionDlg)
-                {
+                var selectedRecords =  sm2.getSelections();
+                var selectedNotMyClaimsIDs = getErrorClaims(selectedRecords, true, false);
+
+                if(selectedNotMyClaimsIDs.length<=0){
+
+                    if(!coSelectionDlg)
+                    {
                         coSelectionDlg =  new Ext.Window({
                             applyTo:'coSelectionDlgHolder',
                             width:410,
@@ -424,10 +484,41 @@
                                 applyTo: 'coSelectionPanel'
                             }),
                             buttons: [{
-                                    text:'Ok',
-                                    handler:function(){
-                                        
-                                        var selectedRecords =  sm2.getSelections();
+                                text:'Ok',
+                                handler:function(){
+
+                                    $("form#ownershipClaimForm").validate(
+                                    {
+                                        rules: {
+                                        workgroupId:{required:isClaimOwnerWorkgroupFieldValid},
+                                        claimOwnerId:{min:1}
+                                        },
+                                        messages: {
+                                        workgroupId:{required:"You must select 'Workgroup'"},
+                                        claimOwnerId:{min:"You must select 'Claim Owner'"}
+                                        }
+                                    });
+
+
+                                    function isClaimOwnerWorkgroupFieldValid(){
+                                        var bFlag = false;
+
+                                        var isInsurerWorkgroupEnable = false;
+
+                                        if($("#userInsurerWorkgroupEnable").val()!=null && $("#userInsurerWorkgroupEnable").val()!=""){
+                                            isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
+                                        }
+
+                                        if(isInsurerWorkgroupEnable && ($("#workgroupId").val()<=0 || $("#workgroupId").val()=="")){
+                                            bFlag = true;
+                                        }
+
+                                        return bFlag;
+                                    }
+
+
+                                    if($('form#ownershipClaimForm').valid()){
+
                                         var selectedIDs = $.map(selectedRecords, function(n){
                                             return n.json.id;
                                         });
@@ -436,74 +527,48 @@
 
                                         $('form#ownershipClaimForm input[name="selectedClaimIds"]').val(param);
 
-                                        $("form#ownershipClaimForm").validate(
-                                        {
-                                            rules: {
-                                                workgroupId:{required:isClaimOwnerWorkgroupFieldValid},
-                                                claimOwnerId:{min:1}
-                                            },
-                                            messages: {
-                                                workgroupId:{required:"You must select 'Workgroup'"},
-                                                claimOwnerId:{min:"You must select 'Claim Owner'"}
-                                            }
-                                        });
+                                        var submitOption = {
+                                            clearForm: true,
+                                            success:function(){
+                                            ds.reload();
+                                            refreshFilterPanel();
+                                            coSelectionDlg.hide();
+                                        }};
 
-                                        function isClaimOwnerWorkgroupFieldValid(){
-                                            var bFlag = false;
-
-                                            var isInsurerWorkgroupEnable = false;
-
-                                            if($("#userInsurerWorkgroupEnable").val()!=null && $("#userInsurerWorkgroupEnable").val()!=""){
-                                                isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
-                                            }
-                            
-                                            if(isInsurerWorkgroupEnable && ($("#workgroupId").val()<=0 || $("#workgroupId").val()=="")){
-                                                bFlag = true;
-                                            }
-
-                                            return bFlag;
-                                        }
-
-                                        if($('form#ownershipClaimForm').valid()){
-                                            
-                                            var submitOption = {
-                                                clearForm: true,
-                                                success:function(){
-                                                ds.reload();
-                                                refreshFilterPanel();
-                                                coSelectionDlg.hide();
-                                            }};
-                                            $("form#ownershipClaimForm").ajaxSubmit(submitOption);
-                                        }                                       
+                                        $("form#ownershipClaimForm").ajaxSubmit(submitOption);
                                     }
-                                },{
-                                    text: 'Close',
-                                    handler: function(){
-                                        coSelectionDlg.hide();
-                                    }
-                                }]
+                                }
+                            },{
+                                text: 'Close',
+                                handler: function(){
+                                    coSelectionDlg.hide();
+                                }
+                            }]
                         });
-                        
+
                         coSelectionDlg.addListener('beforeshow',
-                        function(dialog){
-                            
-                            var insurerId = $("#userInsurerId").val();
-                            var isInsurerWorkgroupEnable = false;
+                            function(dialog){
 
-                            if($("#userInsurerWorkgroupEnable").val()!=null && $("#userInsurerWorkgroupEnable").val()!=""){
-                                isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
+                                var insurerId = $("#userInsurerId").val();
+                                var isInsurerWorkgroupEnable = false;
+
+                                if($("#userInsurerWorkgroupEnable").val()!=null && $("#userInsurerWorkgroupEnable").val()!=""){
+                                    isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
+                                }
+
+                                if(isInsurerWorkgroupEnable){
+                                    $('div#coSelectionHolder').load('user/GetWorkgroupDropDownActionByInsurer.action');
+                                }
+
+                                $('#coClaimHandlerRoleUserDropDownDiv').load("user/ClaimHandlerRoleUserDropDownAction.action?workgroupId=-1&insurerId="+insurerId);
                             }
 
-                            if(isInsurerWorkgroupEnable){
-                                $('div#coSelectionHolder').load('user/GetWorkgroupDropDownActionByUserOnChange.action');
-                            }
-                            
-                            $('#coClaimHandlerRoleUserDropDownDiv').load("user/GetClaimHandlerRoleUserDropDownAction.action?workgroupId=-1&insurerId="+insurerId);
-                        }
-                        
-                    );
-                }
-                coSelectionDlg.show(this);
+                        );
+                    }
+
+                    coSelectionDlg.show(this);
+
+                 }
             }
         });
         
@@ -619,7 +684,8 @@
                 {header: "Last Modified", width: 180, sortable: true, dataIndex: 'lastModifiedDate'},
                 {header: "Review Date", width: 180, sortable: true, dataIndex: 'reviewDate'},
                 {header: "Invoice Amount", width: 200, sortable: true, dataIndex: 'invoiceAmount'},
-                {header: "Viewing", width: 120, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
+                {header: "Owner", width: 100, sortable: true, dataIndex: 'ownerName'},
+                {header: "Viewing", width: 80, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
                         return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '" class="std-label-ro">-</label>'}}
             ],
             sm:sm2,
@@ -785,6 +851,7 @@
 
         loadDataFromSession();
     });
+
 
 </script>
 

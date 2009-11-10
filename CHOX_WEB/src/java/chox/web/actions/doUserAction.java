@@ -2,14 +2,11 @@ package chox.web.actions;
 
 import chox.Util.DateHelper;
 import chox.model.Chorganisation;
-import chox.model.IdLookupItem;
 import chox.model.Insurer;
-import chox.model.LineOfBusiness;
 import chox.model.WebUser;
 import chox.services.ChorganisationService;
 import chox.services.ClaimService;
 import chox.services.InsurerService;
-import chox.services.LineOfBusinessService;
 import chox.services.LookupService;
 import chox.services.UserService;
 import chox.services.WebUserUserRoleService;
@@ -33,11 +30,9 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     private InsurerService insurerService;
     private ChorganisationService chorganisationService;
     private WebUserUserRoleService webUserUserRoleService;
-    // private LineOfBusinessService lineOfBusinessService;
     private ClaimService claimService;
     private Integer insurerId = -1;
     private Integer supplierId = -1;
-    private Integer lineOfBusinessId = -1;
     private PermissionedUser currentUser = getAuthenticatedUser();
     private boolean isOrgSelectable = false;
     private String tabIndex;;
@@ -71,14 +66,6 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     public List getInsurers() {
         insurers = this.lookupService.getInsurers();
         return insurers;
-    }
-
-    public Integer getLineOfBusinessId() {
-        return lineOfBusinessId;
-    }
-
-    public void setLineOfBusinessId(Integer lineOfBusinessId) {
-        this.lineOfBusinessId = lineOfBusinessId;
     }
 
     public List getSuppliers() {
@@ -181,11 +168,6 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     public void setInsurerService(InsurerService insurerService) {
         this.insurerService = insurerService;
     }
-    /*
-    public void setLineOfBusinessService(LineOfBusinessService lineOfBusinessService) {
-        this.lineOfBusinessService = lineOfBusinessService;
-    }
-    */
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
@@ -245,25 +227,12 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
             model.setLastModifiedBy(this.getAuthenticatedUser().getUser());
             model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
-            /*
-            LineOfBusiness lineofbusiness = null;
-
-            if (lineOfBusinessId != null && lineOfBusinessId > 0) {
-                // lineofbusiness = lineOfBusinessService.getObject(lineOfBusinessId);
-                // model.setLineOfBusiness(lineofbusiness);
-            }
-            */
             
             if (mode.equalsIgnoreCase("New")) {
                 
                 doAddNewObject();
                 
             } else {
-
-                if ((lineOfBusinessId == null || lineOfBusinessId < 0) && orgTypeId.equalsIgnoreCase("2")) {
-                    // model.setLineOfBusiness(null);
-                }
                 
                 if (!this.service.isEmailExist(model.getEmail(), model.getId())) {
                     this.service.updateObject(model);

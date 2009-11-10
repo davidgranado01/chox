@@ -1,9 +1,3 @@
-<%-- 
-    Document   : p_notificationList
-    Created on : 16-Sep-2009, 19:13:43
-    Author     : emmanuel
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <s:if test="isClaimAnomalous && !isCHO">
@@ -13,11 +7,11 @@
             <div class="status-warning listContainer">
                 <ul>
                     <s:iterator value="notifications">
-                        <li><s:property value="message"/> <s:if test="isClaimEditable">(<a href='javascript:removeNotification(<s:property value="id"/>);'>Remove note from list</a>)</s:if></li>
+                        <li><s:property value="message"/> <s:if test="isClaimNotificationEditable">(<a href='javascript:removeNotification(<s:property value="id"/>);'>Remove note from list</a>)</s:if></li>
                     </s:iterator>
                 </ul>
             </div>
-            <s:if test="isClaimEditable">
+            <s:if test="isClaimNotificationEditable">
             <input type="button" value="Remove All" onclick='javascript:removeNotification(-1);' />
             </s:if>
         </fieldset>

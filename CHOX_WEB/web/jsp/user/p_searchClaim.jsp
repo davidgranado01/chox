@@ -1,22 +1,15 @@
-<%-- 
-    Document   : partial-searchClaim
-    Created on : 20-Nov-2008, 21:37:13
-    Author     : Emmanuel
---%>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script language="JavaScript">  
 
-    var isClaimHandlerOnly = false;
     var isChoxAdmin = false
     var insurerId = -1;
     var claimOwnerId = -1;
     
     $(document).ready(function(){
         doInsurerSearchSelectOnChange();
-         isClaimHandlerOnly = <s:property value="isClaimHandlerOnly"/>;
-         doShowClaimHandler(-1, -1);
+        doShowClaimHandler(-1, -1);
     }); 
     
     Ext.onReady(function(){                              
@@ -111,25 +104,25 @@
     }); 
     
     function doInsurerSearchSelectOnChange(){
-
-        if(!<s:property value="AuthenticatedUser.IsCHO"/>){
-            
-            var selectedInsurerId = -1;
-
-            if($("#insurerId").val()!=null){
-                selectedInsurerId = $("#insurerId").val();
-            }
-            
-            $("#searchScreenWorkgroupDropDownDiv").load("SearchWorkgroupDropDownAction.action?orgId=" + selectedInsurerId);
-
-        }
         
+        var selectedInsurerId = -1;
+
+        if($("#insurerId").val()!=null){
+            selectedInsurerId = $("#insurerId").val();
+        }
+
+        $("#searchScreenWorkgroupDropDownDiv").load("SearchWorkgroupDropDownAction.action?orgId=" + selectedInsurerId);
+        doShowClaimHandler(-1, selectedInsurerId);
     }
 
-   function doShowClaimHandler(selectedWorkgroupId, insurerId){
-       if(!isClaimHandlerOnly){
-            $('#searchScreenClaimhandlerDownDiv').load("user/GetClaimHandlerRoleUserDropDownAction.action?workgroupId="+selectedWorkgroupId+"&insurerId="+insurerId);
+   function doShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
+
+       var isInsurerUser = <s:property value="isInsurer"/>;
+       if(isInsurerUser){
+           selectedInsurerId = <s:property value="OrganisationId"/>;
        }
+       $('#searchScreenClaimhandlerDownDiv').load("SearchClaimHandlerRoleUserDropDownAction.action?workgroupId="+selectedWorkgroupId+"&insurerId="+selectedInsurerId);
+       
    }
 
    function clearForm(){
@@ -249,18 +242,27 @@
                 </s:select>
             </td>
         </tr>
+
+
         <tr>
-            <s:if test="isInsurer || isChoxAdmin">
+            <s:if test="isInsurer">
+            <tr>
                  <td><label>Workgroup</label></td>
                  <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
-                 <td><label>Claim Handler</label></td>
+                 <td><label>Claim Owner</label></td>
                  <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
+            </tr>
             </s:if>
             <s:else>
-                <input type="hidden" name="workgroup" id="workgroup" value="-1"/>
-                <input type="hidden" name="claimOwnerId" id="claimOwnerId" value="-1"/>
+            <tr>
+                 <td><label>Insurer's Workgroup</label></td>
+                 <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
+                 <td><label>Insurer's Claim Owner</label></td>
+                 <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
+            </tr>
             </s:else>
         </tr>
+
         <tr>
             <s:if test="isChoxAdmin">
                 <td><label>Supplier Name</label></td>

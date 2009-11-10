@@ -189,16 +189,6 @@ public class ClaimSearchCriteria implements Serializable {
         this.hireDateTo = hireDateTo;
     }
     
-    /*
-    public int getLineOfBusinessId() {
-        return lineOfBusinessId;
-    }
-
-    public void setLineOfBusinessId(int lineOfBusinessId) {
-        this.lineOfBusinessId = lineOfBusinessId;
-    }
-    */
-    
     public boolean getIsAnomalies() {
         return isAnomalies;
     }

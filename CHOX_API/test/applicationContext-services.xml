@@ -106,9 +106,6 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>  
-    <bean id="lineOfBusinessService" class="chox.services.LineOfBusinessServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
     <bean id="insurerChorganisationService" class="chox.services.InsurerChorganisationServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>    

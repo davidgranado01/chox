@@ -1,5 +1,13 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
+<script>
+
+    $(document).ready(function(){
+        $("#claimOwnerId").val(claimOwnerId);
+    });
+
+</script>
+
 <s:select
     id="claimOwnerId"
     name="claimOwnerId"

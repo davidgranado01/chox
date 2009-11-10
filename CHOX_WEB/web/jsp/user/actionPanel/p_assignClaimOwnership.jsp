@@ -37,11 +37,11 @@ if(statusMsg==null){
                 selectedWorkgroupId = $("#claimWorkgroupId").val();
             }
 
-            $("#workgroupId").val(selectedWorkgroupId);
+            $("#ownershipAssignmentWorkgroupId").val(selectedWorkgroupId);
             
         }
 
-        doShowClaimHandler(selectedWorkgroupId);
+        doOwnershipAssignmentShowClaimHandler(selectedWorkgroupId, insurerId);
         doAssignOwnershipFormValidation();
 
     });
@@ -59,7 +59,7 @@ if(statusMsg==null){
     function isWorkgroupFieldValid(){
         var bFlag = false;
 
-        if(isWorkgroupEnable && $("#workgroupId").val()<=0){
+        if(isWorkgroupEnable && $("#ownershipAssignmentWorkgroupId").val()<=0){
             bFlag = true;
         }
 
@@ -68,15 +68,15 @@ if(statusMsg==null){
 
     function doAssignOwnershipFormValidation(){
         
-        var validateFlag = $("#formOwnershipAction").validate(
+        var validateFlag = $("#formOwnershipAssignmentAction").validate(
         {
-            errorLabelContainer: "#OwnershipMessageBox",
+            errorLabelContainer: "#OwnershippAssignmentMessageBox",
             rules: {
-                workgroupId:{required:isWorkgroupFieldValid},
+                ownershipAssignmentWorkgroupId:{required:isWorkgroupFieldValid},
                 claimOwnerId:{min:1}
             },
             messages: {
-                workgroupId: {required:"You must supply a value for 'Workgroup'"},
+                ownershipAssignmentWorkgroupId: {required:"You must supply a value for 'Workgroup'"},
                 claimOwnerId: {min:"You must supply a value for 'Claim Owner'"}
             }
         });
@@ -85,23 +85,22 @@ if(statusMsg==null){
         
     }
 
-    function doWorkgroupChange(){
+    function doOwnershipAssignmentWorkgroupChange(){
 
-        if($("#workgroupId").val()!=null){
-            selectedWorkgroupId = $("#workgroupId").val();
+        if($("#ownershipAssignmentWorkgroupId").val()!=null){
+            selectedWorkgroupId = $("#ownershipAssignmentWorkgroupId").val();
         }
-        
         claimOwnerId = -1;
-        doShowClaimHandler(selectedWorkgroupId);
+        doOwnershipAssignmentShowClaimHandler(selectedWorkgroupId, insurerId);
     
     }
 
-    function doShowClaimHandler(selectedWorkgroupId){
-        $("#claimHandlerRoleUserDropDownDiv").load("ClaimHandlerRoleUserDropDownAction.action?workgroupId=" + selectedWorkgroupId + "&insurerId="+insurerId);
+    function doOwnershipAssignmentShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
+        $("#ownershipAssignmentClaimHandlerRoleUserDropDownDiv").load("ClaimHandlerRoleUserDropDownAction.action?workgroupId=" + selectedWorkgroupId + "&insurerId="+selectedInsurerId);
     }
 
     function doAssignOwnershipSubmit(a){
-        
+
         registeAction(a);
         
         if(doAssignOwnershipFormValidation().form()){
@@ -113,12 +112,12 @@ if(statusMsg==null){
 
 </script>
 
-<form onsubmit="return true;" action="user/ownershipAssignment.action" method="post" id="formOwnershipAction" name="formOwnershipAction">
+<form onsubmit="return true;" action="user/ownershipAssignment.action" method="post" id="formOwnershipAssignmentAction" name="formOwnershipAssignmentAction">
     <fieldset class="x-fieldset">
         <legend>Claim Ownership - Action Required</legend>
         <div>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="actionName" name="actionName" value="assigned" />
+            <s:hidden id="actionName" name="actionName" value="assigned_routed" />
 
             <input type="hidden" id="claimWorkgroupId" name="claimWorkgroupId" value="<s:property value="workgroup.id"/>">
             <input type="hidden" id="claimClaimOwnerId" name="claimClaimOwnerId" value="<s:property value="claimOwner.id"/>">
@@ -126,7 +125,7 @@ if(statusMsg==null){
 
             <div>
                 <div class="status-info">
-                Please assign the correct workgroup and claim owner to this claim and then click on the 'Assign Owner' button. If this claim has been assigned to the wrong workgroup, please use the 'More Actions' drop down to display the 'Remove Workgroup Mapping' action panel.
+                Please assign the claim owner for this claim and click on the 'Assign Owner' button. If this claim has been assigned to the incorrect Workgroup, please use the 'More Actions' drop down above, clicking on 'Re-assign Workgroup' to re-assign the claim's Workgroup.
                 </div>
                 <div class="status-control-set">
                     <table class="status-table" width="100%">
@@ -134,9 +133,9 @@ if(statusMsg==null){
                     <tr>
                         <td width="200px"><label width="200px">Workgroup</label></td>
                         <td width="100%">
-                            <s:select name="workgroupId" id="workgroupId"
+                            <s:select name="ownershipAssignmentWorkgroupId" id="ownershipAssignmentWorkgroupId"
                             list="workgroups" headerKey="" listKey="id" listValue="name"
-                            headerValue="-- Please Select --" onchange="doWorkgroupChange()">
+                            headerValue="-- Please Select --" onchange="doOwnershipAssignmentWorkgroupChange()">
                             </s:select>
                         </td>
                     </tr>
@@ -146,7 +145,7 @@ if(statusMsg==null){
                     </s:else>
                     <tr>
                         <td><label>Claim Owner</label></td>
-                        <td><div id="claimHandlerRoleUserDropDownDiv"></div></td>
+                        <td><div id="ownershipAssignmentClaimHandlerRoleUserDropDownDiv"></div></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="choice" nowrap>
@@ -156,7 +155,7 @@ if(statusMsg==null){
                         
                     </table>
 
-                    <div class="errorBox" id="OwnershipMessageBox"></div>
+                    <div class="errorBox" id="OwnershippAssignmentMessageBox"></div>
                     <div id="ownership-submit-result" class="action_msg"><%= statusMsg%></div>
                 </div>
             </div>

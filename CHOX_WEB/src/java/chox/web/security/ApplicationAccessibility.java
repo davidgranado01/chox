@@ -1,5 +1,6 @@
 package chox.web.security;
 
+import chox.model.AccessibilityEditable;
 import chox.model.Claim;
 import chox.services.AccessibilityService;
 import java.util.HashMap;
@@ -200,6 +201,7 @@ public class ApplicationAccessibility {
     }
     
     public Short checkActionAccessibility(String actionName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+        
         String accessibilityKey = getActionAccessibilityKey(actionName, claimStatus);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
@@ -207,6 +209,52 @@ public class ApplicationAccessibility {
         }
 
         return Declined;
+    }
+
+    public AccessibilityEditable checkTabEditableCheck(String tabName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+
+        AccessibilityEditable accessibilityEditable = null;
+        
+        String accessibilityKey = getTabAccessibilityKey(tabName, claimStatus);
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            accessibilityEditable = this.accessibilityService.getAccessibilityEditable(accessibilityKey);
+        }
+        
+        return accessibilityEditable;
+    }
+    
+    public AccessibilityEditable checkActionEditableCheck(String actionName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+
+        AccessibilityEditable accessibilityEditable = null;
+        
+        String accessibilityKey = getActionAccessibilityKey(actionName, claimStatus);
+        
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            accessibilityEditable = this.accessibilityService.getAccessibilityEditable(accessibilityKey);
+        }
+
+        return accessibilityEditable;
+    }
+
+    public AccessibilityEditable checkExtraActionEditableCheck(String actionName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+        AccessibilityEditable accessibilityEditable = null;
+        String accessibilityKey = getExtraActionAccessibilityKey(actionName, claimStatus);
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            accessibilityEditable = this.accessibilityService.getAccessibilityEditable(accessibilityKey);
+        }
+        return accessibilityEditable;
+    }
+
+    public AccessibilityEditable checkNotificationEditableCheck(String notificationName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+        
+        AccessibilityEditable accessibilityEditable = null;
+        String accessibilityKey = getNotificationAccessibilityKey(notificationName, claimStatus);
+
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            accessibilityEditable = this.accessibilityService.getAccessibilityEditable(accessibilityKey);
+        }
+
+        return accessibilityEditable;
     }
     
     public Short checkMenuAccessibility(String menuName, GrantedAuthority[] grantedAuthorities) {
@@ -241,6 +289,7 @@ public class ApplicationAccessibility {
 
         return Declined;
     }
+    
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY KEY">

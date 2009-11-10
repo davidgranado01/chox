@@ -800,6 +800,74 @@
                     </div>
                 </div>
 
+                <s:if test="IsInsurer">
+
+                    <script type="text/javascript">
+
+                        $(document).ready(function() {
+                            $("#extraAction").val("");
+                        });
+
+                        function doShowHideExtraAction(a, b){
+                            if(b){
+                                $("#"+a).css("display:", "block");
+                                $("#"+a).slideDown();
+                            }else{
+                                $("#"+a).slideUp();
+                                $("#"+a).css("display:", "none");
+                                $("#extraAction").val("");
+
+                            }
+                        }
+
+                        function extraActionChange(){
+
+                            var selectedAction = $("#extraAction").val();
+                            $(".extraActionClass").slideUp();
+                            $(".extraActionClass").css("display:", "none");
+
+                            if(selectedAction!=null && selectedAction!=""){
+                                doShowHideExtraAction(selectedAction, 1);
+                            }
+                        }
+
+                    </script>
+
+                    <div id="updateInsurerClaimNumber" class="extraActionClass" style="display: none;">
+                        <table width="100%">
+                            <tr><td>
+                                    <div class="chox-claim-header x-panel-bwrap chox-form-container">
+                                        <s:action name="getUpdateInsurerClaimNumber" executeResult="true"></s:action>
+                                        <div class="action-message"><s:property value="actionResult" /></div>
+                                    </div>
+                                </td></tr>
+                        </table>
+                    </div>
+
+                    <div id="updateClaimOwner" class="extraActionClass" style="display: none;">
+                        <table width="100%">
+                            <tr><td>
+                                    <div class="chox-claim-header x-panel-bwrap chox-form-container">
+                                        <s:action name="getUpdateClaimOwnership" executeResult="true"></s:action>
+                                        <div class="action-message"><s:property value="actionResult" /></div>
+                                    </div>
+                                </td></tr>
+                        </table>
+                    </div>
+
+                    <div id="escalateUnassignedClaim" class="extraActionClass" style="display: none;">
+                        <table width="100%">
+                            <tr><td>
+                            <div class="chox-claim-header x-panel-bwrap chox-form-container">
+                                <s:action name="getEscalateUnassignedClaim" executeResult="true"></s:action>
+                                <div class="action-message"><s:property value="actionResult" /></div>
+                            </div>
+                            </td></tr>
+                        </table>
+                    </div>
+
+                </s:if>
+
                 <s:if test="isClaimNumberDuplicated && notificationAccessibility.claimNumberNotificationAccessibility">
                     <s:action name="getDuplicatedClaimAlert" executeResult="true">
                         <s:param name="claimId"><s:property value="id" /></s:param>
@@ -868,74 +936,6 @@
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">
                         <s:action name="getAlertPanel" executeResult="true" />
                     </div>
-                </s:if>
-
-                <s:if test="IsInsurer">
-
-                <script type="text/javascript">
-
-                    $(document).ready(function() {
-                        $("#extraAction").val("");
-                    });
-
-                    function doShowHideExtraAction(a, b){
-                        if(b){
-                            $("#"+a).css("display:", "block");
-                            $("#"+a).slideDown();
-                        }else{
-                            $("#"+a).slideUp();
-                            $("#"+a).css("display:", "none");
-                            $("#extraAction").val("");
-
-                        }
-                    }
-
-                    function extraActionChange(){
-                        
-                        var selectedAction = $("#extraAction").val();
-                        $(".extraActionClass").slideUp();
-                        $(".extraActionClass").css("display:", "none");
-
-                        if(selectedAction!=null && selectedAction!=""){
-                            doShowHideExtraAction(selectedAction, 1);
-                        }
-                    }
-
-                </script>
-
-                <div id="updateInsurerClaimNumber" class="extraActionClass" style="display: none;">
-                    <table width="100%">
-                        <tr><td>
-                                <div class="chox-claim-header x-panel-bwrap chox-form-container">
-                                    <s:action name="getUpdateInsurerClaimNumber" executeResult="true"></s:action>
-                                    <div class="action-message"><s:property value="actionResult" /></div>
-                                </div>
-                            </td></tr>
-                    </table>
-                </div>
-
-                <div id="updateClaimOwner" class="extraActionClass" style="display: none;">
-                    <table width="100%">
-                        <tr><td>
-                                <div class="chox-claim-header x-panel-bwrap chox-form-container">
-                                    <s:action name="getUpdateClaimOwnership" executeResult="true"></s:action>
-                                    <div class="action-message"><s:property value="actionResult" /></div>
-                                </div>
-                            </td></tr>
-                    </table>
-                </div>
-
-                <div id="escalateUnassignedClaim" class="extraActionClass" style="display: none;">
-                    <table width="100%">
-                        <tr><td>
-                        <div class="chox-claim-header x-panel-bwrap chox-form-container">
-                            <s:action name="getEscalateUnassignedClaim" executeResult="true"></s:action>
-                            <div class="action-message"><s:property value="actionResult" /></div>
-                        </div>
-                        </td></tr>
-                    </table>
-                </div>
-
                 </s:if>
 
                 <div id="tabContainer">

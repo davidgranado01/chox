@@ -138,6 +138,40 @@ public class UserServiceImpl extends DataService implements UserService {
         
         return claimHandlers;
     }
+
+    public List<WebUser> getClaimHanldersByInsurer(int insurerId, boolean workgroupEnable){
+
+        List<WebUser> users = new ArrayList<WebUser>();
+
+        try {
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
+            criteria.add(Restrictions.eq("insurer.id", insurerId));
+            criteria.add(Restrictions.eq("status", true));
+            criteria.addOrder(Order.asc("firstName"));
+            users = findByCriteria(criteria);
+
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
+
+        List<WebUser> claimHandlers = new ArrayList<WebUser>();
+
+        if(!workgroupEnable){
+
+            claimHandlers = users;
+
+        }else{
+
+            for(WebUser wu : users){
+                if(RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_CH)){
+                    claimHandlers.add(wu);
+                }
+            }
+        }
+
+        return claimHandlers;
+    }
     
     public List<WebUser> getUsers(int orgTypeId, int orgId){
         

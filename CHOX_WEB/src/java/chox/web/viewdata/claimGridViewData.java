@@ -1,15 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package chox.web.viewdata;
 
+import chox.Util.AccessibilityHelper;
 import chox.model.Chorganisation;
 import chox.model.Claim;
 import chox.model.Customer;
 import chox.model.Insurer;
 import chox.model.Invoice;
-import chox.model.LineOfBusiness;
 import chox.model.ThirdParty;
 import chox.model.WebUser;
 import chox.model.Workgroup;
@@ -35,8 +31,11 @@ public class claimGridViewData {
     private String insurer;
     private String createdBy;
     private String policyNumber;
+    private boolean isOwnershipEditable;
+    private boolean isWorkgroupEditable;
+    private String ownerName;
 
-    public claimGridViewData(Claim claim) {       
+    public claimGridViewData(Claim claim, WebUser user) {
               
         Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Format dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -67,21 +66,57 @@ public class claimGridViewData {
                 this.reviewDate = dateFormat.format(claim.getHireMonitoringDetail().getNextReviewDate());
             }
         }
-
+        
+        /*
         String orgName = "";
-        WebUser user = claim.getCreatedBy();
-        if (user != null) {
+        WebUser createdByUser = claim.getCreatedBy();
+        
+        if (createdByUser != null) {
             
-            Chorganisation cho = user.getChorganisation();
-            Insurer ins = user.getInsurer();
+            Chorganisation createdByCho = createdByUser.getChorganisation();
+            Insurer createdByIns = createdByUser.getInsurer();
 
-            if (ins != null) {
-                orgName = String.format("(%1$s)", ins.getName());
-            } else if (cho != null) {
-                orgName = String.format("(%1$s)", cho.getName());
+            if (createdByIns != null) {
+                orgName = String.format("(%1$s)", createdByIns.getName());
+            } else if (createdByIns != null) {
+                orgName = String.format("(%1$s)", createdByCho.getName());
             }
-            this.createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+            
+            this.createdBy = String.format("%1$s %2$s %3$s", createdByUser.getFirstName(), createdByUser.getLastName(), orgName);
         }
+        */
+        
+        this.isWorkgroupEditable = AccessibilityHelper.getIsClaimWorkgroupEditable(claim, user);
+        this.isOwnershipEditable = AccessibilityHelper.getIsClaimOwnershipEditable(claim, user);
+
+
+        if(claim.getClaimOwner()!=null){
+            this.ownerName = claim.getClaimOwner().getDisplayName();
+        }
+    }
+
+    public boolean isIsOwnershipEditable() {
+        return isOwnershipEditable;
+    }
+
+    public void setIsOwnershipEditable(boolean isOwnershipEditable) {
+        this.isOwnershipEditable = isOwnershipEditable;
+    }
+
+    public boolean isIsWorkgroupEditable() {
+        return isWorkgroupEditable;
+    }
+
+    public void setIsWorkgroupEditable(boolean isWorkgroupEditable) {
+        this.isWorkgroupEditable = isWorkgroupEditable;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public String getPolicyNumber() {

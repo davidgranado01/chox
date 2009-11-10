@@ -98,6 +98,7 @@ public class BatchUpdateAction extends BaseAction {
             claim.setClaimOwner(claimOwnerDBA);
             updateCliamStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
 
+            // TODO LOG NOTE
         }
 
         return SUCCESS;

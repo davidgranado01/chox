@@ -50,9 +50,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if(isCheckWorkGroup){
             
             // WORKGROUP FILTER
-            if(RoleHelper.isEditableByWorkgroupRole(getCurrentUser())){
+            if(RoleHelper.isUserCheckByWorkgroup(getCurrentUser())){
                 q += " And workgroup.id in (select workgroup.id from UserWorkgroup Where user.id="+getCurrentUser().getId()+")";
             }
+
         }
         
         if(isCheckOwnership){
@@ -90,7 +91,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if(isCheckWorkGroup){
 
             // WORKGROUP
-            if(RoleHelper.isEditableByWorkgroupRole(getCurrentUser())){
+            if(RoleHelper.isUserCheckByWorkgroup(getCurrentUser())){
                 q += " And workgroup.id in (select workgroup.id from UserWorkgroup Where user.id="+getCurrentUser().getId()+")";
             }
         }
@@ -186,7 +187,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
 
-        // Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.lineOfBusiness", "lob", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
         Criteria criteria = getSession().createCriteria(Claim.class)
                 .createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN)
                 .createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN)
@@ -197,11 +197,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
                 .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
 
-        // QUEUE
         if(searchCriteria.getIsWorkgroupCheck()){
-            
-            if(RoleHelper.isEditableByWorkgroupRole(getCurrentUser())){
-                System.out.println(" >>>>>>>>>> FILTER BY WORKGROUP");
+            if(RoleHelper.isUserCheckByWorkgroup(getCurrentUser())){
+                System.out.println(" >>>>>>>>>> WORKGROUP");
                 criteria.add(Restrictions.sqlRestriction("workgroup_id in (select workgroup_id from user_workgroup where user_id ="+getCurrentUser().getId()+")"));
             }
         }
@@ -299,8 +297,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (searchCriteria.getReviewRequiredDateFrom() != null || searchCriteria.getReviewRequiredDateTo() != null) {
             
-            // System.out.println("getReviewRequiredDateFrom"+searchCriteria.getReviewRequiredDateFrom() +"-"+ searchCriteria.getReviewRequiredDateTo());
-
             if (searchCriteria.getReviewRequiredDateFrom() != null) {
                 
                 Date d = searchCriteria.getReviewRequiredDateFrom();
@@ -323,7 +319,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
             
         }
-        
+
         if (searchCriteria.getInvoiceUploadDateFrom() != null || searchCriteria.getInvoiceUploadDateTo() != null) {
 
             if (searchCriteria.getInvoiceUploadDateFrom() != null) {
@@ -481,7 +477,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         c.setThirdParty(claimResult.getClaim().getThirdParty());
         c.setInsurer(claimResult.getClaim().getThirdParty().getInsurer());
         c.setChorganisation(claimResult.getClaim().getChorganisation());
-        // c.setLineOfBusiness(claimResult.getClaim().getLineOfBusiness());
         c.setIncident(claimResult.getClaim().getIncident());
         c.setInvoice(claimResult.getClaim().getInvoice());
         c.setEngineerReport(claimResult.getClaim().getEngineerReport());

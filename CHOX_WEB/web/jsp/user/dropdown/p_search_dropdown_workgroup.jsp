@@ -1,22 +1,5 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<script type="text/javascript">
-    
-    function doSearchSelectWorkgroup(){
-
-        insurerId = <s:property value="orgId"/>;
-
-        var selectedWorkgroupId = -1;
-
-        if($("#workgroup").val()!=null && $("#workgroup").val()!=""){
-            selectedWorkgroupId = $("#workgroup").val();
-        }
-
-        doShowClaimHandler(selectedWorkgroupId, insurerId);
-
-    }
-    
-    </script>
 <s:select
     id="workgroup"                                 
     name="workgroup" 
@@ -25,6 +8,5 @@
     listValue="name" 
     headerKey="-1"
     headerValue="--- ALL ---"
-    emptyOption="false"
-    onchange="doSearchSelectWorkgroup()">
+    emptyOption="false">
 </s:select>

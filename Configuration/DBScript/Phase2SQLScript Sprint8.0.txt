@@ -1511,3 +1511,76 @@ insert into accessibility_item (id, role, access_right, accessibility_id) values
 -- DO NOT ASSIGN INS MNG TO ASSIGN CLAIM OWNER (BATCH UPDATE) -- 
 delete from accessibility_item where accessibility_id = (select id from accessibility where name='action.claimOwnership.ClaimUnacknowledgedUnassigned') and role='ROLE_INS_MNG';
 
+-- ############################################################################################
+-- START VERSION V2.8.2.17
+-- ############################################################################################\
+
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHO', 1, (select id from accessibility where name='tab.HireMonitoring.ClaimClosed'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHO', 2, (select id from accessibility where name='tab.HireMonitoring.ClaimPending'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHO', 2, (select id from accessibility where name='tab.HireMonitoring.ClaimReferredToEngineer'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHO', 2, (select id from accessibility where name='tab.HireMonitoring.ClaimReferredToFNOL'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHO', 2, (select id from accessibility where name='tab.HireMonitoring.ClaimRejected'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHO', 2, (select id from accessibility where name='tab.HireMonitoring.ClaimRejectionAccepted'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHO', 2, (select id from accessibility where name='tab.HireMonitoring.ClaimRejectionContested'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHO', 2, (select id from accessibility where name='tab.HireMonitoring.ClaimUnacknowledgedRouted'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHO', 2, (select id from accessibility where name='tab.HireMonitoring.ClaimUnacknowledgedUnassigned'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHO', 2, (select id from accessibility where name='tab.HireMonitoring.ClaimUnacknowledgedUnrouted'));
+insert into accessibility_item (id, role, access_right, accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHO', 2, (select id from accessibility where name='tab.HireMonitoring.ClaimUpdatedByEngineer'));
+
+delete from accessibility_item where accessibility_id in (
+select id from accessibility where name in ('tab.HireMonitoring.ClaimClosed', 'tab.HireMonitoring.ClaimPending', 'tab.HireMonitoring.ClaimReferredToEngineer', 'tab.HireMonitoring.ClaimReferredToFNOL',
+'tab.HireMonitoring.ClaimRejected', 'tab.HireMonitoring.ClaimRejectionAccepted', 'tab.HireMonitoring.ClaimRejectionContested', 'tab.HireMonitoring.ClaimUnacknowledgedRouted',
+'tab.HireMonitoring.ClaimUnacknowledgedUnassigned', 'tab.HireMonitoring.ClaimUnacknowledgedUnrouted', 'tab.HireMonitoring.ClaimUpdatedByEngineer'))
+and role in ('ROLE_CHO_MNG', 'ROLE_CHO_OPR');
+
+-- ############################################################################################
+-- START VERSION V2.8.2.18
+-- ############################################################################################\
+
+CREATE SEQUENCE accessibility_editable_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE accessibility_editable_id_seq OWNER TO postgres;
+
+CREATE TABLE accessibility_editable
+(
+  id integer NOT NULL DEFAULT nextval('accessibility_editable_id_seq'::regclass),
+  accessibility_id integer NOT NULL,
+  is_workgroup_check boolean DEFAULT false,
+  is_ownership_check boolean DEFAULT false,
+  CONSTRAINT accessibility_editable_pkey PRIMARY KEY (id),
+  CONSTRAINT accessibility_fkey FOREIGN KEY (accessibility_id)
+      REFERENCES accessibility (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (OIDS=FALSE);
+ALTER TABLE accessibility_editable OWNER TO postgres;
+
+-- INSURER accessibility_editable --
+
+insert into accessibility_editable (accessibility_id, is_workgroup_check, is_ownership_check) values ((select id from accessibility where name='action.approveBREPassedByClaimHandler.InvoiceEscalatedToHandler'), true, true);
+insert into accessibility_editable (accessibility_id, is_workgroup_check, is_ownership_check) values ((select id from accessibility where name='action.approveBREPassedClaim.InvoiceApprovedByBRE'), true, true);
+insert into accessibility_editable (accessibility_id, is_workgroup_check, is_ownership_check) values ((select id from accessibility where name='action.approveContestedClaim.ClaimRejectionContested'), true, true);
+insert into accessibility_editable (accessibility_id, is_workgroup_check, is_ownership_check) values ((select id from accessibility where name='action.approveContestedInvoice.ContestedInvoiceReferredToInsurer'), true, true);
+insert into accessibility_editable (accessibility_id, is_workgroup_check, is_ownership_check) values ((select id from accessibility where name='action.claimPending.ClaimPending'), true, true);
+insert into accessibility_editable (accessibility_id, is_workgroup_check, is_ownership_check) values ((select id from accessibility where name='action.logInvoicePayment.AwaitingInvoicePayment'), true, true);
+insert into accessibility_editable (accessibility_id, is_workgroup_check, is_ownership_check) values ((select id from accessibility where name='action.updateclaiminsurerdetail.ClaimUnacknowledgedRouted'), true, true);
+insert into accessibility_editable (accessibility_id, is_workgroup_check, is_ownership_check) values ((select id from accessibility where name='action.updateClaimUpdatedByEngineer.ClaimUpdatedByEngineer'), true, true);
+insert into accessibility_editable (accessibility_id, is_workgroup_check, is_ownership_check) values ((select id from accessibility where name='action.updateInvoiceReferredByEngineer.InvoiceReferredToClaimsHandler'), true, true);
+insert into accessibility_editable (accessibility_id, is_workgroup_check, is_ownership_check) values ((select id from accessibility where name='action.assignClaimOwnership.ClaimUnacknowledgedUnassigned'), true, false);
+
+-- EXTRA - UPDATE CLAIM NUMBER
+insert into accessibility_editable (accessibility_id, is_workgroup_check, is_ownership_check) select id, true, true from accessibility where name like 'extraAction.updateInsurerClaimNumber%';
+
+-- EXTRA - UPDATE CLAIM OWNER
+insert into accessibility_editable (accessibility_id, is_workgroup_check, is_ownership_check) select id, true, false from accessibility where name like 'extraAction.updateClaimOwner.%';
+
+-- NOTIFICATION
+insert into accessibility_editable (accessibility_id, is_workgroup_check, is_ownership_check) select id, true, true from accessibility where name like 'notification.NotificationNotesNotification%';
+
+-- ############################################################################################
+-- START VERSION V2.8.2.19
+-- ############################################################################################\

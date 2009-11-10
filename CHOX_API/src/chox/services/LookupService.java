@@ -18,15 +18,9 @@ public interface LookupService {
     public List getClaimRejectionReason();
     public List getInvoiceRejectionReason();
     public List getNonProvisionReason();
-    
-    // public List getLineOfBusinesses();
-    // public List getAllLineOfBusinesses();
-    // public List getLineOfBusinessesByInsurerId(int insurerId);
-    // public List getLineOfBusinessesByCreditHireId(int chorganisationId);
-    
+   
     public List getAllSuppliers();
     public List getSuppliers(Integer insurerId);
-    //    public List getAllSuppliers();
     
     public List getInsurers();
     public List getInsurers(Integer choId);

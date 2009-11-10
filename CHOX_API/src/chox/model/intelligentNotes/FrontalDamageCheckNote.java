@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package chox.model.intelligentNotes;
 
 import chox.data.SecurityInfoProvider;
@@ -11,10 +7,6 @@ import chox.model.IntelligentNote;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- *
- * @author emmanuel
- */
 public class FrontalDamageCheckNote implements IntelligentNote {
 
     public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
@@ -37,6 +29,7 @@ public class FrontalDamageCheckNote implements IntelligentNote {
     }
 
     public String getNote() {
-        return "The damage to the CHO’s client’s vehicle has been identified as frontal damage.";
+        // return "The damage to the CHO’s client’s vehicle has been identified as frontal damage.";
+        return "The damage to the CHO's client's vehicle has been identified as possible frontal damage.";
     }
 }

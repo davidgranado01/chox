@@ -1,11 +1,9 @@
 package chox.web.actions;
 
 import chox.model.Insurer;
-import chox.model.Workgroup;
 import chox.services.ChoBandService;
 import chox.services.InsurerAlliasService;
 import chox.services.InsurerService;
-import chox.services.LineOfBusinessService;
 import chox.services.WorkgroupService;
 import chox.web.viewdata.ActionResponse;
 import com.opensymphony.xwork2.ModelDriven;
@@ -143,7 +141,6 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
     }
     
     private InsurerAlliasService insurerAlliasService;
-    // private LineOfBusinessService lineOfBusinessService;
     private WorkgroupService workgroupService;
     private ChoBandService choBandService;
     private InsurerService service;
@@ -151,7 +148,6 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
     public void setInsurerService(InsurerService service) { this.service = service; }
     public void setChoBandService(ChoBandService choBandService) { this.choBandService = choBandService; }
     public void setWorkgroupService(WorkgroupService workgroupService) { this.workgroupService = workgroupService; }
-    // public void setLineOfBusinessService(LineOfBusinessService lineOfBusinessService) { this.lineOfBusinessService = lineOfBusinessService; }
     public void setInsurerAlliasService(InsurerAlliasService insurerAlliasService) { this.insurerAlliasService = insurerAlliasService; }    
     
     

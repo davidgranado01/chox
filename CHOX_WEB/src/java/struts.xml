@@ -939,21 +939,6 @@
         <action name="addInsurerWorkgroup" class="chox.web.actions.doInsurerWorkgroupAction" method="addObject">
             <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
-        
-        <!--
-        <action name="getInsurerLineOfBusiness" class="chox.web.actions.InsurerLineOfBusinessAction">
-            <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
-        <action name="removeInsurerLineOfBusiness" class="chox.web.actions.doInsurerLineOfBusinessAction" method="removeObject">
-            <result name="success">/jsp/p_response.jsp
-            </result>
-        </action>
-        <action name="addInsurerLineOfBusiness" class="chox.web.actions.doInsurerLineOfBusinessAction" method="addObject">
-            <result name="success">/jsp/p_response.jsp
-            </result>
-        </action>   
-        !-->
-        
         <action name="getAvailableInsurerChorganisation" class="chox.web.actions.ChorganisationAction" method="getAvailableChorganisation">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>        
@@ -968,7 +953,6 @@
             <result name="success">/jsp/p_response.jsp
             </result>
         </action>   
-        
         <action name="getInsurerChoBand" class="chox.web.actions.InsurerChoBandAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
@@ -1015,30 +999,18 @@
         <action name="VehicleClassDropDownAction" class="chox.web.actions.VehicleClassDropDownAction">
             <result>/jsp/user/adminPanel/p_dropdown_vehicle_class.jsp</result>
         </action>
-
-        <action name="LineOfBusinessDropDownAction" class="chox.web.dropdown.LineOfBusinessDropDownAction">
-            <result>/jsp/user/dropdown/p_search_dropdown_lineOfbusiness.jsp</result>
-        </action>    
-        <action name="LineOfBusinessDropDownByIdAction" class="chox.web.dropdown.LineOfBusinessDropDownAction">
-            <result>/jsp/user/dropdown/p_search_dropdown_lineOfbusiness_id.jsp</result>
-        </action>
-
-        <action name="GetWorkgroupDropDownActionByUser" class="chox.web.dropdown.WorkgroupDropDownAction">
-            <result>/jsp/user/dropdown/p_search_dropdown_workgroup.jsp</result>
-        </action>
-
-        <action name="GetWorkgroupDropDownActionByUserOnChange" class="chox.web.dropdown.WorkgroupDropDownAction">
-            <result>/jsp/user/dropdown/p_dropdown_workgroup.jsp</result>
-        </action>
         
         <action name="SearchWorkgroupDropDownAction" class="chox.web.dropdown.WorkgroupDropDownAction" method="ClaimSearch">
             <result>/jsp/user/dropdown/p_search_dropdown_workgroup.jsp</result>
         </action>
-
-        <action name="ClaimHandlerRoleUserDropDownAction" class="chox.web.dropdown.ClaimHandlerRoleUserDropDownAction">
-            <result>/jsp/user/dropdown/p_search_dropdown_claimHandlerUser.jsp</result>
+        <action name="GetWorkgroupDropDownActionByInsurer" class="chox.web.dropdown.WorkgroupDropDownAction">
+            <result>/jsp/user/dropdown/p_dropdown_workgroup.jsp</result>
         </action>
-        <action name="GetClaimHandlerRoleUserDropDownAction" class="chox.web.dropdown.ClaimHandlerRoleUserDropDownAction">
+
+        <action name="SearchClaimHandlerRoleUserDropDownAction" class="chox.web.dropdown.ClaimHandlerRoleUserDropDownAction" method="ClaimSearch">
+            <result>/jsp/user/dropdown/p_dropdown_claimHandlerUser.jsp</result>
+        </action>
+        <action name="ClaimHandlerRoleUserDropDownAction" class="chox.web.dropdown.ClaimHandlerRoleUserDropDownAction">
             <result>/jsp/user/dropdown/p_dropdown_claimHandlerUser.jsp</result>
         </action>
 

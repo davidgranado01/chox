@@ -81,7 +81,6 @@ function openFile(folderPath){
     
 }
 
-
 function getTodayDate(){
     var now = new Date();
     return now.format(strDateFormat);
@@ -107,7 +106,7 @@ function onOpenAbout(){
         
     var msg = "<span class='aboutProductName'>Product Name: iDAS CHOX</span><br/><br/>";
     msg = msg + "<span class='acountCopyright'>Copyright Message: ©2009 Sherwood Compliance Services Ltd</span><br/><br/>";
-    msg = msg + "<span class='acountVersionNumber'>V2.8.2.14 - 20091103</span><br/><br/>";
+    msg = msg + "<span class='acountVersionNumber'>V2.8.2.18 - 20091109</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
 
     $.blockUI({
@@ -118,6 +117,7 @@ function onOpenAbout(){
             padding:'10px'
         }
     });
+    
     setTimeout($.unblockUI, 5000);
 }  
 

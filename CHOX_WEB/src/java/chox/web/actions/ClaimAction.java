@@ -241,13 +241,29 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         String newStatus = "";
+        String oldOwnerName = "N/A";
+        String noteMsg = "";
         
         if(this.claimOwnerId>0){
 
+            // GET NEW CLAIM OWNER
+            WebUser newClaimOwner = userService.getObject(claimOwnerId);
+
+            // GET OLD CLAIM OWNER
+            if(claim.getClaimOwner()!=null){
+                oldOwnerName = claim.getClaimOwner().getDisplayName();
+            }
+
+            // CHECK STATUS
             if (this.actionName.equalsIgnoreCase(ASSIGNED_PROCESS)) {
+                
                 newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
                 claim.setStatus(newStatus);
+    
             }
+
+            noteMsg = "Claim owner changed from " + oldOwnerName + " to " + newClaimOwner.getDisplayName();
+                
 
             if (!result.equalsIgnoreCase(ERROR)) {
 
@@ -257,14 +273,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         claim.setWorkgroup(workgroupService.getObject(workgroupId));
                     }
 
-                    claim.setClaimOwner(userService.getObject(claimOwnerId));
+                    claim.setClaimOwner(newClaimOwner);
                     this.service.updateClaim(claim);
 
                     if(this.actionName.equalsIgnoreCase(ASSIGNED_PROCESS)) {
                         auditTrailService.logAuditLog(newStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim);
                     }
-                    
-                    
+
+                    // SAVE NEW NOTE
+                    createNewNote(noteMsg, true, "");
 
                 } catch (Exception ex) {
                     result = ERROR;
@@ -1135,98 +1152,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
         this.applicationAccessibility = applicationAccessibility;
     }
-
-    public String getActionPanel() {
-        
-        GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
-        List<String> actions = PanelAction.getPanelActions();
-
-        for (String action : actions) {
-
-            short accessRight = applicationAccessibility.checkActionAccessibility(action, grantedAuthorities, claim.getStatus());
-
-            if (accessRight > 0) {
-                
-                if(!getIsClaimEditable()){
-                    action = EMPTY;
-                }
-                
-                return action;
-                
-            }
-
-        }
-
-        return EMPTY;
-    }
-
-    public boolean getIsClaimEditable(){
-
-        // CHECK THIS USER IS CH OR COM WITH WORKGROUP ENABLE
-        // CHECK THIS USER IS CH OR COM WITH OWNERSHIP ENABLE
-        
-        boolean bFlag = true;
-
-        if(!getIsClaimEditableByWorkgroupCheck() || !getIsClaimEditableByOwnerCheck()){
-            bFlag = false;
-        }
-
-        return bFlag;
-    }
-
-    private boolean getIsClaimEditableByWorkgroupCheck(){
-
-        WebUser user = getAuthenticatedUser().getUser();
-        
-        boolean bFlag = true;
-
-        if(RoleHelper.isClaimEditableCheckByWorkgroupEnabled(user)){
-            if(!AccessibilityHelper.isClaimWorkgroupOwnByUser(user, this.claim)){
-                bFlag = false;
-            }
-        }
-        
-        return bFlag;
-
-    }
-    
-    private boolean getIsClaimEditableByOwnerCheck(){
-
-        WebUser user = getAuthenticatedUser().getUser();
-
-        boolean bFlag = true;
-
-        if(RoleHelper.isClaimEditableCheckByOwnerEnabled(user)){
-            if(!AccessibilityHelper.isClaimOwnByUser(user, this.claim)){
-                bFlag = false;
-            }
-        }
-
-        return bFlag;
-
-    }
-
-    public List getExtraActionList() {
-
-        GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
-        List<String> actions = AdditionalAction.getExtraActions();
-
-        extraActionList = new ArrayList<LookupItem>();
-
-        for (String action : actions) {
-
-            short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, grantedAuthorities, claim.getStatus());
-
-            if (accessRight >= 1){
-                if(getIsClaimEditable()){
-                    String extraActionDescription = AdditionalAction.getExtraActionName(action);
-                    extraActionList.add(new LookupItem(action, extraActionDescription));
-                }
-            }
-        }
-
-        return extraActionList;
-    }
     
     // </editor-fold>
     
@@ -1693,4 +1618,59 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     // </editor-fold>
 
+    public String getActionPanel() {
+
+        GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
+        List<String> actions = PanelAction.getPanelActions();
+
+        for (String action : actions) {
+
+            short accessRight = applicationAccessibility.checkActionAccessibility(action, grantedAuthorities, claim.getStatus());
+
+            if (accessRight > 0) {
+
+                AccessibilityEditable accEditable = applicationAccessibility.checkActionEditableCheck(action, grantedAuthorities, claim.getStatus());
+
+                if(!AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, getAuthenticatedUser().getUser())){
+                    action = EMPTY;
+                }
+
+                return action;
+
+            }
+
+        }
+
+        return EMPTY;
+    }
+
+    public boolean getIsClaimNotificationEditable(){
+        AccessibilityEditable accEditable = applicationAccessibility.checkNotificationEditableCheck("NotificationNotesNotification", getAuthenticatedUser().getAuthorities(), claim.getStatus());
+        return AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, getAuthenticatedUser().getUser());
+    }
+    
+    public List getExtraActionList() {
+
+        GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
+        List<String> actions = AdditionalAction.getExtraActions();
+
+        extraActionList = new ArrayList<LookupItem>();
+
+        for (String action : actions) {
+
+            short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, grantedAuthorities, claim.getStatus());
+
+            if (accessRight >= 1){
+
+                AccessibilityEditable accEditable = applicationAccessibility.checkExtraActionEditableCheck(action, grantedAuthorities, claim.getStatus());
+
+                if(AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, getAuthenticatedUser().getUser())){
+                    String extraActionDescription = AdditionalAction.getExtraActionName(action);
+                    extraActionList.add(new LookupItem(action, extraActionDescription));
+                }
+            }
+        }
+
+        return extraActionList;
+    }
 }

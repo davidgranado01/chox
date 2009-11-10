@@ -13,10 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 
-/**
- *
- * @author Emmanuel
- */
 public class ActivityMonitoringAction extends BaseAction{
     private Integer claimId;
     private List<String> usersViewingThisClaim;

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="chox.model.AccessibilityEditable" table="accessibility_editable">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <many-to-one class="chox.model.Accessibility" column="accessibility_id" name="accessibility"/>
+    <property column="is_workgroup_check" name="workgroupCheck"/>
+    <property column="is_ownership_check" name="ownershipCheck"/>
+  </class>
+</hibernate-mapping>

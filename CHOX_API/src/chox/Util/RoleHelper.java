@@ -25,7 +25,7 @@ public class RoleHelper {
         return bFlag;
    }
 
-    public static boolean isEditableByWorkgroupRole(WebUser user){
+    private static boolean isUserWithWorkgroupRole(WebUser user){
 
         boolean bFlag = false;
 
@@ -39,11 +39,11 @@ public class RoleHelper {
         return bFlag;
     }
 
-    public static boolean isClaimEditableCheckByWorkgroupEnabled(WebUser user){
+    public static boolean isUserCheckByWorkgroup(WebUser user){
         // IS INS USER
         // IS COM AND CH ROLE USER
         // IS WORKGROUP ENABLE
-        return (isWorkgroupEnabledInsurerUser(user) && isEditableByWorkgroupRole(user));
+        return (isInsurerUser(user) && isUserWithWorkgroupRole(user));
     }
 
    /*****************************************************
@@ -79,11 +79,12 @@ public class RoleHelper {
         return bFlag;
    }
 
-    public static boolean isClaimEditableCheckByOwnerEnabled(WebUser user){
+    public static boolean isUserCheckByOwnership(WebUser user){
         // IS INS USER
         // IS CH ROLE USER
         // IS OWNERSHIP ENABLE
-        return (isOwnershipEnabledInsurerUser(user) && isEditableByOwnership(user));
+        //return (isInsurerWorkgroupUser(user) && isUserWithWorkgroupRole(user));
+        return (isInsurerUser(user) && isEditableByOwnership(user));
     }
     
    /*****************************************************
@@ -110,33 +111,7 @@ public class RoleHelper {
         }
 
         return bFlag;
-    }
-
-   public static boolean isWorkgroupEnabledInsurerUser(WebUser user){
-
-        boolean bFlag = false;
-
-        if(isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_INS)){
-            if(user.getInsurer().isWorkgroupEnable()){
-                bFlag = true;
-            }
-        }
-
-        return bFlag;
-    }
-
-   public static boolean isOwnershipEnabledInsurerUser(WebUser user){
-
-        boolean bFlag = false;
-
-        if(isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_INS)){
-            if(user.getInsurer().isClaimOwnershipEnable()){
-                bFlag = true;
-            }
-        }
-
-        return bFlag;
-    }
+   }
    
    public static boolean isCreditHireUser(WebUser user){
 

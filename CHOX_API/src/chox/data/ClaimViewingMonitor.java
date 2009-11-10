@@ -25,7 +25,7 @@ public class ClaimViewingMonitor {
 
     public List<Integer> ping(Integer claimId, String CompanyType, Integer orgId, Integer userId) {
         String key = forStateKey(claimId, CompanyType, orgId);
-        //System.out.println("ping : " + key);
+
         if (claims.containsKey(key)) {
             ClaimViewState vs = (ClaimViewState) claims.get(key);
             vs.ping(userId);

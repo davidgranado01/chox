@@ -5,16 +5,14 @@
     
     function doSelectWorkgroup(){
 
-        var insurerId = <s:property value="AuthenticatedUser.user.insurer.id"/>;
+        var insurerId = <s:property value="orgId"/>;
         var selectedWorkgroupId = -1;
         
         if($("#workgroupId").val()!=null && $("#workgroupId").val()!=""){
-
             selectedWorkgroupId = $("#workgroupId").val();
-
         }
 
-        $('#coClaimHandlerRoleUserDropDownDiv').load("user/GetClaimHandlerRoleUserDropDownAction.action?workgroupId="+selectedWorkgroupId+"&insurerId="+insurerId);
+        $('#coClaimHandlerRoleUserDropDownDiv').load("user/ClaimHandlerRoleUserDropDownAction.action?workgroupId="+selectedWorkgroupId+"&insurerId="+insurerId);
         
     }
     

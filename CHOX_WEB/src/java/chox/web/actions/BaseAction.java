@@ -81,11 +81,20 @@ public class BaseAction extends ActionSupport {
         
         return isChoxAdmin;
     }
-
-    public boolean getIsClaimHandlerOnly(){
-        return RoleHelper.isClaimHandlerOnly(getAuthenticatedUser().getUser());
-    }
     
+    public int getOrganisationId(){
+        
+        int orgId = -1;
+        if(getAuthenticatedUser().getIsINS()){
+            orgId = getAuthenticatedUser().getUser().getInsurer().getId();
+        }else if(getAuthenticatedUser().getIsCHO()){
+            orgId = getAuthenticatedUser().getUser().getChorganisation().getId();
+        }
+
+        return orgId;
+
+    }
+
     public String getCurrentUserDesc(){
         String logInUserDesc = user.getUser().getFirstName() + " " + user.getUser().getLastName();
         String strOrgType = "";
