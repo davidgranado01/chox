@@ -27,6 +27,7 @@
         <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script>
         <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script>
         <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
+        <script src="<%= request.getContextPath()%>/scripts/actionPanel.js" type="text/javascript"></script>
 
         <script type="text/javascript">
 
@@ -562,11 +563,6 @@
 
             }
             
-            function registeAction(val)
-            {
-                $("#actionName").val(val);
-            }
-
             var t;
 
             function pingServer()
@@ -621,40 +617,6 @@
                     document.location = 'doReopenClaimStatus.action?id=<s:property value="id" />';
                 }
                 return true;
-            }
-
-            function checkAndConfirmClaimNumberDuplication(sClaimNumber, sClaimId, form)
-            {
-
-                if(sClaimNumber && sClaimNumber != null)
-                {
-                    $.getJSON("checkIsClaimNumberDuplicated.action", { claimNumber: sClaimNumber, claimId: sClaimId },
-                    
-                    function(data){
-
-                        if(data.isValid)
-                        {
-                            if(data.result && data.result == "yes"){
-                                if(confirm("The claim number you have supplied is already associated with another claim(s). Do you wish to continue?"))
-                                {
-                                   form.submit();
-                                }
-                            }
-                            else{
-                                form.submit();
-                            }
-                        }
-                        else
-                        {
-                            propmtErrors(data.errors);
-                        }
-                    });
-
-                }
-                else
-                {
-                    form.submit();
-                }
             }
 
             $(document).ready(function() {
@@ -803,10 +765,6 @@
                 <s:if test="IsInsurer">
 
                     <script type="text/javascript">
-
-                        $(document).ready(function() {
-                            $("#extraAction").val("");
-                        });
 
                         function doShowHideExtraAction(a, b){
                             if(b){

@@ -8,43 +8,25 @@
         
     });
     
-    function isClaimNumberInvalid(){
-        
-        $("#isClaimNumberValidFlag").val("1");
+    function isUpdateInsurerClaimNumberInvalid(){
+        $("#isUpdateInsurerClaimNumberValidFlag").val("1");
         var sClaimNumber = $("#claimNumber").val();
-        
         if(isSpecialCharacterExist(sClaimNumber)){
             
-            $("#isClaimNumberValidFlag").val("0");
+            $("#isUpdateInsurerClaimNumberValidFlag").val("0");
         }
-
-    }
-    
-    function isSpecialCharacterExist(strClaimNumber){
-        
-        if(strClaimNumber.length>0){
-            
-            var iChars = "!£$%^&*+=-_{[}]#~'@;:/?.>,<"+'"';
-            
-            for (var i = 0; i < strClaimNumber.length; i++) {
-                if (iChars.indexOf(strClaimNumber.charAt(i)) != -1) {
-                    return true;
-                }
-            }             
-        }
-        return false;
     }
     
     function doFormValidationClaimNumber(){
                 
         var validateFlag = $("#formUpdateInsurerClaimNumber").validate(
         {
-            errorLabelContainer: "#ACKmessageBox",  
+            errorLabelContainer: "#ACKmUpdateInsurerClaimNumbermessageBox",
             rules: {
                 claimNumber:{
                     required:true
                 } ,
-                isClaimNumberValidFlag:{
+                isUpdateInsurerClaimNumberValidFlag:{
                     min:1
                 }
             },
@@ -52,7 +34,7 @@
                 claimNumber: {
                     required:"You must supply a value for 'Claim Number'"
                 },
-                isClaimNumberValidFlag:{
+                isUpdateInsurerClaimNumberValidFlag:{
                     min:"Invalid Character used in Claim Number"
                 }              
             }
@@ -61,19 +43,19 @@
         return validateFlag;
     }
     
-     
-        function doSubmitClaimNumber(a){
-            registeAction(a);
-            isClaimNumberInvalid();
-                    
-            if(doFormValidationClaimNumber().form()){
-                        
-                var sClaimNumber = $("#claimNumber").val();
-                var sClaimId = $("#claimId").val();
-                var form = $("#formUpdateInsurerClaimNumber");
-                checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
-            }                    
-        }                
+    function doSubmitClaimNumber(a){
+
+        registeAction(a);
+        isUpdateInsurerClaimNumberInvalid();
+
+        if(doFormValidationClaimNumber().form()){
+
+            var sClaimNumber = $("#claimNumber").val();
+            var sClaimId = $("#claimId").val();
+            var form = $("#formUpdateInsurerClaimNumber");
+            checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
+        }
+    }
        
 </script>
 
@@ -85,8 +67,7 @@
     name="formUpdateInsurerClaimNumber">
     <fieldset class="x-fieldset">
         <s:hidden id="claimId" name="id" />
-        <s:hidden id="actionName" name="actionName" />
-        <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>        
+        <s:hidden id="isUpdateInsurerClaimNumberValidFlag" name="isUpdateInsurerClaimNumberValidFlag" value="1"/>
         <legend>Insurer Claim Number</legend>
         <div class="status-control-set">
             <table class="status-table">
@@ -100,6 +81,6 @@
                 </tr>
             </table>
         </div>
-        <div class="errorBox" id="ACKmessageBox"></div>
+        <div class="errorBox" id="ACKmUpdateInsurerClaimNumbermessageBox"></div>
     </fieldset>
 </form>

@@ -28,14 +28,6 @@
         return true;
     }
     
-    function isRejected(){
-        var sActionName = $("#actionName").val();
-        if(sActionName=="reject"){
-            return true;
-        }
-        return false;
-    }
-    
     function doFormValidation(){
         var validateFlag = $("#approveBREPassedClaim").validate(
         {

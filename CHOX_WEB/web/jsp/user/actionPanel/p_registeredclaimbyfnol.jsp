@@ -2,10 +2,13 @@
 
 <script language="JavaScript">
 
+    $(document).ready(function(){
+        doRegisterFNOFormValidation();
+    });
+    
     function doRejectClaim(){
-        
         registeAction('rejectFNOL');
-        if(doFormValidation().form()){
+        if(doRegisterFNOFormValidation().form()){
             if(!confirm('Are you sure you want to reject this claim?')){
                 return false;
             }
@@ -24,11 +27,7 @@
         return false;
     }
     
-    $(document).ready(function(){
-        doFormValidation();
-    });
-    
-    function doFormValidation(){
+    function doRegisterFNOFormValidation(){
         
         return $("#formRegisterFNOL").validate(
         {
@@ -58,8 +57,10 @@
     <fieldset class="x-fieldset">
         <legend>First Notification of Loss - Action Required</legend>
         <div>
+            
             <s:hidden name="id" />
             <s:hidden id="actionName" name="actionName" />
+            
             <div>
                 <div class="status-info">
                     Please review the claim details using the 'Claim Details' tab, if and when the claim has been registered please enter the assigned Claim Number and click on the 'Return to Claims Handler' button to return the claim to the Claims Handler for review. If the claim has not been registered, please enter the reason why in the 'FNOL Review Note' field before clicking on the 'Return to Claims Handler' button.
@@ -73,7 +74,7 @@
                         <tr valign="top">
                             <td><label>FNOL Review Note (If applicable)</label></td>
                             <td><textarea class="chox-canote" cols="80" rows="5" name="reasonForRejection" id="reasonForRejection"><s:property value="reasonForRejection" /></textarea></td>
-                        </tr>                        
+                        </tr>
                         <tr>
                             <td colspan="2">
                                 <div class="no-format">

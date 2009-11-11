@@ -20,39 +20,26 @@
             isWorkgroupEnable = $("#claimWorkgroupEnable").val();
         }
 
-        // PAGE SETUP - BUTTON
-        doAllowToChangeStatus();
-
         // PAGE SETUP - WORKGROUP ID
         if(isWorkgroupEnable){
-
+            
             if($("#claimWorkgroupId").val()!=null && $("#claimWorkgroupId").val()!=""){
                 selectedWorkgroupId = $("#claimWorkgroupId").val();
             }
 
-            $("#workgroupId").val(selectedWorkgroupId);
-
         }
-
+        
         doUpdateOwnershipShowClaimHandler(selectedWorkgroupId, insurerId);
         doUpdateOwnershipFormValidation();
 
+        $("#uosWorkgroupId").val(selectedWorkgroupId);
+        
     });
 
-    function doAllowToChangeStatus(){
-
-        if(claimStatus=='ClaimUnacknowledgedUnassigned'){
-            $("#assignAndProcess").attr("disabled", false);
-        }else{
-            $("#assignAndProcess").attr("disabled", true);
-        }
-
-    }
-
-    function isWorkgroupFieldValid(){
+    function isUpdateOwnershipWorkgroupFieldValid(){
         var bFlag = false;
 
-        if(isWorkgroupEnable && $("#workgroupId").val()<=0){
+        if(isWorkgroupEnable && $("#uosWorkgroupId").val()<=0){
             bFlag = true;
         }
 
@@ -65,11 +52,11 @@
         {
             errorLabelContainer: "#OwnershipMessageBox",
             rules: {
-                workgroupId:{required:isWorkgroupFieldValid},
+                uosWorkgroupId:{required:isUpdateOwnershipWorkgroupFieldValid},
                 claimOwnerId:{min:1}
             },
             messages: {
-                workgroupId: {required:"You must supply a value for 'Workgroup'"},
+                uosWorkgroupId: {required:"You must supply a value for 'Workgroup'"},
                 claimOwnerId: {min:"You must supply a value for 'Claim Owner'"}
             }
         });
@@ -78,10 +65,10 @@
 
     }
 
-    function doWorkgroupChange(){
+    function doUpdateOwnershipWorkgroupChange(){
 
-        if($("#workgroupId").val()!=null){
-            selectedWorkgroupId = $("#workgroupId").val();
+        if($("#uosWorkgroupId").val()!=null){
+            selectedWorkgroupId = $("#uosWorkgroupId").val();
         }
 
         claimOwnerId = -1;
@@ -109,33 +96,35 @@
 <form onsubmit="return true;" action="user/updateOwnershipAssignment.action" method="post" id="formOwnershipAction" name="formOwnershipAction">
     <fieldset class="x-fieldset">
         <legend>Update Claim Ownership - Action Required</legend>
+        
         <div>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="actionName" name="actionName" value="assigned" />
-
             <input type="hidden" id="claimWorkgroupId" name="claimWorkgroupId" value="<s:property value="workgroup.id"/>">
             <input type="hidden" id="claimClaimOwnerId" name="claimClaimOwnerId" value="<s:property value="claimOwner.id"/>">
             <input type="hidden" id="claimWorkgroupEnable" name="claimWorkgroupEnable" value="<s:property value="insurer.workgroupEnable"/>">
-
             <div>
+                
                 <div class="status-info">
                 Re-assign the Claim Owner by selecting the relevant Workgroup and Claims Handler from the selections below.
                 </div>
+                
                 <div class="status-control-set">
                     <table class="status-table" width="100%">
                     <s:if test="insurer.workgroupEnable">
                     <tr>
-                        <td width="200px"><label width="200px">Workgroup</label></td>
+                        <td width="200px"><label>Workgroup</label></td>
                         <td width="100%">
-                            <s:select name="workgroupId" id="workgroupId"
+                            <s:select name="uosWorkgroupId" id="uosWorkgroupId"
                             list="workgroups" headerKey="" listKey="id" listValue="name"
-                            headerValue="-- Please Select --" onchange="doWorkgroupChange()">
+                            headerValue="-- Please Select --" onchange="doUpdateOwnershipWorkgroupChange()">
                             </s:select>
                         </td>
                     </tr>
                     </s:if>
                     <s:else>
-                        <input type="hidden" id="workgroupId" name="workgroupId" value=""/>
+                        <tr><td colspan="2">
+                        <input type="hidden" id="uosWorkgroupId" name="uosWorkgroupId" value=""/>
+                        </td></tr>
                     </s:else>
                     <tr>
                         <td><label>Claim Owner</label></td>
@@ -150,8 +139,10 @@
                     </table>
                     <div class="errorBox" id="OwnershipMessageBox"></div>
                 </div>
+
             </div>
 
         </div>
+            
     </fieldset>
 </form>

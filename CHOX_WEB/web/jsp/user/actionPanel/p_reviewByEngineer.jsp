@@ -1,19 +1,12 @@
-<%-- 
-    Document   : p_reviewByEngineer
-    Created on : 09-Dec-2008, 18:11:59
-    Author     : Emmanuel
---%>
-
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script language="JavaScript">
         
     $(document).ready(function(){
             
-            
-        $("#formAcknowledgeAction").validate(
+        $("#formReviewAcknowledgeAction").validate(
         {
-            errorLabelContainer: "#ACKmessageBox",                
+            errorLabelContainer: "#ACKReviewmessageBox",
             rules: {
                 indemnityAmount:{
                     required:true,
@@ -57,8 +50,8 @@
 
 
 
-<form action="user/reviewByEngineer.action" method="post" id="formAcknowledgeAction"
-      name="formAcknowledgeAction">
+<form action="user/reviewByEngineer.action" method="post" id="formReviewAcknowledgeAction"
+      name="formReviewAcknowledgeAction">
     <fieldset class="x-fieldset">
         <legend>Engineer Review - Action Required</legend>
         <div>
@@ -123,7 +116,7 @@
                         </tr>
                     </table>
                     
-                    <div class="errorBox" id="ACKmessageBox"></div>
+                    <div class="errorBox" id="ACKReviewmessageBox"></div>
                 </div>
             </div>
         </div>

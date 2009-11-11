@@ -135,12 +135,11 @@
             <result name="updateclaimcarhiredetail">/jsp/user/actionPanel/p_updateCarHireInfo.jsp</result>
             <result name="uploadInvoiceData">/jsp/user/actionPanel/p_uploadInvoiceData.jsp</result>
             <result name="updateinvoicedtailforcalculationincorrect">/jsp/user/actionPanel/p_resubmitInvoiceData.jsp</result>
-            <result name="updateinvoicedtailbyinsurer">/jsp/user/actionPanel/p_approveContestedInvoice.jsp</result>
-            <result name="updateinvoicedtailbycho">/jsp/user/actionPanel/p_resubmitOrAcceptContestedInvoice.jsp</result>
             <result name="approveBREPassedClaim">/jsp/user/actionPanel/p_approveBREPassedClaim.jsp</result>
             <result name="approveEscalatedInvoice">/jsp/user/actionPanel/p_approveEscalatedInvoice.jsp</result>
             <result name="approveContestedInvoice">/jsp/user/actionPanel/p_approveContestedInvoice.jsp</result>
             <result name="approveContestedInvoiceToEng">/jsp/user/actionPanel/p_approveContestedInvoiceToEng.jsp</result>
+            <result name="updateinvoicedtailbycho">/jsp/user/actionPanel/p_resubmitOrAcceptContestedInvoice.jsp</result>
             <result name="resubmitOrAcceptContestedInvoice">/jsp/user/actionPanel/p_resubmitOrAcceptContestedInvoice.jsp</result>
             <result name="logInvoicePayment">/jsp/user/actionPanel/p_logInvoicePayment.jsp</result>
             <result name="reviewByEngineer">/jsp/user/actionPanel/p_reviewByEngineer.jsp</result>
@@ -217,7 +216,7 @@
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
-        <action name="updateOwnershipAssignment" class="chox.web.actions.ClaimAction" method="ownershipAssignment">
+        <action name="updateOwnershipAssignment" class="chox.web.actions.ClaimAction" method="ownershipUpdating">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
                 </param>
@@ -331,7 +330,14 @@
         </action>
 
         <action name="UpdateClaimWorkgroupAssignment" class="chox.web.actions.ClaimAction" method="UpdateClaimWorkgroupAssignment">
-            <result name="success" type="redirect">inbox.action</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail
+                </param>
+                <param name="id">${id}
+                </param>
+                <param name="statusMsg">${statusMsg}
+                </param>
+            </result>
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>

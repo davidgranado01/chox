@@ -1,13 +1,12 @@
-<%-- 
-    Document   : p_approveContestedClaim
-    Created on : 01-Dec-2008, 02:28:00
-    Author     : Emmanuel
---%>
-
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script language="JavaScript">
-    
+
+
+    $(document).ready(function(){
+        doFormValidation();
+    });
+
     function doRejectClaim(){
         
         isClaimNumberInvalid();
@@ -34,49 +33,12 @@
         }                
     }
     
-    $(document).ready(function(){
-        doFormValidation();
-    });
-    
     function isClaimNumberMandatory(){
         var sActionName = $("#actionName").val();
         if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
             return false;
         }
         return true;
-    }
-    
-    function isClaimNumberInvalid(){
-        
-        $("#isClaimNumberValidFlag").val("1");        
-        var sClaimNumber = $("#claimNumber").val();        
-        if(isSpecialCharacterExist(sClaimNumber)){            
-            $("#isClaimNumberValidFlag").val("0");
-        }
-
-    }
-    
-    function isSpecialCharacterExist(strClaimNumber){
-        
-        if(strClaimNumber.length>0){
-            
-            var iChars = "!£$%^&*+=-_{[}]#~'@;:/?.>,<"+'"';
-            
-            for (var i = 0; i < strClaimNumber.length; i++) {
-                if (iChars.indexOf(strClaimNumber.charAt(i)) != -1) {
-                    return true;
-                }
-            }             
-        }
-        return false;
-    }
-    
-    function isRejected(){
-        var sActionName = $("#actionName").val();
-        if(sActionName=="reject"){
-            return true;
-        }
-        return false;
     }
     
     function liabilityMinNumber(){

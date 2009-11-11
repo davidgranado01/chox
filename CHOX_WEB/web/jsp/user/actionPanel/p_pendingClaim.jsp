@@ -13,12 +13,12 @@
                 if(sClaimNumber.length > 0)
                 {
                     var sClaimId = $("#claimId").val();
-                    var form = $("#formAcknowledgeAction");
+                    var form = $("#formPendingAcknowledgeAction");
                     checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
                 }
                 else
                 {
-                    $("#formAcknowledgeAction").submit();
+                    $("#formPendingAcknowledgeAction").submit();
                 }
             }
         }                
@@ -38,15 +38,7 @@
         doFormValidation();
         
     });
-    
-    function isRejected(){
-        var sActionName = $("#actionName").val();
-        if(sActionName=="reject"){
-            return true;
-        }
-        return false;
-    }
-    
+        
     function liabilityMinNumber(){
         var sActionName = $("#actionName").val();
         var iMinliability = 0.01;
@@ -64,38 +56,10 @@
         }
         return iMinliabilityMsg;   
     }
-    
-    function isClaimNumberInvalid(){
         
-        $("#isClaimNumberValidFlag").val("1");
-        
-        var sClaimNumber = $("#claimNumber").val();
-        
-        if(isSpecialCharacterExist(sClaimNumber)){
-            
-            $("#isClaimNumberValidFlag").val("0");
-        }
-
-    }
-    
-    function isSpecialCharacterExist(strClaimNumber){
-        
-        if(strClaimNumber.length>0){
-            
-            var iChars = "!£$%^&*+=-_{[}]#~'@;:/?.>,<"+'"';
-            
-            for (var i = 0; i < strClaimNumber.length; i++) {
-                if (iChars.indexOf(strClaimNumber.charAt(i)) != -1) {
-                    return true;
-                }
-            }             
-        }
-        return false;
-    }
-    
     function doFormValidation(){
                 
-        var validateFlag = $("#formAcknowledgeAction").validate(
+        var validateFlag = $("#formPendingAcknowledgeAction").validate(
         {
             errorLabelContainer: "#ACKmessageBox",  
             rules: {
@@ -153,7 +117,7 @@
     }
     
     function doSubmit(a){
-                    
+
         registeAction(a);
         isClaimNumberInvalid();
                     
@@ -162,14 +126,15 @@
         if(doFormValidation().form()){
             var sClaimNumber = $("#claimNumber").val();
             var sClaimId = $("#claimId").val();
-            var form = $("#formAcknowledgeAction");
+            var form = $("#formPendingAcknowledgeAction");
             checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
         }                    
     }
           
 </script>
 
-<form action="user/acknowledge.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
+<form action="user/acknowledge.action" method="post" id="formPendingAcknowledgeAction" name="formPendingAcknowledgeAction">
+    
     <fieldset class="x-fieldset">
         <legend>Claim Pending - Action Required</legend>
         <div>
@@ -226,7 +191,7 @@
                             </td>
                         </tr>
                         
-                        <div id="dReasonOfRejection">
+
                             
                             <tr valign="top">
                                 <td>
@@ -246,8 +211,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            
-                        </div>
+
                         
                         <tr>
                             <td colspan="4">

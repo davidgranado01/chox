@@ -8,5 +8,5 @@
     listValue="name" 
     headerKey="-1"
     headerValue="--- ALL ---"
-    emptyOption="false">
+    emptyOption="false" onchange="javascript:doSearchWorkgroupOnChange();">
 </s:select>

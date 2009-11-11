@@ -60,9 +60,11 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction{
         
         if(insurerId>1){
 
-            Insurer insurer = insurerService.getObject(insurerId);
+            System.out.println("workgroupId:"+workgroupId);
 
-            List<WebUser> users = service.getClaimHanldersByInsurer(insurerId, insurer.isWorkgroupEnable());
+            Insurer insurer = insurerService.getObject(insurerId);
+            List<WebUser> users = service.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable());
+
             List items = new ArrayList<IdLookupItem>();
 
             for(WebUser user:users){
@@ -81,33 +83,20 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction{
 
         claimhandlers = new ArrayList<IdLookupItem>();
 
-        System.out.println("A001:"+insurerId);
-
         if(insurerId>1){
-
-            System.out.println("A002");
 
             Insurer insurer = insurerService.getObject(insurerId);
 
-            System.out.println("A003:"+insurer.getName());
-
             List<WebUser> users = service.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable());
             List items = new ArrayList<IdLookupItem>();
-
-            System.out.println("A004:"+users.size());
 
             for(WebUser user:users){
                 items.add(new IdLookupItem(user.getId(), user.getDisplayName()));
             }
 
-            System.out.println("A005:"+items.size());
-
             claimhandlers = items;
 
-            System.out.println("A006:"+claimhandlers.size());
         }
-
-        System.out.println("A007");
         
         return SUCCESS;
     }

@@ -34,13 +34,11 @@
     
 </script>
 
-
 <form onsubmit="return true;" action="user/UpdateClaimWorkgroupAssignment.action" method="post" id="formEscalateClaimAction" name="formEscalateClaimAction">
     <fieldset class="x-fieldset">
         <legend>Re-assign Workgroup - Action Required</legend>
         <div>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="actionName" name="actionName" value="assigned" />
             <div>
                 <div class="status-info">
                 If the claim has been incorrectly assigned to this workgroup, please select the correct Workgroup from the selection list below.
@@ -48,7 +46,7 @@
                 <div class="status-control-set">
                     <table class="status-table" width="100%">
                         <tr>
-                            <td width="200px"><label width="200px">Workgroup</label></td>
+                            <td width="200px"><label>Workgroup</label></td>
                             <td width="100%">
                                 <s:select name="escalateWorkgroupId" id="escalateWorkgroupId"
                                 list="otherWorkgroups" headerKey="-1" listKey="id" listValue="name"

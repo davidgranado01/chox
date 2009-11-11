@@ -103,26 +103,38 @@
         
     }); 
     
-    function doInsurerSearchSelectOnChange(){
-        
-        var selectedInsurerId = -1;
-
-        if($("#insurerId").val()!=null){
-            selectedInsurerId = $("#insurerId").val();
-        }
-
-        $("#searchScreenWorkgroupDropDownDiv").load("SearchWorkgroupDropDownAction.action?orgId=" + selectedInsurerId);
-        doShowClaimHandler(-1, selectedInsurerId);
-    }
-
-   function doShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
+    function setSelectedInsurerId(){
 
        var isInsurerUser = <s:property value="isInsurer"/>;
        if(isInsurerUser){
-           selectedInsurerId = <s:property value="OrganisationId"/>;
+           insurerId = <s:property value="OrganisationId"/>;
+       }else{
+            if($("#insurerId").val()!=null){
+                insurerId = $("#insurerId").val();
+            }
        }
+
+    }
+
+    function doInsurerSearchSelectOnChange(){
+        setSelectedInsurerId();
+        $("#searchScreenWorkgroupDropDownDiv").load("SearchWorkgroupDropDownAction.action?orgId=" + insurerId);
+        doShowClaimHandler(-1, insurerId);
+    }
+
+    function doSearchWorkgroupOnChange(){
+        setSelectedInsurerId();
+        var workgroupId = -1;
+
+        if($("#workgroup").val()!=null){
+            workgroupId = $("#workgroup").val();
+        }
+            
+        doShowClaimHandler(workgroupId, insurerId);
+    }
+    
+   function doShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
        $('#searchScreenClaimhandlerDownDiv').load("SearchClaimHandlerRoleUserDropDownAction.action?workgroupId="+selectedWorkgroupId+"&insurerId="+selectedInsurerId);
-       
    }
 
    function clearForm(){

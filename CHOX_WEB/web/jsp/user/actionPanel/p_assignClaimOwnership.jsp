@@ -26,40 +26,23 @@ if(statusMsg==null){
         if($("#claimWorkgroupEnable").val()!=null && $("#claimWorkgroupEnable").val()!=""){
             isWorkgroupEnable = $("#claimWorkgroupEnable").val();
         }        
-
-        // PAGE SETUP - BUTTON
-        doAllowToChangeStatus();
         
         // PAGE SETUP - WORKGROUP ID
         if(isWorkgroupEnable){
-
             if($("#claimWorkgroupId").val()!=null && $("#claimWorkgroupId").val()!=""){
                 selectedWorkgroupId = $("#claimWorkgroupId").val();
-            }
-
-            $("#ownershipAssignmentWorkgroupId").val(selectedWorkgroupId);
-            
+            }            
         }
 
         doOwnershipAssignmentShowClaimHandler(selectedWorkgroupId, insurerId);
         doAssignOwnershipFormValidation();
 
     });
-
-    function doAllowToChangeStatus(){
-        
-        if(claimStatus=='ClaimUnacknowledgedUnassigned'){
-            $("#assignAndProcess").attr("disabled", false);
-        }else{
-            $("#assignAndProcess").attr("disabled", true);
-        }
-        
-    }
     
     function isWorkgroupFieldValid(){
         var bFlag = false;
 
-        if(isWorkgroupEnable && $("#ownershipAssignmentWorkgroupId").val()<=0){
+        if(isWorkgroupEnable && $("#oasWorkgroupId").val()<=0){
             bFlag = true;
         }
 
@@ -72,11 +55,11 @@ if(statusMsg==null){
         {
             errorLabelContainer: "#OwnershippAssignmentMessageBox",
             rules: {
-                ownershipAssignmentWorkgroupId:{required:isWorkgroupFieldValid},
+                oasWorkgroupId:{required:isWorkgroupFieldValid},
                 claimOwnerId:{min:1}
             },
             messages: {
-                ownershipAssignmentWorkgroupId: {required:"You must supply a value for 'Workgroup'"},
+                oasWorkgroupId: {required:"You must supply a value for 'Workgroup'"},
                 claimOwnerId: {min:"You must supply a value for 'Claim Owner'"}
             }
         });
@@ -86,10 +69,11 @@ if(statusMsg==null){
     }
 
     function doOwnershipAssignmentWorkgroupChange(){
-
-        if($("#ownershipAssignmentWorkgroupId").val()!=null){
-            selectedWorkgroupId = $("#ownershipAssignmentWorkgroupId").val();
+        
+        if($("#oasWorkgroupId").val()!=null){
+            selectedWorkgroupId = $("#oasWorkgroupId").val();
         }
+        
         claimOwnerId = -1;
         doOwnershipAssignmentShowClaimHandler(selectedWorkgroupId, insurerId);
     
@@ -116,9 +100,8 @@ if(statusMsg==null){
     <fieldset class="x-fieldset">
         <legend>Claim Ownership - Action Required</legend>
         <div>
+            
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="actionName" name="actionName" value="assigned_routed" />
-
             <input type="hidden" id="claimWorkgroupId" name="claimWorkgroupId" value="<s:property value="workgroup.id"/>">
             <input type="hidden" id="claimClaimOwnerId" name="claimClaimOwnerId" value="<s:property value="claimOwner.id"/>">
             <input type="hidden" id="claimWorkgroupEnable" name="claimWorkgroupEnable" value="<s:property value="insurer.workgroupEnable"/>">
@@ -128,12 +111,12 @@ if(statusMsg==null){
                 Please assign the claim owner for this claim and click on the 'Assign Owner' button. If this claim has been assigned to the incorrect Workgroup, please use the 'More Actions' drop down above, clicking on 'Re-assign Workgroup' to re-assign the claim's Workgroup.
                 </div>
                 <div class="status-control-set">
-                    <table class="status-table" width="100%">
+                    <table class="status-table" width="100%" border="0" cellpadding="0" cellspacing="0">
                     <s:if test="insurer.workgroupEnable">
                     <tr>
-                        <td width="200px"><label width="200px">Workgroup</label></td>
-                        <td width="100%">
-                            <s:select name="ownershipAssignmentWorkgroupId" id="ownershipAssignmentWorkgroupId"
+                        <td><label width="200px">Workgroup</label></td>
+                        <td>
+                            <s:select name="oasWorkgroupId" id="oasWorkgroupId"
                             list="workgroups" headerKey="" listKey="id" listValue="name"
                             headerValue="-- Please Select --" onchange="doOwnershipAssignmentWorkgroupChange()">
                             </s:select>
@@ -141,7 +124,7 @@ if(statusMsg==null){
                     </tr>
                     </s:if>
                     <s:else>
-                        <input type="hidden" id="workgroupId" name="workgroupId" value=""/>
+                        <input type="hidden" id="oasWorkgroupId" name="oasWorkgroupId" value=""/>
                     </s:else>
                     <tr>
                         <td><label>Claim Owner</label></td>
@@ -152,7 +135,6 @@ if(statusMsg==null){
                             <input id="assignAndProcess" type="submit" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit('assigned_routed');"/>
                         </td>
                     </tr>
-                        
                     </table>
 
                     <div class="errorBox" id="OwnershippAssignmentMessageBox"></div>

@@ -4,10 +4,14 @@ import chox.Util.RoleHelper;
 import chox.model.WebUser;
 import chox.model.WebUserRole;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 
 public class UserServiceImpl extends DataService implements UserService {
 
@@ -111,34 +115,32 @@ public class UserServiceImpl extends DataService implements UserService {
 
         try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
-            criteria.add(Restrictions.eq("insurer.id", insurerId));
-            criteria.add(Restrictions.eq("status", true));
-            criteria.addOrder(Order.asc("firstName"));
-            users = findByCriteria(criteria);
+                Criteria criteria = getSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+                criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
 
+                if(workgroupEnable && selectedWorkgroupId>0){
+                    criteria.createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
+                    criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
+                }
+
+                criteria.add(Restrictions.eq("insurer.id", insurerId));
+                criteria.add(Restrictions.eq("status", true));
+                criteria.addOrder(Order.asc("firstName"));
+                
+                criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+                List<HashMap> resultMap = criteria.list();
+
+                for (HashMap m : resultMap) {
+                    users.add((WebUser)m.get("this"));
+                }
+            
         } catch (Throwable e) {
            e.printStackTrace();
         }
         
-        List<WebUser> claimHandlers = new ArrayList<WebUser>();
-
-        if(!workgroupEnable){
-            
-            claimHandlers = users;
-            
-        }else{
-            
-            for(WebUser wu : users){
-                if(RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_CH) && wu.getWorkgroupIds().contains(selectedWorkgroupId)){
-                    claimHandlers.add(wu);
-                }
-            }
-        }
-        
-        return claimHandlers;
+        return users;
     }
-
+    
     public List<WebUser> getClaimHanldersByInsurer(int insurerId, boolean workgroupEnable){
 
         List<WebUser> users = new ArrayList<WebUser>();

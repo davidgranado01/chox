@@ -199,21 +199,18 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if(searchCriteria.getIsWorkgroupCheck()){
             if(RoleHelper.isUserCheckByWorkgroup(getCurrentUser())){
-                System.out.println(" >>>>>>>>>> WORKGROUP");
                 criteria.add(Restrictions.sqlRestriction("workgroup_id in (select workgroup_id from user_workgroup where user_id ="+getCurrentUser().getId()+")"));
             }
         }
         
         if(searchCriteria.getIsOwnerShipCheck()){
             if(RoleHelper.isEditableByOwnership(getCurrentUser())){
-                System.out.println(" >>>>>>>>>> FILTER BY OWNERSHIP A");
                 criteria.add(Restrictions.eq("claimOwner.id", getCurrentUser().getId()));
             }
             
         }
 
         if (searchCriteria.getClaimOwnerId() > 0) {
-            System.out.println(" >>>>>>>>>> FILTER BY OWNERSHIP B");
             criteria.add(Restrictions.eq("claimOwner.id", searchCriteria.getClaimOwnerId()));
         }
         

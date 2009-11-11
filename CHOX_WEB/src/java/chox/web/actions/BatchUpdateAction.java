@@ -6,10 +6,12 @@ package chox.web.actions;
 
 import chox.model.Claim;
 import chox.model.ClaimStatus;
+import chox.model.Comment;
 import chox.model.WebUser;
 import chox.model.Workgroup;
 import chox.services.AuditTrailService;
 import chox.services.ClaimService;
+import chox.services.CommentService;
 import chox.services.SystemLogService;
 import chox.services.UserService;
 import chox.services.WorkgroupService;
@@ -31,7 +33,7 @@ public class BatchUpdateAction extends BaseAction {
     private Integer workgroupId; // CLAIM OWNERSHIP
     private Integer claimOwnerId;
     private WorkgroupService workgroupService;
-
+    private CommentService commentService;
 
     @Override
     public String execute() throws Exception {
@@ -39,7 +41,6 @@ public class BatchUpdateAction extends BaseAction {
         return SUCCESS;
     }
 
-    // SPRINT 8
     public String doInvoicePaymentReceivedAction() {
 
         String oldStatus = ClaimStatus.INVOICE_PAYMENT_LOGGED;
@@ -74,6 +75,7 @@ public class BatchUpdateAction extends BaseAction {
 
     public String doClaimOwnershipAction() {
 
+        
         String oldStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED;
 
         // WORKGROUP
@@ -98,11 +100,31 @@ public class BatchUpdateAction extends BaseAction {
             claim.setClaimOwner(claimOwnerDBA);
             updateCliamStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
 
-            // TODO LOG NOTE
+            // createNewNote(claimOwnerDBA.getDisplayName(), true, claim);
+            
         }
 
         return SUCCESS;
     }
+
+/*
+    private void createNewNote(String newClaimOwnerName, boolean isPublic, Claim claim) {
+
+        String noteMsg = "Claim owner changed from 'N/A' to '" + newClaimOwnerName+"'";
+
+        Comment comment = new Comment();
+        comment.setIsPublic(isPublic);
+        comment.setComment(noteMsg);
+        comment.setClaim(claim);
+
+        try {
+            commentService.createNewObject(comment);
+        } catch (Exception ex) {
+            this.actionResult = "ERROR : " + ex.getMessage();
+        }
+
+    }
+    */
     
     public String clearBREApprovedInvoicesForPayment() {
 
@@ -158,8 +180,7 @@ public class BatchUpdateAction extends BaseAction {
         
     }
 
-    public void setWorkgroup(int id)
-    {
+    public void setWorkgroup(int id){
         this.workgroup = id;
     }
 
@@ -197,6 +218,10 @@ public class BatchUpdateAction extends BaseAction {
 
     public void setClaimOwnerId(Integer claimOwnerId) {
         this.claimOwnerId = claimOwnerId;
+    }
+
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
     }
 
     

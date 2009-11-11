@@ -2,173 +2,140 @@
 
 <script language="JavaScript">
 
-                function doRejectClaim(){
-                    
-                    isClaimNumberInvalid();
-                    registeAction('reject');
 
-                    if(doFormValidation().form()){
-                        if(confirm('Are you sure you want to reject this claim?')){                        
+    $(document).ready(function(){
+        doFormValidation();
+    });
 
-                            var sClaimNumber = $("#claimNumber").val();
-                                if(sClaimNumber.length > 0)
-                                {
-                                    var sClaimId = $("#claimId").val();
-                                    var form = $("#formAcknowledgeAction");
-                                    checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
-                                }
-                                else
-                                {
-                                    $("#formAcknowledgeAction").submit();
-                                }
-                            } 
-                        }
-                                    
-                }
-                
-                function isClaimNumberMandatory(){
-                    var sActionName = $("#actionName").val();
-                    
-                    if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
-                        return false;
-                    }
-                    return true;
-                }
-                
-                $(document).ready(function(){                    
-                    doFormValidation();                    
-                });
-                
-                function isRejected(){
-                    var sActionName = $("#actionName").val();
-                    if(sActionName=="reject"){
-                        return true;
-                    }
-                    return false;
-                } 
-                
-                function liabilityMinNumber(){
-                    var sActionName = $("#actionName").val();
-                    var iMinliability = 0.01;
-                    if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
-                        iMinliability = 0;
-                    }
-                    return iMinliability;
-                }
-                
-                function liabilityMinNumberMsg(){
-                    var sActionName = $("#actionName").val();
-                    var iMinliabilityMsg = "'Percentage Liability Accepted' must be more than 0";
-                    if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
-                        iMinliabilityMsg = "'Percentage Liability Accepted' must be more than or equal to 0";
-                    }
-                    return iMinliabilityMsg;   
-                }
-                
-                function isClaimNumberInvalid(){
-                    
-                    $("#isClaimNumberValidFlag").val("1");
-                    
-                    var sClaimNumber = $("#claimNumber").val();
-                    
-                    if(isSpecialCharacterExist(sClaimNumber)){
-                        
-                        $("#isClaimNumberValidFlag").val("0");
-                    }
-                    
-                }
-    
-                function isSpecialCharacterExist(strClaimNumber){
-                    
-                    if(strClaimNumber.length>0){                        
-                        var iChars = "!£$%^&*+=-_{[}]#~'@;:/?.>,<"+'"';                        
-                        for (var i = 0; i < strClaimNumber.length; i++) {
-                            if (iChars.indexOf(strClaimNumber.charAt(i)) != -1) {
-                                return true;
-                            }
-                        }             
-                    }
-                    return false;
-                }
-                
-                function doFormValidation(){
-                    
-                    var validateFlag = $("#formAcknowledgeAction").validate(
+    function doRejectClaim(){
+
+        isClaimNumberInvalid();
+        registeAction('reject');
+
+        if(doFormValidation().form()){
+            if(confirm('Are you sure you want to reject this claim?')){
+
+                var sClaimNumber = $("#claimNumber").val();
+                    if(sClaimNumber.length > 0)
                     {
-                        errorLabelContainer: "#ACKmessageBox",  
-                        rules: {
-                            indemnityAmount:{
-                                required:true,
-                                number:true
-                            },
-                            percentageLiabilityAccepted:{
-                                required:true,
-                                number:true,
-                                max: 100.00,
-                                min:liabilityMinNumber
-                            },
-                            claimNumber:{
-                                required:isClaimNumberMandatory
-                            } ,
-                            actionName:{
-                                required:true
-                            },
-                            isClaimNumberValidFlag:{
-                                min:1
-                            },
-                            reasonOfRejectionId:{
-                                required:isRejected
-                            }
-                            
-                        },
-                        messages: {
-                            indemnityAmount: {
-                                required:"You must supply a value for 'Indemnity'",
-                                number:"You must supply a numeric value for 'Indemnity'"
-                            }, 
-                            percentageLiabilityAccepted: {
-                                required:"You must supply a value for 'Percentage Liability Accepted'",
-                                number:"You must supply a numeric value for 'Percentage Liability Accepted'",
-                                max:"'Percentage Liability Accepted' cannot be more than 100",
-                                min:liabilityMinNumberMsg
-                            },
-                            claimNumber: {
-                                required:"You must supply a value for 'Claim Number'"
-                            },
-                            actionName:{
-                                required:"You must choose 'Reject this claim' or 'Request Invoice Data"
-                            },
-                            isClaimNumberValidFlag:{
-                                min:"Invalid Character used in Claim Number"
-                            } ,
-                            reasonOfRejectionId:{
-                                required:"You must choose a 'Reason For Rejection'"
-                            }               
-                        }
-                    });
-                    
-                    return validateFlag;
-                }
-                
-                
-                function doSubmit(a){
-                    
-                    registeAction(a);
-                    isClaimNumberInvalid();
-                    
-                    $("#reasonOfRejectionId").val("");
-                    
-                    if(doFormValidation().form()){
-                        var sClaimNumber = $("#claimNumber").val();
                         var sClaimId = $("#claimId").val();
-                        var form = $("#formAcknowledgeAction");
+                        var form = $("#formUpdateByEngAcknowledgeAction");
                         checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
-                    }                    
-                }               
-                    
+                    }
+                    else
+                    {
+                        $("#formUpdateByEngAcknowledgeAction").submit();
+                    }
+                }
+            }
+
+    }
+                
+    function isClaimNumberMandatory(){
+        var sActionName = $("#actionName").val();
+
+        if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
+            return false;
+        }
+        return true;
+    }
+    
+    function liabilityMinNumber(){
+        var sActionName = $("#actionName").val();
+        var iMinliability = 0.01;
+        if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
+            iMinliability = 0;
+        }
+        return iMinliability;
+    }
+                
+    function liabilityMinNumberMsg(){
+        var sActionName = $("#actionName").val();
+        var iMinliabilityMsg = "'Percentage Liability Accepted' must be more than 0";
+        if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
+            iMinliabilityMsg = "'Percentage Liability Accepted' must be more than or equal to 0";
+        }
+        return iMinliabilityMsg;
+    }
+                
+    function doFormValidation(){
+
+        var validateFlag = $("#formUpdateByEngAcknowledgeAction").validate(
+        {
+            errorLabelContainer: "#ACKUpdateByEngMessageBox",
+            rules: {
+                indemnityAmount:{
+                    required:true,
+                    number:true
+                },
+                percentageLiabilityAccepted:{
+                    required:true,
+                    number:true,
+                    max: 100.00,
+                    min:liabilityMinNumber
+                },
+                claimNumber:{
+                    required:isClaimNumberMandatory
+                } ,
+                actionName:{
+                    required:true
+                },
+                isClaimNumberValidFlag:{
+                    min:1
+                },
+                reasonOfRejectionId:{
+                    required:isRejected
+                }
+
+            },
+            messages: {
+                indemnityAmount: {
+                    required:"You must supply a value for 'Indemnity'",
+                    number:"You must supply a numeric value for 'Indemnity'"
+                },
+                percentageLiabilityAccepted: {
+                    required:"You must supply a value for 'Percentage Liability Accepted'",
+                    number:"You must supply a numeric value for 'Percentage Liability Accepted'",
+                    max:"'Percentage Liability Accepted' cannot be more than 100",
+                    min:liabilityMinNumberMsg
+                },
+                claimNumber: {
+                    required:"You must supply a value for 'Claim Number'"
+                },
+                actionName:{
+                    required:"You must choose 'Reject this claim' or 'Request Invoice Data"
+                },
+                isClaimNumberValidFlag:{
+                    min:"Invalid Character used in Claim Number"
+                } ,
+                reasonOfRejectionId:{
+                    required:"You must choose a 'Reason For Rejection'"
+                }
+            }
+        });
+
+        return validateFlag;
+    }
+                
+                
+    function doSubmit(a){
+
+        registeAction(a);
+        isClaimNumberInvalid();
+
+        $("#reasonOfRejectionId").val("");
+
+        if(doFormValidation().form()){
+            var sClaimNumber = $("#claimNumber").val();
+            var sClaimId = $("#claimId").val();
+            var form = $("#formUpdateByEngAcknowledgeAction");
+            checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
+        }
+    }
+
 </script>
 
-<form action="user/acknowledge.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
+<form action="user/acknowledge.action" method="post" id="formUpdateByEngAcknowledgeAction" name="formUpdateByEngAcknowledgeAction">
     <fieldset class="x-fieldset">
         <legend>Claim Acknowledgement - Action Required</legend>
         <div>
@@ -222,8 +189,6 @@
     </td>
 </tr>
 
-<div id="dReasonOfRejection">
-
     <tr valign="top">
         <td>
             <label>Reason for Rejection</label>
@@ -243,8 +208,6 @@
         </td>
     </tr>
 
-</div>
-
 <tr>
     <td colspan="4">
         <div class="no-format">
@@ -262,7 +225,7 @@
                         </tr>
                     </table>
                     
-                    <div class="errorBox" id="ACKmessageBox"></div>
+                    <div class="errorBox" id="ACKUpdateByEngMessageBox"></div>
                     
                 </div>
             </div>

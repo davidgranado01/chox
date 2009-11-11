@@ -108,6 +108,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private IntelligentNoteDisplayEngine intelligentNoteDisplayEngine;
     private int claimOwnerId = -1;
     private int escalateWorkgroupId = -1;
+    private int oasWorkgroupId = -1; // OWNERSHIP ASSIGNMENT - WORKGROUP ID
+    private int uosWorkgroupId = -1; // UPDATE CLAIM OWNERSHIP - WORKGROUP ID
     
     // </editor-fold>
 
@@ -241,9 +243,58 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         String newStatus = "";
+        // String oldOwnerName = "N/A";
+        // String noteMsg = "";
+        
+        if(this.claimOwnerId>0){
+
+            // GET NEW CLAIM OWNER
+            WebUser newClaimOwner = userService.getObject(claimOwnerId);
+            
+            /*
+            // GET OLD CLAIM OWNER
+            if(claim.getClaimOwner()!=null){
+                oldOwnerName = claim.getClaimOwner().getDisplayName();
+            }
+            */
+            
+            newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
+            claim.setStatus(newStatus);
+            // noteMsg = "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getDisplayName() +"'";
+                
+            if (!result.equalsIgnoreCase(ERROR)) {
+
+                try {
+
+                    if(oasWorkgroupId>0){
+                        claim.setWorkgroup(workgroupService.getObject(oasWorkgroupId));
+                    }
+
+                    claim.setClaimOwner(newClaimOwner);
+                    this.service.updateClaim(claim);
+
+                    // LOG AUDIT TRAIL
+                    auditTrailService.logAuditLog(newStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim);
+                    
+                    // SAVE NEW NOTE
+                    // createNewNote(noteMsg, true, "");
+
+                } catch (Exception ex) {
+                    result = ERROR;
+                    this.actionResult = "ERROR : " + ex.getMessage();
+                }
+            }
+        }
+        
+        return result;
+    }
+
+    public String ownershipUpdating() {
+
+        String result = SUCCESS;
         String oldOwnerName = "N/A";
         String noteMsg = "";
-        
+
         if(this.claimOwnerId>0){
 
             // GET NEW CLAIM OWNER
@@ -254,31 +305,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 oldOwnerName = claim.getClaimOwner().getDisplayName();
             }
 
-            // CHECK STATUS
-            if (this.actionName.equalsIgnoreCase(ASSIGNED_PROCESS)) {
-                
-                newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
-                claim.setStatus(newStatus);
-    
-            }
-
-            noteMsg = "Claim owner changed from " + oldOwnerName + " to " + newClaimOwner.getDisplayName();
-                
+            noteMsg = "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getDisplayName()+"'";
 
             if (!result.equalsIgnoreCase(ERROR)) {
 
                 try {
 
                     if(workgroupId>0){
-                        claim.setWorkgroup(workgroupService.getObject(workgroupId));
+                        claim.setWorkgroup(workgroupService.getObject(uosWorkgroupId));
                     }
 
                     claim.setClaimOwner(newClaimOwner);
                     this.service.updateClaim(claim);
-
-                    if(this.actionName.equalsIgnoreCase(ASSIGNED_PROCESS)) {
-                        auditTrailService.logAuditLog(newStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim);
-                    }
 
                     // SAVE NEW NOTE
                     createNewNote(noteMsg, true, "");
@@ -289,7 +327,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 }
             }
         }
-        
+
         return result;
     }
 
@@ -1199,6 +1237,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setEscalateWorkgroupId(int escalateWorkgroupId) {
         this.escalateWorkgroupId = escalateWorkgroupId;
+    }
+
+    public int getOasWorkgroupId() {
+        return oasWorkgroupId;
+    }
+
+    public void setOasWorkgroupId(int oasWorkgroupId) {
+        this.oasWorkgroupId = oasWorkgroupId;
+    }
+
+    public int getUosWorkgroupId() {
+        return uosWorkgroupId;
+    }
+
+    public void setUosWorkgroupId(int uosWorkgroupId) {
+        this.uosWorkgroupId = uosWorkgroupId;
     }
     
     public List<String> getIntelligentNotes() {
