@@ -237,6 +237,7 @@
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
+        
         <action name="approveContestedClaim" class="chox.web.actions.ClaimAction" method="approveContestedClaim">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail
