@@ -73,8 +73,6 @@ public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Repo
     public HashMap getReportParameters() {
         
         HashMap reportParameters = new HashMap();
-        boolean bAction = true;
-        String sActionMsg = "";
         
         try {
             
@@ -247,10 +245,6 @@ public class InsurerAdminWeeklyOverviewReport extends BaseAction implements Repo
             
         } catch (Exception ex) {
             ex.printStackTrace();
-            bAction = false;
-            sActionMsg = ex.getLocalizedMessage();
-        } finally {
-            //dataService.logSystemLog(getReportCode(), sActionMsg, bAction);
         }
         
         return reportParameters;

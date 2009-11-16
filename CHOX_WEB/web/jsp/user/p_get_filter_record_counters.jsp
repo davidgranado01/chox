@@ -17,7 +17,7 @@
         <li><a href="javascript:showClaimIspenaltyChargeApplied();" >Penalty Charges To Be Applied (<s:property value="filterRecordCounter.PenaltyChargesAppliedCount" />)</a></li>
     </s:if>
     <s:if test="filterAccessibility.isInvoicePaymentLoggedAccessible">
-        <li><a href="javascript:showClaimByStatus('InvoicePaymentLogged', false, false);" >Payments to be Received (<s:property value="filterRecordCounter.InvoicePaymentLoggedCount" />)</a></li>
+        <li><a href="javascript:showClaimByStatus('InvoicePaymentLogged', false, false);" >Payments To Be Received (<s:property value="filterRecordCounter.InvoicePaymentLoggedCount" />)</a></li>
     </s:if>
     <s:if test="filterAccessibility.isNewClaimsToBeroutedAccessible">
         <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedUnrouted', false, false);" >New Claims to be Routed (<s:property value="filterRecordCounter.newClaimsToBeroutedCount" />)</a></li>

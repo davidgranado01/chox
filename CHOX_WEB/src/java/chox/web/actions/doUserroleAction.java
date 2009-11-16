@@ -1,5 +1,6 @@
 package chox.web.actions;
 
+import chox.data.OrganisationType;
 import chox.model.Insurer;
 import chox.model.WebUser;
 import chox.model.WebUserRole;
@@ -99,7 +100,7 @@ public class doUserroleAction extends BaseAction{
             
             this.service.addNewUserRole(webUserId, webUserRoleId);
 
-            if(user.getOrganisationType() == 2){
+            if(user.getOrganisationType().equalsIgnoreCase(OrganisationType.INS)){
 
                 Insurer insurer = insurerService.getObject(user.getInsurer().getId());
 

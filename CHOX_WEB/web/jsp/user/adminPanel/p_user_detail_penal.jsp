@@ -35,6 +35,7 @@
     // GET CLAIM DETAIL
     function checkMode(){
         var mode = "<s:property value="mode"/>";
+        
         if(mode!=null && mode!="" && mode=='Edit'){
             isNew = false
         }

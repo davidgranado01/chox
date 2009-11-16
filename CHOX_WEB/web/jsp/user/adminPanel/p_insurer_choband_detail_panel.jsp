@@ -262,26 +262,11 @@
 
             iWeekendBufferDays = getWeekendBuffer(iLabourCostTotalDay);
 
-            var ttl = parseFloat(iLabourCostTotalDay) + parseFloat(iWeekendBufferDays);
+            ttl = parseFloat(iLabourCostTotalDay) + parseFloat(iWeekendBufferDays);
             $("#iTotalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd").val(ttl);
             $("#iWeekendBufferDays_mwoecd").val(iWeekendBufferDays);
         }
         
-/*
-        function doRepairDurationRuleforNonMobileVehicleWithECD(){
-
-            var ttl = 0;
-            
-            var iCCDWeekendBufferDays = $("#CCDWeekendBufferDays").val();
-            var iCCDTakeVehicleToGarageDaysNonMobile = $("#CCDTakeVehicleToGarageDaysNonMobile").val();
-            var iCCDEngineerInspectionDelayDays = $("#CCDEngineerInspectionDelayDays").val();
-            var iCCDTakeVehicleOutDays = $("#CCDTakeVehicleOutDays").val();
-            ttl = parseFloat(iCCDWeekendBufferDays) + parseFloat(iCCDTakeVehicleToGarageDaysNonMobile) + parseFloat(iCCDEngineerInspectionDelayDays) + parseFloat(iCCDTakeVehicleOutDays);
-            $("#iTtlAllowableDaysforNonMobileVehicleWithECD").val(ttl);
-            
-        }
-*/
-
         function doRepairDurationRuleforNonMobileVehicleWithoutECD(){
 
             var iLabourCostTotalDay = 0;
@@ -299,7 +284,7 @@
                 + parseFloat(iCCDIsNotMobileDayAllowance);
 
             iWeekendBufferDays = getWeekendBuffer(iLabourCostTotalDay);
-            var ttl = parseFloat(iLabourCostTotalDay) + parseFloat(iWeekendBufferDays);
+            ttl = parseFloat(iLabourCostTotalDay) + parseFloat(iWeekendBufferDays);
             $("#iTtlAllowableDaysforNonMobileVehicleWoECD").val(ttl);
             $("#iWeekendBufferDays_nmwoecd").val(iWeekendBufferDays);
 

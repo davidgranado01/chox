@@ -110,6 +110,8 @@
                 
                 <div class="status-control-set">
                     <table class="status-table" width="100%">
+
+                    <!-- MANTIS ID:820
                     <s:if test="insurer.workgroupEnable">
                     <tr>
                         <td width="200px"><label>Workgroup</label></td>
@@ -126,6 +128,13 @@
                         <input type="hidden" id="uosWorkgroupId" name="uosWorkgroupId" value=""/>
                         </td></tr>
                     </s:else>
+                    !-->
+                    <tr>
+                        <td colspan="2">
+                        <input type="hidden" id="uosWorkgroupId" name="uosWorkgroupId" value=""/>
+                        </td>
+                    </tr>
+
                     <tr>
                         <td><label>Claim Owner</label></td>
                         <td><div id="claimHandlerRoleUserDropDownDiv"></div></td>

@@ -58,7 +58,7 @@ public class BatchUpdateAction extends BaseAction {
         String oldStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED;
         
         Workgroup workgroupDBA = new Workgroup();
-        workgroupDBA = workgroupService.getObject(this.workgroup);
+        workgroupDBA = workgroupService.getObject(this.workgroupId);
 
         for (Integer id : selectedClaimIdList)  {
             

@@ -1,5 +1,6 @@
 package chox.web.actions;
 
+import chox.data.OrganisationType;
 import chox.model.WebUser;
 import chox.model.WebUserRole;
 import chox.services.UserService;
@@ -31,14 +32,24 @@ public class UserAction extends BaseAction {
     @Override
     public String execute() {
         
+        String orgType = "";
+        if(orgTypeId==1){
+            orgType = OrganisationType.CHOX;
+        }else if(orgTypeId==2){
+            orgType = OrganisationType.INS;
+        }else if(orgTypeId==3){
+            orgType = OrganisationType.CHO;
+        }
         
+        List<WebUser> userData = this.service.getUsers(orgId, orgType);
         
-        List<WebUser> userData = this.service.getUsers(orgTypeId, orgId);
-        
+        // System.out.println("orgTypeId : "+orgTypeId + "|orgType" +orgType+" :SIZE: "+userData.size() + "|userRoleId:"+userRoleId);
+
         user = new ArrayList<UserViewData>();
         
         for(WebUser h : userData)
-        {   
+        {
+
             if(userRoleId>0){
                  if(isSelectedRoleExist(h.getRoles(), userRoleId)){
                     user.add(new UserViewData(h));
@@ -91,13 +102,4 @@ public class UserAction extends BaseAction {
         this.userRoleId = userRoleId;
     }
     
-    /*
-        if(currentUser.getIsCHOXAdmin()){
-            orgTypeId = 1;
-        }else if(currentUser.getIsINS()){
-            orgTypeId = 2;
-        }else if(currentUser.getIsCHO()){
-            orgTypeId = 3;
-        }
-     */
 }

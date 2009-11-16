@@ -127,7 +127,7 @@ public class doInsurerWorkgroupAction extends BaseAction implements ModelDriven<
         String ackMsg = "";
         
         // WORKGROUP FEATUERE IS ENABLE
-        // EXCEPT THE WORKGROUP ITSELF, DO NOT HAVE ANY ACTIVE WORKGROUP        
+        // EXCEPT THE WORKGROUP ITSELF, DO NOT HAVE ANY ACTIVE WORKGROUP
         if(insurer.isWorkgroupEnable() && !service.isWorkgroupAllowToInactive(insurerId, model.getId())){
             ackMsg = "Unable to remove this workgroup. Must maintain at least one active workgroup for this insurer.";
             getActionResponse().AddError(ackMsg);                   

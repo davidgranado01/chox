@@ -1,6 +1,7 @@
 package chox.services;
 
 import chox.Util.RoleHelper;
+import chox.data.OrganisationType;
 import chox.model.WebUser;
 import chox.model.WebUserRole;
 import java.util.ArrayList;
@@ -175,7 +176,7 @@ public class UserServiceImpl extends DataService implements UserService {
         return claimHandlers;
     }
     
-    public List<WebUser> getUsers(int orgTypeId, int orgId){
+    public List<WebUser> getUsers(int orgId, String orgType){
         
         List<WebUser> users = new ArrayList<WebUser>();
         
@@ -185,9 +186,10 @@ public class UserServiceImpl extends DataService implements UserService {
 
             if(orgId>0){
                 
-                if(orgTypeId==2){
+                if(orgType.equalsIgnoreCase(OrganisationType.INS)){
                     criteria.add(Restrictions.eq("insurer.id", orgId));
-                }else if(orgTypeId==3){
+                    
+                }else if(orgType.equalsIgnoreCase(OrganisationType.CHO)){
                     criteria.add(Restrictions.eq("chorganisation.id", orgId));
                 }
                 
@@ -198,7 +200,7 @@ public class UserServiceImpl extends DataService implements UserService {
             List<WebUser> userData = findByCriteria(criteria);
 
             for(WebUser h : userData){
-                if(h.getOrganisationType()==(Integer.valueOf(orgTypeId))){
+                if(h.getOrganisationType().equalsIgnoreCase(orgType)){
                     users.add(h);
                 }
             }

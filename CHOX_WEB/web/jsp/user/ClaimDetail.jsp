@@ -367,7 +367,7 @@
                     });
 
                     commentsDataStore = new Ext.data.Store({
-                        proxy: new Ext.data.HttpProxy({url: 'user/getComments.action',method:'GET'}), reader:commentsJsonReader
+                        proxy: new Ext.data.HttpProxy({url: 'getComments.action',method:'GET'}), reader:commentsJsonReader
                     });
 
                     commentsGrid = new Ext.grid.GridPanel({
@@ -1330,13 +1330,17 @@
                                             <div class="chox-form-item">
                                                 <s:textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment" />
                                             </div>
-                                            <s:if test="!isCHO">
-                                                <div class="chox-form-item">
-                                                    <s:checkbox name="isPublic"/>
-                                                    <label class="std-label-ro">Visible to CHO?</label>
-                                                </div>
+                                            
+                                            <div class="chox-form-item">
+                                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> All</span>
+                                            <s:if test="isInsurer">
+                                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only"/> Insurer Only</span>
                                             </s:if>
-                                            <s:else><input name="isPublic" type="hidden" value="true"/></s:else>
+                                            <s:elseif test="isCHO">
+                                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only"/> Credit Hire Only</span>
+                                            </s:elseif>
+                                            </div>
+
                                             <input type="submit" id="bAddComment" value="Add Note" onclick="javascript:return commentFormValidation();"/>
                                         </fieldset>
                                     </form>

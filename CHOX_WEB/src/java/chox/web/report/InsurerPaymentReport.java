@@ -1,8 +1,10 @@
 package chox.web.report;
 
 import chox.Util.DateHelper;
+import chox.Util.RoleHelper;
 import chox.model.Chorganisation;
 import chox.model.Insurer;
+import chox.model.WebUserRole;
 import chox.services.DataService;
 import chox.web.actions.BaseAction;
 import chox.web.report.viewdata.PaymentReport;
@@ -54,30 +56,27 @@ public class InsurerPaymentReport extends BaseAction implements Report{
     public HashMap getReportParameters() {
         
         HashMap reportParameters = new HashMap();
-
-        boolean bAction = true;
-        String sActionMsg = "";
         
         try {
             
             PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
             
-            /*
-            Date dataStart = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
-            Date dataEnd = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateEnd"))[0]);
-            */ 
-            
             String insurerName = "";
             Integer iSupplierId = -1;
             Integer iInsurerId = -1;            
             
+            boolean isWorkgroupEnabled = false;
+            boolean isOrwnerEnabled = false;
+
             Chorganisation chorg = new Chorganisation();
-            
-            
+
             if(currentUser.getIsINS()){
                 Insurer ins = currentUser.getUser().getInsurer();
                 iInsurerId = ins.getId();
                 insurerName = ins.getName();
+                
+                isWorkgroupEnabled = ins.isWorkgroupEnable();
+                isOrwnerEnabled = ins.isClaimOwnershipEnable();
                 
                 String supplierId = ((String[]) externalParameter.get("supplierId"))[0];
                 if(!supplierId.equalsIgnoreCase("")){
@@ -90,24 +89,26 @@ public class InsurerPaymentReport extends BaseAction implements Report{
             sb.append("Select invoice.* from rpt_claim_invoice invoice ");
             sb.append("where invoice.status = 'AwaitingInvoicePayment' ");
             sb.append("and insurer_id = :pInsurerId and chorganisation_id = :pChorganisationId ");
-            //sb.append("and date_trunc('day', created_date) between @pInvUploadDateFrom and @pInvUploadDateTo ");
+
+            // FILTER BY WORKGROUP AND OWNERSHIO ONLY
+            if(RoleHelper.isCheckSelectedRoleExist(currentUser.getUser().getRoles(), WebUserRole.ROLE_CH)){
+                
+                if(RoleHelper.isUserCheckByWorkgroup(currentUser.getUser())){
+                    sb.append("and invoice.workgroup_id in (select workgroup_id from user_workgroup where user_id="+currentUser.getUser().getId()+") ");
+                }
+
+                if(RoleHelper.isUserCheckByOwnership(currentUser.getUser())){
+                    sb.append("and invoice.owner = "+currentUser.getUser().getId()+" ");
+                }
+                
+            }
+            
             sb.append("order by cho_reference asc");
             String query = sb.toString();
-            
-            /*
-            query = query.replaceAll("@pInvUploadDateFrom", "'" + DateHelper.DBDateFormat.format(dataStart) + "'");
-            query = query.replaceAll("@pInvUploadDateTo", "'" + DateHelper.DBDateFormat.format(dataEnd) + "'");
-           
-            
-            query = query.replaceAll("@pChorganisationId", iSupplierId.toString());
-            query = query.replaceAll("@pInsurerId", iInsurerId.toString());
-            
-            List result = dataService.externalQuery(query);
-             */
 
-             //Emmanuel
-            //27-07-2009
-            //prevent SQL Injection
+            // Emmanuel
+            // 27-07-2009
+            // prevent SQL Injection
             Map paramMap = new HashMap();
             paramMap.put("pChorganisationId", iSupplierId);
             paramMap.put("pInsurerId", iInsurerId);
@@ -123,8 +124,6 @@ public class InsurerPaymentReport extends BaseAction implements Report{
             }            
             
             PaymentReportObject reportObject = new PaymentReportObject();
-            // reportObject.setInvoiceUploadDateFrom(dataStart);
-            // reportObject.setInvoiceUploadDateTo(dataEnd);
             reportObject.setCreatedDate(new Date());
             
             reportParameters.put("Chorganisation", chorg);
@@ -134,10 +133,6 @@ public class InsurerPaymentReport extends BaseAction implements Report{
             
         } catch (Exception ex) {
             ex.printStackTrace();
-            bAction = false;
-            sActionMsg = ex.getLocalizedMessage();
-        } finally {
-            //dataService.logSystemLog(getReportCode(), sActionMsg, bAction);
         }
         
         return reportParameters;

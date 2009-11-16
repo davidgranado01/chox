@@ -110,10 +110,6 @@ public class InvoiceSavingSummaryReport extends BaseAction implements Report{
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            // bAction = false;
-            // sActionMsg = ex.getLocalizedMessage();
-        } finally {
-            // dataService.logSystemLog(getReportCode(), sActionMsg, bAction);
         }
 
         return reportParameters;

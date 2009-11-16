@@ -41,9 +41,7 @@ public class ClaimRejectedReport implements Report {
 
     public HashMap getReportParameters() {
         
-        HashMap reportParameters = new HashMap();
-        boolean bAction = true;
-        String sActionMsg = "";        
+        HashMap reportParameters = new HashMap();   
         
         PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
         
@@ -94,10 +92,6 @@ public class ClaimRejectedReport implements Report {
             
         } catch (Exception ex) {
             ex.printStackTrace();
-            bAction = false;
-            sActionMsg = ex.getLocalizedMessage();
-        } finally {
-            //dataService.logSystemLog(getReportCode(), sActionMsg, bAction, 1);
         }
         
         return reportParameters;

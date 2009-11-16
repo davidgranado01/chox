@@ -44,9 +44,6 @@ public class AverageSettlementAmountReport extends BaseAction implements Report{
     public HashMap getReportParameters() {
         
         HashMap reportParameters = new HashMap();
-
-        boolean bAction = true;
-        String sActionMsg = "";
         
         try {
             
@@ -124,9 +121,6 @@ public class AverageSettlementAmountReport extends BaseAction implements Report{
                         double totalAvg = ttlToPay.doubleValue() / recordCount;
                         dtls.get(0).setValue(new BigDecimal(totalAvg));
                     }
-                    
-                    
-                    
                 }
                 
                 // SET VALUE
@@ -154,10 +148,6 @@ public class AverageSettlementAmountReport extends BaseAction implements Report{
             
         } catch (Exception ex) {
             ex.printStackTrace();
-            bAction = false;
-            sActionMsg = ex.getLocalizedMessage();
-        } finally {
-            // dataService.logSystemLog(getReportCode(), sActionMsg, bAction);
         }
         
         return reportParameters;

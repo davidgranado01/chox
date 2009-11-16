@@ -49,7 +49,7 @@
                             <td width="200px"><label>Workgroup</label></td>
                             <td width="100%">
                                 <s:select name="escalateWorkgroupId" id="escalateWorkgroupId"
-                                list="otherWorkgroups" headerKey="-1" listKey="id" listValue="name"
+                                list="insurerWorkgroups" headerKey="-1" listKey="id" listValue="name"
                                 headerValue="-- Please Select --">
                                 </s:select>
                             </td>

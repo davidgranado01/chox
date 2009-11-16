@@ -42,12 +42,12 @@ public class HistoryAction extends BaseAction {
 
     }
 
-     /*
+    /*
      * isShowAll : true > SHOW ALL RECORDS WITH TYPE IS ERROR AND INFO
      * isShowAll : false > SHOW ALL RECORDS WITH TYPE IS ERROR ONLY
      * isPublic : true > SHOW ALL RECORDS WITH IS_PUBLIC IS TRUE ONLY
      * isPublic : false > SHOW ALL RECORDS REGARDLESS THE IS_PUBLIC
-     */ 
+     */
      
     @Override
     public String execute() {

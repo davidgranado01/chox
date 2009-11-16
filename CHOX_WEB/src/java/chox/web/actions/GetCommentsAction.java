@@ -46,10 +46,8 @@ public class GetCommentsAction extends BaseModelAction {
     
     public String getComments()
     {        
-        
-        boolean isCreditHire = getIsCHO();
-        
-        List<Comment> commentsData = this.service.getCommentByClaimIdFilterByOrg(claimId, isCreditHire);
+                
+        List<Comment> commentsData = this.service.getCommentByClaimIdFilterByOrg(claimId, getAuthenticatedUser().getUser().getOrganisationType());
 
         comments = new ArrayList<CommentViewData>();
         for(Comment c : commentsData)

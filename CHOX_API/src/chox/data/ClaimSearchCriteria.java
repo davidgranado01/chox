@@ -20,7 +20,8 @@ public class ClaimSearchCriteria implements Serializable {
     private String claimNumber;
     private String status;
     private int insurerId;
-    private String vrn;
+    private String thirdPartyVrn;
+    private String customerVrn;
     private String invoiceNumber;
     private Date claimUploadDateFrom;
     private Date claimUploadDateTo;
@@ -39,6 +40,7 @@ public class ClaimSearchCriteria implements Serializable {
     private String dir;
     private Date reviewRequiredDateFrom;
     private Date reviewRequiredDateTo;
+    private boolean isOpenClaim;
     
     private int claimOwnerId;
 
@@ -113,12 +115,20 @@ public class ClaimSearchCriteria implements Serializable {
         this.insurerId = insurerId;
     }
 
-    public String getVrn() {
-        return vrn;
+    public String getCustomerVrn() {
+        return customerVrn;
     }
 
-    public void setVrn(String vrn) {
-        this.vrn = vrn;
+    public void setCustomerVrn(String customerVrn) {
+        this.customerVrn = customerVrn;
+    }
+
+    public String getThirdPartyVrn() {
+        return thirdPartyVrn;
+    }
+
+    public void setThirdPartyVrn(String thirdPartyVrn) {
+        this.thirdPartyVrn = thirdPartyVrn;
     }
 
     public String getInvoiceNumber() {
@@ -279,6 +289,14 @@ public class ClaimSearchCriteria implements Serializable {
 
     public void setClaimOwnerId(int claimOwnerId) {
         this.claimOwnerId = claimOwnerId;
+    }
+
+    public boolean getIsOpenClaim() {
+        return isOpenClaim;
+    }
+
+    public void setIsOpenClaim(boolean isOpenClaim) {
+        this.isOpenClaim = isOpenClaim;
     }
     
 }

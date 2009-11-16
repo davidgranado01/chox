@@ -27,7 +27,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public static final String COMPLETE = "Complete";
     public static final String CANCELLED = "Cancelled";
     public static final String NEW_CLAIM = "1st Notification";
-    // private Map<String, String> sortingMap;
 
     public ClaimServiceImpl() {
         super();
@@ -104,8 +103,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             
         }
         
-        System.out.println("QUERY:"+q);
-
         return getCount(q);
     }
 
@@ -189,6 +186,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         Criteria criteria = getSession().createCriteria(Claim.class)
                 .createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN)
                 .createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN)
                 .createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN)
                 .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
@@ -215,7 +213,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
-            criteria.add(Restrictions.like("choReference", searchCriteria.getSupplierReference()).ignoreCase());
+            String sSupplierRef = "%"+searchCriteria.getSupplierReference()+"%";
+            criteria.add(Restrictions.like("choReference", sSupplierRef).ignoreCase());
         }
 
         if (searchCriteria.getStatus() != null && !searchCriteria.getStatus().isEmpty()) {
@@ -234,7 +233,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.eq("wg.id", searchCriteria.getWorkgroupId()));
         }
 
-        // S8003
         if (searchCriteria.getIsAnomalies()) {
 
             Set AnomaliesStatus = new HashSet();
@@ -263,18 +261,32 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {
-            criteria.add(Restrictions.like("iv.claimInvoiceNo", searchCriteria.getInvoiceNumber()).ignoreCase());
+            String sSearchInvoiceNumber = "%"+searchCriteria.getInvoiceNumber()+"%";
+            criteria.add(Restrictions.like("iv.claimInvoiceNo", sSearchInvoiceNumber).ignoreCase());
         }
 
         if (searchCriteria.getClaimNumber() != null && !searchCriteria.getClaimNumber().isEmpty()) {
-            criteria.add(Restrictions.like("claimNumber", searchCriteria.getClaimNumber()).ignoreCase());
+            String sSearchClaimNumber = "%"+searchCriteria.getClaimNumber()+"%";
+            criteria.add(Restrictions.like("claimNumber", sSearchClaimNumber).ignoreCase());
         }
 
-        if (searchCriteria.getVrn() != null && !searchCriteria.getVrn().isEmpty()) {
-            String vrn = searchCriteria.getVrn().replaceAll(" ", "");
-            criteria.add(Restrictions.like("tp.vehicleRegistration", vrn).ignoreCase());
+        if (searchCriteria.getCustomerVrn()!= null && !searchCriteria.getCustomerVrn().isEmpty()) {
+            String sCustomerVrn = "%"+searchCriteria.getCustomerVrn().replaceAll(" ", "")+"%";
+            criteria.add(Restrictions.like("cs.vehicleRegistration", sCustomerVrn).ignoreCase());
+        }
+        
+        if (searchCriteria.getThirdPartyVrn() != null && !searchCriteria.getThirdPartyVrn().isEmpty()) {
+            String sThirdPartyVrn = "%"+searchCriteria.getThirdPartyVrn().replaceAll(" ", "")+"%";
+            criteria.add(Restrictions.like("tp.vehicleRegistration", sThirdPartyVrn).ignoreCase());
         }
 
+        if (searchCriteria.getIsOpenClaim()) {
+            criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_REJECTION_ACCEPTED));
+            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_REJECTED_ACCEPTED));
+            criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
+            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
+        }
+        
         if (searchCriteria.getClaimUploadDateFrom() != null) {
             Date d = searchCriteria.getClaimUploadDateFrom();
             d.setHours(0);
@@ -300,8 +312,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 d.setHours(0);
                 d.setMinutes(0);
                 d.setSeconds(0);
-                System.out.println("getReviewRequiredDateFrom: "+d);
                 criteria.add(Expression.ge("hmd.nextReviewDate", d));
+                
             }
 
             if (searchCriteria.getReviewRequiredDateTo() != null) {
@@ -311,10 +323,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 d.setHours(0);
                 d.setMinutes(0);
                 d.setSeconds(0);
-                System.out.println("getReviewRequiredDateTo: "+d);
                 criteria.add(Expression.le("hmd.nextReviewDate", d));
+
             }
-            
+
         }
 
         if (searchCriteria.getInvoiceUploadDateFrom() != null || searchCriteria.getInvoiceUploadDateTo() != null) {
@@ -360,6 +372,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getLastModifiedDateFrom() != null || searchCriteria.getLastModifiedDateTo() != null) {
+            
             if (searchCriteria.getLastModifiedDateFrom() != null) {
                 Date d = searchCriteria.getLastModifiedDateFrom();
                 d.setHours(0);
@@ -367,6 +380,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 d.setSeconds(0);
                 criteria.add(Expression.ge("lastModifiedDate", d));
             }
+            
             if (searchCriteria.getLastModifiedDateTo() != null) {
                 Date d = searchCriteria.getLastModifiedDateTo();
                 d.setDate(d.getDate() + 1);
@@ -375,6 +389,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 d.setSeconds(0);
                 criteria.add(Expression.le("lastModifiedDate", d));
             }
+            
         }
 
         criteria.setProjection(Projections.rowCount());

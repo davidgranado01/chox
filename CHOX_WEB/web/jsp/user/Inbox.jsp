@@ -68,7 +68,7 @@
             insurerId : -1,
             invoiceNumber : '',
             claimNumber : '',
-            vrn : '',
+            thirdPartyVrn : '',
             claimUploadDateFrom : '',
             claimUploadDateTo : '',
             invoiceUploadDateFrom : '',
@@ -83,7 +83,9 @@
             reviewRequiredDateTo:'',
             isWorkgroupCheck:isWorkgroupCheck,
             isOwnerShipCheck:isOwnerShipCheck,
-            claimOwnerId:-1
+            claimOwnerId:-1,
+            customerVrn:'',
+            isOpenClaim:''
         }
 
         doDataLoad(0, recordPerPage);
@@ -99,7 +101,7 @@
             insurerId : -1,
             invoiceNumber : '',
             claimNumber : '',
-            vrn : '',
+            thirdPartyVrn : '',
             claimUploadDateFrom : '',
             claimUploadDateTo : '',
             invoiceUploadDateFrom : '',
@@ -114,7 +116,9 @@
             reviewRequiredDateTo:'',
             isWorkgroupCheck:isWorkgroupCheck,
             isOwnerShipCheck:isOwnerShipCheck,
-            claimOwnerId:-1
+            claimOwnerId:-1,
+            customerVrn:'',
+            isOpenClaim:''
         }
 
         doDataLoad(0, recordPerPage);
@@ -129,7 +133,7 @@
             insurerId : -1,
             invoiceNumber : '',
             claimNumber : '',
-            vrn : '',
+            thirdPartyVrn : '',
             claimUploadDateFrom : '',
             claimUploadDateTo : '',
             invoiceUploadDateFrom : '',
@@ -144,7 +148,9 @@
             reviewRequiredDateTo:'',
             isWorkgroupCheck:isWorkgroupCheck,
             isOwnerShipCheck:isOwnerShipCheck,
-            claimOwnerId:-1
+            claimOwnerId:-1,
+            customerVrn:'',
+            isOpenClaim:''
         }
 
         doDataLoad(0, recordPerPage);
@@ -159,7 +165,7 @@
             insurerId : -1,
             invoiceNumber : '',
             claimNumber : '',
-            vrn : '',
+            thirdPartyVrn : '',
             claimUploadDateFrom : '',
             claimUploadDateTo : '',
             invoiceUploadDateFrom : '',
@@ -174,7 +180,9 @@
             reviewRequiredDateTo:'',
             isWorkgroupCheck:false,
             isOwnerShipCheck:false,
-            claimOwnerId:-1
+            claimOwnerId:-1,
+            customerVrn:'',
+            isOpenClaim:''
         }
 
         doDataLoad(0, recordPerPage);
@@ -192,7 +200,7 @@
         var insurerId = Ext.query('*[name$=insurerId]').length > 0 ? Ext.query('*[name$=insurerId]')[0].value : -1;
         var invoiceNumber = Ext.query('*[name$=invoiceNumber]')[0].value;
         var claimNumber = Ext.query('*[name$=claimNumber]')[0].value;
-        var vrn = Ext.query('*[name$=vrn]')[0].value;
+        var thirdPartyVrn = Ext.query('*[name$=thirdPartyVrn]')[0].value;
         var claimUploadDateFrom = Ext.query('*[name$=claimUploadDateFrom]')[0].value;
         var claimUploadDateTo = Ext.query('*[name$=claimUploadDateTo]')[0].value;
         var invoiceUploadDateFrom = Ext.query('*[name$=invoiceUploadDateFrom]')[0].value;
@@ -204,14 +212,16 @@
         var reviewRequiredDateFrom = Ext.query('*[name$=reviewRequiredDateFrom]')[0].value;
         var reviewRequiredDateTo = Ext.query('*[name$=reviewRequiredDateTo]')[0].value;
         var claimOwnerId = Ext.query('*[name$=claimOwnerId]')[0].value;
-
+        var customerVrn = Ext.query('*[name$=customerVrn]')[0].value;
+        var isOpenClaim = Ext.query('*[name$=isOpenClaim]')[0].checked;
+        
         ds.baseParams = {
             supplierReference : supplierReference,
             supplierId : supplierId,
             insurerId : insurerId,
             invoiceNumber : invoiceNumber,
             claimNumber : claimNumber,
-            vrn : vrn,
+            thirdPartyVrn : thirdPartyVrn,
             claimUploadDateFrom : claimUploadDateFrom,
             claimUploadDateTo : claimUploadDateTo,
             invoiceUploadDateFrom : invoiceUploadDateFrom,
@@ -226,7 +236,9 @@
             reviewRequiredDateTo : reviewRequiredDateTo,
             isWorkgroupCheck:false,
             isOwnerShipCheck:false,
-            claimOwnerId : claimOwnerId
+            claimOwnerId : claimOwnerId,
+            customerVrn : customerVrn,
+            isOpenClaim : isOpenClaim
         }
 
         doDataLoad(0, recordPerPage);
@@ -404,12 +416,12 @@
                                             {
                                                 errorLabelContainer: "#HMmessageBox",
                                                 rules: {
-                                                    workgroup:{
+                                                    workgroupId:{
                                                         required:true, min:1
                                                     }
                                                 },
                                                 messages: {
-                                                    workgroup:{
+                                                    workgroupId:{
                                                         required:"You must select 'Workgroup'",
                                                         min:"You must select 'Workgroup'"
                                                     }
@@ -852,7 +864,6 @@
         loadDataFromSession();
     });
 
-
 </script>
 
 <body>
@@ -910,8 +921,8 @@
                     <s:action name="getFilterRecordCounters" namespace="/user" executeResult="true" />
                 </div>
             </div>
-              
-            <div id="searchPanelTab" style="background: #dfe8f6; Height:280px;" class="x-hide-display">
+
+            <div id="searchPanelTab" style="background: #dfe8f6; height:300px;" class="x-hide-display">
                 <div id="searchPanel">
                     <s:action name="searchClaim" namespace="/user" executeResult="true" /> 
                 </div>

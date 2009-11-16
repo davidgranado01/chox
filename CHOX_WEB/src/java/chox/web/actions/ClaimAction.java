@@ -71,6 +71,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private AttachmentTypeService attachmentTypeService;
     private BusinessRulesEngService businessRulesEngService;
     private CommentService commentService;
+    private ChoBandService choBandService;
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="DECLARE CLAIM OBJECT PARAMETERS">
@@ -199,30 +200,28 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_CAR_HIRE_INFO;
-            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(REFER)) {
             newStatus = ClaimStatus.CLAIM_REF_TO_ENG;
-            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(REFER_FNOL)) {
             newStatus = ClaimStatus.CLAIM_REFERRED_TO_FNOL;
-            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(PENDING)) {
             newStatus = ClaimStatus.CLAIM_PENDING;
-            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else {
             newStatus = ClaimStatus.CLAIM_REJECTED;
-            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejectionId:" + claim.getReasonOfRejectionId();
-            logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
+            // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
+            // logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
+            logNewCommentForRejection(claim.getReasonOfRejectionId(), 0);
+            
         }
 
         if (!result.equalsIgnoreCase(ERROR)) {
 
-            boolean isPublic = false;
-
             try {
 
                 auditTrailService.logAuditLog(newStatus, claim, null, null);
-                createNewNote(claim.getEngineerClaimReviewNotes(), isPublic, strPrefix);
+                // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
+                // createNewNote(claim.getEngineerClaimReviewNotes(), false, strPrefix);
+                createNewNote(claim.getEngineerClaimReviewNotes(), 1, strPrefix);
 
                 claim.setEngineerClaimReviewNotes("");
                 claim.setIsFnolReviewed(false);
@@ -319,7 +318,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     this.service.updateClaim(claim);
 
                     // SAVE NEW NOTE
-                    createNewNote(noteMsg, true, "");
+                    int noteVisibilityType = 0;
+                    //createNewNote(noteMsg, true, "");
+                    createNewNote(noteMsg, noteVisibilityType, "");
 
                 } catch (Exception ex) {
                     result = ERROR;
@@ -344,8 +345,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             newStatus = ClaimStatus.CLAIM_REJECTED;
             // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejectionId:" + claim.getReasonOfRejectionId();
         }
-
-        createNewNote(reasonForRejection, false, strPrefix);
+        
+        // createNewNote(reasonForRejection, false, strPrefix);
+        // INSURER ONLY
+        createNewNote(reasonForRejection, 1, strPrefix);
 
         if (!result.equalsIgnoreCase(ERROR)) {
 
@@ -365,11 +368,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
 
-    private void createNewNote(String sComment, boolean isPublic, String strPrefix) {
+    private void createNewNote(String sComment, int noteVisibilityType, String strPrefix) {
 
         if (sComment.length() > 0) {
             Comment comment = new Comment();
-            comment.setIsPublic(isPublic);
+            comment.setVisibilityType(noteVisibilityType);
             comment.setComment(strPrefix + sComment);
             comment.setClaim(claim);
 
@@ -395,7 +398,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
 
             auditTrailService.logAuditLog(newStatus, claim, null, null);
-            createNewNote(claim.getEngineerClaimReviewNotes(), false, strPrefix);
+            // INSURER ONLY
+            // createNewNote(claim.getEngineerClaimReviewNotes(), false, strPrefix);
+            createNewNote(claim.getEngineerClaimReviewNotes(), 1, strPrefix);
 
             claim.setEngineerClaimReviewNotes("");
             this.claim.setStatus(newStatus);
@@ -460,14 +465,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             newStatus = ClaimStatus.CLAIM_PENDING;
         } else {
             newStatus = ClaimStatus.CLAIM_REJECTED;
-            logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
+
+            // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
+            logNewCommentForRejection(claim.getReasonOfRejectionId(), 0);
+            // logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
         }
 
         if (!result.equalsIgnoreCase(ERROR)) {
             
             try {
 
-                createNewNote(claim.getEngineerClaimReviewNotes(), false, strPrefix);
+                // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
+                // createNewNote(claim.getEngineerClaimReviewNotes(), false, strPrefix);
+                createNewNote(claim.getEngineerClaimReviewNotes(), 1, strPrefix);
                 auditTrailService.logAuditLog(newStatus, claim, null, null);
 
                 claim.setEngineerClaimReviewNotes("");
@@ -653,7 +663,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
             sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejection:" + claim.getInvoice().getReasonOfRejectionId();
-            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
+            // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
+            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
+            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), 0);
         }
 
         try {
@@ -686,7 +698,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             newStatus = ClaimStatus.INVOICE_REF_TO_ENG;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
-            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
+            // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
+            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
+            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), 0);
         }
 
         try {
@@ -718,7 +732,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             newStatus = ClaimStatus.INVOICE_REF_TO_ENG;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
-            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
+            // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
+            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
+            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), 0);
         }
 
         try {
@@ -822,7 +838,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             newStatus = ClaimStatus.INVOICE_REF_TO_CH;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
-            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
+            // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
+            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
+            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), 0);
         }
 
         try {
@@ -854,7 +872,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             newStatus = ClaimStatus.INVOICE_REF_TO_ENG;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
-            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
+            // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
+            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
+            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), 0);
         }
 
         try {
@@ -885,7 +905,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             newStatus = ClaimStatus.INVOICE_REF_TO_CH;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
-            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
+            // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
+            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
+            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), 0);
         }
 
         try {
@@ -1130,11 +1152,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return bFlag;
     }
 
-    public void logNewCommentForRejection(Integer reasonOfRejectionId, boolean isPublic) {
+    public void logNewCommentForRejection(Integer reasonOfRejectionId, int noteVisibilityType) {
 
         if (reasonOfRejectionId != null) {
             ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
-            createNewNote(reasonOfRejection.getName(), isPublic, "Reason For Rejection: ");
+            createNewNote(reasonOfRejection.getName(), noteVisibilityType, "Reason For Rejection: ");
         }
     }
     
@@ -1558,6 +1580,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return injurySolicitorId;
     }
 
+    public ChoBandService getChoBandService() {
+        return choBandService;
+    }
+
+    public void setChoBandService(ChoBandService choBandService) {
+        this.choBandService = choBandService;
+    }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
@@ -1609,15 +1639,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="GET DROP DOWN LIST">
-
+    /*
     public List getOtherWorkgroups() {
 
         if (otherWorkgroups == null) {
-            otherWorkgroups = lookupService.getNotMyWorkgroups(this.getAuthenticatedUser().getUser(), true);
+            otherWorkgroups = lookupService.getWorkgroupsByInsurerId(this.getAuthenticatedUser().getUser(), true);
         }
         
         return otherWorkgroups;
     }
+    */
     
     public List getWorkgroups() {
 

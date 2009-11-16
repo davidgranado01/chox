@@ -30,8 +30,6 @@ public class OverviewSummaryReport implements Report {
 
         HashMap reportParameters = new HashMap();
 
-        boolean bAction = true;
-        String sActionMsg = "";
         String userOrgLabel = "";
         String userOrgName = "";
 
@@ -50,7 +48,6 @@ public class OverviewSummaryReport implements Report {
 
             dataStart = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
             dataEnd = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateEnd"))[0]);
-
             StringBuffer sb = new StringBuffer();
 
             if (currentUser.getIsINS()) {
@@ -78,13 +75,17 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.panalty_charge)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_penalty_val ");
 
             if (currentUser.getIsINS()) {
+                
                 sb.append("from insurer_chorganisation insurer_chorganisation, chorganisation chorganisation ");
                 sb.append("where chorganisation.id=insurer_chorganisation.chorganisation_id  ");
                 sb.append("and insurer_chorganisation.insurer_id=:pUserOrgId ");
+                
             } else {
+                
                 sb.append("from insurer_chorganisation insurer_chorganisation, insurer insurer ");
                 sb.append("where insurer.id=insurer_chorganisation.insurer_id ");
                 sb.append("and insurer_chorganisation.chorganisation_id=:pUserOrgId ");
+                
             }
 
             String query = sb.toString();
@@ -125,12 +126,8 @@ public class OverviewSummaryReport implements Report {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            bAction = false;
-            sActionMsg = ex.getLocalizedMessage();
-        } finally {
-            // dataService.logSystemLog(getReportCode(), sActionMsg, bAction);
         }
-
+        
         return reportParameters;
     }
 

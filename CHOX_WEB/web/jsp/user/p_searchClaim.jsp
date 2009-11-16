@@ -140,20 +140,23 @@
    function clearForm(){
    
         $('#searchForm').contents().find(':input').each(function() {
-                var type = this.type;
-                var tag = this.tagName.toLowerCase();
+            var type = this.type;
+            var tag = this.tagName.toLowerCase();
 
-                  if (type == 'text' || type == 'password' || tag == 'textarea'){
-                      this.value = "";
-                  }else if(tag == 'select'){
-                      this.selectedIndex = 0;
-                  }
+            if (type == 'text' || type == 'password' || tag == 'textarea'){
+              this.value = "";
+            }else if(tag == 'select'){
+              this.selectedIndex = 0;
+            }
+        });
+
+        $('#searchForm').contents().find(':checkbox').each(function() {
+              this.checked = false;
         });
 
     }
 
     function statusChange(){
-
 
         if(($('#status :selected').val()!="AwaitingCarHireInfo") && <s:property value="isCHO" />){
             $("input[name='reviewRequiredDateTo']").val("");
@@ -180,8 +183,14 @@
         
         <tr>
             <td><label>Invoice Number</label></td>
-            <td><s:textfield name="invoiceNumber"/></td> 
-            <td><label>VRN</label></td><td><s:textfield name="vrn" /></td>
+            <td><s:textfield name="invoiceNumber"/></td>
+            <td><label>Open Claims</label></td><td><s:checkbox name="isOpenClaim" /></td>
+            
+        </tr>
+        
+        <tr>
+            <td><label>Customer VRN</label></td><td><s:textfield name="customerVrn" /></td>
+            <td><label>Third Party VRN</label></td><td><s:textfield name="thirdPartyVrn" /></td>
         </tr>
         
         <tr>

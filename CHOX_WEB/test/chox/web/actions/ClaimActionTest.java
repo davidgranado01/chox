@@ -9,7 +9,6 @@ import chox.model.Claim;
 import chox.services.ChoBandService;
 import chox.services.ClaimService;
 import chox.services.InvoiceService;
-import chox.services.UploadClaimXMLServiceImpl;
 import chox.web.security.MenuAccessibility;
 import java.util.List;
 import java.util.Map;

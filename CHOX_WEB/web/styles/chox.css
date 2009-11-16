@@ -985,3 +985,7 @@ div#claim-detail-extra div{
     margin:0;
     display: block;
 }
+
+span.input-radio{
+    padding:5px;
+}

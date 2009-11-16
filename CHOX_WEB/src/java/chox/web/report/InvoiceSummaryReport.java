@@ -241,9 +241,7 @@ public class InvoiceSummaryReport implements Report {
             ex.printStackTrace();
             bAction = false;
             sActionMsg = ex.getLocalizedMessage();
-        } finally {
-            // dataService.logSystemLog(getReportCode(), sActionMsg, bAction);
-        }
+        } 
         
         return reportParameters;
     }

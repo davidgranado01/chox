@@ -136,7 +136,8 @@ public class NotificationTest {
         HireMonitoringEcd newEcd = new HireMonitoringEcd();
         newEcd.setEcdDate(DateHelper.Parse("10/10/2009"));
         c.addHireMonitoringEcd(newEcd);
-        c.AddNotifications(newECDAddedChecker.getAnomalousNotifications(c));
+        // TODO: CHECK REQUIRED
+        // c.AddNotifications(newECDAddedChecker.getAnomalousNotifications(c));
         Assert.assertTrue(c.getIsIsAnomalies());
         Assert.assertEquals(1, c.getNotifications().size());
 
@@ -147,14 +148,16 @@ public class NotificationTest {
         HireMonitoringEcd newEcd2 = new HireMonitoringEcd();
         newEcd2.setEcdDate(DateHelper.Parse("12/10/2009"));
         c.addHireMonitoringEcd(newEcd2);
-        c.AddNotifications(newECDAddedChecker.getAnomalousNotifications(c));
+        // TODO: CHECK REQUIRED
+        // c.AddNotifications(newECDAddedChecker.getAnomalousNotifications(c));
         Assert.assertTrue(c.getIsIsAnomalies());
         Assert.assertEquals(1, c.getNotifications().size());
 
         //if repair booked in date is friday
         Date friday = DateHelper.Parse("18/09/2009");
         c.getHireMonitoringDetail().setRepairBookInDate(friday);
-        c.AddNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(c));
+        // TODO: CHECK REQUIRED
+        // c.AddNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(c));
         Assert.assertTrue(c.getIsIsAnomalies());
         Assert.assertEquals(2, c.getNotifications().size());
 

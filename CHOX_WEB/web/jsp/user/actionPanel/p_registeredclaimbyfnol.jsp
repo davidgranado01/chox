@@ -7,7 +7,9 @@
     });
     
     function doRejectClaim(){
+        
         registeAction('rejectFNOL');
+        
         if(doRegisterFNOFormValidation().form()){
             if(!confirm('Are you sure you want to reject this claim?')){
                 return false;
@@ -15,6 +17,8 @@
         }else{
             return false;
         }
+        
+        return true;
     }
     
     function doNoteValidation(){

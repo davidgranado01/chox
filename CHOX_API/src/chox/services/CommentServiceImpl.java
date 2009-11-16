@@ -4,6 +4,7 @@
  */
 package chox.services;
 
+import chox.data.OrganisationType;
 import chox.model.Comment;
 import chox.model.Claim;
 import java.util.List;
@@ -31,7 +32,7 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
         return comments;
     }
      
-    public List<Comment> getCommentByClaimIdFilterByOrg(int claimId, boolean isCreditHire) {
+    public List<Comment> getCommentByClaimIdFilterByOrg(int claimId, String orgType) {
 
         List comments = new ArrayList<Comment>();
 
@@ -39,9 +40,14 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
             
             DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);
             criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
-            
-            if(isCreditHire){
-                criteria.add(Restrictions.eq("isPublic", true));
+
+            // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
+            if(orgType.equalsIgnoreCase(OrganisationType.INS)){
+                // INSURER User SHOULD ABLE TO SEE ALL NOT CREDITHIRE's Notes ONLY
+                criteria.add(Restrictions.ne("visibilityType", 2));
+            }else if(orgType.equalsIgnoreCase(OrganisationType.CHO)){
+                // CREDITHIRE User SHOULD ABLE TO SEE ALL NOT INSURER's Notes ONLY
+                criteria.add(Restrictions.ne("visibilityType", 1));
             }
             
             criteria.addOrder(Order.asc("createdDate"));

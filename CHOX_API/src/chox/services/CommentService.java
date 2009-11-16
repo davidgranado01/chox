@@ -11,7 +11,7 @@ import chox.model.Claim;
 
 public interface CommentService {
     public List<Comment> getCommentByClaimId(int claimId);
-    public List<Comment> getCommentByClaimIdFilterByOrg(int claimId, boolean isCreditHire);
+    public List<Comment> getCommentByClaimIdFilterByOrg(int claimId, String orgType);
     public List<Comment> getCommentByClaim(Claim claim);
     Comment getObject(int id);
     public void createNewObject(Comment comment);

@@ -79,8 +79,7 @@
 
         function onSubmitResponseReceived(responseText, statusText)  {
             responseText = responseText.trim();
-            // $('input[@name=newPassword]').val("");
-            // $('input[@name=confirmNewPassword]').val("");
+            
                 <s:if test="isShowMessage">
                       window.location= "user/inbox.action";
                 </s:if>

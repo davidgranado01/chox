@@ -9,9 +9,8 @@ import java.io.Serializable;
 public class Comment extends AuditableEntity implements Serializable {
 
     protected String comment;
-    //protected int claimId;
     protected Claim claim;
-    protected boolean isPublic;
+    protected int visibilityType; // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
 
     public String getComment() {
         return comment;
@@ -29,20 +28,12 @@ public class Comment extends AuditableEntity implements Serializable {
         this.claim = claim;
     }
 
-    public boolean isIsPublic() {
-        return isPublic;
+    public int getVisibilityType() {
+        return visibilityType;
     }
 
-    public void setIsPublic(boolean isPublic) {
-        this.isPublic = isPublic;
-    }
-    /*
-    public int getClaimId() {
-    return claimId;
+    public void setVisibilityType(int visibilityType) {
+        this.visibilityType = visibilityType;
     }
 
-    public void setClaimId(int claimId) {
-    this.claimId = claimId;
-    }
-     */
 }
