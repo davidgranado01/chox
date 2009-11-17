@@ -989,3 +989,13 @@ div#claim-detail-extra div{
 span.input-radio{
     padding:5px;
 }
+
+.private-comment{
+    background-color:#e9f0f3;
+}
+
+.remark-indicator{
+        font-size:0.7em;
+        font-family: tahoma,arial,verdana,sans-serif;
+        color:#585858;
+}

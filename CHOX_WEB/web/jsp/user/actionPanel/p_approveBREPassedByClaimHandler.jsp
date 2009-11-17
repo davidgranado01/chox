@@ -65,7 +65,8 @@
 <form onsubmit="return true;" action="user/approveBREPassedByClaimHandler.action"
     method="post" id="approveBREPassedByClaimHandler" name="approveBREPassedByClaimHandler">
     <fieldset class="x-fieldset">
-        <legend>Invoice Esclated To Claim Handler - Action Required</legend>
+
+        <legend>Invoice Escalated To Claim Handler - Action Required</legend>
         <s:hidden name="id" />
         <s:hidden id="actionName" name="actionName" />
         <s:hidden id="reasonOfRejectionIdHolder" name="invoice.reasonOfRejectionId"/>
@@ -102,7 +103,7 @@
     <tr>
         <td colspan="4" class="choice">
             <input type="submit" value="Reject Invoice"  onclick="return doRejectClaim();" />
-            <input type="submit" value="Clear for payment" onclick="return doSubmit('accept');"  />
+            <input type="submit" value="Clear For Payment" onclick="return doSubmit('accept');"  />
             <input type="submit" value="Refer To Engineer" onclick="return doSubmit('InvReferEng');"  />
         </td>
     </tr>

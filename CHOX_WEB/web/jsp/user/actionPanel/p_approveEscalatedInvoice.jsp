@@ -111,7 +111,7 @@
                     <tr>                         
                         <td colspan="4" class="choice"> 
                             <input type="submit" value="Reject Invoice"  onclick="return doRejectClaim();" />
-                            <input type="submit" value="Clear For Payment" onclick="return doSubmit('accept');"  />   
+                            <input type="submit" value="Clear For Payment" onclick="return doSubmit('accept');"  />
                             <input type="submit" value="Refer To Claims Handler" onclick="return doSubmit('referCH');"  />  
                         </td>
                     </tr>

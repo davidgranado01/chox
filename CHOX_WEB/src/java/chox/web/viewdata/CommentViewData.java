@@ -21,6 +21,7 @@ public class CommentViewData {
     private String createdBy;
     private String createdDate;
     private String comment;
+    private int visibilityType;
 
     public CommentViewData(Comment comment) {
         Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -28,6 +29,8 @@ public class CommentViewData {
         this.id = comment.getId();
         this.createdDate = dateFormat.format(comment.getCreatedDate());
         this.comment = comment.getComment();
+        this.visibilityType = comment.getVisibilityType();
+
         String orgName = "";
         WebUser user = comment.getCreatedBy();
         if (user != null) {
@@ -59,4 +62,14 @@ public class CommentViewData {
     public String getComment() {
         return comment;
     }
+
+    public int getVisibilityType() {
+        return visibilityType;
+    }
+
+    public void setVisibilityType(int visibilityType) {
+        this.visibilityType = visibilityType;
+    }
+
+
 }

@@ -363,7 +363,12 @@
                 if(!commentsDisabled){
 
                     commentsJsonReader = new Ext.data.JsonReader({
-                        totalProperty: 'totalCount', root: 'results', fields:[{name:'id'}, {name:'createdBy'}, {name:'createdDate'}, {name:'comment'}]
+                        totalProperty: 'totalCount', root: 'results', fields:[
+                            {name:'id'},
+                            {name:'createdBy'},
+                            {name:'createdDate'},
+                            {name:'comment'},
+                            {name:'visibilityType'}]
                     });
 
                     commentsDataStore = new Ext.data.Store({
@@ -374,22 +379,40 @@
                         listeners:  {cellclick:loadComment },
                         store: commentsDataStore, loadMask: true,
                         columns: [
-                            {header: "Created", width: 200, dataIndex: 'createdDate', sortable: false, resizable: true},
-                            {header: "Created By", width: 200, dataIndex: 'createdBy', sortable: false, resizable: true},
-                            {header: "Message", width: 500, dataIndex: 'comment', sortable: false, resizable: true}
+                            {header: "Created", width: 130, dataIndex: 'createdDate', sortable: false, resizable: true},
+                            {header: "Created By", width: 260, dataIndex: 'createdBy', sortable: false, resizable: true},
+                            {header: "Message", width: 700, dataIndex: 'comment', sortable: false, resizable: true}
                         ],
+                        viewConfig:{
+                             getRowClass: function(record, index) {
+    
+
+                                    var c = record.get('visibilityType');
+                                    if(c>0){
+                                       return 'private-comment';
+                                    }
+
+                                }
+                        },
                         renderTo:'commentsGrid', width:960, autoHeight:true, enableHdMenu:false
                     });
+
                 }
 
                 function loadComment(grid, rowIndex, columnIndex, e){
+                    
                     var comment = commentsGrid.getStore().getAt(rowIndex);
-                    var commentText = comment.get("comment");
 
                     var title="Notes";
-                    var msg = "<b>Created Date</b>: " + comment.get("createdDate")
-                        + "<br/><b>Created By</b>: " + comment.get("createdBy")
-                        + "<br/><br/><b>Message</b>: <br/>" + comment.get("comment");
+                    var msg = "<b>Created Date</b>: " + comment.get("createdDate");
+                        msg += "<br/><b>Created By</b>: " + comment.get("createdBy") + "<br/>";
+                        msg += "<br/><b>Message";
+                        
+                        if(comment.get("visibilityType")>0){
+                           msg += " (Private Note)";
+                        }
+                        msg += "</b>: <br/>" + comment.get("comment");
+                        
 
                     propmtMsg(title, msg);
                 }
@@ -421,9 +444,9 @@
                         listeners:  {cellclick:loadAudit},
                         store: auditTrailData,
                         columns: [
-                            {header: "Modified Date", width: 200, dataIndex: 'modifiedDate', sortable: false, resizable: true},
-                            {header: "Modified By", width: 200, dataIndex: 'modifiedBy', sortable: false, resizable: true},
-                            {header: "Status", width: 400, dataIndex: 'status', sortable: false, resizable: true}
+                            {header: "Modified Date", width: 130, dataIndex: 'modifiedDate', sortable: false, resizable: true},
+                            {header: "Modified By", width: 260, dataIndex: 'modifiedBy', sortable: false, resizable: true},
+                            {header: "Status", width: 500, dataIndex: 'status', sortable: false, resizable: true}
                         ],
                         renderTo:'auditTrailGrid',
                         width:960,
@@ -438,7 +461,6 @@
                             claimId : <s:property value="id" />
                         }
                     });
-
                 }
 
                 function loadAudit(grid, rowIndex, columnIndex, e){
@@ -447,7 +469,7 @@
                     var title = "Claim Cycle";
                     var msg = "<b>Modified Date</b>: " + audit.get("modifiedDate")
                         + "<br/><b>Modified By</b>: " + audit.get("modifiedBy")
-                        + "<br/><b>Status</b>: " + audit.get("status")
+                        + "<br/><br/><b>Status</b>: " + audit.get("status")
 
                     propmtMsg(title, msg);
                 }
@@ -1332,22 +1354,28 @@
                                             </div>
                                             
                                             <div class="chox-form-item">
-                                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> All</span>
-                                            <s:if test="isInsurer">
-                                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only"/> Insurer Only</span>
-                                            </s:if>
-                                            <s:elseif test="isCHO">
-                                            <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only"/> Credit Hire Only</span>
-                                            </s:elseif>
+
+<s:if test="isInsurer">
+    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note (Visible By CHO)</span>
+    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only"/> Private Note (Only Visible Internally)</span>
+</s:if>
+<s:elseif test="isCHO">
+    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note (Visible By Insurer)</span>
+    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only"/> Private Note (Only Visible Internally)</span>
+</s:elseif>
+<s:else>
+    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note</span>
+    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only"/> Private Note (Only Visible By Insurer)</span>
+    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only"/> Private Note (Only Visible By CHO)</span>
+</s:else>
                                             </div>
 
                                             <input type="submit" id="bAddComment" value="Add Note" onclick="javascript:return commentFormValidation();"/>
                                         </fieldset>
                                     </form>
                                 </s:if>
-
                                 <div class="errorBox" id="CmErrMsgBox" style="color:red;font-weight: bold;font-size: 10px;"></div>
-
+                                <div class="remark-indicator">Private Note will be highlighted in Blue color</div>
                             </div>
                             
                             <div id="commentsGrid"></div>
