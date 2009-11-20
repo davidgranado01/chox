@@ -35,9 +35,9 @@
             store: userworkgroup_gridviewData,
             loadMask: true,
             columns: [
-                {header: "Workgroup", width: 250, dataIndex: 'name', sortable: false, resizable: true},
-                {header: "Created By", width: 90, dataIndex: 'createdBy', sortable: false, resizable: true},
-                {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: false, resizable: true},
+                {header: "Workgroup", width: 250, dataIndex: 'name', sortable: true, resizable: true},
+                {header: "Created By", width: 90, dataIndex: 'createdBy', sortable: true, resizable: true},
+                {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: true, resizable: true},
                 {header: "", width: 100, dataIndex: 'Remove', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Remove</a>"}}
             ],
@@ -82,7 +82,7 @@
             
             var gridViewId = gridView.get("id");
              $.ajax({
-               url: "removeUserWorkgroupMapping.action?userWorkgroupId="+gridViewId,
+               url: "removeUserWorkgroupMapping.action?userWorkgroupId="+gridViewId+"&webUserId="+<s:property value="id" />,
                success: userworkgroup_doRefreshPage
              });
              
@@ -113,8 +113,51 @@
         
     }
     
-    function userworkgroup_doRefreshPage(){
-        $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" /> + "&tabIndex="+userDetailTabIndex);
+    function userworkgroup_doRefreshPage(responseText, statusText){
+
+        var response = eval('(' + responseText.trim() + ')');
+        var outputDiv =  $('#CDUserWorkgroupMessageBox');
+        outputDiv.html('');
+        outputDiv.removeClass();
+        
+        var refreshGirdView = true;
+
+        if(response)
+        {
+            if(!response.isValid){
+
+               outputDiv.addClass("submit-error");
+
+               if(response.errors.lenght>1){
+
+                    outputDiv.append("<p>Error have been encountered:</p><ul>");
+
+                    jQuery.each(response.errors, function(i, val) {
+                        outputDiv.append("<li>");
+                        outputDiv.append(val);
+                        outputDiv.append("</li>");
+                    });
+
+                    outputDiv.append("</ul>");
+
+               }else{
+                   outputDiv.append("<p>" + response.errors + "</p>");
+               }
+
+               refreshGirdView = false;
+
+            }
+        }
+        else
+        {
+            outputDiv.append("Unknown Error Encountered, please try again.");
+            outputDiv.addClass("submit-error");
+            refreshGirdView = false;
+        }
+
+        if(refreshGirdView){
+            $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" /> + "&tabIndex="+userDetailTabIndex);
+        }
     }
     
     

@@ -32,7 +32,7 @@ public class HistoryHelper {
         history.setProcessDate(DateHelper.getCurrentTimeStamp());
         history.setClaim(claim);
         history.setIsPublic(rv.getIsVisibleToCHO());
-        history.setNarrative(rv.toString() + ':' + rv.getResult());
+        history.setNarrative(rv.toString());
         history.setType(sType);
         history.setRuleId(rBusinessRule.getRuleId());
         history.setIsSystem(true);

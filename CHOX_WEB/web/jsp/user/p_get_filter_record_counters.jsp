@@ -7,6 +7,9 @@
     <s:if test="filterAccessibility.isClaimsAwaitingHireMonitoringInformationAccessible">
         <li><a href="javascript:showClaimByStatus('AwaitingCarHireInfo', false, false);" >Claims Awaiting Hire Monitoring Information (<s:property value="filterRecordCounter.claimsAwaitingHireMonitoringInformationCount" />)</a></li>
     </s:if>
+    <s:if test="filterAccessibility.isAwaitingInvoiceDataAccessible">
+        <li><a href="javascript:showClaimByStatus('AwaitingInvoiceData', false, false);" >Awaiting Invoice Data (<s:property value="filterRecordCounter.awaitingInvoiceDataCount" />)</a></li>
+    </s:if>
     <s:if test="filterAccessibility.isIncorrectInvoiceDataCalculationsAccessible">
         <li><a href="javascript:showClaimByStatus('InvoiceDataCalculationIncorrect', false, false);" >Incorrect Invoice Data Calculations (<s:property value="filterRecordCounter.incorrectInvoiceDataCalculationsCount" />)</a></li>
     </s:if>
@@ -67,6 +70,7 @@
     <s:if test="filterAccessibility.isApprovedInvoicesAwaitingPaymentAccessible">
         <li><a href="javascript:showClaimByStatus('AwaitingInvoicePayment', true, true);" >Approved Invoices Awaiting Payment (<s:property value="filterRecordCounter.approvedInvoicesAwaitingPaymentCount" />)</a></li>
     </s:if>
+
 </ul>                            
 
 

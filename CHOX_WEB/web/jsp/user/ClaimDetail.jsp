@@ -784,34 +784,7 @@
                     </div>
                 </div>
 
-                <s:if test="IsInsurer">
-
-                    <script type="text/javascript">
-
-                        function doShowHideExtraAction(a, b){
-                            if(b){
-                                $("#"+a).css("display:", "block");
-                                $("#"+a).slideDown();
-                            }else{
-                                $("#"+a).slideUp();
-                                $("#"+a).css("display:", "none");
-                                $("#extraAction").val("");
-
-                            }
-                        }
-
-                        function extraActionChange(){
-
-                            var selectedAction = $("#extraAction").val();
-                            $(".extraActionClass").slideUp();
-                            $(".extraActionClass").css("display:", "none");
-
-                            if(selectedAction!=null && selectedAction!=""){
-                                doShowHideExtraAction(selectedAction, 1);
-                            }
-                        }
-
-                    </script>
+                <s:if test="!IsCHO">
 
                     <div id="updateInsurerClaimNumber" class="extraActionClass" style="display: none;">
                         <table width="100%">
@@ -1375,7 +1348,7 @@
                                     </form>
                                 </s:if>
                                 <div class="errorBox" id="CmErrMsgBox" style="color:red;font-weight: bold;font-size: 10px;"></div>
-                                <div class="remark-indicator">Private Note will be highlighted in Blue color</div>
+                                <div class="remark-indicator">Private notes are highlighted in blue</div>
                             </div>
                             
                             <div id="commentsGrid"></div>

@@ -67,7 +67,7 @@
             
             <div>
                 <div class="status-info">
-                    Please review the claim details using the 'Claim Details' tab, if and when the claim has been registered please enter the assigned Claim Number and click on the 'Return to Claims Handler' button to return the claim to the Claims Handler for review. If the claim has not been registered, please enter the reason why in the 'FNOL Review Note' field before clicking on the 'Return to Claims Handler' button.
+                    Please review the claim details using the 'Claim Details' tab, if and when the claim has been registered please enter the assigned Claim Number and click on the 'Return Claim' button to return the claim. If the claim has not been registered, please enter the reason why in the 'FNOL Review Note' field/box before clicking on the 'Return Claim' button.
                 </div>
                 <div class="status-control-set">
                     <table class="status-table">
@@ -87,8 +87,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="choice" nowrap>                     
-                                <input type="submit" value="Return to Claims Handler" onclick="registeAction('registerFNOL')"  />
+                            <td colspan="2" class="choice" nowrap>            
+                            <input type="submit" value="Return Claim" onclick="registeAction('registerFNOL')"  />
                             </td>
                         </tr>
                     </table>

@@ -34,8 +34,6 @@ public class HasCorrectDiscountForNonDA implements IBusinessRule {
                 }
 
                 boolean success = CalcHelper.EqualTo(invoice.getDiscount(), adminHandlingCharge);
-
-                
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
                 if(success){ narrative = "";}

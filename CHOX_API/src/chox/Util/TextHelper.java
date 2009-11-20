@@ -26,5 +26,34 @@ public class TextHelper {
         
         return bFlag;
     }
+
+    public static String getComma(String iString){
+
+        String oString = "";
+        StringTokenizer st = new StringTokenizer(iString);
+        while (st.hasMoreTokens()) {
+             oString += "'"+(st.nextToken(",")).trim()+"',";
+        }
+
+        if(oString.length()>0){
+            oString = oString.substring(0, oString.length()-1);
+        }
+
+        return oString;
+    }
     
+    public static String getSamiColon(String iString){
+        
+        String oString = "";
+        StringTokenizer st = new StringTokenizer(iString);
+        while (st.hasMoreTokens()) {
+             oString += "'"+(st.nextToken(";")).trim()+"',";
+        }
+        
+        if(oString.length()>0){
+            oString = oString.substring(0, oString.length()-1);
+        }
+     
+        return oString;
+    }
 }

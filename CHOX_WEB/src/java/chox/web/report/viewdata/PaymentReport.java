@@ -25,6 +25,7 @@ public class PaymentReport {
     private BigDecimal lessVATCollected = new BigDecimal(0.00);
     private BigDecimal totalHireandRepairServices = new BigDecimal(0.00);
     private BigDecimal additionalClaimsHandlingFee = new BigDecimal(0.00);
+    private BigDecimal penaltyCharge = new BigDecimal(0.00);
     private BigDecimal totaltoPay = new BigDecimal(0.00);
     
     public static PaymentReport getObject(Map data) {
@@ -47,13 +48,22 @@ public class PaymentReport {
         result.setLessDiscount((BigDecimal) data.get("discount".toLowerCase())); 
         result.setLessExcessCollected((BigDecimal) data.get("excess_amount_collected".toLowerCase())); 
         result.setLessVATCollected((BigDecimal) data.get("vat_amount_collected".toLowerCase())); 
-        result.setAdditionalClaimsHandlingFee((BigDecimal) data.get("claims_handling_invoice_amount".toLowerCase())); 
+        result.setAdditionalClaimsHandlingFee((BigDecimal) data.get("claims_handling_invoice_amount".toLowerCase()));
+        result.setPenaltyCharge((BigDecimal) data.get("panalty_charge".toLowerCase()));
         result.setTotaltoPay((BigDecimal) data.get("total_to_pay".toLowerCase())); 
 
         
         return result;
     }
-    
+
+    public BigDecimal getPenaltyCharge() {
+        return penaltyCharge;
+    }
+
+    public void setPenaltyCharge(BigDecimal penaltyCharge) {
+        this.penaltyCharge = penaltyCharge;
+    }
+
     public BigDecimal getAdditionalClaimsHandlingFee() {
         return additionalClaimsHandlingFee;
     }

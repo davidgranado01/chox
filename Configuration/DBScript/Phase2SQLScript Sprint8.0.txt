@@ -90,19 +90,18 @@ insert into accessibility_item values ('ROLE_CHO_MNG', 2, (select id from access
 -- -------------------------------------------------------------------------------------------
 -- emmanuel 15-09-2009
 
-create table notification (id serial not null, type varchar(255), message varchar(255), claim_id int4, primary key (id));
-alter table notification add constraint FK237A88EBDF101435 foreign key (claim_id) references claim;
-
--- -------------------------------------------------------------------------------------------
--- emmanuel 15-09-2009
-
-
 CREATE SEQUENCE notification_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
+
+-- -------------------------------------------------------------------------------------------
+-- emmanuel 15-09-2009
+
+create table notification (id serial not null, type varchar(255), message varchar(255), claim_id int4, primary key (id));
+alter table notification add constraint FK237A88EBDF101435 foreign key (claim_id) references claim;
 
 -- -------------------------------------------------------------------------------------------
 -- emmanuel 15-09-2009
@@ -118,6 +117,9 @@ Create table vehicle_class_celling (
   
 -- -------------------------------------------------------------------------------------------
 -- emmanuel 15-09-2009
+
+update vehicle_class set created_by=999, last_modified_by=999;
+update vehicle_class_celling set created_by=999, last_modified_by=999;
 
 alter table vehicle_class add constraint FK58908AA5EF9D5388 foreign key (created_by) references web_user;
 alter table vehicle_class add constraint FK58908AA5DC88F7DE foreign key (last_modified_by) references web_user;
@@ -1393,7 +1395,7 @@ delete from accessibility_item where role='ROLE_INS_CH_TL';
 ALTER TABLE web_user_user_role RENAME COLUMN wer_user_role_id TO web_user_role_id;
 ALTER TABLE vehicle_class_celling RENAME COLUMN hire_net_celling TO hire_net_ceiling;
 ALTER TABLE vehicle_class_celling RENAME COLUMN repair_net_celling TO repair_net_ceiling;
-ALTER TABLE vehicle_class_celling RENAME TO vehicle_class_ceiling
+ALTER TABLE vehicle_class_celling RENAME TO vehicle_class_ceiling;
 
 ALTER TABLE cho_band RENAME COLUMN is_vehicle_class_celling_enable TO is_vehicle_class_ceiling_enable;
 
@@ -1812,7 +1814,7 @@ insert into accessibility_item values ('ROLE_INS_CH', 2, (select id from accessi
 
 insert into accessibility_item values ('ROLE_CHO_MNG', 2, (select id from accessibility where name ='tab.ClaimDetail.ClaimRejected'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item values ('ROLE_CHOX_ADMIN', 2, (select id from accessibility where name ='tab.ClaimDetail.ClaimRejected'), (select max(id)+1 from accessibility_item));
-update accessibility_item set access_right=2 where accessibility_id in (select id from accessibility where name like '%tab.%Claim%ClaimUnacknowledgedRouted%') and role='ROLE_CHO_OPR';
+update accessibility_item set access_right=1 where accessibility_id in (select id from accessibility where name like '%tab.%Claim%ClaimUnacknowledgedRouted%') and role='ROLE_CHO_OPR';
 insert into accessibility_item values ('ROLE_CHO_MNG', 2, (select id from accessibility where name ='tab.ClaimDetail.ContestedInvoiceReferredToCHO'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item values ('ROLE_CHOX_ADMIN', 2, (select id from accessibility where name ='tab.ClaimDetail.ContestedInvoiceReferredToCHO'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item values ('ROLE_CHOX_ADMIN', 2, (select id from accessibility where name ='tab.ClaimDetail.InvoiceDataCalculationIncorrect'), (select max(id)+1 from accessibility_item));
@@ -1910,4 +1912,108 @@ insert into accessibility_item values ('ROLE_CHOX_ADMIN', 1, (select id from acc
 insert into accessibility_item values ('ROLE_CHOX_ADMIN', 1, (select id from accessibility where name ='action.routeClaims.ClaimUnacknowledgedUnrouted'), (select max(id)+1 from accessibility_item));
 insert into accessibility_item values ('ROLE_CHOX_ADMIN', 1, (select id from accessibility where name ='action.doInvoicePaymentReceived.InvoicePaymentLogged'), (select max(id)+1 from accessibility_item));
 
+-- ############################################################################################
+-- START VERSION V2.8.2.23
+-- ############################################################################################\
 
+-- RE - CONFIGURE MENU --------------------------------------
+
+delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'menu%') and role not in ('ALL','ROLE_CHO_MNG','ROLE_CHOX_ADMIN');
+
+-- DASHBOARD --
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='menu.Dashboard'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_SCR', 1, (select id from accessibility where name ='menu.Dashboard'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='menu.Dashboard'), (select max(id)+1 from accessibility_item));
+
+-- REPORT --
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='menu.Report'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_CH', 1, (select id from accessibility where name ='menu.Report'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_PC', 1, (select id from accessibility where name ='menu.Report'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_SCR', 1, (select id from accessibility where name ='menu.Report'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='menu.Report'), (select max(id)+1 from accessibility_item));
+
+-- ADMIN --
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='menu.Admin'), (select max(id)+1 from accessibility_item));
+
+-- RE - REPORT MENU --------------------------------------
+
+delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'report%');
+
+-- ROLE ALL -- 
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='report.InvoiceSummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='report.InsurerWeeklySummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='report.ClaimRejection'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='report.InsurerPayment'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='report.OverviewSummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='report.AverageSettlementAmountReport'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='report.InvoiceSavingSummaryReport'), (select max(id)+1 from accessibility_item));
+
+-- ROLE CHO MNG -- 
+insert into accessibility_item values ('ROLE_CHO_MNG', 1, (select id from accessibility where name ='report.ClaimRejection'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_CHO_MNG', 1, (select id from accessibility where name ='report.InsurerWeeklySummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_CHO_MNG', 1, (select id from accessibility where name ='report.InvoiceSummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_CHO_MNG', 1, (select id from accessibility where name ='report.OverviewSummary'), (select max(id)+1 from accessibility_item));
+
+-- ROLE INS COM -- 
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='report.AverageSettlementAmountReport'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='report.ClaimRejection'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='report.InsurerWeeklySummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='report.InvoiceSummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='report.OverviewSummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='report.InvoiceSavingSummaryReport'), (select max(id)+1 from accessibility_item));
+
+-- ROLE INS CH -- 
+insert into accessibility_item values ('ROLE_INS_CH', 1, (select id from accessibility where name ='report.InsurerPayment'), (select max(id)+1 from accessibility_item));
+
+-- ROLE INS MNG -- 
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='report.InvoiceSummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='report.InsurerWeeklySummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='report.ClaimRejection'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='report.InsurerPayment'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='report.OverviewSummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='report.AverageSettlementAmountReport'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='report.InvoiceSavingSummaryReport'), (select max(id)+1 from accessibility_item));
+
+-- ROLE INS SCR -- 
+insert into accessibility_item values ('ROLE_INS_SCR', 1, (select id from accessibility where name ='report.AverageSettlementAmountReport'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_SCR', 1, (select id from accessibility where name ='report.ClaimRejection'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_SCR', 1, (select id from accessibility where name ='report.InsurerWeeklySummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_SCR', 1, (select id from accessibility where name ='report.InvoiceSummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_SCR', 1, (select id from accessibility where name ='report.OverviewSummary'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_SCR', 1, (select id from accessibility where name ='report.InvoiceSavingSummaryReport'), (select max(id)+1 from accessibility_item));
+
+-- ROLE INS CH -- 
+insert into accessibility_item values ('ROLE_INS_PC', 1, (select id from accessibility where name ='report.InsurerPayment'), (select max(id)+1 from accessibility_item));
+
+-- ############################################################################################
+-- START VERSION V2.8.2.24
+-- ############################################################################################\
+
+-- NEW REPORT
+insert into accessibility values ((select max(id)+1 from accessibility), 'report.InvoiceReport');
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='report.InvoiceReport'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_CH', 1, (select id from accessibility where name ='report.InvoiceReport'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='report.InvoiceReport'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_PC', 1, (select id from accessibility where name ='report.InvoiceReport'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_SCR', 1, (select id from accessibility where name ='report.InvoiceReport'), (select max(id)+1 from accessibility_item));
+
+--------------------
+
+insert into accessibility select (select max(id)+1 from accessibility), 'filter.AwaitingInvoiceData';
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name ='filter.AwaitingInvoiceData'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO_MNG', 1, (select id from accessibility where name ='filter.AwaitingInvoiceData'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHO_OPR', 1, (select id from accessibility where name ='filter.AwaitingInvoiceData'), (select max(id)+1 from accessibility_item));
+
+-- ############################################################################################
+-- START VERSION V2.8.2.24.1
+-- ############################################################################################\
+
+delete from audit_trail where claim_id=1889 and id in (11503, 12096);
+delete from audit_trail where claim_id=1896 and id in (11517, 12092);
+delete from audit_trail where claim_id=1976 and id in (12009, 12084);
+delete from audit_trail where claim_id=2797 and id in (17880, 18155, 18157, 18160);
+
+
+-- ############################################################################################
+-- START VERSION V2.8.2.25
+-- ############################################################################################\

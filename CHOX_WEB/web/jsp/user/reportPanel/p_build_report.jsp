@@ -5,20 +5,18 @@
 --%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<head>        
-    
-    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.validate.min.js"></script> 
-    <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script> 
-    
-    <script>
-        
-        function renderParameterPanel(report)
-        {
-            $("#param_panel").load("loadParameterPanel.action?reportName=" + report);
-        }
-        
-    </script>
-</head>
+
+<script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.validate.min.js"></script> 
+<script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script> 
+
+<script type="text/javascript">
+
+    function renderParameterPanel(report)
+    {
+        $("#param_panel").load("loadParameterPanel.action?reportName=" + report);
+    }
+
+</script>
 
 <div class="x-panel-bwrap chox-form-container">
     
@@ -33,18 +31,25 @@
                         </div>
                         <div style="height:400px;" class="x-panel-bwrap chox-form-container">
                             <ul>
-                            <li class='reportTypeHeader'>General Reports</li>
+                            
                                 <s:if test="reportAccessibility.insurerWeeklySummaryAccessibility">
+                                <li class='reportTypeHeader'>General Reports</li>
                                 <li><a href="javascript:renderParameterPanel('InsurerAdminWeeklyOverviewReport-Excel');">Admin Weekly Overview Report</a></li>
-                                </s:if> 
-                            <li class='reportTypeHeader'>Claim Reports</li>
+                                </s:if>
+<s:if test="reportAccessibility.overviewSummaryAccessibility || reportAccessibility.claimRejectionAccessibility">
+<li class='reportTypeHeader'>Claim Reports</li>
+</s:if>
                                 <s:if test="reportAccessibility.overviewSummaryAccessibility">                                
                                 <li><a href="javascript:renderParameterPanel('OverviewSummary-Excel');">Claim Overview Summary Report</a></li>
                                 </s:if>
                                 <s:if test="reportAccessibility.claimRejectionAccessibility">                                
                                 <li><a href="javascript:renderParameterPanel('ClaimRejectedReport-Excel');">Claim Rejection Report</a></li>
                                 </s:if>
+                                
                             <li class='reportTypeHeader'>Invoice Reports</li>
+                                <s:if test="reportAccessibility.invoiceReportAccessibility">
+                                <li><a href="javascript:renderParameterPanel('InvoiceReport-Excel');">CHO Invoice Report</a></li>
+                                </s:if>
                                 <s:if test="reportAccessibility.invoiceSummaryAccessibility">
                                 <li><a href="javascript:renderParameterPanel('InvoiceSummaryReport-Excel');">Invoice Summary Report</a></li>
                                 </s:if>

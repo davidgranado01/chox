@@ -1,9 +1,11 @@
 package chox.web.actions;
 
+import chox.Util.RoleHelper;
 import chox.model.IdLookupItem;
 import chox.model.UserWorkgroup;
 import chox.model.WebUser;
 import chox.model.Workgroup;
+import chox.services.ClaimService;
 import chox.services.UserService;
 import chox.services.UserWorkgroupService;
 import chox.services.WorkgroupService;
@@ -20,7 +22,12 @@ public class doUserWorkgroupAction extends BaseAction{
     private UserWorkgroupService service;
     private WorkgroupService workgroupService;
     private UserService userService;
+    private ClaimService claimService;
 
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+    
     public void setUserWorkgroupService(UserWorkgroupService service) {
         this.service = service;
     }
@@ -91,13 +98,35 @@ public class doUserWorkgroupAction extends BaseAction{
     }  
     
     public String removeObject(){
-        
-        if(userWorkgroupId>0){            
-            
+
+        if(userWorkgroupId>0){
+
+            boolean isAllowToDelete = true;
             UserWorkgroup model = service.getObject(userWorkgroupId);
-            String ackMsg = "Workgroup '" + model.getWorkgroup().getName() + "' has been removed";          
-            service.DeleteObject(model);
-            getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);                
+
+            // COM USER
+            if(RoleHelper.isUserCheckByWorkgroup(model.getUser())){
+
+                // NOT OTHER COM ROLE
+                // WITH OPEN ITEM FOR THIS WORKGROUP
+                isAllowToDelete = false;
+                getActionResponse().AddError("Unable to remove the workgroup");
+            }
+            
+            // CH USER AND OWNERSHIP IS TRUE
+            if(RoleHelper.isUserCheckByOwnership(model.getUser())
+                    && claimService.isOpenClaimExist(model.getWorkgroup().getId(), this.webUserId)){
+
+                isAllowToDelete = false;
+                getActionResponse().AddError("Unable to remove the workgroup");
+            }
+
+            if(isAllowToDelete){
+                
+                String ackMsg = "Workgroup '" + model.getWorkgroup().getName() + "' has been removed";
+                service.DeleteObject(model);
+                getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);
+            }
             
         }else{
             

@@ -1,6 +1,5 @@
 package chox.web.actions;
 
-import chox.Util.RoleHelper;
 import chox.model.WebUserRole;
 import chox.web.security.AcegiPrincipal;
 import com.opensymphony.xwork2.ActionSupport;

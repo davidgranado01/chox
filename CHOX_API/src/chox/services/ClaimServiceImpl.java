@@ -213,7 +213,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
-            String sSupplierRef = "%"+searchCriteria.getSupplierReference()+"%";
+            //String sSupplierRef = "%"+searchCriteria.getSupplierReference()+"%";
+            String sSupplierRef = searchCriteria.getSupplierReference();
             criteria.add(Restrictions.like("choReference", sSupplierRef).ignoreCase());
         }
 
@@ -261,22 +262,26 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {
-            String sSearchInvoiceNumber = "%"+searchCriteria.getInvoiceNumber()+"%";
+            //String sSearchInvoiceNumber = "%"+searchCriteria.getInvoiceNumber()+"%";
+            String sSearchInvoiceNumber = searchCriteria.getInvoiceNumber();
             criteria.add(Restrictions.like("iv.claimInvoiceNo", sSearchInvoiceNumber).ignoreCase());
         }
 
         if (searchCriteria.getClaimNumber() != null && !searchCriteria.getClaimNumber().isEmpty()) {
-            String sSearchClaimNumber = "%"+searchCriteria.getClaimNumber()+"%";
+            //String sSearchClaimNumber = "%"+searchCriteria.getClaimNumber()+"%";
+            String sSearchClaimNumber = searchCriteria.getClaimNumber();
             criteria.add(Restrictions.like("claimNumber", sSearchClaimNumber).ignoreCase());
         }
 
         if (searchCriteria.getCustomerVrn()!= null && !searchCriteria.getCustomerVrn().isEmpty()) {
-            String sCustomerVrn = "%"+searchCriteria.getCustomerVrn().replaceAll(" ", "")+"%";
+            // String sCustomerVrn = "%"+searchCriteria.getCustomerVrn().replaceAll(" ", "")+"%";
+            String sCustomerVrn = searchCriteria.getCustomerVrn().replaceAll(" ", "");
             criteria.add(Restrictions.like("cs.vehicleRegistration", sCustomerVrn).ignoreCase());
         }
         
         if (searchCriteria.getThirdPartyVrn() != null && !searchCriteria.getThirdPartyVrn().isEmpty()) {
-            String sThirdPartyVrn = "%"+searchCriteria.getThirdPartyVrn().replaceAll(" ", "")+"%";
+            // String sThirdPartyVrn = "%"+searchCriteria.getThirdPartyVrn().replaceAll(" ", "")+"%";
+            String sThirdPartyVrn = searchCriteria.getThirdPartyVrn().replaceAll(" ", "");
             criteria.add(Restrictions.like("tp.vehicleRegistration", sThirdPartyVrn).ignoreCase());
         }
 
@@ -519,6 +524,32 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    public boolean isOpenClaimExist(int WorkgroupId, int UserId) {
+
+        boolean isExist = false;
+
+        try {
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+            criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
+            criteria.add(Restrictions.eq("claimOwner.id", UserId));
+
+            for(String sStatus : ClaimStatus.getClosedStatus()){
+                criteria.add(Restrictions.ne("status", sStatus));
+            }
+            
+            if (findByCriteria(criteria).size() > 0) {
+                isExist = true;
+            }
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        return isExist;
+
+    }
+    
     public boolean isUserHasOpenClaim(int userId){
 
         boolean isExist = false;
@@ -527,11 +558,18 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
             criteria.add(Restrictions.eq("claimOwner.id", userId));
+
+            for(String sStatus : ClaimStatus.getClosedStatus()){
+                criteria.add(Restrictions.ne("status", sStatus));
+            }
+
+            /*
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
             criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
             criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_REJECTION_ACCEPTED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_REJECTED_ACCEPTED));
-
+            */
+            
             if (findByCriteria(criteria).size() > 0) {
                 isExist = true;
             }

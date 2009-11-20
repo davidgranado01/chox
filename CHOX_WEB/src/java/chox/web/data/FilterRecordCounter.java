@@ -55,7 +55,12 @@ public class FilterRecordCounter {
     public long getPenaltyChargesAppliedCount() {
         return service.getPenaltyChargeAppliedCount();
     }
-    
+
+    public long getAwaitingInvoiceDataCount()
+    {
+        return service.getCountByStatus(ClaimStatus.AWAITING_INVOICE_DATA, false, false);
+    }
+
     public long getInvoicePaymentLoggedCount()
     {
         return service.getCountByStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED, false, false);

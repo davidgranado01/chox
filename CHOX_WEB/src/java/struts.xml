@@ -742,6 +742,7 @@
             <result name="OverviewSummary-Excel">/jsp/user/reportPanel/p_overview_summary_report_param_panel.jsp</result> 
             <result name="AverageSettlementAmount-Excel">/jsp/user/reportPanel/p_insurer_average_settlement_report.jsp</result>
             <result name="InvoiceSavingSummaryReport-Excel">/jsp/user/reportPanel/p_insurer_saving_summary_report.jsp</result>
+            <result name="InvoiceReport-Excel">/jsp/user/reportPanel/p_invoice_report.jsp</result>
         </action>
         
         <action name="exportExcelReport" class="chox.web.actions.ReportAction" method="exportReport">
@@ -1011,6 +1012,9 @@
         </action>
         <action name="GetWorkgroupDropDownActionByInsurer" class="chox.web.dropdown.WorkgroupDropDownAction">
             <result>/jsp/user/dropdown/p_dropdown_workgroup.jsp</result>
+        </action>
+        <action name="GetWorkgroupOnlyDropDownActionByInsurer" class="chox.web.dropdown.WorkgroupDropDownAction">
+            <result>/jsp/user/dropdown/p_dropdown_workgroup_only.jsp</result>
         </action>
 
         <action name="SearchClaimHandlerRoleUserDropDownAction" class="chox.web.dropdown.ClaimHandlerRoleUserDropDownAction" method="ClaimSearch">

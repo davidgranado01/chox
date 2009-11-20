@@ -1,6 +1,6 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<script>
+<script type="text/javascript">
 
     $(document).ready(function(){
         $("#claimOwnerId").val(claimOwnerId);

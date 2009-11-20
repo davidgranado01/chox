@@ -334,11 +334,13 @@ div.chox-claim-header label
 }
 label.chox-claim-header-label
 {
+    vertical-align:top;
 }
 label.chox-claim-header-text
 {
     font-weight: bold;
     margin-left: 10px;
+    vertical-align:top;
 }
 div.comments
 {
@@ -417,6 +419,7 @@ table.searchForm td
     font-size: 12px; 
     width:16%;
     border:1px #ccc solid;
+    vertical-align:top;
     
 }
 
@@ -991,11 +994,12 @@ span.input-radio{
 }
 
 .private-comment{
-    background-color:#e9f0f3;
+    background-color:#e4eef2;
 }
 
 .remark-indicator{
         font-size:0.7em;
         font-family: tahoma,arial,verdana,sans-serif;
         color:#585858;
+        font-weight:bold;
 }

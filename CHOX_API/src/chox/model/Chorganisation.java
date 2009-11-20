@@ -263,18 +263,18 @@ public class Chorganisation extends AuditableEntity implements Serializable, ICH
             sb.append(this.address2);
         }
 
-        if (TextHelper.isValidText(this.postcode)) {
-            if (TextHelper.isValidText(sb.toString())) {
-                sb.append(strDelimiter);
-            }
-            sb.append(this.postcode);
-        }
-
         if (TextHelper.isValidText(this.address3)) {
             if (TextHelper.isValidText(sb.toString())) {
                 sb.append(strDelimiter);
             }
             sb.append(this.address3);
+        }
+
+        if (TextHelper.isValidText(this.postcode)) {
+            if (TextHelper.isValidText(sb.toString())) {
+                sb.append(strDelimiter);
+            }
+            sb.append(this.postcode);
         }
 
         if (TextHelper.isValidText(sb.toString())) {

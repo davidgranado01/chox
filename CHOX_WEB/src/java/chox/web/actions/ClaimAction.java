@@ -242,46 +242,45 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         String newStatus = "";
-        // String oldOwnerName = "N/A";
-        // String noteMsg = "";
-        
-        if(this.claimOwnerId>0){
 
-            // GET NEW CLAIM OWNER
-            WebUser newClaimOwner = userService.getObject(claimOwnerId);
+        if (this.actionName.equalsIgnoreCase(ASSIGNED_PROCESS)) {
             
-            /*
-            // GET OLD CLAIM OWNER
-            if(claim.getClaimOwner()!=null){
-                oldOwnerName = claim.getClaimOwner().getDisplayName();
-            }
-            */
-            
-            newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
-            claim.setStatus(newStatus);
-            // noteMsg = "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getDisplayName() +"'";
+            if(this.claimOwnerId>0){
+
+                newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
                 
-            if (!result.equalsIgnoreCase(ERROR)) {
+                // GET NEW CLAIM OWNER
+                WebUser newClaimOwner = userService.getObject(claimOwnerId);
+                claim.setClaimOwner(newClaimOwner);
 
-                try {
-
-                    if(oasWorkgroupId>0){
-                        claim.setWorkgroup(workgroupService.getObject(oasWorkgroupId));
-                    }
-
-                    claim.setClaimOwner(newClaimOwner);
-                    this.service.updateClaim(claim);
-
-                    // LOG AUDIT TRAIL
-                    auditTrailService.logAuditLog(newStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim);
-                    
-                    // SAVE NEW NOTE
-                    // createNewNote(noteMsg, true, "");
-
-                } catch (Exception ex) {
-                    result = ERROR;
-                    this.actionResult = "ERROR : " + ex.getMessage();
+                if(oasWorkgroupId>0){
+                    claim.setWorkgroup(workgroupService.getObject(oasWorkgroupId));
                 }
+                
+            }else{
+                result = ERROR;
+            }
+
+        } else if (this.actionName.equalsIgnoreCase(REFER_FNOL)) {
+            
+            newStatus = ClaimStatus.CLAIM_REFERRED_TO_FNOL;
+            
+        }else{
+                result = ERROR;
+        }
+
+        if (!result.equalsIgnoreCase(ERROR)) {
+
+            try {
+                claim.setStatus(newStatus);
+                this.service.updateClaim(claim);
+
+                // LOG AUDIT TRAIL
+                auditTrailService.logAuditLog(newStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim);
+
+            } catch (Exception ex) {
+                result = ERROR;
+                this.actionResult = "ERROR : " + ex.getMessage();
             }
         }
         
@@ -332,39 +331,50 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
 
+    /*
+     * There are 2 roles are allow to send the claim to FNOL to register into 3rd party system
+     * 1. COM - During Claim Ownership Assignment
+     * 2. CH - DUring Claim Acknowledge Assignment
+     *
+     * After FNOL register the claim to 3rd party system,
+     * If the claim is COME from COM, then need to back to CLAIM_UNACKNOWLEDGED_UNASSIGNED
+     * Else alway go to CLAIM_UNACKNOWLEDGED_ROUTED
+     */
     public String registerFNOL() {
 
         String result = SUCCESS;
         String newStatus = "";
 
         if (this.actionName.equalsIgnoreCase(REGISTER_FNOL)) {
-            newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
-            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
+            
+            if(claim.getPreviousStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)){
+                newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED;
+            }else{
+                newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
+            }
+
             claim.setIsFnolReviewed(true);
+            
         } else if (this.actionName.equalsIgnoreCase(REJECT_FNOL)) {
             newStatus = ClaimStatus.CLAIM_REJECTED;
-            // sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejectionId:" + claim.getReasonOfRejectionId();
         }
         
-        // createNewNote(reasonForRejection, false, strPrefix);
-        // INSURER ONLY
         createNewNote(reasonForRejection, 1, strPrefix);
 
         if (!result.equalsIgnoreCase(ERROR)) {
 
             try {
+                
                 auditTrailService.logAuditLog(newStatus, claim, null, null);
-
                 claim.setStatus(newStatus);
                 this.service.updateClaim(claim);
 
             } catch (Exception ex) {
                 this.actionResult = "ERROR : " + ex.getMessage();
-                // bActionFlag = false;
-                // sActionMsg = ex.getLocalizedMessage();
             }
 
         }
+        
         return result;
     }
 

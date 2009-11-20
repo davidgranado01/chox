@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import scsbre.model.IInsurerInfo;
+import chox.Util.TextHelper;
 
 public class Insurer extends AuditableEntity implements Serializable, IInsurerInfo {
 
@@ -183,4 +184,44 @@ public class Insurer extends AuditableEntity implements Serializable, IInsurerIn
         this.claimOwnershipEnable = claimOwnershipEnable;
     }
 
+    public String getDisplayAddress() {
+
+        String strDelimiter = ", ";
+        StringBuffer sb = new StringBuffer();
+
+        if (TextHelper.isValidText(this.address1)) {
+            if (TextHelper.isValidText(sb.toString())) {
+                sb.append(strDelimiter);
+            }
+            sb.append(this.address1);
+        }
+
+        if (TextHelper.isValidText(this.address2)) {
+            if (TextHelper.isValidText(sb.toString())) {
+                sb.append(strDelimiter);
+            }
+            sb.append(this.address2);
+        }
+
+        if (TextHelper.isValidText(this.address3)) {
+            if (TextHelper.isValidText(sb.toString())) {
+                sb.append(strDelimiter);
+            }
+            sb.append(this.address3);
+        }
+        
+        if (TextHelper.isValidText(this.postcode)) {
+            if (TextHelper.isValidText(sb.toString())) {
+                sb.append(strDelimiter);
+            }
+            sb.append(this.postcode);
+        }
+
+
+        if (TextHelper.isValidText(sb.toString())) {
+            return sb.toString();
+        } else {
+            return "N/A";
+        }
+    }
 }

@@ -50,7 +50,7 @@ if(statusMsg==null){
     }
 
     function doAssignOwnershipFormValidation(){
-        
+
         var validateFlag = $("#formOwnershipAssignmentAction").validate(
         {
             errorLabelContainer: "#OwnershippAssignmentMessageBox",
@@ -65,7 +65,6 @@ if(statusMsg==null){
         });
 
         return validateFlag;
-        
     }
 
     function doOwnershipAssignmentWorkgroupChange(){
@@ -83,10 +82,17 @@ if(statusMsg==null){
         $("#ownershipAssignmentClaimHandlerRoleUserDropDownDiv").load("ClaimHandlerRoleUserDropDownAction.action?workgroupId=" + selectedWorkgroupId + "&insurerId="+selectedInsurerId);
     }
 
+    function doAssignOwnershipToFnolSubmit(a){
+        registeAction(a);
+        $("form#formOwnershipAssignmentAction #oasWorkgroupId").rules("remove");
+        $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
+        $("#formOwnershipAssignmentAction").submit();        
+        return true;
+    }
+    
     function doAssignOwnershipSubmit(a){
 
         registeAction(a);
-        
         if(doAssignOwnershipFormValidation().form()){
             return true;
         }
@@ -105,10 +111,11 @@ if(statusMsg==null){
             <input type="hidden" id="claimWorkgroupId" name="claimWorkgroupId" value="<s:property value="workgroup.id"/>">
             <input type="hidden" id="claimClaimOwnerId" name="claimClaimOwnerId" value="<s:property value="claimOwner.id"/>">
             <input type="hidden" id="claimWorkgroupEnable" name="claimWorkgroupEnable" value="<s:property value="insurer.workgroupEnable"/>">
+            <s:hidden id="actionName" name="actionName" />
 
             <div>
                 <div class="status-info">
-                Please assign the claim owner for this claim and click on the 'Assign Owner' button. If this claim has been assigned to the incorrect Workgroup, please use the 'More Actions' drop down above, clicking on 'Re-assign Workgroup' to re-assign the claim's Workgroup.
+                Please assign the claim owner for this claim and click on the 'Assign Owner' button. If the claim needs registering by FNOL, please use the 'Refer To FNOL' button. If this claim has been assigned to the incorrect Workgroup, please use the 'More Actions' drop down above, clicking on 'Re-assign Workgroup' to re-assign the claim's Workgroup.
                 </div>
                 <div class="status-control-set">
                     <table class="status-table" width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -132,16 +139,16 @@ if(statusMsg==null){
                     </tr>
                     <tr>
                         <td colspan="2" class="choice" nowrap>
-                            <input id="assignAndProcess" type="submit" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit('assigned_routed');"/>
+                            <input type="submit" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit('assigned_routed');"/>
+                            <input type="button" value="Refer to FNOL" onclick="javascript:return doAssignOwnershipToFnolSubmit('referFNOL');" />
                         </td>
                     </tr>
                     </table>
-
                     <div class="errorBox" id="OwnershippAssignmentMessageBox"></div>
                     <div id="ownership-submit-result" class="action_msg"><%= statusMsg%></div>
                 </div>
             </div>
-
+                
         </div>
     </fieldset>
 </form>

@@ -10,8 +10,7 @@
     $(document).ready(function(){
         doInsurerSearchSelectOnChange();
         doShowClaimHandler(-1, -1);
-
-         new Ext.ToolTip({ target: 'help-open-items-icon', html: 'Claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, Claim Closed or PaymentReceived will be excluded from the list of search results.'});
+        new Ext.ToolTip({ target: 'help-open-items-icon', html: 'When ticked, claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, ClaimClosed or PaymentReceived will be excluded from the list of search results.'});
     }); 
     
     Ext.onReady(function(){                              
@@ -186,7 +185,7 @@
         <tr>
             <td><label>Invoice Number</label></td>
             <td><s:textfield name="invoiceNumber"/></td>
-            <td><label>Open Claims <img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/></label></td><td><s:checkbox name="isOpenClaim" /></td>
+            <td><label>Show Open Claims Only <img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/></label></td><td><s:checkbox name="isOpenClaim" /></td>
             
         </tr>
         

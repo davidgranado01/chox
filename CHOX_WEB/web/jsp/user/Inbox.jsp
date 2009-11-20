@@ -5,11 +5,11 @@
     <title>IDAS-CHOX</title>
     <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
     <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery-1.2.6.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.form.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/ext-jquery-adapter.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.blockUI.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.timer.js"></script>      
+    <script src="<%= request.getContextPath()%>/adapter/jquery/jquery-1.2.6.js" type="text/javascript" ></script>
+    <script src="<%= request.getContextPath()%>/adapter/jquery/jquery.form.js" type="text/javascript" ></script>
+    <script src="<%= request.getContextPath()%>/adapter/jquery/ext-jquery-adapter.js" type="text/javascript" ></script>
+    <script src="<%= request.getContextPath()%>/adapter/jquery/jquery.blockUI.js" type="text/javascript" ></script>
+    <script src="<%= request.getContextPath()%>/adapter/jquery/jquery.timer.js" type="text/javascript" ></script>
     <script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
     <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script> 
@@ -21,7 +21,9 @@
     var currentTabIndex;
     var tabs;
     var recordPerPage = 20;
-    
+    var isCho = <s:property value="isCHO"/>;
+    var isInsurer = <s:property value="isInsurer"/>;
+
     var rd = new Ext.data.JsonReader({
         totalProperty: 'totalCount',   
         root: 'results', 
@@ -283,17 +285,17 @@
                 }
                 
             });
-
             if(selectedNotMyClaimsIDs.length>0){
-                propmtMsg("", selectedNotMyClaimsIDs.join(", ") + " are not belong to you, please de-select them");
+                propmtMsg("", "You are not authorised to action claim(s) " + selectedNotMyClaimsIDs.join(", ") + ", please de-select the tick box for this claim(s)");
             }
 
             return selectedNotMyClaimsIDs;
         }
-
+        
         var approvedInvoicesPaymentAction = new Ext.Action
         ({
             text: 'Update Claim(s) To Invoice Payment Logged',
+            hidden:isCho,
             handler: function(){
                 
                 if(confirm('Are you sure you want to perform this action?'))
@@ -303,6 +305,7 @@
 
                     if(selectedNotMyClaimsIDs.length<=0){
 
+                        selectedRecords =  sm2.getSelections();
                         var selectedIDs = $.map(selectedRecords, function(n){
                             return n.json.id;
                         });
@@ -313,6 +316,7 @@
                             url: "logInvoicePayments.action?selectedClaimIds=" + param,
                             success: function()
                             {
+                                sm2.clearSelections();
                                 ds.reload();
                                 refreshFilterPanel();
                             }
@@ -325,6 +329,7 @@
        var clearBREApprovedInvoicesForPaymentAction = new Ext.Action
         ({
             text: 'Approve Claim(s) For Payment',
+            hidden:isCho,
             handler: function(){
                 if(confirm('Are you sure you want to perform this action?'))
                 {
@@ -332,7 +337,8 @@
                     var selectedNotMyClaimsIDs = getErrorClaims(selectedRecords, true, true);
 
                     if(selectedNotMyClaimsIDs.length<=0){
-                    
+
+                        selectedRecords =  sm2.getSelections();
                         var selectedIDs = $.map(selectedRecords, function(n){
                             return n.json.id;
                         });
@@ -343,6 +349,7 @@
                             url: "clearBREApprovedInvoicesForPayment.action?selectedClaimIds=" + param,
                             success: function()
                             {
+                                sm2.clearSelections();
                                 ds.reload();
                                 refreshFilterPanel();
                             }
@@ -355,6 +362,7 @@
        var doInvoicePaymentReceivedAction = new Ext.Action
         ({
             text: 'Update Claim(s) To Payment Received',
+            hidden:isInsurer,
             handler: function(){
                 if(confirm('Are you sure you want to perform this action?'))
                 {
@@ -362,7 +370,8 @@
                     var selectedNotMyClaimsIDs = getErrorClaims(selectedRecords, true, true);
 
                     if(selectedNotMyClaimsIDs.length<=0){
-                        
+
+                        selectedRecords =  sm2.getSelections();
                         var selectedIDs = $.map(selectedRecords, function(n){
                             return n.json.id;
                         });
@@ -373,6 +382,7 @@
                             url: "doInvoicePaymentReceivedAction.action?selectedClaimIds=" + param,
                             success: function()
                             {
+                                sm2.clearSelections();
                                 ds.reload();
                                 refreshFilterPanel();
                             }
@@ -387,86 +397,67 @@
        var doClaimRoutedAction = new Ext.Action({
            
             text: 'Route Claim(s)',
+            hidden:isCho,
             handler: function(){
 
-                var selectedRecords =  sm2.getSelections();
-                var selectedNotMyClaimsIDs = getErrorClaims(sm2.getSelections(), false, false);
+                if(!wgSelectionDlg)
+                {
+                        wgSelectionDlg =  new Ext.Window({
+                            applyTo:'wgSelectionDlgHolder',
+                            width:410,
+                            height:280,
+                            modal: true,
+                            closeAction:'hide',
+                            plain: false,
+                            title: 'Route Claim(s)',
+                            resizable : false,
+                            items: new Ext.Panel({
+                                applyTo: 'wgSelectionPanel'
+                            }),
+                            buttons: [{
+                                    text:'Ok',
+                                    handler:function(){
 
-                if(selectedNotMyClaimsIDs.length<=0){
-
-                    if(!wgSelectionDlg)
-                    {
-                            wgSelectionDlg =  new Ext.Window({
-                                applyTo:'wgSelectionDlgHolder',
-                                width:410,
-                                height:280,
-                                modal: true,
-                                closeAction:'hide',
-                                plain: false,
-                                title: 'Route Claim(s)',
-                                resizable : false,
-                                items: new Ext.Panel({
-                                    applyTo: 'wgSelectionPanel'
-                                }),
-                                buttons: [{
-                                        text:'Ok',
-                                        handler:function(){
-
-                                            $("form#routeClaimForm").validate(
-                                            {
-                                                errorLabelContainer: "#HMmessageBox",
-                                                rules: {
-                                                    workgroupId:{
-                                                        required:true, min:1
-                                                    }
-                                                },
-                                                messages: {
-                                                    workgroupId:{
-                                                        required:"You must select 'Workgroup'",
-                                                        min:"You must select 'Workgroup'"
-                                                    }
-                                                }
+                                        if($("form#routeClaimForm #workgroupId").val()!=""){
+                                            var selectedRecords =  sm2.getSelections();
+                                            var selectedIDs = $.map(selectedRecords, function(n){
+                                                return n.json.id;
                                             });
 
-                                            if($('form#routeClaimForm').valid()){
+                                            var param = selectedIDs.join(",");
+                                            $('form#routeClaimForm input[name="selectedClaimIds"]').val(param);
 
-                                                var selectedIDs = $.map(selectedRecords, function(n){
-                                                    return n.json.id;
-                                                });
-
-                                                var param = selectedIDs.join(",");
-                                                $('form#routeClaimForm input[name="selectedClaimIds"]').val(param);
-
-                                                var submitOption = {
-                                                    clearForm: true,
-                                                    success:function(){
+                                            var submitOption = {
+                                                clearForm: true,
+                                                success:function(){
+                                                    sm2.clearSelections();
                                                     ds.reload();
                                                     refreshFilterPanel();
                                                     wgSelectionDlg.hide();
-                                                }};
-                                                $("form#routeClaimForm").ajaxSubmit(submitOption);
+                                            }};
+                                        
+                                            $("form#routeClaimForm").ajaxSubmit(submitOption);
 
-                                            }
-                                            else{
-                                                propmtErrorMsg('Workgroup could not be blank.');
-                                            }
-                                        }
-                                    },{
-                                        text: 'Close',
-                                        handler: function(){
-                                            wgSelectionDlg.hide();
-                                        }
-                                    }]
-                            });
+                                        }else{
+                                            propmtErrorMsg('Workgroup could not be blank.');
+                                       }
 
-                            wgSelectionDlg.addListener('beforeshow',
-                                function(dialog){
-                                    $('div#wgSelectionHolder').load('user/GetWorkgroupDropDownActionByInsurer.action');
-                                }
-                            );
-                    }
-                    wgSelectionDlg.show(this);
+                                    }
+                                },{
+                                    text: 'Close',
+                                    handler: function(){
+                                        wgSelectionDlg.hide();
+                                    }
+                                }]
+                        });
+
+                        wgSelectionDlg.addListener('beforeshow',
+                            function(dialog){
+                                $('div#wgSelectionHolder').load('GetWorkgroupOnlyDropDownActionByInsurer.action');
+                            }
+                        );
                 }
+                wgSelectionDlg.show(this);
             }
         });
 
@@ -474,6 +465,7 @@
        var doClaimOwnerAction = new Ext.Action({
 
             text: 'Assign Claim(s) Owner',
+            hidden:isCho,
             handler: function(){
 
                 var selectedRecords =  sm2.getSelections();
@@ -511,7 +503,6 @@
                                         }
                                     });
 
-
                                     function isClaimOwnerWorkgroupFieldValid(){
                                         var bFlag = false;
 
@@ -527,10 +518,10 @@
 
                                         return bFlag;
                                     }
-
-
+                                    
                                     if($('form#ownershipClaimForm').valid()){
 
+                                        selectedRecords =  sm2.getSelections();
                                         var selectedIDs = $.map(selectedRecords, function(n){
                                             return n.json.id;
                                         });
@@ -542,9 +533,10 @@
                                         var submitOption = {
                                             clearForm: true,
                                             success:function(){
-                                            ds.reload();
-                                            refreshFilterPanel();
-                                            coSelectionDlg.hide();
+                                                sm2.clearSelections();
+                                                ds.reload();
+                                                refreshFilterPanel();
+                                                coSelectionDlg.hide();
                                         }};
 
                                         $("form#ownershipClaimForm").ajaxSubmit(submitOption);
@@ -592,15 +584,18 @@
                     doClaimOwnerAction,
                     clearBREApprovedInvoicesForPaymentAction,
                     approvedInvoicesPaymentAction,
-                    doInvoicePaymentReceivedAction]}
+                    doInvoicePaymentReceivedAction
+                ]}
         });
         
         actionMenu.on('arrowclick', function()
         {
 
             var selectedRecords = sm2.getSelections();
-            
-            <s:if test="IsApprovePaymentAccessibile">  
+
+            var isApprovePaymentAccessibile = <s:property value="IsApprovePaymentAccessibile"/>;
+            if(isApprovePaymentAccessibile){
+                    
                 if(isSelectedRecordsMatchGivenStatus(selectedRecords,'AwaitingInvoicePayment'))
                 {   
                     approvedInvoicesPaymentAction.enable(); 
@@ -608,14 +603,16 @@
                 else
                 {
                     approvedInvoicesPaymentAction.disable(); 
-                }  
-            </s:if>
-            <s:else>
-                approvedInvoicesPaymentAction.disable();
+                }
                 
-            </s:else>   
+            }else{
+
+                approvedInvoicesPaymentAction.disable();
+            }
             
-            <s:if test="IsClearBREApprovedInvoicesForPaymentAccessibile"> 
+            var isClearBREApprovedInvoicesForPaymentAccessibile = <s:property value="IsClearBREApprovedInvoicesForPaymentAccessibile"/>;
+            if(isClearBREApprovedInvoicesForPaymentAccessibile){
+                
                 if(isSelectedRecordsMatchGivenStatus(selectedRecords,'InvoiceApprovedByBRE'))
                 {   
                     clearBREApprovedInvoicesForPaymentAction.enable(); 
@@ -623,13 +620,16 @@
                 else
                 {
                     clearBREApprovedInvoicesForPaymentAction.disable(); 
-                }  
-            </s:if>
-            <s:else>
+                }
+                
+            }else{
+                
                 clearBREApprovedInvoicesForPaymentAction.disable();
-            </s:else>
+                
+            }
 
-            <s:if test="IsDoInvoicePaymentReceivedAccessibile"> 
+            var isDoInvoicePaymentReceivedAccessibile = <s:property value="IsDoInvoicePaymentReceivedAccessibile"/>;
+            if(isDoInvoicePaymentReceivedAccessibile){
                 if(isSelectedRecordsMatchGivenStatus(selectedRecords,'InvoicePaymentLogged'))
                 {   
                     doInvoicePaymentReceivedAction.enable(); 
@@ -638,12 +638,12 @@
                 {
                    doInvoicePaymentReceivedAction.disable(); 
                 }  
-            </s:if>
-            <s:else>
+           }else{
                 doInvoicePaymentReceivedAction.disable();
-            </s:else>                
+            }
 
-            <s:if test="IsDoClaimRoutedAccessibile">
+            var isDoClaimRoutedAccessibile = <s:property value="IsDoClaimRoutedAccessibile"/>;
+            if(isDoClaimRoutedAccessibile){
                 
                 if(isSelectedRecordsMatchGivenStatus(selectedRecords,'ClaimUnacknowledgedUnrouted'))
                 {   
@@ -654,12 +654,12 @@
                     doClaimRoutedAction.disable(); 
                 }
                 
-            </s:if>
-            <s:else>
+            }else{
                 doClaimRoutedAction.disable();
-            </s:else>
+            }
 
-            <s:if test="IsDoClaimOwnershipAccessibile">
+            var IsDoClaimOwnershipAccessibile = <s:property value="IsDoClaimOwnershipAccessibile"/>;
+            if(IsDoClaimOwnershipAccessibile){
 
                 if(isSelectedRecordsMatchGivenStatus(selectedRecords,'ClaimUnacknowledgedUnassigned'))
                 {
@@ -670,10 +670,9 @@
                     doClaimOwnerAction.disable();
                 }
 
-            </s:if>
-            <s:else>
+            }else{
                 doClaimOwnerAction.disable();
-            </s:else>
+            }
 
         }, this);
         
@@ -744,7 +743,7 @@
     
     function setupTabPanels()
     {
-         
+       
        currentTabIndex = <s:property value="tab" />;
            
        tabs = new Ext.TabPanel({
@@ -752,7 +751,7 @@
        autoheight:true,
        activeTab: currentTabIndex,
        items:[
-             <s:if test="menuAccessibility.isDashBoardMenuAccessibility">                   
+             <s:if test="menuAccessibility.isDashBoardMenuAccessibility">
                 {contentEl:'boardPanelTab', title:'Dashboard', listeners: {activate: handleActivate}},
             </s:if>
                 {contentEl:'filterPanelTab', title:'Inbox', listeners: {activate: handleActivate}},
@@ -945,10 +944,11 @@
             </s:if>
             
             <div id="gridPanel">
+                
                 <div id="gridHolder"></div>
+                
                 <div class="excel-export">
-                    <form name="thisForm">
-                <a href="javascript:doExportExcel();">Export To Excel</a></form>
+                    <form name="thisForm" action=""><a href="javascript:doExportExcel();">Export To Excel</a></form>
                 </div>
 
                 <div id="wgSelectionDlgHolder" class="x-hidden">
@@ -965,7 +965,7 @@
                             </tr>
                         </table>
                     </form>
-                </div>
+                    </div>
                 </div>
 
                 <div id="coSelectionDlgHolder" class="x-hidden">

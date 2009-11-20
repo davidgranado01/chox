@@ -132,8 +132,8 @@ public class doInsurerWorkgroupAction extends BaseAction implements ModelDriven<
             ackMsg = "Unable to remove this workgroup. Must maintain at least one active workgroup for this insurer.";
             getActionResponse().AddError(ackMsg);                   
             return SUCCESS;
-        }        
-        
+        }
+
         if(service.isWorkgroupDeletable(model.getId())){
             
             service.DeleteObject(model);     

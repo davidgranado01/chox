@@ -63,6 +63,7 @@ public class ApplicationAccessibility {
     public static final String FILTER_CLAIM_UPDATED_BY_ENGINEER = "ClaimUpdatedByEngineer";
     public static final String FILTER_CONTESTED_INVOICE_REF_ENF = "ContestedInvoicesReferredToEngineer";
     public static final String FILTER_CLAIM_OWNERSHIP = "ClaimUnacknowledgedUnassigned";
+    public static final String FILTER_AWAITING_INVOICE_DATA = "AwaitingInvoiceData";
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="PANEL">
@@ -92,6 +93,7 @@ public class ApplicationAccessibility {
     public static final String REPORT_OVERVIEW_SUMMARY = "OverviewSummary";
     public static final String REPORT_AVERAGE_SETTLEMENT = "AverageSettlementAmountReport";
     public static final String REPORT_INVOICE_SAVING_SUMMARY = "InvoiceSavingSummaryReport";
+    public static final String REPORT_INVOICE_REPORT = "InvoiceReport";
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="ADMIN">

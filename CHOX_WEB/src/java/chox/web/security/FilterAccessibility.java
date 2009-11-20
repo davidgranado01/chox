@@ -35,6 +35,7 @@ public class FilterAccessibility {
     private boolean ClaimUpdatedByEngineerAccessible;
     private boolean contestedInvoiceReferToEngAccessible;
     private boolean claimUnacknowledgedUnassignedAccessible;
+    private boolean awaitingInvoiceDataAccessible;
     
     
     public FilterAccessibility(ApplicationAccessibility accessibility,GrantedAuthority[] grantedAuthorities) {
@@ -62,8 +63,13 @@ public class FilterAccessibility {
         ClaimUpdatedByEngineerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_UPDATED_BY_ENGINEER, grantedAuthorities) > 0; 
         contestedInvoiceReferToEngAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CONTESTED_INVOICE_REF_ENF, grantedAuthorities) > 0;
         claimUnacknowledgedUnassignedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_OWNERSHIP, grantedAuthorities) > 0;
+        awaitingInvoiceDataAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_AWAITING_INVOICE_DATA, grantedAuthorities) > 0;
     }
 
+    public boolean getIsAwaitingInvoiceDataAccessible() {
+        return awaitingInvoiceDataAccessible;
+    }
+    
     public boolean getIsRejectedClaimsAccessible() {
         return rejectedClaimsAccessible;
     }

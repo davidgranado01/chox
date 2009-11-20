@@ -56,16 +56,6 @@
                 autoHeight:true,
                 enableHdMenu:false
             });
-
-            /*
-            var pagingBar = new Ext.PagingToolbar({
-                pageSize: workgroup_recordPerPage,
-                store: workgroup_gridviewData,
-                displayInfo: true,
-                displayMsg: 'Displaying records {0} - {1} of {2}',
-                emptyMsg: "No record to display"
-            });    
-            */
             
             workgroup_loadGridViewList()
 

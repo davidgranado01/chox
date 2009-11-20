@@ -60,8 +60,6 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction{
         
         if(insurerId>1){
 
-            System.out.println("workgroupId:"+workgroupId);
-
             Insurer insurer = insurerService.getObject(insurerId);
             List<WebUser> users = service.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable());
 

@@ -78,3 +78,27 @@
         
         return true;
     }
+
+    /* EXTRA ACTION PANEL */
+    function doShowHideExtraAction(a, b){
+        if(b){
+            $("#"+a).css("display:", "block");
+            $("#"+a).slideDown();
+        }else{
+            $("#"+a).slideUp();
+            $("#"+a).css("display:", "none");
+            $("#extraAction").val("");
+
+        }
+    }
+
+    function extraActionChange(){
+
+        var selectedAction = $("#extraAction").val();
+        $(".extraActionClass").slideUp();
+        $(".extraActionClass").css("display:", "none");
+
+        if(selectedAction!=null && selectedAction!=""){
+            doShowHideExtraAction(selectedAction, 1);
+        }
+    }

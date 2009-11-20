@@ -1,13 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package chox.web.report;
 
-/**
- *
- * @author Emmanuel
- */
 public class ReportFactory {
 
     private static String INS_ADMIN_WEEKLY_OVERVIEW_RPT = "InsurerAdminWeeklyOverviewReport-Excel";
@@ -17,6 +9,7 @@ public class ReportFactory {
     private static String OVERVIEW_SUMMARY_REPORT = "OverviewSummary-Excel";
     private static String AVERAGE_SETTLEMENT_REPORT = "AverageSettlementAmount-Excel";
     private static String INVOICE_SAVING_SUMMARY_REPORT = "InvoiceSavingSummaryReport-Excel";
+    private static String INVOICE_RPT = "InvoiceReport-Excel";
     
     public static Report getReportByName(String name) {
         Report report = null;
@@ -34,6 +27,8 @@ public class ReportFactory {
             report = new AverageSettlementAmountReport();            
         } else if (name.equalsIgnoreCase(INVOICE_SAVING_SUMMARY_REPORT)){
             report = new InvoiceSavingSummaryReport();
+        } else if (name.equalsIgnoreCase(INVOICE_RPT)){
+            report = new InvoiceReport();
         }
         return report;
     }

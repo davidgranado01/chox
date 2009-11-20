@@ -59,5 +59,14 @@ public class ClaimStatus {
         status.add(INVOICE_REJECTED_ACCEPTED);
         status.add(INVOICE_PAYMENT_RECEIVED);
         return status;
-    }    
+    }
+
+    public static List<String> getClosedStatus(){
+        List<String> status = new ArrayList<String>();
+        status.add(CLAIM_REJECTION_ACCEPTED);
+        status.add(INVOICE_REJECTED_ACCEPTED);
+        status.add(CLAIM_CLOSED);
+        status.add(INVOICE_PAYMENT_RECEIVED);
+        return status;
+    }
 }

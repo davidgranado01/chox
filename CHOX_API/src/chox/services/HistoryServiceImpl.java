@@ -7,6 +7,7 @@ package chox.services;
 import chox.Util.DateHelper;
 import chox.model.History;
 import chox.model.Claim;
+import chox.xmlValidation.rules.Util.HistoryHelper;
 import scsbre.engine.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -77,8 +78,9 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
         for (int iCount = 0; iCount < results.size(); iCount++) {
 
             RuleEvaluation rv = results.get(iCount);
+            
+            /*
             IBusinessRule rBusinessRule = rv.getRelatedRule();
-
             String sType = "INFO";
             if (rv.getResult() == RuleEvaluationResult.RuleFailed) {
                 sType = "ERROR";
@@ -92,6 +94,9 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
             history.setType(sType);
             history.setRuleId(rBusinessRule.getRuleId());
             history.setIsSystem(true);
+            */
+            
+            History history = HistoryHelper.createHistory(claim, rv);
             saveHistory(history);
         }
     }

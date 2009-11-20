@@ -71,6 +71,7 @@ public class InsurerPaymentReport extends BaseAction implements Report{
             Chorganisation chorg = new Chorganisation();
 
             if(currentUser.getIsINS()){
+                
                 Insurer ins = currentUser.getUser().getInsurer();
                 iInsurerId = ins.getId();
                 insurerName = ins.getName();

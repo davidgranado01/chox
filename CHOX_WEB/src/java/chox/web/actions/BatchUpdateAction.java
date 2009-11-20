@@ -60,8 +60,10 @@ public class BatchUpdateAction extends BaseAction {
         Workgroup workgroupDBA = new Workgroup();
         workgroupDBA = workgroupService.getObject(this.workgroupId);
 
+        System.out.println("doClaimRoutedAction 01: "+workgroupDBA.getName());
+
         for (Integer id : selectedClaimIdList)  {
-            
+
             Claim claim = claimService.getClaim(id);
             claim.setWorkgroup(workgroupDBA);
             updateCliamStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
@@ -69,7 +71,11 @@ public class BatchUpdateAction extends BaseAction {
             if(claim.getInsurer().isClaimOwnershipEnable()){
                 updateCliamStatus(claim, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, 1);
             }
+
+            System.out.println("doClaimRoutedAction 02: "+claim.getChoReference());
+            
         }
+        
         return SUCCESS;
     }
 

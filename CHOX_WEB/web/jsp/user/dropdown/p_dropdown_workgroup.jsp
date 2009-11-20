@@ -13,7 +13,7 @@
         }
 
         $('#coClaimHandlerRoleUserDropDownDiv').load("user/ClaimHandlerRoleUserDropDownAction.action?workgroupId="+selectedWorkgroupId+"&insurerId="+insurerId);
-        
+
     }
     
 </script>
@@ -27,6 +27,5 @@
     headerKey=""
     headerValue="--- ALL ---"
     emptyOption="false"
-     onchange="doSelectWorkgroup()">
-    
+    onchange="doSelectWorkgroup()">
 </s:select>
