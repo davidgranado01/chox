@@ -1,9 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
-<link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
-
 <script language="JavaScript">
         
         var adminCurrentTabIndex = 0;
@@ -153,7 +150,6 @@
            
            adminTabs = new Ext.TabPanel({
            renderTo: 'mainPanel',
-           height:660,
            autoScroll :true,
            activeTab: adminCurrentTabIndex,
            items:[
@@ -191,10 +187,10 @@
        
 </script>
 
-<div id="mainPanel" class="adminTabCss"></div>
+<div id="mainPanel" class="admin-tab-css"></div>
 
 <div id="insurerBrePanelTab" class="x-hide-display">
-    <div class="subAdminTabCss">
+    <div class="sub-admin-tab-css">
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerChoBandMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="objectId" /></s:param>        
@@ -203,7 +199,7 @@
 </div>
 
 <div id="insurerBreMappingPanelTab" class="x-hide-display">
-    <div class="subAdminTabCss">
+    <div class="sub-admin-tab-css">
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerChoBandMappingMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="objectId" /></s:param>        
@@ -212,7 +208,7 @@
 </div>
 
 <div id="insurerWorkgroupPanelTab" class="x-hide-display">
-    <div class="subAdminTabCss">
+    <div class="sub-admin-tab-css">
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerWorkgroupMappingMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="objectId" /></s:param>
@@ -221,7 +217,7 @@
 </div>
 
 <div id="insurerCreditHirePanelTab" class="x-hide-display">
-        <div class="subAdminTabCss">
+        <div class="sub-admin-tab-css">
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerOrgMappingMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="objectId" /></s:param>        
@@ -230,7 +226,7 @@
 </div>
 
 <div id="insurerAlliasPanelTab" class="x-hide-display">
-    <div class="subAdminTabCss">
+    <div class="sub-admin-tab-css">
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerAlliasMappingMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="objectId" /></s:param>        
@@ -239,7 +235,7 @@
 </div>
 
 <div id="insurerVehicleClassCeilingTab" class="x-hide-display">
-    <div class="subAdminTabCss">
+    <div class="sub-admin-tab-css">
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerVehicleClassCeiling</s:param>
             <s:param name="selectOrgId"><s:property value="objectId" /></s:param>
@@ -249,7 +245,7 @@
 
 <div id="insurerDetailPanelTab" class="x-hide-display">
     
-    <div class="subAdminTabCss">
+    <div class="sub-admin-tab-css">
         
     <form id="formUpdateInsurerDetail" action="user/updateInsurerDetail.action" class="XXentity-form" onsubmit="return true;">
     

@@ -114,9 +114,8 @@
 </script>
 
 <div>
-    
     <form id="formAdminParam" class="XXentity-form" name="formAdminParam">
-    <fieldset class="x-fieldset">
+    <fieldset class="x-fieldset" style="height:660px;">
         <legend>Insurer Organisation Management</legend>
         <div id="organisationGird">
             <div class="gridViewHeader">

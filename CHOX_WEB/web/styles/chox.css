@@ -551,12 +551,14 @@ div.no-format
     margin-bottom:4px;
     color: #15428B;
 }
+
 div.no-format label
 {
     margin-right:6px;
     display:inline;
     float:none;
 }
+
 div.status-control-set-no-format
 {
     padding:6px;
@@ -830,29 +832,23 @@ img.tip-target
     font-weight:bold;           
 }
 
-.adminTabCss{
+.admin-tab-css{
     padding-top:6px;
     width:650px;
     background:#dfe8f6;
     background-color:#dfe8f6;
+    overflow:hidden;
 }
 
-.subAdminTabCss{
-    padding:10px;
-    padding-bottom:50px;
-    background:#dfe8f6;
-    background-color:#dfe8f6;   
-    height:580px;
+.sub-admin-tab-css{
+    padding:5px;
     font-size:12px;
-}
-
-.subInsAdminTabCss{
-    padding:10px;
-    padding-bottom:50px;
+    background:inherit;
+    background-color:inherit;
     background:#dfe8f6;
     background-color:#dfe8f6;
-    height:574px;
-    font-size:12px;
+    height:625px;
+    overflow:hidden;
 }
 
 .girdViewObject{
@@ -1002,4 +998,9 @@ span.input-radio{
         font-family: tahoma,arial,verdana,sans-serif;
         color:#585858;
         font-weight:bold;
+}
+
+.admin-tab-grid-view{
+        overflow:auto;
+        height:570px;
 }

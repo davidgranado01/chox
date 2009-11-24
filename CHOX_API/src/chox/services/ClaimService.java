@@ -25,6 +25,7 @@ public interface ClaimService {
     public void  saveObjectForXMLUploader(final ClaimResult claimResult);
     public Boolean isObjectExist(int WorkgroupId);
     public boolean isUserHasOpenClaim(int UserId);
-    public boolean isOpenClaimExist(int WorkgroupId, int UserId);
+    public boolean isOpenClaimByWorkgroupExist(int WorkgroupId);
+    public boolean isOpenClaimByWorkgroupByUserExist(int WorkgroupId, int UserId);
     
 }

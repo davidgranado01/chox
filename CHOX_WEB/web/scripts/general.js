@@ -106,7 +106,7 @@ function onOpenAbout(){
         
     var msg = "<span class='aboutProductName'>Product Name: iDAS CHOX</span><br/><br/>";
     msg = msg + "<span class='acountCopyright'>Copyright Message: ©2009 Sherwood Compliance Services Ltd</span><br/><br/>";
-    msg = msg + "<span class='acountVersionNumber'>V2.8.2.24.1 - 20091120</span><br/><br/>";
+    msg = msg + "<span class='acountVersionNumber'>V2.8.2.27 - 20091124</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
 
     $.blockUI({
@@ -209,23 +209,23 @@ function propmtErrors(errors){
     });
 }
 
-        function getDate(sdate){
-            
-            var date;
-            
-            if(sdate!=null && sdate!=""){
-                
-                var sDay = sdate.substring(0,2);
-                var sMonth = sdate.substring(3,5);
-                var sYear = sdate.substring(6,10);
-                
-                var sDate = sMonth+"/"+sDay+"/"+sYear;
-                date = new Date(sDate);
-            }
-            
-            return date;
-        }   
+    function getDate(sdate){
 
+        var date;
 
+        if(sdate!=null && sdate!=""){
 
-      
+            var sDay = sdate.substring(0,2);
+            var sMonth = sdate.substring(3,5);
+            var sYear = sdate.substring(6,10);
+
+            var sDate = sMonth+"/"+sDay+"/"+sYear;
+            date = new Date(sDate);
+        }
+
+        return date;
+    }
+
+    function doExportExcel(){
+        window.location= "doExportExcel.action";
+    }

@@ -90,7 +90,7 @@
             isOpenClaim:''
         }
 
-        doDataLoad(0, recordPerPage);
+        doDataLoad(0, recordPerPage, true);
 
     }  
     
@@ -123,7 +123,7 @@
             isOpenClaim:''
         }
 
-        doDataLoad(0, recordPerPage);
+        doDataLoad(0, recordPerPage, true);
 
     }  
     
@@ -155,7 +155,7 @@
             isOpenClaim:''
         }
 
-        doDataLoad(0, recordPerPage);
+        doDataLoad(0, recordPerPage, true);
 
     }   
     
@@ -187,13 +187,9 @@
             isOpenClaim:''
         }
 
-        doDataLoad(0, recordPerPage);
+        doDataLoad(0, recordPerPage, true);
         
     }  
-    
-    function doExportExcel(){
-        window.location= "doExportExcel.action";
-    }
     
     function searchClaim()
     {   
@@ -243,7 +239,7 @@
             isOpenClaim : isOpenClaim
         }
 
-        doDataLoad(0, recordPerPage);
+        doDataLoad(0, recordPerPage, true);
         
     }
     
@@ -285,6 +281,7 @@
                 }
                 
             });
+            
             if(selectedNotMyClaimsIDs.length>0){
                 propmtMsg("", "You are not authorised to action claim(s) " + selectedNotMyClaimsIDs.join(", ") + ", please de-select the tick box for this claim(s)");
             }
@@ -710,14 +707,15 @@
             tbar:[actionMenu]
             
         });
-        
+
         ds.on('load',function()
         {
             $('.x-grid3-hd-checker').removeClass('x-grid3-hd-checker-on');
         });
         
         grid.render('gridHolder');
-        grid.getSelectionModel().selectFirstRow(); 
+        grid.getSelectionModel().selectFirstRow();
+
     }
 
     function isSelectedRecordsMatchGivenStatus(selectedRecords,status)
@@ -743,9 +741,9 @@
     
     function setupTabPanels()
     {
-       
+
        currentTabIndex = <s:property value="tab" />;
-           
+
        tabs = new Ext.TabPanel({
        renderTo: 'tabPanel',
        autoheight:true,
@@ -764,6 +762,7 @@
             </s:if> 
             ]
        });
+
     }
 
     function random_number(){
@@ -793,41 +792,40 @@
             });
         }
 
-        t=setTimeout("refreshViewingStatus()",4000);
+        t=setTimeout("refreshViewingStatus()",10000);
     }
-
+     
     function loadDataFromSession()
     {
         $.get("getPageIndexOfCurrentSearch.action", function(data){
-            var start = parseInt(data.trim());            
+            var start = parseInt(data.trim());
             if(start >= 0)
             {
-                doDataLoad(start, recordPerPage);
-            }  
+                doDataLoad(start, recordPerPage, true);
+            }
         }); 
     }
     
     function handleActivate(tab){
         
         $("#gridPanel").hide();
-        
+
         if(tab.title == 'Inbox' || tab.title == 'Search'){
-
-            doDataLoad(0, 0);
-
+            doDataLoad(0, 0, null);
             $("#gridPanel").show();
         }
 
         if(tabs)
         {
             currentTabIndex = tabs.items.indexOf(tabs.getActiveTab());
-        }  
+        }
         
         <s:if test="menuAccessibility.isAdminMenuAccessibility">
         $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=NONE");
         </s:if>
             
         $('.x-grid3-hd-checker').removeClass('x-grid3-hd-checker-on');
+        
     }
    
     function refreshFilterPanel()
@@ -839,28 +837,30 @@
         }); 
     }
     
-    function doDataLoad(start, recordPerPage){
-        
+    function doDataLoad(start, recordPerPage, isSearched){
+
         ds.load(
         {
             params:
-                {
+            {
                 start:start,
-                limit:recordPerPage
+                limit:recordPerPage,
+                isSearched:isSearched
             }
         });
     }
 
     Ext.onReady(function(){
-        
+
         setupTabPanels();
         setupGrid();
-        
+
         if(!<s:property value="isChoxAdmin"/>){
             refreshViewingStatus();
         }
 
         loadDataFromSession();
+
     });
 
 </script>
@@ -921,7 +921,7 @@
                 </div>
             </div>
 
-            <div id="searchPanelTab" style="background: #dfe8f6; height:300px;" class="x-hide-display">
+            <div id="searchPanelTab" style="background: #dfe8f6; height:340px;" class="x-hide-display">
                 <div id="searchPanel">
                     <s:action name="searchClaim" namespace="/user" executeResult="true" /> 
                 </div>

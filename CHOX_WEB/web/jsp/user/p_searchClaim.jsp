@@ -218,8 +218,8 @@
         <s:else>
             <input type="hidden" name="reviewRequiredDateFrom" id="reviewRequiredDateFrom">
             <input type="hidden" name="reviewRequiredDateTo" id="reviewRequiredDateTo">
-            
         </s:else>
+        
         <tr>
             <s:if test="isCHO || isChoxAdmin">
                 
@@ -265,25 +265,22 @@
             </td>
         </tr>
 
-
+        <s:if test="isInsurer">
         <tr>
-            <s:if test="isInsurer">
-            <tr>
-                 <td><label>Workgroup</label></td>
-                 <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
-                 <td><label>Claim Owner</label></td>
-                 <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
-            </tr>
-            </s:if>
-            <s:else>
-            <tr>
-                 <td><label>Insurer's Workgroup</label></td>
-                 <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
-                 <td><label>Insurer's Claim Owner</label></td>
-                 <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
-            </tr>
-            </s:else>
+             <td><label>Workgroup</label></td>
+             <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
+             <td><label>Claim Owner</label></td>
+             <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
         </tr>
+        </s:if>
+        <s:else>
+        <tr>
+             <td><label>Insurer's Workgroup</label></td>
+             <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
+             <td><label>Insurer's Claim Owner</label></td>
+             <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
+        </tr>
+        </s:else>
 
         <tr>
             <s:if test="isChoxAdmin">

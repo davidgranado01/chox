@@ -63,7 +63,8 @@ public class InsurerPaymentReport extends BaseAction implements Report{
             
             String insurerName = "";
             Integer iSupplierId = -1;
-            Integer iInsurerId = -1;            
+            Integer iInsurerId = -1;
+            Integer iWorkgroupId = -1;
             
             boolean isWorkgroupEnabled = false;
             boolean isOrwnerEnabled = false;
@@ -86,6 +87,11 @@ public class InsurerPaymentReport extends BaseAction implements Report{
                 }
             }
             
+            String workgroupId = ((String[]) externalParameter.get("workgroupId"))[0];
+            if(!workgroupId.equalsIgnoreCase("")){
+                iWorkgroupId = Integer.parseInt(workgroupId);
+            }
+
             StringBuffer sb = new StringBuffer();
             sb.append("Select invoice.* from rpt_claim_invoice invoice ");
             sb.append("where invoice.status = 'AwaitingInvoicePayment' ");
@@ -104,6 +110,10 @@ public class InsurerPaymentReport extends BaseAction implements Report{
                 
             }
             
+            if(iWorkgroupId>0){
+                sb.append("and invoice.workgroup_id = "+iWorkgroupId+" ");
+            }
+
             sb.append("order by cho_reference asc");
             String query = sb.toString();
 

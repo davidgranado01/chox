@@ -92,17 +92,19 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         results = searchResult.getResult();
         totalCount = searchResult.getTotalCount();
         return SUCCESS;
+        
     }
-
+    
     public String getPageIndexOfCurrentSearch() {
+        
+        actionResult = "-1";
         if (session.containsKey("searchCriteria")) {
-            Integer start = claimSearchCriteria.getStart();
-            actionResult = start.toString();
-        }
-        else
-        {
-            actionResult = "-1";
-        }
+            if(claimSearchCriteria.getIsSearched()){
+                Integer start = claimSearchCriteria.getStart();
+                actionResult = start.toString();
+            }
+        }     
+        
         return SUCCESS;
     }
 

@@ -15,7 +15,6 @@
         
        userDetailPanelTabs = new Ext.TabPanel({
        renderTo: 'userDetailMainPanel',
-       height:660,
        autoScroll :true,
        activeTab: userDetailTabIndex,
        items:[
@@ -35,7 +34,6 @@
     // GET CLAIM DETAIL
     function checkMode(){
         var mode = "<s:property value="mode"/>";
-        
         if(mode!=null && mode!="" && mode=='Edit'){
             isNew = false
         }
@@ -293,11 +291,11 @@
 
 </script>
 
-<div id="userDetailMainPanel" class="adminTabCss"></div>
+<div id="userDetailMainPanel" class="admin-tab-css"></div>
 
 <div id="userDetailTab" class="x-hide-display">
     
-    <div class="subAdminTabCss">
+    <div class="sub-admin-tab-css">
 
         <form id="formUpdateUserDetail" action="user/updateUserDetail.action" class="XXentity-form" onsubmit="return true;" method="post">
             
@@ -440,7 +438,7 @@
 </div>
 
 <div id="userPasswordTab" class="x-hide-display">
-    <div class="subAdminTabCss">
+    <div class="sub-admin-tab-css">
     <s:if test="mode=='Edit'">
 
             <div class="status-info">
@@ -477,7 +475,7 @@
 </div>
 
 <div id="userRoleTab" class="x-hide-display">
-    <div class="subAdminTabCss">
+    <div class="sub-admin-tab-css">
     <s:if test="mode=='Edit'">
         <div>
             <s:action name="getUserroleMapping" executeResult="true">
@@ -490,7 +488,7 @@
 </div>
 
 <div id="userWorkgroupTab" class="x-hide-display">
-    <div class="subAdminTabCss">
+    <div class="sub-admin-tab-css">
     <s:if test="mode=='Edit'">
         <div>
             <s:action name="getUserWorkgroupMapping" executeResult="true">

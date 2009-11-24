@@ -89,10 +89,15 @@ public class InvoiceReport extends BaseAction implements Report{
                 }
             }
 
+            Integer iWorkgroupId = -1;
+            String workgroupId = ((String[]) externalParameter.get("workgroupId"))[0];
+            if(!workgroupId.equalsIgnoreCase("")){
+                iWorkgroupId = Integer.parseInt(workgroupId);
+            }
+
             StringBuffer sb = new StringBuffer();
             sb.append("Select invoice.* from rpt_claim_invoice invoice ");
-            sb.append("where invoice.status = 'AwaitingInvoicePayment' ");
-            sb.append("and insurer_id = :pInsurerId and chorganisation_id = :pChorganisationId ");
+            sb.append("where insurer_id = :pInsurerId and chorganisation_id = :pChorganisationId ");
             
             if(dataStart!=null){
                 sb.append("and date_trunc('day', invoice.created_date) >= :pInvUploadDateFrom ");
@@ -106,6 +111,10 @@ public class InvoiceReport extends BaseAction implements Report{
 
             if(SupplierRefs.length()>0){
                 sb.append("and invoice.cho_reference in ("+SupplierRefs+") ");
+            }
+
+            if(iWorkgroupId>0){
+                sb.append("and invoice.workgroup_id = "+iWorkgroupId+" ");
             }
             
             sb.append("order by cho_reference asc");

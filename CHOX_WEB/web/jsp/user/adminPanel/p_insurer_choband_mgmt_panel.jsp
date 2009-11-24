@@ -108,7 +108,7 @@
                 </table>
             </div>
             
-            <div id="choband_gridviewGrid" style="height:520px; overflow:auto;"></div>
+            <div id="choband_gridviewGrid" class="admin-tab-grid-view"></div>
             
         </div>
     

@@ -524,7 +524,32 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
-    public boolean isOpenClaimExist(int WorkgroupId, int UserId) {
+    public boolean isOpenClaimByWorkgroupExist(int WorkgroupId) {
+
+        boolean isExist = false;
+
+        try {
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+            criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
+
+            for(String sStatus : ClaimStatus.getClosedStatus()){
+                criteria.add(Restrictions.ne("status", sStatus));
+            }
+
+            if (findByCriteria(criteria).size() > 0) {
+                isExist = true;
+            }
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        return isExist;
+
+    }
+    
+    public boolean isOpenClaimByWorkgroupByUserExist(int WorkgroupId, int UserId) {
 
         boolean isExist = false;
 

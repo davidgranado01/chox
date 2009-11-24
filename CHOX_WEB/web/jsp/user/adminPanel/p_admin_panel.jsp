@@ -14,18 +14,14 @@
     </script>
 </head>
 
-<div class="x-panel-bwrap chox-form-container" id="xPenalMainRight" style="height:680px;">
-    
-    <table cellpadding="0" cellspacing="0" width="100%" style="height:100%;">
-        
+<div class="x-panel-bwrap chox-form-container" id="xPenalMainRight">
+
+    <table cellpadding="0" cellspacing="0" width="100%" style="height:680px;">
         <tr valign="top">
-            
             <td class="chox-admin-form-left-col" width="200px">
-                
-                <fieldset class="x-fieldset" style="height:95%;">
+                <fieldset class="x-fieldset" style="height:660px;">
                     <legend>Admin Panel</legend>
                     <div class="x-panel-bwrap chox-form-container" >
-
                             <ul>
 
 <s:if test="adminAccessibility.isInsurerCompaniesAdminAccessibility">
@@ -44,19 +40,17 @@
     <li><a href="javascript:renderAdminParameterPanel('UserMgmt');">User Management</a></li>
 </s:if>
 
-</ul>
-
+                            </ul>
                     </div>
                 </fieldset>
                 
             </td>
-
-            <td class="chox-form-right-col">
+            <td class="chox-form-right-col" style="width:100%;">
                 <div id="admin_param_panel"></div>
             </td>
 
         </tr>
     </table>
-    
+
 </div>
 

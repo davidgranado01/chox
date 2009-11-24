@@ -229,9 +229,10 @@
     function showOrganisationDropDownDiv() {
         
         if(isOrgShow()){
+            $("#organisationDropDownDiv").css("display","block");
             $("#organisationDropDownDiv").load("OrganisationDropDownAction.action?orgTypeId=" + orgTypeId);
         }else{
-            $("#organisationDropDownDiv").html("");
+            $("#organisationDropDownDiv").css("display","none");
         }
         
     }
@@ -249,7 +250,7 @@
 
 </script>
 
-<fieldset class="x-fieldset">
+<fieldset class="x-fieldset" style="height:660px;">
     <legend>User Management</legend>
     <div id="organisationGird">
         <div class="gridViewHeader">
@@ -282,6 +283,6 @@
             </table>
 
         </div>
-        <div id="gridviewGrid" style="height:570px; overflow:auto;"></div>
+        <div id="gridviewGrid" style="height:540px; overflow:auto;"></div>
     </div>
 </fieldset>

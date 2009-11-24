@@ -2008,12 +2008,13 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 -- START VERSION V2.8.2.24.1
 -- ############################################################################################\
 
-delete from audit_trail where claim_id=1889 and id in (11503, 12096);
-delete from audit_trail where claim_id=1896 and id in (11517, 12092);
-delete from audit_trail where claim_id=1976 and id in (12009, 12084);
-delete from audit_trail where claim_id=2797 and id in (17880, 18155, 18157, 18160);
-
 
 -- ############################################################################################
 -- START VERSION V2.8.2.25
 -- ############################################################################################\
+
+-- ############################################################################################
+-- START VERSION V2.8.2.26
+-- ############################################################################################\
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_COM', 1, (select id from accessibility where name ='panel.FNOLReviewed'), (select max(id)+1 from accessibility_item));

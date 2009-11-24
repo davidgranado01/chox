@@ -11,6 +11,7 @@
 
     $(document).ready(function(){
         new Ext.ToolTip({ target: 'help-supplier-reference-input', html: 'Supplier Reference Number input format: ABC123, ABC124, ABC125'});
+        $('div#rptInvoiceWorkgroupSelectionHolder').load('GetWorkgroupOnlyDropDownActionByInsurer.action');
     });
     
     function openReport()
@@ -96,6 +97,16 @@
 
                 <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">
                     
+<s:if test="!isCHO && !isCH">
+<tr>
+    <td nowrap><label>Workgroup</label></td>
+    <td><div id="rptInvoiceWorkgroupSelectionHolder"></div></td>
+</tr>
+</s:if>
+<s:else>
+    <input type="hidden" id="workgroupId" name="workgroupId" value="-1"/>
+</s:else>
+    
 <s:if test="!isCHO">
     <tr>
     <td nowrap><label>Credit Hire Organisation</label></td>

@@ -104,18 +104,18 @@ public class ClaimRejectedReport implements Report {
         StringBuffer sb = new StringBuffer();
         sb.append("select ");
         sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as iTotal, ");
-        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and claim.status='ClaimRejectionAccepted') as iTotalRejected, ");
-        
+        sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as iTotalRejected, ");
+
         for(ClaimRejectionLineItem cRejected : claimRejection.getClaimRejectionLineItem()){
             
             if(cRejected.getId()!=null){
                 
-                sb.append("(select count(*) from claim claim, (select distinct claim_id, new_status from audit_trail where new_status='ClaimRejectionAccepted' and claim_reason_of_rejection="+cRejected.getId()+") as audit_trail where claim.status!='ClaimClosed' and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.id=audit_trail.claim_id and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_"+cRejected.getId()+", ");
+                sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and audit.claim_reason_of_rejection="+cRejected.getId()+" and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_"+cRejected.getId()+", ");
                 
                 if(isIns){
-                    sb.append("(select count(*) from claim claim, (select distinct claim_id, new_status from audit_trail where new_status='ClaimRejectionAccepted' and claim_reason_of_rejection="+cRejected.getId()+") as audit_trail where claim.status!='ClaimClosed' and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.id=audit_trail.claim_id and claim.insurer_id=insurer_chorganisation.insurer_id) as REJ_PERC_"+cRejected.getId()+", ");
+                    sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and audit.claim_reason_of_rejection="+cRejected.getId()+" and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id) as REJ_PERC_"+cRejected.getId()+", ");
                 }else{
-                    sb.append("(select count(*) from claim claim, (select distinct claim_id, new_status from audit_trail where new_status='ClaimRejectionAccepted' and claim_reason_of_rejection="+cRejected.getId()+") as audit_trail where claim.status!='ClaimClosed' and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.id=audit_trail.claim_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_PERC_"+cRejected.getId()+", ");
+                    sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and audit.claim_reason_of_rejection="+cRejected.getId()+" and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_PERC_"+cRejected.getId()+", ");
                 }
             }
         }
@@ -134,14 +134,8 @@ public class ClaimRejectedReport implements Report {
             sb.append("order by insurer.name asc "); 
         }
         
-        String query = sb.toString();
-        
-        /*
-        query = query.replaceAll(":pOrgId", iOrgId.toString());
-        query = query.replaceAll(":pCreatedDateFrom", "'" + DateHelper.DBDateFormat.format(dataStart) + "'");
-        query = query.replaceAll(":pCreatedDateTo", "'" + DateHelper.DBDateFormat.format(dataEnd) + "'");
-        */
-        
+        String query = sb.toString();        
+
         // Emmanuel
         // 27-07-2009
         // prevent SQL Injection

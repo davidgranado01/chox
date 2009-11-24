@@ -20,5 +20,7 @@ public interface UserService {
     public boolean isEmailExist(String email, int userId);
     public List<WebUser> getClaimHanldersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable);
     public List<WebUser> getClaimHanldersByInsurer(int insurerId, boolean workgroupEnable);
+    public boolean isOtherWorkgroupEnableCOMUserWithWorkgroupExist(int insurerId, int selectedWorkgroupId, int userId);
+    public boolean isOtherWorkgroupEnableCHUserWithWorkgroupExist(int insurerId, int selectedWorkgroupId, int userId);
     
 }

@@ -130,7 +130,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
             e.printStackTrace();
         }
 
-        return isExist;        
+        return isExist;
     }
     
     public boolean isWorkgroupAllowToInactive(int insurerId, int workgroupId){

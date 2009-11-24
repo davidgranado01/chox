@@ -71,24 +71,38 @@
         });
     
     }
-    
+
     function workgroup_triggerStatusRemoveRecord(gridView){
-        
-        var deleteAtt = confirm("Are you sure you want to remove this workgroup?");
-        
+
         $("#CDUserWorkgroupMessageBox").html("");
+
+        var gridViewId = gridView.get("id");
+        var errorMsg = "Are you sure you want to remove this workgroup?";
         
-        if(deleteAtt){
-            
-            var gridViewId = gridView.get("id");
-             $.ajax({
-               url: "removeUserWorkgroupMapping.action?userWorkgroupId="+gridViewId+"&webUserId="+<s:property value="id" />,
-               success: userworkgroup_doRefreshPage
-             });
-             
-        }
+        $.getJSON("isWorkgroupAllowToDelete.action?userWorkgroupId="+gridViewId+"&webUserId="+<s:property value="id" />, function(data){
+            if(!data.isAllowToDelete){
+                
+                if(confirm(data.warningMsg)){
+                    doDeleteUserWorkgroup(gridViewId);
+                }
+                
+            }else{
+
+                if(confirm("Are you sure you want to remove this workgroup?")){
+                    doDeleteUserWorkgroup(gridViewId);
+                }
+            }
+        });
+
     }
     
+    function doDeleteUserWorkgroup(userWorkgroupId){
+         $.ajax({
+           url: "removeUserWorkgroupMapping.action?userWorkgroupId="+userWorkgroupId+"&webUserId="+<s:property value="id" />,
+           success: userworkgroup_doRefreshPage
+         });
+    }
+
     function userworkgroup_doSelectOnChange(){
         $("#CDUserWorkgroupMessageBox").html("");
     }

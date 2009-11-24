@@ -12,6 +12,7 @@ import chox.services.WorkgroupService;
 import chox.web.viewdata.ActionResponse;
 import java.util.ArrayList;
 import java.util.List;
+import net.sf.json.JSONArray;
 
 public class doUserWorkgroupAction extends BaseAction{
     
@@ -23,6 +24,8 @@ public class doUserWorkgroupAction extends BaseAction{
     private WorkgroupService workgroupService;
     private UserService userService;
     private ClaimService claimService;
+
+    private String workgroupValidationMsg;
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
@@ -96,36 +99,74 @@ public class doUserWorkgroupAction extends BaseAction{
     public String doRenderActionPage(){
         return SUCCESS;
     }  
-    
+
+   public String getJsonData() {
+        return workgroupValidationMsg;
+    }
+
+    public String checkWorkgroupAllowToDelete(){
+
+        UserWorkgroup model = service.getObject(userWorkgroupId);
+
+        int selectedInsurerId = model.getUser().getInsurer().getId();
+        int selectedWorkgroupId = model.getWorkgroup().getId();
+        String selectedWorkgroupName = model.getWorkgroup().getName();
+        String selectedUserName = model.getUser().getDisplayName();
+
+        boolean isAllowToDelete = true;
+        String errMsg = "";
+        
+        // NOT OTHER COM ROLE
+        // WITH OPEN ITEM FOR THIS WORKGROUP
+        if(claimService.isOpenClaimByWorkgroupExist(selectedWorkgroupId)){
+
+            if(RoleHelper.isCheckSelectedRoleExist(model.getUser().getRoles(), "ROLE_INS_COM")
+                    && !userService.isOtherWorkgroupEnableCOMUserWithWorkgroupExist(selectedInsurerId, selectedWorkgroupId, this.webUserId)){                
+                isAllowToDelete = false;
+                errMsg = "User "+selectedUserName+" is the last user that has an Insurer Claim Ownership Manager role and is assigned to Workgroup "+selectedWorkgroupName+". Are you sure you want to remove this workgroup?";
+            }
+
+            /*
+            // CH
+            if(RoleHelper.isCheckSelectedRoleExist(model.getUser().getRoles(), "ROLE_INS_CH")
+                    && !userService.isOtherWorkgroupEnableCHUserWithWorkgroupExist(selectedInsurerId, selectedWorkgroupId, this.webUserId)){
+                isAllowToDelete = false;
+                errMsg = "User "+selectedUserName+" is the last user that has an Insurer Claim Handler role and is assigned to Workgroup "+selectedWorkgroupName+". Are you sure you want to remove this workgroup?<br/>";
+            }
+            */
+        }
+        
+        workgroupValidationMsg = "{isAllowToDelete:"+isAllowToDelete+",warningMsg:'"+errMsg+"'}";
+        return SUCCESS;
+    }
+
     public String removeObject(){
 
         if(userWorkgroupId>0){
 
             boolean isAllowToDelete = true;
+            String errMsg = "";
             UserWorkgroup model = service.getObject(userWorkgroupId);
 
-            // COM USER
-            if(RoleHelper.isUserCheckByWorkgroup(model.getUser())){
-
-                // NOT OTHER COM ROLE
-                // WITH OPEN ITEM FOR THIS WORKGROUP
-                isAllowToDelete = false;
-                getActionResponse().AddError("Unable to remove the workgroup");
-            }
+            int selectedWorkgroupId = model.getWorkgroup().getId();
+            String selectedWorkgroupName = model.getWorkgroup().getName();
+            String selectedUserName = model.getUser().getDisplayName();
             
             // CH USER AND OWNERSHIP IS TRUE
             if(RoleHelper.isUserCheckByOwnership(model.getUser())
-                    && claimService.isOpenClaimExist(model.getWorkgroup().getId(), this.webUserId)){
-
+                    && claimService.isOpenClaimByWorkgroupByUserExist(selectedWorkgroupId, this.webUserId)){
                 isAllowToDelete = false;
-                getActionResponse().AddError("Unable to remove the workgroup");
+                errMsg += "User '"+selectedUserName+"' has open claim(s) assigned to them within workgroup '"+selectedWorkgroupName+"', it is not possible to remove the assignment of a Workgroup against a user who has open claim(s).<br/>";
             }
-
+            
             if(isAllowToDelete){
                 
                 String ackMsg = "Workgroup '" + model.getWorkgroup().getName() + "' has been removed";
                 service.DeleteObject(model);
                 getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);
+                
+            }else{
+                getActionResponse().AddError(errMsg);
             }
             
         }else{

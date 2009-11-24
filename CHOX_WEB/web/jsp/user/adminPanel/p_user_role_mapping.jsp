@@ -166,13 +166,14 @@
         if(response && response.isValid){
             
             if(response.resultType && response.resultType == 'Message'){
-                propmtMsg("User Role", response.result);
+                //propmtMsg("User Role", response.result);
+                alert(response.result);
             }
         }
         
         doRefreshPage();
     }
-        
+
     function doRefreshPage(){
         $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" /> + "&tabIndex="+userDetailTabIndex);
     }

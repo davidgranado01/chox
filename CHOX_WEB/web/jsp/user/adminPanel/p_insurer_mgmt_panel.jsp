@@ -16,7 +16,6 @@
            renderTo: 'InsurerMainPanel',
            autoScroll :true,
            activeTab: 0,
-           Height:500,
            items:[
                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroups', listeners: {activate: doSelectDetail}},
                {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: doSelectDetail}},
@@ -53,10 +52,10 @@
 
 </script>
 
-<div id="InsurerMainPanel" class="adminTabCss"></div>
+<div id="InsurerMainPanel" class="admin-tab-css"></div>
 
 <div id="insurerWorkgroupPanelTab" class="x-hide-display">
-    <div class="subInsAdminTabCss">
+    <div class="sub-admin-tab-css">
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerWorkgroupMappingMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="selectOrgId" /></s:param>
@@ -65,7 +64,7 @@
 </div>
 
 <div id="insurerBrePanelTab" class="x-hide-display">
-    <div class="subInsAdminTabCss">
+    <div class="sub-admin-tab-css">
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerChoBandMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="selectOrgId" /></s:param>        
@@ -74,7 +73,7 @@
 </div>
 
 <div id="insurerBreMappingPanelTab" class="x-hide-display">
-    <div class="subInsAdminTabCss">
+    <div class="sub-admin-tab-css">
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerChoBandMappingMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="selectOrgId" /></s:param>        
@@ -83,11 +82,10 @@
 </div>
 
 <div id="insurerVehicleClassCeilingTab" class="x-hide-display">
-    <div class="subInsAdminTabCss">
+    <div class="sub-admin-tab-css">
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerVehicleClassCeiling</s:param>
             <s:param name="selectOrgId"><s:property value="selectOrgId" /></s:param>
         </s:action>
-
      </div>
 </div>

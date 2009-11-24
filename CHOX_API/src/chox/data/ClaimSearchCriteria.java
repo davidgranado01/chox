@@ -41,11 +41,10 @@ public class ClaimSearchCriteria implements Serializable {
     private Date reviewRequiredDateFrom;
     private Date reviewRequiredDateTo;
     private boolean isOpenClaim;
-    
     private int claimOwnerId;
-
     private boolean isWorkgroupCheck;
     private boolean isOwnerShipCheck;
+    private boolean isSearched;
 
     @TypeConversion(converter = "chox.web.data.DateConverter")
     public Date getReviewRequiredDateFrom() {
@@ -297,6 +296,14 @@ public class ClaimSearchCriteria implements Serializable {
 
     public void setIsOpenClaim(boolean isOpenClaim) {
         this.isOpenClaim = isOpenClaim;
+    }
+
+    public boolean getIsSearched() {
+        return isSearched;
+    }
+
+    public void setIsSearched(boolean isSearched) {
+        this.isSearched = isSearched;
     }
     
 }

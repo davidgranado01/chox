@@ -18,6 +18,8 @@
     }
     
     Ext.onReady(function(){
+
+        $('div#rptPaymentWorkgroupSelectionHolder').load('GetWorkgroupOnlyDropDownActionByInsurer.action');
         
         /*
         var dateFromPicker = new Ext.form.DateField({
@@ -95,8 +97,21 @@
             
             <div class="ReportActionMsg" align="justify">This report produces a list of claims that require payment. The report results are per CHO and allow an Insurer to make payments in a more efficient manner.</div>
             
-                <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">  
-<s:if test="!isCHO">                
+                <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">
+
+<s:if test="!isCHO && !isCH">
+<tr>
+<td nowrap><label>Workgroup</label></td>
+<td>
+<div id="rptPaymentWorkgroupSelectionHolder"></div>
+</td>
+</tr>
+</s:if>
+<s:else>
+    <input type="hidden" id="workgroupId" name="workgroupId" value="-1"/>
+</s:else>
+    
+<s:if test="!isCHO"> 
 <tr>
 <td nowrap><label>Credit Hire Organisation</label></td>
 <td>

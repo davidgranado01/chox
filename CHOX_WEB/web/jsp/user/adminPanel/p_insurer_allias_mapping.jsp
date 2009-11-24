@@ -148,6 +148,6 @@
                 <tr><td><div id="CDInsurerAlliasMessageBox" class="errorBox"></div></td></tr>
             </table>
         </div>
-        <div id="allias_gridviewGrid" style="height:540px; overflow:auto;"></div>
+        <div id="allias_gridviewGrid" class="admin-tab-grid-view"></div>
     </div>
 </div>

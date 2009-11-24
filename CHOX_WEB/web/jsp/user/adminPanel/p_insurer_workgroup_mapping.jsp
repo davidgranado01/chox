@@ -201,7 +201,7 @@
 
         </div>
         
-        <div id="workgroup_gridviewGrid" style="height:482px; overflow:auto;"></div>
+        <div id="workgroup_gridviewGrid" class="admin-tab-grid-view"></div>
         
     </div>
 

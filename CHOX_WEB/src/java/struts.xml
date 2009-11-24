@@ -47,7 +47,7 @@
         <action name="doSearchClaim" class="chox.web.actions.SearchClaimAction" method="doSearchClaim">
             <result name="success">/jsp/p_jsonData.jsp
             </result>
-        </action>
+        </action>     
         <action name="getPageIndexOfCurrentSearch" class="chox.web.actions.SearchClaimAction" method="getPageIndexOfCurrentSearch">
             <result name="success">/jsp/p_response.jsp
             </result>
@@ -908,6 +908,9 @@
         </action>
         
         <!-- WORKGROUP !-->
+        <action name="isWorkgroupAllowToDelete" class="chox.web.actions.doUserWorkgroupAction" method="checkWorkgroupAllowToDelete">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
         <action name="getUserWorkgroup" class="chox.web.actions.UserWorkgroupAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
