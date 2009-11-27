@@ -85,8 +85,7 @@
     <legend>Invoice Saving Summary Report</legend>
     <div class="x-panel-bwrap chox-form-container">
         <div class="form-container">
-            <div class="ReportActionMsg" align="justify"></div>
-
+            <div class="ReportActionMsg" align="justify">This report displays the amount saved on CHO invoices, comparing the original invoice amount as submitted by the CHO against the final settlement amount.</div>
                 <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">
 
 <tr>

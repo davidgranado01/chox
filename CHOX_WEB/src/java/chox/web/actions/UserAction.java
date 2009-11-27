@@ -40,16 +40,14 @@ public class UserAction extends BaseAction {
         }else if(orgTypeId==3){
             orgType = OrganisationType.CHO;
         }
-        
+
         List<WebUser> userData = this.service.getUsers(orgId, orgType);
         
-        // System.out.println("orgTypeId : "+orgTypeId + "|orgType" +orgType+" :SIZE: "+userData.size() + "|userRoleId:"+userRoleId);
-
         user = new ArrayList<UserViewData>();
         
         for(WebUser h : userData)
         {
-
+            
             if(userRoleId>0){
                  if(isSelectedRoleExist(h.getRoles(), userRoleId)){
                     user.add(new UserViewData(h));
@@ -58,7 +56,7 @@ public class UserAction extends BaseAction {
                 user.add(new UserViewData(h));
             }
         }
-        
+
         return SUCCESS;
     }
     

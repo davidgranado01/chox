@@ -79,7 +79,7 @@
     <legend>Average Claim Settlement Amount Report</legend>
     <div class="x-panel-bwrap chox-form-container">      
         <div class="form-container">
-            <div class="ReportActionMsg" align="justify"></div>
+            <div class="ReportActionMsg" align="justify">This report displays the average settlement amount, filtered by month, for each CHO using the CHOX system.</div>
             
                 <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">     
               

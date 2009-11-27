@@ -8,7 +8,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 public class UserWorkgroupServiceImpl extends SecureDataService implements UserWorkgroupService {
-        
+
     public List<UserWorkgroup> getObjects(int userId) {
         
         List<UserWorkgroup> objects = new ArrayList<UserWorkgroup>();

@@ -52,10 +52,10 @@ function openHelpFile(url, helpFileRoleType){
           fileName = '/download/iDAS_CHOX_INS_MNG_UG.pdf';
           break;
         case 3: // NORMAL CREDIT HIRE ROLE
-          fileName = '/download/iDAS_CHOX_CHO_UG.pdf';
+          fileName = '/download/iDAS_CHOX_CHO_UG_3.1.pdf';
           break;
         case 4: // CREDIT HIRE MANAGER ROLE
-          fileName = '/download/iDAS_CHOX_CHO_MNG_UG.pdf';
+          fileName = '/download/iDAS_CHOX_CHO_UG_ADM 3.1.pdf';
           break;
     }
 
@@ -106,7 +106,7 @@ function onOpenAbout(){
         
     var msg = "<span class='aboutProductName'>Product Name: iDAS CHOX</span><br/><br/>";
     msg = msg + "<span class='acountCopyright'>Copyright Message: ©2009 Sherwood Compliance Services Ltd</span><br/><br/>";
-    msg = msg + "<span class='acountVersionNumber'>V2.8.2.27 - 20091124</span><br/><br/>";
+    msg = msg + "<span class='acountVersionNumber'>V2.8.2.29 - 20091127</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
 
     $.blockUI({

@@ -26,6 +26,7 @@ public class UserViewData {
 
     public UserViewData(WebUser object) {
 
+
         this.id = object.getId();
         this.email = object.getEmail();
         this.name = object.getDisplayName();
@@ -33,7 +34,7 @@ public class UserViewData {
         this.createdDate = DateHelper.GridViewDateFormat.format(object.getCreatedDate());
         this.status = object.getStatus();
         this.isExpired = object.getIsExpired() ? "Yes" : "No";
-
+        
         if (object.getStatus()) {
             this.statusDesc = "Yes";
         } else {

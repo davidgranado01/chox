@@ -226,10 +226,7 @@ public class OverviewSummaryReport implements Report {
                 lineItemDetails.add(lineItemDetail);
 
             }
-
-            System.out.println(">>>LINE ID" + reportLine.getLineId());
-
-            // LINE 1 to 5
+            
             lineItemDetails = processAllOrganisationDetailPerLines(
                     lineItemDetails,
                     reportLine.getLineId(),

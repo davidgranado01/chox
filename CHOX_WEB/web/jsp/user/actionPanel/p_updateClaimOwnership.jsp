@@ -105,7 +105,7 @@
             <div>
                 
                 <div class="status-info">
-                Re-assign the Claim Owner by selecting the relevant Workgroup and Claims Handler from the selections below.
+                Re-assign the Claim Owner by selecting the relevant Claims Handler from the selections below.
                 </div>
                 
                 <div class="status-control-set">

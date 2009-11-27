@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.hibernate.Criteria;
@@ -192,6 +193,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
                 .createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
                 .createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN)
                 .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
                 .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
 
@@ -205,7 +207,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             if(RoleHelper.isEditableByOwnership(getCurrentUser())){
                 criteria.add(Restrictions.eq("claimOwner.id", getCurrentUser().getId()));
             }
-            
         }
 
         if (searchCriteria.getClaimOwnerId() > 0) {
@@ -411,6 +412,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 addSort(criteria, "tp.vehicleRegistration", dir);
             } else if (sort.equalsIgnoreCase("claimNumber")) {
                 addSort(criteria, "claimNumber", dir);
+            } else if (sort.equalsIgnoreCase("policyNumber")) {
+                addSort(criteria, "tp.policyNumber", dir);
             } else if (sort.equalsIgnoreCase("invoiceAmount")) {
                 addSort(criteria, "iv.totalToPay", dir);
             } else if (sort.equalsIgnoreCase("createdDate")) {
@@ -425,6 +428,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 addSort(criteria, "cho.name", dir);
             } else if (sort.equalsIgnoreCase("insurer")) {
                 addSort(criteria, "ins.name", dir);
+            } else if (sort.equalsIgnoreCase("reviewDate")) {
+                addSort(criteria, "hmd.nextReviewDate", dir);
+            } else if (sort.equalsIgnoreCase("invoiceAmount")) {
+                addSort(criteria, "iv.invoiceAmount", dir);
+             } else if (sort.equalsIgnoreCase("ownerName")) {
+                addSort(criteria, "co.firstName", dir);
+                addSort(criteria, "co.lastName", dir);
             } else if (sort.equalsIgnoreCase("createdBy")) {
                 addSort(criteria, "cb.firstName", dir);
                 addSort(criteria, "cb.lastName", dir);
@@ -548,7 +558,29 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return isExist;
 
     }
+
+    public boolean isOpenClaimByWorkgroupByUserExist(Set WorkgroupIds, int userId) {
+
+        boolean isExist = false;
+
+        if (WorkgroupIds.size() > 0){
+            Iterator itr = WorkgroupIds.iterator();
+            while (itr.hasNext()) {
+                
+                int workgroupId = (Integer)itr.next();
+                if(isOpenClaimByWorkgroupByUserExist(workgroupId, userId)){
+                    System.out.println("EXIST BY:"+workgroupId);
+                    isExist = true;
+                    break;
+                }
+            }
+        }
+        
+        return isExist;
+
+    }
     
+
     public boolean isOpenClaimByWorkgroupByUserExist(int WorkgroupId, int UserId) {
 
         boolean isExist = false;

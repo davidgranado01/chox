@@ -10,11 +10,23 @@
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"></property>
-        <property name="url" value="jdbc:postgresql://localhost:5432/chox_sprint8_build2"></property>
+        <property name="url" value="jdbc:postgresql://localhost:5432/prod_mig_final"></property>
         <property name="username" value="postgres"></property>
         <property name="password" value="GreenF1nCH"></property>
+        <property name="initialSize" value="5"/>
+        <property name="maxActive" value="20"/>
     </bean>
 
+    <!--
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"></property>
+        <property name="url" value="jdbc:postgresql://localhost:5432/chox_test"></property>
+        <property name="username" value="chox"></property>
+        <property name="password" value="id4sch0x"></property>
+        <property name="initialSize" value="5"/>
+        <property name="maxActive" value="20"/>
+    </bean>
+!-->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource">
             <ref bean="dataSource" />

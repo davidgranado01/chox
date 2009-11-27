@@ -6,6 +6,7 @@ import chox.model.WebUser;
 import chox.model.WebUserRole;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -66,13 +67,8 @@ public class UserServiceImpl extends DataService implements UserService {
     }
 
     public WebUser getObject(int id) {
-        UserCacheManager cacheManager = UserCacheManager.getInstance();
-        WebUser user = cacheManager.getUserFromCache(id);
-        if (user == null) {
-            user = (WebUser) get(WebUser.class, id);
-            cacheManager.putUserToCache(user);
-        }
-
+        WebUser user = new WebUser();
+        user = (WebUser) get(WebUser.class, id);        
         return user;
     }
 
@@ -109,6 +105,52 @@ public class UserServiceImpl extends DataService implements UserService {
         
         return users;
     } 
+
+    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, String selectedUserRole){
+
+        boolean isExist = false;
+
+        if (user.getWorkgroupIds().size() > 0){
+            Iterator itr = user.getWorkgroupIds().iterator();
+            while (itr.hasNext()) {
+                int workgroupId = (Integer)itr.next();
+                if(isWorkgroupOwnByOtherUserByRole(user, workgroupId, selectedUserRole)){
+                    isExist = true;
+                }
+            }
+        }
+
+        return isExist;
+    }
+
+    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, int selectedWorkgroupId, String selectedUserRole){
+
+        boolean bFlag = false;
+        List<WebUser> users = new ArrayList<WebUser>();
+        
+        try {
+
+                DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class)
+                .createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
+
+                criteria.add(Restrictions.eq("role.name", selectedUserRole));
+                criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
+                criteria.add(Restrictions.eq("insurer.id", user.getInsurer().getId()));
+                criteria.add(Restrictions.eq("status", true));
+                criteria.add(Restrictions.ne("id", user.getId()));
+
+                users = findByCriteria(criteria);
+                if(users.size()>0){
+                    bFlag = true;
+                }
+
+        } catch (Throwable e) {
+           e.printStackTrace();
+        }
+
+        return bFlag;
+    }
 
     public boolean isOtherWorkgroupEnableCOMUserWithWorkgroupExist(int insurerId, int selectedWorkgroupId, int userId){
 
@@ -233,7 +275,6 @@ public class UserServiceImpl extends DataService implements UserService {
     }
     
     public List<WebUser> getUsers(int orgId, String orgType){
-        
         List<WebUser> users = new ArrayList<WebUser>();
         
         try {
@@ -264,7 +305,7 @@ public class UserServiceImpl extends DataService implements UserService {
         } catch (Throwable e) {
            e.printStackTrace();
         }    
-        
+
         return users;
     } 
     

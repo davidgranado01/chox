@@ -691,7 +691,7 @@
                 {header: "Insurer", width: 80, sortable: true, dataIndex: 'insurer'},
                 {header: "Last Modified", width: 180, sortable: true, dataIndex: 'lastModifiedDate'},
                 {header: "Review Date", width: 180, sortable: true, dataIndex: 'reviewDate'},
-                {header: "Invoice Amount", width: 200, sortable: true, dataIndex: 'invoiceAmount'},
+                {header: "Invoice Amount", width: 200, sortable: true, dataIndex: 'invoiceAmount', align: 'right'},
                 {header: "Owner", width: 100, sortable: true, dataIndex: 'ownerName'},
                 {header: "Viewing", width: 80, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
                         return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '" class="std-label-ro">-</label>'}}

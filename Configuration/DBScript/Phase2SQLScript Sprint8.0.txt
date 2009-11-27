@@ -2018,3 +2018,26 @@ insert into accessibility_item (role, access_right, accessibility_id, id) values
 -- ############################################################################################\
 
 insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_COM', 1, (select id from accessibility where name ='panel.FNOLReviewed'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='panel.FNOLReviewed'), (select max(id)+1 from accessibility_item));
+
+--------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.InvoiceReferredToClaimsHandler');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceReferredToClaimsHandler'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceReferredToClaimsHandler'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceReferredToClaimsHandler'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_CHOX_ADMIN', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceReferredToClaimsHandler'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility),'extraAction.updateClaimOwner.InvoiceReferredToEngineer');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceReferredToEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceReferredToEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceReferredToEngineer'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_CHOX_ADMIN', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.InvoiceReferredToEngineer'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility_editable (id, accessibility_id, is_workgroup_check, is_ownership_check) values ((select max(id)+1 from accessibility_editable), (select id from accessibility where name='extraAction.updateClaimOwner.InvoiceReferredToClaimsHandler'), true, false);
+insert into accessibility_editable (id, accessibility_id, is_workgroup_check, is_ownership_check) values ((select max(id)+1 from accessibility_editable), (select id from accessibility where name='extraAction.updateClaimOwner.InvoiceReferredToEngineer'), true, false);
+
+--------------------
+
+ALTER TABLE customer ALTER COLUMN vehicle_registration TYPE character varying(50);
+ALTER TABLE customer ALTER COLUMN postcode TYPE character varying(50);

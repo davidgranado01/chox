@@ -3,6 +3,7 @@ package chox.services;
 import chox.data.ClaimSearchCriteria;
 import chox.model.*;
 import java.util.List;
+import java.util.Set;
 
 public interface ClaimService {
     
@@ -26,6 +27,7 @@ public interface ClaimService {
     public Boolean isObjectExist(int WorkgroupId);
     public boolean isUserHasOpenClaim(int UserId);
     public boolean isOpenClaimByWorkgroupExist(int WorkgroupId);
+    public boolean isOpenClaimByWorkgroupByUserExist(Set WorkgroupIds, int userId);
     public boolean isOpenClaimByWorkgroupByUserExist(int WorkgroupId, int UserId);
     
 }

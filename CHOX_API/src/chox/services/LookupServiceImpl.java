@@ -124,7 +124,10 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             criteria.add(Restrictions.eq("status", true));
         }
 
-        criteria.add(Restrictions.eq("insurer.id", insurerId));
+        if(insurerId>0){
+            criteria.add(Restrictions.eq("insurer.id", insurerId));
+        }
+        
         criteria.addOrder(Order.asc("name"));
         return findByCriteria(criteria,true);
     }
@@ -271,6 +274,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             sb.append("where a.status=true and b.chorganisation_id=:pChorganisationId");
             
             Map extParameters = new HashMap();
+
             extParameters.put("pChorganisationId", choId);
             
             result = externalQuery(sb.toString(), extParameters, IdLookupItem.class);

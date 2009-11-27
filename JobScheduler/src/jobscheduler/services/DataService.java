@@ -9,8 +9,8 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-
 public class DataService {
+    
     /*
     final String databaseServer = "localhost:5432";
     final String databaseConnection = "choxidas_prod";
@@ -19,7 +19,7 @@ public class DataService {
     */
     
     final String databaseServer = "localhost:5432";
-    final String databaseConnection = "chox_test";
+    final String databaseConnection = "chox";
     final String databaseUserName = "chox";
     final String databaseUserPsw= "id4sch0x";
     

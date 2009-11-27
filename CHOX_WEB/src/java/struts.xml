@@ -54,12 +54,9 @@
         </action>
         <action name="doExportExcel" method="execute" class="chox.web.actions.ExcelGeneratorAction">
             <result name="success" type="stream">
-                <param name="contentType">application/ms-excel
-                </param>
-                <param name="inputName">excelStream
-                </param>
-                <param name="contentDisposition">attachment;filename="excel_report.xls"
-                </param>
+                <param name="contentType">application/ms-excel</param>
+                <param name="inputName">excelStream</param>
+                <param name="contentDisposition">attachment;filename="excel_report.xls"</param>
                 <param name="bufferSize">99999
                 </param>
             </result>
@@ -747,16 +744,12 @@
         
         <action name="exportExcelReport" class="chox.web.actions.ReportAction" method="exportReport">
             <result name="success" type="stream">
-                <param name="contentType">application/ms-excel
-                </param>
-                <param name="inputName">reportStream
-                </param>
-                <param name="contentDisposition">attachment;filename="report.xls"
-                </param>
-                <param name="bufferSize">99999
-                </param>
+                <param name="contentType">application/ms-excel</param>
+                <param name="inputName">reportStream</param>
+                <param name="contentDisposition">attachment;filename="report.xls"</param>
+                <param name="bufferSize">99999</param>
             </result>
-            <result name="failed">/jsp/user/ExcelGenerationFailed.jsp.jsp
+            <result name="failed">/jsp/user/ExcelGenerationFailed.jsp
             </result>
         </action>
 
@@ -766,6 +759,7 @@
             <result name="empty">/jsp/p_response.jsp
             </result>
         </action>
+        
         <action name="showInsurerBoard" class="chox.web.actions.DashboardAction" method="showInsurerBoard">
             <result name="success">/jsp/user/dashboardPanel/p_insurer_board.jsp
             </result>
@@ -905,6 +899,9 @@
         </action>
         <action name="addNewRoleMapping" class="chox.web.actions.doUserroleAction" method="addNewRoleMapping">
             <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
+        </action>
+        <action name="isRoleAllowToDelete" class="chox.web.actions.doUserroleAction" method="checkRoleAllowToDelete">
+            <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         
         <!-- WORKGROUP !-->

@@ -110,7 +110,7 @@
                     </tr>
                         <tr>
                             <td colspan="2" class="choice"> 
-                                <input type="submit" value="Submit" onclick="registeAction('accept')"  />   
+                                <input type="submit" value="Acknowledge" onclick="registeAction('accept')"  />
                                 <input type="submit" value="Update Claims Handler" onclick="registeAction('updatedByEng')"  />  
                             </td>
                         </tr>

@@ -15,6 +15,7 @@ import chox.model.UserWorkgroup;
 public class UserWorkgroupViewData {
 
     private int id;
+    private int workgroupId;
     private String name;
     private String createdBy;
     private String createdDate;
@@ -22,10 +23,19 @@ public class UserWorkgroupViewData {
     public UserWorkgroupViewData(UserWorkgroup object) {
         
         this.id = object.getId();
+        this.workgroupId = object.getWorkgroup().getId();
         this.name = object.getWorkgroup().getName();
         this.createdBy = object.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.GridViewDateFormat.format(object.getCreatedDate());
         
+    }
+
+    public int getWorkgroupId() {
+        return workgroupId;
+    }
+
+    public void setWorkgroupId(int workgroupId) {
+        this.workgroupId = workgroupId;
     }
 
     public String getName() {

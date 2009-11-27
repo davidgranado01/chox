@@ -8,9 +8,9 @@ import java.sql.SQLException;
 public class DataService {
 
     final String databaseServer = "localhost:5432";
-    final String databaseConnection = "choxidas_prod";
+    final String databaseConnection = "prod_mig_final";
     final String databaseUserName = "postgres";
-    final String databaseUserPsw= "GreenF1nCHPasswurd99.";
+    final String databaseUserPsw= "GreenF1nCH";
 
     public Connection getConnection(){
 

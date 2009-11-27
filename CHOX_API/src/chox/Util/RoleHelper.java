@@ -25,7 +25,7 @@ public class RoleHelper {
         return bFlag;
    }
 
-    private static boolean isUserWithWorkgroupRole(WebUser user){
+   private static boolean isUserWithWorkgroupRole(WebUser user){
 
         boolean bFlag = false;
 
@@ -39,12 +39,12 @@ public class RoleHelper {
         return bFlag;
     }
 
-    public static boolean isUserCheckByWorkgroup(WebUser user){
+   public static boolean isUserCheckByWorkgroup(WebUser user){
         // IS INS USER
         // IS COM AND CH ROLE USER
         // IS WORKGROUP ENABLE
         return (isInsurerUser(user) && isUserWithWorkgroupRole(user));
-    }
+   }
 
    /*****************************************************
     * OWNERSHIP
@@ -123,19 +123,33 @@ public class RoleHelper {
 
         return bFlag;
     }
-
-   public static boolean isClaimHandlerOnly(WebUser user){
+   
+    /*
+    public static boolean isClaimHandlerOnly(WebUser user){
 
         boolean bFlag = false;
 
         if(isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_CH)
-                && hasClaimHandlerRoleOnly(user.getRoles())
-                && user.getInsurer().isClaimOwnershipEnable()){
+                && hasClaimHandlerRoleOnly(user.getRoles())){
             bFlag = true;
         }
 
         return bFlag;
     }
+
+    public static boolean isComOnly(WebUser user){
+
+        boolean bFlag = false;
+
+        if(isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_COM)
+                && hasClaimHandlerRoleOnly(user.getRoles())){
+            bFlag = true;
+        }
+
+        return bFlag;
+     
+    }
+    */
    
    public static boolean hasClaimHandlerRoleOnly(Set roles){
        
@@ -162,8 +176,54 @@ public class RoleHelper {
         }
         return bFlag;
    }
-   
+
+   public static boolean hasComRoleOnly(Set roles){
+
+        boolean bFlag = true;
+
+        if(roles!=null){
+
+            if (roles.size() > 0){
+
+                Iterator itr = roles.iterator();
+
+                while (itr.hasNext()) {
+
+                    WebUserRole webUserrole = (WebUserRole) itr.next();
+
+                    if (!webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_COM)
+                            && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS)
+                            ) {
+                        bFlag = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return bFlag;
+   }
+
+   public static boolean hasComAndCHRoleOnly(Set roles){
+
+       boolean bFlag = false;
+
+       if(roles!=null){
+            
+           if (roles.size() > 0){
+
+               if(isCheckSelectedRoleExist(roles, WebUserRole.ROLE_CH) 
+                       && isCheckSelectedRoleExist(roles, WebUserRole.ROLE_COM)
+                       && !hasNoneWorkgroupEnableRole(roles)){
+                    bFlag = true;
+               }
+            }
+        }
+       
+        return bFlag;
+   }
+
    public static boolean hasNoneWorkgroupEnableRole(Set roles){
+       
         boolean bFlag = false;
 
         if(roles!=null){

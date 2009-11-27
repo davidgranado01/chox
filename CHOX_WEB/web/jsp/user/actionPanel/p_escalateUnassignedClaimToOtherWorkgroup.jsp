@@ -48,8 +48,13 @@
                         <tr>
                             <td width="200px"><label>Workgroup</label></td>
                             <td width="100%">
-                                <s:select name="escalateWorkgroupId" id="escalateWorkgroupId"
-                                list="insurerWorkgroups" headerKey="-1" listKey="id" listValue="name"
+                                <s:select name="escalateWorkgroupId"
+                                id="escalateWorkgroupId"
+                                list="insurerWorkgroups" 
+                                headerKey="-1"
+                                listKey="id"
+                                listValue="name"
+                                emptyOption="false"
                                 headerValue="-- Please Select --">
                                 </s:select>
                             </td>

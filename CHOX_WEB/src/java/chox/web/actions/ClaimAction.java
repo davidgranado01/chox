@@ -252,7 +252,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 // GET NEW CLAIM OWNER
                 WebUser newClaimOwner = userService.getObject(claimOwnerId);
                 claim.setClaimOwner(newClaimOwner);
-
+                claim.setIsFnolReviewed(false);
                 if(oasWorkgroupId>0){
                     claim.setWorkgroup(workgroupService.getObject(oasWorkgroupId));
                 }
@@ -1673,7 +1673,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public List getInsurerWorkgroups() {
 
         if (insurerWorkgroups == null) {
-            insurerWorkgroups = lookupService.getWorkgroupsByInsurerId(this.getAuthenticatedUser().getUser().getInsurer().getId(), true);
+            if(this.getAuthenticatedUser().getUser().getInsurer()!=null){
+                insurerWorkgroups = lookupService.getWorkgroupsByInsurerId(this.getAuthenticatedUser().getUser().getInsurer().getId(), true);
+            }else{
+                    insurerWorkgroups = lookupService.getWorkgroupsByInsurerId(-1, true);
+            }
         }
 
         return insurerWorkgroups;
@@ -1690,8 +1694,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public List getInsurers() {
 
         if (insurers == null) {
-            Chorganisation currentCho = this.getAuthenticatedUser().getUser().getChorganisation();
-            insurers = this.lookupService.getInsurers(currentCho.getId());
+
+            if(this.getAuthenticatedUser().getUser().getChorganisation()!=null){
+                Chorganisation currentCho = this.getAuthenticatedUser().getUser().getChorganisation();
+                insurers = this.lookupService.getInsurers(currentCho.getId());
+            }else{
+                insurers = this.lookupService.getInsurers();
+            }
+
         }
 
         return insurers;

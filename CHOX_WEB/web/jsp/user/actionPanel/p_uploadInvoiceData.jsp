@@ -10,7 +10,7 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 
     <fieldset class="x-fieldset">
-        <legend>Acknowledged Claim - Action Required</legend>
+        <legend>Awaiting Invoice Data - Action Required</legend>
         <s:hidden name="id" />
         <div>
             <div class="status-info">

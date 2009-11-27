@@ -4,21 +4,21 @@
 	<!-- ### CLAIM HEADER ##################################### !-->
 
 	<claimheader-first-contact>
-		<data-description>First contact</data-description>
+		<data-description>First Contact</data-description>
 		<data-type>date</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</claimheader-first-contact>
 
 	<claimheader-managing-repair>
-		<data-description>Managing repair</data-description>
+		<data-description>Managing Repair</data-description>
 		<data-type>char</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</claimheader-managing-repair>
 
 	<claimheader-agreement-signed>
-		<data-description>Agreement signed</data-description>
+		<data-description>Agreement Signed</data-description>
 		<data-type>date</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
@@ -283,7 +283,7 @@
 	</thirdpartydetails-claim-reference>
 
 	<thirdpartydetails-vehicle-registration>
-		<data-description>Third Party's Vehicle Registration Number</data-description>
+		<data-description>Third Party's Vehicle Regisreation Number</data-description>
 		<data-type></data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>

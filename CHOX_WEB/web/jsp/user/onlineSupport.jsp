@@ -30,8 +30,8 @@
         $(document).ready(function () {
             
             var op = { 
-                beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
-                success:       onSubmitResponseReceived,  // post-submit callback
+                beforeSubmit:  onBeforeSubmit,
+                success:       onSupportSubmitResponseReceived,
                 timeout: 3000,
                 error: getAcknowledgementMsg
             };
@@ -65,8 +65,7 @@
             $.blockUI();
         }
         
-        
-        function onSubmitResponseReceived(data, statusText)  {
+        function onSupportSubmitResponseReceived(responseText, statusText)  {
 
             var response = eval('(' + responseText.trim() + ')');
             if(response.isValid)

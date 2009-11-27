@@ -18,6 +18,7 @@
             fields:
             [
                 {name:'id'},
+                {name:'workgroupId'},
                 {name:'name'},
                 {name:'createdBy'},
                 {name:'createdDate'}
@@ -77,9 +78,9 @@
         $("#CDUserWorkgroupMessageBox").html("");
 
         var gridViewId = gridView.get("id");
-        var errorMsg = "Are you sure you want to remove this workgroup?";
-        
-        $.getJSON("isWorkgroupAllowToDelete.action?userWorkgroupId="+gridViewId+"&webUserId="+<s:property value="id" />, function(data){
+        var gridViewWorkgroupId = gridView.get("workgroupId");
+                
+        $.getJSON("isWorkgroupAllowToDelete.action?workgroupId="+gridViewWorkgroupId+"&webUserId="+<s:property value="id" />, function(data){
             if(!data.isAllowToDelete){
                 
                 if(confirm(data.warningMsg)){

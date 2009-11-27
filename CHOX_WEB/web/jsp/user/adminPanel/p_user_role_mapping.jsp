@@ -66,7 +66,7 @@
     
     function recordOnclick(grid, rowIndex, columnIndex, e){
 
-        var gridView = gridviewGrid.getStore().getAt(rowIndex);  // Get the Record
+        var gridView = gridviewGrid.getStore().getAt(rowIndex);
         
         if(columnIndex==3){
             triggerStatusRemoveRecord(gridView);
@@ -88,7 +88,37 @@
     function doSelectOnChange(){
         $("#CDUserroleMessageBox").html("");
     }
+
+    function triggerStatusRemoveRecord(gridView){
+
+        $("#CDUserroleMessageBox").html("");
+        
+        var webUserId = $("#webUserId").val();
+        var gridViewId = gridView.get("id");
+        var webUserrolecode = gridView.get("webUserroleRole");
+        var defaultdeleteMsg = "Are you sure you want to remove this role?";
+        
+        // ONLY PERFORM CHECK IF AND ONLY IF USER ARE REMOVING COM OR CH
+        if((webUserrolecode=='ROLE_INS_CH'|| webUserrolecode=='ROLE_INS_COM')){
+            
+            $.getJSON("isRoleAllowToDelete.action?webUserRoleCode="+webUserrolecode+"&webUserId="+webUserId, function(data){
+                if(!data.isAllowToDelete){
+                    alert(data.warningMsg);
+                }else{
+                    if(confirm(data.warningMsg)){
+                        doDeleteUserRoleMapping(gridViewId, webUserId);
+                    }
+                }
+            });
+        }else{
+            if(confirm(defaultdeleteMsg)){        
+                doDeleteUserRoleMapping(gridViewId, webUserId);
+            }
+        }
+    }
+
     
+    /*
     function triggerStatusRemoveRecord(gridView){
         
         var webUserId = $("#webUserId").val();
@@ -101,7 +131,7 @@
         var bFlag = isClaimHandlerGroup();
 
         if((userrolecode=='ROLE_INS_CH'|| userrolecode=='ROLE_INS_COM') && bFlag && !isWorkgroupDisabled){
-            deleteAttMsg = "Delete '"+userrolename+"' role will delete all workgroup associated as well. Are you sure you want to remove this role";
+            deleteAttMsg = "Removing '"+userrolename+"' role from the user will delete all assigned Workgroups. Are you sure you want to remove this role assignment?";
         }
         
         if(confirm(deleteAttMsg)){
@@ -113,7 +143,16 @@
              });
         }   
     }
+    */
 
+    function doDeleteUserRoleMapping(gridViewId, webUserId){
+    
+         $.ajax({
+           url: "removeRoleMapping.action?webUserUserRoleId="+gridViewId+"&webUserId="+webUserId,
+           success: onUserroleMappingSubmitResult
+         });
+    }
+   
     function isClaimHandlerGroup(){
 
         var totalRecord = gridviewGrid.getStore().getCount();
@@ -164,9 +203,7 @@
         var response = eval('(' + responseText.trim() + ')');        
         
         if(response && response.isValid){
-            
             if(response.resultType && response.resultType == 'Message'){
-                //propmtMsg("User Role", response.result);
                 alert(response.result);
             }
         }

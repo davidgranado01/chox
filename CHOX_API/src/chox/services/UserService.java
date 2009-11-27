@@ -22,5 +22,8 @@ public interface UserService {
     public List<WebUser> getClaimHanldersByInsurer(int insurerId, boolean workgroupEnable);
     public boolean isOtherWorkgroupEnableCOMUserWithWorkgroupExist(int insurerId, int selectedWorkgroupId, int userId);
     public boolean isOtherWorkgroupEnableCHUserWithWorkgroupExist(int insurerId, int selectedWorkgroupId, int userId);
+
+    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, String selectedUserRole);
+    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, int selectedWorkgroupId, String selectedUserRole);
     
 }
