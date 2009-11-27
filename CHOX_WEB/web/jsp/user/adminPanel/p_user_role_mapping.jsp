@@ -31,7 +31,7 @@
 
         gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: 'user/getUserole.action?orgTypeId='+<s:property value="orgTypeId" />+'&webUserId='+<s:property value="id" />,method:'GET'}),
+            ({url: 'user/getUserole.action?orgTypeId='+<s:property value="orgTypeId" />+'&webUserId='+<s:property value="id" />+uniqeToken(), method:'GET'}),
             reader:gridviewJsonReader      
         });
         
@@ -212,7 +212,7 @@
     }
 
     function doRefreshPage(){
-        $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" /> + "&tabIndex="+userDetailTabIndex);
+        $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" /> + "&tabIndex="+userDetailTabIndex+uniqeToken());
     }
     
 </script>

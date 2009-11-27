@@ -21,7 +21,8 @@
                 applyTo:'vccSelectionDlgHolder',
                 width:400,
                 height:200,
-                modal: true,
+                layout:'fit',
+                modal:true,
                 closeAction:'hide',
                 plain: false,
                 title: 'Edit Vehicle Class Ceiling',
@@ -30,9 +31,7 @@
                     applyTo: 'vccSelectionPanel'
                 }),
                 buttons: [{
-                        text:'Ok',
-                        
-                        handler:function(){
+                        text:'Ok', handler:function(){
 
                             $("form#editVehicleClassCeilingDetail").validate(
                             {
@@ -62,6 +61,7 @@
                                 });
                             }
                         }
+                        
                     },{
                         text: 'Close',
                         handler: function(){
@@ -98,7 +98,7 @@
 
         vehicleClassCeiling_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: 'getSelectedInsurerVehicleClassCeiling.action',method:'GET'}),
+            ({url: 'getSelectedInsurerVehicleClassCeiling.action',method:'POST'}),
             reader:vehicleClassCeiling_JsonReader
         });
 
@@ -166,7 +166,7 @@
 
     function showEditVehicleClassCeiling(gridView){
         
-        vehicleCeilingEditSelectionDlg.show(this);
+        vehicleCeilingEditSelectionDlg.show();
 
         $("#editVehicleClassId").val(gridView.get("id"));
         $("#editVehicleClassName").html(gridView.get("vehicleClassName"));
@@ -176,7 +176,7 @@
     }
     
     function showVehicleClassDropDown() {
-        $("#vehicleClassDropDownDiv").load("VehicleClassDropDownAction.action?orgId=" + selectOrgId);
+        $("#vehicleClassDropDownDiv").load("VehicleClassDropDownAction.action?orgId=" + selectOrgId+uniqeToken());
         $("#breBandId").val(-1);
     }
 
@@ -273,7 +273,7 @@
         </div>
     </div>
 
-                <div id="vccSelectionDlgHolder" class="x-hidden">
+                <div id="vccSelectionDlgHolder">
                     
                     <div id="vccSelectionPanel">
 

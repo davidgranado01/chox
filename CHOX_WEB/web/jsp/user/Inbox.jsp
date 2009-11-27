@@ -12,7 +12,6 @@
     <script src="<%= request.getContextPath()%>/adapter/jquery/jquery.timer.js" type="text/javascript" ></script>
     <script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
-    <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script> 
     <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script> 
 </head>
 
@@ -797,7 +796,7 @@
      
     function loadDataFromSession()
     {
-        $.get("getPageIndexOfCurrentSearch.action", function(data){
+        $.get("getPageIndexOfCurrentSearch.action?rdt=" + random_number(), function(data){
             var start = parseInt(data.trim());
             if(start >= 0)
             {
@@ -830,7 +829,7 @@
    
     function refreshFilterPanel()
     {
-        $.get("getFilterRecordCounters.action", function(content){
+        $.get("getFilterRecordCounters.action?rdt=" + random_number(), function(content){
            
         $("#filterPanel").html(content);
            

@@ -158,7 +158,11 @@ function random_number() {
     var max = 99999999;
     return (Math.round((max-min) * Math.random() + min));
 }
-    
+
+function uniqeToken(){
+    return "&rdt="+random_number();
+}
+
 function propmtMsg(title, msg){
             
     Ext.MessageBox.show({
