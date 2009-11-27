@@ -46,16 +46,16 @@ function openHelpFile(url, helpFileRoleType){
     switch(helpFileRoleType)
     {
         case 1: // NORMAL INSURER ROLE
-          fileName = '/download/iDAS_CHOX_INS_UG.pdf';
+          fileName = '/download/iDAS_CHOX_IUG_3.1.pdf';
           break;
         case 2: // INSURER MANAGER ROLE
-          fileName = '/download/iDAS_CHOX_INS_MNG_UG.pdf';
+          fileName = '/download/iDAS_CHOX_IUG_AMD_3.1.pdf';
           break;
         case 3: // NORMAL CREDIT HIRE ROLE
           fileName = '/download/iDAS_CHOX_CHO_UG_3.1.pdf';
           break;
         case 4: // CREDIT HIRE MANAGER ROLE
-          fileName = '/download/iDAS_CHOX_CHO_UG_ADM 3.1.pdf';
+          fileName = '/download/iDAS_CHOX_CHO_UG_ADM_3.1.pdf';
           break;
     }
 
