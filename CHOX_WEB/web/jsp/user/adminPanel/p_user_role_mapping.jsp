@@ -101,7 +101,7 @@
         // ONLY PERFORM CHECK IF AND ONLY IF USER ARE REMOVING COM OR CH
         if((webUserrolecode=='ROLE_INS_CH'|| webUserrolecode=='ROLE_INS_COM')){
             
-            $.getJSON("isRoleAllowToDelete.action?webUserRoleCode="+webUserrolecode+"&webUserId="+webUserId, function(data){
+            $.getJSON("isRoleAllowToDelete.action?webUserRoleCode="+webUserrolecode+"&webUserId="+webUserId+uniqeToken(), function(data){
                 if(!data.isAllowToDelete){
                     alert(data.warningMsg);
                 }else{
@@ -117,40 +117,14 @@
         }
     }
 
-    
-    /*
-    function triggerStatusRemoveRecord(gridView){
-        
-        var webUserId = $("#webUserId").val();
-        var userrolecode = gridView.get("webUserroleRole");
-        var userrolename = gridView.get("webUserroleName");
-
-        var deleteAttMsg = "Are you sure you want to remove this role?";
-        $("#CDUserroleMessageBox").html("");
-        
-        var bFlag = isClaimHandlerGroup();
-
-        if((userrolecode=='ROLE_INS_CH'|| userrolecode=='ROLE_INS_COM') && bFlag && !isWorkgroupDisabled){
-            deleteAttMsg = "Removing '"+userrolename+"' role from the user will delete all assigned Workgroups. Are you sure you want to remove this role assignment?";
-        }
-        
-        if(confirm(deleteAttMsg)){
-
-            var gridViewId = gridView.get("id");
-             $.ajax({
-               url: "removeRoleMapping.action?webUserUserRoleId="+gridViewId+"&webUserId="+webUserId,
-               success: onUserroleMappingSubmitResult
-             });
-        }   
-    }
-    */
 
     function doDeleteUserRoleMapping(gridViewId, webUserId){
     
          $.ajax({
-           url: "removeRoleMapping.action?webUserUserRoleId="+gridViewId+"&webUserId="+webUserId,
+           url: "removeRoleMapping.action?webUserUserRoleId="+gridViewId+"&webUserId="+webUserId+uniqeToken(),
            success: onUserroleMappingSubmitResult
          });
+
     }
    
     function isClaimHandlerGroup(){
@@ -187,7 +161,7 @@
             $("#CDUserroleMessageBox").html("");
             
             $.ajax({
-               url: "addNewRoleMapping.action?webUserRoleId="+webUserRoleId+"&webUserId="+webUserId,
+               url: "addNewRoleMapping.action?webUserRoleId="+webUserRoleId+"&webUserId="+webUserId+uniqeToken(),
                success: onUserroleMappingSubmitResult
             });
             
@@ -211,8 +185,11 @@
         doRefreshPage();
     }
 
-    function doRefreshPage(){
-        $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" /> + "&tabIndex="+userDetailTabIndex+uniqeToken());
+    function doRefreshPage(){       
+        var sLocaltion = "#admin_param_panel";
+        var sAction = "updateUserDetailPanel.action";
+        var sparameters = "mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" /> + "&tabIndex=" + userDetailTabIndex;
+        doSectionLoad(sLocaltion, sAction, sparameters);
     }
     
 </script>

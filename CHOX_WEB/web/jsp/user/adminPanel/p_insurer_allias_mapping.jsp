@@ -102,7 +102,7 @@
             $("#CDInsurerAlliasMessageBox").html("");
             
             $.ajax({
-               url: "addInsurerAllias.action?insurerId="+selectOrgId+"&insurerAlliasName="+insurerAlliasName,
+               url: "addInsurerAllias.action?insurerId="+selectOrgId+"&insurerAlliasName="+insurerAlliasName+uniqeToken(),
                success: allias_onSubmitResponseReceived
             });
             
@@ -122,7 +122,7 @@
             var gridViewId = gridView.get("id");
 
             $.ajax({
-               url: "removeInsurerAllias.action?insurerAlliasId="+gridViewId,
+               url: "removeInsurerAllias.action?insurerAlliasId="+gridViewId+uniqeToken(),
                success: allias_onSubmitResponseReceived
             });
         }

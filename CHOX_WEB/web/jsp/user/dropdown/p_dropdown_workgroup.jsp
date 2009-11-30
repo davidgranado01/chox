@@ -12,7 +12,11 @@
             selectedWorkgroupId = $("#workgroupId").val();
         }
 
-        $('#coClaimHandlerRoleUserDropDownDiv').load("user/ClaimHandlerRoleUserDropDownAction.action?workgroupId="+selectedWorkgroupId+"&insurerId="+insurerId);
+        var sLocaltion = "#coClaimHandlerRoleUserDropDownDiv";
+        var sAction = "user/ClaimHandlerRoleUserDropDownAction.action";
+        var sparameters = "workgroupId="+selectedWorkgroupId+"&insurerId="+insurerId;
+        doSectionLoad(sLocaltion, sAction, sparameters);
+        // $('#coClaimHandlerRoleUserDropDownDiv').load("user/ClaimHandlerRoleUserDropDownAction.action?workgroupId="+selectedWorkgroupId+"&insurerId="+insurerId+uniqeToken());
 
     }
     

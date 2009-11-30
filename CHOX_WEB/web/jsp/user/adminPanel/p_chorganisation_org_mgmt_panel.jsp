@@ -45,9 +45,7 @@
                 {header: "Address", width: 170, dataIndex: 'address', sortable: true, resizable: true},
                 {header: "VAT No.", width: 80, dataIndex: 'vatNo', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='highlightItem'>" + value + "</a>"}},                
-               // {header: "Company No.", width: 75, dataIndex: 'companyNo', sortable: false, resizable: true},
-               // {header: "Authority", width: 55, dataIndex: 'authoritiyDelegated', sortable: false, resizable: true},
+                        return "<a href='#' class='highlightItem'>" + value + "</a>"}},
                 {header: "Created By", width: 80, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
@@ -69,7 +67,6 @@
     }); 
     
     function loadGridViewList(){
-
         gridviewData.load(
         {
             params:
@@ -78,13 +75,10 @@
                 limit:recordPerPage
             }
         });
-        
     }
     
     function recordOnclick(grid, rowIndex, columnIndex, e){
-
         var gridView = gridviewGrid.getStore().getAt(rowIndex);  // Get the Record
-        
         if(columnIndex==0){
             loadSelectedRecord(grid, rowIndex, columnIndex, e);
         }else if(columnIndex==3){
@@ -95,12 +89,20 @@
     function loadSelectedRecord(grid, rowIndex, columnIndex, e){
         var gridView = gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
-        $("#admin_param_panel").load("updateChorganisationDetailPanel.action?objectId=" + gridViewId);
+        var sLocaltion = "#admin_param_panel";
+        var sAction = "updateChorganisationDetailPanel.action";
+        var sparameters = "objectId=" + gridViewId;
+        doSectionLoad(sLocaltion, sAction, sparameters);
+        // $("#admin_param_panel").load("updateChorganisationDetailPanel.action?objectId=" + gridViewId+uniqeToken());
     }
 
     function createNewRecord(){
-         var gridViewId = -1;
-        $("#admin_param_panel").load("updateChorganisationDetailPanel.action?objectId=" + gridViewId);
+        var gridViewId = -1;
+        var sLocaltion = "#admin_param_panel";
+        var sAction = "updateChorganisationDetailPanel.action";
+        var sparameters = "objectId=" + gridViewId;
+        doSectionLoad(sLocaltion, sAction, sparameters);
+        // $("#admin_param_panel").load("updateChorganisationDetailPanel.action?objectId=" + gridViewId+uniqeToken());
     }
     
     function triggerStatusUpdateRecord(gridView){
@@ -117,7 +119,7 @@
                 var gridViewId = gridView.get("id");
                 
                  $.ajax({
-                   url: "doTriggerCreditHireAccountStatus.action?objectId="+gridViewId,
+                   url: "doTriggerCreditHireAccountStatus.action?objectId="+gridViewId+uniqeToken(),
                    success: loadGridViewList
                  });
             }

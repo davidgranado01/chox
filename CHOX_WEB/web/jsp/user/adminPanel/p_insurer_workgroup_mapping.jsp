@@ -94,7 +94,7 @@
         if(workgroupName!=null && workgroupName!="" && selectOrgId!=null && selectOrgId>0){
             
             $.ajax({
-               url: "addInsurerWorkgroup.action?insurerId="+selectOrgId+"&workgroupName="+workgroupName,
+               url: "addInsurerWorkgroup.action?insurerId="+selectOrgId+"&workgroupName="+workgroupName+uniqeToken(),
                success: workgroup_onSubmitResponseReceived
             });
             
@@ -108,7 +108,7 @@
         var gridViewId = gridView.get("id");
 
         $.ajax({
-           url: "triggerInsurerWorkgroup.action?insurerId="+selectOrgId+"&workgroupId="+gridViewId,
+           url: "triggerInsurerWorkgroup.action?insurerId="+selectOrgId+"&workgroupId="+gridViewId+uniqeToken(),
            success: workgroup_onSubmitResponseReceived
         });
     }
@@ -118,7 +118,7 @@
         var gridViewId = gridView.get("id");
 
         $.ajax({
-           url: "removeInsurerWorkgroup.action?insurerId="+selectOrgId+"&workgroupId="+gridViewId,
+           url: "removeInsurerWorkgroup.action?insurerId="+selectOrgId+"&workgroupId="+gridViewId+uniqeToken(),
            success: workgroup_onSubmitResponseReceived
         });
     }

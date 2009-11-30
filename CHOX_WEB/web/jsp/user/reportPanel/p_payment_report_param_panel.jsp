@@ -19,7 +19,12 @@
     
     Ext.onReady(function(){
 
-        $('div#rptPaymentWorkgroupSelectionHolder').load('GetWorkgroupOnlyDropDownActionByInsurer.action');
+        var sLocaltion = "div#rptPaymentWorkgroupSelectionHolder";
+        var sAction = "GetWorkgroupOnlyDropDownActionByInsurer.action";
+        var sparameters = "";
+        doSectionLoad(sLocaltion, sAction, sparameters);
+        
+        // $('div#rptPaymentWorkgroupSelectionHolder').load('GetWorkgroupOnlyDropDownActionByInsurer.action?rdt='+random_number());
         
         /*
         var dateFromPicker = new Ext.form.DateField({

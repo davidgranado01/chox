@@ -79,7 +79,11 @@ if(statusMsg==null){
     }
 
     function doOwnershipAssignmentShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
-        $("#ownershipAssignmentClaimHandlerRoleUserDropDownDiv").load("ClaimHandlerRoleUserDropDownAction.action?workgroupId=" + selectedWorkgroupId + "&insurerId="+selectedInsurerId);
+        var sLocaltion = "#ownershipAssignmentClaimHandlerRoleUserDropDownDiv";
+        var sAction = "ClaimHandlerRoleUserDropDownAction.action";
+        var sparameters = "workgroupId=" + selectedWorkgroupId + "&insurerId="+selectedInsurerId;
+        doSectionLoad(sLocaltion, sAction, sparameters);
+        // $("#ownershipAssignmentClaimHandlerRoleUserDropDownDiv").load("ClaimHandlerRoleUserDropDownAction.action?workgroupId=" + selectedWorkgroupId + "&insurerId="+selectedInsurerId);
     }
 
     function doAssignOwnershipToFnolSubmit(a){

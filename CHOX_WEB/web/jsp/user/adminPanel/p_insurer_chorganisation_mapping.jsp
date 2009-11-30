@@ -148,7 +148,7 @@
         var gridViewId = gridView.get("id");
         
         $.ajax({
-           url: "doAddNewInsurerChorganisation.action?chorganisationId="+gridViewId+"&insurerId="+selectOrgId,
+           url: "doAddNewInsurerChorganisation.action?chorganisationId="+gridViewId+"&insurerId="+selectOrgId+uniqeToken(),
            success: ins_cho_doSelectChange
         });
     }
@@ -159,7 +159,7 @@
         
         if(confirm("Are you sure you want to remove this credit hire organisation?")){
          $.ajax({
-           url: "doRemoveInsurerChorganisation.action?objectId="+gridViewId,
+           url: "doRemoveInsurerChorganisation.action?objectId="+gridViewId+uniqeToken(),
            success: ins_cho_doSelectChange
          });
         }

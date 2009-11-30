@@ -98,7 +98,7 @@
             $("#CDInsurerLineOfBusinessMessageBox").html("");
             
             $.ajax({
-               url: "addInsurerLineOfBusiness.action?insurerId="+selectOrgId+"&lineOfBusinessName="+lineOfBusinessName,
+               url: "addInsurerLineOfBusiness.action?insurerId="+selectOrgId+"&lineOfBusinessName="+lineOfBusinessName+uniqeToken(),
                success: lob_onSubmitResponseReceived
             });
             
@@ -112,7 +112,7 @@
             var gridViewId = gridView.get("id");
                 
             $.ajax({
-               url: "removeInsurerLineOfBusiness.action?lineOfBusinessId="+gridViewId,
+               url: "removeInsurerLineOfBusiness.action?lineOfBusinessId="+gridViewId+uniqeToken(),
                success: lob_onSubmitResponseReceived
             });
     }

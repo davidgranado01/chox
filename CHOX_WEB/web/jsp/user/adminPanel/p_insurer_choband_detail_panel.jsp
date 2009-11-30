@@ -134,13 +134,18 @@
 
                    $("#formUpdateInsurerChoBandDetail").ajaxSubmit(op);
 
+
                 }
             }
         }
         
         function doInsurerChoBandBack(){
             doLoadParameter();
-            $("#chobandDiv").load("loadAdminPanel.action?adminPanelName="+selectedPanel+"&selectOrgId="+selectOrgId);
+            var sLocaltion = "#chobandDiv";
+            var sAction = "loadAdminPanel.action";
+            var sparameters = "adminPanelName="+selectedPanel+"&selectOrgId="+selectOrgId;
+            doSectionLoad(sLocaltion, sAction, sparameters);
+            // $("#chobandDiv").load("loadAdminPanel.action?adminPanelName="+selectedPanel+"&selectOrgId="+selectOrgId+uniqeToken());
         }
         
         function onBeforeSubmit(formData, jqForm, options) { 
@@ -153,7 +158,7 @@
             if(confirm("Are you sure you want to delete this BRE Band?")){
                 
                 var apn = $.ajax({
-                   url: "doDeleteCreditHireBand.action?objectId="+<s:property value="objectId"/>,
+                   url: "doDeleteCreditHireBand.action?objectId="+<s:property value="objectId"/>+uniqeToken(),
                    success: deleteSuccessfully
                 });
             }
@@ -187,7 +192,11 @@
                         if(response.resultType && response.resultType == 'New')
                         {
                             var newObjectId =  parseInt(response.result);
-                            $("#chobandDiv").load("loadAdminPanel.action?adminPanelName=InsurerChoBandMgmt&selectOrgId=" + newObjectId);
+                            var sLocaltion = "#chobandDiv";
+                            var sAction = "loadAdminPanel.action";
+                            var sparameters = "adminPanelName=InsurerChoBandMgmt&selectOrgId=" + newObjectId;
+                            doSectionLoad(sLocaltion, sAction, sparameters);
+                           // $("#chobandDiv").load("loadAdminPanel.action?adminPanelName=InsurerChoBandMgmt&selectOrgId=" + newObjectId+uniqeToken());
                         }
                     }
                     else
@@ -335,7 +344,7 @@
 
 <div id="chobandDiv" name="chobandDiv">
 
-    <form id="formUpdateInsurerChoBandDetail" action="user/updateInsurerChoBandDetail.action" class="XXentity-form" onsubmit="return true;">
+    <form id="formUpdateInsurerChoBandDetail" action="user/updateInsurerChoBandDetail.action" method="post" class="XXentity-form" onsubmit="return true;">
     <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
     <input type="hidden" name="insurerId" id="insurerId" value='<s:property value="insurerId"/>'>
 
@@ -405,11 +414,11 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Current Average Labour Rate Per Hour (£)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDAverageLabourRate" name="averageLabourRate" value="<s:property value="averageLabourRate" />" onchange="javascript:doRefreshCalculation();"/><img id="help-averageLabourRate" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/>
+                            <input type="text" class="chox-ttxt" id="CCDAverageLabourRate" name="averageLabourRate" value="<s:property value="averageLabourRate" />" onchange="javascript:doRefreshCalculation();"/><img id="help-averageLabourRate" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Productive Labour hours Per Hire Day (Hours)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDAverageLabourHoursPerHireDay" name="averageLabourHoursPerHireDay" value="<s:property value="averageLabourHoursPerHireDay" />" onchange="javascript:doRefreshCalculation();"/><img id="help-averageLabourHoursPerHireDay" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/>
+                            <input type="text" class="chox-ttxt" id="CCDAverageLabourHoursPerHireDay" name="averageLabourHoursPerHireDay" value="<s:property value="averageLabourHoursPerHireDay" />" onchange="javascript:doRefreshCalculation();"/><img id="help-averageLabourHoursPerHireDay" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
                         </div>
                         
                     </fieldset>
@@ -558,22 +567,22 @@ Engineer's Estimated Days Under Repair + Take Mobile Vehicle To Garage Variable 
                     <fieldset class="x-fieldset"><legend>Hire Tolerances</legend>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Maximum Hire Day Ceiling (Days)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDHireDayCeiling" name="hireDayCeiling" value="<s:property value="hireDayCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireDayCeiling" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/>
+                            <input type="text" class="chox-ttxt" id="CCDHireDayCeiling" name="hireDayCeiling" value="<s:property value="hireDayCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireDayCeiling" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Maximum Hire Net Ceiling (£)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDHireNetCeiling" name="hireNetCeiling" value="<s:property value="hireNetCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireNetCeiling" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/>
+                            <input type="text" class="chox-ttxt" id="CCDHireNetCeiling" name="hireNetCeiling" value="<s:property value="hireNetCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireNetCeiling" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Hire Rate Charge Per Day Tollerance (£)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDHireRateChargeTolerance" name="hireRateChargeTolerance" value="<s:property value="hireRateChargeTolerance" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireRateChargeTolerance" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/>
+                            <input type="text" class="chox-ttxt" id="CCDHireRateChargeTolerance" name="hireRateChargeTolerance" value="<s:property value="hireRateChargeTolerance" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireRateChargeTolerance" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
                         </div>
                     </fieldset>
 
                     <fieldset class="x-fieldset"><legend>Repair Tolerances</legend>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Maximum Repair Net Ceiling (£)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDRepairNetCeiling" name="repairNetCeiling" value="<s:property value="repairNetCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-maxRepairValue" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/>
+                            <input type="text" class="chox-ttxt" id="CCDRepairNetCeiling" name="repairNetCeiling" value="<s:property value="repairNetCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-maxRepairValue" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
                         </div>
                     </fieldset>
 

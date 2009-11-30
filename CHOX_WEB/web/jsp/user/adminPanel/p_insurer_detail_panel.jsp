@@ -90,7 +90,11 @@
         }
         
         function doInsurerBack(){
-            $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=InsurerOrgMgmt");
+            var sLocaltion = "#admin_param_panel";
+            var sAction = "loadAdminPanel.action";
+            var sparameters = "adminPanelName=InsurerOrgMgmt";
+            doSectionLoad(sLocaltion, sAction, sparameters);
+            // $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=InsurerOrgMgmt"+uniqeToken());
         }
         
         function onBeforeSubmit(formData, jqForm, options) { 
@@ -109,7 +113,7 @@
                 if(response.resultType == "New" && response.result)
                 {
                     var newObjectId = parseInt(response.result);
-                    $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + newObjectId);
+                    $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + newObjectId+uniqeToken());
                     propmtMsg("Insurer", "New Insurer has been created. Please create a BRE Band for this Insurer using the BRE Band tab and associate Credit Hire Organisations to this via the BRE Band Mapping tab.");
                 }
                 else if(response.resultType && response.resultType == 'Message'){

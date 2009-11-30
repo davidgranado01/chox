@@ -69,7 +69,7 @@ public class ChoBandServiceImpl extends SecureDataService implements ChoBandServ
     public boolean isChoBandNameExist(ChoBand object){
 
         boolean bFlag = false;
-        
+
         List<ChoBand> choBand = new ArrayList<ChoBand>();
 
         try {
@@ -77,9 +77,11 @@ public class ChoBandServiceImpl extends SecureDataService implements ChoBandServ
             DetachedCriteria criteria = DetachedCriteria.forClass(ChoBand.class);
             criteria.add(Restrictions.eq("name", object.getName()));
             criteria.add(Restrictions.eq("insurer.id", object.getInsurer().getId()));
-            
-            if(object.getId()>0){
-               criteria.add(Restrictions.ne("id", object.getId())); 
+
+            if(object.getId()!=null){
+                if(object.getId()>0){
+                   criteria.add(Restrictions.ne("id", object.getId()));
+                }
             }
             
             choBand = findByCriteria(criteria);

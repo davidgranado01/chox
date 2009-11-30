@@ -12,7 +12,8 @@
     <script src="<%= request.getContextPath()%>/adapter/jquery/jquery.timer.js" type="text/javascript" ></script>
     <script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
-    <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script> 
+    <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
+    <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script>
 </head>
 
 <script type="text/javascript">
@@ -449,7 +450,13 @@
 
                         wgSelectionDlg.addListener('beforeshow',
                             function(dialog){
-                                $('div#wgSelectionHolder').load('GetWorkgroupOnlyDropDownActionByInsurer.action');
+
+                                var sLocaltion = "div#wgSelectionHolder";
+                                var sAction = "GetWorkgroupOnlyDropDownActionByInsurer.action";
+                                var sparameters = "";
+                                doSectionLoad(sLocaltion, sAction, sparameters);
+        
+                                // $('div#wgSelectionHolder').load('GetWorkgroupOnlyDropDownActionByInsurer.action');
                             }
                         );
                 }
@@ -557,10 +564,19 @@
                                 }
 
                                 if(isInsurerWorkgroupEnable){
-                                    $('div#coSelectionHolder').load('user/GetWorkgroupDropDownActionByInsurer.action');
+
+                                    var sLocaltion = "div#coSelectionHolder";
+                                    var sAction = "user/GetWorkgroupDropDownActionByInsurer.action";
+                                    var sparameters = "";
+                                    doSectionLoad(sLocaltion, sAction, sparameters);
+                                    // $('div#coSelectionHolder').load('user/GetWorkgroupDropDownActionByInsurer.action');
                                 }
 
-                                $('#coClaimHandlerRoleUserDropDownDiv').load("user/ClaimHandlerRoleUserDropDownAction.action?workgroupId=-1&insurerId="+insurerId);
+                                var sLocaltion = "#coClaimHandlerRoleUserDropDownDiv";
+                                var sAction = "user/ClaimHandlerRoleUserDropDownAction.action";
+                                var sparameters = "workgroupId=-1&insurerId="+insurerId;
+                                doSectionLoad(sLocaltion, sAction, sparameters);
+                                // $('#coClaimHandlerRoleUserDropDownDiv').load("user/ClaimHandlerRoleUserDropDownAction.action?workgroupId=-1&insurerId="+insurerId);
                             }
 
                         );

@@ -55,7 +55,7 @@
                                 parameter += "&repairNetCeiling="+$("#editRepairNetCeiling").val();
 
                                 $.ajax({
-                                   url: "editVehicleClassCeilingDetail.action"+parameter,
+                                   url: "editVehicleClassCeilingDetail.action"+parameter+uniqeToken(),
                                    success: vehicleClassCeilingUpdateSuccess,
                                    error: vehicleClassCeilingUpdateError
                                 });
@@ -98,7 +98,7 @@
 
         vehicleClassCeiling_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: 'getSelectedInsurerVehicleClassCeiling.action',method:'POST'}),
+            ({url: 'getSelectedInsurerVehicleClassCeiling.action', method:'POST'}),
             reader:vehicleClassCeiling_JsonReader
         });
 
@@ -155,7 +155,7 @@
         if(columnIndex==3){
             
             $.ajax({
-               url: "doRemoveVehicleClassCeilingMapping.action?vehicleClassCeilingId="+gridViewId,
+               url: "doRemoveVehicleClassCeilingMapping.action?vehicleClassCeilingId="+gridViewId+uniqeToken(),
                success: onVehicleClassPageRefresh
             });
             
@@ -176,8 +176,13 @@
     }
     
     function showVehicleClassDropDown() {
-        $("#vehicleClassDropDownDiv").load("VehicleClassDropDownAction.action?orgId=" + selectOrgId+uniqeToken());
-        $("#breBandId").val(-1);
+        var sLocaltion = "#vehicleClassDropDownDiv";
+        var sAction = "VehicleClassDropDownAction.action";
+        var sparameters = "orgId=" + selectOrgId;
+        doSectionLoad(sLocaltion, sAction, sparameters);
+        // $("#breBandId").val(-1);
+        // $("#vehicleClassDropDownDiv").load("VehicleClassDropDownAction.action?orgId=" + selectOrgId+uniqeToken());
+        
     }
 
     function doVehicleClassCeilingSubmit(){
@@ -240,9 +245,7 @@
                     <fieldset class="x-fieldset"><legend>Add New Vehicle Class Ceiling</legend>
                         <div class="form-container">
                             <form id="formVehicleClassCeilingDetail" action="vehicleClassCeilingDetail.action" class="XXentity-form" onsubmit="return true;">
-
-                                <input type="hidden" name="selectOrgId" value='<s:property value="selectOrgId"/>'>
-
+                            <input type="hidden" name="selectOrgId" value='<s:property value="selectOrgId"/>'>
                             <div id="vehicleClassDropDownDiv" class="chox-form-item"></div>
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">Hire Net Ceiling</label>
@@ -273,11 +276,11 @@
         </div>
     </div>
 
-                <div id="vccSelectionDlgHolder">
+                <div id="vccSelectionDlgHolder" class="x-hidden">
                     
                     <div id="vccSelectionPanel">
 
-                        <div class="form-container" style="height:300px">
+                        <div class="form-container" style="height:300px; padding-bottom:30px">
                             
                             <form id="editVehicleClassCeilingDetail" class="XXentity-form" action="">
                                 <input id="editVehicleClassId" name="editVehicleClassId" type="hidden"/>

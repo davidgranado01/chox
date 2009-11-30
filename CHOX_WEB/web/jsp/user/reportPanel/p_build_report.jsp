@@ -13,7 +13,11 @@
 
     function renderParameterPanel(report)
     {
-        $("#param_panel").load("loadParameterPanel.action?reportName=" + report);
+        var sLocaltion = "#param_panel";
+        var sAction = "loadParameterPanel.action";
+        var sparameters = "reportName=" + report;
+        doSectionLoad(sLocaltion, sAction, sparameters);
+        // $("#param_panel").load("loadParameterPanel.action?reportName=" + report+uniqeToken());
     }
 
 </script>

@@ -142,7 +142,7 @@
         
         if(columnIndex==1){
             $.ajax({
-               url: "doAddNewBandChorganisationMapping.action?chorganisationId="+gridViewId+"&chobandId="+selectBandId,
+               url: "doAddNewBandChorganisationMapping.action?chorganisationId="+gridViewId+"&chobandId="+selectBandId+uniqeToken(),
                success: doBRESelectOnChange
             });
         }
@@ -155,7 +155,7 @@
         
         if(columnIndex==2){
             $.ajax({
-               url: "doRemoveBandChorganisationMapping.action?objectId="+gridViewId,
+               url: "doRemoveBandChorganisationMapping.action?objectId="+gridViewId+uniqeToken(),
                success: doBRESelectOnChange
             });           
         }
@@ -171,8 +171,12 @@
     }
     
     function showBreDropDown() {
-        $("#chobandDropDownDiv").load("ChoBandDropDownAction.action?orgId=" + selectOrgId);
+        var sLocaltion = "#chobandDropDownDiv";
+        var sAction = "ChoBandDropDownAction.action";
+        var sparameters = "orgId=" + selectOrgId;
+        doSectionLoad(sLocaltion, sAction, sparameters);
         $("#breBandId").val(-1);
+        // $("#chobandDropDownDiv").load("ChoBandDropDownAction.action?orgId=" + selectOrgId+uniqeToken());
     }
     
 </script>

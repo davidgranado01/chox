@@ -8,7 +8,11 @@
         
         function renderAdminParameterPanel(selectedPanel)
         {
-            $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=" + selectedPanel);
+            var sLocaltion = "#admin_param_panel";
+            var sAction = "loadAdminPanel.action";
+            var sparameters = "adminPanelName=" + selectedPanel;
+            doSectionLoad(sLocaltion, sAction, sparameters);
+            //$("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=" + selectedPanel+uniqeToken());
         }
         
     </script>

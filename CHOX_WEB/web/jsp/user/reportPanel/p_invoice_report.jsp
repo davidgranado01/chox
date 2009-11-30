@@ -11,7 +11,12 @@
 
     $(document).ready(function(){
         new Ext.ToolTip({ target: 'help-supplier-reference-input', html: 'Supplier Reference Number input format: ABC123, ABC124, ABC125'});
-        $('div#rptInvoiceWorkgroupSelectionHolder').load('GetWorkgroupOnlyDropDownActionByInsurer.action');
+
+        var sLocaltion = "div#rptInvoiceWorkgroupSelectionHolder";
+        var sAction = "GetWorkgroupOnlyDropDownActionByInsurer.action";
+        var sparameters = "";
+        doSectionLoad(sLocaltion, sAction, sparameters);
+        //$('div#rptInvoiceWorkgroupSelectionHolder').load('GetWorkgroupOnlyDropDownActionByInsurer.action?rdt='+random_number());
     });
     
     function openReport()

@@ -72,12 +72,20 @@
     function choband_loadSelectedRecord(grid, rowIndex, columnIndex, e){
         var gridView = choband_gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
-        $("#chobandDiv").load("updateInsurerChoBandDetailPanel.action?objectId=" + gridViewId + "&insurerId=" + selectOrgId);
+        var sLocaltion = "#chobandDiv";
+        var sAction = "updateInsurerChoBandDetailPanel.action";
+        var sparameters = "objectId=" + gridViewId + "&insurerId=" + selectOrgId;
+        doSectionLoad(sLocaltion, sAction, sparameters);
+        //$("#chobandDiv").load("updateInsurerChoBandDetailPanel.action?objectId=" + gridViewId + "&insurerId=" + selectOrgId+uniqeToken());
     }
 
     function choband_createNewRecord(){
         var gridViewId = -1;
-        $("#chobandDiv").load("updateInsurerChoBandDetailPanel.action?objectId=" + gridViewId + "&insurerId=" + selectOrgId);
+        var sLocaltion = "#chobandDiv";
+        var sAction = "updateInsurerChoBandDetailPanel.action";
+        var sparameters = "objectId=" + gridViewId + "&insurerId=" + selectOrgId;
+        doSectionLoad(sLocaltion, sAction, sparameters);
+        // $("#chobandDiv").load("updateInsurerChoBandDetailPanel.action?objectId=" + gridViewId + "&insurerId=" + selectOrgId+uniqeToken());
     }
     
     function choband_loadGridViewList(){

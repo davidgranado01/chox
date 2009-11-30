@@ -198,7 +198,14 @@
             if(response.resultType == 'New' && response.result){
                 var newObjectId =  parseInt(response.result);
                 var orgTypeId = $("#orgTypeId").val();
-                $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + newObjectId + "&orgTypeId=" + orgTypeId);
+
+                // AJAX LOAD
+                var sLocaltion = "#admin_param_panel";
+                var sAction = "updateUserDetailPanel.action";
+                var sparameters = "mode=Edit&objectId=" + newObjectId + "&orgTypeId=" + orgTypeId;
+                doSectionLoad(sLocaltion, sAction, sparameters);
+        
+                // $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + newObjectId + "&orgTypeId=" + orgTypeId+uniqeToken());
             }
             else
             {
@@ -286,7 +293,7 @@
     }
     
     function doCancelBack(){
-        $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=" + selectedPanel + "&selectOrgTypeId="+<s:property value="orgTypeId"/>);
+        $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=" + selectedPanel + "&selectOrgTypeId="+<s:property value="orgTypeId"/>+uniqeToken());
     }
 
 </script>

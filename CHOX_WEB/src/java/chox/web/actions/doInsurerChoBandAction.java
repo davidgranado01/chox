@@ -108,7 +108,7 @@ public class doInsurerChoBandAction extends BaseAction implements ModelDriven<Ch
                 actionResult = "Selected Band Name already exists"; 
                 return SUCCESS;
             }
-            
+
             actionResult = "";
             
             this.service.updateObject(model);

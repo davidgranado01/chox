@@ -62,6 +62,7 @@
                 gridviewtype : "insurerOrgMgmt"
             }
         });
+        
     }); 
     
     function recordOnclick(grid, rowIndex, columnIndex, e){
@@ -79,12 +80,12 @@
     function loadSelectedRecord(grid, rowIndex, columnIndex, e){
         var gridView = gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
-        $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + gridViewId);
+        $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + gridViewId+uniqeToken());
     }
 
     function createNewRecord(){
         var gridViewId = -1;
-        $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + gridViewId);
+        $("#admin_param_panel").load("updateInsurerDetailPanel.action?objectId=" + gridViewId+uniqeToken());
     }
     
     function loadGridViewList(){
@@ -105,7 +106,7 @@
             var gridViewId = gridView.get("id");
 
              $.ajax({
-               url: "doTriggerInsurerAccountStatus.action?objectId="+gridViewId,
+               url: "doTriggerInsurerAccountStatus.action?objectId="+gridViewId+uniqeToken(),
                success: loadGridViewList
              });
         }

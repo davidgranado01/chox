@@ -27,7 +27,7 @@
 
         userworkgroup_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: 'user/getUserWorkgroup.action?webUserId='+<s:property value="id" />,method:'GET'}),
+            ({url: 'user/getUserWorkgroup.action?webUserId='+<s:property value="id" />+uniqeToken(), method:'GET'}),
             reader:userworkgroup_gridviewJsonReader
         });
         
@@ -80,7 +80,7 @@
         var gridViewId = gridView.get("id");
         var gridViewWorkgroupId = gridView.get("workgroupId");
                 
-        $.getJSON("isWorkgroupAllowToDelete.action?workgroupId="+gridViewWorkgroupId+"&webUserId="+<s:property value="id" />, function(data){
+        $.getJSON("isWorkgroupAllowToDelete.action?workgroupId="+gridViewWorkgroupId+"&webUserId="+<s:property value="id" />+uniqeToken(), function(data){
             if(!data.isAllowToDelete){
                 
                 if(confirm(data.warningMsg)){
@@ -99,7 +99,7 @@
     
     function doDeleteUserWorkgroup(userWorkgroupId){
          $.ajax({
-           url: "removeUserWorkgroupMapping.action?userWorkgroupId="+userWorkgroupId+"&webUserId="+<s:property value="id" />,
+           url: "removeUserWorkgroupMapping.action?userWorkgroupId="+userWorkgroupId+"&webUserId="+<s:property value="id" />+uniqeToken(),
            success: userworkgroup_doRefreshPage
          });
     }
@@ -118,7 +118,7 @@
             $("#CDUserWorkgroupMessageBox").html("");
             
             $.ajax({
-               url: "addUserWorkgroupMapping.action?workgroupId="+workgroupId+"&webUserId="+webUserId,
+               url: "addUserWorkgroupMapping.action?workgroupId="+workgroupId+"&webUserId="+webUserId+uniqeToken(),
                success: userworkgroup_doRefreshPage
             });
             
@@ -171,7 +171,11 @@
         }
 
         if(refreshGirdView){
-            $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" /> + "&tabIndex="+userDetailTabIndex);
+            var sLocaltion = "#admin_param_panel";
+            var sAction = "updateUserDetailPanel.action";
+            var sparameters = "mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" /> + "&tabIndex=" + userDetailTabIndex;
+            doSectionLoad(sLocaltion, sAction, sparameters);
+            // $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" /> + "&tabIndex="+userDetailTabIndex+uniqeToken());
         }
     }
     

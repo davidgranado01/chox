@@ -130,7 +130,11 @@
         }
         
         function doBack(){
-            $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=" + selectedPanel);
+            var sLocaltion = "#admin_param_panel";
+            var sAction = "loadAdminPanel.action";
+            var sparameters = "adminPanelName=" + selectedPanel;
+            doSectionLoad(sLocaltion, sAction, sparameters);
+           // $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=" + selectedPanel+uniqeToken());
         }
         
         function onBeforeSubmit(formData, jqForm, options) { 
@@ -146,7 +150,7 @@
                 if(response.resultType == "New" && response.result)
                 {
                     var newObjectId = parseInt(response.result);
-                    $("#admin_param_panel").load("updateChorganisationDetailPanel.action?objectId=" + newObjectId);
+                    $("#admin_param_panel").load("updateChorganisationDetailPanel.action?objectId=" + newObjectId+uniqeToken());
                      propmtMsg("New credit hire organisation has been created");
                 }
                 else

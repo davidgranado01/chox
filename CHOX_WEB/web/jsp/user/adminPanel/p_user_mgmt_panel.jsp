@@ -109,13 +109,21 @@
         var gridView = gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
         getParameters();
-        $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId);
+        var sLocaltion = "#admin_param_panel";
+        var sAction = "updateUserDetailPanel.action";
+        var sparameters = "mode=Edit&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId;
+        doSectionLoad(sLocaltion, sAction, sparameters);
+        // $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId+uniqeToken());
     }
 
     function createNewRecord(){
         var gridViewId = -1;
         getParameters();
-        $("#admin_param_panel").load("updateUserDetailPanel.action?mode=New&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId);
+        var sLocaltion = "#admin_param_panel";
+        var sAction = "updateUserDetailPanel.action";
+        var sparameters = "mode=New&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId;
+        doSectionLoad(sLocaltion, sAction, sparameters);
+        // $("#admin_param_panel").load("updateUserDetailPanel.action?mode=New&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId+uniqeToken());
     }
     
     function loadGridViewList(){
@@ -170,7 +178,7 @@
             var gridViewId = gridView.get("id");
 
             $.ajax({
-                url: "doTriggerUserAccountStatus.action?objectId="+gridViewId,
+                url: "doTriggerUserAccountStatus.action?objectId="+gridViewId+uniqeToken(),
                 success: onUpdateUserSubmitResult
             });
         }
@@ -190,7 +198,7 @@
                 var gridViewId = gridView.get("id");
                 
                  $.ajax({
-                   url: "doTriggerPasswordExpiredStatus.action?objectId="+gridViewId,
+                   url: "doTriggerPasswordExpiredStatus.action?objectId="+gridViewId+uniqeToken(),
                    success: loadGridViewList
                  });
             }
@@ -223,14 +231,14 @@
     }
     
     function showUserroleDropDown() {
-        $("#userroleDropDownDiv").load("UserroleDropDownAction.action?orgTypeId=" + orgTypeId);
+        $("#userroleDropDownDiv").load("UserroleDropDownAction.action?orgTypeId=" + orgTypeId+uniqeToken());
     }
 
     function showOrganisationDropDownDiv() {
         
         if(isOrgShow()){
             $("#organisationDropDownDiv").css("display","block");
-            $("#organisationDropDownDiv").load("OrganisationDropDownAction.action?orgTypeId=" + orgTypeId);
+            $("#organisationDropDownDiv").load("OrganisationDropDownAction.action?orgTypeId=" + orgTypeId+uniqeToken());
         }else{
             $("#organisationDropDownDiv").css("display","none");
         }
