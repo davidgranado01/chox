@@ -12,7 +12,6 @@
         $("#isUpdateInsurerClaimNumberValidFlag").val("1");
         var sClaimNumber = $("#claimNumber").val();
         if(isSpecialCharacterExist(sClaimNumber)){
-            
             $("#isUpdateInsurerClaimNumberValidFlag").val("0");
         }
     }

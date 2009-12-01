@@ -3,6 +3,7 @@
         $("#actionName").val(val);
     }
 
+    // NOT IN USE - TO BE REMOVED
     function isClaimNumberInvalid(){
 
         $("#isClaimNumberValidFlag").val("1");
@@ -14,6 +15,15 @@
 
     }
 
+    function isFormClaimNumberInvalid(formName){
+        $("form#"+formName+" input[name$='isClaimNumberValidFlag']").val("1");
+        var sClaimNumber = $("form#"+formName+" input[name$='claimNumber']").val();
+
+        if(isSpecialCharacterExist(sClaimNumber)){
+            $("form#"+formName+" input[name$='isClaimNumberValidFlag']").val("0");
+        }
+    }
+    
     function isSpecialCharacterExist(strClaimNumber){
 
         if(strClaimNumber.length>0){

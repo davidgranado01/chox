@@ -994,7 +994,7 @@
 
 	<invoicesupplier-handling-invoice-no>
 		<data-description>Supplier Claims Handling Invoice Number</data-description>
-		<data-type>numeric</data-type>
+		<data-type></data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicesupplier-handling-invoice-no>
@@ -1008,7 +1008,7 @@
 
 	<invoicesupplier-claim-invoice-no>
 		<data-description>Supplier Claim Invoice Number</data-description>
-		<data-type>numeric</data-type>
+		<data-type></data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</invoicesupplier-claim-invoice-no>

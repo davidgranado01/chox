@@ -81,7 +81,6 @@
         var sAction = "ClaimHandlerRoleUserDropDownAction.action";
         var sparameters = "workgroupId=" + selectedWorkgroupId + "&insurerId="+selectedInsurerId;
         doSectionLoad(sLocaltion, sAction, sparameters);
-        // $("#claimHandlerRoleUserDropDownDiv").load("ClaimHandlerRoleUserDropDownAction.action?workgroupId=" + selectedWorkgroupId + "&insurerId="+selectedInsurerId);
     }
 
     function doUpdateOwnershipSubmit(a){

@@ -55,12 +55,8 @@
     }
     
     function doSubmit(a){
-        
         registeAction(a);
-
         $("#InvoiceReasonOfRejectionId").val("");
-        
-        isClaimNumberInvalid();
         if(!doFormValidation().form()){
             return false;
         }

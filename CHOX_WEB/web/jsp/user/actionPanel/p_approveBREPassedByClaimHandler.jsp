@@ -53,6 +53,7 @@
         $("#InvoiceReasonOfRejectionId").val("");
 
         isClaimNumberInvalid();
+        // isFormClaimNumberInvalid("approveBREPassedByClaimHandler");
         if(!doFormValidation().form()){
             return false;
         }
