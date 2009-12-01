@@ -91,18 +91,61 @@ public class NodeHelper {
         return claimResult;
         
     }
-    
-    public static ClaimResult nodeVehicleClassValidate(
+
+public static ClaimResult nodeVehicleClassValidate(
+        String sectionName,
+        String nodeName,
+        Element element,
+        ClaimResult claimResult,
+        DataValidationParameter dataValidationParameter,
+        VehicleClassService vehicleClassService){
+
+        boolean isValid = true;
+        NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
+        String value = XMLUtils.getElementValue(element, nodeName);
+
+        // CHECK MANDATORY - VALUE IN XML IS EMPTY
+        if(val.isDataMandatory() && value.trim().equalsIgnoreCase("")){
+            isValid = false;
+            claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+        }
+
+        // CHECK MANDATORY - VALUE IN XML IS NOT EMPTY
+        // CHECK THE VEHICLE CLASS FOR THE VALUE IS EXIST OR NOT
+        if(!value.trim().equalsIgnoreCase("")){
+
+            VehicleClass vehicleClass = vehicleClassService.getVehicleClassByNodeName(element, nodeName);
+
+            if(vehicleClass==null && val.isDataMandatory()){
+                isValid = false;
+                claimResult.getMessage().add(String.format(mandatoryVehicleClassDataErrorMsg, sectionName));
+            }
+        }
+
+        setStatus(claimResult, isValid);
+
+        return claimResult;
+
+    }
+
+    public static ClaimResult nodeVehicleClassValidateDefaultMandatoryValue(
         String sectionName, 
         String nodeName,
         Element element,
         ClaimResult claimResult, 
         DataValidationParameter dataValidationParameter,
-        VehicleClassService vehicleClassService){
+        VehicleClassService vehicleClassService,
+        boolean newMandatory){
         
         boolean isValid = true;
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         String value = XMLUtils.getElementValue(element, nodeName); 
+
+        if(newMandatory){
+            val.setDataMandatory("t");
+        }else{
+            val.setDataMandatory("f");
+        }
 
         // CHECK MANDATORY - VALUE IN XML IS EMPTY
         if(val.isDataMandatory() && value.trim().equalsIgnoreCase("")){
@@ -187,6 +230,8 @@ public class NodeHelper {
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         if(newMandatory){
             val.setDataMandatory("t");
+        }else{
+            val.setDataMandatory("f");
         }
         
         String value = XMLUtils.getElementValue(element, nodeName); 

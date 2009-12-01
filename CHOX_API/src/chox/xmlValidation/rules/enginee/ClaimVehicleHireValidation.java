@@ -77,7 +77,8 @@ public class ClaimVehicleHireValidation extends SecureDataService implements rul
             this.claimResult = NodeHelper.nodeValidateDefaultMandatoryValue(sectionName, "vehicle-registration", this.element, this.claimResult, this.dataValidationParameter, false);
             this.claimResult = NodeHelper.nodeValidateDefaultMandatoryValue(sectionName, "vehicle-manufacturer", this.element, this.claimResult, this.dataValidationParameter, false);
             this.claimResult = NodeHelper.nodeValidateDefaultMandatoryValue(sectionName, "vehicle-model", this.element, this.claimResult, this.dataValidationParameter, false);
-            this.claimResult = NodeHelper.nodeVehicleClassValidate(sectionName, "vehicle-class", this.element, this.claimResult, this.dataValidationParameter, vehicleClassService);
+            // this.claimResult = NodeHelper.nodeVehicleClassValidate(sectionName, "vehicle-class", this.element, this.claimResult, this.dataValidationParameter, vehicleClassService);
+            this.claimResult = NodeHelper.nodeVehicleClassValidateDefaultMandatoryValue(sectionName, "vehicle-class", this.element, this.claimResult, this.dataValidationParameter, vehicleClassService, false);
             this.claimResult = NodeHelper.nodeValidateDefaultMandatoryValue(sectionName, "rental-start", this.element, this.claimResult, this.dataValidationParameter, false);
             this.claimResult = NodeHelper.nodeValidateDefaultMandatoryValue(sectionName, "rental-end", this.element, this.claimResult, this.dataValidationParameter, false);
             this.claimResult = NodeHelper.nodeValidateDefaultMandatoryValue(sectionName, "collection-reason", this.element, this.claimResult, this.dataValidationParameter, false);
@@ -101,7 +102,7 @@ public class ClaimVehicleHireValidation extends SecureDataService implements rul
                 || XmlHelper.isNotNull(XmlHelper.getNodeValue(this.element, "rental-days"))
                 || XmlHelper.isNotNull(XmlHelper.getNodeValue(this.element, "collection-reason"))
         ){
-                
+
             if(this.claimResult.getClaim().getVehicleHire()==null){
                 this.claimResult.getClaim().setVehicleHire(new VehicleHire());
             }

@@ -39,5 +39,12 @@ public class DateHelper {
         Calendar cal = Calendar.getInstance();
         return cal.getTime();
     }
-     
+
+    public static Date setDateOnly(Date date){
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        return date;
+    }
+    
 }
