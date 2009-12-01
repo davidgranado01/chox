@@ -72,18 +72,19 @@ if(statusMsg==null){
         if($("#oasWorkgroupId").val()!=null){
             selectedWorkgroupId = $("#oasWorkgroupId").val();
         }
-        
         claimOwnerId = -1;
         doOwnershipAssignmentShowClaimHandler(selectedWorkgroupId, insurerId);
     
     }
 
     function doOwnershipAssignmentShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
-        var sLocaltion = "#ownershipAssignmentClaimHandlerRoleUserDropDownDiv";
-        var sAction = "ClaimHandlerRoleUserDropDownAction.action";
-        var sparameters = "workgroupId=" + selectedWorkgroupId + "&insurerId="+selectedInsurerId;
-        doSectionLoad(sLocaltion, sAction, sparameters);
-        // $("#ownershipAssignmentClaimHandlerRoleUserDropDownDiv").load("ClaimHandlerRoleUserDropDownAction.action?workgroupId=" + selectedWorkgroupId + "&insurerId="+selectedInsurerId);
+        // Mantis Issue: 0000913
+        if(selectedWorkgroupId>0){
+            var sLocaltion = "#ownershipAssignmentClaimHandlerRoleUserDropDownDiv";
+            var sAction = "ClaimHandlerRoleUserDropDownAction.action";
+            var sparameters = "workgroupId=" + selectedWorkgroupId + "&insurerId="+selectedInsurerId;
+            doSectionLoad(sLocaltion, sAction, sparameters);
+        }
     }
 
     function doAssignOwnershipToFnolSubmit(a){

@@ -564,19 +564,16 @@
                                 }
 
                                 if(isInsurerWorkgroupEnable){
-
                                     var sLocaltion = "div#coSelectionHolder";
                                     var sAction = "user/GetWorkgroupDropDownActionByInsurer.action";
                                     var sparameters = "";
                                     doSectionLoad(sLocaltion, sAction, sparameters);
-                                    // $('div#coSelectionHolder').load('user/GetWorkgroupDropDownActionByInsurer.action');
                                 }
 
                                 var sLocaltion = "#coClaimHandlerRoleUserDropDownDiv";
                                 var sAction = "user/ClaimHandlerRoleUserDropDownAction.action";
                                 var sparameters = "workgroupId=-1&insurerId="+insurerId;
                                 doSectionLoad(sLocaltion, sAction, sparameters);
-                                // $('#coClaimHandlerRoleUserDropDownDiv').load("user/ClaimHandlerRoleUserDropDownAction.action?workgroupId=-1&insurerId="+insurerId);
                             }
 
                         );

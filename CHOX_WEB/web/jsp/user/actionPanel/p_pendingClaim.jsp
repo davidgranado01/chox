@@ -4,12 +4,12 @@
 
     function doRejectClaim(){
         
-        isClaimNumberInvalid();
+        isFormClaimNumberInvalid("formPendingAcknowledgeAction");
         registeAction('reject');
         
         if(doFormValidation().form()){
             if(confirm('Are you sure you want to reject this claim?')){
-                var sClaimNumber = $("#claimNumber").val();
+                var sClaimNumber = $("form#formPendingAcknowledgeAction input[name$='claimNumber']").val();
                 if(sClaimNumber.length > 0)
                 {
                     var sClaimId = $("#claimId").val();
@@ -119,12 +119,12 @@
     function doSubmit(a){
 
         registeAction(a);
-        isClaimNumberInvalid();
+        isFormClaimNumberInvalid("formPendingAcknowledgeAction");
                     
         $("#reasonOfRejectionId").val("");
                     
         if(doFormValidation().form()){
-            var sClaimNumber = $("#claimNumber").val();
+            var sClaimNumber = $("form#formPendingAcknowledgeAction input[name$='claimNumber']").val();
             var sClaimId = $("#claimId").val();
             var form = $("#formPendingAcknowledgeAction");
             checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);

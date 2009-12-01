@@ -5,29 +5,28 @@
         $(document).ready(function(){
             doAcknowledgeFormValidation();
         });
-                
+
         function doAcknowledgeRejectClaim(){
 
-            isClaimNumberInvalid();
+            //isClaimNumberInvalid();
+            isFormClaimNumberInvalid("formAcknowledgeAction");
             registeAction('reject');
 
             if(doAcknowledgeFormValidation().form()){
                 if(confirm('Are you sure you want to reject this claim?')){
-
-                    var sClaimNumber = $("#claimNumber").val();
-                        if(sClaimNumber.length > 0)
-                        {
-                            var sClaimId = $("#claimId").val();
-                            var form = $("#formAcknowledgeAction");
-                            checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
-                        }
-                        else
-                        {
-                            $("#formAcknowledgeAction").submit();
-                        }
+                    var sClaimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
+                    if(sClaimNumber.length > 0)
+                    {
+                        var sClaimId = $("#claimId").val();
+                        var form = $("#formAcknowledgeAction");
+                        checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
+                    }
+                    else
+                    {
+                        $("#formAcknowledgeAction").submit();
                     }
                 }
-
+            }
         }
 
         function liabilityMinNumber(){
@@ -110,17 +109,15 @@
         function doAcknowledgeSubmit(a){
 
             registeAction(a);
-            isClaimNumberInvalid();
+            isFormClaimNumberInvalid("formAcknowledgeAction");
 
             $("#reasonOfRejectionId").val("");
 
             if(doAcknowledgeFormValidation().form()){
-
-                var sClaimNumber = $("#claimNumber").val();
+                var sClaimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
                 var sClaimId = $("#claimId").val();
                 var form = $("#formAcknowledgeAction");
                 checkAndConfirmClaimNumberDuplication(sClaimNumber, sClaimId, form);
-                
             }
         }
                     
