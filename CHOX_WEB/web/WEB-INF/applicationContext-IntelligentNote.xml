@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="autodetect">
+
+    <bean id="intelligentNoteDisplayEngine" class="chox.model.intelligentNotes.IntelligentNoteDisplayEngine" singleton="true">
+        <property name="availableIntelligentNotes">
+            <list>
+                <bean class="chox.model.intelligentNotes.VehicleClassCheckNote"></bean>
+                <bean class="chox.model.intelligentNotes.CHOManagingRepairCheckNote"></bean>
+                <bean class="chox.model.intelligentNotes.ComprehensiveCoverCheckNote"></bean>
+                <bean class="chox.model.intelligentNotes.FrontalDamageCheckNote"></bean>
+                <bean class="chox.model.intelligentNotes.NeedForSPandPClassCheckWithoutECDNote"></bean>
+                <bean class="chox.model.intelligentNotes.TotalLossVehicleCheckNote"></bean>
+                <bean class="chox.model.intelligentNotes.UnroadworthyVehicleCheckNote"></bean>
+                <bean class="chox.model.intelligentNotes.VehicleClassAboveSCheckNote"></bean>
+                <bean class="chox.model.intelligentNotes.RepairBookInDateisFridayCheck"></bean>
+                <bean class="chox.model.intelligentNotes.RepairBookInDateisSaturdayCheck"></bean>
+                <bean class="chox.model.intelligentNotes.RepairBookInDateisSundayCheck"></bean>
+            </list>
+        </property>
+    </bean>
+
+</beans>
