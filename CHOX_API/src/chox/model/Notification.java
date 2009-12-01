@@ -1,0 +1,71 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package chox.model;
+
+/**
+ *
+ * @author emmanuel
+ */
+public class Notification extends AuditableEntity {
+
+    public static String TYPE_UPDATE = "Update";
+    public static String TYPE_ANOMALOUS = "Anomalous";
+    private String type;
+    private String message;
+    private Claim claim;
+
+    public Notification() {
+    }
+
+    public Notification(String type, String message) {
+        this.type = type;
+        this.message = message;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        if (type == null) {
+            type = this.getClass().getSimpleName();
+        }
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * @return the message
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * @param message the message to set
+     */
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    /**
+     * @return the claim
+     */
+    public Claim getClaim() {
+        return claim;
+    }
+
+    /**
+     * @param claim the claim to set
+     */
+    public void setClaim(Claim claim) {
+        this.claim = claim;
+    }
+}
