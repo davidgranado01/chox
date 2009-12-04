@@ -10,6 +10,10 @@ import chox.model.*;
 import java.util.Date;
 import scsbre.model.IVehicleClassInfo;
 
+/**
+ *
+ * @author emmanuel
+ */
 public class NeedForSPandPClassCheckWithoutECDNote implements IntelligentNote {
 
     public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
