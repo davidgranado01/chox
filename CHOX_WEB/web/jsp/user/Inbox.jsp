@@ -761,6 +761,7 @@
        autoheight:true,
        activeTab: currentTabIndex,
        items:[
+                {title:'', id:'emptyTabId', hidden:true, listeners: {activate: handleActivate}},
              <s:if test="menuAccessibility.isDashBoardMenuAccessibility">
                 {contentEl:'boardPanelTab', title:'Dashboard', listeners: {activate: handleActivate}},
             </s:if>
@@ -774,6 +775,8 @@
             </s:if> 
             ]
        });
+
+       tabs.remove('emptyTabId', true);
 
     }
 
@@ -866,13 +869,17 @@
 
         setupTabPanels();
         setupGrid();
-
+        //$("#ext-gen28").height("876")
         if(!<s:property value="isChoxAdmin"/>){
             refreshViewingStatus();
         }
 
         loadDataFromSession();
 
+
+        //alert(<s:property value="menuAccessibility.isReportMenuAccessibility"/>);
+        // alert($("div#boardPanel").html());
+        // $("div#boardPanel").css("height","500px");
     });
 
 </script>

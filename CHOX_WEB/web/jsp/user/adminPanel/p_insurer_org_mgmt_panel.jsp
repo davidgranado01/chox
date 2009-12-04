@@ -40,7 +40,7 @@
         listeners:  {cellclick:recordOnclick },
         store: gridviewData,
         columns: [
-            {header: "Name", width: 130, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
+            {header: "Name", width: 150, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
             {header: "VAT No.", width: 100, dataIndex: 'vatNo', sortable: true, resizable: true},
             {header: "Company No.", width: 100, dataIndex: 'companyNo', sortable: true, resizable: true},
@@ -50,7 +50,7 @@
             {header: "Created Date", width:140, dataIndex: 'createdDate', sortable: true, resizable: true}
         ],
         renderTo:'gridviewGrid',
-            width:615,
+            width:640,
             autoHeight:true,
             enableHdMenu:false
         });
@@ -116,20 +116,20 @@
 
 <div>
     <form id="formAdminParam" class="XXentity-form" name="formAdminParam">
-    <fieldset class="x-fieldset" style="height:660px;">
-        <legend>Insurer Organisation Management</legend>
-        <div id="organisationGird">
-            <div class="gridViewHeader">
-                <table width="100%">
-                    <tr>
-                        <td></td>
-                        <td align="right"><button type="button" onclick="javascript:createNewRecord();">Add New Insurer</button></td>
-                    </tr>
-                </table>
+        <fieldset class="x-fieldset" style="height:660px;">
+            <legend>Insurer Organisation Management</legend>
+            <div id="organisationGird">
+                <div class="gridViewHeader">
+                    <table width="100%">
+                        <tr>
+                            <td></td>
+                            <td align="right"><button type="button" onclick="javascript:createNewRecord();">Add New Insurer</button></td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="gridviewGrid" style="height:605px; overflow:auto;" ></div>
             </div>
-            <div id="gridviewGrid" style="height:605px; overflow:auto;" ></div>
-        </div>
-    </fieldset>
+        </fieldset>
     </form> 
     
 </div>

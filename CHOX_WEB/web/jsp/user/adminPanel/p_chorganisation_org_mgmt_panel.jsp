@@ -50,7 +50,7 @@
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
             renderTo:'gridviewGrid',
-                width:615,
+                width:640,
                 autoHeight:true,
                 enableHdMenu:false
             });

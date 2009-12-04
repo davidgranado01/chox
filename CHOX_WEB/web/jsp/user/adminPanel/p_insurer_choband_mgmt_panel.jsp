@@ -45,7 +45,7 @@
             {header: "Created Date", width: 150, dataIndex: 'createdDate', sortable: true, resizable: true}
         ],
         renderTo:'choband_gridviewGrid',
-            width:620,
+            width:640,
             autoHeight:true,
             enableHdMenu:false
         });

@@ -90,7 +90,7 @@ public class OnlineSupportAction extends BaseAction{
             this.getActionResponse().AssignMessageResult("Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.");
         }
         
-        return SUCCESS;      
+        return SUCCESS;
     }
     
     private String doConstructEmailMessage(SupportMessage message){

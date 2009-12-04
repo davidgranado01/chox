@@ -68,7 +68,7 @@
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}}
             ],
             renderTo:'gridviewGrid',
-                width:615,
+                width:640,
                 autoHeight:true,
                 enableHdMenu:false
             });

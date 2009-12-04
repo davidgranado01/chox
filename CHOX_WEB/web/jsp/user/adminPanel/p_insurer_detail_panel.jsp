@@ -92,9 +92,8 @@
         function doInsurerBack(){
             var sLocaltion = "#admin_param_panel";
             var sAction = "loadAdminPanel.action";
-            var sparameters = "adminPanelName=InsurerOrgMgmt";
+            var sparameters = "adminPanelName=ChoxPanelMgmt";
             doSectionLoad(sLocaltion, sAction, sparameters);
-            // $("#admin_param_panel").load("loadAdminPanel.action?adminPanelName=InsurerOrgMgmt"+uniqeToken());
         }
         
         function onBeforeSubmit(formData, jqForm, options) { 
@@ -154,7 +153,7 @@
            
            adminTabs = new Ext.TabPanel({
            renderTo: 'mainPanel',
-           autoScroll :true,
+           height:655,
            activeTab: adminCurrentTabIndex,
            items:[
                 {contentEl:'insurerDetailPanelTab', title:'Details',listeners: {activate: insHandleActivate}},

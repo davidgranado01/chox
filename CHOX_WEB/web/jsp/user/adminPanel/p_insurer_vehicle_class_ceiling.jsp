@@ -107,15 +107,15 @@
             store: vehicleClassCeiling_gridviewData,
             loadMask: true,
             columns: [
-                {header: "Vehicle Class", width: 180, dataIndex: 'vehicleClassName', sortable: true, resizable: true, renderer:function(value,p,r){
+                {header: "Vehicle Class", width: 200, dataIndex: 'vehicleClassName', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>"+value+"</a>" }},
-                {header: "Hire Net Ceiling", width: 150, dataIndex: 'hireNetCeiling', sortable: true, resizable: true},
-                {header: "Repair Net Ceiling", width: 150, dataIndex: 'repairNetCeiling', sortable: true, resizable: true},
-                {header: "", width: 90, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Hire Net Ceiling", width: 160, dataIndex: 'hireNetCeiling', sortable: true, resizable: true},
+                {header: "Repair Net Ceiling", width: 160, dataIndex: 'repairNetCeiling', sortable: true, resizable: true},
+                {header: "", width: 80, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Remove</a>"}}
             ],
             renderTo:'vehicleClassCeiling_gridviewGrid',
-                width:590,
+                width:640,
                 autoHeight:true,
                 enableHdMenu:false
             });
