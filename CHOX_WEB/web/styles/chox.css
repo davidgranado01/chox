@@ -284,7 +284,7 @@ fieldset div
 .chox-admin-form-left-col
 {
     padding-right: 5px;
-    width: 30%;
+    width: 250px;
 }
 
 div.chox-claim-header
@@ -817,8 +817,8 @@ img.tip-target
 }
 
 .gridViewHeader{  
-    /*padding-bottom:5px;  */
-    width:615px;
+    padding-bottom:5px;
+    width:645px;
 }
 
 .gridViewHeader td{
@@ -834,7 +834,7 @@ img.tip-target
 
 .admin-tab-css{
     padding-top:6px;
-    width:650px;
+    width:690px;
     background:#dfe8f6;
     background-color:#dfe8f6;
     overflow:hidden;
@@ -847,7 +847,7 @@ img.tip-target
     background-color:inherit;
     background:#dfe8f6;
     background-color:#dfe8f6;
-    height:625px;
+    height:800px;
     overflow:hidden;
 }
 

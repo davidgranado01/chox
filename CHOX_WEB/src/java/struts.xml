@@ -817,11 +817,10 @@
         
         <action name="loadAdminPanel" class="chox.web.actions.AdminAction" method="loadAdminPanel">
             <result name="CreditHireOrgMgmt">/jsp/user/adminPanel/p_chorganisation_org_mgmt_panel.jsp</result>
-            <result name="InsurerOrgMgmt">/jsp/user/adminPanel/p_insurer_org_mgmt_panel.jsp</result>
+            <result name="ChoxPanelMgmt">/jsp/user/adminPanel/p_insurer_org_mgmt_panel.jsp</result>
             <result name="UserMgmt">/jsp/user/adminPanel/p_user_mgmt_panel.jsp</result>
             <result name="InsurerOrgMappingMgmt">/jsp/user/adminPanel/p_insurer_chorganisation_mapping.jsp</result>
             <result name="InsurerAlliasMappingMgmt">/jsp/user/adminPanel/p_insurer_allias_mapping.jsp</result>
-            <!-- <result name="InsurerLineOfBusinessMappingMgmt">/jsp/user/adminPanel/p_insurer_lob_mapping.jsp</result> !-->
             <result name="InsurerWorkgroupMappingMgmt">/jsp/user/adminPanel/p_insurer_workgroup_mapping.jsp</result>
             <result name="UserroleMapping">/jsp/user/adminPanel/p_user_role_mapping.jsp</result>
             <result name="InsurerChoBandMgmt">/jsp/user/adminPanel/p_insurer_choband_mgmt_panel.jsp</result>

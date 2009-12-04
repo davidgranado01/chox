@@ -13,7 +13,6 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailHelper {
     
-    
     private static final String SMTP_HOST_NAME = "smtp.gmail.com";
     private static final String SMTP_PORT = "465";
     private static final boolean SMTP_authetication = true;

@@ -15,8 +15,8 @@
         
        userDetailPanelTabs = new Ext.TabPanel({
        renderTo: 'userDetailMainPanel',
-       autoScroll :true,
        activeTab: userDetailTabIndex,
+       height:655,
        items:[
            {contentEl:'userDetailTab', title:'User Detail', listeners: {activate: handleActivate}},
            {contentEl:'userPasswordTab', title:'Change Password', disabled:isNew, listeners: {activate: handleActivate}},
@@ -301,7 +301,7 @@
 <div id="userDetailMainPanel" class="admin-tab-css"></div>
 
 <div id="userDetailTab" class="x-hide-display">
-    
+
     <div class="sub-admin-tab-css">
 
         <form id="formUpdateUserDetail" action="user/updateUserDetail.action" class="XXentity-form" onsubmit="return true;" method="post">
