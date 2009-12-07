@@ -11,7 +11,6 @@ import com.filesystemsoftware.utils.XMLUtils;
 
 public class XmlHelper {
     
-    
     public static boolean isNotNull(String s){
         Boolean bFlag = false;
         if(s!=null && !s.equalsIgnoreCase("")){
