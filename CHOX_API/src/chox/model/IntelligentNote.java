@@ -1,4 +1,4 @@
-package chox.model.intelligentNotes;
+package chox.model;
 
 import chox.model.*;
 import chox.data.SecurityInfoProvider;

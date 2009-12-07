@@ -4,7 +4,6 @@
  */
 package chox.model;
 
-import chox.model.intelligentNotes.IntelligentNote;
 import chox.Util.DateHelper;
 import chox.data.FakeSecurityInfoProvider;
 import chox.model.intelligentNotes.*;
