@@ -26,7 +26,7 @@ public interface LookupService {
     public List getInsurers(Integer choId);
     public List getAllInsurers();
     
-    public List getInsurerChoBand(int insurerId);
+    public List getInsurerBreBand(int insurerId);
     public List getReasonOfDelay();
 
     public List getWorkgroups(WebUser user, boolean isActiveOnly);

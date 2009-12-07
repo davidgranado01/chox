@@ -10,14 +10,14 @@ import org.hibernate.criterion.Restrictions;
 public class ChorganisationServiceImpl extends SecureDataService implements ChorganisationService{
     
     protected InsurerChorganisationService insurerChorganisationService;
-    protected ChoBandOrganisationService choBandOrganisationService;
+    protected BreBandOrganisationService breBandOrganisationService;
     
     public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {
         this.insurerChorganisationService = insurerChorganisationService;
     }
     
-    public void setChoBandOrganisationService(ChoBandOrganisationService choBandOrganisationService) {
-        this.choBandOrganisationService = choBandOrganisationService;
+    public void setBreBandOrganisationService(BreBandOrganisationService breBandOrganisationService) {
+        this.breBandOrganisationService = breBandOrganisationService;
     }
     
     

@@ -5,7 +5,7 @@
 package chox.services;
 
 import chox.model.Insurer;
-import chox.model.InsurerAllias;
+import chox.model.InsurerAlias;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
@@ -13,41 +13,39 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 
-public class InsurerAlliasServiceImpl extends SecureDataService implements InsurerAlliasService {
+public class InsurerAliasServiceImpl extends SecureDataService implements InsurerAliasService {
     
     public void createDefaultRecord(Insurer insurer){
-        InsurerAllias object = new InsurerAllias();
+        InsurerAlias object = new InsurerAlias();
         object.setInsurer(insurer);
-        object.setAlliasName(insurer.getName());
+        object.setAliasName(insurer.getName());
         updateObject(object);
     }
     
-    public InsurerAllias getInsurerByAlliasName(String s) {
+    public InsurerAlias getInsurerByAliasName(String s) {
 
-        InsurerAllias insurerallias = new InsurerAllias();
+        InsurerAlias object = new InsurerAlias();
         
         try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAllias.class);
-            criteria.add(Restrictions.eq("alliasName", s));
-            insurerallias = (InsurerAllias) getByCriteria(criteria);
+            DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAlias.class);
+            criteria.add(Restrictions.eq("aliasName", s));
+            object = (InsurerAlias) getByCriteria(criteria);
 
         } catch (Throwable e) {
             e.printStackTrace();
         }
-        return insurerallias;
+        return object;
     }
     
-    public boolean isInsurerAlliasExist(int insurerId, String AlliasName){
+    public boolean isInsurerAliasExist(int insurerId, String AliasName){
         
         boolean bFlag = true;
         
-        InsurerAllias insurerallias = new InsurerAllias();
-        
         try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAllias.class);
-            criteria.add(Restrictions.eq("alliasName", AlliasName.trim()));
+            DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAlias.class);
+            criteria.add(Restrictions.eq("aliasName", AliasName.trim()));
             criteria.add(Restrictions.eq("insurer.id", insurerId));
             
             if(getByCriteria(criteria)==null){
@@ -61,30 +59,30 @@ public class InsurerAlliasServiceImpl extends SecureDataService implements Insur
         return bFlag;
     }
     
-    public List<InsurerAllias> getInsurerAllias(int insurerId) {
+    public List<InsurerAlias> getInsurerAlias(int insurerId) {
 
-        List<InsurerAllias> insurerallias = new ArrayList<InsurerAllias>();
+        List<InsurerAlias> objects = new ArrayList<InsurerAlias>();
         
         try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAllias.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAlias.class);
             
             if(insurerId>0){
                 criteria.add(Restrictions.eq("insurer.id", insurerId));
             }
             
-            criteria.addOrder(Order.asc("alliasName"));  
+            criteria.addOrder(Order.asc("aliasName"));  
             
-            insurerallias = findByCriteria(criteria);
+            objects = findByCriteria(criteria);
             
         } catch (Throwable e) {
             e.printStackTrace();
         }
         
-        return insurerallias;
+        return objects;
     } 
     
-    public boolean DeleteObject(InsurerAllias object){
+    public boolean DeleteObject(InsurerAlias object){
         
         boolean bFlag = false;
         
@@ -102,11 +100,11 @@ public class InsurerAlliasServiceImpl extends SecureDataService implements Insur
         return bFlag;
     }
     
-    public InsurerAllias getObject(int id) {        
-        return (InsurerAllias) get(InsurerAllias.class, id);
+    public InsurerAlias getObject(int id) {
+        return (InsurerAlias) get(InsurerAlias.class, id);
     }
     
-    public boolean updateObject(InsurerAllias object) {
+    public boolean updateObject(InsurerAlias object) {
         
         boolean bFlag = false;
         

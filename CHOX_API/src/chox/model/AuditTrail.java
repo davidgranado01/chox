@@ -1,16 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package chox.model;
 
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- *
- * @author Carlson
- */
 public class AuditTrail extends AuditableEntity implements Serializable {
 
     protected Date updateDate;

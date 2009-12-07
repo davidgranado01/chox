@@ -20,13 +20,13 @@
     <property column="telephone_day" name="telephoneDay"/>
     <property column="telephone_evening" name="telephoneEvening"/>
     <property column="email" name="email"/>
-    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
-    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="last_name" name="lastName"/>
     <property column="title" name="title"/>
     <many-to-one class="chox.model.Insurer" column="insurer_id" name="insurer"/>
     <many-to-one class="chox.model.VehicleClass" column="vehicle_class_id" name="vehicleClass"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
   </class>
 </hibernate-mapping>

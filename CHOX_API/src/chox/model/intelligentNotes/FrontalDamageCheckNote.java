@@ -3,7 +3,6 @@ package chox.model.intelligentNotes;
 import chox.data.SecurityInfoProvider;
 import chox.model.Claim;
 import chox.model.ClaimStatus;
-import chox.model.IntelligentNote;
 import java.util.Arrays;
 import java.util.List;
 

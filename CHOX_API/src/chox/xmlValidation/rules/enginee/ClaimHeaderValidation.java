@@ -6,7 +6,7 @@ import chox.xmlValidation.rules.Util.XmlHelper;
 import org.w3c.dom.*;
 import com.filesystemsoftware.utils.XMLUtils;
 import chox.model.*;
-import chox.services.ChoBandService;
+import chox.services.BreBandService;
 import chox.services.ChorganisationService;
 import chox.services.ClaimService;
 import chox.services.SecureDataService;
@@ -23,7 +23,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
     private DataValidationParameter dataValidationParameter;
     private ClaimService claimService;
     private ChorganisationService chorganisationService;
-    private ChoBandService choBandService;
+    private BreBandService breBandService;
     private ClaimResult claimResult;
     private Element element;
 
@@ -35,19 +35,19 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
     String choReferenceNumber;
     boolean isUpdateManagingRepair = false;
         
-    public void setChoBandService(ChoBandService choBandService) { this.choBandService = choBandService; }
+    public void setBreBandService(BreBandService breBandService) { this.breBandService = breBandService; }
     public void setChorganisationService(ChorganisationService chorganisationService) { this.chorganisationService = chorganisationService; }
     public void setClaimResult(ClaimResult claimResult) { this.claimResult = claimResult; }
     public void setClaimService(ClaimService claimService) { this.claimService = claimService; }
     public void setDataValidationParameter(DataValidationParameter dataValidationParameter) { this.dataValidationParameter = dataValidationParameter; }
     
     public ClaimHeaderValidation(ClaimResult claimResult, DataValidationParameter dataValidationParameter, 
-            ClaimService claimService, ChorganisationService chorganisationService, ChoBandService choBandService){
+            ClaimService claimService, ChorganisationService chorganisationService, BreBandService breBandService){
             setClaimResult(claimResult);
             setDataValidationParameter(dataValidationParameter);
             setClaimService(claimService);
             setChorganisationService(chorganisationService);
-            setChoBandService(choBandService);    
+            setBreBandService(breBandService);
     }
     
     public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{
@@ -122,8 +122,8 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
                 if(claim.getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)){
                     
                     claimResult.setClaimParseStatus(ClaimParseStatus.newInvoice);
-                    ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(claim.getChorganisation().getId(), claim.getInsurer().getId());
-                    claim.setChoband(choBand);
+                    BreBand breBand = breBandService.getBreBandByChorganisationIdAndInsurerId(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                    claim.setBreBand(breBand);
 
                     if(isUpdateManagingRepair && managingRepair!=null){
                         claim.setManagingRepair(managingRepair);

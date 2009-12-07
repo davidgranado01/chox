@@ -2,12 +2,12 @@ package chox.xmlValidation.rules;
 
 import chox.services.BusinessRulesEngService;
 import chox.xmlValidation.rules.enginee.ClaimHeaderValidation;
-import chox.services.ChoBandService;
+import chox.services.BreBandService;
 import chox.services.ChorganisationService;
 import chox.services.ClaimService;
 import chox.services.HireMonitoringEcdService;
 import chox.services.HistoryService;
-import chox.services.InsurerAlliasService;
+import chox.services.InsurerAliasService;
 import chox.services.InsurerChorganisationService;
 import chox.services.InvoiceService;
 import chox.services.VehicleClassService;
@@ -30,9 +30,9 @@ public class BordereauDataValidation {
             BordereauResult bordereauResult, 
             ClaimService claimService,
             ChorganisationService chorganisationService,
-            ChoBandService choBandService,
+            BreBandService breBandService,
             VehicleClassService vehicleClassService,
-            InsurerAlliasService insurerAlliasService,
+            InsurerAliasService insurerAliasService,
             InsurerChorganisationService insurerChorganisationService,
             HireMonitoringEcdService hireMonitoringEcdService,
             InvoiceService invoiceService,
@@ -57,7 +57,7 @@ public class BordereauDataValidation {
                 if(claimResult.isValid()){
                     
                     // CHECK CLAIM HEADER
-                    ClaimHeaderValidation claimHeaderVal = new ClaimHeaderValidation(claimResult, dataValidationParameter, claimService, chorganisationService, choBandService);
+                    ClaimHeaderValidation claimHeaderVal = new ClaimHeaderValidation(claimResult, dataValidationParameter, claimService, chorganisationService, breBandService);
                     claimResult = claimHeaderVal.execute();
 
                     // CHECK CUSTOMER / DRIVER DETAIL (NEW CLAIM ONLY)
@@ -69,7 +69,7 @@ public class BordereauDataValidation {
                     claimResult = claimCustVal.execute();
                     
                     // CHECK CLAIM - THIRD PARTY (NEW CLAIM ONLY)
-                    ClaimThirdPartyValidation claimThirdPartyVal = new ClaimThirdPartyValidation(claimResult, dataValidationParameter, claimService, vehicleClassService, insurerAlliasService, insurerChorganisationService);
+                    ClaimThirdPartyValidation claimThirdPartyVal = new ClaimThirdPartyValidation(claimResult, dataValidationParameter, claimService, vehicleClassService, insurerAliasService, insurerChorganisationService);
                     claimResult = claimThirdPartyVal.execute();
 
                     // CHECK CLAIM - INCIDENT (NEW CLAIM ONLY)
@@ -89,7 +89,7 @@ public class BordereauDataValidation {
                     claimResult = vehicleHireVal.execute();
                     
                     // ALL NEW INVOICE ONLY
-                    InvoiceValidation invVal = new InvoiceValidation(claimResult, dataValidationParameter, claimService, chorganisationService, choBandService);
+                    InvoiceValidation invVal = new InvoiceValidation(claimResult, dataValidationParameter, claimService, chorganisationService, breBandService);
                     claimResult = invVal.execute();
                     
                     /* MANTIS : 719 */

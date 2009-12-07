@@ -5,7 +5,7 @@ import chox.model.notifications.AnomalousCheck;
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import java.io.Serializable;
 import java.util.Date;
-import scsbre.model.ICHOBandInfo;
+import scsbre.model.IBREBandInfo;
 import scsbre.model.ICHOrganisationInfo;
 import scsbre.model.IClaimInfo;
 import scsbre.model.ICustomerVehicleDamageInfo;
@@ -63,7 +63,7 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
     //BRE values are values required for BRE engine that related with the claim
     // It need to be set explicitly before pass the claim object into BRE engine
 
-    private ICHOBandInfo choband;
+    private IBREBandInfo breband;
     private IVehicleClassCeilingInfo vehicleClassCeiling;
     // </editor-fold>   
 
@@ -323,12 +323,12 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
         return this.getInvoice();
     }
 
-    public void setChoband(ICHOBandInfo choband) {
-        this.choband = choband;
+    public void setBreBand(IBREBandInfo breband) {
+        this.breband = breband;
     }
 
-    public ICHOBandInfo getChoBand() {
-        return choband;
+    public IBREBandInfo getBreBand() {
+        return this.breband;
     }
         
     // </editor-fold>

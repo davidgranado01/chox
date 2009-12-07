@@ -7,7 +7,7 @@ package chox.xmlValidation.rules.enginee;
 
 import chox.Util.TextHelper;
 import chox.model.Customer;
-import chox.services.ChoBandService;
+import chox.services.BreBandService;
 import chox.services.ChorganisationService;
 import chox.services.ClaimService;
 import chox.services.SecureDataService;

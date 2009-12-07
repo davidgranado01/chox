@@ -1,11 +1,11 @@
 package chox.xmlValidation.rules.enginee;
 
 import chox.Util.TextHelper;
-import chox.model.InsurerAllias;
+import chox.model.InsurerAlias;
 import chox.model.ThirdParty;
 import chox.model.VehicleClass;
 import chox.services.ClaimService;
-import chox.services.InsurerAlliasService;
+import chox.services.InsurerAliasService;
 import chox.services.InsurerChorganisationService;
 import chox.services.SecureDataService;
 import chox.services.VehicleClassService;
@@ -25,13 +25,13 @@ public class ClaimThirdPartyValidation extends SecureDataService implements rule
     private DataValidationParameter dataValidationParameter;
     private ClaimService claimService;
     private VehicleClassService vehicleClassService;
-    private InsurerAlliasService insurerAlliasService;
+    private InsurerAliasService insurerAliasService;
     private InsurerChorganisationService insurerChorganisationService;
     private ClaimResult claimResult;
     private Element element;
 
     public void setVehicleClassService(VehicleClassService vehicleClassService) { this.vehicleClassService = vehicleClassService; }
-    public void setInsurerAlliasService(InsurerAlliasService insurerAlliasService) { this.insurerAlliasService = insurerAlliasService; }
+    public void setInsurerAliasService(InsurerAliasService insurerAliasService) { this.insurerAliasService = insurerAliasService; }
     public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) { this.insurerChorganisationService = insurerChorganisationService; }
     public void setClaimResult(ClaimResult claimResult) { this.claimResult = claimResult; }
     public void setClaimService(ClaimService claimService) { this.claimService = claimService; }
@@ -42,14 +42,14 @@ public class ClaimThirdPartyValidation extends SecureDataService implements rule
             DataValidationParameter dataValidationParameter, 
             ClaimService claimService,
             VehicleClassService vehicleClassService,
-            InsurerAlliasService insurerAlliasService,
+            InsurerAliasService insurerAliasService,
             InsurerChorganisationService insurerChorganisationService){
         
             setClaimResult(claimResult);
             setDataValidationParameter(dataValidationParameter);
             setClaimService(claimService);
             setVehicleClassService(vehicleClassService);
-            setInsurerAlliasService(insurerAlliasService);
+            setInsurerAliasService(insurerAliasService);
             setInsurerChorganisationService(insurerChorganisationService);
     }
     
@@ -74,7 +74,7 @@ public class ClaimThirdPartyValidation extends SecureDataService implements rule
             isAllowToReadData = true;
             this.claimResult.setCheckDataValid(true);
 
-            this.claimResult = NodeHelper.nodeinsurerAliasValidate(sectionName, "name", this.element, claimResult, dataValidationParameter, insurerAlliasService, insurerChorganisationService);
+            this.claimResult = NodeHelper.nodeinsurerAliasValidate(sectionName, "name", this.element, claimResult, dataValidationParameter, insurerAliasService, insurerChorganisationService);
             this.claimResult = NodeHelper.nodeValidate(sectionName, "policy-number", this.element, claimResult, dataValidationParameter);
             this.claimResult = NodeHelper.nodeValidate(sectionName, "claim-reference", this.element, claimResult, dataValidationParameter);
             this.claimResult = NodeHelper.nodeValidate(sectionName, "vehicle-registration", this.element, claimResult, dataValidationParameter);
@@ -116,8 +116,8 @@ public class ClaimThirdPartyValidation extends SecureDataService implements rule
         
         String insurerAliasName = XmlHelper.getNodeValue(this.element, "name");
         if(insurerAliasName!=null && insurerAliasName.length()>0){
-            InsurerAllias allias = insurerAlliasService.getInsurerByAlliasName(insurerAliasName);
-            this.claimResult.getClaim().getThirdParty().setInsurer(allias.getInsurer());
+            InsurerAlias alias = insurerAliasService.getInsurerByAliasName(insurerAliasName);
+            this.claimResult.getClaim().getThirdParty().setInsurer(alias.getInsurer());
         }
         
         String claimNumber = XmlHelper.getNodeValue(this.element, "claim-reference");

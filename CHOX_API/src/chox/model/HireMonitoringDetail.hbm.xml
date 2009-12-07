@@ -5,9 +5,7 @@
     <id column="id" name="id">
       <generator class="increment"/>
     </id>
-    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
-    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="name_of_repairer" name="nameOfRepairer"/>
     <property column="repair_book_in_date" name="repairBookInDate"/>
@@ -23,5 +21,7 @@
     <property column="labour_cost" name="labourCost"/>
     <property column="non_provision_reason" name="nonProvisionReason"/>
     <property column="next_review_date" name="nextReviewDate"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
   </class>
 </hibernate-mapping>

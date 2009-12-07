@@ -34,9 +34,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private ThirdPartyService thirdPartyService;
     private VehicleHireService vehicleHireService;
     private SolicitorService solicitorService;
-    private InsurerAlliasService insurerAlliasService;
+    private InsurerAliasService insurerAliasService;
     private ChorganisationService chorganisationService;
-    private ChoBandService choBandService;
+    private BreBandService breBandService;
     private HistoryService historyService;
     private HireMonitoringEcdService hireMonitoringEcdService;
     private HireMonitoringDetailService hireMonitoringDetailService;
@@ -222,7 +222,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
             if (bordereauResult.isValid()) {
 
-                bordereauResult = new BordereauDataValidation().validate(file, fileName, bordereauResult, claimService, chorganisationService, choBandService, vehicleClassService, insurerAlliasService, insurerChorganisationService, hireMonitoringEcdService, invoiceService, historyService, businessRulesEngService);
+                bordereauResult = new BordereauDataValidation().validate(file, fileName, bordereauResult, claimService, chorganisationService, breBandService, vehicleClassService, insurerAliasService, insurerChorganisationService, hireMonitoringEcdService, invoiceService, historyService, businessRulesEngService);
 
                 int totalRecord = bordereauResult.getClaimResult().size();
                 int totalProcessed = 0;
@@ -391,16 +391,16 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         this.auditTrailService = auditTrailService;
     }
 
-    public void setInsurerAlliasService(InsurerAlliasService insurerAlliasService) {
-        this.insurerAlliasService = insurerAlliasService;
+    public void setInsurerAliasService(InsurerAliasService insurerAliasService) {
+        this.insurerAliasService = insurerAliasService;
     }
 
     public void setChorganisationService(ChorganisationService chorganisationService) {
         this.chorganisationService = chorganisationService;
     }
 
-    public void setChoBandService(ChoBandService choBandService) {
-        this.choBandService = choBandService;
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
     }
 
     public void setHistoryService(HistoryService historyService) {

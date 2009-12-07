@@ -60,7 +60,7 @@
     <bean id="hireMonitoringEcdService" class="chox.services.HireMonitoringEcdServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="insurerAlliasService" class="chox.services.InsurerAlliasServiceImpl" singleton="false">
+    <bean id="insurerAliasService" class="chox.services.InsurerAliasServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="reasonOfDelayService" class="chox.services.ReasonOfDelayServiceImpl" singleton="false">
@@ -73,14 +73,11 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
-    <bean id="choBandOrganisationService" class="chox.services.ChoBandOrganisationServiceImpl" singleton="false">
+    <bean id="breBandOrganisationService" class="chox.services.BreBandOrganisationServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
-    <bean id="choBandService" class="chox.services.ChoBandServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="globalConfigurationService" class="chox.services.GlobalConfigurationServiceImpl" singleton="false">
+    <bean id="breBandService" class="chox.services.BreBandServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="auditTrailService" class="chox.services.AuditTrailServiceImpl" singleton="false">
@@ -95,13 +92,7 @@
     </bean>    
     <bean id="reasonOfRejectionService" class="chox.services.ReasonOfRejectionServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>    
-    <bean id="supportMessageService" class="chox.services.SupportMessageServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean> 
-    <bean id="systemLogService" class="chox.services.SystemLogServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>     
+    </bean>       
     <bean id="webUserUserRoleService" class="chox.services.WebUserUserRoleServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
@@ -136,9 +127,9 @@
         <property name="vehicleHireService" ref="vehicleHireService" />
         <property name="solicitorService" ref="solicitorService" />
         <property name="invoiceService" ref="invoiceService" />
-        <property name="insurerAlliasService" ref="insurerAlliasService" />
+        <property name="insurerAliasService" ref="insurerAliasService" />
         <property name="chorganisationService" ref="chorganisationService" />
-        <property name="choBandService" ref="choBandService" />
+        <property name="breBandService" ref="breBandService" />
         <property name="historyService" ref="historyService" />
         <property name="auditTrailService" ref="auditTrailService" />
         <property name="sessionFactory" ref="sessionFactory"/>

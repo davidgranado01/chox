@@ -102,33 +102,33 @@ INSERT INTO insurer (id,name,created_by,created_date,last_modified_by,last_modif
 INSERT INTO insurer (id,name,created_by,created_date,last_modified_by,last_modified_date,admin_handling_charge,status,vat_no,company_no,address1,address2,address3,address4,address5,postcode,phone,is_workgroup_enable) VALUES (10,'Highway',999,{ts '2008-11-20 00:23:44'},999,{ts '2008-11-20 00:23:44'},0.00,true,'N/A','N/A','N/A','N/A',null,null,null,'N/A',null,false);
 INSERT INTO insurer (id,name,created_by,created_date,last_modified_by,last_modified_date,admin_handling_charge,status,vat_no,company_no,address1,address2,address3,address4,address5,postcode,phone,is_workgroup_enable) VALUES (16,'Direct Line',999,{ts '2009-01-02 17:43:05'},999,{ts '2009-01-02 17:43:05'},0.00,true,'N/A','N/A','N/A','N/A',null,null,null,'N/A',null,false);
 
--- insurer_allias
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'ROYAL & SUN ALLIANCE',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},1);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'TOYOTA INSURANCE',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},2);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'VOLVO INSURANCE',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},3);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'ROYAL AND SUN ALLIANCE',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},4);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'LANDROVER INSURANCE',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},5);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'RSA Motobility',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},6);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'ROYAL & SUN ALLIANCE MOTABILITY',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},7);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'MORE THAN INSURANCE',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},8);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'Direct Line',999,{ts '2008-11-24 20:55:48'},999,{ts '2008-11-24 20:55:48'},9);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'RBS',999,{ts '2008-11-24 20:57:19'},999,{ts '2008-11-24 20:57:19'},11);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'RSA',999,{ts '2008-11-25 18:13:50'},999,{ts '2008-11-25 18:13:50'},12);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'MORE THAN',999,{ts '2008-12-03 22:49:47'},999,{ts '2008-12-03 22:49:47'},13);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'More TH>N',999,{ts '2008-12-03 22:49:57'},999,{ts '2008-12-03 22:49:57'},14);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'more than',999,{ts '2008-12-03 23:32:25'},999,{ts '2008-12-03 23:32:25'},15);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'morethan',999,{ts '2008-12-03 23:32:25'},999,{ts '2008-12-03 23:32:25'},16);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'MORE TH>N',999,{ts '2008-12-03 23:32:25'},999,{ts '2008-12-03 23:32:25'},17);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'more tha>n',999,{ts '2008-12-03 23:32:25'},999,{ts '2008-12-03 23:32:25'},18);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'More Than',999,{ts '2008-12-08 16:29:06'},999,{ts '2008-12-08 16:29:06'},19);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'More Th>n',999,{ts '2008-12-08 16:29:06'},999,{ts '2008-12-08 16:29:06'},20);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'MoreThan',999,{ts '2008-12-08 16:29:06'},999,{ts '2008-12-08 16:29:06'},21);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'MoreTh>n',999,{ts '2008-12-08 16:29:06'},999,{ts '2008-12-08 16:29:06'},22);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'moreth>n',999,{ts '2008-12-08 16:29:06'},999,{ts '2008-12-08 16:29:06'},23);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'more than insurance',999,{ts '2008-12-12 17:59:00'},999,{ts '2008-12-12 17:59:00'},24);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'More Than Insurance',999,{ts '2008-12-12 17:59:00'},999,{ts '2008-12-12 17:59:00'},25);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'More Th>n Insurance',999,{ts '2008-12-12 17:59:00'},999,{ts '2008-12-12 17:59:00'},26);
-INSERT INTO insurer_allias (insurer_id,allias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'more th>n insurance',999,{ts '2008-12-12 17:59:00'},999,{ts '2008-12-12 17:59:00'},27);
+-- insurer_alias
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'ROYAL & SUN ALLIANCE',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},1);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'TOYOTA INSURANCE',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},2);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'VOLVO INSURANCE',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},3);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'ROYAL AND SUN ALLIANCE',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},4);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'LANDROVER INSURANCE',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},5);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'RSA Motobility',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},6);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'ROYAL & SUN ALLIANCE MOTABILITY',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},7);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'MORE THAN INSURANCE',999,{ts '2008-11-24 20:23:17'},999,{ts '2008-11-24 20:23:17'},8);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'Direct Line',999,{ts '2008-11-24 20:55:48'},999,{ts '2008-11-24 20:55:48'},9);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'RBS',999,{ts '2008-11-24 20:57:19'},999,{ts '2008-11-24 20:57:19'},11);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'RSA',999,{ts '2008-11-25 18:13:50'},999,{ts '2008-11-25 18:13:50'},12);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'MORE THAN',999,{ts '2008-12-03 22:49:47'},999,{ts '2008-12-03 22:49:47'},13);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'More TH>N',999,{ts '2008-12-03 22:49:57'},999,{ts '2008-12-03 22:49:57'},14);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'more than',999,{ts '2008-12-03 23:32:25'},999,{ts '2008-12-03 23:32:25'},15);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'morethan',999,{ts '2008-12-03 23:32:25'},999,{ts '2008-12-03 23:32:25'},16);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'MORE TH>N',999,{ts '2008-12-03 23:32:25'},999,{ts '2008-12-03 23:32:25'},17);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'more tha>n',999,{ts '2008-12-03 23:32:25'},999,{ts '2008-12-03 23:32:25'},18);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'More Than',999,{ts '2008-12-08 16:29:06'},999,{ts '2008-12-08 16:29:06'},19);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'More Th>n',999,{ts '2008-12-08 16:29:06'},999,{ts '2008-12-08 16:29:06'},20);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'MoreThan',999,{ts '2008-12-08 16:29:06'},999,{ts '2008-12-08 16:29:06'},21);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'MoreTh>n',999,{ts '2008-12-08 16:29:06'},999,{ts '2008-12-08 16:29:06'},22);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'moreth>n',999,{ts '2008-12-08 16:29:06'},999,{ts '2008-12-08 16:29:06'},23);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'more than insurance',999,{ts '2008-12-12 17:59:00'},999,{ts '2008-12-12 17:59:00'},24);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'More Than Insurance',999,{ts '2008-12-12 17:59:00'},999,{ts '2008-12-12 17:59:00'},25);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'More Th>n Insurance',999,{ts '2008-12-12 17:59:00'},999,{ts '2008-12-12 17:59:00'},26);
+INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'more th>n insurance',999,{ts '2008-12-12 17:59:00'},999,{ts '2008-12-12 17:59:00'},27);
 
 -- chorganisation
 INSERT INTO chorganisation (id,name,address1,address2,address3,address4,address5,postcode,vat_no,company_no,is_delegated_authority,created_by,created_date,last_modified_by,last_modified_date,status,phone) VALUES (1006,'Drive Assist','Address1','Address2','Address3',null,null,'Postcode','VATNO','COMPNO',true,999,{ts '2008-11-19 17:12:13'},999,{ts '2008-11-19 17:12:13'},true,null);

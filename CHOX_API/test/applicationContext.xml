@@ -33,11 +33,10 @@
         </property>
         <property name="mappingResources">
             <list>
-                <value>chox/model/GlobalConfiguration.hbm.xml</value>
                 <value>chox/model/History.hbm.xml</value>
                 <value>chox/model/WebUser.hbm.xml</value>
                 <value>chox/model/WebUserRole.hbm.xml</value>
-                <value>chox/model/ChoBandOrganisation.hbm.xml</value>
+                <value>chox/model/BreBandOrganisation.hbm.xml</value>
                 <value>chox/model/Chorganisation.hbm.xml</value>
                 <value>chox/model/Claim.hbm.xml</value>
                 <value>chox/model/Customer.hbm.xml</value>
@@ -52,8 +51,8 @@
                 <value>chox/model/VehicleClass.hbm.xml</value>
                 <value>chox/model/VehicleHire.hbm.xml</value>
                 <value>chox/model/Witness.hbm.xml</value>
-                <value>chox/model/ChoBand.hbm.xml</value>
-                <value>chox/model/InsurerAllias.hbm.xml</value>
+                <value>chox/model/BreBand.hbm.xml</value>
+                <value>chox/model/InsurerAlias.hbm.xml</value>
                 <value>chox/model/Accessibility.hbm.xml</value>
                 <value>chox/model/AccessibilityItem.hbm.xml</value>
                 <value>chox/model/Comment.hbm.xml</value>
@@ -61,7 +60,6 @@
                 <value>chox/model/HireMonitoringEcd.hbm.xml</value>
                 <value>chox/model/AuditTrail.hbm.xml</value>
                 <value>chox/model/ReasonOfRejection.hbm.xml</value>
-                <value>chox/model/SupportMessage.hbm.xml</value>
                 <value>chox/model/SystemLog.hbm.xml</value>
                 <value>chox/model/WebUserUserRole.hbm.xml</value>
                 <value>chox/model/InsurerChorganisation.hbm.xml</value>
@@ -69,7 +67,7 @@
                 <value>chox/model/AttachmentType.hbm.xml</value>
                 <value>chox/model/Bordereau.hbm.xml</value>
                 <value>chox/model/Workgroup.hbm.xml</value>
-                <value>chox/model/UserWorkgroup.hbm.xml</value>
+                <value>chox/model/WebUserWorkgroup.hbm.xml</value>
                 <value>chox/model/Notification.hbm.xml</value>
                 <value>chox/model/VehicleClassCeiling.hbm.xml</value>
             </list>

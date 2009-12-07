@@ -2,9 +2,9 @@ package chox.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import scsbre.model.ICHOBandInfo;
+import scsbre.model.IBREBandInfo;
 
-public class ChoBand extends AuditableEntity implements Serializable, ICHOBandInfo {
+public class BreBand extends AuditableEntity implements Serializable, IBREBandInfo {
 
     protected Insurer insurer;
     protected boolean isActive;
@@ -66,7 +66,7 @@ public class ChoBand extends AuditableEntity implements Serializable, ICHOBandIn
     protected boolean hireNetDoesNotExceedBandHireNetCeiling;
     protected boolean repairNetDoesNotExceedBandRepairNetCeiling;
 
-    public ChoBand() {
+    public BreBand() {
     }
 
     public Insurer getInsurer() {

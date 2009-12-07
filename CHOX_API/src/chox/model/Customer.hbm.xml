@@ -25,19 +25,19 @@
     <property column="initial_ecd" name="initialECD" not-null="false"/>
     <property column="policy_number" name="policyNumber"/>
     <property column="claim_reference" name="claimReference"/>
-    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
-    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="is_primary_driver" name="isPrimaryDriver" not-null="true"/>
     <property column="is_usable" name="isUsable" not-null="true"/>
     <property column="is_active" name="isActive" not-null="true"/>
     <property column="comprehensive" name="comprehensive" not-null="true"/>
     <property column="is_total_loss" name="isTotalLoss" not-null="true"/>
-    <many-to-one class="chox.model.VehicleClass" column="vehicle_class_id" name="vehicleClass"/>
     <property column="insurer_name" name="insurerName" not-null="true"/>
     <property column="age" name="age"/>
     <property column="occupation" name="occupation"/>
     <property column="policy_usage" name="policyUsage"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    <many-to-one class="chox.model.VehicleClass" column="vehicle_class_id" name="vehicleClass"/>
   </class>
 </hibernate-mapping>

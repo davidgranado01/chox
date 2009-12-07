@@ -1,7 +1,7 @@
 package chox.xmlValidation.rules.enginee;
 
 import chox.model.Invoice;
-import chox.services.ChoBandService;
+import chox.services.BreBandService;
 import chox.services.ChorganisationService;
 import chox.services.ClaimService;
 import chox.services.SecureDataService;
@@ -22,12 +22,12 @@ public class InvoiceEngineeringFee extends SecureDataService implements rulesInt
     private DataValidationParameter dataValidationParameter;
     private ClaimService claimService;
     private ChorganisationService chorganisationService;
-    private ChoBandService choBandService;
+    private BreBandService breBandService;
     private ClaimResult claimResult;
     private Element element;
 
     public void setElement(Element element) { this.element = element; }
-    public void setChoBandService(ChoBandService choBandService) { this.choBandService = choBandService; }
+    public void setBreBandService(BreBandService breBandService) { this.breBandService = breBandService; }
     public void setChorganisationService(ChorganisationService chorganisationService) { this.chorganisationService = chorganisationService; }
     public void setClaimResult(ClaimResult claimResult) { this.claimResult = claimResult; }
     public void setClaimService(ClaimService claimService) { this.claimService = claimService; }
@@ -38,13 +38,13 @@ public class InvoiceEngineeringFee extends SecureDataService implements rulesInt
             DataValidationParameter dataValidationParameter, 
             ClaimService claimService, 
             ChorganisationService chorganisationService, 
-            ChoBandService choBandService){
+            BreBandService breBandService){
         
             setClaimResult(claimResult);
             setDataValidationParameter(dataValidationParameter);
             setClaimService(claimService);
             setChorganisationService(chorganisationService);
-            setChoBandService(choBandService);    
+            setBreBandService(breBandService);
     }
     
     public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{

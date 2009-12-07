@@ -50,9 +50,7 @@
     <property column="dual_control_qty" name="dualControlQty"/>
     <property column="delivery_collection_fee" name="deliveryCollectionFee"/>
     <property column="delivery_collection_qty" name="deliveryCollectionQty"/>
-    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
-    <many-to-one class="chox.model.WebUser" column="last_nodified_by" name="lastModifiedBy"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="is_payment_mode" name="isPaymentMode"/>
     <property column="is_engineer_decision_approved" name="isEngineerDecisionApproved"/>
@@ -61,9 +59,11 @@
     <property column="hire_rate_charged_per_day" name="hireRateChargedPerDay"/>
     <property column="excess_amount_collected" name="excessAmountCollected"/>
     <property column="vat_amount_collected" name="vatAmountCollected"/>
-    <property column="panalty_charge" name="penaltyCharge"/>
-    <property column="panalty_alert_qty" name="penaltyAlertQty"/>
+    <property column="penalty_charge" name="penaltyCharge"/>
+    <property column="penalty_alert_qty" name="penaltyAlertQty"/>
     <property column="reason_of_rejection_id" name="reasonOfRejectionId"/>
     <property column="penalty_charge_applied_date" name="penaltyChargeAppliedDate"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+    <many-to-one class="chox.model.WebUser" column="last_nodified_by" name="lastModifiedBy"/>
   </class>
 </hibernate-mapping>

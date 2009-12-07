@@ -1,7 +1,7 @@
 package chox.xmlValidation.rules.enginee;
 
 import chox.model.Incident;
-import chox.services.ChoBandService;
+import chox.services.BreBandService;
 import chox.services.ChorganisationService;
 import chox.services.ClaimService;
 import chox.services.SecureDataService;

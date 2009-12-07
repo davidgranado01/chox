@@ -1,15 +1,15 @@
 package chox.services;
 
-import chox.model.UserWorkgroup;
+import chox.model.WebUserWorkgroup;
 import java.util.List;
 
 public interface UserWorkgroupService {
     
-    public List<UserWorkgroup> getObjects(int userId);
-    public UserWorkgroup getObject(int id);
-    public boolean DeleteObject(UserWorkgroup object);
+    public List<WebUserWorkgroup> getObjects(int userId);
+    public WebUserWorkgroup getObject(int id);
+    public boolean DeleteObject(WebUserWorkgroup object);
     public Integer DeleteObject(int webUserId);
-    public boolean AddObject(UserWorkgroup object);
+    public boolean AddObject(WebUserWorkgroup object);
     public boolean isObjectExist(int WorkgroupId);
     public boolean isObjectExist(int webUserId, int workgroupId);
     

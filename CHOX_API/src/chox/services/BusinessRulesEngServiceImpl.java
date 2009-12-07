@@ -1,6 +1,6 @@
 package chox.services;
 
-import chox.model.ChoBand;
+import chox.model.BreBand;
 import chox.model.Claim;
 import chox.model.EngineerReport;
 import chox.model.History;
@@ -23,7 +23,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
     private HireMonitoringEcdService hireMonitoringEcdService;
     private InvoiceService invoiceService;
     private HistoryService historyService;
-    private ChoBandService choBandService;
+    private BreBandService breBandService;
     private InsurerService insurerService;
     
     public void setClaimService(ClaimService claimService) {
@@ -38,8 +38,8 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
     public void setHistoryService(HistoryService historyService) {
         this.historyService = historyService;
     }
-    public void setChoBandService(ChoBandService choBandService) {
-        this.choBandService = choBandService;
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
     }
     public void setInsurerService(InsurerService insurerService) {
         this.insurerService = insurerService;
@@ -112,17 +112,17 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
     private void process(ClaimResult claimResult) {
 
-        ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId());
+        BreBand breBand = breBandService.getBreBandByChorganisationIdAndInsurerId(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId());
 
         // System.out.println("getInsurer:"+claimResult.getClaim().getInsurer().getId());
         // System.out.println("getChorganisation:"+claimResult.getClaim().getChorganisation().getId());
-        // System.out.println("choBand:"+choBand.getId());
+        // System.out.println("breBand:"+breBand.getId());
 
-        if(choBand.getId()!=null){
+        if(breBand.getId()!=null){
 
             VehicleClassCeiling vehicleClassCeiling = insurerService.getVechileClassCeilingForClaim(claimResult.getClaim());
-            choBand.setVehicleClassCeiling(vehicleClassCeiling);
-            claimResult.getClaim().setChoband(choBand);
+            breBand.setVehicleClassCeiling(vehicleClassCeiling);
+            claimResult.getClaim().setBreBand(breBand);
             
             Boolean isEngReportExist = false;
             if (claimResult.getClaim().getEngineerReport() != null) {
@@ -165,10 +165,10 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
     public RulesEngineResponse processResubmitInvoice(Claim breClaim){
 
-        ChoBand choBand = choBandService.getChoBandByChorganisationIdAndInsurerId(breClaim.getChorganisation().getId(), breClaim.getInsurer().getId());
+        BreBand breBand = breBandService.getBreBandByChorganisationIdAndInsurerId(breClaim.getChorganisation().getId(), breClaim.getInsurer().getId());
         VehicleClassCeiling vehicleClassCeiling = insurerService.getVechileClassCeilingForClaim(breClaim);
-        choBand.setVehicleClassCeiling(vehicleClassCeiling);
-        breClaim.setChoband(choBand);
+        breBand.setVehicleClassCeiling(vehicleClassCeiling);
+        breClaim.setBreBand(breBand);
             
         Boolean isEngReportExist = false;
         if (breClaim.getEngineerReport() != null) {
@@ -229,7 +229,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         System.out.println("-------");
         System.out.println(sectionName + "| getChorganisation :" + claimResult.getClaim().getClaimNumber());
         System.out.println(sectionName + "| getChorganisation :" + claimResult.getClaim().getChorganisation());
-        System.out.println(sectionName + "| getChoBand :" + claimResult.getClaim().getChoBand());
+        System.out.println(sectionName + "| getBreBand :" + claimResult.getClaim().getBreBand());
         System.out.println(sectionName + "| getCustomer :" + claimResult.getClaim().getCustomer());
         // System.out.println(sectionName + "| getEngineerReport :"+claimResult.getClaim().getEngineerReport().getAddress1());
         // System.out.println(sectionName + "| getHireMonitoringDetail :"+claimResult.getClaim().getHireMonitoringDetail().getNameOfIme());

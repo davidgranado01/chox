@@ -1,7 +1,7 @@
 package chox.xmlValidation.rules.enginee;
 
 import chox.model.Invoice;
-import chox.services.ChoBandService;
+import chox.services.BreBandService;
 import chox.services.ChorganisationService;
 import chox.services.ClaimService;
 import chox.services.SecureDataService;
@@ -22,12 +22,12 @@ public class InvoiceValidation extends SecureDataService implements rulesInterfa
     private DataValidationParameter dataValidationParameter;
     private ClaimService claimService;
     private ChorganisationService chorganisationService;
-    private ChoBandService choBandService;
+    private BreBandService breBandService;
     private ClaimResult claimResult;
     private Element element;
 
     public void setElement(Element element) { this.element = element; }
-    public void setChoBandService(ChoBandService choBandService) { this.choBandService = choBandService; }
+    public void setBreBandService(BreBandService breBandService) { this.breBandService = breBandService; }
     public void setChorganisationService(ChorganisationService chorganisationService) { this.chorganisationService = chorganisationService; }
     public void setClaimResult(ClaimResult claimResult) { this.claimResult = claimResult; }
     public void setClaimService(ClaimService claimService) { this.claimService = claimService; }
@@ -38,13 +38,13 @@ public class InvoiceValidation extends SecureDataService implements rulesInterfa
             DataValidationParameter dataValidationParameter, 
             ClaimService claimService, 
             ChorganisationService chorganisationService, 
-            ChoBandService choBandService){
+            BreBandService breBandService){
         
             setClaimResult(claimResult);
             setDataValidationParameter(dataValidationParameter);
             setClaimService(claimService);
             setChorganisationService(chorganisationService);
-            setChoBandService(choBandService);    
+            setBreBandService(breBandService);
     }
     
     public ClaimResult execute() throws DOMException, XPathExpressionException, Exception{
@@ -120,26 +120,26 @@ public class InvoiceValidation extends SecureDataService implements rulesInterfa
         this.claimResult.getClaim().setInvoice(invoice);
         
         // VEHICLE
-        InvoiceVehiclesValidation vehiclesVal = new InvoiceVehiclesValidation(claimResult, dataValidationParameter, claimService, chorganisationService, choBandService);
+        InvoiceVehiclesValidation vehiclesVal = new InvoiceVehiclesValidation(claimResult, dataValidationParameter, claimService, chorganisationService, breBandService);
         this.claimResult = vehiclesVal.execute();
         
         // SUPPLIER
-        InvoiceSupplierValidation supplierVal = new InvoiceSupplierValidation(claimResult, dataValidationParameter, claimService, chorganisationService, choBandService);
+        InvoiceSupplierValidation supplierVal = new InvoiceSupplierValidation(claimResult, dataValidationParameter, claimService, chorganisationService, breBandService);
         this.claimResult = supplierVal.execute();
         
         // REPAIR
-        InvoiceRepairValidation repairVal = new InvoiceRepairValidation(claimResult, dataValidationParameter, claimService, chorganisationService, choBandService);
+        InvoiceRepairValidation repairVal = new InvoiceRepairValidation(claimResult, dataValidationParameter, claimService, chorganisationService, breBandService);
         this.claimResult = repairVal.execute();        
         
         // STORAGE RECOVERY
-        InvoiceStorageRecoveryValidation storageeRecVal = new InvoiceStorageRecoveryValidation(claimResult, dataValidationParameter, claimService, chorganisationService, choBandService);
+        InvoiceStorageRecoveryValidation storageeRecVal = new InvoiceStorageRecoveryValidation(claimResult, dataValidationParameter, claimService, chorganisationService, breBandService);
         this.claimResult = storageeRecVal.execute();
 
         // ENGINEERING FEE
-        InvoiceEngineeringFee engFeeVal = new InvoiceEngineeringFee(claimResult, dataValidationParameter, claimService, chorganisationService, choBandService);
+        InvoiceEngineeringFee engFeeVal = new InvoiceEngineeringFee(claimResult, dataValidationParameter, claimService, chorganisationService, breBandService);
         this.claimResult = engFeeVal.execute();
         
-        InvoiceExtraValidation extraValidation = new InvoiceExtraValidation(claimResult, dataValidationParameter, claimService, chorganisationService, choBandService);
+        InvoiceExtraValidation extraValidation = new InvoiceExtraValidation(claimResult, dataValidationParameter, claimService, chorganisationService, breBandService);
         this.claimResult = extraValidation.execute();
         
     }

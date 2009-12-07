@@ -6,37 +6,16 @@ import java.util.Date;
 
 public class Incident extends AuditableEntity implements Serializable {
 
-    /** 
-     * This attribute maps to the column date in the incident table.
-     */
     protected Date date;
-    /** 
-     * This attribute maps to the column location in the incident table.
-     */
     protected String location;
-    /** 
-     * This attribute maps to the column incident_description in the incident table.
-     */
     protected String incidentDescription;
-    /** 
-     * This attribute maps to the column is_police_involved in the incident table.
-     */
     protected boolean isPoliceInvolved;
     protected Witness witness;
     protected Injury injury;
 
-    /**
-     * Method 'Incident'
-     * 
-     */
     public Incident() {
     }
 
-    /**
-     * Method 'getDate'
-     * 
-     * @return java.util.Date
-     */
     @TypeConversion(converter = "chox.data.DateConverter")
     public java.util.Date getDate() {
         return date;

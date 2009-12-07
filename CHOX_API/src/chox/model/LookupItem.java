@@ -4,10 +4,6 @@
  */
 package chox.model;
 
-/**
- *
- * @author Emmanuel
- */
 public class LookupItem {
 
     private String text;

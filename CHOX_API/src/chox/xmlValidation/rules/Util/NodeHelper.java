@@ -6,9 +6,9 @@
 package chox.xmlValidation.rules.Util;
 
 import chox.Util.TextHelper;
-import chox.model.InsurerAllias;
+import chox.model.InsurerAlias;
 import chox.model.VehicleClass;
-import chox.services.InsurerAlliasService;
+import chox.services.InsurerAliasService;
 import chox.services.InsurerChorganisationService;
 import chox.services.VehicleClassService;
 import chox.services.ClaimResult;
@@ -48,7 +48,7 @@ public class NodeHelper {
         Element element,
         ClaimResult claimResult, 
         DataValidationParameter dataValidationParameter,
-        InsurerAlliasService insurerAlliasService,
+        InsurerAliasService insurerAliasService,
         InsurerChorganisationService insurerChorganisationService){
         
         boolean isValid = true;
@@ -63,13 +63,13 @@ public class NodeHelper {
             
         }else{
             
-            InsurerAllias allias = insurerAlliasService.getInsurerByAlliasName(value);
+            InsurerAlias object = insurerAliasService.getInsurerByAliasName(value);
             
-            if(allias!=null){ 
+            if(object!=null){
                 
-                if(allias.getInsurer()!=null){
+                if(object.getInsurer()!=null){
                     
-                    if(!insurerChorganisationService.isActiveObjectExist(allias.getInsurer().getId(), claimResult.getClaim().getChorganisation().getId())){
+                    if(!insurerChorganisationService.isActiveObjectExist(object.getInsurer().getId(), claimResult.getClaim().getChorganisation().getId())){
                         isValid = false;
                         claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value, sectionName));
                     }

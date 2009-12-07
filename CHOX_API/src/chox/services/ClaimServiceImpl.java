@@ -199,7 +199,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if(searchCriteria.getIsWorkgroupCheck()){
             if(RoleHelper.isUserCheckByWorkgroup(getCurrentUser())){
-                criteria.add(Restrictions.sqlRestriction("workgroup_id in (select workgroup_id from user_workgroup where user_id ="+getCurrentUser().getId()+")"));
+                criteria.add(Restrictions.sqlRestriction("workgroup_id in (select workgroup_id from web_user_workgroup where user_id ="+getCurrentUser().getId()+")"));
             }
         }
         

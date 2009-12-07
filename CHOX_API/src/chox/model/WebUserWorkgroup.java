@@ -2,7 +2,7 @@ package chox.model;
 
 import java.io.Serializable;
 
-public class UserWorkgroup extends AuditableEntity implements Serializable {
+public class WebUserWorkgroup extends AuditableEntity implements Serializable {
 
     protected Workgroup workgroup;
     protected WebUser user;

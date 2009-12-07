@@ -3,23 +3,14 @@
  * and open the template in the editor.
  */
 package chox.services;
-
-import chox.data.SecurityInfoProvider;
-import chox.model.Chorganisation;
-import chox.model.SystemLog;
-import chox.model.WebUser;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate3.HibernateTransactionManager;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -28,10 +19,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-/**
- *
- * @author Emmanuel
- */
 public class DataService extends HibernateDaoSupport {
 
     private HibernateTransactionManager transactionManager;
@@ -139,27 +126,6 @@ public class DataService extends HibernateDaoSupport {
                     }
                 });
     }
-    
-    /*
-    public void logSystemLog(String actionId, String msg, boolean status){
-        
-        SystemLog systemLog = new SystemLog();
-        systemLog.setActionId(actionId);
-        systemLog.setMessage(msg);
-        
-        if(status){
-            systemLog.setStatus("S");
-        }else{
-            systemLog.setStatus("F");
-        }
-        
-        try {
-            save(systemLog);
-        } catch (Throwable e) {
-           e.printStackTrace();
-        }
-    } 
-    */
     
     public void delete(final Object object) {
         TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());

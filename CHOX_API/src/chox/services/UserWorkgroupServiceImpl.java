@@ -1,6 +1,6 @@
 package chox.services;
 
-import chox.model.UserWorkgroup;
+import chox.model.WebUserWorkgroup;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
@@ -9,13 +9,13 @@ import org.hibernate.criterion.Restrictions;
 
 public class UserWorkgroupServiceImpl extends SecureDataService implements UserWorkgroupService {
 
-    public List<UserWorkgroup> getObjects(int userId) {
+    public List<WebUserWorkgroup> getObjects(int userId) {
         
-        List<UserWorkgroup> objects = new ArrayList<UserWorkgroup>();
+        List<WebUserWorkgroup> objects = new ArrayList<WebUserWorkgroup>();
         
         try {
             
-            DetachedCriteria criteria = DetachedCriteria.forClass(UserWorkgroup.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
             
             if(userId>0){
                 criteria.add(Restrictions.eq("user.id", userId));
@@ -32,8 +32,8 @@ public class UserWorkgroupServiceImpl extends SecureDataService implements UserW
         return objects;
     }
 
-    public UserWorkgroup getObject(int id) {
-        return (UserWorkgroup) get(UserWorkgroup.class, id);
+    public WebUserWorkgroup getObject(int id) {
+        return (WebUserWorkgroup) get(WebUserWorkgroup.class, id);
     }
 
     public Integer DeleteObject(int webUserId){
@@ -41,8 +41,8 @@ public class UserWorkgroupServiceImpl extends SecureDataService implements UserW
         Integer records = 0;
         boolean bFlag = true;
         
-        List<UserWorkgroup> workgroups = getObjects(webUserId);
-        for(UserWorkgroup obj : workgroups){
+        List<WebUserWorkgroup> workgroups = getObjects(webUserId);
+        for(WebUserWorkgroup obj : workgroups){
             bFlag = DeleteObject(obj);
             
             if(!bFlag){
@@ -55,7 +55,7 @@ public class UserWorkgroupServiceImpl extends SecureDataService implements UserW
     }
     
     
-    public boolean DeleteObject(UserWorkgroup object) {
+    public boolean DeleteObject(WebUserWorkgroup object) {
         
         boolean bFlag = false;
         
@@ -78,7 +78,7 @@ public class UserWorkgroupServiceImpl extends SecureDataService implements UserW
         
         try {
             
-            DetachedCriteria criteria = DetachedCriteria.forClass(UserWorkgroup.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
 
             criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
             
@@ -99,7 +99,7 @@ public class UserWorkgroupServiceImpl extends SecureDataService implements UserW
         
         try {
             
-            DetachedCriteria criteria = DetachedCriteria.forClass(UserWorkgroup.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
 
             criteria.add(Restrictions.eq("workgroup.id", workgroupId));
             criteria.add(Restrictions.eq("user.id", webUserId));
@@ -115,7 +115,7 @@ public class UserWorkgroupServiceImpl extends SecureDataService implements UserW
         return isExist;      
     }    
 
-    public boolean AddObject(UserWorkgroup object) {
+    public boolean AddObject(WebUserWorkgroup object) {
         boolean bFlag = false;
         try {
             save(object);

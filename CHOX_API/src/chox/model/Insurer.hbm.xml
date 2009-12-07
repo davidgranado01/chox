@@ -19,13 +19,13 @@
     <property column="admin_handling_charge" name="adminHandlingCharge"/>
     <property column="cho_agreed_benefit_value" name="choAgreedBenefitValue"/>
     <property column="scs_agreed_benefit_share_value" name="scsAgreedBenefitShareValue"/>
-    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
-    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="is_workgroup_enable" name="workgroupEnable"/>
     <property column="is_auto_routing_enable" name="autoRoutingEnable"/>
     <property column="is_claim_ownership_enable" name="claimOwnershipEnable"/>
+    <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
+    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="vehicleClassCeilings">
       <key column="insurer_id"/>
       <one-to-many class="chox.model.VehicleClassCeiling"/>

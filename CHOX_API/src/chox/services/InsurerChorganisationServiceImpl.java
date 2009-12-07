@@ -16,10 +16,10 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
     // **********************
     // DEFINE SERVIES
     // **********************
-    private ChoBandOrganisationService choBandOrganisationService;
+    private BreBandOrganisationService breBandOrganisationService;
 
-    public void setChoBandOrganisationService(ChoBandOrganisationService choBandOrganisationService) {
-        this.choBandOrganisationService = choBandOrganisationService;
+    public void setBreBandOrganisationService(BreBandOrganisationService breBandOrganisationService) {
+        this.breBandOrganisationService = breBandOrganisationService;
     }
     
     
@@ -84,7 +84,7 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
             bFlag = true;
             
             if(!object.isStatus()){
-                choBandOrganisationService.deleteChoBandOrganisationByChorganisationId(object.getChorganisation().getId(), object.getInsurer().getId());
+                breBandOrganisationService.deleteBreBandOrganisationByChorganisationId(object.getChorganisation().getId(), object.getInsurer().getId());
             }
 
         } catch (Throwable e) {

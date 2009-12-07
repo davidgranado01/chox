@@ -1,7 +1,7 @@
 package chox.services;
 
 import chox.Util.RoleHelper;
-import chox.model.ChoBand;
+import chox.model.BreBand;
 import chox.model.ReasonOfRejection;
 import chox.model.Chorganisation;
 import chox.model.ClaimStatus;
@@ -9,7 +9,7 @@ import chox.model.IdLookupItem;
 import chox.model.Insurer;
 import chox.model.LookupItem;
 import chox.model.ReasonOfDelay;
-import chox.model.UserWorkgroup;
+import chox.model.WebUserWorkgroup;
 import chox.model.VehicleClass;
 import chox.model.WebUser;
 import chox.model.Workgroup;
@@ -44,8 +44,8 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         return findByCriteria(criteria,true);
     }
     
-    public List getInsurerChoBand(int insurerId){
-        DetachedCriteria criteria = DetachedCriteria.forClass(ChoBand.class).addOrder(Order.asc("id"));
+    public List getInsurerBreBand(int insurerId){
+        DetachedCriteria criteria = DetachedCriteria.forClass(BreBand.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("insurer.id", insurerId));
          return findByCriteria(criteria,true);
     }
@@ -136,14 +136,14 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
         List workgroups = new ArrayList();
 
-        DetachedCriteria criteria = DetachedCriteria.forClass(UserWorkgroup.class);
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
         criteria.add(Restrictions.eq("user.id", userId));
 
         List result = findByCriteria(criteria,true);
 
         for (Object o : result) {
             
-            UserWorkgroup a = (UserWorkgroup) o;
+            WebUserWorkgroup a = (WebUserWorkgroup) o;
 
             if(isActiveOnly){
                 if(a.getWorkgroup().isStatus()){
