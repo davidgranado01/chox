@@ -1,7 +1,7 @@
 package chox.web.actions;
 
 import chox.model.Chorganisation;
-import chox.services.ChoBandOrganisationService;
+import chox.services.BreBandOrganisationService;
 import chox.services.ChorganisationService;
 import chox.web.viewdata.ChorganisationViewData;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import net.sf.json.JSONArray;
 public class ChorganisationAction extends BaseAction {
 
     private List<ChorganisationViewData> credithireorganisation;
-    private ChoBandOrganisationService choBandOrganisationService;
+    private BreBandOrganisationService breBandOrganisationService;
     private ChorganisationService service;
     private int insurerId;
     
@@ -28,8 +28,8 @@ public class ChorganisationAction extends BaseAction {
         return "{totalCount:" + this.credithireorganisation.size() + ",results:" + jObject.toString() + "}";
     }
 
-    public void setChoBandOrganisationService(ChoBandOrganisationService choBandOrganisationService) {
-        this.choBandOrganisationService = choBandOrganisationService;
+    public void setBreBandOrganisationService(BreBandOrganisationService breBandOrganisationService) {
+        this.breBandOrganisationService = breBandOrganisationService;
     }
     
     public void setChorganisationService(ChorganisationService service)
@@ -70,10 +70,7 @@ public class ChorganisationAction extends BaseAction {
     }  
     
     // BRE MAPPING, GET CREDIT HIRE WITHOUT CHO BAND
-    public String getChorganisationsByInsurerIdWithoutChoBand(){
-        
-        String sActionMsg = "";
-        boolean bActionFlag = false;
+    public String getChorganisationsByInsurerIdWithoutBreBand(){
          
         try{
             
@@ -85,7 +82,7 @@ public class ChorganisationAction extends BaseAction {
                 
                 for(Chorganisation object : chorganisations){
                     
-                    if(!choBandOrganisationService.isActiveChorganisationWithBand(object.getId(), insurerId)){
+                    if(!breBandOrganisationService.isActiveChorganisationWithBand(object.getId(), insurerId)){
                         credithireorganisation.add(new ChorganisationViewData(object));
                     }
 

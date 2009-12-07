@@ -8,7 +8,6 @@ import chox.Util.DateHelper;
 import chox.model.Chorganisation;
 import chox.model.Insurer;
 import chox.services.DataService;
-import chox.services.SystemLogService;
 import chox.web.report.viewdata.InvoiceSummary;
 import chox.web.report.viewdata.InvoiceSummaryReportObject;
 import chox.web.security.PermissionedUser;
@@ -26,7 +25,6 @@ public class InvoiceSummaryReport implements Report {
     Map externalParameter;
     List<String> reportParameterNames;
     private DataService dataService;
-    private SystemLogService systemLogService;
     
     public InvoiceSummaryReport() {
         reportParameterNames = new ArrayList<String>();
@@ -257,10 +255,6 @@ public class InvoiceSummaryReport implements Report {
 
     public void setDataService(DataService dataService) {
         this.dataService = dataService;
-    }
-    
-    public void setSystemLogService(SystemLogService systemLogService) {
-        this.systemLogService = systemLogService;
     }
 
     public String getReportCode() {

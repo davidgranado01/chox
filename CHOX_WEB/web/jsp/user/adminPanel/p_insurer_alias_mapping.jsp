@@ -4,18 +4,18 @@
 
 <script type="text/javascript">
     
-    var allias_gridviewJsonReader;
-    var allias_gridviewDataStore;
-    var allias_gridviewGrid;
-    var allias_gridviewData;
-    var allias_recordPerPage = 20;
+    var alias_gridviewJsonReader;
+    var alias_gridviewDataStore;
+    var alias_gridviewGrid;
+    var alias_gridviewData;
+    var alias_recordPerPage = 20;
     var selectOrgId = <s:property value="selectOrgId" />;
 
-    selectedPanel = 'InsurerAlliasMappingMgmt';
+    selectedPanel = 'InsurerAliasMappingMgmt';
     
     Ext.onReady(function(){
       
-       allias_gridviewJsonReader = new Ext.data.JsonReader({
+       alias_gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
             fields:
@@ -29,15 +29,15 @@
             ]
         });
 
-        allias_gridviewData = new Ext.data.Store({
+        alias_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: 'user/getInsurerAllias.action',method:'GET'}),
-            reader:allias_gridviewJsonReader      
+            ({url: 'user/getInsurerAlias.action',method:'GET'}),
+            reader:alias_gridviewJsonReader      
         });
     
-        allias_gridviewGrid = new Ext.grid.GridPanel({
-            listeners:  {cellclick:allias_recordOnclick },
-            store: allias_gridviewData,
+        alias_gridviewGrid = new Ext.grid.GridPanel({
+            listeners:  {cellclick:alias_recordOnclick },
+            store: alias_gridviewData,
             loadMask: true,
             columns: [
                 {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
@@ -49,36 +49,36 @@
                 
 
             ],
-            renderTo:'allias_gridviewGrid',
+            renderTo:'alias_gridviewGrid',
                 width:605,
                 autoHeight:true,
                 enableHdMenu:false
             });
 
             var pagingBar = new Ext.PagingToolbar({
-                pageSize: allias_recordPerPage,
-                store: allias_gridviewData,
+                pageSize: alias_recordPerPage,
+                store: alias_gridviewData,
                 displayInfo: true,
                 displayMsg: 'Displaying records {0} - {1} of {2}',
                 emptyMsg: "No record to display"
             });    
             
-            allias_loadGridViewList()
+            alias_loadGridViewList()
 
     }); 
     
-    function allias_recordOnclick(grid, rowIndex, columnIndex, e){
+    function alias_recordOnclick(grid, rowIndex, columnIndex, e){
 
-        var gridView = allias_gridviewGrid.getStore().getAt(rowIndex);  // Get the Record
+        var gridView = alias_gridviewGrid.getStore().getAt(rowIndex);  // Get the Record
 
         if(columnIndex==2){
-            allias_triggerStatusRemoveRecord(gridView);
+            alias_triggerStatusRemoveRecord(gridView);
         }
     }
     
-    function allias_loadGridViewList(){
+    function alias_loadGridViewList(){
         
-        allias_gridviewData.load(
+        alias_gridviewData.load(
         {
             params:
             {
@@ -86,52 +86,52 @@
             }
         });
         
-        $("#insurerAlliasName").val("");
+        $("#insurerAliasName").val("");
     }
     
-    function allias_doSelectChange(){
-        allias_loadGridViewList();
+    function alias_doSelectChange(){
+        alias_loadGridViewList();
     }
     
-    function allias_triggerStatusAddRecord(){
+    function alias_triggerStatusAddRecord(){
         
-        var insurerAlliasName = $("#insurerAlliasName").val();
+        var insurerAliasName = $("#insurerAliasName").val();
         
-        if(insurerAlliasName!=null && insurerAlliasName!="" && selectOrgId!=null && selectOrgId!=""){
+        if(insurerAliasName!=null && insurerAliasName!="" && selectOrgId!=null && selectOrgId!=""){
             
-            $("#CDInsurerAlliasMessageBox").html("");
+            $("#CDInsurerAliasMessageBox").html("");
             
             $.ajax({
-               url: "addInsurerAllias.action?insurerId="+selectOrgId+"&insurerAlliasName="+insurerAlliasName+uniqeToken(),
-               success: allias_onSubmitResponseReceived
+               url: "addInsurerAlias.action?insurerId="+selectOrgId+"&insurerAliasName="+insurerAliasName+uniqeToken(),
+               success: alias_onSubmitResponseReceived
             });
             
             return true;
             
         }else{
-            $("#CDInsurerAlliasMessageBox").html("Please enter 'Insurer Alias Name'");
+            $("#CDInsurerAliasMessageBox").html("Please enter 'Insurer Alias Name'");
         }
         
         return false;
     }
     
-    function allias_triggerStatusRemoveRecord(gridView){
+    function alias_triggerStatusRemoveRecord(gridView){
 
         if(confirm("Are you sure you want to remove this alias?")){
             
             var gridViewId = gridView.get("id");
 
             $.ajax({
-               url: "removeInsurerAllias.action?insurerAlliasId="+gridViewId+uniqeToken(),
-               success: allias_onSubmitResponseReceived
+               url: "removeInsurerAlias.action?insurerAliasId="+gridViewId+uniqeToken(),
+               success: alias_onSubmitResponseReceived
             });
         }
     }
     
-    function allias_onSubmitResponseReceived(responseText, statusText)  {
+    function alias_onSubmitResponseReceived(responseText, statusText)  {
         responseText = responseText.trim();
-        $("#CDInsurerAlliasMessageBox").html(responseText);
-        allias_loadGridViewList();
+        $("#CDInsurerAliasMessageBox").html(responseText);
+        alias_loadGridViewList();
     } 
     
 </script>
@@ -141,13 +141,13 @@
             <table width="100%">
                 <tr><td>
                         <div class="label-block">
-                            <p class="std-label">Insurer Alias: </p> <input name="insurerAlliasName" id="insurerAlliasName" type="text">
-                            <input type="submit" onclick="javascript: return allias_triggerStatusAddRecord();" value="Add"/>
+                            <p class="std-label">Insurer Alias: </p> <input name="insurerAliasName" id="insurerAliasName" type="text">
+                            <input type="submit" onclick="javascript: return alias_triggerStatusAddRecord();" value="Add"/>
                         </div>
                     </td></tr>
-                <tr><td><div id="CDInsurerAlliasMessageBox" class="errorBox"></div></td></tr>
+                <tr><td><div id="CDInsurerAliasMessageBox" class="errorBox"></div></td></tr>
             </table>
         </div>
-        <div id="allias_gridviewGrid" class="admin-tab-grid-view"></div>
+        <div id="alias_gridviewGrid" class="admin-tab-grid-view"></div>
     </div>
 </div>

@@ -2,7 +2,7 @@ package chox.web.actions;
 
 import chox.Util.RoleHelper;
 import chox.model.IdLookupItem;
-import chox.model.UserWorkgroup;
+import chox.model.WebUserWorkgroup;
 import chox.model.WebUser;
 import chox.model.WebUserRole;
 import chox.model.Workgroup;
@@ -55,11 +55,11 @@ public class doUserWorkgroupAction extends BaseAction{
         
         List items = new ArrayList<IdLookupItem>();
         
-        List<UserWorkgroup> selectedWorkgroups = service.getObjects(webUserId);
+        List<WebUserWorkgroup> selectedWorkgroups = service.getObjects(webUserId);
         List<Workgroup> availableWorkgroups = workgroupService.getObjects(insurerId);
         List<Integer> selectedList = new ArrayList<Integer>();
         
-        for (UserWorkgroup o : selectedWorkgroups) {
+        for (WebUserWorkgroup o : selectedWorkgroups) {
             selectedList.add(o.getWorkgroup().getId());
         }
         
@@ -157,7 +157,7 @@ public class doUserWorkgroupAction extends BaseAction{
             boolean isAllowToDelete = true;
             String errMsg = "";
             
-            UserWorkgroup model = service.getObject(userWorkgroupId);
+            WebUserWorkgroup model = service.getObject(userWorkgroupId);
             WebUser user = userService.getObject(this.webUserId);
 
             if(user.getInsurer()!=null){
@@ -204,7 +204,7 @@ public class doUserWorkgroupAction extends BaseAction{
                 
             }else{
                 
-                UserWorkgroup userworkgroup = new UserWorkgroup();
+                WebUserWorkgroup userworkgroup = new WebUserWorkgroup();
                 userworkgroup.setUser(webuser);
                 userworkgroup.setWorkgroup(selectedWorkgroup);
             

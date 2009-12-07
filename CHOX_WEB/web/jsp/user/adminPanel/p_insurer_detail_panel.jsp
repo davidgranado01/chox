@@ -157,7 +157,7 @@
            activeTab: adminCurrentTabIndex,
            items:[
                 {contentEl:'insurerDetailPanelTab', title:'Details',listeners: {activate: insHandleActivate}},
-                {contentEl:'insurerAlliasPanelTab', title:'Alias', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
+                {contentEl:'insurerAliasPanelTab', title:'Alias', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerWorkgroupPanelTab', title:'Workgroup', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerBrePanelTab', title:'BRE Band', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
@@ -173,7 +173,7 @@
 
         function doBreMappingRefresh(tab){
             insHandleActivate(tab);
-            onChoBandPageRefresh();
+            onBreBandPageRefresh();
         }
         
         function insHandleActivate(tab){
@@ -195,7 +195,7 @@
 <div id="insurerBrePanelTab" class="x-hide-display">
     <div class="sub-admin-tab-css">
         <s:action name="loadAdminPanel" executeResult="true">
-            <s:param name="adminPanelName">InsurerChoBandMgmt</s:param>
+            <s:param name="adminPanelName">InsurerBreBandMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="objectId" /></s:param>        
         </s:action>
     </div>
@@ -204,7 +204,7 @@
 <div id="insurerBreMappingPanelTab" class="x-hide-display">
     <div class="sub-admin-tab-css">
         <s:action name="loadAdminPanel" executeResult="true">
-            <s:param name="adminPanelName">InsurerChoBandMappingMgmt</s:param>
+            <s:param name="adminPanelName">InsurerBreBandMappingMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="objectId" /></s:param>        
         </s:action>
     </div>
@@ -228,10 +228,10 @@
     </div>
 </div>
 
-<div id="insurerAlliasPanelTab" class="x-hide-display">
+<div id="insurerAliasPanelTab" class="x-hide-display">
     <div class="sub-admin-tab-css">
         <s:action name="loadAdminPanel" executeResult="true">
-            <s:param name="adminPanelName">InsurerAlliasMappingMgmt</s:param>
+            <s:param name="adminPanelName">InsurerAliasMappingMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="objectId" /></s:param>        
         </s:action>
     </div>

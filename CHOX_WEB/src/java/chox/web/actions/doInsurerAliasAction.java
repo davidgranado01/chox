@@ -5,20 +5,20 @@
 
 package chox.web.actions;
 
-import chox.model.InsurerAllias;
-import chox.services.InsurerAlliasService;
+import chox.model.InsurerAlias;
+import chox.services.InsurerAliasService;
 import chox.services.InsurerService;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
-public class doInsurerAlliasAction extends BaseAction implements ModelDriven<InsurerAllias>, Preparable {
+public class doInsurerAliasAction extends BaseAction implements ModelDriven<InsurerAlias>, Preparable {
     
     protected int insurerId=-1;
-    protected int insurerAlliasId=-1;
-    protected String insurerAlliasName;
-    private InsurerAllias model;
+    protected int insurerAliasId=-1;
+    protected String insurerAliasName;
+    private InsurerAlias model;
     private String actionResult;
-    protected InsurerAlliasService service;
+    protected InsurerAliasService service;
     protected InsurerService insurerService;
     
     public String getActionResult() {
@@ -34,17 +34,17 @@ public class doInsurerAlliasAction extends BaseAction implements ModelDriven<Ins
         this.insurerService = insurerService;
     }
 
-    public void setInsurerAlliasService(InsurerAlliasService service)
+    public void setInsurerAliasService(InsurerAliasService service)
     {
         this.service = service;
     }
     
-    public int getInsurerAlliasId() {
-        return insurerAlliasId;
+    public int getInsurerAliasId() {
+        return insurerAliasId;
     }
 
-    public void setInsurerAlliasId(int insurerAlliasId) {
-        this.insurerAlliasId = insurerAlliasId;
+    public void setInsurerAliasId(int insurerAliasId) {
+        this.insurerAliasId = insurerAliasId;
     }
 
     public int getInsurerId() {
@@ -55,12 +55,12 @@ public class doInsurerAlliasAction extends BaseAction implements ModelDriven<Ins
         this.insurerId = insurerId;
     }
 
-    public String getInsurerAlliasName() {
-        return insurerAlliasName;
+    public String getInsurerAliasName() {
+        return insurerAliasName;
     }
 
-    public void setInsurerAlliasName(String insurerAlliasName) {
-        this.insurerAlliasName = insurerAlliasName;
+    public void setInsurerAliasName(String insurerAliasName) {
+        this.insurerAliasName = insurerAliasName;
     }
     
     public String removeObject(){
@@ -70,28 +70,28 @@ public class doInsurerAlliasAction extends BaseAction implements ModelDriven<Ins
     
     public String addObject(){
         
-        if(!service.isInsurerAlliasExist(insurerId, insurerAlliasName)){
-            model = new InsurerAllias();
-            model.setAlliasName(insurerAlliasName);
+        if(!service.isInsurerAliasExist(insurerId, insurerAliasName)){
+            model = new InsurerAlias();
+            model.setAliasName(insurerAliasName);
             model.setInsurer(insurerService.getObject(insurerId));
             service.updateObject(model);
         }else{
-            actionResult = "Alias '"+insurerAlliasName+"' already exists";
+            actionResult = "Alias '"+insurerAliasName+"' already exists";
         }
         
         return SUCCESS;
     }
 
-    public InsurerAllias getModel() {
+    public InsurerAlias getModel() {
         return this.model;
     }
 
     public void prepare() throws Exception {
         
-        if (Integer.valueOf(insurerAlliasId) <= 0) {
-            model = new InsurerAllias();
+        if (Integer.valueOf(insurerAliasId) <= 0) {
+            model = new InsurerAlias();
         } else {
-            model = service.getObject(insurerAlliasId);
+            model = service.getObject(insurerAliasId);
         }
     }
     

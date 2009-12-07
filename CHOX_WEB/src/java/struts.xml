@@ -820,11 +820,11 @@
             <result name="ChoxPanelMgmt">/jsp/user/adminPanel/p_insurer_org_mgmt_panel.jsp</result>
             <result name="UserMgmt">/jsp/user/adminPanel/p_user_mgmt_panel.jsp</result>
             <result name="InsurerOrgMappingMgmt">/jsp/user/adminPanel/p_insurer_chorganisation_mapping.jsp</result>
-            <result name="InsurerAlliasMappingMgmt">/jsp/user/adminPanel/p_insurer_allias_mapping.jsp</result>
+            <result name="InsurerAliasMappingMgmt">/jsp/user/adminPanel/p_insurer_alias_mapping.jsp</result>
             <result name="InsurerWorkgroupMappingMgmt">/jsp/user/adminPanel/p_insurer_workgroup_mapping.jsp</result>
             <result name="UserroleMapping">/jsp/user/adminPanel/p_user_role_mapping.jsp</result>
-            <result name="InsurerChoBandMgmt">/jsp/user/adminPanel/p_insurer_choband_mgmt_panel.jsp</result>
-            <result name="InsurerChoBandMappingMgmt">/jsp/user/adminPanel/p_insurer_choband_mapping.jsp</result>
+            <result name="InsurerBreBandMgmt">/jsp/user/adminPanel/p_insurer_breband_mgmt_panel.jsp</result>
+            <result name="InsurerBreBandMappingMgmt">/jsp/user/adminPanel/p_insurer_breband_mapping.jsp</result>
             <result name="InsurerPanelMgmt">/jsp/user/adminPanel/p_insurer_mgmt_panel.jsp</result>
             <result name="InsurerVehicleClassCeiling">/jsp/user/adminPanel/p_insurer_vehicle_class_ceiling.jsp</result>
             <result name="NONE">/jsp/p_response.jsp</result>
@@ -921,14 +921,14 @@
         </action>        
         
         
-        <action name="getInsurerAllias" class="chox.web.actions.InsurerAlliasAction">
+        <action name="getInsurerAlias" class="chox.web.actions.InsurerAliasAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
-        <action name="removeInsurerAllias" class="chox.web.actions.doInsurerAlliasAction" method="removeObject">
+        <action name="removeInsurerAlias" class="chox.web.actions.doInsurerAliasAction" method="removeObject">
             <result name="success">/jsp/p_response.jsp
             </result>
         </action>
-        <action name="addInsurerAllias" class="chox.web.actions.doInsurerAlliasAction" method="addObject">
+        <action name="addInsurerAlias" class="chox.web.actions.doInsurerAliasAction" method="addObject">
             <result name="success">/jsp/p_response.jsp
             </result>
         </action>        
@@ -950,7 +950,7 @@
         </action>        
         <action name="getSelectedInsurerChorganisation" class="chox.web.actions.InsurerChorganisationAction" method="getSelectedChorganisation">
             <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>    
+        </action>
         <action name="doRemoveInsurerChorganisation" class="chox.web.actions.doInsurerChorganisationAction" method="removeObject">
             <result name="success">/jsp/p_response.jsp
             </result>
@@ -959,30 +959,30 @@
             <result name="success">/jsp/p_response.jsp
             </result>
         </action>   
-        <action name="getInsurerChoBand" class="chox.web.actions.InsurerChoBandAction">
+        <action name="getInsurerBreBand" class="chox.web.actions.InsurerBreBandAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
-        <action name="updateInsurerChoBandDetailPanel" class="chox.web.actions.doInsurerChoBandAction" method="doRenderActionPage">
-            <result name="success">/jsp/user/adminPanel/p_insurer_choband_detail_panel.jsp</result>
+        <action name="updateInsurerBreBandDetailPanel" class="chox.web.actions.doInsurerBreBandAction" method="doRenderActionPage">
+            <result name="success">/jsp/user/adminPanel/p_insurer_breband_detail_panel.jsp</result>
         </action>
-        <action name="updateInsurerChoBandDetail" class="chox.web.actions.doInsurerChoBandAction" method="updateModel">
+        <action name="updateInsurerBreBandDetailPanel" class="chox.web.actions.doInsurerBreBandAction" method="updateModel">
             <result name="success">/jsp/p_actionResponseJsonData.jsp</result>
         </action>
        
-        <action name="doDeleteCreditHireBand" class="chox.web.actions.doInsurerChoBandAction" method="deleteChoBand">
+        <action name="doDeleteCreditHireBand" class="chox.web.actions.doInsurerBreBandAction" method="deleteBreBand">
             <result name="success">/jsp/p_response.jsp</result>
         </action>      
         
-        <action name="getAvailableInsurerChoBandChorganisation" class="chox.web.actions.ChorganisationAction" method="getChorganisationsByInsurerIdWithoutChoBand">
+        <action name="getAvailableInsurerBreBandChorganisation" class="chox.web.actions.ChorganisationAction" method="getChorganisationsByInsurerIdWithoutBreBand">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
-        <action name="getSelectedInsurerChoBandChorganisation" class="chox.web.actions.InsurerChoBandMappingAction" method="getChorganisationWithChoBandAssigned">
+        <action name="getSelectedInsurerBreBandChorganisation" class="chox.web.actions.InsurerBreBandMappingAction" method="getChorganisationWithBreBandAssigned">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>   
-        <action name="doAddNewBandChorganisationMapping" class="chox.web.actions.doInsurerChoBandMappingAction" method="addObject">
+        <action name="doAddNewBandChorganisationMapping" class="chox.web.actions.doInsurerBreBandMappingAction" method="addObject">
             <result name="success">/jsp/p_response.jsp</result>
         </action>
-        <action name="doRemoveBandChorganisationMapping" class="chox.web.actions.doInsurerChoBandMappingAction" method="removeObject">
+        <action name="doRemoveBandChorganisationMapping" class="chox.web.actions.doInsurerBreBandMappingAction" method="removeObject">
             <result name="success">/jsp/p_response.jsp</result>
         </action>
         <action name="doRemoveVehicleClassCeilingMapping" class="chox.web.actions.doVehicleClassCeilingAction" method="removeObject">
@@ -999,7 +999,7 @@
         <action name="UserroleDropDownAction" class="chox.web.actions.WebUserroleDropDownAction">
             <result>/jsp/user/adminPanel/p_dropdown_userrole.jsp</result>
         </action>
-        <action name="ChoBandDropDownAction" class="chox.web.actions.ChoBandDropDownAction">
+        <action name="BreBandDropDownAction" class="chox.web.actions.BreBandDropDownAction">
             <result>/jsp/user/adminPanel/p_dropdown_bre.jsp</result>
         </action>
         <action name="VehicleClassDropDownAction" class="chox.web.actions.VehicleClassDropDownAction">

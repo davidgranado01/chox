@@ -6,7 +6,7 @@
 package chox.web.actions;
 
 import chox.model.Claim;
-import chox.services.ChoBandService;
+import chox.services.BreBandService;
 import chox.services.ClaimService;
 import chox.services.InvoiceService;
 import chox.web.security.MenuAccessibility;
@@ -647,14 +647,14 @@ public class ClaimActionTest {
     }
 
     /**
-     * Test of setChoBandService method, of class ClaimAction.
+     * Test of setBreBandService method, of class ClaimAction.
      */
     @Test
-    public void testSetChoBandService() {
-        System.out.println("setChoBandService");
-        ChoBandService choBandService = null;
+    public void testSetBreandService() {
+
+        BreBandService breBandService = null;
         ClaimAction instance = new ClaimAction();
-        instance.setChoBandService(choBandService);
+        instance.setBreBandService(breBandService);
         // Review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

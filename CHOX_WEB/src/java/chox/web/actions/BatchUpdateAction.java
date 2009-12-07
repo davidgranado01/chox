@@ -12,7 +12,6 @@ import chox.model.Workgroup;
 import chox.services.AuditTrailService;
 import chox.services.ClaimService;
 import chox.services.CommentService;
-import chox.services.SystemLogService;
 import chox.services.UserService;
 import chox.services.WorkgroupService;
 import java.util.ArrayList;

@@ -1,9 +1,9 @@
 package chox.web.viewdata;
 
 import chox.Util.DateHelper;
-import chox.model.ChoBandOrganisation;
+import chox.model.BreBandOrganisation;
 
-public class ChoBandChorganisationViewData {
+public class BreBandChorganisationViewData {
 
     private int id;
     private int insurerId;
@@ -16,9 +16,7 @@ public class ChoBandChorganisationViewData {
     private String createdBy;
     private String createdDate;
     
-    
-    
-    public ChoBandChorganisationViewData(ChoBandOrganisation object) {
+    public BreBandChorganisationViewData(BreBandOrganisation object) {
          
         this.id = object.getId();
         

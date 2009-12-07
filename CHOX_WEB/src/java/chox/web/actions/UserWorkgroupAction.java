@@ -5,7 +5,7 @@
 
 package chox.web.actions;
 
-import chox.model.UserWorkgroup;
+import chox.model.WebUserWorkgroup;
 import chox.services.UserWorkgroupService;
 import chox.web.viewdata.UserWorkgroupViewData;
 import java.util.ArrayList;
@@ -46,11 +46,11 @@ public class UserWorkgroupAction extends BaseAction {
     @Override
     public String execute() {
 
-        List<UserWorkgroup> userworkgroupData = this.service.getObjects(webUserId);
+        List<WebUserWorkgroup> userworkgroupData = this.service.getObjects(webUserId);
 
         userworkgroups = new ArrayList<UserWorkgroupViewData>();
         
-        for(UserWorkgroup h : userworkgroupData)
+        for(WebUserWorkgroup h : userworkgroupData)
         {
             userworkgroups.add(new UserWorkgroupViewData(h));
         }

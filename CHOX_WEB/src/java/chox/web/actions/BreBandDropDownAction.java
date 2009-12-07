@@ -1,15 +1,15 @@
 package chox.web.actions;
 
-import chox.services.ChoBandService;
+import chox.services.BreBandService;
 import java.util.List;
 
-public class ChoBandDropDownAction extends BaseAction{
+public class BreBandDropDownAction extends BaseAction{
 
     private List breBands = null;
     private Integer orgId;
-    private ChoBandService services;
+    private BreBandService services;
 
-    public void setChoBandService(ChoBandService services) {
+    public void setBreBandService(BreBandService services) {
         this.services = services;
     }
     
@@ -27,7 +27,7 @@ public class ChoBandDropDownAction extends BaseAction{
     
     @Override
     public String execute() throws Exception {
-        this.breBands = services.getInsurerChoBand(getOrgId());
+        this.breBands = services.getInsurerBreBand(getOrgId());
         return SUCCESS;     
     }    
 }

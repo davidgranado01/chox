@@ -5,25 +5,23 @@
 
 package chox.web.actions;
 
-import chox.model.ChoBandOrganisation;
-import chox.services.ChoBandOrganisationService;
-import chox.services.ChoBandService;
+import chox.model.BreBandOrganisation;
+import chox.services.BreBandOrganisationService;
+import chox.services.BreBandService;
 import chox.services.ChorganisationService;
 
-
-public class doInsurerChoBandMappingAction extends BaseAction {
+public class doInsurerBreBandMappingAction extends BaseAction {
     
     private Integer objectId = -1;
     private Integer chorganisationId = -1;
-    private Integer chobandId = -1;
+    private Integer breBandId = -1;
     private String actionResult;
-    private ChoBandOrganisationService service;
-    private ChoBandService choBandService;
+    private BreBandOrganisationService service;
+    private BreBandService breBandService;
     private ChorganisationService chorganisationService;
-
-
-    public void setChoBandOrganisationService(ChoBandOrganisationService service) { this.service = service; }
-    public void setChoBandService(ChoBandService choBandService) { this.choBandService = choBandService; }
+    
+    public void setBreBandOrganisationService(BreBandOrganisationService service) { this.service = service; }
+    public void setBreBandService(BreBandService breBandService) { this.breBandService = breBandService; }
     public void setChorganisationService(ChorganisationService chorganisationService) { this.chorganisationService = chorganisationService; }
     
     public String getActionResult() {
@@ -34,12 +32,12 @@ public class doInsurerChoBandMappingAction extends BaseAction {
         this.actionResult = actionResult;
     }
 
-    public Integer getChobandId() {
-        return chobandId;
+    public Integer getBreBandId() {
+        return breBandId;
     }
 
-    public void setChobandId(Integer chobandId) {
-        this.chobandId = chobandId;
+    public void setBreBandId(Integer breBandId) {
+        this.breBandId = breBandId;
     }
 
     public Integer getChorganisationId() {
@@ -62,7 +60,7 @@ public class doInsurerChoBandMappingAction extends BaseAction {
          
         try{       
         
-            ChoBandOrganisation object = service.getObject(objectId);
+            BreBandOrganisation object = service.getObject(objectId);
             service.deleteObject(object);
 
         } catch (Exception ex) {
@@ -79,8 +77,8 @@ public class doInsurerChoBandMappingAction extends BaseAction {
          
         try{  
             
-            ChoBandOrganisation object = new ChoBandOrganisation();
-            object.setChoBand(choBandService.getObject(chobandId));
+            BreBandOrganisation object = new BreBandOrganisation();
+            object.setBreBand(breBandService.getObject(breBandId));
             object.setChorganisation(chorganisationService.getObject(chorganisationId));
             service.updateObject(object);
 

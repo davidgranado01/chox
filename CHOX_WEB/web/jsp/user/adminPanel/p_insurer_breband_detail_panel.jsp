@@ -6,7 +6,7 @@
 
 <script type="text/javascript">
         
-        var selectedPanel = "InsurerChoBandMgmt"; 
+        var selectedPanel = "InsurerBreBandMgmt";
         var selectOrgId = <s:property value="insurerId" />;
         var objectId = -1;
         var isNew = false;
@@ -59,9 +59,9 @@
             
             $(".chox-form-submit-result").html("");
             
-            var validateFlag = $("#formUpdateInsurerChoBandDetail").validate(
+            var validateFlag = $("#formUpdateInsurerBreBandDetail").validate(
             {
-               errorLabelContainer: "#CDInsurerChoBandmessageBox",
+               errorLabelContainer: "#CDInsurerBreBandmessageBox",
                rules: {
                     name:{required:true},
                     isMobileDayAllowance:{required:true, number:true, min:0},
@@ -109,7 +109,7 @@
 
         }
         
-        function doInsurerChoBandSubmit(){
+        function doInsurerBreBandSubmit(){
             
             document.location="#top";
             
@@ -132,26 +132,25 @@
                         error: onSubmitError
                     };
 
-                   $("#formUpdateInsurerChoBandDetail").ajaxSubmit(op);
+                   $("#formUpdateInsurerBreBandDetail").ajaxSubmit(op);
 
 
                 }
             }
         }
         
-        function doInsurerChoBandBack(){
+        function doInsurerBreBandBack(){
             doLoadParameter();
-            var sLocaltion = "#chobandDiv";
+            var sLocaltion = "#breBandDiv";
             var sAction = "loadAdminPanel.action";
             var sparameters = "adminPanelName="+selectedPanel+"&selectOrgId="+selectOrgId;
             doSectionLoad(sLocaltion, sAction, sparameters);
-            // $("#chobandDiv").load("loadAdminPanel.action?adminPanelName="+selectedPanel+"&selectOrgId="+selectOrgId+uniqeToken());
         }
         
         function onBeforeSubmit(formData, jqForm, options) { 
         }
         
-        function doDeleteChoBand(){
+        function doDeleteBreBand(){
             
             doLoadParameter();
             
@@ -172,7 +171,7 @@
             var output = responseText.substring(2,responseText.length);
             
             if(responseText != "" && responseText != "1" && responseText.substring(0,2) == 'D:'){                
-                doInsurerChoBandBack();
+                doInsurerBreBandBack();
             }else{
                 confirm(output);
             }
@@ -192,11 +191,10 @@
                         if(response.resultType && response.resultType == 'New')
                         {
                             var newObjectId =  parseInt(response.result);
-                            var sLocaltion = "#chobandDiv";
+                            var sLocaltion = "#breBandDiv";
                             var sAction = "loadAdminPanel.action";
-                            var sparameters = "adminPanelName=InsurerChoBandMgmt&selectOrgId=" + newObjectId;
+                            var sparameters = "adminPanelName=InsurerBreBandMgmt&selectOrgId=" + newObjectId;
                             doSectionLoad(sLocaltion, sAction, sparameters);
-                           // $("#chobandDiv").load("loadAdminPanel.action?adminPanelName=InsurerChoBandMgmt&selectOrgId=" + newObjectId+uniqeToken());
                         }
                     }
                     else
@@ -213,7 +211,7 @@
 
                $("#admin_param_panel").unblock();
                 if(!isError){
-                    doInsurerChoBandBack();
+                    doInsurerBreBandBack();
                 }
          }
 
@@ -342,9 +340,9 @@
         
 </script>
 
-<div id="chobandDiv" name="chobandDiv">
+<div id="breBandDiv" name="breBandDiv">
 
-    <form id="formUpdateInsurerChoBandDetail" action="user/updateInsurerChoBandDetail.action" method="post" class="XXentity-form" onsubmit="return true;">
+    <form id="formUpdateInsurerBreBandDetail" action="user/updateInsurerBreBandDetail.action" method="post" class="XXentity-form" onsubmit="return true;">
     <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
     <input type="hidden" name="insurerId" id="insurerId" value='<s:property value="insurerId"/>'>
 
@@ -359,14 +357,14 @@
                 <div style="height:550px; overflow:auto; padding-right:10px;" >
                     <a name='top'/>
                     <div class="chox-form-button">
-                    <input type="button" value="Save Changes" onclick="javascript: doInsurerChoBandSubmit();"/>
+                    <input type="button" value="Save Changes" onclick="javascript: doInsurerBreBandSubmit();"/>
                         <s:if test="!isNew">
-                        <input type="button" value="Delete" onclick="javascript: doDeleteChoBand();"/>
+                        <input type="button" value="Delete" onclick="javascript: doDeleteBreBand();"/>
                         </s:if>
-                    <input type="button" value="Cancel" class="cancel" onclick="javascript: doInsurerChoBandBack();" />
+                    <input type="button" value="Cancel" class="cancel" onclick="javascript: doInsurerBreBandBack();" />
                     </div>
 
-                    <div id="CDInsurerChoBandmessageBox" class="errorBox"></div>
+                    <div id="CDInsurerBreBandmessageBox" class="errorBox"></div>
                     <div class="chox-form-submit-result"></div>
 
                     <fieldset class="x-fieldset"><legend>Total Loss Duration Rule</legend>
@@ -754,11 +752,11 @@ Engineer's Estimated Days Under Repair + Take Mobile Vehicle To Garage Variable 
                 </div>
 
                 <div class="chox-form-button" style="padding-top:10px;">
-                <input type="button" value="Save Changes" onclick="javascript: doInsurerChoBandSubmit();"/>
+                <input type="button" value="Save Changes" onclick="javascript: doInsurerBreBandSubmit();"/>
                     <s:if test="!isNew">
-                    <input type="button" value="Delete" onclick="javascript: doDeleteChoBand();"/>
+                    <input type="button" value="Delete" onclick="javascript: doDeleteBreBand();"/>
                     </s:if>
-                <input type="button" value="Cancel" class="cancel" onclick="javascript: doInsurerChoBandBack();" />
+                <input type="button" value="Cancel" class="cancel" onclick="javascript: doInsurerBreBandBack();" />
                 </div>
                             
             </div>

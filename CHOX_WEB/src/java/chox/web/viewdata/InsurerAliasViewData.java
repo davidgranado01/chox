@@ -1,13 +1,13 @@
 package chox.web.viewdata;
 
 import chox.Util.DateHelper;
-import chox.model.InsurerAllias;
+import chox.model.InsurerAlias;
 
 /**
  *
  * @author Carlson
  */
-public class InsurerAlliasViewData {
+public class InsurerAliasViewData {
 
     private int id;
     private String name;
@@ -16,12 +16,12 @@ public class InsurerAlliasViewData {
     private String createdBy;
     private String createdDate;
 
-    public InsurerAlliasViewData(InsurerAllias object) {
+    public InsurerAliasViewData(InsurerAlias object) {
         
         this.id = object.getId();
         this.insurerId = object.getInsurer().getId();
         this.insurerName = object.getInsurer().getName();
-        this.name = object.getAlliasName();
+        this.name = object.getAliasName();
         this.createdBy =object.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.GridViewDateFormat.format(object.getCreatedDate());   
     }    

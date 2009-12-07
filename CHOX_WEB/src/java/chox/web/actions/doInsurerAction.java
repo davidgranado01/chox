@@ -1,8 +1,8 @@
 package chox.web.actions;
 
 import chox.model.Insurer;
-import chox.services.ChoBandService;
-import chox.services.InsurerAlliasService;
+import chox.services.BreBandService;
+import chox.services.InsurerAliasService;
 import chox.services.InsurerService;
 import chox.services.WorkgroupService;
 import chox.web.viewdata.ActionResponse;
@@ -116,8 +116,8 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
                     workgroupService.createDefaultRecord(model);
                 }
                 
-                insurerAlliasService.createDefaultRecord(model);
-                choBandService.createDefaultRecord(model);
+                insurerAliasService.createDefaultRecord(model);
+                breBandService.createDefaultRecord(model);
                 this.getActionResponse().AssignNewIdResult(model.getId());
                 this.isNew = false;
             }
@@ -140,15 +140,15 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
         }
     }
     
-    private InsurerAlliasService insurerAlliasService;
+    private InsurerAliasService insurerAliasService;
     private WorkgroupService workgroupService;
-    private ChoBandService choBandService;
+    private BreBandService breBandService;
     private InsurerService service;
     
     public void setInsurerService(InsurerService service) { this.service = service; }
-    public void setChoBandService(ChoBandService choBandService) { this.choBandService = choBandService; }
+    public void setBreBandService(BreBandService breBandService) { this.breBandService = breBandService; }
     public void setWorkgroupService(WorkgroupService workgroupService) { this.workgroupService = workgroupService; }
-    public void setInsurerAlliasService(InsurerAlliasService insurerAlliasService) { this.insurerAlliasService = insurerAlliasService; }    
+    public void setInsurerAliasService(InsurerAliasService insurerAliasService) { this.insurerAliasService = insurerAliasService; }
     
     
 }

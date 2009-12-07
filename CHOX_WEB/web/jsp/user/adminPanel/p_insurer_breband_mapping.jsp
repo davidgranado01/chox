@@ -4,28 +4,28 @@
 
 <script type="text/javascript">
 
-    var choband_mapping_gridviewJsonReader;
-    var choband_mapping_gridviewDataStore;
-    var choband_mapping_gridviewGrid;
-    var choband_mapping_gridviewData;
-    var choband_mapping_recordPerPage = 20;
+    var breband_mapping_gridviewJsonReader;
+    var breband_mapping_gridviewDataStore;
+    var breband_mapping_gridviewGrid;
+    var breband_mapping_gridviewData;
+    var breband_mapping_recordPerPage = 20;
     var selectOrgId = <s:property value="selectOrgId" />;
     var selectBandId = -1;
     
-    var choband_gridviewJsonReader;
-    var choband_choGridviewJsonReader;
+    var breband_gridviewJsonReader;
+    var breband_choGridviewJsonReader;
     
-    var choband_a_gridviewDataStore;
-    var choband_a_gridviewGrid;
-    var choband_a_gridviewData;
+    var breband_a_gridviewDataStore;
+    var breband_a_gridviewGrid;
+    var breband_a_gridviewData;
     
-    var choband_s_gridviewDataStore;
-    var choband_s_gridviewGrid;
-    var choband_s_gridviewData;
+    var breband_s_gridviewDataStore;
+    var breband_s_gridviewGrid;
+    var breband_s_gridviewData;
     
     Ext.onReady(function(){
        
-       choband_choGridviewJsonReader = new Ext.data.JsonReader({
+       breband_choGridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
             fields:
@@ -39,7 +39,7 @@
             ]
         });
         
-        choband_gridviewJsonReader = new Ext.data.JsonReader({
+        breband_gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
             fields:
@@ -56,36 +56,36 @@
             ]
         });
 
-        choband_a_gridviewData = new Ext.data.Store({
+        breband_a_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: 'user/getAvailableInsurerChoBandChorganisation.action',method:'GET'}),
-            reader:choband_choGridviewJsonReader      
+            ({url: 'user/getAvailableInsurerBreBandChorganisation.action',method:'GET'}),
+            reader:breband_choGridviewJsonReader
         });
 
-        choband_s_gridviewData = new Ext.data.Store({
+        breband_s_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: 'user/getSelectedInsurerChoBandChorganisation.action',method:'GET'}),
-            reader:choband_gridviewJsonReader      
+            ({url: 'user/getSelectedInsurerBreBandChorganisation.action',method:'GET'}),
+            reader:breband_gridviewJsonReader
         });
         
-        choband_a_gridviewGrid = new Ext.grid.GridPanel({
-            listeners:  {cellclick:choband_recordOnclickAdd },
-            store: choband_a_gridviewData,
+        breband_a_gridviewGrid = new Ext.grid.GridPanel({
+            listeners:  {cellclick:breband_recordOnclickAdd },
+            store: breband_a_gridviewData,
             loadMask: true,
             columns: [
                 {header: "Name", width: 180, dataIndex: 'name', sortable: true, resizable: true},
                 {header: "", width: 70, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Add</a>"}}                
             ],
-            renderTo:'choband_a_gridviewGrid',
+            renderTo:'breband_a_gridviewGrid',
                 width:290,
                 autoHeight:true,
                 enableHdMenu:false
             });
 
-        choband_s_gridviewGrid = new Ext.grid.GridPanel({
-            listeners:  {cellclick:choband_recordOnclickRemove },
-            store: choband_s_gridviewData,
+        breband_s_gridviewGrid = new Ext.grid.GridPanel({
+            listeners:  {cellclick:breband_recordOnclickRemove },
+            store: breband_s_gridviewData,
             loadMask: true,
             columns: [
                 {header: "Name", width: 180, dataIndex: 'chorganisationName', sortable: true, resizable: true},
@@ -93,24 +93,24 @@
                 {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Remove</a>"}}
             ],
-            renderTo:'choband_s_gridviewGrid',
+            renderTo:'breband_s_gridviewGrid',
                 width:290,
                 autoHeight:true,
                 enableHdMenu:false
             });
             
-            onChoBandPageRefresh()
+            onBreBandPageRefresh()
     });
     
-    function onChoBandPageRefresh(){
+    function onBreBandPageRefresh(){
         showBreDropDown();
         doParameterRefresh();
-        chobandMapping_loadGridViewList();
+        brebandMapping_loadGridViewList();
     }
     
-    function chobandMapping_loadGridViewList(){
+    function brebandMapping_loadGridViewList(){
         
-        choband_a_gridviewData.load(
+        breband_a_gridviewData.load(
         {
             params:
             {
@@ -118,17 +118,17 @@
             }
         });
         
-        choband_s_gridviewData.load(
+        breband_s_gridviewData.load(
         {
             params:
             {
                 insurerId:selectOrgId,
-                chobandId:selectBandId
+                breBandId:selectBandId
             }
         });
     }
     
-    function choband_recordOnclickAdd(grid, rowIndex, columnIndex, e){
+    function breband_recordOnclickAdd(grid, rowIndex, columnIndex, e){
         
         doParameterRefresh();
         
@@ -137,20 +137,20 @@
             return;
         }
         
-        var gridView = choband_a_gridviewGrid.getStore().getAt(rowIndex);
+        var gridView = breband_a_gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
         
         if(columnIndex==1){
             $.ajax({
-               url: "doAddNewBandChorganisationMapping.action?chorganisationId="+gridViewId+"&chobandId="+selectBandId+uniqeToken(),
+               url: "doAddNewBandChorganisationMapping.action?chorganisationId="+gridViewId+"&breBandId="+selectBandId+uniqeToken(),
                success: doBRESelectOnChange
             });
         }
     }
 
-    function choband_recordOnclickRemove(grid, rowIndex, columnIndex, e){
+    function breband_recordOnclickRemove(grid, rowIndex, columnIndex, e){
         
-        var gridView = choband_s_gridviewGrid.getStore().getAt(rowIndex);
+        var gridView = breband_s_gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
         
         if(columnIndex==2){
@@ -163,7 +163,7 @@
     
     function doBRESelectOnChange(){  
         doParameterRefresh();
-        chobandMapping_loadGridViewList();
+        brebandMapping_loadGridViewList();
     }
     
     function doParameterRefresh(){
@@ -171,12 +171,11 @@
     }
     
     function showBreDropDown() {
-        var sLocaltion = "#chobandDropDownDiv";
-        var sAction = "ChoBandDropDownAction.action";
+        var sLocaltion = "#breBandDropDownDiv";
+        var sAction = "BreBandDropDownAction.action";
         var sparameters = "orgId=" + selectOrgId;
         doSectionLoad(sLocaltion, sAction, sparameters);
         $("#breBandId").val(-1);
-        // $("#chobandDropDownDiv").load("ChoBandDropDownAction.action?orgId=" + selectOrgId+uniqeToken());
     }
     
 </script>
@@ -187,18 +186,18 @@
            <table width="100%">
                 <tr>
                     <td colspan="2">
-                        <div id="chobandDropDownDiv" class="label-block"></div> 
+                        <div id="breBandDropDownDiv" class="label-block"></div>
                     </td>
                     </tr>
-                <tr><td colspan="2"><div id="CDChobandMappingMessageBox" class="errorBox"></div></td></tr>                
+                <tr><td colspan="2"><div id="CDBrebandMappingMessageBox" class="errorBox"></div></td></tr>
             <tr>
                 <td valign="top">
                     <div class="girdViewLabel">Selected Credit Hire Organisations</div>
-                    <div id="choband_s_gridviewGrid" class="girdViewObject"></div>
+                    <div id="breband_s_gridviewGrid" class="girdViewObject"></div>
                 </td>
                 <td valign="top">
                     <div class="girdViewLabel">Available Credit Hire Organisations</div>
-                    <div id="choband_a_gridviewGrid" class="girdViewObject"></div>
+                    <div id="breband_a_gridviewGrid" class="girdViewObject"></div>
                 </td>
             </tr>
             </table> 

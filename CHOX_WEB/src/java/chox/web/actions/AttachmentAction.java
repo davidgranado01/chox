@@ -12,7 +12,6 @@ import chox.services.AttachmentService;
 import chox.services.HistoryService;
 import chox.data.AttachmentCategory;
 import chox.services.AttachmentTypeService;
-import chox.services.GlobalConfigurationService;
 import chox.web.security.ApplicationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
@@ -24,7 +23,6 @@ public class AttachmentAction extends BaseModelAction implements ModelDriven<Att
 
     private AttachmentService service;
     private HistoryService historyService;
-    private GlobalConfigurationService globalConfigurationService;
     private Attachment model;
     private AttachmentTypeService attachmentTypeService;
     
@@ -130,7 +128,7 @@ public class AttachmentAction extends BaseModelAction implements ModelDriven<Att
 
         Boolean bFlag = false;
 
-        GlobalConfiguration gc = globalConfigurationService.getValueByParam("attachment_path");
+
         String attachmentPath = gc.getValue();
 
         if (FileHelper.isFileValid(inputfile)) {
@@ -231,7 +229,6 @@ public class AttachmentAction extends BaseModelAction implements ModelDriven<Att
     
     /** SET SERVICES **/
     public void setHistoryService(HistoryService historyService) { this.historyService = historyService; }
-    public void setGlobalConfigurationService(GlobalConfigurationService globalConfigurationService) { this.globalConfigurationService = globalConfigurationService; }
     public void setAttachmentService(AttachmentService service) { this.service = service; }
     public void setAttachmentTypeService(AttachmentTypeService attachmentTypeService){ this.attachmentTypeService = attachmentTypeService; }
 

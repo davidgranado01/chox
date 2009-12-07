@@ -1,14 +1,14 @@
 package chox.web.actions;
 
-import chox.services.ChoBandOrganisationService;
+import chox.services.BreBandOrganisationService;
 import chox.web.security.PermissionedUser;
 
 public class UploadClaimsAction extends BaseAction {
 
-    private ChoBandOrganisationService choBandOrganisationService;
+    private BreBandOrganisationService breBandOrganisationService;
 
-    public void setChoBandOrganisationService(ChoBandOrganisationService choBandOrganisationService){
-        this.choBandOrganisationService = choBandOrganisationService;
+    public void setBreBandOrganisationService(BreBandOrganisationService breBandOrganisationService){
+        this.breBandOrganisationService = breBandOrganisationService;
     }
             
     public UploadClaimsAction() {
@@ -24,7 +24,7 @@ public class UploadClaimsAction extends BaseAction {
         
         if(user.getIsCHO()){
             int chorgId = user.getUser().getChorganisation().getId();
-            uploadFlag = choBandOrganisationService.isActiveChorganisationWithBand(chorgId);
+            uploadFlag = breBandOrganisationService.isActiveChorganisationWithBand(chorgId);
         }
         
         return uploadFlag;

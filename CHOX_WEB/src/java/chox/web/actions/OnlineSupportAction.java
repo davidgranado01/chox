@@ -2,17 +2,10 @@ package chox.web.actions;
 
 import chox.Util.DateHelper;
 import chox.Util.EmailHelper;
-import chox.model.Claim;
-import chox.model.SupportMessage;
-import chox.services.ClaimService;
-import chox.services.SupportMessageService;
+import org.apache.struts2.ServletActionContext;
 
 public class OnlineSupportAction extends BaseAction{
-    
-    private String[] recipients = {"choxsupport@sherwoodcompliance.co.uk"};
-    
-    private SupportMessageService supportMessageService;
-    private ClaimService claimService;
+
     private String iSupplierReference;
     private String iSubject;
     private String iMessage;
@@ -54,50 +47,33 @@ public class OnlineSupportAction extends BaseAction{
 
     
     public String saveMessage() {
-        
-        SupportMessage message = new SupportMessage();
-        message.setMessage(iMessage);
-        message.setSubject(iSubject);
-        message.setSupplierReference(iSupplierReference.trim());
-        
-        if(claimService.isClaimSupplierReferenceNumberExist(iSupplierReference)){
-            Claim claim = claimService.getClaimByCHOReferenceNumber(iSupplierReference.trim());
-            message.setClaimId(claim.getId());
-        }
-        
+                
         boolean bFlag = true;
         
-        try{
-            EmailHelper emailHelper = new EmailHelper();
-            String emailMessage = doConstructEmailMessage(message);
-            bFlag = emailHelper.postMail(message.getSubject(), emailMessage, recipients);        
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            this.getActionResponse().AddError("Please try again.");
-            bFlag = false;
-        } 
-        
-        if(bFlag){
-            
             try{
-                supportMessageService.updateObject(message);
+
+                String defaultEmail = ServletActionContext.getServletContext().getInitParameter("onlineSupportDefaultEmail");
+                String[] recipients = {defaultEmail};
+     
+                EmailHelper emailHelper = new EmailHelper();
+                String emailMessage = doConstructEmailMessage(iSubject, iSupplierReference, iMessage);
+                bFlag = emailHelper.postMail(iSubject, emailMessage, recipients);
+                
             } catch (Exception ex) {
                 ex.printStackTrace();
                 this.getActionResponse().AddError("Please try again.");
                 bFlag = false;
-            } 
-            
+            }
+        
+        if(bFlag){            
             this.getActionResponse().AssignMessageResult("Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.");
         }
         
         return SUCCESS;
     }
     
-    private String doConstructEmailMessage(SupportMessage message){
-        
-        // System.out.println("A:"+getAuthenticatedUser().getDisplayName()); 
-        // System.out.println("B:"+DateHelper.getCurrentDate()); 
-        
+    private String doConstructEmailMessage(String sSubject, String sSupplierReference, String sMessage){
+                
         StringBuffer emailMsg = new StringBuffer();
         emailMsg.append("======================================================================\n"); 
         emailMsg.append("Submitted By: " + getAuthenticatedUser().getDisplayName());
@@ -105,26 +81,18 @@ public class OnlineSupportAction extends BaseAction{
         emailMsg.append("Date: " + DateHelper.getCurrentDateWithFormat(email_date_format));
         emailMsg.append("\n");
         emailMsg.append("======================================================================\n"); 
-        emailMsg.append("Supplier Reference Number: " + message.getSupplierReference());
+        emailMsg.append("Supplier Reference Number: " + sSupplierReference);
         emailMsg.append("\n");  
-        emailMsg.append("Subject: " + message.getSubject());
+        emailMsg.append("Subject: " + sSubject);
         emailMsg.append("\n");  
         emailMsg.append("======================================================================\n");  
-        emailMsg.append(message.getMessage());
+        emailMsg.append(sMessage);
         emailMsg.append("\n");
         emailMsg.append("======================================================================\n");  
         
         return emailMsg.toString();
     }
-    
-    public void setSupportMessageService(SupportMessageService supportMessageService) {
-        this.supportMessageService = supportMessageService;
-    }
-    
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
-    
+
     @Override
     public String execute()
     {

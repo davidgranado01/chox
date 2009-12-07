@@ -29,10 +29,9 @@
     <bean id="attachmentService" class="chox.services.AttachmentServiceImpl" singleton="false"/>
     <bean id="insurerService" class="chox.services.InsurerServiceImpl" singleton="false"/>
     <bean id="hireMonitoringEcdService" class="chox.services.HireMonitoringEcdServiceImpl" singleton="false"/>
-    <bean id="insurerAlliasService" class="chox.services.InsurerAlliasServiceImpl" singleton="false"/>
+    <bean id="insurerAliasService" class="chox.services.InsurerAliasServiceImpl" singleton="false"/>
     <bean id="chorganisationService" class="chox.services.ChorganisationServiceImpl" singleton="false"/>
-    <bean id="choBandService" class="chox.services.ChoBandServiceImpl" singleton="false"/>
-    <bean id="globalConfigurationService" class="chox.services.GlobalConfigurationServiceImpl" singleton="false"/> 
+    <bean id="breBandService" class="chox.services.BreBandServiceImpl" singleton="false"/>
     <bean id="dataService" class="chox.services.SecureDataService" singleton="false"/>
     <bean id="uploadClaimXMLService" class="chox.services.UploadClaimXMLServiceImpl" singleton="false">
         <property name="vehicleClassService" ref="vehicleClassService" />
@@ -46,9 +45,9 @@
         <property name="vehicleHireService" ref="vehicleHireService" />
         <property name="solicitorService" ref="solicitorService" />
         <property name="invoiceService" ref="invoiceService" />
-        <property name="insurerAlliasService" ref="insurerAlliasService" />
+        <property name="insurerAliasService" ref="insurerAliasService" />
         <property name="chorganisationService" ref="chorganisationService" />
-        <property name="choBandService" ref="choBandService" />
+        <property name="breBandService" ref="breBandService" />
         <property name="historyService" ref="historyService" />
         <property name="auditTrailService" ref="auditTrailService" />
         <property name="sessionFactory" ref="sessionFactory"/>

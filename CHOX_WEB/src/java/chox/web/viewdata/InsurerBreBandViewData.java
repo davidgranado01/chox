@@ -1,10 +1,10 @@
 package chox.web.viewdata;
 
 import chox.Util.DateHelper;
-import chox.model.ChoBand;
+import chox.model.BreBand;
 import chox.services.InsurerService;
 
-public class InsurerChoBandViewData {
+public class InsurerBreBandViewData {
 
     private int id;
     private String name;
@@ -15,7 +15,7 @@ public class InsurerChoBandViewData {
     private String createdBy;
     private String createdDate;
     
-    public InsurerChoBandViewData(ChoBand object) {
+    public InsurerBreBandViewData(BreBand object) {
 
         this.id = object.getId();
         this.name = object.getName();

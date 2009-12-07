@@ -1,18 +1,18 @@
 package chox.web.actions;
 
-import chox.model.ChoBand;
-import chox.services.ChoBandService;
+import chox.model.BreBand;
+import chox.services.BreBandService;
 import chox.services.InsurerService;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 
-public class doInsurerChoBandAction extends BaseAction implements ModelDriven<ChoBand>, Preparable {
+public class doInsurerBreBandAction extends BaseAction implements ModelDriven<BreBand>, Preparable {
 
-    private ChoBandService service;
+    private BreBandService service;
     private InsurerService insurerService;
     private String objectId;
     private int insurerId = -1;
-    private ChoBand model;
+    private BreBand model;
     private String actionResult;    
     private boolean isNew;
     
@@ -40,11 +40,11 @@ public class doInsurerChoBandAction extends BaseAction implements ModelDriven<Ch
         this.actionResult = actionResult;
     }
     
-    public ChoBand getModel() {
+    public BreBand getModel() {
         return model;
     }
 
-    public void setModel(ChoBand model) {
+    public void setModel(BreBand model) {
         this.model = model;
     }
 
@@ -56,7 +56,7 @@ public class doInsurerChoBandAction extends BaseAction implements ModelDriven<Ch
         this.objectId = objectId;
     }
     
-    public void setChoBandService(ChoBandService service)
+    public void setBreBandService(BreBandService service)
     {
         this.service = service;
     }
@@ -65,7 +65,7 @@ public class doInsurerChoBandAction extends BaseAction implements ModelDriven<Ch
         this.insurerService = insurerService;
     }
 
-    public String deleteChoBand() throws Exception{
+    public String deleteBreBand() throws Exception{
 
         try {
             
@@ -73,7 +73,7 @@ public class doInsurerChoBandAction extends BaseAction implements ModelDriven<Ch
             
             
 //             <<BRE NAME>> 
-            if(service.isChoBandOccupied(model)){
+            if(service.isBreBandOccupied(model)){
             
                 actionResult = "F: You cannot delete '"+model.getName()+"' because it is currently being used by one or more Credit Hire Organisations. Please remove the Credit Hire Organisations from this BRE and try again";
                 return SUCCESS;
@@ -103,8 +103,8 @@ public class doInsurerChoBandAction extends BaseAction implements ModelDriven<Ch
             if(this.isNew){    
                 model.setInsurer(insurerService.getObject(insurerId));
             }
-            
-            if(service.isChoBandNameExist(model)){
+           
+            if(service.isBreBandNameExist(model)){
                 actionResult = "Selected Band Name already exists"; 
                 return SUCCESS;
             }
@@ -127,7 +127,7 @@ public class doInsurerChoBandAction extends BaseAction implements ModelDriven<Ch
     
     public void prepare() throws Exception {
         if (Integer.valueOf(objectId) <= 0) {
-            model = new ChoBand();
+            model = new BreBand();
             this.isNew = true;
         } else {
             model = service.getObject(Integer.valueOf(objectId));

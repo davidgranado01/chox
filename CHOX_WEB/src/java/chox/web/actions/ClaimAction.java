@@ -71,7 +71,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private AttachmentTypeService attachmentTypeService;
     private BusinessRulesEngService businessRulesEngService;
     private CommentService commentService;
-    private ChoBandService choBandService;
+    private BreBandService breBandService;
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="DECLARE CLAIM OBJECT PARAMETERS">
@@ -1590,12 +1590,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return injurySolicitorId;
     }
 
-    public ChoBandService getChoBandService() {
-        return choBandService;
+    public BreBandService getBreBandService() {
+        return breBandService;
     }
 
-    public void setChoBandService(ChoBandService choBandService) {
-        this.choBandService = choBandService;
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
     }
 
     // </editor-fold>

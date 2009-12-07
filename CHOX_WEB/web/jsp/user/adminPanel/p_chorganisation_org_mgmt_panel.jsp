@@ -59,7 +59,7 @@
             {
                 params:
                 {
-                    gridviewtype : "InsurerChoBandMgmt"
+                    gridviewtype : "InsurerBreBandMgmt"
                 }
             });
     

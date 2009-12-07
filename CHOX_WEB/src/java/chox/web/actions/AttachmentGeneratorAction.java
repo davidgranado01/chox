@@ -5,7 +5,6 @@ import chox.model.AttachmentType;
 import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 import java.io.*;
-import chox.services.GlobalConfigurationService;
 import chox.services.AttachmentService;
 import chox.services.AttachmentTypeService;
 
@@ -15,7 +14,6 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
     private InputStream fileStream;
     private Map session;
     private AttachmentService service;
-    private GlobalConfigurationService globalConfigurationService;
     private AttachmentTypeService attachmentTypeService;
     
     private String contentDisposition;
@@ -55,14 +53,6 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
 
     public void setFileStream(InputStream fileStream) {
         this.fileStream = fileStream;
-    }
-
-    public GlobalConfigurationService getGlobalConfigurationService() {
-        return globalConfigurationService;
-    }
-
-    public void setGlobalConfigurationService(GlobalConfigurationService globalConfigurationService) {
-        this.globalConfigurationService = globalConfigurationService;
     }
 
     public void setAttachmentTypeService(AttachmentTypeService attachmentTypeService) {

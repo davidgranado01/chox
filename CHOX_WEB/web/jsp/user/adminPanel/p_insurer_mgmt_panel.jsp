@@ -31,7 +31,7 @@
 
         function doBreMappingRefresh(tab){
             handleActivate(tab);
-            onChoBandPageRefresh();
+            onBreBandPageRefresh();
         }
         
         function doSelectDetail(tab){
@@ -66,7 +66,7 @@
 <div id="insurerBrePanelTab" class="x-hide-display">
     <div class="sub-admin-tab-css">
         <s:action name="loadAdminPanel" executeResult="true">
-            <s:param name="adminPanelName">InsurerChoBandMgmt</s:param>
+            <s:param name="adminPanelName">InsurerBreBandMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="selectOrgId" /></s:param>        
         </s:action>
     </div>
@@ -75,7 +75,7 @@
 <div id="insurerBreMappingPanelTab" class="x-hide-display">
     <div class="sub-admin-tab-css">
         <s:action name="loadAdminPanel" executeResult="true">
-            <s:param name="adminPanelName">InsurerChoBandMappingMgmt</s:param>
+            <s:param name="adminPanelName">InsurerBreBandMappingMgmt</s:param>
             <s:param name="selectOrgId"><s:property value="selectOrgId" /></s:param>        
         </s:action>
     </div>

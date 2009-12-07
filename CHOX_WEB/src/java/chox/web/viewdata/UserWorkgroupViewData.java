@@ -6,7 +6,7 @@
 package chox.web.viewdata;
 
 import chox.Util.DateHelper;
-import chox.model.UserWorkgroup;
+import chox.model.WebUserWorkgroup;
 
 /**
  *
@@ -20,7 +20,7 @@ public class UserWorkgroupViewData {
     private String createdBy;
     private String createdDate;
     
-    public UserWorkgroupViewData(UserWorkgroup object) {
+    public UserWorkgroupViewData(WebUserWorkgroup object) {
         
         this.id = object.getId();
         this.workgroupId = object.getWorkgroup().getId();

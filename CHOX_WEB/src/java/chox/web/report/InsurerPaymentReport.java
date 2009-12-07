@@ -101,7 +101,7 @@ public class InsurerPaymentReport extends BaseAction implements Report{
             if(RoleHelper.isCheckSelectedRoleExist(currentUser.getUser().getRoles(), WebUserRole.ROLE_CH)){
                 
                 if(RoleHelper.isUserCheckByWorkgroup(currentUser.getUser())){
-                    sb.append("and invoice.workgroup_id in (select workgroup_id from user_workgroup where user_id="+currentUser.getUser().getId()+") ");
+                    sb.append("and invoice.workgroup_id in (select workgroup_id from web_user_workgroup where user_id="+currentUser.getUser().getId()+") ");
                 }
 
                 if(RoleHelper.isUserCheckByOwnership(currentUser.getUser())){
