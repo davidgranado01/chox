@@ -9,7 +9,7 @@ import org.junit.Test;
 import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
 import scsbre.engine.rules.ActualHireDaysDoesNotExceedTotalLossInspection;
-import scsbre.engine.util.CHOBandCalcHelper;
+import scsbre.engine.util.BreBandCalcHelper;
 import scsbre.model.ClaimStatus;
 import scsbre.tests.data.TestClaim;
 import scsbre.tests.sample.*;
@@ -33,7 +33,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -49,7 +49,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
     public void testSkipped_OnOffFlag() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setActualHireDaysDoesNotExceedTotalLossInspection(false);
+        claim.getBreBand().setActualHireDaysDoesNotExceedTotalLossInspection(false);
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -68,7 +68,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setActualHireDaysDoesNotExceedTotalLossInspection(true);
+        claim.getBreBand().setActualHireDaysDoesNotExceedTotalLossInspection(true);
 
         // SET HIRE DETAIL
         claim.getHireDetail().setIsTotalLoss(false);
@@ -87,19 +87,16 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         ClaimInfo claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getChoBand().setActualHireDaysDoesNotExceedTotalLossInspection(true);
-        claim.getChoBand().setOfferMadeDays(5);
-        claim.getChoBand().setReceiptOfFinalStatementChequeDays(3);
-        claim.getChoBand().setInspectionDelayDays(1);
+        claim.getBreBand().setActualHireDaysDoesNotExceedTotalLossInspection(true);
+        claim.getBreBand().setOfferMadeDays(5);
+        claim.getBreBand().setReceiptOfFinalStatementChequeDays(3);
+        claim.getBreBand().setInspectionDelayDays(1);
 
         // SET HIRE DETAIL
         claim.getHireDetail().setIsTotalLoss(true);
         claim.getHireDetail().setDays(8);
 
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
-        
-        // CHOBandCalcHelper cBand = CHOBandCalcHelper.getInstance(claim.getChoBand());
-        // System.out.println("getTotalLossInspectionDays:"+cBand.getTotalLossInspectionDays());
         
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -111,10 +108,10 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         ClaimInfo claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getChoBand().setActualHireDaysDoesNotExceedTotalLossInspection(true);
-        claim.getChoBand().setOfferMadeDays(5);
-        claim.getChoBand().setReceiptOfFinalStatementChequeDays(3);
-        claim.getChoBand().setInspectionDelayDays(1);
+        claim.getBreBand().setActualHireDaysDoesNotExceedTotalLossInspection(true);
+        claim.getBreBand().setOfferMadeDays(5);
+        claim.getBreBand().setReceiptOfFinalStatementChequeDays(3);
+        claim.getBreBand().setInspectionDelayDays(1);
 
         // SET HIRE DETAIL
         claim.getHireDetail().setIsTotalLoss(true);
@@ -122,7 +119,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
 
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
 
-        // CHOBandCalcHelper cBand = CHOBandCalcHelper.getInstance(claim.getChoBand());
+        // BreBandCalcHelper cBand = BreBandCalcHelper.getInstance(claim.getBreBand());
         // System.out.println("getTotalLossInspectionDays:"+cBand.getTotalLossInspectionDays());
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
@@ -135,10 +132,10 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         ClaimInfo claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getChoBand().setActualHireDaysDoesNotExceedTotalLossInspection(true);
-        claim.getChoBand().setOfferMadeDays(5);
-        claim.getChoBand().setReceiptOfFinalStatementChequeDays(3);
-        claim.getChoBand().setInspectionDelayDays(1);
+        claim.getBreBand().setActualHireDaysDoesNotExceedTotalLossInspection(true);
+        claim.getBreBand().setOfferMadeDays(5);
+        claim.getBreBand().setReceiptOfFinalStatementChequeDays(3);
+        claim.getBreBand().setInspectionDelayDays(1);
 
         // SET HIRE DETAIL
         claim.getHireDetail().setIsTotalLoss(true);
@@ -146,7 +143,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
 
-        // CHOBandCalcHelper cBand = CHOBandCalcHelper.getInstance(claim.getChoBand());
+        // BreBandCalcHelper cBand = BreBandCalcHelper.getInstance(claim.getBreBand());
         // System.out.println("getTotalLossInspectionDays:"+cBand.getTotalLossInspectionDays());
         
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());

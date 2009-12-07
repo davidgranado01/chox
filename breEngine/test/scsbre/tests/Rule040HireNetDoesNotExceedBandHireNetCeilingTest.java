@@ -32,7 +32,7 @@ public class Rule040HireNetDoesNotExceedBandHireNetCeilingTest extends TestCase 
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -48,10 +48,9 @@ public class Rule040HireNetDoesNotExceedBandHireNetCeilingTest extends TestCase 
         VehicleClassCeilingInfo vehicleClassCeiling = new VehicleClassCeilingInfo();
         vehicleClassCeiling.setHireNetCeiling(new BigDecimal("500.00"));
 
-        // SET CHOBAND
-        claim.getChoBand().setHireNetCeiling(new BigDecimal("100.00"));
-        claim.getChoBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
-        claim.getChoBand().setVehicleClassCeiling(vehicleClassCeiling);
+        claim.getBreBand().setHireNetCeiling(new BigDecimal("100.00"));
+        claim.getBreBand().setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
+        claim.getBreBand().setVehicleClassCeiling(vehicleClassCeiling);
 
         return claim;
     }
@@ -60,7 +59,7 @@ public class Rule040HireNetDoesNotExceedBandHireNetCeilingTest extends TestCase 
     public void testSkipped_OnOffFlag() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHireNetDoesNotExceedBandHireNetCeiling(false);
+        claim.getBreBand().setHireNetDoesNotExceedBandHireNetCeiling(false);
 
         RuleEvaluation rv = new HireNetDoesNotExceedHireNetCeiling().applyToClaim(claim);
 
@@ -74,7 +73,7 @@ public class Rule040HireNetDoesNotExceedBandHireNetCeilingTest extends TestCase 
     public void testPassed_LessThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHireNetDoesNotExceedBandHireNetCeiling(true);
+        claim.getBreBand().setHireNetDoesNotExceedBandHireNetCeiling(true);
 
         claim.getInvoice().setHireNet(new BigDecimal("99.00"));
 
@@ -90,7 +89,7 @@ public class Rule040HireNetDoesNotExceedBandHireNetCeilingTest extends TestCase 
     public void testPassed_Equals() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHireNetDoesNotExceedBandHireNetCeiling(true);
+        claim.getBreBand().setHireNetDoesNotExceedBandHireNetCeiling(true);
         claim.getInvoice().setHireNet(new BigDecimal("100.00"));
 
         RuleEvaluation rv = new HireNetDoesNotExceedHireNetCeiling().applyToClaim(claim);
@@ -105,7 +104,7 @@ public class Rule040HireNetDoesNotExceedBandHireNetCeilingTest extends TestCase 
     public void testFailed_MoreThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHireNetDoesNotExceedBandHireNetCeiling(true);
+        claim.getBreBand().setHireNetDoesNotExceedBandHireNetCeiling(true);
         claim.getInvoice().setHireNet(new BigDecimal("105.00"));
 
         RuleEvaluation rv = new HireNetDoesNotExceedHireNetCeiling().applyToClaim(claim);

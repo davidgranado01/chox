@@ -16,7 +16,7 @@ public class FlaggedForManualInvoiceReview implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isFlaggedForManualInvoiceReview()){
+        if(claim.getBreBand().isFlaggedForManualInvoiceReview()){
         
             boolean success = true;
 

@@ -33,7 +33,7 @@ public class Rule027FlaggedForManualInvoiceReviewTest extends TestCase {
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -53,7 +53,7 @@ public class Rule027FlaggedForManualInvoiceReviewTest extends TestCase {
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setFlaggedForManualInvoiceReview(false);
+        claim.getBreBand().setFlaggedForManualInvoiceReview(false);
         RuleEvaluation rv = new FlaggedForManualInvoiceReview().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -66,7 +66,7 @@ public class Rule027FlaggedForManualInvoiceReviewTest extends TestCase {
     public void testPassed() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setFlaggedForManualInvoiceReview(true);
+        claim.getBreBand().setFlaggedForManualInvoiceReview(true);
 
         claim.setIsInvoiceReviewRequired(false);
 
@@ -82,7 +82,7 @@ public class Rule027FlaggedForManualInvoiceReviewTest extends TestCase {
     public void testFailled() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setFlaggedForManualInvoiceReview(true);
+        claim.getBreBand().setFlaggedForManualInvoiceReview(true);
 
         claim.setIsInvoiceReviewRequired(true);
 

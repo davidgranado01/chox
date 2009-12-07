@@ -33,7 +33,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -49,7 +49,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
     public void testSkipped_OnOffFlag() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setActualHireDaysDoesNotExceedAllowableHireDays(false);
+        claim.getBreBand().setActualHireDaysDoesNotExceedAllowableHireDays(false);
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedAllowableHireDays().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -63,7 +63,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
     public void testSkipped_TotalLostIsTrue() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
+        claim.getBreBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
 
         claim.getHireDetail().setIsTotalLoss(true);
         claim.getEngineeringReport().setEstimatedDaysUnderRepair(1);
@@ -81,7 +81,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
     public void testSkipped_EstimatedDaysUnderRepairLessThanOne() throws IOException {
         
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
+        claim.getBreBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
 
         claim.getHireDetail().setIsTotalLoss(false);
         claim.getEngineeringReport().setEstimatedDaysUnderRepair(2);
@@ -99,7 +99,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
     public void testSkipped_Both() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
+        claim.getBreBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
 
         claim.getHireDetail().setIsTotalLoss(true);
         claim.getEngineeringReport().setEstimatedDaysUnderRepair(2);
@@ -119,15 +119,15 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
         ClaimInfo claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getChoBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
-        claim.getChoBand().setAverageLabourRate(4);
-        claim.getChoBand().setAverageLabourHoursPerHireDay(5);
-        claim.getChoBand().setTakeVehicleToGarageDaysMobile(1);
-        claim.getChoBand().setTakeVehicleToGarageDaysNonMobile(3);
-        claim.getChoBand().setTakeVehicleOutDays(1);
-        claim.getChoBand().setEngineerInspectionDelayDays(2);
-        claim.getChoBand().setIsMobileDayAllowance(2);
-        claim.getChoBand().setIsNotMobileDayAllowance(9);
+        claim.getBreBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
+        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourHoursPerHireDay(5);
+        claim.getBreBand().setTakeVehicleToGarageDaysMobile(1);
+        claim.getBreBand().setTakeVehicleToGarageDaysNonMobile(3);
+        claim.getBreBand().setTakeVehicleOutDays(1);
+        claim.getBreBand().setEngineerInspectionDelayDays(2);
+        claim.getBreBand().setIsMobileDayAllowance(2);
+        claim.getBreBand().setIsNotMobileDayAllowance(9);
 
         // SET HIRE MONITORING ECD
         claim.setHireMonitoringEcd(null);
@@ -170,15 +170,15 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
         ClaimInfo claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getChoBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
-        claim.getChoBand().setAverageLabourRate(4);
-        claim.getChoBand().setAverageLabourHoursPerHireDay(5);
-        claim.getChoBand().setTakeVehicleToGarageDaysMobile(1);
-        claim.getChoBand().setTakeVehicleToGarageDaysNonMobile(3);
-        claim.getChoBand().setTakeVehicleOutDays(1);
-        claim.getChoBand().setEngineerInspectionDelayDays(2);
-        claim.getChoBand().setIsMobileDayAllowance(2);
-        claim.getChoBand().setIsNotMobileDayAllowance(9);
+        claim.getBreBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
+        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourHoursPerHireDay(5);
+        claim.getBreBand().setTakeVehicleToGarageDaysMobile(1);
+        claim.getBreBand().setTakeVehicleToGarageDaysNonMobile(3);
+        claim.getBreBand().setTakeVehicleOutDays(1);
+        claim.getBreBand().setEngineerInspectionDelayDays(2);
+        claim.getBreBand().setIsMobileDayAllowance(2);
+        claim.getBreBand().setIsNotMobileDayAllowance(9);
 
         // SET HIRE MONITORING ECD
         claim.setHireMonitoringEcd(null);
@@ -221,15 +221,15 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
         ClaimInfo claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getChoBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
-        claim.getChoBand().setAverageLabourRate(4);
-        claim.getChoBand().setAverageLabourHoursPerHireDay(5);
-        claim.getChoBand().setTakeVehicleToGarageDaysMobile(1);
-        claim.getChoBand().setTakeVehicleToGarageDaysNonMobile(3);
-        claim.getChoBand().setTakeVehicleOutDays(1);
-        claim.getChoBand().setEngineerInspectionDelayDays(2);
-        claim.getChoBand().setIsMobileDayAllowance(2);
-        claim.getChoBand().setIsNotMobileDayAllowance(9);
+        claim.getBreBand().setActualHireDaysDoesNotExceedAllowableHireDays(true);
+        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourHoursPerHireDay(5);
+        claim.getBreBand().setTakeVehicleToGarageDaysMobile(1);
+        claim.getBreBand().setTakeVehicleToGarageDaysNonMobile(3);
+        claim.getBreBand().setTakeVehicleOutDays(1);
+        claim.getBreBand().setEngineerInspectionDelayDays(2);
+        claim.getBreBand().setIsMobileDayAllowance(2);
+        claim.getBreBand().setIsNotMobileDayAllowance(9);
 
         // SET HIRE MONITORING ECD
         claim.setHireMonitoringEcd(null);

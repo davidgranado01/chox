@@ -35,7 +35,7 @@ public class Rule019HasSuppliedCorrectTotalToPayTest extends TestCase {
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -68,7 +68,7 @@ public class Rule019HasSuppliedCorrectTotalToPayTest extends TestCase {
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasSuppliedCorrectTotalToPay(false);
+        claim.getBreBand().setHasSuppliedCorrectTotalToPay(false);
         RuleEvaluation rv = new HasSuppliedCorrectTotalToPay().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -82,7 +82,7 @@ public class Rule019HasSuppliedCorrectTotalToPayTest extends TestCase {
     public void testPassed_LessThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasSuppliedCorrectTotalToPay(true);
+        claim.getBreBand().setHasSuppliedCorrectTotalToPay(true);
 
         claim.getInvoice().setTotalToPay(new BigDecimal("110.00"));
 
@@ -97,7 +97,7 @@ public class Rule019HasSuppliedCorrectTotalToPayTest extends TestCase {
     public void testPassed_Equals() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasSuppliedCorrectTotalToPay(true);
+        claim.getBreBand().setHasSuppliedCorrectTotalToPay(true);
 
         claim.getInvoice().setTotalToPay(new BigDecimal("120.00"));
 
@@ -119,7 +119,7 @@ public class Rule019HasSuppliedCorrectTotalToPayTest extends TestCase {
     public void testFailled() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasSuppliedCorrectTotalToPay(true);
+        claim.getBreBand().setHasSuppliedCorrectTotalToPay(true);
 
         claim.getInvoice().setTotalToPay(new BigDecimal("130.00"));
 

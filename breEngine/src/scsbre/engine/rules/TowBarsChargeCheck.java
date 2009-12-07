@@ -17,7 +17,7 @@ public class TowBarsChargeCheck implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isTowBarsChargeCheck()){
+        if(claim.getBreBand().isTowBarsChargeCheck()){
 
             boolean success = true;
             

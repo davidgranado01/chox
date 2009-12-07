@@ -17,7 +17,7 @@ public class NonStandardRiskInsurancePremiumCheck implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         
-        if(claim.getChoBand().isNonStandardRiskInsurancePremiumCheck()){
+        if(claim.getBreBand().isNonStandardRiskInsurancePremiumCheck()){
 
             boolean success = true;
 

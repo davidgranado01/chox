@@ -17,7 +17,7 @@ public class DeliveryOrCollectionChargeCheck implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         
-        if(claim.getChoBand().isDeliveryOrCollectionChargeCheck()){
+        if(claim.getBreBand().isDeliveryOrCollectionChargeCheck()){
 
             boolean success = true;
             

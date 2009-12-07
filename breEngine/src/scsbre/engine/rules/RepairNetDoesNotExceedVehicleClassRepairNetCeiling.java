@@ -20,10 +20,10 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isRepairNetDoesNotExceedVehicleClassRepairNetCeiling()){
+        if(claim.getBreBand().isRepairNetDoesNotExceedVehicleClassRepairNetCeiling()){
 
             BigDecimal repairNet = claim.getInvoice().getRepairNet();
-            BigDecimal repairNetCeiling = claim.getChoBand().getMaxRepairNetCeiling();
+            BigDecimal repairNetCeiling = claim.getBreBand().getMaxRepairNetCeiling();
             boolean success = repairNet.compareTo(repairNetCeiling) <= 0;
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);

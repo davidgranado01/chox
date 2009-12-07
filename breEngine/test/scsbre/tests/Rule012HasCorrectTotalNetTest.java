@@ -33,7 +33,7 @@ public class Rule012HasCorrectTotalNetTest extends TestCase {
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -53,7 +53,7 @@ public class Rule012HasCorrectTotalNetTest extends TestCase {
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectTotalNet(false);
+        claim.getBreBand().setHasCorrectTotalNet(false);
         RuleEvaluation rv = new HasCorrectTotalNet().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -66,7 +66,7 @@ public class Rule012HasCorrectTotalNetTest extends TestCase {
     public void testPassed() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectTotalNet(true);
+        claim.getBreBand().setHasCorrectTotalNet(true);
 
         // SET INVOICE
         claim.getInvoice().setHireNet(new BigDecimal("100.00"));
@@ -87,7 +87,7 @@ public class Rule012HasCorrectTotalNetTest extends TestCase {
     public void testFailled() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectTotalNet(true);
+        claim.getBreBand().setHasCorrectTotalNet(true);
 
         // SET INVOICE
         claim.getInvoice().setHireNet(new BigDecimal("0"));

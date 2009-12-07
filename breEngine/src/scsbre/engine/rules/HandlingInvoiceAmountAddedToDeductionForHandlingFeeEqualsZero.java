@@ -30,7 +30,7 @@ public class HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero imple
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
         
-        if(claim.getChoBand().isHandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero()){
+        if(claim.getBreBand().isHandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero()){
 
             IInvoiceInfo invoice = claim.getInvoice();
             BigDecimal sum = invoice.getClaimsHandlingInvoiceAmount().add(invoice.getDeductionForClaimsHandlingFee());

@@ -34,7 +34,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -50,7 +50,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
     public void testSkipped_OnOffFlag() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setLabourCostBusinessRule(false);
+        claim.getBreBand().setLabourCostBusinessRule(false);
         RuleEvaluation rv = new LabourCostBusinessRule().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -64,7 +64,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
     public void testSkipped_NotRequiredToValidateByBRE_HireMonitoringDetailIsNull() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setLabourCostBusinessRule(true);
+        claim.getBreBand().setLabourCostBusinessRule(true);
 
         claim.setHireMonitoringDetail(null);
                 
@@ -81,7 +81,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
     public void testSkipped_NotRequiredToValidateByBRE_HireMonitoringDetailNotNull() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setLabourCostBusinessRule(true);
+        claim.getBreBand().setLabourCostBusinessRule(true);
 
         claim.getHireMonitoringDetail().setLabourCost(BigDecimal.ZERO);
         claim.getHireMonitoringDetail().setLabourHour(0);
@@ -98,11 +98,11 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
     public void testPassed_Equals() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setLabourCostBusinessRule(true);
+        claim.getBreBand().setLabourCostBusinessRule(true);
 
         // SET CHO BAND
-        claim.getChoBand().setAverageLabourRate(4);
-        claim.getChoBand().setAverageLabourHoursPerHireDay(2);
+        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourHoursPerHireDay(2);
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("4"));
@@ -132,11 +132,11 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
     public void testPassed_Less() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setLabourCostBusinessRule(true);
+        claim.getBreBand().setLabourCostBusinessRule(true);
 
         // SET CHO BAND
-        claim.getChoBand().setAverageLabourRate(4);
-        claim.getChoBand().setAverageLabourHoursPerHireDay(2);
+        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourHoursPerHireDay(2);
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("4"));
@@ -164,11 +164,11 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
     public void testFailled() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setLabourCostBusinessRule(true);
+        claim.getBreBand().setLabourCostBusinessRule(true);
 
         // SET CHO BAND
-        claim.getChoBand().setAverageLabourRate(4);
-        claim.getChoBand().setAverageLabourHoursPerHireDay(2);
+        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourHoursPerHireDay(2);
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("4"));

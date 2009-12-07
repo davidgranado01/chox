@@ -33,7 +33,7 @@ public class Rule029EstateChargeCheckTest extends TestCase {
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -53,7 +53,7 @@ public class Rule029EstateChargeCheckTest extends TestCase {
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setEstateChargeCheck(false);
+        claim.getBreBand().setEstateChargeCheck(false);
         RuleEvaluation rv = new EstateChargeCheck().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -66,7 +66,7 @@ public class Rule029EstateChargeCheckTest extends TestCase {
     public void testPassed_zero() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setEstateChargeCheck(true);
+        claim.getBreBand().setEstateChargeCheck(true);
 
         claim.getInvoice().setEstateFee(new BigDecimal("0.00"));
 
@@ -82,7 +82,7 @@ public class Rule029EstateChargeCheckTest extends TestCase {
     public void testPassed_negative() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setEstateChargeCheck(true);
+        claim.getBreBand().setEstateChargeCheck(true);
 
         claim.getInvoice().setEstateFee(new BigDecimal("-1.00"));
 
@@ -98,7 +98,7 @@ public class Rule029EstateChargeCheckTest extends TestCase {
     public void testFailled() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setEstateChargeCheck(true);
+        claim.getBreBand().setEstateChargeCheck(true);
 
         claim.getInvoice().setEstateFee(new BigDecimal("0.99"));
 

@@ -3,7 +3,7 @@ package scsbre.engine.rules;
 import scsbre.engine.IBusinessRule;
 import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
-import scsbre.engine.util.CHOBandCalcHelper;
+import scsbre.engine.util.BreBandCalcHelper;
 import scsbre.model.ClaimStatus;
 import scsbre.model.IClaimInfo;
 
@@ -17,11 +17,11 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isActualHireDaysDoesNotExceedTotalLossInspection()){
+        if(claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection()){
 
             if(claim.getHireDetail().getIsTotalLoss()){
                 
-                CHOBandCalcHelper bandCalc = CHOBandCalcHelper.getInstance(claim.getChoBand());
+                BreBandCalcHelper bandCalc = BreBandCalcHelper.getInstance(claim.getBreBand());
                 boolean success =  claim.getHireDetail().getDays() <= bandCalc.getTotalLossInspectionDays();
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
                 if(success) narrative = "";

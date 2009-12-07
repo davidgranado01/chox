@@ -17,7 +17,7 @@ public class DualControlChargeCheck implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isDualControlChargeCheck()){
+        if(claim.getBreBand().isDualControlChargeCheck()){
 
             boolean success = true;
             

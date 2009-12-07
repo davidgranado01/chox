@@ -33,7 +33,7 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -55,7 +55,7 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setCorrentAdminFee(false);
+        claim.getBreBand().setCorrentAdminFee(false);
         RuleEvaluation rv = new CorrentAdminFee().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -68,7 +68,7 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
     public void testPassed_managingRepairIsTrue_equals() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setCorrentAdminFee(true);
+        claim.getBreBand().setCorrentAdminFee(true);
 
         claim.setManagingRepair(true);
         claim.getInvoice().setAdminFee(new BigDecimal("60.00"));
@@ -83,7 +83,7 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
     public void testPassed_managingRepairIsTrue_lessthan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setCorrentAdminFee(true);
+        claim.getBreBand().setCorrentAdminFee(true);
 
         claim.setManagingRepair(true);
         claim.getInvoice().setAdminFee(new BigDecimal("50.00"));
@@ -98,7 +98,7 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
     public void testPassed_managingRepairIsTrue_lessthan_2() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setCorrentAdminFee(true);
+        claim.getBreBand().setCorrentAdminFee(true);
 
         claim.setManagingRepair(true);
         claim.getInvoice().setAdminFee(new BigDecimal("30.00"));
@@ -113,7 +113,7 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
     public void testPassed_managingRepairIsFalse_equals() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setCorrentAdminFee(true);
+        claim.getBreBand().setCorrentAdminFee(true);
 
         claim.setManagingRepair(false);
         claim.getInvoice().setAdminFee(new BigDecimal("40.00"));
@@ -128,7 +128,7 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
     public void testPassed_managingRepairIsFalse_lessthan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setCorrentAdminFee(true);
+        claim.getBreBand().setCorrentAdminFee(true);
 
         claim.setManagingRepair(false);
         claim.getInvoice().setAdminFee(new BigDecimal("30.00"));
@@ -143,7 +143,7 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
     public void testFailled_managingRepairIsTrue() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setCorrentAdminFee(true);
+        claim.getBreBand().setCorrentAdminFee(true);
 
         claim.setManagingRepair(true);
         claim.getInvoice().setAdminFee(new BigDecimal("61.00"));
@@ -158,7 +158,7 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
     public void testFailled_managingRepairIsFalse() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setCorrentAdminFee(true);
+        claim.getBreBand().setCorrentAdminFee(true);
 
         claim.setManagingRepair(false);
         claim.getInvoice().setAdminFee(new BigDecimal("41.00"));

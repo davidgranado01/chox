@@ -17,7 +17,7 @@ public class SatelliteNavigationChargeCheck implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         
-        if(claim.getChoBand().isSatelliteNavigationChargeCheck()){
+        if(claim.getBreBand().isSatelliteNavigationChargeCheck()){
 
             boolean success = true;
             

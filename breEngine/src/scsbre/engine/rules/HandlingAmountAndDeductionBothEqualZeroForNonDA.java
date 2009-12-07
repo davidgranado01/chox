@@ -19,7 +19,7 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isHandlingAmountAndDeductionBothEqualZeroForNonDA()){
+        if(claim.getBreBand().isHandlingAmountAndDeductionBothEqualZeroForNonDA()){
 
             if(!claim.getCHOrg().isDelegatedAuthority()){
 

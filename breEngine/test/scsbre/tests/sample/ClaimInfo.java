@@ -1,16 +1,11 @@
 package scsbre.tests.sample;
 
 import java.util.Date;
-
-import scsbre.model.ICHOrganisationInfo;
 import scsbre.model.IClaimInfo;
-import scsbre.model.ICustomerVehicleDamageInfo;
-import scsbre.model.IHireMonitoringDetail;
-import scsbre.model.IInsurerInfo;
 
 public class ClaimInfo implements IClaimInfo {
 
-    private CHOBandInfo claimChoBand;
+    private BreBandInfo claimBreBand;
     private CHOrganisationInfo claimCHOrganisation;
     private InvoiceInfo claimInvoice;
     private ExtrasInfo claimExtras;
@@ -25,12 +20,12 @@ public class ClaimInfo implements IClaimInfo {
     private Date hireMonitoringEcd;
     private boolean isInvoiceReviewRequired;
 
-    public CHOBandInfo getChoBand() {
-        return claimChoBand;
+    public BreBandInfo getBreBand() {
+        return claimBreBand;
     }
 
-    public void setChoBand(CHOBandInfo claimChoBand) {
-        this.claimChoBand = claimChoBand;
+    public void setBreBand(BreBandInfo claimBreBand) {
+        this.claimBreBand = claimBreBand;
     }
 
     public CHOrganisationInfo getCHOrg() {

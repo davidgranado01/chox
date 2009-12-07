@@ -19,7 +19,7 @@ public class RoofRackChargeCheck implements IBusinessRule {
         
         
         
-        if(claim.getChoBand().isRoofRackChargeCheck()){
+        if(claim.getBreBand().isRoofRackChargeCheck()){
 
             boolean success = true;
             

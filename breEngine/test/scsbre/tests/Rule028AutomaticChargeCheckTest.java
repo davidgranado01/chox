@@ -33,7 +33,7 @@ public class Rule028AutomaticChargeCheckTest extends TestCase {
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -53,7 +53,7 @@ public class Rule028AutomaticChargeCheckTest extends TestCase {
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setAutomaticChargeCheck(false);
+        claim.getBreBand().setAutomaticChargeCheck(false);
         RuleEvaluation rv = new AutomaticChargeCheck().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -66,7 +66,7 @@ public class Rule028AutomaticChargeCheckTest extends TestCase {
     public void testPassed_zero() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setAutomaticChargeCheck(true);
+        claim.getBreBand().setAutomaticChargeCheck(true);
 
         claim.getInvoice().setAutomaticFee(new BigDecimal("0.00"));
 
@@ -82,7 +82,7 @@ public class Rule028AutomaticChargeCheckTest extends TestCase {
     public void testPassed_negative() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setAutomaticChargeCheck(true);
+        claim.getBreBand().setAutomaticChargeCheck(true);
 
         claim.getInvoice().setAutomaticFee(new BigDecimal("-1.00"));
 
@@ -98,7 +98,7 @@ public class Rule028AutomaticChargeCheckTest extends TestCase {
     public void testFailled() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setAutomaticChargeCheck(true);
+        claim.getBreBand().setAutomaticChargeCheck(true);
 
         claim.getInvoice().setAutomaticFee(new BigDecimal("0.99"));
 

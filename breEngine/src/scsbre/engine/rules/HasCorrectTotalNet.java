@@ -19,7 +19,7 @@ public class HasCorrectTotalNet implements IBusinessRule {
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isHasCorrectTotalNet()){
+        if(claim.getBreBand().isHasCorrectTotalNet()){
             
             IInvoiceInfo invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);

@@ -30,7 +30,7 @@ public class HasCorrectRepairGrossCalculation implements IBusinessRule {
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
         
-        if(claim.getChoBand().isHasCorrectRepairGrossCalculation()){
+        if(claim.getBreBand().isHasCorrectRepairGrossCalculation()){
 
             IInvoiceInfo invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);

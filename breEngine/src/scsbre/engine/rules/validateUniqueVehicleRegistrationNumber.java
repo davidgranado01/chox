@@ -22,7 +22,7 @@ public class validateUniqueVehicleRegistrationNumber implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         
-        if(claim.getChoBand().isValidateUniqueVehicleRegistrationNumber()){
+        if(claim.getBreBand().isValidateUniqueVehicleRegistrationNumber()){
             
             ICustomerVehicleDamageInfo Icust = claim.getCustomerVehicleDamage();
             

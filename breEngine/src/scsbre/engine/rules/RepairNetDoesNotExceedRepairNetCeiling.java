@@ -20,10 +20,10 @@ public class RepairNetDoesNotExceedRepairNetCeiling implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isRepairNetDoesNotExceedBandRepairNetCeiling()){
+        if(claim.getBreBand().isRepairNetDoesNotExceedBandRepairNetCeiling()){
 
             BigDecimal repairNet = claim.getInvoice().getRepairNet();
-            BigDecimal repairNetCeiling = claim.getChoBand().getRepairNetCeiling();
+            BigDecimal repairNetCeiling = claim.getBreBand().getRepairNetCeiling();
             boolean success = repairNet.compareTo(repairNetCeiling) <= 0;
             
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);

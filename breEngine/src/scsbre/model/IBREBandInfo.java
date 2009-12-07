@@ -2,7 +2,7 @@ package scsbre.model;
 
 import java.math.BigDecimal;
 
-public interface ICHOBandInfo {
+public interface IBREBandInfo {
     
     public int getHireDayCeiling();
     public int getTakeVehicleOutDays();

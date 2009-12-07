@@ -31,7 +31,7 @@ TestClaim testClaim = new TestClaim();
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -80,7 +80,7 @@ TestClaim testClaim = new TestClaim();
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCalculatedCorrectDailyRate(false);
+        claim.getBreBand().setHasCalculatedCorrectDailyRate(false);
         RuleEvaluation rv = new HasCalculatedCorrectDailyRate().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -99,7 +99,7 @@ TestClaim testClaim = new TestClaim();
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasAllowedVehicleClass(true);
+        claim.getBreBand().setHasAllowedVehicleClass(true);
         claim.setVClass(null);
 
         RuleEvaluation rv = new HasCalculatedCorrectDailyRate().applyToClaim(claim);
@@ -117,7 +117,7 @@ TestClaim testClaim = new TestClaim();
         // getDailyHireRateCharged EQUALS TO allowedDailyRate
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasAllowedVehicleClass(true);
+        claim.getBreBand().setHasAllowedVehicleClass(true);
 
         claim.getHireDetail().getVehicleClass().setCode("SP1");
         claim.getHireDetail().getVehicleClass().setPrice(new BigDecimal("69.7450"));
@@ -129,7 +129,7 @@ TestClaim testClaim = new TestClaim();
 
         /*
         ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
-        BigDecimal allowedDailyRate = claim.getHireDetail().getVClass().getPrice().add(claim.getChoBand().getHireRateChargeTolerance());
+        BigDecimal allowedDailyRate = claim.getHireDetail().getVClass().getPrice().add(claim.getBreBand().getHireRateChargeTolerance());
         System.out.println("allowedDailyRate: "+allowedDailyRate);
         System.out.println("getDailyHireRateCharged:"+cCalc.getDailyHireRateCharged());
         System.out.println("RESULT:"+cCalc.getDailyHireRateCharged().compareTo(allowedDailyRate));
@@ -157,7 +157,7 @@ TestClaim testClaim = new TestClaim();
         // getDailyHireRateCharged LESS THAN allowedDailyRate
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasAllowedVehicleClass(true);
+        claim.getBreBand().setHasAllowedVehicleClass(true);
 
         claim.getHireDetail().getVehicleClass().setCode("SP1");
         claim.getHireDetail().getVehicleClass().setPrice(new BigDecimal("69.7450"));
@@ -187,7 +187,7 @@ TestClaim testClaim = new TestClaim();
         // getDailyHireRateCharged MORE THAN allowedDailyRate
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasAllowedVehicleClass(true);
+        claim.getBreBand().setHasAllowedVehicleClass(true);
 
         claim.getHireDetail().getVehicleClass().setCode("SP1");
         claim.getHireDetail().getVehicleClass().setPrice(new BigDecimal("69.7450"));

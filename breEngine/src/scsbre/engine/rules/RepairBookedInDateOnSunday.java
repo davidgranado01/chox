@@ -17,7 +17,7 @@ public class RepairBookedInDateOnSunday implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isRepairBookedInDate()){
+        if(claim.getBreBand().isRepairBookedInDate()){
 
             boolean success = true;
 

@@ -33,7 +33,7 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -53,7 +53,7 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(false);
+        claim.getBreBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(false);
         RuleEvaluation rv = new RepairGrossIsLessThanEstimatedTotalRepairAmount().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -69,7 +69,7 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
         ClaimInfo claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getChoBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
+        claim.getBreBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
 
         // SET ENGINEERING REPORT
         claim.getEngineeringReport().setEstimatedTotalRepairAmount(new BigDecimal("0.00"));
@@ -93,7 +93,7 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
         ClaimInfo claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getChoBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
+        claim.getBreBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
 
         // SET ENGINEERING REPORT
         claim.getEngineeringReport().setEstimatedTotalRepairAmount(new BigDecimal("0"));
@@ -114,7 +114,7 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
         ClaimInfo claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getChoBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
+        claim.getBreBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
 
         // SET ENGINEERING REPORT
         claim.getEngineeringReport().setEstimatedTotalRepairAmount(new BigDecimal("100.00"));
@@ -135,7 +135,7 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
         ClaimInfo claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getChoBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
+        claim.getBreBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
 
         // SET ENGINEERING REPORT
         claim.getEngineeringReport().setEstimatedTotalRepairAmount(new BigDecimal("100.00"));
@@ -159,7 +159,7 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
         ClaimInfo claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getChoBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
+        claim.getBreBand().setRepairGrossIsLessThanEstimatedTotalRepairAmount(true);
 
         // SET ENGINEERING REPORT
         claim.getEngineeringReport().setEstimatedTotalRepairAmount(new BigDecimal("100.00"));

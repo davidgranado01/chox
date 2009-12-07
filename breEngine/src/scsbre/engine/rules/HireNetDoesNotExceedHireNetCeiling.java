@@ -21,16 +21,16 @@ public class HireNetDoesNotExceedHireNetCeiling implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         
-        if(claim.getChoBand().isHireNetDoesNotExceedBandHireNetCeiling()){
+        if(claim.getBreBand().isHireNetDoesNotExceedBandHireNetCeiling()){
         
-            boolean success = claim.getInvoice().getHireNet().compareTo(claim.getChoBand().getHireNetCeiling()) <= 0;
+            boolean success = claim.getInvoice().getHireNet().compareTo(claim.getBreBand().getHireNetCeiling()) <= 0;
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
             if(!success){
                 
                 narrative = String.format(narrativeTemplate,
                         moneyFormat.format(claim.getInvoice().getHireNet().doubleValue()),
-                        moneyFormat.format(claim.getChoBand().getHireNetCeiling().doubleValue()));
+                        moneyFormat.format(claim.getBreBand().getHireNetCeiling().doubleValue()));
             }
             
         }else{

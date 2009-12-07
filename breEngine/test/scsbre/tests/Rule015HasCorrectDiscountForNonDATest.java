@@ -34,7 +34,7 @@ public class Rule015HasCorrectDiscountForNonDATest extends TestCase {
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -70,7 +70,7 @@ public class Rule015HasCorrectDiscountForNonDATest extends TestCase {
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectDiscountForNonDA(false);
+        claim.getBreBand().setHasCorrectDiscountForNonDA(false);
         RuleEvaluation rv = new HasCorrectDiscountForNonDA().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -88,7 +88,7 @@ public class Rule015HasCorrectDiscountForNonDATest extends TestCase {
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectDiscountForNonDA(true);
+        claim.getBreBand().setHasCorrectDiscountForNonDA(true);
 
         // SET CHO
         claim.getCHOrg().setDelegatedAuthority(true);
@@ -105,7 +105,7 @@ public class Rule015HasCorrectDiscountForNonDATest extends TestCase {
     public void testPassed() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectDiscountForNonDA(true);
+        claim.getBreBand().setHasCorrectDiscountForNonDA(true);
 
         // SET INVOICE
         claim.getInvoice().setDiscount(new BigDecimal("-15.00"));
@@ -121,7 +121,7 @@ public class Rule015HasCorrectDiscountForNonDATest extends TestCase {
     public void testFailled() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectDiscountForNonDA(true);
+        claim.getBreBand().setHasCorrectDiscountForNonDA(true);
 
         claim.getInvoice().setDiscount(new BigDecimal("-16.00"));
 

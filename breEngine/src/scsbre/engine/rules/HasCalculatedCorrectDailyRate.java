@@ -18,7 +18,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         
-        if(claim.getChoBand().isHasCalculatedCorrectDailyRate()){
+        if(claim.getBreBand().isHasCalculatedCorrectDailyRate()){
             
             if(claim.getVClass() != null){
 
@@ -29,7 +29,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 // IVehicleClassInfo customerVClass = claim.getVClass();
                 IVehicleClassInfo vehickeHireVClass = claim.getHireDetail().getVClass();
                 BigDecimal allowedDailyRate = new BigDecimal(0.00);
-                allowedDailyRate = vehickeHireVClass.getPrice().add(claim.getChoBand().getHireRateChargeTolerance());
+                allowedDailyRate = vehickeHireVClass.getPrice().add(claim.getBreBand().getHireRateChargeTolerance());
 
                 // LESS THAN OR EQUAL TO THE TRUE
                 // boolean success = cCalc.getDailyHireRateChargedWithToleranceDeduction().compareTo(customerVClass.getPrice()) <= 0;

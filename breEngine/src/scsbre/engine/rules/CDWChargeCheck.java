@@ -17,7 +17,7 @@ public class CDWChargeCheck implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isCdwChargeCheck()){
+        if(claim.getBreBand().isCdwChargeCheck()){
 
             boolean success = true;
             

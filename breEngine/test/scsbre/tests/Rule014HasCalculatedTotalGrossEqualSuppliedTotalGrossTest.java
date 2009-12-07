@@ -29,7 +29,7 @@ public class Rule014HasCalculatedTotalGrossEqualSuppliedTotalGrossTest extends T
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -47,7 +47,7 @@ public class Rule014HasCalculatedTotalGrossEqualSuppliedTotalGrossTest extends T
         /* CHO Control Flag is OFF */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCalculatedTotalGrossEqualSuppliedTotalGross(false);
+        claim.getBreBand().setHasCalculatedTotalGrossEqualSuppliedTotalGross(false);
         RuleEvaluation rv = new HasCalculatedTotalGrossEqualSuppliedTotalGross().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -60,7 +60,7 @@ public class Rule014HasCalculatedTotalGrossEqualSuppliedTotalGrossTest extends T
     public void testPassed() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCalculatedTotalGrossEqualSuppliedTotalGross(true);
+        claim.getBreBand().setHasCalculatedTotalGrossEqualSuppliedTotalGross(true);
 
         // SET INVOICE
         claim.getInvoice().setHireNet(new BigDecimal("100.00"));
@@ -82,7 +82,7 @@ public class Rule014HasCalculatedTotalGrossEqualSuppliedTotalGrossTest extends T
     public void testFailled() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCalculatedTotalGrossEqualSuppliedTotalGross(true);
+        claim.getBreBand().setHasCalculatedTotalGrossEqualSuppliedTotalGross(true);
 
         // SET INVOICE
         claim.getInvoice().setHireNet(new BigDecimal("100.00"));

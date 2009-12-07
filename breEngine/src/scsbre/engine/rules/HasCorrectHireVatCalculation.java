@@ -29,7 +29,7 @@ public class HasCorrectHireVatCalculation implements IBusinessRule {
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
         
-        if(claim.getChoBand().isHasCorrectHireVatCalculation()){
+        if(claim.getBreBand().isHasCorrectHireVatCalculation()){
 
             IInvoiceInfo invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);

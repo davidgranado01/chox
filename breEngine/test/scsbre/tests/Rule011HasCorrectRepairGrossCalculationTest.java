@@ -33,7 +33,7 @@ public class Rule011HasCorrectRepairGrossCalculationTest extends TestCase {
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -53,7 +53,7 @@ public class Rule011HasCorrectRepairGrossCalculationTest extends TestCase {
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectRepairGrossCalculation(false);
+        claim.getBreBand().setHasCorrectRepairGrossCalculation(false);
         RuleEvaluation rv = new HasCorrectRepairGrossCalculation().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -66,7 +66,7 @@ public class Rule011HasCorrectRepairGrossCalculationTest extends TestCase {
     public void testPassed() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectRepairGrossCalculation(true);
+        claim.getBreBand().setHasCorrectRepairGrossCalculation(true);
 
         // SET INVOICE
         claim.getInvoice().setRepairNet(new BigDecimal("100.00"));
@@ -83,7 +83,7 @@ public class Rule011HasCorrectRepairGrossCalculationTest extends TestCase {
     public void testFailled() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectRepairGrossCalculation(true);
+        claim.getBreBand().setHasCorrectRepairGrossCalculation(true);
 
         // SET INVOICE
         claim.getInvoice().setRepairNet(new BigDecimal("100.00"));

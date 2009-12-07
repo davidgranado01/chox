@@ -27,7 +27,7 @@ public class HasCorrectHireGrossCalculation implements IBusinessRule {
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isHasCorrectHireGrossCalculation()){
+        if(claim.getBreBand().isHasCorrectHireGrossCalculation()){
 
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
             boolean success = CalcHelper.EqualTo(claim.getInvoice().getHireGross(), iCalc.getCalculatedHireGross());

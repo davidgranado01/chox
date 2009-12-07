@@ -50,9 +50,9 @@ public class TestClaim {
 
     }
 
-    public CHOBandInfo getTestChoBand(){
+    public BreBandInfo getTestBreBand(){
 
-        CHOBandInfo band = new CHOBandInfo();
+        BreBandInfo band = new BreBandInfo();
 
         band.setName("BAND");
         band.setIsActive(true);

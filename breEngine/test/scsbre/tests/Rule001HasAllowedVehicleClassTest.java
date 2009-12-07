@@ -35,7 +35,7 @@ public class Rule001HasAllowedVehicleClassTest extends TestCase {
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -55,7 +55,7 @@ public class Rule001HasAllowedVehicleClassTest extends TestCase {
          */
         
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasAllowedVehicleClass(false);
+        claim.getBreBand().setHasAllowedVehicleClass(false);
         RuleEvaluation rv = new HasAllowedVehicleClass().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -74,7 +74,7 @@ public class Rule001HasAllowedVehicleClassTest extends TestCase {
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasAllowedVehicleClass(true);
+        claim.getBreBand().setHasAllowedVehicleClass(true);
         claim.setVClass(null);
 
         RuleEvaluation rv = new HasAllowedVehicleClass().applyToClaim(claim);
@@ -92,7 +92,7 @@ public class Rule001HasAllowedVehicleClassTest extends TestCase {
         // CUSTOMER VEHICLE CLASS V.S HIRE MONITORING DETAIL VEHICLE CLASS (SAME)
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasAllowedVehicleClass(true);
+        claim.getBreBand().setHasAllowedVehicleClass(true);
 
         claim.getVClass().setCode("SP1");
         claim.getVClass().setPrice(new BigDecimal("69.74"));
@@ -115,7 +115,7 @@ public class Rule001HasAllowedVehicleClassTest extends TestCase {
         // CUSTOMER VEHICLE CLASS V.S HIRE MONITORING DETAIL VEHICLE CLASS (NOT SAME)
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasAllowedVehicleClass(true);
+        claim.getBreBand().setHasAllowedVehicleClass(true);
 
         claim.getVClass().setCode("SP2");
         claim.getVClass().setPrice(new BigDecimal("62.74"));

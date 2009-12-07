@@ -33,7 +33,7 @@ public class Rule018HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZer
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -63,7 +63,7 @@ public class Rule018HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZer
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero(false);
+        claim.getBreBand().setHandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero(false);
         RuleEvaluation rv = new HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -76,7 +76,7 @@ public class Rule018HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZer
     public void testPassed() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero(true);
+        claim.getBreBand().setHandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero(true);
 
         // SET INVOICE
         claim.getInvoice().setClaimsHandlingInvoiceAmount(new BigDecimal("15.00"));
@@ -92,7 +92,7 @@ public class Rule018HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZer
     public void testFailled() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero(true);
+        claim.getBreBand().setHandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero(true);
 
         // SET INVOICE
         claim.getInvoice().setClaimsHandlingInvoiceAmount(new BigDecimal("15.00"));

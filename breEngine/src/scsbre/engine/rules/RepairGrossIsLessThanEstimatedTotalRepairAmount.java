@@ -20,7 +20,7 @@ public class RepairGrossIsLessThanEstimatedTotalRepairAmount implements IBusines
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isRepairGrossIsLessThanEstimatedTotalRepairAmount()){
+        if(claim.getBreBand().isRepairGrossIsLessThanEstimatedTotalRepairAmount()){
         
             IEngineerReportInfo eReport = claim.getEngineeringReport();
             IInvoiceInfo invoice = claim.getInvoice();

@@ -28,9 +28,9 @@ public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRul
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isHireDayCountDoesNotExceedBandHireDayCeiling()){
+        if(claim.getBreBand().isHireDayCountDoesNotExceedBandHireDayCeiling()){
 
-            boolean success = claim.getHireDetail().getDays() <= claim.getChoBand().getHireDayCeiling();
+            boolean success = claim.getHireDetail().getDays() <= claim.getBreBand().getHireDayCeiling();
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
             if(success){

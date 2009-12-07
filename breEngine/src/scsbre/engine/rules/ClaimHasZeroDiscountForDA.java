@@ -27,7 +27,7 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule{
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
         
-        if(claim.getChoBand().isClaimHasZeroDiscountForDA()){
+        if(claim.getBreBand().isClaimHasZeroDiscountForDA()){
             
             if(claim.getCHOrg().isDelegatedAuthority()){
                 

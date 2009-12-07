@@ -34,7 +34,7 @@ public class Rule013HasCorrectTotalVat extends TestCase {
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -54,7 +54,7 @@ public class Rule013HasCorrectTotalVat extends TestCase {
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectTotalVat(false);
+        claim.getBreBand().setHasCorrectTotalVat(false);
         RuleEvaluation rv = new HasCorrectTotalVat().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -67,7 +67,7 @@ public class Rule013HasCorrectTotalVat extends TestCase {
     public void testPassed() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectTotalVat(true);
+        claim.getBreBand().setHasCorrectTotalVat(true);
 
         // SET INVOICE
         claim.getInvoice().setHireNet(new BigDecimal("100.00"));
@@ -88,7 +88,7 @@ public class Rule013HasCorrectTotalVat extends TestCase {
     public void testFailled() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectTotalVat(true);
+        claim.getBreBand().setHasCorrectTotalVat(true);
 
         // SET INVOICE
         claim.getInvoice().setHireNet(new BigDecimal("100.00"));

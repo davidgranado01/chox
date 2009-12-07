@@ -10,7 +10,7 @@ import scsbre.engine.RuleEvaluation;
 import scsbre.engine.RuleEvaluationResult;
 import scsbre.engine.util.ClaimCalcHelper;
 import scsbre.model.ClaimStatus;
-import scsbre.model.ICHOBandInfo;
+import scsbre.model.IBREBandInfo;
 import scsbre.model.IClaimInfo;
 import scsbre.model.ICustomerVehicleDamageInfo;
 import scsbre.model.IEngineerReportInfo;
@@ -25,10 +25,10 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays()){
+        if(claim.getBreBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays()){
 
             ICustomerVehicleDamageInfo cvdamage = claim.getCustomerVehicleDamage();
-            ICHOBandInfo choBand = claim.getChoBand();
+            IBREBandInfo breBand = claim.getBreBand();
             IEngineerReportInfo eReport = claim.getEngineeringReport();
         
             if ( (claim.getHireDetail().getIsTotalLoss()) || (eReport.getEstimatedDaysUnderRepair() < 1)) {
@@ -43,18 +43,18 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
                 int hireDays = claim.getHireDetail().getDays();
                 
                 int takeVehicleToGarageDays = cvdamage.getIsUsable()
-                        ? choBand.getTakeVehicleToGarageDaysMobile()
-                        : choBand.getTakeVehicleToGarageDaysNonMobile();
+                        ? breBand.getTakeVehicleToGarageDaysMobile()
+                        : breBand.getTakeVehicleToGarageDaysNonMobile();
 
                 int maxDays = eReport.getEstimatedDaysUnderRepair();
 
                 maxDays += takeVehicleToGarageDays;
 
                 // Basecamp : S8019
-                // maxDays += choBand.getWeekendBufferDays();
+                // maxDays += breBand.getWeekendBufferDays();
                 maxDays += cCalc.getWeekendBuffer();
-                maxDays += choBand.getTakeVehicleOutDays();
-                maxDays += choBand.getEngineerInspectionDelayDays();
+                maxDays += breBand.getTakeVehicleOutDays();
+                maxDays += breBand.getEngineerInspectionDelayDays();
                 
                 boolean success = hireDays <= maxDays;
 

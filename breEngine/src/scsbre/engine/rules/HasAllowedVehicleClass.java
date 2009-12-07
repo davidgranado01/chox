@@ -15,7 +15,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isHasAllowedVehicleClass()){
+        if(claim.getBreBand().isHasAllowedVehicleClass()){
 
             if(claim.getVClass() != null){
 

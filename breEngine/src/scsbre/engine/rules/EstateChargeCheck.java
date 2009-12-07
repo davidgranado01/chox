@@ -17,7 +17,7 @@ public class EstateChargeCheck implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isEstateChargeCheck()){
+        if(claim.getBreBand().isEstateChargeCheck()){
 
             boolean success = true;
             

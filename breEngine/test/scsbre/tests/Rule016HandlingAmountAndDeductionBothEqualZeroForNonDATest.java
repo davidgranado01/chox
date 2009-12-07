@@ -33,7 +33,7 @@ public class Rule016HandlingAmountAndDeductionBothEqualZeroForNonDATest extends 
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -66,7 +66,7 @@ public class Rule016HandlingAmountAndDeductionBothEqualZeroForNonDATest extends 
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHandlingAmountAndDeductionBothEqualZeroForNonDA(false);
+        claim.getBreBand().setHandlingAmountAndDeductionBothEqualZeroForNonDA(false);
         RuleEvaluation rv = new HandlingAmountAndDeductionBothEqualZeroForNonDA().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -84,7 +84,7 @@ public class Rule016HandlingAmountAndDeductionBothEqualZeroForNonDATest extends 
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHandlingAmountAndDeductionBothEqualZeroForNonDA(true);
+        claim.getBreBand().setHandlingAmountAndDeductionBothEqualZeroForNonDA(true);
 
         // SET CHO
         claim.getCHOrg().setDelegatedAuthority(true);
@@ -101,7 +101,7 @@ public class Rule016HandlingAmountAndDeductionBothEqualZeroForNonDATest extends 
     public void testPassed() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHandlingAmountAndDeductionBothEqualZeroForNonDA(true);
+        claim.getBreBand().setHandlingAmountAndDeductionBothEqualZeroForNonDA(true);
 
         // SET INVOICE
         claim.getInvoice().setClaimsHandlingInvoiceAmount(new BigDecimal("0.00"));
@@ -117,7 +117,7 @@ public class Rule016HandlingAmountAndDeductionBothEqualZeroForNonDATest extends 
     public void testFailled_ClaimsHandlingInvoiceAmountNotZero() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHandlingAmountAndDeductionBothEqualZeroForNonDA(true);
+        claim.getBreBand().setHandlingAmountAndDeductionBothEqualZeroForNonDA(true);
 
         // SET INVOICE
         claim.getInvoice().setClaimsHandlingInvoiceAmount(new BigDecimal("10.00"));
@@ -133,7 +133,7 @@ public class Rule016HandlingAmountAndDeductionBothEqualZeroForNonDATest extends 
     public void testFailled_DeductionForClaimsHandlingFeeNotZero() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHandlingAmountAndDeductionBothEqualZeroForNonDA(true);
+        claim.getBreBand().setHandlingAmountAndDeductionBothEqualZeroForNonDA(true);
 
         // SET INVOICE
         claim.getInvoice().setClaimsHandlingInvoiceAmount(new BigDecimal("0.00"));
@@ -150,7 +150,7 @@ public class Rule016HandlingAmountAndDeductionBothEqualZeroForNonDATest extends 
     public void testFailled_BothNotZero() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHandlingAmountAndDeductionBothEqualZeroForNonDA(true);
+        claim.getBreBand().setHandlingAmountAndDeductionBothEqualZeroForNonDA(true);
 
         // SET INVOICE
         claim.getInvoice().setClaimsHandlingInvoiceAmount(new BigDecimal("10.00"));

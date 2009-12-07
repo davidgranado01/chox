@@ -17,7 +17,7 @@ public class CorrentAdminFee implements IBusinessRule {
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
         
-        if(claim.getChoBand().isCorrentAdminFee()){
+        if(claim.getBreBand().isCorrentAdminFee()){
 
             boolean success = true;
             BigDecimal adminFee = new BigDecimal("40.00");

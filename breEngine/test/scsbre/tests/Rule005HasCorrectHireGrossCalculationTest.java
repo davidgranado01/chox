@@ -34,7 +34,7 @@ public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -59,7 +59,7 @@ public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectHireGrossCalculation(false);
+        claim.getBreBand().setHasCorrectHireGrossCalculation(false);
         RuleEvaluation rv = new HasCorrectHireGrossCalculation().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -73,7 +73,7 @@ public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
     public void testPassed_equal() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectHireGrossCalculation(true);
+        claim.getBreBand().setHasCorrectHireGrossCalculation(true);
 
         claim.getInvoice().setHireGross(new BigDecimal("230.00"));
         
@@ -98,7 +98,7 @@ public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
     public void testPassed_lessThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectHireGrossCalculation(true);
+        claim.getBreBand().setHasCorrectHireGrossCalculation(true);
 
         claim.getInvoice().setHireGross(new BigDecimal("229.89"));
 
@@ -124,7 +124,7 @@ public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
     public void testFailed() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHasCorrectHireGrossCalculation(true);
+        claim.getBreBand().setHasCorrectHireGrossCalculation(true);
 
         claim.getInvoice().setHireGross(new BigDecimal("240.50"));
 

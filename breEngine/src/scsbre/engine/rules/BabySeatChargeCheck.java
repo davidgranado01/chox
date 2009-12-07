@@ -17,7 +17,7 @@ public class BabySeatChargeCheck implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isBabySeatChargeCheck()){
+        if(claim.getBreBand().isBabySeatChargeCheck()){
 
             boolean success = true;
 

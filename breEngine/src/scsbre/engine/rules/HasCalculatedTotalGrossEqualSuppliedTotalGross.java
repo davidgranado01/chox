@@ -26,7 +26,7 @@ public class HasCalculatedTotalGrossEqualSuppliedTotalGross implements IBusiness
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isHasCalculatedTotalGrossEqualSuppliedTotalGross()){
+        if(claim.getBreBand().isHasCalculatedTotalGrossEqualSuppliedTotalGross()){
             
             IInvoiceInfo invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());

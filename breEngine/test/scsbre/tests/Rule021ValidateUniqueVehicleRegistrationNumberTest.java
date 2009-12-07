@@ -33,7 +33,7 @@ public class Rule021ValidateUniqueVehicleRegistrationNumberTest extends TestCase
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -49,7 +49,7 @@ public class Rule021ValidateUniqueVehicleRegistrationNumberTest extends TestCase
     public void testSkipped_OnOffFlag() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setValidateUniqueVehicleRegistrationNumber(false);
+        claim.getBreBand().setValidateUniqueVehicleRegistrationNumber(false);
         RuleEvaluation rv = new validateUniqueVehicleRegistrationNumber().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -62,7 +62,7 @@ public class Rule021ValidateUniqueVehicleRegistrationNumberTest extends TestCase
     public void testPassed() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setValidateUniqueVehicleRegistrationNumber(true);
+        claim.getBreBand().setValidateUniqueVehicleRegistrationNumber(true);
 
         claim.getCustomerVehicleDamage().setVehicleRegistrationExist(Boolean.FALSE);
 
@@ -76,7 +76,7 @@ public class Rule021ValidateUniqueVehicleRegistrationNumberTest extends TestCase
     public void testFailled() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setValidateUniqueVehicleRegistrationNumber(true);
+        claim.getBreBand().setValidateUniqueVehicleRegistrationNumber(true);
 
         claim.getCustomerVehicleDamage().setVehicleRegistrationExist(Boolean.TRUE);
         

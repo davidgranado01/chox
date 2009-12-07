@@ -32,7 +32,7 @@ public class HasCorrectRepairVatCalculation implements IBusinessRule{
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
         
-        if(claim.getChoBand().isHasCorrectRepairVatCalculation()){
+        if(claim.getBreBand().isHasCorrectRepairVatCalculation()){
 
             IInvoiceInfo invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);

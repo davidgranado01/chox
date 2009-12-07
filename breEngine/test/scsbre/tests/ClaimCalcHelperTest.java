@@ -32,7 +32,7 @@ public class ClaimCalcHelperTest extends TestCase {
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -60,7 +60,7 @@ public class ClaimCalcHelperTest extends TestCase {
         ClaimInfo claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getChoBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourRate(4);
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("5.00"));
@@ -73,7 +73,7 @@ public class ClaimCalcHelperTest extends TestCase {
         /*
         System.out.println(""+(claim.getHireMonitoringDetail().getLabourCost().compareTo(new BigDecimal(0.00))<1));
         System.out.println(""+(claim.getHireMonitoringDetail().getLabourHour()>0));
-        System.out.println(new BigDecimal(claim.getChoBand().getAverageLabourRate()*claim.getHireMonitoringDetail().getLabourHour()));
+        System.out.println(new BigDecimal(claim.getBreBand().getAverageLabourRate()*claim.getHireMonitoringDetail().getLabourHour()));
         System.out.println("getDays: "+cCalc.getNewLabourCost());
         */
 
@@ -90,7 +90,7 @@ public class ClaimCalcHelperTest extends TestCase {
         ClaimInfo claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getChoBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourRate(4);
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("0"));
@@ -114,12 +114,12 @@ public class ClaimCalcHelperTest extends TestCase {
     @Test
     public void testNewLabourCost_LabourCostIsZero_LabourRateIsZero() throws IOException {
 
-        // claim.getChoBand.AverageLabourRate X claim.getHireMonitoringDetail.LabourHour
+        // claim.getBreBand.AverageLabourRate X claim.getHireMonitoringDetail.LabourHour
         
         ClaimInfo claim = getTestClaim();
 
         // SET BRE BAND
-        claim.getChoBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourRate(4);
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("0"));
@@ -151,8 +151,8 @@ public class ClaimCalcHelperTest extends TestCase {
         ClaimInfo claim = getTestClaim();
 
         // SET CHO BAND
-        claim.getChoBand().setAverageLabourRate(4);
-        claim.getChoBand().setAverageLabourHoursPerHireDay(2);
+        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourHoursPerHireDay(2);
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("0"));
@@ -178,8 +178,8 @@ public class ClaimCalcHelperTest extends TestCase {
         ClaimInfo claim = getTestClaim();
 
         // SET CHO BAND
-        claim.getChoBand().setAverageLabourRate(4);
-        claim.getChoBand().setAverageLabourHoursPerHireDay(5);
+        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourHoursPerHireDay(5);
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("200"));
@@ -294,8 +294,8 @@ public class ClaimCalcHelperTest extends TestCase {
         ClaimInfo claim = getTestClaim();
 
         // SET CHO BAND
-        claim.getChoBand().setAverageLabourRate(4);
-        claim.getChoBand().setAverageLabourHoursPerHireDay(2);
+        claim.getBreBand().setAverageLabourRate(4);
+        claim.getBreBand().setAverageLabourHoursPerHireDay(2);
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("0"));

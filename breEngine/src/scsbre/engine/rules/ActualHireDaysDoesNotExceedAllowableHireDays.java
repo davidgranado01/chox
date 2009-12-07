@@ -22,7 +22,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isActualHireDaysDoesNotExceedAllowableHireDays()){
+        if(claim.getBreBand().isActualHireDaysDoesNotExceedAllowableHireDays()){
 
             if (!claim.getHireDetail().getIsTotalLoss() && claim.getEngineeringReport().getEstimatedDaysUnderRepair() < 1) {
 

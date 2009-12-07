@@ -2,9 +2,9 @@ package scsbre.tests.sample;
 
 import java.math.BigDecimal;
 
-import scsbre.model.ICHOBandInfo;
+import scsbre.model.IBREBandInfo;
 
-public class CHOBandInfo implements ICHOBandInfo {
+public class BreBandInfo implements IBREBandInfo {
 
     protected InsurerInfo insurer;
     protected boolean isActive;

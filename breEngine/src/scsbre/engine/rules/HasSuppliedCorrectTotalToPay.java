@@ -19,7 +19,7 @@ public class HasSuppliedCorrectTotalToPay implements IBusinessRule {
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isHasSuppliedCorrectTotalToPay()){
+        if(claim.getBreBand().isHasSuppliedCorrectTotalToPay()){
 
             IInvoiceInfo invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);

@@ -1,17 +1,17 @@
 package scsbre.engine.util;
 
-import scsbre.model.ICHOBandInfo;
+import scsbre.model.IBREBandInfo;
 
-public class CHOBandCalcHelper {
+public class BreBandCalcHelper {
 
-    private ICHOBandInfo band;
+    private IBREBandInfo band;
 
-    private CHOBandCalcHelper(ICHOBandInfo b) {
+    private BreBandCalcHelper(IBREBandInfo b) {
         band = b;
     }
 
-    public static CHOBandCalcHelper getInstance(ICHOBandInfo b) {
-        return new CHOBandCalcHelper(b);
+    public static BreBandCalcHelper getInstance(IBREBandInfo b) {
+        return new BreBandCalcHelper(b);
     }
 
     public int getTotalLossInspectionDays() {

@@ -21,11 +21,11 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isHireNetDoesNotExceedVehicleClassHireNetCeiling()){
+        if(claim.getBreBand().isHireNetDoesNotExceedVehicleClassHireNetCeiling()){
 
             BigDecimal hireNet = claim.getInvoice().getHireNet();
 
-            BigDecimal hireNetCeiling = claim.getChoBand().getMaxHireNetCeiling();
+            BigDecimal hireNetCeiling = claim.getBreBand().getMaxHireNetCeiling();
             boolean success = hireNet.compareTo(hireNetCeiling) <= 0;
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);

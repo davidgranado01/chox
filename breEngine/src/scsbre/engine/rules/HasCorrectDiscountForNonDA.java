@@ -21,7 +21,7 @@ public class HasCorrectDiscountForNonDA implements IBusinessRule {
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isHasCorrectDiscountForNonDA()){
+        if(claim.getBreBand().isHasCorrectDiscountForNonDA()){
             
             if(!claim.getCHOrg().isDelegatedAuthority()){
 

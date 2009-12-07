@@ -33,7 +33,7 @@ public class Rule024NumberOfHireDaysReconcileTest extends TestCase {
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -52,7 +52,7 @@ public class Rule024NumberOfHireDaysReconcileTest extends TestCase {
     public void testSkipped_OnOffFlag() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setNumberOfHireDaysReconcile(false);
+        claim.getBreBand().setNumberOfHireDaysReconcile(false);
         RuleEvaluation rv = new NumberOfHireDaysReconcile().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -65,7 +65,7 @@ public class Rule024NumberOfHireDaysReconcileTest extends TestCase {
     public void testFailled_lessThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setNumberOfHireDaysReconcile(true);
+        claim.getBreBand().setNumberOfHireDaysReconcile(true);
 
         claim.getHireDetail().setRentalEnd(DateHelper.getDateFromString("11/10/2009"));
 
@@ -79,7 +79,7 @@ public class Rule024NumberOfHireDaysReconcileTest extends TestCase {
     public void testPassed_Equals() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setNumberOfHireDaysReconcile(true);
+        claim.getBreBand().setNumberOfHireDaysReconcile(true);
 
         claim.getHireDetail().setRentalEnd(DateHelper.getDateFromString("10/10/2009"));
 
@@ -93,7 +93,7 @@ public class Rule024NumberOfHireDaysReconcileTest extends TestCase {
     public void testFailled() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setNumberOfHireDaysReconcile(true);
+        claim.getBreBand().setNumberOfHireDaysReconcile(true);
 
         claim.getHireDetail().setRentalEnd(DateHelper.getDateFromString("09/10/2009"));
 

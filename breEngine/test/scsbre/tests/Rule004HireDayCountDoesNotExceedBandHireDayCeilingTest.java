@@ -32,7 +32,7 @@ public class Rule004HireDayCountDoesNotExceedBandHireDayCeilingTest extends Test
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -42,7 +42,7 @@ public class Rule004HireDayCountDoesNotExceedBandHireDayCeilingTest extends Test
         claim.setVClass(testClaim.getTestVehicleClass());
 
          claim.getHireDetail().setDays(123);
-         claim.getChoBand().setHireDayCeiling(123);
+         claim.getBreBand().setHireDayCeiling(123);
         
         return claim;
     }
@@ -51,7 +51,7 @@ public class Rule004HireDayCountDoesNotExceedBandHireDayCeilingTest extends Test
     public void testSkipped() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHireDayCountDoesNotExceedBandHireDayCeiling(false);
+        claim.getBreBand().setHireDayCountDoesNotExceedBandHireDayCeiling(false);
         RuleEvaluation rv = new HireDayCountDoesNotExceedBandHireDayCeiling().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -70,10 +70,10 @@ public class Rule004HireDayCountDoesNotExceedBandHireDayCeilingTest extends Test
          */
         
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHireDayCountDoesNotExceedBandHireDayCeiling(true);
+        claim.getBreBand().setHireDayCountDoesNotExceedBandHireDayCeiling(true);
         
          claim.getHireDetail().setDays(123);
-         claim.getChoBand().setHireDayCeiling(123);
+         claim.getBreBand().setHireDayCeiling(123);
 
         RuleEvaluation rv = new HireDayCountDoesNotExceedBandHireDayCeiling().applyToClaim(claim);
 
@@ -94,10 +94,10 @@ public class Rule004HireDayCountDoesNotExceedBandHireDayCeilingTest extends Test
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHireDayCountDoesNotExceedBandHireDayCeiling(true);
+        claim.getBreBand().setHireDayCountDoesNotExceedBandHireDayCeiling(true);
 
          claim.getHireDetail().setDays(122);
-         claim.getChoBand().setHireDayCeiling(123);
+         claim.getBreBand().setHireDayCeiling(123);
 
         RuleEvaluation rv = new HireDayCountDoesNotExceedBandHireDayCeiling().applyToClaim(claim);
 
@@ -118,10 +118,10 @@ public class Rule004HireDayCountDoesNotExceedBandHireDayCeilingTest extends Test
          */
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setHireDayCountDoesNotExceedBandHireDayCeiling(true);
+        claim.getBreBand().setHireDayCountDoesNotExceedBandHireDayCeiling(true);
 
          claim.getHireDetail().setDays(124);
-         claim.getChoBand().setHireDayCeiling(123);
+         claim.getBreBand().setHireDayCeiling(123);
 
         RuleEvaluation rv = new HireDayCountDoesNotExceedBandHireDayCeiling().applyToClaim(claim);
 

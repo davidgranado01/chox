@@ -18,7 +18,7 @@ public class LabourCostBusinessRule implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if(claim.getChoBand().isLabourCostBusinessRule()){
+        if(claim.getBreBand().isLabourCostBusinessRule()){
             
             boolean success = true;
             ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);

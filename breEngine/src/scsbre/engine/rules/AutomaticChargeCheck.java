@@ -19,7 +19,7 @@ public class AutomaticChargeCheck implements IBusinessRule {
         
         boolean success = true;
         
-        if(claim.getChoBand().isAutomaticChargeCheck()){
+        if(claim.getBreBand().isAutomaticChargeCheck()){
 
             if(claim.getInvoice().getAutomaticFee().compareTo(new BigDecimal(0)) > 0){
                 success = false;

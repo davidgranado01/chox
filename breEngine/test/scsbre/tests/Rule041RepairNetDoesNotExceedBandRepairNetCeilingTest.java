@@ -32,7 +32,7 @@ public class Rule041RepairNetDoesNotExceedBandRepairNetCeilingTest extends TestC
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setCHOrganisation(testClaim.getTestChorganisation());
-        claim.setChoBand(testClaim.getTestChoBand());
+        claim.setBreBand(testClaim.getTestBreBand());
         claim.setClaimEngineeringReport(testClaim.getTestEngineeringReport());
         claim.setCustomerVehicleDamage(testClaim.getTestCustomerVehicleDamage());
         claim.setExtras(testClaim.getTestExtras());
@@ -46,9 +46,8 @@ public class Rule041RepairNetDoesNotExceedBandRepairNetCeilingTest extends TestC
         VehicleClassCeilingInfo vehicleClassCeiling = new VehicleClassCeilingInfo();
         vehicleClassCeiling.setRepairNetCeiling(new BigDecimal("10000.00"));
 
-        // SET CHOBAND
-        claim.getChoBand().setRepairNetCeiling(new BigDecimal("100.00"));
-        claim.getChoBand().setVehicleClassCeiling(vehicleClassCeiling);
+        claim.getBreBand().setRepairNetCeiling(new BigDecimal("100.00"));
+        claim.getBreBand().setVehicleClassCeiling(vehicleClassCeiling);
 
         claim.getInvoice().setRepairNet(new BigDecimal("400.00"));
 
@@ -59,7 +58,7 @@ public class Rule041RepairNetDoesNotExceedBandRepairNetCeilingTest extends TestC
     public void testSkipped_OnOffFlag() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setRepairNetDoesNotExceedBandRepairNetCeiling(false);
+        claim.getBreBand().setRepairNetDoesNotExceedBandRepairNetCeiling(false);
         RuleEvaluation rv = new RepairNetDoesNotExceedRepairNetCeiling().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
@@ -72,7 +71,7 @@ public class Rule041RepairNetDoesNotExceedBandRepairNetCeilingTest extends TestC
     public void testPassed_LessThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setRepairNetDoesNotExceedBandRepairNetCeiling(true);
+        claim.getBreBand().setRepairNetDoesNotExceedBandRepairNetCeiling(true);
 
         claim.getInvoice().setRepairNet(new BigDecimal("99.00"));
 
@@ -88,7 +87,7 @@ public class Rule041RepairNetDoesNotExceedBandRepairNetCeilingTest extends TestC
     public void testPassed_Equals() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setRepairNetDoesNotExceedBandRepairNetCeiling(true);
+        claim.getBreBand().setRepairNetDoesNotExceedBandRepairNetCeiling(true);
 
         claim.getInvoice().setRepairNet(new BigDecimal("100.00"));
 
@@ -104,16 +103,16 @@ public class Rule041RepairNetDoesNotExceedBandRepairNetCeilingTest extends TestC
     public void testFailed_MoreThan() throws IOException {
 
         ClaimInfo claim = getTestClaim();
-        claim.getChoBand().setRepairNetDoesNotExceedBandRepairNetCeiling(true);
+        claim.getBreBand().setRepairNetDoesNotExceedBandRepairNetCeiling(true);
 
         claim.getInvoice().setRepairNet(new BigDecimal("100.50"));
 
         RuleEvaluation rv = new RepairNetDoesNotExceedRepairNetCeiling().applyToClaim(claim);
         /*
-        boolean success = (claim.getInvoice().getRepairNet()).compareTo(claim.getChoBand().getMaxRepairNetCeiling()) <= 0;
+        boolean success = (claim.getInvoice().getRepairNet()).compareTo(claim.getBreBand().getMaxRepairNetCeiling()) <= 0;
         System.out.println("REPAIR NET: "+claim.getInvoice().getRepairNet());
-        System.out.println("REPAIR NET CELIING: "+claim.getChoBand().getRepairNetCeiling());
-        System.out.println("REPAIR MAX NET CEILING: "+claim.getChoBand().getMaxRepairNetCeiling());
+        System.out.println("REPAIR NET CELIING: "+claim.getBreBand().getRepairNetCeiling());
+        System.out.println("REPAIR MAX NET CEILING: "+claim.getBreBand().getMaxRepairNetCeiling());
         System.out.println(success+"RESULT: "+rv.getResult());
         System.out.println("RESULT: "+rv.getRelatedRule().getNarrative());
         System.out.println("RESULT: "+rv.getRelatedRule().getStatusAfterFailure());

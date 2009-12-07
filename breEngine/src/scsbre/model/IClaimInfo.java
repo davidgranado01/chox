@@ -4,7 +4,7 @@ import java.util.Date;
 
 public interface IClaimInfo {
 
-    public ICHOBandInfo getChoBand();
+    public IBREBandInfo getBreBand();
 
     public ICHOrganisationInfo getCHOrg();
 
