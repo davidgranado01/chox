@@ -1,0 +1,10 @@
+
+
+ALTER TABLE claim_summary ADD CONSTRAINT claim_summary_key UNIQUE (process_date, insurer_id, chorganisation_id, status);
+ALTER TABLE claim_summary ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+----------------------------------------------------------------
+
+ALTER TABLE claim_summary_process DROP COLUMN id;
+ALTER TABLE claim_summary_process ADD CONSTRAINT claim_summary_process_pkey PRIMARY KEY (process_date);
+ALTER TABLE claim_summary_process ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
