@@ -5,8 +5,8 @@
     <id column="id" name="id">
       <generator class="increment"/>
     </id>
-    <many-to-one class="chox.model.Accessibility" column="accessibility_id" name="accessibility"/>
-    <property column="is_workgroup_check" name="workgroupCheck"/>
-    <property column="is_ownership_check" name="ownershipCheck"/>
+    <many-to-one class="chox.model.Accessibility" column="accessibility_id" name="accessibility" not-null="true"/>
+    <property column="is_workgroup_check" name="workgroupCheck" not-null="true"/>
+    <property column="is_ownership_check" name="ownershipCheck" not-null="true"/>
   </class>
 </hibernate-mapping>

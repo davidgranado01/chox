@@ -61,9 +61,9 @@
     <property column="vat_amount_collected" name="vatAmountCollected"/>
     <property column="penalty_charge" name="penaltyCharge"/>
     <property column="penalty_alert_qty" name="penaltyAlertQty"/>
-    <property column="reason_of_rejection_id" name="reasonOfRejectionId"/>
     <property column="penalty_charge_applied_date" name="penaltyChargeAppliedDate"/>
+    <many-to-one class="chox.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>
+    <many-to-one class="chox.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>
-    <many-to-one class="chox.model.WebUser" column="last_nodified_by" name="lastModifiedBy"/>
   </class>
 </hibernate-mapping>

@@ -19,7 +19,6 @@ public class DataSchemaGenerationTest {
     @Test
     @Transactional
     public void testFile() {
-
         SchemaExport schemaExport = new SchemaExport(localSessionFactoryBean.getConfiguration());
         schemaExport.execute(true, false, false, true);
         System.out.print(schemaExport.toString());

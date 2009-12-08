@@ -6,87 +6,48 @@ import java.io.Serializable;
 
 public class Accessibility implements Serializable
 {
-	/** 
-	 * This attribute maps to the column id in the accessibility table.
-	 */
-	protected Integer id;
 
-	/** 
-	 * This attribute maps to the column name in the accessibility table.
-	 */
-	protected String name;
+    protected Integer id;
+    protected String name;
+    protected Set accessibilityItem = new HashSet();
+    protected Set AccessibilityEditable = new HashSet();
 
-	/** 
-	 * This attribute represents the foreign key relationship from the accessibility_item table.
-	 */
-	protected Set accessibilityItem = new HashSet();
+    public Accessibility(){
+    }
 
-	/**
-	 * Method 'Accessibility'
-	 * 
-	 */
-	public Accessibility()
-	{
-	}
+    public java.lang.Integer getId(){
+        return id;
+    }
 
-	/**
-	 * Method 'getId'
-	 * 
-	 * @return java.lang.Integer
-	 */
-	public java.lang.Integer getId()
-	{
-		return id;
-	}
+    public void setId(java.lang.Integer id){
+        this.id = id;
+    }
 
-	/**
-	 * Method 'setId'
-	 * 
-	 * @param id
-	 */
-	public void setId(java.lang.Integer id)
-	{
-		this.id = id;
-	}
+    public java.lang.String getName(){
+        return name;
+    }
 
-	/**
-	 * Method 'getName'
-	 * 
-	 * @return java.lang.String
-	 */
-	public java.lang.String getName()
-	{
-		return name;
-	}
+    public void setName(java.lang.String name){
+        this.name = name;
+    }
 
-	/**
-	 * Method 'setName'
-	 * 
-	 * @param name
-	 */
-	public void setName(java.lang.String name)
-	{
-		this.name = name;
-	}
+    public Set getAccessibilityItem(){
+        return accessibilityItem;
+    }
 
-	/**
-	 * Method 'getAccessibilityItem'
-	 * 
-	 * @return Set
-	 */
-	public Set getAccessibilityItem()
-	{
-		return accessibilityItem;
-	}
+    public void setAccessibilityItem(Set accessibilityItem)
+    {
+        this.accessibilityItem = accessibilityItem;
+    }
 
-	/**
-	 * Method 'setAccessibilityItem'
-	 * 
-	 * @param accessibilityItem
-	 */
-	public void setAccessibilityItem(Set accessibilityItem)
-	{
-		this.accessibilityItem = accessibilityItem;
-	}
+    public Set getAccessibilityEditable() {
+        return AccessibilityEditable;
+    }
+
+    public void setAccessibilityEditable(Set AccessibilityEditable) {
+        this.AccessibilityEditable = AccessibilityEditable;
+    }
+
+
 
 }

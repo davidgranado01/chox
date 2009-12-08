@@ -10,8 +10,8 @@
     <property column="new_status" name="newStatus"/>
     <property column="created_date" name="createdDate"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
-    <property column="claim_reason_of_rejection" name="claimReasonOfRejection"/>
-    <property column="invoice_reason_of_rejection" name="invoiceReasonOfRejection"/>
+    <many-to-one class="chox.model.ReasonOfRejection" column="claim_reason_of_rejection" name="claimReasonOfRejection"/>
+    <many-to-one class="chox.model.ReasonOfRejection" column="invoice_reason_of_rejection" name="invoiceReasonOfRejection"/>
     <many-to-one class="chox.model.WebUser" column="user_id" name="user" not-null="true"/>
     <many-to-one class="chox.model.Claim" column="claim_id" name="claim" not-null="true"/>
     <many-to-one class="chox.model.WebUser" column="created_by" name="createdBy"/>

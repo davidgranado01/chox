@@ -34,7 +34,7 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
     private Date creditAgreementDate;
     private Date gtaNoticeDate;
     private boolean isFnolReviewed;
-    private Integer reasonOfRejectionId;
+    private ReasonOfRejection reasonOfRejection;
     private Date statusModifiedDate;
     private String previousStatus;
     private Date hireMonitoringEcd;
@@ -274,12 +274,12 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
         this.isFnolReviewed = isFnolReviewed;
     }
 
-    public Integer getReasonOfRejectionId() {
-        return reasonOfRejectionId;
+    public ReasonOfRejection getReasonOfRejection() {
+        return reasonOfRejection;
     }
 
-    public void setReasonOfRejectionId(Integer reasonOfRejectionId) {
-        this.reasonOfRejectionId = reasonOfRejectionId;
+    public void setReasonOfRejection(ReasonOfRejection reasonOfRejection) {
+        this.reasonOfRejection = reasonOfRejection;
     }
 
     public Date getStatusModifiedDate() {
@@ -534,5 +534,4 @@ public class Claim extends AuditableEntity implements Serializable, IClaimInfo {
 
     // </editor-fold>  
 
-    
 }

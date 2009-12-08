@@ -10,8 +10,8 @@ public class AuditTrail extends AuditableEntity implements Serializable {
     protected String newStatus;
     protected WebUser user;
     protected Claim claim;
-    protected Integer claimReasonOfRejection;
-    protected Integer invoiceReasonOfRejection;
+    protected ReasonOfRejection claimReasonOfRejection;
+    protected ReasonOfRejection invoiceReasonOfRejection;
 
     public Claim getClaim() {
         return claim;
@@ -53,19 +53,19 @@ public class AuditTrail extends AuditableEntity implements Serializable {
         this.user = user;
     }
 
-    public Integer getClaimReasonOfRejection() {
+    public ReasonOfRejection getClaimReasonOfRejection() {
         return claimReasonOfRejection;
     }
 
-    public void setClaimReasonOfRejection(Integer claimReasonOfRejection) {
+    public void setClaimReasonOfRejection(ReasonOfRejection claimReasonOfRejection) {
         this.claimReasonOfRejection = claimReasonOfRejection;
     }
 
-    public Integer getInvoiceReasonOfRejection() {
+    public ReasonOfRejection getInvoiceReasonOfRejection() {
         return invoiceReasonOfRejection;
     }
 
-    public void setInvoiceReasonOfRejection(Integer invoiceReasonOfRejection) {
+    public void setInvoiceReasonOfRejection(ReasonOfRejection invoiceReasonOfRejection) {
         this.invoiceReasonOfRejection = invoiceReasonOfRejection;
     }
 }

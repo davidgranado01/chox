@@ -14,6 +14,7 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import chox.model.ReasonOfRejection;
 
 public class AuditTrailServiceImpl extends SecureDataService implements AuditTrailService{
     
@@ -60,7 +61,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
     }
     
-    public Boolean logAuditLog(String newStatus, Claim thisClaim, Integer claimReasonOfRejection, Integer invoiceReasonOfRejection){
+    public Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection){
        
         Boolean bFlag = false;
         
@@ -88,8 +89,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
                
     } 
 
-
-    public Boolean logAuditLog(String newStatus, Claim thisClaim, Integer claimReasonOfRejection, Integer invoiceReasonOfRejection, Integer secInteval){
+    public Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection, Integer secInteval){
 
         Boolean bFlag = false;
 

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-autowire="autodetect">
+    
     <bean id="securityInfoProvider" class="chox.data.FakeSecurityInfoProvider" singleton="false"/>
+
     <bean id="auditInterceptor" class="chox.data.DBInterceptor" singleton="false">
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
@@ -16,6 +18,7 @@
         <property name="password" value="">
         </property>
     </bean>
+    
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource">
             <ref bean="dataSource" />
@@ -60,7 +63,6 @@
                 <value>chox/model/HireMonitoringEcd.hbm.xml</value>
                 <value>chox/model/AuditTrail.hbm.xml</value>
                 <value>chox/model/ReasonOfRejection.hbm.xml</value>
-                <value>chox/model/SystemLog.hbm.xml</value>
                 <value>chox/model/WebUserUserRole.hbm.xml</value>
                 <value>chox/model/InsurerChorganisation.hbm.xml</value>
                 <value>chox/model/ReasonOfDelay.hbm.xml</value>

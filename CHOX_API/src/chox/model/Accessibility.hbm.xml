@@ -6,10 +6,14 @@
     <id column="id" name="id">
       <generator class="increment"/>
     </id>
-    <property column="name" name="name"/>
-    <set cascade="all" inverse="true" name="AccessibilityItem">
+    <property column="name" name="name" not-null="true"/>
+    <set name="AccessibilityItem" lazy="extra">
       <key column="accessibility_id"/>
       <one-to-many class="chox.model.AccessibilityItem"/>
+    </set>
+    <set name="AccessibilityEditable" lazy="extra">
+      <key column="accessibility_id"/>
+      <one-to-many class="chox.model.AccessibilityEditable"/>
     </set>
   </class>
 </hibernate-mapping>

@@ -154,37 +154,13 @@ public class Invoice extends AuditableEntity implements Serializable, IInvoiceIn
      * This attribute maps to the column non_standard_insurance_premium_qty in the invoice table.
      */
     protected Integer nonStandardInsurancePremiumQty;
-    /**
-     * This attribute maps to the column admin_fee in the invoice table.
-     */
     protected BigDecimal adminFee;
-    /**
-     * This attribute maps to the column admin_qty in the invoice table.
-     */
     protected Integer adminQty;
-    /**
-     * This attribute maps to the column roof_rack_fee in the invoice table.
-     */
     protected BigDecimal roofRackFee;
-    /**
-     * This attribute maps to the column roof_rack_qty in the invoice table.
-     */
     protected Integer roofRackQty;
-    /**
-     * This attribute maps to the column dual_control_fee in the invoice table.
-     */
     protected BigDecimal dualControlFee;
-    /**
-     * This attribute maps to the column dual_control_qty in the invoice table.
-     */
     protected Integer dualControlQty;
-    /**
-     * This attribute maps to the column delivery_collection_fee in the invoice table.
-     */
     protected BigDecimal deliveryCollectionFee;
-    /**
-     * This attribute maps to the column delivery_collection_qty in the invoice table.
-     */
     protected Integer deliveryCollectionQty;
     protected boolean isPaymentMode;
     protected boolean isEngineerDecisionApproved;
@@ -195,23 +171,13 @@ public class Invoice extends AuditableEntity implements Serializable, IInvoiceIn
     protected BigDecimal vatAmountCollected;
     protected BigDecimal penaltyCharge;
     protected Integer penaltyAlertQty;
-    protected Integer reasonOfRejectionId;
+    protected ReasonOfRejection reasonOfRejection;
     protected Date penaltyChargeAppliedDate;
-
     protected BigDecimal originalTotalToPay;
 
-    /**
-     * Method 'Invoice'
-     *
-     */
     public Invoice() {
     }
 
-    /**
-     * Method 'getDateInvoiced'
-     *
-     * @return java.util.Date
-     */
     @TypeConversion(converter = "chox.data.DateConverter")
     public java.util.Date getDateInvoiced() {
         return dateInvoiced;
@@ -1079,12 +1045,12 @@ public class Invoice extends AuditableEntity implements Serializable, IInvoiceIn
         return dateDiff;
     }
 
-    public Integer getReasonOfRejectionId() {
-        return reasonOfRejectionId;
+    public ReasonOfRejection getReasonOfRejection() {
+        return reasonOfRejection;
     }
 
-    public void setReasonOfRejectionId(Integer reasonOfRejectionId) {
-        this.reasonOfRejectionId = reasonOfRejectionId;
+    public void setReasonOfRejection(ReasonOfRejection reasonOfRejection) {
+        this.reasonOfRejection = reasonOfRejection;
     }
 
     public Date getPenaltyChargeAppliedDate() {

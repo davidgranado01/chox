@@ -7,7 +7,7 @@
       <generator class="increment"/>
     </id>
     <property column="role" name="role" not-null="true"/>
-    <property column="access_right" name="accessRight"/>
+    <property column="access_right" name="accessRight" not-null="true"/>
     <many-to-one class="chox.model.Accessibility" column="accessibility_id" name="Accessibility" not-null="true"/>
   </class>
 </hibernate-mapping>
