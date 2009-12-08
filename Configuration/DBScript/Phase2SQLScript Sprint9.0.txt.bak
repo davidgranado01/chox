@@ -1,0 +1,302 @@
+-- DROP US UNUSE SEQUQNCES
+drop sequence accessibility_id_seq;
+drop sequence accessibility_item_id_seq;
+drop sequence notification_id_seq;
+drop sequence audit_trail_id_seq;
+drop table application_release;
+drop sequence cho_band_id_seq;
+
+-- ALTER AUTOMATIC ROUTING
+ALTER TABLE automatic_routing ALTER ID SET DEFAULT nextval('automatic_routing_id_seq'::regclass);
+
+-- ADD SEQUQNCE
+CREATE SEQUENCE claim_summary_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE claim_summary_id_seq OWNER TO postgres;
+
+ALTER TABLE claim_summary ADD COLUMN id integer NOT NULL DEFAULT nextval('claim_summary_id_seq'::regclass);
+ALTER TABLE claim_summary ADD PRIMARY KEY (id);
+
+-- DROP GLOBAL CONFIGURATION
+drop table global_configuration;
+drop sequence globalconfiguration_id_seq;
+
+
+-- View: rpt_claim_invoice  ----------------------------------------------------------------
+
+DROP VIEW rpt_claim_invoice;
+
+CREATE OR REPLACE VIEW rpt_claim_invoice AS 
+ SELECT invoice.id, invoice.date_invoiced, invoice.handling_invoice_no, invoice.claim_invoice_no, invoice.cdw_qty, invoice.automatic_qty, 
+ invoice.sat_nav_qty, invoice.estate_qty, invoice.baby_seat_qty, invoice.tow_bars_qty, invoice.non_standard_insurance_premium_qty, invoice.admin_qty, 
+ invoice.roof_rack_qty, invoice.dual_control_qty, invoice.delivery_collection_qty, invoice.created_by, invoice.created_date, invoice.last_nodified_by, 
+ invoice.last_modified_date, invoice.hire_net, invoice.hire_vat, invoice.hire_gross, invoice.repair_net, invoice.repair_vat, invoice.repair_gross, 
+ invoice.engineer_fee_net, invoice.engineer_fee_vat, invoice.engineer_fee_gross, invoice.storage_recovery_net, invoice.storage_recovery_vat, 
+ invoice.storage_recovery_gross, invoice.total_net, invoice.total_vat, invoice.total_gross, invoice.claims_handling_invoice_amount, 
+ invoice.deduction_for_claims_handling_fee, invoice.discount, invoice.total_to_pay, invoice.cdw_fee, invoice.automatic_fee, invoice.sat_nav_fee, 
+ invoice.estate_fee, invoice.baby_seat_fee, invoice.tow_bars_fee, invoice.non_standard_insurance_premium_fee, invoice.admin_fee, invoice.roof_rack_fee, 
+ invoice.dual_control_fee, invoice.delivery_collection_fee, invoice.is_payment_mode, invoice.is_engineer_decision_approved, invoice.engineer_invoice_review_notes, 
+ invoice.rejection_reason, invoice.hire_rate_charged_per_day, invoice.excess_amount_collected, invoice.vat_amount_collected, invoice.panalty_charge, 
+ invoice.panalty_alert_qty, invoice.penalty_charge_applied_date, claim.id AS claim_id, claim.status, claim.cho_reference, claim.claim_number, claim.insurer_id, 
+ claim.chorganisation_id, third_party.first_name AS policy_holder_first_name, third_party.last_name AS policy_holder_surname_name, 
+ third_party.vehicle_registration AS vehicle_registration_number, claim.created_date AS claim_created_date, 
+ claim.vehicle_hire_id AS claim_vehicle_hire_id, workgroup.name AS workgroup, claim.workgroup_id, claim.claim_owner_id AS owner
+   FROM claim claim
+   JOIN invoice invoice ON claim.invoice_id = invoice.id
+   LEFT JOIN workgroup workgroup ON workgroup.id = claim.workgroup_id
+   LEFT JOIN third_party third_party ON third_party.id = claim.third_party_id;
+
+ALTER TABLE rpt_claim_invoice OWNER TO postgres;
+
+----------------------------------------------------------------
+
+ALTER TABLE claim DROP COLUMN line_of_business_id;
+ALTER TABLE web_user DROP COLUMN lineofbusiness_id;
+
+-- DROP LINE OF BUSINESS ----------------------------------------------------------------
+drop table line_of_business;
+drop sequence lineofbusiness_id_seq;
+
+----------------------------------------------------------------
+drop table support_message;
+
+----------------------------------------------------------------
+ALTER TABLE s_attachment_type RENAME TO attachment_type;
+ALTER SEQUENCE s_attachment_type_id_seq RENAME TO attachment_type_id_seq;
+ALTER TABLE attachment_type ALTER id SET DEFAULT nextval('attachment_type_id_seq'::regclass);
+
+----------------------------------------------------------------
+ALTER TABLE user_workgroup RENAME TO web_user_workgroup;
+ALTER SEQUENCE user_workgroup_id_seq RENAME TO web_user_workgroup_id_seq;
+ALTER TABLE web_user_workgroup ALTER id SET DEFAULT nextval('web_user_workgroup_id_seq'::regclass);
+
+----------------------------------------------------------------
+ALTER SEQUENCE engineerreport_id_seq RENAME TO engineer_report_id_seq;
+ALTER TABLE engineer_report ALTER id SET DEFAULT nextval('engineer_report_id_seq'::regclass);
+
+----------------------------------------------------------------
+ALTER SEQUENCE hiremonitoringdetail_id_seq RENAME TO hire_monitoring_detail_id_seq;
+ALTER TABLE hire_monitoring_detail ALTER id SET DEFAULT nextval('hire_monitoring_detail_id_seq'::regclass);
+
+----------------------------------------------------------------
+ALTER SEQUENCE hiremonitoringecd_id_seq RENAME TO hire_monitoring_ecd_id_seq;
+ALTER TABLE hire_monitoring_ecd ALTER id SET DEFAULT nextval('hire_monitoring_ecd_id_seq'::regclass);
+
+----------------------------------------------------------------
+ALTER TABLE cho_band RENAME TO bre_band;
+ALTER SEQUENCE choband_id_seq RENAME TO bre_band_id_seq;
+ALTER TABLE bre_band ALTER id SET DEFAULT nextval('bre_band_id_seq'::regclass);
+
+----------------------------------------------------------------
+ALTER TABLE cho_band_organisation RENAME TO bre_band_organisation;
+ALTER SEQUENCE cho_band_organisation_id_seq RENAME TO bre_band_organisation_id_seq;
+
+----------------------------------------------------------------
+ALTER TABLE insurer_allias RENAME TO insurer_alias;
+ALTER SEQUENCE insurer_allias_id_seq RENAME TO insurer_alias_id_seq;
+ALTER TABLE insurer_alias RENAME COLUMN allias_name TO alias_name;
+
+----------------------------------------------------------------
+ALTER SEQUENCE accessibility_id_seq1 RENAME TO accessibility_id_seq;
+ALTER SEQUENCE accessibility_item_id_seq1 RENAME TO accessibility_item_id_seq;
+ALTER SEQUENCE notification_id_seq1 RENAME TO notification_id_seq;
+ALTER SEQUENCE audit_trail_id_seq1 RENAME TO audit_trail_id_seq;
+
+----------------------------------------------------------------
+ALTER TABLE claim_summary DROP COLUMN id;
+ALTER TABLE claim_summary ADD CONSTRAINT claim_summary_key UNIQUE (process_date, insurer_id, chorganisation_id, status);
+
+----------------------------------------------------------------
+DROP SEQUENCE claim_summary_id_seq;
+ALTER TABLE claim_summary_process DROP COLUMN id;
+
+----------------------------------------------------------------
+ALTER TABLE claim_summary_process ADD CONSTRAINT claim_summary_process_pkey PRIMARY KEY (process_date);
+
+----------------------------------------------------------------
+ALTER SEQUENCE vehicleclass_id_seq RENAME TO vehicle_class_id_seq;
+ALTER SEQUENCE vehiclehire_id_seq RENAME TO vehicle_hire_id_seq;
+ALTER SEQUENCE thirdparty_id_seq RENAME TO third_party_id_seq;
+ALTER SEQUENCE reasonofdelay_id_seq RENAME TO reason_of_delay_id_seq;
+
+--penalty
+ALTER TABLE invoice RENAME COLUMN panalty_charge to penalty_charge;
+ALTER TABLE invoice RENAME COLUMN panalty_alert_qty to penalty_alert_qty;
+
+----------------------------------------------------------------
+
+DROP VIEW rpt_claim_audit_trail;
+
+CREATE OR REPLACE VIEW rpt_claim_audit_trail AS 
+ SELECT audit_trail.id, audit_trail.update_date, audit_trail.user_id, audit_trail.claim_id, audit_trail.original_status, 
+ audit_trail.new_status, audit_trail.created_by, audit_trail.created_date, audit_trail.last_modified_by, audit_trail.last_modified_date, 
+ claim.insurer_id, claim.chorganisation_id, invoice.total_to_pay, invoice.penalty_charge AS penalty_charge, invoice.id AS invoice_id, 
+        CASE
+            WHEN audit_trail.claim_reason_of_rejection = 0 THEN NULL::integer
+            ELSE audit_trail.claim_reason_of_rejection
+        END AS claim_reason_of_rejection, 
+        CASE
+            WHEN audit_trail.invoice_reason_of_rejection = 0 THEN NULL::integer
+            ELSE audit_trail.invoice_reason_of_rejection
+        END AS invoice_reason_of_rejection
+   FROM audit_trail audit_trail
+   JOIN claim claim ON claim.id = audit_trail.claim_id
+   LEFT JOIN invoice invoice ON claim.invoice_id = invoice.id;
+
+ALTER TABLE rpt_claim_audit_trail OWNER TO postgres;
+
+----------------------------------------------------------------
+
+DROP VIEW rpt_claim_invoice;
+
+CREATE OR REPLACE VIEW rpt_claim_invoice AS 
+ SELECT invoice.id, invoice.date_invoiced, invoice.handling_invoice_no, invoice.claim_invoice_no, invoice.cdw_qty, 
+ invoice.automatic_qty, invoice.sat_nav_qty, invoice.estate_qty, invoice.baby_seat_qty, invoice.tow_bars_qty, invoice.non_standard_insurance_premium_qty, 
+ invoice.admin_qty, invoice.roof_rack_qty, invoice.dual_control_qty, invoice.delivery_collection_qty, invoice.created_by, invoice.created_date, 
+ invoice.last_nodified_by, invoice.last_modified_date, invoice.hire_net, invoice.hire_vat, invoice.hire_gross, invoice.repair_net, 
+ invoice.repair_vat, invoice.repair_gross, invoice.engineer_fee_net, invoice.engineer_fee_vat, invoice.engineer_fee_gross, invoice.storage_recovery_net, 
+ invoice.storage_recovery_vat, invoice.storage_recovery_gross, invoice.total_net, invoice.total_vat, invoice.total_gross, invoice.claims_handling_invoice_amount, 
+ invoice.deduction_for_claims_handling_fee, invoice.discount, invoice.total_to_pay, invoice.cdw_fee, invoice.automatic_fee, invoice.sat_nav_fee, invoice.estate_fee, 
+ invoice.baby_seat_fee, invoice.tow_bars_fee, invoice.non_standard_insurance_premium_fee, invoice.admin_fee, invoice.roof_rack_fee, invoice.dual_control_fee, 
+ invoice.delivery_collection_fee, invoice.is_payment_mode, invoice.is_engineer_decision_approved, invoice.engineer_invoice_review_notes, invoice.rejection_reason, 
+ invoice.hire_rate_charged_per_day, invoice.excess_amount_collected, invoice.vat_amount_collected, invoice.penalty_charge AS penalty_charge, invoice.penalty_alert_qty AS penalty_alert_qty, 
+ invoice.penalty_charge_applied_date, claim.id AS claim_id, claim.status, claim.cho_reference, claim.claim_number, claim.insurer_id, claim.chorganisation_id, 
+ third_party.first_name AS policy_holder_first_name, third_party.last_name AS policy_holder_surname_name, third_party.vehicle_registration AS vehicle_registration_number, 
+ claim.created_date AS claim_created_date, claim.vehicle_hire_id AS claim_vehicle_hire_id, workgroup.name AS workgroup, claim.workgroup_id, claim.claim_owner_id AS owner
+   FROM claim claim
+   JOIN invoice invoice ON claim.invoice_id = invoice.id
+   LEFT JOIN workgroup workgroup ON workgroup.id = claim.workgroup_id
+   LEFT JOIN third_party third_party ON third_party.id = claim.third_party_id;
+
+ALTER TABLE rpt_claim_invoice OWNER TO postgres;
+
+----------------------------------------------------------------
+ALTER TABLE accessibility_item ADD CONSTRAINT accessibility_id_fkey FOREIGN KEY (accessibility_id) REFERENCES accessibility (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+----------------------------------------------------------------
+ALTER TABLE bre_band ADD CONSTRAINT insurer_id_fkey FOREIGN KEY (insurer_id) REFERENCES insurer (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE claim ADD CONSTRAINT claim_owner_id_fkey FOREIGN KEY (claim_owner_id) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE claim ADD CONSTRAINT claim_reason_of_rejection_id_fkey FOREIGN KEY (reason_of_rejection_id) REFERENCES reason_of_rejection (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE insurer_alias ADD CONSTRAINT insurer_alias_fkey FOREIGN KEY (insurer_id) REFERENCES insurer (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE insurer_chorganisation ADD CONSTRAINT insurer_chorganisation_insurer_fkey FOREIGN KEY (insurer_id) REFERENCES insurer (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE insurer_chorganisation ADD CONSTRAINT insurer_chorganisation_chorganisation_fkey FOREIGN KEY (chorganisation_id) REFERENCES chorganisation (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE notification ADD CONSTRAINT notification_claim_fkey FOREIGN KEY (claim_id) REFERENCES claim (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE vehicle_class_ceiling ADD CONSTRAINT ceiling_insurer_fkey FOREIGN KEY (insurer_id) REFERENCES insurer (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE vehicle_class_ceiling ADD CONSTRAINT ceiling_vehicle_class_fkey FOREIGN KEY (vehicle_class_id) REFERENCES vehicle_class (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+----------------------------------------------------------------
+
+ALTER TABLE bre_band DROP CONSTRAINT choband_insurer_fkey;
+ALTER TABLE bre_band DROP CONSTRAINT choband_insurer;
+ALTER TABLE insurer_alias ADD CONSTRAINT insurer_alias_pkey PRIMARY KEY (id);
+ALTER TABLE notification DROP CONSTRAINT fk237a88ebdf101435;
+ALTER TABLE reason_of_delay ADD CONSTRAINT reason_of_delay_id_pkey PRIMARY KEY (id);
+ALTER TABLE vehicle_class DROP CONSTRAINT fk58908aa5dc88f7de;
+ALTER TABLE vehicle_class DROP CONSTRAINT fk58908aa5ef9d5388;
+ALTER TABLE vehicle_class_ceiling DROP CONSTRAINT fkf098b7a650f077f5;
+ALTER TABLE vehicle_class_ceiling DROP CONSTRAINT fkf098b7a6a373b246;
+ALTER TABLE vehicle_class_ceiling DROP CONSTRAINT fkf098b7a6dc88f7de;
+ALTER TABLE vehicle_class_ceiling DROP CONSTRAINT fkf098b7a6ef9d5388;
+
+ALTER TABLE attachment ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE attachment ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE audit_trail ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE audit_trail ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE automatic_routing ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE automatic_routing ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE bordereau ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE bordereau ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE bre_band ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE bre_band ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE bre_band_organisation ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE bre_band_organisation ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE chorganisation ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE chorganisation ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE claim ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE claim ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE claim_summary ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE claim_summary_process ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE comment ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE comment ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE customer ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE customer ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE engineer_report ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE engineer_report ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE hire_monitoring_detail ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE hire_monitoring_detail ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE hire_monitoring_ecd ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE hire_monitoring_ecd ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE history ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE history ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE incident ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE incident ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE injury ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE injury ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE insurer ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE insurer ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE insurer_alias ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE insurer_alias ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE insurer_chorganisation ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE insurer_chorganisation ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE invoice ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE notification ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE notification ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE reason_of_delay ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE reason_of_delay ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE reason_of_rejection ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE reason_of_rejection ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE solicitor ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE solicitor ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE third_party ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE third_party ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE vehicle_class ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE vehicle_class ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE vehicle_class_ceiling ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE vehicle_class_ceiling ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE vehicle_hire ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE vehicle_hire ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE web_user ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE web_user ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE web_user_role ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE web_user_role ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE web_user_user_role ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE web_user_user_role ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE web_user_workgroup ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE web_user_workgroup ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE witness ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE witness ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE workgroup ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE workgroup ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+----------------------------------------------------------------
+
+ALTER TABLE invoice RENAME COLUMN last_nodified_by TO last_modified_by;
+
+----------------------------------------------------------------
+
+DROP VIEW rpt_claim_invoice;
+
+CREATE OR REPLACE VIEW rpt_claim_invoice AS 
+ SELECT invoice.id, invoice.date_invoiced, invoice.handling_invoice_no, invoice.claim_invoice_no, invoice.cdw_qty, 
+ invoice.automatic_qty, invoice.sat_nav_qty, invoice.estate_qty, invoice.baby_seat_qty, invoice.tow_bars_qty, invoice.non_standard_insurance_premium_qty, 
+ invoice.admin_qty, invoice.roof_rack_qty, invoice.dual_control_qty, invoice.delivery_collection_qty, invoice.created_by, invoice.created_date, 
+ invoice.last_modified_by, invoice.last_modified_date, invoice.hire_net, invoice.hire_vat, invoice.hire_gross, invoice.repair_net, 
+ invoice.repair_vat, invoice.repair_gross, invoice.engineer_fee_net, invoice.engineer_fee_vat, invoice.engineer_fee_gross, invoice.storage_recovery_net, 
+ invoice.storage_recovery_vat, invoice.storage_recovery_gross, invoice.total_net, invoice.total_vat, invoice.total_gross, invoice.claims_handling_invoice_amount, 
+ invoice.deduction_for_claims_handling_fee, invoice.discount, invoice.total_to_pay, invoice.cdw_fee, invoice.automatic_fee, invoice.sat_nav_fee, invoice.estate_fee, 
+ invoice.baby_seat_fee, invoice.tow_bars_fee, invoice.non_standard_insurance_premium_fee, invoice.admin_fee, invoice.roof_rack_fee, invoice.dual_control_fee, 
+ invoice.delivery_collection_fee, invoice.is_payment_mode, invoice.is_engineer_decision_approved, invoice.engineer_invoice_review_notes, invoice.rejection_reason, 
+ invoice.hire_rate_charged_per_day, invoice.excess_amount_collected, invoice.vat_amount_collected, invoice.penalty_charge AS penalty_charge, invoice.penalty_alert_qty AS penalty_alert_qty, 
+ invoice.penalty_charge_applied_date, claim.id AS claim_id, claim.status, claim.cho_reference, claim.claim_number, claim.insurer_id, claim.chorganisation_id, 
+ third_party.first_name AS policy_holder_first_name, third_party.last_name AS policy_holder_surname_name, third_party.vehicle_registration AS vehicle_registration_number, 
+ claim.created_date AS claim_created_date, claim.vehicle_hire_id AS claim_vehicle_hire_id, workgroup.name AS workgroup, claim.workgroup_id, claim.claim_owner_id AS owner
+   FROM claim claim
+   JOIN invoice invoice ON claim.invoice_id = invoice.id
+   LEFT JOIN workgroup workgroup ON workgroup.id = claim.workgroup_id
+   LEFT JOIN third_party third_party ON third_party.id = claim.third_party_id;
+
+ALTER TABLE rpt_claim_invoice OWNER TO postgres;
