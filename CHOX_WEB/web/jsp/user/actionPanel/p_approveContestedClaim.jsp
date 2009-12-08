@@ -119,7 +119,7 @@
         registeAction(a);
         isFormClaimNumberInvalid("formApproveContestedAcknowledgeAction");
         
-        $("#reasonOfRejectionId").val("");
+        // $("#reasonOfRejectionId").val("");
         
         if(doFormValidation().form()){
             var sClaimNumber = $("form#formApproveContestedAcknowledgeAction input[name$='claimNumber']").val();

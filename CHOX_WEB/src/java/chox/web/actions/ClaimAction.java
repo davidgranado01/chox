@@ -111,7 +111,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private int escalateWorkgroupId = -1;
     private int oasWorkgroupId = -1; // OWNERSHIP ASSIGNMENT - WORKGROUP ID
     private int uosWorkgroupId = -1; // UPDATE CLAIM OWNERSHIP - WORKGROUP ID
-    
+    private Integer reasonOfRejectionId;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="MODEL DRIVEN OBJECT">
@@ -209,8 +209,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } else {
             newStatus = ClaimStatus.CLAIM_REJECTED;
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
-            // logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
-            logNewCommentForRejection(claim.getReasonOfRejectionId(), 0);
+            
+            if(reasonOfRejectionId>0){
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                claim.setReasonOfRejection(reasonOfRejection);
+                logNewCommentForRejection(reasonOfRejection, 0);
+            }
             
         }
 
@@ -430,20 +434,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         String result = SUCCESS;
         String newStatus;
 
-        Integer iClaimRejectionReasonId = null;
+        ReasonOfRejection claimRejectionReason = null;
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
 
             newStatus = ClaimStatus.CLAIM_REJECTION_ACCEPTED;
-            iClaimRejectionReasonId = claim.getReasonOfRejectionId();
-
+            claimRejectionReason = claim.getReasonOfRejection();
+            
         } else {
+            
             newStatus = ClaimStatus.CLAIM_REJECTION_CONTESTED;
+            
         }
 
         try {
 
-            auditTrailService.logAuditLog(newStatus, claim, iClaimRejectionReasonId, null);
+            auditTrailService.logAuditLog(newStatus, claim, claimRejectionReason, null);
 
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
@@ -457,13 +463,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String approveContestedClaim() {
-
-        System.out.println("approveContestedClaim : 0000");
         
         String result = SUCCESS;
         String newStatus = "";
-
-        System.out.println("approveContestedClaim : 0001" + this.actionName);
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_CAR_HIRE_INFO;
@@ -474,11 +476,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } else if (this.actionName.equalsIgnoreCase(PENDING)) {
             newStatus = ClaimStatus.CLAIM_PENDING;
         } else {
-            newStatus = ClaimStatus.CLAIM_REJECTED;
 
+            newStatus = ClaimStatus.CLAIM_REJECTED;
+            
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
-            logNewCommentForRejection(claim.getReasonOfRejectionId(), 0);
-            // logNewCommentForRejection(claim.getReasonOfRejectionId(), true);
+            if(reasonOfRejectionId>0){
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                claim.setReasonOfRejection(reasonOfRejection);
+                logNewCommentForRejection(reasonOfRejection, 0);
+            }
         }
 
         if (!result.equalsIgnoreCase(ERROR)) {
@@ -624,10 +630,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String contestOrAcceptRejectedInvoice() {
 
-        boolean bActionFlag = true;
         String result = SUCCESS;
         String newStatus;
-        String sActionMsg = "";
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.CLAIM_REJECTION_ACCEPTED;
@@ -638,44 +642,37 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
 
             auditTrailService.logAuditLog(newStatus, claim, null, null);
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
 
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
 
         } catch (Exception ex) {
-
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
-            bActionFlag = false;
-            sActionMsg = this.actionResult;
-
         } 
 
         return result;
     }
 
-    // 20090422
-    // CHECK THE INVOICE
     public String approveBREPassedClaim() {
 
         String result = SUCCESS;
         String newStatus;
-        boolean bActionFlag = true;
-        String sActionMsg = "";
 
         if (this.actionName.equalsIgnoreCase(ACCEPT)) {
             newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else if (this.actionName.equalsIgnoreCase(INV_REFER_ENG)) {
             newStatus = ClaimStatus.INVOICE_REF_TO_ENG;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus;
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
-            sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + newStatus + "| ReasonOfRejection:" + claim.getInvoice().getReasonOfRejectionId();
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
-            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
-            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), 0);
+
+            if(reasonOfRejectionId>0){
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                claim.getInvoice().setReasonOfRejection(reasonOfRejection);
+                logNewCommentForRejection(reasonOfRejection, 0);
+            }
+            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejection(), 0);
         }
 
         try {
@@ -689,8 +686,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
-            bActionFlag = false;
-            sActionMsg = this.actionResult;
 
         } 
 
@@ -710,7 +705,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
             // logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
-            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), 0);
+
+            if(reasonOfRejectionId>0){
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                claim.getInvoice().setReasonOfRejection(reasonOfRejection);
+                logNewCommentForRejection(reasonOfRejection, 0);
+            }
+            
+            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejection(), 0);
         }
 
         try {
@@ -743,8 +745,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
-            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
-            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), 0);
+            if(reasonOfRejectionId>0){
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                claim.getInvoice().setReasonOfRejection(reasonOfRejection);
+                logNewCommentForRejection(reasonOfRejection, 0);
+            }
+            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejection(), 0);
         }
 
         try {
@@ -849,8 +855,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
-            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
-            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), 0);
+
+            if(reasonOfRejectionId>0){
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                claim.getInvoice().setReasonOfRejection(reasonOfRejection);
+                logNewCommentForRejection(reasonOfRejection, 0);
+            }
+            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejection(), 0);
         }
 
         try {
@@ -883,8 +894,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
-            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
-            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), 0);
+            if(reasonOfRejectionId>0){
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                claim.getInvoice().setReasonOfRejection(reasonOfRejection);
+                logNewCommentForRejection(reasonOfRejection, 0);
+            }
+            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejection(), 0);
         }
 
         try {
@@ -916,8 +931,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } else {
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
-            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
-            logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), 0);
+            
+            if(reasonOfRejectionId>0){
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                claim.getInvoice().setReasonOfRejection(reasonOfRejection);
+                logNewCommentForRejection(reasonOfRejection, 0);
+            }
+            
+            // logNewCommentForRejection(claim.getInvoice().getReasonOfRejection(), 0);
         }
 
         try {
@@ -941,30 +962,24 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
         String newStatus;
-        Integer invoiceReasonOfRejectionId = null;
+        ReasonOfRejection invoiceRejectionReason = null;
         
         if (this.actionName.equalsIgnoreCase(REJECT)) {
 
-            // claim = businessRulesEngService.constructBreValidateObject(claim);
-            // RulesEngineResponse reponse = businessRulesEngService.validate(claim);
-            // historyService.logInvoiceValidationErrorMsg(reponse, claim);
-
             RulesEngineResponse reponse = businessRulesEngService.processResubmitInvoice(claim);
             historyService.logInvoiceValidationErrorMsg(reponse, claim);
-
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_INS;
 
         } else {
 
             newStatus = ClaimStatus.INVOICE_REJECTED_ACCEPTED;
-            invoiceReasonOfRejectionId = claim.getInvoice().getReasonOfRejectionId();
+            invoiceRejectionReason = claim.getInvoice().getReasonOfRejection();
 
         }
 
         try {
 
-            auditTrailService.logAuditLog(newStatus, claim, null, invoiceReasonOfRejectionId);
-
+            auditTrailService.logAuditLog(newStatus, claim, null, invoiceRejectionReason);
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
 
@@ -1162,10 +1177,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return bFlag;
     }
 
-    public void logNewCommentForRejection(Integer reasonOfRejectionId, int noteVisibilityType) {
+    public void logNewCommentForRejection(ReasonOfRejection reasonOfRejection, int noteVisibilityType) {
 
-        if (reasonOfRejectionId != null) {
-            ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+        if (reasonOfRejection != null) {
             createNewNote(reasonOfRejection.getName(), noteVisibilityType, "Reason For Rejection: ");
         }
     }
@@ -1455,6 +1469,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setReasonForRejection(String s) {
         this.reasonForRejection = s;
+    }
+
+    public Integer getReasonOfRejectionId() {
+        return reasonOfRejectionId;
+    }
+
+    public void setReasonOfRejectionId(Integer reasonOfRejectionId) {
+        this.reasonOfRejectionId = reasonOfRejectionId;
     }
 
     // </editor-fold>

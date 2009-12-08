@@ -19,7 +19,7 @@
                 return false;
             }
         
-            $("#reasonOfRejectionIdHolder").val($("#InvoiceReasonOfRejectionId").val());
+            // $("#reasonOfRejectionIdHolder").val($("#InvoiceReasonOfRejectionId").val());
         
         }else{
             return false;
@@ -42,11 +42,11 @@
             errorLabelContainer: "#ActionPanelMessageBox",                
             rules: {
                 actionName:{required:true},
-                InvoiceReasonOfRejectionId:{required:isRejected}
+                reasonOfRejectionId:{required:isRejected}
             },
             messages: {
                 actionName:{required:"You must select action"},
-                InvoiceReasonOfRejectionId:{required:"You must choose a 'Reason For Rejection'"}       
+                reasonOfRejectionId:{required:"You must choose a 'Reason For Rejection'"}
             }
             
         });
@@ -56,7 +56,7 @@
     
     function doSubmit(a){
         registeAction(a);
-        $("#InvoiceReasonOfRejectionId").val("");
+        // $("#InvoiceReasonOfRejectionId").val("");
         if(!doFormValidation().form()){
             return false;
         }
@@ -72,7 +72,9 @@
         <legend>Referred Invoice - Action Required</legend>
         <s:hidden name="id" />
         <s:hidden id="actionName" name="actionName" />
+        <!--
         <s:hidden id="reasonOfRejectionIdHolder" name="invoice.reasonOfRejectionId"/>
+        !-->
         
         <div>
             <div class="status-info">
@@ -87,7 +89,7 @@ Please provide appropriate notes on the 'Notes' tab regarding the decision made.
             <label>Reason for Rejection</label>
         </td>
         <td>
-            <s:select name="InvoiceReasonOfRejectionId" id="InvoiceReasonOfRejectionId"
+            <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
             list="reasonOfInvoiceRejections"  
             listKey="id" 
             listValue="name" 

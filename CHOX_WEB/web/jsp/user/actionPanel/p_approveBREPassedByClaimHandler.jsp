@@ -19,7 +19,7 @@
                 return false;
             }
 
-            $("#reasonOfRejectionIdHolder").val($("#InvoiceReasonOfRejectionId").val());
+            // $("#reasonOfRejectionIdHolder").val($("#InvoiceReasonOfRejectionId").val());
 
         }else{
             return false;
@@ -34,11 +34,11 @@
             errorLabelContainer: "#ActionPanelMessageBox",
             rules: {
                 actionName:{required:true},
-                InvoiceReasonOfRejectionId:{required:isRejected}
+                reasonOfRejectionId:{required:isRejected}
             },
             messages: {
                 actionName:{required:"You must select action"},
-                InvoiceReasonOfRejectionId:{required:"You must choose a 'Reason For Rejection'"}
+                reasonOfRejectionId:{required:"You must choose a 'Reason For Rejection'"}
             }
 
         });
@@ -50,7 +50,7 @@
 
         registeAction(a);
 
-        $("#InvoiceReasonOfRejectionId").val("");
+        // $("#InvoiceReasonOfRejectionId").val("");
 
         isClaimNumberInvalid();
         // isFormClaimNumberInvalid("approveBREPassedByClaimHandler");
@@ -70,8 +70,9 @@
         <legend>Invoice Escalated To Claim Handler - Action Required</legend>
         <s:hidden name="id" />
         <s:hidden id="actionName" name="actionName" />
+        <!--
         <s:hidden id="reasonOfRejectionIdHolder" name="invoice.reasonOfRejectionId"/>
-
+        !-->
         <div>
             <div class="status-info">
              Please review the 'History' tab for details on why the claim has failed the validation rules. Please decide on whether to progress the claim for payment, refer the claim to an Engineer or reject the claim back to the CHO. Please enter any relevant details/comments on the 'Notes' tab regarding the decision made.
@@ -84,7 +85,7 @@
             <label>Reason for Rejection</label>
         </td>
         <td>
-            <s:select name="InvoiceReasonOfRejectionId" id="InvoiceReasonOfRejectionId"
+            <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
             list="reasonOfInvoiceRejections"
             listKey="id"
             listValue="name"
