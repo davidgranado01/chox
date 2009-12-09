@@ -2,7 +2,7 @@
 
 <script language="JavaScript">
         
-        var selectedPanel = "CreditHireOrgMgmt";
+        var selectedPanel = "ChoxCreditHireOrgMgmt";
         var isNew = false;
 
         $(document).ready(function(){

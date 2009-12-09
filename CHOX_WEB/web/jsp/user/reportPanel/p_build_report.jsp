@@ -1,8 +1,5 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.min.js" type="text/javascript" ></script>
-<script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
-
 <script type="text/javascript">
 
     function renderParameterPanel(report)
@@ -16,10 +13,9 @@
 </script>
 
 <div class="x-panel-bwrap chox-form-container">
-    <table cellspacing="4" class="chox-report" >
+    <table cellspacing="4" class="chox-report">
         <tr valign="top">
             <td class="chox-report-left-col">
-
                 <fieldset class="x-fieldset">
                     <legend>Report List</legend>
                     <div class="x-panel-bwrap chox-form-container">

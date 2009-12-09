@@ -785,8 +785,6 @@ img.tip-target
   padding: 10px;
 }
 
-
-
 .gridViewHeader{  
     padding-bottom:5px;
     width:645px;
@@ -1064,3 +1062,60 @@ li.report-type-header{
 }
 
 /******* REPORT - END ************/
+
+/******* ADMIN - START ************/
+
+table.chox-admin{
+    height:660px;
+    width:100%;
+    font-family:tahoma,arial,helvetica,sans-serif;
+    font-size:12px;
+}
+
+table.chox-admin tr{
+    vertical-align:top;
+}
+
+table.chox-admin tr td.chox-admin-left-col{
+    width: 180px;
+    padding-right:5px;
+}
+
+table.chox-admin tr td.chox-admin-right-col{
+    width: 750px;
+}
+
+table.chox-admin tr td fieldset{
+    height:640px;
+}
+
+ul.admin-header-list li{
+    line-height:20px;
+    color: #222222;
+}
+
+div.admin-gridview-header{
+    padding-bottom:5px;
+    width:720px;
+}
+
+div.admin-gridview-header table{
+    width:100%;
+}
+
+div.admin-gridview-header table tr td#label{
+    text-align:left;
+    width:99%;
+}
+
+div.admin-gridview-header table tr td#buttons{
+    text-align:right;
+    width:1%;
+    padding-left:10px;
+    white-space: nowrap;
+}
+
+div#chox-admin-holder{
+    width:740px;
+}
+/******* ADMIN - END ************/

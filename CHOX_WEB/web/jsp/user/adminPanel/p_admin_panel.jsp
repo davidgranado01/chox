@@ -1,35 +1,32 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<head>        
-    <title></title>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.min.js"></script>
-    <script type="text/javascript">
-        
-        function renderAdminParameterPanel(selectedPanel)
-        {
-            var sLocaltion = "#admin_param_panel";
-            var sAction = "loadAdminPanel.action";
-            var sparameters = "adminPanelName=" + selectedPanel;
-            doSectionLoad(sLocaltion, sAction, sparameters);
-        }
-        
-    </script>
-</head>
+<script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.min.js"></script>
+<script type="text/javascript">
 
-<div class="x-panel-bwrap chox-form-container" id="xPenalMainRight">
-    <table cellpadding="0" cellspacing="0" width="100%" style="height:680px;">
-        <tr valign="top">
-            <td class="chox-admin-form-left-col">
-                <fieldset class="x-fieldset" style="height:660px;">
+    function renderAdminParameterPanel(selectedPanel)
+    {
+        var sLocaltion = "#admin_param_panel";
+        var sAction = "loadAdminPanel.action";
+        var sparameters = "adminPanelName=" + selectedPanel;
+        doSectionLoad(sLocaltion, sAction, sparameters);
+    }
+
+</script>
+
+<div class="x-panel-bwrap chox-form-container">
+    <table class="chox-admin">
+        <tr>
+            <td class="chox-admin-left-col">
+                <fieldset class="x-fieldset">
                     <legend>Admin Panel</legend>
-                    <div class="x-panel-bwrap chox-form-container" >
-                            <ul>
+                    <div>
+                            <ul class='admin-header-list'>
                             <s:if test="adminAccessibility.isInsurerCompaniesAdminAccessibility">
-                                <li><a href="javascript:renderAdminParameterPanel('ChoxPanelMgmt');">Insurance Companies</a></li>
+                                <li><a href="javascript:renderAdminParameterPanel('ChoxInsurerMgmtPanel');">Insurance Companies</a></li>
                             </s:if>
 
                             <s:if test="adminAccessibility.isCreditHireOrgAdminAccessibility">
-                                <li><a href="javascript:renderAdminParameterPanel('CreditHireOrgMgmt');">Credit Hire Organisations</a></li>
+                                <li><a href="javascript:renderAdminParameterPanel('ChoxCreditHireOrgMgmt');">Credit Hire Organisations</a></li>
                             </s:if>
 
                             <s:if test="adminAccessibility.isInsurerBreManagementAdminAccessibility">
@@ -43,9 +40,7 @@
                     </div>
                 </fieldset>
             </td>
-            <td>
-                <div id="admin_param_panel"></div>
-            </td>
+            <td id="admin_param_panel" class="chox-admin-right-col"></td>
         </tr>
     </table>
 </div>

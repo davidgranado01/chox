@@ -92,7 +92,7 @@
         function doInsurerBack(){
             var sLocaltion = "#admin_param_panel";
             var sAction = "loadAdminPanel.action";
-            var sparameters = "adminPanelName=ChoxPanelMgmt";
+            var sparameters = "adminPanelName=ChoxInsurerMgmtPanel";
             doSectionLoad(sLocaltion, sAction, sparameters);
         }
         

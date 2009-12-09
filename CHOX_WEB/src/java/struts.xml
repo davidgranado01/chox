@@ -816,8 +816,8 @@
         </action>
         
         <action name="loadAdminPanel" class="chox.web.actions.AdminAction" method="loadAdminPanel">
-            <result name="CreditHireOrgMgmt">/jsp/user/adminPanel/p_chorganisation_org_mgmt_panel.jsp</result>
-            <result name="ChoxPanelMgmt">/jsp/user/adminPanel/p_insurer_org_mgmt_panel.jsp</result>
+            <result name="ChoxInsurerMgmtPanel">/jsp/user/adminPanel/p_chox_insurers_mgmt_panel.jsp</result>
+            <result name="ChoxCreditHireOrgMgmt">/jsp/user/adminPanel/p_chox_chorganisation_mgmt_panel.jsp</result>
             <result name="UserMgmt">/jsp/user/adminPanel/p_user_mgmt_panel.jsp</result>
             <result name="InsurerOrgMappingMgmt">/jsp/user/adminPanel/p_insurer_chorganisation_mapping.jsp</result>
             <result name="InsurerAliasMappingMgmt">/jsp/user/adminPanel/p_insurer_alias_mapping.jsp</result>
@@ -993,11 +993,11 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         
-        <action name="OrganisationDropDownAction" class="chox.web.actions.OrganisationDropDownAction">
-            <result>/jsp/user/adminPanel/p_dropdown_organisation.jsp</result>
+        <action name="OrganisationDropDownAction" class="chox.web.dropdown.OrganisationDropDownAction">
+            <result>/jsp/user/dropdown/p_dropdown_organisation.jsp</result>
         </action>
-        <action name="UserroleDropDownAction" class="chox.web.actions.WebUserroleDropDownAction">
-            <result>/jsp/user/adminPanel/p_dropdown_userrole.jsp</result>
+        <action name="UserroleDropDownAction" class="chox.web.dropdown.WebUserroleDropDownAction">
+            <result>/jsp/user/dropdown/p_dropdown_userrole.jsp</result>
         </action>
         <action name="BreBandDropDownAction" class="chox.web.actions.BreBandDropDownAction">
             <result>/jsp/user/adminPanel/p_dropdown_bre.jsp</result>
@@ -1021,13 +1021,6 @@
         </action>
         <action name="ClaimHandlerRoleUserDropDownAction" class="chox.web.dropdown.ClaimHandlerRoleUserDropDownAction">
             <result>/jsp/user/dropdown/p_dropdown_claimHandlerUser.jsp</result>
-        </action>
-
-        <action name="LoadEncodePasswordPage" class="chox.web.actions.AdminAction" method="loadEncodePasswordPage">
-            <result>/jsp/user/EncodePassword.jsp</result>
-        </action>
-        <action name="encodeAllUserPassword" class="chox.web.actions.AdminAction" method="encodeAllUserPassword">
-            <result>/jsp/p_response.jsp</result>
         </action>
         <action name="removeNotification" class="chox.web.actions.ClaimAction" method="removeNotification">
             <result>/jsp/user/p_notification_list.jsp</result>

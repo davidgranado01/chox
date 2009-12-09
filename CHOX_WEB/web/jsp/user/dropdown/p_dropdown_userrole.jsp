@@ -9,6 +9,6 @@
         listValue="name" 
         headerKey=""
         headerValue="--- ALL ---"
-        onchange="javascript: doUseroleSelected();"
+        onchange="javascript:loadGridViewList();"
         emptyOption="false">
 </s:select>

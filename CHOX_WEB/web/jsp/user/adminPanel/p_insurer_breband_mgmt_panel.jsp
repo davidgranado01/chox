@@ -54,7 +54,7 @@
         {
             params:
             {
-                gridviewtype : "creditHireOrgMgmt",
+                gridviewtype : "ChoxCreditHireOrgMgmt",
                 insurerId:selectOrgId
             }
         });

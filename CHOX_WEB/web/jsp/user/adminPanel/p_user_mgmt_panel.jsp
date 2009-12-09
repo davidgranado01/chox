@@ -9,26 +9,20 @@
     var gridviewGrid;
     var gridviewData;
     var recordPerPage = 20;
-    
-    var orgTypeId = -1;
-    var orgId = -1;
+
     var userRoleId = -1;
-    
-    var selectOrgTypeId = <s:property value="selectOrgTypeId" />;
-    var selectOrgId = <s:property value="selectOrgId" />;
-    var isCHOXAdmin = <s:property value="isCHOXAdmin" />;
+    var orgTypeId = <s:property value="OrgTypeId" />;
+    var organisationId = <s:property value="OrgId" />;
+    var isChoxAdmin = <s:property value="IsChoxAdmin" />;
 
     Ext.onReady(function(){
-    
-       if(selectOrgTypeId>0){
-            $("#orgTypeId").val(selectOrgTypeId);
-       }
-       
-       if(selectOrgId>0){
-           $("#orgId").val(selectOrgId);
-       }
-       
-       gridviewJsonReader = new Ext.data.JsonReader({
+
+        if(!isChoxAdmin){
+            $("#organisationId").val(organisationId);
+            $("#orgTypeId").val(orgTypeId);
+        }
+        
+        gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
             fields:
@@ -67,16 +61,23 @@
                 {header: "Has Password Expired?", width: 140, dataIndex: 'isExpired', sortable: false, resizable: true,renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}}
             ],
-            renderTo:'gridviewGrid',
-                width:640,
-                autoHeight:true,
-                enableHdMenu:false
-            });
+            width: 720,
+            height: 510
+        });
+
+        gridviewGrid.render('gridviewGridHolderId');
             
-            pageRefresh();
+        pageRefresh();
 
     }); 
-    
+
+    function pageRefresh(){
+        getParameters();
+        showOrganisationDropDownDiv();
+        showUserroleDropDown();
+        loadGridViewList();
+    }
+
     function recordOnclick(grid, rowIndex, columnIndex, e){
 
         var gridView = gridviewGrid.getStore().getAt(rowIndex);
@@ -92,77 +93,79 @@
     }
 
     function getParameters(){
-
-        orgId ="";
-        userRoleId = -1;
         
         orgTypeId = $("#orgTypeId").val();
-        orgId = $("#orgId").val();
         userRoleId = $("#userrolesId").val();
-
-        if(isOrgShow()){
-            orgId = $("#organisationId").val();
+        
+        if(isChoxAdmin){
+            organisationId=$("#organisationId").val();
         }
+        
     }
     
     function loadSelectedRecord(grid, rowIndex, columnIndex, e){
+
+        getParameters();
+        
         var gridView = gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
-        getParameters();
         var sLocaltion = "#admin_param_panel";
         var sAction = "updateUserDetailPanel.action";
         var sparameters = "mode=Edit&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId;
         doSectionLoad(sLocaltion, sAction, sparameters);
-        // $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId+uniqeToken());
+        
     }
 
     function createNewRecord(){
-        var gridViewId = -1;
+        
         getParameters();
+        
+        var gridViewId = -1;
         var sLocaltion = "#admin_param_panel";
         var sAction = "updateUserDetailPanel.action";
         var sparameters = "mode=New&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId;
         doSectionLoad(sLocaltion, sAction, sparameters);
-        // $("#admin_param_panel").load("updateUserDetailPanel.action?mode=New&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId+uniqeToken());
+    }
+    
+    function showUserroleDropDown() {
+        $("#userroleDropDownDiv").load("UserroleDropDownAction.action?orgTypeId=" + orgTypeId + uniqeToken());
+    }
+
+    function showOrganisationDropDownDiv(){
+        $("#organisationDropDownDiv").load("OrganisationDropDownAction.action?orgTypeId=" + orgTypeId + uniqeToken(), function() {
+            if(!isChoxAdmin){
+                $("#orgTypeId").attr("disabled", true);
+                $("#organisationId").attr("disabled", true);
+            }
+        });
     }
     
     function loadGridViewList(){
         
+        
+        getParameters();
+
         gridviewData.load(
         {
             params:
             {
-                start:0,
-                limit:recordPerPage,
                 orgTypeId:orgTypeId,
-                orgId:orgId,
+                orgId:organisationId,
                 userRoleId:userRoleId
             }
         });
     }
     
-    function doSelectChange(){
-        
-        $("#organisationId").val("");
-        $("#userrolesId").val("");
-        
+    function doOrganisationTypeChange(){
         pageRefresh();
     }
     
-    function pageRefresh(){
+    function doDropDownOnChange(){
+
         
-        getParameters();
-        showUserroleDropDown();
-        showOrganisationDropDownDiv();
-        loadGridViewList();
-        
-    }
-    
-    function doUseroleSelected(){
-        getParameters();
         loadGridViewList();
     }
-    
+
     function triggerStatusUpdateRecord(gridView){
             
         var aletMsg = "Are you sure you want to inactivate this user?";
@@ -206,91 +209,65 @@
 
     function onUpdateUserSubmitResult(responseText, statusText){
 
-                var response = eval('(' + responseText.trim() + ')');
-                // var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
-                // outputDiv.html('');//clear out the response message holder
+        var response = eval('(' + responseText.trim() + ')');
 
-                if(response)
-                {
-                    if(response.isValid){
+        if(response)
+        {
+            if(response.isValid){
 
-                        if(response.resultType && response.resultType == 'Message')
-                        {
-                            propmtMsg("", response.result)
-                        }
-                        
-                    }
-                }
-                else
+                if(response.resultType && response.resultType == 'Message')
                 {
-                    propmtErrorMsg("Unknown Error Encountered, please try again.");
+                    propmtMsg("", response.result)
                 }
 
+            }
+        }
+        else
+        {
+            propmtErrorMsg("Unknown Error Encountered, please try again.");
+        }
         
         loadGridViewList();
+        
     }
     
-    function showUserroleDropDown() {
-        $("#userroleDropDownDiv").load("UserroleDropDownAction.action?orgTypeId=" + orgTypeId+uniqeToken());
-    }
 
-    function showOrganisationDropDownDiv() {
-        
-        if(isOrgShow()){
-            $("#organisationDropDownDiv").css("display","block");
-            $("#organisationDropDownDiv").load("OrganisationDropDownAction.action?orgTypeId=" + orgTypeId+uniqeToken());
-        }else{
-            $("#organisationDropDownDiv").css("display","none");
-        }
-        
-    }
-
-    function isOrgShow(){
-
-        var isAllow = false;
-
-        if(isCHOXAdmin && (orgTypeId==2 || orgTypeId==3)){
-            isAllow = true;
-        }
-
-        return isAllow;
-    }
-
+   
 </script>
-
-<fieldset class="x-fieldset" style="height:660px;">
+    
+<div id="chox-admin-holder">
+    
+    <fieldset class="x-fieldset">
     <legend>User Management</legend>
-    <div id="organisationGird">
-        <div class="gridViewHeader">
-            <table width="100%">
-                <tr>
-                    <td><s:property value="orgTypeId" />
-
-        <s:if test="isSelectable">
-            <div class="label-block">
-            <p class="std-label">Organisation Type: </p>
-            <select id="orgTypeId" onchange="javascript:doSelectChange()">
-                <option value="1">Sherwood Organisation</option>
-                <option value="2">Insurer Organisation</option>
-                <option value="3">Credit Hire Organisation</option>
-            </select>
-            </div>
-        </s:if>
-        <s:else>
-            <input name="orgTypeId" id="orgTypeId" type="hidden" value="<s:property value="orgTypeId" />">
-        </s:else>
-    
-    <div id="organisationDropDownDiv" class="label-block"></div>
-    <div id="userroleDropDownDiv" class="label-block"></div>
-    
+        
     <input name="orgId" id="orgId" type="hidden" value="<s:property value="orgId" />">
 
-                    </td>
-                    <td align="right" valign="bottom" width="50%"><button type="button" onclick="javascript:createNewRecord();" style="white-space: nowrap;">Add New User</button></td>
-                </tr>
-            </table>
+    <div class="admin-gridview-header">
+        <table>
+            <tr>
+                <td id="label">
 
-        </div>
-        <div id="gridviewGrid" style="height:540px; overflow:auto;"></div>
+                    <div class="label-block">
+                    <p class="std-label">Organisation Type:</p>
+                    <select id="orgTypeId" onchange="javascript:doOrganisationTypeChange()">
+                        <option value="1">Sherwood Organisation</option>
+                        <option value="2">Insurer Organisation</option>
+                        <option value="3">Credit Hire Organisation</option>
+                    </select>
+                    </div>
+                    <div id="organisationDropDownDiv" class="label-block"></div>
+                    <div id="userroleDropDownDiv" class="label-block"></div>
+
+                </td>
+                <td id="buttons">
+                    <button type="button" onclick="javascript:createNewRecord();" style="white-space: nowrap;">Add New User</button>
+                </td>
+            </tr>
+        </table>
     </div>
-</fieldset>
+
+    <div id="gridviewGridHolderId"></div>
+            
+    </fieldset>
+    
+</div>

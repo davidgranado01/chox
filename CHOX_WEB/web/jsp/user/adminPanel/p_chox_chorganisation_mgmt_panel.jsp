@@ -40,26 +40,26 @@
             listeners:  {cellclick:recordOnclick },
             store: gridviewData,
             columns: [
-                {header: "Name", width: 110, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
+                {header: "Name", width: 150, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='highlightItem'>" + value + "</a>"}},
+                {header: "VAT No.", width: 60, dataIndex: 'vatNo', sortable: true, resizable: true},
                 {header: "Address", width: 170, dataIndex: 'address', sortable: true, resizable: true},
-                {header: "VAT No.", width: 80, dataIndex: 'vatNo', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='highlightItem'>" + value + "</a>"}},
                 {header: "Created By", width: 80, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
-            renderTo:'gridviewGrid',
-                width:640,
-                autoHeight:true,
-                enableHdMenu:false
-            });
+            height: 575,
+            width: 720
+        });
+
+        gridviewGrid.render('gridviewGridHolderId');
 
             gridviewData.load(
             {
                 params:
                 {
-                    gridviewtype : "InsurerBreBandMgmt"
+                    
                 }
             });
     
@@ -127,21 +127,20 @@
     
 </script>
 
-<form id="formAdminParam" class="XXentity-form" name="formAdminParam">
-
-<fieldset class="x-fieldset" style="height:660px;">
+<div id="chox-admin-holder">
+<form id="ChoxChorganisationMgmtPanelForm" name="ChoxChorganisationMgmtPanelForm" class="XXentity-form" action="POST">
+<fieldset class="x-fieldset">
     <legend>Credit Hire Organisation Management</legend>
-    <div id="organisationGird">
-        <div class="gridViewHeader">
+        <div class="admin-gridview-header">
             <table width="100%">
                 <tr>
-                    <td></td>
-                    <td align="right"><button type="button" onclick="javascript:createNewRecord();">Add New Credit Hire Organisation</button></td>
+                    <td id="label"></td>
+                    <td id="buttons"><button type="button" onclick="javascript:createNewRecord();">Add New Credit Hire Organisation</button></td>
                 </tr>
             </table>
 
         </div>        
-        <div id="gridviewGrid" style="height:605px; overflow:auto;"></div>
-    </div>
+        <div id="gridviewGridHolderId"></div>
 </fieldset>
-</form> 
+</form>
+    </div>

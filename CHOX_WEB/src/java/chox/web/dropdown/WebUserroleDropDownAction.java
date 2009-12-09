@@ -1,5 +1,6 @@
-package chox.web.actions;
+package chox.web.dropdown;
 
+import chox.web.actions.*;
 import chox.services.WebUserUserRoleService;
 import java.util.ArrayList;
 import java.util.List;
