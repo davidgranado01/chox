@@ -71,46 +71,60 @@
     }
 
 </script>
+
 <fieldset class="x-fieldset">
+    
     <legend>Invoice Saving Summary Report</legend>
-<form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
+
+    <form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
 
     <input id="insurerId" name="insurerId" type="hidden"/>
-    
 
     <div class="x-panel-bwrap chox-form-container">
+        
         <div class="form-container">
-            <div class="instruction-message">This report displays the amount saved on CHO invoices, comparing the original invoice amount as submitted by the CHO against the final settlement amount.</div>
-                <table class="report-form">
-
-<tr>
-<td nowrap><label>Credit Hire Organisation</label></td>
-<td>
-<s:select
-    name="chOrganisationId"
-    id="chOrganisationId"
-    list="suppliers"
-    listKey="id"
-    listValue="name"
-    headerKey=""
-    headerValue="- Please Select -"
-    emptyOption="false">
-    </s:select>
-</td>
-</tr>
-                    <tr>
-                        <td nowrap width="30%"><label>Invoice Upload Date From</label></td><td><div id="dateFromDiv" /></td>
-                    </tr>
-                    <tr>
-                        <td nowrap><label>Invoice Upload Date To</label></td><td><div id="dateToDiv"/></td>
-                    </tr>
-                </table>
             
-                <div class="chox-report-button">
-                    <button type="button" onclick="javascript:openReport();">Generate Report</button>
-                </div>
+            <div class="instruction-message">
+                This report displays the amount saved on CHO invoices, comparing the original invoice amount as submitted by the CHO against the final settlement amount.
+            </div>
+            
+            <table class="report-form">
+
+                <tr>
+                <td nowrap><label>Credit Hire Organisation</label></td>
+                <td>
+                <s:select
+                    name="chOrganisationId"
+                    id="chOrganisationId"
+                    list="suppliers"
+                    listKey="id"
+                    listValue="name"
+                    headerKey=""
+                    headerValue="- Please Select -"
+                    emptyOption="false">
+                    </s:select>
+                </td>
+                </tr>
+
+                <tr>
+                    <td nowrap width="30%"><label>Invoice Upload Date From</label></td><td><div id="dateFromDiv" /></td>
+                </tr>
+
+                <tr>
+                    <td nowrap><label>Invoice Upload Date To</label></td><td><div id="dateToDiv"/></td>
+                </tr>
+
+            </table>
+            
+            <div class="chox-report-button">
+                <button type="button" onclick="javascript:openReport();">Generate Report</button>
+            </div>
 
         </div>
+
         <div id="acknowledge-message-box"></div>
-    </div></form>
+    </div>
+    
+    </form>
+    
 </fieldset>

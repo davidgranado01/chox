@@ -88,7 +88,7 @@
 </s:if> 
                 </table>
             
-<div class="chox-report-button">
+            <div class="chox-report-button">
                 <button type="button" onclick="javascript:openReport();">Generate Report</button>                
             </div>
  

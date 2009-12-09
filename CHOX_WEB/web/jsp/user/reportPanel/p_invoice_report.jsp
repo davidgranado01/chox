@@ -95,54 +95,51 @@
 
             <div class="instruction-message">This report allows a user to produce an invoice for a particular claim or set of claims. Invoices are produced per Credit Hire Organisation and are based on specific Supplier Reference Number(s) and/or specifying a date range based on the invoice upload date.</div>
 
-                <table class="report-form">
-                    
-<s:if test="!isCHO && !isCH">
-<tr>
-    <td nowrap><label>Workgroup</label></td>
-    <td><div id="rptInvoiceWorkgroupSelectionHolder"></div></td>
-</tr>
-</s:if>
-<s:else>
-    <input type="hidden" id="workgroupId" name="workgroupId" value="-1"/>
-</s:else>
-    
-<s:if test="!isCHO">
-    <tr>
-    <td nowrap><label>Credit Hire Organisation</label></td>
-    <td>
-    <s:select
-        name="supplierId"
-        id="supplierId"
-        list="suppliers"
-        listKey="id"
-        listValue="name"
-        headerKey=""
-        headerValue="- Please Select -"
-        emptyOption="false">
-        </s:select>
-    </td>
-    </tr>
+            <table class="report-form">
+            
+                <s:if test="!isCHO && !isCH">
+                <tr>
+                    <td nowrap><label>Workgroup</label></td>
+                    <td><div id="rptInvoiceWorkgroupSelectionHolder"></div></td>
+                </tr>
+                </s:if>
+                <s:else>
+                    <input type="hidden" id="workgroupId" name="workgroupId" value="-1"/>
+                </s:else>
 
-</s:if>
-<tr>
-    <td nowrap width="30%"><label>Invoice Uploaded From</label></td><td><div id="dateFromDiv" /></td>
-</tr>
-<tr>
-    <td nowrap><label>Invoice Uploaded To</label></td><td><div id="dateToDiv"/></td>
-</tr>
-<tr>
-   <td nowrap><label>Supplier Reference(s)</label></td><td><textarea cols="20" rows="5" id="supplierReferences" name="supplierReferences"></textarea><img id="help-supplier-reference-input" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/></td>
-</tr>
+                <s:if test="!isCHO">
+                <tr>
+                    <td nowrap><label>Credit Hire Organisation</label></td>
+                    <td>
+                    <s:select name="supplierId" id="supplierId" list="suppliers"
+                    listKey="id" listValue="name" headerKey="" headerValue="- Please Select -" emptyOption="false">
+                    </s:select>
+                    </td>
+                </tr>
+                </s:if>
+                
+                <tr>
+                    <td nowrap width="30%"><label>Invoice Uploaded From</label></td><td><div id="dateFromDiv" /></td>
+                </tr>
+                <tr>
+                    <td nowrap><label>Invoice Uploaded To</label></td><td><div id="dateToDiv"/></td>
+                </tr>
+                <tr>
+                   <td nowrap><label>Supplier Reference(s)</label></td><td><textarea cols="20" rows="5" id="supplierReferences" name="supplierReferences"></textarea><img id="help-supplier-reference-input" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/></td>
+                </tr>
 
-    
-
-                </table>
+            </table>
 
             <div class="chox-report-button">
                 <button type="button" onclick="javascript:openReport();">Generate Report</button>
             </div>
+                
         </div>
+                
         <div id="acknowledge-message-box"></div>
-    </div></form> 
+
+        </div>
+        
+        </form>
+                
 </fieldset>
