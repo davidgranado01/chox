@@ -436,32 +436,14 @@ div.buttonPanel
     
 }
 
-/*
-ul.inbox li ul {
-
-
-background: transparent url(../images/folder_icon.gif) no-repeat;
-list-style-type: none;
-margin: -1.4em 0 0 -1.6em;
-padding: 1.4em 0 0 0.6em;
-
-}
-
-*/
-
 ul.inbox{
-    
-    /*background: transparent url(../images/folder_icon.gif) no-repeat;*/
     margin:10px;
 }
 
 ul.inbox li{
-    
-    /*background: transparent url(../images/folder_icon.gif) no-repeat;*/
     margin:5px;
     
 }
-
 
 label.std-label-ro{
     line-height:20px;
