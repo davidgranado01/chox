@@ -1,13 +1,7 @@
-<%-- 
-    Document   : p_report_main
-    Created on : 26-Jan-2009, 17:12:00
-    Author     : Emmanuel
---%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-
-<script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.min.js"></script>
-<script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script> 
+<script src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.min.js" type="text/javascript" ></script>
+<script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 
@@ -17,66 +11,70 @@
         var sAction = "loadParameterPanel.action";
         var sparameters = "reportName=" + report;
         doSectionLoad(sLocaltion, sAction, sparameters);
-        // $("#param_panel").load("loadParameterPanel.action?reportName=" + report+uniqeToken());
     }
 
 </script>
 
 <div class="x-panel-bwrap chox-form-container">
-    
-    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <table cellspacing="4" class="chox-report" >
         <tr valign="top">
-            <td width="50%" class="chox-form-left-col">
+            <td class="chox-report-left-col">
+
                 <fieldset class="x-fieldset">
-                    <legend>Report List</legend>                    
+                    <legend>Report List</legend>
                     <div class="x-panel-bwrap chox-form-container">
-                        <div class="ReportActionMsg">
+                        <div class="instruction-message">
                             Please select from the list of available reports
                         </div>
-                        <div style="height:400px;" class="x-panel-bwrap chox-form-container">
-                            <ul>
-                            
+                        <div class="x-panel-bwrap chox-form-container">
+                            <ul class='report-header-list'>
                                 <s:if test="reportAccessibility.insurerWeeklySummaryAccessibility">
-                                <li class='reportTypeHeader'>General Reports</li>
+                                <li class='report-type-header'>General Reports</li>
                                 <li><a href="javascript:renderParameterPanel('InsurerAdminWeeklyOverviewReport-Excel');">Admin Weekly Overview Report</a></li>
                                 </s:if>
-<s:if test="reportAccessibility.overviewSummaryAccessibility || reportAccessibility.claimRejectionAccessibility">
-<li class='reportTypeHeader'>Claim Reports</li>
-</s:if>
-                                <s:if test="reportAccessibility.overviewSummaryAccessibility">                                
+                                
+                                <s:if test="reportAccessibility.overviewSummaryAccessibility || reportAccessibility.claimRejectionAccessibility">
+                                <li class='report-type-header'>Claim Reports</li>
+                                </s:if>
+
+                                <s:if test="reportAccessibility.overviewSummaryAccessibility">
                                 <li><a href="javascript:renderParameterPanel('OverviewSummary-Excel');">Claim Overview Summary Report</a></li>
                                 </s:if>
+                                
                                 <s:if test="reportAccessibility.claimRejectionAccessibility">                                
                                 <li><a href="javascript:renderParameterPanel('ClaimRejectedReport-Excel');">Claim Rejection Report</a></li>
                                 </s:if>
                                 
-                            <li class='reportTypeHeader'>Invoice Reports</li>
+                                <li class='report-type-header'>Invoice Reports</li>
+                                
                                 <s:if test="reportAccessibility.invoiceReportAccessibility">
                                 <li><a href="javascript:renderParameterPanel('InvoiceReport-Excel');">CHO Invoice Report</a></li>
                                 </s:if>
+
                                 <s:if test="reportAccessibility.invoiceSummaryAccessibility">
                                 <li><a href="javascript:renderParameterPanel('InvoiceSummaryReport-Excel');">Invoice Summary Report</a></li>
                                 </s:if>
-                                <s:if test="reportAccessibility.insurerPaymentReportAccessibility">                                
+
+                                <s:if test="reportAccessibility.insurerPaymentReportAccessibility">
                                 <li><a href="javascript:renderParameterPanel('PaymentReport-Excel');">CHO Payment Bordereau</a></li>
                                 </s:if>
-                                <s:if test="reportAccessibility.insurerAverageClaimSettlementReportAccessibility">                                
+
+                                <s:if test="reportAccessibility.insurerAverageClaimSettlementReportAccessibility">
                                 <li><a href="javascript:renderParameterPanel('AverageSettlementAmount-Excel');">Average Claim Settlement Amount Report</a></li>
                                 </s:if>
+
                                 <s:if test="reportAccessibility.invoiceSavingSummaryReportAccessibility">
                                 <li><a href="javascript:renderParameterPanel('InvoiceSavingSummaryReport-Excel');">CHO Invoice Savings Summary</a></li>
                                 </s:if>
+                                
                             </ul>
                         </div>
                     </div>  
                 </fieldset>
+
             </td>
-            <td width="50%" class="chox-form-right-col">
-                <div id="param_panel"></div>
-            </td>
+            <td class="chox-report-right-col" id="param_panel"></td>
         </tr>
     </table>
-    
-    
 </div>
 

@@ -1,11 +1,6 @@
-<%-- 
-    Document   : p_invoice_summary_report_param_panel
-    Created on : 30-Jan-2009, 17:12:00
-    Author     : Emmanuel
---%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">
+<script type="text/javascript">
         
     var reportName = 'InvoiceSummaryReport-Excel';
 
@@ -46,7 +41,7 @@
                 
         var validateFlag = $("#formReportParam").validate(
         {
-            errorLabelContainer: "#ACKmessageBox",  
+            errorLabelContainer: "#acknowledge-message-box",
             rules: {
                 DateStart:{
                     required:true,
@@ -73,18 +68,18 @@
     }
     
 </script>
-
-<form id="formReportParam" class="XXentity-form" name="formReportParam">
-    
 <fieldset class="x-fieldset">
     <legend>Invoice Summary Report</legend>
+<form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
+    
+
     <div class="x-panel-bwrap chox-form-container">      
         <div class="form-container">
             
-            <div class="ReportActionMsg" align="justify">This report provides information at a high level regarding the financials of CHOX invoices, including details relating to penalty charges as a result of late payments. The dates that require selection below refer to the date the invoice was uploaded onto CHOX.
+            <div class="instruction-message">This report provides information at a high level regarding the financials of CHOX invoices, including details relating to penalty charges as a result of late payments. The dates that require selection below refer to the date the invoice was uploaded onto CHOX.
             </div>
             
-                <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">  
+                <table class="report-form">
 <s:if test="!isCHO">                
 <tr>
 <td nowrap><label>Credit Hire Organisation</label></td>
@@ -127,13 +122,10 @@
                     </tr>                      
                 </table>
             
-            <div align="right" class="chox-form-button">
+<div class="chox-report-button">
                 <button type="button" onclick="javascript:openReport();">Generate Report</button>                
             </div>
-            <div id="INCmessageBox" class="errorBox"></div>
-            <div id="submitResult" class="chox-form-submit-result"></div>    
         </div>
-        <div class="errorBox" id="ACKmessageBox"></div>
-    </div>
+        <div id="acknowledge-message-box"></div>
+    </div></form> 
 </fieldset>
-</form> 

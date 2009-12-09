@@ -1,22 +1,8 @@
-<%--
-    Document   : p_insurer_admin_weekly_overview_param_panel
-    Created on : 26-Jan-2009, 17:12:00
-    Author     : Emmanuel
---%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">
+<script type="text/javascript">
 
     var reportName = 'InvoiceSavingSummaryReport-Excel';
-
-    function openReport()
-    {
-        if(doFormValidation().form()){
-            var queryString = $('#formReportParam').formSerialize();
-
-            window.location= "exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
-        }
-    }
 
     Ext.onReady(function(){
 
@@ -43,11 +29,20 @@
 
     });
 
+    function openReport()
+    {
+        if(doFormValidation().form()){
+            var queryString = $('#formReportParam').formSerialize();
+
+            window.location= "exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
+        }
+    }
+    
     function doFormValidation(){
 
         var validateFlag = $("#formReportParam").validate(
         {
-            errorLabelContainer: "#ACKmessageBox",
+            errorLabelContainer: "#acknowledge-message-box",
             rules: {
                 chOrganisationId:{required:true},
                 DateStart:{
@@ -76,17 +71,17 @@
     }
 
 </script>
-
-<form id="formReportParam" class="XXentity-form" name="formReportParam">
+<fieldset class="x-fieldset">
+    <legend>Invoice Saving Summary Report</legend>
+<form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
 
     <input id="insurerId" name="insurerId" type="hidden"/>
     
-<fieldset class="x-fieldset">
-    <legend>Invoice Saving Summary Report</legend>
+
     <div class="x-panel-bwrap chox-form-container">
         <div class="form-container">
-            <div class="ReportActionMsg" align="justify">This report displays the amount saved on CHO invoices, comparing the original invoice amount as submitted by the CHO against the final settlement amount.</div>
-                <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">
+            <div class="instruction-message">This report displays the amount saved on CHO invoices, comparing the original invoice amount as submitted by the CHO against the final settlement amount.</div>
+                <table class="report-form">
 
 <tr>
 <td nowrap><label>Credit Hire Organisation</label></td>
@@ -111,13 +106,11 @@
                     </tr>
                 </table>
             
-                <div class="chox-form-button" align="right">
+                <div class="chox-report-button">
                     <button type="button" onclick="javascript:openReport();">Generate Report</button>
                 </div>
-            <div id="INCmessageBox" class="errorBox"></div>
-            <div id="submitResult" class="chox-form-submit-result"></div>
+
         </div>
-        <div class="errorBox" id="ACKmessageBox"></div>
-    </div>
+        <div id="acknowledge-message-box"></div>
+    </div></form>
 </fieldset>
-</form>

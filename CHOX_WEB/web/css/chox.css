@@ -691,13 +691,7 @@ img.tip-target
     float:none; 
 }
 
-.ReportActionMsg{
-    font-family: tahoma;
-    font-size: 12px;   
-    color:#413839;
-    padding:2px;
-    margin-bottom:10px;
-}
+
 
 .chox-textarea
 {
@@ -791,12 +785,7 @@ img.tip-target
   padding: 10px;
 }
 
-.reportTypeHeader{
-  font-family: tahoma,arial,verdana,sans-serif;
-  font-size: 12px;
-  font-weight:bold;    
-  padding-top:15px;
-}
+
 
 .gridViewHeader{  
     padding-bottom:5px;
@@ -986,3 +975,92 @@ span.input-radio{
         overflow:auto;
         height:570px;
 }
+
+
+
+/******* GENERAL - START ************/
+
+div.instruction-message{
+    font-family:tahoma,arial,helvetica,sans-serif;
+    font-size:12px;
+    color:#413839;
+    padding:2px;
+    margin-bottom:10px;
+    text-align:justify;
+}
+
+/******* GENERAL - END ************/
+
+
+/******* REPORT - START ************/
+
+table.report-form{
+
+    background: #dfe8f6;
+    width:99.6%;
+    border-collapse:collapse;
+    margin:2px;
+
+}
+
+table.report-form td{
+    padding:4px;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px;
+    width:16%;
+    border:1px #ccc solid;
+    vertical-align:top;
+}
+
+table.chox-report{
+    height:500px;
+    width:100%;
+    padding-right:5px;
+    font-family:tahoma,arial,helvetica,sans-serif;
+    font-size:12px;
+}
+
+table.chox-report td.chox-report-left-col{
+    width: 50%;
+}
+
+table.chox-report td.chox-report-right-col{
+    width: 50%;
+}
+
+table.chox-report tr td fieldset{
+    height:480px;
+}
+
+div.chox-report-button{
+    padding-top:10px;
+    font-style:normal;
+    font-variant:normal;
+    font-weight:normal;
+    line-height:normal;
+    text-align:right;
+}
+
+div#acknowledge-message-box{
+    color: red;
+    text-align:left;
+    font-size:10px;
+}
+
+div#acknowledge-message-box label{
+    padding:0;
+    margin:0;
+    line-height:16px;
+}
+
+ul.report-header-list li{
+    line-height:20px;
+    color: #222222;
+}
+
+li.report-type-header{
+  font-weight:bold;
+  padding-top:10px;
+}
+
+/******* REPORT - END ************/

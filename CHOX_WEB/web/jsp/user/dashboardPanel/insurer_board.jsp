@@ -1,12 +1,7 @@
-<%-- 
-    Document   : insurer_board
-    Created on : 02-Feb-2009, 16:19:35
-    Author     : Emmanuel
---%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 
-    <script>
+<script type="text/javascript">
         $(document).ready(function(){  
             
             $("#dashboardSupplierId").change(onSelectChange);  
@@ -55,7 +50,7 @@
     <fieldset class="x-fieldset">
         <legend>Insurer Admin Dashboard</legend>
         
-        <div class="ReportActionMsg">
+        <div class="instruction-message">
             This dashboard displays a snapshot of claims in the
             system to date across a weekly, monthly and yearly period.
             Results can be viewed for an individual CHO or across the entire

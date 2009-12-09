@@ -47,7 +47,7 @@
     <fieldset class="x-fieldset">
         <legend>CHO Admin Dashboard</legend>
         
-        <div class="ReportActionMsg">
+        <div class="instruction-message">
                This dashboard displays a snapshot of claims in the system
                   to date across a weekly, monthly and yearly period. Results can
                   be viewed for an individual Insurer or across the entire Insurer

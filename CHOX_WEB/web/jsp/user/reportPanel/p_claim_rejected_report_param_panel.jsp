@@ -1,22 +1,9 @@
-<%-- 
-    Document   : p_invoice_summary_report_param_panel
-    Created on : 30-Jan-2009, 17:12:00
-    Author     : Emmanuel
---%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">
+<script type="text/javascript">
         
     var reportName = 'ClaimRejectedReport-Excel';
 
-    function openReport()
-    {        
-        if(doFormValidation().form()){
-            var queryString = $('#formReportParam').formSerialize();  
-            window.location = "exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
-        }
-    }
-    
     Ext.onReady(function(){
         
         var dateFromPicker = new Ext.form.DateField({
@@ -42,11 +29,20 @@
         
     }); 
 
+
+    function openReport()
+    {
+        if(doFormValidation().form()){
+            var queryString = $('#formReportParam').formSerialize();
+            window.location = "exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
+        }
+    }
+    
     function doFormValidation(){
                 
         var validateFlag = $("#formReportParam").validate(
         {
-            errorLabelContainer: "#ACKmessageBox",  
+            errorLabelContainer: "#acknowledge-message-box",
             rules: {
                 DateStart:{
                     required:true,
@@ -74,33 +70,39 @@
     
 </script>
 
-<form id="formReportParam" class="XXentity-form" name="formReportParam">
-    
 <fieldset class="x-fieldset">
+    
     <legend>Claim Rejected Report</legend>
-    <div class="x-panel-bwrap chox-form-container">      
-        <div class="form-container">
-            
-            <div class="ReportActionMsg" align="justify">This report provides information on why claims have been rejected in CHOX at the claim notification stage.  The dates that require selection below refer to the date the claim was uploaded onto CHOX.
-            </div>
-            
-                <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">  
 
-                    <tr>
-                        <td nowrap width="30%"><label>Claim Uploaded Date From</label></td><td><div id="dateFromDiv" /></td>                       
-                    </tr>    
-                    <tr>
-                        <td nowrap><label>Claim Uploaded Date To</label></td><td><div id="dateToDiv"/></td>                            
-                    </tr>                      
-                </table>
-            
-            <div align="right" class="chox-form-button">
-                <button type="button" onclick="javascript:openReport();">Generate Report</button>                
+    <form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
+
+    <div class="x-panel-bwrap chox-form-container">
+        
+        <div class="form-container">
+
+            <div class="instruction-message">
+                This report provides information on why claims have been rejected in CHOX at the claim notification stage. The dates that require selection below refer to the date the claim was uploaded onto CHOX.
             </div>
-            <div id="INCmessageBox" class="errorBox"></div>
-            <div id="submitResult" class="chox-form-submit-result"></div>    
+
+            <table class="report-form">
+                <tr>
+                    <td nowrap width="30%"><label>Claim Uploaded Date From</label></td><td><div id="dateFromDiv" /></td>
+                </tr>
+                <tr>
+                    <td nowrap><label>Claim Uploaded Date To</label></td><td><div id="dateToDiv"/></td>
+                </tr>
+            </table>
+
+            <div class="chox-report-button">
+                <button type="button" onclick="javascript:openReport();">Generate Report</button>
+            </div>
+
         </div>
-        <div class="errorBox" id="ACKmessageBox"></div>
+
+        <div id="acknowledge-message-box"></div>
+    
     </div>
+    
+    </form>
+
 </fieldset>
-</form> 

@@ -1,21 +1,8 @@
-<%-- 
-    Document   : p_insurer_admin_weekly_overview_param_panel
-    Created on : 26-Jan-2009, 17:12:00
-    Author     : Emmanuel
---%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">
+<script type="text/javascript">
         
     var reportName = 'AverageSettlementAmount-Excel';
-
-    function openReport()
-    {   
-        if(doFormValidation().form()){
-            var queryString = $('#formReportParam').formSerialize();  
-            window.location= "exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
-        }
-    }
     
     Ext.onReady(function(){
         
@@ -41,12 +28,20 @@
         dateToPicker.render('dateToDiv');
         
     }); 
-    
+
+    function openReport()
+    {
+        if(doFormValidation().form()){
+            var queryString = $('#formReportParam').formSerialize();
+            window.location= "exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
+        }
+    }
+
     function doFormValidation(){
                 
         var validateFlag = $("#formReportParam").validate(
         {
-            errorLabelContainer: "#ACKmessageBox",  
+            errorLabelContainer: "#acknowledge-message-box",
             rules: {
                 DateStart:{
                     required:true,
@@ -73,16 +68,16 @@
     }
     
 </script>
-
-<form id="formReportParam" class="XXentity-form" name="formReportParam">
 <fieldset class="x-fieldset">
     <legend>Average Claim Settlement Amount Report</legend>
+<form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
+
     <div class="x-panel-bwrap chox-form-container">      
         <div class="form-container">
-            <div class="ReportActionMsg" align="justify">This report displays the average settlement amount, filtered by month, for each CHO using the CHOX system.</div>
+            <div class="instruction-message">This report displays the average settlement amount, filtered by month, for each CHO using the CHOX system.</div>
             
-                <table cellpadding="0" cellspacing="0" class="searchForm" style="width:99%;" border="0">     
-              
+                <table class="report-form">
+
 <s:if test="isCHOXAdmin">
     <tr>
     <td nowrap><label>Insurer</label></td>
@@ -109,13 +104,10 @@
                         <td nowrap><label>Settlement Date To</label></td><td><div id="dateToDiv"/></td>                            
                     </tr>  
                 </table>
-                <div class="chox-form-button" align="right">
+                <div class="chox-report-button">
                     <button type="button" onclick="javascript:openReport();">Generate Report</button>
-                </div>
-            <div id="INCmessageBox" class="errorBox"></div>
-            <div id="submitResult" class="chox-form-submit-result"></div>    
+                </div> 
         </div>
-        <div class="errorBox" id="ACKmessageBox"></div>
-    </div>
+        <div id="acknowledge-message-box"></div>
+    </div></form>
 </fieldset>
-</form>
