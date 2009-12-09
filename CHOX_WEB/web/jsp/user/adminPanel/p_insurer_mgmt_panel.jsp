@@ -1,9 +1,9 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
+<link href="<%= request.getContextPath()%>/css/chox.css" rel="stylesheet" type="text/css" media="all"/>
 <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
 
-<script language="JavaScript">
+<script type="text/javascript">
         
         var selectedPanel = "InsurerPanelMgmt";
         var adminCurrentTabIndex = 0;

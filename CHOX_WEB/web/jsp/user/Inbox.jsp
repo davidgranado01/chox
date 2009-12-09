@@ -3,13 +3,13 @@
 
 <head>
     <title>IDAS-CHOX</title>
-    <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
+    <link href="<%= request.getContextPath()%>/css/chox.css" rel="stylesheet" type="text/css" media="all"/>
     <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
-    <script src="<%= request.getContextPath()%>/adapter/jquery/jquery-1.2.6.js" type="text/javascript" ></script>
-    <script src="<%= request.getContextPath()%>/adapter/jquery/jquery.form.js" type="text/javascript" ></script>
-    <script src="<%= request.getContextPath()%>/adapter/jquery/ext-jquery-adapter.js" type="text/javascript" ></script>
-    <script src="<%= request.getContextPath()%>/adapter/jquery/jquery.blockUI.js" type="text/javascript" ></script>
-    <script src="<%= request.getContextPath()%>/adapter/jquery/jquery.timer.js" type="text/javascript" ></script>
+    <script src="<%= request.getContextPath()%>/scripts/jquery/jquery-1.2.6.js" type="text/javascript" ></script>
+    <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.form.js" type="text/javascript" ></script>
+    <script src="<%= request.getContextPath()%>/scripts/jquery/ext-jquery-adapter.js" type="text/javascript" ></script>
+    <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.blockUI.js" type="text/javascript" ></script>
+    <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.timer.js" type="text/javascript" ></script>
     <script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
     <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>

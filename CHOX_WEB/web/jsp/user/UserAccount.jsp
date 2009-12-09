@@ -11,15 +11,15 @@
     <title>IDAS-CHOX</title>
 
 
-    <link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="<%= request.getContextPath()%>/css/chox.css" rel="stylesheet" type="text/css" media="all"/>
     <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
 
-    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery-1.2.6.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.form.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.blockUI.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/ext-jquery-adapter.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.metadata.js"></script>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery/jquery-1.2.6.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery/jquery.form.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery/ext-jquery-adapter.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery/jquery.metadata.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.min.js"></script>
 
 
     <script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
@@ -27,7 +27,7 @@
     <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
 
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
 
             var op = {
@@ -124,7 +124,7 @@
                         <table cellpadding="0" cellspacing="0" border="0" width="100%">
                             <tr valign="middle">
                                 <td>
-                                    <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left" />
+                                    <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left" alt="" />
                                 </td>
                                 <td width="100%" align="right">
                                     <ul id="top-menu">
@@ -188,12 +188,12 @@
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">
                                 Choose a new password <span class="mandatory">*</span></label>
-                            <input type="password" class="chox-ttxt" label="Enter Password" name="newPassword" id="newPassword" size="20" maxlength="20" />
+                            <input type="password" class="chox-ttxt" name="newPassword" id="newPassword" size="20" maxlength="20" />
                             </div>
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">
                                 Re-enter new password<span class="mandatory">*</span></label>
-                            <input type="password" class="chox-ttxt" label="Enter Password" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20" />
+                            <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20" />
                             </div>
                             <div class="chox-form-button">
                                 <label class="chox-form-std-label">&nbsp;</label>

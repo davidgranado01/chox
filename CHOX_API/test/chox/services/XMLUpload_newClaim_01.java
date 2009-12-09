@@ -138,7 +138,7 @@ public class XMLUpload_newClaim_01 {
         // Assert.assertEquals(false, claim.getIsInvoiceReviewRequired());
         Assert.assertEquals(false, claim.getIsIsAnomalies());
         Assert.assertEquals(false, claim.isIsFnolReviewed());
-        Assert.assertEquals(null, claim.getReasonOfRejectionId());
+        Assert.assertEquals(null, claim.getReasonOfRejection());
 
     }
 

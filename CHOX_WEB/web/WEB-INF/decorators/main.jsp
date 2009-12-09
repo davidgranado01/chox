@@ -11,15 +11,13 @@
     
     <head>
         
-        
         <title><decorator:title default="Struts Starter"/> - CHOX v2.2 build 2008-11-26 </title>
-        <link href="<%= request.getContextPath() %>/styles/main.css" rel="stylesheet" type="text/css" media="all"/>
-        <link href="<%= request.getContextPath() %>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>        
+        <link href="<%= request.getContextPath() %>/css/chox.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="<%= request.getContextPath() %>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
         
- 	<script type="text/javascript" src="<%= request.getContextPath() %>/adapter/jquery/jquery-1.2.6.js"></script>
- 	<script type="text/javascript" src="<%= request.getContextPath() %>/adapter/jquery/jquery.form.js"></script>
- 	<script type="text/javascript" src="<%= request.getContextPath() %>/adapter/jquery/ext-jquery-adapter.js"></script>
+ 	<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery-1.2.6.js"></script>
+ 	<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/jquery.form.js"></script>
+ 	<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/jquery/ext-jquery-adapter.js"></script>
 
         <script src="<%= request.getContextPath() %>/scripts/ext-base.js" type="text/javascript"></script>
         <script src="<%= request.getContextPath() %>/scripts/ext-all.js" type="text/javascript"></script> 

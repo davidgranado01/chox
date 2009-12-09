@@ -8,9 +8,9 @@
     
     <head>
         <title>IDAS CHOX Welcome Page</title>
-        <link href="<%= request.getContextPath()%>/styles/login.css" rel="stylesheet" type="text/css" media="all"/> 
+        <link href="<%= request.getContextPath()%>/css/login.css" rel="stylesheet" type="text/css" media="all"/>
         
-        <script>
+        <script type="">
             var newwindow;
             function openFile(url,name)
             {
@@ -23,10 +23,10 @@
     </head>
     <body class="modal login">
     <div class="outer">
-        <img alt="Logo" src="<%= request.getContextPath() %>/images/logo_login.jpg">
+        <img alt="Logo" src="<%= request.getContextPath() %>/images/logo_login.jpg" alt=""/>
     </div>
     <div class="modal_container">
-        <div class="app_title"><img alt="Logo" src="<%= request.getContextPath() %>/images/chox_logo_small.jpg"></div>
+        <div class="app_title"><img alt="Logo" src="<%= request.getContextPath() %>/images/chox_logo_small.jpg" alt=""/></div>
         <div class="inner">
             <div class="content" id="loginPanel">
                <form action="<%=request.getContextPath()%>/j_acegi_security_check" method="POST" >

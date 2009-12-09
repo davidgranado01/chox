@@ -1,8 +1,8 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<link href="<%= request.getContextPath()%>/styles/chox.css" rel="stylesheet" type="text/css" media="all"/>    
+<link href="<%= request.getContextPath()%>/css/chox.css" rel="stylesheet" type="text/css" media="all"/>
 
-<script language="JavaScript">
+<script type="text/javascript">
     function doValidation(){
         
         var inp = document.getElementById("workgroupId");

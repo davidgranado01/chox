@@ -2,10 +2,7 @@
 
 <head>        
     <title></title>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/adapter/jquery/jquery.validate.min.js"></script>
-    <!--
-    <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
-    !-->
+    <script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.min.js"></script>
     <script type="text/javascript">
         
         function renderAdminParameterPanel(selectedPanel)
