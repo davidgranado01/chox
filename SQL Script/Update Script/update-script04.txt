@@ -1,0 +1,2 @@
+ALTER TABLE claim_summary ALTER COLUMN status SET NOT NULL;
+CREATE INDEX claim_summary_idx ON claim_summary USING btree (process_date, insurer_id, chorganisation_id, status);
