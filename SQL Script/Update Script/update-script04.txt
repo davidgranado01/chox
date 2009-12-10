@@ -1,2 +1,12 @@
 ALTER TABLE claim_summary ALTER COLUMN status SET NOT NULL;
 CREATE INDEX claim_summary_idx ON claim_summary USING btree (process_date, insurer_id, chorganisation_id, status);
+
+-- ADD SEQUQNCE
+CREATE SEQUENCE claim_summary_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE claim_summary_id_seq OWNER TO postgres;
+ALTER TABLE claim_summary ADD COLUMN id integer NOT NULL DEFAULT nextval('claim_summary_id_seq'::regclass);
