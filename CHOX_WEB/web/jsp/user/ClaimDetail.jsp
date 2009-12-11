@@ -758,6 +758,7 @@
                                 </s:elseif>
 
                             </table>
+                                    
                         </fieldset>
 
                         <div id="claim-detail-extra">
