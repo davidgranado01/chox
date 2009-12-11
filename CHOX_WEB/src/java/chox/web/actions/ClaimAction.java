@@ -309,7 +309,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                 try {
 
-                    if(workgroupId>0){
+                    if(uosWorkgroupId>0){
                         claim.setWorkgroup(workgroupService.getObject(uosWorkgroupId));
                     }
 
@@ -318,7 +318,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                     // SAVE NEW NOTE
                     int noteVisibilityType = 0;
-                    //createNewNote(noteMsg, true, "");
                     createNewNote(noteMsg, noteVisibilityType, "");
 
                 } catch (Exception ex) {

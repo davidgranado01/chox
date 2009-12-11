@@ -177,9 +177,10 @@ public class WebUser implements Serializable {
         }
         return ids;
     }
-
+    
+    //TODO: SPRINT 8 ENHANCEMENT
     public String getDisplayName() {
-        return String.format("%1$s %2$s", this.getFirstName(), this.getLastName());
+        return String.format("%1$s %2$s", this.getLastName(), this.getFirstName());
     }
     
     public void setClaimHandler(boolean claimHandler) {

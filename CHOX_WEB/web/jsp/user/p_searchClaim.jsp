@@ -197,8 +197,7 @@
         <tr>
             <td><label>Invoice Number</label></td>
             <td><s:textfield name="invoiceNumber"/></td>
-            <td><label>Show Open Claims Only <img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" /></label></td><td><s:checkbox name="isOpenClaim" /></td>
-            
+            <td><label>Show Open Claims Only <img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" /></label></td><td><s:checkbox name="isOpenClaim" value="true"/></td>
         </tr>
         
         <tr>

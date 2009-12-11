@@ -1017,7 +1017,7 @@
         </action>
 
         <action name="SearchClaimHandlerRoleUserDropDownAction" class="chox.web.dropdown.ClaimHandlerRoleUserDropDownAction" method="ClaimSearch">
-            <result>/jsp/user/dropdown/p_dropdown_claimHandlerUser.jsp</result>
+            <result>/jsp/user/dropdown/p_search_dropdown_claimHandlerUser.jsp</result>
         </action>
         <action name="ClaimHandlerRoleUserDropDownAction" class="chox.web.dropdown.ClaimHandlerRoleUserDropDownAction">
             <result>/jsp/user/dropdown/p_dropdown_claimHandlerUser.jsp</result>
