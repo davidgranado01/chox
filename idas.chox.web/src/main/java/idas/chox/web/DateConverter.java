@@ -29,7 +29,7 @@ import com.opensymphony.xwork2.util.TypeConversionException;
 public class DateConverter extends StrutsTypeConverter {
     public Object convertFromString(Map context, String[] values, Class toClass) {
         if (values != null && values.length > 0 && values[0] != null && values[0].length() > 0) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             try {
                 return sdf.parse(values[0]);
             }
@@ -41,7 +41,7 @@ public class DateConverter extends StrutsTypeConverter {
     }
     public String convertToString(Map context, Object o) {
         if (o instanceof Date) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             return sdf.format((Date)o);
         }
         return "";
