@@ -1,0 +1,94 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package idas.chox.service.bre.rules;
+
+import idas.chox.core.bre.IBusinessRule;
+import idas.chox.core.bre.RuleEvaluation;
+import idas.chox.core.bre.RuleEvaluationResult;
+import idas.chox.core.model.BreBand;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Customer;
+import idas.chox.core.model.EngineerReport;
+import idas.chox.service.bre.util.ClaimCalcHelper;
+
+public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusinessRule {
+
+    private String narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Esimtated Days Under Repair.";
+
+    public RuleEvaluation applyToClaim(Claim claim) {
+
+        RuleEvaluation res = new RuleEvaluation();
+        res.setIsVisibleToCHO(false);
+        res.setRelatedRule(this);
+
+        if (claim.getBreBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays()) {
+
+            Customer cvdamage = claim.getCustomer();
+            BreBand choBand = claim.getBreBand();
+            EngineerReport eReport = claim.getEngineerReport();
+
+            if ((claim.getVehicleHire().getIsTotalLoss()) || (eReport.getEstimatedDaysUnderRepair() < 1)) {
+
+                narrative = "Claim is a Total Loss or Estimated Days Under Repair is less than 1";
+                res.setResult(RuleEvaluationResult.RuleSkipped);
+
+            } else {
+
+                ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
+
+                int hireDays = claim.getVehicleHire().getDays();
+
+                int takeVehicleToGarageDays = cvdamage.getIsUsable()
+                        ? choBand.getTakeVehicleToGarageDaysMobile()
+                        : choBand.getTakeVehicleToGarageDaysNonMobile();
+
+                int maxDays = eReport.getEstimatedDaysUnderRepair();
+
+                maxDays += takeVehicleToGarageDays;
+
+                // Basecamp : S8019
+                // maxDays += choBand.getWeekendBufferDays();
+                maxDays += cCalc.getWeekendBuffer();
+                maxDays += choBand.getTakeVehicleOutDays();
+                maxDays += choBand.getEngineerInspectionDelayDays();
+
+                boolean success = hireDays <= maxDays;
+
+                if (success) {
+                    narrative = "";
+                    res.setResult(RuleEvaluationResult.RulePassed);
+
+                } else {
+
+                    res.setResult(RuleEvaluationResult.RuleFailed);
+
+                }
+
+            }
+
+        } else {
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
+
+        return res;
+
+    }
+
+    public String getNarrative() {
+        return narrative;
+    }
+
+    public String getRuleId() {
+        return "020";
+    }
+
+    public String getStatusAfterFailure() {
+        return ClaimStatus.INVOICE_ESCALATED;
+    }
+}

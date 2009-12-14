@@ -1,0 +1,45 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package idas.chox.service.bre.util;
+
+import idas.chox.core.model.Invoice;
+import java.math.BigDecimal;
+
+public class ExtrasCalcHelper {
+    
+    private Invoice invoice;
+    
+    private ExtrasCalcHelper(Invoice ex){
+
+        invoice = ex;
+    }
+    
+    public static ExtrasCalcHelper getInstance(Invoice ex){
+        
+        return new ExtrasCalcHelper(ex);
+    }
+    
+    public BigDecimal getTotalExtras() {
+
+        BigDecimal total = BigDecimal.ZERO;
+        
+        total = total.add(invoice.getCdwFee());
+        total = total.add(invoice.getAutomaticFee());
+        total = total.add(invoice.getSatNavFee());
+        total = total.add(invoice.getEstateFee());
+        total = total.add(invoice.getBabySeatFee());
+        total = total.add(invoice.getTowBarsFee());
+        total = total.add(invoice.getNonStandardInsurancePremiumFee());
+        total = total.add(invoice.getAdminFee());
+        total = total.add(invoice.getRoofRackFee());
+        total = total.add(invoice.getDualControlFee());
+        total = total.add(invoice.getDeliveryCollectionFee());
+        
+        return total;
+    }
+
+}
+

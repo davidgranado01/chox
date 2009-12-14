@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="idas.chox.core.model.InsurerChorganisation" table="insurer_chorganisation">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <property column="created_date" name="createdDate"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+    <property column="status" name="status" not-null="true"/>
+    <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
+    <many-to-one class="idas.chox.core.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+  </class>
+</hibernate-mapping>

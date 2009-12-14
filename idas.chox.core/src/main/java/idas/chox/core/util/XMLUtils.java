@@ -1,0 +1,340 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package idas.chox.core.util;
+
+
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.zip.GZIPOutputStream;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+/**
+ * Misc XML utilities
+ */
+public class XMLUtils {
+
+    private XMLUtils() {
+    }
+
+    /**
+     * Retrieve the text contained within an element
+     *<p>
+     *@param element The element within an XML document whose content is required.
+     *</p>
+     *<p>
+     *@return The contents of the <code>element</code> as a <code>String</code>
+     *</p>
+     *<p>
+     *@throw DOMException if an error occurs accessing the XML document
+     *</p>
+     */
+    public static final String getElementText(Element element)
+    throws DOMException
+    {
+        StringBuffer sb=new StringBuffer();
+
+        NodeList nl=element.getChildNodes();
+        int nodes=nl.getLength();
+        for(int i=0;i<nodes;i++)    {
+            Node n=nl.item(i);
+            short nt=n.getNodeType();
+            if(nt==Node.TEXT_NODE || nt==Node.CDATA_SECTION_NODE)
+                sb.append(n.getNodeValue());
+        }
+        return sb.toString().trim();
+    }
+
+    public static final String getElementTextNoTrim(Element element)
+    throws DOMException
+    {
+        StringBuffer sb=new StringBuffer();
+
+        NodeList nl=element.getChildNodes();
+        int nodes=nl.getLength();
+        for(int i=0;i<nodes;i++)    {
+            Node n=nl.item(i);
+            short nt=n.getNodeType();
+            if(nt==Node.TEXT_NODE || nt==Node.CDATA_SECTION_NODE)
+                sb.append(n.getNodeValue());
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Retrieve the text contained within an element which is searched for.
+     * <br />
+     *<p>
+     *@param root The element which a search is to be performed from.
+     *@param tag The name of the element which is to be searched for.
+     *</p>
+     *<p>
+     *@return The contents of the first matching element found as a <code>String</code>
+     *</p>
+     *<p>
+     *@throw DOMException if an error occurs accessing the XML document
+     *</p>
+     */
+    public static final String getElementValue(Element root,String tag)
+    throws DOMException
+    {
+        NodeList nl=root.getElementsByTagName(tag);
+        if(nl.getLength()==0) return null;
+        return getElementText((Element)nl.item(0));
+    }
+
+
+    public static final Element makeElement(Document doc,String tag,String value)
+    throws DOMException
+    {
+        Element e=doc.createElement(tag);
+        if(value!=null)
+            e.appendChild(doc.createCDATASection(value));
+        return e;
+    }
+
+    public static final Element makeElementAppend(Document doc,Element parent,String tag,String value)
+    throws DOMException
+    {
+        Element e=doc.createElement(tag);
+        if(value!=null)
+            e.appendChild(doc.createCDATASection(value));
+        parent.appendChild(e);
+        return e;
+    }
+
+    public static final Element makeElementAppendTextNode(Document doc,Element parent,String tag,String value)
+    throws DOMException
+    {
+        Element e=doc.createElement(tag);
+        if(value!=null)
+            e.appendChild(doc.createTextNode(value));
+        parent.appendChild(e);
+        return e;
+    }
+
+
+
+    public static final Element makeElementAppend(Document doc,Element parent,String tag)
+    throws DOMException
+    {
+        Element e=doc.createElement(tag);
+        parent.appendChild(e);
+        return e;
+    }
+
+
+    /**
+     * Convert an XML document to plain text
+     *<p>
+     *@param xmlDocument The document to be converted.
+     *</p>
+     *<p>
+     *@return The <code>xmlDocument</code> as a text string.
+     *</p>
+     */
+    public static final String toString(Document xmlDocument)
+    throws DOMException,IOException,TransformerConfigurationException,TransformerException
+    {
+        TransformerFactory tf=TransformerFactory.newInstance();
+        Transformer t=tf.newTransformer();
+
+        StringWriter sw=new StringWriter();
+        t.transform(new DOMSource(xmlDocument),new StreamResult(sw));
+        String xmlText=sw.toString();
+        sw.close();
+        return xmlText;
+    }
+
+    public static final String toStringNoXMLHeader(Document xmlDocument)
+            throws DOMException,IOException,TransformerConfigurationException,TransformerException
+    {
+        String s=toString(xmlDocument);
+        int i=s.indexOf("?>");
+        return s.substring(i+2);
+    }
+
+
+    public static final void toFile(Document xmlDocument,File outputFile)
+    throws DOMException,IOException,TransformerConfigurationException,TransformerException,IOException
+    {
+        OutputFormat f=new OutputFormat(xmlDocument);
+        f.setLineWidth(132);
+        f.setIndenting(true);
+        f.setIndent(1);
+        FileOutputStream fos=new FileOutputStream(outputFile);
+        XMLSerializer s=new XMLSerializer(fos,f);
+        s.serialize(xmlDocument);
+        fos.flush();
+        fos.close();
+    }
+
+    public static final void toGZipFile(Document xmlDocument,File outputFile)
+    throws DOMException,IOException,TransformerConfigurationException,TransformerException,IOException
+    {
+        File tmp=File.createTempFile("tmp", "xml");
+        tmp.deleteOnExit();
+        OutputFormat f=new OutputFormat(xmlDocument);
+        f.setLineWidth(132);
+        f.setIndenting(true);
+        f.setIndent(1);
+        XMLSerializer s=new XMLSerializer(new FileOutputStream(tmp),f);
+        s.serialize(xmlDocument);
+
+        byte [] buffer=new byte[65536];
+        GZIPOutputStream os=new GZIPOutputStream(new FileOutputStream(outputFile));
+        FileInputStream is=new FileInputStream(tmp);
+        int r=is.read(buffer);
+        while(r!=-1){
+            os.write(buffer, 0, r);
+            r=is.read(buffer);
+        }
+        os.close();
+        is.close();
+
+        tmp.delete();
+    }
+
+
+    /**
+     * Parse an XML text document into a Document object
+     *<p>
+     *@param xmlText The XML document as a <code>String</code>
+     *</p>
+     *<p>
+     *@return The parsed document as a <code>Document</code> object
+     *</p>
+     *<p>
+     *@throws DOMException
+     *@throws ParserConfigurationException
+     *@throws SAXException
+     *@throws IOException
+     *</p>
+     */
+    public static final Document toDocument(String xmlText)
+    throws DOMException, ParserConfigurationException, SAXException, IOException
+    {
+        if(xmlText==null) return null;
+        DocumentBuilderFactory dbf=DocumentBuilderFactory.newInstance();
+        DocumentBuilder db=dbf.newDocumentBuilder();
+        Document doc=db.parse(new InputSource(new StringReader(xmlText)));
+        return doc;
+    }
+
+    public static final Document toDocument(File xmlFile)
+    throws DOMException, ParserConfigurationException, SAXException, IOException
+    {
+        if(xmlFile==null || !xmlFile.canRead()) return null;
+        DocumentBuilderFactory dbf=DocumentBuilderFactory.newInstance();
+        DocumentBuilder db=dbf.newDocumentBuilder();
+        Document doc=db.parse(xmlFile);
+        return doc;
+    }
+
+    /**
+     * Parse an XML text document into a Document object
+     *<p>
+     *@param xmlText The XML document as an array of bytes (7bit ASCII).
+     *</p>
+     *<p>
+     *@return The parsed document as a <code>Document</code> object
+     *</p>
+     *<p>
+     *@throws DOMException
+     *@throws ParserConfigurationException
+     *@throws SAXException
+     *@throws IOException
+     *</p>
+     */
+    public static final Document toDocument(byte [] xmlData)
+    throws Exception
+    {
+        if(xmlData==null) return null;
+        StringBuffer sb=new StringBuffer(xmlData.length);
+        for(int i=0;i<xmlData.length;i++)   {
+            sb.setCharAt(i,(char)xmlData[i]);
+        }
+        return toDocument(sb.toString());
+    }
+
+    public static final Element getElement(Element start,String tag)
+    throws DOMException
+    {
+        NodeList nl=start.getElementsByTagName(tag);
+        if(nl.getLength()==0) return null;
+        return (Element)nl.item(0);
+    }
+
+    public static final String getValue(Document doc,String path,String defaultValue)
+    throws DOMException,XPathExpressionException
+    {
+        XPath xpath=XPathFactory.newInstance().newXPath();
+        Element e=(Element)xpath.evaluate(path,doc,XPathConstants.NODE);
+        if(e==null)
+            return defaultValue;
+        return getElementText(e);
+    }
+
+    public static final Element getElement(Document doc,String path)
+    throws DOMException,XPathExpressionException
+    {
+        XPath xpath=XPathFactory.newInstance().newXPath();
+        Element e=(Element)xpath.evaluate(path,doc,XPathConstants.NODE);
+        return e;
+    }
+
+    public static final ArrayList<Element> getElements(Document doc,String parentPath,String tag)
+    throws DOMException,XPathExpressionException
+    {
+        Element parent=getElement(doc,parentPath);
+        if(parent==null)
+            return null;
+        NodeList nl=parent.getElementsByTagName(tag);
+        ArrayList<Element> nodes=new ArrayList<Element>();
+        for(int i=0;i<nl.getLength();i++)   {
+            nodes.add((Element)nl.item(i));
+        }
+        return nodes;
+    }
+
+    public static final ArrayList<Element> getElements(Document doc,Element parent,String tag)
+    throws DOMException,XPathExpressionException
+    {
+        NodeList nl=parent.getElementsByTagName(tag);
+        ArrayList<Element> nodes=new ArrayList<Element>();
+        for(int i=0;i<nl.getLength();i++)   {
+            nodes.add((Element)nl.item(i));
+        }
+        return nodes;
+    }
+
+
+}

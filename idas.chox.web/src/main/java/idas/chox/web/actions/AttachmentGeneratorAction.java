@@ -1,0 +1,122 @@
+package idas.chox.web.actions;
+
+import idas.chox.core.model.Attachment;
+import idas.chox.core.model.AttachmentType;
+import idas.chox.core.services.AttachmentService;
+import idas.chox.core.services.AttachmentTypeService;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+import org.apache.struts2.interceptor.SessionAware;
+
+
+
+public class AttachmentGeneratorAction extends BaseAction implements SessionAware {
+    
+    private String fileId;
+    private InputStream fileStream;
+    private Map session;
+    private AttachmentService service;
+    private AttachmentTypeService attachmentTypeService;
+    
+    private String contentDisposition;
+    private String contentType;
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getContentDisposition() {
+        return contentDisposition;
+    }
+
+    public void setContentDisposition(String contentDisposition) {
+        this.contentDisposition = contentDisposition;
+    }
+    
+    public void setAttachmentService(AttachmentService service) {
+        this.service = service;
+    }
+        
+    public String getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
+    }
+
+    public InputStream getFileStream() {
+        return fileStream;
+    }
+
+    public void setFileStream(InputStream fileStream) {
+        this.fileStream = fileStream;
+    }
+
+    public void setAttachmentTypeService(AttachmentTypeService attachmentTypeService) {
+        this.attachmentTypeService = attachmentTypeService;
+    }
+    
+    public void setSession(Map session) {
+        this.session = session;
+    }
+    
+    private Attachment getAttachmentFileName(int fileId){
+        Attachment att = service.getObject(fileId);
+        return att;
+    }
+    
+    @Override
+    public String execute() throws Exception {
+        
+        int fileId = 0;
+        
+        if(!this.fileId.equalsIgnoreCase("") && this.fileId!=null){
+            fileId = Integer.parseInt(this.fileId);
+        }else{
+            return "error";
+        }
+        
+        Attachment att = getAttachmentFileName(fileId);
+        
+        if(att==null){
+            return "error";
+        }
+        
+        fileStream = new ByteArrayInputStream(att.getFileBuffer());
+        String strContentDisposition = "filename="+att.getFileName();
+        this.setContentDisposition(strContentDisposition);
+        AttachmentType attachmentType = attachmentTypeService.getAttachmentType(att.getFileType());
+        
+        if(attachmentType!=null){
+            this.setContentType(attachmentType.getMimeType());
+        }else{
+            this.setContentType("text/html");            
+        }
+        
+        return SUCCESS;
+    }
+    
+    public FileInputStream doExportFile(String strFile) throws IOException {
+        
+        FileInputStream fis = null;
+        
+        try
+        {
+            File f = new File(strFile);
+            fis = new FileInputStream(f);
+        }
+        catch (IOException e){
+            
+        }
+        return fis;
+    }
+}

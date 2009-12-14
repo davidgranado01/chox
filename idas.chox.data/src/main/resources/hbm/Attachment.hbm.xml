@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="idas.chox.core.model.Attachment" table="attachment">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <property column="file_name" name="fileName" not-null="true"/>
+    <property column="remarks" name="remarks"/>
+    <property column="category" name="category" not-null="true"/>
+    <property column="file_type" name="fileType"/>
+    <property column="file_buffer" name="fileBuffer"/>
+    <property column="created_date" name="createdDate"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+    <many-to-one class="idas.chox.core.model.Claim" column="claim_id" name="claim" not-null="true"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy" not-null="true"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy" not-null="true"/>
+  </class>
+</hibernate-mapping>

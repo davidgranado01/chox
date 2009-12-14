@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="idas.chox.core.model.Claim" table="claim">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <property column="managing_repair" name="managingRepair" not-null="true"/>
+    <property column="policy_holder_contact_date" name="policyHolderContactDate"/>
+    <property column="cho_reference" name="choReference"/>
+    <property column="status" name="status" not-null="true"/>
+    <property column="created_date" name="createdDate"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+    <property column="claim_number" name="claimNumber"/>
+    <property column="gta_notice_date" name="gtaNoticeDate"/>
+    <property column="credit_agreement_date" name="creditAgreementDate"/>
+    <property column="indeminty_amount" name="indemnityAmount"/>
+    <property column="percentage_liability_accepted" name="percentageLiabilityAccepted"/>
+    <property column="is_quantum_dispute" name="isQuantumDispute"/>
+    <property column="is_fnol_reviewed" name="isFnolReviewed"/>
+    <property column="engineer_claim_review_notes" name="engineerClaimReviewNotes"/>
+    <property column="is_invoice_review_required" name="isInvoiceReviewRequired"/>
+    <property column="status_modified_date" name="statusModifiedDate"/>
+    <property column="previous_status" name="previousStatus"/>
+    <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>
+    <many-to-one class="idas.chox.core.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>
+    <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
+    <many-to-one class="idas.chox.core.model.Workgroup" column="workgroup_id" name="workgroup"/>
+    <many-to-one cascade="save-update,delete" class="idas.chox.core.model.Customer" column="customer_id" name="customer"/>
+    <many-to-one cascade="save-update,delete" class="idas.chox.core.model.EngineerReport" column="engineer_report_id" name="engineerReport"/>
+    <many-to-one cascade="save-update,delete" class="idas.chox.core.model.HireMonitoringDetail" column="hire_monitoring_detail_id" name="hireMonitoringDetail"/>
+    <many-to-one cascade="save-update,delete" class="idas.chox.core.model.Incident" column="incident_id" name="incident"/>
+    <many-to-one cascade="save-update,delete" class="idas.chox.core.model.Invoice" column="invoice_id" name="invoice"/>
+    <many-to-one cascade="save-update,delete" class="idas.chox.core.model.ThirdParty" column="third_party_id" name="thirdParty"/>
+    <many-to-one cascade="save-update,delete" class="idas.chox.core.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="claim_owner_id" name="claimOwner"/>
+    <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="hireMonitoringEcds" order-by="created_date asc">
+      <key column="claim_id"/>
+      <one-to-many class="idas.chox.core.model.HireMonitoringEcd"/>
+    </bag>
+    <bag cascade="all, delete-orphan" inverse="true" name="notifications">
+      <key column="claim_id"/>
+      <one-to-many class="idas.chox.core.model.Notification"/>
+    </bag>
+    <filter condition=":chorganisationId = chorganisation_id" name="Claim_CHOFilter"/>
+    <filter condition=":insurerId = insurer_id" name="Claim_InsurerFilter"/>
+    <filter condition=":claimOwnershipId = claim_owner_id" name="Claim_OwnershipFilter"/>
+    <filter condition="workgroup_id IN (:workgroupIds)" name="Claim_WorkgroupFilter"/>
+  </class>
+  <filter-def name="Claim_CHOFilter">
+    <filter-param name="chorganisationId" type="integer"/>
+  </filter-def>
+  <filter-def name="Claim_InsurerFilter">
+    <filter-param name="insurerId" type="integer"/>
+  </filter-def>
+  <filter-def name="Claim_WorkgroupFilter">
+    <filter-param name="workgroupIds" type="integer"/>
+  </filter-def>
+  <filter-def name="Claim_OwnershipFilter">
+    <filter-param name="claimOwnershipId" type="integer"/>
+  </filter-def>
+</hibernate-mapping>

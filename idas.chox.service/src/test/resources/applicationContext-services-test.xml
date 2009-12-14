@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="autodetect">
+    <bean id="claimService" class="idas.chox.data.services.ClaimServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+    <bean id="lookupService" class="idas.chox.data.services.LookupServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+    <bean id="accessibilityService" class="idas.chox.data.services.AccessibilityServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="incidentService" class="idas.chox.data.services.IncidentServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="commentService" class="idas.chox.data.services.CommentServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="customerService" class="idas.chox.data.services.CustomerServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="engineerReportService" class="idas.chox.data.services.EngineerReportServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="hireMonitoringDetailService" class="idas.chox.data.services.HireMonitoringDetailServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="historyService" class="idas.chox.data.services.HistoryServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="invoiceService" class="idas.chox.data.services.InvoiceServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="solicitorService" class="idas.chox.data.services.SolicitorServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="injuryService" class="idas.chox.data.services.InjuryServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="thirdPartyService" class="idas.chox.data.services.ThirdPartyServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="vehicleHireService" class="idas.chox.data.services.VehicleHireServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="vehicleClassService" class="idas.chox.data.services.VehicleClassServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="witnessService" class="idas.chox.data.services.WitnessServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="attachmentService" class="idas.chox.data.services.AttachmentServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="insurerService" class="idas.chox.data.services.InsurerServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="hireMonitoringEcdService" class="idas.chox.data.services.HireMonitoringEcdServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="insurerAliasService" class="idas.chox.data.services.InsurerAliasServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="reasonOfDelayService" class="idas.chox.data.services.ReasonOfDelayServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="attachmentTypeService" class="idas.chox.data.services.AttachmentTypeServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="chorganisationService" class="idas.chox.data.services.ChorganisationServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+    <bean id="breBandOrganisationService" class="idas.chox.data.services.BreBandOrganisationServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+    <bean id="breBandService" class="idas.chox.data.services.BreBandServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="auditTrailService" class="idas.chox.data.services.AuditTrailServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+    <bean id="userService" class="idas.chox.data.services.UserServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="dataService" class="idas.chox.data.services.SecureDataService" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="reasonOfRejectionService" class="idas.chox.data.services.ReasonOfRejectionServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="supportMessageService" class="idas.chox.data.services.SupportMessageServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="systemLogService" class="idas.chox.data.services.SystemLogServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="webUserUserRoleService" class="idas.chox.data.services.WebUserUserRoleServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+    <bean id="insurerChorganisationService" class="idas.chox.data.services.InsurerChorganisationServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="bordereauService" class="idas.chox.data.services.BordereauServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="workgroupService" class="idas.chox.data.services.WorkgroupServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="userWorkgroupService" class="idas.chox.data.services.UserWorkgroupServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="businessRulesEngService" class="idas.chox.service.bre.BusinessRulesEngServiceImpl" singleton="false">
+        <property name="claimService" ref="claimService" />
+        <property name="hireMonitoringEcdService" ref="hireMonitoringEcdService" />
+        <property name="invoiceService" ref="invoiceService" />
+        <property name="historyService" ref="historyService" />
+    </bean>
+    <bean id="uploadClaimXMLService" class="idas.chox.service.xml.UploadClaimXMLServiceImpl" singleton="false">
+        <property name="vehicleClassService" ref="vehicleClassService" />
+        <property name="engineerReportService" ref="engineerReportService" />
+        <property name="incidentService" ref="incidentService" />
+        <property name="injuryService" ref="injuryService" />
+        <property name="customerService" ref="customerService" />
+        <property name="claimService" ref="claimService" />
+        <property name="witnessService" ref="witnessService" />
+        <property name="thirdPartyService" ref="thirdPartyService" />
+        <property name="vehicleHireService" ref="vehicleHireService" />
+        <property name="solicitorService" ref="solicitorService" />
+        <property name="invoiceService" ref="invoiceService" />
+        <property name="insurerAliasService" ref="insurerAliasService" />
+        <property name="chorganisationService" ref="chorganisationService" />
+        <property name="breBandService" ref="breBandService" />
+        <property name="historyService" ref="historyService" />
+        <property name="auditTrailService" ref="auditTrailService" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+        <property name="bordereauService" ref="bordereauService"/>
+        <property name="businessRulesEngService" ref="businessRulesEngService"/>
+    </bean>
+</beans>

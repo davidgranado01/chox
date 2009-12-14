@@ -1,0 +1,10 @@
+package idas.chox.core.xmlValidation;
+
+public enum ClaimParseStatus {
+    newClaim,
+    existClaim,
+    ClaimNotEditable,
+    newInvoice,
+    existInvoice,
+    invalidSchema
+}

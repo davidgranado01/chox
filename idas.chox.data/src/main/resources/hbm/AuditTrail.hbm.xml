@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="idas.chox.core.model.AuditTrail" table="audit_trail">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <property column="update_date" name="updateDate" not-null="true"/>
+    <property column="original_status" name="originalStatus"/>
+    <property column="new_status" name="newStatus"/>
+    <property column="created_date" name="createdDate"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+    <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="claim_reason_of_rejection" name="claimReasonOfRejection"/>
+    <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="invoice_reason_of_rejection" name="invoiceReasonOfRejection"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="user_id" name="user" not-null="true"/>
+    <many-to-one class="idas.chox.core.model.Claim" column="claim_id" name="claim" not-null="true"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+  </class>
+</hibernate-mapping>

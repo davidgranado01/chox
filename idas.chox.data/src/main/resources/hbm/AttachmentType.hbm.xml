@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="idas.chox.core.model.AttachmentType" table="attachment_type">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <property column="code" name="code" not-null="true"/>
+    <property column="description" name="description" not-null="true"/>
+    <property column="status" name="status" not-null="true"/>
+    <property column="mime_type" name="mimeType" not-null="true"/>
+  </class>
+</hibernate-mapping>

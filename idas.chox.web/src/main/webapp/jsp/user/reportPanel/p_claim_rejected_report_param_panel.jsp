@@ -1,0 +1,108 @@
+<%@ taglib uri="/struts-tags" prefix="s" %>
+
+<script type="text/javascript">
+        
+    var reportName = 'ClaimRejectedReport-Excel';
+
+    Ext.onReady(function(){
+        
+        var dateFromPicker = new Ext.form.DateField({
+            name: 'DateStart',
+            width: 120,
+            allowBlank: true,
+            format: 'd/m/Y',
+            value: getTodayDate(),
+            showWeekNumber: true
+        });
+        
+        var dateToPicker = new Ext.form.DateField({
+            name: 'DateEnd',
+            width: 120,
+            allowBlank: true,
+            format: 'd/m/Y',
+            value: getTodayDate(),
+            showWeekNumber: true
+        });
+        
+        dateFromPicker.render('dateFromDiv');        
+        dateToPicker.render('dateToDiv');
+        
+    }); 
+
+
+    function openReport()
+    {
+        if(doFormValidation().form()){
+            var queryString = $('#formReportParam').formSerialize();
+            window.location = "exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
+        }
+    }
+    
+    function doFormValidation(){
+                
+        var validateFlag = $("#formReportParam").validate(
+        {
+            errorLabelContainer: "#acknowledge-message-box",
+            rules: {
+                DateStart:{
+                    required:true,
+                    date: true
+                },
+                DateEnd:{
+                    required:true,
+                    date: true
+                }
+            },
+            messages: {
+                DateStart: {
+                    required:"A value must be supplied for 'Created Date From'",
+                    date:"You must supply a date value 'Created Date From'"
+                }, 
+                DateEnd: {
+                    required:"A value must be supplied for 'Created Date To'",
+                    date:"You must supply a date value 'Created Date To'"
+                }         
+            }
+        });
+
+        return validateFlag;
+    }
+    
+</script>
+
+<fieldset class="x-fieldset">
+    
+    <legend>Claim Rejected Report</legend>
+
+    <form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
+
+    <div class="x-panel-bwrap chox-form-container">
+        
+        <div class="form-container">
+
+            <div class="instruction-message">
+                This report provides information on why claims have been rejected in CHOX at the claim notification stage. The dates that require selection below refer to the date the claim was uploaded onto CHOX.
+            </div>
+
+            <table class="report-form">
+                <tr>
+                    <td nowrap width="30%"><label>Claim Uploaded Date From</label></td><td><div id="dateFromDiv" /></td>
+                </tr>
+                <tr>
+                    <td nowrap><label>Claim Uploaded Date To</label></td><td><div id="dateToDiv"/></td>
+                </tr>
+            </table>
+
+            <div class="chox-report-button">
+                <button type="button" onclick="javascript:openReport();">Generate Report</button>
+            </div>
+
+        </div>
+
+        <div id="acknowledge-message-box"></div>
+    
+    </div>
+    
+    </form>
+
+</fieldset>

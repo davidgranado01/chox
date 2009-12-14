@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="autodetect">   
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="org.h2.Driver">
+        </property>
+        <property name="url" value="jdbc:h2:mem:test">
+        </property>
+        <property name="username" value="sa">
+        </property>
+        <property name="password" value="">
+        </property>
+    </bean>
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource" />
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect
+                </prop>
+                <prop key="hibernate.show_sql">true
+                </prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
+            </props>
+        </property>
+        <property name="mappingResources">
+            <list>
+                <value>hbm/History.hbm.xml</value>
+                <value>hbm/WebUser.hbm.xml</value>
+                <value>hbm/WebUserRole.hbm.xml</value>
+                <value>hbm/BreBandOrganisation.hbm.xml</value>
+                <value>hbm/Chorganisation.hbm.xml</value>
+                <value>hbm/Claim.hbm.xml</value>
+                <value>hbm/Customer.hbm.xml</value>
+                <value>hbm/EngineerReport.hbm.xml</value>
+                <value>hbm/HireMonitoringDetail.hbm.xml</value>
+                <value>hbm/Incident.hbm.xml</value>
+                <value>hbm/Injury.hbm.xml</value>
+                <value>hbm/Insurer.hbm.xml</value>
+                <value>hbm/Invoice.hbm.xml</value>
+                <value>hbm/Solicitor.hbm.xml</value>
+                <value>hbm/ThirdParty.hbm.xml</value>
+                <value>hbm/VehicleClass.hbm.xml</value>
+                <value>hbm/VehicleHire.hbm.xml</value>
+                <value>hbm/Witness.hbm.xml</value>
+                <value>hbm/BreBand.hbm.xml</value>
+                <value>hbm/InsurerAlias.hbm.xml</value>
+                <value>hbm/Accessibility.hbm.xml</value>
+                <value>hbm/AccessibilityItem.hbm.xml</value>
+                <value>hbm/Comment.hbm.xml</value>
+                <value>hbm/Attachment.hbm.xml</value>
+                <value>hbm/HireMonitoringEcd.hbm.xml</value>
+                <value>hbm/AuditTrail.hbm.xml</value>
+                <value>hbm/ReasonOfRejection.hbm.xml</value>
+                <value>hbm/WebUserUserRole.hbm.xml</value>
+                <value>hbm/InsurerChorganisation.hbm.xml</value>
+                <value>hbm/ReasonOfDelay.hbm.xml</value>
+                <value>hbm/AttachmentType.hbm.xml</value>
+                <value>hbm/Bordereau.hbm.xml</value>
+                <value>hbm/Workgroup.hbm.xml</value>
+                <value>hbm/WebUserWorkgroup.hbm.xml</value>
+                <value>hbm/Notification.hbm.xml</value>
+                <value>hbm/VehicleClassCeiling.hbm.xml</value>
+                <value>hbm/AccessibilityEditable.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="securityInfoProvider" class="idas.chox.data.FakeSecurityInfoProvider" singleton="false"/>
+        <!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>   
+</beans>

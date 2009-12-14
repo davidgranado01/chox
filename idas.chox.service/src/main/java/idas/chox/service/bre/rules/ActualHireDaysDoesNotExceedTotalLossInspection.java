@@ -1,0 +1,58 @@
+package idas.chox.service.bre.rules;
+
+import idas.chox.core.bre.IBusinessRule;
+import idas.chox.core.bre.RuleEvaluation;
+import idas.chox.core.bre.RuleEvaluationResult;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.service.bre.util.CHOBandCalcHelper;
+
+public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusinessRule {
+
+    String narrative = "Number of hire days billed by the CHO exceeds the allowable days threshold for total loss hires.";
+
+    public RuleEvaluation applyToClaim(Claim claim) {
+
+        RuleEvaluation res = new RuleEvaluation();
+        res.setIsVisibleToCHO(false);
+        res.setRelatedRule(this);
+
+        if (claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection()) {
+
+            if (claim.getVehicleHire().getIsTotalLoss()) {
+
+                CHOBandCalcHelper bandCalc = CHOBandCalcHelper.getInstance(claim.getBreBand());
+                boolean success = claim.getVehicleHire().getDays() <= bandCalc.getTotalLossInspectionDays();
+                res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+                if (success) {
+                    narrative = "";
+                }
+
+            } else {
+                res.setResult(RuleEvaluationResult.RuleSkipped);
+                narrative = "Rule only applies when the clam is a total loss";
+            }
+
+        } else {
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
+
+        return res;
+    }
+
+    public String getNarrative() {
+        return narrative;
+
+    }
+
+    public String getRuleId() {
+        return "007";
+    }
+
+    public String getStatusAfterFailure() {
+        return ClaimStatus.INVOICE_ESCALATED;
+    }
+}

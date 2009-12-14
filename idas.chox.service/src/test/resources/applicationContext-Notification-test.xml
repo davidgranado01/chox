@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="byName">
+    <bean id="newECDAddedChecker" class="idas.chox.service.notifications.ClaimAnomalousChecker" singleton="true">
+        <property name="anomalousChecks">
+            <list>
+                <bean class="idas.chox.service.notifications.EcdAnomalousNotificationChecker"></bean>
+            </list>
+        </property>
+    </bean>
+    <bean id="hireMonitoringDetailUpdatedChecker" class="idas.chox.service.notifications.ClaimAnomalousChecker" singleton="true">
+        <property name="anomalousChecks">
+            <list>
+                <bean class="idas.chox.service.notifications.RepairBookedInOnFridayNotificationChecker"></bean>
+                <bean class="idas.chox.service.notifications.RepairBookedInOnSaturdayNotificationChecker"></bean>
+                <bean class="idas.chox.service.notifications.RepairBookedInOnSundayNotificationChecker"></bean>
+            </list>
+        </property>
+    </bean>
+</beans>

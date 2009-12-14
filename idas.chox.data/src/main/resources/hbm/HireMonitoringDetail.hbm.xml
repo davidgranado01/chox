@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="idas.chox.core.model.HireMonitoringDetail" table="hire_monitoring_detail">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <property column="created_date" name="createdDate"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+    <property column="name_of_repairer" name="nameOfRepairer"/>
+    <property column="repair_book_in_date" name="repairBookInDate"/>
+    <property column="original_repair_book_in_date" name="originalRepairBookInDate"/>
+    <property column="inspection_booked_date" name="inspectionBookedDate"/>
+    <property column="inspection_date" name="inspectionDate"/>
+    <property column="name_of_ime" name="nameOfIme"/>
+    <property column="repair_completion_date" name="repairCompletionDate"/>
+    <property column="total_loss_inspection_report" name="totalLossInspectionReport"/>
+    <property column="is_total_lost_check" name="isTotalLostCheck" not-null="true"/>
+    <property column="labour_rate" name="labourRate"/>
+    <property column="labour_hour" name="labourHour"/>
+    <property column="labour_cost" name="labourCost"/>
+    <property column="non_provision_reason" name="nonProvisionReason"/>
+    <property column="next_review_date" name="nextReviewDate"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+  </class>
+</hibernate-mapping>
