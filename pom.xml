@@ -11,6 +11,6 @@
         <module>idas.chox.core</module>
         <module>idas.chox.data</module>
         <module>idas.chox.service</module>
-    <module>idas.chox.web</module>
-  </modules>
+        <module>idas.chox.web</module>
+    </modules>
 </project>
