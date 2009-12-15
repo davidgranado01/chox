@@ -107,11 +107,59 @@ public class doUserWorkgroupAction extends BaseAction{
     public String checkWorkgroupAllowToDelete(){
 
         boolean isAllowToDelete = true;
-        String errMsg = "";
+        String errMsg = "Are you sure you want to remove this workgroup?";
 
         WebUser wu = userService.getObject(this.webUserId);
         Workgroup wg = workgroupService.getObject(this.workgroupId);
+
+        if(wu.getInsurer()!=null){
+
+            if(wu.getInsurer().isWorkgroupEnable()){
+                // WORKGROUP ENABLE VALIDATION
+
+                if(RoleHelper.isUserCheckByWorkgroup(wu)){
+
+                    if(claimService.isOpenClaimByWorkgroupExist(workgroupId)){
+    
+                        String sUserRoles = "";
+
+                        if(RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_CH)
+                            && !userService.isWorkgroupOwnByOtherUserByRole(wu, this.workgroupId, WebUserRole.ROLE_CH)){
+                            
+                            // System.out.println("WG > CH : " + RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_CH));
+                            sUserRoles = getUserRoleList(sUserRoles, "Insurer Claim Handler Role");
+                            isAllowToDelete = false;
+
+                        }
+
+                        if(RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_COM)
+                            && !userService.isWorkgroupOwnByOtherUserByRole(wu, this.workgroupId, WebUserRole.ROLE_COM)){
+                            
+                            // System.out.println("WG > COM : " + RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_COM));
+                            sUserRoles = getUserRoleList(sUserRoles, "Insurer Claim Ownership Manager Role");
+                            isAllowToDelete = false;
+                            
+                        }
+
+                        if(RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_FNOL)
+                            && !userService.isWorkgroupOwnByOtherUserByRole(wu, this.workgroupId, WebUserRole.ROLE_FNOL)){
+                            
+                            // System.out.println("WG > FNOL : " + RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_FNOL));
+                            sUserRoles = getUserRoleList(sUserRoles, "Insurer FNOL Handler Role");
+                            isAllowToDelete = false;
+                            
+                        }
+
+                        if(!isAllowToDelete){
+                            errMsg = "User "+wu.getDisplayName()+" is the last user that has "+sUserRoles+" and is assigned to Workgroup "+wg.getName()+". Are you sure you want to remove this workgroup?";
+                        }
+                        
+                    }
+                }
+            }
+        }
         
+        /*
         if(wu.getInsurer()!=null){
 
             boolean isOpenItemForWorkgroup = claimService.isOpenClaimByWorkgroupExist(workgroupId);
@@ -145,11 +193,23 @@ public class doUserWorkgroupAction extends BaseAction{
                 }
             }
         }
+        */
         
         workgroupValidationMsg = "{isAllowToDelete:"+isAllowToDelete+",warningMsg:'"+errMsg+"'}";
         return SUCCESS;
     }
 
+    private String getUserRoleList(String iString, String userRoleName){
+
+        if(iString.length()>0){
+            iString += ", "+userRoleName;
+        }else{
+            iString = userRoleName;
+        }
+
+        return iString;
+    }
+    
     public String removeObject(){
 
         if(userWorkgroupId>0){
@@ -162,7 +222,7 @@ public class doUserWorkgroupAction extends BaseAction{
 
             if(user.getInsurer()!=null){
                 
-                boolean isOpenItemForUser = claimService.isOpenClaimByWorkgroupByUserExist(model.getWorkgroup().getId(), this.webUserId);
+                boolean isOpenItemForUser = claimService.isOpenClaimByWorkgroupIdByUserExist(user.getInsurer().getId(), model.getWorkgroup().getId(), this.webUserId);
                 
                 if(user.getInsurer().isClaimOwnershipEnable()
                         && isOpenItemForUser

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface ClaimService {
-    
     public Claim getClaim(int id);
     public Long getCountByStatus(String status, boolean isCheckWorkGroup, boolean isCheckOwnership);
     public Long getNonDEPaymentLogCount();
@@ -26,8 +25,8 @@ public interface ClaimService {
     public void  saveObjectForXMLUploader(final ClaimResult claimResult);
     public Boolean isObjectExist(int WorkgroupId);
     public boolean isUserHasOpenClaim(int UserId);
+    public boolean isOpenClaimByWorkgroupsByStatusExist(int insurerId, Set WorkgroupIds, String status);
     public boolean isOpenClaimByWorkgroupExist(int WorkgroupId);
-    public boolean isOpenClaimByWorkgroupByUserExist(Set WorkgroupIds, int userId);
-    public boolean isOpenClaimByWorkgroupByUserExist(int WorkgroupId, int UserId);
-    
+    public boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set WorkgroupIds, int userId);
+    public boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int WorkgroupId, int UserId);
 }

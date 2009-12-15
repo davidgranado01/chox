@@ -89,7 +89,7 @@
                 
             }else{
 
-                if(confirm("Are you sure you want to remove this workgroup?")){
+                if(confirm(data.warningMsg)){
                     doDeleteUserWorkgroup(gridViewId);
                 }
             }

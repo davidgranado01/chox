@@ -16,7 +16,6 @@ public class PanelAction {
     public static final String ACTION_approveEscalatedInvoice = "approveEscalatedInvoice";
     public static final String ACTION_approveContestedInvoice = "approveContestedInvoice";
     public static final String ACTION_resubmitOrAcceptContestedInvoice = "resubmitOrAcceptContestedInvoice";
-    public static final String ACTION_logInvoicePayment = "logInvoicePayment";
     public static final String ACTION_reviewByEngineer = "reviewByEngineer";
     public static final String ACTION_registeredclaimbyfnol = "registeredclaimbyfnol";
     public static final String ACTION_claimPending = "claimPending";
@@ -26,7 +25,8 @@ public class PanelAction {
     public static final String ACTION_approveContestedInvoiceToEng = "approveContestedInvoiceToEng";
     public static final String ACTION_approveBREPassedByClaimHandler = "approveBREPassedByClaimHandler";
     public static final String ACTION_assignClaimOwnership = "assignClaimOwnership";
-    
+    public static final String ACTION_logInvoicePayment = "logInvoicePayment";
+
     public static List<String> getPanelActions() {
         List<String> action = new ArrayList<String>();
         action.add(ACTION_claimlineofbusiness);

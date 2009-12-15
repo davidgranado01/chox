@@ -89,7 +89,6 @@ public class claimGridViewData {
         this.isWorkgroupEditable = AccessibilityHelper.getIsClaimWorkgroupEditable(claim, user);
         this.isOwnershipEditable = AccessibilityHelper.getIsClaimOwnershipEditable(claim, user);
 
-
         if(claim.getClaimOwner()!=null){
             this.ownerName = claim.getClaimOwner().getDisplayName();
         }

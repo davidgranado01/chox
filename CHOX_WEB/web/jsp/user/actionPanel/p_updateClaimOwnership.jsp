@@ -95,7 +95,7 @@
 
 <form onsubmit="return true;" action="updateOwnershipAssignment.action" method="post" id="formOwnershipAction" name="formOwnershipAction">
     <fieldset class="x-fieldset">
-        <legend>Update Workgroup And Claim Ownership - Action Required</legend>
+        <legend>Update Workgroup/Claim Owner - Action Required</legend>
         
         <div>
             <s:hidden id="claimId" name="id" />
@@ -105,7 +105,7 @@
             <div>
                 
                 <div class="status-info">
-                    Re-assign the Workgroup and Claim Owner by selecting the relevant Claims Handler from the selections below.
+                    Update the Workgroup or Claim Owner by using the drop down menus provided below, selecting a Workgroup will determine which Claims Handlers are displayed in the Claim Owner drop down menu.
                 </div>
                 
                 <div class="status-control-set">

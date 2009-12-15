@@ -238,7 +238,8 @@ public class WebUser implements Serializable {
                 WebUserRole webUserrole = (WebUserRole) itr.next();
 
                 if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CH) 
-                        || webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_COM)) {
+                        || webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_COM)
+                        || webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_FNOL)) {
                     bFlag = true;
                     break;
                 }

@@ -2,6 +2,7 @@ package chox.web.actions;
 
 import chox.Util.RoleHelper;
 import chox.data.OrganisationType;
+import chox.model.ClaimStatus;
 import chox.model.Insurer;
 import chox.model.WebUser;
 import chox.model.WebUserRole;
@@ -140,67 +141,136 @@ public class doUserroleAction extends BaseAction{
         
         return SUCCESS;
     }
-    
+
     public String checkRoleAllowToDelete(){
 
         boolean isAllowToDelete = true;
         String errMsg = "Are you sure you want to remove this role?";
-
         WebUser user = userService.getObject(this.webUserId);
         
         if(user.getInsurer()!=null){
 
-            if(user.getInsurer().isWorkgroupEnable() && this.webUserRoleCode.equalsIgnoreCase(WebUserRole.ROLE_COM)){
-                if(!RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_CH)){
-                    // ONLY CAN DELETE WHEN NO WORKGROUPS
-                    if(user.getWorkgroupIds().size()>0){
-                        isAllowToDelete = false;
-                        errMsg = "It is not possible to remove the assignment of a Claim Ownership Manager Role against a user who has workgroup(s). Please remove the workgroup(s) from this user.";
-                    }
-                }else{
-
-                    boolean hasOpenClaims = claimService.isOpenClaimByWorkgroupByUserExist(user.getWorkgroupIds(), user.getId());
-                    boolean hasOtherComUsers = userService.isWorkgroupOwnByOtherUserByRole(user, WebUserRole.ROLE_COM);
-System.out.println(">>>>>>>>>>> 1 :"+hasOpenClaims);
-                    System.out.println(">>>>>>>>>>> 2 :"+hasOtherComUsers);
-                    if(hasOpenClaims && !hasOtherComUsers){
-System.out.println(">>>>>>>>>>> 3 :");
-                        errMsg = "User "+user.getDisplayName()+" is the last user that has Claim Ownership Manager and is assigned to Workgroup(s). Are you sure you want to remove this workgroup?";
-                    }
-                }
-            }
-
             if(user.getInsurer().isWorkgroupEnable()){
+                // WORKGROUP ENABLE VALIDATION
 
-                if(this.webUserRoleCode.equalsIgnoreCase(WebUserRole.ROLE_CH)){
-                    if(!RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_COM)){
-                        // ONLY CAN DELETE WHEN NO WORKGROUPS
-                        if(user.getWorkgroupIds().size()>0){
-                            isAllowToDelete = false;
-                            errMsg = "It is not possible to remove the assignment of a Claim Handler Role against a user who has workgroup(s).";
+                if(RoleHelper.isUserCheckByWorkgroup(user)){
+                    // WORKGROUP ENABLE FOR CERTAIN USERS (CH, FNOL, COM)
+
+                    String selectedRoleDescription = "";
+
+                    if(this.webUserRoleCode.equalsIgnoreCase(WebUserRole.ROLE_COM)){
+
+                        selectedRoleDescription = "Claim Ownership Manager";
+
+                        // DELETE COM
+                        boolean hasOpenClaims = claimService.isOpenClaimByWorkgroupsByUserExist(user.getInsurer().getId(), user.getWorkgroupIds(), -1);
+                        boolean hasOtherComUsers = userService.isWorkgroupOwnByOtherUserByRole(user, WebUserRole.ROLE_COM);
+
+                        // System.out.println(">>>> hasOpenClaims:"+hasOpenClaims);
+                        // System.out.println(">>>> hasOtherComUsers:"+hasOtherComUsers);
+
+                        if(hasOpenClaims && !hasOtherComUsers){
+
+                            // System.out.println(">>>> COM NOT ALLOW");
+                            
+                            errMsg = "User "+user.getDisplayName()+" is the last user that has "+selectedRoleDescription+" and is assigned to Workgroup(s). Are you sure you want to remove this role?";
                         }
 
-                    }else{
-                        // CHECK CH ALLOW TO DELETE
-                        if(user.getInsurer().isClaimOwnershipEnable() && claimService.isUserHasOpenClaim(this.webUserId)){
-                            isAllowToDelete = false;
-                            errMsg = "User "+user.getDisplayName()+" has open claim(s) assigned to them, it is not possible to remove the assignment of a Claim Handler Role against a user who has open claim(s)";
+                    }else if(this.webUserRoleCode.equalsIgnoreCase(WebUserRole.ROLE_FNOL)){
+
+                        selectedRoleDescription = "FNOL";
+
+                        // DELETE FNOL
+                        boolean hasOpenFnolClaims = claimService.isOpenClaimByWorkgroupsByStatusExist(user.getInsurer().getId(), user.getWorkgroupIds(), ClaimStatus.CLAIM_REFERRED_TO_FNOL);
+                        boolean hasOtherFnolUsers = userService.isWorkgroupOwnByOtherUserByRole(user, WebUserRole.ROLE_FNOL);
+
+                        // System.out.println(">>>> hasOpenFnolClaims:"+hasOpenFnolClaims);
+                        // System.out.println(">>>> hasOtherFnolUsers:"+hasOtherFnolUsers);
+
+                        if(hasOpenFnolClaims && !hasOtherFnolUsers){
+
+                            // System.out.println(">>>> FNOL NOT ALLOW");
+                            
+                            errMsg = "User "+user.getDisplayName()+" is the last user that has "+selectedRoleDescription+" and is assigned to Workgroup(s). Are you sure you want to remove this role?";
+                        }
+
+                    }else if(this.webUserRoleCode.equalsIgnoreCase(WebUserRole.ROLE_CH)){
+
+                        selectedRoleDescription = "Claim Handler";
+                        
+                        boolean hasOpenClaims = true;
+                        boolean hasOtherCHUsers = true;
+
+                        if(user.getInsurer().isClaimOwnershipEnable()){
+
+                            // CLAIM OWNERSHIP
+                            hasOpenClaims = claimService.isUserHasOpenClaim(user.getId());
+
+                            // System.out.println(">>>> CH hasOpenClaims:"+hasOpenClaims);
+                            
+                            if(hasOpenClaims){
+
+                                // System.out.println(">>>> CH OWNER NOT ALLOW");
+                                
+                                isAllowToDelete = false;
+                                errMsg = "User "+user.getDisplayName()+" has open claim(s) assigned to them, it is not possible to remove the assignment of a "+selectedRoleDescription+" Role against a user who has open claim(s)";
+                            }
+
+                        }else{
+
+                            // WOPRKGROUP ONLY
+                            hasOpenClaims = claimService.isOpenClaimByWorkgroupsByUserExist(user.getInsurer().getId(), user.getWorkgroupIds(), -1);
+                            hasOtherCHUsers = userService.isWorkgroupOwnByOtherUserByRole(user, WebUserRole.ROLE_CH);
+
+                            // System.out.println(">>>> CH WORKGROUP hasOpenClaims:"+hasOpenClaims);
+                            // System.out.println(">>>> CH WORKGROUP hasOtherCHUsers:"+hasOtherCHUsers);
+
+                            if(hasOpenClaims && !hasOtherCHUsers){
+
+                                // System.out.println(">>>> CH WORKGROUP NOT ALLOW");
+                                
+                                errMsg = "User "+user.getDisplayName()+" is the last user that has "+selectedRoleDescription+" and is assigned to Workgroup(s). Are you sure you want to remove this role?";
+                            }
                         }
                     }
+
+                    if(isAllowToDelete){
+
+                        // System.out.println("CHECK 1 : PASSED : " + errMsg);
+                        
+                        if(user.getWorkgroupIds().size()>0 && user.getRoles().size()<=2){
+                            isAllowToDelete = false;
+                            errMsg = "It is not possible to remove the assignment of "+selectedRoleDescription+" against a user who has workgroup(s). Please remove the workgroup(s) from this user.";
+                        }
+                        
+                    }
+
                 }
                 
             }else{
 
-                // CHECK CH ALLOW TO DELETE
-                if(user.getInsurer().isClaimOwnershipEnable() && claimService.isUserHasOpenClaim(this.webUserId)){
-                    isAllowToDelete = false;
-                    errMsg = "User "+user.getDisplayName()+" has open claim(s) assigned to them, it is not possible to remove the assignment of a Claim Handler Role against a user who has open claim(s)";
+                if(user.getInsurer().isClaimOwnershipEnable()){
+                    
+                    // CLAIM OWNERSHIP
+                    boolean hasOpenClaims = claimService.isUserHasOpenClaim(user.getId());
+
+                    // System.out.println(">>>> CH hasOpenClaims:"+hasOpenClaims);
+
+                    if(hasOpenClaims){
+
+                        // System.out.println(">>>> CH OWNER NOT ALLOW");
+                        
+                        isAllowToDelete = false;
+                        errMsg = "User "+user.getDisplayName()+" has open claim(s) assigned to them, it is not possible to remove the assignment of a Claim Handler Role against a user who has open claim(s)";
+                        
+                    }
                 }
             }
         }
-        System.out.println(">>>>>>>>>>> 3 :"+errMsg);
+
         workgroupValidationMsg = "{isAllowToDelete:"+isAllowToDelete+",warningMsg:'"+errMsg+"'}";
         return SUCCESS;
+        
     }
 
     public String removeRoleMapping(){

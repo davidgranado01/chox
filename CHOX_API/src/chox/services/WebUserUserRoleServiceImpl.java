@@ -233,10 +233,18 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);  
         criteria.add(Restrictions.eq("id", roleId));
-        
+
+        /*
         Criterion chCriterion = Restrictions.eq("name", WebUserRole.ROLE_CH);
         Criterion comCriterion = Restrictions.eq("name", WebUserRole.ROLE_COM);
+        Criterion fnolCriterion = Restrictions.eq("name", WebUserRole.ROLE_FNOL);
         criteria.add(Restrictions.or(chCriterion, comCriterion));
+        */
+        
+        criteria.add(Restrictions.disjunction()
+                .add(Restrictions.eq("name", WebUserRole.ROLE_CH))
+                .add(Restrictions.eq("name", WebUserRole.ROLE_COM))
+                .add(Restrictions.eq("name", WebUserRole.ROLE_FNOL)));
         
         webUserRole = (WebUserRole) getByCriteria(criteria);
         

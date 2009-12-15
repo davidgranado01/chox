@@ -24,9 +24,15 @@ public class AccessibilityHelper {
 
             }
 
+            // System.out.println(">>> isUserCheckByOwnership: "+RoleHelper.isUserCheckByOwnership(user));
+            // System.out.println(">>> isOwnershipCheck: "+accEditable.isOwnershipCheck());
+            // System.out.println(">>> isClaimOwnershipLocked: "+user.getInsurer().isClaimOwnershipLocked());
+            
             // ONLY INSURER USER
             // ONLY INSURER OWNERSHIP IS TRUE
-            if(RoleHelper.isUserCheckByOwnership(user) && accEditable.isOwnershipCheck()){
+            if(RoleHelper.isUserCheckByOwnership(user) && accEditable.isOwnershipCheck() && user.getInsurer().isClaimOwnershipLocked()){
+
+                // System.out.println(">>> IN");
 
                 if(!AccessibilityHelper.isClaimOwnByUser(user, claim)){
                     bOwnershipFlag = false;
@@ -63,7 +69,7 @@ public class AccessibilityHelper {
 
         // ONLY INSURER USER
         // ONLY INSURER OWNERSHIP IS TRUE
-        if(RoleHelper.isUserCheckByOwnership(user)){
+        if(RoleHelper.isUserCheckByOwnership(user) && user.getInsurer().isClaimOwnershipLocked()){
 
             if(!AccessibilityHelper.isClaimOwnByUser(user, claim)){
                 bOwnershipFlag = false;

@@ -26,6 +26,7 @@
     <property column="is_workgroup_enable" name="workgroupEnable"/>
     <property column="is_auto_routing_enable" name="autoRoutingEnable"/>
     <property column="is_claim_ownership_enable" name="claimOwnershipEnable"/>
+    <property column="is_claim_ownership_locked" name="claimOwnershipLocked"/>
     <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="vehicleClassCeilings">
       <key column="insurer_id"/>
       <one-to-many class="chox.model.VehicleClassCeiling"/>

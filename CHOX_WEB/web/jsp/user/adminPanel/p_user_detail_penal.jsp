@@ -12,11 +12,12 @@
     
     function setupUserDetailPanels()
     {  
-        
+
        userDetailPanelTabs = new Ext.TabPanel({
        renderTo: 'userDetailMainPanel',
        activeTab: userDetailTabIndex,
        height:655,
+       autoWidth:true,
        items:[
            {contentEl:'userDetailTab', title:'User Detail', listeners: {activate: handleActivate}},
            {contentEl:'userPasswordTab', title:'Change Password', disabled:isNew, listeners: {activate: handleActivate}},
@@ -24,6 +25,7 @@
            {contentEl:'userWorkgroupTab', title:'Workgroups', disabled:isWorkgroupDisabled, listeners: {activate: handleActivate}}
        ]
        });
+
     }
     
     function handleActivate(tab){
@@ -441,7 +443,7 @@
             </div>
         </form>
         <div id="CDmessageBox" class="submit-error"></div>
-</div>
+    </div>
 </div>
 
 <div id="userPasswordTab" class="x-hide-display">

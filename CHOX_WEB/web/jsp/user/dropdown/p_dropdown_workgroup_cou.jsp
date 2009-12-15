@@ -2,21 +2,21 @@
 
 
 <script type="text/javascript">
-    
-    function doSelectWorkgroup(){
+
+    function doSelectWorkgroupCou(){
         var insurerId = <s:property value="orgId"/>;
         var selectedWorkgroupId = -1;
-        
+
         if($("#workgroupId").val()!=null && $("#workgroupId").val()!=""){
             selectedWorkgroupId = $("#workgroupId").val();
         }
 
-        var sLocaltion = "#coClaimHandlerRoleUserDropDownDiv";
+        var sLocaltion = "#couClaimHandlerRoleUserDropDownDiv";
         var sAction = "user/ClaimHandlerRoleUserDropDownAction.action";
         var sparameters = "workgroupId="+selectedWorkgroupId+"&insurerId="+insurerId;
         doSectionLoad(sLocaltion, sAction, sparameters);
     }
-    
+
 </script>
 
 <s:select
@@ -26,7 +26,7 @@
     listKey="id"
     listValue="name"
     headerKey=""
-    headerValue="--- ALL ---"
+    headerValue="- Please Select -"
     emptyOption="false"
-    onchange="doSelectWorkgroup()">
+    onchange="doSelectWorkgroupCou()">
 </s:select>

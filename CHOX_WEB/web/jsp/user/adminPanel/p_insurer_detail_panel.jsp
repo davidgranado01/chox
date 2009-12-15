@@ -23,7 +23,8 @@
             );
             
             doFormValidation();
-                
+            doOwnershipChange();
+
         }); 
         
         function doFormValidation(){
@@ -186,6 +187,22 @@
             }
             
         }
+
+        function doOwnershipChange(){
+
+            var claimOwnershipEnable = false;
+            if($('form#formUpdateInsurerDetail input[name="claimOwnershipEnable"]:checked').val()){
+                claimOwnershipEnable = true;
+            }
+
+            if(!claimOwnershipEnable){
+                $('form#formUpdateInsurerDetail input[name="claimOwnershipLocked"]').attr('disabled', true);
+                $('form#formUpdateInsurerDetail input[name="claimOwnershipLocked"]').attr('checked', false);
+            }else{
+                $('form#formUpdateInsurerDetail input[name="claimOwnershipLocked"]').attr('disabled', false);
+            }
+
+        }
         
        
 </script>
@@ -318,7 +335,7 @@
                 </div>
                  <div class="chox-form-item">
                     <label class="chox-form-std-label">Enable Claim Ownership</label>
-                    <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" />
+                    <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" onchange="javascript:doOwnershipChange();" /> Locked? <s:checkbox name="claimOwnershipLocked" value="claimOwnershipLocked" />
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Active</label>

@@ -425,6 +425,9 @@
         <action name="doClaimOwnershipAction" class="chox.web.actions.BatchUpdateAction" method="doClaimOwnershipAction">
             <result name="success">/jsp/p_response.jsp</result>
         </action>
+        <action name="doClaimOwnershipUpdateAction" class="chox.web.actions.BatchUpdateAction" method="doClaimOwnershipUpdateAction">
+            <result name="success">/jsp/p_response.jsp</result>
+        </action>
         <action name="doInvoicePaymentReceivedAction" class="chox.web.actions.BatchUpdateAction" method="doInvoicePaymentReceivedAction">
             <result name="success">/jsp/p_response.jsp</result>
         </action>
@@ -1011,6 +1014,9 @@
         </action>
         <action name="GetWorkgroupDropDownActionByInsurer" class="chox.web.dropdown.WorkgroupDropDownAction">
             <result>/jsp/user/dropdown/p_dropdown_workgroup.jsp</result>
+        </action>
+        <action name="GetCouWorkgroupDropDownActionByInsurer" class="chox.web.dropdown.WorkgroupDropDownAction">
+            <result>/jsp/user/dropdown/p_dropdown_workgroup_cou.jsp</result>
         </action>
         <action name="GetWorkgroupOnlyDropDownActionByInsurer" class="chox.web.dropdown.WorkgroupDropDownAction">
             <result>/jsp/user/dropdown/p_dropdown_workgroup_only.jsp</result>

@@ -9,8 +9,8 @@
 </script>
 
 <s:select
-    id="claimOwnerId"
-    name="claimOwnerId"
+    id="searchClaimOwnerId"
+    name="searchClaimOwnerId"
     list="claimhandlers"
     listKey="id"
     listValue="name"

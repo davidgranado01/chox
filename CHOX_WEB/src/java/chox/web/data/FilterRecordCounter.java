@@ -32,8 +32,8 @@ public class FilterRecordCounter {
         return service.getCountByStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO, false, false);
     }
 
-    public long getNewClaimsToBeroutedCount() {
-       return service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, false, false);
+    public long getNewClaimsToBeRoutedCount() {
+       return service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, true, false);
     }
 
     public long getClaimsAwaitingClaimsHandlingPaymentCount() {
@@ -49,7 +49,7 @@ public class FilterRecordCounter {
     }
     
     public long getClaimReferredToFNOLCount() {
-        return service.getCountByStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL, false, false);
+        return service.getCountByStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL, true, false);
     }    
     
     public long getPenaltyChargesAppliedCount() {

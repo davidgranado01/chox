@@ -106,6 +106,12 @@ public class UserServiceImpl extends DataService implements UserService {
         return users;
     } 
 
+    /*
+     * GET SELECTED USER ROLE
+     * GET SELECTED USER WORKGROUPS
+     * IF OTHER USERS WITH SAME ROLE AND
+     * THOSE USERS HAVING SAME WORKGROUPS EXISTS
+     */
     public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, String selectedUserRole){
 
         boolean isExist = false;
@@ -142,62 +148,6 @@ public class UserServiceImpl extends DataService implements UserService {
 
                 users = findByCriteria(criteria);
                 if(users.size()>0){
-                    bFlag = true;
-                }
-
-        } catch (Throwable e) {
-           e.printStackTrace();
-        }
-
-        return bFlag;
-    }
-
-    public boolean isOtherWorkgroupEnableCOMUserWithWorkgroupExist(int insurerId, int selectedWorkgroupId, int userId){
-
-        boolean bFlag = false;
-
-        try {
-
-                Criteria criteria = getSession().createCriteria(WebUser.class)
-                        .createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN)
-                        .createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
-
-                criteria.add(Restrictions.eq("role.name", "ROLE_INS_COM"));
-                criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
-                criteria.add(Restrictions.eq("insurer.id", insurerId));
-                criteria.add(Restrictions.eq("status", true));
-                criteria.add(Restrictions.ne("id", userId));
-
-                criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-                if(criteria.list().size()>0){
-                    bFlag = true;
-                }
-
-        } catch (Throwable e) {
-           e.printStackTrace();
-        }
-
-        return bFlag;
-    }
-
-    public boolean isOtherWorkgroupEnableCHUserWithWorkgroupExist(int insurerId, int selectedWorkgroupId, int userId){
-
-        boolean bFlag = false;
-
-        try {
-
-                Criteria criteria = getSession().createCriteria(WebUser.class)
-                        .createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN)
-                        .createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
-
-                criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
-                criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
-                criteria.add(Restrictions.eq("insurer.id", insurerId));
-                criteria.add(Restrictions.eq("status", true));
-                criteria.add(Restrictions.ne("id", userId));
-
-                criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-                if(criteria.list().size()>0){
                     bFlag = true;
                 }
 
