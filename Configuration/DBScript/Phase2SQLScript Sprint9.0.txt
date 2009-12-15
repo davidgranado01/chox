@@ -300,3 +300,5 @@ CREATE OR REPLACE VIEW rpt_claim_invoice AS
    LEFT JOIN third_party third_party ON third_party.id = claim.third_party_id;
 
 ALTER TABLE rpt_claim_invoice OWNER TO postgres;
+
+
