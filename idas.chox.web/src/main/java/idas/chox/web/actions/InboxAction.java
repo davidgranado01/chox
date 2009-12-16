@@ -87,6 +87,13 @@ public class InboxAction extends BaseAction implements SessionAware {
         return accessRight > 0;
     }
 
+    // TODO: REFACTORING TO SEPERATE BATCH UPDATE FROM GENERAL ACTION
+    public boolean getIsDoUpdateClaimOwnershipAccessibile()
+    {
+        short accessRight = applicationAccessibility.checkActionAccessibility("claimOwnership", super.getAuthenticatedUser().getAuthorities(), ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        return accessRight > 0;
+    }
+    
     public void setSession(Map arg0) {
         this.session = arg0;
     }

@@ -29,7 +29,7 @@
         <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedUnassigned', true, false);" >New Claims to be Assigned (<s:property value="filterRecordCounter.ClaimUnacknowledgedUnassignedAccessible" />)</a></li>
     </s:if>
     <s:if test="filterAccessibility.isClaimReferredToFNOLAccessible">
-        <li><a href="javascript:showClaimByStatus('ClaimReferredToFNOL', false, false);" >Claims To Be Registered (<s:property value="filterRecordCounter.ClaimReferredToFNOLCount" />)</a></li>
+        <li><a href="javascript:showClaimByStatus('ClaimReferredToFNOL', true, false);" >Claims To Be Registered (<s:property value="filterRecordCounter.ClaimReferredToFNOLCount" />)</a></li>
     </s:if>
     <s:if test="filterAccessibility.isClaimsAwaitingAcknowledgementAccessible">
         <li><a href="javascript:showClaimByStatus('ClaimUnacknowledgedRouted', true, true);" >Claims Awaiting Acknowledgement (<s:property value="filterRecordCounter.claimsAwaitingAcknowledgementCount" />)</a></li>

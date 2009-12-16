@@ -17,6 +17,7 @@
        renderTo: 'userDetailMainPanel',
        activeTab: userDetailTabIndex,
        height:655,
+       autoWidth:true,
        items:[
            {contentEl:'userDetailTab', title:'User Detail', listeners: {activate: handleActivate}},
            {contentEl:'userPasswordTab', title:'Change Password', disabled:isNew, listeners: {activate: handleActivate}},

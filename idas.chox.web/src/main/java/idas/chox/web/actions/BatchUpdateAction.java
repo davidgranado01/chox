@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
 
 import idas.chox.core.model.Claim;
@@ -13,14 +9,10 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.CommentService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WorkgroupService;
-import idas.chox.web.actions.BaseAction;
 import java.util.ArrayList;
 import java.util.List;
+import idas.chox.core.model.Comment;
 
-/**
- *
- * @author emmanuel
- */
 public class BatchUpdateAction extends BaseAction {
 
     private ClaimService claimService;
@@ -47,7 +39,7 @@ public class BatchUpdateAction extends BaseAction {
 
         for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
-            updateCliamStatus(claim, oldStatus, newStatus, 0);
+            updateClaimStatus(claim, oldStatus, newStatus, 0);
         }
         return SUCCESS;
     }
@@ -59,19 +51,15 @@ public class BatchUpdateAction extends BaseAction {
         Workgroup workgroupDBA = new Workgroup();
         workgroupDBA = workgroupService.getObject(this.workgroupId);
 
-        System.out.println("doClaimRoutedAction 01: " + workgroupDBA.getName());
-
         for (Integer id : selectedClaimIdList) {
 
             Claim claim = claimService.getClaim(id);
             claim.setWorkgroup(workgroupDBA);
-            updateCliamStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
+            updateClaimStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
 
             if (claim.getInsurer().isClaimOwnershipEnable()) {
-                updateCliamStatus(claim, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, 1);
+                updateClaimStatus(claim, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, 1);
             }
-
-            System.out.println("doClaimRoutedAction 02: " + claim.getChoReference());
 
         }
 
@@ -103,33 +91,72 @@ public class BatchUpdateAction extends BaseAction {
             }
 
             claim.setClaimOwner(claimOwnerDBA);
-            updateCliamStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
-
-            // createNewNote(claimOwnerDBA.getDisplayName(), true, claim);
+            updateClaimStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
 
         }
 
         return SUCCESS;
     }
 
-    /*
-    private void createNewNote(String newClaimOwnerName, boolean isPublic, Claim claim) {
+    public String doClaimOwnershipUpdateAction() {
 
-    String noteMsg = "Claim owner changed from 'N/A' to '" + newClaimOwnerName+"'";
 
-    Comment comment = new Comment();
-    comment.setIsPublic(isPublic);
-    comment.setComment(noteMsg);
-    comment.setClaim(claim);
+            System.out.println(">>> workgroupId : "+this.workgroupId);
+            System.out.println(">>> claimOwnerId : "+this.claimOwnerId);
 
-    try {
-    commentService.createNewObject(comment);
-    } catch (Exception ex) {
-    this.actionResult = "ERROR : " + ex.getMessage();
+        // WORKGROUP
+        Workgroup workgroupDBA = new Workgroup();
+        if(this.workgroupId!=null && this.workgroupId>0){
+            workgroupDBA = workgroupService.getObject(this.workgroupId);
+        }
+
+        // CLAIM OWNERSHIP
+        WebUser claimOwnerDBA = userService.getObject(this.claimOwnerId);
+
+        // UPDATE CLAIMS(s)
+        for (Integer id : selectedClaimIdList)  {
+
+            Claim claim = claimService.getClaim(id);
+
+            System.out.println("01 claim : "+claim.getId());
+
+            String noteMsg = "Claim owner changed from '" + claim.getClaimOwner().getDisplayName() + "' to '" + claimOwnerDBA.getDisplayName()+"'";
+
+            if(this.workgroupId!=null && this.workgroupId>0){
+                claim.setWorkgroup(workgroupDBA);
+            }
+
+            claim.setClaimOwner(claimOwnerDBA);
+            claimService.updateClaim(claim);
+
+            System.out.println("02 claim : "+claim.getId());
+
+            // SAVE NEW NOTE
+            int noteVisibilityType = 0;
+            createNewNote(noteMsg, noteVisibilityType, "", claim);
+
+        }
+
+        System.out.println("**************");
+        return SUCCESS;
     }
 
+    private void createNewNote(String sComment, int noteVisibilityType, String strPrefix, Claim claim) {
+
+        if (sComment.length() > 0) {
+            Comment comment = new Comment();
+            comment.setVisibilityType(noteVisibilityType);
+            comment.setComment(strPrefix + sComment);
+            comment.setClaim(claim);
+
+            try {
+                commentService.createNewObject(comment);
+            } catch (Exception ex) {
+                this.actionResult = "ERROR : " + ex.getMessage();
+            }
+        }
     }
-     */
+
     public String clearBREApprovedInvoicesForPayment() {
 
         String oldStatus = ClaimStatus.INVOICE_APPROVED_BY_BRE;
@@ -137,7 +164,7 @@ public class BatchUpdateAction extends BaseAction {
 
         for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
-            updateCliamStatus(claim, oldStatus, newStatus, 0);
+            updateClaimStatus(claim, oldStatus, newStatus, 0);
         }
         return SUCCESS;
     }
@@ -149,12 +176,12 @@ public class BatchUpdateAction extends BaseAction {
 
         for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
-            updateCliamStatus(claim, oldStatus, newStatus, 0);
+            updateClaimStatus(claim, oldStatus, newStatus, 0);
         }
         return SUCCESS;
     }
 
-    private void updateCliamStatus(Claim claim, String oldStatus, String newStatus, Integer secInterval) {
+    private void updateClaimStatus(Claim claim, String oldStatus, String newStatus, Integer secInterval) {
         if (claim.getStatus().equalsIgnoreCase(oldStatus)) {
             try {
                 auditTrailService.logAuditLog(newStatus, claim, null, null, secInterval);

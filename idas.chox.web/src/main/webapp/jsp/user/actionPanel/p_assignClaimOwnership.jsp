@@ -89,20 +89,25 @@ if(statusMsg==null){
 
     function doAssignOwnershipToFnolSubmit(a){
         registeAction(a);
-        $("form#formOwnershipAssignmentAction #oasWorkgroupId").rules("remove");
         $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
-        $("#formOwnershipAssignmentAction").submit();        
+        $("form#formOwnershipAssignmentAction #claimOwnerId").val("");
+        $("#formOwnershipAssignmentAction").submit();
         return true;
     }
-    
+
     function doAssignOwnershipSubmit(a){
 
         registeAction(a);
+
+        $("form#formOwnershipAssignmentAction #claimOwnerId").rules("add", {
+            min:1
+        })
+
         if(doAssignOwnershipFormValidation().form()){
             return true;
         }
-        
-        return false;
+
+        return true;
     }
 
 </script>

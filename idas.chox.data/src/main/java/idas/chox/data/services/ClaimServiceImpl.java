@@ -537,6 +537,50 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    public boolean isOpenClaimByWorkgroupsByStatusExist(int insurerId, Set WorkgroupIds, String status) {
+
+        boolean isExist = false;
+
+        if (WorkgroupIds.size() > 0){
+            Iterator itr = WorkgroupIds.iterator();
+            while (itr.hasNext()) {
+
+                int workgroupId = (Integer)itr.next();
+                if(isOpenClaimByWorkgroupIdByStatusExist(insurerId, workgroupId, status)){
+                    isExist = true;
+                    break;
+                }
+            }
+        }
+
+        return isExist;
+
+    }
+
+    private boolean isOpenClaimByWorkgroupIdByStatusExist(int insurerId, Integer WorkgroupId, String status) {
+
+        boolean isExist = false;
+
+        try {
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+            criteria.add(Restrictions.eq("insurer.id", insurerId));
+            criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
+            criteria.add(Restrictions.eq("status", status));
+
+            if (findByCriteria(criteria).size() > 0) {
+                isExist = true;
+            }
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        return isExist;
+
+    }
+
+    //TODO: FILTER BY INSURER AS WELL
     public boolean isOpenClaimByWorkgroupExist(int WorkgroupId) {
 
         boolean isExist = false;
@@ -562,29 +606,28 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
-    public boolean isOpenClaimByWorkgroupByUserExist(Set WorkgroupIds, int userId) {
+    public boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set WorkgroupIds, int userId) {
 
         boolean isExist = false;
 
         if (WorkgroupIds.size() > 0){
             Iterator itr = WorkgroupIds.iterator();
             while (itr.hasNext()) {
-                
+
                 int workgroupId = (Integer)itr.next();
-                if(isOpenClaimByWorkgroupByUserExist(workgroupId, userId)){
-                    System.out.println("EXIST BY:"+workgroupId);
+                if(isOpenClaimByWorkgroupIdByUserExist(insurerId, workgroupId, userId)){
+
                     isExist = true;
                     break;
                 }
             }
         }
-        
+
         return isExist;
 
     }
-    
 
-    public boolean isOpenClaimByWorkgroupByUserExist(int WorkgroupId, int UserId) {
+    public boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int WorkgroupId, int UserId) {
 
         boolean isExist = false;
 
@@ -592,12 +635,16 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
             criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
-            criteria.add(Restrictions.eq("claimOwner.id", UserId));
+            criteria.add(Restrictions.eq("insurer.id", insurerId));
+
+            if(UserId>0){
+                criteria.add(Restrictions.eq("claimOwner.id", UserId));
+            }
 
             for(String sStatus : ClaimStatus.getClosedStatus()){
                 criteria.add(Restrictions.ne("status", sStatus));
             }
-            
+
             if (findByCriteria(criteria).size() > 0) {
                 isExist = true;
             }
@@ -609,7 +656,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return isExist;
 
     }
-    
+
     public boolean isUserHasOpenClaim(int userId){
 
         boolean isExist = false;
@@ -623,13 +670,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 criteria.add(Restrictions.ne("status", sStatus));
             }
 
-            /*
-            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
-            criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
-            criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_REJECTION_ACCEPTED));
-            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_REJECTED_ACCEPTED));
-            */
-            
             if (findByCriteria(criteria).size() > 0) {
                 isExist = true;
             }
@@ -641,17 +681,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return isExist;
 
     }
+
     
 }
-
-
-
-
-
-
-
-
-
-
-
-

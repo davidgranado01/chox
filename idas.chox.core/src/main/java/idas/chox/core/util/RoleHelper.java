@@ -30,7 +30,7 @@ public class RoleHelper {
         boolean bFlag = false;
 
         if(
-            (isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_CH) || isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_COM))
+            (isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_CH) || isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_COM) || isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_FNOL))
             && user.getInsurer().isWorkgroupEnable()
         ){
             bFlag = true;

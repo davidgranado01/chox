@@ -9,12 +9,12 @@
 </script>
 
 <s:select
-    id="claimOwnerId"
-    name="claimOwnerId"
+    id="searchClaimOwnerId"
+    name="searchClaimOwnerId"
     list="claimhandlers"
     listKey="id"
     listValue="name"
     headerKey="-1"
-    headerValue="- Please Select -"
+    headerValue="--- ALL ---"
     emptyOption="false">
 </s:select>

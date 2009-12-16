@@ -164,7 +164,7 @@ public class WebUser implements Serializable {
     @Override
     public String toString() {
         String orgName = orgName = String.format("(%1$s)", getOrganisationName());
-        return String.format("%1$s %2$s %3$s", this.getFirstName(), this.getLastName(), orgName);
+        return String.format("%1$s, %2$s %3$s", this.getLastName(), this.getFirstName(), orgName);
     }
 
     public Set<Integer> getWorkgroupIds() {
@@ -179,7 +179,7 @@ public class WebUser implements Serializable {
     }
 
     public String getDisplayName() {
-        return String.format("%1$s %2$s", this.getFirstName(), this.getLastName());
+        return String.format("%1$s %2$s", this.getLastName(), this.getFirstName());
     }
     
     public void setClaimHandler(boolean claimHandler) {
@@ -233,11 +233,12 @@ public class WebUser implements Serializable {
             Iterator itr = roles.iterator();
 
             while (itr.hasNext()) {
-                
+
                 WebUserRole webUserrole = (WebUserRole) itr.next();
 
-                if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CH) 
-                        || webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_COM)) {
+                if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CH)
+                        || webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_COM)
+                        || webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_FNOL)) {
                     bFlag = true;
                     break;
                 }
@@ -248,7 +249,6 @@ public class WebUser implements Serializable {
 
     }
     
-
     public String getOrganisationType() {
 
         String orgType = OrganisationType.CHO;
@@ -263,29 +263,5 @@ public class WebUser implements Serializable {
         
         return orgType;
     }
-
-    /*
-    public int getOrganisationType() {
-
-        Integer typeIndex = -1;
-
-        if (this.isCHOXAdmin()) {
-
-            typeIndex = 1;
-
-        } else {
-
-            if (this.getInsurer() != null) {
-                typeIndex = 2;
-            } else if (this.getChorganisation() != null) {
-                typeIndex = 3;
-            }
-        }
-
-        return typeIndex;
-    }
-    */
-
     
 }
-

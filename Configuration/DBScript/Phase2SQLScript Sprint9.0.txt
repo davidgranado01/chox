@@ -1,4 +1,279 @@
--- DROP US UNUSE SEQUQNCES
+-- DROP FUNCTION ---------------------------------------------------
+
+DROP FUNCTION sqlrunstatusreport(integer);
+
+-- CREATE FUNCTION -------------------------------------------------
+
+CREATE OR REPLACE FUNCTION sqlrunstatusreport(integer)
+  RETURNS boolean AS
+$BODY$
+
+DECLARE
+currDate timestamp; 
+isSuccess boolean;
+userId int;
+
+BEGIN
+currDate=now();
+isSuccess = false;
+userId=$1;
+
+	-- INSERT ALL RECORD PER INSURER / CH HIRE / STATUS
+	-- WITH TOTAL ACCEPT / REJECTED COUNT FOR {Accumulative Section}
+	BEGIN
+	
+		insert into claim_summary (process_date, insurer_id, chorganisation_id, status, a_total_claim_count, a_total_inv_count, created_by, created_date) 
+		select currDate as process_date, claim.insurer_id, claim.chorganisation_id, audit.new_status as status , 
+		count(distinct claim.id) as a_total_claim_count, count(distinct invoice.id) as a_total_inv_count, userId as created_by, currDate as created_date
+		from audit_trail audit
+		inner join claim claim on audit.claim_id=claim.id
+		left outer join invoice invoice on claim.invoice_id=invoice.id
+		group by claim.insurer_id, claim.chorganisation_id, audit.new_status;
+
+		isSuccess = true;
+		
+	END;
+
+	BEGIN
+	-- UPDATE TOTAL ACCEPT / REJECTED COUNT FOR {Week Section}
+
+		update claim_summary 
+		set 
+		w_total_claim_count = a.w_total_claim_count,
+		w_total_inv_count = a.w_total_inv_count 
+		from (
+			select claim.insurer_id as insurer_id, claim.chorganisation_id as chorganisation_id, audit.new_status as status,
+			count(distinct claim.id) as w_total_claim_count, count(distinct invoice.id) as w_total_inv_count
+			from audit_trail audit
+			inner join claim claim on audit.claim_id=claim.id
+			left outer join invoice invoice on claim.invoice_id=invoice.id
+			where date(audit.update_date) between SqlGetDayOfWeek() and date(now())
+			group by claim.insurer_id, claim.chorganisation_id, audit.new_status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+		
+		isSuccess = true;
+
+	END;
+
+	BEGIN
+	-- UPDATE TOTAL ACCEPT / REJECTED COUNT FOR {Month Section}
+
+		update claim_summary 
+		set 
+		m_total_claim_count = a.m_total_claim_count,
+		m_total_inv_count = a.m_total_inv_count 
+		from (
+			select claim.insurer_id as insurer_id, claim.chorganisation_id as chorganisation_id, audit.new_status as status,
+			count(distinct claim.id) as m_total_claim_count, count(distinct invoice.id) as m_total_inv_count
+			from audit_trail audit
+			inner join claim claim on audit.claim_id=claim.id
+			left outer join invoice invoice on claim.invoice_id=invoice.id
+			where date(audit.update_date) between SqlGetDayOfMonth() and date(now())
+			group by claim.insurer_id, claim.chorganisation_id, audit.new_status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+		
+		isSuccess = true;
+
+	END;
+		
+	-- ACCUMULATIVE
+	BEGIN
+
+		update claim_summary set 
+		a_count = a.a_count,
+		a_inv_count = a.a_inv_count,
+		a_total_to_pay = a.a_total_to_pay,
+		a_penalty_charge = a.a_penalty_charge
+		from (
+			select claim.insurer_id as insurer_id, claim.chorganisation_id as chorganisation_id, audit.new_status as status, 
+			count(*) as a_count,
+			count(invoice.id) as a_inv_count,
+			case when sum(invoice.total_to_pay) is null then 0 else sum(invoice.total_to_pay) end as a_total_to_pay, 
+			case when sum(invoice.panalty_charge) is null then 0 else sum(invoice.panalty_charge) end as a_penalty_charge
+			from audit_trail audit
+			inner join (select a.claim_id, max(a.update_date) as max_update_date from audit_trail a group by a.claim_id) max_audit on audit.claim_id=max_audit.claim_id and audit.update_date=max_audit.max_update_date
+			inner join claim claim on audit.claim_id = claim.id
+			left outer join invoice invoice on claim.invoice_id = invoice.id
+			group by claim.insurer_id, claim.chorganisation_id, audit.new_status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+
+		isSuccess = true;
+	
+	END;
+
+	-- WEEKLY
+	BEGIN
+
+		update claim_summary set 
+		w_count = vw_claim_weekly_summary.w_count,
+		w_inv_count = vw_claim_weekly_summary.w_inv_count,
+		w_total_to_pay = vw_claim_weekly_summary.w_total_to_pay,
+		w_penalty_charge = vw_claim_weekly_summary.w_penalty_charge
+		from vw_claim_weekly_summary 
+		where claim_summary.insurer_id=vw_claim_weekly_summary.insurer_id 
+		and claim_summary.chorganisation_id=vw_claim_weekly_summary.chorganisation_id
+		and claim_summary.status = vw_claim_weekly_summary.status;
+
+	END;
+
+	-- MONTH
+	BEGIN
+
+		update claim_summary set 
+		m_count = vw_claim_monthly_summary.m_count,
+		m_inv_count = vw_claim_monthly_summary.m_inv_count,
+		m_total_to_pay = vw_claim_monthly_summary.m_total_to_pay,
+		m_penalty_charge = vw_claim_monthly_summary.m_penalty_charge
+		from vw_claim_monthly_summary 
+		where claim_summary.insurer_id=vw_claim_monthly_summary.insurer_id 
+		and claim_summary.chorganisation_id=vw_claim_monthly_summary.chorganisation_id
+		and claim_summary.status = vw_claim_monthly_summary.status;
+
+	END;
+
+	/** UPDATE CLAIM CREATED INFORMATION - START **/
+
+	-- WEEKLY
+	BEGIN
+		update claim_summary set w_claim_created_count = a.claim_created_count
+		from (
+			select insurer_id, chorganisation_id, status, count(*) as claim_created_count
+			from claim
+			where date(created_date) between SqlGetDayOfWeek() and date(now())
+			group by insurer_id, chorganisation_id, status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+	END;
+
+	-- MONTH
+	BEGIN
+
+		update claim_summary set m_claim_created_count = a.claim_created_count
+		from (
+			select insurer_id, chorganisation_id, status, count(*) as claim_created_count
+			from claim
+			where date(created_date) between SqlGetDayOfMonth() and date(now())
+			group by insurer_id, chorganisation_id, status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+
+	END;
+
+	-- ACCUMULATE
+	BEGIN
+		update claim_summary set a_claim_created_count = a.claim_created_count
+		from (
+			select insurer_id, chorganisation_id, status, count(*) as claim_created_count
+			from claim
+			group by insurer_id, chorganisation_id, status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+	END;
+
+	/** UPDATE INVOICE CREATED INFORMATION - START **/
+	-- WEEKLY
+	BEGIN
+		update claim_summary 
+		set 
+		w_inv_created_count = a.inv_created_count,
+		w_inv_created_amt = a.inv_created_amt 
+		from (
+			select insurer_id, chorganisation_id, status, count(*) as inv_created_count, 
+			case when sum(total_to_pay-panalty_charge) is null then 0.00 else sum(total_to_pay-panalty_charge) end as inv_created_amt
+			from rpt_claim_invoice 
+			where date(created_date) between SqlGetDayOfWeek() and date(now())
+			group by insurer_id, chorganisation_id, status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+	
+	END;
+
+	-- MONTH
+	BEGIN
+		update claim_summary 
+		set 
+		m_inv_created_count = a.inv_created_count,
+		m_inv_created_amt = a.inv_created_amt 
+		from (
+			select insurer_id, chorganisation_id, status, count(*) as inv_created_count, 
+			case when sum(total_to_pay-panalty_charge) is null then 0.00 else sum(total_to_pay-panalty_charge) end as inv_created_amt
+			from rpt_claim_invoice 
+			where date(created_date) between SqlGetDayOfMonth() and date(now())
+			group by insurer_id, chorganisation_id, status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+	
+	END;
+	
+	BEGIN
+		update claim_summary 
+		set 
+		a_inv_created_count = a.inv_created_count,
+		a_inv_created_amt = a.inv_created_amt 
+		from (
+			select insurer_id, chorganisation_id, status, count(*) as inv_created_count, 
+			case when sum(total_to_pay-panalty_charge) is null then 0.00 else sum(total_to_pay-panalty_charge) end as inv_created_amt
+			from rpt_claim_invoice
+			group by insurer_id, chorganisation_id, status
+		) a
+		where 
+		claim_summary.insurer_id=a.insurer_id
+		and claim_summary.chorganisation_id=a.chorganisation_id
+		and claim_summary.status = a.status;
+	
+	END;
+		
+	/** UPDATE INVOICE CREATED INFORMATION - END **/
+	
+	BEGIN
+	
+		insert into claim_summary_process (process_date, created_date, created_by) values (currDate, currDate, userId);
+
+	END;
+
+	BEGIN
+	
+		delete from claim_summary where process_date<currDate;
+
+	END;
+
+return isSuccess;
+
+END;
+$BODY$
+  LANGUAGE 'plpgsql' VOLATILE
+  COST 100;
+ALTER FUNCTION sqlrunstatusreport(integer) OWNER TO postgres;
+
+
+-- DROP US UNUSE SEQUQNCES -------------------------------------------------
 drop sequence accessibility_id_seq;
 drop sequence accessibility_item_id_seq;
 drop sequence notification_id_seq;
@@ -6,25 +281,12 @@ drop sequence audit_trail_id_seq;
 drop table application_release;
 drop sequence cho_band_id_seq;
 
--- ALTER AUTOMATIC ROUTING
+-- ALTER AUTOMATIC ROUTING -------------------------------------------------
 ALTER TABLE automatic_routing ALTER ID SET DEFAULT nextval('automatic_routing_id_seq'::regclass);
-
--- ADD SEQUQNCE
-CREATE SEQUENCE claim_summary_id_seq
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 1
-  CACHE 1;
-ALTER TABLE claim_summary_id_seq OWNER TO postgres;
-
-ALTER TABLE claim_summary ADD COLUMN id integer NOT NULL DEFAULT nextval('claim_summary_id_seq'::regclass);
-ALTER TABLE claim_summary ADD PRIMARY KEY (id);
 
 -- DROP GLOBAL CONFIGURATION
 drop table global_configuration;
 drop sequence globalconfiguration_id_seq;
-
 
 -- View: rpt_claim_invoice  ----------------------------------------------------------------
 
@@ -218,8 +480,6 @@ ALTER TABLE chorganisation ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_b
 ALTER TABLE chorganisation ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE claim ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE claim ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
-ALTER TABLE claim_summary ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
-ALTER TABLE claim_summary_process ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE comment ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE comment ADD CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE customer ADD CONSTRAINT created_by_fkey FOREIGN KEY (created_by) REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
@@ -301,4 +561,8 @@ CREATE OR REPLACE VIEW rpt_claim_invoice AS
 
 ALTER TABLE rpt_claim_invoice OWNER TO postgres;
 
+----------------------------------------------------------------
 
+ALTER TABLE insurer ALTER COLUMN is_claim_locked SET DEFAULT false;
+
+----------------------------------------------------------------

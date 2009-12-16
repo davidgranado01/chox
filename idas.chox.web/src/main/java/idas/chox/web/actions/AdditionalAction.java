@@ -27,7 +27,7 @@ public class AdditionalAction extends BaseAction{
         if (extraAction.equalsIgnoreCase("updateInsurerClaimNumber")) {
             returnStr = "Update Insurer Claim Number";
         }else if (extraAction.equalsIgnoreCase("updateClaimOwner")) {
-            returnStr = "Update Claim Ownership";
+            returnStr = "Update Workgroup/Claim Owner";
         }else if (extraAction.equalsIgnoreCase("escalateUnassignedClaim")) {
             returnStr = "Re-assign Workgroup";
         }

@@ -9,11 +9,8 @@ public class WebUserRole extends AuditableEntity implements Serializable {
     public static final String ROLE_CHO = "ROLE_CHO";
     public static final String ROLE_CH = "ROLE_INS_CH";
     public static final String ROLE_COM = "ROLE_INS_COM";
-
-    // CREDIT HIRE MANAGER
+    public static final String ROLE_FNOL = "ROLE_INS_FNOL";
     public static final String ROLE_CH_MNG = "ROLE_CHO_MNG";
-
-    // INSURER MANAGER
     public static final String ROLE_INS_MNG = "ROLE_INS_MNG";
 
     protected String name;

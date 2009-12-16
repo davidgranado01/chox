@@ -26,7 +26,7 @@ public class AccessibilityHelper {
 
             // ONLY INSURER USER
             // ONLY INSURER OWNERSHIP IS TRUE
-            if(RoleHelper.isUserCheckByOwnership(user) && accEditable.isOwnershipCheck()){
+            if(RoleHelper.isUserCheckByOwnership(user) && accEditable.isOwnershipCheck() && user.getInsurer().isClaimLocked()){
 
                 if(!AccessibilityHelper.isClaimOwnByUser(user, claim)){
                     bOwnershipFlag = false;
@@ -63,7 +63,7 @@ public class AccessibilityHelper {
 
         // ONLY INSURER USER
         // ONLY INSURER OWNERSHIP IS TRUE
-        if(RoleHelper.isUserCheckByOwnership(user)){
+        if(RoleHelper.isUserCheckByOwnership(user) && user.getInsurer().isClaimLocked()){
 
             if(!AccessibilityHelper.isClaimOwnByUser(user, claim)){
                 bOwnershipFlag = false;

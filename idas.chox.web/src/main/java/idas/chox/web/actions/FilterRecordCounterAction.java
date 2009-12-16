@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
 
 import idas.chox.core.services.ClaimService;
@@ -9,10 +5,6 @@ import idas.chox.web.FilterRecordCounter;
 import idas.chox.web.security.ApplicationAccessibility;
 import idas.chox.web.security.FilterAccessibility;
 
-/**
- *
- * @author emmanuel
- */
 public class FilterRecordCounterAction extends BaseAction {
 
     private ClaimService service;

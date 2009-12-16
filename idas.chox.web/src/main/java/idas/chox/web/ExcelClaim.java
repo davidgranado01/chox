@@ -15,6 +15,7 @@ public class ExcelClaim {
     public Claim getClaim() {
         return claim;
     }
+    
 
     public void setClaim(Claim claim) {
         this.claim = claim;

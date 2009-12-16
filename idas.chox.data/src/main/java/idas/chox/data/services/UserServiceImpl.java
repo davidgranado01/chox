@@ -100,15 +100,21 @@ public class UserServiceImpl extends DataService implements UserService {
         return users;
     }
 
-    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, String selectedUserRole) {
+    /*
+     * GET SELECTED USER ROLE
+     * GET SELECTED USER WORKGROUPS
+     * IF OTHER USERS WITH SAME ROLE AND
+     * THOSE USERS HAVING SAME WORKGROUPS EXISTS
+     */
+    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, String selectedUserRole){
 
         boolean isExist = false;
 
-        if (user.getWorkgroupIds().size() > 0) {
+        if (user.getWorkgroupIds().size() > 0){
             Iterator itr = user.getWorkgroupIds().iterator();
             while (itr.hasNext()) {
-                int workgroupId = (Integer) itr.next();
-                if (isWorkgroupOwnByOtherUserByRole(user, workgroupId, selectedUserRole)) {
+                int workgroupId = (Integer)itr.next();
+                if(isWorkgroupOwnByOtherUserByRole(user, workgroupId, selectedUserRole)){
                     isExist = true;
                 }
             }
@@ -117,80 +123,30 @@ public class UserServiceImpl extends DataService implements UserService {
         return isExist;
     }
 
-    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, int selectedWorkgroupId, String selectedUserRole) {
+    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, int selectedWorkgroupId, String selectedUserRole){
 
         boolean bFlag = false;
         List<WebUser> users = new ArrayList<WebUser>();
 
         try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
+                DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class)
+                .createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
 
-            criteria.add(Restrictions.eq("role.name", selectedUserRole));
-            criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
-            criteria.add(Restrictions.eq("insurer.id", user.getInsurer().getId()));
-            criteria.add(Restrictions.eq("status", true));
-            criteria.add(Restrictions.ne("id", user.getId()));
+                criteria.add(Restrictions.eq("role.name", selectedUserRole));
+                criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
+                criteria.add(Restrictions.eq("insurer.id", user.getInsurer().getId()));
+                criteria.add(Restrictions.eq("status", true));
+                criteria.add(Restrictions.ne("id", user.getId()));
 
-            users = findByCriteria(criteria);
-            if (users.size() > 0) {
-                bFlag = true;
-            }
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        return bFlag;
-    }
-
-    public boolean isOtherWorkgroupEnableCOMUserWithWorkgroupExist(int insurerId, int selectedWorkgroupId, int userId) {
-
-        boolean bFlag = false;
-
-        try {
-
-            Criteria criteria = getSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
-
-            criteria.add(Restrictions.eq("role.name", "ROLE_INS_COM"));
-            criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
-            criteria.add(Restrictions.eq("insurer.id", insurerId));
-            criteria.add(Restrictions.eq("status", true));
-            criteria.add(Restrictions.ne("id", userId));
-
-            criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-            if (criteria.list().size() > 0) {
-                bFlag = true;
-            }
+                users = findByCriteria(criteria);
+                if(users.size()>0){
+                    bFlag = true;
+                }
 
         } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        return bFlag;
-    }
-
-    public boolean isOtherWorkgroupEnableCHUserWithWorkgroupExist(int insurerId, int selectedWorkgroupId, int userId) {
-
-        boolean bFlag = false;
-
-        try {
-
-            Criteria criteria = getSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
-
-            criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
-            criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
-            criteria.add(Restrictions.eq("insurer.id", insurerId));
-            criteria.add(Restrictions.eq("status", true));
-            criteria.add(Restrictions.ne("id", userId));
-
-            criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-            if (criteria.list().size() > 0) {
-                bFlag = true;
-            }
-
-        } catch (Throwable e) {
-            e.printStackTrace();
+           e.printStackTrace();
         }
 
         return bFlag;

@@ -99,7 +99,7 @@
         var defaultdeleteMsg = "Are you sure you want to remove this role?";
         
         // ONLY PERFORM CHECK IF AND ONLY IF USER ARE REMOVING COM OR CH
-        if((webUserrolecode=='ROLE_INS_CH'|| webUserrolecode=='ROLE_INS_COM')){
+        if((webUserrolecode=='ROLE_INS_CH' || webUserrolecode=='ROLE_INS_COM' || webUserrolecode=='ROLE_INS_FNOL')){
             
             $.getJSON("isRoleAllowToDelete.action?webUserRoleCode="+webUserrolecode+"&webUserId="+webUserId+uniqeToken(), function(data){
                 if(!data.isAllowToDelete){
@@ -125,30 +125,6 @@
            success: onUserroleMappingSubmitResult
          });
 
-    }
-   
-    function isClaimHandlerGroup(){
-
-        var totalRecord = gridviewGrid.getStore().getCount();
-        
-        var iClaimHandlerCount = 0;
-        
-        
-        for (var iCount=0; iCount<totalRecord; iCount++){
-            
-            var userrolecode = gridviewGrid.getStore().getAt(iCount).get("webUserroleRole");
-
-            if(userrolecode=='ROLE_INS_CH'||userrolecode=='ROLE_INS_COM'){
-                iClaimHandlerCount++;
-            }
-
-        }
-        
-        if(iClaimHandlerCount==1){
-            return true;
-        }
-
-        return false;
     }
     
     function triggerStatusAddRecord(){

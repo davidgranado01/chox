@@ -124,8 +124,6 @@
         var sAction = "SearchWorkgroupDropDownAction.action";
         var sparameters = "orgId=" + insurerId;
         doSectionLoad(sLocaltion, sAction, sparameters);
-
-        // $("#searchScreenWorkgroupDropDownDiv").load("SearchWorkgroupDropDownAction.action?orgId=" + insurerId+uniqeToken());
         doShowClaimHandler(-1, insurerId);
     }
 
@@ -146,8 +144,6 @@
         var sAction = "SearchClaimHandlerRoleUserDropDownAction.action";
         var sparameters = "workgroupId="+selectedWorkgroupId+"&insurerId="+selectedInsurerId;
         doSectionLoad(sLocaltion, sAction, sparameters);
-
-        // $('#searchScreenClaimhandlerDownDiv').load("SearchClaimHandlerRoleUserDropDownAction.action?workgroupId="+selectedWorkgroupId+"&insurerId="+selectedInsurerId+uniqeToken());
    }
 
    function clearForm(){
@@ -197,7 +193,7 @@
         <tr>
             <td><label>Invoice Number</label></td>
             <td><s:textfield name="invoiceNumber"/></td>
-            <td><label>Show Open Claims Only <img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" /></label></td><td><s:checkbox name="isOpenClaim" /></td>
+            <td><label>Show Open Claims Only <img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" /></label></td><td><s:checkbox name="isOpenClaim" value="true" /></td>
             
         </tr>
         

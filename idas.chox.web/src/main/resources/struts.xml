@@ -425,6 +425,9 @@
         <action name="doClaimOwnershipAction" class="idas.chox.web.actions.BatchUpdateAction" method="doClaimOwnershipAction">
             <result name="success">/jsp/p_response.jsp</result>
         </action>
+        <action name="doClaimOwnershipUpdateAction" class="chox.web.actions.BatchUpdateAction" method="doClaimOwnershipUpdateAction">
+            <result name="success">/jsp/p_response.jsp</result>
+        </action>
         <action name="doInvoicePaymentReceivedAction" class="idas.chox.web.actions.BatchUpdateAction" method="doInvoicePaymentReceivedAction">
             <result name="success">/jsp/p_response.jsp</result>
         </action>
@@ -816,8 +819,8 @@
         </action>
 
         <action name="loadAdminPanel" class="idas.chox.web.actions.AdminAction" method="loadAdminPanel">
-            <result name="ChoxInsurerMgmtPanel">/jsp/user/adminPanel/p_chox_insurers_mgmt_panel.jsp</result>
-            <result name="ChoxCreditHireOrgMgmt">/jsp/user/adminPanel/p_chox_chorganisation_mgmt_panel.jsp</result>
+            <result name="ChoxPanelMgmt">/jsp/user/adminPanel/p_chox_insurers_mgmt_panel.jsp</result>
+            <result name="CreditHireOrgMgmt">/jsp/user/adminPanel/p_chox_chorganisation_mgmt_panel.jsp</result>
             <result name="UserMgmt">/jsp/user/adminPanel/p_user_mgmt_panel.jsp</result>
             <result name="InsurerOrgMappingMgmt">/jsp/user/adminPanel/p_insurer_chorganisation_mapping.jsp</result>
             <result name="InsurerAliasMappingMgmt">/jsp/user/adminPanel/p_insurer_alias_mapping.jsp</result>
@@ -1006,20 +1009,23 @@
             <result>/jsp/user/adminPanel/p_dropdown_vehicle_class.jsp</result>
         </action>
 
-        <action name="SearchWorkgroupDropDownAction" class="idas.chox.web.actions.WorkgroupDropDownAction" method="ClaimSearch">
+        <action name="SearchWorkgroupDropDownAction" class="idas.chox.web.dropdown.WorkgroupDropDownAction" method="ClaimSearch">
             <result>/jsp/user/dropdown/p_search_dropdown_workgroup.jsp</result>
         </action>
-        <action name="GetWorkgroupDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction">
+        <action name="GetWorkgroupDropDownActionByInsurer" class="idas.chox.web.dropdown.WorkgroupDropDownAction">
             <result>/jsp/user/dropdown/p_dropdown_workgroup.jsp</result>
         </action>
-        <action name="GetWorkgroupOnlyDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction">
+        <action name="GetCouWorkgroupDropDownActionByInsurer" class="idas.chox.web.dropdown.WorkgroupDropDownAction">
+            <result>/jsp/user/dropdown/p_dropdown_workgroup_cou.jsp</result>
+        </action>
+        <action name="GetWorkgroupOnlyDropDownActionByInsurer" class="idas.chox.web.dropdown.WorkgroupDropDownAction">
             <result>/jsp/user/dropdown/p_dropdown_workgroup_only.jsp</result>
         </action>
 
-        <action name="SearchClaimHandlerRoleUserDropDownAction" class="idas.chox.web.actions.ClaimHandlerRoleUserDropDownAction" method="ClaimSearch">
-            <result>/jsp/user/dropdown/p_dropdown_claimHandlerUser.jsp</result>
+        <action name="SearchClaimHandlerRoleUserDropDownAction" class="idas.chox.web.dropdown.ClaimHandlerRoleUserDropDownAction" method="ClaimSearch">
+            <result>/jsp/user/dropdown/p_search_dropdown_claimHandlerUser.jsp</result>
         </action>
-        <action name="ClaimHandlerRoleUserDropDownAction" class="idas.chox.web.actions.ClaimHandlerRoleUserDropDownAction">
+        <action name="ClaimHandlerRoleUserDropDownAction" class="idas.chox.web.dropdown.ClaimHandlerRoleUserDropDownAction">
             <result>/jsp/user/dropdown/p_dropdown_claimHandlerUser.jsp</result>
         </action>
         <action name="removeNotification" class="idas.chox.web.actions.ClaimAction" method="removeNotification">

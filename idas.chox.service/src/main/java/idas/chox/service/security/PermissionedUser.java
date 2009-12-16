@@ -58,17 +58,14 @@ public class PermissionedUser implements UserDetails {
     }
 
     public String getDisplayName() {
-        return user.getFirstName() + ", " + user.getLastName();
+        return user.getDisplayName();
     }
 
     public boolean getIsCHO() {
-
         return isInRoleOf("ROLE_CHO");
-
     }
 
     public boolean getIsINS() {
-
         return isInRoleOf("ROLE_INS");
 
     }

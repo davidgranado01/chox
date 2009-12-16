@@ -24,6 +24,7 @@
     <property column="is_workgroup_enable" name="workgroupEnable"/>
     <property column="is_auto_routing_enable" name="autoRoutingEnable"/>
     <property column="is_claim_ownership_enable" name="claimOwnershipEnable"/>
+    <property column="is_claim_locked" name="claimLocked"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="vehicleClassCeilings">
