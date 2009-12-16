@@ -81,19 +81,6 @@ public class BaseAction extends ActionSupport {
         return isChoxAdmin;
     }
     
-    public boolean isClaimOwnershipLocked(){
-        
-        boolean isClaimOwnershipLocked = false;
-
-        if(getAuthenticatedUser().getIsINS()){
-
-            isClaimOwnershipLocked = getAuthenticatedUser().getUser().getInsurer().isClaimOwnershipLocked();
-
-        }
-
-        return isClaimOwnershipLocked;
-    }
-
     public int getOrganisationId(){
         
         int orgId = -1;

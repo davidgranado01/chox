@@ -20,8 +20,8 @@ delete from accessibility where name like 'extraAction.updateClaimOwner.ClaimRef
 
 --------------------------------------
 
-ALTER TABLE insurer ADD COLUMN is_claim_ownership_locked boolean;
-ALTER TABLE insurer ALTER COLUMN is_claim_ownership_locked SET STORAGE PLAIN;
-update insurer set is_claim_ownership_locked = false;
+ALTER TABLE insurer ADD COLUMN is_claim_locked boolean;
+ALTER TABLE insurer ALTER COLUMN is_claim_locked SET STORAGE PLAIN;
+update insurer set is_claim_locked = false;
 
 --------------------------------------

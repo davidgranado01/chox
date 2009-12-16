@@ -164,7 +164,7 @@ public class WebUser implements Serializable {
     @Override
     public String toString() {
         String orgName = orgName = String.format("(%1$s)", getOrganisationName());
-        return String.format("%1$s %2$s %3$s", this.getFirstName(), this.getLastName(), orgName);
+        return String.format("%1$s, %2$s %3$s", this.getLastName(), this.getFirstName(), orgName);
     }
 
     public Set<Integer> getWorkgroupIds() {

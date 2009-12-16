@@ -26,7 +26,7 @@ public class Insurer extends AuditableEntity implements Serializable, IInsurerIn
     protected boolean workgroupEnable;
     protected boolean autoRoutingEnable;
     protected boolean claimOwnershipEnable;
-    protected boolean claimOwnershipLocked;
+    protected boolean claimLocked;
     protected List<VehicleClassCeiling> vehicleClassCeilings;
 
     public Insurer() {
@@ -185,12 +185,12 @@ public class Insurer extends AuditableEntity implements Serializable, IInsurerIn
         this.claimOwnershipEnable = claimOwnershipEnable;
     }
 
-    public boolean isClaimOwnershipLocked() {
-        return claimOwnershipLocked;
+    public boolean isClaimLocked() {
+        return claimLocked;
     }
 
-    public void setClaimOwnershipLocked(boolean claimOwnershipLocked) {
-        this.claimOwnershipLocked = claimOwnershipLocked;
+    public void setClaimLocked(boolean claimLocked) {
+        this.claimLocked = claimLocked;
     }
 
     public String getDisplayAddress() {
