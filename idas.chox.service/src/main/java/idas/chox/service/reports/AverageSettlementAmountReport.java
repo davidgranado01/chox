@@ -28,14 +28,17 @@ public class AverageSettlementAmountReport implements Report {
         reportParameterNames = new ArrayList<String>();
     }
 
+    @Override
     public String getReportTemplateFileName() {
         return "template_AverageSettlementAmountReport.xls";
     }
 
+    @Override
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }
 
+    @Override
     public HashMap getReportParameters() {
 
         HashMap reportParameters = new HashMap();
