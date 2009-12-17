@@ -14,6 +14,7 @@
     <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
     <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script>
+    <script src="<%= request.getContextPath()%>/scripts/Form.js" type="text/javascript"></script>
 </head>
 
 <script type="text/javascript">

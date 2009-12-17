@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
 
 import idas.chox.core.services.LookupService;
@@ -13,10 +9,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.struts2.interceptor.ParameterAware;
 
-/**
- *
- * @author Emmanuel
- */
+
 public class ReportAction extends BaseAction implements ParameterAware {
 
     private String actionResult;

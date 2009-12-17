@@ -26,7 +26,7 @@
                             <ul class='report-header-list'>
                                 <s:if test="reportAccessibility.insurerWeeklySummaryAccessibility">
                                 <li class='report-type-header'>General Reports</li>
-                                <li><a href="javascript:renderParameterPanel('InsurerAdminWeeklyOverviewReport-Excel');">Admin Weekly Overview Report</a></li>
+                                <li><a href="javascript:renderParameterPanel('AdminWeeklyOverviewReport-Excel');">Admin Weekly Overview Report</a></li>
                                 </s:if>
                                 
                                 <s:if test="reportAccessibility.overviewSummaryAccessibility || reportAccessibility.claimRejectionAccessibility">

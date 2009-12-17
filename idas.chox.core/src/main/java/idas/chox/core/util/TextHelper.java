@@ -56,4 +56,15 @@ public class TextHelper {
      
         return oString;
     }
+
+    public static int getId(String sInput){
+
+        int iOutput = -1;
+
+        if((sInput.trim()).length()>0 && sInput!=null && !sInput.equalsIgnoreCase("")){
+            iOutput = Integer.parseInt(sInput);
+        }
+
+        return iOutput;
+    }
 }

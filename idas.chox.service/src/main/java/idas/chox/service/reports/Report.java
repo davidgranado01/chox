@@ -15,8 +15,6 @@ public interface Report {
 
     void setDataService(DataService dataService);
 
-    String getReportCode();
-
     HashMap getReportParameters();
 
     String getReportTemplateFileName();

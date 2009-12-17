@@ -735,7 +735,7 @@
         </action>
 
         <action name="loadParameterPanel" class="idas.chox.web.actions.ReportAction" method="loadParameterPanel">
-            <result name="InsurerAdminWeeklyOverviewReport-Excel">/jsp/user/reportPanel/p_insurer_admin_weekly_overview_param_panel.jsp</result>
+            <result name="AdminWeeklyOverviewReport-Excel">/jsp/user/reportPanel/p_admin_weekly_overview_param_panel.jsp</result>
             <result name="InvoiceSummaryReport-Excel">/jsp/user/reportPanel/p_invoice_summary_report_param_panel.jsp</result>
             <result name="ClaimRejectedReport-Excel">/jsp/user/reportPanel/p_claim_rejected_report_param_panel.jsp</result>
             <result name="PaymentReport-Excel">/jsp/user/reportPanel/p_payment_report_param_panel.jsp</result>

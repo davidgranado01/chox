@@ -2,7 +2,7 @@ package idas.chox.service.reports;
 
 public class ReportFactory {
 
-    private static String INS_ADMIN_WEEKLY_OVERVIEW_RPT = "InsurerAdminWeeklyOverviewReport-Excel";
+    private static String ADMIN_WEEKLY_OVERVIEW_RPT = "AdminWeeklyOverviewReport-Excel";
     private static String INVOICE_SUMMARY_RPT = "InvoiceSummaryReport-Excel";
     private static String CLAIM_REJECTED_RPT = "ClaimRejectedReport-Excel";
     private static String INSURER_PAYMENT_RPT = "PaymentReport-Excel";
@@ -13,8 +13,8 @@ public class ReportFactory {
     
     public static Report getReportByName(String name) {
         Report report = null;
-        if (name.equalsIgnoreCase(INS_ADMIN_WEEKLY_OVERVIEW_RPT)) {
-            report = new InsurerAdminWeeklyOverviewReport();
+        if (name.equalsIgnoreCase(ADMIN_WEEKLY_OVERVIEW_RPT)) {
+            report = new AdminWeeklyOverviewReport();
         } else if (name.equalsIgnoreCase(INVOICE_SUMMARY_RPT)) {
             report = new InvoiceSummaryReport();
         } else if (name.equalsIgnoreCase(CLAIM_REJECTED_RPT)) {

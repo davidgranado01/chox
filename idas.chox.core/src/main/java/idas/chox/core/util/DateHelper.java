@@ -103,6 +103,7 @@ public class DateHelper {
         return a;
     }
 
+    /*
     public static Date getFirstDateOfTheMonth(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -110,7 +111,7 @@ public class DateHelper {
         cal.add(Calendar.DATE, -dayOfMonth);
         return cal.getTime();
     }
-
+    
     public static Date getFirstDateOfTheWeek(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -142,15 +143,23 @@ public class DateHelper {
         return a;
 
     }
-
+    */
+    
     //format: dd/MM/yyyy
     public static Date Parse(String source) {
-        try {
-            return LocalDateFormat.parse(source);
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-            return null;
+        
+        if((source.trim()).length()>0 && source!=null && !source.equalsIgnoreCase("")){
+            
+            try {
+                    return LocalDateFormat.parse(source);
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+                return null;
+            }
+            
         }
+
+        return null;
     }
 
     public static boolean DateCompare(Date date1, Date date2) {
@@ -181,4 +190,8 @@ public class DateHelper {
         date.setTime(0);
         return date;
     }
+
+
+
+    
 }

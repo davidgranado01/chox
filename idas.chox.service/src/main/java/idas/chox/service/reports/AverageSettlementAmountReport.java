@@ -189,8 +189,8 @@ public class AverageSettlementAmountReport implements Report {
         try {
 
             StringBuffer sb = new StringBuffer();
-            sb.append("select a.id as id, a.name as name from chorganisation ");
-            sb.append("a inner join insurer_chorganisation b on a.id = b.chorganisation_id and b.status=true ");
+            sb.append("select a.id as id, a.name as name from chorganisation a ");
+            sb.append("inner join insurer_chorganisation b on a.id = b.chorganisation_id and b.status=true ");
             sb.append("where a.status=true and b.insurer_id=:pInsurerId");
 
             Map extParameters = new HashMap();
