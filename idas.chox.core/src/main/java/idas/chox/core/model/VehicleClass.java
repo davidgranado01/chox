@@ -3,7 +3,7 @@ package idas.chox.core.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class VehicleClass extends AuditableEntity implements Serializable {
+public class VehicleClass extends Entity implements Serializable {
 
     /**
      * This attribute maps to the column price in the vehicle_class table.

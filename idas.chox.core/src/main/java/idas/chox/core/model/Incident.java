@@ -3,7 +3,7 @@ package idas.chox.core.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Incident extends AuditableEntity implements Serializable {
+public class Incident extends Entity implements Serializable {
 
     /** 
      * This attribute maps to the column date in the incident table.

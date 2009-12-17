@@ -7,10 +7,7 @@ package idas.chox.web.actions;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.Customer;
 import idas.chox.core.model.HireMonitoringDetail;
-import idas.chox.core.services.CustomerService;
-import idas.chox.core.services.HireMonitoringDetailService;
 import idas.chox.core.services.LookupService;
 import idas.chox.service.notifications.ClaimAnomalousChecker;
 import idas.chox.service.notifications.HireUpdatedNotification;
@@ -24,23 +21,11 @@ import net.sf.json.JSONObject;
  */
 public class HireMonitoringDetailAction extends BaseModelAction implements ModelDriven<HireMonitoringDetail>, Preparable {
 
-    private HireMonitoringDetailService service;
-    private CustomerService customerService;
     private HireMonitoringDetail model;
-    private Customer customer;
-    private int customerId;
     private List nonProvisionReasons;
     private LookupService lookupService;
     private ClaimAnomalousChecker hireMonitoringDetailUpdatedChecker;
     private Boolean isUpdateInsurer;
-
-    public void setHireMonitoringDetailService(HireMonitoringDetailService service) {
-        this.service = service;
-    }
-
-    public void setCustomerService(CustomerService customerService) {
-        this.customerService = customerService;
-    }
 
     public void setLookupService(LookupService service) {
         this.lookupService = service;
@@ -51,17 +36,11 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
     }
 
     public void prepare() throws Exception {
-        if (objectId <= 0) {
+
+        Claim claim = getClaim();
+        model = claim.getHireMonitoringDetail();
+        if (model == null) {
             model = new HireMonitoringDetail();
-        } else {
-            model = service.getObject(objectId);
-        }
-
-        if (customerId <= 0) {
-            customer = new Customer();
-
-        } else {
-            customer = customerService.getObject(customerId);
         }
     }
 
@@ -69,11 +48,7 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
 
         try {
 
-            boolean isNewHireMonitoringDetail = false;
-
-            if (model.getId() == null) {
-                isNewHireMonitoringDetail = true;
-            }
+            boolean isTransient = model.isTransient();
 
             Claim c = claimService.getClaim(getClaimId());
             c.setHireMonitoringDetail(model);
@@ -85,7 +60,7 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
 
             claimService.updateClaim(c);
 
-            if (isNewHireMonitoringDetail) {
+            if (isTransient) {
                 this.getActionResponse().AssignNewIdResult(model.getId());
             }
 
@@ -104,18 +79,6 @@ public class HireMonitoringDetailAction extends BaseModelAction implements Model
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_HIRE_MONITORING;
-    }
-
-    public int getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
-
-    public Customer getCustomer() {
-        return customer;
     }
 
     public List getNonProvisionReasons() {

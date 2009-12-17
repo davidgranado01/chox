@@ -8,6 +8,7 @@ import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.common.AttachmentCategory;
 import idas.chox.core.model.AccessibilityEditable;
+import idas.chox.core.model.Attachment;
 import idas.chox.core.model.AttachmentType;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
@@ -16,6 +17,8 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.HireMonitoringDetail;
+import idas.chox.core.model.HireMonitoringEcd;
+import idas.chox.core.model.History;
 import idas.chox.core.model.Incident;
 import idas.chox.core.model.Injury;
 import idas.chox.core.model.Insurer;
@@ -33,9 +36,6 @@ import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.BusinessRulesEngService;
 import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.CommentService;
-import idas.chox.core.services.HistoryService;
-import idas.chox.core.services.InvoiceService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ReasonOfRejectionService;
 import idas.chox.core.services.UserService;
@@ -48,9 +48,13 @@ import idas.chox.web.security.ApplicationAccessibility;
 import idas.chox.web.security.NotificationAccessibility;
 import idas.chox.web.security.PanelAccessibility;
 import idas.chox.web.security.TabAccessibility;
+import idas.chox.web.viewdata.CommentViewData;
+import idas.chox.web.viewdata.HireMonitoringEcdViewData;
+import idas.chox.web.viewdata.HistoryViewData;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import net.sf.json.JSONArray;
 import org.apache.struts2.interceptor.SessionAware;
 import org.springframework.security.GrantedAuthority;
 
@@ -64,6 +68,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private Integer tab = -1;
     private String actionResult;
     private String actionResult2;
+    private JSONArray jObject;
     // <editor-fold defaultstate="collapsed" desc="DECLARE ACTION NAME">
     public static final String REFER_FNOL = "referFNOL";
     public static final String REJECT = "reject";
@@ -93,15 +98,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // <editor-fold defaultstate="collapsed" desc="DECLARE SERVICES OBJECTS">
     private ClaimService service;
     private LookupService lookupService;
-    private InvoiceService invoiceService;
     private AuditTrailService auditTrailService;
-    private HistoryService historyService;
     private ReasonOfRejectionService reasonOfRejectionService;
     private WorkgroupService workgroupService;
     private UserService userService;
     private AttachmentTypeService attachmentTypeService;
     private BusinessRulesEngService businessRulesEngService;
-    private CommentService commentService;
     private BreBandService breBandService;
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="DECLARE CLAIM OBJECT PARAMETERS">
@@ -410,13 +412,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private void createNewNote(String sComment, int noteVisibilityType, String strPrefix) {
 
         if (sComment.length() > 0) {
+
             Comment comment = new Comment();
             comment.setVisibilityType(noteVisibilityType);
             comment.setComment(strPrefix + sComment);
-            comment.setClaim(claim);
-
+            claim.addComment(comment);
             try {
-                commentService.createNewObject(comment);
+                service.updateClaim(claim);
             } catch (Exception ex) {
                 this.actionResult = "ERROR : " + ex.getMessage();
             }
@@ -611,33 +613,31 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String reSubmitRejectedClaim() {
 
-        boolean bActionFlag = true;
         String result = SUCCESS;
-        String sActionMsg = "";
 
-        RulesEngineResponse reponse = businessRulesEngService.processResubmitInvoice(claim);
-        historyService.logInvoiceValidationErrorMsg(reponse, claim);
-        String repStatus = reponse.getStatus();
+        claim = service.getClaim(claim.getId());
+
+        RulesEngineResponse response = businessRulesEngService.processResubmitInvoice(claim);
+
+        List<History> histories = (History.New(response));
+        claim.getHistories().addAll(histories);
+
+        String repStatus = response.getStatus();
 
         if (!repStatus.equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
-
-            claim = service.getClaim(claim.getId());
 
             try {
 
                 auditTrailService.logAuditLog(repStatus, claim, null, null);
-                sActionMsg = "ClaimId:" + claim.getId() + "| Status:" + repStatus;
 
                 claim.setStatus(repStatus);
                 this.service.updateClaim(claim);
+                result = SUCCESS;
 
             } catch (Exception ex) {
 
                 this.actionResult = "ERROR : " + ex.getMessage();
-                bActionFlag = false;
                 result = ERROR;
-                sActionMsg = this.actionResult;
-
             }
 
             result = SUCCESS;
@@ -992,7 +992,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (this.actionName.equalsIgnoreCase(REJECT)) {
 
             RulesEngineResponse reponse = businessRulesEngService.processResubmitInvoice(claim);
-            historyService.logInvoiceValidationErrorMsg(reponse, claim);
+            claim.addHistories(History.New(reponse));
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_INS;
 
         } else {
@@ -1096,7 +1096,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
 
             invoice.setPenaltyChargeAppliedDate(DateHelper.getCurrentTimeStamp());
-            this.invoiceService.updateObject(invoice);
+            service.updateClaim(claim);
 
         } catch (Exception ex) {
 
@@ -1647,16 +1647,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.lookupService = service;
     }
 
-    public void setInvoiceService(InvoiceService invoiceService) {
-        this.invoiceService = invoiceService;
-    }
-
     public void setAuditTrailService(AuditTrailService auditTrailService) {
         this.auditTrailService = auditTrailService;
-    }
-
-    public void setHistoryService(HistoryService historyService) {
-        this.historyService = historyService;
     }
 
     public void setUserService(UserService userService) {
@@ -1665,10 +1657,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setWorkgroupService(WorkgroupService workgroupService) {
         this.workgroupService = workgroupService;
-    }
-
-    public void setCommentService(CommentService commentService) {
-        this.commentService = commentService;
     }
 
     public void setReasonOfRejectionService(ReasonOfRejectionService reasonOfRejectionService) {
@@ -1687,11 +1675,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // <editor-fold defaultstate="collapsed" desc="GET DROP DOWN LIST">
     /*
     public List getOtherWorkgroups() {
-
+    
     if (otherWorkgroups == null) {
     otherWorkgroups = lookupService.getWorkgroupsByInsurerId(this.getAuthenticatedUser().getUser(), true);
     }
-
+    
     return otherWorkgroups;
     }
      */
@@ -1811,5 +1799,64 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         return extraActionList;
+    }
+
+    public String getAttachments() {
+
+        List<Attachment> attachments = claim.getAttachments();
+        jObject = JSONArray.fromObject(attachments);
+        return SUCCESS;
+    }
+
+    public String getComments() {
+
+        List<Comment> comments = claim.getComments();
+        List<CommentViewData> viewDatas = new ArrayList<CommentViewData>();
+
+        for (Comment c : comments) {
+            viewDatas.add(new CommentViewData(c));
+        }
+        jObject = JSONArray.fromObject(viewDatas);
+        return SUCCESS;
+    }
+
+    public String getHireMonitoringEcds() {
+
+        List<HireMonitoringEcd> hireMonitoringEcds = claim.getHireMonitoringEcds();
+
+        List<HireMonitoringEcdViewData> viewDatas = new ArrayList<HireMonitoringEcdViewData>();
+        int seq = 1;
+        for (HireMonitoringEcd h : hireMonitoringEcds) {
+            viewDatas.add(new HireMonitoringEcdViewData(h, seq));
+            seq++;
+        }
+
+        jObject = JSONArray.fromObject(viewDatas);
+
+        return SUCCESS;
+    }
+
+    public String getHistories() {
+
+        List<History> histories = claim.getHistories();
+
+        List<HistoryViewData> viewDatas = new ArrayList<HistoryViewData>();
+
+        for (History h : histories) {
+            viewDatas.add(new HistoryViewData(h));
+        }
+
+        jObject = JSONArray.fromObject(viewDatas);
+
+        return SUCCESS;
+    }
+
+    public String getJsonArrayData() {
+
+        if (jObject != null) {
+            return "{totalCount:" + this.jObject.size() + ",results:" + jObject.toString() + "}";
+        }
+        return "";
+
     }
 }

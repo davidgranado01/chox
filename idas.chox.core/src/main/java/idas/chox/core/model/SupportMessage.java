@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class SupportMessage extends AuditableEntity implements Serializable {
+public class SupportMessage extends Entity implements Serializable {
 
     protected int claimId;
     protected String supplierReference;

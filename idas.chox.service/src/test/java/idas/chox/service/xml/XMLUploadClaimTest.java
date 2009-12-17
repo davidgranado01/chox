@@ -8,11 +8,8 @@ import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.services.BordereauService;
 import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.CustomerService;
-import idas.chox.core.services.EngineerReportService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.VehicleClassService;
-import idas.chox.core.services.VehicleHireService;
 import idas.chox.core.xmlValidation.BordereauResult;
 import idas.chox.core.xmlValidation.ClaimResult;
 import java.io.File;
@@ -37,13 +34,7 @@ public class XMLUploadClaimTest {
     @Autowired
     private ClaimService claimService;
     @Autowired
-    private CustomerService customerService;
-    @Autowired
     private VehicleClassService vehicleClassService;
-    @Autowired
-    private EngineerReportService engineerReportService;
-    @Autowired
-    private VehicleHireService vehicleHireService;
    
     /*
     @Test
@@ -117,9 +108,9 @@ public class XMLUploadClaimTest {
 
         // CHECK DATA IN DATABASE
         checkClaimObject(claim);
-        checkCustomer(claim.getCustomer().getId());
-        checkEngineeringReport(claim.getEngineerReport().getId());
-        checkVehicleHire(claim.getVehicleHire().getId());
+        checkCustomer(claim.getCustomer());
+        checkEngineeringReport(claim.getEngineerReport());
+        checkVehicleHire(claim.getVehicleHire());
 
         /*
         protected Insurer insurer;
@@ -154,10 +145,8 @@ public class XMLUploadClaimTest {
 
     }
 
-    private void checkEngineeringReport(int objId) {
-
-        EngineerReport engineerReport = engineerReportService.getObject(objId);
-
+    private void checkEngineeringReport(EngineerReport engineerReport)
+    {
         // FROM <engineer-report>
         Assert.assertEquals(new BigDecimal("2991"), engineerReport.getLabourAmount());
         Assert.assertEquals(new BigDecimal("234"), engineerReport.getTotalAmount());
@@ -175,8 +164,7 @@ public class XMLUploadClaimTest {
         Assert.assertEquals("dfsdfsf@ss.d", engineerReport.getEmail());
     }
 
-    private void checkVehicleHire(int objId) {
-        VehicleHire vehicleHire = vehicleHireService.getObject(objId);
+    private void checkVehicleHire(VehicleHire vehicleHire) {
         Assert.assertEquals("T456YHU", vehicleHire.getVehicleRegistration());
         Assert.assertEquals("Ford", vehicleHire.getVehicleManufacturer());
         Assert.assertEquals("T456YHU", vehicleHire.getVehicleModel());
@@ -188,9 +176,7 @@ public class XMLUploadClaimTest {
         Assert.assertEquals(VehicleClass.getId(), vehicleHire.getVehicleClass().getId());
     }
 
-    private void checkCustomer(int objId) {
-        Customer customer = customerService.getObject(objId);
-
+    private void checkCustomer(Customer customer) {
         // FROM <driver>
         Assert.assertEquals("s", customer.getTitle());
         Assert.assertEquals("James", customer.getFirstName());

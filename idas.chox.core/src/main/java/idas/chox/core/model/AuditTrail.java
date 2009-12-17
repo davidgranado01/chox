@@ -3,7 +3,7 @@ package idas.chox.core.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class AuditTrail extends AuditableEntity implements Serializable {
+public class AuditTrail extends Entity implements Serializable {
 
     protected Date updateDate;
     protected String originalStatus;

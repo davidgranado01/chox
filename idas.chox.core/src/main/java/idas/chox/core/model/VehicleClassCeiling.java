@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  *
  * @author emmanuel
  */
-public class VehicleClassCeiling extends AuditableEntity {
+public class VehicleClassCeiling extends Entity {
 
     private BigDecimal hireNetCeiling;
     private BigDecimal repairNetCeiling;

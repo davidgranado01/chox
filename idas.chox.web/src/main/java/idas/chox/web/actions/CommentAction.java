@@ -8,39 +8,21 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
-import idas.chox.core.services.CommentService;
 import idas.chox.web.security.ApplicationAccessibility;
 import net.sf.json.JSONObject;
 
-public class CommentAction extends BaseModelAction implements ModelDriven<Comment>, Preparable {
+public class CommentAction extends BaseModelAction implements ModelDriven<Comment>, Preparable  {
 
-    private CommentService service;
     private Comment model;
-    // private int claimId;
-
-    public void setCommentService(CommentService service) {
-        this.service = service;
-    }
-
-    public Comment getModel() {
-        return model;
-    }
-
-    public void prepare() throws Exception {
-        if (objectId <= 0) {
-            model = new Comment();
-            Claim c = new Claim();
-            c.setId(claimId);
-            model.setClaim(c);
-
-        } else {
-            model = service.getObject(objectId);
-        }
-    }
-
+    private String comment;
+  
     public String createNewComment() {
         try {
-            this.service.createNewObject(model);
+
+            Claim claim = getClaim();
+            model.setComment(getComment());
+            claim.addComment(model);
+            this.claimService.updateClaim(claim);
         } catch (Exception ex) {
             this.getActionResponse().AddError(ex.getMessage());
         }
@@ -56,13 +38,26 @@ public class CommentAction extends BaseModelAction implements ModelDriven<Commen
     String getTabName() {
         return ApplicationAccessibility.TAB_NOTES;
     }
-    /*
-    public int getClaimId() {
-    return claimId;
+
+    /**
+     * @return the comment
+     */
+    public String getComment() {
+        return comment;
     }
 
-    public void setClaimId(int claimId) {
-    this.claimId = claimId;
-    }
+    /**
+     * @param comment the comment to set
      */
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Comment getModel() {
+        return model;
+    }
+
+    public void prepare() throws Exception {
+        model = new Comment();
+    }
 }

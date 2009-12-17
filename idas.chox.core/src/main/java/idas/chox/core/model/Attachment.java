@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class Attachment extends AuditableEntity implements Serializable {
+public class Attachment extends Entity implements Serializable {
 
     protected String fileName;
     protected String remarks;

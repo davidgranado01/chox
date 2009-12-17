@@ -2,6 +2,7 @@ package idas.chox.data.services;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.History;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ClaimService;
@@ -45,26 +46,26 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         claim.setClaimNumber(claim.getClaimNumber().trim());
         save(claim);
     }
-    
+
     public Long getCountByStatus(String status, boolean isCheckWorkGroup, boolean isCheckOwnership) {
 
         String q = "select count(*) from Claim where status = '" + status + "'";
 
-        if(isCheckWorkGroup){
-            
+        if (isCheckWorkGroup) {
+
             // WORKGROUP FILTER
-            if(RoleHelper.isUserCheckByWorkgroup(getCurrentUser())){
-                q += " And workgroup.id in (select workgroup.id from UserWorkgroup Where user.id="+getCurrentUser().getId()+")";
+            if (RoleHelper.isUserCheckByWorkgroup(getCurrentUser())) {
+                q += " And workgroup.id in (select workgroup.id from WebUserWorkgroup Where user.id=" + getCurrentUser().getId() + ")";
             }
 
         }
-        
-        if(isCheckOwnership){
-            
-            if(RoleHelper.isEditableByOwnership(getCurrentUser())){
-                q += " And claimOwner.id ="+getCurrentUser().getId();
+
+        if (isCheckOwnership) {
+
+            if (RoleHelper.isEditableByOwnership(getCurrentUser())) {
+                q += " And claimOwner.id =" + getCurrentUser().getId();
             }
-            
+
         }
 
         return getCount(q);
@@ -80,7 +81,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     public Long getHireUpdateWarningCountNumber(boolean isCheckWorkGroup, boolean isCheckOwnership) {
-        
+
         String q = "select count(*) from Claim c where size(c.notifications) > 0 ";
         q += "And (c.status = 'ClaimReferredToEngineer' ";
         q += "Or c.status = 'ClaimReferredToFNOL' ";
@@ -91,22 +92,22 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         q += "Or c.status = 'ClaimUpdatedByEngineer' ";
         q += "Or c.status = 'ClaimUnacknowledgedRouted') ";
 
-        if(isCheckWorkGroup){
+        if (isCheckWorkGroup) {
 
             // WORKGROUP
-            if(RoleHelper.isUserCheckByWorkgroup(getCurrentUser())){
-                q += " And workgroup.id in (select workgroup.id from UserWorkgroup Where user.id="+getCurrentUser().getId()+")";
+            if (RoleHelper.isUserCheckByWorkgroup(getCurrentUser())) {
+                q += " And workgroup.id in (select workgroup.id from WebUserWorkgroup Where user.id=" + getCurrentUser().getId() + ")";
             }
         }
 
-        if(isCheckOwnership){
-            
-            if(RoleHelper.isEditableByOwnership(getCurrentUser())){
-                q += " And claimOwner.id ="+getCurrentUser().getId();
+        if (isCheckOwnership) {
+
+            if (RoleHelper.isEditableByOwnership(getCurrentUser())) {
+                q += " And claimOwner.id =" + getCurrentUser().getId();
             }
-            
+
         }
-        
+
         return getCount(q);
     }
 
@@ -188,26 +189,16 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
 
-        Criteria criteria = getSession().createCriteria(Claim.class)
-                .createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
+        Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN).createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
 
-        if(searchCriteria.getIsWorkgroupCheck()){
-            if(RoleHelper.isUserCheckByWorkgroup(getCurrentUser())){
-                criteria.add(Restrictions.sqlRestriction("workgroup_id in (select workgroup_id from user_workgroup where user_id ="+getCurrentUser().getId()+")"));
+        if (searchCriteria.getIsWorkgroupCheck()) {
+            if (RoleHelper.isUserCheckByWorkgroup(getCurrentUser())) {
+                criteria.add(Restrictions.sqlRestriction("workgroup_id in (select workgroup_id from web_user_workgroup where user_id =" + getCurrentUser().getId() + ")"));
             }
         }
-        
-        if(searchCriteria.getIsOwnerShipCheck()){
-            if(RoleHelper.isEditableByOwnership(getCurrentUser())){
+
+        if (searchCriteria.getIsOwnerShipCheck()) {
+            if (RoleHelper.isEditableByOwnership(getCurrentUser())) {
                 criteria.add(Restrictions.eq("claimOwner.id", getCurrentUser().getId()));
             }
         }
@@ -215,7 +206,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getClaimOwnerId() > 0) {
             criteria.add(Restrictions.eq("claimOwner.id", searchCriteria.getClaimOwnerId()));
         }
-        
+
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
             //String sSupplierRef = "%"+searchCriteria.getSupplierReference()+"%";
             String sSupplierRef = searchCriteria.getSupplierReference();
@@ -233,7 +224,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getSupplierId() > 0) {
             criteria.add(Restrictions.eq("cho.id", searchCriteria.getSupplierId()));
         }
-        
+
         if (searchCriteria.getWorkgroupId() > 0) {
             criteria.add(Restrictions.eq("wg.id", searchCriteria.getWorkgroupId()));
         }
@@ -249,7 +240,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             AnomaliesStatus.add(ClaimStatus.CLAIM_REJECTED);
             AnomaliesStatus.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
             AnomaliesStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-            
+
             criteria.add(Restrictions.sizeGt("notifications", 0));
             criteria.add(Restrictions.in("status", AnomaliesStatus));
 
@@ -264,7 +255,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
             criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.created_date) + 1 >(iv1_.panalty_alert_qty+1)*30"));
         }
-        
+
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {
             //String sSearchInvoiceNumber = "%"+searchCriteria.getInvoiceNumber()+"%";
             String sSearchInvoiceNumber = searchCriteria.getInvoiceNumber();
@@ -277,12 +268,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.like("claimNumber", sSearchClaimNumber).ignoreCase());
         }
 
-        if (searchCriteria.getCustomerVrn()!= null && !searchCriteria.getCustomerVrn().isEmpty()) {
+        if (searchCriteria.getCustomerVrn() != null && !searchCriteria.getCustomerVrn().isEmpty()) {
             // String sCustomerVrn = "%"+searchCriteria.getCustomerVrn().replaceAll(" ", "")+"%";
             String sCustomerVrn = searchCriteria.getCustomerVrn().replaceAll(" ", "");
             criteria.add(Restrictions.like("cs.vehicleRegistration", sCustomerVrn).ignoreCase());
         }
-        
+
         if (searchCriteria.getThirdPartyVrn() != null && !searchCriteria.getThirdPartyVrn().isEmpty()) {
             // String sThirdPartyVrn = "%"+searchCriteria.getThirdPartyVrn().replaceAll(" ", "")+"%";
             String sThirdPartyVrn = searchCriteria.getThirdPartyVrn().replaceAll(" ", "");
@@ -295,7 +286,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
         }
-        
+
         if (searchCriteria.getClaimUploadDateFrom() != null) {
             Date d = searchCriteria.getClaimUploadDateFrom();
             d.setHours(0);
@@ -314,15 +305,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getReviewRequiredDateFrom() != null || searchCriteria.getReviewRequiredDateTo() != null) {
-            
+
             if (searchCriteria.getReviewRequiredDateFrom() != null) {
-                
+
                 Date d = searchCriteria.getReviewRequiredDateFrom();
                 d.setHours(0);
                 d.setMinutes(0);
                 d.setSeconds(0);
                 criteria.add(Expression.ge("hmd.nextReviewDate", d));
-                
+
             }
 
             if (searchCriteria.getReviewRequiredDateTo() != null) {
@@ -356,11 +347,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 d.setSeconds(0);
                 criteria.add(Expression.le("iv.createdDate", d));
             }
-            
+
         }
 
         if (searchCriteria.getHireDateFrom() != null || searchCriteria.getHireDateTo() != null) {
-            
+
             if (searchCriteria.getHireDateFrom() != null) {
                 Date d = searchCriteria.getHireDateFrom();
                 d.setHours(0);
@@ -377,11 +368,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 d.setSeconds(0);
                 criteria.add(Expression.ge("vh.rentalStart", d)).add(Expression.le("vh.rentalEnd", d));
             }
-            
+
         }
 
         if (searchCriteria.getLastModifiedDateFrom() != null || searchCriteria.getLastModifiedDateTo() != null) {
-            
+
             if (searchCriteria.getLastModifiedDateFrom() != null) {
                 Date d = searchCriteria.getLastModifiedDateFrom();
                 d.setHours(0);
@@ -389,7 +380,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 d.setSeconds(0);
                 criteria.add(Expression.ge("lastModifiedDate", d));
             }
-            
+
             if (searchCriteria.getLastModifiedDateTo() != null) {
                 Date d = searchCriteria.getLastModifiedDateTo();
                 d.setDate(d.getDate() + 1);
@@ -398,7 +389,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 d.setSeconds(0);
                 criteria.add(Expression.le("lastModifiedDate", d));
             }
-            
+
         }
 
         criteria.setProjection(Projections.rowCount());
@@ -435,7 +426,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 addSort(criteria, "hmd.nextReviewDate", dir);
             } else if (sort.equalsIgnoreCase("invoiceAmount")) {
                 addSort(criteria, "iv.invoiceAmount", dir);
-             } else if (sort.equalsIgnoreCase("ownerName")) {
+            } else if (sort.equalsIgnoreCase("ownerName")) {
                 addSort(criteria, "co.firstName", dir);
                 addSort(criteria, "co.lastName", dir);
             } else if (sort.equalsIgnoreCase("createdBy")) {
@@ -511,6 +502,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         c.setInvoice(claimResult.getClaim().getInvoice());
         c.setEngineerReport(claimResult.getClaim().getEngineerReport());
         c.setVehicleHire(claimResult.getClaim().getVehicleHire());
+
+        if (claimResult.getHistory() != null && claimResult.getHistory().size() > 0) {
+           for(History h : claimResult.getHistory())
+           {
+               c.addHistory(h);
+           }
+        }
 
         save(c);
     }
@@ -590,7 +588,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
             criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
 
-            for(String sStatus : ClaimStatus.getClosedStatus()){
+            for (String sStatus : ClaimStatus.getClosedStatus()) {
                 criteria.add(Restrictions.ne("status", sStatus));
             }
 
@@ -610,7 +608,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         boolean isExist = false;
 
-        if (WorkgroupIds.size() > 0){
+        if (WorkgroupIds.size() > 0) {
             Iterator itr = WorkgroupIds.iterator();
             while (itr.hasNext()) {
 
@@ -656,8 +654,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return isExist;
 
     }
-
-    public boolean isUserHasOpenClaim(int userId){
+ 
+    public boolean isUserHasOpenClaim(int userId) {
 
         boolean isExist = false;
 
@@ -666,7 +664,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
             criteria.add(Restrictions.eq("claimOwner.id", userId));
 
-            for(String sStatus : ClaimStatus.getClosedStatus()){
+            for (String sStatus : ClaimStatus.getClosedStatus()) {
                 criteria.add(Restrictions.ne("status", sStatus));
             }
 

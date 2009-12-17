@@ -16,24 +16,15 @@ public class SecureDataService extends DataService {
             if (!this.getSecurityInfoProvider().getIsCHOXAdmin()) {
 
                 if (this.getSecurityInfoProvider().getIsCHO()) {
-
-                    // CREDIT HIRE USER
                     getCurrentSession().enableFilter("Claim_CHOFilter").setParameter("chorganisationId", this.getCurrentUser().getChorganisation().getId());
+                    getCurrentSession().enableFilter("History_IsPublicFilter").setParameter("isPublic", true);
+                    getCurrentSession().enableFilter("Comment_VisibilityTypesFilter").setParameter("visibilityType", 2);
 
                 } else if (this.getSecurityInfoProvider().getIsINS()) {
 
                     getCurrentSession().enableFilter("Claim_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
                     getCurrentSession().enableFilter("Workgroup_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
-
-                    /*
-                    if(RoleHelper.isGlobalFilterByWorkgroup(getCurrentUser())){
-                    getCurrentSession().enableFilter("Claim_WorkgroupFilter").setParameterList("workgroupIds", this.getCurrentUser().getWorkgroupIds());
-                    }
-
-                    if(RoleHelper.isGlobalFilterByOwnership(getCurrentUser())){
-                    getCurrentSession().enableFilter("Claim_OwnershipFilter").setParameter("claimOwnershipId", this.getCurrentUser().getId());
-                    }
-                     */
+                    getCurrentSession().enableFilter("Comment_VisibilityTypesFilter").setParameter("visibilityType", 1);
                 }
             }
         }

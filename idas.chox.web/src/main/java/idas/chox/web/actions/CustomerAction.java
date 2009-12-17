@@ -6,10 +6,10 @@ package idas.chox.web.actions;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.VehicleClass;
-import idas.chox.core.services.CustomerService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.VehicleClassService;
@@ -19,7 +19,6 @@ import net.sf.json.JSONObject;
 
 public class CustomerAction extends BaseModelAction implements ModelDriven<Customer>, Preparable {
 
-    private CustomerService service;
     private Customer model;
     private LookupService lookupService;
     private VehicleClassService vehicleClassService;
@@ -39,19 +38,14 @@ public class CustomerAction extends BaseModelAction implements ModelDriven<Custo
         this.insurerService = insurerService;
     }
 
-    public void setCustomerService(CustomerService service) {
-        this.service = service;
-    }
-
     public Customer getModel() {
         return model;
     }
 
     public void prepare() throws Exception {
-        if (objectId <= 0) {
+        model = getClaim().getCustomer();
+        if (model == null) {
             model = new Customer();
-        } else {
-            model = service.getObject(objectId);
         }
     }
 
@@ -61,16 +55,14 @@ public class CustomerAction extends BaseModelAction implements ModelDriven<Custo
             model.setVehicleClass(this.vehicleClassService.getObject(vehicleClassId));
         }
 
-        /* EDITED @ 20081208
-        if(insurerId >= 0)
-        {
-        model.setInsurer(this.insurerService.getObject(insurerId));
-        }
-         */
-
         try {
-            this.service.updateObject(model);
-            this.actionResult = "";
+            boolean isTransient = model.isTransient();
+            Claim claim = getClaim();
+            claim.setCustomer(model);
+            this.claimService.updateClaim(claim);
+            if (isTransient) {
+                this.getActionResponse().AssignNewIdResult(model.getId());
+            }
 
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();

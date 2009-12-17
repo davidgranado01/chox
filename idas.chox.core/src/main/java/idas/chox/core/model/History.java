@@ -1,108 +1,56 @@
 package idas.chox.core.model;
 
+import idas.chox.core.bre.IBusinessRule;
+import idas.chox.core.bre.RuleEvaluation;
+import idas.chox.core.bre.RuleEvaluationResult;
+import idas.chox.core.bre.RulesEngineResponse;
+import idas.chox.core.util.DateHelper;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class History extends AuditableEntity implements Serializable {
+public class History extends Entity implements Serializable {
 
-    /**
-     * This attribute maps to the column id in the history table.
-     */
     protected String ruleId;
     protected boolean isSystem;
     protected Claim claim;
-    /**
-     * This attribute maps to the column narrative in the history table.
-     */
     protected String narrative;
-    /**
-     * This attribute maps to the column process_date in the history table.
-     */
     protected Date processDate;
-    /**
-     * This attribute maps to the column is_public in the history table.
-     */
     protected boolean isPublic;
-    /**
-     * This attribute maps to the column type in the history table.
-     */
     protected String type;
 
-    /**
-     * Method 'History'
-     *
-     */
     public History() {
     }
 
-    /**
-     * Method 'getNarrative'
-     *
-     * @return java.lang.String
-     */
     public java.lang.String getNarrative() {
         return narrative;
     }
 
-    /**
-     * Method 'setNarrative'
-     *
-     * @param narrative
-     */
     public void setNarrative(java.lang.String narrative) {
         this.narrative = narrative;
     }
 
-    /**
-     * Method 'getProcessDate'
-     *
-     * @return java.util.Date
-     */
     public java.util.Date getProcessDate() {
         return processDate;
     }
 
-    /**
-     * Method 'setProcessDate'
-     *
-     * @param processDate
-     */
     public void setProcessDate(java.util.Date processDate) {
         this.processDate = processDate;
     }
 
-    /**
-     * Method 'getIsPublic'
-     *
-     * @return short
-     */
     public boolean getIsPublic() {
         return isPublic;
     }
 
-    /**
-     * Method 'setIsPublic'
-     *
-     * @param isPublic
-     */
     public void setIsPublic(boolean isPublic) {
         this.isPublic = isPublic;
     }
 
-    /**
-     * Method 'getType'
-     *
-     * @return java.lang.String
-     */
     public java.lang.String getType() {
         return type;
     }
 
-    /**
-     * Method 'setType'
-     *
-     * @param type
-     */
     public void setType(java.lang.String type) {
         this.type = type;
     }
@@ -129,5 +77,51 @@ public class History extends AuditableEntity implements Serializable {
 
     public void setClaim(Claim claim) {
         this.claim = claim;
+    }
+
+    public static History New(Attachment attachment) {
+        String strNarrative = String.format("New file is uploaded. [Claim id : %s][Category id : %s][File Name : %s][Attachment id : %s]", attachment.getClaim().getId(), attachment.getCategory(), attachment.getFileName(), attachment.getId());
+        History his = new History();
+        his.setClaim(attachment.getClaim());
+        his.setIsPublic(true);
+        his.setIsSystem(false);
+        his.setNarrative(strNarrative);
+        his.setProcessDate(DateHelper.getCurrentTimeStamp());
+        his.setRuleId("H01");
+        his.setType("INFO");
+        return his;
+    }
+
+    public static History New(RuleEvaluation rv) {
+
+        String sType = "INFO";
+        if (rv.getResult() == RuleEvaluationResult.RuleFailed) {
+            sType = "ERROR";
+        }
+
+        IBusinessRule rBusinessRule = rv.getRelatedRule();
+
+        History history = new History();
+
+        history.setProcessDate(DateHelper.getCurrentTimeStamp());
+        history.setIsPublic(rv.getIsVisibleToCHO());
+        history.setNarrative(rv.toString());
+        history.setType(sType);
+        history.setRuleId(rBusinessRule.getRuleId());
+        history.setIsSystem(true);
+
+        return history;
+
+    }
+
+    public static List<History> New(RulesEngineResponse rulesEngineResponse) {
+        List<History> histories = new ArrayList<History>();
+        List<RuleEvaluation> results = rulesEngineResponse.getResults();
+        if (results != null) {
+            for (RuleEvaluation result : results) {
+                histories.add(New(result));
+            }
+        }
+        return histories;
     }
 }

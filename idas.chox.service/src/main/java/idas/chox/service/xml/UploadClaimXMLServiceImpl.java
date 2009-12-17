@@ -11,22 +11,10 @@ import idas.chox.core.services.BusinessRulesEngService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.CustomerService;
-import idas.chox.core.services.EngineerReportService;
-import idas.chox.core.services.HireMonitoringDetailService;
-import idas.chox.core.services.HireMonitoringEcdService;
-import idas.chox.core.services.HistoryService;
-import idas.chox.core.services.IncidentService;
-import idas.chox.core.services.InjuryService;
 import idas.chox.core.services.InsurerAliasService;
 import idas.chox.core.services.InsurerChorganisationService;
-import idas.chox.core.services.InvoiceService;
-import idas.chox.core.services.SolicitorService;
-import idas.chox.core.services.ThirdPartyService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.VehicleClassService;
-import idas.chox.core.services.VehicleHireService;
-import idas.chox.core.services.WitnessService;
 import idas.chox.core.xmlValidation.BordereauParseStatus;
 import idas.chox.core.xmlValidation.BordereauResult;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
@@ -50,23 +38,11 @@ import org.springframework.transaction.support.TransactionTemplate;
 public class UploadClaimXMLServiceImpl extends SecureDataService implements UploadClaimXMLService {
 
     private VehicleClassService vehicleClassService;
-    private EngineerReportService engineerReportService;
-    private IncidentService incidentService;
-    private InjuryService injuryService;
-    private CustomerService customerService;
-    private InvoiceService invoiceService;
     private AuditTrailService auditTrailService;
     private ClaimService claimService;
-    private WitnessService witnessService;
-    private ThirdPartyService thirdPartyService;
-    private VehicleHireService vehicleHireService;
-    private SolicitorService solicitorService;
     private InsurerAliasService insurerAliasService;
     private ChorganisationService chorganisationService;
     private BreBandService choBandService;
-    private HistoryService historyService;
-    private HireMonitoringEcdService hireMonitoringEcdService;
-    private HireMonitoringDetailService hireMonitoringDetailService;
     private InsurerChorganisationService insurerChorganisationService;
     private BordereauService bordereauService;
     private BusinessRulesEngService businessRulesEngService;
@@ -248,7 +224,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
             if (bordereauResult.isValid()) {
 
-                bordereauResult = new BordereauDataValidation().validate(file, fileName, bordereauResult, claimService, chorganisationService, choBandService, vehicleClassService, insurerAliasService, insurerChorganisationService, hireMonitoringEcdService, invoiceService, historyService, businessRulesEngService);
+                bordereauResult = new BordereauDataValidation().validate(file, fileName, bordereauResult, claimService, chorganisationService, choBandService, vehicleClassService, insurerAliasService, insurerChorganisationService, businessRulesEngService);
 
                 int totalRecord = bordereauResult.getClaimResult().size();
                 int totalProcessed = 0;
@@ -306,19 +282,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
                         public void doInTransactionWithoutResult(TransactionStatus status) {
 
-                            if (readOnlyXmlParseResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
-                                customerService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-                                thirdPartyService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-                                incidentService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-                                witnessService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-                                injuryService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-                                solicitorService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-                                hireMonitoringDetailService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-                            }
-
-                            engineerReportService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-                            vehicleHireService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-                            invoiceService.saveObjectForXMLUploader(readOnlyXmlParseResult);
                             claimService.saveObjectForXMLUploader(readOnlyXmlParseResult);
 
                             if (readOnlyXmlParseResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
@@ -336,12 +299,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                             if (readOnlyXmlParseResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
                                 auditTrailService.logAuditLog(readOnlyXmlParseResult.getClaim().getStatus(), readOnlyXmlParseResult.getClaim().getPreviousStatus(), readOnlyXmlParseResult.getClaim());
 
-                                if (readOnlyXmlParseResult.getHistory().size() > 0) {
-                                    historyService.saveHistories(readOnlyXmlParseResult.getHistory());
-                                }
-
                             }
-
                         }
                     });
 
@@ -373,44 +331,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         this.vehicleClassService = vehicleClassService;
     }
 
-    public void setEngineerReportService(EngineerReportService engineerReportService) {
-        this.engineerReportService = engineerReportService;
-    }
-
-    public void setIncidentService(IncidentService incidentService) {
-        this.incidentService = incidentService;
-    }
-
-    public void setInjuryService(InjuryService injuryService) {
-        this.injuryService = injuryService;
-    }
-
-    public void setCustomerService(CustomerService customerService) {
-        this.customerService = customerService;
-    }
-
-    public void setInvoiceService(InvoiceService invoiceService) {
-        this.invoiceService = invoiceService;
-    }
-
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
-    }
-
-    public void setWitnessService(WitnessService witnessService) {
-        this.witnessService = witnessService;
-    }
-
-    public void setThirdPartyService(ThirdPartyService thirdPartyService) {
-        this.thirdPartyService = thirdPartyService;
-    }
-
-    public void setVehicleHireService(VehicleHireService vehicleHireService) {
-        this.vehicleHireService = vehicleHireService;
-    }
-
-    public void setSolicitorService(SolicitorService solicitorService) {
-        this.solicitorService = solicitorService;
     }
 
     public void setAuditTrailService(AuditTrailService auditTrailService) {
@@ -427,18 +349,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     public void setBreBandService(BreBandService choBandService) {
         this.choBandService = choBandService;
-    }
-
-    public void setHistoryService(HistoryService historyService) {
-        this.historyService = historyService;
-    }
-
-    public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) {
-        this.hireMonitoringEcdService = hireMonitoringEcdService;
-    }
-
-    public void setHireMonitoringDetailService(HireMonitoringDetailService hireMonitoringDetailService) {
-        this.hireMonitoringDetailService = hireMonitoringDetailService;
     }
 
     public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {

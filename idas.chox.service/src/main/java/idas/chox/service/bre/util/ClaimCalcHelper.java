@@ -45,7 +45,7 @@ public class ClaimCalcHelper {
 	public int getHireDuration()
 	{
             Date hireStart = claim.getVehicleHire().getRentalStart();
-            Date initialEcd = claim.getHireMonitoringEcd();
+            Date initialEcd = claim.getLatestHireMonitoringEcdDate();
             return CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
 	}
         
@@ -74,7 +74,7 @@ public class ClaimCalcHelper {
 		allowedDays += claim.getBreBand().getEngineerInspectionDelayDays();
 
 		//if (claim.getCustomerVehicleDamage().getInitialECD() == null) //no ecd
-                if (claim.getHireMonitoringEcd()==null) //no ecd
+                if (claim.getLatestHireMonitoringEcdDate()==null) //no ecd
 		{
                     if (claim.getCustomer().getIsUsable())
                     {
@@ -218,7 +218,7 @@ public class ClaimCalcHelper {
             
             int iDays = 0;
             
-            if (claim.getHireMonitoringEcd()==null)
+            if (claim.getLatestHireMonitoringEcdDate()==null)
             {
                 if (claim.getCustomer().getIsUsable())
                 {

@@ -3,7 +3,7 @@ package idas.chox.core.model;
 import idas.chox.core.util.TextHelper;
 import java.io.Serializable;
 
-public class Chorganisation extends AuditableEntity implements Serializable {
+public class Chorganisation extends Entity implements Serializable {
 
     /**
      * This attribute maps to the column name in the chorganisation table.

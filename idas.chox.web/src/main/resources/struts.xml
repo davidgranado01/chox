@@ -63,7 +63,7 @@
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp
             </result>
         </action>
-        <action name="doExportFile" method="execute" class="idas.chox.web.actions.AttachmentGeneratorAction">
+        <action name="doExportFile" method="export" class="idas.chox.web.actions.AttachmentAction">
             <result name="success" type="stream">
                 <param name="inputName">fileStream</param>
                 <param name="contentDisposition">${contentDisposition}</param>
@@ -73,7 +73,7 @@
             <result name="failed">/jsp/user/ExcelGenerationFailed.jsp
             </result>
         </action>
-        <action name="doDeleteFile" class="idas.chox.web.actions.DeleteAttachmentAction">
+        <action name="doDeleteFile" class="idas.chox.web.actions.AttachmentAction" method="delete">
             <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
@@ -107,7 +107,7 @@
             <result name="error">/jsp/user/ClaimDetail.jsp
             </result>
         </action>
-        <action name="getAttachmentDetail" class="idas.chox.web.actions.GetAttachmentDetailAction">
+        <action name="getAttachmentDetail" class="idas.chox.web.actions.AttachmentAction" method="detail">
             <result name="success">/jsp/user/AttachmentProcess.jsp
             </result>
         </action>
@@ -629,8 +629,8 @@
             <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
-        <action name="getHireMonitoringEcds" class="idas.chox.web.actions.GetHireMonitoringEcdsAction" method="getHireMonitoringEcds">
-            <result name="success">/jsp/p_jsonData.jsp
+        <action name="getHireMonitoringEcds" class="idas.chox.web.actions.ClaimAction" method="getHireMonitoringEcds">
+            <result name="success">/jsp/p_jsonArrayData.jsp
             </result>
         </action>
         <!-- End HireMonitoringEcd -->
@@ -666,8 +666,8 @@
         <!-- End VehicleHire Detail -->
 
         <!-- Start History Detail -->
-        <action name="getHistories" class="idas.chox.web.actions.HistoryAction">
-            <result name="success">/jsp/p_jsonData.jsp
+        <action name="getHistories" class="idas.chox.web.actions.ClaimAction" method="getHistories">
+            <result name="success">/jsp/p_jsonArrayData.jsp
             </result>
         </action>
         <!-- End History Detail -->
@@ -686,19 +686,19 @@
             <result name="decline">/jsp/p_accessDeclined.jsp
             </result>
         </action>
-        <action name="getComments" class="idas.chox.web.actions.GetCommentsAction" method="getComments">
-            <result name="success">/jsp/p_jsonData.jsp
+        <action name="getComments" class="idas.chox.web.actions.ClaimAction" method="getComments">
+            <result name="success">/jsp/p_jsonArrayData.jsp
             </result>
         </action>
-        <action name="getAttachments" class="idas.chox.web.actions.GetAttachmentsAction" method="getAttachments">
-            <result name="success">/jsp/p_jsonData.jsp
+        <action name="getAttachments" class="idas.chox.web.actions.ClaimAction" method="getAttachments">
+            <result name="success">/jsp/p_jsonArrayData.jsp
             </result>
         </action>
         <action name="createNewComment" class="idas.chox.web.actions.CommentAction" method="createNewComment">
             <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>
-        <action name="createNewAttachment" class="idas.chox.web.actions.AttachmentAction" method="createNewAttachment">
+        <action name="createNewAttachment" class="idas.chox.web.actions.AttachmentAction" method="create">
             <result name="success">/jsp/p_actionResponseJsonData.jsp
             </result>
         </action>

@@ -4,7 +4,6 @@
  */
 package idas.chox.data.services;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Criteria;
@@ -26,28 +25,14 @@ import org.springframework.transaction.support.TransactionTemplate;
  */
 public class DataService extends HibernateDaoSupport {
 
-    private HibernateTransactionManager transactionManager;
-
-    protected Session getCurrentSession() {
-
-        return getSession();
-    }
+    protected HibernateTransactionManager transactionManager;
 
     public Object get(final Class c, final int id) {
 
         DetachedCriteria dc = DetachedCriteria.forClass(c).add(Restrictions.eq("id", id));
         List result = getHibernateTemplate().findByCriteria(dc);
         return (result != null && result.size() == 1) ? result.get(0) : null;
-    }
-
-    public Object get(final Class c, final Serializable id) {
-
-        return getHibernateTemplate().get(c, id);
-    }
-
-    public void Evict(Object object) {
-        getHibernateTemplate().evict(object);
-    }
+    }   
 
     public List query(final String query) {
 
@@ -96,16 +81,6 @@ public class DataService extends HibernateDaoSupport {
         }
     }
 
-    protected Long getCount(String query) {
-        Long count = new Long(0);
-        List result = getHibernateTemplate().find(query);
-
-        if (result != null && !result.isEmpty()) {
-            count = (Long) result.get(0);
-        }
-        return count;
-    }
-
     public List findByCriteria(final DetachedCriteria c) {
 
         return getHibernateTemplate().findByCriteria(c);
@@ -130,26 +105,6 @@ public class DataService extends HibernateDaoSupport {
                 });
     }
 
-    /*
-    public void logSystemLog(String actionId, String msg, boolean status){
-
-    SystemLog systemLog = new SystemLog();
-    systemLog.setActionId(actionId);
-    systemLog.setMessage(msg);
-
-    if(status){
-    systemLog.setStatus("S");
-    }else{
-    systemLog.setStatus("F");
-    }
-
-    try {
-    save(systemLog);
-    } catch (Throwable e) {
-    e.printStackTrace();
-    }
-    } 
-     */
     public void delete(final Object object) {
         TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
         transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -168,5 +123,20 @@ public class DataService extends HibernateDaoSupport {
 
     public void setTransactionManager(HibernateTransactionManager transactionManager) {
         this.transactionManager = transactionManager;
+    }
+
+    protected Session getCurrentSession() {
+
+        return getSession();
+    }
+
+    protected Long getCount(String query) {
+        Long count = new Long(0);
+        List result = getHibernateTemplate().find(query);
+
+        if (result != null && !result.isEmpty()) {
+            count = (Long) result.get(0);
+        }
+        return count;
     }
 }

@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class WebUserRole extends AuditableEntity implements Serializable {
+public class WebUserRole extends Entity implements Serializable {
 
     public static final String ROLE_CHOX = "ROLE_CHOX";
     public static final String ROLE_INS = "ROLE_INS";

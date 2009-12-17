@@ -6,7 +6,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class Comment extends AuditableEntity implements Serializable {
+public class Comment extends Entity implements Serializable {
 
     protected String comment;
     protected Claim claim;

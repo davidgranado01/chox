@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import idas.chox.core.util.TextHelper;
 
-public class Insurer extends AuditableEntity implements Serializable {
+public class Insurer extends Entity implements Serializable {
 
     protected String name;
     protected BigDecimal adminHandlingCharge;

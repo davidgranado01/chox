@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class BreBandOrganisation extends AuditableEntity implements Serializable {
+public class BreBandOrganisation extends Entity implements Serializable {
 
     protected BreBand breBand;
     protected Chorganisation chorganisation;

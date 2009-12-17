@@ -8,7 +8,7 @@ package idas.chox.core.model;
  *
  * @author emmanuel
  */
-public class Notification extends AuditableEntity {
+public class Notification extends Entity {
 
     public static String TYPE_UPDATE = "Update";
     public static String TYPE_ANOMALOUS = "Anomalous";

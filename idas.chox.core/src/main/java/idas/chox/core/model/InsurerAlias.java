@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class InsurerAlias extends AuditableEntity implements Serializable {
+public class InsurerAlias extends Entity implements Serializable {
 
     protected String aliasName;
     protected Insurer insurer;

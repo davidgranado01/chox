@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class Bordereau extends AuditableEntity implements Serializable {
+public class Bordereau extends Entity implements Serializable {
 
     protected byte[] fileBuffer;
     protected String fileName;

@@ -3,7 +3,7 @@ package idas.chox.core.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class VehicleHire extends AuditableEntity implements Serializable {
+public class VehicleHire extends Entity implements Serializable {
 
     protected boolean IsTotalLoss;
     protected String vehicleRegistration;

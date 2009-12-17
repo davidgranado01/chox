@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class ThirdParty extends AuditableEntity implements Serializable {
+public class ThirdParty extends Entity implements Serializable {
 
     /**
      * This attribute maps to the column policy_number in the third_party table.

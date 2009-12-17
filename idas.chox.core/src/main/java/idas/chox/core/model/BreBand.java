@@ -3,7 +3,7 @@ package idas.chox.core.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class BreBand extends AuditableEntity implements Serializable {
+public class BreBand extends Entity implements Serializable {
 
     protected Insurer insurer;
     protected boolean isActive;

@@ -12,54 +12,12 @@
     <bean id="accessibilityService" class="idas.chox.data.services.AccessibilityServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="incidentService" class="idas.chox.data.services.IncidentServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="commentService" class="idas.chox.data.services.CommentServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="customerService" class="idas.chox.data.services.CustomerServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="engineerReportService" class="idas.chox.data.services.EngineerReportServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="hireMonitoringDetailService" class="idas.chox.data.services.HireMonitoringDetailServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="historyService" class="idas.chox.data.services.HistoryServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="invoiceService" class="idas.chox.data.services.InvoiceServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="solicitorService" class="idas.chox.data.services.SolicitorServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="injuryService" class="idas.chox.data.services.InjuryServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="thirdPartyService" class="idas.chox.data.services.ThirdPartyServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="vehicleHireService" class="idas.chox.data.services.VehicleHireServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
     <bean id="vehicleClassService" class="idas.chox.data.services.VehicleClassServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="witnessService" class="idas.chox.data.services.WitnessServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="attachmentService" class="idas.chox.data.services.AttachmentServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    </bean>    
     <bean id="insurerService" class="idas.chox.data.services.InsurerServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="hireMonitoringEcdService" class="idas.chox.data.services.HireMonitoringEcdServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    </bean>  
     <bean id="insurerAliasService" class="idas.chox.data.services.InsurerAliasServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>

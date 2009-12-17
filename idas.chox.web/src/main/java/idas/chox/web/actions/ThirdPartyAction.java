@@ -9,7 +9,6 @@ import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.services.InsurerService;
-import idas.chox.core.services.ThirdPartyService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.web.security.ApplicationAccessibility;
 import net.sf.json.JSONObject;
@@ -20,26 +19,20 @@ import net.sf.json.JSONObject;
  */
 public class ThirdPartyAction extends BaseModelAction implements ModelDriven<ThirdParty>, Preparable {
 
-    private ThirdPartyService service;
     private VehicleClassService vehicleClassService;
     private InsurerService insurerService;
     private ThirdParty model;
     private int insurerId;
     private int vehicleClassId;
 
-    public void setThirdPartyService(ThirdPartyService service) {
-        this.service = service;
-    }
-
     public ThirdParty getModel() {
         return model;
     }
 
     public void prepare() throws Exception {
-        if (objectId <= 0) {
+        model = getClaim().getThirdParty();
+        if (model == null) {
             model = new ThirdParty();
-        } else {
-            model = service.getObject(objectId);
         }
     }
 
@@ -52,17 +45,15 @@ public class ThirdPartyAction extends BaseModelAction implements ModelDriven<Thi
         if (insurerId >= 0) {
             model.setInsurer(this.insurerService.getObject(insurerId));
         }
-
-
         try {
-            if (objectId <= 0) {
-                Claim c = claimService.getClaim(getClaimId());
-                c.setThirdParty(model);
-                this.claimService.updateClaim(c);
-                this.actionResult = "new:" + model.getId();
-            } else {
-                this.service.updateObject(model);
-                this.actionResult = "";
+            boolean isTransient = model.isTransient();
+            Claim claim = getClaim();
+
+            claim.setThirdParty(model);
+
+            this.claimService.updateClaim(claim);
+            if (isTransient) {
+                this.getActionResponse().AssignNewIdResult(model.getId());
             }
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();

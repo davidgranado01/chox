@@ -6,10 +6,9 @@ package idas.chox.web.actions;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.Incident;
 import idas.chox.core.model.Injury;
-import idas.chox.core.services.IncidentService;
-import idas.chox.core.services.InjuryService;
 import idas.chox.web.security.ApplicationAccessibility;
 import net.sf.json.JSONObject;
 
@@ -19,37 +18,40 @@ import net.sf.json.JSONObject;
  */
 public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>, Preparable {
 
-    private InjuryService service;
     private Injury model;
     private int incidentId;
-    private IncidentService incidentService;
-
-    public void setInjuryService(InjuryService service) {
-        this.service = service;
-    }
 
     public Injury getModel() {
         return model;
     }
 
     public void prepare() throws Exception {
-        if (objectId <= 0) {
-            model = new Injury();
+        Claim claim = getClaim();
+
+        if (claim != null && claim.getIncident() != null) {
+            model = claim.getIncident().getInjury();
         } else {
-            model = service.getObject(objectId);
+            model = new Injury();
         }
     }
 
     public String updateModel() {
         try {
-            if (objectId <= 0) {
-                Incident incident = incidentService.getObject(incidentId);
-                this.model.setIncident(incident);
-                this.service.updateObject(model);
-                this.actionResult = "new:" + model.getId();
-            } else {
-                this.service.updateObject(model);
-                this.actionResult = "";
+            boolean isTransient = model.isTransient();
+            Claim claim = getClaim();
+            Incident incident = claim.getIncident();
+
+            if (incident == null) {
+                incident = new Incident();
+            }
+
+            incident.setInjury(model);
+
+            claim.setIncident(incident);
+
+            this.claimService.updateClaim(claim);
+            if (isTransient) {
+                this.getActionResponse().AssignNewIdResult(model.getId());
             }
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
@@ -75,7 +77,4 @@ public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>
         this.incidentId = incidentId;
     }
 
-    public void setIncidentService(IncidentService incidentService) {
-        this.incidentService = incidentService;
-    }
 }

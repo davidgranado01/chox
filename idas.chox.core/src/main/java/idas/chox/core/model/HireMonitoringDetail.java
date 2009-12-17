@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class HireMonitoringDetail extends AuditableEntity implements Serializable {
+public class HireMonitoringDetail extends Entity implements Serializable {
 
     /** 
      * This attribute maps to the column name_of_repairer in the hire_monitoring_detail table.

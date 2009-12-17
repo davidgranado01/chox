@@ -11,7 +11,6 @@ import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.VehicleClassService;
-import idas.chox.core.services.VehicleHireService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.web.security.ApplicationAccessibility;
 import java.util.Date;
@@ -24,15 +23,10 @@ import net.sf.json.JSONObject;
  */
 public class VehicleHireAction extends BaseModelAction implements ModelDriven<VehicleHire>, Preparable {
 
-    private VehicleHireService service;
     private LookupService lookupService;
     private VehicleClassService vehicleClassService;
     private VehicleHire model;
     private int vehicleClassId;
-
-    public void setVehicleHireService(VehicleHireService service) {
-        this.service = service;
-    }
 
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
@@ -47,31 +41,29 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
     }
 
     public void prepare() throws Exception {
-        if (objectId <= 0) {
-            model = new VehicleHire();
+        Claim claim = getClaim();
+
+        if (claim != null && claim.getVehicleHire() != null) {
+            model = claim.getVehicleHire();
         } else {
-            model = service.getObject(objectId);
+            model = new VehicleHire();
         }
     }
 
     public String updateModel() {
 
-        if (vehicleClassId >= 0) {
-            model.setVehicleClass(this.vehicleClassService.getObject(vehicleClassId));
-        }
-
         try {
-            if (model.getId() > 0) {
-                this.service.updateObject(model);
-            } else {
-                Claim c = claimService.getClaim(getClaimId());
-                c.setVehicleHire(model);
-                this.claimService.updateClaim(c);
-                this.getActionResponse().AssignNewIdResult(c.getId());
-            }
+            boolean isTransient = model.isTransient();
+            Claim claim = getClaim();
 
+            claim.setVehicleHire(model);
+
+            this.claimService.updateClaim(claim);
+            if (isTransient) {
+                this.getActionResponse().AssignNewIdResult(model.getId());
+            }
         } catch (Exception ex) {
-            this.getActionResponse().AddError(ex.getMessage());
+            this.actionResult = "ERROR :" + ex.getMessage();
         }
         return SUCCESS;
     }

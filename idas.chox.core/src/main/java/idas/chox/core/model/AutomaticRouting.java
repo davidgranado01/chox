@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class AutomaticRouting extends AuditableEntity implements Serializable{
+public class AutomaticRouting extends Entity implements Serializable{
 
     protected String expression;
     protected Insurer insurer;

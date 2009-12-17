@@ -8,7 +8,6 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Invoice;
-import idas.chox.core.services.InvoiceService;
 import idas.chox.web.security.ApplicationAccessibility;
 import net.sf.json.JSONObject;
 
@@ -18,35 +17,30 @@ import net.sf.json.JSONObject;
  */
 public class InvoiceAction extends BaseModelAction implements ModelDriven<Invoice>, Preparable {
 
-    private InvoiceService service;
     private Invoice model;
-
-    public void setInvoiceService(InvoiceService service) {
-        this.service = service;
-    }
 
     public Invoice getModel() {
         return model;
     }
 
     public void prepare() throws Exception {
-        if (objectId <= 0) {
+        model = getClaim().getInvoice();
+        if (model == null) {
             model = new Invoice();
-        } else {
-            model = service.getObject(objectId);
         }
     }
 
     public String updateModel() {
         try {
-            if (model.getId() > 0) {
-                this.service.updateObject(model);
-            } else {
-                Claim c = claimService.getClaim(getClaimId());
-                c.setInvoice(model);
-                this.claimService.updateClaim(c);
+            boolean isTransient = model.isTransient();
+            Claim claim = getClaim();
+
+            claim.setInvoice(model);
+
+            this.claimService.updateClaim(claim);
+            if (isTransient) {
+                this.getActionResponse().AssignNewIdResult(model.getId());
             }
-            this.actionResult = "";
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }

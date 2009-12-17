@@ -8,7 +8,6 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Incident;
-import idas.chox.core.services.IncidentService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.web.security.ApplicationAccessibility;
 import java.util.Date;
@@ -20,35 +19,29 @@ import net.sf.json.JSONObject;
  */
 public class IncidentAction extends BaseModelAction implements ModelDriven<Incident>, Preparable {
 
-    private IncidentService service;
     private Incident model;
-
-    public void setIncidentService(IncidentService service) {
-        this.service = service;
-    }
 
     public Incident getModel() {
         return model;
     }
 
     public void prepare() throws Exception {
-        if (objectId <= 0) {
+        model = getClaim().getIncident();
+        if (model == null) {
             model = new Incident();
-        } else {
-            model = service.getObject(objectId);
         }
     }
 
     public String updateModel() {
         try {
-            if (objectId <= 0) {
-                Claim c = claimService.getClaim(getClaimId());
-                c.setIncident(model);
-                this.claimService.updateClaim(c);
-                this.actionResult = "new:" + model.getId();
-            } else {
-                this.service.updateObject(model);
-                this.actionResult = "";
+            boolean isTransient = model.isTransient();
+            Claim claim = getClaim();
+
+            claim.setIncident(model);
+
+            this.claimService.updateClaim(claim);
+            if (isTransient) {
+                this.getActionResponse().AssignNewIdResult(model.getId());
             }
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();

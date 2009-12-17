@@ -5,7 +5,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Customer extends AuditableEntity implements Serializable {
+public class Customer extends Entity implements Serializable {
 
     private Boolean isVehicleRegistrationexist = false;
     /**

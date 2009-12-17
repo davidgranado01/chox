@@ -9,11 +9,6 @@ import idas.chox.core.model.Witness;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.CommentService;
-import idas.chox.core.services.HistoryService;
-import idas.chox.core.services.InjuryService;
-import idas.chox.core.services.SolicitorService;
-import idas.chox.core.services.WitnessService;
 import idas.chox.web.ExcelClaim;
 import idas.chox.web.ExcelInvoice;
 import java.io.ByteArrayInputStream;
@@ -30,19 +25,11 @@ import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
 
-
-
-
 public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
     private InputStream excelStream;
     private Map session;
     private ClaimService claimService;
-    private HistoryService historyService;
-    private CommentService commentService;
-    private WitnessService witnessService;
-    private InjuryService injuryService;
-    private SolicitorService solicitorService;
 
     public InputStream getExcelStream() {
         return excelStream;
@@ -55,7 +42,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
     public ByteArrayOutputStream doExportExcel() throws IOException {
 
         File thisFile = new File(".");
-        
+
         ClaimSearchCriteria c = null;
         ByteArrayOutputStream buf = null;
 
@@ -73,7 +60,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         }
         return buf;
     }
-    
+
     protected String getReportTemplatePath(String reportTemplateName) {
         String reportDefinationFilePath = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + reportTemplateName);
         return reportDefinationFilePath;
@@ -91,12 +78,10 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         List<ExcelClaim> excelClaims = new ArrayList<ExcelClaim>();
 
         for (Object obj : claims) {
-            Claim claim = (Claim)obj;
+            Claim claim = (Claim) obj;
             ExcelClaim ec = new ExcelClaim();
             ExcelInvoice ev = new ExcelInvoice();
             ec.setClaim(claim);
-
-
 
             if (claim.getInvoice() != null) {
 
@@ -111,11 +96,11 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
             if (claim.getIncident() != null) {
 
                 // GET INJURY
-                Injury injury = injuryService.getInjuryByIncident(claim.getIncident());
+                Injury injury = claim.getIncident().getInjury();
 
                 if (injury != null) {
 
-                    Solicitor solicitor = solicitorService.getSolicitorByInjury(injury);
+                    Solicitor solicitor = injury.getSolicitor();
 
                     if (solicitor != null) {
                         ec.setSolicitor(solicitor);
@@ -123,13 +108,13 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
                     ec.setInjury(injury);
                 }
-                
+
                 // GET WITNESS
-                Witness witness = witnessService.getWitnessByIncident(claim.getIncident());
+                Witness witness = claim.getIncident().getWitness();
                 if (witness != null) {
                     ec.setWitness(witness);
                 }
-                
+
             }
 
             excelClaims.add(ec);
@@ -138,10 +123,9 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
             Boolean isPublic = this.getIsCHO();
 
             // GET HISTORY BY CLAIM ID;
-            histories.addAll(historyService.getHistoryByClaim(claim, isShowAll, isPublic));
-
+            histories.addAll(claim.getHistories());
             // GET COMMENT BY CLAIM ID;
-            comments.addAll(commentService.getCommentByClaimId(claim.getId()));
+            comments.addAll(claim.getComments());
         }
 
         if (histories.size() <= 0) {
@@ -157,21 +141,19 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         excelMap.put("excelinvoices", invoices);
         excelMap.put("histories", histories);
         excelMap.put("comments", comments);
-        
+
         /*
         XLSTransformer transformer = new XLSTransformer();
         transformer.transformXLS(templateIS, excelMap).write(out);
-        */
-        
+         */
+
         XLSTransformer transformer = new XLSTransformer();
         transformer.transformXLS(templateIS, excelMap).write(out);
-        
+
         excelMap.clear();
         return out;
     }
-    
-    
-    
+
     public String execute() throws Exception {
 
         ByteArrayOutputStream buf = doExportExcel();
@@ -189,27 +171,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
     public void setSession(Map session) {
         this.session = session;
-    }
-
-    public void setHistoryService(HistoryService service) {
-        this.historyService = service;
-    }
-
-    public void setCommentService(CommentService service) {
-        this.commentService = service;
-    }
-
-    public void setWitnessService(WitnessService service) {
-        this.witnessService = service;
-    }
-
-    public void setInjuryService(InjuryService service) {
-        this.injuryService = service;
-    }
-
-    public void setSolicitorService(SolicitorService service) {
-        this.solicitorService = service;
-    }
+    }  
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;

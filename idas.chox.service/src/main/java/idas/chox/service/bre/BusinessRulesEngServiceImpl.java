@@ -13,11 +13,7 @@ import idas.chox.core.model.VehicleClassCeiling;
 import idas.chox.core.services.BusinessRulesEngService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.HireMonitoringEcdService;
-import idas.chox.core.services.HistoryService;
 import idas.chox.core.services.InsurerService;
-import idas.chox.core.services.InvoiceService;
-import idas.chox.core.util.HistoryHelper;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import java.math.BigDecimal;
@@ -28,27 +24,12 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
     private static String sectionName = "BRE Enginee";
     private ClaimService claimService;
-    private HireMonitoringEcdService hireMonitoringEcdService;
-    private InvoiceService invoiceService;
-    private HistoryService historyService;
     private BreBandService choBandService;
     private InsurerService insurerService;
     private RulesEngine rulesEngine;
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
-    }
-
-    public void setHireMonitoringEcdService(HireMonitoringEcdService hireMonitoringEcdService) {
-        this.hireMonitoringEcdService = hireMonitoringEcdService;
-    }
-
-    public void setInvoiceService(InvoiceService invoiceService) {
-        this.invoiceService = invoiceService;
-    }
-
-    public void setHistoryService(HistoryService historyService) {
-        this.historyService = historyService;
     }
 
     public void setBreBandService(BreBandService choBandService) {
@@ -103,8 +84,6 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
                 claim.getVehicleHire().setVehicleClass(null);
             }
         }
-
-        claim.setHireMonitoringEcd(hireMonitoringEcdService.getLatestHireMonitoringECDDate(claim));
         return claim;
     }
 
@@ -230,7 +209,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
                 claimResult.getMessage().add(rv.toString());
             }
 
-            histories.add(HistoryHelper.createHistory(claimResult.getClaim(), rv));
+            histories.add(History.New(rv));
         }
 
         return histories;

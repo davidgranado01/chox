@@ -6,8 +6,8 @@ package idas.chox.web.actions;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.Invoice;
-import idas.chox.core.services.InvoiceService;
 import idas.chox.web.security.ApplicationAccessibility;
 import net.sf.json.JSONObject;
 
@@ -17,7 +17,6 @@ import net.sf.json.JSONObject;
  */
 public class ExtraAction extends BaseModelAction implements ModelDriven<Invoice>, Preparable {
 
-    private InvoiceService service;
     private Invoice model;
     private Integer cdwQty;
     private Integer automaticQty;
@@ -31,19 +30,16 @@ public class ExtraAction extends BaseModelAction implements ModelDriven<Invoice>
     private Integer deliveryCollectionQty;
     private Integer estateQty;
 
-    public void setInvoiceService(InvoiceService service) {
-        this.service = service;
-    }
-
     public Invoice getModel() {
         return model;
     }
 
     public void prepare() throws Exception {
-        if (objectId <= 0) {
+
+        model = getClaim().getInvoice();
+
+        if (model == null) {
             model = new Invoice();
-        } else {
-            model = service.getObject(objectId);
         }
     }
 
@@ -60,7 +56,12 @@ public class ExtraAction extends BaseModelAction implements ModelDriven<Invoice>
             model.setDualControlQty(dualControlQty);
             model.setDeliveryCollectionQty(deliveryCollectionQty);
             model.setEstateQty(estateQty);
-            this.service.updateObject(model);
+
+            Claim claim = getClaim();
+            claim.setInvoice(model);
+
+            claimService.updateClaim(claim);
+
             this.actionResult = "1";
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();

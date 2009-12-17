@@ -519,7 +519,7 @@
                     {
                         params:
                             {
-                            claimId : <s:property value="id" />
+                            id : <s:property value="id" />
                         }
                     });
                 }
@@ -547,7 +547,7 @@
                         {
                             params:
                                 {
-                                claimId : <s:property value="id" />
+                                id : <s:property value="id" />
                             }
                         });
                         commentsLoaded = true;

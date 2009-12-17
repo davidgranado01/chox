@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class WebUserUserRole extends AuditableEntity implements Serializable{
+public class WebUserUserRole extends Entity implements Serializable{
     
     protected boolean active;
     protected WebUser webUser;

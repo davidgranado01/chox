@@ -12,11 +12,11 @@
         <security:intercept-url pattern="/user/**"         access="ROLE_CHO,ROLE_INS,ROLE_CHOX" />
         <security:intercept-url pattern="/**"              filters="none" />
         <!-- Override default login and logout pages -->
-        <security:form-login login-page="/login.action?"
+        <security:form-login login-page="/login.action"
                              login-processing-url="/j_acegi_security_check"
                              default-target-url="/user/inbox.action"
                              authentication-failure-url="/login.action?login_error=1" />
-        <security:logout logout-url="/logout" logout-success-url="/logoutSuccess.jsp" />
+        <security:logout logout-url="/j_acegi_logout" logout-success-url="/login.action" />
         <security:anonymous />
     </security:http>
 

@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class SystemLog extends AuditableEntity implements Serializable {
+public class SystemLog extends Entity implements Serializable {
 
     protected String actionId;
     protected String message;

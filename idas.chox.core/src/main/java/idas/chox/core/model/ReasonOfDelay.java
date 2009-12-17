@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class ReasonOfDelay extends AuditableEntity implements Serializable {
+public class ReasonOfDelay extends Entity implements Serializable {
 
     protected String name;
     protected String description;

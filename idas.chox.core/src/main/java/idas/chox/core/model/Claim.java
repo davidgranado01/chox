@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Claim extends AuditableEntity implements Serializable {
+public class Claim extends Entity implements Serializable {
 
     // <editor-fold defaultstate="collapsed" desc=" Member Variables ">
     private boolean managingRepair;
@@ -27,7 +27,6 @@ public class Claim extends AuditableEntity implements Serializable {
     private ReasonOfRejection reasonOfRejection;
     private Date statusModifiedDate;
     private String previousStatus;
-    private Date hireMonitoringEcd;
     private WebUser claimOwner;
     private BreBand choband;
     // </editor-fold>
@@ -42,11 +41,14 @@ public class Claim extends AuditableEntity implements Serializable {
     private EngineerReport engineerReport;
     private HireMonitoringDetail hireMonitoringDetail;
     private Workgroup workgroup;
-// </editor-fold>
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc=" Composite Collections ">
     private List<HireMonitoringEcd> hireMonitoringEcds;
     private List<Notification> notifications;
-// </editor-fold>
+    private List<Attachment> attachments;
+    private List<History> histories;
+    private List<Comment> comments;
+    // </editor-fold>
 
     public Claim() {
         hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
@@ -234,12 +236,15 @@ public class Claim extends AuditableEntity implements Serializable {
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
     }
 
-    public void setHireMonitoringEcd(Date d) {
-        this.hireMonitoringEcd = d;
-    }
+    public Date getLatestHireMonitoringEcdDate() {
+        Date latestHireMonitoringEcdDate = null;
 
-    public Date getHireMonitoringEcd() {
-        return this.hireMonitoringEcd;
+        if (getHireMonitoringEcds() != null && getHireMonitoringEcds().size() > 0) {
+            HireMonitoringEcd latestEcd = getHireMonitoringEcds().get(getHireMonitoringEcds().size() - 1);
+            latestHireMonitoringEcdDate = latestEcd.ecdDate;
+        }
+
+        return latestHireMonitoringEcdDate;
     }
 
     public boolean isIsFnolReviewed() {
@@ -302,8 +307,8 @@ public class Claim extends AuditableEntity implements Serializable {
 
         return DateHelper.daysBetween(lastStatusModified, now);
     }
-
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc=" HireMonitoringEcd ">
     public List<HireMonitoringEcd> getHireMonitoringEcds() {
         return hireMonitoringEcds;
@@ -314,6 +319,9 @@ public class Claim extends AuditableEntity implements Serializable {
     }
 
     public void addHireMonitoringEcd(HireMonitoringEcd ecd) {
+        if (hireMonitoringEcds == null) {
+            hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
+        }
         ecd.claim = this;
         hireMonitoringEcds.add(ecd);
     }
@@ -339,9 +347,90 @@ public class Claim extends AuditableEntity implements Serializable {
 
         return null;
     }
-
     // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc=" Notification ">
+
+    // <editor-fold defaultstate="collapsed" desc=" Attachment ">
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
+    }
+
+    public void addAttachment(Attachment attachment) {
+        if (attachments == null) {
+            attachments = new ArrayList<Attachment>();
+        }
+
+        attachment.claim = this;
+        attachments.add(attachment);
+
+        //add history
+        addHistory(History.New(attachment));
+    }
+
+    public void deleteAttachment(Attachment attachment) {
+        attachments.remove(attachment);
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc=" Comments ">
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public void addComment(Comment comment) {
+        if (comments == null) {
+            comments = new ArrayList<Comment>();
+        }
+
+        comment.claim = this;
+        comments.add(comment);
+    }
+
+    public void deleteComment(Comment comment) {
+        comments.remove(comment);
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="History">
+    public List<History> getHistories() {
+        return histories;
+    }
+
+    public void setHistories(List<History> histories) {
+        this.histories = histories;
+    }
+
+    public void addHistory(History history) {
+
+        if (histories == null) {
+            histories = new ArrayList<History>();
+        }
+
+        history.claim = this;
+        histories.add(history);
+    }
+
+    public void addHistories(List<History> histories) {
+
+        if (histories == null) {
+            histories = new ArrayList<History>();
+        }
+
+        for (History history : histories) {
+            history.claim = this;
+            histories.add(history);
+        }
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Notification">
     public List<Notification> getNotifications() {
         return notifications;
     }
@@ -462,8 +551,8 @@ public class Claim extends AuditableEntity implements Serializable {
     public void setClaimOwner(WebUser claimOwner) {
         this.claimOwner = claimOwner;
     }
-
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="BRE Properties ">
     public void setBreBand(BreBand choband) {
         this.choband = choband;

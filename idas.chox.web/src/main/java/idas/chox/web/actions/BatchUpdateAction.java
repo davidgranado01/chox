@@ -6,7 +6,6 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.CommentService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WorkgroupService;
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ public class BatchUpdateAction extends BaseAction {
     private Integer workgroupId; // CLAIM OWNERSHIP
     private Integer claimOwnerId;
     private WorkgroupService workgroupService;
-    private CommentService commentService;
 
     @Override
     public String execute() throws Exception {
@@ -147,10 +145,11 @@ public class BatchUpdateAction extends BaseAction {
             Comment comment = new Comment();
             comment.setVisibilityType(noteVisibilityType);
             comment.setComment(strPrefix + sComment);
-            comment.setClaim(claim);
+
+            claim.addComment(comment);
 
             try {
-                commentService.createNewObject(comment);
+                claimService.updateClaim(claim);
             } catch (Exception ex) {
                 this.actionResult = "ERROR : " + ex.getMessage();
             }
@@ -248,8 +247,5 @@ public class BatchUpdateAction extends BaseAction {
     public void setClaimOwnerId(Integer claimOwnerId) {
         this.claimOwnerId = claimOwnerId;
     }
-
-    public void setCommentService(CommentService commentService) {
-        this.commentService = commentService;
-    }
+   
 }

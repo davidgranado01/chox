@@ -5,11 +5,8 @@ import idas.chox.core.services.BusinessRulesEngService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.HireMonitoringEcdService;
-import idas.chox.core.services.HistoryService;
 import idas.chox.core.services.InsurerAliasService;
 import idas.chox.core.services.InsurerChorganisationService;
-import idas.chox.core.services.InvoiceService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.xmlValidation.BordereauResult;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
@@ -27,9 +24,6 @@ public class BordereauDataValidation {
             VehicleClassService vehicleClassService,
             InsurerAliasService insurerAlliasService,
             InsurerChorganisationService insurerChorganisationService,
-            HireMonitoringEcdService hireMonitoringEcdService,
-            InvoiceService invoiceService,
-            HistoryService historyService,
             BusinessRulesEngService businessRuleEngService){
         
         try {

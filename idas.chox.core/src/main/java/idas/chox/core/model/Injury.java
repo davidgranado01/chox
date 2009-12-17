@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class Injury extends AuditableEntity implements Serializable {
+public class Injury extends Entity implements Serializable {
 
     /**
      * This attribute maps to the column name in the injury table.

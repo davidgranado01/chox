@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class InsurerChorganisation extends AuditableEntity implements Serializable {
+public class InsurerChorganisation extends Entity implements Serializable {
 
     protected Insurer insurer;
     protected Chorganisation chorganisation;

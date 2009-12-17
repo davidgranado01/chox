@@ -2,7 +2,7 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class WebUserWorkgroup extends AuditableEntity implements Serializable {
+public class WebUserWorkgroup extends Entity implements Serializable {
 
     protected Workgroup workgroup;
     protected WebUser user;

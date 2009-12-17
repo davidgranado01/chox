@@ -3,7 +3,7 @@ package idas.chox.core.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class HireMonitoringEcd extends AuditableEntity implements Serializable {
+public class HireMonitoringEcd extends Entity implements Serializable {
 
     /**
      * This attribute maps to the column ecd_date in the hire_monitoring_ecd table.

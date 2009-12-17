@@ -5,14 +5,12 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.model.Incident;
-import idas.chox.core.model.Injury;
 import idas.chox.core.model.Solicitor;
-import idas.chox.core.services.IncidentService;
-import idas.chox.core.services.InjuryService;
-import idas.chox.core.services.SolicitorService;
 import idas.chox.web.security.ApplicationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.Injury;
 import net.sf.json.JSONObject;
 
 /**
@@ -21,48 +19,46 @@ import net.sf.json.JSONObject;
  */
 public class SolicitorAction extends BaseModelAction implements ModelDriven<Solicitor>, Preparable {
 
-    private SolicitorService service;
     private Solicitor model;
-    private InjuryService injuryService;
-    private IncidentService incidentService;
     private int incidentId;
-
-    public void setSolicitorService(SolicitorService service) {
-        this.service = service;
-    }
 
     public Solicitor getModel() {
         return model;
     }
 
     public void prepare() throws Exception {
-        if (objectId <= 0) {
-            model = new Solicitor();
+        Claim claim = getClaim();
+
+        if (claim != null && claim.getIncident() != null && claim.getIncident().getInjury() != null) {
+            model = claim.getIncident().getInjury().getSolicitor();
         } else {
-            model = service.getObject(objectId);
+            model = new Solicitor();
         }
     }
 
     public String updateModel() {
         try {
-            if (objectId <= 0) {
-                Incident incident = this.incidentService.getObject(this.getIncidentId());
-                Injury injury = this.injuryService.getObjectByIncidentId(incident);
-                if (injury == null) {
+            boolean isTransient = model.isTransient();
+            Claim claim = getClaim();
+            Incident incident = claim.getIncident();
 
-                    injury = new Injury();
-                    injury.setIncident(incident);
-                    this.injuryService.updateObject(injury);
-                }
-                this.model.setInjury(injury);
-                this.service.updateObject(model);
-                this.actionResult = "new:" + model.getId();
-            } else {
-                this.service.updateObject(model);
-                this.actionResult = "";
+            if (incident == null) {
+                incident = new Incident();
+                claim.setIncident(incident);
             }
 
+            Injury injury = incident.getInjury();
+            if (injury == null) {
+                injury = new Injury();
+                incident.setInjury(injury);
+            }
 
+            injury.setSolicitor(model);
+
+            this.claimService.updateClaim(claim);
+            if (isTransient) {
+                this.getActionResponse().AssignNewIdResult(model.getId());
+            }
         } catch (Exception ex) {
             this.actionResult = "ERROR :" + ex.getMessage();
         }
@@ -77,21 +73,5 @@ public class SolicitorAction extends BaseModelAction implements ModelDriven<Soli
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_CLAIM_DETAIL;
-    }
-
-    public void setInjuryService(InjuryService injuryService) {
-        this.injuryService = injuryService;
-    }
-
-    public void setIncidentService(IncidentService incidentService) {
-        this.incidentService = incidentService;
-    }
-
-    public int getIncidentId() {
-        return incidentId;
-    }
-
-    public void setIncidentId(int incidentId) {
-        this.incidentId = incidentId;
     }
 }

@@ -3,7 +3,7 @@ package idas.chox.core.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class EngineerReport extends AuditableEntity implements Serializable {
+public class EngineerReport extends Entity implements Serializable {
 
     /**
      * This attribute maps to the column days in the engineer_report table.

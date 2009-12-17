@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.math.BigDecimal;
 
-public class Invoice extends AuditableEntity implements Serializable {
+public class Invoice extends Entity implements Serializable {
 
     /**
      * This attribute maps to the column date_invoiced in the invoice table.
