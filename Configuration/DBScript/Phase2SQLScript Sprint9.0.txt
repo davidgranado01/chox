@@ -371,12 +371,11 @@ ALTER SEQUENCE audit_trail_id_seq1 RENAME TO audit_trail_id_seq;
 ----------------------------------------------------------------
 ALTER TABLE claim_summary DROP COLUMN id;
 ALTER TABLE claim_summary ADD CONSTRAINT claim_summary_key UNIQUE (process_date, insurer_id, chorganisation_id, status);
-
-----------------------------------------------------------------
 DROP SEQUENCE claim_summary_id_seq;
-ALTER TABLE claim_summary_process DROP COLUMN id;
 
 ----------------------------------------------------------------
+
+ALTER TABLE claim_summary_process DROP COLUMN id;
 ALTER TABLE claim_summary_process ADD CONSTRAINT claim_summary_process_pkey PRIMARY KEY (process_date);
 
 ----------------------------------------------------------------
@@ -454,8 +453,10 @@ ALTER TABLE vehicle_class_ceiling ADD CONSTRAINT ceiling_vehicle_class_fkey FORE
 
 ALTER TABLE bre_band DROP CONSTRAINT choband_insurer_fkey;
 ALTER TABLE bre_band DROP CONSTRAINT choband_insurer;
+ALTER TABLE insurer_alias DROP CONSTRAINT insurer_allias_pkey;
 ALTER TABLE insurer_alias ADD CONSTRAINT insurer_alias_pkey PRIMARY KEY (id);
 ALTER TABLE notification DROP CONSTRAINT fk237a88ebdf101435;
+ALTER TABLE reason_of_delay DROP CONSTRAINT reason_of_delay_pkey;
 ALTER TABLE reason_of_delay ADD CONSTRAINT reason_of_delay_id_pkey PRIMARY KEY (id);
 ALTER TABLE vehicle_class DROP CONSTRAINT fk58908aa5dc88f7de;
 ALTER TABLE vehicle_class DROP CONSTRAINT fk58908aa5ef9d5388;
@@ -566,3 +567,153 @@ ALTER TABLE rpt_claim_invoice OWNER TO postgres;
 ALTER TABLE insurer ALTER COLUMN is_claim_locked SET DEFAULT false;
 
 ----------------------------------------------------------------
+
+-- ADD WORKGROUP AND OWNERSHIP CONTROL TO WEB_USER_ROLE
+
+ALTER TABLE web_user_role ADD COLUMN is_workgroup_related boolean;
+ALTER TABLE web_user_role ALTER COLUMN is_workgroup_related SET STORAGE PLAIN;
+update web_user_role set is_workgroup_related = false;
+
+ALTER TABLE web_user_role ADD COLUMN is_ownership_related boolean;
+ALTER TABLE web_user_role ALTER COLUMN is_ownership_related SET STORAGE PLAIN;
+update web_user_role set is_ownership_related = false;
+
+update web_user_role set is_workgroup_related=true where name in ('ROLE_INS_CH', 'ROLE_INS_FNOL', 'ROLE_INS_COM');
+update web_user_role set is_ownership_related=true where name in ('ROLE_INS_CH');
+
+----------------------------------------------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.logInvoicePayment.AwaitingInvoicePayment');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.approveBREPassedClaim.InvoiceApprovedByBRE');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.doInvoicePaymentReceived.InvoicePaymentLogged');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.routeClaims.ClaimUnacknowledgedUnrouted');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.claimOwnership.ClaimUnacknowledgedUnassigned');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.AwaitingCarHireInfo');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.AwaitingInvoiceData');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.AwaitingInvoicePayment');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.ClaimPending');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.ClaimReferredToEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.ClaimRejected');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.ClaimRejectionContested');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.ClaimUnacknowledgedRouted');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.ClaimUpdatedByEngineer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.ContestedInvoiceReferredToCHO');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.ContestedInvoiceReferredToInsurer');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.InvoiceApprovedByBRE');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.InvoiceDataCalculationIncorrect');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.InvoiceEscalated');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.InvoiceEscalatedToHandler');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.InvoicePaymentLogged');
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'batch.updateClaimWorkgroupAndOwner.PaymentReceived');
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_PC',1, (select id from accessibility where name ='batch.logInvoicePayment.AwaitingInvoicePayment'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_MNG', 1, (select id from accessibility where name ='batch.logInvoicePayment.AwaitingInvoicePayment'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_CH', 1, (select id from accessibility where name ='batch.logInvoicePayment.AwaitingInvoicePayment'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ALL', 0, (select id from accessibility where name ='batch.logInvoicePayment.AwaitingInvoicePayment'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHOX_ADMIN', 1, (select id from accessibility where name ='batch.logInvoicePayment.AwaitingInvoicePayment'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_CH', 1, (select id from accessibility where name ='batch.approveBREPassedClaim.InvoiceApprovedByBRE'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_MNG', 1, (select id from accessibility where name ='batch.approveBREPassedClaim.InvoiceApprovedByBRE'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ALL', 0, (select id from accessibility where name ='batch.approveBREPassedClaim.InvoiceApprovedByBRE'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHOX_ADMIN', 1, (select id from accessibility where name ='batch.approveBREPassedClaim.InvoiceApprovedByBRE'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHO_MNG',1, (select id from accessibility where name ='batch.doInvoicePaymentReceived.InvoicePaymentLogged'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHO_OPR',1, (select id from accessibility where name ='batch.doInvoicePaymentReceived.InvoicePaymentLogged'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ALL',0, (select id from accessibility where name ='batch.doInvoicePaymentReceived.InvoicePaymentLogged'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHOX_ADMIN',1, (select id from accessibility where name ='batch.doInvoicePaymentReceived.InvoicePaymentLogged'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ALL', 0, (select id from accessibility where name ='batch.routeClaims.ClaimUnacknowledgedUnrouted'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_CR', 1, (select id from accessibility where name ='batch.routeClaims.ClaimUnacknowledgedUnrouted'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_INS_MNG', 1, (select id from accessibility where name ='batch.routeClaims.ClaimUnacknowledgedUnrouted'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ROLE_CHOX_ADMIN', 1, (select id from accessibility where name ='batch.routeClaims.ClaimUnacknowledgedUnrouted'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL',0, (select id from accessibility where name ='batch.claimOwnership.ClaimUnacknowledgedUnassigned'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM',1, (select id from accessibility where name ='batch.claimOwnership.ClaimUnacknowledgedUnassigned'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG',1, (select id from accessibility where name ='batch.claimOwnership.ClaimUnacknowledgedUnassigned'));
+
+----------------
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.AwaitingCarHireInfo'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.AwaitingCarHireInfo'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.AwaitingCarHireInfo'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.AwaitingInvoiceData'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.AwaitingInvoiceData'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.AwaitingInvoiceData'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.AwaitingInvoicePayment'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.AwaitingInvoicePayment'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.AwaitingInvoicePayment'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimPending'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimPending'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimPending'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimReferredToEngineer'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimReferredToEngineer'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimReferredToEngineer'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimRejected'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimRejected'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimRejected'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimRejectionContested'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimRejectionContested'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimRejectionContested'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimUnacknowledgedRouted'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimUnacknowledgedRouted'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimUnacknowledgedRouted'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimUpdatedByEngineer'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimUpdatedByEngineer'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ClaimUpdatedByEngineer'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ContestedInvoiceReferredToCHO'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ContestedInvoiceReferredToCHO'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ContestedInvoiceReferredToCHO'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ContestedInvoiceReferredToInsurer'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ContestedInvoiceReferredToInsurer'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.ContestedInvoiceReferredToInsurer'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceApprovedByBRE'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceApprovedByBRE'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceApprovedByBRE'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceDataCalculationIncorrect'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceDataCalculationIncorrect'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceDataCalculationIncorrect'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceEscalated'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceEscalated'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceEscalated'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceEscalatedToHandler'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceEscalatedToHandler'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceEscalatedToHandler'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoicePaymentLogged'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoicePaymentLogged'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoicePaymentLogged'));
+
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.PaymentReceived'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.PaymentReceived'));
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.PaymentReceived'));
+
+-------------------------------
+
+-- ADD SEQUQNCE
+CREATE SEQUENCE claim_summary_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE claim_summary_id_seq OWNER TO postgres;
+ALTER TABLE claim_summary ADD COLUMN id integer NOT NULL DEFAULT nextval('claim_summary_id_seq'::regclass);
+ALTER TABLE claim_summary ADD CONSTRAINT claim_summary_pkey PRIMARY KEY (id);
+ALTER TABLE claim_summary DROP CONSTRAINT claim_summary_key;
+
+-------------------------------
+

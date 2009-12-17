@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
 
 import idas.chox.core.model.ClaimStatus;
@@ -14,10 +10,6 @@ import idas.chox.web.security.ReportAccessibility;
 import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 
-/**
- *
- * @author Emmanuel
- */
 public class InboxAction extends BaseAction implements SessionAware {
 
     private Map session;
