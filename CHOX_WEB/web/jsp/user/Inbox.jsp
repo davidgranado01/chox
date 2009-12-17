@@ -612,7 +612,7 @@
         var updateClaimOwnershipSelectionDlg;
         var doUpdateClaimOwnerAction = new Ext.Action({
 
-            text: 'Update Claim(s) Workgroup And Claim Owner',
+            text: 'Update Claim(s) Workgroup/Claim Owner',
             hidden:isCho,
             handler: function(){
 
@@ -622,7 +622,7 @@
                 "ContestedInvoiceReferredToCHO", "ContestedInvoiceReferredToInsurer", "InvoiceApprovedByBRE",
                 "InvoiceDataCalculationIncorrect", "InvoiceEscalated", "InvoiceEscalatedToHandler",
                 "InvoicePaymentLogged", "PaymentReceived"];
-            
+
                 var selectedRecords =  sm2.getSelections();
                 var selectedNotMyClaimsIDs = getErrorClaims(selectedRecords, true, false, allowStatuses);
 
@@ -638,7 +638,7 @@
                             modal: true,
                             closeAction:'hide',
                             plain: false,
-                            title: 'Update Claim(s) Workgroup And Claim Owner',
+                            title: 'Update Claim(s) Workgroup/Claim Owner',
                             resizable : false,
                             items: new Ext.Panel({
                                 applyTo: 'couSelectionPanel'

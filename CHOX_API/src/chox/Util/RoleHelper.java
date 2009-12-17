@@ -3,6 +3,7 @@ package chox.Util;
 import chox.model.WebUser;
 import chox.model.WebUserRole;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 public class RoleHelper {
@@ -123,106 +124,8 @@ public class RoleHelper {
 
         return bFlag;
     }
-   
-    /*
-    public static boolean isClaimHandlerOnly(WebUser user){
 
-        boolean bFlag = false;
-
-        if(isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_CH)
-                && hasClaimHandlerRoleOnly(user.getRoles())){
-            bFlag = true;
-        }
-
-        return bFlag;
-    }
-
-    public static boolean isComOnly(WebUser user){
-
-        boolean bFlag = false;
-
-        if(isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_COM)
-                && hasClaimHandlerRoleOnly(user.getRoles())){
-            bFlag = true;
-        }
-
-        return bFlag;
-     
-    }
-    */
-   
-   public static boolean hasClaimHandlerRoleOnly(Set roles){
-       
-        boolean bFlag = true;
-
-        if(roles!=null){
-
-            if (roles.size() > 0){
-
-                Iterator itr = roles.iterator();
-
-                while (itr.hasNext()) {
-
-                    WebUserRole webUserrole = (WebUserRole) itr.next();
-
-                    if (!webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CH)
-                            && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS)
-                            ) {
-                        bFlag = false;
-                        break;
-                    }
-                }
-            }
-        }
-        return bFlag;
-   }
-
-   public static boolean hasComRoleOnly(Set roles){
-
-        boolean bFlag = true;
-
-        if(roles!=null){
-
-            if (roles.size() > 0){
-
-                Iterator itr = roles.iterator();
-
-                while (itr.hasNext()) {
-
-                    WebUserRole webUserrole = (WebUserRole) itr.next();
-
-                    if (!webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_COM)
-                            && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS)
-                            ) {
-                        bFlag = false;
-                        break;
-                    }
-                }
-            }
-        }
-        return bFlag;
-   }
-
-   public static boolean hasComAndCHRoleOnly(Set roles){
-
-       boolean bFlag = false;
-
-       if(roles!=null){
-            
-           if (roles.size() > 0){
-
-               if(isCheckSelectedRoleExist(roles, WebUserRole.ROLE_CH) 
-                       && isCheckSelectedRoleExist(roles, WebUserRole.ROLE_COM)
-                       && !hasNoneWorkgroupEnableRole(roles)){
-                    bFlag = true;
-               }
-            }
-        }
-       
-        return bFlag;
-   }
-
-   public static boolean hasNoneWorkgroupEnableRole(Set roles){
+    public static boolean hasNoneWorkgroupEnableRole(Set roles){
        
         boolean bFlag = false;
 
@@ -248,7 +151,7 @@ public class RoleHelper {
         }
         return bFlag;
    }
-   
+
    public static boolean isCheckSelectedRoleExist(Set roles, String roleName){
 
         boolean bFlag = false;
@@ -274,6 +177,34 @@ public class RoleHelper {
 
         return bFlag;
 
+    }
+
+    public static int getWorkgroupRoleCount(Set roles){
+
+        int iCount = 0;
+        
+        List<String> workgroupRoles = WebUserRole.getWorkgroupRoles();
+
+        if(roles!=null){
+
+            if (roles.size() > 0){
+
+                Iterator itr = roles.iterator();
+
+                while (itr.hasNext()) {
+
+                    WebUserRole webUserrole = (WebUserRole) itr.next();
+
+                    if (workgroupRoles.contains(webUserrole.getName())) {
+
+                        iCount++;
+                    }
+
+                }
+            }
+        }
+        System.out.println(">>>>>>>>>>>>>>>>>> iCount : "+iCount);
+        return iCount;
     }
 
 }

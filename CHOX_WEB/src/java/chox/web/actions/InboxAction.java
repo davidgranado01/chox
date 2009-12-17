@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package chox.web.actions;
 
 import chox.model.ClaimStatus;
@@ -14,10 +10,6 @@ import org.apache.struts2.interceptor.SessionAware;
 import chox.services.AuditTrailService;
 import chox.web.security.AdminAccessibility;
 
-/**
- *
- * @author Emmanuel
- */
 public class InboxAction extends BaseAction implements SessionAware {
 
     private Map session;

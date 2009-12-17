@@ -15,7 +15,7 @@ public class AccessibilityHelper {
 
             // ONLY INSURER USER
             // ONLY INSURER WORKGROUPCONTROL IS TRUE
-            if(RoleHelper.isUserCheckByWorkgroup(user) && accEditable.isWorkgroupCheck()){
+            if(RoleHelper.isUserCheckByWorkgroup(user) && accEditable.isWorkgroupCheck() && user.getInsurer().isClaimLocked()){
 
                 // SET TO FALSE IF CLAIM's WORKGROUP IN USER'S WORKGROUP(S)
                 if(!AccessibilityHelper.isClaimWorkgroupOwnByUser(user, claim)){
@@ -50,7 +50,7 @@ public class AccessibilityHelper {
 
         // ONLY INSURER USER
         // ONLY INSURER WORKGROUPCONTROL IS TRUE
-        if(RoleHelper.isUserCheckByWorkgroup(user)){
+        if(RoleHelper.isUserCheckByWorkgroup(user) && user.getInsurer().isClaimLocked()){
 
             // SET TO FALSE IF CLAIM's WORKGROUP IN USER'S WORKGROUP(S)
             if(!isClaimWorkgroupOwnByUser(user, claim)){

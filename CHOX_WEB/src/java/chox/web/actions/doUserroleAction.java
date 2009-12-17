@@ -166,12 +166,7 @@ public class doUserroleAction extends BaseAction{
                         boolean hasOpenClaims = claimService.isOpenClaimByWorkgroupsByUserExist(user.getInsurer().getId(), user.getWorkgroupIds(), -1);
                         boolean hasOtherComUsers = userService.isWorkgroupOwnByOtherUserByRole(user, WebUserRole.ROLE_COM);
 
-                        // System.out.println(">>>> hasOpenClaims:"+hasOpenClaims);
-                        // System.out.println(">>>> hasOtherComUsers:"+hasOtherComUsers);
-
                         if(hasOpenClaims && !hasOtherComUsers){
-
-                            // System.out.println(">>>> COM NOT ALLOW");
                             
                             errMsg = "User "+user.getDisplayName()+" is the last user that has "+selectedRoleDescription+" and is assigned to Workgroup(s). Are you sure you want to remove this role?";
                         }
@@ -184,12 +179,7 @@ public class doUserroleAction extends BaseAction{
                         boolean hasOpenFnolClaims = claimService.isOpenClaimByWorkgroupsByStatusExist(user.getInsurer().getId(), user.getWorkgroupIds(), ClaimStatus.CLAIM_REFERRED_TO_FNOL);
                         boolean hasOtherFnolUsers = userService.isWorkgroupOwnByOtherUserByRole(user, WebUserRole.ROLE_FNOL);
 
-                        // System.out.println(">>>> hasOpenFnolClaims:"+hasOpenFnolClaims);
-                        // System.out.println(">>>> hasOtherFnolUsers:"+hasOtherFnolUsers);
-
                         if(hasOpenFnolClaims && !hasOtherFnolUsers){
-
-                            // System.out.println(">>>> FNOL NOT ALLOW");
                             
                             errMsg = "User "+user.getDisplayName()+" is the last user that has "+selectedRoleDescription+" and is assigned to Workgroup(s). Are you sure you want to remove this role?";
                         }
@@ -205,12 +195,8 @@ public class doUserroleAction extends BaseAction{
 
                             // CLAIM OWNERSHIP
                             hasOpenClaims = claimService.isUserHasOpenClaim(user.getId());
-
-                            // System.out.println(">>>> CH hasOpenClaims:"+hasOpenClaims);
                             
                             if(hasOpenClaims){
-
-                                // System.out.println(">>>> CH OWNER NOT ALLOW");
                                 
                                 isAllowToDelete = false;
                                 errMsg = "User "+user.getDisplayName()+" has open claim(s) assigned to them, it is not possible to remove the assignment of a "+selectedRoleDescription+" Role against a user who has open claim(s)";
@@ -222,12 +208,7 @@ public class doUserroleAction extends BaseAction{
                             hasOpenClaims = claimService.isOpenClaimByWorkgroupsByUserExist(user.getInsurer().getId(), user.getWorkgroupIds(), -1);
                             hasOtherCHUsers = userService.isWorkgroupOwnByOtherUserByRole(user, WebUserRole.ROLE_CH);
 
-                            // System.out.println(">>>> CH WORKGROUP hasOpenClaims:"+hasOpenClaims);
-                            // System.out.println(">>>> CH WORKGROUP hasOtherCHUsers:"+hasOtherCHUsers);
-
                             if(hasOpenClaims && !hasOtherCHUsers){
-
-                                // System.out.println(">>>> CH WORKGROUP NOT ALLOW");
                                 
                                 errMsg = "User "+user.getDisplayName()+" is the last user that has "+selectedRoleDescription+" and is assigned to Workgroup(s). Are you sure you want to remove this role?";
                             }
@@ -236,9 +217,7 @@ public class doUserroleAction extends BaseAction{
 
                     if(isAllowToDelete){
 
-                        // System.out.println("CHECK 1 : PASSED : " + errMsg);
-                        
-                        if(user.getWorkgroupIds().size()>0 && user.getRoles().size()<=2){
+                        if(user.getWorkgroupIds().size()>0 && RoleHelper.getWorkgroupRoleCount(user.getRoles())<=1){
                             isAllowToDelete = false;
                             errMsg = "It is not possible to remove the assignment of "+selectedRoleDescription+" against a user who has workgroup(s). Please remove the workgroup(s) from this user.";
                         }
@@ -254,11 +233,7 @@ public class doUserroleAction extends BaseAction{
                     // CLAIM OWNERSHIP
                     boolean hasOpenClaims = claimService.isUserHasOpenClaim(user.getId());
 
-                    // System.out.println(">>>> CH hasOpenClaims:"+hasOpenClaims);
-
                     if(hasOpenClaims){
-
-                        // System.out.println(">>>> CH OWNER NOT ALLOW");
                         
                         isAllowToDelete = false;
                         errMsg = "User "+user.getDisplayName()+" has open claim(s) assigned to them, it is not possible to remove the assignment of a Claim Handler Role against a user who has open claim(s)";
@@ -275,28 +250,8 @@ public class doUserroleAction extends BaseAction{
 
     public String removeRoleMapping(){
         WebUserUserRole object = this.service.getObject(this.webUserUserRoleId);
-        this.service.DeleteObject(object);
-        
-        /*
-        WebUser user = userService.getLatestObject(webUserId);
-        if(user.getInsurer()!=null){
-            
-            Insurer insurer = insurerService.getObject(user.getInsurer().getId());
-
-            if(!user.isClaimHandler() && insurer.isWorkgroupEnable()
-                    && (
-                        object.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_CH)
-                        || object.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_COM)
-                        )){
-
-                // Integer recordDeleted = userWorkgroupService.DeleteObject(object.getWebUser().getId());
-                // String ackMsg = recordDeleted + " Workgroup(s) have been deleted";
-                // getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);
-            }
-        }
-        */
-        
+        this.service.DeleteObject(object);        
         return SUCCESS;
-        
-    }    
+    }
+    
 }

@@ -21,9 +21,10 @@
                     return this.optional(element) || re.test(value);
                 }, "Please check your input."
             );
-            
+
+            new Ext.ToolTip({ target: 'help-claimLocked', html: '"Enable claim locked" will force FNOL, COM, and CH only allowed to edit the claims belong to them only'});
             doFormValidation();
-            doOwnershipChange();
+            doPageLoadCheck();
 
         }); 
         
@@ -188,19 +189,51 @@
             
         }
 
-        function doOwnershipChange(){
+        function doPageLoadCheck(){
+            var claimWorkgroupEnable = doWorkgroupCheck();
+            var claimOwnershipEnable = doOwnershipCheck();
+
+            if(!claimWorkgroupEnable && !claimOwnershipEnable){
+                $("#ClaimLockedHolder").slideUp();
+                $('form#formUpdateInsurerDetail input[name="claimLocked"]').attr('checked', false);
+            }else{
+                $("#ClaimLockedHolder").slideDown();
+            }
+        }
+        
+        function doWorkgroupCheck(){
+
+            var claimWorkgroupEnable = false;
+            
+            if($('form#formUpdateInsurerDetail input[name="workgroupEnable"]:checked').val()){
+                claimWorkgroupEnable = true;
+                $("#AutomaticClaimRoutingHolder").slideDown();
+            }else{
+                $("#AutomaticClaimRoutingHolder").slideUp();
+                $('form#formUpdateInsurerDetail input[name="autoRoutingEnable"]').attr('checked', false);
+            }
+
+            return claimWorkgroupEnable;
+            
+        }
+        
+        function doOwnershipCheck(){
 
             var claimOwnershipEnable = false;
+            
             if($('form#formUpdateInsurerDetail input[name="claimOwnershipEnable"]:checked').val()){
                 claimOwnershipEnable = true;
             }
 
+            return claimOwnershipEnable;
+/*
             if(!claimOwnershipEnable){
                 $('form#formUpdateInsurerDetail input[name="claimOwnershipLocked"]').attr('disabled', true);
                 $('form#formUpdateInsurerDetail input[name="claimOwnershipLocked"]').attr('checked', false);
             }else{
                 $('form#formUpdateInsurerDetail input[name="claimOwnershipLocked"]').attr('disabled', false);
             }
+*/
 
         }
         
@@ -327,15 +360,19 @@
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Enable Workgroup</label>
-                    <s:checkbox name="workgroupEnable" value="workgroupEnable" />
+                    <s:checkbox name="workgroupEnable" value="workgroupEnable" onchange="javascript:doPageLoadCheck();"/>
                 </div>
-                 <div class="chox-form-item">
+                 <div class="chox-form-item" id="AutomaticClaimRoutingHolder">
                     <label class="chox-form-std-label">Enable Automatic Claim Routing</label>
                     <s:checkbox name="autoRoutingEnable" value="autoRoutingEnable" />
                 </div>
                  <div class="chox-form-item">
                     <label class="chox-form-std-label">Enable Claim Ownership</label>
-                    <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" onchange="javascript:doOwnershipChange();" /> Locked? <s:checkbox name="claimOwnershipLocked" value="claimOwnershipLocked" />
+                    <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" onchange="javascript:doPageLoadCheck();" />
+                </div>
+                 <div class="chox-form-item" id="ClaimLockedHolder">
+                    <label class="chox-form-std-label">Enable Claim Locked</label>
+                    <s:checkbox name="claimLocked" value="claimLocked" /><img id="help-claimLocked" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Active</label>

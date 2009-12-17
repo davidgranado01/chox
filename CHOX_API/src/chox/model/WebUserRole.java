@@ -1,6 +1,8 @@
 package chox.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WebUserRole extends AuditableEntity implements Serializable {
 
@@ -10,12 +12,16 @@ public class WebUserRole extends AuditableEntity implements Serializable {
     public static final String ROLE_CH = "ROLE_INS_CH";
     public static final String ROLE_COM = "ROLE_INS_COM";
     public static final String ROLE_FNOL = "ROLE_INS_FNOL";
-
-    // CREDIT HIRE MANAGER
     public static final String ROLE_CH_MNG = "ROLE_CHO_MNG";
-
-    // INSURER MANAGER
     public static final String ROLE_INS_MNG = "ROLE_INS_MNG";
+
+    public static List<String> getWorkgroupRoles() {
+        List<String> workgroupRoles = new ArrayList<String>();
+        workgroupRoles.add(ROLE_CH);
+        workgroupRoles.add(ROLE_COM);
+        workgroupRoles.add(ROLE_FNOL);
+        return workgroupRoles;
+    }
 
     protected String name;
     protected String description;
