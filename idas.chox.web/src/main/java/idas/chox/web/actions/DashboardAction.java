@@ -18,10 +18,6 @@ import java.util.List;
 import java.util.Map;
 import org.apache.struts2.interceptor.ParameterAware;
 
-/**
- *
- * @author Emmanuel
- */
 public class DashboardAction extends BaseAction implements ParameterAware {
 
     private DashBoardViewData monthToDateInsurerBoardViewData;
@@ -51,15 +47,6 @@ public class DashboardAction extends BaseAction implements ParameterAware {
 
         return "";
 
-    }
-
-    public String updateDashBoardSummary() {
-        String query = "select * from SqlRunStatusReport(" + this.getAuthenticatedUser().getUser().getId() + ");";
-        dataService.externalQuery(query, new HashMap());
-
-
-
-        return SUCCESS;
     }
 
     public String showInsurerBoardHeader() {

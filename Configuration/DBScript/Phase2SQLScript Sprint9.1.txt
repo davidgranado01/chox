@@ -279,3 +279,10 @@ DROP FUNCTION sqlgetcredithiredashboardbytype(integer, integer, integer);
 
 ---------------------------------------------------------------------------------------------
 
+ALTER TABLE web_user ADD COLUMN user_name character varying(256);
+update web_user set user_name = email;
+ALTER TABLE web_user ALTER COLUMN user_name SET NOT NULL;
+ALTER TABLE web_user ALTER COLUMN user_name SET STORAGE PLAIN;
+
+---------------------------------------------------------------------------------------------
+

@@ -25,7 +25,6 @@ public class InsurerDashboardBuilder {
 
     public DashBoardViewData getWeekToDate() {
         Map queryParameters = getQueryParameters();
-        //String query = getQuery();
 
         StringBuffer sb = new StringBuffer();
         sb.append("select ");
@@ -142,6 +141,7 @@ public class InsurerDashboardBuilder {
 
         queryParameters.put("pInsId", insurer.getId());
         queryParameters.put("pChorganisationId", choOrgId);
+        
         return queryParameters;
     }
 

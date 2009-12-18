@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.dashboard;
 
 import idas.chox.core.model.Chorganisation;
@@ -10,10 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- *
- * :author Emmanuel
- */
 public class ChoDashboardBuilder {
 
     private DataService dataService;
@@ -154,6 +146,7 @@ public class ChoDashboardBuilder {
         queryParameters.put("pInsurerId", insurerId);
 
         return queryParameters;
+        
     }
 
     public void setExtParameters(Map extParameters) {

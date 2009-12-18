@@ -369,16 +369,6 @@ ALTER SEQUENCE notification_id_seq1 RENAME TO notification_id_seq;
 ALTER SEQUENCE audit_trail_id_seq1 RENAME TO audit_trail_id_seq;
 
 ----------------------------------------------------------------
-ALTER TABLE claim_summary DROP COLUMN id;
-ALTER TABLE claim_summary ADD CONSTRAINT claim_summary_key UNIQUE (process_date, insurer_id, chorganisation_id, status);
-DROP SEQUENCE claim_summary_id_seq;
-
-----------------------------------------------------------------
-
-ALTER TABLE claim_summary_process DROP COLUMN id;
-ALTER TABLE claim_summary_process ADD CONSTRAINT claim_summary_process_pkey PRIMARY KEY (process_date);
-
-----------------------------------------------------------------
 ALTER SEQUENCE vehicleclass_id_seq RENAME TO vehicle_class_id_seq;
 ALTER SEQUENCE vehiclehire_id_seq RENAME TO vehicle_hire_id_seq;
 ALTER SEQUENCE thirdparty_id_seq RENAME TO third_party_id_seq;
@@ -700,19 +690,3 @@ insert into accessibility_item (id,role,access_right,accessibility_id) values ((
 insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ALL', 0,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.PaymentReceived'));
 insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_COM', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.PaymentReceived'));
 insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item),'ROLE_INS_MNG', 1,(select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.PaymentReceived'));
-
--------------------------------
-
--- ADD SEQUQNCE
-CREATE SEQUENCE claim_summary_id_seq
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 1
-  CACHE 1;
-ALTER TABLE claim_summary_id_seq OWNER TO postgres;
-ALTER TABLE claim_summary ADD COLUMN id integer NOT NULL DEFAULT nextval('claim_summary_id_seq'::regclass);
-ALTER TABLE claim_summary ADD CONSTRAINT claim_summary_pkey PRIMARY KEY (id);
-ALTER TABLE claim_summary DROP CONSTRAINT claim_summary_key;
-
-

@@ -5,6 +5,7 @@
     <id column="id" name="id">
       <generator class="increment"/>
     </id>
+    <property column="user_name" name="userName" not-null="true"/>
     <property column="email" name="email" not-null="true"/>
     <property column="first_name" name="firstName" not-null="true"/>
     <property column="last_name" name="lastName" not-null="true"/>

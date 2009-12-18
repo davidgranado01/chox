@@ -13,6 +13,7 @@ public class WebUser implements Serializable {
     // <editor-fold defaultstate="collapsed" desc="PARAMETERS">
     
     protected int id;
+    protected String userName;
     protected String email;
     protected String firstName;
     protected String lastName;
@@ -161,6 +162,14 @@ public class WebUser implements Serializable {
     
     // </editor-fold>
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    
     @Override
     public String toString() {
         String orgName = orgName = String.format("(%1$s)", getOrganisationName());

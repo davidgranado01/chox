@@ -74,11 +74,6 @@ public class ClaimTest {
 
 
     }
-//    @Test
-//    public void ExportSchema()
-//    {
-//        SchemaExport schemaExport = new SchemaExport(sessionFactory.getConfiguration());
-//        schemaExport.create(true, false);
-//    }
+
 }
 
