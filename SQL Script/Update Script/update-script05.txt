@@ -26,6 +26,6 @@ update insurer set is_claim_locked = false;
 
 --------------------------------------
 
-delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'extraAction.updateClaimOwner.%') and role='ROLE_CHOX_ADMIN'
+delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'extraAction.updateClaimOwner.%') and role='ROLE_CHOX_ADMIN';
 
 --------------------------------------
