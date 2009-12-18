@@ -745,12 +745,12 @@
                                     </tr>
                                 </s:if>
 
-                                <s:if test="!isClaimClosed && isCHO">
+                                <s:if test="!IsClaimClosedStatuses && isCHO">
                                     <tr>
                                         <td colspan="3" align="right"><input value="Close Claim" type="button" onclick="javascript: return closeClaimStatus();"/></td>
                                     </tr>
                                 </s:if>
-                                    
+
                                 <s:elseif test="isClaimClosed && isCHO">
                                     <tr>
                                         <td colspan="3" align="right"><input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/></td>

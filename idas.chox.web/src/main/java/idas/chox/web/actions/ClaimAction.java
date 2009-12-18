@@ -1180,6 +1180,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
 
+    /*
+     * DO NOT ALLOW TO CLOSE THE CLAIM WHERE STATUS IS IN  ClaimStatus.getClosedStatus()
+     */
+    public boolean getIsClaimClosedStatuses() {
+        boolean bFlag = false;
+
+        if((ClaimStatus.getClosedStatus()).contains(claim.getStatus())){
+            bFlag = true;
+        }
+
+        return bFlag;
+    }
+    
     public boolean getIsClaimClosed() {
         boolean bFlag = false;
 

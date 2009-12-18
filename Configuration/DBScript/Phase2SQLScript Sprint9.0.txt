@@ -715,5 +715,4 @@ ALTER TABLE claim_summary ADD COLUMN id integer NOT NULL DEFAULT nextval('claim_
 ALTER TABLE claim_summary ADD CONSTRAINT claim_summary_pkey PRIMARY KEY (id);
 ALTER TABLE claim_summary DROP CONSTRAINT claim_summary_key;
 
--------------------------------
 
