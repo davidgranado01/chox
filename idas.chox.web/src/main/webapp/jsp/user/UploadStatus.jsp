@@ -40,7 +40,7 @@
         <a href="<s:url action="onlineSupport"/>">Online Support Form</a>
         </div></li>
     <li><a href="javascript:onOpenAbout();">|&nbsp;About CHOX&nbsp;</a></li>
-    <li><a href="<%=request.getContextPath()%>/j_acegi_logout" >|&nbsp;<b><s:property value="CurrentUserDesc" /></b> ( Log Off )</a></li>
+    <li><a href="<%=request.getContextPath()%>/j_spring_security_logout" >|&nbsp;<b><s:property value="CurrentUserDesc" /></b> ( Log Off )</a></li>
 </ul>
 <div style="clear:both"></div>
                             </td>

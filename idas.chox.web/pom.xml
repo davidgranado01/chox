@@ -42,7 +42,7 @@
                 <filtering>false</filtering>
                 <directory>${basedir}/src/main/resources/reports</directory>
             </resource>
-             <resource>
+            <resource>
                 <filtering>false</filtering>
                 <directory>${basedir}/src/main/resources/excelTemplate</directory>
             </resource>

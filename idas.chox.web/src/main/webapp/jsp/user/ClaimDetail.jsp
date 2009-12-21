@@ -8,9 +8,9 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <html>
-    
+
     <head>
-        
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>IDAS-CHOX</title>
         <link href="<%= request.getContextPath()%>/css/chox.css" rel="stylesheet" type="text/css" media="all"/>
@@ -28,6 +28,9 @@
         <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script>
         <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
         <script src="<%= request.getContextPath()%>/scripts/actionPanel.js" type="text/javascript"></script>
+        <script src="<%= request.getContextPath()%>/scripts/ajax.js" type="text/javascript"></script>
+        <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
+        <script src="<%= request.getContextPath()%>/scripts/ui.js" type="text/javascript"></script>
 
         <script type="text/javascript">
 
@@ -74,15 +77,13 @@
                 error: onSubmitError
             };
 
-            $(document).ready(function(){
-
+            $(function(){
                 var fsets =  $('legend');
                 fsets.click(function(){ $(this).next().toggle();});
                 fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
                 fsets.mouseout(function(){ $(this).css("cursor","normal");});
                 $('.entity-form').ajaxForm(globalEntityFormOptions);
-                pingServer();
-
+                activityMonitor.pingServer(<s:property value="id"/>);
             });
 
             function onBeforeSubmit(formData, jqForm, options) {
@@ -384,15 +385,15 @@
                             {header: "Message", width: 700, dataIndex: 'comment', sortable: false, resizable: true}
                         ],
                         viewConfig:{
-                             getRowClass: function(record, index) {
+                            getRowClass: function(record, index) {
     
 
-                                    var c = record.get('visibilityType');
-                                    if(c>0){
-                                       return 'private-comment';
-                                    }
-
+                                var c = record.get('visibilityType');
+                                if(c>0){
+                                    return 'private-comment';
                                 }
+
+                            }
                         },
                         renderTo:'commentsGrid', width:960, autoHeight:true, enableHdMenu:false
                     });
@@ -405,13 +406,13 @@
 
                     var title="Notes";
                     var msg = "<b>Created Date</b>: " + comment.get("createdDate");
-                        msg += "<br/><b>Created By</b>: " + comment.get("createdBy") + "<br/>";
-                        msg += "<br/><b>Message";
+                    msg += "<br/><b>Created By</b>: " + comment.get("createdBy") + "<br/>";
+                    msg += "<br/><b>Message";
                         
-                        if(comment.get("visibilityType")>0){
-                           msg += " (Private Note)";
-                        }
-                        msg += "</b>: <br/>" + comment.get("comment");
+                    if(comment.get("visibilityType")>0){
+                        msg += " (Private Note)";
+                    }
+                    msg += "</b>: <br/>" + comment.get("comment");
                         
 
                     propmtMsg(title, msg);
@@ -587,35 +588,6 @@
             
             var t;
 
-            function pingServer()
-            {
-                $.getJSON('activityMonitoringAction.action?claimId=<s:property value="id" />' + "&token=" + random_number(),
-                function(data){
-
-                    if(data.results.length > 0)
-                    {
-
-                        $("#userViewingThisClaim").empty();
-                        $.each(data.results, function(i,result){
-                            if(i > 0)
-                            {
-                                $("#userViewingThisClaim").append(', ');
-                            }
-                            $("#userViewingThisClaim").append(result);
-                        });
-                        $("#userViewingThisClaimDiv").show();
-
-                    }
-                    else
-                    {
-                        $("#userViewingThisClaimDiv").hide();
-                    }
-
-                });
-
-                t=setTimeout("pingServer()",4000);
-            }
-
             function updateAnomalies(a){
                 document.location = "doUpdateAnomalies.action?id="+a;
             }
@@ -696,7 +668,7 @@
                                             <a href="<s:url action="onlineSupport"/>">Online Support Form</a>
                                         </div></li>
                                     <li><a href="javascript:onOpenAbout();">|&nbsp;About CHOX&nbsp;</a></li>
-                                    <li><a href="<%=request.getContextPath()%>/j_acegi_logout" >|&nbsp;<b><s:property value="CurrentUserDesc" /></b> ( Log Off )</a></li>
+                                    <li><a href="<%=request.getContextPath()%>/j_spring_security_logout" >|&nbsp;<b><s:property value="CurrentUserDesc" /></b> ( Log Off )</a></li>
                                 </ul>
                                 <div style="clear:both"></div>
                             </td>
@@ -705,9 +677,9 @@
                 </div>
 
                 <div style="width:960px">
-                    
+
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">
-                        
+
                         <fieldset class="x-fieldset">
                             <legend>Claim Summary</legend>
                             <table cellpadding="0" cellspacing="0" border="0">
@@ -811,11 +783,11 @@
                     <div id="escalateUnassignedClaim" class="extraActionClass" style="display: none;">
                         <table width="100%">
                             <tr><td>
-                            <div class="chox-claim-header x-panel-bwrap chox-form-container">
-                                <s:action name="getEscalateUnassignedClaim" executeResult="true"></s:action>
-                                <div class="action-message"><s:property value="actionResult" /></div>
-                            </div>
-                            </td></tr>
+                                    <div class="chox-claim-header x-panel-bwrap chox-form-container">
+                                        <s:action name="getEscalateUnassignedClaim" executeResult="true"></s:action>
+                                        <div class="action-message"><s:property value="actionResult" /></div>
+                                    </div>
+                                </td></tr>
                         </table>
                     </div>
 
@@ -829,9 +801,9 @@
                 </s:if>
 
                 <s:if test="notificationAccessibility.userViewingNotificationAccessibility">
-                <div id="userViewingThisClaimDiv" class="status-warning" style="display:none;">
-                    This claim is currently being viewed and / or modified by the following user(s) : <span id="userViewingThisClaim"></span>
-                </div>
+                    <div id="userViewingThisClaimDiv" class="status-warning" style="display:none;">
+                        This claim is currently being viewed and / or modified by the following user(s) : <span id="userViewingThisClaim"></span>
+                    </div>
                 </s:if>
 
                 <s:if test="isAnyIntelligentNotes && notificationAccessibility.intelligentNotesNotificationAccessibility">
@@ -850,11 +822,11 @@
                 </s:if>
 
                 <s:if test="notificationAccessibility.notificationNotesNotificationAccessibility">
-                <div id="notificationNotesDiv">
-                    <s:action executeResult="true" name="renderNotifications">
-                     <s:param name="id"><s:property value="id" /></s:param>
-                    </s:action>
-                </div>
+                    <div id="notificationNotesDiv">
+                        <s:action executeResult="true" name="renderNotifications">
+                            <s:param name="id"><s:property value="id" /></s:param>
+                        </s:action>
+                    </div>
                 </s:if>
 
                 <script type="text/javascript">
@@ -1081,10 +1053,10 @@
 
                     <!-- ************************ PAYMENT PACK / ATTACHMENT  *********** !-->
                     <div id="paymentPack" class="x-hide-display">
-                        
+
                         <s:if test="tabAccessibility.paymentPackTabAccessibility != 0">
-                            
-                        <script type="text/javascript">
+
+                            <script type="text/javascript">
                             
                                 var sucessColor = "#15428b";
                                 var warningColor = "red";
@@ -1167,38 +1139,38 @@
                                     attachmentHtmlDesc = "<table cellpadding='0' cellspacing='0' border='0' class='remarkTable'>";
                                     attachmentHtmlDesc += "<tr><th width='28%'><b>Type</b></th><th width='70%'><b>Description</b></th></tr>";
 
-                                    <s:iterator value="AllowFileTypes">
+                                <s:iterator value="AllowFileTypes">
                                         attachmentHtmlDesc +=     '<tr>';
                                         attachmentHtmlDesc += '<td>.<s:property value="code"/>    </td>';
                                         attachmentHtmlDesc += '<td><s:property value="description"/></td>';
                                         attachmentHtmlDesc += '</tr>';
-                                    </s:iterator>
+                                </s:iterator>
 
-                                    attachmentHtmlDesc += "</table>";
+                                        attachmentHtmlDesc += "</table>";
 
-                                    new Ext.ToolTip({
-                                        target: 'attachmentTypeSpan',
-                                        html: attachmentHtmlDesc,
-                                        title: 'Attachment Formats',
-                                        autoHide: false,
-                                        closable: true,
-                                        draggable:true
+                                        new Ext.ToolTip({
+                                            target: 'attachmentTypeSpan',
+                                            html: attachmentHtmlDesc,
+                                            title: 'Attachment Formats',
+                                            autoHide: false,
+                                            closable: true,
+                                            draggable:true
+                                        });
+
+                                        Ext.QuickTips.init();
+
                                     });
-
-                                    Ext.QuickTips.init();
-
-                                });
                                 
                             </script>
 
-                        <div class="attachments  x-panel-bwrap chox-form-container">
+                            <div class="attachments  x-panel-bwrap chox-form-container">
 
-                        <form id="fAttachment" action="createNewAttachment.action" method="POST" enctype="multipart/form-data" name="Attform">
+                                <form id="fAttachment" action="createNewAttachment.action" method="POST" enctype="multipart/form-data" name="Attform">
                                     <input type="hidden" name="claimId" value='<s:property value="id" />'>
                                     <input type="hidden" name="uploadFileName">
 
                                     <fieldset class="x-fieldset">
-                                        
+
                                         <legend>Add a new Attachment&nbsp;</legend>
 
                                         <table class="chox-form-item" cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -1251,11 +1223,11 @@
                                         </table>
 
                                     </fieldset>
-                        </form>
-                    </div>
+                                </form>
+                            </div>
 
-                        <a name="attachmentlisting"></a>
-                        <div id="paymentPackGrid"></div>
+                            <a name="attachmentlisting"></a>
+                            <div id="paymentPackGrid"></div>
 
                         </s:if>
                     </div>
@@ -1278,7 +1250,7 @@
                     <div id="comments" class="x-hide-display">
 
                         <s:if test="tabAccessibility.notesTabAccessibility != 0">
-                                
+
                             <script type="text/javascript">
 
                                 $(document).ready(function() {
@@ -1325,22 +1297,22 @@
                                             <div class="chox-form-item">
                                                 <s:textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment" />
                                             </div>
-                                            
+
                                             <div class="chox-form-item">
 
-<s:if test="isInsurer">
-    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note (Visible By CHO)</span>
-    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only"/> Private Note (Only Visible Internally)</span>
-</s:if>
-<s:elseif test="isCHO">
-    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note (Visible By Insurer)</span>
-    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only"/> Private Note (Only Visible Internally)</span>
-</s:elseif>
-<s:else>
-    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note</span>
-    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only"/> Private Note (Only Visible By Insurer)</span>
-    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only"/> Private Note (Only Visible By CHO)</span>
-</s:else>
+                                                <s:if test="isInsurer">
+                                                    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note (Visible By CHO)</span>
+                                                    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only"/> Private Note (Only Visible Internally)</span>
+                                                    </s:if>
+                                                    <s:elseif test="isCHO">
+                                                    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note (Visible By Insurer)</span>
+                                                    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only"/> Private Note (Only Visible Internally)</span>
+                                                    </s:elseif>
+                                                    <s:else>
+                                                    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note</span>
+                                                    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only"/> Private Note (Only Visible By Insurer)</span>
+                                                    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only"/> Private Note (Only Visible By CHO)</span>
+                                                    </s:else>
                                             </div>
 
                                             <input type="submit" id="bAddComment" value="Add Note" onclick="javascript:return commentFormValidation();"/>
@@ -1350,7 +1322,7 @@
                                 <div class="errorBox" id="CmErrMsgBox" style="color:red;font-weight: bold;font-size: 10px;"></div>
                                 <div class="remark-indicator">Private notes are highlighted in blue</div>
                             </div>
-                            
+
                             <div id="commentsGrid"></div>
 
                         </s:if>

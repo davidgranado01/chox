@@ -44,11 +44,14 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>hibernateFilter</filter-name>
-        <url-pattern>/j_acegi_security_check</url-pattern>
+        <url-pattern>/j_spring_security_check</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 
     <filter-mapping>
@@ -91,5 +94,9 @@
         <welcome-file>default.jsp</welcome-file>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
 
 </web-app>

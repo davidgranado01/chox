@@ -26,13 +26,6 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
     private Authentication currentAuthentication;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-
-        // Ensure sendRedirect will always be called with url = true on successful auth.
-        setAlwaysUseDefaultTargetUrl(true);
-    }
-
-    @Override
     protected void onSuccessfulAuthentication(HttpServletRequest request,
             HttpServletResponse response, Authentication authResult)
             throws IOException {

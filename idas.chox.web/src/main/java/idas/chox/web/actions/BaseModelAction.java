@@ -21,7 +21,6 @@ public abstract class BaseModelAction extends BaseAction {
     public static final String READ_ONLY = "r";
     public static final String EDITABLE = "w";
     public static final String DECLINE = "decline";
-    protected int objectId = 0;
     protected int claimId = 0;
     protected String claimStatus;
     protected String actionResult;
@@ -33,15 +32,7 @@ public abstract class BaseModelAction extends BaseAction {
     // </editor-fold>
 
     abstract String getTabName();
-
-    public int getObjectId() {
-        return objectId;
-    }
-
-    public void setObjectId(int id) {
-        this.objectId = id;
-    }
-
+  
     public String getCaimStatus() {
         return claimStatus;
     }
@@ -70,7 +61,7 @@ public abstract class BaseModelAction extends BaseAction {
     public String execute() {
         GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
         String tabName = getTabName();
-        String claimStatus = getCaimStatus();
+        claimStatus = getCaimStatus();
         short accessRight = applicationAccessibility.checkTabAccessibility(tabName, grantedAuthorities, claimStatus);
 
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
