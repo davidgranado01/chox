@@ -27,7 +27,7 @@
 
         userworkgroup_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: 'user/getUserWorkgroup.action?webUserId='+<s:property value="id" />+uniqeToken(), method:'GET'}),
+            ({url: 'user/getUserWorkgroup.action?webUserId='+<s:property value="id" />+uniqeToken(), method:'POST'}),
             reader:userworkgroup_gridviewJsonReader
         });
         
@@ -43,12 +43,11 @@
                     return "<a href='#' class='highlightItem'>Remove</a>"}}
             ],
             renderTo:'userworkgroup_gridviewGrid',
-                width:615,
-                autoHeight:true,
-                enableHdMenu:false
-            });
+            width:700,
+            height:450
+        });
             
-            userworkgroup_loadGridViewList()
+        userworkgroup_loadGridViewList()
 
     }); 
        
@@ -175,7 +174,6 @@
             var sAction = "updateUserDetailPanel.action";
             var sparameters = "mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" /> + "&tabIndex=" + userDetailTabIndex;
             doSectionLoad(sLocaltion, sAction, sparameters);
-            // $("#admin_param_panel").load("updateUserDetailPanel.action?mode=Edit&objectId=" + <s:property value="id" /> + "&orgTypeId=" + <s:property value="orgTypeId" /> + "&tabIndex="+userDetailTabIndex+uniqeToken());
         }
     }
     

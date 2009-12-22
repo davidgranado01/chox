@@ -7,6 +7,20 @@ public interface UserService {
 
     public WebUser findByEmail(String email);
 
+    public boolean isEmailExist(String email);
+
+    public boolean isEmailExist(String email, int userId);
+
+    public WebUser loadUserByEmail(String email);
+
+    public WebUser findByUserName(String userName);
+
+    public boolean isUserNameExist(String userName);
+
+    public boolean isUserNameExist(String userName, int userId);
+
+    public WebUser loadUserByUsername(String userName);
+
     public void persist(WebUser user, String emailId);
 
     public WebUser getObject(int id);
@@ -17,21 +31,18 @@ public interface UserService {
 
     public List<WebUser> getUsers();
 
-    public WebUser getUsers(int id);
+    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, String selectedUserRole);
 
-    public List<WebUser> getUsers(int orgId, String orgType);
-
-    public boolean updateObject(WebUser object);
-
-    public boolean isEmailExist(String email);
-
-    public boolean isEmailExist(String email, int userId);
+    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, int selectedWorkgroupId, String selectedUserRole);
 
     public List<WebUser> getClaimHanldersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable);
 
     public List<WebUser> getClaimHanldersByInsurer(int insurerId, boolean workgroupEnable);
 
-    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, String selectedUserRole);
+    public List<WebUser> getUsers(int orgId, String orgType);
 
-    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, int selectedWorkgroupId, String selectedUserRole);
+    public WebUser getUsers(int id);
+
+    public boolean updateObject(WebUser object);
+
 }

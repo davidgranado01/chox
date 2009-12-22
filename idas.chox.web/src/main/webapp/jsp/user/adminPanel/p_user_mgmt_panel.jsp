@@ -28,6 +28,7 @@
             fields:
             [
                 {name:'id'},
+                {name:'userName'},
                 {name:'email'},
                 {name:'name'},
                 {name:'orgName'},
@@ -51,9 +52,10 @@
             store: gridviewData,
             loadMask: true,
             columns: [
-                {header: "Email", width: 120, dataIndex: 'email', sortable: true, resizable: true, renderer:function(value,p,r){
+                {header: "User Name", width: 100, dataIndex: 'userName', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
                 {header: "Name", width: 90, dataIndex: 'name', sortable: true, resizable: true},
+                {header: "Email", width: 120, dataIndex: 'email', sortable: true, resizable: true},
                 {header: "Organisation", width: 80, dataIndex: 'orgName', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},

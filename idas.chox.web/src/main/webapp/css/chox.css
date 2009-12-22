@@ -803,7 +803,7 @@ img.tip-target
 
 .admin-tab-css{
     padding-top:6px;
-    width:690px;
+    width:740px;
     background:#dfe8f6;
     background-color:#dfe8f6;
     overflow:hidden;
@@ -816,8 +816,8 @@ img.tip-target
     background-color:inherit;
     background:#dfe8f6;
     background-color:#dfe8f6;
-    height:800px;
     overflow:hidden;
+    height:800px;
 }
 
 .girdViewObject{
@@ -1118,4 +1118,5 @@ div.admin-gridview-header table tr td#buttons{
 div#chox-admin-holder{
     width:740px;
 }
+
 /******* ADMIN - END ************/

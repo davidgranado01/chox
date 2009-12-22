@@ -78,10 +78,7 @@ public class AdminAction extends BaseAction {
     return isSelectable;
 
     }
-    
-
-
-    
+   
     public boolean getIsCHOXAdmin(){
     return currentUser.getIsCHOXAdmin();
     }

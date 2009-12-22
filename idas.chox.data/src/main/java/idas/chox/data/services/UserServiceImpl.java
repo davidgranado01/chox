@@ -58,13 +58,59 @@ public class UserServiceImpl extends DataService implements UserService {
         return bFlag;
     }
 
-    public void persist(WebUser user, String emailId) {
-        this.save(user);
+    public WebUser loadUserByEmail(String email) {
+        WebUser u = findByEmail(email);
+        return u;
     }
 
-    public WebUser loadUserByUsername(String s) {
-        WebUser u = findByEmail(s);
+    public WebUser findByUserName(String userName) {
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("userName", userName).ignoreCase());
+        criteria.add(Restrictions.eq("status", true));
+        WebUser result = (WebUser) getByCriteria(criteria);
+        return result;
+    }
+
+    public boolean isUserNameExist(String userName) {
+
+        boolean bFlag = true;
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("userName", userName).ignoreCase());
+        WebUser result = (WebUser) getByCriteria(criteria);
+
+        if (result == null) {
+            bFlag = false;
+        }
+
+        return bFlag;
+    }
+
+    public boolean isUserNameExist(String userName, int userId) {
+
+        boolean bFlag = true;
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("userName", userName).ignoreCase());
+
+        if (userId > 0) {
+            criteria.add(Restrictions.ne("id", userId));
+        }
+
+        WebUser result = (WebUser) getByCriteria(criteria);
+
+        if (result == null) {
+            bFlag = false;
+        }
+
+        return bFlag;
+    }
+
+    public WebUser loadUserByUsername(String userName) {
+        WebUser u = findByUserName(userName);
         return u;
+    }
+
+    public void persist(WebUser user, String emailId) {
+        this.save(user);
     }
 
     public WebUser getObject(int id) {
@@ -90,7 +136,8 @@ public class UserServiceImpl extends DataService implements UserService {
         try {
 
             DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
-            criteria.addOrder(Order.asc("email"));
+            //criteria.addOrder(Order.asc("email"));
+            criteria.addOrder(Order.asc("userName"));
             users = findByCriteria(criteria);
 
         } catch (Throwable e) {
@@ -106,15 +153,15 @@ public class UserServiceImpl extends DataService implements UserService {
      * IF OTHER USERS WITH SAME ROLE AND
      * THOSE USERS HAVING SAME WORKGROUPS EXISTS
      */
-    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, String selectedUserRole){
+    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, String selectedUserRole) {
 
         boolean isExist = false;
 
-        if (user.getWorkgroupIds().size() > 0){
+        if (user.getWorkgroupIds().size() > 0) {
             Iterator itr = user.getWorkgroupIds().iterator();
             while (itr.hasNext()) {
-                int workgroupId = (Integer)itr.next();
-                if(isWorkgroupOwnByOtherUserByRole(user, workgroupId, selectedUserRole)){
+                int workgroupId = (Integer) itr.next();
+                if (isWorkgroupOwnByOtherUserByRole(user, workgroupId, selectedUserRole)) {
                     isExist = true;
                 }
             }
@@ -123,30 +170,28 @@ public class UserServiceImpl extends DataService implements UserService {
         return isExist;
     }
 
-    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, int selectedWorkgroupId, String selectedUserRole){
+    public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, int selectedWorkgroupId, String selectedUserRole) {
 
         boolean bFlag = false;
         List<WebUser> users = new ArrayList<WebUser>();
 
         try {
 
-                DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class)
-                .createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
+            DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
 
-                criteria.add(Restrictions.eq("role.name", selectedUserRole));
-                criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
-                criteria.add(Restrictions.eq("insurer.id", user.getInsurer().getId()));
-                criteria.add(Restrictions.eq("status", true));
-                criteria.add(Restrictions.ne("id", user.getId()));
+            criteria.add(Restrictions.eq("role.name", selectedUserRole));
+            criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
+            criteria.add(Restrictions.eq("insurer.id", user.getInsurer().getId()));
+            criteria.add(Restrictions.eq("status", true));
+            criteria.add(Restrictions.ne("id", user.getId()));
 
-                users = findByCriteria(criteria);
-                if(users.size()>0){
-                    bFlag = true;
-                }
+            users = findByCriteria(criteria);
+            if (users.size() > 0) {
+                bFlag = true;
+            }
 
         } catch (Throwable e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
 
         return bFlag;

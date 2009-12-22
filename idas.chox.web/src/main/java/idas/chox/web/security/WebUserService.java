@@ -16,8 +16,9 @@ public class WebUserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
     private SaltSource saltSource;
   
-    public WebUser findByEmail(String email) {       
-        return this.getUserService().findByEmail(email);
+    public WebUser findByUserName(String userName) {
+        //return this.getUserService().findByEmail(email);
+        return this.getUserService().findByUserName(userName);
     }
 
     public void persist(WebUser user, String emailId) {
@@ -25,27 +26,26 @@ public class WebUserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException, DataAccessException {
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {
         
-        WebUser u = findByEmail(s);
+        WebUser u = findByUserName(userName);
         
-        if (s == null || "".equals(s.trim()) || u == null) {
-            throw new UsernameNotFoundException(s);
+        if (userName == null || "".equals(userName.trim()) || u == null) {
+            throw new UsernameNotFoundException(userName);
         }
         
         if(u.getInsurer()!=null){
             if(!u.getInsurer().isStatus()){
-                throw new UsernameNotFoundException(s);
+                throw new UsernameNotFoundException(userName);
             }
         }
         
         if(u.getChorganisation()!=null){
             if(!u.getChorganisation().isStatus()){
-                throw new UsernameNotFoundException(s);
+                throw new UsernameNotFoundException(userName);
             }
         }
         UserDetails userDetail = new PermissionedUser(u);
-        //u.setPassword(encodePassword(userDetail));
         return userDetail;
     }
 

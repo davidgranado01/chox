@@ -31,7 +31,7 @@
 
         gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: 'user/getUserole.action?orgTypeId='+<s:property value="orgTypeId" />+'&webUserId='+<s:property value="id" />+uniqeToken(), method:'GET'}),
+            ({url: 'user/getUserole.action?orgTypeId='+<s:property value="orgTypeId" />+'&webUserId='+<s:property value="id" />+uniqeToken(), method:'POST'}),
             reader:gridviewJsonReader      
         });
         
@@ -47,20 +47,11 @@
                     return "<a href='#' class='highlightItem'>Remove</a>"}}
             ],
             renderTo:'gridviewGrid',
-                width:615,
-                autoHeight:true,
-                enableHdMenu:false
-            });
-
-            var pagingBar = new Ext.PagingToolbar({
-                pageSize: recordPerPage,
-                store: gridviewData,
-                displayInfo: true,
-                displayMsg: 'Displaying records {0} - {1} of {2}',
-                emptyMsg: "No record to display"
-            });    
-            
-            loadGridViewList()
+            width:700,
+            height:460
+        });
+  
+        loadGridViewList()
 
     }); 
     
@@ -170,9 +161,9 @@
     
 </script>
 
-            <div class="status-info">
+<div class="status-info">
 Assign one or more user roles against this user by using the 'Add New Role' button below. The assignment of roles will dictate which work queues the user will see as well the user's access/permission rights.
-            </div>    
+</div>    
                 
 <div>
     

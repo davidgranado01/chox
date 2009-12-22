@@ -12,6 +12,7 @@ import java.util.Set;
 public class UserViewData {
 
     private int id;
+    private String userName;
     private String email;
     private String name;
     private boolean status;
@@ -25,8 +26,8 @@ public class UserViewData {
 
     public UserViewData(WebUser object) {
 
-
         this.id = object.getId();
+        this.userName = object.getUserName();
         this.email = object.getEmail();
         this.name = object.getDisplayName();
         this.createdBy = object.getCreatedBy().getDisplayName();
@@ -135,4 +136,14 @@ public class UserViewData {
     public String getIsExpired() {
         return isExpired;
     }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+
 }

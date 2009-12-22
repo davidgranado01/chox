@@ -12,12 +12,11 @@
     
     function setupUserDetailPanels()
     {  
-        
        userDetailPanelTabs = new Ext.TabPanel({
        renderTo: 'userDetailMainPanel',
        activeTab: userDetailTabIndex,
-       height:655,
-       autoWidth:true,
+       height:635,
+       width:740,
        items:[
            {contentEl:'userDetailTab', title:'User Detail', listeners: {activate: handleActivate}},
            {contentEl:'userPasswordTab', title:'Change Password', disabled:isNew, listeners: {activate: handleActivate}},
@@ -32,7 +31,6 @@
         if(userDetailPanelTabs) { userDetailTabIndex = userDetailPanelTabs.items.indexOf(userDetailPanelTabs.getActiveTab()); }
     }
     
-    // GET CLAIM DETAIL
     function checkMode(){
         var mode = "<s:property value="mode"/>";
         if(mode!=null && mode!="" && mode=='Edit'){
@@ -61,7 +59,6 @@
         }
     }
 
-    // PAGE
     $(document).ready(function(){
         
         getOrgTypeId();
@@ -262,7 +259,8 @@
             $("#admin_param_panel").block();
 
             var op = {
-                success:       onSubmitUpdatePasswordResponseReceived,
+                success:
+                onSubmitUpdatePasswordResponseReceived,
                 timeout: 3000,
                 error: onSubmitError
             };
@@ -328,27 +326,28 @@
                     <s:if test="orgTypeId==2">
                         <input name="insurerId" id="insurerId" type="hidden" value="<s:property value="insurer.id" />">
                     </s:if>
+                    
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">User Name<span class="mandatory">*</span></label>
+                        <input type="text" class="chox-ttxt" id="CCDUserName" name="userName" value="<s:property value="userName" />"/>
+                    </div>
 
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">Email</label>
+                        <label class="chox-form-std-label">Email<span class="mandatory">*</span></label>
                         <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value="<s:property value="email" />"/>
                     </div>
-
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">&nbsp;</label>
-                        <span class="column_remark">Please note this (Email) will be the user's Username</span>
-                    </div>
-
+                
                 </s:if>
                 <s:else>
 
                 <div class="chox-form-item">
+                    <label class="chox-form-std-label">User Name<span class="mandatory">*</span></label>
+                    <input type="text" class="chox-ttxt" id="CCDUserName" name="userName" value="<s:property value="userName" />"/>
+                </div>
+                
+                <div class="chox-form-item">
                     <label class="chox-form-std-label">Email<span class="mandatory">*</span></label>
                     <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value="<s:property value="email" />"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label">&nbsp;</label>
-                    <span class="column_remark">Please note this (Email) will be the user's Username</span>
                 </div>
 
                 <s:if test="orgTypeId==2">
@@ -441,12 +440,15 @@
                 <div class="chox-form-submit-result" id="chox-form-submit-result"></div>
             </div>
         </form>
-        <div id="CDmessageBox" class="submit-error"></div>
-</div>
+        <div id="CDmessageBox" class="acknowledge-message-box"></div>
+    </div>
+                
 </div>
 
 <div id="userPasswordTab" class="x-hide-display">
+
     <div class="sub-admin-tab-css">
+
     <s:if test="mode=='Edit'">
 
             <div class="status-info">
@@ -480,9 +482,11 @@
             <div id="CDPswMessageBox" style="text-align:center" class="errorBox"></div>
     </s:if>
     </div>
+    
 </div>
 
 <div id="userRoleTab" class="x-hide-display">
+    
     <div class="sub-admin-tab-css">
     <s:if test="mode=='Edit'">
         <div>
@@ -493,9 +497,11 @@
         </div>
     </s:if>
     </div>
+    
 </div>
 
 <div id="userWorkgroupTab" class="x-hide-display">
+    
     <div class="sub-admin-tab-css">
     <s:if test="mode=='Edit'">
         <div>
@@ -506,4 +512,5 @@
         </div>
     </s:if>
     </div>
+    
 </div>

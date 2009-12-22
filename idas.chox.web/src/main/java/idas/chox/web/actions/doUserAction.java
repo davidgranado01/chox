@@ -20,7 +20,7 @@ import org.springframework.security.providers.encoding.PasswordEncoder;
 
 public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Preparable {
 
-    private UserService service;
+    private UserService userService;
     private String objectId;
     private WebUser model;
     private String orgTypeId;
@@ -160,8 +160,8 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         this.objectId = objectId;
     }
 
-    public void setUserService(UserService service) {
-        this.service = service;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     public void setLookupService(LookupService lookupService) {
@@ -202,7 +202,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
             if (isAllowUpdate) {
                 thisObject.setLastModifiedBy(this.getAuthenticatedUser().getUser());
                 thisObject.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-                this.service.updateObject(thisObject);
+                this.userService.updateObject(thisObject);
             }
 
         } catch (Exception ex) {
@@ -215,7 +215,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     public String triggerPasswordExpiredStatus() {
         WebUser thisObject = model;
         thisObject.setIsExpired(!thisObject.getIsExpired());
-        this.service.updateObject(thisObject);
+        this.userService.updateObject(thisObject);
         return SUCCESS;
 
     }
@@ -237,11 +237,11 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
             } else {
 
-                if (!this.service.isEmailExist(model.getEmail(), model.getId())) {
-                    this.service.updateObject(model);
+                if (!this.userService.isUserNameExist(model.getUserName(), model.getId())) {
+                    this.userService.updateObject(model);
                     this.getActionResponse().AssignMessageResult("Your changes have been saved.");
                 } else {
-                    this.getActionResponse().AddError("Email Address already exist!");
+                    this.getActionResponse().AddError("User Name is already exist!");
                 }
 
             }
@@ -265,7 +265,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
             model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
             model.setLastModifiedBy(this.getAuthenticatedUser().getUser());
             encodePassword();
-            this.service.updateObject(model);
+            this.userService.updateObject(model);
             this.getActionResponse().AssignMessageResult("Your changes have been saved.");
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -278,12 +278,12 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
         boolean bFlag = false;
 
-        if (!this.service.isEmailExist(model.getEmail())) {
+        if (!this.userService.isUserNameExist(model.getUserName())) {
 
             model.setCreatedBy(this.getAuthenticatedUser().getUser());
             model.setCreatedDate(DateHelper.getCurrentTimeStamp());
             model.setIsExpired(true);
-
+            
             if (insurerId > 0) {
                 Insurer selectInsurer = insurerService.getObject(insurerId);
                 model.setInsurer(selectInsurer);
@@ -296,7 +296,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
             encodePassword();
 
-            if (this.service.updateObject(model)) {
+            if (this.userService.updateObject(model)) {
 
                 if (webUserUserRoleService.addBaseNewUserRole(model.getId(), Integer.valueOf(this.orgTypeId))) {
                     bFlag = true;
@@ -310,7 +310,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
         } else {
             // actionResult = "Email Address already exist!";
-            this.getActionResponse().AddError("Email Address already exist!");
+            this.getActionResponse().AddError("User Name is already exist!!");
         }
 
         return bFlag;
@@ -323,7 +323,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
             model.setClaimHandler(false);
             mode = "New";
         } else {
-            model = service.getUsers(Integer.valueOf(objectId));
+            model = userService.getUsers(Integer.valueOf(objectId));
             mode = "Edit";
 
         }

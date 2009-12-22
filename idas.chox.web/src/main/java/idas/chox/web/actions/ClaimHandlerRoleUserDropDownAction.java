@@ -13,7 +13,7 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
     private List claimhandlers = null;
     private Integer workgroupId;
     private Integer insurerId;
-    private UserService service;
+    private UserService userService;
     private InsurerService insurerService;
 
     public Integer getWorkgroupId() {
@@ -32,8 +32,8 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
         this.insurerId = insurerId;
     }
 
-    public void setUserService(UserService service) {
-        this.service = service;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     public void setInsurerService(InsurerService insurerService) {
@@ -60,7 +60,7 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
         if (insurerId > 1) {
 
             Insurer insurer = insurerService.getObject(insurerId);
-            List<WebUser> users = service.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable());
+            List<WebUser> users = userService.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable());
 
             List items = new ArrayList<IdLookupItem>();
 
@@ -84,7 +84,7 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
 
             Insurer insurer = insurerService.getObject(insurerId);
 
-            List<WebUser> users = service.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable());
+            List<WebUser> users = userService.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable());
             List items = new ArrayList<IdLookupItem>();
 
             for (WebUser user : users) {

@@ -164,13 +164,7 @@ public class doUserroleAction extends BaseAction {
                         boolean hasOpenClaims = claimService.isOpenClaimByWorkgroupsByUserExist(user.getInsurer().getId(), user.getWorkgroupIds(), -1);
                         boolean hasOtherComUsers = userService.isWorkgroupOwnByOtherUserByRole(user, WebUserRole.ROLE_COM);
 
-                        // System.out.println(">>>> hasOpenClaims:"+hasOpenClaims);
-                        // System.out.println(">>>> hasOtherComUsers:"+hasOtherComUsers);
-
                         if(hasOpenClaims && !hasOtherComUsers){
-
-                            // System.out.println(">>>> COM NOT ALLOW");
-
                             errMsg = "User "+user.getDisplayName()+" is the last user that has "+selectedRoleDescription+" and is assigned to Workgroup(s). Are you sure you want to remove this role?";
                         }
 

@@ -14,7 +14,7 @@ import net.sf.json.JSONArray;
 public class UserAction extends BaseAction {
 
     private List<UserViewData> user;
-    private UserService service;
+    private UserService userService;
     private int orgTypeId = -1;
     private int orgId;
     private int userRoleId = -1;
@@ -24,8 +24,8 @@ public class UserAction extends BaseAction {
         return "{totalCount:" + this.user.size() + ",results:" + jObject.toString() + "}";
     }
 
-    public void setUserService(UserService service) {
-        this.service = service;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class UserAction extends BaseAction {
             orgType = OrganisationType.CHO;
         }
 
-        List<WebUser> userData = this.service.getUsers(orgId, orgType);
+        List<WebUser> userData = this.userService.getUsers(orgId, orgType);
 
         user = new ArrayList<UserViewData>();
 
