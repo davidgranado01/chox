@@ -5,25 +5,10 @@
     $(document).ready(function(){
 
 
-        var ecdDateDatePicker = new Ext.form.DateField({
-            name: 'ecdDate',
-            width: 100,
-            allowBlank: true,
-            format: 'd/m/Y',
-            showWeekNumber: true,
-            validationEvent : false,
-            value: '<s:date format="dd/MM/yyyy" name="date" />',
-            renderTo:'ecdDatePH'
-        });
+        var ecdDateDatePicker = ui.dateField('ecdDate','<s:date format="dd/MM/yyyy" name="date" />','ecdDatePH');
+        var form = $("#formAddNewHireMonitoringEcd");
 
-        var ecdOptions = { 
-            beforeSubmit:  onBeforeSubmit,  // pre-submit callback 
-            success:       onAfterEcdSubmit,  // post-submit callback 
-            timeout: 3000,
-            error: onSubmitError
-        };
-        
-        $("#formAddNewHireMonitoringEcd").validate(
+        form.validate(
         {
             errorLabelContainer: "#ECDMessageBox",                
             rules: {
@@ -42,17 +27,15 @@
                 supportingNote:{
                     required:"You must supply a value for 'Supporting Note'"
                 }
-            },
-            submitHandler: function(form) {
-                $(form).ajaxSubmit(ecdOptions);
-            }   
+            }
         });
         
-        $("#hireMonitorModalClose").click(function(){ $("#hireMonitoringDetails").unblock();});  
+        $("#hireMonitorModalClose").click(function(){ $("#hireMonitoringDetails").unblock();});
+
+        ui.ajaxForm(form,onAfterEcdSubmit);
     });
 
     function onAfterEcdSubmit(responseText, statusText)  {    
-        onSubmitResponseReceived(responseText, statusText);
         loadEcds();
         doResetForm();
     }
@@ -72,14 +55,12 @@
     function getReasonDescription(id){
 
         <s:iterator value="reasonOfDelay">
-
-            if(id=="<s:property value="id"/>"){
-                return "<s:property value="description"/>";
-            }
-
+                    if(id=="<s:property value="id"/>"){
+                        return "<s:property value="description"/>";
+                    }
         </s:iterator>
 
-    }
+     }
     
 </script>
 
@@ -91,14 +72,14 @@
     <fieldset class="x-fieldset">
         <legend>New/Revised ECD</legend>
         <div style="display:none" class="form-container">
-            
+
             <s:if test="isECDFormVisible">
 
                 <div class="chox-form-item">
                     <label class="chox-form-std-label" style="width:150px;">New ECD</label>
                     <span id="ecdDatePH"></span>
                 </div>
-                
+
                 <div class="chox-form-item">
                     <label class="chox-form-std-label" style="width:150px;">Reason for Delay</label>
                     <s:select 
@@ -108,7 +89,7 @@
                         emptyOption="false" onchange="doPopulateNote();" cssClass="hm-reason-drop-down">
                     </s:select>
                 </div>
-                
+
                 <div class="chox-form-item">
                     <label class="chox-form-std-label" style="width:150px;">Supporting Note</label>
                     <textarea class="chox-tta" id="ECDSupportingNote" cols="30" rows="5" name="supportingNote"><s:property value="supportingNote" /></textarea>
@@ -121,7 +102,7 @@
 
                 <div class="errorBox" id="ECDMessageBox"></div>
                 <div class="chox-form-submit-result">&nbsp;</div>
-                
+
             </s:if>
             <s:else>
                 <span id="ecdDatePH" style="visibility:hidden;"></span>
@@ -130,7 +111,7 @@
             </s:else>
 
             <div id="ecdGridHolder"></div>
-            
+
         </div>
 
     </fieldset></form>

@@ -15,7 +15,7 @@
     <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script>
 
-    <script src="<%= request.getContextPath()%>/scripts/form.js" type="text/javascript"></script>
+    <script src="<%= request.getContextPath()%>/scripts/ui.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/ajax.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
     

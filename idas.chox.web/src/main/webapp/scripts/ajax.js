@@ -26,16 +26,38 @@ var ajax = function() {
         handleGeneralError(textStatus);
         return false;
     }
+    
+    function checkJSONResponse(response)
+    {
+        if(response.isValid) {
+            return true;
+        }
+        handleGeneralErrors(response.Errors);
+        return false;
+    }
+
+    function handleGeneralErrors(errors)
+    {
+        if(SHOW_ERROR_MSG)
+        {
+            if(errors){
+                ui.promptErrorsMsg(errors);
+            }
+            else{
+                ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
+            }
+        }
+    }
 
     function handleGeneralError(msg)
     {
         if(SHOW_ERROR_MSG)
         {
             if(msg){
-                alert(msg);
+                ui.promptErrorMsg(msg);
             }
             else{
-                alert(AJAX_GENERAL_ERROR_MSG);
+                ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
             }
         }
     }
@@ -47,54 +69,60 @@ var ajax = function() {
         }
     }
 
-    return {
-        loadHtml : function(url,param,success,error) {
+    function loadHtml(url,param,success,error) {
 
-            var target = $(this);
-            $.post(url,param,function(data,textStatus){
+        var target = $(this);
+        $.post(url,param,function(data,textStatus){
 
-                if(checkResponse(textStatus)){
-                    if(target){
-                        target.html(data);
-                    }
-                    if(success){
-                        success(data);
-                    }
+            if(checkResponse(textStatus)){
+                if(target){
+                    target.html(data);
                 }
-                else{
-                    if(error){
-                        error(data);
-                    }
+                if(success){
+                    success(data);
                 }
-            },'html');
-        },
-        loadJson : function(url,param,success,error){
-
-            $.post(url,param,function(data,textStatus){
-
-                if(checkResponse(textStatus)){
-                    if(success){
-                        success(data);
-                    }
-                }
-                else{
-                    if(error){
-                        error(data);
-                    }
-                }
-            },'json');
-        },
-        handleAjaxError : function(conn, response, options){
-
-            //if session time out : server return error status 401
-            if(response.status == HTTP_SESSION_TIMEOUT_STATUS){
-                //redirect user back to login page
-                handleSessionTimeoutError();
             }
             else{
-                handleGeneralError();
+                if(error){
+                    error(data);
+                }
             }
+        },'html');
+    }
+
+    function loadJson(url,param,success,error){
+
+        $.post(url,param,function(data,textStatus){
+
+            if(checkResponse(textStatus) && checkJSONResponse(data)){
+                if(success){
+                    success(data);
+                }
+            }
+            else{
+                if(error){
+                    error(data);
+                }
+            }
+        },'json');
+    }
+
+    function handleAjaxError(conn, response, options){
+
+        //if session time out : server return error status 401
+        if(response.status == HTTP_SESSION_TIMEOUT_STATUS){
+            //redirect user back to login page
+            handleSessionTimeoutError();
         }
+        else{
+            handleGeneralError();
+        }
+    }
+
+    return {
+        loadHtml : loadHtml,
+        loadJson : loadJson,
+        handleAjaxError : handleAjaxError
     };
 }();
 

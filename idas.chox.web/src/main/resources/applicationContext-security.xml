@@ -11,7 +11,8 @@
     <security:http auto-config="false" entry-point-ref="authenticationProcessingFilterEntryPoint">
         <security:intercept-url pattern="/user/**"         access="ROLE_CHO,ROLE_INS,ROLE_CHOX" />
         <security:intercept-url pattern="/**"              filters="none" />
-    </security:http>
+        <security:logout logout-success-url="/login.action"/>
+    </security:http>    
 
     <security:authentication-provider user-service-ref="userDetailsService">
         <security:password-encoder hash="md5"/>
@@ -25,6 +26,7 @@
         <property name="alwaysUseDefaultTargetUrl"  value="true" />
         <property name="authenticationManager" ref="authenticationManager" />
         <property name="passwordExpiredUrl"  value="/user/openUserAccount.action" />
+        <property name="authenticationFailureUrl" value="/login.action?error=true" />
     </bean>
 
     <bean id="authenticationProcessingFilterEntryPoint" class="idas.chox.web.security.CustomAuthenticationProcessingFilterEntryPoint">

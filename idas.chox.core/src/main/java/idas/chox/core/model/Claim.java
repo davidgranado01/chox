@@ -50,11 +50,6 @@ public class Claim extends Entity implements Serializable {
     private List<Comment> comments;
     // </editor-fold>
 
-    public Claim() {
-        hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
-        notifications = new ArrayList<Notification>();
-    }
-
     // <editor-fold defaultstate="collapsed" desc="Public Properties">
     public boolean isManagingRepair() {
         return managingRepair;
@@ -311,6 +306,10 @@ public class Claim extends Entity implements Serializable {
 
     // <editor-fold defaultstate="collapsed" desc=" HireMonitoringEcd ">
     public List<HireMonitoringEcd> getHireMonitoringEcds() {
+        if(hireMonitoringEcds == null)
+        {
+            hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
+        }
         return hireMonitoringEcds;
     }
 

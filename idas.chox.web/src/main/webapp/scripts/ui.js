@@ -84,45 +84,122 @@ var ui = function(){
         hasFormUnderSubmission = false;
     }
 
-    return {
-        dateField : function(name,defaultValue,target) {
+    function parseErrors(errors)
+    {
+        var errorMsg = "<ul>";
+        $.each(errors, function() {
+            errorMsg += "<li>";
+            errorMsg += this;
+            errorMsg +="</li>";
+        });
+        errorMsg +="</ul>";
+        return errorMsg;
+    }
 
-            var dateField = new Ext.form.DateField({
-                name: name,
-                id: name,
-                width: 100,
-                allowBlank: true,
-                format: dateFormat,
-                showWeekNumber: true,
-                validationEvent : false,
-                value: defaultValue,
-                renderTo:target
-            });
+    function createDateField(name,defaultValue,target) {
 
-            return dateField;
-        },
-        ajaxForm : function(form,successCallBack){
+        var dateField = new Ext.form.DateField({
+            name: name,
+            id: name,
+            width: 100,
+            allowBlank: true,
+            format: dateFormat,
+            showWeekNumber: true,
+            validationEvent : false,
+            value: defaultValue,
+            renderTo:target
+        });
 
-            function onAfterSubmit(responseText, statusText){
-                onSubmitResponseReceived(responseText, statusText);
-                if(successCallBack){
-                    successCallBack(responseText, statusText);
-                }
+        return dateField;
+    }
+
+    function ajaxForm(form,successCallBack){
+
+        function onAfterSubmit(responseText, statusText){
+            onSubmitResponseReceived(responseText, statusText);
+            if(successCallBack){
+                successCallBack(responseText, statusText);
             }
-
-            form.submit(function(){
-
-                if(form.valid()){
-                    var options = {
-                        beforeSubmit:  onBeforeSubmit,  // pre-submit callback
-                        success:       onAfterSubmit,  // post-submit callback
-                        timeout: 3000,
-                        error: onSubmitError
-                    };
-                    $(this).ajaxSubmit(options);
-                }
-                return false;
-            });
         }
+
+        form.submit(function(){
+
+            if(form.valid()){
+                var options = {
+                    beforeSubmit:  onBeforeSubmit,  // pre-submit callback
+                    success:       onAfterSubmit,  // post-submit callback
+                    timeout: 3000,
+                    error: onSubmitError
+                };
+                $(this).ajaxSubmit(options);
+            }
+            return false;
+        });
+    }
+
+    function promptMsg(title,msg)
+    {
+        Ext.MessageBox.show({
+            title: title,
+            msg: msg,
+            width : 400,
+            buttons: Ext.MessageBox.OK
+        });
+    }
+
+    function promptErrorMsg(errorMsg)
+    {
+        Ext.Msg.show({
+            title: 'Error',
+            msg:Ext.util.Format.ellipsis(errorMsg, 2000),
+            icon:Ext.Msg.ERROR,
+            buttons:Ext.Msg.OK,
+            width : 400
+        });
+    }
+
+    function promptErrorsMsg(errors)
+    {
+        var errorMsg = parseErrors(errors);
+        ui.promptErrorMsg(errorMsg);
+    }
+
+    return {
+        dateField : createDateField,
+        ajaxForm : ajaxForm,
+        promptMsg : promptMsg,
+        promptErrorMsg :promptErrorMsg,
+        promptErrorsMsg : promptErrorsMsg
     };
 }();
+
+$.blockUI.defaults = {
+    message:  '<h1 class="block">Please wait...</h1>',
+
+    css: {
+        padding:        '10px',
+        margin:         0,
+        width:          '30%',
+        top:            '10%',
+        left:           '35%',
+        textAlign:      'center',
+        color:          '#000',
+        border:         '3px solid #aaa',
+        backgroundColor:'#fff',
+        cursor:         'wait' ,
+        height: 'auto'
+    },
+
+    overlayCSS:  {
+        backgroundColor:'#6c8cbe',
+        opacity:        '0.5'
+    },
+
+    baseZ: 1000,
+    centerX: true,
+    centerY: true,
+    allowBodyStretch: true,
+    constrainTabKey: true,
+    fadeOut:  0,
+    applyPlatformOpacityRules: true
+};

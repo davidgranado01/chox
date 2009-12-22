@@ -27,7 +27,7 @@
         <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script>
         <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script>
         <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
-        <script src="<%= request.getContextPath()%>/scripts/actionPanel.js" type="text/javascript"></script>
+        <script src="<%= request.getContextPath()%>/scripts/actionPanelLib.js" type="text/javascript"></script>
         <script src="<%= request.getContextPath()%>/scripts/ajax.js" type="text/javascript"></script>
         <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
         <script src="<%= request.getContextPath()%>/scripts/ui.js" type="text/javascript"></script>
@@ -633,7 +633,7 @@
                         {
                             params:
                                 {
-                                claimId : <s:property value="id" />
+                                id : <s:property value="id" />
                             }
                         });
                     }
@@ -1218,7 +1218,7 @@
                                             </tr>
                                             <tr>
                                                 <td>&nbsp;</td>
-                                                <td align="left" valign="top"><div class="chox-form-submit-result" id="AttMsgBox" style="text-align: left;"/></td>
+                                                <td align="left" valign="top"><div class="chox-form-submit-result" id="AttMsgBox" style="text-align: left;"></div></td>
                                             </tr>
                                         </table>
 
