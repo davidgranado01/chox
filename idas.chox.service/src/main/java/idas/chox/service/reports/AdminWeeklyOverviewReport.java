@@ -24,10 +24,13 @@ public class AdminWeeklyOverviewReport implements Report {
     List<String> reportParameterNames;
     private DataService dataService;
 
-    @Override
     public InputStream build() {
-        ReportBuilder builder = new ExcelReportBuilder();
+        ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
+    }
+
+    protected ReportBuilder getReportBuilder() {
+        return new ExcelReportBuilder();
     }
 
     @Override
@@ -49,17 +52,14 @@ public class AdminWeeklyOverviewReport implements Report {
         reportParameterNames = new ArrayList<String>();
     }
 
-
- 
-
     @Override
     public HashMap getReportParameters() {
 
         HashMap reportParameters = new HashMap();
 
         try {
-
-            PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
+            
+            PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));            
             Integer selectedSupplierId = -1;
             Integer selectedInsurerId = -1;
             Date startDate = null;
@@ -81,76 +81,63 @@ public class AdminWeeklyOverviewReport implements Report {
                 endDate = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
             }
 
-            /*
-            System.out.println("currentUser:"+currentUser.getDisplayName());
-            System.out.println("supplierId:"+selectedSupplierId);
-            System.out.println("insurerId:"+selectedInsurerId);
-            System.out.println("DateStart:"+startDate);
-            System.out.println("DateEnd:"+endDate);
-
-            String dataStartRaw = ((String[]) externalParameter.get("DateStart"))[0];
-            String dateEndRaw = ((String[]) externalParameter.get("DateEnd"))[0];
-            Date startDate = DateHelper.LocalDateFormat.parse(dataStartRaw);
-            Date endDate = DateHelper.LocalDateFormat.parse(dateEndRaw);
-            */
-            
-
-            /*
             String userOrgLabel = "";
             String userOrgName = "";
             String selectedOrgName = "All";
             String selectedOrgLabel = "";
             String reportHeaderTitle = "";
-            boolean isIns = false;
-            isIns = currentUser.getIsINS();
 
-            if (isIns) {
+            if(!currentUser.getIsCHOXAdmin()){
+                
+                if (currentUser.getIsINS()) {
 
-                Insurer ins = currentUser.getUser().getInsurer();
+                    Insurer ins = currentUser.getUser().getInsurer();
+                    selectedInsurerId = ins.getId();
+                    userOrgName = ins.getName();
 
-                userOrgLabel = "Insurer";
-                iInsurerId = ins.getId();
-                userOrgName = ins.getName();
-                selectedOrgLabel = "Credit Hire Organisation";
-                reportHeaderTitle = "iDAS CHOX Report - Insurer Weekly Overview Report";
+                    userOrgLabel = "Insurer";
+                    selectedOrgLabel = "Credit Hire Organisation";
+                    reportHeaderTitle = "iDAS CHOX Report - Insurer Weekly Overview Report";
 
-                if (!supplierId.equalsIgnoreCase("")) {
-                    iSupplierId = Integer.parseInt(supplierId);
-                    selectedOrgName = getChorganisation(iSupplierId).getName();
+                    if (selectedSupplierId>0) {
+                        selectedOrgName = getChorganisation(selectedSupplierId).getName();
+                    }
+
+                } else {
+
+                    Chorganisation chorg = currentUser.getUser().getChorganisation();
+                    selectedSupplierId = chorg.getId();
+                    userOrgName = chorg.getName();
+
+                    userOrgLabel = "Credit Hire Organisation";
+                    selectedOrgLabel = "Insurer";
+                    reportHeaderTitle = "iDAS CHOX Report - Credit Hire Weekly Overview Report";
+
+                    if (selectedInsurerId>0) {
+                        selectedOrgName = getInsurer(selectedInsurerId).getName();
+                    }
+
                 }
-
-            } else {
-
-                Chorganisation chorg = currentUser.getUser().getChorganisation();
-
-                userOrgLabel = "Credit Hire Organisation";
-                iSupplierId = chorg.getId();
-                userOrgName = chorg.getName();
-                selectedOrgLabel = "Insurer";
-                reportHeaderTitle = "iDAS CHOX Report - Credit Hire Weekly Overview Report";
-                /*
-                if (!insurerId.equalsIgnoreCase("")) {
-                    iInsurerId = Integer.parseInt(insurerId);
-                    selectedOrgName = getInsurer(iInsurerId).getName();
-                }
-
+                
             }
 
+            // GET START DATE
             Calendar c1 = Calendar.getInstance();
             c1.setTime(startDate);
             Integer dayOfWeek1 = c1.get(Calendar.DAY_OF_WEEK);
             c1.add(Calendar.DATE, -dayOfWeek1 + 2);
-            Date dateFirstMonday = c1.getTime();//actual start date of report
+            Date dateFirstMonday = c1.getTime();
+            Date currentMonday = dateFirstMonday;
 
+            // GET END DATE
             Calendar c2 = Calendar.getInstance();
             c2.setTime(endDate);
             Integer dayOfWeek2 = c2.get(Calendar.DAY_OF_WEEK);
             c2.add(Calendar.DATE, -dayOfWeek2 + 2);
             Date dateLastMonday = c2.getTime();
             c2.add(Calendar.DATE, 6);
-            Date dateLastSunday = c2.getTime();//actual end date of report
-
-            Date currentMonday = dateFirstMonday;
+            Date dateLastSunday = c2.getTime();
+            
             List<WeekSummary> weekSummaries = new ArrayList<WeekSummary>();
 
             Integer iClaimsInvoicedHis = 0;
@@ -164,54 +151,14 @@ public class AdminWeeklyOverviewReport implements Report {
                 Date startOfTheWeek = c.getTime();
                 c.add(Calendar.DATE, 6);
                 Date endOfTheWeek = c.getTime();
+                
+                String query = getReportQuery(currentUser.getIsINS());
 
                 HashMap queryParameters = new HashMap();
-
-                String strInsurerOrgSelection1 = "";
-                String strInsurerOrgSelection2 = "";
-                if (isIns) {
-                    strInsurerOrgSelection1 = "(a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id";
-                    strInsurerOrgSelection2 = "(chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND insurer_id=insurer.id";
-                } else {
-                    strInsurerOrgSelection1 = "(a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id";
-                    strInsurerOrgSelection2 = "(insurer_id = :pInsId or :pInsId < 0) AND chorganisation_id=chorganisation.id";
-                }
-
-                StringBuffer sb = new StringBuffer();
-                sb.append("select ");
-                sb.append("((select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) < :pSelectedStartDate group by claim_id) b WHERE " + strInsurerOrgSelection1 + " AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) < :pSelectedStartDate AND a.new_status not in ('ClaimClosed','InvoicePaymentLogged','PaymentReceived')) - (select count(distinct id) from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) < :pSelectedStartDate group by claim_id) b WHERE " + strInsurerOrgSelection1 + " AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) < :pSelectedStartDate AND a.new_status in ('ClaimRejectionAccepted'))) as claimsBFwd, ");
-                sb.append("(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_claim_audit_trail where " + strInsurerOrgSelection2 + " and date(update_date) between :pSelectedStartDate and :pSelectedEndDate and new_status='ClaimUnacknowledgedUnrouted') as claimsNotification, ");
-                sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, min(update_date) as min_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE " + strInsurerOrgSelection1 + " AND a.claim_id=b.claim_id AND a.update_date=b.min_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.original_status in ('ClaimClosed')) as reopenClaims, ");
-                sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE " + strInsurerOrgSelection1 + " AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ClaimRejectionAccepted') AND a.claim_reason_of_rejection in (select id from reason_of_rejection where type='Claim' and name like '%Out of Scope%')) as claimsOutOfScope, ");
-                sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE " + strInsurerOrgSelection1 + " AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ClaimRejectionAccepted') AND a.claim_reason_of_rejection not in (select id from reason_of_rejection where type='Claim' and name like '%Out of Scope%')) as rejectedClaims, ");
-                sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE " + strInsurerOrgSelection1 + " AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND (a.invoice_id is NULL) AND a.new_status in ('ClaimClosed')) as nonThisInsurerClaims, ");
-                sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE " + strInsurerOrgSelection1 + " AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND (a.invoice_id is NOT NULL) AND a.new_status in ('ClaimClosed') and a.claim_id not in (select claim_id from audit_trail where date(update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND (new_status='InvoicePaymentLogged' or original_status='InvoicePaymentLogged'))) as insurerClaimsClosed, ");
-                sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail where " + strInsurerOrgSelection2 + " AND new_status = 'InvoicePaymentLogged' and date(update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate) as claimsPaid, ");
-                sb.append("(select case when count(distinct a.claim_id) is null then 0 else count(distinct a.claim_id) end as no_count from rpt_claim_audit_trail a, claim b WHERE " + strInsurerOrgSelection1 + " AND a.claim_id=b.id AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ClaimRejectionAccepted') AND (b.reason_of_rejection_id != (select id from reason_of_rejection where type='Claim' and name like '%Out of Scope%') OR b.reason_of_rejection_id is null)) as claimsNotificationContestedByInsurer, ");
-                sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) <= :pSelectedEndDate group by claim_id) b WHERE " + strInsurerOrgSelection1 + " AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) <= :pSelectedEndDate AND a.new_status in ('ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedRouted', 'ClaimReferredToEngineer', 'ClaimReferredToFNOL', 'ClaimRejectionContested', 'ClaimRejected', 'ClaimPending', 'ClaimUpdatedByEngineer')) as claimsPendingByInsurer, ");
-                sb.append("(select case when count(distinct a.claim_id) is null then 0 else count(distinct a.claim_id) end as no_count from rpt_claim_audit_trail a, claim b WHERE " + strInsurerOrgSelection1 + " AND a.claim_id=b.id AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('AwaitingCarHireInfo')) as claimsNotificationAcceptedByInsurer, ");
-                sb.append("(select case when count(distinct a.claim_id) is null then 0 else count(distinct a.claim_id) end as no_count from rpt_claim_audit_trail a, claim b WHERE " + strInsurerOrgSelection1 + " AND a.claim_id=b.id AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ClaimReferredToFNOL')) as claimsFNOLCreatedByInsurer, ");
-                sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_invoice WHERE " + strInsurerOrgSelection2 + " AND date(created_date) BETWEEN :pSelectedStartDate AND :pSelectedEndDate) as claimsInvoiced, ");
-                sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE " + strInsurerOrgSelection1 + " AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ContestedInvoiceReferredToCHO', 'InvoiceDataCalculationIncorrect', 'InvoiceRejectionAccepted')) as invoiceContestedByInsurer, ");
-                sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE " + strInsurerOrgSelection1 + " AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ContestedInvoiceReferredToInsurer', 'InvoiceApprovedByBRE', 'InvoiceEscalated', 'InvoiceReferredToClaimsHandler')) as invoicePendingByInsurer, ");
-                sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE " + strInsurerOrgSelection1 + " AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('AwaitingInvoicePayment')) as invoiceApprovedByInsurer, ");
-                sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail where " + strInsurerOrgSelection2 + " AND new_status='InvoicePaymentLogged' and date(update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate) as invoicePaidByInsurer, ");
-                sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) <= :pSelectedEndDate group by claim_id) b WHERE " + strInsurerOrgSelection1 + " AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) <= :pSelectedEndDate AND a.new_status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as claimsToBeInvoiced ");
-
-                if (isIns) {
-                    sb.append("from insurer insurer ");
-                    sb.append("where insurer.id = :pInsId ");
-                } else {
-                    sb.append("from chorganisation chorganisation ");
-                    sb.append("where chorganisation.id = :pChorganisationId ");
-                }
-
-                String query = sb.toString();
-
                 queryParameters.put("pSelectedStartDate", startOfTheWeek);
                 queryParameters.put("pSelectedEndDate", endOfTheWeek);
-                queryParameters.put("pInsId", iInsurerId);
-                queryParameters.put("pChorganisationId", iSupplierId);
+                queryParameters.put("pInsId", selectedInsurerId);
+                queryParameters.put("pChorganisationId", selectedSupplierId);
 
                 List result = dataService.externalQuery(query, queryParameters);
 
@@ -228,15 +175,13 @@ public class AdminWeeklyOverviewReport implements Report {
 
                     weekSummaries.add(weekSummary);
                 }
-
+        
                 c.add(Calendar.DATE, 1);
                 currentMonday = c.getTime();
 
             } while (currentMonday.before(dateLastSunday));
             
-
             WeekSummaryReportObject reportObject = new WeekSummaryReportObject();
-
             reportObject.setWeekCycleFrom(dateFirstMonday);
             reportObject.setWeekCycleTo(dateLastSunday);
             reportObject.setCreatedDate(new Date());
@@ -248,13 +193,67 @@ public class AdminWeeklyOverviewReport implements Report {
             reportParameters.put("selectedOrgLabel", selectedOrgLabel);
             reportParameters.put("selectedOrgName", selectedOrgName);
             reportParameters.put("reportHeaderTitle", reportHeaderTitle);
-            */
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
         return reportParameters;
+    }
+
+    private String getReportQuery(boolean isInsurer){
+
+        StringBuffer sb = new StringBuffer();
+
+        if(isInsurer){
+
+            sb.append("select ");
+            sb.append("((select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) < :pSelectedStartDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) < :pSelectedStartDate AND a.new_status not in ('ClaimClosed','InvoicePaymentLogged','PaymentReceived','ClaimRejectionAccepted'))) as claimsBFwd, ");
+            sb.append("(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_claim_audit_trail where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND insurer_id=insurer.id and date(update_date) between :pSelectedStartDate and :pSelectedEndDate and new_status='ClaimUnacknowledgedUnrouted' and original_status!='ClaimClosed') as claimsNotification, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, min(update_date) as min_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.min_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.original_status in ('ClaimClosed')) as reopenClaims, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ClaimRejectionAccepted') AND a.claim_reason_of_rejection in (select id from reason_of_rejection where type='Claim' and name like '%Out of Scope%')) as claimsOutOfScope, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ClaimRejectionAccepted') AND a.claim_reason_of_rejection not in (select id from reason_of_rejection where type='Claim' and name like '%Out of Scope%')) as rejectedClaims, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND (a.invoice_id is NULL) AND a.new_status in ('ClaimClosed')) as nonThisInsurerClaims, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND (a.invoice_id is NOT NULL) AND a.new_status in ('ClaimClosed') and a.claim_id not in (select claim_id from audit_trail where date(update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND (new_status='InvoicePaymentLogged' or original_status='InvoicePaymentLogged'))) as insurerClaimsClosed, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND insurer_id=insurer.id AND new_status = 'InvoicePaymentLogged' and date(update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate) as claimsPaid, ");
+            sb.append("(select case when count(distinct a.claim_id) is null then 0 else count(distinct a.claim_id) end as no_count from rpt_claim_audit_trail a, claim b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.id AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ClaimRejectionAccepted') AND (b.reason_of_rejection_id != (select id from reason_of_rejection where type='Claim' and name like '%Out of Scope%') OR b.reason_of_rejection_id is null)) as claimsNotificationContestedByInsurer, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) <= :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) <= :pSelectedEndDate AND a.new_status in ('ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedUnassigned', 'ClaimUnacknowledgedRouted', 'ClaimReferredToEngineer', 'ClaimReferredToFNOL', 'ClaimRejectionContested', 'ClaimRejected', 'ClaimPending', 'ClaimUpdatedByEngineer')) as claimsPendingByInsurer, ");
+            sb.append("(select case when count(distinct a.claim_id) is null then 0 else count(distinct a.claim_id) end as no_count from rpt_claim_audit_trail a, claim b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.id AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('AwaitingCarHireInfo')) as claimsNotificationAcceptedByInsurer, ");
+            sb.append("(select case when count(distinct a.claim_id) is null then 0 else count(distinct a.claim_id) end as no_count from rpt_claim_audit_trail a, claim b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.id AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ClaimReferredToFNOL')) as claimsFNOLCreatedByInsurer, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_invoice WHERE (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND insurer_id=insurer.id AND date(created_date) BETWEEN :pSelectedStartDate AND :pSelectedEndDate) as claimsInvoiced, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ContestedInvoiceReferredToCHO', 'InvoiceDataCalculationIncorrect', 'InvoiceRejectionAccepted')) as invoiceContestedByInsurer, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ContestedInvoiceReferredToInsurer', 'InvoiceApprovedByBRE', 'InvoiceEscalated', 'InvoiceReferredToClaimsHandler')) as invoicePendingByInsurer, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('AwaitingInvoicePayment')) as invoiceApprovedByInsurer, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND insurer_id=insurer.id AND new_status='InvoicePaymentLogged' and date(update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate) as invoicePaidByInsurer, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) <= :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) <= :pSelectedEndDate AND a.new_status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as claimsToBeInvoiced ");
+            sb.append("from insurer insurer where insurer.id = :pInsId ");
+
+        }else{
+
+            sb.append("select ");
+            sb.append("((select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) < :pSelectedStartDate group by claim_id) b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) < :pSelectedStartDate AND a.new_status not in ('ClaimClosed','InvoicePaymentLogged','PaymentReceived','ClaimRejectionAccepted'))) as claimsBFwd, ");
+            sb.append("(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_claim_audit_trail where (insurer_id = :pInsId or :pInsId < 0) AND chorganisation_id=chorganisation.id and date(update_date) between :pSelectedStartDate and :pSelectedEndDate and new_status='ClaimUnacknowledgedUnrouted' and original_status!='ClaimClosed') as claimsNotification, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, min(update_date) as min_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.claim_id AND a.update_date=b.min_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.original_status in ('ClaimClosed')) as reopenClaims, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ClaimRejectionAccepted') AND a.claim_reason_of_rejection in (select id from reason_of_rejection where type='Claim' and name like '%Out of Scope%')) as claimsOutOfScope, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ClaimRejectionAccepted') AND a.claim_reason_of_rejection not in (select id from reason_of_rejection where type='Claim' and name like '%Out of Scope%')) as rejectedClaims, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND (a.invoice_id is NULL) AND a.new_status in ('ClaimClosed')) as nonThisInsurerClaims, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND (a.invoice_id is NOT NULL) AND a.new_status in ('ClaimClosed') and a.claim_id not in (select claim_id from audit_trail where date(update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND (new_status='InvoicePaymentLogged' or original_status='InvoicePaymentLogged'))) as insurerClaimsClosed, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail where (insurer_id = :pInsId or :pInsId < 0) AND chorganisation_id=chorganisation.id AND new_status = 'InvoicePaymentLogged' and date(update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate) as claimsPaid, ");
+            sb.append("(select case when count(distinct a.claim_id) is null then 0 else count(distinct a.claim_id) end as no_count from rpt_claim_audit_trail a, claim b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.id AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ClaimRejectionAccepted') AND (b.reason_of_rejection_id != (select id from reason_of_rejection where type='Claim' and name like '%Out of Scope%') OR b.reason_of_rejection_id is null)) as claimsNotificationContestedByInsurer, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) <= :pSelectedEndDate group by claim_id) b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) <= :pSelectedEndDate AND a.new_status in ('ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedUnassigned', 'ClaimUnacknowledgedRouted', 'ClaimReferredToEngineer', 'ClaimReferredToFNOL', 'ClaimRejectionContested', 'ClaimRejected', 'ClaimPending', 'ClaimUpdatedByEngineer')) as claimsPendingByInsurer, ");
+            sb.append("(select case when count(distinct a.claim_id) is null then 0 else count(distinct a.claim_id) end as no_count from rpt_claim_audit_trail a, claim b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.id AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('AwaitingCarHireInfo')) as claimsNotificationAcceptedByInsurer, ");
+            sb.append("(select case when count(distinct a.claim_id) is null then 0 else count(distinct a.claim_id) end as no_count from rpt_claim_audit_trail a, claim b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.id AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ClaimReferredToFNOL')) as claimsFNOLCreatedByInsurer, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_invoice WHERE (insurer_id = :pInsId or :pInsId < 0) AND chorganisation_id=chorganisation.id AND date(created_date) BETWEEN :pSelectedStartDate AND :pSelectedEndDate) as claimsInvoiced, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ContestedInvoiceReferredToCHO', 'InvoiceDataCalculationIncorrect', 'InvoiceRejectionAccepted')) as invoiceContestedByInsurer, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('ContestedInvoiceReferredToInsurer', 'InvoiceApprovedByBRE', 'InvoiceEscalated', 'InvoiceReferredToClaimsHandler')) as invoicePendingByInsurer, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) between :pSelectedStartDate and :pSelectedEndDate group by claim_id) b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate AND a.new_status in ('AwaitingInvoicePayment')) as invoiceApprovedByInsurer, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail where (insurer_id = :pInsId or :pInsId < 0) AND chorganisation_id=chorganisation.id AND new_status='InvoicePaymentLogged' and date(update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate) as invoicePaidByInsurer, ");
+            sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) <= :pSelectedEndDate group by claim_id) b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) <= :pSelectedEndDate AND a.new_status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as claimsToBeInvoiced ");
+            sb.append("from chorganisation chorganisation where chorganisation.id = :pChorganisationId ");
+            
+        }
+
+        return sb.toString();
     }
 
     private Chorganisation getChorganisation(int orgId) {

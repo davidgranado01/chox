@@ -5,15 +5,14 @@
     var reportName = 'AdminWeeklyOverviewReport-Excel';
     
     Ext.onReady(function(){
-        DatePicker('DateStart').render('dateFromDiv');
-        DatePicker('DateEnd').render('dateToDiv');
+        ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
+        ui.dateField('DateEnd',getTodayDate(),'dateToDiv');
     }); 
 
     function openReport()
     {
         if(doFormValidation().form()){
             var queryString = $('#formReportParam').formSerialize();
-            alert(queryString);
             window.location = "exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
         }
     }

@@ -49,8 +49,21 @@ public class ClaimRejectedReport implements Report {
 
             List<ClaimRejectionLineItem> reportRows = getReasonOfRejection();
 
+            Date dataStart = null;
+            Date dataEnd = null;
+            
+            if(((String[]) externalParameter.get("DateStart"))!=null){
+                dataStart = DateHelper.Parse(((String[]) externalParameter.get("DateStart"))[0]);
+            }
+
+            if(((String[]) externalParameter.get("DateStart"))!=null){
+                dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
+            }
+
+            /*
             Date dataStart = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
             Date dataEnd = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateEnd"))[0]);
+            */
             boolean isInsReport = currentUser.getIsINS();
 
             String sOrganisationLabel = "";
@@ -136,9 +149,6 @@ public class ClaimRejectedReport implements Report {
 
         String query = sb.toString();
 
-        // Emmanuel
-        // 27-07-2009
-        // prevent SQL Injection
         Map paramMap = new HashMap();
         paramMap.put("pOrgId", iOrgId);
         paramMap.put("pCreatedDateFrom", dataStart);

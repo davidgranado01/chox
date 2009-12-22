@@ -5,31 +5,10 @@
     var reportName = 'ClaimRejectedReport-Excel';
 
     Ext.onReady(function(){
-        
-        var dateFromPicker = new Ext.form.DateField({
-            name: 'DateStart',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            value: getTodayDate(),
-            showWeekNumber: true
-        });
-        
-        var dateToPicker = new Ext.form.DateField({
-            name: 'DateEnd',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            value: getTodayDate(),
-            showWeekNumber: true
-        });
-        
-        dateFromPicker.render('dateFromDiv');        
-        dateToPicker.render('dateToDiv');
-        
-    }); 
-
-
+        ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
+        ui.dateField('DateEnd',getTodayDate(),'dateToDiv');
+    });
+    
     function openReport()
     {
         if(doFormValidation().form()){

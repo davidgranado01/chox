@@ -41,13 +41,10 @@ public class WeekSummary {
         result.setWeekCycleDate(data.get("weekCycleDate").toString());
         result.setClaimsBFwd(getIntegerValue(data.get("claimsBFwd".toLowerCase())));
         result.setClaimsNotification(getIntegerValue(data.get("claimsNotification".toLowerCase())));
-        // Added by Calrson @ 20091001
         result.setReopenClaims(getIntegerValue(data.get("reopenClaims".toLowerCase())));
         result.setClaimsOutOfScope(getIntegerValue(data.get("claimsOutOfScope".toLowerCase())));
-        // Added by Carlson @ 20091001
         result.setRejectedClaims(getIntegerValue(data.get("rejectedClaims".toLowerCase())));
         result.setNonThisInsurerClaims(getIntegerValue(data.get("nonThisInsurerClaims".toLowerCase())));
-        // Added by Carlson @ 20091001
         result.setInsurerClaimsClosed(getIntegerValue(data.get("insurerClaimsClosed".toLowerCase())));
         result.setClaimsPaid(getIntegerValue(data.get("claimsPaid".toLowerCase())));
         result.setClaimsNotificationContestedByInsurer(getIntegerValue(data.get("claimsNotificationContestedByInsurer".toLowerCase())));
@@ -64,57 +61,6 @@ public class WeekSummary {
         return result;
     }
 
-    /*
-    private Integer newChoxNotification;
-    private Integer claimWithdrawn;
-    private Integer existingClaim;
-    private Integer cumulativeClaim;
-    private Integer claimOutOfScope;
-    private Integer claimInScope;
-    private Integer claimNotificationContestedByRsa;
-    private Integer claimPendingByRsa;
-    private Integer claimNotificationAcceptedByRsa;
-    private BigDecimal inScopeClaimContestedPercentage;
-    private Integer claimFnolCreatedByRsa;
-    private Integer claimInvoiced;
-    private Integer contestedinvoiceByRsa;
-    private Integer pendingInvoiceByRsa;
-    private Integer approvedInvoiceByRsa;
-    private Integer paidInvoiceByRsa;
-    private BigDecimal paidInvoicePercentage;
-    private Integer claimTobeInvoiced;
-
-    public static WeekSummary getObject(Map data) {
-        WeekSummary result = new WeekSummary();
-
-        result.setNewChoxNotification(getIntegerValue(data.get("newChoxNotification".toLowerCase())));
-        result.setClaimWithdrawn(getIntegerValue(data.get("claimWithdrawn".toLowerCase())));
-        result.setExistingClaim(getIntegerValue(data.get("existingClaim".toLowerCase())));
-        result.setCumulativeClaim(getIntegerValue(data.get("cumulativeClaim".toLowerCase())));
-        result.setClaimOutOfScope(getIntegerValue(data.get("claimOutOfScope".toLowerCase())));
-        result.setClaimInScope(getIntegerValue(data.get("claimInScope".toLowerCase())));
-        result.setClaimNotificationContestedByRsa(getIntegerValue(data.get("claimNotificationContestedByRsa".toLowerCase())));
-        result.setClaimPendingByRsa(getIntegerValue(data.get("claimPendingByRsa".toLowerCase())));
-        result.setClaimNotificationAcceptedByRsa(getIntegerValue(data.get("claimNotificationAcceptedByRsa".toLowerCase())));
-        //result.setInScopeClaimContestedPercentage(getIntegerValue(data.get("inScopeClaimContestedPercentage".toLowerCase())));
-        result.setClaimFnolCreatedByRsa(getIntegerValue(data.get("claimFnolCreatedByRsa".toLowerCase())));
-        result.setClaimInvoiced(getIntegerValue(data.get("claimInvoiced".toLowerCase())));
-        result.setContestedinvoiceByRsa(getIntegerValue(data.get("contestedinvoiceByRsa".toLowerCase())));
-        result.setPendingInvoiceByRsa(getIntegerValue(data.get("pendingInvoiceByRsa".toLowerCase())));
-        result.setApprovedInvoiceByRsa(getIntegerValue(data.get("approvedInvoiceByRsa".toLowerCase())));
-        result.setPaidInvoiceByRsa(getIntegerValue(data.get("paidInvoiceByRsa".toLowerCase())));
-        //result.setPaidInvoicePercentage(getIntegerValue(data.get("paidInvoicePercentage".toLowerCase())));
-        result.setClaimTobeInvoiced(getIntegerValue(data.get("claimTobeInvoiced".toLowerCase())));
-        result.setWeekCycleDate(data.get("weekCycleDate").toString());
-        //calculated field
-        BigDecimal cPaidInvoicePercentage = new BigDecimal(result.getClaimInvoiced() * result.getPaidInvoiceByRsa() / 100);
-        BigDecimal cInScopeClaimContestedPercentage = result.getClaimInScope() > 0 ? new BigDecimal(result.getClaimNotificationContestedByRsa() / result.getClaimInScope() * 100) : BigDecimal.ZERO;
-        result.setPaidInvoicePercentage(cPaidInvoicePercentage);
-        
-        result.setInScopeClaimContestedPercentage(cInScopeClaimContestedPercentage);
-        return result;
-    }
-    */
     public static Integer getIntegerValue(Object v) {
         if (v.getClass().equals(Integer.class)) {
             return (Integer) v;
@@ -125,32 +71,26 @@ public class WeekSummary {
         }
     }
 
-    // Added by Carlson @ 20091001
     public Integer getReopenClaims() {
         return reopenClaims;
     }
 
-    // Added by Carlson @ 20091001
     public void setReopenClaims(Integer reopenClaims) {
         this.reopenClaims = reopenClaims;
     }
 
-    // Added by Carlson @ 20091001
     public Integer getRejectedClaims() {
         return rejectedClaims;
     }
 
-    // Added by Carlson @ 20091001
     public void setRejectedClaims(Integer rejectedClaims) {
         this.rejectedClaims = rejectedClaims;
     }
 
-    // Added by Carlson @ 20091001
     public Integer getInsurerClaimsClosed() {
         return insurerClaimsClosed;
     }
 
-    // Added by Carlson @ 20091001
     public void setInsurerClaimsClosed(Integer insurerClaimsClosed) {
         this.insurerClaimsClosed = insurerClaimsClosed;
     }
@@ -164,8 +104,6 @@ public class WeekSummary {
     }
 
     public Integer getClaimsCFwd() {
-        // return claimsBFwd + claimsNotification - claimsOutOfScope - nonThisInsurerClaims - claimsPaid;
-        // Added by Carlson @ 20091001
         return claimsBFwd + claimsNotification + reopenClaims - claimsOutOfScope - rejectedClaims - nonThisInsurerClaims - insurerClaimsClosed - claimsPaid;
     }
     

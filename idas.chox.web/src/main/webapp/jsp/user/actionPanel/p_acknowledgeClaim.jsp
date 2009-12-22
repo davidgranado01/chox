@@ -85,6 +85,7 @@
         return iMinliability;
     }
 
+
     function liabilityMinNumberMsg(){
         var sActionName = $("#actionName").val();
         var iMinliabilityMsg = "'Percentage Liability Accepted' must be more than 0";

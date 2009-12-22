@@ -28,9 +28,7 @@ html, body
     background-x-position: 0%;
     background-y-position: 0%;
 }
-body.modal
-{
-}
+
 html, body
 {
     background-attachment: scroll;
@@ -78,6 +76,7 @@ body.login .modal_container .inner
 {
     padding-top: 8px;
 }
+
 body.login .modal_container div.content
 {
     margin-left: 0;
@@ -94,15 +93,18 @@ body.login div.checkbox_and_submit
     font-size: 10px;
     margin-left: 80px;
 }
+
 body.login p
 {
     font-size: 11px;
     margin: 0 0 5px 0;
 }
+
 body.login div.checkbox_and_submit p
 {
     margin: 10px 0 0 0;
 }
+
 body.login p label
 {
     font-size: 14px;
@@ -207,3 +209,70 @@ body.login .modal_container .app_title
 }
 
 /******** FORGET PASSWORD *************/
+
+div.status-info
+{
+    background-color:white;
+    border:2px orange solid;
+    padding:12px 12px 12px 60px;
+    font-weight:normal;
+    font-size:12px;
+    vertical-align:middle;
+    margin-bottom:4px;
+    white-space:normal;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-image: url('../images/default/window/icon-info.gif');
+    font-family: tahoma,arial,verdana,sans-serif;
+}
+
+.forget-password-container
+{
+    background-attachment: scroll;
+    background-color: #ffffff;
+    background-image: none;
+    background-repeat: repeat;
+    background-x-position: 0%;
+    background-y-position: 0%;
+
+    border-bottom-color: #0093c8;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-left-color: #0093c8;
+    border-left-style: solid;
+    border-left-width: 2px;
+    border-right-color: #0093c8;
+    border-right-style: solid;
+    border-right-width: 2px;
+    border-top-color: #0093c8;
+    border-top-style: solid;
+    border-top-width: 2px;
+
+    margin-bottom: 0pt;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0pt;
+    text-align: left;
+    width: 650px;
+    background-color:#fff;
+    padding:10px;
+
+}
+
+.error{
+    color: red;
+    font-family:tahoma,arial,verdana,sans-serif;
+    white-space: nowrap;
+     padding-left:5px;
+}
+
+.forget-password-label{
+    width:100px;
+    display: block;
+    float: left;
+}
+
+.forget-password-input
+{
+    padding-right:5px;
+}

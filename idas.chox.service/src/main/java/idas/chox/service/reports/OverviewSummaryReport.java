@@ -46,8 +46,20 @@ public class OverviewSummaryReport implements Report {
 
         try {
 
+
+            /*
             dataStart = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
             dataEnd = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateEnd"))[0]);
+            */
+
+            if(((String[]) externalParameter.get("DateStart"))!=null){
+                dataStart = DateHelper.Parse(((String[]) externalParameter.get("DateStart"))[0]);
+            }
+
+            if(((String[]) externalParameter.get("DateStart"))!=null){
+                dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
+            }
+
             StringBuffer sb = new StringBuffer();
 
             if (currentUser.getIsINS()) {
@@ -64,15 +76,15 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='AwaitingCarHireInfo') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_accepted_claims_val, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='ClaimRejectionAccepted') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_rejected_claims_num, ");
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='ClaimRejectionAccepted') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_rejected_claims_val, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='InvoicePaymentLogged') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_approved_invoice_num, ");
-            sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='InvoicePaymentLogged') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_approved_invoice_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status in ('PaymentReceived')) b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_approved_invoice_num, ");
+            sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status in ('PaymentReceived')) b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_approved_invoice_val, ");
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='InvoiceRejectionAccepted') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_rejected_invoice_num, ");
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where new_status='InvoiceRejectionAccepted') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_rejected_invoice_val, ");
-            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.claim_created_date)))/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.new_status='InvoicePaymentLogged' where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.insurer_id=insurer_chorganisation.insurer_id and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) as average_claim_cycle_day, ");
-            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.created_date)))/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.new_status='InvoicePaymentLogged' where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.insurer_id=insurer_chorganisation.insurer_id and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) as average_invoice_cycle_day, ");
+            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.claim_created_date)))/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.new_status='PaymentReceived' where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.insurer_id=insurer_chorganisation.insurer_id and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) as average_claim_cycle_day, ");
+            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.created_date)))/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.new_status='PaymentReceived' where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.insurer_id=insurer_chorganisation.insurer_id and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) as average_invoice_cycle_day, ");
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(vehicle_hire.days)/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice left outer join vehicle_hire vehicle_hire on vehicle_hire.id = invoice.claim_vehicle_hire_id where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_hire_duration_day, ");
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.total_to_pay)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_invoice_val, ");
-            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.panalty_charge)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_penalty_val ");
+            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.penalty_charge)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_penalty_val ");
 
             if (currentUser.getIsINS()) {
 
@@ -240,7 +252,6 @@ public class OverviewSummaryReport implements Report {
             reportLine.setLineItem(lineItemDetails);
         }
 
-        // LINE 6 to 10
         return processTotalAverageSection(reportLines);
 
     }
@@ -251,11 +262,11 @@ public class OverviewSummaryReport implements Report {
         StringBuffer sb = new StringBuffer();
 
         sb.append("select ");
-        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.claim_created_date)))/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.new_status='InvoicePaymentLogged' where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageClaimCycleForAllOrg, ");
-        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.created_date)))/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.new_status='InvoicePaymentLogged' where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageInvoiceCycleForAllOrg, ");
+        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.claim_created_date)))/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.new_status='PaymentReceived' where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageClaimCycleForAllOrg, ");
+        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.created_date)))/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.new_status='PaymentReceived' where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageInvoiceCycleForAllOrg, ");
         sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(vehicle_hire.days)/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice left outer join vehicle_hire vehicle_hire on vehicle_hire.id = invoice.claim_vehicle_hire_id where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageHireDurationForAllOrg, ");
         sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.total_to_pay)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageInvoiceValueForAllOrg, ");
-        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.panalty_charge)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averagePenaltyValueForAllOrg ");
+        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.penalty_charge)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averagePenaltyValueForAllOrg ");
 
         if (!currentUser.getIsINS()) {
             sb.append("from chorganisation chorganisation where chorganisation.id=:pUserOrgId ");
@@ -266,15 +277,8 @@ public class OverviewSummaryReport implements Report {
         }
 
         String query = sb.toString();
-        /*query = query.replaceAll("@pUploadDateFrom", "'" + DateHelper.DBDateFormat.format(dataStart) + "'");
-        query = query.replaceAll("@pUploadDateTo", "'" + DateHelper.DBDateFormat.format(dataEnd) + "'");
-        query = query.replaceAll("@pUserOrgId", userOrgId.toString());
-        query = query.replaceAll("@sqlStatement1", sqlStatement1);*/
         query = query.replaceAll("@sqlStatement1", sqlStatement1);
 
-        //Emmanuel
-        //27-07-2009
-        //prevent SQL Injection
         Map paramMap = new HashMap();
         paramMap.put("pUploadDateFrom", dataStart);
         paramMap.put("pUploadDateTo", dataEnd);

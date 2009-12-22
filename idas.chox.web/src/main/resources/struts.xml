@@ -22,7 +22,11 @@
             <result name="success">/jsp/login.jsp?login_error=${login_error}
             </result>
         </action>
+        <action name="requestToResetPassword" class="idas.chox.web.actions.ForgetPasswordAction" method="requestToResetPassword">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
     </package>
+    
     <package name="user" namespace="/user" extends="home-package">
         <default-interceptor-ref name="authenticated" />
         <action name ="processClaimsAction" class ="idas.chox.web.actions.ProcessClaimsAction">
@@ -1034,7 +1038,7 @@
         <action name="renderNotifications" class="idas.chox.web.actions.ClaimAction" method="renderNotifications">
             <result>/jsp/user/p_notification_list.jsp</result>
         </action>
-
     </package>
+
     <include file="config-browser.xml"/>
 </struts>
