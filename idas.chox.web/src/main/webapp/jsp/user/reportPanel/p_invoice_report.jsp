@@ -11,7 +11,6 @@
         var sAction = "GetWorkgroupOnlyDropDownActionByInsurer.action";
         var sparameters = "";
         doSectionLoad(sLocaltion, sAction, sparameters);
-        //$('div#rptInvoiceWorkgroupSelectionHolder').load('GetWorkgroupOnlyDropDownActionByInsurer.action?rdt='+random_number());
     });
     
     function openReport()

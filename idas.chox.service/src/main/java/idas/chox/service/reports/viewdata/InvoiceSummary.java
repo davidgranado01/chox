@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.reports.viewdata;
 
 import idas.chox.core.util.MathHelper;
@@ -9,10 +5,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
-/**
- *
- * @author Emmanuel
- */
 public class InvoiceSummary {
 
     private String orgName;

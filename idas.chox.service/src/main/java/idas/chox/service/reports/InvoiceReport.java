@@ -45,9 +45,6 @@ public class InvoiceReport implements Report {
             PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
             user = currentUser.getUser();
 
-            //final Date dataStart = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
-            //final Date dataEnd = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateEnd"))[0]);
-
             final Date dataStart = DateHelper.Parse(((String[]) externalParameter.get("DateStart"))[0]);
             final Date dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
 
@@ -64,6 +61,7 @@ public class InvoiceReport implements Report {
                 sListSupplierRef = ((String[]) externalParameter.get("supplierReferences"))[0];
             }
             final String listSupplierRef = sListSupplierRef;
+
 
             // SUPPLIER REF IN COMMA DELIMETERS
             String SupplierRefs = "";
@@ -103,16 +101,10 @@ public class InvoiceReport implements Report {
             }
 
             Integer iWorkgroupId = -1;
-
             if(((String[]) externalParameter.get("workgroupId"))!=null){
                 iWorkgroupId = TextHelper.getId(((String[]) externalParameter.get("workgroupId"))[0]);
             }
-            /*
-            String workgroupId = ((String[]) externalParameter.get("workgroupId"))[0];
-            if (!workgroupId.equalsIgnoreCase("")) {
-                iWorkgroupId = Integer.parseInt(workgroupId);
-            }
-            */
+
             StringBuffer sb = new StringBuffer();
             sb.append("Select invoice.* from rpt_claim_invoice invoice ");
             sb.append("where insurer_id = :pInsurerId and chorganisation_id = :pChorganisationId ");
@@ -158,7 +150,6 @@ public class InvoiceReport implements Report {
             reportParameters.put("rptCreditHireAddress", rptCreditHireAddress);
             reportParameters.put("rptCreditHireCompanyNumber", rptCreditHireCompanyNumber);
             reportParameters.put("rptCreditHireVat", rptCreditHireVat);
-
 
         } catch (Exception ex) {
             ex.printStackTrace();
