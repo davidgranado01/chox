@@ -1,6 +1,6 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">
+<script type="text/javascript">
 
     $(function(){
 

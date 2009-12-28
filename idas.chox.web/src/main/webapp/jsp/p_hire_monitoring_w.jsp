@@ -1,7 +1,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 
-<script language="JavaScript">
+<script type="text/javascript">
         
     $(function(){
 
@@ -212,7 +212,7 @@
                 <input type="submit" value="Save Changes" /><s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
             </div>
 
-            <div id="HMmessageBox" style="text-align:center" class="action_msg"></div>            
+            <div id="HMmessageBox" style="text-align:center" class="action-error-msg"></div>
             <div class="chox-form-submit-result">&nbsp;</div>   
 
         </div>

@@ -1,13 +1,5 @@
-<%-- 
-    Document   : claimDetail
-    Created on : 23-Nov-2008, 12:04:54
-    Author     : Dermot
---%>
-
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-
-<head>
 
     <script src="<%= request.getContextPath()%>/scripts/actionPanelLib.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
@@ -626,8 +618,6 @@
 
     </script>
 
-</head>
-
 <div style="width:960px">
 
     <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -699,7 +689,7 @@
                         headerKey=""
                         headerValue="More Actions"
                         emptyOption="false"
-                        onchange="javascript:extraActionChange();">
+                        onchange="javascript:handleExtraActionChange();">
                     </s:select>
                 </s:if>
             </div>

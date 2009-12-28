@@ -157,7 +157,7 @@
                         </tr>
                     </table>
                     <div class="errorBox" id="OwnershippAssignmentMessageBox"></div>
-                    <div id="ownership-submit-result" class="action_msg"><%= statusMsg%></div>
+                    <div id="ownership-submit-result" class="action-error-msg"><%= statusMsg%></div>
                 </div>
             </div>
 

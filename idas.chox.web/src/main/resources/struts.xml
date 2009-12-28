@@ -1001,7 +1001,7 @@
 
         <!--Start Alert Panel-->
         <action name="getAlertPanel" class="idas.chox.web.actions.ClaimAction" method="getAlertPanel">
-            <result name="penaltyChargeApplied">/jsp/alertPanel/p_penaltyCharge.jsp
+            <result name="penaltyChargeApplied">/jsp/alertPanel/p_penalty_charge.jsp
             </result>
             <result name="empty">/jsp/p_action_response_json_data.jsp
             </result>
