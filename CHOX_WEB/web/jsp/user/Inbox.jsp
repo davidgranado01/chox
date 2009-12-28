@@ -24,7 +24,6 @@
     var isCho = <s:property value="isCHO"/>;
     var isInsurer = <s:property value="isInsurer"/>;
 
-
     var rd = new Ext.data.JsonReader({
         totalProperty: 'totalCount',   
         root: 'results', 
@@ -621,7 +620,7 @@
                 "ClaimRejectionContested", "ClaimUnacknowledgedRouted", "ClaimUpdatedByEngineer",
                 "ContestedInvoiceReferredToCHO", "ContestedInvoiceReferredToInsurer", "InvoiceApprovedByBRE",
                 "InvoiceDataCalculationIncorrect", "InvoiceEscalated", "InvoiceEscalatedToHandler",
-                "InvoicePaymentLogged", "PaymentReceived"];
+                "InvoicePaymentLogged", "PaymentReceived", "ClaimReferredToFNOL"];
 
                 var selectedRecords =  sm2.getSelections();
                 var selectedNotMyClaimsIDs = getErrorClaims(selectedRecords, true, false, allowStatuses);

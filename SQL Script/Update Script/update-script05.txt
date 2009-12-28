@@ -28,4 +28,8 @@ update insurer set is_claim_locked = false;
 
 delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'extraAction.updateClaimOwner.%') and role='ROLE_CHOX_ADMIN';
 
+
 --------------------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateClaimOwner.ClaimReferredToFNOL');
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.ClaimReferredToFNOL'), (select max(id)+1 from accessibility_item));

@@ -18,7 +18,7 @@ public interface UserService {
     public boolean updateObject(WebUser object);
     public boolean isEmailExist(String email);
     public boolean isEmailExist(String email, int userId);
-    public List<WebUser> getClaimHanldersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable);
+    public List<WebUser> getClaimHanldersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable, String sortColumn);
     public List<WebUser> getClaimHanldersByInsurer(int insurerId, boolean workgroupEnable);
     public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, String selectedUserRole);
     public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, int selectedWorkgroupId, String selectedUserRole);

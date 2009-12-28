@@ -158,7 +158,7 @@ public class UserServiceImpl extends DataService implements UserService {
         return bFlag;
     }
 
-    public List<WebUser> getClaimHanldersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable){
+    public List<WebUser> getClaimHanldersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable, String sortColumn){
 
         List<WebUser> users = new ArrayList<WebUser>();
 
@@ -174,7 +174,7 @@ public class UserServiceImpl extends DataService implements UserService {
 
                 criteria.add(Restrictions.eq("insurer.id", insurerId));
                 criteria.add(Restrictions.eq("status", true));
-                criteria.addOrder(Order.asc("firstName"));
+                criteria.addOrder(Order.asc(sortColumn));
                 
                 criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
                 List<HashMap> resultMap = criteria.list();
@@ -199,7 +199,7 @@ public class UserServiceImpl extends DataService implements UserService {
             DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
             criteria.add(Restrictions.eq("insurer.id", insurerId));
             criteria.add(Restrictions.eq("status", true));
-            criteria.addOrder(Order.asc("firstName"));
+            criteria.addOrder(Order.asc("lastName"));
             users = findByCriteria(criteria);
 
         } catch (Throwable e) {

@@ -146,8 +146,6 @@
         var sAction = "SearchClaimHandlerRoleUserDropDownAction.action";
         var sparameters = "workgroupId="+selectedWorkgroupId+"&insurerId="+selectedInsurerId;
         doSectionLoad(sLocaltion, sAction, sparameters);
-
-        // $('#searchScreenClaimhandlerDownDiv').load("SearchClaimHandlerRoleUserDropDownAction.action?workgroupId="+selectedWorkgroupId+"&insurerId="+selectedInsurerId+uniqeToken());
    }
 
    function clearForm(){

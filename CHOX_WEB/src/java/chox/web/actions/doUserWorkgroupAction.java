@@ -107,7 +107,7 @@ public class doUserWorkgroupAction extends BaseAction{
     public String checkWorkgroupAllowToDelete(){
 
         boolean isAllowToDelete = true;
-        String errMsg = "Are you sure you want to remove this workgroup?";
+        String errMsg = "Are you sure you want to remove this Workgroup?";
 
         WebUser wu = userService.getObject(this.webUserId);
         Workgroup wg = workgroupService.getObject(this.workgroupId);
@@ -151,7 +151,7 @@ public class doUserWorkgroupAction extends BaseAction{
                         }
 
                         if(!isAllowToDelete){
-                            errMsg = "User "+wu.getDisplayName()+" is the last user that has "+sUserRoles+" and is assigned to Workgroup "+wg.getName()+". Are you sure you want to remove this workgroup?";
+                            errMsg = "User "+wu.getDisplayName()+" is the last user that has "+sUserRoles+" and is assigned to Workgroup "+wg.getName()+". Are you sure you want to remove this Workgroup?";
                         }
                         
                     }
@@ -228,7 +228,7 @@ public class doUserWorkgroupAction extends BaseAction{
                         && isOpenItemForUser
                         && RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_CH)){
                     isAllowToDelete = false;
-                    errMsg += "User '"+user.getDisplayName()+"' has open claim(s) assigned to them within workgroup '"+model.getWorkgroup().getName()+"', it is not possible to remove the assignment of a Workgroup against a user who has open claim(s)";
+                    errMsg += "User '"+user.getDisplayName()+"' has open claim(s) assigned to them within Workgroup '"+model.getWorkgroup().getName()+"', it is not possible to remove the assignment of a Workgroup against a user who has open claim(s)";
                 }
             }
 
@@ -260,7 +260,7 @@ public class doUserWorkgroupAction extends BaseAction{
             
             if(this.service.isObjectExist(webUserId, workgroupId)){
                 
-                getActionResponse().AddError("Selected workgroup '"+selectedWorkgroup.getName()+"' is already exist");
+                getActionResponse().AddError("Selected Workgroup '"+selectedWorkgroup.getName()+"' is already exist");
                 
             }else{
                 

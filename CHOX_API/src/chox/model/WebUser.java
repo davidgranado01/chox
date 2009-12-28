@@ -180,9 +180,13 @@ public class WebUser implements Serializable {
     
     //TODO: SPRINT 8 ENHANCEMENT
     public String getDisplayName() {
+        return String.format("%1$s %2$s", this.getFirstName(), this.getLastName());
+    }
+
+    public String getDisplayDropDownName() {
         return String.format("%1$s %2$s", this.getLastName(), this.getFirstName());
     }
-    
+
     public void setClaimHandler(boolean claimHandler) {
         this.claimHandler = claimHandler;
     }

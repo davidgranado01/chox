@@ -219,7 +219,7 @@ public class doUserroleAction extends BaseAction{
 
                         if(user.getWorkgroupIds().size()>0 && RoleHelper.getWorkgroupRoleCount(user.getRoles())<=1){
                             isAllowToDelete = false;
-                            errMsg = "It is not possible to remove the assignment of "+selectedRoleDescription+" against a user who has workgroup(s). Please remove the workgroup(s) from this user.";
+                            errMsg = "It is not possible to remove the assignment of "+selectedRoleDescription+" against a user who has Workgroup(s). Please remove the Workgroup(s) from this user.";
                         }
                         
                     }

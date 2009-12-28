@@ -61,12 +61,11 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction{
         if(insurerId>1){
 
             Insurer insurer = insurerService.getObject(insurerId);
-            List<WebUser> users = service.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable());
-
+            List<WebUser> users = service.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable(), "lastName");
             List items = new ArrayList<IdLookupItem>();
 
             for(WebUser user:users){
-                items.add(new IdLookupItem(user.getId(), user.getDisplayName()));
+                items.add(new IdLookupItem(user.getId(), user.getDisplayDropDownName()));
             }
 
             claimhandlers = items;
@@ -75,7 +74,7 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction{
 
         return SUCCESS;
     }
-    
+
     @Override
     public String execute() throws Exception {
 
@@ -85,7 +84,7 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction{
 
             Insurer insurer = insurerService.getObject(insurerId);
 
-            List<WebUser> users = service.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable());
+            List<WebUser> users = service.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable(), "firstName");
             List items = new ArrayList<IdLookupItem>();
 
             for(WebUser user:users){

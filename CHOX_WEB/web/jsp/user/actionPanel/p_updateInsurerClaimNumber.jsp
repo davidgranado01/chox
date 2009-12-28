@@ -72,7 +72,7 @@
             <table class="status-table">
                 <tr>
                     <td>
-                    <label>Claim Number</label></td><td nowrap>
+                    <label>Claim Number<span class="mandatory">*</span></label></td><td nowrap>
                         <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
                         <input type="button" value="Update Claim Number" onclick="javascript: doSubmitClaimNumber('updateClaimNumber');" /> 
                     </td>

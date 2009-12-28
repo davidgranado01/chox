@@ -76,7 +76,7 @@
     function doUpdateOwnershipShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
         var sLocaltion = "#claimHandlerRoleUserDropDownDiv";
         var sAction = "ClaimHandlerRoleUserDropDownAction.action";
-        var sparameters = "workgroupId=" + selectedWorkgroupId + "&insurerId="+selectedInsurerId;
+        var sparameters = "workgroupId="+selectedWorkgroupId+"&insurerId="+selectedInsurerId;
         doSectionLoad(sLocaltion, sAction, sparameters);
     }
 
@@ -117,7 +117,7 @@
                         <td width="200px"><label>Workgroup</label></td>
                         <td width="100%">
                             <s:select name="uosWorkgroupId" id="uosWorkgroupId"
-                            list="workgroups" headerKey="" listKey="id" listValue="name"
+                            list="insurerWorkgroups" headerKey="" listKey="id" listValue="name"
                             headerValue="-- Please Select --" onchange="doUpdateOwnershipWorkgroupChange()">
                             </s:select>
                         </td>

@@ -166,7 +166,7 @@
 </tr>
 <tr>
     <td>
-        <label>Claim Number</label></td><td>
+        <label>Claim Number<span class="mandatory">*</span></label></td><td>
         <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
     </td>
     <td>

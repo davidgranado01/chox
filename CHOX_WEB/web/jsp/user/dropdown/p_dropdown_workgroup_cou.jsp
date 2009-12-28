@@ -4,6 +4,7 @@
 <script type="text/javascript">
 
     function doSelectWorkgroupCou(){
+
         var insurerId = <s:property value="orgId"/>;
         var selectedWorkgroupId = -1;
 
@@ -15,6 +16,7 @@
         var sAction = "user/ClaimHandlerRoleUserDropDownAction.action";
         var sparameters = "workgroupId="+selectedWorkgroupId+"&insurerId="+insurerId;
         doSectionLoad(sLocaltion, sAction, sparameters);
+
     }
 
 </script>

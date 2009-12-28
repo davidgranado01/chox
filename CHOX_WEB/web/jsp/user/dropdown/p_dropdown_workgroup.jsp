@@ -26,7 +26,7 @@
     listKey="id"
     listValue="name"
     headerKey=""
-    headerValue="--- ALL ---"
+    headerValue="- Please Select -"
     emptyOption="false"
     onchange="doSelectWorkgroup()">
 </s:select>
