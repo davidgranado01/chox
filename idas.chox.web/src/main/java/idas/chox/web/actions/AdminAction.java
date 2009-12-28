@@ -64,6 +64,17 @@ public class AdminAction extends BaseAction {
     public boolean isChoxAdmin() {
         return getIsChoxAdmin();
     }
+
+    private int selectOrgId = -1;
+
+    public void setSelectOrgId(int selectOrgId) {
+        this.selectOrgId = selectOrgId;
+    }
+
+    public int getSelectOrgId() {
+        return selectOrgId;
+    }
+
     /*
     private int selectOrgTypeId = -1;
     private String gridViewType;

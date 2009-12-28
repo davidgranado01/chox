@@ -93,7 +93,7 @@
         function doInsurerBack(){
             var sLocaltion = "#admin_param_panel";
             var sAction = "loadAdminPanel.action";
-            var sparameters = "adminPanelName=ChoxPanelMgmt";
+            var sparameters = "adminPanelName=ChoxInsurerMgmtPanel";
             doSectionLoad(sLocaltion, sAction, sparameters);
         }
         
@@ -154,7 +154,8 @@
            
            adminTabs = new Ext.TabPanel({
            renderTo: 'mainPanel',
-           height:655,
+           height:635,
+           width:740,
            activeTab: adminCurrentTabIndex,
            items:[
                 {contentEl:'insurerDetailPanelTab', title:'Details',listeners: {activate: insHandleActivate}},
@@ -164,7 +165,7 @@
                 {contentEl:'insurerBrePanelTab', title:'BRE Band', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', disabled:<s:property value="isNew"/>, listeners: {activate: doBreMappingRefresh}},
                 {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', disabled:<s:property value="isNew"/>, listeners: {activate: insHandleActivate}}
-            ]
+            ]   
            });
         }
        
@@ -256,10 +257,13 @@
 
 <div id="insurerVehicleClassCeilingTab" class="x-hide-display">
     <div class="sub-admin-tab-css">
+
+        <!--
         <s:action name="loadAdminPanel" executeResult="true">
             <s:param name="adminPanelName">InsurerVehicleClassCeiling</s:param>
             <s:param name="selectOrgId"><s:property value="objectId" /></s:param>
-        </s:action> 
+        </s:action>
+        !-->
      </div>
 </div>
 
@@ -270,8 +274,7 @@
     <form id="formUpdateInsurerDetail" action="user/updateInsurerDetail.action" class="XXentity-form" onsubmit="return true;">
     
     <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
-        <fieldset class="x-fieldset">
-        <legend>Insurer Detail</legend>
+
             <div class="form-container">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Name<span class="mandatory">*</span></label>
@@ -347,12 +350,12 @@
                     <input type="button" value='Cancel' class="cancel" onclick="javascript: return doInsurerBack();" />
                     
                 </div>
-                <div id="CDmessageBox" style="text-align:center" class="errorBox"></div>  
+                <div id="CDmessageBox" class="acknowledge-message-box"></div>
                 
             </div>
         <br/>
         <div class="chox-form-submit-result" id="chox-form-submit-result"></div>
-        </fieldset>
+
     </form>
 
     </div>

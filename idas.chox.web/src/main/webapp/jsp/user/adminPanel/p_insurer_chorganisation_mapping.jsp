@@ -74,9 +74,7 @@
                     return "<a href='#' class='highlightItem'>Add</a>"}}                
             ],
             renderTo:'ins_cho_a_gridviewGrid',
-                width:290,
-                autoHeight:true,
-                enableHdMenu:false
+            width:300, height: 540
             });
 
         ins_cho_s_gridviewGrid = new Ext.grid.GridPanel({
@@ -90,9 +88,7 @@
                     return "<a href='#' class='highlightItem'>Remove</a>"}}
             ],
             renderTo:'ins_cho_s_gridviewGrid',
-                width:290,
-                autoHeight:true,
-                enableHdMenu:false
+            width:300, height: 540
             });
             
             ins_cho_loadGridViewList();

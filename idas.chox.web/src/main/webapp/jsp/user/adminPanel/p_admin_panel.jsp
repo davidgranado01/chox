@@ -1,6 +1,6 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.min.js"></script>
+
 <script type="text/javascript">
 
     function renderAdminParameterPanel(selectedPanel)
@@ -26,7 +26,7 @@
                             </s:if>
 
                             <s:if test="adminAccessibility.isCreditHireOrgAdminAccessibility">
-                                <li><a href="javascript:renderAdminParameterPanel('ChoxCreditHireOrgMgmt');">Credit Hire Organisations</a></li>
+                                <li><a href="javascript:renderAdminParameterPanel('ChoxCreditHireMgmtPanel');">Credit Hire Organisations</a></li>
                             </s:if>
 
                             <s:if test="adminAccessibility.isInsurerBreManagementAdminAccessibility">

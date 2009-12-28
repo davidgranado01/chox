@@ -38,7 +38,7 @@
             function doCancel(){
                 document.location="<%= request.getContextPath()%>/login.action";
             }
-
+            
         </script>
 
     </head>
@@ -59,26 +59,27 @@
 
             <div class="inner" style="padding-top:10px;">
                 <div id="login">
-                    <form onsubmit="return true;" id="forgetPasswordRequestForm" name="forgetPasswordRequestForm" action="<%=request.getContextPath()%>/requestToResetPassword.action" method="post" >
+
+                    <form onsubmit="return true;" id="forgetPasswordRequestForm" name="forgetPasswordRequestForm" class="XXentity-form" action="<%= request.getContextPath()%>/requestToResetPassword.action" method="POST" >
                         <div class="login_form">
-                            <p>
+                            <div>
                                 <label class="forget-password-label">Username:</label>
                                 <input type="text" name="userName" id="userName" style="width:250px" class="forget-password-input"/>
-                            </p>
-
-                            <p>
+                            </div>
+                            <div>
                                 <label class="forget-password-label">Email:</label>
                                 <input type="text" name="email" id="email" style="width:250px"/>
-                            </p>
+                            </div>
 
                             <div class="checkbox_and_submit">
                             <p>
-                                <input type="submit" value="Submit" /><input type="button" value="Cancel" onclick="javascript:doCancel();" />
+                                <input type="submit" value="Submit"/><input type="button" value="Cancel" onclick="javascript:doCancel();" />
                             </p>
                             </div>
                         </div>
                         <div id="ACKmessageBox" style="display:block;"></div>
                     </form>
+
                 </div>
             </div>
                         

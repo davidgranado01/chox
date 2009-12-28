@@ -78,9 +78,7 @@
                     return "<a href='#' class='highlightItem'>Add</a>"}}                
             ],
             renderTo:'breband_a_gridviewGrid',
-                width:290,
-                autoHeight:true,
-                enableHdMenu:false
+            width:300, height: 540
             });
 
         breband_s_gridviewGrid = new Ext.grid.GridPanel({
@@ -94,9 +92,7 @@
                     return "<a href='#' class='highlightItem'>Remove</a>"}}
             ],
             renderTo:'breband_s_gridviewGrid',
-                width:290,
-                autoHeight:true,
-                enableHdMenu:false
+            width:300, height: 540
             });
             
             onBreBandPageRefresh()

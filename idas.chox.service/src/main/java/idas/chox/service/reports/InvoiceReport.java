@@ -75,11 +75,9 @@ public class InvoiceReport implements Report {
 
             // GET INSURER INFORMATION
             if (RoleHelper.isInsurerUser(user)) {
-
                 insurerId = user.getInsurer().getId();
                 rptInsurerName = user.getInsurer().getName();
                 rptInsurerAddress = user.getInsurer().getDisplayAddress();
-
             }
 
             Integer creditHireId = -1;
@@ -141,7 +139,7 @@ public class InvoiceReport implements Report {
                 PaymentReport payment = PaymentReport.getObject(data);
                 payments.add(payment);
             }
-
+            
             reportParameters.put("payments", payments);
             reportParameters.put("rptCreatedDate", new Date());
             reportParameters.put("rptInsurerName", rptInsurerName);

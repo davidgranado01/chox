@@ -13,10 +13,10 @@
         doSectionLoad(sLocaltion, sAction, sparameters);
     });
     
-    function openReport()
+    function openInvoiceReport()
     {
-        if(doFormValidation().form()){
-            var queryString = $('#formReportParam').formSerialize();
+        if(doInvoiceReportFormValidation().form()){
+            var queryString = $('#formInvoiceReportParam').formSerialize();
             window.location= "exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
         }
     }
@@ -26,9 +26,9 @@
         ui.dateField('DateEnd',getTodayDate(),'dateToDiv');
     });
 
-    function doFormValidation(){
+    function doInvoiceReportFormValidation(){
 
-        var validateFlag = $("#formReportParam").validate(
+        var validateFlag = $("#formInvoiceReportParam").validate(
         {
             errorLabelContainer: "#acknowledge-message-box",
             rules: {
@@ -66,7 +66,7 @@
 <fieldset class="x-fieldset">
 
     <legend>CHO Invoice Report</legend>
-<form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
+<form id="formInvoiceReportParam" class="XXentity-form" name="formInvoiceReportParam" action="POST">
 
 
     <div class="x-panel-bwrap chox-form-container">
@@ -85,7 +85,6 @@
                 <s:else>
                     <input type="hidden" id="workgroupId" name="workgroupId" value="-1"/>
                 </s:else>
-
                 <s:if test="!isCHO">
                 <tr>
                     <td nowrap><label>Credit Hire Organisation</label></td>
@@ -110,7 +109,7 @@
             </table>
 
             <div class="chox-report-button">
-                <button type="button" onclick="javascript:openReport();">Generate Report</button>
+                <button type="button" onclick="javascript:openInvoiceReport();">Generate Report</button>
             </div>
                 
         </div>

@@ -44,8 +44,7 @@
                             </p>
                             <div class="checkbox_and_submit">
                                 <p>
-                                    <input type="submit" value="Sign In" /><a href="<%= request.getContextPath()%>/jsp/p_forget_password_request.jsp" class="forget-password-link">Forget Password</a>
-
+                                    <input type="submit" value="Sign In" /><a href="requestForgetPassword.action" class="forget-password-link">Forget Password</a>
                                 </p>
                                 <p><s:if test="#parameters.size()>0">
                                         <span id="login-error">Incorrect Username and/or Password </span>

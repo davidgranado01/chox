@@ -33,7 +33,7 @@
 
         workgroup_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: 'user/getInsurerWorkgroup.action',method:'GET'}),
+            ({url: 'user/getInsurerWorkgroup.action',method:'POST'}),
             reader:workgroup_gridviewJsonReader      
         });
 
@@ -42,9 +42,9 @@
             store: workgroup_gridviewData,
             loadMask: true,
             columns: [
-                {header: "Insurer", width: 60, dataIndex: 'insurerName', sortable: true, resizable: true},
-                {header: "Workgroup", width: 100, dataIndex: 'name', sortable: true, resizable: true},
-                {header: "Active", width: 60, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
+                {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
+                {header: "Workgroup", width: 180, dataIndex: 'name', sortable: true, resizable: true},
+                {header: "Active", width: 80, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>" + value + "</a>"}},
                 {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){
                     return "<a href='#' class='highlightItem'>Remove</a>"}},       
@@ -52,12 +52,11 @@
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
             renderTo:'workgroup_gridviewGrid',
-                width:605,
-                autoHeight:true,
-                enableHdMenu:false
+            height: 540,
+            width: 720
             });
             
-            workgroup_loadGridViewList()
+            workgroup_loadGridViewList();
 
     }); 
     
@@ -75,7 +74,7 @@
     }
     
     function workgroup_loadGridViewList(){
-        
+       
         workgroup_gridviewData.load(
         {
             params:

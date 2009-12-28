@@ -4,6 +4,7 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.util.RoleHelper;
+import idas.chox.core.util.TextHelper;
 import idas.chox.data.services.DataService;
 import idas.chox.service.reports.viewdata.PaymentReport;
 import idas.chox.service.reports.viewdata.PaymentReportObject;
@@ -78,16 +79,36 @@ public class InsurerPaymentReport implements Report {
                 isWorkgroupEnabled = ins.isWorkgroupEnable();
                 isOrwnerEnabled = ins.isClaimOwnershipEnable();
 
+                if((externalParameter.get("supplierId"))!=null){
+                    String supplierId = ((String[]) externalParameter.get("supplierId"))[0];
+                    if(!supplierId.equalsIgnoreCase("")){
+                        iSupplierId = TextHelper.getId(supplierId);
+                        chorg = getChorganisation(iSupplierId);
+                    }
+                }
+                
+                /*
                 String supplierId = ((String[]) externalParameter.get("supplierId"))[0];
                 if (!supplierId.equalsIgnoreCase("")) {
                     iSupplierId = Integer.parseInt(supplierId);
                     chorg = getChorganisation(iSupplierId);
                 }
+                */
+
             }
 
+            /*
             String workgroupId = ((String[]) externalParameter.get("workgroupId"))[0];
             if (!workgroupId.equalsIgnoreCase("")) {
                 iWorkgroupId = Integer.parseInt(workgroupId);
+            }
+            */
+            
+            if((externalParameter.get("workgroupId"))!=null){
+                String workgroupId = ((String[]) externalParameter.get("workgroupId"))[0];
+                if(!workgroupId.equalsIgnoreCase("")){
+                    iWorkgroupId = TextHelper.getId(workgroupId);
+                }
             }
 
             StringBuffer sb = new StringBuffer();
@@ -115,9 +136,6 @@ public class InsurerPaymentReport implements Report {
             sb.append("order by cho_reference asc");
             String query = sb.toString();
 
-            // Emmanuel
-            // 27-07-2009
-            // prevent SQL Injection
             Map paramMap = new HashMap();
             paramMap.put("pChorganisationId", iSupplierId);
             paramMap.put("pInsurerId", iInsurerId);

@@ -36,40 +36,31 @@
         });
     
         alias_gridviewGrid = new Ext.grid.GridPanel({
-            listeners:  {cellclick:alias_recordOnclick },
-            store: alias_gridviewData,
-            loadMask: true,
-            columns: [
-                {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
-                {header: "Alias Name", width: 180, dataIndex: 'name', sortable: true, resizable: true},
-                {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){
-                    return "<a href='#' class='highlightItem'>Remove</a>"}},
-                {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
-                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
-                
-
-            ],
-            renderTo:'alias_gridviewGrid',
-                width:605,
-                autoHeight:true,
-                enableHdMenu:false
-            });
-
-            var pagingBar = new Ext.PagingToolbar({
-                pageSize: alias_recordPerPage,
+                listeners:  {cellclick:alias_recordOnclick },
                 store: alias_gridviewData,
-                displayInfo: true,
-                displayMsg: 'Displaying records {0} - {1} of {2}',
-                emptyMsg: "No record to display"
-            });    
+                height: 540,
+                width: 720,
+                columns: [
+                    {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
+                    {header: "Alias Name", width: 180, dataIndex: 'name', sortable: true, resizable: true},
+                    {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){
+                        return "<a href='#' class='highlightItem'>Remove</a>"}},
+                    {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
+                    {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
+                ],
+                renderTo:'alias_gridviewGrid',
+                loadMask: true,
+                autoScroll:true,
+                autoShow:true
+            });
             
-            alias_loadGridViewList()
+            alias_loadGridViewList();
 
     }); 
     
     function alias_recordOnclick(grid, rowIndex, columnIndex, e){
 
-        var gridView = alias_gridviewGrid.getStore().getAt(rowIndex);  // Get the Record
+        var gridView = alias_gridviewGrid.getStore().getAt(rowIndex);
 
         if(columnIndex==2){
             alias_triggerStatusRemoveRecord(gridView);

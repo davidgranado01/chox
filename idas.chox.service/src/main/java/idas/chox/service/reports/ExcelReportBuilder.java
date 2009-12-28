@@ -16,10 +16,6 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.core.io.ClassPathResource;
 
-/**
- *
- * @author Emmanuel
- */
 public class ExcelReportBuilder implements ReportBuilder {
 
     public InputStream buildReport(Report report) {

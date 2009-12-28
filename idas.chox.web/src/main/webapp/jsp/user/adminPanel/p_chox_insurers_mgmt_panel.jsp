@@ -53,21 +53,13 @@
         });
 
         gridviewGrid.render('gridviewGridHolderId');
-        
-        gridviewData.load(
-        {
-            params:
-            {
-
-            }
-        });
+        gridviewData.load({ params:{} });
         
     }); 
     
     function recordOnclick(grid, rowIndex, columnIndex, e){
 
         var gridView = gridviewGrid.getStore().getAt(rowIndex);
-        
         if(columnIndex==0){
             loadSelectedRecord(grid, rowIndex, columnIndex, e);
         }else if(columnIndex==3){
@@ -94,7 +86,6 @@
     function triggerStatusUpdateRecord(gridView){
             
         var aletMsg = "Are you sure you want to inactive this insurer?";
-
         if(!gridView.get("status")){
             aletMsg = "Are you sure you want to activate this insurer?";
         }
@@ -103,11 +94,10 @@
 
         if(deleteAtt){
             var gridViewId = gridView.get("id");
-
-             $.ajax({
-               url: "doTriggerInsurerAccountStatus.action?objectId="+gridViewId+uniqeToken(),
-               success: loadGridViewList
-             });
+            $.ajax({
+                url: "doTriggerInsurerAccountStatus.action?objectId="+gridViewId+uniqeToken(),
+                success: loadGridViewList
+            });
         }
     }
     
@@ -127,10 +117,7 @@
                         </tr>
                     </table>
                 </div>
-            
                 <div id="gridviewGridHolderId"></div>
-
         </fieldset>
     </form> 
-    
 </div>

@@ -22,9 +22,15 @@
             <result name="success">/jsp/login.jsp?login_error=${login_error}
             </result>
         </action>
-        <action name="requestToResetPassword" class="idas.chox.web.actions.ForgetPasswordAction" method="requestToResetPassword">
-            <result name="success">/jsp/p_jsonData.jsp</result>
+
+        <action name="requestForgetPassword" class="idas.chox.web.actions.ForgetPasswordAction">
+            <result name="success">/jsp/p_forget_password_request.jsp</result>
         </action>
+
+        <action name="requestToResetPassword" class="idas.chox.web.actions.ForgetPasswordAction" method="requestToResetPassword">
+            <result name="success">login.action</result>
+        </action>
+        
     </package>
     
     <package name="user" namespace="/user" extends="home-package">
@@ -823,8 +829,8 @@
         </action>
 
         <action name="loadAdminPanel" class="idas.chox.web.actions.AdminAction" method="loadAdminPanel">
-            <result name="ChoxPanelMgmt">/jsp/user/adminPanel/p_chox_insurers_mgmt_panel.jsp</result>
-            <result name="CreditHireOrgMgmt">/jsp/user/adminPanel/p_chox_chorganisation_mgmt_panel.jsp</result>
+            <result name="ChoxInsurerMgmtPanel">/jsp/user/adminPanel/p_chox_insurers_mgmt_panel.jsp</result>
+            <result name="ChoxCreditHireMgmtPanel">/jsp/user/adminPanel/p_chox_chorganisation_mgmt_panel.jsp</result>
             <result name="UserMgmt">/jsp/user/adminPanel/p_user_mgmt_panel.jsp</result>
             <result name="InsurerOrgMappingMgmt">/jsp/user/adminPanel/p_insurer_chorganisation_mapping.jsp</result>
             <result name="InsurerAliasMappingMgmt">/jsp/user/adminPanel/p_insurer_alias_mapping.jsp</result>
@@ -857,7 +863,7 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="updateInsurerDetailPanel" class="idas.chox.web.actions.doInsurerAction" method="doRenderActionPage">
-            <result name="success">/jsp/user/adminPanel/p_insurer_detail_panel.jsp</result>
+            <result name="success">/jsp/user/adminPanel/p_chox_insurers_mgmt.jsp</result>
         </action>
         <action name="updateInsurerDetail" class="idas.chox.web.actions.doInsurerAction" method="updateModel">
             <result name="success">/jsp/p_actionResponseJsonData.jsp</result>

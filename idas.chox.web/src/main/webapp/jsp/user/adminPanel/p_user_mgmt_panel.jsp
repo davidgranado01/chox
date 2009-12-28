@@ -144,7 +144,6 @@
     
     function loadGridViewList(){
         
-        
         getParameters();
 
         gridviewData.load(
@@ -163,8 +162,6 @@
     }
     
     function doDropDownOnChange(){
-
-        
         loadGridViewList();
     }
 
