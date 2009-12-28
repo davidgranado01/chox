@@ -83,5 +83,4 @@
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
 
-
 </beans>

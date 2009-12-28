@@ -71,13 +71,8 @@ var ajax = function() {
 
     function loadHtml(url,param,success,error) {
 
-        var target = $(this);
         $.post(url,param,function(data,textStatus){
-
-            if(checkResponse(textStatus)){
-                if(target){
-                    target.html(data);
-                }
+            if(checkResponse(textStatus)){               
                 if(success){
                     success(data);
                 }
@@ -125,6 +120,8 @@ var ajax = function() {
         handleAjaxError : handleAjaxError
     };
 }();
+
+
 
 
 

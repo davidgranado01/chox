@@ -1,2 +1,2 @@
 
-<% response.sendRedirect("user/inbox.action"); %>
+<% response.sendRedirect("/prv/inbox.action"); %>

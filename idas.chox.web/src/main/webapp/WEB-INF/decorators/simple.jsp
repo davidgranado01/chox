@@ -1,0 +1,45 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="/struts-tags" prefix="s" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+
+    <head>
+        <title><decorator:title default="IDAS-CHOX"/></title>
+        <%@ include file="/includes/styles.jsp"%>
+        <%@ include file="/includes/scripts.jsp"%>
+        <decorator:head />
+
+    </head>
+
+    <body>
+        <div class="outer" id="outerDiv">
+
+            <div class="inner">
+
+                <div id="chox-menu">
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                        <tr valign="middle">
+                            <td>
+                                <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left" alt=""/>
+                            </td>
+                            <td width="100%" align="right">
+                                <div class="top-menu">
+                                    <a href="javascript:window.close();"><b>Close</b></a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <decorator:body />
+
+            </div>
+        </div>
+
+        <div class="footerText">
+            ©2009 Sherwood Compliance Services Ltd | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','Copyright');" class="footerText">Copyright</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','PrivacyPolicy');" class="footerText">Privacy Policy</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','TermsOfService');" class="footerText">Terms of Service</a>
+        </div>
+
+    </body>
+</html>

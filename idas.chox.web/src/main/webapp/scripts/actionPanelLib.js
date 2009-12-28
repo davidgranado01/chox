@@ -17,7 +17,7 @@ var actionPanel = function(){
     {
         if(sClaimNumber && sClaimNumber.length > 0)
         {
-            var url = "checkIsClaimNumberDuplicated.action";
+            var url = "<%=request.getContextPath()%>/ajax/checkIsClaimNumberDuplicated.action";
             var param = {
                 claimNumber: sClaimNumber,
                 claimId: sClaimId

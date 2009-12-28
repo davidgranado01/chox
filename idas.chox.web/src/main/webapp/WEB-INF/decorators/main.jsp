@@ -1,86 +1,60 @@
-<!DOCTYPE html PUBLIC 
-	"-//W3C//DTD XHTML 1.1 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="/struts-tags" prefix="s" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
 
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %>
-<%@taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %>
-<%@taglib prefix="s" uri="/struts-tags" %>
+    <head>
+        <title><decorator:title default="IDAS-CHOX"/></title>
+        <%@ include file="/includes/styles.jsp"%>
+        <%@ include file="/includes/scripts.jsp"%>
+        <decorator:head />
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<title><decorator:title default="Struts Starter"/></title>
-    <link href="<s:url value='/styles/main.css'/>" rel="stylesheet" type="text/css" media="all"/>
-    <link href="<s:url value='/struts/niftycorners/niftyCorners.css'/>" rel="stylesheet" type="text/css"/>
-    <link href="<s:url value='/struts/niftycorners/niftyPrint.css'/>" rel="stylesheet" type="text/css" media="print"/>
-    <script language="JavaScript" type="text/javascript" src="<s:url value='/struts/niftycorners/nifty.js'/>"></script>
-	<script language="JavaScript" type="text/javascript">
-        window.onload = function(){
-            if(!NiftyCheck()) {
-                return;
-            }
-            // perform niftycorners rounding
-            // eg.
-            // Rounded("blockquote","tr bl","#ECF1F9","#CDFFAA","smooth border #88D84F");
-        }
-    </script>
-    <decorator:head/>
-</head>
-<body id="page-home">
-    <div id="page">
-        <div id="header" class="clearfix">
-        	HEADER
-            <hr />
-        </div>
-        
-        <div id="content" class="clearfix">
-            <div id="main">
-            	<h3>Main Content</h3>
-            	<decorator:body/>
-                <hr />
-            </div>
-            
-            <div id="sub">
-            	<h3>Sub Content</h3>
-            </div>
-            
-            
-            <div id="local">
-                <h3>Local Nav. Bar</h3>
-                <ul>
-                    <li><a href="#">Content page 1</a></li>
-                    <li><a href="#">Content page 2</a></li>
-                    <li><a href="#">Content page 3</a></li>
-                    <li><a href="#">Content page 4</a></li>
-                    <li><a href="#">Content page 5</a></li>
-                    <li><a href="#">Content page 6</a></li>
-                </ul>
-            </div>
-            
-            
-            <div id="nav">
-                <div class="wrapper">
-                <h3>Nav. bar</h3>
-                <ul class="clearfix">
-                     <li><a href="#">Menu 1</a></li>
-                     <li><a href="#">Menu 2</a></li>
-                     <li><a href="#">Menu 3</a></li>
-                     <li><a href="#">Menu 4</a></li>
-                     <li><a href="#">Menu 5</a></li>
-                     <li class="last"><a href="#">Menu 6</a></li>
-                </ul>
+    </head>
+
+    <body>
+        <div class="outer" id="outerDiv">
+
+            <div class="inner">
+
+                <div id="chox-menu">
+
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                        <tr valign="middle">
+                            <td>
+                                <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left" alt="" />
+                            </td>
+                            <td width="100%" align="right">
+
+                                <ul id="top-menu">
+                                    <li><a href="<s:url action="inbox"/>">&nbsp;Home&nbsp;</a></li>
+                                    <li><a href="<s:url action="openUserAccount" />">|&nbsp;Settings&nbsp;</a></li>
+                                    <s:if test="isCHO"><li><a href='<s:url action="uploadClaims"/>'>|&nbsp;XML Uploads&nbsp;</a></li></s:if>
+                                    <s:if test="!isChoxAdmin"><li><a href="javascript:openHelpFile('<%= request.getContextPath()%>',<s:property value="roleTypeForHelpFile" />);">|&nbsp;Help&nbsp;</a></li></s:if>
+                                    <li><a href="#" onmouseover="mopen('m2')" onmouseout="mclosetime()">|&nbsp;Support&nbsp;</a>
+                                        <div id="m2" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
+                                            <a href="javascript:openSupportFile('<%= request.getContextPath()%>');">Support Procedure</a>
+                                            <a href="<s:url action="onlineSupport"/>">Online Support Form</a>
+                                        </div></li>
+                                    <li><a href="javascript:onOpenAbout();">|&nbsp;About CHOX&nbsp;</a></li>
+                                    <li><a href="<%=request.getContextPath()%>/j_spring_security_logout" >|&nbsp;<b><s:property value="CurrentUserDesc" /></b> ( Log Off )</a></li>
+                                </ul>
+
+                                <div style="clear:both"></div>
+
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-                <hr />
+
+                <decorator:body />
+
             </div>
         </div>
-        
-        <div id="footer" class="clearfix">
-            Footer
+
+        <div class="footerText">
+            ©2009 Sherwood Compliance Services Ltd | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','Copyright');" class="footerText">Copyright</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','PrivacyPolicy');" class="footerText">Privacy Policy</a> | <a href="javascript:openChoxPolicyPage('<%= request.getContextPath()%>','TermsOfService');" class="footerText">Terms of Service</a>
         </div>
-        
-    </div>
-    
-    <div id="extra1">&nbsp;</div>
-    <div id="extra2">&nbsp;</div>
-</body>
+
+    </body>
 </html>
