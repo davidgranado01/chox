@@ -19,7 +19,7 @@
             root: 'results',
             idProperty: 'threadid',
             remoteSort: true,
-        
+
             fields:[
                 {name:'id'},
                 {name:'status'},
@@ -1143,9 +1143,8 @@
                         <td class="pop-claim-ownership-column"><div id="couClaimHandlerRoleUserDropDownDiv"></div></td>
                     </tr>
                 </table>
+
             </form>
         </div>
     </div>
-
 </div>
-
