@@ -1,6 +1,29 @@
-
 <%@ taglib uri="/struts-tags" prefix="s" %>     
 
+<script type="text/javascript">
+
+    $(function(){
+
+        var form = $("form#formUpdateWitness");
+
+        form.validate(
+        {
+            errorLabelContainer: "#WitnessMessageBox",
+            rules: {
+                name:{required:true}
+            },
+            messages: {
+                name:{required:"Please supply a valid value for 'Name'"}
+            }
+        });
+
+        ui.ajaxForm(form);
+
+    });
+
+</script>
+
+<!--
 <script language="JavaScript">
 
         $(document).ready(function(){
@@ -20,9 +43,10 @@
         });  
 
 </script>
+!-->
 
-<form id="formUpdateWitness" name="formUpdateWitness" action="<%=request.getContextPath()%>/prv/p/updateWitness.action" class="XXentity-form">
-     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
+<form id="formUpdateWitness" name="formUpdateWitness" action="<%=request.getContextPath()%>/prv/p/updateWitness.action" class="XXentity-form" method="POST">
+     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>  
     <fieldset class="x-fieldset">        
         <legend>Witness Details</legend>
@@ -68,8 +92,8 @@
                 Email</label>
             <input type="text" class="chox-ttxt" name="email" value="<s:property value="email" />"/></div>
             <div class="chox-form-button"><input type="submit" value="Save Changes" /></div>
-            <div id="WitnessMessageBox" class="errorBox"></div>
             <div class="chox-form-submit-result"></div>
+            <div id="WitnessMessageBox" class="action-error-msg"></div>
         </div>
     </fieldset>
 </form>

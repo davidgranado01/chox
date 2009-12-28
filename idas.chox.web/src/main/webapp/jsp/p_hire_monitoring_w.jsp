@@ -6,85 +6,40 @@
     $(function(){
 
         var repairBookInDatePicker = ui.dateField('repairBookInDate','<s:date format="dd/MM/yyyy" name="repairBookInDate" />','repairBookInDatePH');
-                           
         var inspectionBookedDateDatePicker = ui.dateField('inspectionBookedDate','<s:date format="dd/MM/yyyy" name="inspectionBookedDate" />','inspectionBookedDatePH');
-
         var inspectionDateDatePicker = ui.dateField('inspectionDate','<s:date format="dd/MM/yyyy" name="inspectionDate" />','inspectionDatePH');
-
         var nextReviewDatePicker = ui.dateField('nextReviewDate','<s:date format="dd/MM/yyyy" name="nextReviewDate" />','nextReviewDatePH');
-
         var repairCompletionDateDatePicker = ui.dateField('repairCompletionDate','<s:date format="dd/MM/yyyy" name="repairCompletionDate" />','repairCompletionDatePH');
 
         var form = $("form#formUpdateHireMonitoringDetail");
+        
         form.validate(
         {
             errorLabelContainer: "#HMmessageBox",
             rules: {
-                repairBookInDate:{
-                    date:true
-                },
-                inspectionBookedDate:{
-                    date:true
-                },
-                inspectionDate:{
-                    date:true
-                },
-                repairCompletionDate:{
-                    date:true
-                },
-                nextReviewDate:{
-                    date:true
-                },
-                labourRate :{
-                    number:true
-                },
-                labourHour :{
-                    digits:true
-                },
-                labourCost :{
-                    number:true
-                },
-                nonProvisionReason :{
-                    required: isNonProvisionReasonRequired
-                },
-                date_compare_field:{
-                    required: isDateCorrect
-                }
+                repairBookInDate:{date:true},
+                inspectionBookedDate:{date:true},
+                inspectionDate:{date:true},
+                repairCompletionDate:{date:true},
+                nextReviewDate:{date:true},
+                labourRate :{number:true},
+                labourHour :{digits:true},
+                labourCost :{number:true},
+                nonProvisionReason :{required: isNonProvisionReasonRequired},
+                date_compare_field:{required: isDateCorrect}
             },
             messages: {
-                nameOfRepairer:{
-                    required:"You must supply a date for 'Name Of Repairer'"
-                },
-                repairBookInDate: {
-                    date:"Invalid date format for 'Repair Book In Date'"
-                },
-                inspectionBookedDate: {
-                    date:"Invalid date format for 'Inspection Booked Date'"
-                },
-                inspectionDate: {
-                    date:"Invalid date format for 'Inspection Date'"
-                },
-                nextReviewDate: {
-                    date:"Invalid date format for 'Next Review Date'"
-                },
-                repairCompletionDate: {
-                    date:"Invalid date format for 'Repair Completion Date'"
-                },
-                labourRate :{
-                    number:"You must supply a numeric value for 'Labour Rate'"
-                },
-                labourHour :{
-                    digits:"You must supply a digit value for 'Labour Hours'"
-                },
-                labourCost :{
-                    number:"You must supply a numeric value for 'Total Labour Cost'"
-                },
-                nonProvisionReason :{
-                    required:"You must select 'Labour Information Non-Provision Reason' if 'Labour Rate', 'Labour Hours' or 'Total Labour Cost' cannot be provided"
-                },
-                date_compare_field:{
-                    required:"The 'Repair Completion Date' must be after the 'Repair Book In Date'"
-                }
+                nameOfRepairer:{required:"You must supply a date for 'Name Of Repairer'"},
+                repairBookInDate: {date:"Invalid date format for 'Repair Book In Date'"},
+                inspectionBookedDate: {date:"Invalid date format for 'Inspection Booked Date'"},
+                inspectionDate: {date:"Invalid date format for 'Inspection Date'"},
+                nextReviewDate: {date:"Invalid date format for 'Next Review Date'"},
+                repairCompletionDate: {date:"Invalid date format for 'Repair Completion Date'"},
+                labourRate :{number:"You must supply a numeric value for 'Labour Rate'"},
+                labourHour :{digits:"You must supply a digit value for 'Labour Hours'"},
+                labourCost :{number:"You must supply a numeric value for 'Total Labour Cost'"},
+                nonProvisionReason :{required:"You must select 'Labour Information Non-Provision Reason' if 'Labour Rate', 'Labour Hours' or 'Total Labour Cost' cannot be provided"},
+                date_compare_field:{required:"The 'Repair Completion Date' must be after the 'Repair Book In Date'"}
             }
         });
 
@@ -125,7 +80,7 @@
 </script>
 
 <form id="formUpdateHireMonitoringDetail" name="formUpdateHireMonitoringDetail"
-      action="<%=request.getContextPath()%>/prv/p/updateHireMonitorDetail.action" method="post">
+      action="<%=request.getContextPath()%>/prv/p/updateHireMonitorDetail.action" method="POST">
 
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <input type="hidden" name="date_compare_field" value=''>

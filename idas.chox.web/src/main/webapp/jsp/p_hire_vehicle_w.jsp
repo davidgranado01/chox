@@ -1,23 +1,12 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
+<script type="text/javascript">
 
-<script language="JavaScript">
-        
+    $(function(){
 
-    $(document).ready(function(){
-            
-            
-        var rentalStartDatePicker = new Ext.form.DateField({
-            name: 'rentalStart',
-            width: 100,
-            allowBlank: true,
-            format: 'd/m/Y',
-            showWeekNumber: true,
-            validationEvent : false,
-            value: '<s:date format="dd/MM/yyyy" name="rentalStart" />',
-            renderTo:'rentalStartPH'
-        });  
-            
+        ui.dateField('rentalStart', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'rentalStartPH');
+        ui.dateField('rentalEnd', '<s:date format="dd/MM/yyyy" name="rentalEnd" />' ,'rentalEndPH');
+
         var rentalStartTimPicker = new Ext.form.TimeField({
             name: 'rentalStartTime',
             width: 100,
@@ -28,18 +17,7 @@
             value: '<s:property value="rentalStartTime" />',
             renderTo:'rentalStartTimePH'
         });
-            
-        var rentalEndDatePicker = new Ext.form.DateField({
-            name: 'rentalEnd',
-            width: 100,
-            allowBlank: true,
-            format: 'd/m/Y',
-            showWeekNumber: true,
-            validationEvent : false,
-            value: '<s:date format="dd/MM/yyyy" name="rentalEnd" />',
-            renderTo:'rentalEndPH'
-        });  
-            
+        
         var rentalEndTimPicker = new Ext.form.TimeField({
             name: 'rentalEndTime',
             width: 100,
@@ -51,99 +29,46 @@
             renderTo:'rentalEndTimePH'
         });
             
-            
-        //repairBookInDatePicker.render('repairBookInDatePlaceHolder');
          $.validator.addMethod('time', function (value) { 
                 return /^(\d{2}:\d{2})$/.test(value); 
-            });
-            
-        $("#formUpdateHireVehicle").validate(
+        });
+
+        var form = $("#formUpdateHireVehicle");
+
+        form.validate(
         {
-            errorLabelContainer: "#HVDmessageBox",  
-            
+            errorLabelContainer: "#HVDmessageBox",
             rules: {
-                   
-                vehicleManufacturer:{
-                    required:true
-                },
-                vehicleModel:{
-                    required:true
-                },
-                vehicleRegistration:{
-                    required:true
-                },    
-                rentalStart:{
-                    date:true,
-                    required:true
-                },
-                rentalStartTime:{
-                    time:true,
-                    required:true  
-                 
-                },  
-                rentalStart:{
-                    required:true
-                },
-                rentalEndTime:{
-                    time:true,
-                    required:true                     
-                },  
-                vehicleClassId:{
-                    min:1
-                },
-                days:{
-                    min:0,
-                    digits:true
-                }
-                 
+                vehicleManufacturer:{required:true},
+                vehicleModel:{required:true},
+                vehicleRegistration:{required:true},    
+                rentalStart:{date:true,required:true},
+                rentalStartTime:{time:true,required:true},  
+                rentalEnd:{date:true,required:true},
+                rentalEndTime:{time:true,required:true},  
+                vehicleClassId : { min:1 },
+                days : { min:0, digits:true }
             },
             messages: {
-                   
-                vehicleManufacturer:{
-                    required:"You must supply a value for 'Vehicle Manufacturer"
-                },
-                vehicleModel:{
-                    required:"You must supply a value for 'Vehicle Model'"
-                },
-                vehicleRegistration:{
-                    required:"You must supply a value for 'Vehicle Registration'"
-                },                   
-                rentalStart: {
-                    date:"Invalid date format for 'Hire Start (Date)'",
-                    required:"You must supply a value for 'Hire Start (Date)'"
-                }, 
-                rentalEnd: {
-                    date:"Invalid date format for 'Hire End (Date)'",                   
-                    required:"You must supply a value for 'Hire End (Date)'"
-                },
-                rentalStartTime: {
-                    time:"Invalid date format for 'Hire Start (Time)'",
-                    required:"You must supply a value for 'Hire Start (Time)'"
-                }, 
-                rentalEndTime: {
-                    time:"Invalid date format for 'Hire End (Time)'",
-                    required:"You must supply a value for 'Hire End (Time)'"
-                },
-                vehicleClassId:{
-                    min: "You must select a Vehicle Class"
-                },
-                days:{
-                    required:"You must supply a value for 'No. Days Hire'",
-                    min: "You must supply a value for 'No. Days Hire' that is greater than 0",
-                    digits: "You must supply a numeric value for 'No. Days Hire'" 
-                }
-                 
-            },
-            submitHandler: function(form) {
-                $(form).ajaxSubmit(globalEntityFormOptions);
+                vehicleManufacturer:{required:"You must supply a value for 'Vehicle Manufacturer"},
+                vehicleModel:{required:"You must supply a value for 'Vehicle Model'"},
+                vehicleRegistration:{required:"You must supply a value for 'Vehicle Registration'"},                   
+                rentalStart: {date:"Invalid date format for 'Hire Start (Date)'", required:"You must supply a value for 'Hire Start (Date)'"},
+                rentalEnd: {date:"Invalid date format for 'Hire End (Date)'", required:"You must supply a value for 'Hire End (Date)'"},
+                rentalStartTime: {time:"Invalid date format for 'Hire Start (Time)'", required:"You must supply a value for 'Hire Start (Time)'"},
+                rentalEndTime: {time:"Invalid date format for 'Hire End (Time)'", required:"You must supply a value for 'Hire End (Time)'"},
+                vehicleClassId:{min: "You must select a Vehicle Class"},
+                days:{required:"You must supply a value for 'No. Days Hire'", min: "You must supply a value for 'No. Days Hire' that is greater than 0", digits: "You must supply a numeric value for 'No. Days Hire'"}
             }
         });
+
+        ui.ajaxForm(form);
+        
     }); 
         
 </script>
 
 <form id="formUpdateHireVehicle" action="<%=request.getContextPath()%>/prv/p/updateVehicleHire.action" class="XXentity-form">
-    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset">
         <legend>Hire Vehicle Details</legend>
@@ -194,7 +119,7 @@
                 <input type="submit" value="Save Changes" />
             </div>
             <div class="chox-form-submit-result">&nbsp;</div>   
-            <div id="HVDmessageBox" style="text-align:center"></div>  
+            <div id="HVDmessageBox" class="action-error-msg"></div>
         </div>
     </fieldset>
 </form> 

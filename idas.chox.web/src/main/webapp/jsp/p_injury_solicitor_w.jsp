@@ -1,5 +1,28 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
+<script type="text/javascript">
+
+    $(function(){
+
+        var form = $("form#formupdateSolicitor");
+
+        form.validate(
+        {
+            errorLabelContainer: "#SolicitorMessageBox",
+            rules: {
+                name:{required:true}
+            },
+            messages: {
+                name:{required:"Please supply a valid value for 'Name'"}
+            }
+        });
+
+        ui.ajaxForm(form);
+
+    });
+
+</script>
+<!--
 <script language="JavaScript">
 
         $(document).ready(function(){
@@ -19,10 +42,11 @@
         });  
 
 </script>
-
-<form id="formupdateSolicitor" action="<%=request.getContextPath()%>/prv/p/updateSolicitor.action" class="XXentity-form" name="formupdateSolicitor">
-   <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
+!-->
+<form id="formupdateSolicitor" name="formupdateSolicitor" action="<%=request.getContextPath()%>/prv/p/updateSolicitor.action" method="post" class="XXentity-form">
+   <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>
+    
     <fieldset class="x-fieldset">
         <legend>Injury Solicitor</legend>
         <div style="display:none" class="form-container">            
@@ -62,7 +86,7 @@
                 <input type="submit" value="Save Changes" />
             </div>
             <div class="chox-form-submit-result">&nbsp;</div>     
-            <div id="SolicitorMessageBox" style="text-align:center"></div>
+            <div id="SolicitorMessageBox" class="action-error-msg"></div>
         </div>
     </fieldset>
 </form>

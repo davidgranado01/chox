@@ -1080,6 +1080,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
 
+        System.out.println(">>>>>>>01");
+
         try {
 
             Invoice invoice = claim.getInvoice();
@@ -1088,6 +1090,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             invoice.setPenaltyCharge(getPenaltyChargeAmount());
             Boolean isPenaltyAlertNotUsed = getIsRemovePenaltyAlert();
 
+            System.out.println(">>>>>>>02");
+
             if (isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) {
                 long dateDiff = DateHelper.daysBetween(invoice.getCreatedDate(), new Date());
                 int newpenaltyAlertQty = (int) (dateDiff / 30);
@@ -1095,8 +1099,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 invoice.setPenaltyAlertQty(newpenaltyAlertQty);
             }
 
+            System.out.println(">>>>>>>03");
+
             invoice.setPenaltyChargeAppliedDate(DateHelper.getCurrentTimeStamp());
             service.updateClaim(claim);
+
+            System.out.println(">>>>>>>04");
 
         } catch (Exception ex) {
 
@@ -1104,6 +1112,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             this.actionResult = "ERROR : " + ex.getMessage();
 
         }
+
+        System.out.println(">>>>>>>05:"+result);
 
         return result;
     }

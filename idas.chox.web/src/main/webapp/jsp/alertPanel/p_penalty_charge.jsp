@@ -6,16 +6,40 @@
 
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">
-    
-    $(document).ready(function(){
-        doFormValidation();
-        
+
+<script type="text/javascript">
+
+    $(function(){
+
         $("#tPenaltyChargeAmount").keyup(function (e) {
             updateTotalToPay($("#tPenaltyChargeAmount").val());
         });
+        
+        var form = $("form#applyPenaltyCharge");
+
+        form.validate(
+        {
+            errorLabelContainer: "#PenaltyChargeBox",
+            rules: {
+                penaltyChargeAmount:{
+                    required:true,
+                    number:true
+                }
+            },
+            messages: {
+                penaltyChargeAmount:{
+                    required:"You must supply a value for 'Penalty Charge Amount'",
+                    number:"You must supply a numeric value for 'Penalty Charge Amount'"
+                }
+            }
+        });
+
+        //ui.ajaxForm(form);
+
     });
-    
+
+
+    /*
     function doFormValidation(){
         
         var validateFlag = $("#applyPenaltyCharge").validate(
@@ -29,18 +53,16 @@
             },
             messages: {
                 penaltyChargeAmount:{
-                    required:"You must supply a value for 'penaltyChargeAmount'",
-                    number:"You must supply a numeric value for 'penaltyChargeAmount'"
+                    required:"You must supply a value for 'Penalty Charge Amount'",
+                    number:"You must supply a numeric value for 'Penalty Charge Amount'"
                 }              
             }
         });
         
         return validateFlag;
     }
-    
-
-
-    
+    */
+   
     function updateTotalToPay(inputValue)
     {       
         var newPenaltyCharge;
@@ -61,9 +83,9 @@
 
 </script>
 
-<form onsubmit="return true;" action="<%= request.getContextPath()%>/prv/p/doApplyPenaltyCharge.action" method="post" id="applyPenaltyCharge" name="applyPenaltyCharge">
+<form action="<%= request.getContextPath()%>/prv/doApplyPenaltyCharge.action" method="post" id="applyPenaltyCharge" name="applyPenaltyCharge">
 
-<s:hidden name="id" />    
+<s:hidden name="id" />
 <s:hidden id="hvTotalAmountToPayBeforeNewPenaltyCharge" name="totalAmountToPayBeforeNewPenaltyCharge" />
 
 <fieldset class="x-fieldset"><legend>Apply Penalty Charge</legend>
@@ -71,39 +93,32 @@
     <div class="status-warning">
         Payment for this invoice is overdue. The number of days since the invoice was created is <s:property value="invoiceIntroducedDays" />. A penalty charge may be applicable to this invoice.
     </div> 
-    
-    <table>
-        <tr>
-            <td>
-                <label class="chox-claim-header-label">Total Amount to Pay </label>
-                <label class="chox-claim-header-text"><s:property value="totalAmountToPayBeforeNewPenaltyChargeFormatted" /></label>                            
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label class="chox-claim-header-label">Penalty Amount&nbsp;:&nbsp;£</label>
-                <input type="text" class="chox-ttxt" id="tPenaltyChargeAmount" name="penaltyChargeAmount" value="<s:property value="penaltyChargeAmount" />"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label class="chox-claim-header-label">Total Amount to Pay After Penalty Charge</label>
-                <label id="totalAmountToPayAfterNewPenaltyChargeLabel" class="chox-claim-header-text"><s:property value="totalAmountToPayAfterNewPenaltyChargeFormatted" />&nbsp;&nbsp;</label>
-            </td>
-        </tr>
-        <td>
-        <tr>                        
-            <td>
-                <input type="submit" value="Apply" />
-                <s:if test="isShowPenaltyChargeAlert">
-                    &nbsp;<s:checkbox name="isRemovePenaltyAlert" label="Remove From Penalty Charge Queue"/>
-                    <label>Remove From Queue</label>
-                </s:if>
-            </td>
-        </tr>
-    </table>         
-    <div class="errorBox" id="ACKmessageBox"></div>
 
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td width="30px"><label>Total Amount to Pay </label></td>
+        <td width="70%"><s:property value="totalAmountToPayBeforeNewPenaltyChargeFormatted" /></td>
+    </tr>
+    <tr>
+        <td><label>Penalty Amount</label></td>
+        <td>£&nbsp;<input type="text" class="chox-ttxt" id="tPenaltyChargeAmount" name="penaltyChargeAmount" value="<s:property value="penaltyChargeAmount" />"/></td>
+    </tr>
+    <tr>
+        <td><label>Total Amount to Pay After Penalty Charge</label></td>
+        <td><label id="totalAmountToPayAfterNewPenaltyChargeLabel"><s:property value="totalAmountToPayAfterNewPenaltyChargeFormatted" />&nbsp;&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input type="submit" value="Apply" />
+            <s:if test="isShowPenaltyChargeAlert">
+            &nbsp;<s:checkbox name="isRemovePenaltyAlert" label="Remove From Penalty Charge Queue"/>
+            <label>Remove From Queue</label>
+            </s:if>
+        </td>
+    </tr>
+    </table>
+    <div class="chox-form-submit-result">&nbsp;</div>
+    <div id="PenaltyChargeBox" class="action-error-msg"></div>
 </fieldset> 
 
 

@@ -370,17 +370,6 @@ div.action-error-msg
 {
     color: red;
     font: bold 11px tahoma,arial,verdana,sans-serif;
-    line-height: 35px;
-    margin-top: 5px;
-    text-align: center;
-}
-
-div.action_msg
-{
-    color: #15428b;
-    font: bold 11px tahoma,arial,verdana,sans-serif;
-    line-height: 35px;
-    margin-top: 5px;
     text-align: center;
 }
 
@@ -413,7 +402,6 @@ table.searchForm
 
 table.searchForm td
 {
-    
     padding:4px; 
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 12px; 
@@ -559,7 +547,13 @@ table.status-table .choice
     font-size:13px;
 }
 
-label.error { color: red; font-weight:bold;font-size:11px;display:block ; line-height:25px}
+label.error { 
+    color:red;
+    font-weight:bold;
+    font-size:11px;
+    display:block;
+    line-height:18px;
+}
 
 div.errorBox
 {

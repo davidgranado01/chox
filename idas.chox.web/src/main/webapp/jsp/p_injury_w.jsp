@@ -14,36 +14,19 @@
                 name:{required:true}
             },
             messages: {
-                name:{required:"Please supply a valid value for Name"}
+                name:{required:"Please supply a valid value for 'Name'"}
             }
         });
 
-        ui.ajaxForm(form,onHireMonitoringSubmitResponseReceived);
+        ui.ajaxForm(form);
         
     });
 
-        /*
-        $(document).ready(function(){
-            $("#formUpdateInjuryt").validate(
-            {
-                errorLabelContainer: "#InjuryMessageBox",                
-                rules: {  
-                    name:{required:true}
-                },
-                messages: {
-                    name:{required:"Please supply a valid value for Name"}
-                },
-                submitHandler: function(form) {
-                    $(form).ajaxSubmit(globalEntityFormOptions);
-                }                
-            }); 
-        });  
-        */
 </script>
 
-<form id="formUpdateInjuryt" name="formUpdateInjuryt" action="<%=request.getContextPath()%>/prv/p/updateInjury.action" class="XXentity-form">
-    
-    <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
+<form id="formUpdateInjuryt" name="formUpdateInjuryt" action="<%=request.getContextPath()%>/prv/p/updateInjury.action" class="XXentity-form" method="post">
+
+    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>
     
     <fieldset class="x-fieldset">

@@ -1,11 +1,11 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">
+<script type="text/javascript">
         
-    $(document).ready(function(){
-
+    $(function(){
 
         var ecdDateDatePicker = ui.dateField('ecdDate','<s:date format="dd/MM/yyyy" name="date" />','ecdDatePH');
+
         var form = $("#formAddNewHireMonitoringEcd");
 
         form.validate(
@@ -65,8 +65,7 @@
 </script>
 
 <form id="formAddNewHireMonitoringEcd" action="<%=request.getContextPath()%>/prv/p/addNewHireMonitoringEcd.action" name="formAddNewHireMonitoringEcd" class="XXentity-form">
-
-    <input type="hidden" name="objectId" value='<s:property value="id"/>'>
+    
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
 
     <fieldset class="x-fieldset">
@@ -76,22 +75,22 @@
             <s:if test="isECDFormVisible">
 
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label" style="width:150px;">New ECD</label>
+                    <label class="chox-form-std-label" style="width:150px;">New ECD<span class="mandatory">*</span></label>
                     <span id="ecdDatePH"></span>
                 </div>
 
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label" style="width:150px;">Reason for Delay</label>
+                    <label class="chox-form-std-label" style="width:150px;">Reason for Delay<span class="mandatory">*</span></label>
                     <s:select 
                         name="reasonOfDelayId" id="reasonOfDelayId" list="reasonOfDelay"
                         listKey="id" listValue="name" headerKey=""
-                        headerValue="--- SELECT ---"
+                        headerValue="- Please Select -"
                         emptyOption="false" onchange="doPopulateNote();" cssClass="hm-reason-drop-down">
                     </s:select>
                 </div>
 
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label" style="width:150px;">Supporting Note</label>
+                    <label class="chox-form-std-label" style="width:150px;">Supporting Note<span class="mandatory">*</span></label>
                     <textarea class="chox-tta" id="ECDSupportingNote" cols="30" rows="5" name="supportingNote"><s:property value="supportingNote" /></textarea>
                 </div>
 
@@ -100,8 +99,8 @@
                     <s:checkbox name="isUpdateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
                 </div>
 
-                <div class="errorBox" id="ECDMessageBox"></div>
                 <div class="chox-form-submit-result">&nbsp;</div>
+                <div id="ECDMessageBox" class="action-error-msg"></div>
 
             </s:if>
             <s:else>

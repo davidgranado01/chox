@@ -239,5 +239,4 @@
                         <div class="chox-form-submit-result"></div>          
                 </div>
             </fieldset>
-            <div id="CDmessageBox" style="text-align:center"></div>  
         </form>
