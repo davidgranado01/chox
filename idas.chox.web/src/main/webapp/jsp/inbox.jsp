@@ -860,7 +860,7 @@
                     sm2,
                     {id:'Id', header: "Supplier Ref", width: 180, sortable: true, dataIndex: 'supplierReference',
                         renderer:function(value,p,r){
-                            return '<a href="<%=request.getContextPath()%>/prv/p/openClaimDetail.action?id=' + r.data['id'] + '&tab=' + currentTabIndex + '">' + value + '</a>'}},
+                            return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?id=' + r.data['id'] + '&tab=' + currentTabIndex + '">' + value + '</a>'}},
                     {header: "Insurer's VRN", width: 180, sortable: true, dataIndex: 'vehicleRegistration'},
                     {header: "Insurer's Policy No", width: 200, sortable: true, dataIndex: 'policyNumber'},
                     {header: "Claim No", width: 220, sortable: true, dataIndex: 'claimNumber'},
