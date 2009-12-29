@@ -1,3 +1,15 @@
 -- ############################################################
 -- MERGE SOLICITOR TABLE AND INJURY TABLE
 -- ############################################################
+
+DROP TABLE solicitor;
+ALTER TABLE injury ADD COLUMN solicitor_name varchar(255);
+ALTER TABLE injury ADD COLUMN solicitor_address1 varchar(255);
+ALTER TABLE injury ADD COLUMN solicitor_address2 varchar(255); 
+ALTER TABLE injury ADD COLUMN solicitor_address3 varchar(255); 
+ALTER TABLE injury ADD COLUMN solicitor_address4 varchar(255); 
+ALTER TABLE injury ADD COLUMN solicitor_address5 varchar(255);
+ALTER TABLE injury ADD COLUMN solicitor_postcode varchar(255); 
+ALTER TABLE injury ADD COLUMN solicitor_telephone varchar(255); 
+ALTER TABLE injury ADD COLUMN solicitor_email varchar(255); 
+ALTER TABLE injury ADD COLUMN solicitor_is_appointed boolean NOT NULL DEFAULT false;
