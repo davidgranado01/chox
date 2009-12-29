@@ -84,11 +84,11 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction{
 
             Insurer insurer = insurerService.getObject(insurerId);
 
-            List<WebUser> users = service.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable(), "firstName");
+            List<WebUser> users = service.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable(), "lastName");
             List items = new ArrayList<IdLookupItem>();
 
             for(WebUser user:users){
-                items.add(new IdLookupItem(user.getId(), user.getDisplayName()));
+                items.add(new IdLookupItem(user.getId(), user.getDisplayDropDownName()));
             }
 
             claimhandlers = items;
