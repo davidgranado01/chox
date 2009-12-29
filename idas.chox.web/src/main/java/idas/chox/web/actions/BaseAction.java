@@ -33,8 +33,6 @@ public class BaseAction extends ActionSupport {
         return user;
     }
 
-    
-
     public boolean getIsCHO() {
         return getAuthenticatedUser().getIsCHO();
     }
@@ -117,5 +115,10 @@ public class BaseAction extends ActionSupport {
         }
 
         return iRoleType;
+    }
+
+    protected void handleException(Object source,Exception ex) {
+        logger.error(String.format("%1$s threw an Exception : %2$s",source.getClass().getName(), ex.getMessage()));
+        getActionResponse().AddError(ex.getMessage());
     }
 }

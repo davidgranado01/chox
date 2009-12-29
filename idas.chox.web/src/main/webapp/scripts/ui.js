@@ -11,15 +11,19 @@ var ui = function(){
             if(elementToBlock){
                 outputDiv = elementToBlock.find('div.chox-form-submit-result');
                 outputDiv.text("");
-                outputDiv.removeClass("submit-error");
-                elementToBlock = jqForm.find('div.form-container');
+                outputDiv.removeClass("submit-error");            
+            }
+
+            hasFormUnderSubmission = true;
+
+            elementToBlock = jqForm.find('div.form-container');
+            if(elementToBlock)
+            {
                 elementToBlock.block({
                     message: "Please wait.."
                 });
             }
-            hasFormUnderSubmission = true;
            
-
             return true;
 
         }else{
@@ -37,46 +41,43 @@ var ui = function(){
         {
             elementToBlock.unblock();
             var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
-            outputDiv.html('');
-        }
 
-        if(response)
-        {
-            if(response.isValid){
-
-                if(response.resultType && response.resultType == 'New')
-                {
-                    var newObjectId =  parseInt(response.result);
-                    var hvObjectId = elementToBlock.find("input[name='objectId']");
-                    hvObjectId.val(newObjectId);
-                }
-                else if(response.resultType && response.resultType == 'Message')
-                {
-                    outputDiv.append("<p>" + response.result + "</p>");
+            if(response)
+            {
+                if(response.isValid){
+                   if(response.resultType && response.resultType == 'New')
+                    {
+                        var newObjectId =  parseInt(response.result);
+                        var hvObjectId = elementToBlock.find("input[name='objectId']");
+                        hvObjectId.val(newObjectId);
+                    }
+                    else if(response.resultType && response.resultType == 'Message')
+                    {
+                        outputDiv.append("<p>" + response.result + "</p>");
+                    }
+                    else
+                    {
+                        outputDiv.append("<p>Your changes have been saved.</p>");
+                    }
                 }
                 else
                 {
-                    outputDiv.append("<p>Your changes have been saved.</p>");
-                }
+                    outputDiv.append('<p>There was an error:</p><ul class="submit-error">');
 
+                    $.each(response.errors, function() {
+                        outputDiv.append("<li>");
+                        outputDiv.append(this.toString());
+                        outputDiv.append("</li>");
+                    });
+
+                    outputDiv.append("</ul>");
+                }
             }
             else
             {
-                outputDiv.append('<p>There was an error:</p><ul class="submit-error">');
-
-                $.each(response.errors, function() {
-                    outputDiv.append("<li>");
-                    outputDiv.append(this.toString());
-                    outputDiv.append("</li>");
-                });
-
-                outputDiv.append("</ul>");
+                outputDiv.append("Unknown Error Encountered, please try again.");
+                outputDiv.addClass("submit-error");
             }
-        }
-        else
-        {
-            outputDiv.append("Unknown Error Encountered, please try again.");
-            outputDiv.addClass("submit-error");
         }
 
         hasFormUnderSubmission = false;

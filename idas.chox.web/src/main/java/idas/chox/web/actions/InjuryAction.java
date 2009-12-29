@@ -10,7 +10,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.Incident;
 import idas.chox.core.model.Injury;
 import idas.chox.web.security.ApplicationAccessibility;
-import net.sf.json.JSONObject;
 
 /**
  *
@@ -19,7 +18,6 @@ import net.sf.json.JSONObject;
 public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>, Preparable {
 
     private Injury model;
-    private int incidentId;
 
     public Injury getModel() {
         return model;
@@ -56,15 +54,10 @@ public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>
                 this.getActionResponse().AssignNewIdResult(model.getId());
             }
         } catch (Exception ex) {
-            logger.error(ex);
-            getActionResponse().AddError(ex.getMessage());
+            handleException(this,ex);
+            return ERROR;
         }
         return SUCCESS;
-    }
-
-    public String getJsonData() {
-        JSONObject jObject = JSONObject.fromObject(this.model);
-        return jObject.toString();
     }
 
     @Override
@@ -72,11 +65,4 @@ public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>
         return ApplicationAccessibility.TAB_CLAIM_DETAIL;
     }
 
-    public int getIncidentId() {
-        return incidentId;
-    }
-
-    public void setIncidentId(int incidentId) {
-        this.incidentId = incidentId;
-    }
 }
