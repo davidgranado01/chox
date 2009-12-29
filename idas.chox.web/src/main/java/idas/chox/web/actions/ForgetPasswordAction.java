@@ -1,17 +1,14 @@
 package idas.chox.web.actions;
 
-import com.opensymphony.xwork2.ActionSupport;
 import idas.chox.core.model.WebUser;
 import idas.chox.web.security.WebUserService;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContextHolder;
 
-public class ForgetPasswordAction extends BaseAction{
+public class ForgetPasswordAction extends BaseAction {
 
     private String userName;
     private String email;
     private String confirmEmail;
-    private WebUserService webUserService;
+    private WebUserService userDetailsService;
 
     public String getConfirmEmail() {
         return confirmEmail;
@@ -37,42 +34,38 @@ public class ForgetPasswordAction extends BaseAction{
         this.userName = userName;
     }
 
-    public void setWebUserService(WebUserService webUserService) {
-        this.webUserService = webUserService;
-    }
+    public String requestToResetPassword() {
 
-    public WebUserService getWebUserService() {
-        return webUserService;
-    }
+        System.out.println(" >>>>>>>>>>>>> userName:" + this.userName + ":" + getUserName());
+        System.out.println(" >>>>>>>>>>>>> email:" + this.email);
 
-    public String requestToResetPassword(){
-        
-        // System.out.println(" >>>>>>>>>>>>> userName:"+this.userName + ":"+getUserName());
-        // System.out.println(" >>>>>>>>>>>>> email:"+this.email);
-
-        this.userName = "admin@ins.com";
-        this.email = "admin@ins.com";
+        //this.userName = "admin@ins.com";
+        //this.email = "admin@ins.com";
 
         // VALIDATE IS VALID MATCH USER NAME OR EMAIL?
-        System.out.println(" >>>>>>>>>>>>> webUserService:"+webUserService);
-        WebUser user = webUserService.findByUserName(this.userName);
-        System.out.println(" >>>>>>>>>>>>> user:"+user);
-        
+        System.out.println(" >>>>>>>>>>>>> webUserService:" + userDetailsService);
+        WebUser user = userDetailsService.findByUserName(this.userName);
+        System.out.println(" >>>>>>>>>>>>> user:" + user);
+
         return SUCCESS;
     }
 
     @Override
     public String execute() {
-
-        try {
-
-        System.out.println(" >>>>>>>>>>>>> userName:"+this.userName + ":"+getUserName());
-        System.out.println(" >>>>>>>>>>>>> email:"+this.email);
-        
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
         return SUCCESS;
+    }
+
+    /**
+     * @return the userDetailsService
+     */
+    public WebUserService getUserDetailsService() {
+        return userDetailsService;
+    }
+
+    /**
+     * @param userDetailsService the userDetailsService to set
+     */
+    public void setUserDetailsService(WebUserService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 }

@@ -8,17 +8,17 @@ var ui = function(){
 
         if(!hasFormUnderSubmission){
 
-            if(elementToBlock != undefined){
+            if(elementToBlock){
                 outputDiv = elementToBlock.find('div.chox-form-submit-result');
                 outputDiv.text("");
                 outputDiv.removeClass("submit-error");
+                elementToBlock = jqForm.find('div.form-container');
+                elementToBlock.block({
+                    message: "Please wait.."
+                });
             }
-
             hasFormUnderSubmission = true;
-            elementToBlock = jqForm.find('div.form-container');
-            elementToBlock.block({
-                message: "Please wait.."
-            });
+           
 
             return true;
 
@@ -31,10 +31,14 @@ var ui = function(){
 
     function onSubmitCompleted(responseText, statusText)  {
 
-        elementToBlock.unblock();
         response = eval('(' + responseText.trim() + ')');
-        var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
-        outputDiv.html('');
+
+        if(elementToBlock)
+        {
+            elementToBlock.unblock();
+            var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
+            outputDiv.html('');
+        }
 
         if(response)
         {
@@ -79,7 +83,13 @@ var ui = function(){
     }
 
     function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
-        elementToBlock.unblock();
+        if(elementToBlock)
+        {
+            elementToBlock.unblock();
+            var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
+            outputDiv.html('');
+        }
+        
         hasFormUnderSubmission = false;
     }
 
@@ -171,6 +181,8 @@ var ui = function(){
         promptErrorsMsg : promptErrorsMsg
     };
 }();
+
+
 
 $.blockUI.defaults = {
     message:  '<h1 class="block">Please wait...</h1>',

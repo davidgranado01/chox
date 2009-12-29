@@ -42,12 +42,7 @@
 
     var popupTimeUp = 900000;
 
-    var globalEntityFormOptions = {
-        beforeSubmit:  onBeforeSubmit,  // pre-submit callback
-        success:       onSubmitResponseReceived,  // post-submit callback
-        timeout: 3000,
-        error: onSubmitError
-    };
+   
 
     $(function(){
         var fsets =  $('legend');
