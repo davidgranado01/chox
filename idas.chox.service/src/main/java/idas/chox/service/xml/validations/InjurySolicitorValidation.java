@@ -108,7 +108,6 @@ public class InjurySolicitorValidation extends SecureDataService implements rule
 
             Solicitor solicitor = new Solicitor();
 
-            solicitor.setInjury(this.injury);
             solicitor.setAddress1(XmlHelper.getNodeValue(this.element, "address1"));
             solicitor.setAddress2(XmlHelper.getNodeValue(this.element, "address2"));
             solicitor.setAddress3(XmlHelper.getNodeValue(this.element, "address3"));

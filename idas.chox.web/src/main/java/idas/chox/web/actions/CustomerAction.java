@@ -43,9 +43,11 @@ public class CustomerAction extends BaseModelAction implements ModelDriven<Custo
     }
 
     public void prepare() throws Exception {
-        model = getClaim().getCustomer();
+        Claim claim = getClaim();
+        model = claim.getCustomer();
         if (model == null) {
             model = new Customer();
+            claim.setCustomer(model);
         }
     }
 
@@ -57,8 +59,7 @@ public class CustomerAction extends BaseModelAction implements ModelDriven<Custo
 
         try {
             boolean isTransient = model.isTransient();
-            Claim claim = getClaim();
-            claim.setCustomer(model);
+            Claim claim = getClaim();           
             this.claimService.updateClaim(claim);
             if (isTransient) {
                 this.getActionResponse().AssignNewIdResult(model.getId());

@@ -26,12 +26,24 @@ public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>
     }
 
     public void prepare() throws Exception {
+
         Claim claim = getClaim();
 
-        if (claim != null && claim.getIncident() != null) {
-            model = claim.getIncident().getInjury();
-        } else {
-            model = new Injury();
+        if (claim != null) {
+            Incident incident = claim.getIncident();
+
+            if (incident == null) {
+                incident = new Incident();
+                claim.setIncident(incident);
+            }
+
+            model = incident.getInjury();
+
+            if (model == null) {
+                model = new Injury();
+                model.setIncident(incident);
+                incident.setInjury(model);
+            }
         }
     }
 
@@ -39,22 +51,13 @@ public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>
         try {
             boolean isTransient = model.isTransient();
             Claim claim = getClaim();
-            Incident incident = claim.getIncident();
-
-            if (incident == null) {
-                incident = new Incident();
-            }
-
-            incident.setInjury(model);
-
-            claim.setIncident(incident);
-
             this.claimService.updateClaim(claim);
             if (isTransient) {
                 this.getActionResponse().AssignNewIdResult(model.getId());
             }
         } catch (Exception ex) {
-            this.actionResult = "ERROR :" + ex.getMessage();
+            logger.error(ex);
+            getActionResponse().AddError(ex.getMessage());
         }
         return SUCCESS;
     }
@@ -76,5 +79,4 @@ public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>
     public void setIncidentId(int incidentId) {
         this.incidentId = incidentId;
     }
-
 }

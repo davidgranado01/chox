@@ -103,7 +103,7 @@ public class doUserWorkgroupAction extends BaseAction {
         return workgroupValidationMsg;
     }
 
-    public String checkWorkgroupAllowToDelete(){
+    public String checkWorkgroupAllowToDelete() {
 
         boolean isAllowToDelete = true;
         String errMsg = "Are you sure you want to remove this workgroup?";
@@ -111,19 +111,18 @@ public class doUserWorkgroupAction extends BaseAction {
         WebUser wu = userService.getObject(this.webUserId);
         Workgroup wg = workgroupService.getObject(this.workgroupId);
 
-        if(wu.getInsurer()!=null){
+        if (wu.getInsurer() != null) {
 
-            if(wu.getInsurer().isWorkgroupEnable()){
+            if (wu.getInsurer().isWorkgroupEnable()) {
                 // WORKGROUP ENABLE VALIDATION
 
-                if(RoleHelper.isUserCheckByWorkgroup(wu)){
+                if (RoleHelper.isUserCheckByWorkgroup(wu)) {
 
-                    if(claimService.isOpenClaimByWorkgroupExist(workgroupId)){
+                    if (claimService.isOpenClaimByWorkgroupExist(workgroupId)) {
 
                         String sUserRoles = "";
 
-                        if(RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_CH)
-                            && !userService.isWorkgroupOwnByOtherUserByRole(wu, this.workgroupId, WebUserRole.ROLE_CH)){
+                        if (RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_CH) && !userService.isWorkgroupOwnByOtherUserByRole(wu, this.workgroupId, WebUserRole.ROLE_CH)) {
 
                             // System.out.println("WG > CH : " + RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_CH));
                             sUserRoles = getUserRoleList(sUserRoles, "Insurer Claim Handler Role");
@@ -131,8 +130,7 @@ public class doUserWorkgroupAction extends BaseAction {
 
                         }
 
-                        if(RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_COM)
-                            && !userService.isWorkgroupOwnByOtherUserByRole(wu, this.workgroupId, WebUserRole.ROLE_COM)){
+                        if (RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_COM) && !userService.isWorkgroupOwnByOtherUserByRole(wu, this.workgroupId, WebUserRole.ROLE_COM)) {
 
                             // System.out.println("WG > COM : " + RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_COM));
                             sUserRoles = getUserRoleList(sUserRoles, "Insurer Claim Ownership Manager Role");
@@ -140,8 +138,7 @@ public class doUserWorkgroupAction extends BaseAction {
 
                         }
 
-                        if(RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_FNOL)
-                            && !userService.isWorkgroupOwnByOtherUserByRole(wu, this.workgroupId, WebUserRole.ROLE_FNOL)){
+                        if (RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_FNOL) && !userService.isWorkgroupOwnByOtherUserByRole(wu, this.workgroupId, WebUserRole.ROLE_FNOL)) {
 
                             // System.out.println("WG > FNOL : " + RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_FNOL));
                             sUserRoles = getUserRoleList(sUserRoles, "Insurer FNOL Handler Role");
@@ -149,8 +146,8 @@ public class doUserWorkgroupAction extends BaseAction {
 
                         }
 
-                        if(!isAllowToDelete){
-                            errMsg = "User "+wu.getDisplayName()+" is the last user that has "+sUserRoles+" and is assigned to Workgroup "+wg.getName()+". Are you sure you want to remove this workgroup?";
+                        if (!isAllowToDelete) {
+                            errMsg = "User " + wu.getDisplayName() + " is the last user that has " + sUserRoles + " and is assigned to Workgroup " + wg.getName() + ". Are you sure you want to remove this workgroup?";
                         }
 
                     }
@@ -158,24 +155,24 @@ public class doUserWorkgroupAction extends BaseAction {
             }
         }
 
-        workgroupValidationMsg = "{isAllowToDelete:"+isAllowToDelete+",warningMsg:'"+errMsg+"'}";
+        workgroupValidationMsg = "{isAllowToDelete:" + isAllowToDelete + ",warningMsg:'" + errMsg + "'}";
         return SUCCESS;
     }
 
-    private String getUserRoleList(String iString, String userRoleName){
+    private String getUserRoleList(String iString, String userRoleName) {
 
-        if(iString.length()>0){
-            iString += ", "+userRoleName;
-        }else{
+        if (iString.length() > 0) {
+            iString += ", " + userRoleName;
+        } else {
             iString = userRoleName;
         }
 
         return iString;
     }
-    
-        public String removeObject(){
 
-        if(userWorkgroupId>0){
+    public String removeObject() {
+
+        if (userWorkgroupId > 0) {
 
             boolean isAllowToDelete = true;
             String errMsg = "";
@@ -183,28 +180,26 @@ public class doUserWorkgroupAction extends BaseAction {
             WebUserWorkgroup model = service.getObject(userWorkgroupId);
             WebUser user = userService.getObject(this.webUserId);
 
-            if(user.getInsurer()!=null){
+            if (user.getInsurer() != null) {
 
                 boolean isOpenItemForUser = claimService.isOpenClaimByWorkgroupIdByUserExist(user.getInsurer().getId(), model.getWorkgroup().getId(), this.webUserId);
 
-                if(user.getInsurer().isClaimOwnershipEnable()
-                        && isOpenItemForUser
-                        && RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_CH)){
+                if (user.getInsurer().isClaimOwnershipEnable() && isOpenItemForUser && RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_CH)) {
                     isAllowToDelete = false;
-                    errMsg += "User '"+user.getDisplayName()+"' has open claim(s) assigned to them within workgroup '"+model.getWorkgroup().getName()+"', it is not possible to remove the assignment of a Workgroup against a user who has open claim(s)";
+                    errMsg += "User '" + user.getDisplayName() + "' has open claim(s) assigned to them within workgroup '" + model.getWorkgroup().getName() + "', it is not possible to remove the assignment of a Workgroup against a user who has open claim(s)";
                 }
             }
 
-            if(isAllowToDelete){
+            if (isAllowToDelete) {
                 String ackMsg = "Workgroup '" + model.getWorkgroup().getName() + "' has been removed";
                 service.DeleteObject(model);
                 getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);
 
-            }else{
+            } else {
                 getActionResponse().AddError(errMsg);
             }
 
-        }else{
+        } else {
 
             getActionResponse().AddError("Selected workgroup is not valid");
 
@@ -235,9 +230,8 @@ public class doUserWorkgroupAction extends BaseAction {
             }
 
         } catch (Exception ex) {
-
-            ex.printStackTrace();
-
+            logger.error(ex);
+            getActionResponse().AddError(ex.getMessage());
         }
 
 

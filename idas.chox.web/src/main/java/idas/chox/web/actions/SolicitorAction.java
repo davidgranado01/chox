@@ -20,7 +20,6 @@ import net.sf.json.JSONObject;
 public class SolicitorAction extends BaseModelAction implements ModelDriven<Solicitor>, Preparable {
 
     private Solicitor model;
-    private int incidentId;
 
     public Solicitor getModel() {
         return model;
@@ -29,17 +28,7 @@ public class SolicitorAction extends BaseModelAction implements ModelDriven<Soli
     public void prepare() throws Exception {
         Claim claim = getClaim();
 
-        if (claim != null && claim.getIncident() != null && claim.getIncident().getInjury() != null) {
-            model = claim.getIncident().getInjury().getSolicitor();
-        } else {
-            model = new Solicitor();
-        }
-    }
-
-    public String updateModel() {
-        try {
-            boolean isTransient = model.isTransient();
-            Claim claim = getClaim();
+        if (claim != null) {
             Incident incident = claim.getIncident();
 
             if (incident == null) {
@@ -48,19 +37,29 @@ public class SolicitorAction extends BaseModelAction implements ModelDriven<Soli
             }
 
             Injury injury = incident.getInjury();
+
             if (injury == null) {
                 injury = new Injury();
+                injury.setIncident(incident);
                 incident.setInjury(injury);
             }
 
-            injury.setSolicitor(model);
+            model = injury.getSolicitor();
 
-            this.claimService.updateClaim(claim);
-            if (isTransient) {
-                this.getActionResponse().AssignNewIdResult(model.getId());
+            if (model == null) {
+                model = new Solicitor();
+                injury.setSolicitor(model);
             }
+        }
+    }
+
+    public String updateModel() {
+        try {           
+            Claim claim = getClaim();
+            this.claimService.updateClaim(claim);           
         } catch (Exception ex) {
-            this.actionResult = "ERROR :" + ex.getMessage();
+            logger.error(ex);
+            getActionResponse().AddError(ex.getMessage());
         }
         return SUCCESS;
     }

@@ -24,6 +24,7 @@ public class CommentAction extends BaseModelAction implements ModelDriven<Commen
             claim.addComment(model);
             this.claimService.updateClaim(claim);
         } catch (Exception ex) {
+            logger.error(ex);
             this.getActionResponse().AddError(ex.getMessage());
         }
         return SUCCESS;

@@ -34,7 +34,6 @@
                 <value>hbm/Injury.hbm.xml</value>
                 <value>hbm/Insurer.hbm.xml</value>
                 <value>hbm/Invoice.hbm.xml</value>
-                <value>hbm/Solicitor.hbm.xml</value>
                 <value>hbm/ThirdParty.hbm.xml</value>
                 <value>hbm/VehicleClass.hbm.xml</value>
                 <value>hbm/VehicleHire.hbm.xml</value>

@@ -30,9 +30,11 @@ public class ThirdPartyAction extends BaseModelAction implements ModelDriven<Thi
     }
 
     public void prepare() throws Exception {
-        model = getClaim().getThirdParty();
+        Claim claim = getClaim();
+        model = claim.getThirdParty();
         if (model == null) {
             model = new ThirdParty();
+            claim.setThirdParty(model);
         }
     }
 
@@ -48,9 +50,6 @@ public class ThirdPartyAction extends BaseModelAction implements ModelDriven<Thi
         try {
             boolean isTransient = model.isTransient();
             Claim claim = getClaim();
-
-            claim.setThirdParty(model);
-
             this.claimService.updateClaim(claim);
             if (isTransient) {
                 this.getActionResponse().AssignNewIdResult(model.getId());

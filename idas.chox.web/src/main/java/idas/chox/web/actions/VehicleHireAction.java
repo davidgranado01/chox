@@ -45,8 +45,11 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
 
         if (claim != null && claim.getVehicleHire() != null) {
             model = claim.getVehicleHire();
-        } else {
+        } 
+        
+        if(model == null) {
             model = new VehicleHire();
+            claim.setVehicleHire(model);
         }
     }
 
@@ -54,10 +57,7 @@ public class VehicleHireAction extends BaseModelAction implements ModelDriven<Ve
 
         try {
             boolean isTransient = model.isTransient();
-            Claim claim = getClaim();
-
-            claim.setVehicleHire(model);
-
+            Claim claim = getClaim();  
             this.claimService.updateClaim(claim);
             if (isTransient) {
                 this.getActionResponse().AssignNewIdResult(model.getId());

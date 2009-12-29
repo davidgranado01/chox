@@ -75,7 +75,7 @@
                 <param name="id">${id}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="doUpdateClaimStatus" class="idas.chox.web.actions.ClaimAction" method="doUpdateClaimStatus">
@@ -85,7 +85,7 @@
                 <param name="id">${id}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="doReopenClaimStatus" class="idas.chox.web.actions.ClaimAction" method="doReopenClaimStatus">
@@ -95,7 +95,7 @@
                 <param name="id">${id}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="approveInvoiceRefferedByEngineer" class="idas.chox.web.actions.ClaimAction" method="approveInvoiceRefferedByEngineer">
@@ -105,11 +105,11 @@
                 <param name="id">${id}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="openClaimDetail" class="idas.chox.web.actions.ClaimAction">
-            <result name="success">/jsp/p_claim_detail.jsp
+            <result name="success">/jsp/claim_detail.jsp
             </result>
             <result name="ClaimNotFound">/jsp/claim_not_found.jsp</result>
         </action>
@@ -126,7 +126,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="acknowledge" class="idas.chox.web.actions.ClaimAction" method="acknowledge">
@@ -138,7 +138,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="ownershipAssignment" class="idas.chox.web.actions.ClaimAction" method="ownershipAssignment">
@@ -149,7 +149,7 @@
                 </param>
                 <param name="statusMsg">${statusMsg}</param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="updateOwnershipAssignment" class="idas.chox.web.actions.ClaimAction" method="ownershipUpdating">
@@ -160,7 +160,7 @@
                 </param>
                 <param name="statusMsg">${statusMsg}</param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="registerFNOL" class="idas.chox.web.actions.ClaimAction" method="registerFNOL">
@@ -172,7 +172,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="contestOrAcceptRejectedClaim" class="idas.chox.web.actions.ClaimAction" method="contestOrAcceptRejectedClaim">
@@ -184,7 +184,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="approveContestedClaim" class="idas.chox.web.actions.ClaimAction" method="approveContestedClaim">
@@ -196,7 +196,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="submitHireMonitoringDetail" class="idas.chox.web.actions.ClaimAction" method="submitHireMonitoringDetail">
@@ -208,7 +208,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="reSubmitRejectedClaim" class="idas.chox.web.actions.ClaimAction" method="reSubmitRejectedClaim">
@@ -220,7 +220,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="approveBREPassedClaim" class="idas.chox.web.actions.ClaimAction" method="approveBREPassedClaim">
@@ -232,7 +232,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="approveBREPassedByClaimHandler" class="idas.chox.web.actions.ClaimAction" method="approveBREPassedByClaimHandler">
@@ -244,7 +244,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="updateInsurerClaimNumber" class="idas.chox.web.actions.ClaimAction" method="updateInsurerClaimNumber">
@@ -256,7 +256,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="UpdateClaimWorkgroupAssignment" class="idas.chox.web.actions.ClaimAction" method="UpdateClaimWorkgroupAssignment">
@@ -268,7 +268,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="updatePaymentReceived" class="idas.chox.web.actions.ClaimAction" method="updatePaymentReceived">
@@ -280,7 +280,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="approveEscalatedInvoice" class="idas.chox.web.actions.ClaimAction" method="approveEscalatedInvoice">
@@ -292,7 +292,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="approveContestedInvoice" class="idas.chox.web.actions.ClaimAction" method="approveContestedInvoice">
@@ -304,7 +304,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="ContestedInvoiceByCH" class="idas.chox.web.actions.ClaimAction" method="contestedInvoiceByCH">
@@ -316,7 +316,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="resubmitOrAcceptContestedInvoice" class="idas.chox.web.actions.ClaimAction" method="resubmitOrAcceptContestedInvoice">
@@ -328,7 +328,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="logInvoicePayment" class="idas.chox.web.actions.ClaimAction" method="logInvoicePayment">
@@ -340,7 +340,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="reviewByEngineer" class="idas.chox.web.actions.ClaimAction" method="reviewByEngineer">
@@ -352,7 +352,7 @@
                 <param name="statusMsg">${statusMsg}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp
+            <result name="error">/jsp/claim_detail.jsp
             </result>
         </action>
         <action name="doApplyPenaltyCharge" class="idas.chox.web.actions.ClaimAction" method="doApplyPenaltyCharge">
@@ -362,7 +362,7 @@
                 <param name="id">${id}
                 </param>
             </result>
-            <result name="error">/jsp/p_claim_detail.jsp</result>
+            <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <!-- End Claim Detail -->
         <!--Start Support-->

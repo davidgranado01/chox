@@ -34,7 +34,8 @@ public class InsurerAction extends BaseAction {
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(ex);
+            getActionResponse().AddError(ex.getMessage());
         }
 
         return SUCCESS;

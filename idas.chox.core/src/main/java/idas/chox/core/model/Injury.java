@@ -55,6 +55,8 @@ public class Injury extends Entity implements Serializable {
      *
      */
     public Injury() {
+
+        solicitor = new Solicitor();
     }
 
     /**

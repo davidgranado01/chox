@@ -1,8 +1,6 @@
 package idas.chox.core.model;
 
-import java.io.Serializable;
-
-public class Solicitor extends Entity implements Serializable {
+public class Solicitor {
 
     /**
      * This attribute maps to the column name in the solicitor table.
@@ -44,10 +42,6 @@ public class Solicitor extends Entity implements Serializable {
      * This attribute maps to the column is_appointed in the solicitor table.
      */
     protected boolean isAppointed;
-    /**
-     * This attribute represents the foreign key relationship to the injury table.
-     */
-    protected Injury injury;
 
     /**
      * Method 'Solicitor'
@@ -234,23 +228,5 @@ public class Solicitor extends Entity implements Serializable {
      */
     public void setIsAppointed(boolean isAppointed) {
         this.isAppointed = isAppointed;
-    }
-
-    /**
-     * Method 'getInjury'
-     *
-     * @return Injury
-     */
-    public Injury getInjury() {
-        return injury;
-    }
-
-    /**
-     * Method 'setInjury'
-     *
-     * @param injury
-     */
-    public void setInjury(Injury injury) {
-        this.injury = injury;
     }
 }

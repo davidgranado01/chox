@@ -41,7 +41,8 @@ public class UserAccountAction extends BaseAction {
             userService.persist(webUser, webUser.getEmail());
             this.getActionResponse().AssignMessageResult("Your password has been changed.");
         } catch (Exception ex) {
-            this.getActionResponse().AddError(ex.getMessage());
+            logger.error(ex);
+            getActionResponse().AddError(ex.getMessage());
         }
         return SUCCESS;
     }

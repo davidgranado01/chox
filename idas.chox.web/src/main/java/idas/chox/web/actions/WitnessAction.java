@@ -22,41 +22,42 @@ public class WitnessAction extends BaseModelAction implements ModelDriven<Witnes
     private Witness model;
     private int incidentId;
 
-
     public Witness getModel() {
         return model;
     }
 
     public void prepare() throws Exception {
-       Claim claim = getClaim();
+        Claim claim = getClaim();
 
-        if (claim != null && claim.getIncident() != null) {
-            model = claim.getIncident().getWitness();
-        } else {
-            model = new Witness();
-        }
-    }
-
-     public String updateModel() {
-        try {
-            boolean isTransient = model.isTransient();
-            Claim claim = getClaim();
+        if (claim != null) {
             Incident incident = claim.getIncident();
 
             if (incident == null) {
                 incident = new Incident();
+                claim.setIncident(incident);
             }
 
-            incident.setWitness(model);
+            model = claim.getIncident().getWitness();
 
-            claim.setIncident(incident);
+            if (model == null) {
+                model = new Witness();
+                model.setIncident(incident);
+                incident.setWitness(model);
+            }
+        }
+    }
 
+    public String updateModel() {
+        try {
+            boolean isTransient = model.isTransient();
+            Claim claim = getClaim();
             this.claimService.updateClaim(claim);
             if (isTransient) {
                 this.getActionResponse().AssignNewIdResult(model.getId());
             }
         } catch (Exception ex) {
-            this.actionResult = "ERROR :" + ex.getMessage();
+            logger.error(ex);
+            getActionResponse().AddError(ex.getMessage());
         }
         return SUCCESS;
     }

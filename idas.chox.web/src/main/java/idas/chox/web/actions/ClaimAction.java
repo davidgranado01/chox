@@ -1634,24 +1634,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return injuryId;
     }
-
-    public int getInjurySolicitorId() {
-
-        if (injurySolicitorId == null) {
-            injurySolicitorId = -1;
-            Incident incident = claim.getIncident();
-
-            if (incident != null) {
-                Injury injury = incident.getInjury();
-                if (injury != null) {
-                    Solicitor solicitor = injury.getSolicitor();
-                    injurySolicitorId = solicitor == null ? -1 : solicitor.getId();
-                }
-            }
-        }
-        return injurySolicitorId;
-    }
-
+   
     public BreBandService getBreBandService() {
         return breBandService;
     }

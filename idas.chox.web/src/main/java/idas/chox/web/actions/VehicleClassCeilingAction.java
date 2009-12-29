@@ -53,7 +53,8 @@ public class VehicleClassCeilingAction extends BaseAction {
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(ex);
+            getActionResponse().AddError(ex.getMessage());
         }
 
         return SUCCESS;

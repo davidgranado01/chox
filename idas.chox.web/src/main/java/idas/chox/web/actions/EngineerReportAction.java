@@ -24,10 +24,12 @@ public class EngineerReportAction extends BaseModelAction implements ModelDriven
     }
 
     public void prepare() throws Exception {
-        model = getClaim().getEngineerReport();
+        Claim claim = getClaim();
+        model = claim.getEngineerReport();
 
         if (model == null) {
             model = new EngineerReport();
+            claim.setEngineerReport(model);
         }
     }
 

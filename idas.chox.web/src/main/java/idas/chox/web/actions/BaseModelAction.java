@@ -8,7 +8,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.services.ClaimService;
 import idas.chox.data.services.DataService;
 import idas.chox.web.security.ApplicationAccessibility;
-import idas.chox.web.viewdata.ActionResponse;
 import org.springframework.security.GrantedAuthority;
 
 /**
@@ -27,7 +26,6 @@ public abstract class BaseModelAction extends BaseAction {
     protected ClaimService claimService;
     protected DataService dataService;    
     protected ApplicationAccessibility applicationAccessibility;
-    protected ActionResponse actionResponse;
     private Claim claim;
     // </editor-fold>
 

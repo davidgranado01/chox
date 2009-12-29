@@ -1,493 +1,611 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-    <script src="<%= request.getContextPath()%>/scripts/actionPanelLib.js" type="text/javascript"></script>
-    <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
+<script src="<%= request.getContextPath()%>/scripts/actionPanelLib.js" type="text/javascript"></script>
+<script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
-        var invoiceDetailTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
-        var hireMonitoringTabAccessibility = <s:property value="tabAccessibility.hireMonitoringTabAccessibility" />;
-        var historyTabAccessibility = <s:property value="tabAccessibility.historyTabAccessibility" />;
-        var notesTabAccessibility = <s:property value="tabAccessibility.notesTabAccessibility" />;
-        var paymentPackTabAccessibility = <s:property value="tabAccessibility.paymentPackTabAccessibility" />;
-        var auditTrailTabAccessibility = <s:property value="tabAccessibility.auditTrailTabAccessibility" />;
+    var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
+    var invoiceDetailTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
+    var hireMonitoringTabAccessibility = <s:property value="tabAccessibility.hireMonitoringTabAccessibility" />;
+    var historyTabAccessibility = <s:property value="tabAccessibility.historyTabAccessibility" />;
+    var notesTabAccessibility = <s:property value="tabAccessibility.notesTabAccessibility" />;
+    var paymentPackTabAccessibility = <s:property value="tabAccessibility.paymentPackTabAccessibility" />;
+    var auditTrailTabAccessibility = <s:property value="tabAccessibility.auditTrailTabAccessibility" />;
 
-        var hasFormUnderSubmission = false;
-        var elementToBlock;
+    var hasFormUnderSubmission = false;
+    var elementToBlock;
 
-        var claimDetailsDisabled = claimDetailTabAccessibility == 0;
-        var hireMonitoringDetailsDisabled = hireMonitoringTabAccessibility  == 0;
-        var invoiceDetailsDisabled = invoiceDetailTabAccessibility == 0;
-        var paymentPackDisabled = paymentPackTabAccessibility == 0;
-        var historyDetailsDisabled = historyTabAccessibility == 0;
-        var commentsDisabled = notesTabAccessibility == 0;
-        var auditTrailDisabled = auditTrailTabAccessibility == 0;
+    var claimDetailsDisabled = claimDetailTabAccessibility == 0;
+    var hireMonitoringDetailsDisabled = hireMonitoringTabAccessibility  == 0;
+    var invoiceDetailsDisabled = invoiceDetailTabAccessibility == 0;
+    var paymentPackDisabled = paymentPackTabAccessibility == 0;
+    var historyDetailsDisabled = historyTabAccessibility == 0;
+    var commentsDisabled = notesTabAccessibility == 0;
+    var auditTrailDisabled = auditTrailTabAccessibility == 0;
 
-        // COMMENT
-        var commentsJsonReader;
-        var commentsDataStore;
-        var commentsGrid;
+    // COMMENT
+    var commentsJsonReader;
+    var commentsDataStore;
+    var commentsGrid;
 
-        // PAYMENT PACK
-        var paymentPackJsonReader;
-        var paymentPackDataStore;
-        var paymentPackGrid;
+    // PAYMENT PACK
+    var paymentPackJsonReader;
+    var paymentPackDataStore;
+    var paymentPackGrid;
 
-        // COMMENT
-        var auditTrailJsonReader;
-        var auditTrailDataStore;
-        var auditTrailGrid;
+    // COMMENT
+    var auditTrailJsonReader;
+    var auditTrailDataStore;
+    var auditTrailGrid;
 
-        var popupTimeUp = 900000;
+    var popupTimeUp = 900000;
 
-        var globalEntityFormOptions = {
-            beforeSubmit:  onBeforeSubmit,  // pre-submit callback
-            success:       onSubmitResponseReceived,  // post-submit callback
-            timeout: 3000,
-            error: onSubmitError
-        };
+    var globalEntityFormOptions = {
+        beforeSubmit:  onBeforeSubmit,  // pre-submit callback
+        success:       onSubmitResponseReceived,  // post-submit callback
+        timeout: 3000,
+        error: onSubmitError
+    };
 
-        $(function(){
-            var fsets =  $('legend');
-            fsets.click(function(){ $(this).next().toggle();});
-            fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
-            fsets.mouseout(function(){ $(this).css("cursor","normal");});
-            $('.entity-form').ajaxForm(globalEntityFormOptions);
-            activityMonitor.pingServer(<s:property value="id"/>);
-        });
+    $(function(){
+        var fsets =  $('legend');
+        fsets.click(function(){ $(this).next().toggle();});
+        fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
+        fsets.mouseout(function(){ $(this).css("cursor","normal");});
+        $('.entity-form').ajaxForm(globalEntityFormOptions);
+        activityMonitor.pingServer(<s:property value="id"/>);
+    });
 
-        function onBeforeSubmit(formData, jqForm, options) {
+    function onBeforeSubmit(formData, jqForm, options) {
 
-            if(!hasFormUnderSubmission){
+        if(!hasFormUnderSubmission){
 
-                if(elementToBlock != undefined){
-                    outputDiv = elementToBlock.find('div.chox-form-submit-result');
-                    outputDiv.text("");
-                    outputDiv.removeClass("submit-error");
-                }
-
-                hasFormUnderSubmission = true;
-                elementToBlock = jqForm.find('div.form-container');
-                elementToBlock.block({ message: "Please wait.." });
-
-                var queryString = $.param(formData);
-
-                return true;
-
-            }else{
-                alert("Please wait until other save operations have completed");
+            if(elementToBlock != undefined){
+                outputDiv = elementToBlock.find('div.chox-form-submit-result');
+                outputDiv.text("");
+                outputDiv.removeClass("submit-error");
             }
 
-            return false;
+            hasFormUnderSubmission = true;
+            elementToBlock = jqForm.find('div.form-container');
+            elementToBlock.block({ message: "Please wait.." });
+
+            var queryString = $.param(formData);
+
+            return true;
+
+        }else{
+            alert("Please wait until other save operations have completed");
         }
 
-        function onSubmitResponseReceived(responseText, statusText)  {
+        return false;
+    }
 
-            elementToBlock.unblock();
-            response = eval('(' + responseText.trim() + ')');
-            var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
-            outputDiv.html('');
+    function onSubmitResponseReceived(responseText, statusText)  {
 
-            if(response)
-            {
-                if(response.isValid){
+        elementToBlock.unblock();
+        response = eval('(' + responseText.trim() + ')');
+        var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
+        outputDiv.html('');
 
-                    if(response.resultType && response.resultType == 'New')
-                    {
-                        var newObjectId =  parseInt(response.result);
-                        var hvObjectId = elementToBlock.find("input[name='objectId']");
-                        hvObjectId.val(newObjectId);
-                    }
-                    else if(response.resultType && response.resultType == 'Message')
-                    {
-                        outputDiv.append("<p>" + response.result + "</p>");
-                    }
-                    else
-                    {
-                        outputDiv.append("<p>Your changes have been saved.</p>");
-                    }
+        if(response)
+        {
+            if(response.isValid){
 
+                if(response.resultType && response.resultType == 'New')
+                {
+                    var newObjectId =  parseInt(response.result);
+                    var hvObjectId = elementToBlock.find("input[name='objectId']");
+                    hvObjectId.val(newObjectId);
+                }
+                else if(response.resultType && response.resultType == 'Message')
+                {
+                    outputDiv.append("<p>" + response.result + "</p>");
                 }
                 else
                 {
-                    outputDiv.append("<p>There was an error:</p><ul>");
-
-                    jQuery.each(response.errors, function() {
-                        outputDiv.append("<li>");
-                        outputDiv.append(this);
-                        outputDiv.append("</li>");
-                    });
-
-                    outputDiv.append("</ul>");
-                    outputDiv.addClass("submit-error");
+                    outputDiv.append("<p>Your changes have been saved.</p>");
                 }
+
             }
             else
             {
-                outputDiv.append("Unknown Error Encountered, please try again.");
+                outputDiv.append("<p>There was an error:</p><ul>");
+
+                jQuery.each(response.errors, function() {
+                    outputDiv.append("<li>");
+                    outputDiv.append(this);
+                    outputDiv.append("</li>");
+                });
+
+                outputDiv.append("</ul>");
                 outputDiv.addClass("submit-error");
             }
-
-            hasFormUnderSubmission = false;
         }
-
-        function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
-            elementToBlock.unblock();
-            var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
+        else
+        {
+            outputDiv.append("Unknown Error Encountered, please try again.");
             outputDiv.addClass("submit-error");
-            outputDiv.text(textStatus  + ":" + errorThrown);
-            hasFormUnderSubmission = false;
         }
 
-        function doCleanResult(){
-            $(".chox-form-submit-result").html("");
-        }
+        hasFormUnderSubmission = false;
+    }
 
-        Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
+    function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
+        elementToBlock.unblock();
+        var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
+        outputDiv.addClass("submit-error");
+        outputDiv.text(textStatus  + ":" + errorThrown);
+        hasFormUnderSubmission = false;
+    }
 
-        Ext.onReady(function(){
+    function doCleanResult(){
+        $(".chox-form-submit-result").html("");
+    }
 
-            var tabs = new Ext.TabPanel({
-                renderTo: 'tabContainer',
-                width:960,
-                activeTab: 0,
-                frame:false,
-                plain:true,
-                defaults:{autoHeight: true},
-                items:[
-                    {
-                        contentEl:'claimDetails',
-                        title: 'Claim Details',
-                        disabled: claimDetailsDisabled,
-                        listeners: {activate : doCleanResult}
-                    },
-                    {
-                        contentEl:'hireMonitoringDetails',
-                        title: 'Hire Monitoring',
-                        disabled: hireMonitoringDetailsDisabled,
-                        listeners: {activate : doCleanResult}
-                    },
-                    {
-                        contentEl:'invoiceDetails',
-                        title: 'Invoice Details',
-                        disabled: invoiceDetailsDisabled,
-                        listeners: {activate : doCleanResult}
-                    },
-                    {
-                        contentEl:'paymentPack',
-                        title: 'Attachments',
-                        disabled: paymentPackDisabled,
-                        listeners: {activate : doCleanResult}
-                    },
-                    {
-                        contentEl:'historyDetails',
-                        title: 'History', disabled: historyDetailsDisabled,
-                        listeners: {activate : doCleanResult}
-                    },
-                    {
-                        contentEl:'auditTrailDetails',
-                        title: 'Claim Cycle', disabled: auditTrailDisabled,
-                        listeners: {activate : doCleanResult}
-                    },
-                    {
-                        contentEl:'comments',
-                        title: 'Notes',
-                        disabled: commentsDisabled,
-                        listeners: {activate : loadComments}
-                    }
+    Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
+
+    Ext.onReady(function(){
+
+        var tabs = new Ext.TabPanel({
+            renderTo: 'tabContainer',
+            width:960,
+            activeTab: 0,
+            frame:false,
+            plain:true,
+            defaults:{autoHeight: true},
+            items:[
+                {
+                    contentEl:'claimDetails',
+                    title: 'Claim Details',
+                    disabled: claimDetailsDisabled,
+                    listeners: {activate : doCleanResult}
+                },
+                {
+                    contentEl:'hireMonitoringDetails',
+                    title: 'Hire Monitoring',
+                    disabled: hireMonitoringDetailsDisabled,
+                    listeners: {activate : doCleanResult}
+                },
+                {
+                    contentEl:'invoiceDetails',
+                    title: 'Invoice Details',
+                    disabled: invoiceDetailsDisabled,
+                    listeners: {activate : doCleanResult}
+                },
+                {
+                    contentEl:'paymentPack',
+                    title: 'Attachments',
+                    disabled: paymentPackDisabled,
+                    listeners: {activate : doCleanResult}
+                },
+                {
+                    contentEl:'historyDetails',
+                    title: 'History', disabled: historyDetailsDisabled,
+                    listeners: {activate : doCleanResult}
+                },
+                {
+                    contentEl:'auditTrailDetails',
+                    title: 'Claim Cycle', disabled: auditTrailDisabled,
+                    listeners: {activate : doCleanResult}
+                },
+                {
+                    contentEl:'comments',
+                    title: 'Notes',
+                    disabled: commentsDisabled,
+                    listeners: {activate : loadComments}
+                }
+            ]
+        });
+
+        /***********************************************************************************
+         * ATTACHMENT / PAYMENT PACK
+         ***********************************************************************************/
+
+        if(!paymentPackDisabled){
+
+            paymentPackJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'id',  hidden:true},
+                    {name:'fileName'},
+                    {name:'category'},
+                    {name:'remarks' },
+                    {name:'modifiedDate' },
+                    {name:'modifiedBy' },
+                    {name:'delete' }
                 ]
             });
 
-            /***********************************************************************************
-             * ATTACHMENT / PAYMENT PACK
-             ***********************************************************************************/
+            paymentPackDataStore = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy
+                ({url: '<%= request.getContextPath()%>/prv/p/getAttachments.action',method:'GET'}),
+                reader:paymentPackJsonReader
+            });
 
-            if(!paymentPackDisabled){
+            paymentPackGrid = new Ext.grid.GridPanel({
+                listeners:  {cellclick:loadAttachment },
+                store: paymentPackDataStore,
+                loadMask: true,
+                columns: [
+                    {header: "File Name", width: 250, dataIndex: 'fileName', sortable: true, resizable: true},
+                    {header: "Category", width: 150, dataIndex: 'category', sortable: true, resizable: true},
+                    {header: "Description", width: 300, dataIndex: 'remarks', sortable: true, resizable: true},
+                    {header: "Created Date", width: 150, dataIndex: 'modifiedDate', sortable: true, resizable: true},
+                    {header: "", width: 60, dataIndex: 'delete', sortable: false, hidden:(paymentPackTabAccessibility!=2), resizable: false, renderer:function(value,p,r){
+                            return "<a href='#attachmentlisting'>" + value + "</a>"}}
+                ],
+                renderTo:'paymentPackGrid',
+                width:960,
+                autoHeight:true,
+                enableHdMenu:false
+            });
+            loadAttachments();
+        }
 
-                paymentPackJsonReader = new Ext.data.JsonReader({
-                    totalProperty: 'totalCount',
-                    root: 'results',
-                    fields:
-                        [
-                        {name:'id',  hidden:true},
-                        {name:'fileName'},
-                        {name:'category'},
-                        {name:'remarks' },
-                        {name:'modifiedDate' },
-                        {name:'modifiedBy' },
-                        {name:'delete' }
-                    ]
-                });
+        function loadAttachment(grid, rowIndex, columnIndex, e){
 
-                paymentPackDataStore = new Ext.data.Store({
-                    proxy: new Ext.data.HttpProxy
-                    ({url: '<%= request.getContextPath()%>/prv/p/getAttachments.action',method:'GET'}),
-                    reader:paymentPackJsonReader
-                });
-
-                paymentPackGrid = new Ext.grid.GridPanel({
-                    listeners:  {cellclick:loadAttachment },
-                    store: paymentPackDataStore,
-                    loadMask: true,
-                    columns: [
-                        {header: "File Name", width: 250, dataIndex: 'fileName', sortable: true, resizable: true},
-                        {header: "Category", width: 150, dataIndex: 'category', sortable: true, resizable: true},
-                        {header: "Description", width: 300, dataIndex: 'remarks', sortable: true, resizable: true},
-                        {header: "Created Date", width: 150, dataIndex: 'modifiedDate', sortable: true, resizable: true},
-                        {header: "", width: 60, dataIndex: 'delete', sortable: false, hidden:(paymentPackTabAccessibility!=2), resizable: false, renderer:function(value,p,r){
-                                return "<a href='#attachmentlisting'>" + value + "</a>"}}
-                    ],
-                    renderTo:'paymentPackGrid',
-                    width:960,
-                    autoHeight:true,
-                    enableHdMenu:false
-                });
-                loadAttachments();
-            }
-
-            function loadAttachment(grid, rowIndex, columnIndex, e){
-
-                var attachment = paymentPackGrid.getStore().getAt(rowIndex);
-                var fileId = attachment.get("id");
+            var attachment = paymentPackGrid.getStore().getAt(rowIndex);
+            var fileId = attachment.get("id");
                     
-                if(columnIndex!=4){
-                    var link = "<%= request.getContextPath()%>/prv/p/doExportFile.action?fileId=" + fileId;
-                    window.open(link,"","width=600,height=400,status=yes,menubar=no");
-                }else{
-                    deleteAttachment(fileId);
-                }
+            if(columnIndex!=4){
+                var link = "<%= request.getContextPath()%>/prv/p/doExportFile.action?fileId=" + fileId;
+                window.open(link,"","width=600,height=400,status=yes,menubar=no");
+            }else{
+                deleteAttachment(fileId);
+            }
+        }
+
+        function deleteAttachment(a){
+
+            var deleteAtt = confirm("Are you sure you want to delete this attachment?");
+
+            if(deleteAtt){
+                paymentPackLoaded = false;
+                var url = "<%= request.getContextPath()%>/prv/p/doDeleteFile.action";
+                var param = {"fileId":a};
+                ajax.loadJson(url,param,loadAttachments);
             }
 
-            function deleteAttachment(a){
+            doCleanResult();
+        }
 
-                var deleteAtt = confirm("Are you sure you want to delete this attachment?");
+        /***********************************************************************************
+         * HIRE MONITORING
+         ***********************************************************************************/
 
-                if(deleteAtt){
-                    paymentPackLoaded = false;
-                    var url = "<%= request.getContextPath()%>/prv/p/doDeleteFile.action";
-                    var param = {"fileId":a};
-                    ajax.loadJson(url,param,loadAttachments);
-                }
+        if(!hireMonitoringDetailsDisabled){
 
-                doCleanResult();
-            }
+            ecdJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'sequence'},
+                    {name:'ecdDate'},
+                    {name:'reason'},
+                    {name:'supportingNote' }
+                ]
+            });
 
-            /***********************************************************************************
-             * HIRE MONITORING
-             ***********************************************************************************/
+            ecdDataStore = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy
+                ({url: '<%= request.getContextPath()%>/prv/p/getHireMonitoringEcds.action',method:'GET'}),
+                reader:ecdJsonReader
+            });
 
-            if(!hireMonitoringDetailsDisabled){
+            ecdGrid = new Ext.grid.GridPanel({
+                listeners:  {cellclick:loadHireMonitor },
+                store: ecdDataStore,
+                loadMask: true,
+                columns: [
+                    {header: "", width: 20, dataIndex: 'sequence', sortable: false, resizable: true},
+                    {header: "ECD Date", width: 70, dataIndex: 'ecdDate', sortable: false, resizable: true},
+                    {header: "Reason", width: 80, dataIndex: 'reason', sortable: false, resizable: true},
+                    {header: "Supporting Note", width: 280, dataIndex: 'supportingNote', sortable: false, resizable: true}
+                ],
+                renderTo:'ecdGridHolder',
+                width:445,
+                autoHeight:true,
+                enableHdMenu:false
+            });
 
-                ecdJsonReader = new Ext.data.JsonReader({
-                    totalProperty: 'totalCount',
-                    root: 'results',
-                    fields:
-                        [
-                        {name:'sequence'},
-                        {name:'ecdDate'},
-                        {name:'reason'},
-                        {name:'supportingNote' }
-                    ]
-                });
-
-                ecdDataStore = new Ext.data.Store({
-                    proxy: new Ext.data.HttpProxy
-                    ({url: '<%= request.getContextPath()%>/prv/p/getHireMonitoringEcds.action',method:'GET'}),
-                    reader:ecdJsonReader
-                });
-
-                ecdGrid = new Ext.grid.GridPanel({
-                    listeners:  {cellclick:loadHireMonitor },
-                    store: ecdDataStore,
-                    loadMask: true,
-                    columns: [
-                        {header: "", width: 20, dataIndex: 'sequence', sortable: false, resizable: true},
-                        {header: "ECD Date", width: 70, dataIndex: 'ecdDate', sortable: false, resizable: true},
-                        {header: "Reason", width: 80, dataIndex: 'reason', sortable: false, resizable: true},
-                        {header: "Supporting Note", width: 280, dataIndex: 'supportingNote', sortable: false, resizable: true}
-                    ],
-                    renderTo:'ecdGridHolder',
-                    width:445,
-                    autoHeight:true,
-                    enableHdMenu:false
-                });
-
-                loadEcds();
-            }
+            loadEcds();
+        }
     
-            function loadHireMonitor(grid, rowIndex, columnIndex, e){
-                var hiremonitoringECD = ecdGrid.getStore().getAt(rowIndex);
-                var supportingNoteText = "<br/><b>Supporting note</b>: <br/>"+hiremonitoringECD.get("supportingNote");
-                var EcdText = "<b>ECD Date</b>: "+hiremonitoringECD.get("ecdDate");
-                var ReasonText = "<b>Reason</b>: "+hiremonitoringECD.get("reason");
+        function loadHireMonitor(grid, rowIndex, columnIndex, e){
+            var hiremonitoringECD = ecdGrid.getStore().getAt(rowIndex);
+            var supportingNoteText = "<br/><b>Supporting note</b>: <br/>"+hiremonitoringECD.get("supportingNote");
+            var EcdText = "<b>ECD Date</b>: "+hiremonitoringECD.get("ecdDate");
+            var ReasonText = "<b>Reason</b>: "+hiremonitoringECD.get("reason");
 
-                var title = EcdText;
-                var msg = EcdText + "<br/>" + ReasonText + "<br/>" + supportingNoteText;
-                propmtMsg(title, msg);
-            }
+            var title = EcdText;
+            var msg = EcdText + "<br/>" + ReasonText + "<br/>" + supportingNoteText;
+            propmtMsg(title, msg);
+        }
 
-            /***********************************************************************************
-             * COMMENT / NOTE
-             ***********************************************************************************/
+        /***********************************************************************************
+         * COMMENT / NOTE
+         ***********************************************************************************/
 
-            if(!commentsDisabled){
+        if(!commentsDisabled){
 
-                commentsJsonReader = new Ext.data.JsonReader({
-                    totalProperty: 'totalCount', root: 'results', fields:[
-                        {name:'id'},
-                        {name:'createdBy'},
-                        {name:'createdDate'},
-                        {name:'comment'},
-                        {name:'visibilityType'}]
-                });
+            commentsJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount', root: 'results', fields:[
+                    {name:'id'},
+                    {name:'createdBy'},
+                    {name:'createdDate'},
+                    {name:'comment'},
+                    {name:'visibilityType'}]
+            });
 
-                commentsDataStore = new Ext.data.Store({
-                    proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getComments.action',method:'GET'}), reader:commentsJsonReader
-                });
+            commentsDataStore = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getComments.action',method:'GET'}), reader:commentsJsonReader
+            });
 
-                commentsGrid = new Ext.grid.GridPanel({
-                    listeners:  {cellclick:loadComment },
-                    store: commentsDataStore, loadMask: true,
-                    columns: [
-                        {header: "Created", width: 130, dataIndex: 'createdDate', sortable: false, resizable: true},
-                        {header: "Created By", width: 260, dataIndex: 'createdBy', sortable: false, resizable: true},
-                        {header: "Message", width: 700, dataIndex: 'comment', sortable: false, resizable: true}
-                    ],
-                    viewConfig:{
-                        getRowClass: function(record, index) {
+            commentsGrid = new Ext.grid.GridPanel({
+                listeners:  {cellclick:loadComment },
+                store: commentsDataStore, loadMask: true,
+                columns: [
+                    {header: "Created", width: 130, dataIndex: 'createdDate', sortable: false, resizable: true},
+                    {header: "Created By", width: 260, dataIndex: 'createdBy', sortable: false, resizable: true},
+                    {header: "Message", width: 700, dataIndex: 'comment', sortable: false, resizable: true}
+                ],
+                viewConfig:{
+                    getRowClass: function(record, index) {
     
 
-                            var c = record.get('visibilityType');
-                            if(c>0){
-                                return 'private-comment';
-                            }
-
+                        var c = record.get('visibilityType');
+                        if(c>0){
+                            return 'private-comment';
                         }
-                    },
-                    renderTo:'commentsGrid', width:960, autoHeight:true, enableHdMenu:false
-                });
 
-            }
+                    }
+                },
+                renderTo:'commentsGrid', width:960, autoHeight:true, enableHdMenu:false
+            });
 
-            function loadComment(grid, rowIndex, columnIndex, e){
+        }
+
+        function loadComment(grid, rowIndex, columnIndex, e){
                     
-                var comment = commentsGrid.getStore().getAt(rowIndex);
+            var comment = commentsGrid.getStore().getAt(rowIndex);
 
-                var title="Notes";
-                var msg = "<b>Created Date</b>: " + comment.get("createdDate");
-                msg += "<br/><b>Created By</b>: " + comment.get("createdBy") + "<br/>";
-                msg += "<br/><b>Message";
+            var title="Notes";
+            var msg = "<b>Created Date</b>: " + comment.get("createdDate");
+            msg += "<br/><b>Created By</b>: " + comment.get("createdBy") + "<br/>";
+            msg += "<br/><b>Message";
                         
-                if(comment.get("visibilityType")>0){
-                    msg += " (Private Note)";
-                }
-                msg += "</b>: <br/>" + comment.get("comment");
-                        
-
-                propmtMsg(title, msg);
+            if(comment.get("visibilityType")>0){
+                msg += " (Private Note)";
             }
+            msg += "</b>: <br/>" + comment.get("comment");
+                        
 
-            /***********************************************************************************
-             * AUDIT TRAIL
-             ***********************************************************************************/
+            propmtMsg(title, msg);
+        }
 
-            if(!auditTrailDisabled){
+        /***********************************************************************************
+         * AUDIT TRAIL
+         ***********************************************************************************/
 
-                auditTrailJsonReader = new Ext.data.JsonReader({
-                    totalProperty: 'totalCount',
-                    root: 'results',
-                    fields:
-                        [
-                        {name:'modifiedDate'},
-                        {name:'modifiedBy'},
-                        {name:'status'}
-                    ]
-                });
+        if(!auditTrailDisabled){
 
-                var auditTrailData = new Ext.data.Store({
-                    proxy: new Ext.data.HttpProxy
-                    ({url: '<%= request.getContextPath()%>/prv/p/getAuditTrail.action',method:'GET'}),
-                    reader:auditTrailJsonReader
-                });
+            auditTrailJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'modifiedDate'},
+                    {name:'modifiedBy'},
+                    {name:'status'}
+                ]
+            });
 
-                var auditGrid = new Ext.grid.GridPanel({
-                    listeners:  {cellclick:loadAudit},
-                    store: auditTrailData,
-                    columns: [
-                        {header: "Modified Date", width: 130, dataIndex: 'modifiedDate', sortable: false, resizable: true},
-                        {header: "Modified By", width: 260, dataIndex: 'modifiedBy', sortable: false, resizable: true},
-                        {header: "Status", width: 500, dataIndex: 'status', sortable: false, resizable: true}
-                    ],
-                    renderTo:'auditTrailGrid',
-                    width:960,
-                    autoHeight:true,
-                    enableHdMenu:false
-                });
+            var auditTrailData = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy
+                ({url: '<%= request.getContextPath()%>/prv/p/getAuditTrail.action',method:'GET'}),
+                reader:auditTrailJsonReader
+            });
 
-                auditTrailData.load(
+            var auditGrid = new Ext.grid.GridPanel({
+                listeners:  {cellclick:loadAudit},
+                store: auditTrailData,
+                columns: [
+                    {header: "Modified Date", width: 130, dataIndex: 'modifiedDate', sortable: false, resizable: true},
+                    {header: "Modified By", width: 260, dataIndex: 'modifiedBy', sortable: false, resizable: true},
+                    {header: "Status", width: 500, dataIndex: 'status', sortable: false, resizable: true}
+                ],
+                renderTo:'auditTrailGrid',
+                width:960,
+                autoHeight:true,
+                enableHdMenu:false
+            });
+
+            auditTrailData.load(
+            {
+                params:
+                    {
+                    claimId : <s:property value="id" />
+                }
+            });
+        }
+
+        function loadAudit(grid, rowIndex, columnIndex, e){
+            var audit = auditGrid.getStore().getAt(rowIndex);
+
+            var title = "Claim Cycle";
+            var msg = "<b>Modified Date</b>: " + audit.get("modifiedDate")
+                + "<br/><b>Modified By</b>: " + audit.get("modifiedBy")
+                + "<br/><br/><b>Status</b>: " + audit.get("status")
+
+            propmtMsg(title, msg);
+        }
+
+        /***********************************************************************************
+         * HISTORY
+         ***********************************************************************************/
+
+        var historyData;
+        var historyJsonReader;
+        var historyGrid;
+
+        if(!historyDetailsDisabled){
+
+            historyJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'createdBy'},
+                    {name:'createdDate'},
+                    {name:'narrative'}
+                ]
+            });
+
+            historyData = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy
+                ({url: '<%= request.getContextPath()%>/prv/p/getHistories.action',method:'GET'}),
+                reader:historyJsonReader
+            });
+
+            historyGrid = new Ext.grid.GridPanel({
+                listeners:  {cellclick:loadHistory },
+                store: historyData,
+                columns: [
+                    {header: "Created On", width: 110, dataIndex: 'createdDate', sortable: false, resizable: true},
+                    {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: false, resizable: true},
+                    {header: "Message Text", width: 650, dataIndex: 'narrative', sortable: false, resizable: true}
+                ],
+                renderTo:'historyGrid',
+                width:960,
+                autoHeight:true,
+                enableHdMenu:false
+            });
+
+            historyData.load(
+            {
+                params:
+                    {
+                    id : <s:property value="id" />
+                }
+            });
+        }
+
+        function loadHistory(grid, rowIndex, columnIndex, e){
+            var historyItem = historyGrid.getStore().getAt(rowIndex);
+
+            var title = "History";
+            var msg = "<b>Created Date</b>: " + historyItem.get("createdDate")
+                + "<br/><b>Created By</b>: " + historyItem.get("createdBy")
+                + "<br/><br/><b>Message</b>: <br/>" + historyItem.get("narrative")
+
+            propmtMsg(title, msg);
+        }
+
+    });
+
+    // LOAD COMMENT
+    var commentsLoaded = false;
+
+    function loadComments(){
+        if(!commentsDisabled){
+            if(!commentsLoaded){
+                commentsDataStore.load(
                 {
                     params:
                         {
-                        claimId : <s:property value="id" />
+                        id : <s:property value="id" />
                     }
                 });
+                commentsLoaded = true;
             }
+        }
+    }
 
-            function loadAudit(grid, rowIndex, columnIndex, e){
-                var audit = auditGrid.getStore().getAt(rowIndex);
+    // LOAD PAYMENT PACK / ATTACHMENT
+    var paymentPackLoaded = false;
+            
+    function loadAttachments(){
 
-                var title = "Claim Cycle";
-                var msg = "<b>Modified Date</b>: " + audit.get("modifiedDate")
-                    + "<br/><b>Modified By</b>: " + audit.get("modifiedBy")
-                    + "<br/><br/><b>Status</b>: " + audit.get("status")
+        if(!paymentPackDisabled && !paymentPackLoaded){
+                    
+            paymentPackDataStore.load(
+            {
+                params:
+                    {
+                    claimId : <s:property value="id" />
+                }
+            });
 
-                propmtMsg(title, msg);
-            }
+            paymentPackLoaded = true;
+            resetAttachmentForm();
+        }
+    }
 
-            /***********************************************************************************
-             * HISTORY
-             ***********************************************************************************/
+    function resetAttachmentForm(){
+                
+        if(paymentPackTabAccessibility>=2){
+            $("#fAttachment").each(function(){
+                this.reset();
+            });
+        }
 
-            var historyData;
-            var historyJsonReader;
-            var historyGrid;
+    }
+            
+    var t;
 
-            if(!historyDetailsDisabled){
+    function updateAnomalies(a){
+        document.location = "<%= request.getContextPath()%>/prv/doUpdateAnomalies.action?id="+a;
+    }
 
-                historyJsonReader = new Ext.data.JsonReader({
-                    totalProperty: 'totalCount',
-                    root: 'results',
-                    fields:
-                        [
-                        {name:'createdBy'},
-                        {name:'createdDate'},
-                        {name:'narrative'}
-                    ]
-                });
+    function closeClaimStatus(){
 
-                historyData = new Ext.data.Store({
-                    proxy: new Ext.data.HttpProxy
-                    ({url: '<%= request.getContextPath()%>/prv/p/getHistories.action',method:'GET'}),
-                    reader:historyJsonReader
-                });
+        if(!confirm('Are you sure you want to close this claim?')){
+            return false;
+        }else{
+            document.location = '<%= request.getContextPath()%>/prv/doUpdateClaimStatus.action?id=<s:property value="id" />';
+        }
 
-                historyGrid = new Ext.grid.GridPanel({
-                    listeners:  {cellclick:loadHistory },
-                    store: historyData,
-                    columns: [
-                        {header: "Created On", width: 110, dataIndex: 'createdDate', sortable: false, resizable: true},
-                        {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: false, resizable: true},
-                        {header: "Message Text", width: 650, dataIndex: 'narrative', sortable: false, resizable: true}
-                    ],
-                    renderTo:'historyGrid',
-                    width:960,
-                    autoHeight:true,
-                    enableHdMenu:false
-                });
+        return true;
+    }
 
-                historyData.load(
+    function reopenClaimStatus(){
+
+        if(!confirm('Are you sure you want to re-open this claim?')){
+            return false;
+        }else{
+            document.location = '<%= request.getContextPath()%>/prv/doReopenClaimStatus.action?id=<s:property value="id" />';
+        }
+        return true;
+    }
+
+    $(document).ready(function() {
+        $("#popGeneralTemplateClose").click(function(){ $.unblockUI();});
+    });
+
+    function removeNotification(notificationId)
+    {
+        var url = "<%= request.getContextPath()%>/prv/p/removeNotification.action";
+        var param = {"notificationId" : notificationId,"id": <s:property value="id" />};
+
+        ajax.loadHtml(url,param,function(data){
+            $("div#notificationNotesDiv").html(data);
+        });
+    }
+
+    var ecdsLoaded = false;
+    function loadEcds(){
+
+        if(!hireMonitoringDetailsDisabled){
+
+            if(!ecdsLoaded)
+            {
+                ecdDataStore.load(
                 {
                     params:
                         {
@@ -495,128 +613,10 @@
                     }
                 });
             }
-
-            function loadHistory(grid, rowIndex, columnIndex, e){
-                var historyItem = historyGrid.getStore().getAt(rowIndex);
-
-                var title = "History";
-                var msg = "<b>Created Date</b>: " + historyItem.get("createdDate")
-                    + "<br/><b>Created By</b>: " + historyItem.get("createdBy")
-                    + "<br/><br/><b>Message</b>: <br/>" + historyItem.get("narrative")
-
-                propmtMsg(title, msg);
-            }
-
-        });
-
-        // LOAD COMMENT
-        var commentsLoaded = false;
-
-        function loadComments(){
-            if(!commentsDisabled){
-                if(!commentsLoaded){
-                    commentsDataStore.load(
-                    {
-                        params:
-                            {
-                            id : <s:property value="id" />
-                        }
-                    });
-                    commentsLoaded = true;
-                }
-            }
         }
+    }
 
-        // LOAD PAYMENT PACK / ATTACHMENT
-        var paymentPackLoaded = false;
-            
-        function loadAttachments(){
-
-            if(!paymentPackDisabled && !paymentPackLoaded){
-                    
-                paymentPackDataStore.load(
-                {
-                    params:
-                        {
-                        claimId : <s:property value="id" />
-                    }
-                });
-
-                paymentPackLoaded = true;
-                resetAttachmentForm();
-            }
-        }
-
-        function resetAttachmentForm(){
-                
-            if(paymentPackTabAccessibility>=2){
-                $("#fAttachment").each(function(){
-                    this.reset();
-                });
-            }
-
-        }
-            
-        var t;
-
-        function updateAnomalies(a){
-            document.location = "<%= request.getContextPath()%>/prv/doUpdateAnomalies.action?id="+a;
-        }
-
-        function closeClaimStatus(){
-
-            if(!confirm('Are you sure you want to close this claim?')){
-                return false;
-            }else{
-                document.location = '<%= request.getContextPath()%>/prv/doUpdateClaimStatus.action?id=<s:property value="id" />';
-            }
-
-            return true;
-        }
-
-        function reopenClaimStatus(){
-
-            if(!confirm('Are you sure you want to re-open this claim?')){
-                return false;
-            }else{
-                document.location = '<%= request.getContextPath()%>/prv/doReopenClaimStatus.action?id=<s:property value="id" />';
-            }
-            return true;
-        }
-
-        $(document).ready(function() {
-            $("#popGeneralTemplateClose").click(function(){ $.unblockUI();});
-        });
-
-        function removeNotification(notificationId)
-        {
-            var url = "<%= request.getContextPath()%>/prv/p/removeNotification.action";
-            var param = {"notificationId" : notificationId,"id": <s:property value="id" />};
-
-            ajax.loadHtml(url,param,function(data){
-                $("div#notificationNotesDiv").html(data);
-            });
-        }
-
-        var ecdsLoaded = false;
-        function loadEcds(){
-
-            if(!hireMonitoringDetailsDisabled){
-
-                if(!ecdsLoaded)
-                {
-                    ecdDataStore.load(
-                    {
-                        params:
-                            {
-                            id : <s:property value="id" />
-                        }
-                    });
-                }
-            }
-        }
-
-    </script>
+</script>
 
 <div style="width:960px">
 
@@ -818,24 +818,22 @@
                         <td class="chox-form-left-col">
 
                             <s:action name="getCustomer" namespace="/prv/p" executeResult="true">
-                                <s:param name="objectId"><s:property value="customerId" /></s:param>
+                                <s:param name="claimId"><s:property value="id" /></s:param>
                                 <s:param name="claimStatus"><s:property value="status" /></s:param>
                             </s:action>
 
                             <s:action name="getInjury" namespace="/prv/p" executeResult="true">
-                                <s:param name="objectId"><s:property value="injuryId" /></s:param>
-                                <s:param name="incidentId"><s:property value="incidentId" /></s:param>
+                                <s:param name="claimId"><s:property value="id" /></s:param>
                                 <s:param name="claimStatus"><s:property value="status" /></s:param>
                             </s:action>
 
                             <s:action name="getSolicitor" namespace="/prv/p" executeResult="true">
-                                <s:param name="objectId"><s:property value="injurySolicitorId" /></s:param>
-                                <s:param name="incidentId"><s:property value="incidentId" /></s:param>
+                                <s:param name="claimId"><s:property value="id" /></s:param>
                                 <s:param name="claimStatus"><s:property value="status" /></s:param>
                             </s:action>
 
                             <s:action name="getCustomerVehicleDamage" namespace="/prv/p" executeResult="true">
-                                <s:param name="objectId"><s:property value="customerId" /></s:param>
+                                <s:param name="claimId"><s:property value="id" /></s:param>
                                 <s:param name="claimStatus"><s:property value="status" /></s:param>
                             </s:action>
 
@@ -878,20 +876,17 @@
 
 
                             <s:action name="getIncident" namespace="/prv/p" executeResult="true">
-                                <s:param name="objectId"><s:property value="incidentId" /></s:param>
                                 <s:param name="claimId"><s:property value="id" /></s:param>
                                 <s:param name="claimStatus"><s:property value="status" /></s:param>
                             </s:action>
 
                             <s:action name="getThirdParty" namespace="/prv/p" executeResult="true">
-                                <s:param name="objectId"><s:property value="thirdPartyId" /></s:param>
                                 <s:param name="claimId"><s:property value="id" /></s:param>
                                 <s:param name="claimStatus"><s:property value="status" /></s:param>
                             </s:action>
 
                             <s:action name="getWitness" namespace="/prv/p" executeResult="true">
-                                <s:param name="incidentId"><s:property value="incidentId" /></s:param>
-                                <s:param name="objectId"><s:property value="witnessId" /></s:param>
+                                <s:param name="claimId"><s:property value="id" /></s:param>
                                 <s:param name="claimStatus"><s:property value="status" /></s:param>
                             </s:action>
 
@@ -914,8 +909,6 @@
                         <td class="chox-form-left-col">
                             <s:action name="getHireMonitoringDetail" namespace="/prv/p" executeResult="true">
                                 <s:param name="claimId"><s:property value="id" /></s:param>
-                                <s:param name="customerId"><s:property value="customerId" /></s:param>
-                                <s:param name="objectId"><s:property value="hireMonitoringDetailId" /></s:param>
                                 <s:param name="claimStatus"><s:property value="status" /></s:param>
                             </s:action>
                         </td>
@@ -951,14 +944,12 @@
                     <tr valign="top">
                         <td class="chox-form-left-col">
                             <s:action name="getInvoice" namespace="/prv/p" executeResult="true">
-                                <s:param name="objectId"><s:property value="invoiceId" /></s:param>
                                 <s:param name="claimId"><s:property value="id" /></s:param>
                                 <s:param name="claimStatus"><s:property value="status" /></s:param>
                             </s:action>
 
 
                             <s:action name="getVehicleHire" namespace="/prv/p" executeResult="true">
-                                <s:param name="objectId"><s:property value="vehicleHireId" /></s:param>
                                 <s:param name="claimId"><s:property value="id" /></s:param>
                                 <s:param name="claimStatus"><s:property value="status" /></s:param>
                             </s:action>
@@ -968,13 +959,11 @@
 
 
                             <s:action name="getExtra" namespace="/prv/p" executeResult="true">
-                                <s:param name="objectId"><s:property value="invoiceId" /></s:param>
                                 <s:param name="claimId"><s:property value="id" /></s:param>
                                 <s:param name="claimStatus"><s:property value="status" /></s:param>
                             </s:action>
 
                             <s:action name="getEngineerReport" namespace="/prv/p" executeResult="true">
-                                <s:param name="objectId"><s:property value="engineerReportId" /></s:param>
                                 <s:param name="claimId"><s:property value="id" /></s:param>
                                 <s:param name="claimStatus"><s:property value="status" /></s:param>
                             </s:action>

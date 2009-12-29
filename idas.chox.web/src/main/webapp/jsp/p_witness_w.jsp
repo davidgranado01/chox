@@ -1,99 +1,75 @@
+
 <%@ taglib uri="/struts-tags" prefix="s" %>     
 
-<script type="text/javascript">
+<script language="JavaScript">
 
     $(function(){
-
-        var form = $("form#formUpdateWitness");
-
+        var form = $("#formUpdateWitness");
         form.validate(
         {
             errorLabelContainer: "#WitnessMessageBox",
             rules: {
-                name:{required:true}
+                name:{required:true},
+                email:{email:true}
             },
             messages: {
-                name:{required:"Please supply a valid value for 'Name'"}
+                name:{required:'Please supply a valid value for Name'},
+                email:{email:'Please supply a valid email address for "Email"'}
             }
         });
-
         ui.ajaxForm(form);
-
     });
 
 </script>
 
-<!--
-<script language="JavaScript">
-
-        $(document).ready(function(){
-            $("#formUpdateWitness").validate(
-            {
-                errorLabelContainer: "#WitnessMessageBox",                
-                rules: {  
-                    name:{required:true}
-                },
-                messages: {
-                    name:{required:"Please supply a valid value for Name"}
-                },
-                submitHandler: function(form) {
-                    $(form).ajaxSubmit(globalEntityFormOptions);
-                }                
-            }); 
-        });  
-
-</script>
-!-->
-
-<form id="formUpdateWitness" name="formUpdateWitness" action="<%=request.getContextPath()%>/prv/p/updateWitness.action" class="XXentity-form" method="POST">
-     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-    <input type="hidden" name="incidentId" value='<s:property value="incidentId"/>'>  
+<form id="formUpdateWitness" name="formUpdateWitness" action="<%=request.getContextPath()%>/prv/p/updateWitness.action" class="XXentity-form">
+    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset">        
         <legend>Witness Details</legend>
-            <div style="display:none" class="form-container">
+        <div style="display:none" class="form-container">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Name<span class="mandatory">*</span></label>
-            <input type="text" class="chox-ttxt" name="name" value="<s:property value="name" />"/></div>        
+                    Name<span class="mandatory">*</span></label>
+                <input type="text" class="chox-ttxt" name="name" value="<s:property value="name" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Address 1</label>
-            <input type="text" class="chox-ttxt" name="address1" value="<s:property value="address1" />"/></div>
+                    Address 1</label>
+                <input type="text" class="chox-ttxt" name="address1" value="<s:property value="address1" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Address 2</label>
-            <input type="text" class="chox-ttxt" name="address2" value="<s:property value="address2" />"/></div>
+                    Address 2</label>
+                <input type="text" class="chox-ttxt" name="address2" value="<s:property value="address2" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Address 3</label>
-            <input type="text" class="chox-ttxt" name="address3" value="<s:property value="address3" />"/></div>
+                    Address 3</label>
+                <input type="text" class="chox-ttxt" name="address3" value="<s:property value="address3" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Address 4</label>
-            <input type="text" class="chox-ttxt" name="address4" value="<s:property value="address4" />"/></div>
+                    Address 4</label>
+                <input type="text" class="chox-ttxt" name="address4" value="<s:property value="address4" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Address 5</label>
-            <input type="text" class="chox-ttxt" name="address5" value="<s:property value="address5" />"/></div>
+                    Address 5</label>
+                <input type="text" class="chox-ttxt" name="address5" value="<s:property value="address5" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Postcode</label>
-            <input type="text" class="chox-ttxt" name="postcode" value="<s:property value="postcode" />"/></div>
+                    Postcode</label>
+                <input type="text" class="chox-ttxt" name="postcode" value="<s:property value="postcode" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Telephone Day</label>
-            <input type="text" class="chox-ttxt" name="telephoneDay" value="<s:property value="telephoneDay" />"/></div>
+                    Telephone Day</label>
+                <input type="text" class="chox-ttxt" name="telephoneDay" value="<s:property value="telephoneDay" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Telephone Evening</label>
-            <input type="text" class="chox-ttxt" name="telephoneEvening" value="<s:property value="telephoneEvening" />"/></div>
+                    Telephone Evening</label>
+                <input type="text" class="chox-ttxt" name="telephoneEvening" value="<s:property value="telephoneEvening" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                Email</label>
-            <input type="text" class="chox-ttxt" name="email" value="<s:property value="email" />"/></div>
+                    Email</label>
+                <input type="text" class="chox-ttxt" name="email" value="<s:property value="email" />"/></div>
             <div class="chox-form-button"><input type="submit" value="Save Changes" /></div>
+            <div id="WitnessMessageBox" class="errorBox"></div>
             <div class="chox-form-submit-result"></div>
-            <div id="WitnessMessageBox" class="action-error-msg"></div>
         </div>
     </fieldset>
 </form>

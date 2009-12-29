@@ -62,7 +62,8 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
             this.service.updateObject(thisObject);
 
         } catch (Exception ex) {
-            throw ex;
+            logger.error(ex);
+            getActionResponse().AddError(ex.getMessage());
         }
 
         return SUCCESS;
@@ -123,8 +124,8 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
-            this.getActionResponse().AddError(ex.getMessage());
+            logger.error(ex);
+            getActionResponse().AddError(ex.getMessage());
         }
 
         return SUCCESS;

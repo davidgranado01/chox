@@ -29,7 +29,7 @@ var ui = function(){
         return false;
     }
 
-    function onSubmitResponseReceived(responseText, statusText)  {
+    function onSubmitCompleted(responseText, statusText)  {
 
         elementToBlock.unblock();
         response = eval('(' + responseText.trim() + ')');
@@ -58,16 +58,15 @@ var ui = function(){
             }
             else
             {
-                outputDiv.append("<p>There was an error:</p><ul>");
+                outputDiv.append('<p>There was an error:</p><ul class="submit-error">');
 
-                jQuery.each(response.errors, function() {
+                $.each(response.errors, function() {
                     outputDiv.append("<li>");
-                    outputDiv.append(this);
+                    outputDiv.append(this.toString());
                     outputDiv.append("</li>");
                 });
 
                 outputDiv.append("</ul>");
-                outputDiv.addClass("submit-error");
             }
         }
         else
@@ -116,7 +115,7 @@ var ui = function(){
     function ajaxForm(form,successCallBack){
 
         function onAfterSubmit(responseText, statusText){
-            onSubmitResponseReceived(responseText, statusText);
+            onSubmitCompleted(responseText, statusText);
             if(successCallBack){
                 successCallBack(responseText, statusText);
             }

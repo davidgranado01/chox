@@ -24,9 +24,11 @@ public class InvoiceAction extends BaseModelAction implements ModelDriven<Invoic
     }
 
     public void prepare() throws Exception {
-        model = getClaim().getInvoice();
+        Claim claim = getClaim();
+        model = claim.getInvoice();
         if (model == null) {
             model = new Invoice();
+            claim.setInvoice(model);
         }
     }
 
@@ -34,9 +36,6 @@ public class InvoiceAction extends BaseModelAction implements ModelDriven<Invoic
         try {
             boolean isTransient = model.isTransient();
             Claim claim = getClaim();
-
-            claim.setInvoice(model);
-
             this.claimService.updateClaim(claim);
             if (isTransient) {
                 this.getActionResponse().AssignNewIdResult(model.getId());

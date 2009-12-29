@@ -86,7 +86,8 @@ public class doInsurerChorganisationAction extends BaseAction implements ModelDr
             service.triggerStatus(model);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(ex);
+            getActionResponse().AddError(ex.getMessage());
         }
 
         return SUCCESS;
@@ -107,7 +108,8 @@ public class doInsurerChorganisationAction extends BaseAction implements ModelDr
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(ex);
+            getActionResponse().AddError(ex.getMessage());
         }
 
         return SUCCESS;

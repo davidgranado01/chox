@@ -20,9 +20,11 @@ public class CustomerVehicleDamageAction extends BaseModelAction implements Mode
     }
 
     public void prepare() throws Exception {
-        model = getClaim().getCustomer();
+        Claim claim = getClaim();
+        model = claim.getCustomer();
         if (model == null) {
             model = new Customer();
+            claim.setCustomer(model);
         }
     }
 
@@ -30,7 +32,6 @@ public class CustomerVehicleDamageAction extends BaseModelAction implements Mode
         try {
             boolean isTransient = model.isTransient();
             Claim claim = getClaim();
-            claim.setCustomer(model);
             this.claimService.updateClaim(claim);
             if (isTransient) {
                 this.getActionResponse().AssignNewIdResult(model.getId());
