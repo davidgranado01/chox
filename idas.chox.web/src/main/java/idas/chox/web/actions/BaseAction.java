@@ -40,7 +40,7 @@ public class BaseAction extends ActionSupport {
     public boolean getIsInsurer() {
         return getAuthenticatedUser().getIsINS();
     }
-
+    
     public boolean getIsChoxAdmin() {
 
         boolean isChoxAdmin = false;
@@ -52,16 +52,28 @@ public class BaseAction extends ActionSupport {
         return isChoxAdmin;
     }
 
-    public int getOrganisationId() {
+    public int getUserOrganisationType(){
+        int iOrganisationType = 1;
+        if (!getAuthenticatedUser().getIsCHOXAdmin()) {
+            if (getAuthenticatedUser().getIsCHO()) {
+                iOrganisationType = 3;
+            } else if (getAuthenticatedUser().getIsINS()) {
+                iOrganisationType = 2;
+            }
+        }
+        return iOrganisationType;
+    }
+    
+    public int getUserOrganisationId() {
 
-        int orgId = -1;
+        int iOrganisationId = 1;
         if (getAuthenticatedUser().getIsINS()) {
-            orgId = getAuthenticatedUser().getUser().getInsurer().getId();
+            iOrganisationId = getAuthenticatedUser().getUser().getInsurer().getId();
         } else if (getAuthenticatedUser().getIsCHO()) {
-            orgId = getAuthenticatedUser().getUser().getChorganisation().getId();
+            iOrganisationId = getAuthenticatedUser().getUser().getChorganisation().getId();
         }
 
-        return orgId;
+        return iOrganisationId;
 
     }
 

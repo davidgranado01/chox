@@ -23,42 +23,54 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     private UserService userService;
     private String objectId;
     private WebUser model;
-    private String orgTypeId;
-    private String mode;
+    private String organisationTypeId;
     private List insurers;
     private List suppliers;
     private LookupService lookupService;
     private InsurerService insurerService;
+    private Integer insurerId = -1;
+    private Integer supplierId = -1;
     private ChorganisationService chorganisationService;
     private WebUserUserRoleService webUserUserRoleService;
     private ClaimService claimService;
-    private Integer insurerId = -1;
-    private Integer supplierId = -1;
     private PermissionedUser currentUser = getAuthenticatedUser();
-    private boolean isOrgSelectable = false;
-    private String tabIndex;
 
-    ;
-
-    public String getTabIndex() {
-        return tabIndex;
+    public String doRenderActionPage() {
+        return SUCCESS;
     }
 
-    public void setTabIndex(String tabIndex) {
-        this.tabIndex = tabIndex;
-    }
-
-    public boolean isIsOrgSelectable() {
-        if (currentUser.getIsCHOXAdmin()) {
-            isOrgSelectable = true;
+    public void prepare() throws Exception {
+        if (Integer.valueOf(objectId) <= 0) {
+            model = new WebUser();
+            model.setClaimHandler(false);
+        } else {
+            model = userService.getUsers(Integer.valueOf(objectId));
         }
-        return isOrgSelectable;
     }
 
-    public boolean isWorkgroupEnabled() {
+    // <editor-fold defaultstate="collapsed" desc="GET SET">
+    
+    public boolean getIsNew() {
+        if (Integer.valueOf(objectId) <= 0) {
+            return true;
+        }
+        return false;
+    }
 
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public String getOrganisationTypeId() {
+        return organisationTypeId;
+    }
+
+    public void setOrganisationTypeId(String organisationTypeId) {
+        this.organisationTypeId = organisationTypeId;
+    }
+
+    public boolean getIsWorkgroupEnabled() {
         boolean isEnable = false;
-
         if (model.getInsurer() != null) {
             Insurer insurer = insurerService.getObject(model.getInsurer().getId());
             isEnable = insurer.isWorkgroupEnable();
@@ -66,82 +78,8 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         return isEnable;
     }
 
-    public List getInsurers() {
-        insurers = this.lookupService.getInsurers();
-        return insurers;
-    }
-
-    public List getSuppliers() {
-        suppliers = this.lookupService.getAllSuppliers();
-        return suppliers;
-    }
-
-    public String getMode() {
-        return mode;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
-
-    public Integer getInsurerId() {
-
-        if (!currentUser.getIsCHOXAdmin()) {
-            insurerId = currentUser.getUser().getInsurer().getId();
-        }
-
-        return insurerId;
-    }
-
-    public void setInsurerId(Integer insurerId) {
-        this.insurerId = insurerId;
-    }
-
-    public Integer getSupplierId() {
-        if (!currentUser.getIsCHOXAdmin()) {
-            supplierId = currentUser.getUser().getChorganisation().getId();
-        }
-        return supplierId;
-    }
-
-    public void setSupplierId(Integer supplierId) {
-        this.supplierId = supplierId;
-    }
-
-    public String getOrgTypeId() {
-        return orgTypeId;
-    }
-
-    public void setOrgTypeId(String orgTypeId) {
-        this.orgTypeId = orgTypeId;
-    }
-
-    public String getOrgTypeName() {
-
-        String orgTypeName = "N/A";
-
-        if (this.orgTypeId.equalsIgnoreCase("1")) {
-            orgTypeName = "Sherwood Organisation Users";
-        } else if (this.orgTypeId.equalsIgnoreCase("2")) {
-            orgTypeName = "Insurer Organisation Users";
-        } else if (this.orgTypeId.equalsIgnoreCase("3")) {
-            orgTypeName = "Credit Hire Organisation Users";
-        }
-
-        return orgTypeName;
-    }
-
-    public String getOrgName() {
-
-        String sOutput = "N/A";
-
-        if (this.orgTypeId.equalsIgnoreCase("1")) {
-            sOutput = "Sherwood";
-        } else {
-            sOutput = model.getOrganisationName();
-        }
-
-        return sOutput;
+    public int getCurrentUserOrganisationId() {
+        return getUserOrganisationId();
     }
 
     public WebUser getModel() {
@@ -158,10 +96,6 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
     public void setObjectId(String objectId) {
         this.objectId = objectId;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
     public void setLookupService(LookupService lookupService) {
@@ -184,6 +118,132 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         this.chorganisationService = chorganisationService;
     }
 
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="ACTION : ADD OR EDIT USER">
+
+    public String updateModel() throws Exception {
+
+        try {
+
+            model.setLastModifiedBy(this.getAuthenticatedUser().getUser());
+            model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+
+            if (getIsNew()) {
+
+                doAddNewObject();
+
+            } else {
+
+                if (!this.userService.isUserNameExist(model.getUserName(), model.getId())) {
+                    this.userService.updateObject(model);
+                } else {
+                    this.getActionResponse().AddError("User Name is already exist!");
+                }
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            this.getActionResponse().AddError(ex.getMessage());
+        }
+
+        return SUCCESS;
+    }
+
+    private void doAddNewObject() {
+
+        if (!this.userService.isUserNameExist(model.getUserName())) {
+
+            model.setCreatedBy(this.getAuthenticatedUser().getUser());
+            model.setCreatedDate(DateHelper.getCurrentTimeStamp());
+            model.setIsExpired(true);
+
+            if (insurerId > 0) {
+                Insurer selectInsurer = insurerService.getObject(insurerId);
+                model.setInsurer(selectInsurer);
+            }
+
+            if (supplierId > 0) {
+                Chorganisation selectChorganisation = chorganisationService.getObject(supplierId);
+                model.setChorganisation(selectChorganisation);
+            }
+
+            encodePassword();
+
+            if (this.userService.updateObject(model)) {
+
+                if (webUserUserRoleService.addBaseNewUserRole(model.getId(), Integer.valueOf(this.organisationTypeId))) {
+                    this.getActionResponse().AssignNewIdResult(model.getId());
+                }
+
+            } else {
+                this.getActionResponse().AddError("Please try again!");
+            }
+
+        } else {
+            this.getActionResponse().AddError("User Name is already exist!!");
+        }
+
+    }
+
+    private void encodePassword() {
+        PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
+        model.setPassword(passwordEncoder.encodePassword(model.getPassword(), null));
+    }
+
+    public List getInsurers() {
+        insurers = this.lookupService.getInsurers();
+        return insurers;
+    }
+
+    public List getSuppliers() {
+        suppliers = this.lookupService.getAllSuppliers();
+        return suppliers;
+    }
+
+    public Integer getInsurerId() {
+
+        if (!currentUser.getIsCHOXAdmin()) {
+            insurerId = currentUser.getUser().getInsurer().getId();
+        }
+        return insurerId;
+    }
+
+    public void setInsurerId(Integer insurerId) {
+        this.insurerId = insurerId;
+    }
+
+    public Integer getSupplierId() {
+        if (!currentUser.getIsCHOXAdmin()) {
+            supplierId = currentUser.getUser().getChorganisation().getId();
+        }
+        return supplierId;
+    }
+
+    public void setSupplierId(Integer supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="ACTION : UPDATE USER PASSWORD">
+    public String updateUserPassword() throws Exception {
+
+        try {
+            model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+            model.setLastModifiedBy(this.getAuthenticatedUser().getUser());
+            encodePassword();
+            this.userService.updateObject(model);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            this.getActionResponse().AddError(ex.getMessage());
+        }
+        return SUCCESS;
+    }
+
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="ACTION : GRID VIEW - UPDATE STATUS & PASSWORD">
     public String triggerStatus() throws Exception {
 
         try {
@@ -219,113 +279,5 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         return SUCCESS;
 
     }
-
-    public String doRenderActionPage() {
-        return SUCCESS;
-    }
-
-    public String updateModel() throws Exception {
-
-        try {
-
-            model.setLastModifiedBy(this.getAuthenticatedUser().getUser());
-            model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
-            if (mode.equalsIgnoreCase("New")) {
-
-                doAddNewObject();
-
-            } else {
-
-                if (!this.userService.isUserNameExist(model.getUserName(), model.getId())) {
-                    this.userService.updateObject(model);
-                    this.getActionResponse().AssignMessageResult("Your changes have been saved.");
-                } else {
-                    this.getActionResponse().AddError("User Name is already exist!");
-                }
-
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            this.getActionResponse().AddError(ex.getMessage());
-        }
-
-        return SUCCESS;
-    }
-
-    private void encodePassword() {
-        PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
-        model.setPassword(passwordEncoder.encodePassword(model.getPassword(), null));
-    }
-
-    public String updateUserPassword() throws Exception {
-
-        try {
-            model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-            model.setLastModifiedBy(this.getAuthenticatedUser().getUser());
-            encodePassword();
-            this.userService.updateObject(model);
-            this.getActionResponse().AssignMessageResult("Your changes have been saved.");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            this.getActionResponse().AddError(ex.getMessage());
-        }
-        return SUCCESS;
-    }
-
-    private boolean doAddNewObject() {
-
-        boolean bFlag = false;
-
-        if (!this.userService.isUserNameExist(model.getUserName())) {
-
-            model.setCreatedBy(this.getAuthenticatedUser().getUser());
-            model.setCreatedDate(DateHelper.getCurrentTimeStamp());
-            model.setIsExpired(true);
-            
-            if (insurerId > 0) {
-                Insurer selectInsurer = insurerService.getObject(insurerId);
-                model.setInsurer(selectInsurer);
-            }
-
-            if (supplierId > 0) {
-                Chorganisation selectChorganisation = chorganisationService.getObject(supplierId);
-                model.setChorganisation(selectChorganisation);
-            }
-
-            encodePassword();
-
-            if (this.userService.updateObject(model)) {
-
-                if (webUserUserRoleService.addBaseNewUserRole(model.getId(), Integer.valueOf(this.orgTypeId))) {
-                    bFlag = true;
-                    this.getActionResponse().AssignNewIdResult(model.getId());
-                }
-
-            } else {
-                // actionResult = "Please try again!";
-                this.getActionResponse().AddError("Please try again!");
-            }
-
-        } else {
-            // actionResult = "Email Address already exist!";
-            this.getActionResponse().AddError("User Name is already exist!!");
-        }
-
-        return bFlag;
-    }
-
-    public void prepare() throws Exception {
-
-        if (Integer.valueOf(objectId) <= 0) {
-            model = new WebUser();
-            model.setClaimHandler(false);
-            mode = "New";
-        } else {
-            model = userService.getUsers(Integer.valueOf(objectId));
-            mode = "Edit";
-
-        }
-    }
+    // </editor-fold>
 }

@@ -2,8 +2,8 @@
 
 <p class="std-label">User Roles: </p>
 <s:select
-        id="userrolesId"                                 
-        name="userrolesId" 
+        id="SelectedUserrolesId"
+        name="SelectedUserrolesId"
         list="userroleList" 
         listKey="id" 
         listValue="name" 

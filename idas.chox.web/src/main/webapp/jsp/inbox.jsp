@@ -19,7 +19,6 @@
             root: 'results',
             idProperty: 'threadid',
             remoteSort: true,
-
             fields:[
                 {name:'id'},
                 {name:'status'},

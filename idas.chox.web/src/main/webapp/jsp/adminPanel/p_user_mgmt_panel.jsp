@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
@@ -8,25 +7,18 @@
     var gridviewDataStore;
     var gridviewGrid;
     var gridviewData;
-    var recordPerPage = 20;
 
-    var userRoleId = -1;
-    var orgTypeId = <s:property value="OrgTypeId" />;
-    var organisationId = <s:property value="OrgId" />;
-    var isChoxAdmin = <s:property value="IsChoxAdmin" />;
+    var SelectedUserRoleId = -1;
+    var SelectedOrganisationTypeId = -1;
+    var SelectedOrganisationId = -1;
 
     Ext.onReady(function(){
 
-        if(!isChoxAdmin){
-            $("#organisationId").val(organisationId);
-            $("#orgTypeId").val(orgTypeId);
-        }
-        
         gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
             fields:
-            [
+                [
                 {name:'id'},
                 {name:'userName'},
                 {name:'email'},
@@ -43,41 +35,51 @@
 
         gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getUser.action',method:'GET'}),
+            ({url: '<%= request.getContextPath()%>/prv/p/getUsers.action',method:'POST'}),
             reader:gridviewJsonReader      
         });
        
         gridviewGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:recordOnclick },
             store: gridviewData,
-            loadMask: true,
+            enableHdMenu:false,
+            layout:'fit',
+            viewConfig:{forceFit:true},
+            title:'User Management',
             columns: [
                 {header: "User Name", width: 100, dataIndex: 'userName', sortable: true, resizable: true, renderer:function(value,p,r){
-                    return "<a href='#' class='highlightItem'>" + value + "</a>"}},
+                        return "<a href='#' class='highlightItem'>" + value + "</a>"}},
                 {header: "Name", width: 90, dataIndex: 'name', sortable: true, resizable: true},
                 {header: "Email", width: 120, dataIndex: 'email', sortable: true, resizable: true},
                 {header: "Organisation", width: 80, dataIndex: 'orgName', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
-                    return "<a href='#' class='highlightItem'>" + value + "</a>"}},
+                        return "<a href='#' class='highlightItem'>" + value + "</a>"}},
                 {header: "Role", width: 150, dataIndex: 'role', sortable: true, resizable: true},
                 {header: "Has Password Expired?", width: 140, dataIndex: 'isExpired', sortable: false, resizable: true,renderer:function(value,p,r){
-                    return "<a href='#' class='highlightItem'>" + value + "</a>"}}
+                        return "<a href='#' class='highlightItem'>" + value + "</a>"}}
             ],
-            width: 720,
-            height: 510
+            height:565,
+            width: 750
         });
 
-        gridviewGrid.render('gridviewGridHolderId');
-            
-        pageRefresh();
+        gridviewGrid.render('gridviewGridHolderId');        
+        onPageLoad();
 
     }); 
 
-    function pageRefresh(){
-        getParameters();
+    function onPageLoad(){
+
+        SelectedOrganisationTypeId = $("#CurrentUserOrganisationType").val();
+        $("#SelectedOrganisationTypeId").val(SelectedOrganisationTypeId);
+        
+        if($("#CurrentUserOrganisationType").val()>1){
+            $("#SelectedOrganisationTypeId").attr("disabled", true);
+            SelectedOrganisationId = $("#CurrentUserOrganisationId").val();
+            
+        }
+
         showOrganisationDropDownDiv();
-        showUserroleDropDown();
-        loadGridViewList();
+        
     }
 
     function recordOnclick(grid, rowIndex, columnIndex, e){
@@ -86,177 +88,152 @@
         
         if(columnIndex==0){
             loadSelectedRecord(grid, rowIndex, columnIndex, e);
-        }else if(columnIndex==3){
+        }else if(columnIndex==4){
             triggerStatusUpdateRecord(gridView);
-        }
-        else if(columnIndex==5){
+        }else if(columnIndex==6){
             triggerIsExpiredUpdateRecord(gridView);
         }
+        
     }
 
     function getParameters(){
-        
-        orgTypeId = $("#orgTypeId").val();
-        userRoleId = $("#userrolesId").val();
-        
-        if(isChoxAdmin){
-            organisationId=$("#organisationId").val();
-        }
-        
+        SelectedOrganisationTypeId = $("#SelectedOrganisationTypeId").val();
+        SelectedOrganisationId = $("#SelectedOrganisationId").val();
+        SelectedUserRoleId = $("#SelectedUserrolesId").val();
     }
-    
+
+    function loadGridViewList(){
+
+        getParameters();
+
+        gridviewData.load({
+            params:
+                {
+                organisationTypeId:SelectedOrganisationTypeId,
+                organisationId:SelectedOrganisationId,
+                userRoleId:SelectedUserRoleId
+            }
+        });
+    }
+
     function loadSelectedRecord(grid, rowIndex, columnIndex, e){
 
         getParameters();
         
         var gridView = gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
-        var sLocaltion = "#admin_param_panel";
-        var sAction = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
-        var sparameters = "mode=Edit&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId;
-        doSectionLoad(sLocaltion, sAction, sparameters);
+
+        var target = "#admin_param_panel";
+        var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
+        var param = {"objectId":gridViewId,"organisationTypeId":SelectedOrganisationTypeId};
+        ajax.loadHtml(url,param,function(data){
+            $(target).html(data);
+        });
         
     }
 
     function createNewRecord(){
         
         getParameters();
-        
         var gridViewId = -1;
-        var sLocaltion = "#admin_param_panel";
-        var sAction = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
-        var sparameters = "mode=New&objectId=" + gridViewId + "&orgTypeId=" + orgTypeId;
-        doSectionLoad(sLocaltion, sAction, sparameters);
+
+        var target = "#admin_param_panel";
+        var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
+        var param = {"objectId":gridViewId, "organisationTypeId":SelectedOrganisationTypeId};
+        ajax.loadHtml(url,param,function(data){
+            $(target).html(data);
+        });
+        
+    }
+   
+    function doOrganisationTypeChange(){
+        showOrganisationDropDownDiv();
+    }
+    
+    function showOrganisationDropDownDiv(){
+       
+        SelectedOrganisationTypeId = $("#SelectedOrganisationTypeId").val();
+        var target = "#organisationDropDownDiv";
+        var url = "<%= request.getContextPath()%>/prv/p/OrganisationDropDownAction.action";
+        var param = {"SelectedOrganisationTypeId":SelectedOrganisationTypeId};
+       
+        ajax.loadHtml(url,param,function(data){
+            $(target).html(data);
+            if($("#CurrentUserOrganisationId").val()>1){
+                SelectedOrganisationId = $("#CurrentUserOrganisationId").val();
+                $("#SelectedOrganisationId").val(SelectedOrganisationId);
+                $("#SelectedOrganisationId").attr("disabled", true);
+            }
+            showUserroleDropDown();
+        });
     }
     
     function showUserroleDropDown() {
-        $("#userroleDropDownDiv").load("<%= request.getContextPath()%>/prv/p/UserroleDropDownAction.action?orgTypeId=" + orgTypeId + uniqeToken());
-    }
 
-    function showOrganisationDropDownDiv(){
-        $("#organisationDropDownDiv").load("<%= request.getContextPath()%>/prv/p/OrganisationDropDownAction.action?orgTypeId=" + orgTypeId + uniqeToken(), function() {
-            if(!isChoxAdmin){
-                $("#orgTypeId").attr("disabled", true);
-                $("#organisationId").attr("disabled", true);
-            }
-        });
-    }
-    
-    function loadGridViewList(){
-        
-        getParameters();
+        SelectedOrganisationTypeId = $("#SelectedOrganisationTypeId").val();
 
-        gridviewData.load(
-        {
-            params:
-            {
-                orgTypeId:orgTypeId,
-                orgId:organisationId,
-                userRoleId:userRoleId
-            }
+        var target = "#userroleDropDownDiv";
+        var url = "<%= request.getContextPath()%>/prv/p/WebUserroleDropDownAction.action";
+        var param = {"SelectedOrganisationTypeId":SelectedOrganisationTypeId};
+
+        ajax.loadHtml(url,param,function(data){
+            $(target).html(data);
+            loadGridViewList();
         });
-    }
-    
-    function doOrganisationTypeChange(){
-        pageRefresh();
-    }
-    
-    function doDropDownOnChange(){
-        loadGridViewList();
+
     }
 
     function triggerStatusUpdateRecord(gridView){
             
         var aletMsg = "Are you sure you want to inactivate this user?";
-
         if(!gridView.get("status")){
             aletMsg = "Are you sure you want to activate this user?";
         }
 
-        var deleteAtt = confirm(aletMsg);
-
-        if(deleteAtt){
-
+        if(confirm(aletMsg)){
             var gridViewId = gridView.get("id");
-
-            $.ajax({
-                url: "<%= request.getContextPath()%>/prv/p/doTriggerUserAccountStatus.action?objectId="+gridViewId+uniqeToken(),
-                success: onUpdateUserSubmitResult
-            });
+            var url = "<%= request.getContextPath()%>/prv/p/doTriggerUserAccountStatus.action";
+            var param = {"objectId":gridViewId};
+            ajax.loadHtml(url,param,loadGridViewList);
         }
-        
     }
     
     function triggerIsExpiredUpdateRecord(gridView){
             
-            var aletMsg = "Are you sure you want to cancel the password expired status?";
-            if(gridView.get("isExpired") == "No"){
-                aletMsg = "Are you sure you want to mark this user's password as expired?";
-            }
-            
-            var deleteAtt = confirm(aletMsg);
-            
-            if(deleteAtt){
-                var gridViewId = gridView.get("id");
-                
-                 $.ajax({
-                   url: "<%= request.getContextPath()%>/prv/p/doTriggerPasswordExpiredStatus.action?objectId="+gridViewId+uniqeToken(),
-                   success: loadGridViewList
-                 });
-            }
+        var aletMsg = "Are you sure you want to cancel the password expired status?";
+        if(gridView.get("isExpired") == "No"){
+            aletMsg = "Are you sure you want to mark this user's password as expired?";
+        }
+
+        if(confirm(aletMsg)){
+            var gridViewId = gridView.get("id");
+            var url = "<%= request.getContextPath()%>/prv/p/doTriggerPasswordExpiredStatus.action";
+            var param = {"objectId":gridViewId};
+            ajax.loadHtml(url,param,loadGridViewList);
+        }
     }
 
-    function onUpdateUserSubmitResult(responseText, statusText){
-
-        var response = eval('(' + responseText.trim() + ')');
-
-        if(response)
-        {
-            if(response.isValid){
-
-                if(response.resultType && response.resultType == 'Message')
-                {
-                    propmtMsg("", response.result)
-                }
-
-            }
-        }
-        else
-        {
-            propmtErrorMsg("Unknown Error Encountered, please try again.");
-        }
-        
-        loadGridViewList();
-        
-    }
-    
-
-   
 </script>
-    
+
 <div id="chox-admin-holder">
-    
-    <fieldset class="x-fieldset">
-    <legend>User Management</legend>
-        
-    <input name="orgId" id="orgId" type="hidden" value="<s:property value="orgId" />">
+
+    <input name="CurrentUserOrganisationType" id="CurrentUserOrganisationType" type="hidden" value="<s:property value="CurrentUserOrganisationType" />">
+    <input name="CurrentUserOrganisationId" id="CurrentUserOrganisationId" type="hidden" value="<s:property value="CurrentUserOrganisationId" />">
 
     <div class="admin-gridview-header">
-        <table>
+        <table cellpadding="0" cellspacing="0" border="0">
             <tr>
                 <td id="label">
-
                     <div class="label-block">
-                    <p class="std-label">Organisation Type:</p>
-                    <select id="orgTypeId" onchange="javascript:doOrganisationTypeChange()">
-                        <option value="1">Sherwood Organisation</option>
-                        <option value="2">Insurer Organisation</option>
-                        <option value="3">Credit Hire Organisation</option>
-                    </select>
+                        <p class="std-label">Organisation Type:</p>
+                        <select id="SelectedOrganisationTypeId" onchange="javascript:doOrganisationTypeChange()">
+                            <option value="1">Sherwood Organisation</option>
+                            <option value="2">Insurer Organisation</option>
+                            <option value="3">Credit Hire Organisation</option>
+                        </select>
                     </div>
                     <div id="organisationDropDownDiv" class="label-block"></div>
                     <div id="userroleDropDownDiv" class="label-block"></div>
-
                 </td>
                 <td id="buttons">
                     <button type="button" onclick="javascript:createNewRecord();" style="white-space: nowrap;">Add New User</button>
@@ -266,7 +243,5 @@
     </div>
 
     <div id="gridviewGridHolderId"></div>
-            
-    </fieldset>
-    
+
 </div>

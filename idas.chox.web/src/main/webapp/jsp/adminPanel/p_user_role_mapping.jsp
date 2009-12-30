@@ -13,11 +13,11 @@
 
     Ext.onReady(function(){
         
-       gridviewJsonReader = new Ext.data.JsonReader({
+        gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
             fields:
-            [
+                [
                 {name:'id'},
                 {name:'webUserId'},
                 {name:'webUserName'},
@@ -31,7 +31,7 @@
 
         gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getUserole.action?orgTypeId='+<s:property value="orgTypeId" />+'&webUserId='+<s:property value="id" />+uniqeToken(), method:'POST'}),
+            ({url: '<%= request.getContextPath()%>/prv/p/getUserole.action?orgTypeId='+<s:property value="orgTypeId" />, method:'POST'}),
             reader:gridviewJsonReader      
         });
         
@@ -44,7 +44,7 @@
                 {header: "Created By", width: 90, dataIndex: 'createdBy', sortable: false, resizable: true},
                 {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: false, resizable: true},
                 {header: "", width: 100, dataIndex: 'Remove', sortable: false, resizable: true, renderer:function(value,p,r){
-                    return "<a href='#' class='highlightItem'>Remove</a>"}}
+                        return "<a href='#' class='highlightItem'>Remove</a>"}}
             ],
             renderTo:'gridviewGrid',
             width:700,
@@ -69,7 +69,7 @@
         gridviewData.load(
         {
             params:
-            {
+                {
                 webUserId:<s:property value="id" />
             }
         });
@@ -111,10 +111,10 @@
 
     function doDeleteUserRoleMapping(gridViewId, webUserId){
     
-         $.ajax({
-           url: "<%= request.getContextPath()%>/prv/p/removeRoleMapping.action?webUserUserRoleId="+gridViewId+"&webUserId="+webUserId+uniqeToken(),
-           success: onUserroleMappingSubmitResult
-         });
+        $.ajax({
+            url: "<%= request.getContextPath()%>/prv/p/removeRoleMapping.action?webUserUserRoleId="+gridViewId+"&webUserId="+webUserId+uniqeToken(),
+            success: onUserroleMappingSubmitResult
+        });
 
     }
     
@@ -128,8 +128,8 @@
             $("#CDUserroleMessageBox").html("");
             
             $.ajax({
-               url: "<%= request.getContextPath()%>/prv/p/addNewRoleMapping.action?webUserRoleId="+webUserRoleId+"&webUserId="+webUserId+uniqeToken(),
-               success: onUserroleMappingSubmitResult
+                url: "<%= request.getContextPath()%>/prv/p/addNewRoleMapping.action?webUserRoleId="+webUserRoleId+"&webUserId="+webUserId+uniqeToken(),
+                success: onUserroleMappingSubmitResult
             });
             
         }else{
@@ -162,13 +162,13 @@
 </script>
 
 <div class="status-info">
-Assign one or more user roles against this user by using the 'Add New Role' button below. The assignment of roles will dictate which work queues the user will see as well the user's access/permission rights.
+    Assign one or more user roles against this user by using the 'Add New Role' button below. The assignment of roles will dictate which work queues the user will see as well the user's access/permission rights.
 </div>    
-                
+
 <div>
-    
+
     <input id="webUserId" name ="webUserId" type="hidden" value="<s:property value="id" />">
-    
+
     <div id="organisationGird">
         <div class="gridViewHeader">
             <table width="100%">
@@ -194,7 +194,7 @@ Assign one or more user roles against this user by using the 'Add New Role' butt
                 <tr><td><div id="CDUserroleMessageBox" class="submit-error"></div></td></tr>
             </table>
         </div>
-        
+
         <div id="gridviewGrid"></div>
     </div>
 

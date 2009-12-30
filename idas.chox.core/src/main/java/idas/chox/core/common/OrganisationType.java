@@ -6,4 +6,17 @@ public class OrganisationType {
     public static final String CHO = "CreditHire";
     public static final String INS = "Insurer";
 
+    public static String getOrganisationType(int iOrganisationTypeCode){
+
+        if (iOrganisationTypeCode == 1) {
+            return OrganisationType.CHOX;
+        } else if (iOrganisationTypeCode == 2) {
+            return OrganisationType.INS;
+        } else if (iOrganisationTypeCode == 3) {
+            return OrganisationType.CHO;
+        }
+
+        return "";
+    }
+    
 }

@@ -261,7 +261,6 @@ public class WebUser implements Serializable {
     public String getOrganisationType() {
 
         String orgType = OrganisationType.CHO;
-        
         if (RoleHelper.isCheckSelectedRoleExist(this.roles, WebUserRole.ROLE_CHOX)) {
             orgType = OrganisationType.CHOX;
         } else if (RoleHelper.isCheckSelectedRoleExist(this.roles, WebUserRole.ROLE_CHO)) {

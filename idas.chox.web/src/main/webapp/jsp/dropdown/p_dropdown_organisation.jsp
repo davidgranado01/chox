@@ -2,8 +2,8 @@
 
 <p class="std-label">Company Name: </p>
 <s:select
-        id="organisationId"
-        name="organisationId"
+        id="SelectedOrganisationId"
+        name="SelectedOrganisationId"
         list="organisationList"
         listKey="id"
         listValue="name"

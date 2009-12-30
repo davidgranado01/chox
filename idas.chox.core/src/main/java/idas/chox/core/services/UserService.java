@@ -39,7 +39,7 @@ public interface UserService {
 
     public List<WebUser> getClaimHanldersByInsurer(int insurerId, boolean workgroupEnable);
 
-    public List<WebUser> getUsers(int orgId, String orgType);
+    public List<WebUser> getUsers(int organisationId, int organisationTypeId, int userRoleId);
 
     public WebUser getUsers(int id);
 

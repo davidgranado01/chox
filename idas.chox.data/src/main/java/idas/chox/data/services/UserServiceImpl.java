@@ -136,7 +136,6 @@ public class UserServiceImpl extends DataService implements UserService {
         try {
 
             DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
-            //criteria.addOrder(Order.asc("email"));
             criteria.addOrder(Order.asc("userName"));
             users = findByCriteria(criteria);
 
@@ -263,30 +262,27 @@ public class UserServiceImpl extends DataService implements UserService {
         return claimHandlers;
     }
 
-    public List<WebUser> getUsers(int orgId, String orgType) {
+    public List<WebUser> getUsers(int organisationId, int organisationTypeId, int userRoleId) {
+        
         List<WebUser> users = new ArrayList<WebUser>();
 
         try {
 
             DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
-
-            if (orgId > 0) {
-
-                if (orgType.equalsIgnoreCase(OrganisationType.INS)) {
-                    criteria.add(Restrictions.eq("insurer.id", orgId));
-
-                } else if (orgType.equalsIgnoreCase(OrganisationType.CHO)) {
-                    criteria.add(Restrictions.eq("chorganisation.id", orgId));
+            
+            if (organisationTypeId > 0 && organisationId > 0) {
+                if (organisationTypeId==2) {
+                    criteria.add(Restrictions.eq("insurer.id", organisationId));
+                } else if (organisationTypeId==3) {
+                    criteria.add(Restrictions.eq("chorganisation.id", organisationId));
                 }
-
             }
 
-            criteria.addOrder(Order.asc("email"));
-
-            List<WebUser> userData = findByCriteria(criteria);
-
+            criteria.addOrder(Order.asc("userName"));
+            
+            List<WebUser> userData = findByCriteria(criteria);                        
             for (WebUser h : userData) {
-                if (h.getOrganisationType().equalsIgnoreCase(orgType)) {
+                if (h.getOrganisationType().equalsIgnoreCase(OrganisationType.getOrganisationType(organisationTypeId))) {
                     users.add(h);
                 }
             }

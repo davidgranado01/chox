@@ -44,7 +44,7 @@ div#tabPanel{
 }
 
 a{
-    
+
     color: #15428b;
     font: 12px tahoma,arial,verdana,sans-serif;
 }
@@ -85,7 +85,7 @@ div#chox-menu
     padding-right:5px;
     margin-bottom: 10px;
     margin-top:10px;
-    
+
 }
 .tip
 {
@@ -96,12 +96,10 @@ div#chox-menu
 {
 }
 
-
 .chox-form-container
 {
     background: #dfe8f6;
     padding: 6px;
-    padding-left: 11px;
 }
 fieldset div
 {
@@ -243,7 +241,7 @@ fieldset div
 
 .chox-form-item .chox-form-std-label
 {
-    
+
     display: block;
     float: left;
     margin-right: 10px;
@@ -254,7 +252,7 @@ fieldset div
 
 .chox-form-item .chox-form-std-label2
 {
-    
+
     display: block;
     float: left;
     margin-right: 10px;
@@ -266,7 +264,7 @@ fieldset div
 
 .chox-form-item .chox-form-std-label-longer
 {
-    
+
     display: block;
     float: left;
     margin-right: 10px;
@@ -392,12 +390,12 @@ div.excel-export
 
 table.searchForm
 {
-    
+
     background: #dfe8f6; 
     width:99.6%;
     border-collapse:collapse;
     margin:2px;
-    
+
 }
 
 table.searchForm td
@@ -408,12 +406,12 @@ table.searchForm td
     width:16%;
     border:1px #ccc solid;
     vertical-align:top;
-    
+
 }
 
 table.searchForm label
 {
-    
+
 }
 
 div.buttonPanel
@@ -421,7 +419,7 @@ div.buttonPanel
     background: #dfe8f6; 
     text-align:center;
     padding:5px;
-    
+
 }
 
 ul.inbox{
@@ -430,7 +428,7 @@ ul.inbox{
 
 ul.inbox li{
     margin:5px;
-    
+
 }
 
 label.std-label-ro{
@@ -441,7 +439,7 @@ label.std-label-ro{
 
 label.std-data-ro
 {
-    
+
     font-weight:bold;
 }
 
@@ -499,7 +497,7 @@ div.status-info-submit
 
 div.status-control-set
 {
-    
+
     margin-top:5px;
 }
 div.status-control-set label
@@ -553,14 +551,6 @@ label.error {
     font-size:11px;
     display:block;
     line-height:18px;
-}
-
-div.errorBox
-{
-    color: red;
-    padding-left:20px;
-    text-align:center;
-    font-family: tahoma,arial,verdana,sans-serif;
 }
 
 div.submit-error
@@ -695,40 +685,40 @@ img.tip-target
 }
 
 #top-menu{	
-  margin: 0;
-  padding: 0;
-  z-index:30;
-  float: right;
-  font-family: tahoma,arial,verdana,sans-serif;
-  font-size: 12px;
-  color:#1641a0;
-  white-space: nowrap;
-  text-decoration: none;
+    margin: 0;
+    padding: 0;
+    z-index:30;
+    float: right;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px;
+    color:#1641a0;
+    white-space: nowrap;
+    text-decoration: none;
 }
 
 #top-menu li
 {	
-  margin: 0;
-  padding: 0;    
-  list-style: none;
-  float: left;
-  font:inherit;
-  z-index:99;
-  color:inherit;
-  white-space: nowrap;
-  text-decoration: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    float: left;
+    font:inherit;
+    z-index:99;
+    color:inherit;
+    white-space: nowrap;
+    text-decoration: none;
 }
 
 #top-menu li a
 {	
-  font:inherit;
-  display: block;
-  text-align: center;
-  z-index:99;
-  color:inherit;
-  white-space: nowrap;
-  text-decoration: none;
-  
+    font:inherit;
+    display: block;
+    text-align: center;
+    z-index:99;
+    color:inherit;
+    white-space: nowrap;
+    text-decoration: none;
+
 }
 
 #top-menu li a:hover
@@ -770,13 +760,13 @@ img.tip-target
 }
 
 #onlineMsgAck{
-  font-family: tahoma,arial,verdana,sans-serif;
-  font-size: 12px;
-  font-weight:bold;
-  color:#084B8A;
-  background: #FFFFFF; 
-  display: block;
-  padding: 10px;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px;
+    font-weight:bold;
+    color:#084B8A;
+    background: #FFFFFF;
+    display: block;
+    padding: 10px;
 }
 
 .gridViewHeader{  
@@ -792,15 +782,15 @@ img.tip-target
 .highlightItem{
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 10px;   
-    font-weight:bold;           
+    font-weight:bold;
 }
 
 .admin-tab-css{
-    padding-top:6px;
-    width:740px;
     background:#dfe8f6;
     background-color:#dfe8f6;
-    overflow:hidden;
+    width:750px;
+    border:solid thin Green;
+    height:800px;
 }
 
 .sub-admin-tab-css{
@@ -957,15 +947,15 @@ span.input-radio{
 }
 
 .remark-indicator{
-        font-size:0.7em;
-        font-family: tahoma,arial,verdana,sans-serif;
-        color:#585858;
-        font-weight:bold;
+    font-size:0.7em;
+    font-family: tahoma,arial,verdana,sans-serif;
+    color:#585858;
+    font-weight:bold;
 }
 
 .admin-tab-grid-view{
-        overflow:auto;
-        height:570px;
+    overflow:auto;
+    height:570px;
 }
 
 
@@ -1051,8 +1041,8 @@ ul.report-header-list li{
 }
 
 li.report-type-header{
-  font-weight:bold;
-  padding-top:10px;
+    font-weight:bold;
+    padding-top:10px;
 }
 
 /******* REPORT - END ************/
@@ -1072,11 +1062,29 @@ table.chox-admin tr{
 
 table.chox-admin tr td.chox-admin-left-col{
     width: 180px;
-    padding-right:5px;
+    min-height:660px;
+}
+
+div#chox-admin-col-div{
+    border:1px solid #B5B8C8;
+    display:block;
+    padding:10px;
+    height:660px;
+}
+
+div#chox-admin-col-div label#header-title{
+    color:#15428B;
+    font-family:tahoma,arial,helvetica,sans-serif;
+    font-size:12px;
+    font-weight:bold;
+    padding-bottom:10px;
 }
 
 table.chox-admin tr td.chox-admin-right-col{
     width: 750px;
+    min-height:660px;
+    margin:0;
+    padding:0;
 }
 
 table.chox-admin tr td fieldset{
@@ -1090,11 +1098,12 @@ ul.admin-header-list li{
 
 div.admin-gridview-header{
     padding-bottom:5px;
-    width:720px;
+    width:100%;
 }
 
 div.admin-gridview-header table{
     width:100%;
+    border-spacing:0;
 }
 
 div.admin-gridview-header table tr td#label{
@@ -1110,7 +1119,9 @@ div.admin-gridview-header table tr td#buttons{
 }
 
 div#chox-admin-holder{
-    width:740px;
+    width: 750px;
+    padding:0 0 0 5px;
+    border:thin solid Red;
 }
 
 /******* ADMIN - END ************/

@@ -7,14 +7,14 @@ import java.util.List;
 public class OrganisationDropDownAction extends BaseAction {
 
     private List organisationList = null;
-    private String orgTypeId;
+    private String SelectedOrganisationTypeId;
     private LookupService service;
 
     @Override
     public String execute() throws Exception {
 
-        if (getOrgTypeId() != null && !getOrgTypeId().equals("")) {
-            getOrganisationList(getOrgTypeId());
+        if (getSelectedOrganisationTypeId() != null && !getSelectedOrganisationTypeId().equals("")) {
+            getOrganisationList(getSelectedOrganisationTypeId());
             return SUCCESS;
         } else {
             return SUCCESS;
@@ -36,12 +36,12 @@ public class OrganisationDropDownAction extends BaseAction {
 
     }
 
-    public String getOrgTypeId() {
-        return orgTypeId;
+    public String getSelectedOrganisationTypeId() {
+        return SelectedOrganisationTypeId;
     }
 
-    public void setOrgTypeId(String orgTypeId) {
-        this.orgTypeId = orgTypeId;
+    public void setSelectedOrganisationTypeId(String SelectedOrganisationTypeId) {
+        this.SelectedOrganisationTypeId = SelectedOrganisationTypeId;
     }
 
     public List getOrganisationList() {

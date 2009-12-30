@@ -39,41 +39,14 @@ public class AdminAction extends BaseAction {
         this.actionResult = actionResult;
     }
 
-    public int getOrgTypeId() {
-
-        int OrgTypeId = 1;
-        if (!currentUser.getIsCHOXAdmin()) {
-            if (currentUser.getIsCHO()) {
-                OrgTypeId = 3;
-            } else if (currentUser.getIsINS()) {
-                OrgTypeId = 2;
-            }
-        }
-
-        return OrgTypeId;
+    public int getCurrentUserOrganisationType(){
+        return getUserOrganisationType();
     }
 
-    public int getOrgId() {
-        return getOrganisationId();
+    public int getCurrentUserOrganisationId() {
+        return getUserOrganisationId();
     }
 
-    public WebUser getCurrentUser() {
-        return currentUser.getUser();
-    }
-
-    public boolean isChoxAdmin() {
-        return getIsChoxAdmin();
-    }
-
-    private int selectOrgId = -1;
-
-    public void setSelectOrgId(int selectOrgId) {
-        this.selectOrgId = selectOrgId;
-    }
-
-    public int getSelectOrgId() {
-        return selectOrgId;
-    }
 
     /*
     private int selectOrgTypeId = -1;
@@ -100,13 +73,10 @@ public class AdminAction extends BaseAction {
 
     }
 
-
-
     public void setSelectOrgTypeId(int selectOrgTypeId) {
     this.selectOrgTypeId = selectOrgTypeId;
     }
-     */
-    /*
+
     public String getGridViewType() {
     return gridViewType;
     }

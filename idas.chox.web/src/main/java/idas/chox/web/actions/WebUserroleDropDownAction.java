@@ -6,7 +6,7 @@ import java.util.List;
 
 public class WebUserroleDropDownAction extends BaseAction {
 
-    private String orgTypeId;
+    private String SelectedOrganisationTypeId;
     private List userroleList = null;
     private WebUserUserRoleService service;
 
@@ -17,8 +17,8 @@ public class WebUserroleDropDownAction extends BaseAction {
     @Override
     public String execute() throws Exception {
 
-        if (getOrgTypeId() != null && !getOrgTypeId().equals("")) {
-            getUserroleList(getOrgTypeId());
+        if (getSelectedOrganisationTypeId() != null && !getSelectedOrganisationTypeId().equals("")) {
+            getUserroleList(getSelectedOrganisationTypeId());
             return SUCCESS;
         } else {
             return SUCCESS;
@@ -30,12 +30,12 @@ public class WebUserroleDropDownAction extends BaseAction {
         this.userroleList = service.getWebUserrolesLookupItem(Integer.valueOf(id));
     }
 
-    public String getOrgTypeId() {
-        return orgTypeId;
+    public String getSelectedOrganisationTypeId() {
+        return SelectedOrganisationTypeId;
     }
 
-    public void setOrgTypeId(String orgTypeId) {
-        this.orgTypeId = orgTypeId;
+    public void setSelectedOrganisationTypeId(String SelectedOrganisationTypeId) {
+        this.SelectedOrganisationTypeId = SelectedOrganisationTypeId;
     }
 
     public List getUserroleList() {

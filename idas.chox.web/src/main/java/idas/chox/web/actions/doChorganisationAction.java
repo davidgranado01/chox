@@ -10,23 +10,14 @@ public class doChorganisationAction extends BaseAction implements ModelDriven<Ch
     private ChorganisationService service;
     private String objectId;
     private Chorganisation model;
-    private String actionResult;
-    private boolean isNew;
 
-    public boolean isIsNew() {
-        return isNew;
-    }
-
-    public void setIsNew(boolean isNew) {
-        this.isNew = isNew;
-    }
-
-    public String getActionResult() {
-        return actionResult;
-    }
-
-    public void setActionResult(String actionResult) {
-        this.actionResult = actionResult;
+    // <editor-fold defaultstate="collapsed" desc="GET SET">
+    
+    public boolean getIsNew() {
+        if (Integer.valueOf(objectId) <= 0) {
+            return true;
+        }
+        return false;
     }
 
     public Chorganisation getModel() {
@@ -48,7 +39,11 @@ public class doChorganisationAction extends BaseAction implements ModelDriven<Ch
     public void setChorganisationService(ChorganisationService service) {
         this.service = service;
     }
+    
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="ACTION">
+    
     public String triggerStatus() throws Exception {
 
         Chorganisation thisObject = null;
@@ -77,21 +72,18 @@ public class doChorganisationAction extends BaseAction implements ModelDriven<Ch
 
         try {
 
-            actionResult = "Your changes have been saved.";
-
-            if (this.isNew) {
+            if (getIsNew()) {
 
                 if (this.service.isChorgNameExist(model.getName())) {
-                    actionResult = "Insurer name already exist!";
+                    this.getActionResponse().AddError("Insurer name already exist!");
                     return SUCCESS;
                 }
             }
 
             model = this.service.updateObject(model);
 
-            if (this.isNew) {
-                actionResult = "objectId:" + model.getId();
-                this.isNew = false;
+            if (getIsNew()) {
+                this.getActionResponse().AssignNewIdResult(model.getId());
             }
 
 
@@ -105,10 +97,10 @@ public class doChorganisationAction extends BaseAction implements ModelDriven<Ch
     public void prepare() throws Exception {
         if (Integer.valueOf(objectId) <= 0) {
             model = new Chorganisation();
-            this.isNew = true;
         } else {
             model = service.getObject(Integer.valueOf(objectId));
-            this.isNew = false;
         }
     }
+
+     // </editor-fold>
 }

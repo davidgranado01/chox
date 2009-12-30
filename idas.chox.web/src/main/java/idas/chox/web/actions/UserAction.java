@@ -1,6 +1,5 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.common.OrganisationType;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.UserService;
@@ -13,15 +12,17 @@ import net.sf.json.JSONArray;
 
 public class UserAction extends BaseAction {
 
-    private List<UserViewData> user;
+    private List<UserViewData> users = new ArrayList<UserViewData>();
     private UserService userService;
-    private int orgTypeId = -1;
-    private int orgId;
+    private int organisationTypeId = -1;
+    private int organisationId = -1;
     private int userRoleId = -1;
 
+    // <editor-fold defaultstate="collapsed" desc="GRID VIEW HOLDER">
+    
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.user);
-        return "{totalCount:" + this.user.size() + ",results:" + jObject.toString() + "}";
+        JSONArray jObject = JSONArray.fromObject(this.users);
+        return "{totalCount:" + this.users.size() + ",results:" + jObject.toString() + "}";
     }
 
     public void setUserService(UserService userService) {
@@ -31,27 +32,15 @@ public class UserAction extends BaseAction {
     @Override
     public String execute() {
 
-        String orgType = "";
-        if (orgTypeId == 1) {
-            orgType = OrganisationType.CHOX;
-        } else if (orgTypeId == 2) {
-            orgType = OrganisationType.INS;
-        } else if (orgTypeId == 3) {
-            orgType = OrganisationType.CHO;
-        }
-
-        List<WebUser> userData = this.userService.getUsers(orgId, orgType);
-
-        user = new ArrayList<UserViewData>();
+        List<WebUser> userData = this.userService.getUsers(organisationId, organisationTypeId, userRoleId);
 
         for (WebUser h : userData) {
-
             if (userRoleId > 0) {
                 if (isSelectedRoleExist(h.getRoles(), userRoleId)) {
-                    user.add(new UserViewData(h));
+                    users.add(new UserViewData(h));
                 }
             } else {
-                user.add(new UserViewData(h));
+                users.add(new UserViewData(h));
             }
         }
 
@@ -74,20 +63,20 @@ public class UserAction extends BaseAction {
         return isExist;
     }
 
-    public int getOrgId() {
-        return orgId;
+    public int getOrganisationTypeId() {
+        return organisationTypeId;
     }
 
-    public void setOrgId(int orgId) {
-        this.orgId = orgId;
+    public void setOrganisationTypeId(int organisationTypeId) {
+        this.organisationTypeId = organisationTypeId;
     }
 
-    public int getOrgTypeId() {
-        return orgTypeId;
+    public int getOrganisationId() {
+        return organisationId;
     }
 
-    public void setOrgTypeId(int orgTypeId) {
-        this.orgTypeId = orgTypeId;
+    public void setOrganisationId(int organisationId) {
+        this.organisationId = organisationId;
     }
 
     public int getUserRoleId() {
@@ -97,4 +86,7 @@ public class UserAction extends BaseAction {
     public void setUserRoleId(int userRoleId) {
         this.userRoleId = userRoleId;
     }
+
+    // </editor-fold>
+
 }
