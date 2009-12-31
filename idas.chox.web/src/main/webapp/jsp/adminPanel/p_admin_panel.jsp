@@ -20,7 +20,7 @@
         <tr>
             <td class="chox-admin-left-col">
                 <div id="chox-admin-col-div">
-                    <label id="header-title">Admin Panel</label>
+                    <div id="header-title"><label>Admin Panel</label></div>
                     <ul class='admin-header-list'>
                         <s:if test="adminAccessibility.isInsurerCompaniesAdminAccessibility">
                             <li><a href="javascript:renderAdminParameterPanel('ChoxInsurerMgmtPanel');">Insurance Companies</a></li>

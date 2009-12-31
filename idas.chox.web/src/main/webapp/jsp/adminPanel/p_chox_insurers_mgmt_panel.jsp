@@ -38,7 +38,6 @@
             enableHdMenu:false,
             layout:'fit',
             viewConfig:{forceFit:true},
-            title:'Insurer Organisation Management',
             columns: [
                 {header: "Name", width: 180, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='highlightItem'>" + value + "</a>"}},
@@ -49,8 +48,8 @@
                 {header: "Created By", width:100, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width:140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
-            height:630,
-            width:750
+            height:584,
+            width: 730
         });
 
         gridviewGrid.render('gridviewGridHolderId');
@@ -121,15 +120,18 @@
 </script>
 
 <div id="chox-admin-holder">
-    <form id="ChoxInsurerMgmtPanelForm" name="ChoxInsurerMgmtPanelForm" class="XXentity-form" action="POST">
-        <div class="admin-gridview-header">
-            <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                    <td id="label"></td>
-                    <td id="buttons"><button type="button" onclick="javascript:createNewRecord();">Add New Insurer</button></td>
-                </tr>
-            </table>
-        </div>
-        <div id="gridviewGridHolderId"></div>
-    </form> 
+    <div id="chox-admin-col-div">
+        <div id="header-title"><label>Insurer Organisation Management</label></div>
+        <form id="ChoxInsurerMgmtPanelForm" name="ChoxInsurerMgmtPanelForm" class="XXentity-form" action="POST">
+            <div class="admin-gridview-header">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td id="label"></td>
+                        <td id="buttons"><button type="button" onclick="javascript:createNewRecord();">Add New Insurer</button></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="gridviewGridHolderId"></div>
+        </form>
+    </div>
 </div>

@@ -55,10 +55,9 @@
 
 </script>
 
-
 <div id="chox-admin-holder">
     <div id="chox-admin-col-div">
-        <label id="header-title">Credit Hire Detail</label>
+        <div id="header-title"><label>Credit Hire Detail</label></div>
         <form id="formUpdateChorganisationDetail" name="formUpdateChorganisationDetail" action="<%= request.getContextPath()%>/prv/p/updateChorganisationDetail.action" class="XXentity-form" method="POST">
 
             <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>

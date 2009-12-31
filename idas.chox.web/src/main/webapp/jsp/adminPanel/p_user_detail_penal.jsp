@@ -3,17 +3,17 @@
 
 <script type="text/javascript">
 
-    var userDetailPanelTabs;
     var userDetailTabIndex = 0;
+    var userDetailPanelTabs;
     var isNew = true;
     var isWorkgroupEnabled = true;
 
     $(document).ready(function(){
-
-        // CHECK PROCESS MODE
-        isNew = $("#isNew").val();
-        isWorkgroupEnabled = $("#isWorkgroupEnabled").val();
         
+        // CHECK PROCESS MODE
+        isNew = isTrue($("#isNew").val());
+        isWorkgroupEnabled = isTrue($("#isWorkgroupEnabled").val())
+
         // ADD REGULAR EXPRESSION FOR FORM VALIDATION
         $.validator.addMethod("regex", function(value, element, regexp) {
             var check = false;
@@ -46,12 +46,6 @@
             }
         });
 
-        if(!isNew){
-            $("form#formUpdateUserDetail #password").rules("remove");
-            $("form#formUpdateUserDetail #confirmNewPassword").rules("remove");
-        }
-        // ui.ajaxForm(form);
-
         // USER PASSWORD FORM VALIDATION
         var userPasswordform = $("form#formUpdatePassword");
         userPasswordform.validate(
@@ -66,35 +60,31 @@
                 confirmNewPassword:{equalTo: "Your passwords do not match"}
             }
         });
-
         ui.ajaxForm(userPasswordform);
+
+
+        getUserDetailTabIndex();
         
         // GENERATE TAB
-        doSetupTabs();
-        
-    });
-    
-    function doSetupTabs(){
-
         userDetailPanelTabs = new Ext.TabPanel({
             renderTo: 'userDetailMainPanel',
             activeTab: userDetailTabIndex,
-            height:650,
-            width:750,
+            height:610,
+            width:730,
+            border:true,
             items:[
                 {contentEl:'userDetailTab', title:'User Detail', listeners: {activate: handleActivate}},
-                {contentEl:'userPasswordTab', id:'userPasswordTabId', title:'Change Password', listeners: {activate: handleActivate}},
-                {contentEl:'userRoleTab', id:'userRoleTabId', title:'User Roles', listeners: {activate: handleActivate}},
-                {contentEl:'userWorkgroupTab', title:'Workgroups', disabled:(!isWorkgroupEnabled), listeners: {activate: handleActivate}}
+                {contentEl:'userPasswordTab', id:'userPasswordTabId', disabled:isNew, title:'Change Password', listeners: {activate: handleActivate}},
+                {contentEl:'userRoleTab', id:'userRoleTabId', disabled:isNew, title:'User Roles', listeners: {activate: handleActivate}},
+                {contentEl:'userWorkgroupTab', title:'Workgroups', disabled:(isNew || !isWorkgroupEnabled), listeners: {activate: handleActivate}}
             ]
         });
-        
-        /*
-        if(isNew){
-            userDetailPanelTabs.getItem('userPasswordTabId').disable();
-            userDetailPanelTabs.getItem('userRoleTabId').disable();
+    });
+    
+    function getUserDetailTabIndex(){
+        if($("#tabIndex").val()!=null && $("#tabIndex").val()!=''){
+            userDetailTabIndex = $("#tabIndex").val();
         }
-         */
     }
 
     function handleActivate(tab){
@@ -130,17 +120,22 @@
     }
 
 </script>
-
+<input name="tabIndex" id="tabIndex" type="hidden" value="<s:property value="tabIndex" />">
 <input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />">
 <input name="isWorkgroupEnabled" id="isWorkgroupEnabled" type="hidden" value="<s:property value="isWorkgroupEnabled" />">
 <input name="CurrentUserOrganisationId" id="CurrentUserOrganisationId" type="hidden" value="<s:property value="CurrentUserOrganisationId" />">
 
 <div id="chox-admin-holder">
 
-    <div id="userDetailMainPanel" class="admin-tab-css"></div>
+    <div id="chox-admin-col-div">
+        <div id="header-title"><label>User Name:
+                <s:if test="!isNew"><s:property value="displayName" /> (<s:property value="email" />)</s:if><s:else>Create New User</s:else>
+            </label>
+        </div>
+        <div id="userDetailMainPanel"></div>
+    </div>
 
     <div id="userDetailTab" class="x-hide-display">
-
         <div class="sub-admin-tab-css">
 
             <form id="formUpdateUserDetail" action="<%= request.getContextPath()%>/prv/p/updateUserDetail.action" class="XXentity-form" onsubmit="return true;" method="post">
@@ -216,7 +211,6 @@
                                         emptyOption="false">
                                     </s:select>
                                 </div>
-
                             </s:if>
                             <s:else>
                                 <input name="supplierId" id="supplierId" type="hidden" value="<s:property value="CurrentUserOrganisationId" />">
@@ -244,7 +238,6 @@
                         <label class="chox-form-std-label">Last Name<span class="mandatory">*</span></label>
                         <input type="text" class="chox-ttxt" id="CCDLastName" name="lastName" value="<s:property value="lastName" />"/>
                     </div>
-
                     <s:if test="isNew">
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>
@@ -277,6 +270,7 @@
     <div id="userPasswordTab" class="x-hide-display">
         <div class="sub-admin-tab-css">
             <s:if test="!isNew">
+
                 <div class="status-info">
                     N.B. Passwords are case sensitive. Must be at least 6 characters.<br/>
                     Must contain at least one lower case letter, one upper case letter, and one number.
@@ -285,25 +279,24 @@
                     <form id="formUpdatePassword" action="<%= request.getContextPath()%>/prv/p/updateUserPassword.action" class="XXentity-form" onsubmit="return true;" method="post">
                         <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
                         <input name="organisationTypeId" id="organisationTypeId" type="hidden" value="<s:property value="organisationTypeId" />">
-                        <div class="chox-form-item">
-                            <label class="chox-form-std-label">User: </label>
-                            <b><s:property value="displayName" /></b>
+                        <div class="form-container">
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>
+                                <input type="password" class="chox-ttxt" id="password" name="password" size="20" maxlength="20"/>
+                            </div>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Re-enter Password<span class="mandatory">*</span></label>
+                                <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20"/>
+                            </div>
+                            <div class="chox-form-button">
+                                <input type="submit" value="Save Password"/>
+                            </div>
+                            <div class="chox-form-submit-result"></div>
+                            <div id="CDPswMessageBox" class="action-error-msg"></div>
                         </div>
-                        <div class="chox-form-item">
-                            <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>
-                            <input type="password" class="chox-ttxt" id="password" name="password" size="20" maxlength="20"/>
-                        </div>
-                        <div class="chox-form-item">
-                            <label class="chox-form-std-label">Re-enter Password<span class="mandatory">*</span></label>
-                            <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20"/>
-                        </div>
-                        <div class="chox-form-button">
-                            <input type="submit" value="Save Password"/>
-                        </div>
-                        <div class="chox-form-submit-result"></div>
-                        <div id="CDPswMessageBox" class="action-error-msg"></div>
                     </form>
                 </div>
+
             </s:if>
         </div>
     </div>
@@ -314,7 +307,7 @@
                 <div>
                     <s:action name="getUserroleMapping" executeResult="true">
                         <s:param name="webUserId"><s:property value="id" /></s:param>
-                        <s:param name="orgTypeId"><s:property value="organisationTypeId" /></s:param>
+                        <s:param name="organisationTypeId"><s:property value="organisationTypeId" /></s:param>
                     </s:action>
                 </div>
             </s:if>
@@ -327,7 +320,7 @@
                 <div>
                     <s:action name="getUserWorkgroupMapping" executeResult="true">
                         <s:param name="webUserId"><s:property value="id" /></s:param>
-                        <s:param name="insurerId"><s:property value="insurer.id" /></s:param>
+                        <s:param name="organisationTypeId"><s:property value="organisationTypeId" /></s:param>
                     </s:action>
                 </div>
             </s:if>
