@@ -23,7 +23,7 @@ public interface UserService {
 
     public void persist(WebUser user, String emailId);
 
-    public WebUser getObject(int id);
+    public WebUser getWebUser(int id);
 
     public Long getNumChoActiveUser(Integer choId);
 

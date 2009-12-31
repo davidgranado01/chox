@@ -1,71 +1,25 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.common.OrganisationType;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
-import idas.chox.core.model.WebUserUserRole;
-import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.InsurerService;
-import idas.chox.core.services.UserService;
-import idas.chox.core.services.UserWorkgroupService;
-import idas.chox.core.services.WebUserUserRoleService;
-import idas.chox.core.util.RoleHelper;
-import idas.chox.web.viewdata.ActionResponse;
+import idas.chox.service.admin.AdminUserRoleService;
+import idas.chox.service.ActionResponse;
 import java.util.List;
 
 public class doUserroleAction extends BaseAction {
 
-    private List userroles;
-    private int orgTypeId;
+    private int organisationTypeId;
+    private int webUserId;
     private int webUserUserRoleId;
     private int webUserRoleId;
     private String webUserRoleCode;
-    private int webUserId;
-    private WebUserUserRoleService service;
-    private UserWorkgroupService userWorkgroupService;
-    private UserService userService;
-    private InsurerService insurerService;
-    private String actionResult;
-    private String workgroupValidationMsg;
-    private ClaimService claimService;
+    private AdminUserRoleService adminUserRoleService;
 
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
+    // <editor-fold defaultstate="collapsed" desc="GET SET">
+    public int getOrganisationTypeId() {
+        return organisationTypeId;
     }
 
-    public String getWebUserRoleCode() {
-        return webUserRoleCode;
-    }
-
-    public void setWebUserRoleCode(String webUserRoleCode) {
-        this.webUserRoleCode = webUserRoleCode;
-    }
-
-    public String getJsonData() {
-        return workgroupValidationMsg;
-    }
-
-    public String getActionResult() {
-        return actionResult;
-    }
-
-    public void setActionResult(String actionResult) {
-        this.actionResult = actionResult;
-    }
-
-    public List getUserroles() {
-        userroles = this.service.getSelectedUserAvailableRoleLookupItem(orgTypeId, webUserId);
-        return userroles;
-    }
-
-    public int getWebUserRoleId() {
-        return webUserRoleId;
-    }
-
-    public void setWebUserRoleId(int webUserRoleId) {
-        this.webUserRoleId = webUserRoleId;
+    public void setOrganisationTypeId(int organisationTypeId) {
+        this.organisationTypeId = organisationTypeId;
     }
 
     public int getWebUserId() {
@@ -76,6 +30,14 @@ public class doUserroleAction extends BaseAction {
         this.webUserId = webUserId;
     }
 
+    public int getWebUserRoleId() {
+        return webUserRoleId;
+    }
+
+    public void setWebUserRoleId(int webUserRoleId) {
+        this.webUserRoleId = webUserRoleId;
+    }
+
     public int getWebUserUserRoleId() {
         return webUserUserRoleId;
     }
@@ -84,190 +46,79 @@ public class doUserroleAction extends BaseAction {
         this.webUserUserRoleId = webUserUserRoleId;
     }
 
-    public void setUserWorkgroupService(UserWorkgroupService userWorkgroupService) {
-        this.userWorkgroupService = userWorkgroupService;
+    public String getWebUserRoleCode() {
+        return webUserRoleCode;
     }
 
-    public void setInsurerService(InsurerService insurerService) {
-        this.insurerService = insurerService;
+    public void setWebUserRoleCode(String webUserRoleCode) {
+        this.webUserRoleCode = webUserRoleCode;
     }
 
-    public void setWebUserUserRoleService(WebUserUserRoleService service) {
-        this.service = service;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    public int getOrgTypeId() {
-        return orgTypeId;
-    }
-
-    public void setOrgTypeId(int orgTypeId) {
-        this.orgTypeId = orgTypeId;
-    }
-
+    // </editor-fold>
+    
     public String doRenderActionPage() {
         return SUCCESS;
     }
 
-    public String addNewRoleMapping() {
+    public List getAvailableUserroles() {
+        return adminUserRoleService.getAvailableUserroles(organisationTypeId, webUserId);
+    }
+
+    public String addNewWebUserRoleMapping() {
+
+        if (webUserId > 0 && webUserRoleId > 0) {
+
+            try {
+
+                ActionResponse response = adminUserRoleService.addNewWebUserRoleMapping(webUserId, webUserRoleId);
+                setActionResponse(response);
+                
+            } catch (Exception ex) {
+                handleException(this, ex);
+                return ERROR;
+            }
+        }
+
+        return SUCCESS;
+    }
+
+    public String removeWebUserRoleMapping() {
+        
+        if (this.webUserUserRoleId > 0) {
+            
+            try {
+                ActionResponse response = adminUserRoleService.deleteWebUserRoleMapping(this.webUserUserRoleId);
+                setActionResponse(response);
+                
+            } catch (Exception ex) {
+                handleException(this, ex);
+                return ERROR;
+            }
+
+        }
+        
+        return SUCCESS;
+        
+    }
+
+    public void setAdminUserRoleService(AdminUserRoleService adminUserRoleService) {
+        this.adminUserRoleService = adminUserRoleService;
+    }
+
+    public String checkRoleAllowToDelete() {
 
         try {
 
-            WebUser user = userService.getObject(webUserId);
-            this.service.addNewUserRole(webUserId, webUserRoleId);
-
-            if (user.getOrganisationType().equalsIgnoreCase(OrganisationType.INS)) {
-
-                Insurer insurer = insurerService.getObject(user.getInsurer().getId());
-
-                if (service.isClaimHandlerRole(webUserRoleId) 
-                        && insurer.isWorkgroupEnable()
-                        && (userWorkgroupService.getObjects(webUserId).size()) <= 0) {
-
-                    String ackMsg = "Please assign one or more Workgroup(s) to this user";
-                    getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);
-
-                }
-            }
-
+            ActionResponse response = adminUserRoleService.ValidateRoleToBeDeleted(this.webUserId, this.webUserRoleCode);
+            setActionResponse(response);
+            
         } catch (Exception ex) {
-            ex.printStackTrace();
+            handleException(this, ex);
+            return ERROR;
         }
-
-        return SUCCESS;
-    }
-
-    public String checkRoleAllowToDelete(){
-
-        boolean isAllowToDelete = true;
-        String errMsg = "Are you sure you want to remove this role?";
-        WebUser user = userService.getObject(this.webUserId);
-
-        if(user.getInsurer()!=null){
-
-            if(user.getInsurer().isWorkgroupEnable()){
-                // WORKGROUP ENABLE VALIDATION
-
-                if(RoleHelper.isUserCheckByWorkgroup(user)){
-                    // WORKGROUP ENABLE FOR CERTAIN USERS (CH, FNOL, COM)
-
-                    String selectedRoleDescription = "";
-
-                    if(this.webUserRoleCode.equalsIgnoreCase(WebUserRole.ROLE_COM)){
-
-                        selectedRoleDescription = "Claim Ownership Manager";
-
-                        // DELETE COM
-                        boolean hasOpenClaims = claimService.isOpenClaimByWorkgroupsByUserExist(user.getInsurer().getId(), user.getWorkgroupIds(), -1);
-                        boolean hasOtherComUsers = userService.isWorkgroupOwnByOtherUserByRole(user, WebUserRole.ROLE_COM);
-
-                        if(hasOpenClaims && !hasOtherComUsers){
-                            errMsg = "User "+user.getDisplayName()+" is the last user that has "+selectedRoleDescription+" and is assigned to Workgroup(s). Are you sure you want to remove this role?";
-                        }
-
-                    }else if(this.webUserRoleCode.equalsIgnoreCase(WebUserRole.ROLE_FNOL)){
-
-                        selectedRoleDescription = "FNOL";
-
-                        // DELETE FNOL
-                        boolean hasOpenFnolClaims = claimService.isOpenClaimByWorkgroupsByStatusExist(user.getInsurer().getId(), user.getWorkgroupIds(), ClaimStatus.CLAIM_REFERRED_TO_FNOL);
-                        boolean hasOtherFnolUsers = userService.isWorkgroupOwnByOtherUserByRole(user, WebUserRole.ROLE_FNOL);
-
-                        // System.out.println(">>>> hasOpenFnolClaims:"+hasOpenFnolClaims);
-                        // System.out.println(">>>> hasOtherFnolUsers:"+hasOtherFnolUsers);
-
-                        if(hasOpenFnolClaims && !hasOtherFnolUsers){
-
-                            // System.out.println(">>>> FNOL NOT ALLOW");
-
-                            errMsg = "User "+user.getDisplayName()+" is the last user that has "+selectedRoleDescription+" and is assigned to Workgroup(s). Are you sure you want to remove this role?";
-                        }
-
-                    }else if(this.webUserRoleCode.equalsIgnoreCase(WebUserRole.ROLE_CH)){
-
-                        selectedRoleDescription = "Claim Handler";
-
-                        boolean hasOpenClaims = true;
-                        boolean hasOtherCHUsers = true;
-
-                        if(user.getInsurer().isClaimOwnershipEnable()){
-
-                            // CLAIM OWNERSHIP
-                            hasOpenClaims = claimService.isUserHasOpenClaim(user.getId());
-
-                            // System.out.println(">>>> CH hasOpenClaims:"+hasOpenClaims);
-
-                            if(hasOpenClaims){
-
-                                // System.out.println(">>>> CH OWNER NOT ALLOW");
-
-                                isAllowToDelete = false;
-                                errMsg = "User "+user.getDisplayName()+" has open claim(s) assigned to them, it is not possible to remove the assignment of a "+selectedRoleDescription+" Role against a user who has open claim(s)";
-                            }
-
-                        }else{
-
-                            // WOPRKGROUP ONLY
-                            hasOpenClaims = claimService.isOpenClaimByWorkgroupsByUserExist(user.getInsurer().getId(), user.getWorkgroupIds(), -1);
-                            hasOtherCHUsers = userService.isWorkgroupOwnByOtherUserByRole(user, WebUserRole.ROLE_CH);
-
-                            // System.out.println(">>>> CH WORKGROUP hasOpenClaims:"+hasOpenClaims);
-                            // System.out.println(">>>> CH WORKGROUP hasOtherCHUsers:"+hasOtherCHUsers);
-
-                            if(hasOpenClaims && !hasOtherCHUsers){
-
-                                // System.out.println(">>>> CH WORKGROUP NOT ALLOW");
-
-                                errMsg = "User "+user.getDisplayName()+" is the last user that has "+selectedRoleDescription+" and is assigned to Workgroup(s). Are you sure you want to remove this role?";
-                            }
-                        }
-                    }
-
-                    if(isAllowToDelete){
-
-                        // System.out.println("CHECK 1 : PASSED : " + errMsg);
-
-                        if(user.getWorkgroupIds().size()>0 && user.getRoles().size()<=2){
-                            isAllowToDelete = false;
-                            errMsg = "It is not possible to remove the assignment of "+selectedRoleDescription+" against a user who has workgroup(s). Please remove the workgroup(s) from this user.";
-                        }
-
-                    }
-
-                }
-
-            }else{
-
-                if(user.getInsurer().isClaimOwnershipEnable()){
-
-                    // CLAIM OWNERSHIP
-                    boolean hasOpenClaims = claimService.isUserHasOpenClaim(user.getId());
-
-                    // System.out.println(">>>> CH hasOpenClaims:"+hasOpenClaims);
-
-                    if(hasOpenClaims){
-
-                        // System.out.println(">>>> CH OWNER NOT ALLOW");
-
-                        isAllowToDelete = false;
-                        errMsg = "User "+user.getDisplayName()+" has open claim(s) assigned to them, it is not possible to remove the assignment of a Claim Handler Role against a user who has open claim(s)";
-
-                    }
-                }
-            }
-        }
-
-        workgroupValidationMsg = "{isAllowToDelete:"+isAllowToDelete+",warningMsg:'"+errMsg+"'}";
+        
         return SUCCESS;
 
     }
-
-    public String removeRoleMapping(){
-        WebUserUserRole object = this.service.getObject(this.webUserUserRoleId);
-        this.service.DeleteObject(object);
-        return SUCCESS;
-    }
+    
 }

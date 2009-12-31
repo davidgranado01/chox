@@ -129,11 +129,11 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         return chorganisations;
     }
 
-    public Chorganisation getObject(int id) {
+    public Chorganisation getChorganisation(int id) {
         return (Chorganisation) get(Chorganisation.class, id);
     }
 
-    public Chorganisation updateObject(Chorganisation object) {
+    public Chorganisation updateChorganisation(Chorganisation object) {
 
         try {
             save(object);

@@ -37,22 +37,14 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return object.getName();
     }
 
-    public List<WebUserUserRole> getUserRoleMapping(Integer webUserId, Integer webUserRoleId) {
+    public List<WebUserUserRole> getMappedUserRole(Integer webUserId) {
 
         List<WebUserUserRole> webUserUserRoles = new ArrayList<WebUserUserRole>();
 
         try {
 
             DetachedCriteria criteria = DetachedCriteria.forClass(WebUserUserRole.class);
-
-            if (webUserId != null && webUserId > 0) {
-                criteria.add(Restrictions.eq("webUser.id", webUserId));
-            }
-
-            if (webUserRoleId != null && webUserRoleId > 0) {
-                criteria.add(Restrictions.eq("webUserRole.id", webUserRoleId));
-            }
-
+            criteria.add(Restrictions.eq("webUser.id", webUserId));
             webUserUserRoles = findByCriteria(criteria);
 
         } catch (Throwable e) {
@@ -78,7 +70,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
 
             WebUserUserRole webUserUserRole = new WebUserUserRole();
             webUserUserRole.setActive(true);
-            webUserUserRole.setWebUser(userService.getObject(webUserId));
+            webUserUserRole.setWebUser(userService.getWebUser(webUserId));
             webUserUserRole.setWebUserRole(getWebUserRole(webUserRoleId));
             updateObject(webUserUserRole);
             bFlag = true;
@@ -99,7 +91,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
 
             WebUserUserRole webUserUserRole = new WebUserUserRole();
             webUserUserRole.setActive(true);
-            webUserUserRole.setWebUser(userService.getObject(webUserId));
+            webUserUserRole.setWebUser(userService.getWebUser(webUserId));
             webUserUserRole.setWebUserRole(getUserOrgBaseRoleId(typeId));
 
             updateObject(webUserUserRole);
@@ -214,7 +206,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
 
         List items = new ArrayList<IdLookupItem>();
         List<WebUserRole> webUserroles = getWebUserroles(orgTypeId);
-        List<WebUserUserRole> selectedWebUserroles = getUserRoleMapping(webUserId, null);
+        List<WebUserUserRole> selectedWebUserroles = getMappedUserRole(webUserId);
         List<Integer> selectedList = new ArrayList<Integer>();
 
         for (WebUserUserRole o : selectedWebUserroles) {
@@ -237,13 +229,6 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("id", roleId));
-
-        /*
-        Criterion chCriterion = Restrictions.eq("name", WebUserRole.ROLE_CH);
-        Criterion comCriterion = Restrictions.eq("name", WebUserRole.ROLE_COM);
-        Criterion fnolCriterion = Restrictions.eq("name", WebUserRole.ROLE_FNOL);
-        criteria.add(Restrictions.or(chCriterion, comCriterion));
-        */
 
         criteria.add(Restrictions.disjunction()
                 .add(Restrictions.eq("name", WebUserRole.ROLE_CH))

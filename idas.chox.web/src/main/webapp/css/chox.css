@@ -369,14 +369,17 @@ div.action-error-msg
     color: red;
     font: bold 11px tahoma,arial,verdana,sans-serif;
     text-align: center;
+    margin: 5px 0 5px 0;
+    text-transform:capitalize
 }
 
 div.chox-form-submit-result
 {
     color: #15428b;
     font: bold 11px tahoma,arial,verdana,sans-serif;
-    margin-top: 5px;
+    margin: 5px 0 5px 0;
     text-align: center;
+    text-transform:capitalize
 }
 
 div.excel-export
@@ -785,23 +788,19 @@ img.tip-target
     font-weight:bold;
 }
 
-.admin-tab-css{
-    background:#dfe8f6;
-    background-color:#dfe8f6;
+.admin-tab-css{    
+    display:block;
+    height:660px;
     width:750px;
-    border:solid thin Green;
-    height:800px;
 }
 
 .sub-admin-tab-css{
-    padding:5px;
-    font-size:12px;
     background:inherit;
     background-color:inherit;
     background:#dfe8f6;
     background-color:#dfe8f6;
-    overflow:hidden;
-    height:800px;
+    padding:10px 5px 5px 5px;
+    height:700px;
 }
 
 .girdViewObject{
@@ -1072,7 +1071,7 @@ div#chox-admin-col-div{
     height:660px;
 }
 
-div#chox-admin-col-div label#header-title{
+div#chox-admin-col-div div#header-title{
     color:#15428B;
     font-family:tahoma,arial,helvetica,sans-serif;
     font-size:12px;
@@ -1121,7 +1120,6 @@ div.admin-gridview-header table tr td#buttons{
 div#chox-admin-holder{
     width: 750px;
     padding:0 0 0 5px;
-    border:thin solid Red;
 }
 
 /******* ADMIN - END ************/

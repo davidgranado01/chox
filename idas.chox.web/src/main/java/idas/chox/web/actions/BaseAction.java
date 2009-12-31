@@ -4,7 +4,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.web.security.AcegiPrincipal;
 import idas.chox.service.security.PermissionedUser;
-import idas.chox.web.viewdata.ActionResponse;
+import idas.chox.service.ActionResponse;
 import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -100,6 +100,10 @@ public class BaseAction extends ActionSupport {
             actionResponse = new ActionResponse();
         }
         return actionResponse;
+    }
+
+    public void setActionResponse(ActionResponse actionResponse) {
+        this.actionResponse = actionResponse;
     }
 
     public String getActionResponseString()

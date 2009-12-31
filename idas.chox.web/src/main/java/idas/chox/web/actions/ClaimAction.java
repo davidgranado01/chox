@@ -282,11 +282,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
 
                 // GET NEW CLAIM OWNER
-                WebUser newClaimOwner = userService.getObject(claimOwnerId);
+                WebUser newClaimOwner = userService.getWebUser(claimOwnerId);
                 claim.setClaimOwner(newClaimOwner);
                 claim.setIsFnolReviewed(false);
                 if (oasWorkgroupId > 0) {
-                    claim.setWorkgroup(workgroupService.getObject(oasWorkgroupId));
+                    claim.setWorkgroup(workgroupService.getWorkgroup(oasWorkgroupId));
                 }
 
             } else {
@@ -328,7 +328,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (this.claimOwnerId > 0) {
 
             // GET NEW CLAIM OWNER
-            WebUser newClaimOwner = userService.getObject(claimOwnerId);
+            WebUser newClaimOwner = userService.getWebUser(claimOwnerId);
 
             // GET OLD CLAIM OWNER
             if (claim.getClaimOwner() != null) {
@@ -342,7 +342,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 try {
 
                     if (uosWorkgroupId > 0) {
-                        claim.setWorkgroup(workgroupService.getObject(uosWorkgroupId));
+                        claim.setWorkgroup(workgroupService.getWorkgroup(uosWorkgroupId));
                     }
 
                     claim.setClaimOwner(newClaimOwner);
@@ -820,7 +820,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             if (escalateWorkgroupId > 0) {
 
-                claim.setWorkgroup(workgroupService.getObject(escalateWorkgroupId));
+                claim.setWorkgroup(workgroupService.getWorkgroup(escalateWorkgroupId));
                 claim.setClaimOwner(null);
                 this.service.updateClaim(claim);
             }

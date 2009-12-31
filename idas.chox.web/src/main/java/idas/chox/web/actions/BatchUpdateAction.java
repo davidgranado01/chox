@@ -47,7 +47,7 @@ public class BatchUpdateAction extends BaseAction {
         String oldStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED;
 
         Workgroup workgroupDBA = new Workgroup();
-        workgroupDBA = workgroupService.getObject(this.workgroupId);
+        workgroupDBA = workgroupService.getWorkgroup(this.workgroupId);
 
         for (Integer id : selectedClaimIdList) {
 
@@ -72,12 +72,12 @@ public class BatchUpdateAction extends BaseAction {
         // WORKGROUP
         Workgroup workgroupDBA = new Workgroup();
         if (this.workgroupId != null && this.workgroupId > 0) {
-            workgroupDBA = workgroupService.getObject(this.workgroupId);
+            workgroupDBA = workgroupService.getWorkgroup(this.workgroupId);
         }
 
         // CLAIM OWNERSHIP
         WebUser claimOwnerDBA = new WebUser();
-        claimOwnerDBA = userService.getObject(this.claimOwnerId);
+        claimOwnerDBA = userService.getWebUser(this.claimOwnerId);
 
         // UPDATE CLAIMS(s)
         for (Integer id : selectedClaimIdList) {
@@ -105,11 +105,11 @@ public class BatchUpdateAction extends BaseAction {
         // WORKGROUP
         Workgroup workgroupDBA = new Workgroup();
         if(this.workgroupId!=null && this.workgroupId>0){
-            workgroupDBA = workgroupService.getObject(this.workgroupId);
+            workgroupDBA = workgroupService.getWorkgroup(this.workgroupId);
         }
 
         // CLAIM OWNERSHIP
-        WebUser claimOwnerDBA = userService.getObject(this.claimOwnerId);
+        WebUser claimOwnerDBA = userService.getWebUser(this.claimOwnerId);
 
         // UPDATE CLAIMS(s)
         for (Integer id : selectedClaimIdList)  {

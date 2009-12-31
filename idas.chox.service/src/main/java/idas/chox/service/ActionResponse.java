@@ -1,4 +1,4 @@
-package idas.chox.web.viewdata;
+package idas.chox.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,21 +7,19 @@ public class ActionResponse {
 
     public static String RESULT_TYPE_NEW_ID = "New";
     public static String RESULT_TYPE_MESSAGE = "Message";
-     public static String RESULT_TYPE_YESNO = "YesNo";
-
+    public static String RESULT_TYPE_YESNO = "YesNo";
     private List<String> errors;
     private String resultType;
     private Object result;
 
-    public ActionResponse()
-    {
-        errors = new ArrayList<String>() {};
+    public ActionResponse() {
+        errors = new ArrayList<String>() {
+        };
     }
 
-    public Boolean getIsValid()
-    {
+    public Boolean getIsValid() {
         return getErrors().isEmpty();
-    }  
+    }
 
     /**
      * @return the result
@@ -44,33 +42,28 @@ public class ActionResponse {
         return errors;
     }
 
-    public void AddError(final String errorMessage)
-    {
-        if(errorMessage!=null){
+    public void AddError(final String errorMessage) {
+        if (errorMessage != null) {
             errors.add(errorMessage);
         }
     }
 
-    public void AssignResult(final String type,final Object result)
-    {
+    public void AssignResult(final String type, final Object result) {
         setResultType(type);
         setResult(result);
     }
 
-    public void AssignNewIdResult(int id)
-    {
+    public void AssignNewIdResult(int id) {
         setResultType(RESULT_TYPE_NEW_ID);
         setResult(id);
     }
 
-    public void AssignMessageResult(String message)
-    {
+    public void AssignMessageResult(String message) {
         setResultType(RESULT_TYPE_MESSAGE);
         setResult(message);
     }
 
-    public void AssignYesNoResult(Boolean result)
-    {
+    public void AssignYesNoResult(Boolean result) {
         setResultType(RESULT_TYPE_YESNO);
         setResult(result ? "yes" : "no");
     }
@@ -81,6 +74,7 @@ public class ActionResponse {
     public void setErrors(List<String> errors) {
         this.errors = errors;
     }
+
 
     /**
      * @return the resultType
@@ -95,7 +89,4 @@ public class ActionResponse {
     public void setResultType(String resultType) {
         this.resultType = resultType;
     }
-
-
-
 }

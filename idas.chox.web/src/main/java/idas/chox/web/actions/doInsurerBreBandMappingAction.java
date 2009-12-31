@@ -86,7 +86,7 @@ public class doInsurerBreBandMappingAction extends BaseAction {
 
             BreBandOrganisation object = new BreBandOrganisation();
             object.setBreBand(breBandService.getObject(breBandId));
-            object.setChorganisation(chorganisationService.getObject(chorganisationId));
+            object.setChorganisation(chorganisationService.getChorganisation(chorganisationId));
             service.updateObject(object);
 
         } catch (Exception ex) {

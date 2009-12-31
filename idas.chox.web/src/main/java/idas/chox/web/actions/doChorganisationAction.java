@@ -3,13 +3,18 @@ package idas.chox.web.actions;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Chorganisation;
-import idas.chox.core.services.ChorganisationService;
+import idas.chox.service.ActionResponse;
+import idas.chox.service.admin.AdminChorganisationService;
 
 public class doChorganisationAction extends BaseAction implements ModelDriven<Chorganisation>, Preparable {
 
-    private ChorganisationService service;
+    private AdminChorganisationService adminChorganisationService;
     private String objectId;
     private Chorganisation model;
+
+    public void setAdminChorganisationService(AdminChorganisationService adminChorganisationService) {
+        this.adminChorganisationService = adminChorganisationService;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
     
@@ -36,35 +41,26 @@ public class doChorganisationAction extends BaseAction implements ModelDriven<Ch
         this.objectId = objectId;
     }
 
-    public void setChorganisationService(ChorganisationService service) {
-        this.service = service;
-    }
-    
     // </editor-fold>
-
+    
     // <editor-fold defaultstate="collapsed" desc="ACTION">
+
+    public String doRenderActionPage() {
+        return SUCCESS;
+    }
     
     public String triggerStatus() throws Exception {
 
-        Chorganisation thisObject = null;
-        thisObject = this.service.getObject(Integer.valueOf(objectId));
-
-        if (thisObject.isStatus()) {
-            thisObject.setStatus(false);
-        } else {
-            thisObject.setStatus(true);
-        }
-
         try {
-            this.service.updateObject(thisObject);
+
+            ActionResponse response = adminChorganisationService.UpdateChorganisationStatus(this.objectId);
+            setActionResponse(response);
+
         } catch (Exception ex) {
-            throw ex;
+            handleException(this, ex);
+            return ERROR;
         }
 
-        return SUCCESS;
-    }
-
-    public String doRenderActionPage() {
         return SUCCESS;
     }
 
@@ -74,33 +70,40 @@ public class doChorganisationAction extends BaseAction implements ModelDriven<Ch
 
             if (getIsNew()) {
 
-                if (this.service.isChorgNameExist(model.getName())) {
+                if (this.adminChorganisationService.isChorganisationNameExist(model.getName())) {
                     this.getActionResponse().AddError("Insurer name already exist!");
                     return SUCCESS;
                 }
             }
 
-            model = this.service.updateObject(model);
-
+            model = adminChorganisationService.UpdateChorganisation(model);
+            
             if (getIsNew()) {
                 this.getActionResponse().AssignNewIdResult(model.getId());
             }
 
-
         } catch (Exception ex) {
-            throw ex;
+            handleException(this, ex);
+            return ERROR;
         }
 
         return SUCCESS;
     }
 
     public void prepare() throws Exception {
-        if (Integer.valueOf(objectId) <= 0) {
-            model = new Chorganisation();
-        } else {
-            model = service.getObject(Integer.valueOf(objectId));
+        
+        try {
+
+            if (Integer.valueOf(objectId) <= 0) {
+                model = new Chorganisation();
+            } else {
+                model = adminChorganisationService.getChorganisation(objectId);
+            }
+
+        } catch (Exception ex) {
+            handleException(this, ex);
         }
     }
-
-     // </editor-fold>
+    
+    // </editor-fold>
 }

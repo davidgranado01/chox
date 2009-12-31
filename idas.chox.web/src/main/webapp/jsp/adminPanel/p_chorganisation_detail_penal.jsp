@@ -40,11 +40,29 @@
             }
         });
 
+        //ui.ajaxForm(form, onChorganisationSubmitResult);
         ui.ajaxForm(form);
 
     });
+/*
+    function onChorganisationSubmitResult(responseText, statusText){
 
-    function doCancelBack(){
+        response = eval('(' + responseText.trim() + ')');
+
+        if(response)
+        {
+            if(response.isValid){
+                
+                if(response.resultType && response.resultType == 'New')
+                {
+                    alert("Your Changes Have Been Saved");
+                    doChorganisationCancelBack();
+                }
+            }
+        }
+    }
+    */
+    function doChorganisationCancelBack(){
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
         var param = {"adminPanelName":"ChoxCreditHireMgmtPanel"};
@@ -113,7 +131,7 @@
                 </div>
                 <div class="chox-form-button">
                     <input type="submit" value="Save Changes"/>
-                    <input type="button" value="Cancel" class="cancel" onclick="javascript: doCancelBack();" />
+                    <input type="button" value="Cancel" class="cancel" onclick="javascript: doChorganisationCancelBack();" />
                 </div>
                 <div class="chox-form-submit-result">&nbsp;</div>
                 <div id="CDmessageBox" class="action-error-msg"></div>

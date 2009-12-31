@@ -44,7 +44,7 @@ public class VehicleClassDropDownAction extends BaseAction {
     public String execute() throws Exception {
 
         List<VehicleClass> vehicleClassesList = vehicleClassService.getAllVehicleClass();
-        List<VehicleClassCeiling> vehicleClassCeilings = vehicleClassCeilingService.getVehicleClassCeilingByInsurer(insurerService.getObject(orgId));
+        List<VehicleClassCeiling> vehicleClassCeilings = vehicleClassCeilingService.getVehicleClassCeilingByInsurer(insurerService.getInsurer(orgId));
         List<VehicleClass> newVehicleClasses = new ArrayList<VehicleClass>();
 
         for (VehicleClass v : vehicleClassesList) {

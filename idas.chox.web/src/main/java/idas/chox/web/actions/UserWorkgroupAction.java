@@ -45,7 +45,7 @@ public class UserWorkgroupAction extends BaseAction {
     @Override
     public String execute() {
 
-        List<WebUserWorkgroup> userworkgroupData = this.service.getObjects(webUserId);
+        List<WebUserWorkgroup> userworkgroupData = this.service.getUserWorkgroupsByUser(webUserId);
 
         userworkgroups = new ArrayList<UserWorkgroupViewData>();
 

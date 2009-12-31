@@ -6,7 +6,7 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.WorkgroupService;
-import idas.chox.web.viewdata.ActionResponse;
+import idas.chox.service.ActionResponse;
 
 public class doInsurerWorkgroupAction extends BaseAction implements ModelDriven<Workgroup>, Preparable {
 
@@ -74,12 +74,12 @@ public class doInsurerWorkgroupAction extends BaseAction implements ModelDriven<
 
         String ackMsg = "";
 
-        if (!service.isWorkgroupExist(insurerId, workgroupName)) {
+        if (!service.isWorkgroupNameExistByInsurer(insurerId, workgroupName)) {
 
-            model.setInsurer(insurerService.getObject(insurerId));
+            model.setInsurer(insurerService.getInsurer(insurerId));
             model.setName(workgroupName);
             model.setStatus(true);
-            service.updateObject(model);
+            service.save(model);
 
             ackMsg = "Workgroup '" + workgroupName + "' has been created";
             getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);
@@ -98,7 +98,7 @@ public class doInsurerWorkgroupAction extends BaseAction implements ModelDriven<
 
         boolean isAllowedToChange = true;
         String ackMsg = "";
-        Insurer insurer = insurerService.getObject(insurerId);
+        Insurer insurer = insurerService.getInsurer(insurerId);
 
         // CHECK WORKGROUPS STATUS IF CHANGE FROM ACTIVE TO INACTIVE
         // WORKGROUP FEATUERE IS ENABLE
@@ -109,7 +109,7 @@ public class doInsurerWorkgroupAction extends BaseAction implements ModelDriven<
 
         if (isAllowedToChange) {
             model.setStatus(!model.isStatus());
-            service.updateObject(model);
+            service.save(model);
         } else {
             ackMsg = "Unable to de-activate this workgroup. Must maintain at least one active workgroup for this insurer.";
             getActionResponse().AddError(ackMsg);
@@ -121,7 +121,7 @@ public class doInsurerWorkgroupAction extends BaseAction implements ModelDriven<
 
     public String removeObject() {
 
-        Insurer insurer = insurerService.getObject(insurerId);
+        Insurer insurer = insurerService.getInsurer(insurerId);
 
         String ackMsg = "";
 
@@ -135,7 +135,7 @@ public class doInsurerWorkgroupAction extends BaseAction implements ModelDriven<
 
         if (service.isWorkgroupDeletable(model.getId())) {
 
-            service.DeleteObject(model);
+            service.delete(model);
             ackMsg = "Workgroup '" + model.getName() + "' has been deleted";
             getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);
 
@@ -152,7 +152,7 @@ public class doInsurerWorkgroupAction extends BaseAction implements ModelDriven<
         if (Integer.valueOf(workgroupId) <= 0) {
             model = new Workgroup();
         } else {
-            model = service.getObject(workgroupId);
+            model = service.getWorkgroup(workgroupId);
         }
 
     }

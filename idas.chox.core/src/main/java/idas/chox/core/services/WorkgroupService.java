@@ -6,21 +6,24 @@ import java.util.List;
 
 public interface WorkgroupService {
 
-    public List<Workgroup> getObjects(int insurerId);
+    public Workgroup getWorkgroup(int id);
 
-    public List<Workgroup> getAllObjects(int insurerId);
+    public void delete(Workgroup object);
 
-    public Workgroup getObject(int id);
+    public void save(Workgroup object);
 
-    public boolean DeleteObject(Workgroup object);
+    public List<Workgroup> getWorkgroupsByInsurer(int insurerId);
 
-    public void updateObject(Workgroup object);
+    public List<Workgroup> getAllWorkgroupsByInsurer(int insurerId, String strOrder);
 
-    public boolean isWorkgroupExist(int insurerId, String workgroupName);
+    public boolean isWorkgroupNameExistByInsurer(int insurerId, String workgroupName);
 
+    public void defaultWorkgroup(Insurer insurer);
+
+    public List<Workgroup> getAvailableWorkgroupsByInsurer(int InsurerId, int webUserId);
+
+    // TO BE REVIEWED
     public boolean isWorkgroupDeletable(int workgroupId);
-
-    public void createDefaultRecord(Insurer insurer);
 
     public boolean isInsurerAllowToEnableWorkgroup(Insurer insurer);
 

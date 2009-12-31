@@ -5,17 +5,14 @@ import java.util.List;
 
 public interface UserWorkgroupService {
 
-    public List<WebUserWorkgroup> getObjects(int userId);
+    public List<WebUserWorkgroup> getUserWorkgroupsByUser(int userId);
 
-    public WebUserWorkgroup getObject(int id);
+    public WebUserWorkgroup getUserWorkgroup(int userWorkgroupId);
 
-    public boolean DeleteObject(WebUserWorkgroup object);
+    public void deleteWebUserWorkgroup(WebUserWorkgroup webUserWorkgroup);
 
-    public Integer DeleteObject(int webUserId);
+    public void saveWebUserWorkgroup(WebUserWorkgroup webUserWorkgroup);
 
-    public boolean AddObject(WebUserWorkgroup object);
+    public boolean isUserWorkgroupExist(Integer workgroupId, Integer webUserId);
 
-    public boolean isObjectExist(int WorkgroupId);
-
-    public boolean isObjectExist(int webUserId, int workgroupId);
 }

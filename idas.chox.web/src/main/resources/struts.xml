@@ -703,39 +703,41 @@
         <!--End User Details-->
 
         <!--Start User ROLE Details-->
-        <action name="getUserole" class="idas.chox.web.actions.UserroleAction">
+        <action name="getUseroles" class="idas.chox.web.actions.UserroleAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="getUserroleMapping" class="idas.chox.web.actions.doUserroleAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_user_role_mapping.jsp</result>
         </action>
-        <action name="removeRoleMapping" class="idas.chox.web.actions.doUserroleAction" method="removeRoleMapping">
+        <action name="removeWebUserRoleMapping" class="idas.chox.web.actions.doUserroleAction" method="removeWebUserRoleMapping">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <action name="addNewRoleMapping" class="idas.chox.web.actions.doUserroleAction" method="addNewRoleMapping">
+        <action name="addNewWebUserRoleMapping" class="idas.chox.web.actions.doUserroleAction" method="addNewWebUserRoleMapping">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <action name="isRoleAllowToDelete" class="idas.chox.web.actions.doUserroleAction" method="checkRoleAllowToDelete">
-            <result name="success">/jsp/p_jsonData.jsp</result>
+        <action name="isWebUserRoleAllowToDelete" class="idas.chox.web.actions.doUserroleAction" method="checkRoleAllowToDelete">
+            <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
        <!--End User Details-->
+       
        <!--Start User Workgroup-->
-        <action name="isWorkgroupAllowToDelete" class="idas.chox.web.actions.doUserWorkgroupAction" method="checkWorkgroupAllowToDelete">
+        <action name="getUserWorkgroups" class="idas.chox.web.actions.UserWorkgroupAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
-        <action name="getUserWorkgroup" class="idas.chox.web.actions.UserWorkgroupAction">
-            <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
-        <action name="removeUserWorkgroupMapping" class="idas.chox.web.actions.doUserWorkgroupAction" method="removeObject">
-            <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="getUserWorkgroupMapping" class="idas.chox.web.actions.doUserWorkgroupAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_user_userworkgroup_mapping.jsp</result>
         </action>
-        <action name="addUserWorkgroupMapping" class="idas.chox.web.actions.doUserWorkgroupAction" method="addObject">
+        <action name="removeUserWorkgroupMapping" class="idas.chox.web.actions.doUserWorkgroupAction" method="removeWebUserWorkgroupMapping">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="isUserWorkgroupAllowToDelete" class="idas.chox.web.actions.doUserWorkgroupAction" method="checkUserWorkgroupAllowToDelete">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="addUserWorkgroupMapping" class="idas.chox.web.actions.doUserWorkgroupAction" method="addNewWebUserWorkgroupMapping">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
        <!--End User Workgroup-->
+       
        <!--Start Insurer Workgroup-->
         <action name="getInsurerWorkgroup" class="idas.chox.web.actions.InsurerWorkgroupAction">
             <result name="success">/jsp/p_jsonData.jsp</result>

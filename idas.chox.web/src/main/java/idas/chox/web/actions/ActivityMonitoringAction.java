@@ -31,7 +31,7 @@ public class ActivityMonitoringAction extends BaseAction {
         int currentUserID = getUserId();
         for (Integer id : userIds) {
             if (id != currentUserID) {
-                WebUser user = userService.getObject(id);
+                WebUser user = userService.getWebUser(id);
                 usersViewingThisClaim.add(user.toString());
             }
         }

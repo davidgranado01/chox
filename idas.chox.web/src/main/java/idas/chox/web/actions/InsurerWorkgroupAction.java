@@ -39,7 +39,7 @@ public class InsurerWorkgroupAction extends BaseAction {
 
         try {
 
-            List<Workgroup> workgroupDatas = this.workgroupService.getAllObjects(insurerId);
+            List<Workgroup> workgroupDatas = this.workgroupService.getAllWorkgroupsByInsurer(insurerId, "name");
 
             this.workgroups = new ArrayList<WorkgroupViewData>();
 
@@ -59,4 +59,5 @@ public class InsurerWorkgroupAction extends BaseAction {
         JSONArray jObject = JSONArray.fromObject(this.workgroups);
         return "{totalCount:" + this.workgroups.size() + ",results:" + jObject.toString() + "}";
     }
+    
 }

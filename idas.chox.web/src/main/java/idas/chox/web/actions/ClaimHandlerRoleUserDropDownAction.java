@@ -59,7 +59,7 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
 
         if (insurerId > 1) {
 
-            Insurer insurer = insurerService.getObject(insurerId);
+            Insurer insurer = insurerService.getInsurer(insurerId);
             List<WebUser> users = userService.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable());
 
             List items = new ArrayList<IdLookupItem>();
@@ -82,7 +82,7 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
 
         if (insurerId > 1) {
 
-            Insurer insurer = insurerService.getObject(insurerId);
+            Insurer insurer = insurerService.getInsurer(insurerId);
 
             List<WebUser> users = userService.getClaimHanldersByInsurerWorkgroup(insurerId, workgroupId, insurer.isWorkgroupEnable());
             List items = new ArrayList<IdLookupItem>();

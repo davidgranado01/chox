@@ -18,11 +18,11 @@ public interface InsurerService {
 
     Insurer getInsurerByNodeName(Element thisElement, String nodeName);
 
-    public Insurer getObject(int id);
+    public Insurer getInsurer(int id);
 
     public List<Insurer> getInsurers();
 
-    public Insurer updateObject(Insurer object);
+    public Insurer updateInsurer(Insurer object);
 
     public VehicleClassCeiling getVechileClassCeilingForClaim(Claim claim);
 }

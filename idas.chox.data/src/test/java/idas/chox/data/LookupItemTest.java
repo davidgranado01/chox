@@ -84,7 +84,7 @@ public class LookupItemTest {
         Assert.assertNotNull(sessionFactory);
         Assert.assertNotNull(workgroupService);
 
-        List workgroups = workgroupService.getAllObjects(3);
+        List workgroups = workgroupService.getWorkgroupsByInsurer(3);
         System.out.println(workgroups.size());
         Assert.assertTrue(workgroups.size() > 0);
     }

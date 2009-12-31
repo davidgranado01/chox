@@ -10,8 +10,8 @@ import net.sf.json.JSONArray;
 
 public class UserroleAction extends BaseAction {
 
-    private List<UserroleViewData> userrole;
-    private WebUserUserRoleService service;
+    private List<UserroleViewData> userroles;
+    private WebUserUserRoleService webUserUserRoleService;
     private int webUserId;
 
     public int getWebUserId() {
@@ -23,26 +23,32 @@ public class UserroleAction extends BaseAction {
     }
 
     public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.userrole);
-        return "{totalCount:" + this.userrole.size() + ",results:" + jObject.toString() + "}";
+        JSONArray jObject = JSONArray.fromObject(this.userroles);
+        return "{totalCount:" + this.userroles.size() + ",results:" + jObject.toString() + "}";
     }
 
-    public void setWebUserUserRoleService(WebUserUserRoleService service) {
-        this.service = service;
+    public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService) {
+        this.webUserUserRoleService = webUserUserRoleService;
     }
 
     @Override
     public String execute() {
 
-        List<WebUserUserRole> userroleData = this.service.getUserRoleMapping(webUserId, null);
+        try {
 
-        userrole = new ArrayList<UserroleViewData>();
+            userroles = new ArrayList<UserroleViewData>();
 
-        for (WebUserUserRole h : userroleData) {
-            if (!h.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_CHO) && !h.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_INS) && !h.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_CHOX)) {
+            List<WebUserUserRole> userroleData = this.webUserUserRoleService.getMappedUserRole(webUserId);
 
-                userrole.add(new UserroleViewData(h));
+            for (WebUserUserRole h : userroleData) {
+                if (!h.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_CHO) && !h.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_INS) && !h.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_CHOX)) {
+                    userroles.add(new UserroleViewData(h));
+                }
             }
+
+        } catch (Exception ex) {
+            handleException(this, ex);
+            return ERROR;
         }
 
         return SUCCESS;

@@ -4,25 +4,18 @@ import idas.chox.core.util.RoleHelper;
 import idas.chox.core.common.OrganisationType;
 import java.util.Set;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class WebUser implements Serializable {
+public class WebUser extends Entity implements Serializable {
 
     // <editor-fold defaultstate="collapsed" desc="PARAMETERS">
-    
-    protected int id;
     protected String userName;
     protected String email;
     protected String firstName;
     protected String lastName;
     protected String password;
     protected boolean status;
-    protected WebUser createdBy;
-    protected Date createdDate;
-    protected WebUser lastModifiedBy;
-    protected Date lastModifiedDate;
     protected Chorganisation chorganisation;
     protected Insurer insurer;
     private Boolean isExpired;
@@ -31,23 +24,15 @@ public class WebUser implements Serializable {
     private Set workgroups;
     protected String organisationName;
     protected boolean claimHandler = false;
-
+    protected Set workgroupRelatedRoles;
     // </editor-fold>
-    
+
     public WebUser() {
         isExpired = false;
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
     
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public java.lang.String getEmail() {
         return email;
     }
@@ -87,39 +72,7 @@ public class WebUser implements Serializable {
     public void setStatus(boolean status) {
         this.status = status;
     }
-
-    public WebUser getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(WebUser createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public java.util.Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(java.util.Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public WebUser getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(WebUser lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public java.util.Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(java.util.Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
+    
     public Chorganisation getChorganisation() {
         return chorganisation;
     }
@@ -159,9 +112,8 @@ public class WebUser implements Serializable {
     public void setWorkgroups(Set workgroups) {
         this.workgroups = workgroups;
     }
-    
-    // </editor-fold>
 
+    // </editor-fold>
     public String getUserName() {
         return userName;
     }
@@ -169,7 +121,7 @@ public class WebUser implements Serializable {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-    
+
     @Override
     public String toString() {
         String orgName = orgName = String.format("(%1$s)", getOrganisationName());
@@ -190,11 +142,11 @@ public class WebUser implements Serializable {
     public String getDisplayName() {
         return String.format("%1$s %2$s", this.getLastName(), this.getFirstName());
     }
-    
+
     public void setClaimHandler(boolean claimHandler) {
         this.claimHandler = claimHandler;
     }
-    
+
     public String getOrganisationName() {
         Chorganisation cho = this.getChorganisation();
         Insurer ins = this.getInsurer();
@@ -212,8 +164,8 @@ public class WebUser implements Serializable {
 
         boolean bFlag = false;
 
-        if(this.roles!=null){
-            
+        if (this.roles != null) {
+
             if (this.roles.size() > 0) {
 
                 Iterator itr = roles.iterator();
@@ -230,7 +182,7 @@ public class WebUser implements Serializable {
                 }
             }
         }
-        
+
         return bFlag;
     }
 
@@ -245,9 +197,7 @@ public class WebUser implements Serializable {
 
                 WebUserRole webUserrole = (WebUserRole) itr.next();
 
-                if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CH)
-                        || webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_COM)
-                        || webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_FNOL)) {
+                if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CH) || webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_COM) || webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_FNOL)) {
                     bFlag = true;
                     break;
                 }
@@ -257,7 +207,7 @@ public class WebUser implements Serializable {
         return bFlag;
 
     }
-    
+
     public String getOrganisationType() {
 
         String orgType = OrganisationType.CHO;
@@ -268,8 +218,39 @@ public class WebUser implements Serializable {
         } else if (RoleHelper.isCheckSelectedRoleExist(this.roles, WebUserRole.ROLE_INS)) {
             orgType = OrganisationType.INS;
         }
-        
+
         return orgType;
     }
-    
+
+    public Set getWorkgroupRelatedRoles() {
+
+        if (workgroupRelatedRoles == null) {
+            setWorkgroupRelatedRoles();
+        }
+
+        return workgroupRelatedRoles;
+    }
+
+    private void setWorkgroupRelatedRoles() {
+
+        workgroupRelatedRoles = new HashSet();
+
+        if (this.roles != null) {
+
+            if (this.roles.size() > 0) {
+
+                Iterator itr = this.roles.iterator();
+
+                while (itr.hasNext()) {
+
+                    WebUserRole webUserrole = (WebUserRole) itr.next();
+
+                    if (webUserrole.isWorkgroupRelated()) {
+                        workgroupRelatedRoles.add(webUserrole);
+                    }
+
+                }
+            }
+        }
+    }
 }

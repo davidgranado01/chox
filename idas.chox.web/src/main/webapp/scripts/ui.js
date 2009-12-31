@@ -50,6 +50,7 @@ var ui = function(){
                         var newObjectId =  parseInt(response.result);
                         var hvObjectId = elementToBlock.find("input[name='objectId']");
                         hvObjectId.val(newObjectId);
+                        outputDiv.append("<p>Your changes have been saved.</p>");
                     }
                     else if(response.resultType && response.resultType == 'Message')
                     {

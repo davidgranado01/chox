@@ -70,7 +70,7 @@ public class doInsurerAliasAction extends BaseAction implements ModelDriven<Insu
         if (!service.isInsurerAliasExist(insurerId, insurerAliasName)) {
             model = new InsurerAlias();
             model.setAliasName(insurerAliasName);
-            model.setInsurer(insurerService.getObject(insurerId));
+            model.setInsurer(insurerService.getInsurer(insurerId));
             service.updateObject(model);
         } else {
             actionResult = "Alias '" + insurerAliasName + "' already exists";

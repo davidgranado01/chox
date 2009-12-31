@@ -45,7 +45,7 @@ public class VehicleClassCeilingAction extends BaseAction {
 
         try {
 
-            List<VehicleClassCeiling> vehicleClassCeilings = vehicleClassCeilingService.getVehicleClassCeilingByInsurer(insurerService.getObject(insurerId));
+            List<VehicleClassCeiling> vehicleClassCeilings = vehicleClassCeilingService.getVehicleClassCeilingByInsurer(insurerService.getInsurer(insurerId));
             vehicleClassCeilingViewData = new ArrayList<VehicleClassCeilingViewData>();
 
             for (VehicleClassCeiling vcc : vehicleClassCeilings) {

@@ -113,7 +113,7 @@ public class UserServiceImpl extends DataService implements UserService {
         this.save(user);
     }
 
-    public WebUser getObject(int id) {
+    public WebUser getWebUser(int id) {
         WebUser user = new WebUser();
         user = (WebUser) get(WebUser.class, id);
         return user;

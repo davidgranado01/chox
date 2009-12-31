@@ -53,9 +53,9 @@ public class VehicleClassCeilingTest {
         vehicleClassCeiling.setVehicleClass(P1);
         RSA.AddVehicleClassCeiling(vehicleClassCeiling);
 
-        insurerService.updateObject(RSA);
+        insurerService.updateInsurer(RSA);
 
-        Insurer insurerWithVehicleClassCeiling = insurerService.getObject(RSA.getId());
+        Insurer insurerWithVehicleClassCeiling = insurerService.getInsurer(RSA.getId());
         Assert.assertNotNull(insurerWithVehicleClassCeiling);
 
         Assert.assertEquals(1, insurerWithVehicleClassCeiling.getVehicleClassCeilings().size());

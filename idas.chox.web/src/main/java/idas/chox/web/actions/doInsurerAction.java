@@ -7,7 +7,7 @@ import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.InsurerAliasService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.WorkgroupService;
-import idas.chox.web.viewdata.ActionResponse;
+import idas.chox.service.ActionResponse;
 
 public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>, Preparable {
 
@@ -50,7 +50,7 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
 
     public String triggerStatus() throws Exception {
 
-        Insurer thisObject = this.service.getObject(Integer.valueOf(objectId));
+        Insurer thisObject = this.service.getInsurer(Integer.valueOf(objectId));
 
         if (thisObject.isStatus()) {
             thisObject.setStatus(false);
@@ -59,7 +59,7 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
         }
 
         try {
-            this.service.updateObject(thisObject);
+            this.service.updateInsurer(thisObject);
 
         } catch (Exception ex) {
             logger.error(ex);
@@ -75,7 +75,7 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
 
     public String triggerInsurerWorkgroupFeature() throws Exception {
 
-        Insurer thisObject = this.service.getObject(Integer.valueOf(objectId));
+        Insurer thisObject = this.service.getInsurer(Integer.valueOf(objectId));
 
         // ORIGINAL IS FALSE, CHANGE TO TRUE
         if (!thisObject.isWorkgroupEnable() && !workgroupService.isInsurerAllowToEnableWorkgroup(thisObject)) {
@@ -85,7 +85,7 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
         }
 
         thisObject.setWorkgroupEnable(!thisObject.isWorkgroupEnable());
-        this.service.updateObject(thisObject);
+        this.service.updateInsurer(thisObject);
         return SUCCESS;
     }
 
@@ -109,12 +109,12 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
 
             }
 
-            model = this.service.updateObject(model);
+            model = this.service.updateInsurer(model);
 
             if (this.isNew) {
 
                 if (model.isWorkgroupEnable()) {
-                    workgroupService.createDefaultRecord(model);
+                    workgroupService.defaultWorkgroup(model);
                 }
 
                 insurerAliasService.createDefaultRecord(model);
@@ -136,7 +136,7 @@ public class doInsurerAction extends BaseAction implements ModelDriven<Insurer>,
             model = new Insurer();
             this.isNew = true;
         } else {
-            model = service.getObject(Integer.valueOf(objectId));
+            model = service.getInsurer(Integer.valueOf(objectId));
             this.isNew = false;
         }
     }

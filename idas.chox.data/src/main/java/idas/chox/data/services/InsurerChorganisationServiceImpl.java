@@ -112,6 +112,7 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
             if (chorganisationId != null && chorganisationId > 0) {
                 criteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
             }
+            
             criteria.add(Restrictions.eq("status", true));
             objects = findByCriteria(criteria);
 

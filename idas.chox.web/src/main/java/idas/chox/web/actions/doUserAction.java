@@ -13,26 +13,30 @@ import idas.chox.core.services.UserService;
 import idas.chox.core.services.WebUserUserRoleService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.PermissionedUser;
-import idas.chox.web.viewdata.ActionResponse;
+import idas.chox.service.ActionResponse;
+import idas.chox.service.admin.AdminUserService;
 import java.util.List;
 import org.springframework.security.providers.encoding.Md5PasswordEncoder;
 import org.springframework.security.providers.encoding.PasswordEncoder;
 
 public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Preparable {
 
-    private UserService userService;
     private String objectId;
     private WebUser model;
     private String organisationTypeId;
     private List insurers;
     private List suppliers;
-    private LookupService lookupService;
-    private InsurerService insurerService;
     private Integer insurerId = -1;
     private Integer supplierId = -1;
-    private ChorganisationService chorganisationService;
-    private WebUserUserRoleService webUserUserRoleService;
-    private ClaimService claimService;
+    private AdminUserService adminUserService;
+    private Integer tabIndex;
+
+    public void setAdminUserService(AdminUserService adminUserService) {
+        this.adminUserService = adminUserService;
+    }
+    private UserService userService;
+    private LookupService lookupService;
+    private InsurerService insurerService;
     private PermissionedUser currentUser = getAuthenticatedUser();
 
     public String doRenderActionPage() {
@@ -50,6 +54,14 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
     
+    public Integer getTabIndex() {
+        return tabIndex;
+    }
+
+    public void setTabIndex(Integer tabIndex) {
+        this.tabIndex = tabIndex;
+    }
+
     public boolean getIsNew() {
         if (Integer.valueOf(objectId) <= 0) {
             return true;
@@ -72,7 +84,7 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     public boolean getIsWorkgroupEnabled() {
         boolean isEnable = false;
         if (model.getInsurer() != null) {
-            Insurer insurer = insurerService.getObject(model.getInsurer().getId());
+            Insurer insurer = insurerService.getInsurer(model.getInsurer().getId());
             isEnable = insurer.isWorkgroupEnable();
         }
         return isEnable;
@@ -106,89 +118,33 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
         this.insurerService = insurerService;
     }
 
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
-
-    public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService) {
-        this.webUserUserRoleService = webUserUserRoleService;
-    }
-
-    public void setChorganisationService(ChorganisationService chorganisationService) {
-        this.chorganisationService = chorganisationService;
-    }
-
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="ACTION : ADD OR EDIT USER">
-
     public String updateModel() throws Exception {
 
         try {
 
-            model.setLastModifiedBy(this.getAuthenticatedUser().getUser());
-            model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-
+            ActionResponse response;
+            
             if (getIsNew()) {
-
-                doAddNewObject();
+                
+                response = adminUserService.doAddNewUser(model, this.insurerId, this.supplierId, this.organisationTypeId);
 
             } else {
+                
+                response = adminUserService.updateUser(model);
 
-                if (!this.userService.isUserNameExist(model.getUserName(), model.getId())) {
-                    this.userService.updateObject(model);
-                } else {
-                    this.getActionResponse().AddError("User Name is already exist!");
-                }
             }
 
+            setActionResponse(response);
+
         } catch (Exception ex) {
-            ex.printStackTrace();
-            this.getActionResponse().AddError(ex.getMessage());
+            handleException(this, ex);
+            return ERROR;
         }
 
         return SUCCESS;
-    }
-
-    private void doAddNewObject() {
-
-        if (!this.userService.isUserNameExist(model.getUserName())) {
-
-            model.setCreatedBy(this.getAuthenticatedUser().getUser());
-            model.setCreatedDate(DateHelper.getCurrentTimeStamp());
-            model.setIsExpired(true);
-
-            if (insurerId > 0) {
-                Insurer selectInsurer = insurerService.getObject(insurerId);
-                model.setInsurer(selectInsurer);
-            }
-
-            if (supplierId > 0) {
-                Chorganisation selectChorganisation = chorganisationService.getObject(supplierId);
-                model.setChorganisation(selectChorganisation);
-            }
-
-            encodePassword();
-
-            if (this.userService.updateObject(model)) {
-
-                if (webUserUserRoleService.addBaseNewUserRole(model.getId(), Integer.valueOf(this.organisationTypeId))) {
-                    this.getActionResponse().AssignNewIdResult(model.getId());
-                }
-
-            } else {
-                this.getActionResponse().AddError("Please try again!");
-            }
-
-        } else {
-            this.getActionResponse().AddError("User Name is already exist!!");
-        }
-
-    }
-
-    private void encodePassword() {
-        PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
-        model.setPassword(passwordEncoder.encodePassword(model.getPassword(), null));
     }
 
     public List getInsurers() {
@@ -230,13 +186,13 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     public String updateUserPassword() throws Exception {
 
         try {
-            model.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-            model.setLastModifiedBy(this.getAuthenticatedUser().getUser());
-            encodePassword();
-            this.userService.updateObject(model);
+            
+            ActionResponse response = adminUserService.updateUserPassword(model);
+            setActionResponse(response);
+            
         } catch (Exception ex) {
-            ex.printStackTrace();
-            this.getActionResponse().AddError(ex.getMessage());
+            handleException(this, ex);
+            return ERROR;
         }
         return SUCCESS;
     }
@@ -248,36 +204,30 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
         try {
 
-            WebUser thisObject = model;
-            thisObject.setStatus(!thisObject.getStatus());
-
-            boolean isAllowUpdate = true;
-
-            if (!thisObject.getStatus() && claimService.isUserHasOpenClaim(thisObject.getId())) {
-                String ackMsg = "This user currently has assigned claims. Please reassign these claims before de-activating this user account";
-                getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);
-                isAllowUpdate = false;
-            }
-
-            if (isAllowUpdate) {
-                thisObject.setLastModifiedBy(this.getAuthenticatedUser().getUser());
-                thisObject.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-                this.userService.updateObject(thisObject);
-            }
+            ActionResponse response = adminUserService.triggerUserStatus(model);
+            setActionResponse(response);
 
         } catch (Exception ex) {
-            throw ex;
+            handleException(this, ex);
+            return ERROR;
         }
 
         return SUCCESS;
     }
 
     public String triggerPasswordExpiredStatus() {
-        WebUser thisObject = model;
-        thisObject.setIsExpired(!thisObject.getIsExpired());
-        this.userService.updateObject(thisObject);
-        return SUCCESS;
 
+        try {
+
+            ActionResponse response = adminUserService.triggerPasswordExpiredStatus(model);
+            setActionResponse(response);
+
+        } catch (Exception ex) {
+            handleException(this, ex);
+            return ERROR;
+        }
+
+        return SUCCESS;
     }
     // </editor-fold>
 }

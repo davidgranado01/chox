@@ -25,7 +25,7 @@ public interface WebUserUserRoleService {
     // *****************************
     // EXTRACT 
     // *****************************    
-    public List<WebUserUserRole> getUserRoleMapping(Integer webUserId, Integer webUserRoleId);
+    public List<WebUserUserRole> getMappedUserRole(Integer webUserId);
 
     public List<WebUserRole> getWebUserroles(int orgTypeId);
 

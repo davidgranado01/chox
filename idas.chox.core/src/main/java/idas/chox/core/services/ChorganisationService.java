@@ -13,9 +13,9 @@ public interface ChorganisationService {
 
     public List<Chorganisation> getChorganisation();
 
-    public Chorganisation getObject(int id);
+    public Chorganisation getChorganisation(int id);
 
-    public Chorganisation updateObject(Chorganisation object);
+    public Chorganisation updateChorganisation(Chorganisation object);
 
     public List<Chorganisation> getActiveChorganisation();
 

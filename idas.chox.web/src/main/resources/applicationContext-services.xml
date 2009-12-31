@@ -92,4 +92,27 @@
         <property name="bordereauService" ref="bordereauService"/>
         <property name="businessRulesEngService" ref="businessRulesEngService"/>
     </bean>
+    <bean id="adminUserRoleService" class="idas.chox.service.admin.AdminUserRoleService" singleton="false">
+        <property name="userService" ref="userService" />
+        <property name="claimService" ref="claimService" />
+        <property name="webUserUserRoleService" ref="webUserUserRoleService" />
+        <property name="userWorkgroupService" ref="userWorkgroupService" />
+    </bean>
+    <bean id="adminUserWorkgroupService" class="idas.chox.service.admin.AdminUserWorkgroupService" singleton="false">
+        <property name="userService" ref="userService" />
+        <property name="claimService" ref="claimService" />
+        <property name="workgroupService" ref="workgroupService" />
+        <property name="userWorkgroupService" ref="userWorkgroupService" />
+    </bean>
+    <bean id="adminUserService" class="idas.chox.service.admin.AdminUserService" singleton="false">
+        <property name="lookupService" ref="lookupService" />
+        <property name="insurerService" ref="insurerService" />
+        <property name="chorganisationService" ref="chorganisationService" />
+        <property name="webUserUserRoleService" ref="webUserUserRoleService" />
+        <property name="claimService" ref="claimService" />
+    </bean>
+    <bean id="adminChorganisationService" class="idas.chox.service.admin.AdminChorganisationService" singleton="false">
+        <property name="chorganisationService" ref="chorganisationService" />
+    </bean>
+    
 </beans>

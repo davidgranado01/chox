@@ -98,8 +98,8 @@ public class doInsurerChorganisationAction extends BaseAction implements ModelDr
         try {
 
             if (!service.isInactiveObjectExist(insurerId, chorganisationId)) {
-                model.setChorganisation(chorganisationService.getObject(chorganisationId));
-                model.setInsurer(insurerService.getObject(insurerId));
+                model.setChorganisation(chorganisationService.getChorganisation(chorganisationId));
+                model.setInsurer(insurerService.getInsurer(insurerId));
                 model.setStatus(true);
                 service.updateObject(model);
             } else {

@@ -100,7 +100,7 @@ public class doVehicleClassCeilingAction extends BaseAction implements ModelDriv
         try {
 
             model.setVehicleClass(vehicleClassService.getObject(vehicleClassId));
-            model.setInsurer(insurerService.getObject(Integer.parseInt(selectOrgId)));
+            model.setInsurer(insurerService.getInsurer(Integer.parseInt(selectOrgId)));
             vehicleClassCeilingService.updateObject(model);
 
         } catch (Exception ex) {

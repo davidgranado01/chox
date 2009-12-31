@@ -100,7 +100,7 @@ public class doInsurerBreBandAction extends BaseAction implements ModelDriven<Br
         try {
 
             if (this.isNew) {
-                model.setInsurer(insurerService.getObject(insurerId));
+                model.setInsurer(insurerService.getInsurer(insurerId));
             }
 
             if (service.isBreBandNameExist(model)) {

@@ -45,7 +45,7 @@ public class ThirdPartyAction extends BaseModelAction implements ModelDriven<Thi
         }
 
         if (insurerId >= 0) {
-            model.setInsurer(this.insurerService.getObject(insurerId));
+            model.setInsurer(this.insurerService.getInsurer(insurerId));
         }
         try {
             boolean isTransient = model.isTransient();

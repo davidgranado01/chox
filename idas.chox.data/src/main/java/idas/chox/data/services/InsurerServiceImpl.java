@@ -51,7 +51,7 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
         return insurer;
     }
 
-    public Insurer getObject(int id) {
+    public Insurer getInsurer(int id) {
         return (Insurer) get(Insurer.class, id);
     }
 
@@ -72,7 +72,7 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
         return insurer;
     }
 
-    public Insurer updateObject(Insurer object) {
+    public Insurer updateInsurer(Insurer object) {
 
         try {
             save(object);
