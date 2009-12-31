@@ -5,6 +5,7 @@ import idas.chox.core.model.WebUserRole;
 import idas.chox.web.security.AcegiPrincipal;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.viewdata.ActionResponse;
+import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.Authentication;
@@ -101,6 +102,12 @@ public class BaseAction extends ActionSupport {
         return actionResponse;
     }
 
+    public String getActionResponseString()
+    {
+       JSONObject jsonObject = JSONObject.fromObject(getActionResponse());
+       return jsonObject.toString();
+    }
+
     public Integer getRoleTypeForHelpFile() {
 
         /*
@@ -130,7 +137,7 @@ public class BaseAction extends ActionSupport {
     }
 
     protected void handleException(Object source,Exception ex) {
-        logger.error(String.format("%1$s threw an Exception : %2$s",source.getClass().getName(), ex.getMessage()));
+        logger.error(ex.getMessage());
         getActionResponse().AddError(ex.getMessage());
     }
 }

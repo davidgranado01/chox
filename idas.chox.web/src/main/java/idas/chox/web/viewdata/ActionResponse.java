@@ -2,7 +2,6 @@ package idas.chox.web.viewdata;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.sf.json.JSONObject;
 
 public class ActionResponse {
 
@@ -81,13 +80,6 @@ public class ActionResponse {
      */
     public void setErrors(List<String> errors) {
         this.errors = errors;
-    }
-
-    @Override
-    public String toString()
-    {
-       JSONObject jsonObject = JSONObject.fromObject(this);
-       return jsonObject.toString();
     }
 
     /**

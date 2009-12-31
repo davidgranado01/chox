@@ -6,4 +6,4 @@
 
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<s:property value="ActionResponse" escape="false" />
+<s:property value="ActionResponseString" escape="false" />
