@@ -58,9 +58,28 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring</artifactId>
+            <artifactId>spring-core</artifactId>
             <version>2.5.6.SEC01</version>
-            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>2.5.6.SEC01</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>2.5.6.SEC01</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>2.5.6.SEC01</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>2.5.6.SEC01</version>
         </dependency>
         <dependency>
             <groupId>xalan</groupId>
@@ -82,7 +101,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>2.5.6</version>
+            <version>2.5.6.SEC01</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -94,13 +113,16 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
             <version>3.2-FINAL</version>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>net.sf.jxls</groupId>
             <artifactId>jxls-core</artifactId>
             <version>0.9.8</version>
-            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>2.2</version>
         </dependency>
     </dependencies>
 </project>

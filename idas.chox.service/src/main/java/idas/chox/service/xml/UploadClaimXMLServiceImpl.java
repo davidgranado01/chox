@@ -29,11 +29,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionException;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 public class UploadClaimXMLServiceImpl extends SecureDataService implements UploadClaimXMLService {
 
@@ -268,45 +264,27 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return bordereauResult;
     }
 
+    @Transactional
     private ClaimResult saveXMLRecord(ClaimResult claimResult) {
 
-        TransactionTemplate transactionTemplate = new TransactionTemplate(getTransactionManager());
-        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        claimService.saveObjectForXMLUploader(claimResult);
 
-        try {
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
 
-            final ClaimResult readOnlyXmlParseResult = claimResult;
+            auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, "", claimResult.getClaim());
 
-            transactionTemplate.execute(
-                    new TransactionCallbackWithoutResult() {
-
-                        public void doInTransactionWithoutResult(TransactionStatus status) {
-
-                            claimService.saveObjectForXMLUploader(readOnlyXmlParseResult);
-
-                            if (readOnlyXmlParseResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
-
-                                auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, "", readOnlyXmlParseResult.getClaim());
-
-                                if (readOnlyXmlParseResult.getClaim().getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)) {
-                                    auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, readOnlyXmlParseResult.getClaim(), 1);
-                                } else if (readOnlyXmlParseResult.getClaim().getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
-                                    auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, readOnlyXmlParseResult.getClaim(), 1);
-                                    auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, readOnlyXmlParseResult.getClaim(), 2);
-                                }
-                            }
-
-                            if (readOnlyXmlParseResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
-                                auditTrailService.logAuditLog(readOnlyXmlParseResult.getClaim().getStatus(), readOnlyXmlParseResult.getClaim().getPreviousStatus(), readOnlyXmlParseResult.getClaim());
-
-                            }
-                        }
-                    });
-
-        } catch (TransactionException e) {
-            // xmlParseResult = XmlHelper.setErrorMessage(xmlParseResult, e.getMessage(), false);
+            if (claimResult.getClaim().getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)) {
+                auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, claimResult.getClaim(), 1);
+            } else if (claimResult.getClaim().getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
+                auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, claimResult.getClaim(), 1);
+                auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claimResult.getClaim(), 2);
+            }
         }
 
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
+            auditTrailService.logAuditLog(claimResult.getClaim().getStatus(), claimResult.getClaim().getPreviousStatus(), claimResult.getClaim());
+
+        }
         return claimResult;
     }
 

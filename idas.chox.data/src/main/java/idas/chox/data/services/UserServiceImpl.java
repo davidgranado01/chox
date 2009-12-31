@@ -16,7 +16,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 
-public class UserServiceImpl extends DataService implements UserService {
+public class UserServiceImpl extends BaseDataService implements UserService {
 
     public UserServiceImpl() {
     }

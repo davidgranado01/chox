@@ -4,7 +4,7 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.util.DateHelper;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.AverageSettlementAmountDtlViewData;
 import idas.chox.service.reports.viewdata.AverageSettlementAmountReportObject;
 import idas.chox.service.reports.viewdata.AverageSettlementAmountRowData;
@@ -22,7 +22,7 @@ public class AverageSettlementAmountReport implements Report {
 
     Map externalParameter;
     List<String> reportParameterNames;
-    private DataService dataService;
+    private BaseDataService baseDataService;
 
     public AverageSettlementAmountReport() {
         reportParameterNames = new ArrayList<String>();
@@ -59,7 +59,7 @@ public class AverageSettlementAmountReport implements Report {
             if (!insurerId.equalsIgnoreCase("")) {
 
                 iInsurerId = Integer.valueOf(insurerId);
-                ins = reportHelper.getInsurer(iInsurerId, this.dataService);
+                ins = reportHelper.getInsurer(iInsurerId, this.baseDataService);
 
             } else {
                 ins = currentUser.getUser().getInsurer();
@@ -195,7 +195,7 @@ public class AverageSettlementAmountReport implements Report {
 
             Map extParameters = new HashMap();
             extParameters.put("pInsurerId", insurerId);
-            List result = dataService.externalQuery(sb.toString(), extParameters, IdLookupItem.class);
+            List result = baseDataService.externalQuery(sb.toString(), extParameters, IdLookupItem.class);
 
             for (Object o : result) {
                 IdLookupItem data = (IdLookupItem) o;
@@ -237,7 +237,7 @@ public class AverageSettlementAmountReport implements Report {
         paramMap.put("pMonth", iMonth);
         paramMap.put("pYear", iYear);
 
-        List result = dataService.externalQuery(query, paramMap);
+        List result = baseDataService.externalQuery(query, paramMap);
 
         for (Object o : result) {
             Map data = (Map) o;
@@ -257,8 +257,8 @@ public class AverageSettlementAmountReport implements Report {
         return new ExcelReportBuilder();
     }
 
-    public void setDataService(DataService dataService) {
-        this.dataService = dataService;
+    public void setDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
 
     public String getReportCode() {

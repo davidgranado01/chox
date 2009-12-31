@@ -44,7 +44,7 @@ public class GetCommentsAction extends BaseModelAction {
 
     public String getComments() {
 
-        List<Comment> commentsData = this.service.getCommentByClaimIdFilterByOrg(claimId, getAuthenticatedUser().getUser().getOrganisationType());
+        List<Comment> commentsData = this.service.getCommentByClaimIdFilterByOrg(claimId, getAuthenticatedUser().getOrganisationType());
 
         comments = new ArrayList<CommentViewData>();
         for (Comment c : commentsData) {

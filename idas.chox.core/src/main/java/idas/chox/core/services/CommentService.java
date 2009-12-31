@@ -17,6 +17,4 @@ public interface CommentService {
     public List<Comment> getCommentByClaim(Claim claim);
 
     Comment getObject(int id);
-
-    public void createNewObject(Comment comment);
 }

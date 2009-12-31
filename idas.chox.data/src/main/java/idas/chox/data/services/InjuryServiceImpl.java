@@ -48,7 +48,6 @@ public class InjuryServiceImpl extends SecureDataService implements InjuryServic
     }
 
     public void updateObject(Injury injury) {
-
         save(injury);
     }
 

@@ -103,8 +103,7 @@ public class ProcessClaimsAction extends BaseAction {
             bordereauResult = this.service.processClaimXMLFile(this.file, this.filename.toLowerCase());
 
             // SET CREATED BY USER AND CREATED DATE
-            PermissionedUser user = this.getAuthenticatedUser();
-            this.bordereauResult.setCreatedBy(user.getUser());
+            this.bordereauResult.setCreatedBy( this.getAuthenticatedUser());
             this.bordereauResult.setCreatedDate(DateHelper.getCurrentTimeStamp());
 
             // SET STATUS

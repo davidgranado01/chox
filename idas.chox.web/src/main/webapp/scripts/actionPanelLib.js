@@ -12,36 +12,10 @@ var actionPanel = function(){
         }
         return false;
     }
-
-    function checkClaimNumberDuplicationAndSubmit(sClaimNumber, sClaimId, form)
+    
+    function registerAction(name)
     {
-        if(sClaimNumber && sClaimNumber.length > 0)
-        {
-            var url = "<%=request.getContextPath()%>/ajax/checkIsClaimNumberDuplicated.action";
-            var param = {
-                claimNumber: sClaimNumber,
-                claimId: sClaimId
-            };
-
-            ajax.loadJson(url,param,function(data){
-                if(data.result && data.result == "yes"){
-                    if(confirm("The claim number you have supplied is already associated with another claim(s). Do you wish to continue?"))
-                    {
-                        form.submit();
-                    }
-                }
-                else form.submit();
-            });
-
-        }
-        else{
-            form.submit();
-        }
-    }
-
-    function registerAction(actionName)
-    {
-        $("#actionName").val(actionName);
+        $("#name").val(name);
     }
 
     function handleExtraActionChange(){
@@ -55,7 +29,6 @@ var actionPanel = function(){
     }
     
     return {        
-        checkClaimNumberDuplicationAndSubmit : checkClaimNumberDuplicationAndSubmit,
         registerAction : registerAction,
         onExtraActionChange : handleExtraActionChange
     };

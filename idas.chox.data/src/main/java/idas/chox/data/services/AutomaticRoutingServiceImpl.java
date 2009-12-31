@@ -7,7 +7,7 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-public class AutomaticRoutingServiceImpl extends DataService implements AutomaticRoutingService {
+public class AutomaticRoutingServiceImpl extends SecureDataService implements AutomaticRoutingService {
 
     public Boolean saveObj(AutomaticRouting obj) {
 

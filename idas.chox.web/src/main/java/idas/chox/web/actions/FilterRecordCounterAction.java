@@ -28,7 +28,7 @@ public class FilterRecordCounterAction extends BaseAction {
 
     public FilterAccessibility getFilterAccessibility() {
         if (filterAccessibility == null) {
-            filterAccessibility = getApplicationAccessibility().getFilterAccessibility(super.getAuthenticatedUser().getAuthorities());
+            filterAccessibility = getApplicationAccessibility().getFilterAccessibility(getAuthenticatedUser().getRoles());
         }
         return filterAccessibility;
     }

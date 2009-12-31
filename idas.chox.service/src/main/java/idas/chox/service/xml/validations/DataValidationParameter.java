@@ -1,5 +1,6 @@
-package idas.chox.core.xmlValidation;
+package idas.chox.service.xml.validations;
 
+import idas.chox.core.xmlValidation.*;
 import idas.chox.core.util.DocumentHelper;
 import java.io.File;
 import java.io.IOException;

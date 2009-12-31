@@ -9,7 +9,7 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.UserService;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import idas.chox.service.dashboard.ChoDashboardBuilder;
 import idas.chox.service.dashboard.DashBoardViewData;
 import idas.chox.service.dashboard.InsurerDashboardBuilder;
@@ -23,7 +23,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     private DashBoardViewData monthToDateInsurerBoardViewData;
     private DashBoardViewData weekToDateInsurerBoardViewData;
     private DashBoardViewData cumulativeInsurerBoardViewData;
-    private DataService dataService;
+    private BaseDataService baseDataService;
     private LookupService lookupService;
     private UserService userService;
     private ClaimService claimService;
@@ -38,7 +38,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     public String getLastProcessDate() {
 
         String query = "select to_char(max(process_date), 'YYYY-MM-DD HH24:MI:SS') as last_process_date from claim_summary_process";
-        List result = dataService.externalQuery(query, new HashMap());
+        List result = baseDataService.externalQuery(query, new HashMap());
 
         if (!result.isEmpty()) {
             Map data = (Map) result.get(0);
@@ -50,13 +50,13 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     }
 
     public String showInsurerBoardHeader() {
-        Insurer currentInsurer = this.getAuthenticatedUser().getUser().getInsurer();
+        Insurer currentInsurer = this.getAuthenticatedUser().getInsurer();
         numberOfActiveUser = userService.getNumInsActiveUser(currentInsurer.getId());
         return SUCCESS;
     }
 
     public String showChoBoardHeader() {
-        Chorganisation currentCho = this.getAuthenticatedUser().getUser().getChorganisation();
+        Chorganisation currentCho = this.getAuthenticatedUser().getChorganisation();
         numberOfActiveUser = userService.getNumChoActiveUser(currentCho.getId());
         return SUCCESS;
     }
@@ -65,8 +65,8 @@ public class DashboardAction extends BaseAction implements ParameterAware {
 
         try {
 
-            Insurer currentInsurer = this.getAuthenticatedUser().getUser().getInsurer();
-            InsurerDashboardBuilder builder = new InsurerDashboardBuilder(dataService, currentInsurer, extParameters);
+            Insurer currentInsurer = this.getAuthenticatedUser().getInsurer();
+            InsurerDashboardBuilder builder = new InsurerDashboardBuilder(baseDataService, currentInsurer, extParameters);
             monthToDateInsurerBoardViewData = builder.getMonthToDate();
             weekToDateInsurerBoardViewData = builder.getWeekToDate();
             cumulativeInsurerBoardViewData = builder.getCumulative();
@@ -82,8 +82,8 @@ public class DashboardAction extends BaseAction implements ParameterAware {
 
         try {
 
-            Chorganisation currentChorganisation = this.getAuthenticatedUser().getUser().getChorganisation();
-            ChoDashboardBuilder builder = new ChoDashboardBuilder(dataService, currentChorganisation, extParameters);
+            Chorganisation currentChorganisation = this.getAuthenticatedUser().getChorganisation();
+            ChoDashboardBuilder builder = new ChoDashboardBuilder(baseDataService, currentChorganisation, extParameters);
             monthToDateInsurerBoardViewData = builder.getMonthToDate();
             weekToDateInsurerBoardViewData = builder.getWeekToDate();
             cumulativeInsurerBoardViewData = builder.getCumulative();
@@ -93,8 +93,8 @@ public class DashboardAction extends BaseAction implements ParameterAware {
         return SUCCESS;
     }
 
-    public void setDataService(DataService dataService) {
-        this.dataService = dataService;
+    public void setDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
 
     public void setClaimService(ClaimService claimService) {

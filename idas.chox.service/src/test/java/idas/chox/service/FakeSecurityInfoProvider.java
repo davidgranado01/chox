@@ -93,6 +93,11 @@ public class FakeSecurityInfoProvider implements SecurityInfoProvider  {
         this.currentUser = currentUser;
     }
 
+    @Override
+    public boolean isInRoleOf(String role) {
+        return true;
+    }
+
 
 
 

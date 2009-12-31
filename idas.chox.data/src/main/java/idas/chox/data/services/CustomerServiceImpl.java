@@ -10,6 +10,7 @@ public class CustomerServiceImpl extends SecureDataService implements CustomerSe
         return (Customer) get(Customer.class, id);
     }
 
+    
     public void updateObject(Customer customer) {
         save(customer);
     }

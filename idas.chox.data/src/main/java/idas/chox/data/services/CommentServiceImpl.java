@@ -84,9 +84,5 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
 
     public Comment getObject(int id) {
         return (Comment) get(Comment.class, id);
-    }
-
-    public void createNewObject(Comment comment) {        
-        this.save(comment);
-    }
+    }    
 }

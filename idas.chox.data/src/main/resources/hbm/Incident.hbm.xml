@@ -13,7 +13,7 @@
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="is_police_involved" name="isPoliceInvolved" not-null="true"/>
-    <one-to-one cascade="save-update,delete" name="witness" class="idas.chox.core.model.Witness" property-ref="incident"/>
-    <one-to-one cascade="save-update,delete" name="injury" class="idas.chox.core.model.Injury" property-ref="incident"/>
+    <one-to-one cascade="save-update,delete" class="idas.chox.core.model.Witness" name="witness" property-ref="incident"/>
+    <one-to-one cascade="save-update,delete" class="idas.chox.core.model.Injury" name="injury" property-ref="incident"/>
   </class>
 </hibernate-mapping>

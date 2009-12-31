@@ -1,7 +1,7 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.services.LookupService;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.Report;
 import idas.chox.service.reports.ReportFactory;
 import java.io.InputStream;
@@ -16,7 +16,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
     private Map parametersMap;
     private InputStream reportStream;
     private String reportName;
-    private DataService dataService;
+    private BaseDataService baseDataService;
     private LookupService lookupService;
     private List insurers;
     private List suppliers;
@@ -33,7 +33,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
         Report report = ReportFactory.getReportByName(reportName);
         report.setExternalParameter(parametersMap);
-        report.setDataService(dataService);
+        report.setDataService(baseDataService);
         reportStream = report.build();
         String returnStr = "";
 
@@ -85,8 +85,8 @@ public class ReportAction extends BaseAction implements ParameterAware {
         return suppliers;
     }
 
-    public void setDataService(DataService dataService) {
-        this.dataService = dataService;
+    public void setDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
 
     public void setLookupService(LookupService lookupService) {
@@ -94,6 +94,6 @@ public class ReportAction extends BaseAction implements ParameterAware {
     }
 
     public boolean getIsCH() {
-        return getAuthenticatedUser().getUser().isClaimHandler();
+        return getAuthenticatedUser().isClaimHandler();
     }
 }

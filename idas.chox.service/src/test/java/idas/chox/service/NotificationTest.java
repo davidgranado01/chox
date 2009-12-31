@@ -31,10 +31,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- *
- * @author Emmanuel
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext-Notification-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml"})
 public class NotificationTest {
@@ -144,9 +140,8 @@ public class NotificationTest {
         newEcd.setEcdDate(DateHelper.Parse("10/10/2009"));
         c.addHireMonitoringEcd(newEcd);
         // TODO: CHECK REQUIRED
-        for(Notification notification : newECDAddedChecker.getAnomalousNotifications(c))
-        {
-             c.AddNotification(notification);
+        for (Notification notification : newECDAddedChecker.getAnomalousNotifications(c)) {
+            c.AddNotification(notification);
         }
         Assert.assertTrue(c.getIsIsAnomalies());
         Assert.assertEquals(1, c.getNotifications().size());
@@ -168,9 +163,8 @@ public class NotificationTest {
         c.getHireMonitoringDetail().setRepairBookInDate(friday);
         // TODO: CHECK REQUIRED
         // c.AddNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(c));
-        for(Notification notification :  hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(c))
-        {
-             c.AddNotification(notification);
+        for (Notification notification : hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(c)) {
+            c.AddNotification(notification);
         }
         Assert.assertTrue(c.getIsIsAnomalies());
         Assert.assertEquals(2, c.getNotifications().size());

@@ -52,9 +52,9 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
 
         claimhandlers = new ArrayList<IdLookupItem>();
 
-        if (getAuthenticatedUser().getIsINS()) {
+        if (getIsInsurer()) {
 
-            insurerId = getAuthenticatedUser().getUser().getInsurer().getId();
+            insurerId = getAuthenticatedUser().getInsurer().getId();
         }
 
         if (insurerId > 1) {

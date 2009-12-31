@@ -5,7 +5,7 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.core.util.TextHelper;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.PaymentReport;
 import idas.chox.service.security.PermissionedUser;
 import java.io.InputStream;
@@ -19,7 +19,7 @@ public class InvoiceReport implements Report {
 
     Map externalParameter;
     List<String> reportParameterNames;
-    private DataService dataService;
+    private BaseDataService baseDataService;
     private WebUser user = new WebUser();
 
     public InvoiceReport() {
@@ -130,7 +130,7 @@ public class InvoiceReport implements Report {
             paramMap.put("pChorganisationId", creditHireId);
             paramMap.put("pInsurerId", insurerId);
 
-            List result = dataService.externalQuery(query, paramMap);
+            List result = baseDataService.externalQuery(query, paramMap);
 
             List<PaymentReport> payments = new ArrayList<PaymentReport>();
 
@@ -165,8 +165,8 @@ public class InvoiceReport implements Report {
         return new ExcelReportBuilder();
     }
 
-    public void setDataService(DataService dataService) {
-        this.dataService = dataService;
+    public void setDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
 
     public String getReportCode() {
@@ -181,7 +181,7 @@ public class InvoiceReport implements Report {
         if (!sObjectId.equalsIgnoreCase("")) {
 
             Integer iChorganisation = Integer.valueOf(sObjectId);
-            chorganisation = reportHelper.getChorganisation(iChorganisation, this.dataService);
+            chorganisation = reportHelper.getChorganisation(iChorganisation, this.baseDataService);
         } else {
             chorganisation = user.getChorganisation();
         }

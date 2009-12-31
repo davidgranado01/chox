@@ -2,7 +2,7 @@ package idas.chox.service.reports;
 
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.MathHelper;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.OverviewSummaryLineItem;
 import idas.chox.service.reports.viewdata.OverviewSummaryLineItemDetail;
 import idas.chox.service.reports.viewdata.OverviewSummaryReportByOrg;
@@ -20,7 +20,7 @@ public class OverviewSummaryReport implements Report {
 
     Map externalParameter;
     List<String> reportParameterNames;
-    private DataService dataService;
+    private BaseDataService baseDataService;
     private PermissionedUser currentUser;
     private Date dataStart;
     private Date dataEnd;
@@ -107,7 +107,7 @@ public class OverviewSummaryReport implements Report {
             paramMap.put("pUploadDateTo", dataEnd);
             paramMap.put("pUserOrgId", userOrgId);
 
-            List result = dataService.externalQuery(query, paramMap);
+            List result = baseDataService.externalQuery(query, paramMap);
 
             List<OverviewSummaryReportByOrg> overviewSummaryReportByOrgs = new ArrayList<OverviewSummaryReportByOrg>();
 
@@ -284,7 +284,7 @@ public class OverviewSummaryReport implements Report {
         paramMap.put("pUploadDateTo", dataEnd);
         paramMap.put("pUserOrgId", userOrgId);
 
-        List result = dataService.externalQuery(query, paramMap);
+        List result = baseDataService.externalQuery(query, paramMap);
 
         for (Object o : result) {
             Map data = (Map) o;
@@ -370,8 +370,8 @@ public class OverviewSummaryReport implements Report {
         return new ExcelReportBuilder();
     }
 
-    public void setDataService(DataService dataService) {
-        this.dataService = dataService;
+    public void setDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
 
     public void setExternalParameter(Map parameters) {

@@ -36,4 +36,10 @@ public class Comment extends Entity implements Serializable {
         this.visibilityType = visibilityType;
     }
 
+    public static Comment New(int visibilityType, String msg) {
+        Comment comment = new Comment();
+        comment.setVisibilityType(visibilityType);
+        comment.setComment(msg);
+        return comment;
+    }
 }

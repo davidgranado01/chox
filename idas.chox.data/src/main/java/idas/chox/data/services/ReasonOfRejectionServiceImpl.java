@@ -13,6 +13,7 @@ public class ReasonOfRejectionServiceImpl extends SecureDataService implements R
         return (ReasonOfRejection) get(ReasonOfRejection.class, id);
     }
 
+    
     public void updateObject(ReasonOfRejection reasonOfRejection) {
         save(reasonOfRejection);
     }

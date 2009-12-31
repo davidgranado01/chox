@@ -4,7 +4,6 @@
  */
 package idas.chox.web.actions;
 
-import idas.chox.core.model.WebUser;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.UserService;
 import idas.chox.service.security.PermissionedUser;
@@ -13,7 +12,6 @@ public class AdminAction extends BaseAction {
 
     private String adminPanelName;
     private String actionResult;
-    private PermissionedUser currentUser = getAuthenticatedUser();
 
     public String adminPanel() {
         return SUCCESS;

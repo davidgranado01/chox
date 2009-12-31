@@ -8,7 +8,7 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.MathHelper;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.ClaimRejectedReportObject;
 import idas.chox.service.reports.viewdata.ClaimRejection;
 import idas.chox.service.reports.viewdata.ClaimRejectionLineItem;
@@ -25,7 +25,7 @@ public class ClaimRejectedReport implements Report {
 
     Map externalParameter;
     List<String> reportParameterNames;
-    private DataService dataService;
+    private BaseDataService baseDataService;
 
     public ClaimRejectedReport() {
         reportParameterNames = new ArrayList<String>();
@@ -154,7 +154,7 @@ public class ClaimRejectedReport implements Report {
         paramMap.put("pCreatedDateFrom", dataStart);
         paramMap.put("pCreatedDateTo", dataEnd);
 
-        List result = dataService.externalQuery(query, paramMap);
+        List result = baseDataService.externalQuery(query, paramMap);
 
         for (Object o : result) {
 
@@ -245,7 +245,7 @@ public class ClaimRejectedReport implements Report {
         /* query = query.replaceAll(":pOrgId", iOrgId.toString());
         query = query.replaceAll(":pCreatedDateFrom", "'" + DateHelper.DBDateFormat.format(dataStart) + "'");
         query = query.replaceAll(":pCreatedDateTo", "'" + DateHelper.DBDateFormat.format(dataEnd) + "'");*/
-        //List result = dataService.externalQuery(query);
+        //List result = baseDataService.externalQuery(query);
 
         //Emmanuel
         //27-07-2009
@@ -255,7 +255,7 @@ public class ClaimRejectedReport implements Report {
         paramMap.put("pCreatedDateFrom", dataStart);
         paramMap.put("pCreatedDateTo", dataEnd);
 
-        List result = dataService.externalQuery(query, paramMap);
+        List result = baseDataService.externalQuery(query, paramMap);
 
         Integer iClaimTotalCount = 0;
         Integer iClaimRejectedTotalCount = 0;
@@ -294,7 +294,7 @@ public class ClaimRejectedReport implements Report {
 
         List<ClaimRejectionLineItem> reportRows = new ArrayList<ClaimRejectionLineItem>();
         String query = "select id, name from reason_of_rejection where type='Claim' and status = true order by id asc";
-        List result = dataService.externalQuery(query);
+        List result = baseDataService.externalQuery(query);
 
         for (Object o : result) {
             Map data = (Map) o;
@@ -318,8 +318,8 @@ public class ClaimRejectedReport implements Report {
         return new ExcelReportBuilder();
     }
 
-    public void setDataService(DataService dataService) {
-        this.dataService = dataService;
+    public void setDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
 
     public String getReportCode() {

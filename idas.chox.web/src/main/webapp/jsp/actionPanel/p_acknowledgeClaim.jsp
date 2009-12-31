@@ -104,7 +104,7 @@
                 var sClaimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
                 var sClaimId = $("#claimId").val();
                 var form = $("#formAcknowledgeAction");
-                actionPanel.checkClaimNumberDuplicationAndSubmit(sClaimNumber,sClaimId,form);
+                checkClaimNumberDuplicationAndSubmit(sClaimNumber,sClaimId,form);
             }
         }
     }
@@ -120,19 +120,46 @@
             var sClaimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
             var sClaimId = $("#claimId").val();
             var form = $("#formAcknowledgeAction");
-            actionPanel.checkClaimNumberDuplicationAndSubmit(sClaimNumber, sClaimId, form);
+            checkClaimNumberDuplicationAndSubmit(sClaimNumber, sClaimId, form);
         }
     }
+
+    function checkClaimNumberDuplicationAndSubmit(sClaimNumber, sClaimId, form)
+    {
+        if(sClaimNumber && sClaimNumber.length > 0)
+        {
+            var url = "<%=request.getContextPath()%>/prv/p/checkIsClaimNumberDuplicated.action";
+            var param = {
+                claimNumber: sClaimNumber,
+                claimId: sClaimId
+            };
+
+            ajax.loadJson(url,param,function(data){
+                if(data.result && data.result == "yes"){
+                    if(confirm("The claim number you have supplied is already associated with another claim(s). Do you wish to continue?"))
+                    {
+                        form.submit();
+                    }
+                }
+                else form.submit();
+            });
+
+        }
+        else{
+            form.submit();
+        }
+    }
+
                     
 </script>
 
-<form action="<%=request.getContextPath()%>/prv/acknowledge.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
+<form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
 
     <fieldset class="x-fieldset">
         <legend>Claim Acknowledgement - Action Required</legend>
         <div>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="actionName" name="actionName" />
+            <s:hidden id="name" name="name" />
             <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
             <div>
                 <div class="status-info">
@@ -207,11 +234,11 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice" nowrap>
-                                <input type="button" value="Reject" onclick="javascript: return doAcknowledgeRejectClaim();" />
-                                <input type="button" value="Acknowledge" onclick="javascript: return doAcknowledgeSubmit('accept')"  />
-                                <input type="button" value="Refer To Engineer" onclick="javascript: return doAcknowledgeSubmit('refer');" />
-                                <input type="button" value="Refer to FNOL" onclick="javascript: return doAcknowledgeSubmit('referFNOL');" />
-                                <input type="button" value="Claim Pending" onclick="javascript: return doAcknowledgeSubmit('pending');" />
+                                <input type="button" value="Reject" onclick="doAcknowledgeRejectClaim();" />
+                                <input type="button" value="Acknowledge" onclick="doAcknowledgeSubmit('acknowledgeClaim')"  />
+                                <input type="button" value="Refer To Engineer" onclick="doAcknowledgeSubmit('refer');" />
+                                <input type="button" value="Refer to FNOL" onclick="doAcknowledgeSubmit('referFNOL');" />
+                                <input type="button" value="Claim Pending" onclick="doAcknowledgeSubmit('pending');" />
                             </td>
                         </tr>
                     </table>

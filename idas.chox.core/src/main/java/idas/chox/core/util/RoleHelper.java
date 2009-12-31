@@ -3,6 +3,7 @@ package idas.chox.core.util;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 public class RoleHelper {

@@ -2,11 +2,11 @@ package idas.chox.web.security;
 
 import idas.chox.core.model.AccessibilityEditable;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.WebUser;
 import idas.chox.core.util.AccessibilityHelper;
-import idas.chox.web.actions.BaseAction;
-import org.springframework.security.GrantedAuthority;
+import java.util.Set;
 
-public class TabAccessibility extends BaseAction {
+public class TabAccessibility {
 
     private short claimDetailTabAccessibility;
     private short invoiceDetailTabAccessibility;
@@ -16,31 +16,25 @@ public class TabAccessibility extends BaseAction {
     private short paymentPackTabAccessibility;
     private short auditTrailTabAccessibility;
     private Claim claim;
-    private GrantedAuthority[] grantedAuthorities;
+    private Set roles;
+    private WebUser user;
     private ApplicationAccessibility applicationAccessibility;
 
-    public TabAccessibility(ApplicationAccessibility applicationAccessibility, GrantedAuthority[] grantedAuthorities, Claim claim) {
+    public TabAccessibility(ApplicationAccessibility applicationAccessibility,WebUser user, Claim claim) {
 
-        setApplicationAccessibility(applicationAccessibility);
-        setGrantedAuthorities(grantedAuthorities);
-        setClaim(claim);
-
-        claimDetailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_CLAIM_DETAIL, grantedAuthorities, claim.getStatus());
-        hireMonitoringTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_HIRE_MONITORING, grantedAuthorities, claim.getStatus());
-        historyTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_HISTORY, grantedAuthorities, claim.getStatus());
-        invoiceDetailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_INVOICE_DETAIL, grantedAuthorities, claim.getStatus());
-        paymentPackTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_PAYMENT_PACK, grantedAuthorities, claim.getStatus());
-        notesTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_NOTES, grantedAuthorities, claim.getStatus());
-        auditTrailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_AUDIT_TRAIL, grantedAuthorities, claim.getStatus());
-
-    }
-
-    public Claim getClaim() {
-        return claim;
-    }
-
-    public void setClaim(Claim claim) {
+        this.applicationAccessibility = applicationAccessibility;
+        this.user = user;
+        this.roles = user.getRoles();
         this.claim = claim;
+
+        claimDetailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_CLAIM_DETAIL, roles, claim.getStatus());
+        hireMonitoringTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_HIRE_MONITORING, roles, claim.getStatus());
+        historyTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_HISTORY, roles, claim.getStatus());
+        invoiceDetailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_INVOICE_DETAIL, roles, claim.getStatus());
+        paymentPackTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_PAYMENT_PACK, roles, claim.getStatus());
+        notesTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_NOTES, roles, claim.getStatus());
+        auditTrailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_AUDIT_TRAIL, roles, claim.getStatus());
+
     }
 
     public short getClaimDetailTabAccessibility() {
@@ -71,14 +65,6 @@ public class TabAccessibility extends BaseAction {
         return doTabAccessibilityFilter(auditTrailTabAccessibility, ApplicationAccessibility.TAB_AUDIT_TRAIL);
     }
 
-    public GrantedAuthority[] getGrantedAuthorities() {
-        return grantedAuthorities;
-    }
-
-    public void setGrantedAuthorities(GrantedAuthority[] grantedAuthorities) {
-        this.grantedAuthorities = grantedAuthorities;
-    }
-
     public ApplicationAccessibility getApplicationAccessibility() {
         return applicationAccessibility;
     }
@@ -91,9 +77,9 @@ public class TabAccessibility extends BaseAction {
 
         if (iResult >= 2) {
 
-            AccessibilityEditable accEditable = this.applicationAccessibility.checkTabEditableCheck(tabName, this.grantedAuthorities, claim.getStatus());
+            AccessibilityEditable accEditable = this.applicationAccessibility.checkTabEditableCheck(tabName, this.roles, claim.getStatus());
 
-            if (!AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, getAuthenticatedUser().getUser())) {
+            if (!AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, user)) {
                 iResult = 1;
             }
 

@@ -22,7 +22,7 @@ public class WorkgroupDropDownAction extends BaseAction {
 
     public Integer getOrgId() {
         if (getIsInsurer()) {
-            orgId = getAuthenticatedUser().getUser().getInsurer().getId();
+            orgId = getAuthenticatedUser().getInsurer().getId();
         }
         return orgId;
     }
@@ -51,8 +51,7 @@ public class WorkgroupDropDownAction extends BaseAction {
 
     @Override
     public String execute() throws Exception {
-        PermissionedUser user = getAuthenticatedUser();
-        workgroups = service.getWorkgroups(user.getUser(), true);
+        workgroups = service.getWorkgroups(getAuthenticatedUser(), true);
         return SUCCESS;
     }
 }

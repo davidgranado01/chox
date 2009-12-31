@@ -1,8 +1,8 @@
 package idas.chox.core.services;
 
-import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.WebUserUserRole;
 import java.util.List;
+import java.util.Set;
 
 public interface WebUserUserRoleService {
 
@@ -27,7 +27,7 @@ public interface WebUserUserRoleService {
     // *****************************    
     public List<WebUserUserRole> getMappedUserRole(Integer webUserId);
 
-    public List<WebUserRole> getWebUserroles(int orgTypeId);
+    public Set getWebUserroles(int orgTypeId);
 
     public List getSelectedUserAvailableRoleLookupItem(int orgTypeId, Integer webUserId);
 

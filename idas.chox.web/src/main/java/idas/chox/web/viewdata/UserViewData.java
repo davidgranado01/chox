@@ -7,6 +7,7 @@ package idas.chox.web.viewdata;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.util.DateHelper;
+import java.util.Iterator;
 import java.util.Set;
 
 public class UserViewData {
@@ -70,9 +71,10 @@ public class UserViewData {
 
         if (iRoles > 0) {
 
-            for (Object o : roles) {
-                WebUserRole webUserrole = (WebUserRole) o;
 
+            Iterator itr = roles.iterator();
+            while (itr.hasNext()) {
+                WebUserRole webUserrole = (WebUserRole) itr.next();
                 if (!webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHO) && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHOX) && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS)) {
 
                     sRole = sRole + webUserrole.getDescription() + ", ";
@@ -144,6 +146,4 @@ public class UserViewData {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
-
 }

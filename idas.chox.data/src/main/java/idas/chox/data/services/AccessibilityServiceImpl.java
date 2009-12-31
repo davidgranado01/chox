@@ -13,7 +13,7 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-public class AccessibilityServiceImpl extends DataService implements AccessibilityService {
+public class AccessibilityServiceImpl extends BaseDataService implements AccessibilityService {
 
     public HashMap getAccessibilityMap() {
 

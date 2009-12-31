@@ -108,7 +108,7 @@
 
         var isInsurerUser = <s:property value="isInsurer"/>;
         if(isInsurerUser){
-            insurerId = <s:property value="UserOrganisationId"/>;
+            insurerId = '<s:property value="OrganisationId"/>';
         }else{
             if($("#insurerId").val()!=null){
                 insurerId = $("#insurerId").val();

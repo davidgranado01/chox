@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="byName">
+    <bean id="workflowContext" class="idas.chox.service.workflow.ClaimProcessWorkflowContext">
+        <property name="dataService" ref="dataService"></property>
+    </bean>
+    <bean id="activityFactory" class="idas.chox.core.workflow.ActivityFactory">
+        <property name="activities">
+            <map>
+                <entry key="newClaim" value-ref="newClaim"/>
+                <entry key="assignOwner" value-ref="assignOwner"/>
+                <entry key="assignWorkGroup" value-ref="assignWorkGroup"/>
+                <entry key="acknowledgeClaim" value-ref="acknowledgeClaim"/>
+            </map>
+        </property>
+        <property name="workflowContext" ref="workflowContext"></property>
+    </bean>
+
+    <bean id="newClaim" class="idas.chox.service.workflow.activities.NewClaim"/>
+    <bean id="assignOwner" class="idas.chox.service.workflow.activities.AssignOwner"/>
+    <bean id="assignWorkGroup" class="idas.chox.service.workflow.activities.AssignWorkGroup"/>
+    <bean id="acknowledgeClaim" class="idas.chox.service.workflow.activities.AcknowledgeClaim"/>
+</beans>

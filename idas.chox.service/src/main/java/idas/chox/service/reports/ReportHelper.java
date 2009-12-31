@@ -2,7 +2,7 @@ package idas.chox.service.reports;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import org.hibernate.criterion.DetachedCriteria;
@@ -24,7 +24,7 @@ public class ReportHelper {
         return (BigDecimal) v;
     }
 
-    public Insurer getInsurer(Integer sObjectId, DataService dataService) {
+    public Insurer getInsurer(Integer sObjectId, BaseDataService baseDataService) {
 
         Insurer ins = new Insurer();
 
@@ -32,7 +32,7 @@ public class ReportHelper {
 
             DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
             criteria.add(Restrictions.eq("id", sObjectId));
-            ins = (Insurer) dataService.getByCriteria(criteria);
+            ins = (Insurer) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -41,7 +41,7 @@ public class ReportHelper {
         return ins;
     }
 
-    public Chorganisation getChorganisation(Integer sObjectId, DataService dataService) {
+    public Chorganisation getChorganisation(Integer sObjectId, BaseDataService baseDataService) {
 
         Chorganisation chorg = new Chorganisation();
 
@@ -49,7 +49,7 @@ public class ReportHelper {
 
             DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
             criteria.add(Restrictions.eq("id", sObjectId));
-            chorg = (Chorganisation) dataService.getByCriteria(criteria);
+            chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
             e.printStackTrace();

@@ -5,7 +5,7 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.core.util.TextHelper;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.PaymentReport;
 import idas.chox.service.reports.viewdata.PaymentReportObject;
 import idas.chox.service.security.PermissionedUser;
@@ -22,7 +22,7 @@ public class InsurerPaymentReport implements Report {
 
     Map externalParameter;
     List<String> reportParameterNames;
-    private DataService dataService;
+    private BaseDataService baseDataService;
 
     public InsurerPaymentReport() {
         reportParameterNames = new ArrayList<String>();
@@ -43,7 +43,7 @@ public class InsurerPaymentReport implements Report {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
             criteria.add(Restrictions.eq("id", orgId));
-            chorg = (Chorganisation) dataService.getByCriteria(criteria);
+            chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -140,7 +140,7 @@ public class InsurerPaymentReport implements Report {
             paramMap.put("pChorganisationId", iSupplierId);
             paramMap.put("pInsurerId", iInsurerId);
 
-            List result = dataService.externalQuery(query, paramMap);
+            List result = baseDataService.externalQuery(query, paramMap);
 
             List<PaymentReport> payments = new ArrayList<PaymentReport>();
 
@@ -174,8 +174,8 @@ public class InsurerPaymentReport implements Report {
         return new ExcelReportBuilder();
     }
 
-    public void setDataService(DataService dataService) {
-        this.dataService = dataService;
+    public void setDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
 
     public String getReportCode() {

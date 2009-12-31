@@ -4,7 +4,7 @@
  */
 package idas.chox.web.actions;
 
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import java.util.List;
 import net.sf.json.JSONArray;
 
@@ -14,7 +14,7 @@ import net.sf.json.JSONArray;
  */
 public class TestAction extends BaseAction {
 
-    private DataService dataService;
+    private BaseDataService baseDataService;
     private String query;
     private List result;
 
@@ -35,12 +35,12 @@ public class TestAction extends BaseAction {
         return SUCCESS;
     }
 
-    public DataService getDataService() {
-        return dataService;
+    public BaseDataService getDataService() {
+        return baseDataService;
     }
 
-    public void setDataService(DataService dataService) {
-        this.dataService = dataService;
+    public void setDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
 
     public String getQuery() {

@@ -18,7 +18,6 @@
     <property column="percentage_liability_accepted" name="percentageLiabilityAccepted"/>
     <property column="is_quantum_dispute" name="isQuantumDispute"/>
     <property column="is_fnol_reviewed" name="isFnolReviewed"/>
-    <property column="engineer_claim_review_notes" name="engineerClaimReviewNotes"/>
     <property column="is_invoice_review_required" name="isInvoiceReviewRequired"/>
     <property column="status_modified_date" name="statusModifiedDate"/>
     <property column="previous_status" name="previousStatus"/>
@@ -32,7 +31,7 @@
     <many-to-one cascade="save-update,delete" class="idas.chox.core.model.Incident" column="incident_id" name="incident"/>
     <many-to-one cascade="save-update,delete" class="idas.chox.core.model.Invoice" column="invoice_id" name="invoice"/>
     <many-to-one cascade="save-update,delete" class="idas.chox.core.model.ThirdParty" column="third_party_id" name="thirdParty"/>
-    <many-to-one cascade="save-update,delete" class="idas.chox.core.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire" />
+    <many-to-one cascade="save-update,delete" class="idas.chox.core.model.VehicleHire" column="vehicle_hire_id" name="vehicleHire"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="claim_owner_id" name="claimOwner"/>

@@ -5,7 +5,7 @@
 package idas.chox.service.dashboard;
 
 import idas.chox.core.model.Insurer;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,12 +13,12 @@ import java.util.Map;
 public class InsurerDashboardBuilder {
 
     // INPUT DATA
-    private DataService dataService;
+    private BaseDataService baseDataService;
     private Insurer insurer;
     private Map extParameters;
 
-    public InsurerDashboardBuilder(DataService dataService, Insurer insurer, Map extParameters) {
-        this.setDataService(dataService);
+    public InsurerDashboardBuilder(BaseDataService baseDataService, Insurer insurer, Map extParameters) {
+        this.setDataService(baseDataService);
         this.setExtParameters(extParameters);
         this.setInsurer(insurer);
     }
@@ -122,7 +122,7 @@ public class InsurerDashboardBuilder {
     private DashBoardViewData build(Map queryParameters, String query) {
 
         DashBoardViewData viewData = new DashBoardViewData();
-        List result = dataService.externalQuery(query, queryParameters);
+        List result = baseDataService.externalQuery(query, queryParameters);
         if (!result.isEmpty()) {
             viewData = DashBoardViewData.getObject((Map) result.get(0));
         }
@@ -145,8 +145,8 @@ public class InsurerDashboardBuilder {
         return queryParameters;
     }
 
-    private void setDataService(DataService dataService) {
-        this.dataService = dataService;
+    private void setDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
 
     private void setInsurer(Insurer insurer) {

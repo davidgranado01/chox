@@ -6,8 +6,10 @@ import idas.chox.core.model.WebUserUserRole;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WebUserUserRoleService;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import org.hibernate.criterion.Criterion;
+import java.util.Set;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -166,9 +168,9 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return webUserRole;
     }
 
-    public List<WebUserRole> getWebUserroles(int orgTypeId) {
+    public Set getWebUserroles(int orgTypeId) {
 
-        List<WebUserRole> webUserRoles = new ArrayList<WebUserRole>();
+        Set webUserRoles = new HashSet<WebUserRole>();
 
         try {
 
@@ -180,7 +182,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
             criteria.add(Restrictions.ne("name", WebUserRole.ROLE_INS));
             criteria.add(Restrictions.ne("name", WebUserRole.ROLE_CHOX));
 
-            webUserRoles = findByCriteria(criteria);
+            webUserRoles.addAll(findByCriteria(criteria));
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -192,10 +194,12 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
 
     public List getWebUserrolesLookupItem(int orgTypeId) {
 
-        List<WebUserRole> webUserroles = getWebUserroles(orgTypeId);
+        Set webUserroles = getWebUserroles(orgTypeId);
         List items = new ArrayList<IdLookupItem>();
 
-        for (WebUserRole s : webUserroles) {
+        Iterator itr = webUserroles.iterator();
+        while (itr.hasNext()) {
+            WebUserRole s = (WebUserRole) itr.next();
             items.add(new IdLookupItem(s.getId(), s.getDescription()));
         }
 
@@ -205,7 +209,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
     public List getSelectedUserAvailableRoleLookupItem(int orgTypeId, Integer webUserId) {
 
         List items = new ArrayList<IdLookupItem>();
-        List<WebUserRole> webUserroles = getWebUserroles(orgTypeId);
+        Set webUserroles = getWebUserroles(orgTypeId);
         List<WebUserUserRole> selectedWebUserroles = getMappedUserRole(webUserId);
         List<Integer> selectedList = new ArrayList<Integer>();
 
@@ -213,7 +217,9 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
             selectedList.add(o.getWebUserRole().getId());
         }
 
-        for (WebUserRole s : webUserroles) {
+        Iterator itr = webUserroles.iterator();
+        while (itr.hasNext()) {
+            WebUserRole s = (WebUserRole) itr.next();
             if (!selectedList.contains(s.getId())) {
                 items.add(new IdLookupItem(s.getId(), s.getDescription()));
             }
@@ -222,7 +228,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return items;
     }
 
-    public boolean isClaimHandlerRole(int roleId){
+    public boolean isClaimHandlerRole(int roleId) {
 
         boolean isClaimHandler = false;
         WebUserRole webUserRole = new WebUserRole();
@@ -230,18 +236,14 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("id", roleId));
 
-        criteria.add(Restrictions.disjunction()
-                .add(Restrictions.eq("name", WebUserRole.ROLE_CH))
-                .add(Restrictions.eq("name", WebUserRole.ROLE_COM))
-                .add(Restrictions.eq("name", WebUserRole.ROLE_FNOL)));
+        criteria.add(Restrictions.disjunction().add(Restrictions.eq("name", WebUserRole.ROLE_CH)).add(Restrictions.eq("name", WebUserRole.ROLE_COM)).add(Restrictions.eq("name", WebUserRole.ROLE_FNOL)));
 
         webUserRole = (WebUserRole) getByCriteria(criteria);
 
-        if(webUserRole!=null){
+        if (webUserRole != null) {
             isClaimHandler = true;
         }
 
         return isClaimHandler;
     }
-    
 }

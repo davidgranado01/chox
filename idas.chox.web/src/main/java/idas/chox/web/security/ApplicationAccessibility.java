@@ -2,9 +2,12 @@ package idas.chox.web.security;
 
 import idas.chox.core.model.AccessibilityEditable;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.AccessibilityService;
 import java.util.HashMap;
-import org.springframework.security.GrantedAuthority;
+import java.util.Iterator;
+import java.util.Set;
 
 public class ApplicationAccessibility {
 
@@ -102,102 +105,102 @@ public class ApplicationAccessibility {
     private AccessibilityService accessibilityService;
 
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY OBJECT">
-    public TabAccessibility getTabAccessibility(GrantedAuthority[] grantedAuthorities, Claim claim) {
-        return new TabAccessibility(this, grantedAuthorities, claim);
+    public TabAccessibility getTabAccessibility(WebUser user, Claim claim) {
+        return new TabAccessibility(this, user, claim);
     }
 
-    public NotificationAccessibility getNotificationAccessibility(GrantedAuthority[] grantedAuthorities, String claimStatus) {
-        return new NotificationAccessibility(this, grantedAuthorities, claimStatus);
+    public NotificationAccessibility getNotificationAccessibility(Set roles, String claimStatus) {
+        return new NotificationAccessibility(this, roles, claimStatus);
     }
 
-    public PanelAccessibility getPanelAccessibility(GrantedAuthority[] grantedAuthorities) {
-        return new PanelAccessibility(this, grantedAuthorities);
+    public PanelAccessibility getPanelAccessibility(Set roles) {
+        return new PanelAccessibility(this, roles);
     }
 
-    public FilterAccessibility getFilterAccessibility(GrantedAuthority[] grantedAuthorities) {
-        return new FilterAccessibility(this, grantedAuthorities);
+    public FilterAccessibility getFilterAccessibility(Set roles) {
+        return new FilterAccessibility(this, roles);
     }
 
-    public MenuAccessibility getMenuAccessibility(GrantedAuthority[] grantedAuthorities) {
-        return new MenuAccessibility(this, grantedAuthorities);
+    public MenuAccessibility getMenuAccessibility(Set roles) {
+        return new MenuAccessibility(this, roles);
     }
 
-    public ReportAccessibility getReportAccessibility(GrantedAuthority[] grantedAuthorities) {
-        return new ReportAccessibility(this, grantedAuthorities);
+    public ReportAccessibility getReportAccessibility(Set roles) {
+        return new ReportAccessibility(this, roles);
     }
 
-    public AdminAccessibility getAdminAccessibility(GrantedAuthority[] grantedAuthorities) {
-        return new AdminAccessibility(this, grantedAuthorities);
+    public AdminAccessibility getAdminAccessibility(Set roles) {
+        return new AdminAccessibility(this, roles);
     }
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY CHECK">
-    public Short checkTabAccessibility(String tabName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+    public Short checkTabAccessibility(String tabName, Set roles, String claimStatus) {
 
         String accessibilityKey = getTabAccessibilityKey(tabName, claimStatus);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, grantedAuthorities);
+            return checkAccebility(roleMap, roles);
         }
 
         return Declined;
     }
 
-    public Short checkNotificationAccessibility(String notificationName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+    public Short checkNotificationAccessibility(String notificationName, Set roles, String claimStatus) {
 
         String accessibilityKey = getNotificationAccessibilityKey(notificationName, claimStatus);
 
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, grantedAuthorities);
+            return checkAccebility(roleMap, roles);
         }
 
         return Declined;
     }
 
-    public Short checkFilterAccessibility(String filterName, GrantedAuthority[] grantedAuthorities) {
+    public Short checkFilterAccessibility(String filterName, Set roles) {
 
         String accessibilityKey = getFilterAccessibilityKey(filterName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, grantedAuthorities);
+            return checkAccebility(roleMap, roles);
         }
 
         return Declined;
     }
 
-    public Short checkPanelAccessibility(String filterName, GrantedAuthority[] grantedAuthorities) {
+    public Short checkPanelAccessibility(String filterName, Set roles) {
 
         String accessibilityKey = getPanelAccessibilityKey(filterName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, grantedAuthorities);
+            return checkAccebility(roleMap, roles);
         }
 
         return Declined;
     }
 
-    public Short checkExtraActionAccessibility(String actionName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+    public Short checkExtraActionAccessibility(String actionName, Set roles, String claimStatus) {
         String accessibilityKey = getExtraActionAccessibilityKey(actionName, claimStatus);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, grantedAuthorities);
+            return checkAccebility(roleMap, roles);
         }
         return Declined;
     }
 
-    public Short checkActionAccessibility(String actionName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+    public Short checkActionAccessibility(String actionName, Set roles, String claimStatus) {
 
         String accessibilityKey = getActionAccessibilityKey(actionName, claimStatus);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, grantedAuthorities);
+            return checkAccebility(roleMap, roles);
         }
 
         return Declined;
     }
 
-    public AccessibilityEditable checkTabEditableCheck(String tabName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+    public AccessibilityEditable checkTabEditableCheck(String tabName, Set roles, String claimStatus) {
 
         AccessibilityEditable accessibilityEditable = null;
 
@@ -209,7 +212,7 @@ public class ApplicationAccessibility {
         return accessibilityEditable;
     }
 
-    public AccessibilityEditable checkActionEditableCheck(String actionName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+    public AccessibilityEditable checkActionEditableCheck(String actionName, Set roles, String claimStatus) {
 
         AccessibilityEditable accessibilityEditable = null;
 
@@ -222,7 +225,7 @@ public class ApplicationAccessibility {
         return accessibilityEditable;
     }
 
-    public AccessibilityEditable checkExtraActionEditableCheck(String actionName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+    public AccessibilityEditable checkExtraActionEditableCheck(String actionName, Set roles, String claimStatus) {
         AccessibilityEditable accessibilityEditable = null;
         String accessibilityKey = getExtraActionAccessibilityKey(actionName, claimStatus);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
@@ -231,7 +234,7 @@ public class ApplicationAccessibility {
         return accessibilityEditable;
     }
 
-    public AccessibilityEditable checkNotificationEditableCheck(String notificationName, GrantedAuthority[] grantedAuthorities, String claimStatus) {
+    public AccessibilityEditable checkNotificationEditableCheck(String notificationName, Set roles, String claimStatus) {
 
         AccessibilityEditable accessibilityEditable = null;
         String accessibilityKey = getNotificationAccessibilityKey(notificationName, claimStatus);
@@ -243,34 +246,34 @@ public class ApplicationAccessibility {
         return accessibilityEditable;
     }
 
-    public Short checkMenuAccessibility(String menuName, GrantedAuthority[] grantedAuthorities) {
+    public Short checkMenuAccessibility(String menuName, Set roles) {
 
         String accessibilityKey = getMenuAccessibilityKey(menuName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, grantedAuthorities);
+            return checkAccebility(roleMap, roles);
         }
 
         return Declined;
     }
 
-    public Short checkReportAccessibility(String reportName, GrantedAuthority[] grantedAuthorities) {
+    public Short checkReportAccessibility(String reportName, Set roles) {
 
         String accessibilityKey = getReportAccessibilityKey(reportName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, grantedAuthorities);
+            return checkAccebility(roleMap, roles);
         }
 
         return Declined;
     }
 
-    public Short checkAdminAccessibility(String adminName, GrantedAuthority[] grantedAuthorities) {
+    public Short checkAdminAccessibility(String adminName, Set roles) {
 
         String accessibilityKey = getAdminAccessibilityKey(adminName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, grantedAuthorities);
+            return checkAccebility(roleMap, roles);
         }
 
         return Declined;
@@ -311,7 +314,7 @@ public class ApplicationAccessibility {
     }
     // </editor-fold>
 
-    private Short checkAccebility(HashMap roleMap, GrantedAuthority[] grantedAuthorities) {
+    private Short checkAccebility(HashMap roleMap, Set roles) {
 
         short right = 0;
         boolean isRoleSpecified = false;
@@ -322,10 +325,13 @@ public class ApplicationAccessibility {
         }
 
         //2. return role accessibility if exist
-        for (GrantedAuthority g : grantedAuthorities) {
-            if (roleMap.containsKey(g.getAuthority())) {
+
+        Iterator itr = roles.iterator();
+        while (itr.hasNext()) {
+            WebUserRole r = (WebUserRole) itr.next();
+            if (roleMap.containsKey(r.getName())) {
                 isRoleSpecified = true;
-                short curRight = (Short) roleMap.get(g.getAuthority());
+                short curRight = (Short) roleMap.get(r.getName());
                 if (curRight > right) {
                     right = curRight;
                 }

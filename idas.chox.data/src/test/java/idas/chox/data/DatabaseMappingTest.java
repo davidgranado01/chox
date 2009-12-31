@@ -11,7 +11,7 @@ public class DatabaseMappingTest extends UnitilsJUnit4{
     
     @Test
     public void testMappingToDatabase() {
-       // HibernateUnitils.assertMappingWithDatabaseConsistent();
+       //HibernateUnitils.assertMappingWithDatabaseConsistent();
     }
     
 }

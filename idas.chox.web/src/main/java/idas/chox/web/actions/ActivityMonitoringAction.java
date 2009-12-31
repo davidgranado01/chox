@@ -85,7 +85,7 @@ public class ActivityMonitoringAction extends BaseAction {
     }
 
     public int getUserId() {
-        return this.getAuthenticatedUser().getUser().getId();
+        return this.getAuthenticatedUser().getId();
     }
 
     public String getOrganisationType() {
@@ -100,9 +100,9 @@ public class ActivityMonitoringAction extends BaseAction {
 
     public int getOrganisationId() {
         if (this.getIsCHO()) {
-            return this.getAuthenticatedUser().getUser().getChorganisation().getId();
+            return this.getAuthenticatedUser().getChorganisation().getId();
         } else if (this.getIsInsurer()) {
-            return this.getAuthenticatedUser().getUser().getInsurer().getId();
+            return this.getAuthenticatedUser().getInsurer().getId();
         } else {
             return 999;
         }

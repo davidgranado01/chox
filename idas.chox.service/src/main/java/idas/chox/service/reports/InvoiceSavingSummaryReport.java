@@ -4,7 +4,7 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.util.DateHelper;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.InvoiceSavingSummaryReportObject;
 import idas.chox.service.reports.viewdata.InvoiceSavingSummaryReportViewData;
 import idas.chox.service.security.PermissionedUser;
@@ -19,7 +19,7 @@ public class InvoiceSavingSummaryReport implements Report {
 
     Map externalParameter;
     List<String> reportParameterNames;
-    private DataService dataService;
+    private BaseDataService baseDataService;
     WebUser user = new WebUser();
 
     public InvoiceSavingSummaryReport() {
@@ -86,7 +86,7 @@ public class InvoiceSavingSummaryReport implements Report {
             paramMap.put("pInvUploadDateFrom", dataStart);
             paramMap.put("pInvUploadDateTo", dataEnd);
 
-            List result = dataService.externalQuery(query, paramMap);
+            List result = baseDataService.externalQuery(query, paramMap);
 
             for (Object o : result) {
 
@@ -121,8 +121,8 @@ public class InvoiceSavingSummaryReport implements Report {
         return new ExcelReportBuilder();
     }
 
-    public void setDataService(DataService dataService) {
-        this.dataService = dataService;
+    public void setDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
 
     public String getReportCode() {
@@ -135,7 +135,7 @@ public class InvoiceSavingSummaryReport implements Report {
         ReportHelper reportHelper = new ReportHelper();
 
         if (!sObjectId.equalsIgnoreCase("")) {
-            insurer = reportHelper.getInsurer(Integer.valueOf(sObjectId), this.dataService);
+            insurer = reportHelper.getInsurer(Integer.valueOf(sObjectId), this.baseDataService);
         } else {
             insurer = user.getInsurer();
         }
@@ -152,7 +152,7 @@ public class InvoiceSavingSummaryReport implements Report {
         if (!sObjectId.equalsIgnoreCase("")) {
 
             Integer iChorganisation = Integer.valueOf(sObjectId);
-            chorganisation = reportHelper.getChorganisation(iChorganisation, this.dataService);
+            chorganisation = reportHelper.getChorganisation(iChorganisation, this.baseDataService);
         } else {
             chorganisation = user.getChorganisation();
         }

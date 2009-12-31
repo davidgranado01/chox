@@ -11,7 +11,6 @@ import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.xmlValidation.BordereauResult;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
-import idas.chox.core.xmlValidation.DataValidationParameter;
 import java.io.File;
 
 public class BordereauDataValidation {

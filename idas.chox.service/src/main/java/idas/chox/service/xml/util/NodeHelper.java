@@ -9,7 +9,7 @@ import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.util.TextHelper;
 import idas.chox.core.xmlValidation.ClaimResult;
-import idas.chox.core.xmlValidation.DataValidationParameter;
+import idas.chox.service.xml.validations.DataValidationParameter;
 import idas.chox.core.xmlValidation.NodeRuleModel;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

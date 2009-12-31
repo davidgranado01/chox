@@ -12,6 +12,7 @@ import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.services.WebUserUserRoleService;
 import idas.chox.core.services.WorkgroupService;
 import java.util.List;
+import java.util.Set;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +96,7 @@ public class LookupItemTest {
         Assert.assertNotNull(sessionFactory);
         Assert.assertNotNull(webUserUserRoleService);
 
-        List userRoles = webUserUserRoleService.getWebUserroles(2);
+        Set userRoles = webUserUserRoleService.getWebUserroles(2);
         System.out.println(userRoles.size());
         Assert.assertTrue(userRoles.size() > 0);
     }

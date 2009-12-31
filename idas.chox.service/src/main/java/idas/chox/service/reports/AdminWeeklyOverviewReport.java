@@ -4,7 +4,7 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.TextHelper;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.WeekSummary;
 import idas.chox.service.reports.viewdata.WeekSummaryReportObject;
 import idas.chox.service.security.PermissionedUser;
@@ -22,7 +22,7 @@ public class AdminWeeklyOverviewReport implements Report {
 
     Map externalParameter;
     List<String> reportParameterNames;
-    private DataService dataService;
+    private BaseDataService baseDataService;
 
     public InputStream build() {
         ReportBuilder builder = getReportBuilder();
@@ -34,8 +34,8 @@ public class AdminWeeklyOverviewReport implements Report {
     }
 
     @Override
-    public void setDataService(DataService dataService) {
-        this.dataService = dataService;
+    public void setDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
 
     @Override
@@ -160,7 +160,7 @@ public class AdminWeeklyOverviewReport implements Report {
                 queryParameters.put("pInsId", selectedInsurerId);
                 queryParameters.put("pChorganisationId", selectedSupplierId);
 
-                List result = dataService.externalQuery(query, queryParameters);
+                List result = baseDataService.externalQuery(query, queryParameters);
 
                 for (Object o : result) {
 
@@ -263,7 +263,7 @@ public class AdminWeeklyOverviewReport implements Report {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
             criteria.add(Restrictions.eq("id", orgId));
-            chorg = (Chorganisation) dataService.getByCriteria(criteria);
+            chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -279,7 +279,7 @@ public class AdminWeeklyOverviewReport implements Report {
 
             DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
             criteria.add(Restrictions.eq("id", orgId));
-            ins = (Insurer) dataService.getByCriteria(criteria);
+            ins = (Insurer) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
             e.printStackTrace();

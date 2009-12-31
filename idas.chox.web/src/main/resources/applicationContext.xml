@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans default-autowire="autodetect">
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+    default-autowire="autodetect" >
     
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"></property>
@@ -19,7 +26,7 @@
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect
                 </prop>
-                <prop key="hibernate.show_sql">true
+                <prop key="hibernate.show_sql">false
                 </prop>
                 <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
                 <prop key="hibernate.cache.use_query_cache">true</prop>
@@ -66,19 +73,20 @@
             </list>
         </property>
     </bean>
-    <bean id="securityInfoProvider" class="idas.chox.web.security.WebSecurityInfoProvider" singleton="false"/>
+    <bean id="securityInfoProvider" class="idas.chox.web.security.WebSecurityInfoProvider"/>
         <!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
 
-    <bean id="userDetailsService" class="idas.chox.web.security.WebUserService" singleton="false">
+    <bean id="userDetailsService" class="idas.chox.web.security.WebUserService">
         <property name="userService">
             <ref bean="userService" />
         </property>
     </bean>
-
-    <bean id="auditInterceptor" class="idas.chox.data.DBInterceptor" singleton="false">
+   
+    <bean id="auditInterceptor" class="idas.chox.data.DBInterceptor">
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
 

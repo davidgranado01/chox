@@ -1,32 +1,19 @@
 package idas.chox.dashboard;
 
-import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.Insurer;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerService;
-import idas.chox.data.services.DataService;
-import idas.chox.service.dashboard.ChoDashboardBuilder;
-import idas.chox.service.dashboard.InsurerDashboardBuilder;
-import java.io.File;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import junit.framework.Assert;
+import idas.chox.data.services.SecureDataService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml"})
-public class DashboardTest {
+public class DashboardTest{
 
     @Autowired
     InsurerService insurerService;
@@ -34,7 +21,7 @@ public class DashboardTest {
     ChorganisationService chorganisationService;
     @Autowired
     @Qualifier("dataService")
-    DataService dataService;
+    SecureDataService baseDataService;
 
     @Test
     public void testInsurerDashBoard(){

@@ -1,64 +1,43 @@
 package idas.chox.web.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
+import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
-import idas.chox.web.security.AcegiPrincipal;
-import idas.chox.service.security.PermissionedUser;
+import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.ActionResponse;
 import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContextHolder;
 
 public class BaseAction extends ActionSupport {
 
-    protected static Log logger = LogFactory.getLog("chox");
-    protected PermissionedUser user;
+    private SecurityInfoProvider securityInfoProvider;
+    protected static Log logger = LogFactory.getLog("chox");   
     protected ActionResponse actionResponse;
-
-    @AcegiPrincipal
-    public void setAuthenticatedUser(PermissionedUser user) {
-        this.user = user;
-    }
-
-    public PermissionedUser getAuthenticatedUser() {
-
-        if (user == null) {
-            Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-            if (currentUser != null) {
-                user = (PermissionedUser) currentUser.getPrincipal();
-            }
-
-        }
-        return user;
+ 
+    public WebUser getAuthenticatedUser() {
+        return securityInfoProvider.getCurrentUser();
     }
 
     public boolean getIsCHO() {
-        return getAuthenticatedUser().getIsCHO();
+        return securityInfoProvider.getIsCHO();
     }
 
     public boolean getIsInsurer() {
-        return getAuthenticatedUser().getIsINS();
+        return securityInfoProvider.getIsINS();
     }
     
     public boolean getIsChoxAdmin() {
 
-        boolean isChoxAdmin = false;
-
-        if (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CHOX)) {
-            isChoxAdmin = true;
-        }
-
-        return isChoxAdmin;
+        return securityInfoProvider.getIsCHOXAdmin();
     }
 
     public int getUserOrganisationType(){
         int iOrganisationType = 1;
-        if (!getAuthenticatedUser().getIsCHOXAdmin()) {
-            if (getAuthenticatedUser().getIsCHO()) {
+        if (!securityInfoProvider.getIsCHOXAdmin()) {
+            if (securityInfoProvider.getIsCHO()) {
                 iOrganisationType = 3;
-            } else if (getAuthenticatedUser().getIsINS()) {
+            } else if (securityInfoProvider.getIsINS()) {
                 iOrganisationType = 2;
             }
         }
@@ -68,10 +47,10 @@ public class BaseAction extends ActionSupport {
     public int getUserOrganisationId() {
 
         int iOrganisationId = 1;
-        if (getAuthenticatedUser().getIsINS()) {
-            iOrganisationId = getAuthenticatedUser().getUser().getInsurer().getId();
-        } else if (getAuthenticatedUser().getIsCHO()) {
-            iOrganisationId = getAuthenticatedUser().getUser().getChorganisation().getId();
+        if (securityInfoProvider.getIsINS()) {
+            iOrganisationId = getAuthenticatedUser().getInsurer().getId();
+        } else if (securityInfoProvider.getIsCHO()) {
+            iOrganisationId = getAuthenticatedUser().getChorganisation().getId();
         }
 
         return iOrganisationId;
@@ -79,13 +58,14 @@ public class BaseAction extends ActionSupport {
     }
 
     public String getCurrentUserDesc() {
-        String logInUserDesc = user.getUser().getFirstName() + " " + user.getUser().getLastName();
+        WebUser user = getAuthenticatedUser();
+        String logInUserDesc = user.getFirstName() + " " + user.getLastName();
         String strOrgType = "";
 
-        if (user.getIsCHO()) {
-            strOrgType = user.getUser().getChorganisation().getName();
-        } else if (user.getIsINS()) {
-            strOrgType = user.getUser().getInsurer().getName();
+        if (securityInfoProvider.getIsCHO()) {
+            strOrgType = user.getChorganisation().getName();
+        } else if (securityInfoProvider.getIsINS()) {
+            strOrgType = user.getInsurer().getName();
         }
 
         if (!strOrgType.equalsIgnoreCase("")) {
@@ -125,14 +105,14 @@ public class BaseAction extends ActionSupport {
 
         if (getIsInsurer()) {
             iRoleType = 1;
-            if (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG)) {
+            if (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) {
                 iRoleType = 2;
             }
         }
 
         if (getIsCHO()) {
             iRoleType = 3;
-            if (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CH_MNG)) {
+            if (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_MNG)) {
                 iRoleType = 4;
             }
         }
@@ -143,5 +123,12 @@ public class BaseAction extends ActionSupport {
     protected void handleException(Object source,Exception ex) {
         logger.error(ex.getMessage());
         getActionResponse().AddError(ex.getMessage());
+    }
+
+    /**
+     * @param securityInfoProvider the securityInfoProvider to set
+     */
+    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
+        this.securityInfoProvider = securityInfoProvider;
     }
 }

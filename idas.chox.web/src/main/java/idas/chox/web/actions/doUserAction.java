@@ -2,22 +2,14 @@ package idas.chox.web.actions;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
-import idas.chox.core.services.ChorganisationService;
-import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.UserService;
-import idas.chox.core.services.WebUserUserRoleService;
-import idas.chox.core.util.DateHelper;
-import idas.chox.service.security.PermissionedUser;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminUserService;
 import java.util.List;
-import org.springframework.security.providers.encoding.Md5PasswordEncoder;
-import org.springframework.security.providers.encoding.PasswordEncoder;
 
 public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Preparable {
 
@@ -37,7 +29,6 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     private UserService userService;
     private LookupService lookupService;
     private InsurerService insurerService;
-    private PermissionedUser currentUser = getAuthenticatedUser();
 
     public String doRenderActionPage() {
         return SUCCESS;
@@ -159,8 +150,8 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
 
     public Integer getInsurerId() {
 
-        if (!currentUser.getIsCHOXAdmin()) {
-            insurerId = currentUser.getUser().getInsurer().getId();
+        if (getIsChoxAdmin()) {
+            insurerId = getAuthenticatedUser().getInsurer().getId();
         }
         return insurerId;
     }
@@ -170,8 +161,8 @@ public class doUserAction extends BaseAction implements ModelDriven<WebUser>, Pr
     }
 
     public Integer getSupplierId() {
-        if (!currentUser.getIsCHOXAdmin()) {
-            supplierId = currentUser.getUser().getChorganisation().getId();
+        if (!getIsChoxAdmin()) {
+            supplierId = getAuthenticatedUser().getChorganisation().getId();
         }
         return supplierId;
     }

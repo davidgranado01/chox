@@ -4,7 +4,7 @@
  */
 package idas.chox.web.security;
 
-import org.springframework.security.GrantedAuthority;
+import java.util.Set;
 
 public class AdminAccessibility {
 
@@ -13,11 +13,11 @@ public class AdminAccessibility {
     private boolean userManagementAdminAccessibility;
     private boolean isInsurerBreManagementAdminAccessibility;
 
-    public AdminAccessibility(ApplicationAccessibility applicationAccessibility, GrantedAuthority[] grantedAuthorities) {
-        insurerCompaniesAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_INSURER_COMPANIES, grantedAuthorities) > 0;
-        creditHireOrgAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_CREDIT_HIRE_ORG, grantedAuthorities) > 0;
-        userManagementAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_USER_MANAGEMENT, grantedAuthorities) > 0;
-        isInsurerBreManagementAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_INSURER_BRE_MANAGEMENT, grantedAuthorities) > 0;
+    public AdminAccessibility(ApplicationAccessibility applicationAccessibility, Set roles) {
+        insurerCompaniesAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_INSURER_COMPANIES, roles) > 0;
+        creditHireOrgAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_CREDIT_HIRE_ORG, roles) > 0;
+        userManagementAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_USER_MANAGEMENT, roles) > 0;
+        isInsurerBreManagementAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_INSURER_BRE_MANAGEMENT, roles) > 0;
     }
 
     public boolean getIsCreditHireOrgAdminAccessibility() {

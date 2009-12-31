@@ -40,6 +40,7 @@ public class SolicitorServiceImpl extends SecureDataService implements Solicitor
         return (Solicitor) get(Solicitor.class, id);
     }
 
+    
     public void updateObject(Solicitor solicitor) {
 
         save(solicitor);

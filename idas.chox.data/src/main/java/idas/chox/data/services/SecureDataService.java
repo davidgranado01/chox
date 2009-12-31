@@ -3,7 +3,7 @@ package idas.chox.data.services;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.model.WebUser;
 
-public class SecureDataService extends DataService {
+public class SecureDataService extends BaseDataService {
 
     private SecurityInfoProvider securityInforProvider;
 
@@ -11,7 +11,7 @@ public class SecureDataService extends DataService {
 
         this.securityInforProvider = provider;
 
-        if (this.securityInforProvider != null) {
+        if (this.securityInforProvider != null && this.securityInforProvider.getCurrentUser() != null) {
 
             if (!this.getSecurityInfoProvider().getIsCHOXAdmin()) {
 

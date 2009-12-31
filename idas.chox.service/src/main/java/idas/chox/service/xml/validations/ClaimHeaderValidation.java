@@ -11,7 +11,6 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
-import idas.chox.core.xmlValidation.DataValidationParameter;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
 import org.w3c.dom.*;

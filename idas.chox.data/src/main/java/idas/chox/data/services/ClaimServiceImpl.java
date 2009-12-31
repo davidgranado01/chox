@@ -24,6 +24,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
@@ -42,6 +44,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return (Claim) get(Claim.class, id);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void updateClaim(Claim claim) {
         claim.setClaimNumber(claim.getClaimNumber().trim());
         save(claim);
@@ -504,10 +507,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         c.setVehicleHire(claimResult.getClaim().getVehicleHire());
 
         if (claimResult.getHistory() != null && claimResult.getHistory().size() > 0) {
-           for(History h : claimResult.getHistory())
-           {
-               c.addHistory(h);
-           }
+            for (History h : claimResult.getHistory()) {
+                c.addHistory(h);
+            }
         }
 
         save(c);
@@ -539,12 +541,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         boolean isExist = false;
 
-        if (WorkgroupIds.size() > 0){
+        if (WorkgroupIds.size() > 0) {
             Iterator itr = WorkgroupIds.iterator();
             while (itr.hasNext()) {
 
-                int workgroupId = (Integer)itr.next();
-                if(isOpenClaimByWorkgroupIdByStatusExist(insurerId, workgroupId, status)){
+                int workgroupId = (Integer) itr.next();
+                if (isOpenClaimByWorkgroupIdByStatusExist(insurerId, workgroupId, status)) {
                     isExist = true;
                     break;
                 }
@@ -612,8 +614,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             Iterator itr = WorkgroupIds.iterator();
             while (itr.hasNext()) {
 
-                int workgroupId = (Integer)itr.next();
-                if(isOpenClaimByWorkgroupIdByUserExist(insurerId, workgroupId, userId)){
+                int workgroupId = (Integer) itr.next();
+                if (isOpenClaimByWorkgroupIdByUserExist(insurerId, workgroupId, userId)) {
 
                     isExist = true;
                     break;
@@ -635,11 +637,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
             criteria.add(Restrictions.eq("insurer.id", insurerId));
 
-            if(UserId>0){
+            if (UserId > 0) {
                 criteria.add(Restrictions.eq("claimOwner.id", UserId));
             }
 
-            for(String sStatus : ClaimStatus.getClosedStatus()){
+            for (String sStatus : ClaimStatus.getClosedStatus()) {
                 criteria.add(Restrictions.ne("status", sStatus));
             }
 
@@ -654,7 +656,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return isExist;
 
     }
- 
+
     public boolean isUserHasOpenClaim(int userId) {
 
         boolean isExist = false;
@@ -679,6 +681,4 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return isExist;
 
     }
-
-    
 }

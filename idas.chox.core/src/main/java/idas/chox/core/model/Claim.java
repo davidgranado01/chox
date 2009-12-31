@@ -19,7 +19,6 @@ public class Claim extends Entity implements Serializable {
     private BigDecimal indemnityAmount;
     private BigDecimal percentageLiabilityAccepted;
     private boolean isQuantumDispute;
-    private String engineerClaimReviewNotes;
     private boolean isInvoiceReviewRequired;
     private Date creditAgreementDate;
     private Date gtaNoticeDate;
@@ -189,15 +188,7 @@ public class Claim extends Entity implements Serializable {
 
     public void setGtaNoticeDate(Date gtaNoticeDate) {
         this.gtaNoticeDate = gtaNoticeDate;
-    }
-
-    public String getEngineerClaimReviewNotes() {
-        return engineerClaimReviewNotes;
-    }
-
-    public void setEngineerClaimReviewNotes(String engineerClaimReviewNotes) {
-        this.engineerClaimReviewNotes = engineerClaimReviewNotes;
-    }
+    }    
 
     public BigDecimal getIndemnityAmount() {
         return indemnityAmount;

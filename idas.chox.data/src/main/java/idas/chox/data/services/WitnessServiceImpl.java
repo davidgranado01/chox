@@ -28,6 +28,7 @@ public class WitnessServiceImpl extends SecureDataService implements WitnessServ
         return (Witness) get(Witness.class, id);
     }
 
+    
     public void updateObject(Witness witness) {
 
         save(witness);

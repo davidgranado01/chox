@@ -6,9 +6,9 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.services.ClaimService;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import idas.chox.web.security.ApplicationAccessibility;
-import org.springframework.security.GrantedAuthority;
+import java.util.Set;
 
 /**
  *
@@ -24,13 +24,13 @@ public abstract class BaseModelAction extends BaseAction {
     protected String claimStatus;
     protected String actionResult;
     protected ClaimService claimService;
-    protected DataService dataService;    
+    protected BaseDataService baseDataService;
     protected ApplicationAccessibility applicationAccessibility;
     private Claim claim;
     // </editor-fold>
 
     abstract String getTabName();
-  
+
     public String getCaimStatus() {
         return claimStatus;
     }
@@ -40,8 +40,7 @@ public abstract class BaseModelAction extends BaseAction {
     }
 
     public Claim getClaim() {
-        if(claim == null)
-        {
+        if (claim == null) {
             claim = this.claimService.getClaim(claimId);
         }
         return claim;
@@ -57,10 +56,10 @@ public abstract class BaseModelAction extends BaseAction {
 
     @Override
     public String execute() {
-        GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
+        Set roles = getAuthenticatedUser().getRoles();
         String tabName = getTabName();
         claimStatus = getCaimStatus();
-        short accessRight = applicationAccessibility.checkTabAccessibility(tabName, grantedAuthorities, claimStatus);
+        short accessRight = applicationAccessibility.checkTabAccessibility(tabName, roles, claimStatus);
 
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
 
@@ -72,8 +71,8 @@ public abstract class BaseModelAction extends BaseAction {
         this.claimService = claimService;
     }
 
-    public void setDataService(DataService dataService) {
-        this.dataService = dataService;
+    public void setDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
 
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {

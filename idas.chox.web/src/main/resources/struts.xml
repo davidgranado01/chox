@@ -29,6 +29,15 @@
     </package>
     <package name="private-package" namespace="/prv" extends="home-package">
         <default-interceptor-ref name="authenticated" />
+
+         <action name ="processClaim" class ="idas.chox.web.actions.ClaimActivityAction">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+            </result>
+            <result name="error">/jsp/claim_detail.jsp</result>
+        </action>
+
         <action name ="processClaimsAction" class ="idas.chox.web.actions.ProcessClaimsAction">
             <result name ="success">/jsp/p_upload_status.jsp</result>
             <result name ="error">/jsp/p_upload_claims.jsp</result>

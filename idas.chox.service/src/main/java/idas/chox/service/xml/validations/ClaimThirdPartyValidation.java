@@ -12,7 +12,6 @@ import idas.chox.core.util.TextHelper;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
-import idas.chox.core.xmlValidation.DataValidationParameter;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
 import javax.xml.xpath.XPathExpressionException;

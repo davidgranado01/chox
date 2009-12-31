@@ -1,13 +1,13 @@
 package idas.chox.web.security;
 
-import org.springframework.security.GrantedAuthority;
+import java.util.Set;
 
 public class PanelAccessibility {
 
     private boolean fnolReviewedPanelAccessible;
 
-    public PanelAccessibility(ApplicationAccessibility accessibility, GrantedAuthority[] grantedAuthorities) {
-        fnolReviewedPanelAccessible = accessibility.checkPanelAccessibility(ApplicationAccessibility.PANEL_FNOL_REVIEWED, grantedAuthorities) > 0;
+    public PanelAccessibility(ApplicationAccessibility accessibility, Set roles) {
+        fnolReviewedPanelAccessible = accessibility.checkPanelAccessibility(ApplicationAccessibility.PANEL_FNOL_REVIEWED, roles) > 0;
     }
 
     public boolean getFnolReviewedPanelAccessible() {

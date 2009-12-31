@@ -36,6 +36,7 @@ public class EngineerReportServiceImpl extends SecureDataService implements Engi
         return (EngineerReport) get(EngineerReport.class, id);
     }
 
+    
     public void updateObject(EngineerReport engineerReport) {
         save(engineerReport);
     }

@@ -44,7 +44,7 @@ public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>
             }
         }
     }
-
+    
     public String updateModel() {
         try {
             boolean isTransient = model.isTransient();

@@ -34,8 +34,11 @@ public class WebSecurityInfoProvider implements SecurityInfoProvider {
 
     public WebUser getCurrentUser() {
 
-
-        return getPermissionedUser().getUser();
+        PermissionedUser permissionedUser = getPermissionedUser();
+        if (permissionedUser != null) {
+            return permissionedUser.getUser();
+        }
+        return null;
     }
 
     public boolean getIsCHO() {
@@ -54,5 +57,9 @@ public class WebSecurityInfoProvider implements SecurityInfoProvider {
 
         return getPermissionedUser().getIsCHOXAdmin();
 
+    }
+
+    public boolean isInRoleOf(String role) {
+        return getPermissionedUser().isInRoleOf(role);
     }
 }

@@ -26,10 +26,10 @@ import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.Notification;
 import idas.chox.core.model.ReasonOfRejection;
-import idas.chox.core.model.Solicitor;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.Witness;
 import idas.chox.core.services.AttachmentTypeService;
 import idas.chox.core.services.AuditTrailService;
@@ -253,9 +253,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 auditTrailService.logAuditLog(newStatus, claim, null, null);
                 // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
                 // createNewNote(claim.getEngineerClaimReviewNotes(), false, strPrefix);
-                createNewNote(claim.getEngineerClaimReviewNotes(), 1, strPrefix);
+                
+                //createNewNote(claim.getEngineerClaimReviewNotes(), 1, strPrefix);
 
-                claim.setEngineerClaimReviewNotes("");
                 claim.setIsFnolReviewed(false);
                 claim.setStatus(newStatus);
                 this.service.updateClaim(claim);
@@ -441,9 +441,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             auditTrailService.logAuditLog(newStatus, claim, null, null);
             // INSURER ONLY
             // createNewNote(claim.getEngineerClaimReviewNotes(), false, strPrefix);
-            createNewNote(claim.getEngineerClaimReviewNotes(), 1, strPrefix);
+            
+            //createNewNote(claim.getEngineerClaimReviewNotes(), 1, strPrefix);
 
-            claim.setEngineerClaimReviewNotes("");
             this.claim.setStatus(newStatus);
             this.service.updateClaim(claim);
 
@@ -475,7 +475,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         try {
-
             auditTrailService.logAuditLog(newStatus, claim, claimRejectionReason, null);
 
             this.claim.setStatus(newStatus);
@@ -520,10 +519,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                 // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
                 // createNewNote(claim.getEngineerClaimReviewNotes(), false, strPrefix);
-                createNewNote(claim.getEngineerClaimReviewNotes(), 1, strPrefix);
-                auditTrailService.logAuditLog(newStatus, claim, null, null);
+                
+                //createNewNote(claim.getEngineerClaimReviewNotes(), 1, strPrefix);
 
-                claim.setEngineerClaimReviewNotes("");
+                auditTrailService.logAuditLog(newStatus, claim, null, null);
                 this.claim.setStatus(newStatus);
                 this.service.updateClaim(claim);
 
@@ -1255,7 +1254,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public TabAccessibility getTabAccessibility() {
 
         if (tabAccessibility == null) {
-            tabAccessibility = applicationAccessibility.getTabAccessibility(getAuthenticatedUser().getAuthorities(), claim);
+            tabAccessibility = applicationAccessibility.getTabAccessibility(getAuthenticatedUser(), claim);
         }
         return tabAccessibility;
     }
@@ -1263,14 +1262,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public NotificationAccessibility getNotificationAccessibility() {
 
         if (notificationAccessibility == null) {
-            notificationAccessibility = applicationAccessibility.getNotificationAccessibility(getAuthenticatedUser().getAuthorities(), claim.getStatus());
+            notificationAccessibility = applicationAccessibility.getNotificationAccessibility(getAuthenticatedUser().getRoles(), claim.getStatus());
         }
         return notificationAccessibility;
     }
 
     public PanelAccessibility getPanelAccessibility() {
         if (panelAccessibility == null) {
-            panelAccessibility = applicationAccessibility.getPanelAccessibility(getAuthenticatedUser().getAuthorities());
+            panelAccessibility = applicationAccessibility.getPanelAccessibility(getAuthenticatedUser().getRoles());
         }
         return panelAccessibility;
     }
@@ -1683,7 +1682,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public List getOtherWorkgroups() {
     
     if (otherWorkgroups == null) {
-    otherWorkgroups = lookupService.getWorkgroupsByInsurerId(this.getAuthenticatedUser().getUser(), true);
+    otherWorkgroups = lookupService.getWorkgroupsByInsurerId(this.getAuthenticatedUser(), true);
     }
     
     return otherWorkgroups;
@@ -1692,7 +1691,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public List getWorkgroups() {
 
         if (workgroups == null) {
-            workgroups = lookupService.getWorkgroups(this.getAuthenticatedUser().getUser(), true);
+            workgroups = lookupService.getWorkgroups(this.getAuthenticatedUser(), true);
         }
 
         return workgroups;
@@ -1702,8 +1701,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public List getInsurerWorkgroups() {
 
         if (insurerWorkgroups == null) {
-            if (this.getAuthenticatedUser().getUser().getInsurer() != null) {
-                insurerWorkgroups = lookupService.getWorkgroupsByInsurerId(this.getAuthenticatedUser().getUser().getInsurer().getId(), true);
+            if (this.getAuthenticatedUser().getInsurer() != null) {
+                insurerWorkgroups = lookupService.getWorkgroupsByInsurerId(this.getAuthenticatedUser().getInsurer().getId(), true);
             } else {
                 insurerWorkgroups = lookupService.getWorkgroupsByInsurerId(-1, true);
             }
@@ -1724,8 +1723,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (insurers == null) {
 
-            if (this.getAuthenticatedUser().getUser().getChorganisation() != null) {
-                Chorganisation currentCho = this.getAuthenticatedUser().getUser().getChorganisation();
+            if (this.getAuthenticatedUser().getChorganisation() != null) {
+                Chorganisation currentCho = this.getAuthenticatedUser().getChorganisation();
                 insurers = this.lookupService.getInsurers(currentCho.getId());
             } else {
                 insurers = this.lookupService.getInsurers();
@@ -1753,18 +1752,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // </editor-fold>
     public String getActionPanel() {
 
-        GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
+        Set roles = getAuthenticatedUser().getRoles();
         List<String> actions = PanelAction.getPanelActions();
 
         for (String action : actions) {
 
-            short accessRight = applicationAccessibility.checkActionAccessibility(action, grantedAuthorities, claim.getStatus());
+            short accessRight = applicationAccessibility.checkActionAccessibility(action, roles, claim.getStatus());
 
             if (accessRight > 0) {
 
-                AccessibilityEditable accEditable = applicationAccessibility.checkActionEditableCheck(action, grantedAuthorities, claim.getStatus());
+                AccessibilityEditable accEditable = applicationAccessibility.checkActionEditableCheck(action, roles, claim.getStatus());
 
-                if (!AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, getAuthenticatedUser().getUser())) {
+                if (!AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, getAuthenticatedUser())) {
                     action = EMPTY;
                 }
 
@@ -1778,26 +1777,26 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean getIsClaimNotificationEditable() {
-        AccessibilityEditable accEditable = applicationAccessibility.checkNotificationEditableCheck("NotificationNotesNotification", getAuthenticatedUser().getAuthorities(), claim.getStatus());
-        return AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, getAuthenticatedUser().getUser());
+        AccessibilityEditable accEditable = applicationAccessibility.checkNotificationEditableCheck("NotificationNotesNotification", getAuthenticatedUser().getRoles(), claim.getStatus());
+        return AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, getAuthenticatedUser());
     }
 
     public List getExtraActionList() {
 
-        GrantedAuthority[] grantedAuthorities = getAuthenticatedUser().getAuthorities();
+        Set roles = getAuthenticatedUser().getRoles();
         List<String> actions = AdditionalAction.getExtraActions();
 
         extraActionList = new ArrayList<LookupItem>();
 
         for (String action : actions) {
 
-            short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, grantedAuthorities, claim.getStatus());
+            short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, roles, claim.getStatus());
 
             if (accessRight >= 1) {
 
-                AccessibilityEditable accEditable = applicationAccessibility.checkExtraActionEditableCheck(action, grantedAuthorities, claim.getStatus());
+                AccessibilityEditable accEditable = applicationAccessibility.checkExtraActionEditableCheck(action, roles, claim.getStatus());
 
-                if (AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, getAuthenticatedUser().getUser())) {
+                if (AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, getAuthenticatedUser())) {
                     String extraActionDescription = AdditionalAction.getExtraActionName(action);
                     extraActionList.add(new LookupItem(action, extraActionDescription));
                 }

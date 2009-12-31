@@ -21,7 +21,7 @@ public class UserAccountAction extends BaseAction {
 
     @Override
     public String execute() {
-        webUser = this.getAuthenticatedUser().getUser();
+        webUser = this.getAuthenticatedUser();
         if (webUser.getIsExpired()) {
             message = "Your Password has expired. Please choose a new password.";
         }
@@ -30,10 +30,10 @@ public class UserAccountAction extends BaseAction {
 
     public String changePassword() {
         try {
-            webUser = this.getAuthenticatedUser().getUser();
+            webUser = this.getAuthenticatedUser();
 
             webUser.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
-            webUser.setLastModifiedBy(this.getAuthenticatedUser().getUser());
+            webUser.setLastModifiedBy(this.getAuthenticatedUser());
 
             PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
             webUser.setPassword(passwordEncoder.encodePassword(getNewPassword(), null));

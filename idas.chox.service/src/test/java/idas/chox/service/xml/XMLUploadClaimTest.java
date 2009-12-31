@@ -35,7 +35,7 @@ public class XMLUploadClaimTest {
     private ClaimService claimService;
     @Autowired
     private VehicleClassService vehicleClassService;
-   
+
     /*
     @Test
     public void testFile_1_Error() {
@@ -137,7 +137,6 @@ public class XMLUploadClaimTest {
         Assert.assertEquals(new BigDecimal("0.00"), claim.getIndemnityAmount());
         Assert.assertEquals(new BigDecimal("0.00"), claim.getPercentageLiabilityAccepted());
         Assert.assertEquals(false, claim.getIsQuantumDispute());
-        Assert.assertEquals(null, claim.getEngineerClaimReviewNotes());
         // Assert.assertEquals(false, claim.getIsInvoiceReviewRequired());
         Assert.assertEquals(false, claim.getIsIsAnomalies());
         Assert.assertEquals(false, claim.isIsFnolReviewed());
@@ -145,8 +144,7 @@ public class XMLUploadClaimTest {
 
     }
 
-    private void checkEngineeringReport(EngineerReport engineerReport)
-    {
+    private void checkEngineeringReport(EngineerReport engineerReport) {
         // FROM <engineer-report>
         Assert.assertEquals(new BigDecimal("2991"), engineerReport.getLabourAmount());
         Assert.assertEquals(new BigDecimal("234"), engineerReport.getTotalAmount());

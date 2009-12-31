@@ -18,6 +18,7 @@ public class VehicleHireServiceImpl extends SecureDataService implements Vehicle
         return (VehicleHire) get(VehicleHire.class, id);
     }
 
+    
     public void updateObject(VehicleHire vehicleHire) {
 
         save(vehicleHire);

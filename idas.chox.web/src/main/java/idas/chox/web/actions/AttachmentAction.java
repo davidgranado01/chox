@@ -11,7 +11,7 @@ import idas.chox.core.model.AttachmentType;
 import idas.chox.core.model.Claim;
 import idas.chox.core.services.AttachmentTypeService;
 import idas.chox.core.util.FileHelper;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import idas.chox.web.security.ApplicationAccessibility;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -249,7 +249,7 @@ public class AttachmentAction extends BaseModelAction implements ModelDriven<Att
 
     public void prepare() throws Exception {
         if (getFileId() > 0) {
-            model = (Attachment) dataService.get(Attachment.class, getFileId());
+            model = (Attachment) baseDataService.get(Attachment.class, getFileId());
         } else {
             model = new Attachment();
         }

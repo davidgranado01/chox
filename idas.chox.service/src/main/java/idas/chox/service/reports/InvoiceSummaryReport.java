@@ -8,7 +8,7 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.TextHelper;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.InvoiceSummary;
 import idas.chox.service.reports.viewdata.InvoiceSummaryReportObject;
 import idas.chox.service.security.PermissionedUser;
@@ -25,7 +25,7 @@ public class InvoiceSummaryReport implements Report {
 
     Map externalParameter;
     List<String> reportParameterNames;
-    private DataService dataService;
+    private BaseDataService baseDataService;
 
     public InvoiceSummaryReport() {
         reportParameterNames = new ArrayList<String>();
@@ -46,7 +46,7 @@ public class InvoiceSummaryReport implements Report {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
             criteria.add(Restrictions.eq("id", orgId));
-            chorg = (Chorganisation) dataService.getByCriteria(criteria);
+            chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -62,7 +62,7 @@ public class InvoiceSummaryReport implements Report {
 
             DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
             criteria.add(Restrictions.eq("id", orgId));
-            ins = (Insurer) dataService.getByCriteria(criteria);
+            ins = (Insurer) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -213,7 +213,7 @@ public class InvoiceSummaryReport implements Report {
                 paramMap.put("selectedOrgId", selectedOrgId);
             }
 
-            List result = dataService.externalQuery(query, paramMap);
+            List result = baseDataService.externalQuery(query, paramMap);
 
             List<InvoiceSummary> invoiceSummaries = new ArrayList<InvoiceSummary>();
 
@@ -253,8 +253,8 @@ public class InvoiceSummaryReport implements Report {
         return new ExcelReportBuilder();
     }
 
-    public void setDataService(DataService dataService) {
-        this.dataService = dataService;
+    public void setDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
     
 }

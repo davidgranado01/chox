@@ -1,19 +1,19 @@
 package idas.chox.service.dashboard;
 
 import idas.chox.core.model.Chorganisation;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.BaseDataService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ChoDashboardBuilder {
 
-    private DataService dataService;
+    private BaseDataService baseDataService;
     private Chorganisation chorganisation;
     private Map extParameters;
 
-    public ChoDashboardBuilder(DataService dataService, Chorganisation chorganisation, Map extParameters) {
-        this.setDataService(dataService);
+    public ChoDashboardBuilder(BaseDataService baseDataService, Chorganisation chorganisation, Map extParameters) {
+        this.setDataService(baseDataService);
         this.setExtParameters(extParameters);
         this.setChorganisation(chorganisation);
     }
@@ -116,7 +116,7 @@ public class ChoDashboardBuilder {
 
     private DashBoardViewData build(Map queryParameters, String query) {
         DashBoardViewData viewData = new DashBoardViewData();
-        List result = dataService.externalQuery(query, queryParameters);
+        List result = baseDataService.externalQuery(query, queryParameters);
         if (!result.isEmpty()) {
             viewData = DashBoardViewData.getObject((Map) result.get(0));
         }
@@ -124,8 +124,8 @@ public class ChoDashboardBuilder {
         return viewData;
     }
 
-    public void setDataService(DataService dataService) {
-        this.dataService = dataService;
+    public void setDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
     }
 
     public void setChorganisation(Chorganisation chorganisation) {

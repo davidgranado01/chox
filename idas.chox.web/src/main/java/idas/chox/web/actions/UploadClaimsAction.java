@@ -1,7 +1,6 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.services.BreBandOrganisationService;
-import idas.chox.service.security.PermissionedUser;
 
 public class UploadClaimsAction extends BaseAction {
 
@@ -17,12 +16,10 @@ public class UploadClaimsAction extends BaseAction {
 
     public boolean isUploadFlag() {
 
-        PermissionedUser user = getAuthenticatedUser();
-
         uploadFlag = false;
 
-        if (user.getIsCHO()) {
-            int chorgId = user.getUser().getChorganisation().getId();
+        if (getIsCHO()) {
+            int chorgId = getAuthenticatedUser().getChorganisation().getId();
             uploadFlag = breBandOrganisationService.isActiveChorganisationWithBand(chorgId);
         }
 

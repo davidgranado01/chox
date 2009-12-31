@@ -34,7 +34,7 @@ public class InboxAction extends BaseAction implements SessionAware {
     public ReportAccessibility getReportAccessibility() {
 
         if (reportAccessibility == null) {
-            reportAccessibility = getApplicationAccessibility().getReportAccessibility(super.getAuthenticatedUser().getAuthorities());
+            reportAccessibility = getApplicationAccessibility().getReportAccessibility(super.getAuthenticatedUser().getRoles());
         }
         return reportAccessibility;
     }
@@ -42,47 +42,47 @@ public class InboxAction extends BaseAction implements SessionAware {
     public AdminAccessibility getAdminAccessibility() {
 
         if (adminAccessibility == null) {
-            adminAccessibility = getApplicationAccessibility().getAdminAccessibility(super.getAuthenticatedUser().getAuthorities());
+            adminAccessibility = getApplicationAccessibility().getAdminAccessibility(super.getAuthenticatedUser().getRoles());
         }
         return adminAccessibility;
     }
 
     public MenuAccessibility getMenuAccessibility() {
         if (menuAccessibility == null) {
-            menuAccessibility = getApplicationAccessibility().getMenuAccessibility(super.getAuthenticatedUser().getAuthorities());
+            menuAccessibility = getApplicationAccessibility().getMenuAccessibility(super.getAuthenticatedUser().getRoles());
         }
         return menuAccessibility;
     }
 
     public boolean getIsApprovePaymentAccessibile() {
-        short accessRight = applicationAccessibility.checkActionAccessibility("logInvoicePayment", super.getAuthenticatedUser().getAuthorities(), ClaimStatus.AWAITING_INVOICE_PAYMENT);
+        short accessRight = applicationAccessibility.checkActionAccessibility("logInvoicePayment", super.getAuthenticatedUser().getRoles(), ClaimStatus.AWAITING_INVOICE_PAYMENT);
         return accessRight > 0;
     }
 
     public boolean getIsClearBREApprovedInvoicesForPaymentAccessibile() {
-        short accessRight = applicationAccessibility.checkActionAccessibility("approveBREPassedClaim", super.getAuthenticatedUser().getAuthorities(), ClaimStatus.INVOICE_APPROVED_BY_BRE);
+        short accessRight = applicationAccessibility.checkActionAccessibility("approveBREPassedClaim", super.getAuthenticatedUser().getRoles(), ClaimStatus.INVOICE_APPROVED_BY_BRE);
         return accessRight > 0;
     }
 
     public boolean getIsDoInvoicePaymentReceivedAccessibile() {
-        short accessRight = applicationAccessibility.checkActionAccessibility("doInvoicePaymentReceived", super.getAuthenticatedUser().getAuthorities(), ClaimStatus.INVOICE_PAYMENT_LOGGED);
+        short accessRight = applicationAccessibility.checkActionAccessibility("doInvoicePaymentReceived", super.getAuthenticatedUser().getRoles(), ClaimStatus.INVOICE_PAYMENT_LOGGED);
         return accessRight > 0;
     }
 
     public boolean getIsDoClaimRoutedAccessibile() {
-        short accessRight = applicationAccessibility.checkActionAccessibility("routeClaims", super.getAuthenticatedUser().getAuthorities(), ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+        short accessRight = applicationAccessibility.checkActionAccessibility("routeClaims", super.getAuthenticatedUser().getRoles(), ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
         return accessRight > 0;
     }
 
     public boolean getIsDoClaimOwnershipAccessibile() {
-        short accessRight = applicationAccessibility.checkActionAccessibility("claimOwnership", super.getAuthenticatedUser().getAuthorities(), ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        short accessRight = applicationAccessibility.checkActionAccessibility("claimOwnership", super.getAuthenticatedUser().getRoles(), ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         return accessRight > 0;
     }
 
     // TODO: REFACTORING TO SEPERATE BATCH UPDATE FROM GENERAL ACTION
     public boolean getIsDoUpdateClaimOwnershipAccessibile()
     {
-        short accessRight = applicationAccessibility.checkActionAccessibility("claimOwnership", super.getAuthenticatedUser().getAuthorities(), ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        short accessRight = applicationAccessibility.checkActionAccessibility("claimOwnership", super.getAuthenticatedUser().getRoles(), ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         return accessRight > 0;
     }
     

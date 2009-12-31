@@ -9,7 +9,7 @@ import idas.chox.core.services.GlobalConfigurationService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-public class GlobalConfigurationServiceImpl extends DataService implements GlobalConfigurationService {
+public class GlobalConfigurationServiceImpl extends BaseDataService implements GlobalConfigurationService {
 
     public GlobalConfiguration getValueByParam(String s) {
 

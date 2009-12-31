@@ -3,7 +3,6 @@ package idas.chox.service.xml.validations;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimResult;
-import idas.chox.core.xmlValidation.DataValidationParameter;
 import idas.chox.service.xml.util.NodeHelper;
 import java.util.ArrayList;
 import javax.xml.xpath.XPathExpressionException;

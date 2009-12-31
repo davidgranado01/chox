@@ -9,7 +9,7 @@ import idas.chox.core.services.BordereauService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
-public class BordereauServiceImpl extends DataService implements BordereauService {
+public class BordereauServiceImpl extends SecureDataService implements BordereauService {
 
     public Boolean saveObj(Bordereau obj) {
 

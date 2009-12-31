@@ -32,12 +32,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- *
- * @author emmanuel
- */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml"})
+@ContextConfiguration( locations = {"classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml"})
 public class IntelligentNoteTest {
 
     @Autowired

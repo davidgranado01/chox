@@ -4,7 +4,7 @@
  */
 package idas.chox.web.security;
 
-import org.springframework.security.GrantedAuthority;
+import java.util.Set;
 
 /**
  *
@@ -37,32 +37,32 @@ public class FilterAccessibility {
     private boolean claimUnacknowledgedUnassignedAccessible;
     private boolean awaitingInvoiceDataAccessible;
 
-    public FilterAccessibility(ApplicationAccessibility accessibility, GrantedAuthority[] grantedAuthorities) {
+    public FilterAccessibility(ApplicationAccessibility accessibility, Set roles) {
 
-        rejectedClaimsAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_REJECTED_CLAIMS, grantedAuthorities) > 0;
-        incorrectInvoiceDataCalculationsAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INCORRECT_INVOICE_DATA_COLC, grantedAuthorities) > 0;
-        contestedInvoicesReferredToCHOAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CONTESTED_INVOICE_REF_CHO, grantedAuthorities) > 0;
-        claimsAwaitingHireMonitoringInformationAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_AWAITING_HIRE_MONITORING_INFO, grantedAuthorities) > 0;
-        claimsAwaitingAcknowledgementAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_AWAITING_ACK, grantedAuthorities) > 0;
-        reSubmittedClaimsAwaitingAcknowledgementAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_RESUBMIT_CLAIM_AWAITING_ACK, grantedAuthorities) > 0;
-        hireUpdateAnomaliesAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_HIRE_UPDATE_ANOMALIES, grantedAuthorities) > 0;
-        newClaimsToBeroutedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_NEW_CLAIM_TO_BE_ROUTED, grantedAuthorities) > 0;
-        claimsAwaitingClaimsHandlingPaymentAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_AWAITING_CLAIM_HANDLING_PAYMENT, grantedAuthorities) > 0;
-        approvedInvoicesAwaitingPaymentAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_APPROVED_INVOICE_AWAITING_PAYMENT, grantedAuthorities) > 0;
-        escalatedInvoicesAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_ESCALATED_INVOICE, grantedAuthorities) > 0;
-        invoiceEscalatedToHandlerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_ESCALATED_INVOICE_TO_CH, grantedAuthorities) > 0;
-        contestedInvoicesReferredToInsurerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CONTESTED_INVOICE_REF_INS, grantedAuthorities) > 0;
-        invoicesApprovedByBREAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_APPROVED_BY_BRE, grantedAuthorities) > 0;
-        claimReferredToEngineerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_REF_ENG, grantedAuthorities) > 0;
-        claimReferredToFNOLAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_REF_FNOL, grantedAuthorities) > 0;
-        penaltyChargesAppliedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_PENALTY_CHARGES_APPLIED, grantedAuthorities) > 0;
-        claimPendingAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_PENDING, grantedAuthorities) > 0;
-        InvoiceReferredToClaimsHandlerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_REF_TO_CH, grantedAuthorities) > 0;
-        InvoicePaymentLoggedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_PAYMENT_LOGGED, grantedAuthorities) > 0;
-        ClaimUpdatedByEngineerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_UPDATED_BY_ENGINEER, grantedAuthorities) > 0;
-        contestedInvoiceReferToEngAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CONTESTED_INVOICE_REF_ENF, grantedAuthorities) > 0;
-        claimUnacknowledgedUnassignedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_OWNERSHIP, grantedAuthorities) > 0;
-        awaitingInvoiceDataAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_AWAITING_INVOICE_DATA, grantedAuthorities) > 0;
+        rejectedClaimsAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_REJECTED_CLAIMS, roles) > 0;
+        incorrectInvoiceDataCalculationsAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INCORRECT_INVOICE_DATA_COLC, roles) > 0;
+        contestedInvoicesReferredToCHOAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CONTESTED_INVOICE_REF_CHO, roles) > 0;
+        claimsAwaitingHireMonitoringInformationAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_AWAITING_HIRE_MONITORING_INFO, roles) > 0;
+        claimsAwaitingAcknowledgementAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_AWAITING_ACK, roles) > 0;
+        reSubmittedClaimsAwaitingAcknowledgementAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_RESUBMIT_CLAIM_AWAITING_ACK, roles) > 0;
+        hireUpdateAnomaliesAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_HIRE_UPDATE_ANOMALIES, roles) > 0;
+        newClaimsToBeroutedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_NEW_CLAIM_TO_BE_ROUTED, roles) > 0;
+        claimsAwaitingClaimsHandlingPaymentAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_AWAITING_CLAIM_HANDLING_PAYMENT, roles) > 0;
+        approvedInvoicesAwaitingPaymentAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_APPROVED_INVOICE_AWAITING_PAYMENT, roles) > 0;
+        escalatedInvoicesAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_ESCALATED_INVOICE, roles) > 0;
+        invoiceEscalatedToHandlerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_ESCALATED_INVOICE_TO_CH, roles) > 0;
+        contestedInvoicesReferredToInsurerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CONTESTED_INVOICE_REF_INS, roles) > 0;
+        invoicesApprovedByBREAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_APPROVED_BY_BRE, roles) > 0;
+        claimReferredToEngineerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_REF_ENG, roles) > 0;
+        claimReferredToFNOLAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_REF_FNOL, roles) > 0;
+        penaltyChargesAppliedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_PENALTY_CHARGES_APPLIED, roles) > 0;
+        claimPendingAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_PENDING, roles) > 0;
+        InvoiceReferredToClaimsHandlerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_REF_TO_CH, roles) > 0;
+        InvoicePaymentLoggedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_PAYMENT_LOGGED, roles) > 0;
+        ClaimUpdatedByEngineerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_UPDATED_BY_ENGINEER, roles) > 0;
+        contestedInvoiceReferToEngAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CONTESTED_INVOICE_REF_ENF, roles) > 0;
+        claimUnacknowledgedUnassignedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_OWNERSHIP, roles) > 0;
+        awaitingInvoiceDataAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_AWAITING_INVOICE_DATA, roles) > 0;
     }
 
     public boolean getIsAwaitingInvoiceDataAccessible() {

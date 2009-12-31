@@ -6,10 +6,13 @@ import java.util.Set;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import javax.management.relation.Role;
 
 public class WebUser extends Entity implements Serializable {
 
     // <editor-fold defaultstate="collapsed" desc="PARAMETERS">
+    protected int id;
     protected String userName;
     protected String email;
     protected String firstName;
@@ -32,7 +35,6 @@ public class WebUser extends Entity implements Serializable {
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
-    
     public java.lang.String getEmail() {
         return email;
     }
