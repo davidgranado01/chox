@@ -9,11 +9,33 @@ import java.util.List;
 
 public class InsurerBreBandMappingAction extends BaseAction {
 
+    protected int insurerId = -1;
+    
+    public int getInsurerId() {
+        return insurerId;
+    }
+
+    public void setInsurerId(int insurerId) {
+        this.insurerId = insurerId;
+    }
+
+    public String doRenderActionPage() {
+        return SUCCESS;
+    }
+
+
+
+
+
+
+
+
+    
     private List<BreBandChorganisationViewData> insurerBreBand;
     private BreBandOrganisationService breBandOrganisationService;
-    private int insurerId = -1;
+    
     private int breBandId = -1;
-
+    
     public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.insurerBreBand);
         return "{totalCount:" + this.insurerBreBand.size() + ",results:" + jObject.toString() + "}";
@@ -23,13 +45,7 @@ public class InsurerBreBandMappingAction extends BaseAction {
         this.breBandOrganisationService = breBandOrganisationService;
     }
 
-    public int getInsurerId() {
-        return insurerId;
-    }
 
-    public void setInsurerId(int insurerId) {
-        this.insurerId = insurerId;
-    }
 
     public int getBreBandId() {
         return breBandId;

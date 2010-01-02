@@ -67,7 +67,7 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
 
             if (reasonOfDelayId > 0) {
 
-                ReasonOfDelay reasonOfDelayObject = reasonOfDelayService.getObject(reasonOfDelayId);
+                ReasonOfDelay reasonOfDelayObject = reasonOfDelayService.getReasonOfDelay(reasonOfDelayId);
                 model.setReason(reasonOfDelayObject.getName());
 
                 Claim claim = claimService.getClaim(claimId);

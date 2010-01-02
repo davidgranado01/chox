@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.core.services;
 
 import idas.chox.core.model.Claim;
@@ -12,17 +8,17 @@ import java.util.List;
 
 public interface InsurerService {
 
-    public boolean isInsurerNameExist(String s);
+    public boolean isInsurerNameExist(String insurerName);
 
-    Insurer getInsurerByName(String s);
+    Insurer getInsurerByName(String insurerName);
 
     Insurer getInsurerByNodeName(Element thisElement, String nodeName);
 
-    public Insurer getInsurer(int id);
+    public Insurer getInsurer(int insurerId);
 
     public List<Insurer> getInsurers();
 
-    public Insurer updateInsurer(Insurer object);
+    public Insurer updateInsurer(Insurer insurer);
 
     public VehicleClassCeiling getVechileClassCeilingForClaim(Claim claim);
 }

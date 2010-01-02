@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface ReasonOfDelayService {
 
-    public ReasonOfDelay getObject(int id);
+    public ReasonOfDelay getReasonOfDelay(int reasonOfDelayId);
 
     public List<ReasonOfDelay> getReasonOfDelay();
 

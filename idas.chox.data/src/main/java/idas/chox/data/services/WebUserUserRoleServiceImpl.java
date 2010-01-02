@@ -28,7 +28,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         this.webUserUserRoleService = webUserUserRoleService;
     }
 
-    public WebUserUserRole getObject(int id) {
+    public WebUserUserRole getWebUserUserRole(int id) {
         return (WebUserUserRole) get(WebUserUserRole.class, id);
     }
 
@@ -43,43 +43,32 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
 
         List<WebUserUserRole> webUserUserRoles = new ArrayList<WebUserUserRole>();
 
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(WebUserUserRole.class);
-            criteria.add(Restrictions.eq("webUser.id", webUserId));
-            webUserUserRoles = findByCriteria(criteria);
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUserUserRole.class);
+        criteria.add(Restrictions.eq("webUser.id", webUserId));
+        webUserUserRoles = findByCriteria(criteria);
 
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
 
         return webUserUserRoles;
     }
 
-    public void updateObject(WebUserUserRole object) {
-        try {
-            save(object);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+    public void saveWebUserUserRole(WebUserUserRole object) {
+
+        save(object);
+
     }
 
     public boolean addNewUserRole(int webUserId, int webUserRoleId) {
 
         boolean bFlag = false;
 
-        try {
 
-            WebUserUserRole webUserUserRole = new WebUserUserRole();
-            webUserUserRole.setActive(true);
-            webUserUserRole.setWebUser(userService.getWebUser(webUserId));
-            webUserUserRole.setWebUserRole(getWebUserRole(webUserRoleId));
-            updateObject(webUserUserRole);
-            bFlag = true;
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        WebUserUserRole webUserUserRole = new WebUserUserRole();
+        webUserUserRole.setActive(true);
+        webUserUserRole.setWebUser(userService.getWebUser(webUserId));
+        webUserUserRole.setWebUserRole(getWebUserRole(webUserRoleId));
+        saveWebUserUserRole(webUserUserRole);
+        bFlag = true;
 
         return bFlag;
 
@@ -89,20 +78,14 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
 
         boolean bFlag = false;
 
-        try {
 
-            WebUserUserRole webUserUserRole = new WebUserUserRole();
-            webUserUserRole.setActive(true);
-            webUserUserRole.setWebUser(userService.getWebUser(webUserId));
-            webUserUserRole.setWebUserRole(getUserOrgBaseRoleId(typeId));
+        WebUserUserRole webUserUserRole = new WebUserUserRole();
+        webUserUserRole.setActive(true);
+        webUserUserRole.setWebUser(userService.getWebUser(webUserId));
+        webUserUserRole.setWebUserRole(getUserOrgBaseRoleId(typeId));
 
-            updateObject(webUserUserRole);
-            bFlag = true;
+        saveWebUserUserRole(webUserUserRole);
 
-        } catch (Throwable e) {
-            e.printStackTrace();
-
-        }
 
         return bFlag;
 
@@ -128,20 +111,17 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
 
     }
 
-    public boolean DeleteObject(WebUserUserRole object) {
+    public boolean deleteWebUserUserRole(WebUserUserRole object) {
 
         boolean bFlag = false;
 
-        try {
 
 
-            delete(object);
 
-            bFlag = true;
+        delete(object);
 
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        bFlag = true;
+
 
         return bFlag;
     }
@@ -172,21 +152,16 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
 
         Set webUserRoles = new HashSet<WebUserRole>();
 
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
 
-            criteria.add(Restrictions.eq("typeId", orgTypeId));
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
 
-            criteria.add(Restrictions.ne("name", WebUserRole.ROLE_CHO));
-            criteria.add(Restrictions.ne("name", WebUserRole.ROLE_INS));
-            criteria.add(Restrictions.ne("name", WebUserRole.ROLE_CHOX));
+        criteria.add(Restrictions.eq("typeId", orgTypeId));
+        criteria.add(Restrictions.ne("name", WebUserRole.ROLE_CHO));
+        criteria.add(Restrictions.ne("name", WebUserRole.ROLE_INS));
+        criteria.add(Restrictions.ne("name", WebUserRole.ROLE_CHOX));
+        webUserRoles = findByCriteria(criteria);
 
-            webUserRoles.addAll(findByCriteria(criteria));
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
 
         return webUserRoles;
 

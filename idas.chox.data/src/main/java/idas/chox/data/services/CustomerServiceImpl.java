@@ -6,16 +6,15 @@ import idas.chox.core.xmlValidation.ClaimResult;
 
 public class CustomerServiceImpl extends SecureDataService implements CustomerService {
 
-    public Customer getObject(int id) {
+    public Customer getCustomer(int id) {
         return (Customer) get(Customer.class, id);
     }
 
-    
-    public void updateObject(Customer customer) {
+    public void saveCustomer(Customer customer) {
         save(customer);
     }
 
-    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
+    public void saveCustomerForXMLUploader(final ClaimResult claimResult) {
         Customer customer = claimResult.getClaim().getCustomer();
         if (customer != null) {
             getHibernateTemplate().saveOrUpdate(customer);

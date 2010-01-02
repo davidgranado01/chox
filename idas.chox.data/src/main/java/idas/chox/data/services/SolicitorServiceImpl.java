@@ -13,18 +13,14 @@ public class SolicitorServiceImpl extends SecureDataService implements Solicitor
 
         Solicitor solicitor = null;
 
-        try {
-            DetachedCriteria criteria = DetachedCriteria.forClass(Solicitor.class).add(Restrictions.eq("injury", injury));
-            solicitor = (Solicitor) getByCriteria(criteria);
+        DetachedCriteria criteria = DetachedCriteria.forClass(Solicitor.class).add(Restrictions.eq("injury", injury));
+        solicitor = (Solicitor) getByCriteria(criteria);
 
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
 
         return solicitor;
     }
 
-    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
+    public void saveSolicitorForXMLUploader(final ClaimResult claimResult) {
 
         if ((claimResult.getSolicitors()) != null) {
 
@@ -36,13 +32,11 @@ public class SolicitorServiceImpl extends SecureDataService implements Solicitor
         }
     }
 
-    public Solicitor getObject(int id) {
+    public Solicitor getSolicitor(int id) {
         return (Solicitor) get(Solicitor.class, id);
     }
 
-    
-    public void updateObject(Solicitor solicitor) {
-
+    public void saveSolicitor(Solicitor solicitor) {
         save(solicitor);
     }
 }

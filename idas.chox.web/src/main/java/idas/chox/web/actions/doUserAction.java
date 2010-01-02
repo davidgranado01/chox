@@ -7,6 +7,7 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.UserService;
+import idas.chox.service.security.PermissionedUser;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminUserService;
 import java.util.List;

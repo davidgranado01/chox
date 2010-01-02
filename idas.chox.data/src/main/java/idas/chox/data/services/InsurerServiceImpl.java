@@ -29,14 +29,11 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
     public Insurer getInsurerByName(String s) {
 
         Insurer insurer = new Insurer();
-        try {
-            DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
-            criteria.add(Restrictions.eq("name", s));
-            insurer = (Insurer) getByCriteria(criteria);
 
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
+        criteria.add(Restrictions.eq("name", s));
+        insurer = (Insurer) getByCriteria(criteria);
+
 
         return insurer;
     }
@@ -59,26 +56,19 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
 
         List<Insurer> insurer = new ArrayList<Insurer>();
 
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
-            criteria.addOrder(Order.asc("name"));
-            insurer = findByCriteria(criteria);
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
+        criteria.addOrder(Order.asc("name"));
+        insurer = findByCriteria(criteria);
 
         return insurer;
     }
 
     public Insurer updateInsurer(Insurer object) {
 
-        try {
-            save(object);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+
+        save(object);
+
 
         return object;
     }
@@ -86,16 +76,14 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
     public VehicleClassCeiling getVechileClassCeilingForClaim(Claim claim) {
         VehicleClassCeiling vehicleClassCeiling = null;
 
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassCeiling.class);
-            criteria.add(Restrictions.eq("insurer", claim.getInsurer()));
-            criteria.add(Restrictions.eq("vehicleClass", claim.getCustomer().getVehicleClass()));
-            vehicleClassCeiling = (VehicleClassCeiling) getByCriteria(criteria);
 
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassCeiling.class);
+        criteria.add(Restrictions.eq("insurer", claim.getInsurer()));
+        criteria.add(Restrictions.eq("vehicleClass", claim.getCustomer().getVehicleClass()));
+        vehicleClassCeiling = (VehicleClassCeiling) getByCriteria(criteria);
+
+
 
         return vehicleClassCeiling;
     }

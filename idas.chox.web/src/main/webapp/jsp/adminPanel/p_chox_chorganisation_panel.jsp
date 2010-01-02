@@ -40,7 +40,6 @@
             enableHdMenu:false,
             layout:'fit',
             viewConfig:{forceFit:true},
-            title:'Credit Hire Organisation Management',
             columns: [
                 {header: "Name", width: 150, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='highlightItem'>" + value + "</a>"}},
@@ -51,8 +50,8 @@
                 {header: "Created By", width: 80, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
-            height:630,
-            width: 750
+            height:580,
+            width: 730
         });
 
         gridviewGrid.render('gridviewGridHolderId');
@@ -90,7 +89,6 @@
 
     }
 
-
     function createNewRecord(){
 
         var target = "#admin_param_panel";
@@ -118,20 +116,23 @@
         }
         
     }
-    
+
 </script>
 
 <div id="chox-admin-holder">
-    <form id="ChoxChorganisationMgmtPanelForm" name="ChoxChorganisationMgmtPanelForm" class="XXentity-form" action="" method="POST">
-        <div class="admin-gridview-header">
-            <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                    <td id="label"></td>
-                    <td id="buttons"><button type="button" onclick="javascript:createNewRecord();">Add New Credit Hire Organisation</button></td>
-                </tr>
-            </table>
+    <div id="chox-admin-col-div">
+        <div id="header-title"><label>Credit Hire Organisation Management</label></div>
+        <form id="ChoxChorganisationMgmtPanelForm" name="ChoxChorganisationMgmtPanelForm" class="XXentity-form" action="" method="POST">
+            <div class="admin-gridview-header">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td id="label"></td>
+                        <td id="buttons"><button type="button" onclick="javascript:createNewRecord();">Add New Credit Hire Organisation</button></td>
+                    </tr>
+                </table>
 
-        </div>        
-        <div id="gridviewGridHolderId"></div>
-    </form>
+            </div>
+            <div id="gridviewGridHolderId"></div>
+        </form>
+    </div>
 </div>

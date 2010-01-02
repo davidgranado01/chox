@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
@@ -27,16 +26,16 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         this.claimService = claimService;
     }
 
-    public Workgroup getWorkgroup(int id) {
-        return (Workgroup) get(Workgroup.class, id);
+    public Workgroup getWorkgroup(int workgroupId) {
+        return (Workgroup) get(Workgroup.class, workgroupId);
     }
 
-    public void delete(Workgroup object) {
-        delete(object);
+    public void deleteWorkgroup(Workgroup workgroup) {
+        delete(workgroup);
     }
 
-    public void save(Workgroup object) {
-        save(object);
+    public void saveWorkgroup(Workgroup workgroup) {
+        save(workgroup);
     }
 
     public List<Workgroup> getWorkgroupsByInsurer(int insurerId) {
@@ -94,7 +93,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         object.setInsurer(insurer);
         object.setName(insurer.getName());
         object.setStatus(true);
-        save(object);
+        saveWorkgroup(object);
     }
 
     public List<Workgroup> getAvailableWorkgroupsByInsurer(int insurerId, int webUserId) {
@@ -120,7 +119,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
 
         boolean isExist = false;
 
-        if (!this.userWorkgroupService.isUserWorkgroupExist(workgroupId, null) && !this.claimService.isObjectExist(workgroupId)) {
+        if (!this.userWorkgroupService.isUserWorkgroupExist(workgroupId, -1) && !this.claimService.isObjectExist(workgroupId)) {
             isExist = true;
         }
 

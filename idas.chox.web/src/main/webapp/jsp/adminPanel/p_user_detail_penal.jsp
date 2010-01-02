@@ -8,7 +8,7 @@
     var isNew = true;
     var isWorkgroupEnabled = true;
 
-    $(document).ready(function(){
+    $(function(){
         
         // CHECK PROCESS MODE
         isNew = isTrue($("#isNew").val());
@@ -92,7 +92,7 @@
         if(userDetailPanelTabs) { userDetailTabIndex = userDetailPanelTabs.items.indexOf(userDetailPanelTabs.getActiveTab()); }
     }
 
-    function doCancelBack(){
+    function doUserCancelBack(){
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
         var param = {"adminPanelName":"UserMgmt"};
@@ -102,10 +102,10 @@
     }
 
     function doUserDetailSubmit(){        
-        ui.ajaxForm($("form#formUpdateUserDetail"), doSubmitSucceed);
+        ui.ajaxForm($("form#formUpdateUserDetail"), doSubmitUserSucceed);
     }
 
-    function doSubmitSucceed(responseText, statusText){
+    function doSubmitUserSucceed(responseText, statusText){
         var response = eval('(' + responseText.trim() + ')');
         if(response && response.isValid)
         {
@@ -258,7 +258,7 @@
                     </div>
                     <div class="chox-form-button">
                         <input type="submit" value="Save Changes" onclick="javascript: return doUserDetailSubmit();"/>
-                        <input type="button" value="Cancel" class="cancel" onclick="javascript: return doCancelBack();" />
+                        <input type="button" value="Cancel" class="cancel" onclick="javascript: return doUserCancelBack();" />
                     </div>
                     <div class="chox-form-submit-result"></div>
                     <div id="CDmessageBox" class="action-error-msg"></div>

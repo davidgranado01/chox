@@ -27,7 +27,7 @@ public class BreBandDropDownAction extends BaseAction {
 
     @Override
     public String execute() throws Exception {
-        this.breBands = services.getInsurerBreBand(getOrgId());
+        this.breBands = services.getInsurerBreBandsByInsurer(getOrgId());
         return SUCCESS;
     }
 }

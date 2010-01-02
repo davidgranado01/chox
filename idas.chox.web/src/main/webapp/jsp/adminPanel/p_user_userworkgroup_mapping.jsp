@@ -198,7 +198,7 @@
 </div>
 <div>
     <div>
-        <div class="gridViewHeader">
+        <div class="grid-view-header">
             <table width="100%">
                 <tr>
                     <td>

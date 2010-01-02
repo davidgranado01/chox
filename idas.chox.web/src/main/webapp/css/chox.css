@@ -772,12 +772,13 @@ img.tip-target
     padding: 10px;
 }
 
-.gridViewHeader{  
+.grid-view-header{
     padding-bottom:5px;
-    width:645px;
+    padding-right:5px;
+    width:100%;
 }
 
-.gridViewHeader td{
+.grid-view-header td{
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 12px;
 }
@@ -803,13 +804,13 @@ img.tip-target
     height:700px;
 }
 
-.girdViewObject{
+.gird-view-object{
     height:560px; 
     overflow:auto;
     width:310px;
 }
 
-.girdViewLabel{
+.gird-view-label{
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: 12px;   
     font-weight:bold;
@@ -827,15 +828,17 @@ img.tip-target
     width:500px;
 }
 
-.label-block .std-label
+.label-block p.std-label
 {
+    vertical-align:bottom;
+    font-weight:bold;
     display: block;
     float: left;
     margin-right: 10px;
     text-align: right;
     width: 100px;
     white-space: nowrap;
-    vertical-align:bottom;
+    height:20px
 }
 
 .popUpViewDiv{

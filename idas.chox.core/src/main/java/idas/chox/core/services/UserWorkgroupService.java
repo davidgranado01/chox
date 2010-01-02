@@ -14,5 +14,4 @@ public interface UserWorkgroupService {
     public void saveWebUserWorkgroup(WebUserWorkgroup webUserWorkgroup);
 
     public boolean isUserWorkgroupExist(Integer workgroupId, Integer webUserId);
-
 }

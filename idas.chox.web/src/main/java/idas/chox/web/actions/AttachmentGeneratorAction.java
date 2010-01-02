@@ -12,8 +12,6 @@ import java.io.InputStream;
 import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 
-
-
 public class AttachmentGeneratorAction extends BaseAction implements SessionAware {
     
     private String fileId;
@@ -70,7 +68,7 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
     }
     
     private Attachment getAttachmentFileName(int fileId){
-        Attachment att = service.getObject(fileId);
+        Attachment att = service.getAttachment(fileId);
         return att;
     }
     

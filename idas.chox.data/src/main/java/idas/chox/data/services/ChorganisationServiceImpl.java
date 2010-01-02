@@ -2,7 +2,6 @@ package idas.chox.data.services;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.InsurerChorganisation;
-import idas.chox.core.model.WebUser;
 import idas.chox.core.services.BreBandOrganisationService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerChorganisationService;
@@ -10,10 +9,56 @@ import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 public class ChorganisationServiceImpl extends SecureDataService implements ChorganisationService {
 
+    public Chorganisation getChorganisation(int chorganisationId) {
+        return (Chorganisation) get(Chorganisation.class, chorganisationId);
+    }
+    
+    public List<Chorganisation> getChorganisations(String order) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
+        
+        if(!order.equalsIgnoreCase("") && order!=null){
+            criteria.addOrder(Order.asc(order));
+        }
+        
+        return findByCriteria(criteria);
+    }
+
+    public Chorganisation updateChorganisation(Chorganisation chorganisation) {
+        save(chorganisation);
+        return chorganisation;
+    }
+
+
+    public List<Chorganisation> getAvailableChorganisationsByInsurer(int insurerId) {
+
+        // GET ALL CHORGANISATIONS
+        DetachedCriteria chorganisationCirteria = DetachedCriteria.forClass(Chorganisation.class);
+        chorganisationCirteria.add(Restrictions.eq("status", true));
+
+        // GET ALL CHORGANISATIONS ASSIGNED TO INSURER
+        DetachedCriteria insurerChorganisationCirteria = DetachedCriteria.forClass(InsurerChorganisation.class);
+        insurerChorganisationCirteria.add(Restrictions.eq("insurer.id", insurerId));
+        insurerChorganisationCirteria.add(Restrictions.eq("status", true));
+        insurerChorganisationCirteria.setProjection(Property.forName("chorganisation.id"));
+        
+        // FILTERED BY ASSIGNED CHORGANISATIONS
+        chorganisationCirteria.add(Property.forName("id").notIn(insurerChorganisationCirteria));
+
+        // RETURN SEARCH RESULT
+        return findByCriteria(chorganisationCirteria);
+
+    }
+
+
+
+
+
+    
     protected InsurerChorganisationService insurerChorganisationService;
     protected BreBandOrganisationService choBandOrganisationService;
 
@@ -37,10 +82,18 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
 
     }
 
-    public List<Chorganisation> getObjectsByInsurerId(int insurerId) {
+
+
+
+
+
+    
+
+    
+    public List<Chorganisation> getChorganisationsByInsurerId(int insurerId) {
         List<Chorganisation> objects = new ArrayList<Chorganisation>();
 
-        List<InsurerChorganisation> InsurerChorganisation = insurerChorganisationService.getObjects(insurerId, null);
+        List<InsurerChorganisation> InsurerChorganisation = insurerChorganisationService.getInsurerChorganisations(insurerId, null);
 
         for (InsurerChorganisation object : InsurerChorganisation) {
             if (object.getChorganisation().isStatus()) {
@@ -51,26 +104,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         return objects;
     }
 
-    public List<Chorganisation> getObjectsWithoutInsurer(int insurerId) {
-
-        List<Chorganisation> objects = new ArrayList<Chorganisation>();
-
-        try {
-
-            List<Chorganisation> allchos = this.getActiveChorganisation();
-
-            for (Chorganisation org : allchos) {
-                if (!insurerChorganisationService.isActiveObjectExist(insurerId, org.getId())) {
-                    objects.add(org);
-                }
-            }
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        return objects;
-    }
+    
 
     public Chorganisation getChorgByName(String s) {
 
@@ -86,13 +120,6 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         }
 
         return object;
-    }
-
-    public Chorganisation getCurrentCHOrganisation() {
-        Chorganisation chorg = new Chorganisation();
-        WebUser thisUser = getCurrentUser();
-        chorg.setId(thisUser.getChorganisation().getId());
-        return chorg;
     }
 
     public List<Chorganisation> getActiveChorganisation() {
@@ -112,34 +139,9 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         return chorganisations;
     }
 
-    public List<Chorganisation> getChorganisation() {
-
-        List<Chorganisation> chorganisations = new ArrayList<Chorganisation>();
-
-        try {
-
-            DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
-            criteria.addOrder(Order.asc("name"));
-            chorganisations = findByCriteria(criteria);
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        return chorganisations;
-    }
-
-    public Chorganisation getChorganisation(int id) {
-        return (Chorganisation) get(Chorganisation.class, id);
-    }
-
-    public Chorganisation updateChorganisation(Chorganisation object) {
-
-        try {
-            save(object);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return object;
+    public Chorganisation getCurrentCHOrganisation() {
+        Chorganisation chorg = new Chorganisation();
+        chorg.setId(getCurrentUser().getChorganisation().getId());
+        return chorg;
     }
 }

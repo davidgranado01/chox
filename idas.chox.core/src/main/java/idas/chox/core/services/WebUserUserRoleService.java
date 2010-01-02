@@ -6,25 +6,16 @@ import java.util.Set;
 
 public interface WebUserUserRoleService {
 
-    // *****************************
-    // STANDARD FUNCTOIN
-    // *****************************
-    public WebUserUserRole getObject(int id);
+    public WebUserUserRole getWebUserUserRole(int webUserUserRoleId);
 
-    public void updateObject(WebUserUserRole object);
+    public void saveWebUserUserRole(WebUserUserRole webUserUserRole);
 
-    public boolean DeleteObject(WebUserUserRole object);
+    public boolean deleteWebUserUserRole(WebUserUserRole webUserUserRole);
 
-    // *****************************
-    // VALIDATION
-    // *****************************
     public boolean addBaseNewUserRole(int webUserId, int typeId);
 
     public boolean addNewUserRole(int webUserId, int webUserRoleId);
 
-    // *****************************
-    // EXTRACT 
-    // *****************************    
     public List<WebUserUserRole> getMappedUserRole(Integer webUserId);
 
     public Set getWebUserroles(int orgTypeId);

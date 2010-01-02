@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
+<!--
 <script type="text/javascript">
 
     var breband_mapping_gridviewJsonReader;
@@ -9,7 +9,8 @@
     var breband_mapping_gridviewGrid;
     var breband_mapping_gridviewData;
     var breband_mapping_recordPerPage = 20;
-    var selectOrgId = <s:property value="selectOrgId" />;
+    //var selectOrgId = <s:property value="selectOrgId" />;
+    var selectOrgId = -1;
     var selectBandId = -1;
     
     var breband_gridviewJsonReader;
@@ -176,9 +177,13 @@
     
 </script>
 
-<div>
-    <div id="organisationGird">
-        <div class="gridViewHeader">
+        <div class="status-info">
+    {BRE MAPPING}
+</div>
+
+
+
+        <div class="grid-view-header">
            <table width="100%">
                 <tr>
                     <td colspan="2">
@@ -188,15 +193,15 @@
                 <tr><td colspan="2"><div id="CDBrebandMappingMessageBox" class="errorBox"></div></td></tr>
             <tr>
                 <td valign="top">
-                    <div class="girdViewLabel">Selected Credit Hire Organisations</div>
-                    <div id="breband_s_gridviewGrid" class="girdViewObject"></div>
+                    <div class="gird-view-label">Selected Credit Hire Organisations</div>
+                    <div id="breband_s_gridviewGrid" class="gird-view-object"></div>
                 </td>
                 <td valign="top">
-                    <div class="girdViewLabel">Available Credit Hire Organisations</div>
-                    <div id="breband_a_gridviewGrid" class="girdViewObject"></div>
+                    <div class="gird-view-label">Available Credit Hire Organisations</div>
+                    <div id="breband_a_gridviewGrid" class="gird-view-object"></div>
                 </td>
             </tr>
             </table> 
         </div>
-    </div>
-</div>
+
+!-->

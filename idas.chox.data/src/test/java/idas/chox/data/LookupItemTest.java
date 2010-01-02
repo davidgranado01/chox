@@ -63,7 +63,7 @@ public class LookupItemTest {
         Assert.assertNotNull(sessionFactory);
         Assert.assertNotNull(chorganisationService);
 
-        List chorganisations = chorganisationService.getChorganisation();
+        List chorganisations = chorganisationService.getChorganisations("name");
         System.out.println(chorganisations.size());
         Assert.assertTrue(chorganisations.size() > 0);
     }

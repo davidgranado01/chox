@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.core.services;
 
 import idas.chox.core.xmlValidation.ClaimResult;
@@ -9,9 +5,9 @@ import idas.chox.core.model.VehicleHire;
 
 public interface VehicleHireService {
 
-    public void saveObjectForXMLUploader(final ClaimResult claimResult);
+    public void saveVehicleHireForXMLUploader(final ClaimResult claimResult);
 
-    public VehicleHire getObject(int id);
+    public VehicleHire getVehicleHire(int vehicleHireId);
 
-    public void updateObject(VehicleHire vehicleHire);
+    public void saveVehicleHire(VehicleHire vehicleHire);
 }

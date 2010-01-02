@@ -20,28 +20,15 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
         this.breBandOrganisationService = breBandOrganisationService;
     }
 
-    public List<BreBand> getInsurerBreBand(int insurerId) {
+    public List<BreBand> getInsurerBreBandsByInsurer(int insurerId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(BreBand.class);
 
-        List<BreBand> breBand = new ArrayList<BreBand>();
-
-        try {
-
-            DetachedCriteria criteria = DetachedCriteria.forClass(BreBand.class);
-
-            if (insurerId > 0) {
-
-                criteria.add(Restrictions.eq("insurer.id", insurerId));
-
-            }
-
-            criteria.addOrder(Order.asc("name"));
-            breBand = findByCriteria(criteria);
-
-        } catch (Throwable e) {
-            e.printStackTrace();
+        if (insurerId > 0) {
+            criteria.add(Restrictions.eq("insurer.id", insurerId));
         }
 
-        return breBand;
+        criteria.addOrder(Order.asc("name"));
+        return findByCriteria(criteria);
     }
 
     public boolean isBreBandNameExist(BreBand object) {
@@ -50,23 +37,17 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
 
         List<BreBand> objects = new ArrayList<BreBand>();
 
-        try {
+        DetachedCriteria criteria = DetachedCriteria.forClass(BreBand.class);
+        criteria.add(Restrictions.eq("name", object.getName()));
+        criteria.add(Restrictions.eq("insurer.id", object.getInsurer().getId()));
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(BreBand.class);
-            criteria.add(Restrictions.eq("name", object.getName()));
-            criteria.add(Restrictions.eq("insurer.id", object.getInsurer().getId()));
-
-            if (object.getId() != null) {
-                if (object.getId() > 0) {
-                    criteria.add(Restrictions.ne("id", object.getId()));
-                }
+        if (object.getId() != null) {
+            if (object.getId() > 0) {
+                criteria.add(Restrictions.ne("id", object.getId()));
             }
-
-            objects = findByCriteria(criteria);
-
-        } catch (Throwable e) {
-            e.printStackTrace();
         }
+
+        objects = findByCriteria(criteria);
 
         if (objects.size() > 0) {
             bFlag = true;
@@ -84,7 +65,7 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
         object.setName("Default");
         object.setInsurer(insurer);
         object.setIsActive(true);
-        updateObject(object);
+        saveBreBand(object);
     }
 
     public BreBand getDummyBreBand() {
@@ -108,54 +89,26 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
         return object;
     }
 
-    public BreBand getObject(int id) {
+    public BreBand getBreBand(int id) {
         return (BreBand) get(BreBand.class, id);
     }
 
-    public void updateObject(BreBand object) {
-
+    public void saveBreBand(BreBand object) {
         save(object);
     }
 
-    public boolean deleteObject(BreBand object) {
-
-        boolean bFlag = false;
-
-        try {
-
-            if (breBandOrganisationService.deleteBreBandOrganisationByBandId(object.getId())) {
-
-                delete(object);
-                bFlag = true;
-            }
-
-        } catch (Throwable e) {
-            bFlag = false;
-        }
-
-        return bFlag;
-    }
-
-    public BreBand getBreBandByChorganisationIdAndInsurerId(int orgId, int insurerId) {
+    public BreBand getBreBand(int orgId, int insurerId) {
 
         BreBand band = new BreBand();
 
-        try {
+        List<BreBandOrganisation> bandChorgs = breBandOrganisationService.getBreBandChorganisationsByChoOrgId(orgId);
 
-            List<BreBandOrganisation> bandChorgs = breBandOrganisationService.getBreBandChorganisationsByChoOrgId(orgId);
-
-            for (BreBandOrganisation object : bandChorgs) {
-                if (object.getBreBand().getInsurer().getId() == insurerId) {
-                    band = object.getBreBand();
-                    break;
-                }
+        for (BreBandOrganisation object : bandChorgs) {
+            if (object.getBreBand().getInsurer().getId() == insurerId) {
+                band = object.getBreBand();
+                break;
             }
-
-        } catch (Throwable e) {
-            e.printStackTrace();
         }
-
         return band;
     }
-
 }

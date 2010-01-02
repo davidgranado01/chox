@@ -8,9 +8,9 @@ public interface VehicleClassCeilingService {
 
     public List<VehicleClassCeiling> getVehicleClassCeilingByInsurer(Insurer insurer);
 
-    public void updateObject(VehicleClassCeiling object);
+    public void saveVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling);
 
-    public void deleteObject(VehicleClassCeiling object);
+    public void deleteVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling);
 
-    public VehicleClassCeiling getObject(int id);
+    public VehicleClassCeiling getVehicleClassCeiling(int vehicleClassCeilingId);
 }

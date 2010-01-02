@@ -3,14 +3,14 @@
 
 <script type="text/javascript">
     
-    var gridviewJsonReader;
-    var gridviewDataStore;
-    var gridviewGrid;  
-    var gridviewData;
+    var insurer_gridviewJsonReader;
+    var insurer_gridviewDataStore;
+    var insurer_gridviewGrid;
+    var insurer_gridviewData;
 
     Ext.onReady(function(){
     
-        gridviewJsonReader = new Ext.data.JsonReader({
+        insurer_gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
             fields:
@@ -26,15 +26,15 @@
             ]
         });
 
-        gridviewData = new Ext.data.Store({
+        insurer_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getInsurer.action',method:'POST'}),
-            reader:gridviewJsonReader
+            ({url: '<%= request.getContextPath()%>/prv/p/getInsurers.action',method:'POST'}),
+            reader:insurer_gridviewJsonReader
         });
     
-        gridviewGrid = new Ext.grid.GridPanel({
-            listeners:  {cellclick:recordOnclick },
-            store: gridviewData,
+        insurer_gridviewGrid = new Ext.grid.GridPanel({
+            listeners:  {cellclick:insurer_recordOnclick },
+            store: insurer_gridviewData,
             enableHdMenu:false,
             layout:'fit',
             viewConfig:{forceFit:true},
@@ -52,30 +52,27 @@
             width: 730
         });
 
-        gridviewGrid.render('gridviewGridHolderId');
-        loadGridViewList();
+        insurer_gridviewGrid.render('gridviewGridHolderId');
+        insurer_loadGridViewList();
         
     }); 
 
-    function loadGridViewList(){
-        gridviewData.load({ params: { start:0} });
+    function insurer_loadGridViewList(){
+        insurer_gridviewData.load({ params: { start:0} });
     }
     
-    function recordOnclick(grid, rowIndex, columnIndex, e){
-    
-        var gridView = gridviewGrid.getStore().getAt(rowIndex);
-        
+    function insurer_recordOnclick(grid, rowIndex, columnIndex, e){
+        var gridView = insurer_gridviewGrid.getStore().getAt(rowIndex);
         if(columnIndex==0){
-            loadSelectedRecord(grid, rowIndex, columnIndex, e);
+            insurer_loadSelectedRecord(grid, rowIndex, columnIndex, e);
         }else if(columnIndex==3){
-            triggerStatusUpdateRecord(gridView);
+            triggerStatusUpdateInsurerRecord(gridView);
         }
-        
     }
 
-    function loadSelectedRecord(grid, rowIndex, columnIndex, e){
+    function insurer_loadSelectedRecord(grid, rowIndex, columnIndex, e){
         
-        var gridView = gridviewGrid.getStore().getAt(rowIndex);
+        var gridView = insurer_gridviewGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
@@ -87,7 +84,7 @@
         
     }
 
-    function createNewRecord(){
+    function createNewInsurerRecord(){
         
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
@@ -99,7 +96,7 @@
         
     }
 
-    function triggerStatusUpdateRecord(gridView){
+    function triggerStatusUpdateInsurerRecord(gridView){
             
         var aletMsg = "Are you sure you want to inactive this insurer?";
         if(!gridView.get("status")){
@@ -111,7 +108,7 @@
             var url = "<%= request.getContextPath()%>/prv/p/doTriggerInsurerAccountStatus.action";
             var param = {"objectId":gridViewId};
             
-            ajax.loadHtml(url, param, loadGridViewList);
+            ajax.loadHtml(url, param, insurer_loadGridViewList);
 
         }
         
@@ -127,7 +124,7 @@
                 <table cellpadding="0" cellspacing="0" border="0">
                     <tr>
                         <td id="label"></td>
-                        <td id="buttons"><button type="button" onclick="javascript:createNewRecord();">Add New Insurer</button></td>
+                        <td id="buttons"><button type="button" onclick="javascript:createNewInsurerRecord();">Add New Insurer</button></td>
                     </tr>
                 </table>
             </div>

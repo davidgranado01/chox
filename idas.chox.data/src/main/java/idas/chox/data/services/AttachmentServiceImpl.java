@@ -13,50 +13,16 @@ import org.hibernate.criterion.Restrictions;
 
 public class AttachmentServiceImpl extends SecureDataService implements AttachmentService {
 
-    public Boolean saveObj(Attachment attachment) {
-
-        Boolean bFlag = false;
-
-        try {
-            save(attachment);
-            bFlag = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return bFlag;
-    }
-
-    public Boolean deleteAttachment(Attachment att) {
-
-        Boolean bFlag = false;
-        try {
-            delete(att);
-            bFlag = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return bFlag;
-    }
-
-    public List<Attachment> getAttachmentByClaimId(int claimId) {
-
+    public List<Attachment> getAttachmentsByClaim(int claimId) {
         List attachments = new ArrayList<Attachment>();
-
-        try {
-
-            DetachedCriteria criteria = DetachedCriteria.forClass(Attachment.class);
-            criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
-            List result = findByCriteria(criteria);
-            attachments = result;
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
+        DetachedCriteria criteria = DetachedCriteria.forClass(Attachment.class);
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+        List result = findByCriteria(criteria);
+        attachments = result;
         return attachments;
     }
 
-    public Attachment getObject(int id) {
-        return (Attachment) get(Attachment.class, id);
+    public Attachment getAttachment(int AttachmentId) {
+        return (Attachment) get(Attachment.class, AttachmentId);
     }
 }

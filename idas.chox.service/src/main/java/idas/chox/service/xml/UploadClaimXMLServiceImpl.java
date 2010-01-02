@@ -125,7 +125,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     public ClaimResult doAutomaticClaimRoutingEnable(ClaimResult claimResult) {
 
         int insurerId = claimResult.getClaim().getThirdParty().getInsurer().getId();
-        List<AutomaticRouting> automaticRoutingMapping = automaticRoutingService.getObjects(insurerId);
+        List<AutomaticRouting> automaticRoutingMapping = automaticRoutingService.getAutomaticRoutings(insurerId);
 
         if (automaticRoutingMapping.size() > 0) {
 
@@ -197,7 +197,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             }
 
             bordereauResult.setBordereau(doBordereau(file, fileName, bordereauResult.getBordereauStatus(), bordereauResult.getBordereauParseStatusDescription()));
-            bordereauService.saveObj(bordereauResult.getBordereau());
+            bordereauService.saveBordereau(bordereauResult.getBordereau());
 
             return bordereauResult;
 

@@ -16,16 +16,13 @@ public class VehicleClassServiceImpl extends SecureDataService implements Vehicl
 
         VehicleClass vehicleclass = null;
 
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClass.class);
-            criteria.add(Restrictions.eq("name", s));
 
-            vehicleclass = (VehicleClass) getByCriteria(criteria);
+        DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClass.class);
+        criteria.add(Restrictions.eq("name", s));
 
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        vehicleclass = (VehicleClass) getByCriteria(criteria);
+
 
         return vehicleclass;
     }
@@ -42,7 +39,7 @@ public class VehicleClassServiceImpl extends SecureDataService implements Vehicl
         return vehicleclass;
     }
 
-    public VehicleClass getObject(int id) {
+    public VehicleClass getVehicleClass(int id) {
         return (VehicleClass) get(VehicleClass.class, id);
     }
 

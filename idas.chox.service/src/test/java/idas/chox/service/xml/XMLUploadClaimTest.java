@@ -99,7 +99,7 @@ public class XMLUploadClaimTest {
 
         // 5. CHECK BORDEREAU RESULT
         Bordereau bordereau = null;
-        bordereau = bordereauService.getObject(fileName);
+        bordereau = bordereauService.getBordereauByFileName(fileName);
         Assert.assertEquals(fileName, bordereau.getFileName());
         // Assert.assertEquals("allRejected", bordereau.getStatus());
 

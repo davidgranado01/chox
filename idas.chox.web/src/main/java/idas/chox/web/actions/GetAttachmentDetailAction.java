@@ -37,7 +37,7 @@ public class GetAttachmentDetailAction extends BaseAction {
 
     @Override
     public String execute() {
-        attachment = service.getObject(fileId);
+        attachment = service.getAttachment(fileId);
         return SUCCESS;
     }
 }

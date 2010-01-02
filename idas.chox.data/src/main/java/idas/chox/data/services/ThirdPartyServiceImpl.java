@@ -6,7 +6,7 @@ import idas.chox.core.xmlValidation.ClaimResult;
 
 public class ThirdPartyServiceImpl extends SecureDataService implements ThirdPartyService {
 
-    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
+    public void saveThirdPartyForXMLUploader(final ClaimResult claimResult) {
 
         ThirdParty thirdparty = claimResult.getClaim().getThirdParty();
 
@@ -15,12 +15,11 @@ public class ThirdPartyServiceImpl extends SecureDataService implements ThirdPar
         }
     }
 
-    public ThirdParty getObject(int id) {
+    public ThirdParty getThirdParty(int id) {
         return (ThirdParty) get(ThirdParty.class, id);
     }
 
-    public void updateObject(ThirdParty thirdParty) {
-
+    public void saveThirdParty(ThirdParty thirdParty) {
         save(thirdParty);
     }
 }

@@ -1,0 +1,105 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="/struts-tags" prefix="s" %>
+
+<div id="insurerBreDetailTab">
+
+    <script type="text/javascript">
+    
+        var breband_gridviewJsonReader;
+        var breband_gridviewDataStore;
+        var breband_gridviewGrid;
+        var breband_gridviewData;
+    
+        Ext.onReady(function(){
+    
+            breband_gridviewJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'id'},
+                    {name:'name'},
+                    {name:'insurerName'},
+                    {name:'status'},
+                    {name:'statusDesc'},
+                    {name:'createdBy'},
+                    {name:'createdDate'}
+                ]
+            });
+
+            breband_gridviewData = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy
+                ({url: '<%= request.getContextPath()%>/prv/p/getInsurerBreBand.action',method:'POST'}),
+                reader:breband_gridviewJsonReader
+            });
+    
+            breband_gridviewGrid = new Ext.grid.GridPanel({
+                listeners:  {cellclick:breband_recordOnclick },
+                store: breband_gridviewData,
+                renderTo:'breband_gridviewGrid',
+                enableHdMenu:false,
+                layout:'fit',
+                viewConfig:{forceFit:true},
+                columns: [
+                    {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
+                    {header: "Band", width: 240, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
+                            return "<a href='#' class='highlightItem'>" + value + "</a>"}},
+                    {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: true, resizable: true},
+                    {header: "Created Date", width: 150, dataIndex: 'createdDate', sortable: true, resizable: true}
+                ],
+           
+                height:420,
+                width: 715
+            });
+
+            breband_gridviewData.load({params:{insurerId:<s:property value="insurerId" />}});
+        
+        });
+
+        function breband_recordOnclick(grid, rowIndex, columnIndex, e){
+
+            if(columnIndex==1){
+
+                var gridView = breband_gridviewGrid.getStore().getAt(rowIndex);
+                var breBandId = gridView.get("id");
+            
+                var target = "div#insurerBreDetailTab";
+                var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
+                var param = {"objectId":breBandId, "insurerId":<s:property value="insurerId" />};
+                ajax.loadHtml(url,param,function(data){
+                    $(target).html(data);
+                });
+            }
+        }
+
+        function breband_createNewRecord(){
+            var sLocaltion = "div#insurerBreDetailTab";
+            var sAction = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
+            var sparameters = "objectId=-1&insurerId=" + <s:property value="insurerId" />;
+            doSectionLoad(sLocaltion, sAction, sparameters);
+        }
+    
+    </script>
+
+    <div class="sub-admin-tab-css">
+
+        <div class="status-info">
+            {BRE LISTING}
+        </div>
+
+        <div class="grid-view-header">
+
+            <table width="100%">
+                <tr>
+                    <td align="right">
+                        <button type="button" onclick="javascript:breband_createNewRecord();">Add New Band</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="breband_gridviewGrid"></div>
+
+    </div>
+
+</div>

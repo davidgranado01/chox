@@ -13,34 +13,28 @@ public class VehicleClassCeilingServiceImpl extends SecureDataService implements
     public List<VehicleClassCeiling> getVehicleClassCeilingByInsurer(Insurer insurer) {
         List<VehicleClassCeiling> vehicleClassCeilings = null;
 
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassCeiling.class);
-            criteria.add(Restrictions.eq("insurer", insurer));
-            criteria.addOrder(Order.asc("vehicleClass"));
-            vehicleClassCeilings = findByCriteria(criteria);
 
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassCeiling.class);
+        criteria.add(Restrictions.eq("insurer", insurer));
+        criteria.addOrder(Order.asc("vehicleClass"));
+        vehicleClassCeilings = findByCriteria(criteria);
+
 
         return vehicleClassCeilings;
     }
 
-    public void updateObject(VehicleClassCeiling object) {
+    public void saveVehicleClassCeiling(VehicleClassCeiling object) {
         save(object);
     }
 
-    public void deleteObject(VehicleClassCeiling object) {
-        try {
-            delete(object);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+    public void deleteVehicleClassCeiling(VehicleClassCeiling object) {
+
+        delete(object);
 
     }
 
-    public VehicleClassCeiling getObject(int id) {
+    public VehicleClassCeiling getVehicleClassCeiling(int id) {
         return (VehicleClassCeiling) get(VehicleClassCeiling.class, id);
     }
 }

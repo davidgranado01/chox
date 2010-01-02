@@ -103,13 +103,10 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
 
     public Boolean saveHistory(History history) {
         Boolean bFlag = true;
-        try {
-            save(history);
-            bFlag = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            bFlag = false;
-        }
+
+        save(history);
+        bFlag = true;
+
         return bFlag;
     }
 

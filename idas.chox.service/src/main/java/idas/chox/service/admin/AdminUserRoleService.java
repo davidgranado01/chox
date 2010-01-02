@@ -176,8 +176,8 @@ public class AdminUserRoleService extends DataService {
     // <editor-fold defaultstate="collapsed" desc="USERROLE - DELETE">
     public ActionResponse deleteWebUserRoleMapping(int webUserUserRoleId) {
         
-        WebUserUserRole object = this.webUserUserRoleService.getObject(webUserUserRoleId);
-        this.webUserUserRoleService.DeleteObject(object);
+        WebUserUserRole object = this.webUserUserRoleService.getWebUserUserRole(webUserUserRoleId);
+        this.webUserUserRoleService.deleteWebUserUserRole(object);
         return this.actionResponse;
     }
     

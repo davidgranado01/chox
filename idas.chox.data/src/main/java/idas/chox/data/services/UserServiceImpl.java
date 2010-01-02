@@ -133,15 +133,12 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
         List<WebUser> users = new ArrayList<WebUser>();
 
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
-            criteria.addOrder(Order.asc("userName"));
-            users = findByCriteria(criteria);
 
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
+        criteria.addOrder(Order.asc("userName"));
+        users = findByCriteria(criteria);
+
 
         return users;
     }
@@ -174,24 +171,22 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         boolean bFlag = false;
         List<WebUser> users = new ArrayList<WebUser>();
 
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
 
-            criteria.add(Restrictions.eq("role.name", selectedUserRole));
-            criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
-            criteria.add(Restrictions.eq("insurer.id", user.getInsurer().getId()));
-            criteria.add(Restrictions.eq("status", true));
-            criteria.add(Restrictions.ne("id", user.getId()));
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
 
-            users = findByCriteria(criteria);
-            if (users.size() > 0) {
-                bFlag = true;
-            }
+        criteria.add(Restrictions.eq("role.name", selectedUserRole));
+        criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
+        criteria.add(Restrictions.eq("insurer.id", user.getInsurer().getId()));
+        criteria.add(Restrictions.eq("status", true));
+        criteria.add(Restrictions.ne("id", user.getId()));
 
-        } catch (Throwable e) {
-            e.printStackTrace();
+        users = findByCriteria(criteria);
+        if (users.size() > 0) {
+            bFlag = true;
         }
+
+
 
         return bFlag;
     }
@@ -200,30 +195,28 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
         List<WebUser> users = new ArrayList<WebUser>();
 
-        try {
 
-            Criteria criteria = getSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
-            criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
 
-            if (workgroupEnable && selectedWorkgroupId > 0) {
-                criteria.createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
-                criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
-            }
+        Criteria criteria = getSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+        criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
 
-            criteria.add(Restrictions.eq("insurer.id", insurerId));
-            criteria.add(Restrictions.eq("status", true));
-            criteria.addOrder(Order.asc("firstName"));
-
-            criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-            List<HashMap> resultMap = criteria.list();
-
-            for (HashMap m : resultMap) {
-                users.add((WebUser) m.get("this"));
-            }
-
-        } catch (Throwable e) {
-            e.printStackTrace();
+        if (workgroupEnable && selectedWorkgroupId > 0) {
+            criteria.createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
+            criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
         }
+
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
+        criteria.add(Restrictions.eq("status", true));
+        criteria.addOrder(Order.asc("firstName"));
+
+        criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+        List<HashMap> resultMap = criteria.list();
+
+        for (HashMap m : resultMap) {
+            users.add((WebUser) m.get("this"));
+        }
+
+
 
         return users;
     }
@@ -232,17 +225,15 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
         List<WebUser> users = new ArrayList<WebUser>();
 
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
-            criteria.add(Restrictions.eq("insurer.id", insurerId));
-            criteria.add(Restrictions.eq("status", true));
-            criteria.addOrder(Order.asc("firstName"));
-            users = findByCriteria(criteria);
 
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
+        criteria.add(Restrictions.eq("status", true));
+        criteria.addOrder(Order.asc("firstName"));
+        users = findByCriteria(criteria);
+
+
 
         List<WebUser> claimHandlers = new ArrayList<WebUser>();
 
@@ -263,33 +254,29 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     }
 
     public List<WebUser> getUsers(int organisationId, int organisationTypeId, int userRoleId) {
-        
+
         List<WebUser> users = new ArrayList<WebUser>();
 
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
-            
-            if (organisationTypeId > 0 && organisationId > 0) {
-                if (organisationTypeId==2) {
-                    criteria.add(Restrictions.eq("insurer.id", organisationId));
-                } else if (organisationTypeId==3) {
-                    criteria.add(Restrictions.eq("chorganisation.id", organisationId));
-                }
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
+
+        if (organisationTypeId > 0 && organisationId > 0) {
+            if (organisationTypeId == 2) {
+                criteria.add(Restrictions.eq("insurer.id", organisationId));
+            } else if (organisationTypeId == 3) {
+                criteria.add(Restrictions.eq("chorganisation.id", organisationId));
             }
-
-            criteria.addOrder(Order.asc("userName"));
-            
-            List<WebUser> userData = findByCriteria(criteria);                        
-            for (WebUser h : userData) {
-                if (h.getOrganisationType().equalsIgnoreCase(OrganisationType.getOrganisationType(organisationTypeId))) {
-                    users.add(h);
-                }
-            }
-
-        } catch (Throwable e) {
-            e.printStackTrace();
         }
+
+        criteria.addOrder(Order.asc("userName"));
+
+        List<WebUser> userData = findByCriteria(criteria);
+        for (WebUser h : userData) {
+            if (h.getOrganisationType().equalsIgnoreCase(OrganisationType.getOrganisationType(organisationTypeId))) {
+                users.add(h);
+            }
+        }
+
 
         return users;
     }
@@ -299,17 +286,12 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return (WebUser) get(WebUser.class, id);
     }
 
-    public boolean updateObject(WebUser object) {
+    public boolean saveUser(WebUser object) {
         boolean bFlag = false;
-        try {
-            object.setEmail(object.getEmail().toLowerCase());
-            save(object);
-            bFlag = true;
 
-        } catch (Throwable e) {
-            bFlag = false;
-            e.printStackTrace();
-        }
+        object.setEmail(object.getEmail().toLowerCase());
+        save(object);
+        bFlag = true;
 
         return bFlag;
     }

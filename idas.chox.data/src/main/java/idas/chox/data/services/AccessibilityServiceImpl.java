@@ -41,38 +41,20 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
 
         int oResult = -1;
 
-        try {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Accessibility.class);
+        criteria.add(Restrictions.eq("name", accessibilityKey));
+        Accessibility object = (Accessibility) getByCriteria(criteria);
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(Accessibility.class);
-            criteria.add(Restrictions.eq("name", accessibilityKey));
-            Accessibility object = (Accessibility) getByCriteria(criteria);
-
-            if (object != null) {
-                oResult = object.getId();
-            }
-
-        } catch (Throwable e) {
-            e.printStackTrace();
+        if (object != null) {
+            oResult = object.getId();
         }
 
         return oResult;
     }
 
     public AccessibilityEditable getAccessibilityEditable(String accessibilityKey) {
-
-        AccessibilityEditable object = new AccessibilityEditable();
-
-        try {
-
-            DetachedCriteria criteria = DetachedCriteria.forClass(AccessibilityEditable.class);
-            criteria.add(Restrictions.eq("accessibility.id", getAccessibilityId(accessibilityKey)));
-            object = (AccessibilityEditable) getByCriteria(criteria);
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        return object;
-
+        DetachedCriteria criteria = DetachedCriteria.forClass(AccessibilityEditable.class);
+        criteria.add(Restrictions.eq("accessibility.id", getAccessibilityId(accessibilityKey)));
+        return (AccessibilityEditable) getByCriteria(criteria);
     }
 }

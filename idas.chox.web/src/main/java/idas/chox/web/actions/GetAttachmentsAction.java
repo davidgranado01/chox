@@ -34,7 +34,7 @@ public class GetAttachmentsAction extends BaseModelAction {
 
     public String getAttachments() {
         attachments = new ArrayList<AttachmentViewData>();
-        List<Attachment> AttachmentData = this.service.getAttachmentByClaimId(claimId);
+        List<Attachment> AttachmentData = this.service.getAttachmentsByClaim(claimId);
         for (Attachment a : AttachmentData) {
             attachments.add(new AttachmentViewData(a));
         }

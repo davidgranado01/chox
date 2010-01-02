@@ -50,13 +50,7 @@
     </bean>    
     <bean id="reasonOfRejectionService" class="idas.chox.data.services.ReasonOfRejectionServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>    
-    <bean id="supportMessageService" class="idas.chox.data.services.SupportMessageServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean> 
-    <bean id="systemLogService" class="idas.chox.data.services.SystemLogServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>     
+    </bean>      
     <bean id="webUserUserRoleService" class="idas.chox.data.services.WebUserUserRoleServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>

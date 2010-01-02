@@ -8,7 +8,7 @@ import org.hibernate.criterion.Restrictions;
 
 public class EngineerReportServiceImpl extends SecureDataService implements EngineerReportService {
 
-    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
+    public void saveEngineerReportForXMLUploader(final ClaimResult claimResult) {
 
         if ((claimResult.getClaim().getEngineerReport()) != null) {
             save(claimResult.getClaim().getEngineerReport());
@@ -19,25 +19,19 @@ public class EngineerReportServiceImpl extends SecureDataService implements Engi
 
         EngineerReport engineerreport = new EngineerReport();
 
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(EngineerReport.class);
-            criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
-            engineerreport = (EngineerReport) getByCriteria(criteria);
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        DetachedCriteria criteria = DetachedCriteria.forClass(EngineerReport.class);
+        criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
+        engineerreport = (EngineerReport) getByCriteria(criteria);
 
         return engineerreport;
     }
 
-    public EngineerReport getObject(int id) {
+    public EngineerReport getEngineerReport(int id) {
         return (EngineerReport) get(EngineerReport.class, id);
     }
 
-    
-    public void updateObject(EngineerReport engineerReport) {
+    public void saveEngineerReport(EngineerReport engineerReport) {
         save(engineerReport);
     }
 }

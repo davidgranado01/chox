@@ -87,10 +87,10 @@ public class doVehicleClassCeilingAction extends BaseAction implements ModelDriv
 
     public String updateVehicleClassCeiling() {
 
-        VehicleClassCeiling vehicleClassCeilingObj = vehicleClassCeilingService.getObject(Integer.valueOf(vehicleClassCeilingId));
+        VehicleClassCeiling vehicleClassCeilingObj = vehicleClassCeilingService.getVehicleClassCeiling(Integer.valueOf(vehicleClassCeilingId));
         vehicleClassCeilingObj.setHireNetCeiling(hireNetCeiling);
         vehicleClassCeilingObj.setRepairNetCeiling(repairNetCeiling);
-        vehicleClassCeilingService.updateObject(vehicleClassCeilingObj);
+        vehicleClassCeilingService.saveVehicleClassCeiling(vehicleClassCeilingObj);
 
         return SUCCESS;
     }
@@ -99,9 +99,9 @@ public class doVehicleClassCeilingAction extends BaseAction implements ModelDriv
 
         try {
 
-            model.setVehicleClass(vehicleClassService.getObject(vehicleClassId));
+            model.setVehicleClass(vehicleClassService.getVehicleClass(vehicleClassId));
             model.setInsurer(insurerService.getInsurer(Integer.parseInt(selectOrgId)));
-            vehicleClassCeilingService.updateObject(model);
+            vehicleClassCeilingService.saveVehicleClassCeiling(model);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -121,8 +121,8 @@ public class doVehicleClassCeilingAction extends BaseAction implements ModelDriv
 
             if (!vehicleClassCeilingId.equalsIgnoreCase("")) {
 
-                VehicleClassCeiling vehicleClassCeiling = vehicleClassCeilingService.getObject(Integer.parseInt(vehicleClassCeilingId));
-                vehicleClassCeilingService.deleteObject(vehicleClassCeiling);
+                VehicleClassCeiling vehicleClassCeiling = vehicleClassCeilingService.getVehicleClassCeiling(Integer.parseInt(vehicleClassCeilingId));
+                vehicleClassCeilingService.deleteVehicleClassCeiling(vehicleClassCeiling);
             }
 
         } catch (Exception ex) {

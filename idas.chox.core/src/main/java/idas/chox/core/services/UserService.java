@@ -41,8 +41,7 @@ public interface UserService {
 
     public List<WebUser> getUsers(int organisationId, int organisationTypeId, int userRoleId);
 
-    public WebUser getUsers(int id);
+    public WebUser getUsers(int userId);
 
-    public boolean updateObject(WebUser object);
-
+    public boolean saveUser(WebUser user);
 }

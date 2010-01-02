@@ -1,9 +1,10 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
-
+<!--
 <script type="text/javascript">
 
-    var selectOrgId = <s:property value="selectOrgId" />;
+   // var selectOrgId = <s:property value="selectOrgId" />;
+   var selectOrgId = -1;
     var vehicleClassCeilingJsonReader;
     var vehicleClassCeiling_gridviewData;
     var vehicleClassCeiling_gridviewGrid;
@@ -238,7 +239,7 @@
 
 <div>
     <div id="VehicleClassCeilingorganisationGird">
-        <div class="gridViewHeader">
+        <div class="grid-view-header">
            <table width="100%">
             <tr>
                 <td>
@@ -268,7 +269,7 @@
 
             <tr>
                 <td valign="top">
-                <div class="girdViewLabel">Vehicle Class Ceiling</div>
+                <div class="gird-view-label">Vehicle Class Ceiling</div>
                 <div id="vehicleClassCeiling_gridviewGrid" style="height:360px; overflow:auto;"></div>
                 </td>
             </tr>
@@ -306,3 +307,4 @@
 
 
 </div>
+                !-->

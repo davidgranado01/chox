@@ -326,18 +326,19 @@
             <result>/jsp/dropdown/p_dropdown_claimHandlerUser.jsp</result>
         </action>
         <action name="loadAdminPanel" class="idas.chox.web.actions.AdminAction" method="loadAdminPanel">
-            <result name="ChoxInsurerMgmtPanel">/jsp/adminPanel/p_chox_insurers_mgmt_panel.jsp</result>
-            <result name="ChoxCreditHireMgmtPanel">/jsp/adminPanel/p_chox_chorganisation_mgmt_panel.jsp</result>
-            <result name="UserMgmt">/jsp/adminPanel/p_user_mgmt_panel.jsp</result>
-            <result name="InsurerOrgMappingMgmt">/jsp/adminPanel/p_insurer_chorganisation_mapping.jsp</result>
-            <result name="InsurerAliasMappingMgmt">/jsp/adminPanel/p_insurer_alias_mapping.jsp</result>
-            <result name="InsurerWorkgroupMappingMgmt">/jsp/adminPanel/p_insurer_workgroup_mapping.jsp</result>
+            <result name="ChoxInsurerMgmtPanel">/jsp/adminPanel/p_chox_insurers_panel.jsp</result>
+            <result name="ChoxCreditHireMgmtPanel">/jsp/adminPanel/p_chox_chorganisation_panel.jsp</result>
+            <result name="UserMgmt">/jsp/adminPanel/p_users_panel.jsp</result>
             <result name="UserroleMapping">/jsp/adminPanel/p_user_role_mapping.jsp</result>
-            <result name="InsurerBreBandMgmt">/jsp/adminPanel/p_insurer_breband_mgmt_panel.jsp</result>
-            <result name="InsurerBreBandMappingMgmt">/jsp/adminPanel/p_insurer_breband_mapping.jsp</result>
-            <result name="InsurerPanelMgmt">/jsp/adminPanel/p_insurer_mgmt_panel.jsp</result>
-            <result name="InsurerVehicleClassCeiling">/jsp/adminPanel/p_insurer_vehicle_class_ceiling.jsp</result>
+            <result name="InsurerPanelMgmt">/jsp/adminPanel/p_insurers_panel.jsp</result>
             <result name="NONE">/jsp/p_action_response_json_data.jsp</result>
+            <!--
+            <result name="InsurerOrgMappingMgmt">/jsp/adminPanel/p_insurer_chorganisation_mapping.jsp</result>
+            <result name="InsurerVehicleClassCeiling">/jsp/adminPanel/p_insurer_vehicle_class_ceiling.jsp</result>
+            <result name="InsurerBreBandMappingMgmt">/jsp/adminPanel/p_insurer_breband_mapping.jsp</result>
+            <result name="InsurerBreBandMgmt">/jsp/adminPanel/p_insurer_breband_mgmt_panel.jsp</result>
+            <result name="InsurerWorkgroupMappingMgmt">/jsp/adminPanel/p_insurer_workgroup_mapping.jsp</result>
+            !-->
         </action>
         <action name="searchClaim" class="idas.chox.web.actions.SearchClaimAction">
             <result name="success">/jsp/p_searchClaim.jsp</result>
@@ -630,65 +631,25 @@
         <action name="doTriggerPasswordExpiredStatus" class="idas.chox.web.actions.doUserAction" method="triggerPasswordExpiredStatus">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <action name="doTriggerCreditHireAccountStatus" class="idas.chox.web.actions.doChorganisationAction" method="triggerStatus">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-        <action name="doTriggerInsurerAccountStatus" class="idas.chox.web.actions.doInsurerAction" method="triggerStatus">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
+
+
        <!--End User Account-->
-       <!--Start Insureer-->
-        <action name="getInsurer" class="idas.chox.web.actions.InsurerAction">
-            <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
-        <action name="updateInsurerDetailPanel" class="idas.chox.web.actions.doInsurerAction" method="doRenderActionPage">
-            <result name="success">/jsp/adminPanel/p_chox_insurers_mgmt.jsp</result>
-        </action>
-        <action name="updateInsurerDetail" class="idas.chox.web.actions.doInsurerAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-        <action name="triggerInsurerWorkgroupFeature" class="idas.chox.web.actions.doInsurerAction" method="triggerInsurerWorkgroupFeature">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
+
+
+        
+
         <action name="editVehicleClassCeilingDetail" class="idas.chox.web.actions.doVehicleClassCeilingAction" method="updateVehicleClassCeiling">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="vehicleClassCeilingDetail" class="idas.chox.web.actions.doVehicleClassCeilingAction" method="updateModel">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <action name="getInsurerAlias" class="idas.chox.web.actions.InsurerAliasAction">
-            <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
-        <action name="removeInsurerAlias" class="idas.chox.web.actions.doInsurerAliasAction" method="removeObject">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-        <action name="addInsurerAlias" class="idas.chox.web.actions.doInsurerAliasAction" method="addObject">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-        <action name="getAvailableInsurerChorganisation" class="idas.chox.web.actions.ChorganisationAction" method="getAvailableChorganisation">
-            <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
-        <action name="getSelectedInsurerChorganisation" class="idas.chox.web.actions.InsurerChorganisationAction" method="getSelectedChorganisation">
-            <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
-        <action name="doAddNewInsurerChorganisation" class="idas.chox.web.actions.doInsurerChorganisationAction" method="addObject">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-        <action name="doRemoveInsurerChorganisation" class="idas.chox.web.actions.doInsurerChorganisationAction" method="removeObject">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-       <!--End Insusrer-->
-       <!--Start CH Org-->
-        <action name="getChorganisation" class="idas.chox.web.actions.ChorganisationAction">
-            <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
-        <action name="updateChorganisationDetailPanel" class="idas.chox.web.actions.doChorganisationAction" method="doRenderActionPage">
-            <result name="success">/jsp/adminPanel/p_chorganisation_detail_penal.jsp</result>
-        </action>
-        <action name="updateChorganisationDetail" class="idas.chox.web.actions.doChorganisationAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-       <!--End CH Org-->
+
+
+
+       
+
+       
        <!--Start User Details-->
         <action name="getUsers" class="idas.chox.web.actions.UserAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
@@ -747,45 +708,30 @@
         </action>
        <!--End User Workgroup-->
        
-       <!--Start Insurer Workgroup-->
-        <action name="getInsurerWorkgroup" class="idas.chox.web.actions.InsurerWorkgroupAction">
-            <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
-        <action name="triggerInsurerWorkgroup" class="idas.chox.web.actions.doInsurerWorkgroupAction" method="triggerObject">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-        <action name="removeInsurerWorkgroup" class="idas.chox.web.actions.doInsurerWorkgroupAction" method="removeObject">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-        <action name="addInsurerWorkgroup" class="idas.chox.web.actions.doInsurerWorkgroupAction" method="addObject">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-       <!--End Insurer Workgroup-->
+
        <!--Start BRE Band-->
+        <action name="getInsurerBreBandPage" class="idas.chox.web.actions.InsurerBreBandAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_insurer_brebands_panel.jsp</result>
+        </action>
         <action name="getInsurerBreBand" class="idas.chox.web.actions.InsurerBreBandAction">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
-        <action name="updateInsurerBreBandDetailPanel" class="idas.chox.web.actions.doInsurerBreBandAction" method="doRenderActionPage">
+        <action name="updateInsurerBreBandDetailPanel" class="idas.chox.web.actions.InsurerBreBandAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_insurer_breband_detail_panel.jsp</result>
         </action>
-        <action name="updateInsurerBreBandDetailPanel" class="idas.chox.web.actions.doInsurerBreBandAction" method="updateModel">
+<!--
+        <action name="updateInsurerBreBandDetailPanels" class="idas.chox.web.actions.doInsurerBreBandAction" method="updateModel">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <action name="doDeleteCreditHireBand" class="idas.chox.web.actions.doInsurerBreBandAction" method="deleteBreBand">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
+!-->
+        <!--End BRE Band-->
+
+
+
         <action name="getAvailableInsurerBreBandChorganisation" class="idas.chox.web.actions.ChorganisationAction" method="getChorganisationsByInsurerIdWithoutBreBand">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
-        <action name="getSelectedInsurerBreBandChorganisation" class="idas.chox.web.actions.InsurerBreBandMappingAction" method="getChorganisationWithBreBandAssigned">
-            <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
-        <action name="doAddNewBandChorganisationMapping" class="idas.chox.web.actions.doInsurerBreBandMappingAction" method="addObject">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-        <action name="doRemoveBandChorganisationMapping" class="idas.chox.web.actions.doInsurerBreBandMappingAction" method="removeObject">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
+
         <action name="doRemoveVehicleClassCeilingMapping" class="idas.chox.web.actions.doVehicleClassCeilingAction" method="removeObject">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
@@ -793,6 +739,7 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
        <!--End BRE Band-->
+
        <!--Start Notifications-->
         <action name="removeNotification" class="idas.chox.web.actions.ClaimAction" method="removeNotification">
             <result>/jsp/p_notification_list.jsp</result>
@@ -801,6 +748,7 @@
             <result>/jsp/p_notification_list.jsp</result>
         </action>
        <!--End Notification-->
+
        <!--Start Alert Panel-->
         <action name="getAlertPanel" class="idas.chox.web.actions.ClaimAction" method="getAlertPanel">
             <result name="penaltyChargeApplied">/jsp/alertPanel/p_penalty_charge.jsp</result>
@@ -811,10 +759,121 @@
             <result name="empty">/jsp/p_action_response_json_data.jsp</result>
         </action>
        <!--End Alert Panel-->
+       
        <!--Start Admin-->
         <action name="adminFunction" class="idas.chox.web.actions.AdminAction" method="adminPanel">
             <result name="success">/jsp/adminPanel/p_admin_panel.jsp</result>
         </action>
-       <!--End Admin--> 
+       <!--End Admin-->
+
+
+
+
+
+
+
+
+       <!-- ********************************* REVIEWED ********************************************** !-->
+
+       <!-- Start CHORGANISATION -->
+        <action name="getChorganisation" class="idas.chox.web.actions.ChorganisationAction">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="updateChorganisationDetailPanel" class="idas.chox.web.actions.ChorganisationAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_chox_chorganisation_detail_penal.jsp</result>
+        </action>
+        <action name="updateChorganisationDetail" class="idas.chox.web.actions.ChorganisationAction" method="updateChorganisation">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="doTriggerCreditHireAccountStatus" class="idas.chox.web.actions.ChorganisationAction" method="triggerChorganisationStatus">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+       <!-- End CHORGANISATION -->
+       
+       <!--Start INSURER -->
+        <action name="getInsurers" class="idas.chox.web.actions.InsurerAction">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="updateInsurerDetailPanel" class="idas.chox.web.actions.InsurerAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_insurers_detail_panel.jsp</result>
+        </action>
+        <action name="doTriggerInsurerAccountStatus" class="idas.chox.web.actions.InsurerAction" method="triggerInsurerStatus">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="updateInsurerDetail" class="idas.chox.web.actions.InsurerAction" method="updateInsurer">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <!--End INSURER -->
+        
+       <!--Start INSURER ALIAS -->
+        <action name="getInsurerAliasPage" class="idas.chox.web.actions.InsurerAliasAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_insurer_alias_mapping.jsp</result>
+        </action>
+        <action name="getInsurerAlias" class="idas.chox.web.actions.InsurerAliasAction">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="removeInsurerAlias" class="idas.chox.web.actions.InsurerAliasAction" method="removeInsurerAlias">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="addNewInsurerAlias" class="idas.chox.web.actions.InsurerAliasAction" method="addNewInsurerAlias">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <!--End INSURER ALIAS -->
+
+       <!--Start INSURER WORKGROUP -->
+        <action name="getInsurerWorkgroupPage" class="idas.chox.web.actions.InsurerWorkgroupAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_insurer_workgroup_mapping.jsp</result>
+        </action>
+        <action name="getInsurerWorkgroup" class="idas.chox.web.actions.InsurerWorkgroupAction">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="removeInsurerWorkgroup" class="idas.chox.web.actions.InsurerWorkgroupAction" method="removeInsurerWorkgroup">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="addNewInsurerWorkgroup" class="idas.chox.web.actions.InsurerWorkgroupAction" method="addNewInsurerWorkgroup">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="triggerInsurerWorkgroupStatus" class="idas.chox.web.actions.InsurerWorkgroupAction" method="triggerInsurerWorkgroupStatus">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+       <!--End INSURER WORKGROUP -->
+
+        <!-- START INSURER V.S CHORGANISATION -->
+        <action name="getInsurerChorganisationMappingPage" class="idas.chox.web.actions.InsurerChorganisationAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_insurer_chorganisation_mapping.jsp</result>
+        </action>
+        <action name="getAvailableInsurerChorganisation" class="idas.chox.web.actions.InsurerChorganisationAction" method="getAvailableChorganisations">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="getSelectedInsurerChorganisation" class="idas.chox.web.actions.InsurerChorganisationAction" method="getSelectedChorganisations">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="doAddNewInsurerChorganisation" class="idas.chox.web.actions.InsurerChorganisationAction" method="addNewInsurerChorganisation">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="doRemoveInsurerChorganisation" class="idas.chox.web.actions.InsurerChorganisationAction" method="removeInsurerChorganisation">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+       <!-- END INSURER V.S CHORGANISATION -->
+
+        <!-- START INSURER V.S BRE -->
+        <action name="getInsurerBreBandChorganisationMapping" class="idas.chox.web.actions.InsurerBreBandMappingAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_insurer_breband_mgmt_panel.jsp</result>
+        </action>
+        <action name="getSelectedInsurerBreBandChorganisation" class="idas.chox.web.actions.InsurerBreBandMappingAction" method="getChorganisationWithBreBandAssigned">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="doAddNewBandChorganisationMapping" class="idas.chox.web.actions.doInsurerBreBandMappingAction" method="addObject">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="doRemoveBandChorganisationMapping" class="idas.chox.web.actions.doInsurerBreBandMappingAction" method="removeObject">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="doDeleteCreditHireBand" class="idas.chox.web.actions.doInsurerBreBandAction" method="deleteBreBand">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <!-- END INSURER V.S BRE -->
+
     </package>
+    
 </struts>

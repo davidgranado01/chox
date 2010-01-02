@@ -6,7 +6,7 @@ import idas.chox.core.xmlValidation.ClaimResult;
 
 public class VehicleHireServiceImpl extends SecureDataService implements VehicleHireService {
 
-    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
+    public void saveVehicleHireForXMLUploader(final ClaimResult claimResult) {
 
         if ((claimResult.getClaim().getVehicleHire()) != null) {
             getHibernateTemplate().saveOrUpdate(claimResult.getClaim().getVehicleHire());
@@ -14,13 +14,11 @@ public class VehicleHireServiceImpl extends SecureDataService implements Vehicle
         }
     }
 
-    public VehicleHire getObject(int id) {
+    public VehicleHire getVehicleHire(int id) {
         return (VehicleHire) get(VehicleHire.class, id);
     }
 
-    
-    public void updateObject(VehicleHire vehicleHire) {
-
+    public void saveVehicleHire(VehicleHire vehicleHire) {
         save(vehicleHire);
     }
 }

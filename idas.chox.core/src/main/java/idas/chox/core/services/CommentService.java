@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.core.services;
 
 import idas.chox.core.model.Comment;
@@ -16,5 +12,7 @@ public interface CommentService {
 
     public List<Comment> getCommentByClaim(Claim claim);
 
-    Comment getObject(int id);
+    public Comment getComment(int commentId);
+
+    public void createNewComment(Comment comment);
 }

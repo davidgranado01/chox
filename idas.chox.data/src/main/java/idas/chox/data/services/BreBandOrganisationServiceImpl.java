@@ -18,19 +18,9 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
         boolean isExist = false;
 
         List<BreBandOrganisation> objects = new ArrayList<BreBandOrganisation>();
-
-        try {
-
-            List<BreBandOrganisation> brebandorganisations = getBreBandChorganisationsByChoOrgId(choOrgid);
-
-            for (BreBandOrganisation obj : brebandorganisations) {
-
-                objects.add(obj);
-
-            }
-
-        } catch (Throwable e) {
-            e.printStackTrace();
+        List<BreBandOrganisation> brebandorganisations = getBreBandChorganisationsByChoOrgId(choOrgid);
+        for (BreBandOrganisation obj : brebandorganisations) {
+            objects.add(obj);
         }
 
         if (objects.size() > 0) {
@@ -43,21 +33,13 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
     public boolean isActiveChorganisationWithBand(int choOrgid, int insurerId) {
 
         boolean isExist = false;
-
         List<BreBandOrganisation> objects = new ArrayList<BreBandOrganisation>();
+        List<BreBandOrganisation> brebandorganisations = getBreBandChorganisationsByChoOrgId(choOrgid);
 
-        try {
-
-            List<BreBandOrganisation> brebandorganisations = getBreBandChorganisationsByChoOrgId(choOrgid);
-
-            for (BreBandOrganisation obj : brebandorganisations) {
-                if (obj.getBreBand().getInsurer().getId() == insurerId) {
-                    objects.add(obj);
-                }
+        for (BreBandOrganisation obj : brebandorganisations) {
+            if (obj.getBreBand().getInsurer().getId() == insurerId) {
+                objects.add(obj);
             }
-
-        } catch (Throwable e) {
-            e.printStackTrace();
         }
 
         if (objects.size() > 0) {
@@ -72,14 +54,7 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
         boolean isExist = false;
 
         List<BreBandOrganisation> objects = new ArrayList<BreBandOrganisation>();
-
-        try {
-
-            objects = getBreBandChorganisationsByBreBandId(bandId);
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        objects = getBreBandChorganisationsByBreBandId(bandId);
 
         if (objects.size() > 0) {
             isExist = true;
@@ -89,66 +64,32 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
     }
 
     public List<BreBandOrganisation> getBreBandChorganisationsByChoOrgId(int choOrgid) {
-
-        List<BreBandOrganisation> objects = new ArrayList<BreBandOrganisation>();
-
-        try {
-
-            DetachedCriteria criteria = DetachedCriteria.forClass(BreBandOrganisation.class);
-            criteria.add(Restrictions.eq("chorganisation.id", choOrgid));
-            objects = findByCriteria(criteria);
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        return objects;
+        DetachedCriteria criteria = DetachedCriteria.forClass(BreBandOrganisation.class);
+        criteria.add(Restrictions.eq("chorganisation.id", choOrgid));
+        return findByCriteria(criteria);
 
     }
 
     public List<BreBandOrganisation> getBreBandChorganisationsByBreBandId(int bandId) {
-
-        List<BreBandOrganisation> objects = new ArrayList<BreBandOrganisation>();
-
-        try {
-            DetachedCriteria criteria = DetachedCriteria.forClass(BreBandOrganisation.class);
-            criteria.add(Restrictions.eq("breBand.id", bandId));
-            objects = findByCriteria(criteria);
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        return objects;
-
+        DetachedCriteria criteria = DetachedCriteria.forClass(BreBandOrganisation.class);
+        criteria.add(Restrictions.eq("breBand.id", bandId));
+        return findByCriteria(criteria);
     }
 
-    public boolean deleteBreBandOrganisationByChorganisationId(int chorganisationId, int insurerId) {
+    public void deleteBreBandOrganisationByChorganisationId(int chorganisationId, int insurerId) {
 
-        boolean bFlag = false;
+        List<BreBandOrganisation> objects = new ArrayList<BreBandOrganisation>();
+        DetachedCriteria criteria = DetachedCriteria.forClass(BreBandOrganisation.class);
+        criteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
+        objects = findByCriteria(criteria);
 
-        try {
-
-            List<BreBandOrganisation> objects = new ArrayList<BreBandOrganisation>();
-            DetachedCriteria criteria = DetachedCriteria.forClass(BreBandOrganisation.class);
-            criteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
-            objects = findByCriteria(criteria);
-
-            int iCount = 0;
-            for (BreBandOrganisation object : objects) {
-                if (object.getBreBand().getInsurer().getId() == insurerId) {
-                    iCount++;
-                    delete(object);
-                }
+        int iCount = 0;
+        for (BreBandOrganisation object : objects) {
+            if (object.getBreBand().getInsurer().getId() == insurerId) {
+                iCount++;
+                delete(object);
             }
-
-            bFlag = true;
-
-        } catch (Throwable e) {
-            e.printStackTrace();
         }
-
-        return bFlag;
     }
 
     public boolean deleteBreBandOrganisationByBandId(int bandId) {
@@ -175,21 +116,15 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
         return bFlag;
     }
 
-    public void deleteObject(BreBandOrganisation object) {
-
-        try {
-            delete(object);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
+    public void deleteBreBandOrganisation(BreBandOrganisation breBandOrganisation) {
+        delete(breBandOrganisation);
     }
 
-    public BreBandOrganisation getObject(int id) {
+    public BreBandOrganisation getBreBandOrganisation(int id) {
         return (BreBandOrganisation) get(BreBandOrganisation.class, id);
     }
 
-    public void updateObject(BreBandOrganisation object) {
-        save(object);
+    public void saveBreBandOrganisatiion(BreBandOrganisation breBandOrganisation) {
+        save(breBandOrganisation);
     }
 }

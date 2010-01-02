@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.core.services;
 
 import idas.chox.core.model.Insurer;
@@ -10,15 +6,15 @@ import java.util.List;
 
 public interface InsurerAliasService {
 
-    public InsurerAlias getInsurerByAliasName(String s);
+    public InsurerAlias getInsurerByAliasName(String aliasName);
 
-    public List<InsurerAlias> getInsurerAlias(int insurerId);
+    public List<InsurerAlias> getInsurerAliasesByInsurer(int insurerId);
 
-    public InsurerAlias getObject(int id);
+    public InsurerAlias getInsurerAlias(int insurerAliasId);
 
-    public boolean DeleteObject(InsurerAlias object);
+    public void deleteInsurerAlias(InsurerAlias insurerAlias);
 
-    public boolean updateObject(InsurerAlias object);
+    public void saveInsurerAlias(InsurerAlias insurerAlias);
 
     public boolean isInsurerAliasExist(int insurerId, String AliasName);
 

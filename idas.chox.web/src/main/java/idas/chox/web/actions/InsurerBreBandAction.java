@@ -1,5 +1,7 @@
 package idas.chox.web.actions;
 
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.services.BreBandService;
 import idas.chox.web.viewdata.InsurerBreBandViewData;
@@ -7,21 +9,33 @@ import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 
-public class InsurerBreBandAction extends BaseAction {
+public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreBand>, Preparable {
 
-    private List<InsurerBreBandViewData> insurerBreBand;
-    private BreBandService service;
+    private String objectId;
     private int insurerId = -1;
-
-    public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.insurerBreBand);
-        return "{totalCount:" + this.insurerBreBand.size() + ",results:" + jObject.toString() + "}";
+    private BreBand model;
+    protected List<InsurerBreBandViewData> insurerBreBands;
+    protected BreBandService breBandService;
+    
+    public String doRenderActionPage() {
+        return SUCCESS;
     }
 
-    public void setBreBandService(BreBandService service) {
-        this.service = service;
+    public boolean getIsNew() {
+        if (Integer.valueOf(objectId) <= 0) {
+            return true;
+        }
+        return false;
+    }
+    
+    public BreBand getModel() {
+        return model;
     }
 
+    public void setModel(BreBand model) {
+        this.model = model;
+    }
+    
     public int getInsurerId() {
         return insurerId;
     }
@@ -30,18 +44,38 @@ public class InsurerBreBandAction extends BaseAction {
         this.insurerId = insurerId;
     }
 
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
+    }
+
+    public void prepare() throws Exception {
+        if (Integer.valueOf(objectId) <= 0) {
+            model = new BreBand();
+        } else {
+            model = breBandService.getBreBand(Integer.valueOf(objectId));
+        }
+    }
+    
+    public String getJsonData() {
+        JSONArray jObject = JSONArray.fromObject(this.insurerBreBands);
+        return "{totalCount:" + this.insurerBreBands.size() + ",results:" + jObject.toString() + "}";
+    }
+
     @Override
     public String execute() {
 
-
         try {
 
-            List<BreBand> insurerBreBandData = this.service.getInsurerBreBand(this.insurerId);
+            List<BreBand> insurerBreBandData = this.breBandService.getInsurerBreBandsByInsurer(this.insurerId);
 
-            insurerBreBand = new ArrayList<InsurerBreBandViewData>();
+            insurerBreBands = new ArrayList<InsurerBreBandViewData>();
 
             for (BreBand h : insurerBreBandData) {
-                insurerBreBand.add(new InsurerBreBandViewData(h));
+                insurerBreBands.add(new InsurerBreBandViewData(h));
             }
 
         } catch (Exception ex) {
@@ -50,5 +84,9 @@ public class InsurerBreBandAction extends BaseAction {
 
 
         return SUCCESS;
+    }
+
+    public void setBreBandService(BreBandService service) {
+        this.breBandService = service;
     }
 }

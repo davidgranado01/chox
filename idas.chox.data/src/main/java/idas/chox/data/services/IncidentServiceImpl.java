@@ -6,7 +6,7 @@ import idas.chox.core.xmlValidation.ClaimResult;
 
 public class IncidentServiceImpl extends SecureDataService implements IncidentService {
 
-    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
+    public void saveIncidentForXMLUploader(final ClaimResult claimResult) {
 
         Incident incident = claimResult.getClaim().getIncident();
 
@@ -15,11 +15,11 @@ public class IncidentServiceImpl extends SecureDataService implements IncidentSe
         }
     }
 
-    public Incident getObject(int id) {
+    public Incident getIncident(int id) {
         return (Incident) get(Incident.class, id);
     }
 
-    public void updateObject(Incident incident) {
+    public void saveIncident(Incident incident) {
         save(incident);
     }
 }

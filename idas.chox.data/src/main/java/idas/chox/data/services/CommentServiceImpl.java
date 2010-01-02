@@ -17,72 +17,42 @@ import org.hibernate.criterion.Order;
 public class CommentServiceImpl extends SecureDataService implements CommentService {
 
     public List<Comment> getCommentByClaimId(int claimId) {
-
-        List comments = new ArrayList<Comment>();
-
-        try {
-            DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);
-            criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
-            criteria.addOrder(Order.asc("createdDate"));           
-            comments = findByCriteria(criteria);
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        return comments;
+        DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+        criteria.addOrder(Order.asc("createdDate"));
+        return findByCriteria(criteria);
     }
-     
+
     public List<Comment> getCommentByClaimIdFilterByOrg(int claimId, String orgType) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
 
-        List comments = new ArrayList<Comment>();
-
-        try {
-            
-            DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);
-            criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
-
-            // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
-            if(orgType.equalsIgnoreCase(OrganisationType.INS)){
-                // INSURER User SHOULD ABLE TO SEE ALL NOT CREDITHIRE's Notes ONLY
-                criteria.add(Restrictions.ne("visibilityType", 2));
-            }else if(orgType.equalsIgnoreCase(OrganisationType.CHO)){
-                // CREDITHIRE User SHOULD ABLE TO SEE ALL NOT INSURER's Notes ONLY
-                criteria.add(Restrictions.ne("visibilityType", 1));
-            }
-            
-            criteria.addOrder(Order.asc("createdDate"));
-            comments = findByCriteria(criteria);
-
-        } catch (Throwable e) {
-            e.printStackTrace();
+        // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
+        if (orgType.equalsIgnoreCase(OrganisationType.INS)) {
+            // INSURER User SHOULD ABLE TO SEE ALL NOT CREDITHIRE's Notes ONLY
+            criteria.add(Restrictions.ne("visibilityType", 2));
+        } else if (orgType.equalsIgnoreCase(OrganisationType.CHO)) {
+            // CREDITHIRE User SHOULD ABLE TO SEE ALL NOT INSURER's Notes ONLY
+            criteria.add(Restrictions.ne("visibilityType", 1));
         }
 
-        return comments;
+        criteria.addOrder(Order.asc("createdDate"));
+
+        return findByCriteria(criteria);
     }
-        
+
     public List<Comment> getCommentByClaim(Claim claim) {
-
-        List comments = new ArrayList<Comment>();
-
-        try {
-            //Criteria criteria = getCurrentSession().createCriteria(Comment.class).add(Restrictions.eq("claim", claim));
-            DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);//.add(Restrictions.eq("claimId", claim.getId()));
-            criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
-            criteria.addOrder(Order.asc("claim.id"));           
-            comments = findByCriteria(criteria);
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        
-        
-
-        return comments;
+        DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);//.add(Restrictions.eq("claimId", claim.getId()));
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
+        criteria.addOrder(Order.asc("claim.id"));
+        return findByCriteria(criteria);
     }
 
-    public Comment getObject(int id) {
+    public Comment getComment(int id) {
         return (Comment) get(Comment.class, id);
-    }    
+    }
+
+    public void createNewComment(Comment comment) {
+        this.save(comment);
+    }
 }

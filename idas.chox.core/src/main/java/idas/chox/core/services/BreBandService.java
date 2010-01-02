@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.core.services;
 
 import idas.chox.core.model.BreBand;
@@ -10,19 +6,17 @@ import java.util.List;
 
 public interface BreBandService {
 
-    public BreBand getObject(int id);
+    public BreBand getBreBand(int breBandId);
 
-    public void updateObject(BreBand object);
+    public void saveBreBand(BreBand breBand);
 
-    public boolean deleteObject(BreBand object);
+    public List<BreBand> getInsurerBreBandsByInsurer(int insurerId);
 
-    public List<BreBand> getInsurerBreBand(int insurerId);
+    BreBand getBreBand(int orgId, int insurerId);
 
-    BreBand getBreBandByChorganisationIdAndInsurerId(int orgId, int insurerId);
+    public boolean isBreBandOccupied(BreBand breBand);
 
-    public boolean isBreBandOccupied(BreBand object);
-
-    public boolean isBreBandNameExist(BreBand object);
+    public boolean isBreBandNameExist(BreBand breBand);
 
     public void createDefaultRecord(Insurer insurer);
 }

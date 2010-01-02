@@ -481,15 +481,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber) {
 
         Claim claim = new Claim();
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-            criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
-            claim = (Claim) getByCriteria(criteria);
 
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
+        claim = (Claim) getByCriteria(criteria);
+
+
         return claim;
     }
 
@@ -519,19 +517,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         boolean isExist = false;
 
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
 
-            criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
 
-            if (findByCriteria(criteria).size() > 0) {
-                isExist = true;
-            }
+        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
 
-        } catch (Throwable e) {
-            e.printStackTrace();
+        if (findByCriteria(criteria).size() > 0) {
+            isExist = true;
         }
+
+
 
         return isExist;
 
@@ -561,20 +557,18 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         boolean isExist = false;
 
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-            criteria.add(Restrictions.eq("insurer.id", insurerId));
-            criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
-            criteria.add(Restrictions.eq("status", status));
 
-            if (findByCriteria(criteria).size() > 0) {
-                isExist = true;
-            }
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
+        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
+        criteria.add(Restrictions.eq("status", status));
 
-        } catch (Throwable e) {
-            e.printStackTrace();
+        if (findByCriteria(criteria).size() > 0) {
+            isExist = true;
         }
+
+
 
         return isExist;
 
@@ -585,22 +579,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         boolean isExist = false;
 
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-            criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
 
-            for (String sStatus : ClaimStatus.getClosedStatus()) {
-                criteria.add(Restrictions.ne("status", sStatus));
-            }
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
 
-            if (findByCriteria(criteria).size() > 0) {
-                isExist = true;
-            }
-
-        } catch (Throwable e) {
-            e.printStackTrace();
+        for (String sStatus : ClaimStatus.getClosedStatus()) {
+            criteria.add(Restrictions.ne("status", sStatus));
         }
+
+        if (findByCriteria(criteria).size() > 0) {
+            isExist = true;
+        }
+
+
 
         return isExist;
 
@@ -630,27 +622,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int WorkgroupId, int UserId) {
 
         boolean isExist = false;
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
 
-        try {
+        if (UserId > 0) {
+            criteria.add(Restrictions.eq("claimOwner.id", UserId));
+        }
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-            criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
-            criteria.add(Restrictions.eq("insurer.id", insurerId));
+        for (String sStatus : ClaimStatus.getClosedStatus()) {
+            criteria.add(Restrictions.ne("status", sStatus));
+        }
 
-            if (UserId > 0) {
-                criteria.add(Restrictions.eq("claimOwner.id", UserId));
-            }
-
-            for (String sStatus : ClaimStatus.getClosedStatus()) {
-                criteria.add(Restrictions.ne("status", sStatus));
-            }
-
-            if (findByCriteria(criteria).size() > 0) {
-                isExist = true;
-            }
-
-        } catch (Throwable e) {
-            e.printStackTrace();
+        if (findByCriteria(criteria).size() > 0) {
+            isExist = true;
         }
 
         return isExist;
@@ -661,22 +646,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         boolean isExist = false;
 
-        try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-            criteria.add(Restrictions.eq("claimOwner.id", userId));
 
-            for (String sStatus : ClaimStatus.getClosedStatus()) {
-                criteria.add(Restrictions.ne("status", sStatus));
-            }
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("claimOwner.id", userId));
 
-            if (findByCriteria(criteria).size() > 0) {
-                isExist = true;
-            }
-
-        } catch (Throwable e) {
-            e.printStackTrace();
+        for (String sStatus : ClaimStatus.getClosedStatus()) {
+            criteria.add(Restrictions.ne("status", sStatus));
         }
+
+        if (findByCriteria(criteria).size() > 0) {
+            isExist = true;
+        }
+
+
 
         return isExist;
 

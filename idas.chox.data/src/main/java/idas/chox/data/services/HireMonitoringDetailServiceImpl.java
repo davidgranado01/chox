@@ -24,11 +24,11 @@ public class HireMonitoringDetailServiceImpl extends SecureDataService implement
         return hiremonitoringdetail;
     }
 
-    public HireMonitoringDetail getObject(int id) {
+    public HireMonitoringDetail getHireMonitoringDetail(int id) {
         return (HireMonitoringDetail) get(HireMonitoringDetail.class, id);
     }
 
-    public void updateObject(HireMonitoringDetail hireMonitoringDetail) {
+    public void saveHireMonitoringDetail(HireMonitoringDetail hireMonitoringDetail) {
 
         this.save(hireMonitoringDetail);
     }

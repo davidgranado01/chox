@@ -12,7 +12,7 @@ public class AdminAction extends BaseAction {
 
     private String adminPanelName;
     private String actionResult;
-
+            
     public String adminPanel() {
         return SUCCESS;
     }

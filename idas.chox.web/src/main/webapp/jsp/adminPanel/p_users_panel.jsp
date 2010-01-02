@@ -271,6 +271,7 @@
 
         <input name="CurrentUserOrganisationType" id="CurrentUserOrganisationType" type="hidden" value="<s:property value="CurrentUserOrganisationType" />">
         <input name="CurrentUserOrganisationId" id="CurrentUserOrganisationId" type="hidden" value="<s:property value="CurrentUserOrganisationId" />">
+        
             <div class="admin-gridview-header">
                 <table cellpadding="0" cellspacing="0" border="0">
                     <tr>

@@ -73,7 +73,7 @@ public class AdminUserService extends DataService {
         this.actionResponse = new ActionResponse();
 
         if (!this.userService.isUserNameExist(webUser.getUserName(), webUser.getId())) {
-            this.userService.updateObject(webUser);
+            this.userService.saveUser(webUser);
         } else {
             this.getActionResponse().AddError("User Name is already exist!");
         }
@@ -101,7 +101,7 @@ public class AdminUserService extends DataService {
 
             webUser.setPassword(encodePassword(webUser.getPassword()));
 
-            if (this.userService.updateObject(webUser)) {
+            if (this.userService.saveUser(webUser)) {
 
                 if (webUserUserRoleService.addBaseNewUserRole(webUser.getId(), Integer.valueOf(organisationTypeId))) {
                     this.getActionResponse().AssignNewIdResult(webUser.getId());
@@ -124,7 +124,7 @@ public class AdminUserService extends DataService {
         this.actionResponse = new ActionResponse();
 
         webUser.setPassword(encodePassword(webUser.getPassword()));
-        this.userService.updateObject(webUser);
+        this.userService.saveUser(webUser);
 
         return this.actionResponse;
         
@@ -150,7 +150,7 @@ public class AdminUserService extends DataService {
         }
 
         if (isAllowUpdate) {
-            this.userService.updateObject(webUser);
+            this.userService.saveUser(webUser);
         }
 
 
@@ -160,7 +160,7 @@ public class AdminUserService extends DataService {
     public ActionResponse triggerPasswordExpiredStatus(WebUser webUser) {
         this.actionResponse = new ActionResponse();
         webUser.setIsExpired(!webUser.getIsExpired());
-        this.userService.updateObject(webUser);
+        this.userService.saveUser(webUser);
         return this.actionResponse;
     }
 }

@@ -14,27 +14,23 @@ public class WitnessServiceImpl extends SecureDataService implements WitnessServ
 
         Witness witness = null;
 
-        try {
-            DetachedCriteria criteria = DetachedCriteria.forClass(Witness.class).add(Restrictions.eq("incident", incident));
-            witness = (Witness) getByCriteria(criteria);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Witness.class).add(Restrictions.eq("incident", incident));
+        witness = (Witness) getByCriteria(criteria);
+
 
         return witness;
     }
 
-    public Witness getObject(int id) {
+    public Witness getWitness(int id) {
         return (Witness) get(Witness.class, id);
     }
 
-    
-    public void updateObject(Witness witness) {
-
+    public void saveWitness(Witness witness) {
         save(witness);
     }
 
-    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
+    public void saveWitnessForXMLUploader(final ClaimResult claimResult) {
 
         ArrayList<Witness> witnesses = claimResult.getWitnesses();
 

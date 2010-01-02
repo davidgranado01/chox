@@ -37,11 +37,11 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
         return findByCriteria(criteria);
     }
 
-    public HireMonitoringEcd getObject(int id) {
+    public HireMonitoringEcd getHireMonitoringEcd(int id) {
         return (HireMonitoringEcd) get(HireMonitoringEcd.class, id);
     }
 
-    public void updateObject(HireMonitoringEcd object) {
+    public void saveHireMonitoringEcd(HireMonitoringEcd object) {
         save(object);
     }
 

@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.core.services;
 
 import idas.chox.core.model.AuditTrail;
@@ -11,10 +6,16 @@ import idas.chox.core.model.ReasonOfRejection;
 import java.util.List;
 
 public interface AuditTrailService {
-    AuditTrail getObject(int id);
-    public Boolean logAuditLog(String newStatus,String oldStatus, Claim thisClaim);
+
+    AuditTrail getAuditTrail(int auditTrailId);
+
+    public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim);
+
     public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim, Integer secInteval);
+
     public Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection);
+
     public Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection, Integer secInteval);
+
     public List<AuditTrail> getAuditTrailByClaim(int claimId);
 }

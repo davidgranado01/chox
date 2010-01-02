@@ -6,18 +6,18 @@ import idas.chox.core.xmlValidation.ClaimResult;
 
 public class InvoiceServiceImpl extends SecureDataService implements InvoiceService {
 
-    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
+    public void saveInvoiceForXMLUploader(final ClaimResult claimResult) {
 
         if ((claimResult.getClaim().getInvoice()) != null) {
             getHibernateTemplate().saveOrUpdate((claimResult.getClaim().getInvoice()));
         }
     }
 
-    public Invoice getObject(int id) {
+    public Invoice getInvoice(int id) {
         return (Invoice) get(Invoice.class, id);
     }
 
-    public void updateObject(Invoice invoice) {
+    public void saveInvoice(Invoice invoice) {
 
         save(invoice);
     }

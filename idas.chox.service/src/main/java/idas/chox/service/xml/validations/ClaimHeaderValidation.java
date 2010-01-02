@@ -135,7 +135,7 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
                 if (claim.getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)) {
 
                     claimResult.setClaimParseStatus(ClaimParseStatus.newInvoice);
-                    BreBand choBand = choBandService.getBreBandByChorganisationIdAndInsurerId(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                    BreBand choBand = choBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
                     claim.setBreBand(choBand);
 
                     if (isUpdateManagingRepair && managingRepair != null) {
@@ -172,7 +172,11 @@ public class ClaimHeaderValidation extends SecureDataService implements rulesInt
             claim.setIndemnityAmount(new BigDecimal("0.00"));
             claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
             claim.setChorganisation(chorganisationService.getCurrentCHOrganisation());
-
+            /*
+            if(getCurrentUser().getChorganisation()!=null){
+                claim.setChorganisation(getCurrentUser().getChorganisation());
+            }
+            */
         }
 
         claimResult.setClaim(claim);

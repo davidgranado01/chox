@@ -7,15 +7,15 @@ public interface BreBandOrganisationService {
 
     public boolean isBreBandOccupied(int bandId);
 
-    public BreBandOrganisation getObject(int id);
+    public BreBandOrganisation getBreBandOrganisation(int breBandOrganisationId);
 
-    public void updateObject(BreBandOrganisation object);
+    public void saveBreBandOrganisatiion(BreBandOrganisation breBandOrganisation);
 
     public boolean deleteBreBandOrganisationByBandId(int bandId);
 
-    public boolean deleteBreBandOrganisationByChorganisationId(int chorganisationId, int insurerId);
+    public void deleteBreBandOrganisationByChorganisationId(int chorganisationId, int insurerId);
 
-    public void deleteObject(BreBandOrganisation object);
+    public void deleteBreBandOrganisation(BreBandOrganisation breBandOrganisation);
 
     public List<BreBandOrganisation> getBreBandChorganisationsByBreBandId(int bandId);
 

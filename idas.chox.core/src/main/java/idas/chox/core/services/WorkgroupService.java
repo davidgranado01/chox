@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface WorkgroupService {
 
-    public Workgroup getWorkgroup(int id);
+    public Workgroup getWorkgroup(int workgroupId);
 
-    public void delete(Workgroup object);
+    public void deleteWorkgroup(Workgroup workgroup);
 
-    public void save(Workgroup object);
+    public void saveWorkgroup(Workgroup workgroup);
 
     public List<Workgroup> getWorkgroupsByInsurer(int insurerId);
 

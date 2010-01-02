@@ -40,28 +40,10 @@
             }
         });
 
-        //ui.ajaxForm(form, onChorganisationSubmitResult);
         ui.ajaxForm(form);
 
     });
-/*
-    function onChorganisationSubmitResult(responseText, statusText){
 
-        response = eval('(' + responseText.trim() + ')');
-
-        if(response)
-        {
-            if(response.isValid){
-                
-                if(response.resultType && response.resultType == 'New')
-                {
-                    alert("Your Changes Have Been Saved");
-                    doChorganisationCancelBack();
-                }
-            }
-        }
-    }
-    */
     function doChorganisationCancelBack(){
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";

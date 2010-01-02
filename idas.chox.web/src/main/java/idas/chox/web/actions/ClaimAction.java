@@ -239,7 +239,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
 
             if (reasonOfRejectionId > 0) {
-                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
                 claim.setReasonOfRejection(reasonOfRejection);
                 logNewCommentForRejection(reasonOfRejection, 0);
             }
@@ -507,7 +507,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
             if (reasonOfRejectionId > 0) {
-                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
                 claim.setReasonOfRejection(reasonOfRejection);
                 logNewCommentForRejection(reasonOfRejection, 0);
             }
@@ -692,7 +692,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
 
             if (reasonOfRejectionId > 0) {
-                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
                 claim.getInvoice().setReasonOfRejection(reasonOfRejection);
                 logNewCommentForRejection(reasonOfRejection, 0);
             }
@@ -731,7 +731,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             // logNewCommentForRejection(claim.getInvoice().getReasonOfRejectionId(), true);
 
             if (reasonOfRejectionId > 0) {
-                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
                 claim.getInvoice().setReasonOfRejection(reasonOfRejection);
                 logNewCommentForRejection(reasonOfRejection, 0);
             }
@@ -770,7 +770,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
             if (reasonOfRejectionId > 0) {
-                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
                 claim.getInvoice().setReasonOfRejection(reasonOfRejection);
                 logNewCommentForRejection(reasonOfRejection, 0);
             }
@@ -881,7 +881,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
 
             if (reasonOfRejectionId > 0) {
-                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
                 claim.getInvoice().setReasonOfRejection(reasonOfRejection);
                 logNewCommentForRejection(reasonOfRejection, 0);
             }
@@ -919,7 +919,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             newStatus = ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO;
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
             if (reasonOfRejectionId > 0) {
-                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
                 claim.getInvoice().setReasonOfRejection(reasonOfRejection);
                 logNewCommentForRejection(reasonOfRejection, 0);
             }
@@ -957,7 +957,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
 
             if (reasonOfRejectionId > 0) {
-                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getObject(reasonOfRejectionId);
+                ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
                 claim.getInvoice().setReasonOfRejection(reasonOfRejection);
                 logNewCommentForRejection(reasonOfRejection, 0);
             }

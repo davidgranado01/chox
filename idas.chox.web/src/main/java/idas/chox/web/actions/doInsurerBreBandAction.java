@@ -1,68 +1,8 @@
 package idas.chox.web.actions;
 
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.BreBand;
-import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.InsurerService;
+public class doInsurerBreBandAction{
 
-public class doInsurerBreBandAction extends BaseAction implements ModelDriven<BreBand>, Preparable {
-
-    private BreBandService service;
-    private InsurerService insurerService;
-    private String objectId;
-    private int insurerId = -1;
-    private BreBand model;
-    private String actionResult;
-    private boolean isNew;
-
-    public int getInsurerId() {
-        return insurerId;
-    }
-
-    public void setInsurerId(int insurerId) {
-        this.insurerId = insurerId;
-    }
-
-    public boolean isIsNew() {
-        return isNew;
-    }
-
-    public void setIsNew(boolean isNew) {
-        this.isNew = isNew;
-    }
-
-    public String getActionResult() {
-        return actionResult;
-    }
-
-    public void setActionResult(String actionResult) {
-        this.actionResult = actionResult;
-    }
-
-    public BreBand getModel() {
-        return model;
-    }
-
-    public void setModel(BreBand model) {
-        this.model = model;
-    }
-
-    public String getObjectId() {
-        return objectId;
-    }
-
-    public void setObjectId(String objectId) {
-        this.objectId = objectId;
-    }
-
-    public void setBreBandService(BreBandService service) {
-        this.service = service;
-    }
-
-    public void setInsurerService(InsurerService insurerService) {
-        this.insurerService = insurerService;
-    }
+/*
 
     public String deleteBreBand() throws Exception {
 
@@ -74,11 +14,11 @@ public class doInsurerBreBandAction extends BaseAction implements ModelDriven<Br
 //             <<BRE NAME>> 
             if (service.isBreBandOccupied(model)) {
 
-                actionResult = "F: You cannot delete '" + model.getName() + "' because it is currently being used by one or more Credit Hire Organisations. Please remove the Credit Hire Organisations from this BRE and try again";
+                // actionResult = "F: You cannot delete '" + model.getName() + "' because it is currently being used by one or more Credit Hire Organisations. Please remove the Credit Hire Organisations from this BRE and try again";
                 return SUCCESS;
             } else {
                 this.service.deleteObject(model);
-                actionResult = "D:'" + model.getName() + "' has deleted";
+                //actionResult = "D:'" + model.getName() + "' has deleted";
 
             }
 
@@ -91,10 +31,6 @@ public class doInsurerBreBandAction extends BaseAction implements ModelDriven<Br
         return SUCCESS;
     }
 
-    public String doRenderActionPage() {
-        return SUCCESS;
-    }
-
     public String updateModel() throws Exception {
 
         try {
@@ -104,16 +40,16 @@ public class doInsurerBreBandAction extends BaseAction implements ModelDriven<Br
             }
 
             if (service.isBreBandNameExist(model)) {
-                actionResult = "Selected Band Name already exists";
+                //actionResult = "Selected Band Name already exists";
                 return SUCCESS;
             }
 
-            actionResult = "";
+            //actionResult = "";
 
             this.service.updateObject(model);
 
             if (this.isNew) {
-                actionResult = "objectId:" + model.getId();
+                //actionResult = "objectId:" + model.getId();
                 this.isNew = false;
             }
 
@@ -133,4 +69,5 @@ public class doInsurerBreBandAction extends BaseAction implements ModelDriven<Br
             this.isNew = false;
         }
     }
+ * */
 }

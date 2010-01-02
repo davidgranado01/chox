@@ -5,21 +5,22 @@ import java.util.List;
 
 public interface ChorganisationService {
 
-    public List<Chorganisation> getObjectsWithoutInsurer(int insurerId);
+    public Chorganisation getChorganisation(int chorganisationId);
 
-    public List<Chorganisation> getObjectsByInsurerId(int insurerId);
+    public List<Chorganisation> getChorganisations(String order);
 
-    public Chorganisation getCurrentCHOrganisation();
+    public Chorganisation updateChorganisation(Chorganisation chorganisation);
 
-    public List<Chorganisation> getChorganisation();
+    public List<Chorganisation> getAvailableChorganisationsByInsurer(int insurerId);
 
-    public Chorganisation getChorganisation(int id);
-
-    public Chorganisation updateChorganisation(Chorganisation object);
+    public List<Chorganisation> getChorganisationsByInsurerId(int insurerId);
 
     public List<Chorganisation> getActiveChorganisation();
 
-    public boolean isChorgNameExist(String s);
+    public boolean isChorgNameExist(String chorganisationName);
 
-    public Chorganisation getChorgByName(String s);
+    public Chorganisation getChorgByName(String chorganisationName);
+
+    public Chorganisation getCurrentCHOrganisation();
 }
+

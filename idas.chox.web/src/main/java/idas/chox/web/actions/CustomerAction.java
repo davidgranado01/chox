@@ -54,7 +54,7 @@ public class CustomerAction extends BaseModelAction implements ModelDriven<Custo
     public String updateModel() {
 
         if (vehicleClassId >= 0) {
-            model.setVehicleClass(this.vehicleClassService.getObject(vehicleClassId));
+            model.setVehicleClass(this.vehicleClassService.getVehicleClass(vehicleClassId));
         }
 
         try {

@@ -8,6 +8,9 @@
         var selectedPanel = "InsurerPanelMgmt";
         var adminCurrentTabIndex = 0;
         var InsurerMainPanelTabs;
+
+
+        var selectOrgId = -1;
                 
         function setupInsurerMainPanels()
         {

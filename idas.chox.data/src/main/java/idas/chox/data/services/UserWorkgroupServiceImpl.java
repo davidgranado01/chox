@@ -33,11 +33,11 @@ public class UserWorkgroupServiceImpl extends SecureDataService implements UserW
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
 
-        if (workgroupId > 0) {
+        if (workgroupId != null && workgroupId > 0) {
             criteria.add(Restrictions.eq("workgroup.id", workgroupId));
         }
 
-        if (webUserId > 0) {
+        if (webUserId != null && webUserId > 0) {
             criteria.add(Restrictions.eq("user.id", webUserId));
         }
 
@@ -51,5 +51,4 @@ public class UserWorkgroupServiceImpl extends SecureDataService implements UserW
     public void saveWebUserWorkgroup(WebUserWorkgroup webUserWorkgroup) {
         save(webUserWorkgroup);
     }
-
 }

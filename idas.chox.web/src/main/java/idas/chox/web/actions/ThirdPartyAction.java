@@ -41,7 +41,7 @@ public class ThirdPartyAction extends BaseModelAction implements ModelDriven<Thi
     public String updateModel() {
 
         if (vehicleClassId >= 0) {
-            model.setVehicleClass(this.vehicleClassService.getObject(vehicleClassId));
+            model.setVehicleClass(this.vehicleClassService.getVehicleClass(vehicleClassId));
         }
 
         if (insurerId >= 0) {

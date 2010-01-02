@@ -5,9 +5,7 @@ import java.util.List;
 
 public interface ReasonOfRejectionService {
 
-    public ReasonOfRejection getObject(int id);
-
-    public void updateObject(ReasonOfRejection reasonOfRejection);
+    public ReasonOfRejection getReasonOfRejection(int reasonOfRejectionId);
 
     public List<ReasonOfRejection> getAllReasonOfRejection();
 }

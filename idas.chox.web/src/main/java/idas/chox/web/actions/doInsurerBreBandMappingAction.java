@@ -67,8 +67,8 @@ public class doInsurerBreBandMappingAction extends BaseAction {
 
         try {
 
-            BreBandOrganisation object = service.getObject(objectId);
-            service.deleteObject(object);
+            BreBandOrganisation object = service.getBreBandOrganisation(objectId);
+            service.deleteBreBandOrganisation(object);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -85,9 +85,9 @@ public class doInsurerBreBandMappingAction extends BaseAction {
         try {
 
             BreBandOrganisation object = new BreBandOrganisation();
-            object.setBreBand(breBandService.getObject(breBandId));
+            object.setBreBand(breBandService.getBreBand(breBandId));
             object.setChorganisation(chorganisationService.getChorganisation(chorganisationId));
-            service.updateObject(object);
+            service.saveBreBandOrganisatiion(object);
 
         } catch (Exception ex) {
             ex.printStackTrace();

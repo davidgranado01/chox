@@ -104,7 +104,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
     private void process(ClaimResult claimResult) {
 
-        BreBand choBand = choBandService.getBreBandByChorganisationIdAndInsurerId(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId());
+        BreBand choBand = choBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId());
 
         // System.out.println("getInsurer:"+claimResult.getClaim().getInsurer().getId());
         // System.out.println("getChorganisation:"+claimResult.getClaim().getChorganisation().getId());
@@ -157,7 +157,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
     public RulesEngineResponse processResubmitInvoice(Claim breClaim) {
 
-        BreBand choBand = choBandService.getBreBandByChorganisationIdAndInsurerId(breClaim.getChorganisation().getId(), breClaim.getInsurer().getId());
+        BreBand choBand = choBandService.getBreBand(breClaim.getChorganisation().getId(), breClaim.getInsurer().getId());
         VehicleClassCeiling vehicleClassCeiling = insurerService.getVechileClassCeilingForClaim(breClaim);
         choBand.setVehicleClassCeiling(vehicleClassCeiling);
         breClaim.setBreBand(choBand);
