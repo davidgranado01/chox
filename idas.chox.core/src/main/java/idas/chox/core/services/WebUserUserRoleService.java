@@ -10,11 +10,11 @@ public interface WebUserUserRoleService {
 
     public void saveWebUserUserRole(WebUserUserRole webUserUserRole);
 
-    public boolean deleteWebUserUserRole(WebUserUserRole webUserUserRole);
+    public void deleteWebUserUserRole(WebUserUserRole webUserUserRole);
 
-    public boolean addBaseNewUserRole(int webUserId, int typeId);
+    public void addBaseNewUserRole(int webUserId, int typeId);
 
-    public boolean addNewUserRole(int webUserId, int webUserRoleId);
+    public void addNewUserRole(int webUserId, int webUserRoleId);
 
     public List<WebUserUserRole> getMappedUserRole(Integer webUserId);
 

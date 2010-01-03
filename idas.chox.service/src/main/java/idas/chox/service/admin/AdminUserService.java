@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.service.admin;
 
 import idas.chox.core.model.Chorganisation;
@@ -12,19 +7,13 @@ import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
-import idas.chox.core.services.LookupService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WebUserUserRoleService;
-import idas.chox.core.util.DateHelper;
 import idas.chox.data.services.DataService;
 import idas.chox.service.ActionResponse;
 import org.springframework.security.providers.encoding.Md5PasswordEncoder;
 import org.springframework.security.providers.encoding.PasswordEncoder;
 
-/**
- *
- * @author Carlson
- */
 public class AdminUserService extends DataService {
 
     private ActionResponse actionResponse;
@@ -67,7 +56,6 @@ public class AdminUserService extends DataService {
         this.webUserUserRoleService = webUserUserRoleService;
     }
 
-
     public ActionResponse updateUser(WebUser webUser) {
 
         this.actionResponse = new ActionResponse();
@@ -103,9 +91,8 @@ public class AdminUserService extends DataService {
 
             if (this.userService.saveUser(webUser)) {
 
-                if (webUserUserRoleService.addBaseNewUserRole(webUser.getId(), Integer.valueOf(organisationTypeId))) {
-                    this.getActionResponse().AssignNewIdResult(webUser.getId());
-                }
+                webUserUserRoleService.addBaseNewUserRole(webUser.getId(), Integer.valueOf(organisationTypeId));
+                this.getActionResponse().AssignNewIdResult(webUser.getId());
 
             } else {
                 this.getActionResponse().AddError("Please try again!");
@@ -116,25 +103,25 @@ public class AdminUserService extends DataService {
         }
 
         return this.actionResponse;
-        
+
     }
 
-    public ActionResponse updateUserPassword(WebUser webUser){
-        
+    public ActionResponse updateUserPassword(WebUser webUser) {
+
         this.actionResponse = new ActionResponse();
 
         webUser.setPassword(encodePassword(webUser.getPassword()));
         this.userService.saveUser(webUser);
 
         return this.actionResponse;
-        
+
     }
 
     private String encodePassword(String sPassword) {
         PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
         return passwordEncoder.encodePassword(sPassword, null);
     }
-    
+
     public ActionResponse triggerUserStatus(WebUser webUser) {
 
         this.actionResponse = new ActionResponse();
@@ -156,7 +143,7 @@ public class AdminUserService extends DataService {
 
         return this.actionResponse;
     }
-    
+
     public ActionResponse triggerPasswordExpiredStatus(WebUser webUser) {
         this.actionResponse = new ActionResponse();
         webUser.setIsExpired(!webUser.getIsExpired());

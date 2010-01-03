@@ -40,55 +40,29 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
     }
 
     public List<WebUserUserRole> getMappedUserRole(Integer webUserId) {
-
-        List<WebUserUserRole> webUserUserRoles = new ArrayList<WebUserUserRole>();
-
-
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserUserRole.class);
         criteria.add(Restrictions.eq("webUser.id", webUserId));
-        webUserUserRoles = findByCriteria(criteria);
-
-
-        return webUserUserRoles;
+        return findByCriteria(criteria);
     }
 
     public void saveWebUserUserRole(WebUserUserRole object) {
-
         save(object);
-
     }
 
-    public boolean addNewUserRole(int webUserId, int webUserRoleId) {
-
-        boolean bFlag = false;
-
-
+    public void addNewUserRole(int webUserId, int webUserRoleId) {
         WebUserUserRole webUserUserRole = new WebUserUserRole();
         webUserUserRole.setActive(true);
         webUserUserRole.setWebUser(userService.getWebUser(webUserId));
         webUserUserRole.setWebUserRole(getWebUserRole(webUserRoleId));
         saveWebUserUserRole(webUserUserRole);
-        bFlag = true;
-
-        return bFlag;
-
     }
 
-    public boolean addBaseNewUserRole(int webUserId, int typeId) {
-
-        boolean bFlag = false;
-
-
+    public void addBaseNewUserRole(int webUserId, int typeId) {
         WebUserUserRole webUserUserRole = new WebUserUserRole();
         webUserUserRole.setActive(true);
         webUserUserRole.setWebUser(userService.getWebUser(webUserId));
         webUserUserRole.setWebUserRole(getUserOrgBaseRoleId(typeId));
-
         saveWebUserUserRole(webUserUserRole);
-
-
-        return bFlag;
-
     }
 
     private WebUserRole getUserOrgBaseRoleId(int orgTypeId) {
@@ -111,60 +85,31 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
 
     }
 
-    public boolean deleteWebUserUserRole(WebUserUserRole object) {
-
-        boolean bFlag = false;
-
-
-
-
+    public void deleteWebUserUserRole(WebUserUserRole object) {
         delete(object);
-
-        bFlag = true;
-
-
-        return bFlag;
     }
 
     private WebUserRole getWebUserRole(String roleName) {
-
-        WebUserRole webUserRole = new WebUserRole();
-
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("name", roleName));
-        webUserRole = (WebUserRole) getByCriteria(criteria);
-
-        return webUserRole;
+        return (WebUserRole) getByCriteria(criteria);
     }
 
     private WebUserRole getWebUserRole(int webUserRoleId) {
-
-        WebUserRole webUserRole = new WebUserRole();
-
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("id", webUserRoleId));
-        webUserRole = (WebUserRole) getByCriteria(criteria);
-
-        return webUserRole;
+        return (WebUserRole) getByCriteria(criteria);
     }
 
     public Set getWebUserroles(int orgTypeId) {
-
         Set webUserRoles = new HashSet<WebUserRole>();
-
-
-
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
-
         criteria.add(Restrictions.eq("typeId", orgTypeId));
         criteria.add(Restrictions.ne("name", WebUserRole.ROLE_CHO));
         criteria.add(Restrictions.ne("name", WebUserRole.ROLE_INS));
         criteria.add(Restrictions.ne("name", WebUserRole.ROLE_CHOX));
-        webUserRoles = findByCriteria(criteria);
-
-
+        webUserRoles.addAll(findByCriteria(criteria));
         return webUserRoles;
-
     }
 
     public List getWebUserrolesLookupItem(int orgTypeId) {
