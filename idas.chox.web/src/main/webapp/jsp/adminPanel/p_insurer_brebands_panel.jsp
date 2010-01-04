@@ -43,7 +43,7 @@
                 columns: [
                     {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
                     {header: "Band", width: 240, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
-                            return "<a href='#' class='highlightItem'>" + value + "</a>"}},
+                            return "<a href='#' class='high-light-item'>" + value + "</a>"}},
                     {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: true, resizable: true},
                     {header: "Created Date", width: 150, dataIndex: 'createdDate', sortable: true, resizable: true}
                 ],
@@ -57,12 +57,9 @@
         });
 
         function breband_recordOnclick(grid, rowIndex, columnIndex, e){
-
             if(columnIndex==1){
-
                 var gridView = breband_gridviewGrid.getStore().getAt(rowIndex);
                 var breBandId = gridView.get("id");
-            
                 var target = "div#insurerBreDetailTab";
                 var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
                 var param = {"objectId":breBandId, "insurerId":<s:property value="insurerId" />};
@@ -73,10 +70,12 @@
         }
 
         function breband_createNewRecord(){
-            var sLocaltion = "div#insurerBreDetailTab";
-            var sAction = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
-            var sparameters = "objectId=-1&insurerId=" + <s:property value="insurerId" />;
-            doSectionLoad(sLocaltion, sAction, sparameters);
+            var target = "div#insurerBreDetailTab";
+            var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
+            var param = {"objectId":"-1","insurerId":<s:property value="insurerId" />};
+            ajax.loadHtml(url,param,function(data){
+                $(target).html(data);
+            });
         }
     
     </script>
@@ -88,7 +87,6 @@
         </div>
 
         <div class="grid-view-header">
-
             <table width="100%">
                 <tr>
                     <td align="right">

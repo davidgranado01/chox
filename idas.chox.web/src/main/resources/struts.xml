@@ -30,7 +30,7 @@
     <package name="private-package" namespace="/prv" extends="home-package">
         <default-interceptor-ref name="authenticated" />
 
-         <action name ="processClaim" class ="idas.chox.web.actions.ClaimActivityAction">
+        <action name ="processClaim" class ="idas.chox.web.actions.ClaimActivityAction">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -304,9 +304,6 @@
         <action name="BreBandDropDownAction" class="idas.chox.web.actions.BreBandDropDownAction">
             <result>/jsp/dropdown/p_dropdown_bre.jsp</result>
         </action>
-        <action name="VehicleClassDropDownAction" class="idas.chox.web.actions.VehicleClassDropDownAction">
-            <result>/jsp/dropdown/p_dropdown_vehicle_class.jsp</result>
-        </action>
         <action name="SearchWorkgroupDropDownAction" class="idas.chox.web.actions.WorkgroupDropDownAction" method="ClaimSearch">
             <result>/jsp/dropdown/p_search_dropdown_workgroup.jsp</result>
         </action>
@@ -332,13 +329,6 @@
             <result name="UserroleMapping">/jsp/adminPanel/p_user_role_mapping.jsp</result>
             <result name="InsurerPanelMgmt">/jsp/adminPanel/p_insurers_panel.jsp</result>
             <result name="NONE">/jsp/p_action_response_json_data.jsp</result>
-            <!--
-            <result name="InsurerOrgMappingMgmt">/jsp/adminPanel/p_insurer_chorganisation_mapping.jsp</result>
-            <result name="InsurerVehicleClassCeiling">/jsp/adminPanel/p_insurer_vehicle_class_ceiling.jsp</result>
-            <result name="InsurerBreBandMappingMgmt">/jsp/adminPanel/p_insurer_breband_mapping.jsp</result>
-            <result name="InsurerBreBandMgmt">/jsp/adminPanel/p_insurer_breband_mgmt_panel.jsp</result>
-            <result name="InsurerWorkgroupMappingMgmt">/jsp/adminPanel/p_insurer_workgroup_mapping.jsp</result>
-            !-->
         </action>
         <action name="searchClaim" class="idas.chox.web.actions.SearchClaimAction">
             <result name="success">/jsp/p_searchClaim.jsp</result>
@@ -638,12 +628,7 @@
 
         
 
-        <action name="editVehicleClassCeilingDetail" class="idas.chox.web.actions.doVehicleClassCeilingAction" method="updateVehicleClassCeiling">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-        <action name="vehicleClassCeilingDetail" class="idas.chox.web.actions.doVehicleClassCeilingAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
+
 
 
 
@@ -709,35 +694,13 @@
        <!--End User Workgroup-->
        
 
-       <!--Start BRE Band-->
-        <action name="getInsurerBreBandPage" class="idas.chox.web.actions.InsurerBreBandAction" method="doRenderActionPage">
-            <result name="success">/jsp/adminPanel/p_insurer_brebands_panel.jsp</result>
-        </action>
-        <action name="getInsurerBreBand" class="idas.chox.web.actions.InsurerBreBandAction">
-            <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
-        <action name="updateInsurerBreBandDetailPanel" class="idas.chox.web.actions.InsurerBreBandAction" method="doRenderActionPage">
-            <result name="success">/jsp/adminPanel/p_insurer_breband_detail_panel.jsp</result>
-        </action>
-<!--
-        <action name="updateInsurerBreBandDetailPanels" class="idas.chox.web.actions.doInsurerBreBandAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-!-->
-        <!--End BRE Band-->
 
 
 
-        <action name="getAvailableInsurerBreBandChorganisation" class="idas.chox.web.actions.ChorganisationAction" method="getChorganisationsByInsurerIdWithoutBreBand">
-            <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
 
-        <action name="doRemoveVehicleClassCeilingMapping" class="idas.chox.web.actions.doVehicleClassCeilingAction" method="removeObject">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-        <action name="getSelectedInsurerVehicleClassCeiling" class="idas.chox.web.actions.VehicleClassCeilingAction" method="getSelectedInsurerVehicleClassCeiling">
-            <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
+
+
+
        <!--End BRE Band-->
 
        <!--Start Notifications-->
@@ -856,23 +819,62 @@
         </action>
        <!-- END INSURER V.S CHORGANISATION -->
 
+               <!--Start INSURER BRE BAND -->
+        <action name="getInsurerBreBandPage" class="idas.chox.web.actions.InsurerBreBandAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_insurer_brebands_panel.jsp</result>
+        </action>
+        <action name="getInsurerBreBand" class="idas.chox.web.actions.InsurerBreBandAction">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="updateInsurerBreBandDetailPanel" class="idas.chox.web.actions.InsurerBreBandAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_insurer_breband_detail_panel.jsp</result>
+        </action>
+        <action name="updateInsurerBreBandDetail" class="idas.chox.web.actions.InsurerBreBandAction" method="updateInsurerBreBand">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="deleteInsurerBreBandDetail" class="idas.chox.web.actions.InsurerBreBandAction" method="deleteInsurerBreBand">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <!-- End INSURER BRE BAND -->
+        
         <!-- START INSURER V.S BRE -->
         <action name="getInsurerBreBandChorganisationMapping" class="idas.chox.web.actions.InsurerBreBandMappingAction" method="doRenderActionPage">
-            <result name="success">/jsp/adminPanel/p_insurer_breband_mgmt_panel.jsp</result>
+            <result name="success">/jsp/adminPanel/p_insurer_breband_mapping.jsp</result>
         </action>
         <action name="getSelectedInsurerBreBandChorganisation" class="idas.chox.web.actions.InsurerBreBandMappingAction" method="getChorganisationWithBreBandAssigned">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
-        <action name="doAddNewBandChorganisationMapping" class="idas.chox.web.actions.doInsurerBreBandMappingAction" method="addObject">
+        <action name="getAvailableInsurerBreBandChorganisation" class="idas.chox.web.actions.InsurerBreBandMappingAction" method="getChorganisationsByInsurerIdWithoutBreBand">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="doAddNewBandChorganisationMapping" class="idas.chox.web.actions.InsurerBreBandMappingAction" method="addBreBandChorganisation">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <action name="doRemoveBandChorganisationMapping" class="idas.chox.web.actions.doInsurerBreBandMappingAction" method="removeObject">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-        <action name="doDeleteCreditHireBand" class="idas.chox.web.actions.doInsurerBreBandAction" method="deleteBreBand">
+        <action name="doRemoveBandChorganisationMapping" class="idas.chox.web.actions.InsurerBreBandMappingAction" method="deleteBreBandChorganisation">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <!-- END INSURER V.S BRE -->
+
+        <!-- START INSURER VEHICLE CLASS CEILING -->
+        <action name="getInsurerVehicleClassCeilingPage" class="idas.chox.web.actions.InsurerVehicleClassCeiling" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_insurer_vehicle_class_ceiling.jsp</result>
+        </action>
+        <action name="VehicleClassDropDownAction" class="idas.chox.web.actions.VehicleClassDropDownAction">
+            <result>/jsp/dropdown/p_dropdown_vehicle_class.jsp</result>
+        </action>
+        <action name="doRemoveVehicleClassCeilingMapping" class="idas.chox.web.actions.InsurerVehicleClassCeiling" method="removeVehicleClassCeiling">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="getSelectedInsurerVehicleClassCeiling" class="idas.chox.web.actions.InsurerVehicleClassCeiling" method="getSelectedInsurerVehicleClassCeiling">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="addNewVehicleClassCeiling" class="idas.chox.web.actions.InsurerVehicleClassCeiling" method="addNewVehicleClassCeiling">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="editVehicleClassCeilingDetail" class="idas.chox.web.actions.InsurerVehicleClassCeiling" method="updateVehicleClassCeiling">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <!-- END INSURER VEHICLE CLASS CEILING -->
 
     </package>
     

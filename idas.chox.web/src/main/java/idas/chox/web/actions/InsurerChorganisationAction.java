@@ -2,9 +2,11 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.InsurerChorganisation;
+import idas.chox.core.services.BreBandOrganisationService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.InsurerService;
+import idas.chox.service.ActionResponse;
 import idas.chox.web.viewdata.ChorganisationViewData;
 import idas.chox.web.viewdata.InsurerChorganisationViewData;
 import java.util.ArrayList;
@@ -17,12 +19,17 @@ public class InsurerChorganisationAction extends BaseAction {
     protected int insurerChorganisationId;
     protected InsurerChorganisationService insurerChorganisationService;
     protected ChorganisationService chorganisationService;
+    protected BreBandOrganisationService breBandOrganisationService;
     private InsurerService insurerService;
     protected String jsonRecords;
     private int chorganisationId = -1;
 
     public int getInsurerChorganisationId() {
         return insurerChorganisationId;
+    }
+
+    public void setBreBandOrganisationService(BreBandOrganisationService breBandOrganisationService) {
+        this.breBandOrganisationService = breBandOrganisationService;
     }
 
     public void setInsurerChorganisationId(int insurerChorganisationId) {
@@ -139,9 +146,21 @@ public class InsurerChorganisationAction extends BaseAction {
         try {
             
             if (this.insurerChorganisationId > 0) {
+
                 InsurerChorganisation insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(this.insurerChorganisationId);
-                insurerChorganisation.setStatus(false);
-                insurerChorganisationService.saveInsurerChorganisation(insurerChorganisation);
+
+
+                if(!breBandOrganisationService.isActiveChorganisationWithBand(insurerChorganisation.getChorganisation().getId(), insurerChorganisation.getInsurer().getId())){
+
+                    insurerChorganisation.setStatus(false);
+                    insurerChorganisationService.saveInsurerChorganisation(insurerChorganisation);
+                    
+                }else{
+
+                    getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Not allowed to delete Thic Credit Hire From This insuere. Please remove the Bre Band assigned to this Credit Hire First");
+
+                }
+
             }
             
         } catch (Exception ex) {

@@ -3,7 +3,6 @@ package idas.chox.web.actions;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Chorganisation;
-import idas.chox.core.services.BreBandOrganisationService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminChorganisationService;
@@ -16,8 +15,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
 
     private AdminChorganisationService adminChorganisationService;
     private List<ChorganisationViewData> credithireorganisation;
-    private BreBandOrganisationService breBandOrganisationService;
-    private ChorganisationService service;
+    private ChorganisationService chorganisationService;
     private int insurerId;
     private String objectId;
     private Chorganisation model;
@@ -121,7 +119,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     @Override
     public String execute() {
 
-        List<Chorganisation> credithireorganisationData = this.service.getChorganisations("name");
+        List<Chorganisation> credithireorganisationData = this.chorganisationService.getChorganisations("name");
 
         credithireorganisation = new ArrayList<ChorganisationViewData>();
 
@@ -132,40 +130,8 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
         return SUCCESS;
     }
 
-    // BRE MAPPING, GET CREDIT HIRE WITHOUT CHO BAND
-    public String getChorganisationsByInsurerIdWithoutBreBand() {
-
-        try {
-
-            credithireorganisation = new ArrayList<ChorganisationViewData>();
-
-            if (insurerId > 0) {
-
-                List<Chorganisation> chorganisations = service.getChorganisationsByInsurerId(insurerId);
-
-                for (Chorganisation object : chorganisations) {
-
-                    if (!breBandOrganisationService.isActiveChorganisationWithBand(object.getId(), insurerId)) {
-                        credithireorganisation.add(new ChorganisationViewData(object));
-                    }
-
-                }
-            }
-
-        } catch (Exception ex) {
-            handleException(this, ex);
-            return ERROR;
-        }
-
-        return SUCCESS;
-    }
-
-    public void setBreBandOrganisationService(BreBandOrganisationService breBandOrganisationService) {
-        this.breBandOrganisationService = breBandOrganisationService;
-    }
-
-    public void setChorganisationService(ChorganisationService service) {
-        this.service = service;
+    public void setChorganisationService(ChorganisationService chorganisationService) {
+        this.chorganisationService = chorganisationService;
     }
 
     public void setAdminChorganisationService(AdminChorganisationService adminChorganisationService) {

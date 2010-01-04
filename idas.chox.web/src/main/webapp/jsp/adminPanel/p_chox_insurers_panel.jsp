@@ -40,11 +40,11 @@
             viewConfig:{forceFit:true},
             columns: [
                 {header: "Name", width: 180, dataIndex: 'name', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='highlightItem'>" + value + "</a>"}},
+                        return "<a href='#' class='high-light-item'>" + value + "</a>"}},
                 {header: "VAT No.", width: 120, dataIndex: 'vatNo', sortable: true, resizable: true},
                 {header: "Company No.", width: 120, dataIndex: 'companyNo', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='highlightItem'>" + value + "</a>"}},
+                        return "<a href='#' class='high-light-item'>" + value + "</a>"}},
                 {header: "Created By", width:100, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width:140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],

@@ -41,8 +41,8 @@
             columns: [
                 {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
                 {header: "Workgroup", width: 180, dataIndex: 'name', sortable: true, resizable: true},
-                {header: "Active", width: 80, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='highlightItem'>" + value + "</a>"}},
-                {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='highlightItem'>Remove</a>"}},
+                {header: "Active", width: 80, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>" + value + "</a>"}},
+                {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>"}},
                 {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
@@ -154,9 +154,17 @@
 
     function insurerWorkgroup_doRefreshPage(){
 
+        var tabIndex = 0;
         var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-        var param = {"objectId":<s:property value="insurerId" />,"tabIndex":"2"};
+        var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
+        var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
+        
+        if(<s:property value="isChoxAdmin"/>){
+            tabIndex = 2;
+            url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+            var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
+        }
+        
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
         });

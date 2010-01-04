@@ -5,20 +5,20 @@ import java.util.List;
 
 public class BreBandDropDownAction extends BaseAction {
 
-    private List breBands = null;
-    private Integer orgId;
+    private List breBands;
+    private Integer insurerId;
     private BreBandService services;
 
     public void setBreBandService(BreBandService services) {
         this.services = services;
     }
 
-    public Integer getOrgId() {
-        return orgId;
+    public Integer getInsurerId() {
+        return insurerId;
     }
 
-    public void setOrgId(Integer orgId) {
-        this.orgId = orgId;
+    public void setInsurerId(Integer insurerId) {
+        this.insurerId = insurerId;
     }
 
     public List getBreBands() {
@@ -27,7 +27,16 @@ public class BreBandDropDownAction extends BaseAction {
 
     @Override
     public String execute() throws Exception {
-        this.breBands = services.getInsurerBreBandsByInsurer(getOrgId());
+        
+        try {
+            
+            this.breBands = services.getInsurerBreBandsByInsurer(this.insurerId);
+            
+        } catch (Exception ex) {
+            handleException(this, ex);
+            return ERROR;
+        }
+        
         return SUCCESS;
     }
 }

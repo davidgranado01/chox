@@ -47,15 +47,15 @@
             viewConfig:{forceFit:true},
             columns: [
                 {header: "User Name", width: 100, dataIndex: 'userName', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='highlightItem'>" + value + "</a>"}},
+                        return "<a href='#' class='high-light-item'>" + value + "</a>"}},
                 {header: "Name", width: 90, dataIndex: 'name', sortable: true, resizable: true},
                 {header: "Email", width: 120, dataIndex: 'email', sortable: true, resizable: true},
                 {header: "Organisation", width: 80, dataIndex: 'orgName', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='highlightItem'>" + value + "</a>"}},
+                        return "<a href='#' class='high-light-item'>" + value + "</a>"}},
                 {header: "Role", width: 150, dataIndex: 'role', sortable: true, resizable: true},
                 {header: "Has Password Expired?", width: 140, dataIndex: 'isExpired', sortable: false, resizable: true,renderer:function(value,p,r){
-                        return "<a href='#' class='highlightItem'>" + value + "</a>"}}
+                        return "<a href='#' class='high-light-item'>" + value + "</a>"}}
             ],
             height:500,
             width: 730

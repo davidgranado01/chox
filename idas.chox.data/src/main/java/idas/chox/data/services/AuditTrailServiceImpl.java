@@ -15,6 +15,8 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class AuditTrailServiceImpl extends SecureDataService implements AuditTrailService {
 
@@ -22,6 +24,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return (AuditTrail) get(AuditTrail.class, auditTrailId);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim) {
 
         Boolean bFlag = false;
@@ -41,6 +44,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim, Integer secInteval) {
 
         Boolean bFlag = false;
@@ -65,6 +69,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection) {
 
         Boolean bFlag = false;
@@ -93,6 +98,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection, Integer secInteval) {
 
         Boolean bFlag = false;

@@ -9,7 +9,7 @@ public interface BreBandOrganisationService {
 
     public BreBandOrganisation getBreBandOrganisation(int breBandOrganisationId);
 
-    public void saveBreBandOrganisatiion(BreBandOrganisation breBandOrganisation);
+    public void saveBreBandOrganisation(BreBandOrganisation breBandOrganisation);
 
     public boolean deleteBreBandOrganisationByBandId(int bandId);
 

@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class HistoryServiceImpl extends SecureDataService implements HistoryService {
 
@@ -71,6 +73,7 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
         return histories;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void logInvoiceValidationErrorMsg(RulesEngineResponse reponse, Claim claim) {
 
         List<RuleEvaluation> results = reponse.getResults();
@@ -101,6 +104,7 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
         }
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Boolean saveHistory(History history) {
         Boolean bFlag = true;
 
@@ -110,6 +114,7 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
         return bFlag;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveHistories(List<History> histories) {
 
         for (History history : histories) {

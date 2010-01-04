@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class CommentServiceImpl extends SecureDataService implements CommentService {
 
@@ -52,6 +54,7 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
         return (Comment) get(Comment.class, id);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void createNewComment(Comment comment) {
         this.save(comment);
     }

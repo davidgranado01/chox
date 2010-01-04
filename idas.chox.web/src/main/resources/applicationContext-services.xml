@@ -18,7 +18,9 @@
     <bean id="vehicleClassService" class="idas.chox.data.services.VehicleClassServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    
+    <bean id="vehicleClassCeilingService" class="idas.chox.data.services.VehicleClassCeilingServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>    
     <bean id="insurerService" class="idas.chox.data.services.InsurerServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>  

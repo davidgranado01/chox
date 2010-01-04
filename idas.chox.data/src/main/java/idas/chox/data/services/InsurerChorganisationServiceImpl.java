@@ -10,13 +10,23 @@ import idas.chox.core.services.InsurerChorganisationService;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class InsurerChorganisationServiceImpl extends SecureDataService implements InsurerChorganisationService {
 
+    private BreBandOrganisationService choBandOrganisationService;
+
+    public void setChoBandOrganisationService(BreBandOrganisationService choBandOrganisationService) {
+        this.choBandOrganisationService = choBandOrganisationService;
+    }
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteInsurerChorganisation(InsurerChorganisation object) {
         delete(object);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveInsurerChorganisation(InsurerChorganisation object) {
         save(object);
     }
@@ -51,12 +61,8 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
 
         return (InsurerChorganisation) getByCriteria(criteria);
     }
-    private BreBandOrganisationService choBandOrganisationService;
 
-    public void setChoBandOrganisationService(BreBandOrganisationService choBandOrganisationService) {
-        this.choBandOrganisationService = choBandOrganisationService;
-    }
-
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public boolean triggerStatus(InsurerChorganisation object) {
 
         boolean bFlag = false;

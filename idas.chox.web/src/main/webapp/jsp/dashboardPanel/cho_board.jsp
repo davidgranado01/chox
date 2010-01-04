@@ -35,7 +35,7 @@
         
         function loadData(insurerId)
         {
-            $.get("showChoBoard.action?insurerId=" + insurerId, function(data){
+            $.get("<%= request.getContextPath()%>/prv/p/showChoBoard.action?insurerId=" + insurerId, function(data){
                 $("#resultHolder").html(data);
             });
         }

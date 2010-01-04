@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Set;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class WebUserUserRoleServiceImpl extends SecureDataService implements WebUserUserRoleService {
 
@@ -45,10 +47,12 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return findByCriteria(criteria);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveWebUserUserRole(WebUserUserRole object) {
         save(object);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void addNewUserRole(int webUserId, int webUserRoleId) {
         WebUserUserRole webUserUserRole = new WebUserUserRole();
         webUserUserRole.setActive(true);
@@ -57,6 +61,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         saveWebUserUserRole(webUserUserRole);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void addBaseNewUserRole(int webUserId, int typeId) {
         WebUserUserRole webUserUserRole = new WebUserUserRole();
         webUserUserRole.setActive(true);
@@ -85,6 +90,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
 
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteWebUserUserRole(WebUserUserRole object) {
         delete(object);
     }

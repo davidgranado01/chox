@@ -1,12 +1,14 @@
 package idas.chox.core.services;
 
-import idas.chox.core.model.Insurer;
+import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleClassCeiling;
 import java.util.List;
 
 public interface VehicleClassCeilingService {
 
-    public List<VehicleClassCeiling> getVehicleClassCeilingByInsurer(Insurer insurer);
+    public List<VehicleClass> getAvailableVehicleClassCeilingByInsurer(int insurerId);
+
+    public List<VehicleClassCeiling> getSelectedVehicleClassCeilingByInsurer(int insurerId);
 
     public void saveVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling);
 

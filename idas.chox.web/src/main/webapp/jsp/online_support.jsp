@@ -76,7 +76,7 @@
         }
         
         function getAcknowledgementMsg(){
-            $(".block").html("<span id='onlineMsgAck'>Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.</span><span id='onlineMsgAck'><input type='button' value='Close' onclick='javascript:doFinalReset();'></span>");
+            $(".block").html("<span id='online-message-acknowledgement'>Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.</span><span id='onlineMsgAck'><input type='button' value='Close' onclick='javascript:doFinalReset();'></span>");
         }
         
     </script>    

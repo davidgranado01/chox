@@ -5,6 +5,8 @@ import idas.chox.core.services.UserWorkgroupService;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class UserWorkgroupServiceImpl extends SecureDataService implements UserWorkgroupService {
 
@@ -23,6 +25,7 @@ public class UserWorkgroupServiceImpl extends SecureDataService implements UserW
         return (WebUserWorkgroup) get(WebUserWorkgroup.class, userWorkgroupId);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteWebUserWorkgroup(WebUserWorkgroup webUserWorkgroup) {
         delete(webUserWorkgroup);
     }
@@ -48,6 +51,7 @@ public class UserWorkgroupServiceImpl extends SecureDataService implements UserW
         return isExist;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveWebUserWorkgroup(WebUserWorkgroup webUserWorkgroup) {
         save(webUserWorkgroup);
     }

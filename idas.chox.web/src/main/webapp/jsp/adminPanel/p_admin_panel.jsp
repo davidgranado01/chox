@@ -12,7 +12,7 @@
             $(target).html(data);
         });
     }
-
+    
 </script>
 
 <div class="x-panel-bwrap chox-form-container">

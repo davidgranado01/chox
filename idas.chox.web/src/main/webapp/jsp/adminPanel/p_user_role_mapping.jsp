@@ -44,7 +44,7 @@
                 {header: "Created By", width: 90, dataIndex: 'createdBy', sortable: false, resizable: true},
                 {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: false, resizable: true},
                 {header: "", width: 100, dataIndex: 'Remove', sortable: false, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='highlightItem'>Remove</a>"}}
+                        return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
             renderTo:'gridviewGrid',
             height:420,
@@ -202,9 +202,14 @@
 
     function userrole_doRefreshPage(){
 
+        var tabIndex = 0;
+        if(<s:property value="isChoxAdmin"/>){
+            tabIndex = 2;
+        }
+        
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
-        var param = {"objectId":<s:property value="id" /> ,"organisationTypeId":<s:property value="organisationTypeId" />,"tabIndex":"2"};
+        var param = {"objectId":<s:property value="id" /> ,"organisationTypeId":<s:property value="organisationTypeId" />,"tabIndex":tabIndex};
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
         });

@@ -74,7 +74,7 @@
                 {contentEl:'insurerCreditHirePanelTab', title:'CHO Mapping', tabTip:'Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerChorganisationMappingPage.action?insurerId="+<s:property value="id" />, scripts:true}},
                 {contentEl:'insurerBrePanelTab', title:'BRE', tabTip:'BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="id" />, scripts:true}},
                 {contentEl:'insurerBreMappingPanelTab', title:'BRE Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="id" />, scripts:true}},
-                {contentEl:'insurerVehicleClassCeilingTab', title:'V. Class Ceilings', tabTip:'Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}}
+                {contentEl:'insurerVehicleClassCeilingTab', title:'V. Class Ceilings', tabTip:'Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="id" />, scripts:true}}
             ]
         });
 
@@ -170,7 +170,7 @@
 
     <div id="chox-admin-col-div">
         <div id="header-title">
-            <label>User Name:
+            <label>Insurer Name:
                 <s:if test="!isNew"><s:property value="name" /> </s:if><s:else>Create New Insurer</s:else>
             </label>
         </div>

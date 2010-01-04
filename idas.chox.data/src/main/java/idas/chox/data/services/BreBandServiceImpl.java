@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class BreBandServiceImpl extends SecureDataService implements BreBandService {
 
@@ -56,10 +58,11 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
         return bFlag;
     }
 
-    public boolean isBreBandOccupied(BreBand object) {
-        return breBandOrganisationService.isBreBandOccupied(object.getId());
+    public boolean isBreBandOccupied(BreBand breBand) {
+        return breBandOrganisationService.isBreBandOccupied(breBand.getId());
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void createDefaultRecord(Insurer insurer) {
         BreBand object = getDummyBreBand();
         object.setName("Default");
@@ -93,10 +96,16 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
         return (BreBand) get(BreBand.class, id);
     }
 
-    public void saveBreBand(BreBand object) {
-        save(object);
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void saveBreBand(BreBand breBand) {
+        save(breBand);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void deleteBreBand(BreBand breBand) {
+        delete(breBand);
+    }
+    
     public BreBand getBreBand(int orgId, int insurerId) {
 
         BreBand band = new BreBand();

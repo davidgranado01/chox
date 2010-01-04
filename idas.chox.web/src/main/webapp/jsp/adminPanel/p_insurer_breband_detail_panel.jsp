@@ -2,59 +2,19 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <script type="text/javascript">
-        
-    var objectId = -1;
-    var isNew = false;
-        
-    $(document).ready(function(){
-            
-        if(<s:property value="objectId"/><0){
-            isNew = true;
-        }
-            
-        doFormValidation();
-        doRefreshCalculation();
-        doPlugInTips();
-            
-    });
+    
+    Ext.onReady(function(){
 
-    function doPlugInTips(){
         new Ext.ToolTip({ target: 'help-averageLabourHoursPerHireDay', html: 'How many hours the garage should work on the car per day'});
         new Ext.ToolTip({ target: 'help-averageLabourRate', html: 'Average amount charged per hour for repair. This is based on an average amount charged for both preferred repairers and all other repairers.'});
         new Ext.ToolTip({ target: 'help-hireDayCeiling', html: 'Maximum allowable hire days.'});
         new Ext.ToolTip({ target: 'help-hireNetCeiling', html: 'Maximum amount allowed to be charged for hire only.'});
         new Ext.ToolTip({ target: 'help-hireRateChargeTolerance', html: 'A figure allowing small deviations to the price charged per day for the hire based on the vehicle class.'});
         new Ext.ToolTip({ target: 'help-maxRepairValue', html: 'Maximum amount allowed to be charged for repair of vehicle.'});
-    }
-
-    function doRefreshCalculation(){
-            
-        // C09 - Take Mobile Vehicle To Garage Variable
-        var iCCDTakeVehicleToGarageDaysMobile = $("#CCDTakeVehicleToGarageDaysMobile").val();
-        $(".chox-ttxt-readonly-TakeVehicleToGarageDaysMobile").val(iCCDTakeVehicleToGarageDaysMobile);
-            
-        // C10 - Take Non-Mobile Vehicle To Garage Variable (Days)
-        var iCCDTakeVehicleToGarageDaysNonMobile = $("#CCDTakeVehicleToGarageDaysNonMobile").val();
-        $(".chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile").val(iCCDTakeVehicleToGarageDaysNonMobile);
-            
-        // C11 - Engineer Inspection Delay Variable (Days)
-        var iCCDEngineerInspectionDelayDays = $("#CCDEngineerInspectionDelayDays").val();
-        $(".chox-ttxt-readonly-EngineerInspectionDelayVariable").val(iCCDEngineerInspectionDelayDays);
-
-        // C12 - Collection of Vehicle from garage Variable (Days)
-        var iCCDTakeVehicleOutDays = $("#CCDTakeVehicleOutDays").val();
-        $(".chox-ttxt-readonly-CollectionofVehiclefromGarageVariable").val(iCCDTakeVehicleOutDays)
-            
-        doTtlLossAllowableTtlDuration();
-        doRepairDurationRuleforMobileVehicleWithoutECD();
-        doRepairDurationRuleforNonMobileVehicleWithoutECD();
-    }
-
-    function doFormValidation(){
-            
-        $(".chox-form-submit-result").html("");
-            
-        var validateFlag = $("#formUpdateInsurerBreBandDetail").validate(
+        
+        var form = $("form#formUpdateInsurerBreBandDetail");
+        
+        form.validate(
         {
             errorLabelContainer: "#CDInsurerBreBandmessageBox",
             rules: {
@@ -94,131 +54,39 @@
                 averageLabourRate: {required:"You must supply a value for 'Average Labour Rate'", number:"'Average Labour Rate' must be numeric", min:"'Average Labour Rate' cannot be less than zero"},
                 averageLabourHoursPerHireDay: {required:"You must supply a value for 'Average Labour Hours Per Hire Day'", number:"'Average Labour Hours Per Hire Day' must be numeric", min:"'Average Labour Hours Per Hire Day' cannot be less than zero"},
                 takeVehicleOutDays: {required:"You must supply a value for 'Take Vehicle Out Days'", number:"'Take Vehicle Out Days' must be numeric", min:"'Take Vehicle Out Days' cannot be less than zero"}
-            },
-            submitHandler: function(form) {
-                    
             }
         });
 
-        return validateFlag;
+        ui.ajaxForm(form, doNewBreBandSaveResult);
+         
+        doRefreshCalculation();
 
+            
+    });
+
+    function doRefreshCalculation(){
+            
+        // C09 - Take Mobile Vehicle To Garage Variable
+        var iCCDTakeVehicleToGarageDaysMobile = $("#CCDTakeVehicleToGarageDaysMobile").val();
+        $(".chox-ttxt-readonly-TakeVehicleToGarageDaysMobile").val(iCCDTakeVehicleToGarageDaysMobile);
+            
+        // C10 - Take Non-Mobile Vehicle To Garage Variable (Days)
+        var iCCDTakeVehicleToGarageDaysNonMobile = $("#CCDTakeVehicleToGarageDaysNonMobile").val();
+        $(".chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile").val(iCCDTakeVehicleToGarageDaysNonMobile);
+            
+        // C11 - Engineer Inspection Delay Variable (Days)
+        var iCCDEngineerInspectionDelayDays = $("#CCDEngineerInspectionDelayDays").val();
+        $(".chox-ttxt-readonly-EngineerInspectionDelayVariable").val(iCCDEngineerInspectionDelayDays);
+
+        // C12 - Collection of Vehicle from garage Variable (Days)
+        var iCCDTakeVehicleOutDays = $("#CCDTakeVehicleOutDays").val();
+        $(".chox-ttxt-readonly-CollectionofVehiclefromGarageVariable").val(iCCDTakeVehicleOutDays)
+            
+        doTtlLossAllowableTtlDuration();
+        doRepairDurationRuleforMobileVehicleWithoutECD();
+        doRepairDurationRuleforNonMobileVehicleWithoutECD();
     }
-        
-    function doInsurerBreBandSubmit(){
-            
-        document.location="#top";
-            
-        var confirmationMsg = "Are you sure you wish to save the changes made?";
-            
-        if(isNew){
-            confirmationMsg = "Are you sure you wish to add this BRE Band?";
-        }
-        
-        if(doFormValidation().form()){
-            
-            if(confirm(confirmationMsg)){
-
-                $("#admin_param_panel").block();
-
-                var op = {
-                    beforeSubmit:  onBeforeSubmit,
-                    success:onSubmitResponseReceived,
-                    timeout: 3000,
-                    error: onSubmitError
-                };
-
-                $("#formUpdateInsurerBreBandDetail").ajaxSubmit(op);
-
-
-            }
-        }
-    }
-        
-    function doInsurerBreBandBack(){
-        doLoadParameter();
-        var sLocaltion = "#breBandDiv";
-        var sAction = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
-        var sparameters = "adminPanelName="+selectedPanel+"&selectOrgId="+selectOrgId;
-        doSectionLoad(sLocaltion, sAction, sparameters);
-    }
-        
-    function onBeforeSubmit(formData, jqForm, options) {
-    }
-        
-    function doDeleteBreBand(){
-            
-        doLoadParameter();
-            
-        if(confirm("Are you sure you want to delete this BRE Band?")){
-                
-            var apn = $.ajax({
-                url: "<%= request.getContextPath()%>/prv/p/doDeleteCreditHireBand.action?objectId="+<s:property value="objectId"/>+uniqeToken(),
-                success: deleteSuccessfully
-            });
-        }
-    }
-        
-    function deleteSuccessfully(responseText, statusText){
-            
-        $("#admin_param_panel").unblock();
-            
-        responseText = responseText.trim();
-        var output = responseText.substring(2,responseText.length);
-            
-        if(responseText != "" && responseText != "1" && responseText.substring(0,2) == 'D:'){
-            doInsurerBreBandBack();
-        }else{
-            confirm(output);
-        }
-            
-    }
-
-    function onSubmitResponseReceived(responseText, statusText)  {
-
-        doLoadParameter();
-        var isError = false;
-        response = eval('(' + responseText.trim() + ')');
-
-        if(response)
-        {
-            if(response.isValid){
-
-                if(response.resultType && response.resultType == 'New')
-                {
-                    var newObjectId =  parseInt(response.result);
-                    var sLocaltion = "#breBandDiv";
-                    var sAction = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
-                    var sparameters = "adminPanelName=InsurerBreBandMgmt&selectOrgId=" + newObjectId;
-                    doSectionLoad(sLocaltion, sAction, sparameters);
-                }
-            }
-            else
-            {
-                isError = true;
-                propmtErrors(response.errors);
-            }
-        }
-        else
-        {
-            isError = true;
-            propmtErrorMsg("Unknown Error Encountered, please try again.");
-        }
-
-        $("#admin_param_panel").unblock();
-        if(!isError){
-            doInsurerBreBandBack();
-        }
-    }
-
-    function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
-        $("#admin_param_panel").unblock();
-        propmtErrorMsg("Error");
-    }
-        
-    function doLoadParameter(){
-        objectId = $("#objectId").val();
-    }
-
+    
     function doTtlLossAllowableTtlDuration(){
 
         var ttl = 0;
@@ -230,7 +98,7 @@
         $("#iTtlLossAllowableTtlDuration").val(ttl);
             
     }
-        
+
     function doRepairDurationRuleforMobileVehicleWithoutECD(){
             
         var iLabourCostTotalDay = 0;
@@ -317,413 +185,489 @@
 
         return iWeekendBufferDay;
     }
+
+    function doInsurerBreBandBack(){
+
+        var tabIndex = 1;
+
+        if(<s:property value="isChoxAdmin"/>){
+            tabIndex = 4;
+        }
         
+        var target = "#insurerBreDetailTab";
+        var url = "<%= request.getContextPath()%>/prv/p/getInsurerBreBandPage.action";
+        var param = {"insurerId":<s:property value="insurerId" />,"tabIndex":tabIndex};
+        
+        ajax.loadHtml(url,param,function(data){
+            $(target).html(data);
+        });
+        
+    }
+    
+    function doDeleteBreBand(){
+        if(confirm("Are you sure you want to delete this BRE Band?")){
+            var url = "<%= request.getContextPath()%>/prv/p/deleteInsurerBreBandDetail.action";
+            var param = {"objectId":<s:property value="objectId" />};
+            ajax.loadHtml(url, param, doDeleteBreBandResponse);
+        }
+    }
+
+    function doDeleteBreBandResponse(){
+
+        var tabIndex = 1;
+        var target = "#admin_param_panel";
+        var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
+        var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
+        
+        if(<s:property value="isChoxAdmin"/>){
+            tabIndex = 4;
+            url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+            param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
+        }
+        
+        ajax.loadHtml(url,param,function(data){
+            $(target).html(data);
+        });
+    }
+
+    function doNewBreBandSaveResult(responseText, statusText){
+
+        var response = eval('(' + responseText.trim() + ')');
+
+        if(response)
+        {
+            if(response.isValid){
+
+                if(response.resultType && response.resultType == 'New')
+                {
+                    alert("Your changes have been saved");
+                    var newObjectId =  parseInt(response.result);
+                    var target = "div#insurerBreDetailTab";
+                    var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
+                    var param = {"objectId":newObjectId, "insurerId":<s:property value="insurerId" />};
+                    ajax.loadHtml(url,param,function(data){
+                        $(target).html(data);
+                    });
+                    
+                }
+
+            }
+            
+        }
+
+    }
+    
 </script>
 
-<form id="formUpdateInsurerBreBandDetail" action="<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetail.action" method="post" class="XXentity-form" onsubmit="return true;">
-    <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
-    <input type="hidden" name="insurerId" id="insurerId" value='<s:property value="insurerId"/>'>
+<div class="sub-admin-tab-css">
 
-    <div class="form-container">
+    <form id="formUpdateInsurerBreBandDetail" name="formUpdateInsurerBreBandDetail"
+          action="<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetail.action" method="POST" class="XXentity-form">
 
-        <div class="label-block">
-            <label class="chox-form-std-label-longer">Name<span class="mandatory">*</span></label>
-            <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
-        </div>
+        <div class="form-container">
 
-
-        <div style="height:550px; overflow:auto; padding-right:10px;" >
-            <a name='top'/>
-            <div class="chox-form-button">
-                <input type="button" value="Save Changes" onclick="javascript: doInsurerBreBandSubmit();"/>
-                <s:if test="!isNew">
-                    <input type="button" value="Delete" onclick="javascript: doDeleteBreBand();"/>
-                </s:if>
-                <input type="button" value="Cancel" class="cancel" onclick="javascript: doInsurerBreBandBack();" />
+            <div class="grid-view-header">
+                <table width="100%">
+                    <tr>
+                        <td>
+                            <div class="label-block">
+                                <label class="chox-form-std-label-longer">Name<span class="mandatory">*</span></label>
+                                <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
+                                <input type="submit" value="Save"/>
+                                <s:if test="!isNew">
+                                    <input type="button" value="Delete" onclick="javascript: doDeleteBreBand();"/>
+                                </s:if>
+                                <input type="button" value="Cancel" class="cancel" onclick="javascript: doInsurerBreBandBack();" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
 
-            <div id="CDInsurerBreBandmessageBox" class="errorBox"></div>
-            <div class="chox-form-submit-result"></div>
+            <div>
+                <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
+                <input type="hidden" name="insurerId" id="insurerId" value='<s:property value="insurerId"/>'>
 
-            <fieldset class="x-fieldset"><legend>Total Loss Duration Rule</legend>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Receipt of Final Settlement Cheque Variable (Days)<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDReceiptOfFinalStatementChequeDays" name="receiptOfFinalStatementChequeDays" value="<s:property value="receiptOfFinalStatementChequeDays" />" onchange="javascript:doRefreshCalculation();"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Ttl. Loss Settlement Offer Process Variable (Days)<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDOfferMadeDays" name="offerMadeDays" value="<s:property value="offerMadeDays" />" onchange="javascript:doRefreshCalculation();"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Ttl. Loss Engineer Inspection Delay Variable (Days)<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDInspectionDelayDays" name="inspectionDelayDays" value="<s:property value="inspectionDelayDays" />" onchange="javascript:doRefreshCalculation();"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer"><b>Ttl. Loss Allowable Total Duration (Days)</b></label>
-                    <input type="text" class="chox-ttxt-readonly" readonly="true" value="0" id="iTtlLossAllowableTtlDuration" name="iTtlLossAllowableTtlDuration"/>
-                </div>
-            </fieldset>
+                <div class="admin-bre-band-detail-holder">
+                    <a name='top'/>
+                    <div id="CDInsurerBreBandmessageBox" class="action-error-msg"></div>
+                    <div class="chox-form-submit-result"></div>
 
-            <fieldset class="x-fieldset"><legend>Labour Cost/hours</legend>
-                <div class="status-info">
-                    <b>Labour Cost Calculation:</b><br/>
-                    (((Labour Cost/Current Average Labour Rate Per Hour)/Productive Labour Hours in Garage Per Hire Day) + Take Mobile Vehicle To Garage Variable or Take Non-Mobile Vehicle to Garage Variable (Depending on Mobile/Non-Mobile Vehicle) + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends))
-                    <br/><br/>
-                    <b>Labour Hours Calculation:</b><br/>
-                    ((Labour Hours/Productive Labour Hours in Garage Per Hire Day) + Take Mobile Vehicle to Garage or Take Non-Mobile Vehicle to Garage (Depending on Mobile/Non Mobile Vehicle) + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends))
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Take Mobile Vehicle To Garage Variable (Days)<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDTakeVehicleToGarageDaysMobile" name="takeVehicleToGarageDaysMobile" value="<s:property value="takeVehicleToGarageDaysMobile" />" onchange="javascript:doRefreshCalculation();"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Take Non-Mobile Vehicle To Garage Variable (Days)<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDTakeVehicleToGarageDaysNonMobile" name="takeVehicleToGarageDaysNonMobile" value="<s:property value="takeVehicleToGarageDaysNonMobile" />" onchange="javascript:doRefreshCalculation();"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDEngineerInspectionDelayDays" name="engineerInspectionDelayDays" value="<s:property value="engineerInspectionDelayDays" />" onchange="javascript:doRefreshCalculation();"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDTakeVehicleOutDays" name="takeVehicleOutDays" value="<s:property value="takeVehicleOutDays" />" onchange="javascript:doRefreshCalculation();"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Current Average Labour Rate Per Hour (£)<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDAverageLabourRate" name="averageLabourRate" value="<s:property value="averageLabourRate" />" onchange="javascript:doRefreshCalculation();"/><img id="help-averageLabourRate" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Productive Labour hours Per Hire Day (Hours)<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDAverageLabourHoursPerHireDay" name="averageLabourHoursPerHireDay" value="<s:property value="averageLabourHoursPerHireDay" />" onchange="javascript:doRefreshCalculation();"/><img id="help-averageLabourHoursPerHireDay" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
-                </div>
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Total Loss Duration Rule</div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Receipt of Final Settlement Cheque Variable (Days)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDReceiptOfFinalStatementChequeDays" name="receiptOfFinalStatementChequeDays" value="<s:property value="receiptOfFinalStatementChequeDays" />" onchange="javascript:doRefreshCalculation();"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Ttl. Loss Settlement Offer Process Variable (Days)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDOfferMadeDays" name="offerMadeDays" value="<s:property value="offerMadeDays" />" onchange="javascript:doRefreshCalculation();"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Ttl. Loss Engineer Inspection Delay Variable (Days)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDInspectionDelayDays" name="inspectionDelayDays" value="<s:property value="inspectionDelayDays" />" onchange="javascript:doRefreshCalculation();"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer"><b>Ttl. Loss Allowable Total Duration (Days)</b></label>
+                            <input type="text" class="chox-ttxt-readonly" readonly="true" value="0" id="iTtlLossAllowableTtlDuration" name="iTtlLossAllowableTtlDuration"/>
+                        </div>
+                    </div>
 
-            </fieldset>
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Labour Cost/hours</div>
+                        <div class="status-info">
+                            <b>Labour Cost Calculation:</b><br/>
+                            (((Labour Cost/Current Average Labour Rate Per Hour)/Productive Labour Hours in Garage Per Hire Day) + Take Mobile Vehicle To Garage Variable or Take Non-Mobile Vehicle to Garage Variable (Depending on Mobile/Non-Mobile Vehicle) + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends))
+                            <br/><br/>
+                            <b>Labour Hours Calculation:</b><br/>
+                            ((Labour Hours/Productive Labour Hours in Garage Per Hire Day) + Take Mobile Vehicle to Garage or Take Non-Mobile Vehicle to Garage (Depending on Mobile/Non Mobile Vehicle) + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends))
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Take Mobile Vehicle To Garage Variable (Days)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDTakeVehicleToGarageDaysMobile" name="takeVehicleToGarageDaysMobile" value="<s:property value="takeVehicleToGarageDaysMobile" />" onchange="javascript:doRefreshCalculation();"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Take Non-Mobile Vehicle To Garage Variable (Days)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDTakeVehicleToGarageDaysNonMobile" name="takeVehicleToGarageDaysNonMobile" value="<s:property value="takeVehicleToGarageDaysNonMobile" />" onchange="javascript:doRefreshCalculation();"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDEngineerInspectionDelayDays" name="engineerInspectionDelayDays" value="<s:property value="engineerInspectionDelayDays" />" onchange="javascript:doRefreshCalculation();"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDTakeVehicleOutDays" name="takeVehicleOutDays" value="<s:property value="takeVehicleOutDays" />" onchange="javascript:doRefreshCalculation();"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Current Average Labour Rate Per Hour (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDAverageLabourRate" name="averageLabourRate" value="<s:property value="averageLabourRate" />" onchange="javascript:doRefreshCalculation();"/><img id="help-averageLabourRate" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Productive Labour hours Per Hire Day (Hours)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDAverageLabourHoursPerHireDay" name="averageLabourHoursPerHireDay" value="<s:property value="averageLabourHoursPerHireDay" />" onchange="javascript:doRefreshCalculation();"/><img id="help-averageLabourHoursPerHireDay" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
 
-            <fieldset class="x-fieldset"><legend>Repair Duration Rule for Mobile Vehicle With ECD</legend>
-                <div class="status-info">
-                    <b>Repair Duration Calculation:</b><br/>
-                    ECD + Take Mobile Vehicle To Garage Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Take Mobile Vehicle To Garage Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysMobile" readonly="true"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly="true"/>
-                </div>
-            </fieldset>
+                        </div>
+                    </div>
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Repair Duration Rule for Mobile Vehicle With ECD</div>
 
-            <fieldset class="x-fieldset"><legend>Repair Duration Rule for Mobile Vehicle Without ECD</legend>
-                <div class="status-info">
-                    <b>ECD Calculation:</b><br/>
-                    Mobile Vehicle ECD Variable + Take Mobile Vehicle To Garage Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
-                    <br/><br/>
-                    Where No ECD is provided by the CHO the ECD variable is used, acting as an artificial ECD.
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Mobile Vehicle ECD Variable (Days)<span class="mandatory">*</span></label>
-                    <input size="5" maxlength="5" type="text" class="chox-ttxt" id="CCDIsMobileDayAllowance" name="isMobileDayAllowance" value="<s:property value="isMobileDayAllowance" />" onchange="javascript:doRefreshCalculation();"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Take Mobile Vehicle To Garage Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysMobile" readonly="true"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly="true"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Weekend Buffer (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly" id="iWeekendBufferDays_mwoecd" name="iWeekendBufferDays_mwoecd" value="4" onchange="javascript:doRefreshCalculation();"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer"><b>Ttl Allowable Days for Mobile Vehicle Without ECD</b></label>
-                    <input type="text" class="chox-ttxt-readonly" readonly="true" id="iTotalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd" name="iTotalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd"/>
-                </div>
-            </fieldset>
+                        <div class="status-info">
+                            <b>Repair Duration Calculation:</b><br/>
+                            ECD + Take Mobile Vehicle To Garage Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Take Mobile Vehicle To Garage Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysMobile" readonly="true"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly="true"/>
+                        </div>
+                    </div>
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Repair Duration Rule for Mobile Vehicle Without ECD</div>
 
-            <fieldset class="x-fieldset"><legend>Repair Duration Rule for Non-Mobile Vehicle with ECD</legend>
-                <div class="status-info">
-                    <b>Repair Duration Calculation:</b><br/>
-                    ECD + Take Non-Mobile Vehicle To Garage Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Take Non-Mobile Vehicle To Garage Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile" readonly="true"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly="true"/>
-                </div>
-            </fieldset>
+                        <div class="status-info">
+                            <b>ECD Calculation:</b><br/>
+                            Mobile Vehicle ECD Variable + Take Mobile Vehicle To Garage Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
+                            <br/><br/>
+                            Where No ECD is provided by the CHO the ECD variable is used, acting as an artificial ECD.
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Mobile Vehicle ECD Variable (Days)<span class="mandatory">*</span></label>
+                            <input size="5" maxlength="5" type="text" class="chox-ttxt" id="CCDIsMobileDayAllowance" name="isMobileDayAllowance" value="<s:property value="isMobileDayAllowance" />" onchange="javascript:doRefreshCalculation();"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Take Mobile Vehicle To Garage Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysMobile" readonly="true"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly="true"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Weekend Buffer (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly" id="iWeekendBufferDays_mwoecd" name="iWeekendBufferDays_mwoecd" value="4" onchange="javascript:doRefreshCalculation();"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer"><b>Ttl Allowable Days for Mobile Vehicle Without ECD</b></label>
+                            <input type="text" class="chox-ttxt-readonly" readonly="true" id="iTotalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd" name="iTotalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd"/>
+                        </div>
+                    </div>
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Repair Duration Rule for Non-Mobile Vehicle with ECD</div>
+                        <div class="status-info">
+                            <b>Repair Duration Calculation:</b><br/>
+                            ECD + Take Non-Mobile Vehicle To Garage Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Take Non-Mobile Vehicle To Garage Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile" readonly="true"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly="true"/>
+                        </div>
+                    </div>
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Repair Duration Rule for Non-Mobile Vehicle without ECD</div>
 
-            <fieldset class="x-fieldset"><legend>Repair Duration Rule for Non-Mobile Vehicle without ECD</legend>
-                <div class="status-info">
-                    <b>ECD Calculation:</b><br/>
-                    Non-Mobile Vehicle ECD Variable + Take Non-Mobile Vehicle To Garage Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
-                    <br/><br/>
-                    Where No ECD is provided by the CHO the ECD variable is used, acting as an artificial ECD.
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Non-Mobile Vehicle ECD Variable (Days)<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDIsNotMobileDayAllowance" name="isNotMobileDayAllowance" value="<s:property value="isNotMobileDayAllowance" />" onchange="javascript:doRefreshCalculation();"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Take Non-Mobile Vehicle To Garage Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile" readonly="true"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly="true"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Weekend Buffer (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly" id="iWeekendBufferDays_nmwoecd" name="iWeekendBufferDays_nmwoecd" value="4" onchange="javascript:doRefreshCalculation();"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer"><b>Ttl Allowable Days for Non-Mobile Vehicle Without ECD</b></label>
-                    <input type="text" class="chox-ttxt-readonly" readonly="true" id="iTtlAllowableDaysforNonMobileVehicleWoECD" name="iTtlAllowableDaysforNonMobileVehicleWoECD"/>
-                </div>
-            </fieldset>
+                        <div class="status-info">
+                            <b>ECD Calculation:</b><br/>
+                            Non-Mobile Vehicle ECD Variable + Take Non-Mobile Vehicle To Garage Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
+                            <br/><br/>
+                            Where No ECD is provided by the CHO the ECD variable is used, acting as an artificial ECD.
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Non-Mobile Vehicle ECD Variable (Days)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDIsNotMobileDayAllowance" name="isNotMobileDayAllowance" value="<s:property value="isNotMobileDayAllowance" />" onchange="javascript:doRefreshCalculation();"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Take Non-Mobile Vehicle To Garage Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile" readonly="true"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly="true"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Weekend Buffer (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly" id="iWeekendBufferDays_nmwoecd" name="iWeekendBufferDays_nmwoecd" value="4" onchange="javascript:doRefreshCalculation();"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer"><b>Ttl Allowable Days for Non-Mobile Vehicle Without ECD</b></label>
+                            <input type="text" class="chox-ttxt-readonly" readonly="true" id="iTtlAllowableDaysforNonMobileVehicleWoECD" name="iTtlAllowableDaysforNonMobileVehicleWoECD"/>
+                        </div>
+                    </div>
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Engineer Estimation Rule</div>
 
-            <fieldset class="x-fieldset"><legend>Engineer Estimation Rule</legend>
+                        <div class="status-info">
+                            <b>Engineer Estimation Rule:</b><br/>
+                            Engineer's Estimated Days Under Repair + Take Mobile Vehicle To Garage Variable or Take Non-Mobile Vehicle To Garage Variable (Depending on Mobile/Non-Mobile Vehicle) + Engineer Inspection Delay Variable + Collection of Vehicle from garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
+                        </div>
 
-                <div class="status-info">
-                    <b>Engineer Estimation Rule:</b><br/>
-                    Engineer's Estimated Days Under Repair + Take Mobile Vehicle To Garage Variable or Take Non-Mobile Vehicle To Garage Variable (Depending on Mobile/Non-Mobile Vehicle) + Engineer Inspection Delay Variable + Collection of Vehicle from garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
-                </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Take Mobile Vehicle To Garage Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysMobile" readonly="true"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Take Non-Mobile Vehicle To Garage Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile" readonly="true"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
+                            <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly="true"/>
+                        </div>
+                    </div>
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Hire Tolerances</div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Hire Day Ceiling (Days)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDHireDayCeiling" name="hireDayCeiling" value="<s:property value="hireDayCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireDayCeiling" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Hire Net Ceiling (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDHireNetCeiling" name="hireNetCeiling" value="<s:property value="hireNetCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireNetCeiling" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Hire Rate Charge Per Day Tollerance (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDHireRateChargeTolerance" name="hireRateChargeTolerance" value="<s:property value="hireRateChargeTolerance" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireRateChargeTolerance" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
+                        </div>
+                    </div>
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Repair Tolerances</div>
 
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Take Mobile Vehicle To Garage Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysMobile" readonly="true"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Take Non-Mobile Vehicle To Garage Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile" readonly="true"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariable" readonly="true"/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
-                    <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly="true"/>
-                </div>
-            </fieldset>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Repair Net Ceiling (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDRepairNetCeiling" name="repairNetCeiling" value="<s:property value="repairNetCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-maxRepairValue" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
+                        </div>
+                    </div>
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Additional Invoice Validations</div>
 
-            <fieldset class="x-fieldset"><legend>Hire Tolerances</legend>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Maximum Hire Day Ceiling (Days)<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDHireDayCeiling" name="hireDayCeiling" value="<s:property value="hireDayCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireDayCeiling" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasAllowedVehicleClass" value="hasAllowedVehicleClass" /></div>
+                            <label class="chox-form-check-label">Like for like vehicle class hire provision Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the replacement hire vehicle is a like for like match with the non-fault driver's vehicle.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasCalculatedCorrectDailyRate" value="hasCalculatedCorrectDailyRate" /></div>
+                            <label class="chox-form-check-label">Vehicle class daily rate charge Check</label>
+                            <div class="chox-form-check-description">Check against the allowed daily rate for the vehicle class of the replacement hire vehicle (according to the GTA or specific CHO agreement) and the daily rate billed by the CHO.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hireNetDoesNotExceedBandHireNetCeiling" value="hireNetDoesNotExceedBandHireNetCeiling" /></div><label class="chox-form-check-label">Hire Net Ceiling Check</label>
+                            <div class="chox-form-check-description">Check to ensure the Hire Net billed by the CHO does not exceed the CHO's specified Hire Net ceiling (this Hire Net ceiling is enforced regardless of vehicle class of replacement hire vehicle).</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hireNetDoesNotExceedVehicleClassHireNetCeiling" value="hireNetDoesNotExceedVehicleClassHireNetCeiling" /></div><label class="chox-form-check-label">Vehicle Class Hire Net Ceiling Check</label>
+                            <div class="chox-form-check-description">Check to ensure the Hire Net billed by the CHO does not exceed the specified Hire Net ceiling for the replacement hire vehicle’s vehicle class.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedBandRepairNetCeiling" value="repairNetDoesNotExceedBandRepairNetCeiling" /></div><label class="chox-form-check-label">Repair Net Ceiling Check</label>
+                            <div class="chox-form-check-description">Check to ensure the Repair Net billed by the CHO does not exceed the CHO's specified Repair Net ceiling (this Repair Net ceiling is enforced regardless of vehicle class of replacement hire vehicle).</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedVehicleClassRepairNetCeiling" value="repairNetDoesNotExceedVehicleClassRepairNetCeiling" /></div><label class="chox-form-check-label">Vehicle Class Repair Net Ceiling Check</label>
+                            <div class="chox-form-check-description">Check to ensure the Repair Net billed by the CHO does not exceed the specified Repair Net ceiling for the replacement hire vehicle's vehicle class.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hireDayCountDoesNotExceedBandHireDayCeiling" value="hireDayCountDoesNotExceedBandHireDayCeiling" /></div><label class="chox-form-check-label">Hire Day Ceiling Check</label>
+                            <div class="chox-form-check-description">Check to ensure the number of hire days billed by the CHO does not exceed the CHO's specified hire days ceiling.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="actualHireDaysDoesNotExceedAllowableHireDays" value="actualHireDaysDoesNotExceedAllowableHireDays" /></div><label class="chox-form-check-label">Repair Duration Rules</label>
+                            <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for a non Total Loss hire type, please review the series of 'Repair Duration Rules' further up this screen for details on the variables that contribute to the maximum number of days.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="actualHireDaysDoesNotExceedTotalLossInspection" value="actualHireDaysDoesNotExceedTotalLossInspection" /></div><label class="chox-form-check-label">Total Loss Duration Rule</label>
+                            <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for a Total Loss hire type, please review the 'Total Loss Duration Rule' further up this screen for details on the variables that contribute to the maximum number of days.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="repairGrossIsLessThanEstimatedTotalRepairAmount" value="repairGrossIsLessThanEstimatedTotalRepairAmount" /></div><label class="chox-form-check-label">Engineer's Estimated Total Repair Amount Check</label>
+                            <div class="chox-form-check-description">Check the Engineer's estimated Total Repair Amount against the Repair Gross amount billed by the CHO. If the Repair Gross billed amount is higher than the Engineer's estimated amount then the invoice will be flagged.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="estimatedRepairDaysPlusBandDaysDoNotExceedHireDays" value="estimatedRepairDaysPlusBandDaysDoNotExceedHireDays" /></div><label class="chox-form-check-label">Engineer's Estimated Repair Days Check</label>
+                            <div class="chox-form-check-description">This checks the Engineer's estimated number of repair days (with the addition of several variables) against the number of hire days billed by the CHO, if the number of hire days billed is greater than the estimation then the invoice will be flagged. Please review the 'Engineer Estimation Rule' further up this screen for more information.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="labourCostBusinessRule" value="labourCostBusinessRule" /></div><label class="chox-form-check-label">Labour Cost/Hours Check</label>
+                            <div class="chox-form-check-description">This check looks at either the labour cost for the repair or the number of labour hours exerted by the repairer during the repair process.  Using the formula as detailed in the 'Labour Cost/hours' rule further up this screen, an acceptable/expected number of hire days based on the labour information provided is calculated.  This calculated number of days is compared against the number of hire days billed by the CHO, if the billed days are greater than the acceptable/expected number of hire days the invoice will be flagged.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="correntAdminFee" value="correntAdminFee" /></div><label class="chox-form-check-label">Correct Administration Fee Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the correct administration fee is being charged based on the nature of the service provided, either management of the repair or hire only.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDate" value="repairBookedInDate" /></div><label class="chox-form-check-label">Repair booked in date Check</label>
+                            <div class="chox-form-check-description">If the repair has been booked into a garage on a Friday, Saturday, Sunday, or Bank Holiday then the invoice will be flagged for review.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="validateUniqueVehicleRegistrationNumber" value="validateUniqueVehicleRegistrationNumber" /></div><label class="chox-form-check-label">CHO's Client's Vehicle Registration Duplication Check</label>
+                            <div class="chox-form-check-description">Check on CHO's Client's vehicle registration number, if a claim already exists in CHOX against the same vehicle registration the invoice will be flagged.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="flaggedForManualInvoiceReview" value="flaggedForManualInvoiceReview" /></div><label class="chox-form-check-label">Invoiced Flagged For Manual Invoice Review</label>
+                            <div class="chox-form-check-description">If the claim has been manually flagged at the front of the claim cycle for review, the invoice will be flagged for review upon invoice upload.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasCorrectDiscountForNonDA" value="hasCorrectDiscountForNonDA" /></div><label class="chox-form-check-label">CHO not participating in the Delegated Authority scheme discount Check</label>
+                            <div class="chox-form-check-description">Check on CHOs not participating in the Delegated Authority scheme apply correct VAT discount off the Total to Pay.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="handlingAmountAndDeductionBothEqualZeroForNonDA" value="handlingAmountAndDeductionBothEqualZeroForNonDA" /></div><label class="chox-form-check-label">CHO not participating in the Delegated Authority scheme Claims Handling charge check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO who is not participating in the Delegated Authority scheme is not trying to charge for Claims Handling services twice.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="claimHasZeroDiscountForDA" value="claimHasZeroDiscountForDA" /></div><label class="chox-form-check-label">CHO participating in the Delegated Authority scheme discount Check</label>
+                            <div class="chox-form-check-description">Check on CHOs participating in the Delegated Authority scheme do not include a flat VAT discount off the Total to Pay.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero" value="handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero" /></div><label class="chox-form-check-label">CHO participating in the Delegated Authority scheme Claims Handling charge reconciliation Check</label>
+                            <div class="chox-form-check-description">Check on CHOs participating in the Delegated Authority scheme deduct the correct amount off the hire invoice for Claims Handling services.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="numberOfHireDaysReconcile" value="numberOfHireDaysReconcile" /></div><label class="chox-form-check-label">Hire days billed Reconciliation Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the number of hire days billed matches the hire start and hire end data provided.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasCorrectHireVatCalculation" value="hasCorrectHireVatCalculation" /></div><label class="chox-form-check-label">Hire VAT Calculation Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Hire Net.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasCorrectHireGrossCalculation" value="hasCorrectHireGrossCalculation" /></div><label class="chox-form-check-label">Hire Gross Calculation Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Hire Gross amount.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasCorrectRepairVatCalculation" value="hasCorrectRepairVatCalculation" /></div><label class="chox-form-check-label">Repair VAT Calculation Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Repair Net. </div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasCorrectRepairGrossCalculation" value="hasCorrectRepairGrossCalculation" /></div><label class="chox-form-check-label">Repair Gross Calculation Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Repair Gross amount.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalNet" value="hasCorrectTotalNet" /></div><label class="chox-form-check-label">Total Net Calculation Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total Net amount.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalVat" value="hasCorrectTotalVat" /></div><label class="chox-form-check-label">Total VAT Calculation Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Total Net.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasCalculatedTotalGrossEqualSuppliedTotalGross" value="hasCalculatedTotalGrossEqualSuppliedTotalGross" /></div><label class="chox-form-check-label">Total Gross Calculation Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total Gross amount.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasSuppliedCorrectTotalToPay" value="hasSuppliedCorrectTotalToPay" /></div><label class="chox-form-check-label">Total To Pay Calculation Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total To Pay amount.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="automaticChargeCheck" value="automaticChargeCheck" /></div><label class="chox-form-check-label">Automatic Charge Check</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="estateChargeCheck" value="estateChargeCheck" /></div><label class="chox-form-check-label">Estate Charge Check</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="nonStandardRiskInsurancePremiumCheck" value="nonStandardRiskInsurancePremiumCheck" /></div><label class="chox-form-check-label">Non Standard Risk Insurance Premium Check</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="cdwChargeCheck" value="cdwChargeCheck" /></div><label class="chox-form-check-label">CDW Charge Check</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="satelliteNavigationChargeCheck" value="satelliteNavigationChargeCheck" /></div><label class="chox-form-check-label">Satellite Navigation Charge Check</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="babySeatChargeCheck" value="babySeatChargeCheck" /></div><label class="chox-form-check-label">Baby Seat Charge Check</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="towBarsChargeCheck" value="towBarsChargeCheck" /></div><label class="chox-form-check-label">Tow Bars Charge Check</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="roofRackChargeCheck" value="roofRackChargeCheck" /></div><label class="chox-form-check-label">Roof Rack Charge Check</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="deliveryOrCollectionChargeCheck" value="deliveryOrCollectionChargeCheck" /></div><label class="chox-form-check-label">Delivery / Collection Charge Check</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="dualControlChargeCheck" value="dualControlChargeCheck" /></div><label class="chox-form-check-label">Dual Control Charge Check</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
+                        </div>
+                    </div>
+                    <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>
                 </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Maximum Hire Net Ceiling (£)<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDHireNetCeiling" name="hireNetCeiling" value="<s:property value="hireNetCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireNetCeiling" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Hire Rate Charge Per Day Tollerance (£)<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDHireRateChargeTolerance" name="hireRateChargeTolerance" value="<s:property value="hireRateChargeTolerance" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireRateChargeTolerance" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
-                </div>
-            </fieldset>
-
-            <fieldset class="x-fieldset"><legend>Repair Tolerances</legend>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label-longer">Maximum Repair Net Ceiling (£)<span class="mandatory">*</span></label>
-                    <input type="text" class="chox-ttxt" id="CCDRepairNetCeiling" name="repairNetCeiling" value="<s:property value="repairNetCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-maxRepairValue" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
-                </div>
-            </fieldset>
-
-            <fieldset class="x-fieldset"><legend>Additional Invoice Validations</legend>
-
-
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="hasAllowedVehicleClass" value="hasAllowedVehicleClass" /></div>
-                    <label class="chox-form-check-label">Like for like vehicle class hire provision Check</label>
-                    <div class="chox-form-check-description">Check to ensure that the replacement hire vehicle is a like for like match with the non-fault driver's vehicle.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="hasCalculatedCorrectDailyRate" value="hasCalculatedCorrectDailyRate" /></div>
-                    <label class="chox-form-check-label">Vehicle class daily rate charge Check</label>
-                    <div class="chox-form-check-description">Check against the allowed daily rate for the vehicle class of the replacement hire vehicle (according to the GTA or specific CHO agreement) and the daily rate billed by the CHO.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="hireNetDoesNotExceedBandHireNetCeiling" value="hireNetDoesNotExceedBandHireNetCeiling" /></div><label class="chox-form-check-label">Hire Net Ceiling Check</label>
-                    <div class="chox-form-check-description">Check to ensure the Hire Net billed by the CHO does not exceed the CHO's specified Hire Net ceiling (this Hire Net ceiling is enforced regardless of vehicle class of replacement hire vehicle).</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="hireNetDoesNotExceedVehicleClassHireNetCeiling" value="hireNetDoesNotExceedVehicleClassHireNetCeiling" /></div><label class="chox-form-check-label">Vehicle Class Hire Net Ceiling Check</label>
-                    <div class="chox-form-check-description">Check to ensure the Hire Net billed by the CHO does not exceed the specified Hire Net ceiling for the replacement hire vehicle’s vehicle class.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedBandRepairNetCeiling" value="repairNetDoesNotExceedBandRepairNetCeiling" /></div><label class="chox-form-check-label">Repair Net Ceiling Check</label>
-                    <div class="chox-form-check-description">Check to ensure the Repair Net billed by the CHO does not exceed the CHO's specified Repair Net ceiling (this Repair Net ceiling is enforced regardless of vehicle class of replacement hire vehicle).</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedVehicleClassRepairNetCeiling" value="repairNetDoesNotExceedVehicleClassRepairNetCeiling" /></div><label class="chox-form-check-label">Vehicle Class Repair Net Ceiling Check</label>
-                    <div class="chox-form-check-description">Check to ensure the Repair Net billed by the CHO does not exceed the specified Repair Net ceiling for the replacement hire vehicle's vehicle class.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="hireDayCountDoesNotExceedBandHireDayCeiling" value="hireDayCountDoesNotExceedBandHireDayCeiling" /></div><label class="chox-form-check-label">Hire Day Ceiling Check</label>
-                    <div class="chox-form-check-description">Check to ensure the number of hire days billed by the CHO does not exceed the CHO's specified hire days ceiling.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="actualHireDaysDoesNotExceedAllowableHireDays" value="actualHireDaysDoesNotExceedAllowableHireDays" /></div><label class="chox-form-check-label">Repair Duration Rules</label>
-                    <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for a non Total Loss hire type, please review the series of 'Repair Duration Rules' further up this screen for details on the variables that contribute to the maximum number of days.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="actualHireDaysDoesNotExceedTotalLossInspection" value="actualHireDaysDoesNotExceedTotalLossInspection" /></div><label class="chox-form-check-label">Total Loss Duration Rule</label>
-                    <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for a Total Loss hire type, please review the 'Total Loss Duration Rule' further up this screen for details on the variables that contribute to the maximum number of days.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="repairGrossIsLessThanEstimatedTotalRepairAmount" value="repairGrossIsLessThanEstimatedTotalRepairAmount" /></div><label class="chox-form-check-label">Engineer's Estimated Total Repair Amount Check</label>
-                    <div class="chox-form-check-description">Check the Engineer's estimated Total Repair Amount against the Repair Gross amount billed by the CHO. If the Repair Gross billed amount is higher than the Engineer's estimated amount then the invoice will be flagged.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="estimatedRepairDaysPlusBandDaysDoNotExceedHireDays" value="estimatedRepairDaysPlusBandDaysDoNotExceedHireDays" /></div><label class="chox-form-check-label">Engineer's Estimated Repair Days Check</label>
-                    <div class="chox-form-check-description">This checks the Engineer's estimated number of repair days (with the addition of several variables) against the number of hire days billed by the CHO, if the number of hire days billed is greater than the estimation then the invoice will be flagged. Please review the 'Engineer Estimation Rule' further up this screen for more information.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="labourCostBusinessRule" value="labourCostBusinessRule" /></div><label class="chox-form-check-label">Labour Cost/Hours Check</label>
-                    <div class="chox-form-check-description">This check looks at either the labour cost for the repair or the number of labour hours exerted by the repairer during the repair process.  Using the formula as detailed in the 'Labour Cost/hours' rule further up this screen, an acceptable/expected number of hire days based on the labour information provided is calculated.  This calculated number of days is compared against the number of hire days billed by the CHO, if the billed days are greater than the acceptable/expected number of hire days the invoice will be flagged.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="correntAdminFee" value="correntAdminFee" /></div><label class="chox-form-check-label">Correct Administration Fee Check</label>
-                    <div class="chox-form-check-description">Check to ensure that the correct administration fee is being charged based on the nature of the service provided, either management of the repair or hire only.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDate" value="repairBookedInDate" /></div><label class="chox-form-check-label">Repair booked in date Check</label>
-                    <div class="chox-form-check-description">If the repair has been booked into a garage on a Friday, Saturday, Sunday, or Bank Holiday then the invoice will be flagged for review.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="validateUniqueVehicleRegistrationNumber" value="validateUniqueVehicleRegistrationNumber" /></div><label class="chox-form-check-label">CHO's Client's Vehicle Registration Duplication Check</label>
-                    <div class="chox-form-check-description">Check on CHO's Client's vehicle registration number, if a claim already exists in CHOX against the same vehicle registration the invoice will be flagged.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="flaggedForManualInvoiceReview" value="flaggedForManualInvoiceReview" /></div><label class="chox-form-check-label">Invoiced Flagged For Manual Invoice Review</label>
-                    <div class="chox-form-check-description">If the claim has been manually flagged at the front of the claim cycle for review, the invoice will be flagged for review upon invoice upload.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="hasCorrectDiscountForNonDA" value="hasCorrectDiscountForNonDA" /></div><label class="chox-form-check-label">CHO not participating in the Delegated Authority scheme discount Check</label>
-                    <div class="chox-form-check-description">Check on CHOs not participating in the Delegated Authority scheme apply correct VAT discount off the Total to Pay.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="handlingAmountAndDeductionBothEqualZeroForNonDA" value="handlingAmountAndDeductionBothEqualZeroForNonDA" /></div><label class="chox-form-check-label">CHO not participating in the Delegated Authority scheme Claims Handling charge check</label>
-                    <div class="chox-form-check-description">Check to ensure that the CHO who is not participating in the Delegated Authority scheme is not trying to charge for Claims Handling services twice.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="claimHasZeroDiscountForDA" value="claimHasZeroDiscountForDA" /></div><label class="chox-form-check-label">CHO participating in the Delegated Authority scheme discount Check</label>
-                    <div class="chox-form-check-description">Check on CHOs participating in the Delegated Authority scheme do not include a flat VAT discount off the Total to Pay.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero" value="handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero" /></div><label class="chox-form-check-label">CHO participating in the Delegated Authority scheme Claims Handling charge reconciliation Check</label>
-                    <div class="chox-form-check-description">Check on CHOs participating in the Delegated Authority scheme deduct the correct amount off the hire invoice for Claims Handling services.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="numberOfHireDaysReconcile" value="numberOfHireDaysReconcile" /></div><label class="chox-form-check-label">Hire days billed Reconciliation Check</label>
-                    <div class="chox-form-check-description">Check to ensure that the number of hire days billed matches the hire start and hire end data provided.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="hasCorrectHireVatCalculation" value="hasCorrectHireVatCalculation" /></div><label class="chox-form-check-label">Hire VAT Calculation Check</label>
-                    <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Hire Net.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="hasCorrectHireGrossCalculation" value="hasCorrectHireGrossCalculation" /></div><label class="chox-form-check-label">Hire Gross Calculation Check</label>
-                    <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Hire Gross amount.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="hasCorrectRepairVatCalculation" value="hasCorrectRepairVatCalculation" /></div><label class="chox-form-check-label">Repair VAT Calculation Check</label>
-                    <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Repair Net. </div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="hasCorrectRepairGrossCalculation" value="hasCorrectRepairGrossCalculation" /></div><label class="chox-form-check-label">Repair Gross Calculation Check</label>
-                    <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Repair Gross amount.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalNet" value="hasCorrectTotalNet" /></div><label class="chox-form-check-label">Total Net Calculation Check</label>
-                    <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total Net amount.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalVat" value="hasCorrectTotalVat" /></div><label class="chox-form-check-label">Total VAT Calculation Check</label>
-                    <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Total Net.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="hasCalculatedTotalGrossEqualSuppliedTotalGross" value="hasCalculatedTotalGrossEqualSuppliedTotalGross" /></div><label class="chox-form-check-label">Total Gross Calculation Check</label>
-                    <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total Gross amount.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="hasSuppliedCorrectTotalToPay" value="hasSuppliedCorrectTotalToPay" /></div><label class="chox-form-check-label">Total To Pay Calculation Check</label>
-                    <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total To Pay amount.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="automaticChargeCheck" value="automaticChargeCheck" /></div><label class="chox-form-check-label">Automatic Charge Check</label>
-                    <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="estateChargeCheck" value="estateChargeCheck" /></div><label class="chox-form-check-label">Estate Charge Check</label>
-                    <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="nonStandardRiskInsurancePremiumCheck" value="nonStandardRiskInsurancePremiumCheck" /></div><label class="chox-form-check-label">Non Standard Risk Insurance Premium Check</label>
-                    <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="cdwChargeCheck" value="cdwChargeCheck" /></div><label class="chox-form-check-label">CDW Charge Check</label>
-                    <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="satelliteNavigationChargeCheck" value="satelliteNavigationChargeCheck" /></div><label class="chox-form-check-label">Satellite Navigation Charge Check</label>
-                    <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="babySeatChargeCheck" value="babySeatChargeCheck" /></div><label class="chox-form-check-label">Baby Seat Charge Check</label>
-                    <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="towBarsChargeCheck" value="towBarsChargeCheck" /></div><label class="chox-form-check-label">Tow Bars Charge Check</label>
-                    <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="roofRackChargeCheck" value="roofRackChargeCheck" /></div><label class="chox-form-check-label">Roof Rack Charge Check</label>
-                    <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="deliveryOrCollectionChargeCheck" value="deliveryOrCollectionChargeCheck" /></div><label class="chox-form-check-label">Delivery / Collection Charge Check</label>
-                    <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
-                </div>
-                <div class="chox-form-checkboxitem">
-                    <div class="chox-form-checkbox"><s:checkbox name="dualControlChargeCheck" value="dualControlChargeCheck" /></div><label class="chox-form-check-label">Dual Control Charge Check</label>
-                    <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
-                </div>
-            </fieldset>
-
-            <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>
-
+            </div>
         </div>
-
-        <div class="chox-form-button" style="padding-top:10px;">
-            <input type="button" value="Save Changes" onclick="javascript: doInsurerBreBandSubmit();"/>
-            <s:if test="!isNew">
-                <input type="button" value="Delete" onclick="javascript: doDeleteBreBand();"/>
-            </s:if>
-            <input type="button" value="Cancel" class="cancel" onclick="javascript: doInsurerBreBandBack();" />
-        </div>
-
-    </div>
-</form>
+    </form>
+</div>

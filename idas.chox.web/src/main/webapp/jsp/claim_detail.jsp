@@ -978,7 +978,7 @@
 
                     var attachmentHtmlDesc = "";
 
-                    attachmentHtmlDesc = "<table cellpadding='0' cellspacing='0' border='0' class='remarkTable'>";
+                    attachmentHtmlDesc = "<table cellpadding='0' cellspacing='0' border='0' class='remark-table'>";
                     attachmentHtmlDesc += "<tr><th width='28%'><b>Type</b></th><th width='70%'><b>Description</b></th></tr>";
 
                 <s:iterator value="AllowFileTypes">
@@ -1173,7 +1173,7 @@
 
     <!-- *************************************************************** !-->
 
-    <div class="popUpViewDiv" id="popGeneralTemplate"><input type="button" value="Close" id="popGeneralTemplateClose"><br/><br/><div id="popGeneralTemplateMessage"></div></div>
+    <div class="pop-up-view_div" id="popGeneralTemplate"><input type="button" value="Close" id="popGeneralTemplateClose"><br/><br/><div id="popGeneralTemplateMessage"></div></div>
 
 </div>
 

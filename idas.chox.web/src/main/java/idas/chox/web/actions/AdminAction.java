@@ -4,15 +4,24 @@
  */
 package idas.chox.web.actions;
 
+import idas.chox.core.model.WebUser;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.UserService;
-import idas.chox.service.security.PermissionedUser;
 
 public class AdminAction extends BaseAction {
 
     private String adminPanelName;
     private String actionResult;
-            
+    private Integer tabIndex;
+
+    public Integer getTabIndex() {
+        return tabIndex;
+    }
+
+    public void setTabIndex(Integer tabIndex) {
+        this.tabIndex = tabIndex;
+    }
+
     public String adminPanel() {
         return SUCCESS;
     }
@@ -37,15 +46,17 @@ public class AdminAction extends BaseAction {
         this.actionResult = actionResult;
     }
 
-    public int getCurrentUserOrganisationType(){
+    public WebUser getCurrentUser() {
+        return getAuthenticatedUser();
+    }
+
+    public int getCurrentUserOrganisationType() {
         return getUserOrganisationType();
     }
 
     public int getCurrentUserOrganisationId() {
         return getUserOrganisationId();
     }
-
-
     /*
     private int selectOrgTypeId = -1;
     private String gridViewType;
@@ -60,7 +71,7 @@ public class AdminAction extends BaseAction {
     return isSelectable;
 
     }
-   
+
     public boolean getIsCHOXAdmin(){
     return currentUser.getIsCHOXAdmin();
     }

@@ -15,6 +15,8 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class UserServiceImpl extends BaseDataService implements UserService {
 
@@ -109,6 +111,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return u;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void persist(WebUser user, String emailId) {
         this.save(user);
     }
@@ -286,13 +289,9 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return (WebUser) get(WebUser.class, id);
     }
 
-    public boolean saveUser(WebUser object) {
-        boolean bFlag = false;
-
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void saveUser(WebUser object) {
         object.setEmail(object.getEmail().toLowerCase());
         save(object);
-        bFlag = true;
-
-        return bFlag;
     }
 }

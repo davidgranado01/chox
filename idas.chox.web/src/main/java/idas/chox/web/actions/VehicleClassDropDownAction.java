@@ -1,35 +1,22 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.model.VehicleClass;
-import idas.chox.core.model.VehicleClassCeiling;
-import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.VehicleClassCeilingService;
-import idas.chox.core.services.VehicleClassService;
 import java.util.ArrayList;
 import java.util.List;
 
 public class VehicleClassDropDownAction extends BaseAction {
 
-    private List vehicleClasses = null;
-    private Integer orgId;
-    private InsurerService insurerService;
-    private VehicleClassService vehicleClassService;
-    private VehicleClassCeilingService vehicleClassCeilingService;
+    protected List vehicleClasses = new ArrayList<VehicleClass>();
+    protected int insurerId;
+    protected VehicleClassCeilingService vehicleClassCeilingService;
 
-    public Integer getOrgId() {
-        return orgId;
+    public int getInsurerId() {
+        return insurerId;
     }
 
-    public void setOrgId(Integer orgId) {
-        this.orgId = orgId;
-    }
-
-    public void setVehicleClassService(VehicleClassService vehicleClassService) {
-        this.vehicleClassService = vehicleClassService;
-    }
-
-    public void setInsurerService(InsurerService insurerService) {
-        this.insurerService = insurerService;
+    public void setInsurerId(int insurerId) {
+        this.insurerId = insurerId;
     }
 
     public void setVehicleClassCeilingService(VehicleClassCeilingService vehicleClassCeilingService) {
@@ -42,35 +29,16 @@ public class VehicleClassDropDownAction extends BaseAction {
 
     @Override
     public String execute() throws Exception {
+        
+        try {
+            
+            vehicleClasses = vehicleClassCeilingService.getAvailableVehicleClassCeilingByInsurer(this.insurerId);
 
-        List<VehicleClass> vehicleClassesList = vehicleClassService.getAllVehicleClass();
-        List<VehicleClassCeiling> vehicleClassCeilings = vehicleClassCeilingService.getVehicleClassCeilingByInsurer(insurerService.getInsurer(orgId));
-        List<VehicleClass> newVehicleClasses = new ArrayList<VehicleClass>();
-
-        for (VehicleClass v : vehicleClassesList) {
-            if (!isVehicleClassCeilingExist(vehicleClassCeilings, v.getId())) {
-                newVehicleClasses.add(v);
-            }
+        } catch (Exception ex) {
+            handleException(this, ex);
+            return ERROR;
         }
-
-        vehicleClasses = newVehicleClasses;
         return SUCCESS;
     }
 
-    private boolean isVehicleClassCeilingExist(List<VehicleClassCeiling> vehicleClassCeilings, int vehicleClassId) {
-
-        boolean bFlag = false;
-
-        for (VehicleClassCeiling vc : vehicleClassCeilings) {
-
-            if (vc.getVehicleClass().getId() == vehicleClassId) {
-                bFlag = true;
-                break;
-            }
-
-        }
-
-        return bFlag;
-
-    }
 }

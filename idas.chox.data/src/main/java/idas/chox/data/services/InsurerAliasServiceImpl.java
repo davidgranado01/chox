@@ -11,9 +11,12 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class InsurerAliasServiceImpl extends SecureDataService implements InsurerAliasService {
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void createDefaultRecord(Insurer insurer) {
         InsurerAlias object = new InsurerAlias();
         object.setInsurer(insurer);
@@ -24,9 +27,6 @@ public class InsurerAliasServiceImpl extends SecureDataService implements Insure
     public InsurerAlias getInsurerByAliasName(String aliasName) {
 
         InsurerAlias object = new InsurerAlias();
-
-
-
         DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAlias.class);
         criteria.add(Restrictions.eq("aliasName", aliasName));
         object = (InsurerAlias) getByCriteria(criteria);
@@ -45,6 +45,7 @@ public class InsurerAliasServiceImpl extends SecureDataService implements Insure
         return findByCriteria(criteria);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteInsurerAlias(InsurerAlias insurerAlias) {
         delete(insurerAlias);
     }
@@ -53,6 +54,7 @@ public class InsurerAliasServiceImpl extends SecureDataService implements Insure
         return (InsurerAlias) get(InsurerAlias.class, insurerAliasId);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveInsurerAlias(InsurerAlias insurerAlias) {
         save(insurerAlias);
     }

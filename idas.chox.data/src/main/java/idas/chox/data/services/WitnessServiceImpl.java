@@ -7,6 +7,8 @@ import idas.chox.core.xmlValidation.ClaimResult;
 import java.util.ArrayList;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class WitnessServiceImpl extends SecureDataService implements WitnessService {
 
@@ -26,10 +28,12 @@ public class WitnessServiceImpl extends SecureDataService implements WitnessServ
         return (Witness) get(Witness.class, id);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveWitness(Witness witness) {
         save(witness);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveWitnessForXMLUploader(final ClaimResult claimResult) {
 
         ArrayList<Witness> witnesses = claimResult.getWitnesses();

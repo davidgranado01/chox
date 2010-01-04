@@ -979,7 +979,7 @@
                 }
         
         <s:if test="menuAccessibility.isAdminMenuAccessibility">
-                $("#admin_param_panel").load("<%=request.getContextPath()%>/prv/p/loadAdminPanel.action?adminPanelName=NONE");
+                //$("#admin_param_panel").load("<%=request.getContextPath()%>/prv/p/loadAdminPanel.action?adminPanelName=NONE");
         </s:if>
             
                 $('.x-grid3-hd-checker').removeClass('x-grid3-hd-checker-on');
@@ -1079,7 +1079,7 @@
         <div id="wgSelectionPanel">
             <form id="routeClaimForm" action="<%=request.getContextPath()%>/prv/doClaimRoutedAction.action" class="XXentity-form">
                 <input name="selectedClaimIds" type="hidden" />
-                <table class="selectionForm" cellspacing="0" cellpadding="0" border="0">
+                <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                         <th colspan="2"><label>Please select the 'Workgroup' in order to route the claim(s) to the relevant handling team.</label></th>
                     </tr>

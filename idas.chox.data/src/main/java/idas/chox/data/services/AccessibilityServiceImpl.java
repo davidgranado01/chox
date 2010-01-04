@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class AccessibilityServiceImpl extends BaseDataService implements AccessibilityService {
 

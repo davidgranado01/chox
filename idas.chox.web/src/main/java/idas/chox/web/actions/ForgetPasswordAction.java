@@ -35,9 +35,9 @@ public class ForgetPasswordAction extends BaseAction {
     }
 
     public String requestToResetPassword() {
-
         System.out.println(" >>>>>>>>>>>>> userName:" + this.userName + ":" + getUserName());
         System.out.println(" >>>>>>>>>>>>> email:" + this.email);
+
 
         //this.userName = "admin@ins.com";
         //this.email = "admin@ins.com";

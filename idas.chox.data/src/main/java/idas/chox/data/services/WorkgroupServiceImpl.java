@@ -12,6 +12,8 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class WorkgroupServiceImpl extends SecureDataService implements WorkgroupService {
 
@@ -30,10 +32,12 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         return (Workgroup) get(Workgroup.class, workgroupId);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteWorkgroup(Workgroup workgroup) {
         delete(workgroup);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveWorkgroup(Workgroup workgroup) {
         save(workgroup);
     }
@@ -88,6 +92,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
 
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void defaultWorkgroup(Insurer insurer) {
         Workgroup object = new Workgroup();
         object.setInsurer(insurer);

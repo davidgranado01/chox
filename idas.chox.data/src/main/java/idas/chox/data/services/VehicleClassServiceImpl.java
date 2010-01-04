@@ -13,18 +13,9 @@ import org.w3c.dom.*;
 public class VehicleClassServiceImpl extends SecureDataService implements VehicleClassService {
 
     public VehicleClass getVehicleClassByName(String s) {
-
-        VehicleClass vehicleclass = null;
-
-
-
         DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClass.class);
         criteria.add(Restrictions.eq("name", s));
-
-        vehicleclass = (VehicleClass) getByCriteria(criteria);
-
-
-        return vehicleclass;
+        return (VehicleClass) getByCriteria(criteria);
     }
 
     public VehicleClass getVehicleClassByNodeName(Element thisElement, String nodeName) {

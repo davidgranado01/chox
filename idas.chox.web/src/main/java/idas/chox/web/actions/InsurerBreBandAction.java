@@ -4,6 +4,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.services.BreBandService;
+import idas.chox.core.services.InsurerService;
 import idas.chox.web.viewdata.InsurerBreBandViewData;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,18 +17,20 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     private BreBand model;
     protected List<InsurerBreBandViewData> insurerBreBands;
     protected BreBandService breBandService;
-    
+    protected InsurerService insurerService;
+
     public String doRenderActionPage() {
         return SUCCESS;
     }
 
     public boolean getIsNew() {
-        if (Integer.valueOf(objectId) <= 0) {
+
+        if (objectId != null && !objectId.equalsIgnoreCase("") && Integer.valueOf(objectId) <= 0) {
             return true;
         }
         return false;
     }
-    
+
     public BreBand getModel() {
         return model;
     }
@@ -35,7 +38,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     public void setModel(BreBand model) {
         this.model = model;
     }
-    
+
     public int getInsurerId() {
         return insurerId;
     }
@@ -53,13 +56,21 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     }
 
     public void prepare() throws Exception {
-        if (Integer.valueOf(objectId) <= 0) {
+        try {
+
             model = new BreBand();
-        } else {
-            model = breBandService.getBreBand(Integer.valueOf(objectId));
+
+            if (objectId != null && !objectId.equalsIgnoreCase("")) {
+                if (Integer.valueOf(objectId) > 0) {
+                    model = breBandService.getBreBand(Integer.valueOf(this.objectId));
+                }
+            }
+
+        } catch (Exception ex) {
+            handleException(this, ex);
         }
     }
-    
+
     public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.insurerBreBands);
         return "{totalCount:" + this.insurerBreBands.size() + ",results:" + jObject.toString() + "}";
@@ -79,14 +90,60 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            handleException(this, ex);
+            return ERROR;
         }
-
 
         return SUCCESS;
     }
 
-    public void setBreBandService(BreBandService service) {
-        this.breBandService = service;
+    public String updateInsurerBreBand() {
+
+        try {
+
+            model.setInsurer(insurerService.getInsurer(this.insurerId));
+
+            if (breBandService.isBreBandNameExist(model)) {
+                getActionResponse().AddError("Selected Band Name already exists");
+            } else {
+
+                breBandService.saveBreBand(model);
+
+                if (getIsNew()) {
+                    getActionResponse().AssignNewIdResult(model.getId());
+                }
+
+            }
+
+        } catch (Exception ex) {
+            handleException(this, ex);
+            return ERROR;
+        }
+
+        return SUCCESS;
+    }
+
+    public String deleteInsurerBreBand() {
+        try {
+
+            if (breBandService.isBreBandOccupied(model)) {
+                getActionResponse().AddError("You cannot delete '" + model.getName() + "' because it is currently being used by one or more Credit Hire Organisations. Please remove the Credit Hire Organisations from this BRE and try again");
+            } else {
+                this.breBandService.deleteBreBand(model);
+            }
+
+        } catch (Exception ex) {
+            handleException(this, ex);
+            return ERROR;
+        }
+        return SUCCESS;
+    }
+
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
+    }
+
+    public void setInsurerService(InsurerService insurerService) {
+        this.insurerService = insurerService;
     }
 }

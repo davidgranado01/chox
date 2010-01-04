@@ -42,10 +42,9 @@
             viewConfig:{forceFit:true},
             columns: [
                 {header: "Name", width: 220, dataIndex: 'name', sortable: true, resizable: true},
-                {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='highlightItem'>Add</a>"}}
+                {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Add</a>"}}
             ],
-            height:460,
-            width: 340
+            height:460, width: 340
         });
 
         insChoSelected_gridviewJsonReader = new Ext.data.JsonReader({
@@ -84,7 +83,7 @@
                 {header: "Name", width: 170, dataIndex: 'chorganisationName', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'chorganisationStatusDesc', sortable: true, resizable: true},
                 {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='highlightItem'>Remove</a>"}}
+                        return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
             height:460,
             width: 340
@@ -105,21 +104,67 @@
             var chorganisationId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doAddNewInsurerChorganisation.action";
             var param = {"insurerId":<s:property value="insurerId" />,"chorganisationId":chorganisationId};
-            ajax.loadHtml(url, param, insCho_loadGridViewList);
+            ajax.loadHtml(url, param, doInsurerChorganisationPageRefresh);
         }
         
     }
     
     function insCho_recordOnclickRemoveCreditHire(grid, rowIndex, columnIndex, e){
-        var gridView = insChoSelected_gridviewGrid.getStore().getAt(rowIndex);
+    
         if(columnIndex==2){
+            
             if(confirm("Are you sure you want to remove this credit hire organisation?")){
+                
+                var gridView = insChoSelected_gridviewGrid.getStore().getAt(rowIndex);
                 var insurerChorganisationId = gridView.get("id");
                 var url = "<%= request.getContextPath()%>/prv/p/doRemoveInsurerChorganisation.action";
                 var param = {"insurerChorganisationId":insurerChorganisationId};
-                ajax.loadHtml(url, param, insCho_loadGridViewList);
+
+                ajax.loadHtml(url, param,  function(responseText, statusText){
+
+                    var response = eval('(' + responseText.trim() + ')');
+
+                    if(response)
+                    {
+                        if(response.isValid){
+
+                            if(response.resultType && response.resultType == 'Message')
+                            {
+                                alert(response.result);
+                                return;
+                            }
+
+                        }
+                        else
+                        {
+                            alert(response.result);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        alert("Unknown Error Encountered, please try again.");
+                    }
+
+                    doInsurerChorganisationPageRefresh();
+                });
             }
         }
+    }
+
+    function doInsurerChorganisationPageRefresh(){
+
+        var tabIndex = 0;
+        if(<s:property value="isChoxAdmin"/>){
+            tabIndex = 3;
+        }
+        
+        var target = "#admin_param_panel";
+        var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+        var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
+        ajax.loadHtml(url,param,function(data){
+            $(target).html(data);
+        });
     }
 
 </script>
@@ -141,5 +186,4 @@
             </td>
         </tr>
     </table>
-
 </div>  

@@ -43,5 +43,5 @@ public interface UserService {
 
     public WebUser getUsers(int userId);
 
-    public boolean saveUser(WebUser user);
+    public void saveUser(WebUser user);
 }

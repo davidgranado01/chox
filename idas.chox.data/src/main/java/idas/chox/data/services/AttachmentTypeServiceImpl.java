@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class AttachmentTypeServiceImpl extends SecureDataService implements AttachmentTypeService {
 

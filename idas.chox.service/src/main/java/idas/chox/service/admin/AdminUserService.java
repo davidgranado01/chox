@@ -58,14 +58,20 @@ public class AdminUserService extends DataService {
 
     public ActionResponse updateUser(WebUser webUser) {
 
+        System.out.println(">>>>>>>>>> 0001");
         this.actionResponse = new ActionResponse();
 
         if (!this.userService.isUserNameExist(webUser.getUserName(), webUser.getId())) {
+
+            System.out.println(">>>>>>>>>> 0002");
+
             this.userService.saveUser(webUser);
+
         } else {
             this.getActionResponse().AddError("User Name is already exist!");
         }
 
+        System.out.println(">>>>>>>>>> 0003");
 
         return this.actionResponse;
     }
@@ -89,14 +95,11 @@ public class AdminUserService extends DataService {
 
             webUser.setPassword(encodePassword(webUser.getPassword()));
 
-            if (this.userService.saveUser(webUser)) {
+            this.userService.saveUser(webUser);
 
-                webUserUserRoleService.addBaseNewUserRole(webUser.getId(), Integer.valueOf(organisationTypeId));
-                this.getActionResponse().AssignNewIdResult(webUser.getId());
+            webUserUserRoleService.addBaseNewUserRole(webUser.getId(), Integer.valueOf(organisationTypeId));
+            this.getActionResponse().AssignNewIdResult(webUser.getId());
 
-            } else {
-                this.getActionResponse().AddError("Please try again!");
-            }
 
         } else {
             this.getActionResponse().AddError("User Name is already exist!!");
@@ -109,10 +112,8 @@ public class AdminUserService extends DataService {
     public ActionResponse updateUserPassword(WebUser webUser) {
 
         this.actionResponse = new ActionResponse();
-
         webUser.setPassword(encodePassword(webUser.getPassword()));
         this.userService.saveUser(webUser);
-
         return this.actionResponse;
 
     }

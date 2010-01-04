@@ -9,6 +9,8 @@ import idas.chox.core.services.HireMonitoringDetailService;
 import idas.chox.core.xmlValidation.ClaimResult;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class HireMonitoringDetailServiceImpl extends SecureDataService implements HireMonitoringDetailService {
 
@@ -28,11 +30,13 @@ public class HireMonitoringDetailServiceImpl extends SecureDataService implement
         return (HireMonitoringDetail) get(HireMonitoringDetail.class, id);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveHireMonitoringDetail(HireMonitoringDetail hireMonitoringDetail) {
 
         this.save(hireMonitoringDetail);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveObjectForXMLUploader(final ClaimResult claimResult) {
         if (claimResult.getClaim().getHireMonitoringDetail() != null) {
             super.getHibernateTemplate().saveOrUpdate(claimResult.getClaim().getHireMonitoringDetail());

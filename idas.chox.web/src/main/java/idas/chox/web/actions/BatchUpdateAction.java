@@ -98,10 +98,6 @@ public class BatchUpdateAction extends BaseAction {
 
     public String doClaimOwnershipUpdateAction() {
 
-
-            System.out.println(">>> workgroupId : "+this.workgroupId);
-            System.out.println(">>> claimOwnerId : "+this.claimOwnerId);
-
         // WORKGROUP
         Workgroup workgroupDBA = new Workgroup();
         if(this.workgroupId!=null && this.workgroupId>0){
@@ -116,10 +112,13 @@ public class BatchUpdateAction extends BaseAction {
 
             Claim claim = claimService.getClaim(id);
 
-            System.out.println("01 claim : "+claim.getId());
+            String oldClaimOwnerName = "-";
+            if(claim.getClaimOwner()!=null){
+                oldClaimOwnerName = claim.getClaimOwner().getDisplayName();
+            }
 
-            String noteMsg = "Claim owner changed from '" + claim.getClaimOwner().getDisplayName() + "' to '" + claimOwnerDBA.getDisplayName()+"'";
-
+            String noteMsg = "Claim owner changed from '" + oldClaimOwnerName + "' to '" + claimOwnerDBA.getDisplayName()+"'";
+            
             if(this.workgroupId!=null && this.workgroupId>0){
                 claim.setWorkgroup(workgroupDBA);
             }
@@ -127,15 +126,12 @@ public class BatchUpdateAction extends BaseAction {
             claim.setClaimOwner(claimOwnerDBA);
             claimService.updateClaim(claim);
 
-            System.out.println("02 claim : "+claim.getId());
-
             // SAVE NEW NOTE
             int noteVisibilityType = 0;
             createNewNote(noteMsg, noteVisibilityType, "", claim);
 
         }
 
-        System.out.println("**************");
         return SUCCESS;
     }
 

@@ -5,9 +5,12 @@ import idas.chox.core.services.EngineerReportService;
 import idas.chox.core.xmlValidation.ClaimResult;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class EngineerReportServiceImpl extends SecureDataService implements EngineerReportService {
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveEngineerReportForXMLUploader(final ClaimResult claimResult) {
 
         if ((claimResult.getClaim().getEngineerReport()) != null) {
@@ -31,6 +34,7 @@ public class EngineerReportServiceImpl extends SecureDataService implements Engi
         return (EngineerReport) get(EngineerReport.class, id);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveEngineerReport(EngineerReport engineerReport) {
         save(engineerReport);
     }

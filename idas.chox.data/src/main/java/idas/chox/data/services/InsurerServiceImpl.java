@@ -11,6 +11,8 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.w3c.dom.Element;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class InsurerServiceImpl extends SecureDataService implements InsurerService {
 
@@ -64,6 +66,7 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
         return insurer;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Insurer updateInsurer(Insurer object) {
 
 

@@ -11,6 +11,8 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class ChorganisationServiceImpl extends SecureDataService implements ChorganisationService {
 
@@ -28,6 +30,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         return findByCriteria(criteria);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Chorganisation updateChorganisation(Chorganisation chorganisation) {
         save(chorganisation);
         return chorganisation;
@@ -81,14 +84,6 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         return isExist;
 
     }
-
-
-
-
-
-
-    
-
     
     public List<Chorganisation> getChorganisationsByInsurerId(int insurerId) {
         List<Chorganisation> objects = new ArrayList<Chorganisation>();

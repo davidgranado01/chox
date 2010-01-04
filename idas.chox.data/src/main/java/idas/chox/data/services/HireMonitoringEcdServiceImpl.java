@@ -12,6 +12,8 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -41,6 +43,7 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
         return (HireMonitoringEcd) get(HireMonitoringEcd.class, id);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveHireMonitoringEcd(HireMonitoringEcd object) {
         save(object);
     }

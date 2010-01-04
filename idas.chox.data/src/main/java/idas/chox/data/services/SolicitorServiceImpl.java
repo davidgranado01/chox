@@ -6,6 +6,8 @@ import idas.chox.core.services.SolicitorService;
 import idas.chox.core.xmlValidation.ClaimResult;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.DetachedCriteria;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class SolicitorServiceImpl extends SecureDataService implements SolicitorService {
 
@@ -20,6 +22,7 @@ public class SolicitorServiceImpl extends SecureDataService implements Solicitor
         return solicitor;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveSolicitorForXMLUploader(final ClaimResult claimResult) {
 
         if ((claimResult.getSolicitors()) != null) {
@@ -36,6 +39,7 @@ public class SolicitorServiceImpl extends SecureDataService implements Solicitor
         return (Solicitor) get(Solicitor.class, id);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveSolicitor(Solicitor solicitor) {
         save(solicitor);
     }

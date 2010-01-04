@@ -10,6 +10,8 @@ import org.hibernate.criterion.Restrictions;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class BreBandOrganisationServiceImpl extends SecureDataService implements BreBandOrganisationService {
 
@@ -49,12 +51,12 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
         return isExist;
     }
 
-    public boolean isBreBandOccupied(int bandId) {
+    public boolean isBreBandOccupied(int breBandId) {
 
         boolean isExist = false;
 
         List<BreBandOrganisation> objects = new ArrayList<BreBandOrganisation>();
-        objects = getBreBandChorganisationsByBreBandId(bandId);
+        objects = getBreBandChorganisationsByBreBandId(breBandId);
 
         if (objects.size() > 0) {
             isExist = true;
@@ -76,6 +78,7 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
         return findByCriteria(criteria);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteBreBandOrganisationByChorganisationId(int chorganisationId, int insurerId) {
 
         List<BreBandOrganisation> objects = new ArrayList<BreBandOrganisation>();
@@ -116,6 +119,7 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
         return bFlag;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteBreBandOrganisation(BreBandOrganisation breBandOrganisation) {
         delete(breBandOrganisation);
     }
@@ -124,7 +128,8 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
         return (BreBandOrganisation) get(BreBandOrganisation.class, id);
     }
 
-    public void saveBreBandOrganisatiion(BreBandOrganisation breBandOrganisation) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void saveBreBandOrganisation(BreBandOrganisation breBandOrganisation) {
         save(breBandOrganisation);
     }
 }

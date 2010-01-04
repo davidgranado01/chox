@@ -5,6 +5,8 @@ import idas.chox.core.services.AutomaticRoutingService;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class AutomaticRoutingServiceImpl extends SecureDataService implements AutomaticRoutingService {
 

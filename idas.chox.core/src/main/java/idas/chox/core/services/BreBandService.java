@@ -19,4 +19,6 @@ public interface BreBandService {
     public boolean isBreBandNameExist(BreBand breBand);
 
     public void createDefaultRecord(Insurer insurer);
+
+    public void deleteBreBand(BreBand breBand);
 }

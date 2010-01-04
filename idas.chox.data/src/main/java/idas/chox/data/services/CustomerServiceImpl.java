@@ -3,6 +3,8 @@ package idas.chox.data.services;
 import idas.chox.core.model.Customer;
 import idas.chox.core.services.CustomerService;
 import idas.chox.core.xmlValidation.ClaimResult;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class CustomerServiceImpl extends SecureDataService implements CustomerService {
 
@@ -10,10 +12,12 @@ public class CustomerServiceImpl extends SecureDataService implements CustomerSe
         return (Customer) get(Customer.class, id);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveCustomer(Customer customer) {
         save(customer);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveCustomerForXMLUploader(final ClaimResult claimResult) {
         Customer customer = claimResult.getClaim().getCustomer();
         if (customer != null) {

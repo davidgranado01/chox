@@ -40,7 +40,7 @@
                 {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
                 {header: "Alias Name", width: 180, dataIndex: 'name', sortable: true, resizable: true},
                 {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='highlightItem'>Remove</a>"}},
+                        return "<a href='#' class='high-light-item'>Remove</a>"}},
                 {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
@@ -126,9 +126,14 @@
 
     function insurerAlias_doRefreshPage(){
 
+        var tabIndex = 0;
+        if(<s:property value="isChoxAdmin"/>){
+            tabIndex = 1;
+        }
+        
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-        var param = {"objectId":<s:property value="insurerId" />,"tabIndex":"1"};
+        var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
         });
@@ -164,7 +169,8 @@
                         <p class="std-label">Insurer Alias: </p> <input name="insurerAliasName" id="insurerAliasName" type="text">
                         <input type="submit" onclick="javascript: return alias_triggerStatusAddRecord();" value="Add"/>
                     </div>
-                </td></tr>
+                </td>
+            </tr>
         </table>
     </div>
     <div id="CDInsurerAliasMessageBox" class="chox-form-submit-result"></div>
