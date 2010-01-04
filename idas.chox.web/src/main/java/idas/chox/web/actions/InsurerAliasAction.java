@@ -21,6 +21,33 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
     protected InsurerAliasService insurerAliasService;
     protected InsurerService insurerService;
 
+    public InsurerAlias getModel() {
+        return model;
+    }
+
+    public void setModel(InsurerAlias model) {
+        this.model = model;
+    }
+
+    public String doRenderActionPage() {
+        return SUCCESS;
+    }
+
+    public String getJsonData() {
+        JSONArray jObject = JSONArray.fromObject(this.insurerAliases);
+        return "{totalCount:" + this.insurerAliases.size() + ",results:" + jObject.toString() + "}";
+    }
+
+    public void prepare() throws Exception {
+
+        if (Integer.valueOf(insurerAliasId) <= 0) {
+            model = new InsurerAlias();
+        } else {
+            model = insurerAliasService.getInsurerAlias(insurerAliasId);
+        }
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="GET SET">
     public int getInsurerAliasId() {
         return insurerAliasId;
     }
@@ -45,18 +72,6 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
         this.insurerAliases = insurerAliases;
     }
 
-    public InsurerAlias getModel() {
-        return model;
-    }
-
-    public void setModel(InsurerAlias model) {
-        this.model = model;
-    }
-
-    public String doRenderActionPage() {
-        return SUCCESS;
-    }
-
     public int getInsurerId() {
         return insurerId;
     }
@@ -64,11 +79,8 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
     public void setInsurerId(int insurerId) {
         this.insurerId = insurerId;
     }
-
-    public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.insurerAliases);
-        return "{totalCount:" + this.insurerAliases.size() + ",results:" + jObject.toString() + "}";
-    }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="ACTIONS">
 
     @Override
     public String execute() {
@@ -88,15 +100,6 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
         }
 
         return SUCCESS;
-    }
-
-    public void prepare() throws Exception {
-
-        if (Integer.valueOf(insurerAliasId) <= 0) {
-            model = new InsurerAlias();
-        } else {
-            model = insurerAliasService.getInsurerAlias(insurerAliasId);
-        }
     }
 
     public String addNewInsurerAlias() {
@@ -140,6 +143,8 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
 
         return SUCCESS;
     }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="SERVICES">
 
     public void setInsurerAliasService(InsurerAliasService insurerAliasService) {
         this.insurerAliasService = insurerAliasService;
@@ -148,4 +153,5 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
     public void setInsurerService(InsurerService insurerService) {
         this.insurerService = insurerService;
     }
+    // </editor-fold>
 }

@@ -9,7 +9,7 @@
     var userworkgroup_gridviewData;
    
     Ext.onReady(function(){
-        
+
         userworkgroup_gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
@@ -28,7 +28,7 @@
             ({url: '<%= request.getContextPath()%>/prv/p/getUserWorkgroups.action?webUserId='+<s:property value="id" />+uniqeToken(), method:'POST'}),
             reader:userworkgroup_gridviewJsonReader
         });
-        
+
         userworkgroup_gridviewGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:userworkgroup_recordOnclick },
             store: userworkgroup_gridviewData,
@@ -46,7 +46,7 @@
             height:410,
             width: 715
         });
-            
+
         userworkgroup_loadGridViewList()
 
     });
@@ -66,6 +66,7 @@
             ajax.loadHtml(url, param, onUserWorkgroupMappingSubmitResult);
 
         }else{
+            
             triggerCss("div#CDUserWorkgroupMessageBox", true);
             $("div#CDUserWorkgroupMessageBox").html("please select user workgroup");
         }
@@ -84,7 +85,6 @@
         triggerCss("div#CDUserWorkgroupMessageBox", true);
         
         var userWorkgroupId = gridView.get("id");
-
         var url = "<%= request.getContextPath()%>/prv/p/isUserWorkgroupAllowToDelete.action";
         var param = {"userWorkgroupId":userWorkgroupId,"webUserId":<s:property value="id" />};
 
@@ -210,7 +210,7 @@
                         <s:select
                             id="workgroupId"                                 
                             name="workgroupId" 
-                            list="workgroups" 
+                            list="availableWorkgroups"
                             listKey="id" 
                             listValue="name" 
                             headerKey=""
@@ -225,5 +225,4 @@
         <div id="CDUserWorkgroupMessageBox" class="chox-form-submit-result"></div>
         <div id="userworkgroup_gridviewGrid"></div>
     </div>
-
 </div>

@@ -76,7 +76,7 @@ public class AdminUserService extends DataService {
         return this.actionResponse;
     }
 
-    public ActionResponse doAddNewUser(WebUser webUser, Integer insurerId, Integer supplierId, String organisationTypeId) {
+    public ActionResponse doAddNewUser(WebUser webUser, Integer insurerId, Integer supplierId, Integer organisationTypeId) {
 
 
         if (!this.userService.isUserNameExist(webUser.getUserName())) {
@@ -97,7 +97,7 @@ public class AdminUserService extends DataService {
 
             this.userService.saveUser(webUser);
 
-            webUserUserRoleService.addBaseNewUserRole(webUser.getId(), Integer.valueOf(organisationTypeId));
+            webUserUserRoleService.addBaseNewUserRole(webUser.getId(), organisationTypeId);
             this.getActionResponse().AssignNewIdResult(webUser.getId());
 
 

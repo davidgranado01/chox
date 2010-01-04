@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -10,30 +6,20 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.services.LookupService;
-import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.web.security.ApplicationAccessibility;
 import java.util.Date;
 import java.util.List;
 import net.sf.json.JSONObject;
 
-/**
- *
- * @author Emmanuel
- */
 public class VehicleHireAction extends BaseModelAction implements ModelDriven<VehicleHire>, Preparable {
 
     private LookupService lookupService;
-    private VehicleClassService vehicleClassService;
     private VehicleHire model;
     private int vehicleClassId;
 
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
-    }
-
-    public void setVehicleClassService(VehicleClassService vehicleClassService) {
-        this.vehicleClassService = vehicleClassService;
     }
 
     public VehicleHire getModel() {

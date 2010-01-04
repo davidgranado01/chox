@@ -39,14 +39,6 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
         this.model = model;
     }
 
-    public String getObjectId() {
-        return objectId;
-    }
-
-    public void setObjectId(String objectId) {
-        this.objectId = objectId;
-    }
-
     public void prepare() throws Exception {
 
         try {
@@ -62,6 +54,20 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
         }
     }
 
+    public String getJsonData() {
+        JSONArray jObject = JSONArray.fromObject(this.credithireorganisation);
+        return "{totalCount:" + this.credithireorganisation.size() + ",results:" + jObject.toString() + "}";
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="GET SET">
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
+    }
+
     public int getInsurerId() {
         return insurerId;
     }
@@ -69,11 +75,8 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     public void setInsurerId(int insurerId) {
         this.insurerId = insurerId;
     }
-
-    public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.credithireorganisation);
-        return "{totalCount:" + this.credithireorganisation.size() + ",results:" + jObject.toString() + "}";
-    }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="ACTIONS">
 
     public String triggerChorganisationStatus() throws Exception {
 
@@ -129,6 +132,8 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
 
         return SUCCESS;
     }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="SERVICES">
 
     public void setChorganisationService(ChorganisationService chorganisationService) {
         this.chorganisationService = chorganisationService;
@@ -137,4 +142,5 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     public void setAdminChorganisationService(AdminChorganisationService adminChorganisationService) {
         this.adminChorganisationService = adminChorganisationService;
     }
+    // </editor-fold>
 }

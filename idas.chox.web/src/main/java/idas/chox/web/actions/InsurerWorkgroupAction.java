@@ -30,6 +30,20 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
         this.model = model;
     }
 
+    public void prepare() throws Exception {
+        if (Integer.valueOf(workgroupId) <= 0) {
+            model = new Workgroup();
+        } else {
+            model = workgroupService.getWorkgroup(workgroupId);
+        }
+    }
+
+    public String getJsonData() {
+        JSONArray jObject = JSONArray.fromObject(this.workgroups);
+        return "{totalCount:" + this.workgroups.size() + ",results:" + jObject.toString() + "}";
+    }
+    
+    // <editor-fold defaultstate="collapsed" desc="GET SET">
     public int getInsurerId() {
         return insurerId;
     }
@@ -65,15 +79,8 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
     public void setWorkgroups(List<WorkgroupViewData> workgroups) {
         this.workgroups = workgroups;
     }
-
-    public void prepare() throws Exception {
-        if (Integer.valueOf(workgroupId) <= 0) {
-            model = new Workgroup();
-        } else {
-            model = workgroupService.getWorkgroup(workgroupId);
-        }
-    }
-    
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="ACTIONS">
     @Override
     public String execute() {
 
@@ -93,11 +100,6 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
         }
 
         return SUCCESS;
-    }
-
-    public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.workgroups);
-        return "{totalCount:" + this.workgroups.size() + ",results:" + jObject.toString() + "}";
     }
 
     public String addNewInsurerWorkgroup() {
@@ -183,7 +185,8 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
         return SUCCESS;
 
     }
-
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="SERVICES">
     public void setInsurerService(InsurerService insurerService) {
         this.insurerService = insurerService;
     }
@@ -191,5 +194,5 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
     public void setWorkgroupService(WorkgroupService workgroupService) {
         this.workgroupService = workgroupService;
     }
-    
+    // </editor-fold>
 }

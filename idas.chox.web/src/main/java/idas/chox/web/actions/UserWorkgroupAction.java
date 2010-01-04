@@ -1,11 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
 
+import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.WebUserWorkgroup;
 import idas.chox.core.services.UserWorkgroupService;
+import idas.chox.service.ActionResponse;
+import idas.chox.service.admin.AdminUserWorkgroupService;
 import idas.chox.web.viewdata.UserWorkgroupViewData;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +13,45 @@ import net.sf.json.JSONArray;
 public class UserWorkgroupAction extends BaseAction {
 
     private List<UserWorkgroupViewData> userworkgroups;
-    private UserWorkgroupService service;
     private int webUserId;
+    private int organisationTypeId;
+    private int userWorkgroupId;
+    private int workgroupId;
+    private UserWorkgroupService userWorkgroupService;
+    private AdminUserWorkgroupService adminUserWorkgroupService;
 
-    public void setUserWorkgroupService(UserWorkgroupService service) {
-        this.service = service;
+    public String doRenderActionPage() {
+        return SUCCESS;
+    }
+
+    public String getJsonData() {
+        JSONArray jObject = JSONArray.fromObject(this.userworkgroups);
+        return "{totalCount:" + this.userworkgroups.size() + ",results:" + jObject.toString() + "}";
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="GET SET">
+    public int getWorkgroupId() {
+        return workgroupId;
+    }
+
+    public void setWorkgroupId(int workgroupId) {
+        this.workgroupId = workgroupId;
+    }
+
+    public int getUserWorkgroupId() {
+        return userWorkgroupId;
+    }
+
+    public void setUserWorkgroupId(int userWorkgroupId) {
+        this.userWorkgroupId = userWorkgroupId;
+    }
+
+    public int getOrganisationTypeId() {
+        return organisationTypeId;
+    }
+
+    public void setOrganisationTypeId(int organisationTypeId) {
+        this.organisationTypeId = organisationTypeId;
     }
 
     public List<UserWorkgroupViewData> getUserworkgroups() {
@@ -36,16 +69,16 @@ public class UserWorkgroupAction extends BaseAction {
     public void setWebUserId(int webUserId) {
         this.webUserId = webUserId;
     }
-
-    public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.userworkgroups);
-        return "{totalCount:" + this.userworkgroups.size() + ",results:" + jObject.toString() + "}";
-    }
-
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="ACTIONS">
     @Override
     public String execute() {
+        return SUCCESS;
+    }
 
-        List<WebUserWorkgroup> userworkgroupData = this.service.getUserWorkgroupsByUser(webUserId);
+    public String getUserWorkgroups() {
+
+        List<WebUserWorkgroup> userworkgroupData = userWorkgroupService.getUserWorkgroupsByUser(webUserId);
 
         userworkgroups = new ArrayList<UserWorkgroupViewData>();
 
@@ -55,4 +88,76 @@ public class UserWorkgroupAction extends BaseAction {
 
         return SUCCESS;
     }
+
+    public List getAvailableWorkgroups() {
+
+        List items = new ArrayList<IdLookupItem>();
+
+        try {
+
+            items = adminUserWorkgroupService.getWorkgroups(this.webUserId);
+
+        } catch (Exception ex) {
+            handleException(this, ex);
+        }
+
+        return items;
+    }
+
+    public String checkUserWorkgroupAllowToDelete() {
+
+        try {
+
+            ActionResponse response = adminUserWorkgroupService.checkUserWorkgroupAllowToDelete(this.userWorkgroupId);
+            setActionResponse(response);
+
+        } catch (Exception ex) {
+            handleException(this, ex);
+            return ERROR;
+        }
+
+        return SUCCESS;
+    }
+
+    public String removeWebUserWorkgroupMapping() {
+
+        try {
+
+            ActionResponse response = adminUserWorkgroupService.removeWebUserWorkgroupMapping(this.userWorkgroupId);
+            setActionResponse(response);
+
+        } catch (Exception ex) {
+            handleException(this, ex);
+            return ERROR;
+        }
+
+        return SUCCESS;
+
+    }
+
+    public String addNewWebUserWorkgroupMapping() {
+
+        try {
+
+            ActionResponse response = adminUserWorkgroupService.addNewWebUserWorkgroupMapping(this.workgroupId, this.webUserId);
+            setActionResponse(response);
+
+        } catch (Exception ex) {
+            handleException(this, ex);
+            return ERROR;
+        }
+
+        return SUCCESS;
+
+    }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="SERVICES">
+    public void setAdminUserWorkgroupService(AdminUserWorkgroupService adminUserWorkgroupService) {
+        this.adminUserWorkgroupService = adminUserWorkgroupService;
+    }
+
+    public void setUserWorkgroupService(UserWorkgroupService userWorkgroupService) {
+        this.userWorkgroupService = userWorkgroupService;
+    }
+    // </editor-fold>
 }

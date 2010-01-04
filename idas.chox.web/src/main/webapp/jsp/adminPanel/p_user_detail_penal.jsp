@@ -132,7 +132,7 @@
                 <s:if test="!isNew"><s:property value="displayName" /> (<s:property value="email" />)</s:if><s:else>Create New User</s:else>
             </label>
         </div>
-        <div id="userDetailMainPanel"></div>
+        <div id="userDetailMainPanel"/>
     </div>
 
     <div id="userDetailTab" class="x-hide-display">

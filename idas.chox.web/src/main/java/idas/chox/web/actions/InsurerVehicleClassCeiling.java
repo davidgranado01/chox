@@ -26,6 +26,36 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
     protected VehicleClassService vehicleClassService;
     protected InsurerService insurerService;
 
+    public boolean getIsNew() {
+
+        if (objectId != null && !objectId.equalsIgnoreCase("") && Integer.valueOf(objectId) <= 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public VehicleClassCeiling getModel() {
+        return model;
+    }
+
+    public void setModel(VehicleClassCeiling model) {
+        this.model = model;
+    }
+
+    public String doRenderActionPage() {
+        return SUCCESS;
+    }
+
+    public void prepare() throws Exception {
+        model = new VehicleClassCeiling();
+    }
+
+    public String getJsonData() {
+        JSONArray jObject = JSONArray.fromObject(this.vehicleClassCeilingViewData);
+        return "{totalCount:" + this.vehicleClassCeilingViewData.size() + ",results:" + jObject.toString() + "}";
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="GET SET">
     public int getVehicleClassCeilingId() {
         return vehicleClassCeilingId;
     }
@@ -58,22 +88,6 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
         this.repairNetCeiling = repairNetCeiling;
     }
 
-    public boolean getIsNew() {
-
-        if (objectId != null && !objectId.equalsIgnoreCase("") && Integer.valueOf(objectId) <= 0) {
-            return true;
-        }
-        return false;
-    }
-
-    public VehicleClassCeiling getModel() {
-        return model;
-    }
-
-    public void setModel(VehicleClassCeiling model) {
-        this.model = model;
-    }
-
     public String getObjectId() {
         return objectId;
     }
@@ -89,20 +103,8 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
     public void setInsurerId(int insurerId) {
         this.insurerId = insurerId;
     }
-
-    public String doRenderActionPage() {
-        return SUCCESS;
-    }
-
-    public void prepare() throws Exception {
-        model = new VehicleClassCeiling();
-    }
-
-    public String getJsonData() {
-        JSONArray jObject = JSONArray.fromObject(this.vehicleClassCeilingViewData);
-        return "{totalCount:" + this.vehicleClassCeilingViewData.size() + ",results:" + jObject.toString() + "}";
-    }
-
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="ACTION">
     public String getSelectedInsurerVehicleClassCeiling() {
 
         try {
@@ -158,22 +160,23 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
     }
 
     public String updateVehicleClassCeiling() {
-        
+
         try {
 
             VehicleClassCeiling vehicleClassCeiling = vehicleClassCeilingService.getVehicleClassCeiling(this.vehicleClassCeilingId);
             vehicleClassCeiling.setHireNetCeiling(new BigDecimal(this.hireNetCeiling));
             vehicleClassCeiling.setRepairNetCeiling(new BigDecimal(this.repairNetCeiling));
             vehicleClassCeilingService.saveVehicleClassCeiling(vehicleClassCeiling);
-            
+
         } catch (Exception ex) {
             handleException(this, ex);
             return ERROR;
         }
-        
+
         return SUCCESS;
     }
-
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="SERVICES">
     public void setVehicleClassService(VehicleClassService vehicleClassService) {
         this.vehicleClassService = vehicleClassService;
     }
@@ -185,4 +188,5 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
     public void setInsurerService(InsurerService insurerService) {
         this.insurerService = insurerService;
     }
+    // </editor-fold>
 }

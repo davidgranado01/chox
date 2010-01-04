@@ -24,22 +24,6 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     private BreBandService breBandService;
     private InsurerService insurerService;
 
-    public String getObjectId() {
-        return objectId;
-    }
-
-    public void setObjectId(String objectId) {
-        this.objectId = objectId;
-    }
-
-    public Integer getTabIndex() {
-        return tabIndex;
-    }
-
-    public void setTabIndex(Integer tabIndex) {
-        this.tabIndex = tabIndex;
-    }
-
     public boolean getIsNew() {
         if (Integer.valueOf(objectId) <= 0) {
             return true;
@@ -76,6 +60,25 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
 
         }
     }
+
+    // <editor-fold defaultstate="collapsed" desc="GET SET">
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
+    }
+
+    public Integer getTabIndex() {
+        return tabIndex;
+    }
+
+    public void setTabIndex(Integer tabIndex) {
+        this.tabIndex = tabIndex;
+    }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="ACTION">
 
     @Override
     public String execute() {
@@ -156,6 +159,8 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
 
         return SUCCESS;
     }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="SERVICES">
 
     public void setInsurerService(InsurerService insurerService) {
         this.insurerService = insurerService;
@@ -172,4 +177,5 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     public void setInsurerAliasService(InsurerAliasService insurerAliasService) {
         this.insurerAliasService = insurerAliasService;
     }
+    // </editor-fold>
 }
