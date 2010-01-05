@@ -2,9 +2,7 @@ package idas.chox.data.services;
 
 import idas.chox.core.common.OrganisationType;
 import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.UserService;
-import idas.chox.core.util.RoleHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,40 +29,6 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return result;
     }
 
-    public boolean isEmailExist(String email) {
-
-        boolean bFlag = true;
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("email", email).ignoreCase());
-        WebUser result = (WebUser) getByCriteria(criteria);
-
-        if (result == null) {
-            bFlag = false;
-        }
-
-        return bFlag;
-    }
-
-    public boolean isEmailExist(String email, int userId) {
-
-        boolean bFlag = true;
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("email", email).ignoreCase());
-        criteria.add(Restrictions.ne("id", userId));
-        WebUser result = (WebUser) getByCriteria(criteria);
-
-        if (result == null) {
-            bFlag = false;
-        }
-
-        return bFlag;
-    }
-
-    public WebUser loadUserByEmail(String email) {
-        WebUser u = findByEmail(email);
-        return u;
-    }
-
     public WebUser findByUserName(String userName) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("userName", userName).ignoreCase());
@@ -74,41 +38,29 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     }
 
     public boolean isUserNameExist(String userName) {
-
-        boolean bFlag = true;
-
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("userName", userName).ignoreCase());
         WebUser result = (WebUser) getByCriteria(criteria);
-
         if (result == null) {
-            bFlag = false;
+            return false;
         }
-
-        return bFlag;
+        return true;
     }
 
     public boolean isUserNameExist(String userName, int userId) {
 
-        boolean bFlag = true;
-
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("userName", userName).ignoreCase());
-
         if (userId > 0) {
             criteria.add(Restrictions.ne("id", userId));
         }
-
         WebUser result = (WebUser) getByCriteria(criteria);
-
         if (result == null) {
-            bFlag = false;
+            return false;
         }
-
-        return bFlag;
+        return true;
     }
 
     public WebUser loadUserByUsername(String userName) {
-        WebUser u = findByUserName(userName);
-        return u;
+        return findByUserName(userName);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -124,20 +76,6 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     public Long getNumInsActiveUser(Integer insId) {
         String q = "select count(*) from WebUser where status = true and insurer.id = " + insId.toString();
         return getCount(q);
-    }
-
-    public List<WebUser> getUsers() {
-
-        List<WebUser> users = new ArrayList<WebUser>();
-
-
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
-        criteria.addOrder(Order.asc("userName"));
-        users = findByCriteria(criteria);
-
-
-        return users;
     }
 
     /*
@@ -165,13 +103,8 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
     public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, int selectedWorkgroupId, String selectedUserRole) {
 
-        boolean bFlag = false;
         List<WebUser> users = new ArrayList<WebUser>();
-
-
-
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroups", "wgs", CriteriaSpecification.LEFT_JOIN);
-
         criteria.add(Restrictions.eq("role.name", selectedUserRole));
         criteria.add(Restrictions.eq("wgs.id", selectedWorkgroupId));
         criteria.add(Restrictions.eq("insurer.id", user.getInsurer().getId()));
@@ -180,19 +113,15 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
         users = findByCriteria(criteria);
         if (users.size() > 0) {
-            bFlag = true;
+            return true;
         }
 
-
-
-        return bFlag;
+        return false;
     }
 
     public List<WebUser> getClaimHanldersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable) {
 
         List<WebUser> users = new ArrayList<WebUser>();
-
-
 
         Criteria criteria = getSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
@@ -213,47 +142,12 @@ public class UserServiceImpl extends BaseDataService implements UserService {
             users.add((WebUser) m.get("this"));
         }
 
-
-
         return users;
-    }
-
-    public List<WebUser> getClaimHanldersByInsurer(int insurerId, boolean workgroupEnable) {
-
-        List<WebUser> users = new ArrayList<WebUser>();
-
-
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
-        criteria.add(Restrictions.eq("insurer.id", insurerId));
-        criteria.add(Restrictions.eq("status", true));
-        criteria.addOrder(Order.asc("firstName"));
-        users = findByCriteria(criteria);
-
-
-
-        List<WebUser> claimHandlers = new ArrayList<WebUser>();
-
-        if (!workgroupEnable) {
-
-            claimHandlers = users;
-
-        } else {
-
-            for (WebUser wu : users) {
-                if (RoleHelper.isCheckSelectedRoleExist(wu.getRoles(), WebUserRole.ROLE_CH)) {
-                    claimHandlers.add(wu);
-                }
-            }
-        }
-
-        return claimHandlers;
     }
 
     public List<WebUser> getUsers(int organisationId, int organisationTypeId, int userRoleId) {
 
         List<WebUser> users = new ArrayList<WebUser>();
-
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
 
@@ -274,8 +168,12 @@ public class UserServiceImpl extends BaseDataService implements UserService {
             }
         }
 
-
         return users;
+    }
+
+    public List<WebUser> getUsers() {
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
+        return findByCriteria(criteria);
     }
 
     public WebUser getWebUser(int id) {
@@ -283,7 +181,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         user = (WebUser) get(WebUser.class, id);
         return user;
     }
-    
+
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveUser(WebUser object) {
         object.setEmail(object.getEmail().toLowerCase());

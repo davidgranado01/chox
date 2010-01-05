@@ -646,8 +646,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         boolean isExist = false;
 
-
-
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("claimOwner.id", userId));
 
@@ -658,8 +656,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (findByCriteria(criteria).size() > 0) {
             isExist = true;
         }
-
-
 
         return isExist;
 

@@ -7,12 +7,6 @@ public interface UserService {
 
     public WebUser findByEmail(String email);
 
-    public boolean isEmailExist(String email);
-
-    public boolean isEmailExist(String email, int userId);
-
-    public WebUser loadUserByEmail(String email);
-
     public WebUser findByUserName(String userName);
 
     public boolean isUserNameExist(String userName);
@@ -29,17 +23,15 @@ public interface UserService {
 
     public Long getNumInsActiveUser(Integer insId);
 
-    public List<WebUser> getUsers();
-
     public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, String selectedUserRole);
 
     public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, int selectedWorkgroupId, String selectedUserRole);
 
     public List<WebUser> getClaimHanldersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable);
 
-    public List<WebUser> getClaimHanldersByInsurer(int insurerId, boolean workgroupEnable);
-
     public List<WebUser> getUsers(int organisationId, int organisationTypeId, int userRoleId);
-    
+
+    public List<WebUser> getUsers();
+
     public void saveUser(WebUser user);
 }

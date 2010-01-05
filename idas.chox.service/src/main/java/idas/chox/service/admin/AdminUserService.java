@@ -45,7 +45,6 @@ public class AdminUserService extends DataService {
     }
 
     // <editor-fold defaultstate="collapsed" desc="USERS">
-
     public ActionResponse updateUser(WebUser webUser) {
 
         this.actionResponse = new ActionResponse();
@@ -61,6 +60,7 @@ public class AdminUserService extends DataService {
 
     public ActionResponse doAddNewUser(WebUser webUser, Integer insurerId, Integer supplierId, Integer organisationTypeId) {
 
+        this.actionResponse = new ActionResponse();
 
         if (!this.userService.isUserNameExist(webUser.getUserName())) {
 
@@ -78,14 +78,13 @@ public class AdminUserService extends DataService {
 
             webUser.setPassword(encodePassword(webUser.getPassword()));
 
-            this.userService.saveUser(webUser);
+            userService.saveUser(webUser);
 
             webUserUserRoleService.addBaseNewUserRole(webUser.getId(), organisationTypeId);
-            this.getActionResponse().AssignNewIdResult(webUser.getId());
-
+            this.actionResponse.AssignNewIdResult(webUser.getId());
 
         } else {
-            this.getActionResponse().AddError("User Name is already exist!!");
+            this.actionResponse.AddError("User Name is already exist!");
         }
 
         return this.actionResponse;
@@ -109,7 +108,7 @@ public class AdminUserService extends DataService {
 
     }
 
-    private String encodePassword(String sPassword) {
+    public String encodePassword(String sPassword) {
         PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
         return passwordEncoder.encodePassword(sPassword, null);
     }
@@ -123,15 +122,13 @@ public class AdminUserService extends DataService {
         boolean isAllowUpdate = true;
 
         if (!webUser.getStatus() && claimService.isUserHasOpenClaim(webUser.getId())) {
-            String ackMsg = "This user currently has assigned claims. Please reassign these claims before de-activating this user account";
-            getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, ackMsg);
+            this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "This user currently has assigned claims. Please reassign these claims before de-activating this user account");
             isAllowUpdate = false;
         }
 
         if (isAllowUpdate) {
             this.userService.saveUser(webUser);
         }
-
 
         return this.actionResponse;
     }
@@ -145,16 +142,18 @@ public class AdminUserService extends DataService {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="USER ROLES">
-    public List<WebUserUserRole> getMappedUserRole(int webUserId){
+    public List getAvailableUserroles(int organisationTypeId, int webUserId) {
+        return this.webUserUserRoleService.getSelectedUserAvailableRoleLookupItem(organisationTypeId, webUserId);
+    }
+
+    public List<WebUserUserRole> getMappedUserRole(int webUserId) {
         return webUserUserRoleService.getMappedUserRole(webUserId);
     }
 
     public ActionResponse addNewWebUserRoleMapping(int webUserId, int webUserRoleId) {
 
         this.actionResponse = new ActionResponse();
-
         WebUser webUser = userService.getWebUser(webUserId);
-
         this.webUserUserRoleService.addNewUserRole(webUserId, webUserRoleId);
 
         if (webUser.getOrganisationType().equalsIgnoreCase(OrganisationType.INS)) {
@@ -168,7 +167,6 @@ public class AdminUserService extends DataService {
     }
 
     public ActionResponse ValidateRoleToBeDeleted(int webUserId, String webUserRoleCode) {
-
         this.actionResponse = new ActionResponse();
         WebUser webUser = userService.getWebUser(webUserId);
 
@@ -179,38 +177,27 @@ public class AdminUserService extends DataService {
                 if (webUser.getInsurer().isClaimOwnershipEnable()) {
                     // CLAIM OWNERSHIP
                     if (claimService.isUserHasOpenClaim(webUser.getId())) {
-                        getActionResponse().AddError("User " + webUser.getDisplayName() + " has open claim(s) assigned to them, it is not possible to remove the assignment of a 'Claim Handler' Role against a user who has open claim(s)");
+                        this.actionResponse.AddError("User " + webUser.getDisplayName() + " has open claim(s) assigned to them, it is not possible to remove the assignment of a 'Claim Handler' Role against a user who has open claim(s)");
                     }
                 }
             }
         }
-
-        return getActionResponse();
-
+        return this.actionResponse;
     }
 
     private void doInsurerUserRoleValidation(WebUser webUser, String webUserRoleCode) {
-
         if (RoleHelper.isUserCheckByWorkgroup(webUser)) {
-
             if (webUser.getWorkgroupIds().size() > 0) {
                 // WITH WORKGROUP EXIST
 
                 if (webUser.getWorkgroupRelatedRoles().size() == 1) {
                     // HAS ONLY ONE WORKGROUP RELATED ROLES
-
                     getActionResponse().AddError("It is not possible to remove this role against a user who has workgroup(s). Please remove the workgroup(s) from this user.");
-
                 } else {
-
                     doValidateWebUserByRole(webUser, webUserRoleCode);
-
                 }
-
             }
-
         }
-
     }
 
     private void doValidateWebUserByRole(WebUser webUser, String webUserRoleCode) {
@@ -232,9 +219,7 @@ public class AdminUserService extends DataService {
 
         if (hasOpenClaims && !hasOtherUsers) {
             getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "User " + webUser.getDisplayName() + " is the last user that has 'Claim Ownership Manager' and is assigned to Workgroup(s). Are you sure you want to remove this role?");
-
         }
-
     }
 
     public void doFnolRoleValidation(WebUser webUser) {
@@ -244,7 +229,6 @@ public class AdminUserService extends DataService {
 
         if (hasOpenClaims && !hasOtherUsers) {
             getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "User " + webUser.getDisplayName() + " is the last user that has 'Insurer FNOL Handler' and is assigned to Workgroup(s). Are you sure you want to remove this role?");
-
         }
     }
 
@@ -264,23 +248,15 @@ public class AdminUserService extends DataService {
             boolean hasOtherUsers = userService.isWorkgroupOwnByOtherUserByRole(webUser, WebUserRole.ROLE_CH);
 
             if (hasOpenClaims && !hasOtherUsers) {
-
                 getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "User " + webUser.getDisplayName() + " is the last user that has 'Claim Handler' and is assigned to Workgroup(s). Are you sure you want to remove this role?");
-
             }
         }
-
     }
 
     public ActionResponse deleteWebUserRoleMapping(int webUserUserRoleId) {
-
         WebUserUserRole object = this.webUserUserRoleService.getWebUserUserRole(webUserUserRoleId);
         this.webUserUserRoleService.deleteWebUserUserRole(object);
         return this.actionResponse;
-    }
-
-    public List getAvailableUserroles(int organisationTypeId, int webUserId) {
-        return this.webUserUserRoleService.getSelectedUserAvailableRoleLookupItem(organisationTypeId, webUserId);
     }
     // </editor-fold>
 
@@ -400,11 +376,10 @@ public class AdminUserService extends DataService {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
-
     public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService) {
         this.webUserUserRoleService = webUserUserRoleService;
     }
-    
+
     public void setChorganisationService(ChorganisationService chorganisationService) {
         this.chorganisationService = chorganisationService;
     }

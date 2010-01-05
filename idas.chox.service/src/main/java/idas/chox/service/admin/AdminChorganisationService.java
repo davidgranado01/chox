@@ -27,14 +27,6 @@ public class AdminChorganisationService extends DataService {
         this.chorganisationService = chorganisationService;
     }
 
-    public ActionResponse UpdateChorganisationSTatus(Chorganisation chorganisation) {
-
-        this.actionResponse = new ActionResponse();
-
-        return getActionResponse();
-
-    }
-
     public Chorganisation UpdateChorganisation(Chorganisation chorganisation) {
         chorganisation = chorganisationService.updateChorganisation(chorganisation);
         return chorganisation;
