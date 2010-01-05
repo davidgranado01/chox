@@ -3,7 +3,6 @@ package idas.chox.web.actions;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Chorganisation;
-import idas.chox.core.services.ChorganisationService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminChorganisationService;
 import idas.chox.web.viewdata.ChorganisationViewData;
@@ -15,7 +14,6 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
 
     private AdminChorganisationService adminChorganisationService;
     private List<ChorganisationViewData> credithireorganisation;
-    private ChorganisationService chorganisationService;
     private int insurerId;
     private String objectId;
     private Chorganisation model;
@@ -119,26 +117,22 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
         return SUCCESS;
     }
 
-    @Override
-    public String execute() {
+    public String getChorganisations() {
+        try {
+            credithireorganisation = new ArrayList<ChorganisationViewData>();
+            List<Chorganisation> choData = this.adminChorganisationService.getAllChorganisations("name");
+            for (Chorganisation h : choData) {
+                credithireorganisation.add(new ChorganisationViewData(h));
+            }
 
-        List<Chorganisation> credithireorganisationData = this.chorganisationService.getChorganisations("name");
-
-        credithireorganisation = new ArrayList<ChorganisationViewData>();
-
-        for (Chorganisation h : credithireorganisationData) {
-            credithireorganisation.add(new ChorganisationViewData(h));
+        } catch (Exception ex) {
+            handleException(this, ex);
+            return ERROR;
         }
-
         return SUCCESS;
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
-
-    public void setChorganisationService(ChorganisationService chorganisationService) {
-        this.chorganisationService = chorganisationService;
-    }
-
     public void setAdminChorganisationService(AdminChorganisationService adminChorganisationService) {
         this.adminChorganisationService = adminChorganisationService;
     }

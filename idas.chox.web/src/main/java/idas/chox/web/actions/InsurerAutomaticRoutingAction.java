@@ -5,7 +5,7 @@ import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.service.ActionResponse;
-import idas.chox.service.admin.AdminInsurerAutomaticRoutingService;
+import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerAutomaticRoutingViewData;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +18,8 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
     private int automaticRoutingId = -1;
     private String objectId;
     private AutomaticRouting model;
-    protected List<InsurerAutomaticRoutingViewData> insurerAutomaticRoutings = new ArrayList<InsurerAutomaticRoutingViewData>();
-    private AdminInsurerAutomaticRoutingService adminInsurerAutomaticRoutingService;
+    private List<InsurerAutomaticRoutingViewData> insurerAutomaticRoutings = new ArrayList<InsurerAutomaticRoutingViewData>();
+    private AdminInsurerService adminInsurerService;
 
     public AutomaticRouting getModel() {
         return model;
@@ -46,7 +46,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
 
             if (this.objectId != null && !this.objectId.equalsIgnoreCase("")) {
                 if (Integer.valueOf(objectId) > 0) {
-                    model = adminInsurerAutomaticRoutingService.getInsurerAutomaticRouting(Integer.valueOf(this.objectId));
+                    model = adminInsurerService.getInsurerAutomaticRouting(Integer.valueOf(this.objectId));
                 }
             }
 
@@ -99,7 +99,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
 
         try {
 
-            List<AutomaticRouting> automaticRoutingData = this.adminInsurerAutomaticRoutingService.getInsurerAutomaticRoutings(this.insurerId);
+            List<AutomaticRouting> automaticRoutingData = adminInsurerService.getInsurerAutomaticRoutings(this.insurerId);
             for (AutomaticRouting h : automaticRoutingData) {
                 insurerAutomaticRoutings.add(new InsurerAutomaticRoutingViewData(h));
             }
@@ -115,9 +115,9 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
 
         try {
 
-            AutomaticRouting automaticRouting = adminInsurerAutomaticRoutingService.getInsurerAutomaticRouting(this.automaticRoutingId);
+            AutomaticRouting automaticRouting = adminInsurerService.getInsurerAutomaticRouting(this.automaticRoutingId);
             automaticRouting.setExpression(model.getExpression());
-            this.adminInsurerAutomaticRoutingService.updateAutomaticRouting(automaticRouting);
+            adminInsurerService.updateAutomaticRouting(automaticRouting);
 
         } catch (Exception ex) {
             handleException(this, ex);
@@ -131,7 +131,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
 
         List items = new ArrayList<IdLookupItem>();
         try {
-            items = this.adminInsurerAutomaticRoutingService.getAvailableWorkgroups(this.insurerId);
+            items = adminInsurerService.getAvailableWorkgroups(this.insurerId);
         } catch (Exception ex) {
             handleException(this, ex);
         }
@@ -141,21 +141,21 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
 
     public String deleteAutomaticRoutingDetail() {
         ActionResponse response;
-        response = adminInsurerAutomaticRoutingService.deleteAutomaticRouting(this.automaticRoutingId);
+        response = adminInsurerService.deleteAutomaticRouting(this.automaticRoutingId);
         setActionResponse(response);
         return SUCCESS;
     }
 
     public String addNewAutomaticRoutingDetail() {
         ActionResponse response;
-        response = adminInsurerAutomaticRoutingService.addNewAutomaticRouting(this.insurerId, this.workgroupId, model.getExpression());
+        response = adminInsurerService.addNewAutomaticRouting(this.insurerId, this.workgroupId, model.getExpression());
         setActionResponse(response);
         return SUCCESS;
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
-    public void setAdminInsurerAutomaticRoutingService(AdminInsurerAutomaticRoutingService adminInsurerAutomaticRoutingService) {
-        this.adminInsurerAutomaticRoutingService = adminInsurerAutomaticRoutingService;
+    public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
+        this.adminInsurerService = adminInsurerService;
     }
     // </editor-fold>
 }

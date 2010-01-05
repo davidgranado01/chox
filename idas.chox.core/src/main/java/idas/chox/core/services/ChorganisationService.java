@@ -13,8 +13,8 @@ public interface ChorganisationService {
 
     public List<Chorganisation> getAvailableChorganisationsByInsurer(int insurerId);
 
-    public List<Chorganisation> getChorganisationsByInsurerId(int insurerId);
-
+    public List<Chorganisation> getActiveChorganisationsByInsurerWithoutBreBand(int insurerId);
+   
     public List<Chorganisation> getActiveChorganisation();
 
     public boolean isChorgNameExist(String chorganisationName);

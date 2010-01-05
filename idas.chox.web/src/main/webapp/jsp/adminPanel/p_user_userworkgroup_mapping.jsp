@@ -41,7 +41,7 @@
                 {header: "Created By", width: 90, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: true, resizable: true},
                 {header: "", width: 100, dataIndex: 'Remove', sortable: false, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='highlihigh-light-itemghtItem'>Remove</a>"}}
+                        return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
             height:410,
             width: 715

@@ -49,7 +49,7 @@ public class VehicleClassCeilingTest {
         vehicleClassCeiling.setVehicleClass(P1);
         RSA.AddVehicleClassCeiling(vehicleClassCeiling);
 
-        insurerService.updateInsurer(RSA);
+        insurerService.saveInsurer(RSA);
 
         Insurer insurerWithVehicleClassCeiling = insurerService.getInsurer(RSA.getId());
         Assert.assertNotNull(insurerWithVehicleClassCeiling);

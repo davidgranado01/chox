@@ -30,7 +30,7 @@
 
         gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getChorganisation.action',method:'POST'}),
+            ({url: '<%= request.getContextPath()%>/prv/p/getChorganisations.action',method:'POST'}),
             reader:gridviewJsonReader      
         });
 

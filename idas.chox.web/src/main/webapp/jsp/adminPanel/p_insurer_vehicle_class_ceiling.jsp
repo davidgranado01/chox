@@ -63,7 +63,7 @@
         ui.ajaxForm($("form#editVehicleClassCeilingDetail"), onVehicleClassPageRefresh);
 
 
-        if(!vehicleCeilingEditSelectionDlg)
+        if(!vehicleCeilingEditSelectionDlg || vehicleCeilingEditSelectionDlg==null)
         {
             vehicleCeilingEditSelectionDlg =  new Ext.Window({
                 applyTo:'vccSelectionDlgHolder',
@@ -80,10 +80,14 @@
                 }),
                 buttons: [{
                         text:'Ok', handler: function(){
- 
-                            $("form#editVehicleClassCeilingDetail").ajaxSubmit();
-                            vehicleCeilingEditSelectionDlg.hide();
-                            onVehicleClassPageRefresh();
+
+                            var op = {
+                                success: doVehicleClassCeilingPageRefresh,
+                                timeout: 3000,
+                                error: ui.onSubmitError
+                            };
+                            
+                            $("form#editVehicleClassCeilingDetail").ajaxSubmit(op);
                         }
                     },{
                         text: 'Close', handler: function(){
@@ -138,8 +142,10 @@
        
     });
 
-    /*
     function doVehicleClassCeilingPageRefresh(){
+
+        vehicleCeilingEditSelectionDlg.hide();
+        vehicleCeilingEditSelectionDlg = null;
 
         var tabIndex = 0;
         if(<s:property value="isChoxAdmin"/>){
@@ -153,8 +159,7 @@
             $(target).html(data);
         });
     }
-     */
-   
+
     function onVehicleClassPageRefresh(){
         showVehicleClassDropDown();
         vehicleClassCeiling_loadGridViewList();

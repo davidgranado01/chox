@@ -2,12 +2,9 @@ package idas.chox.web.actions;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
-import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
-import idas.chox.core.services.UserService;
 import idas.chox.service.admin.AdminUserService;
 import idas.chox.web.viewdata.UserViewData;
 import java.util.ArrayList;
@@ -20,7 +17,6 @@ import idas.chox.service.ActionResponse;
 public class UserAction extends BaseAction implements ModelDriven<WebUser>, Preparable {
 
     private List<UserViewData> users = new ArrayList<UserViewData>();
-    private UserService userService;
     private int organisationTypeId = -1;
     private int organisationId = -1;
     private int userRoleId = -1;
@@ -29,9 +25,8 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     private Integer insurerId = -1;
     private Integer supplierId = -1;
     private Integer tabIndex;
-    private LookupService lookupService;
-    private InsurerService insurerService;
     private AdminUserService adminUserService;
+    private LookupService lookupService;
 
     public boolean getIsNew() {
 
@@ -62,6 +57,21 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
 
     public int getCurrentUserOrganisationId() {
         return getUserOrganisationId();
+    }
+
+    public void prepare() throws Exception {
+        try {
+            model = new WebUser();
+            model.setClaimHandler(false);
+
+            if (objectId != null && !objectId.equalsIgnoreCase("")) {
+                if (Integer.valueOf(objectId) > 0) {
+                    model = adminUserService.getUser(Integer.valueOf(objectId));
+                }
+            }
+        } catch (Exception ex) {
+            handleException(this, ex);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
@@ -137,61 +147,53 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     public void setObjectId(String objectId) {
         this.objectId = objectId;
     }
-
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
-    @Override
-    public String execute() {
 
-        List<WebUser> userData = this.userService.getUsers(organisationId, organisationTypeId, userRoleId);
+    public String getUsers() {
+        
+        try {
+            
+            List<WebUser> userData = adminUserService.getUsers(organisationId, organisationTypeId, userRoleId);
 
-        for (WebUser h : userData) {
-            if (userRoleId > 0) {
-                if (isSelectedRoleExist(h.getRoles(), userRoleId)) {
+            for (WebUser h : userData) {
+                if (userRoleId > 0) {
+                    if (isSelectedRoleExist(h.getRoles(), userRoleId)) {
+                        users.add(new UserViewData(h));
+                    }
+                } else {
                     users.add(new UserViewData(h));
                 }
-            } else {
-                users.add(new UserViewData(h));
             }
+        } catch (Exception ex) {
+            handleException(this, ex);
+            return ERROR;
         }
-
         return SUCCESS;
     }
 
     private boolean isSelectedRoleExist(Set roles, int selectedRole) {
         boolean isExist = false;
+        try {
+            Iterator it = roles.iterator();
 
-        Iterator it = roles.iterator();
-
-        while (it.hasNext()) {
-            WebUserRole webUserrole = (WebUserRole) it.next();
-            if (webUserrole.getId() == selectedRole) {
-                isExist = true;
-                break;
+            while (it.hasNext()) {
+                WebUserRole webUserrole = (WebUserRole) it.next();
+                if (webUserrole.getId() == selectedRole) {
+                    isExist = true;
+                    break;
+                }
             }
+        } catch (Exception ex) {
+            handleException(this, ex);
         }
-
         return isExist;
-    }
-
-    public void prepare() throws Exception {
-
-        model = new WebUser();
-        model.setClaimHandler(false);
-
-        if (objectId != null && !objectId.equalsIgnoreCase("")) {
-            if (Integer.valueOf(objectId) > 0) {
-                model = userService.getUsers(Integer.valueOf(objectId));
-            }
-        }
-
     }
 
     public boolean getIsWorkgroupEnabled() {
         boolean isEnable = false;
         if (model.getInsurer() != null) {
-            Insurer insurer = insurerService.getInsurer(model.getInsurer().getId());
-            isEnable = insurer.isWorkgroupEnable();
+            isEnable = model.getInsurer().isWorkgroupEnable();
         }
         return isEnable;
     }
@@ -268,14 +270,6 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    public void setInsurerService(InsurerService insurerService) {
-        this.insurerService = insurerService;
-    }
-
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
     }

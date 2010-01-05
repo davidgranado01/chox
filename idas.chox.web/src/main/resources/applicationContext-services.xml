@@ -91,31 +91,27 @@
         <property name="bordereauService" ref="bordereauService"/>
         <property name="businessRulesEngService" ref="businessRulesEngService"/>
     </bean>
-    <bean id="adminUserRoleService" class="idas.chox.service.admin.AdminUserRoleService" singleton="false">
-        <property name="userService" ref="userService" />
-        <property name="claimService" ref="claimService" />
-        <property name="webUserUserRoleService" ref="webUserUserRoleService" />
-        <property name="userWorkgroupService" ref="userWorkgroupService" />
-    </bean>
-    <bean id="adminUserWorkgroupService" class="idas.chox.service.admin.AdminUserWorkgroupService" singleton="false">
-        <property name="userService" ref="userService" />
-        <property name="claimService" ref="claimService" />
-        <property name="workgroupService" ref="workgroupService" />
-        <property name="userWorkgroupService" ref="userWorkgroupService" />
-    </bean>
     <bean id="adminUserService" class="idas.chox.service.admin.AdminUserService" singleton="false">
-        <property name="lookupService" ref="lookupService" />
         <property name="insurerService" ref="insurerService" />
         <property name="chorganisationService" ref="chorganisationService" />
         <property name="webUserUserRoleService" ref="webUserUserRoleService" />
         <property name="claimService" ref="claimService" />
+        <property name="userService" ref="userService" />
+        <property name="workgroupService" ref="workgroupService" />
+        <property name="userWorkgroupService" ref="userWorkgroupService" />
     </bean>
     <bean id="adminChorganisationService" class="idas.chox.service.admin.AdminChorganisationService" singleton="false">
         <property name="chorganisationService" ref="chorganisationService" />
     </bean>
-    <bean id="adminInsurerAutomaticRoutingService" class="idas.chox.service.admin.AdminInsurerAutomaticRoutingService" singleton="false">
+    <bean id="adminInsurerService" class="idas.chox.service.admin.AdminInsurerService" singleton="false">
         <property name="insurerService" ref="insurerService" />
         <property name="workgroupService" ref="workgroupService" />
+        <property name="breBandService" ref="breBandService" />
         <property name="automaticRoutingService" ref="automaticRoutingService" />
+        <property name="chorganisationService" ref="chorganisationService" />
+        <property name="breBandOrganisationService" ref="breBandOrganisationService" />
+        <property name="insurerChorganisationService" ref="insurerChorganisationService" />
+        <property name="insurerAliasService" ref="insurerAliasService" />
+        <property name="vehicleClassCeilingService" ref="vehicleClassCeilingService" />
     </bean>
 </beans>

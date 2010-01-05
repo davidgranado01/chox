@@ -18,7 +18,6 @@ public class VehicleClassCeilingServiceImpl extends SecureDataService implements
         // GET ALL VEHICLE CLASS
         DetachedCriteria vehicleClassCirteria = DetachedCriteria.forClass(VehicleClass.class);
 
-
         // GET ALL  VEHICLE CLASS ASSIGNED TO INSURER
         DetachedCriteria vehicleClassCeilingCirteria = DetachedCriteria.forClass(VehicleClassCeiling.class);
         vehicleClassCeilingCirteria.add(Restrictions.eq("insurer.id", insurerId));

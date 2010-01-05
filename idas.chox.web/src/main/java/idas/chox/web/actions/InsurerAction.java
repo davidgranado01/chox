@@ -7,11 +7,8 @@ import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Insurer;
-import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.InsurerAliasService;
-import idas.chox.core.services.InsurerService;
-import idas.chox.core.services.WorkgroupService;
 import idas.chox.service.ActionResponse;
+import idas.chox.service.admin.AdminInsurerService;
 
 public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, Preparable {
 
@@ -19,10 +16,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     private String objectId;
     private Insurer model;
     private Integer tabIndex;
-    private InsurerAliasService insurerAliasService;
-    private WorkgroupService workgroupService;
-    private BreBandService breBandService;
-    private InsurerService insurerService;
+    private AdminInsurerService adminInsurerService;
 
     public boolean getIsNew() {
         if (Integer.valueOf(objectId) <= 0) {
@@ -53,7 +47,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
             if (!objectId.equalsIgnoreCase("") && Integer.valueOf(objectId) <= 0) {
                 model = new Insurer();
             } else {
-                model = insurerService.getInsurer(Integer.valueOf(objectId));
+                model = adminInsurerService.getInsurer(Integer.valueOf(objectId));
             }
         } catch (Exception ex) {
             handleException(this, ex);
@@ -79,12 +73,11 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTION">
-
-    @Override
-    public String execute() {
+    public String getInsurers() {
 
         try {
-            List<Insurer> insurerData = this.insurerService.getInsurers();
+
+            List<Insurer> insurerData = adminInsurerService.getInsurers();
 
             insurer = new ArrayList<InsurerViewData>();
 
@@ -103,35 +96,11 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     public String updateInsurer() throws Exception {
 
         try {
-
-            if (this.getIsNew()) {
-
-                if (this.insurerService.isInsurerNameExist(model.getName())) {
-                    this.getActionResponse().AddError("Insurer name already exist!");
-                    return SUCCESS;
-                }
-
-            } else {
-
-                if (model.isWorkgroupEnable() && !workgroupService.isInsurerAllowToEnableWorkgroup(model)) {
-                    this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Please make sure there is atleast one active workgroup exist in order to enable workgroup function");
-                    return SUCCESS;
-                }
-
-            }
-
-            model = this.insurerService.updateInsurer(model);
-
-            if (this.getIsNew()) {
-
-                if (model.isWorkgroupEnable()) {
-                    workgroupService.defaultWorkgroup(model);
-                }
-
-                insurerAliasService.createDefaultRecord(model);
-                breBandService.createDefaultRecord(model);
-            }
-
+            
+            ActionResponse response;
+            response = adminInsurerService.updateInsurer(model, getIsNew());
+            setActionResponse(response);
+            
         } catch (Exception ex) {
             handleException(this, ex);
             return ERROR;
@@ -141,41 +110,26 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     }
 
     public String triggerInsurerStatus() throws Exception {
+        
         try {
-            Insurer thisObject = this.insurerService.getInsurer(Integer.valueOf(objectId));
 
-            if (thisObject.isStatus()) {
-                thisObject.setStatus(false);
-            } else {
-                thisObject.setStatus(true);
+            if(objectId!=null && !objectId.equalsIgnoreCase("")){
+                adminInsurerService.triggerInsurerStatus(Integer.valueOf(objectId));
             }
-
-            this.insurerService.updateInsurer(thisObject);
-
+            
         } catch (Exception ex) {
             handleException(this, ex);
             return ERROR;
         }
 
         return SUCCESS;
+        
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
 
-    public void setInsurerService(InsurerService insurerService) {
-        this.insurerService = insurerService;
-    }
-
-    public void setBreBandService(BreBandService breBandService) {
-        this.breBandService = breBandService;
-    }
-
-    public void setWorkgroupService(WorkgroupService workgroupService) {
-        this.workgroupService = workgroupService;
-    }
-
-    public void setInsurerAliasService(InsurerAliasService insurerAliasService) {
-        this.insurerAliasService = insurerAliasService;
+    public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
+        this.adminInsurerService = adminInsurerService;
     }
     // </editor-fold>
 }

@@ -3,28 +3,24 @@ package idas.chox.web.actions;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.VehicleClassCeiling;
-import idas.chox.core.services.InsurerService;
-import idas.chox.core.services.VehicleClassCeilingService;
-import idas.chox.core.services.VehicleClassService;
+import idas.chox.service.ActionResponse;
+import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.VehicleClassCeilingViewData;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import net.sf.json.JSONArray;
 import java.util.List;
 
 public class InsurerVehicleClassCeiling extends BaseAction implements ModelDriven<VehicleClassCeiling>, Preparable {
 
+    private int insurerId;
+    private int vehicleClassId;
+    private int vehicleClassCeilingId;
+    private double hireNetCeiling = 0.00;
+    private double repairNetCeiling = 0.00;
     private String objectId;
     private VehicleClassCeiling model;
-    protected int insurerId;
-    protected int vehicleClassId;
-    protected int vehicleClassCeilingId;
-    protected double hireNetCeiling = 0.00;
-    protected double repairNetCeiling = 0.00;
-    protected List<VehicleClassCeilingViewData> vehicleClassCeilingViewData = new ArrayList<VehicleClassCeilingViewData>();
-    protected VehicleClassCeilingService vehicleClassCeilingService;
-    protected VehicleClassService vehicleClassService;
-    protected InsurerService insurerService;
+    private List<VehicleClassCeilingViewData> vehicleClassCeilingViewData = new ArrayList<VehicleClassCeilingViewData>();
+    private AdminInsurerService adminInsurerService;
 
     public boolean getIsNew() {
 
@@ -104,12 +100,13 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
         this.insurerId = insurerId;
     }
     // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="ACTION">
+    // <editor-fold defaultstate="collapsed" desc="ACTIONS">
+
     public String getSelectedInsurerVehicleClassCeiling() {
 
         try {
 
-            List<VehicleClassCeiling> vehicleClassCeilings = vehicleClassCeilingService.getSelectedVehicleClassCeilingByInsurer(this.insurerId);
+            List<VehicleClassCeiling> vehicleClassCeilings = adminInsurerService.getVehicleClassCeilingByInsurer(this.insurerId);
 
             for (VehicleClassCeiling vcc : vehicleClassCeilings) {
                 vehicleClassCeilingViewData.add(new VehicleClassCeilingViewData(vcc));
@@ -127,10 +124,9 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
 
         try {
 
-            model.setVehicleClass(vehicleClassService.getVehicleClass(this.vehicleClassId));
-            model.setInsurer(insurerService.getInsurer(this.insurerId));
-            vehicleClassCeilingService.saveVehicleClassCeiling(model);
-            getActionResponse().AssignNewIdResult(model.getId());
+            ActionResponse response;
+            response = adminInsurerService.addNewVehicleClassCeiling(this.model, this.vehicleClassId, this.insurerId);
+            setActionResponse(response);
 
         } catch (Exception ex) {
             handleException(this, ex);
@@ -145,10 +141,9 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
         try {
 
             if (this.vehicleClassCeilingId > 0) {
-
-                VehicleClassCeiling vehicleClassCeiling = vehicleClassCeilingService.getVehicleClassCeiling(this.vehicleClassCeilingId);
-                vehicleClassCeilingService.deleteVehicleClassCeiling(vehicleClassCeiling);
-
+                ActionResponse response;
+                response = adminInsurerService.removeVehicleClassCeiling(this.vehicleClassCeilingId);
+                setActionResponse(response);
             }
 
         } catch (Exception ex) {
@@ -163,10 +158,9 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
 
         try {
 
-            VehicleClassCeiling vehicleClassCeiling = vehicleClassCeilingService.getVehicleClassCeiling(this.vehicleClassCeilingId);
-            vehicleClassCeiling.setHireNetCeiling(new BigDecimal(this.hireNetCeiling));
-            vehicleClassCeiling.setRepairNetCeiling(new BigDecimal(this.repairNetCeiling));
-            vehicleClassCeilingService.saveVehicleClassCeiling(vehicleClassCeiling);
+            ActionResponse response;
+            response = adminInsurerService.updateVehicleClassCeiling(this.vehicleClassCeilingId, this.hireNetCeiling, this.repairNetCeiling);
+            setActionResponse(response);
 
         } catch (Exception ex) {
             handleException(this, ex);
@@ -177,16 +171,9 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
-    public void setVehicleClassService(VehicleClassService vehicleClassService) {
-        this.vehicleClassService = vehicleClassService;
-    }
 
-    public void setVehicleClassCeilingService(VehicleClassCeilingService vehicleClassCeilingService) {
-        this.vehicleClassCeilingService = vehicleClassCeilingService;
-    }
-
-    public void setInsurerService(InsurerService insurerService) {
-        this.insurerService = insurerService;
+    public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
+        this.adminInsurerService = adminInsurerService;
     }
     // </editor-fold>
 }

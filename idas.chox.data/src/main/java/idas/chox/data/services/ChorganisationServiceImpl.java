@@ -1,12 +1,12 @@
 package idas.chox.data.services;
 
+import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.InsurerChorganisation;
-import idas.chox.core.services.BreBandOrganisationService;
 import idas.chox.core.services.ChorganisationService;
-import idas.chox.core.services.InsurerChorganisationService;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
@@ -19,14 +19,14 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
     public Chorganisation getChorganisation(int chorganisationId) {
         return (Chorganisation) get(Chorganisation.class, chorganisationId);
     }
-    
+
     public List<Chorganisation> getChorganisations(String order) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
-        
-        if(!order.equalsIgnoreCase("") && order!=null){
+
+        if (!order.equalsIgnoreCase("") && order != null) {
             criteria.addOrder(Order.asc(order));
         }
-        
+
         return findByCriteria(criteria);
     }
 
@@ -35,7 +35,6 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         save(chorganisation);
         return chorganisation;
     }
-
 
     public List<Chorganisation> getAvailableChorganisationsByInsurer(int insurerId) {
 
@@ -48,29 +47,30 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         insurerChorganisationCirteria.add(Restrictions.eq("insurer.id", insurerId));
         insurerChorganisationCirteria.add(Restrictions.eq("status", true));
         insurerChorganisationCirteria.setProjection(Property.forName("chorganisation.id"));
-        
-        // FILTERED BY ASSIGNED CHORGANISATIONS
-        chorganisationCirteria.add(Property.forName("id").notIn(insurerChorganisationCirteria));
 
         // RETURN SEARCH RESULT
+        chorganisationCirteria.add(Property.forName("id").notIn(insurerChorganisationCirteria));
         return findByCriteria(chorganisationCirteria);
 
     }
 
+    public List<Chorganisation> getActiveChorganisationsByInsurerWithoutBreBand(int insurerId) {
 
+        // GET ALL ACTIVE CH ORGANISATION FILTER BY INSURER
+        DetachedCriteria insurerChorganisationCirteria = DetachedCriteria.forClass(InsurerChorganisation.class);
+        insurerChorganisationCirteria.add(Restrictions.eq("insurer.id", insurerId));
+        insurerChorganisationCirteria.add(Restrictions.eq("status", true));
 
+        // GET ALL CH ORGANISATION BY BRE BAND ASSIGNED TO THE INSURER
+        DetachedCriteria breBandOrganisationCirteria = DetachedCriteria.forClass(BreBandOrganisation.class);
+        breBandOrganisationCirteria.createAlias("this.breBand", "bre", CriteriaSpecification.INNER_JOIN);
+        breBandOrganisationCirteria.add(Restrictions.eq("bre.insurer.id", insurerId));
+        breBandOrganisationCirteria.setProjection(Property.forName("chorganisation.id"));
 
-
-    
-    protected InsurerChorganisationService insurerChorganisationService;
-    protected BreBandOrganisationService choBandOrganisationService;
-
-    public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {
-        this.insurerChorganisationService = insurerChorganisationService;
-    }
-
-    public void setChoBandOrganisationService(BreBandOrganisationService choBandOrganisationService) {
-        this.choBandOrganisationService = choBandOrganisationService;
+        // RETURN SEARCH RESULT
+        insurerChorganisationCirteria.add(Property.forName("chorganisation.id").notIn(breBandOrganisationCirteria));
+        insurerChorganisationCirteria.setProjection(Property.forName("chorganisation"));
+        return findByCriteria(insurerChorganisationCirteria);
     }
 
     public boolean isChorgNameExist(String s) {
@@ -84,22 +84,6 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         return isExist;
 
     }
-    
-    public List<Chorganisation> getChorganisationsByInsurerId(int insurerId) {
-        List<Chorganisation> objects = new ArrayList<Chorganisation>();
-
-        List<InsurerChorganisation> InsurerChorganisation = insurerChorganisationService.getInsurerChorganisations(insurerId, null);
-
-        for (InsurerChorganisation object : InsurerChorganisation) {
-            if (object.getChorganisation().isStatus()) {
-                objects.add(object.getChorganisation());
-            }
-        }
-
-        return objects;
-    }
-
-    
 
     public Chorganisation getChorgByName(String s) {
 

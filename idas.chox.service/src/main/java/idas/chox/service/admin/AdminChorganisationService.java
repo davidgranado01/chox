@@ -4,7 +4,7 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.data.services.DataService;
 import idas.chox.service.ActionResponse;
-
+import java.util.List;
 
 public class AdminChorganisationService extends DataService {
 
@@ -27,27 +27,31 @@ public class AdminChorganisationService extends DataService {
         this.chorganisationService = chorganisationService;
     }
 
-    public ActionResponse UpdateChorganisationSTatus(Chorganisation chorganisation){
+    public ActionResponse UpdateChorganisationSTatus(Chorganisation chorganisation) {
 
         this.actionResponse = new ActionResponse();
 
         return getActionResponse();
-        
+
     }
 
-    public Chorganisation UpdateChorganisation(Chorganisation chorganisation){
-        chorganisation = chorganisationService.updateChorganisation(chorganisation);        
+    public Chorganisation UpdateChorganisation(Chorganisation chorganisation) {
+        chorganisation = chorganisationService.updateChorganisation(chorganisation);
         return chorganisation;
     }
 
-    public boolean isChorganisationNameExist(String chorganisationName){
+    public boolean isChorganisationNameExist(String chorganisationName) {
         return chorganisationService.isChorgNameExist(chorganisationName);
     }
-    
-    public ActionResponse UpdateChorganisationStatus(String chorganisationId){
 
-        if(!chorganisationId.equalsIgnoreCase("")){
-            
+    public List<Chorganisation> getAllChorganisations(String orderColumn) {
+        return this.chorganisationService.getChorganisations("name");
+    }
+
+    public ActionResponse UpdateChorganisationStatus(String chorganisationId) {
+
+        if (!chorganisationId.equalsIgnoreCase("")) {
+
             this.actionResponse = new ActionResponse();
 
             Chorganisation chorganisation = null;
@@ -61,26 +65,24 @@ public class AdminChorganisationService extends DataService {
 
             this.chorganisationService.updateChorganisation(chorganisation);
 
-        }else{
-            
+        } else {
+
             getActionResponse().AddError("Incorrect Credit Hire Organisation");
-            
+
         }
-        
+
         return getActionResponse();
-        
+
     }
 
     public Chorganisation getChorganisation(String ChorganisationId) {
 
         Chorganisation chorganisation = null;
-        
+
         if (!ChorganisationId.equalsIgnoreCase("")) {
             chorganisation = chorganisationService.getChorganisation(Integer.valueOf(ChorganisationId));
         }
-        
+
         return chorganisation;
     }
-    
-
 }

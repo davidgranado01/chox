@@ -116,12 +116,6 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         this.save(user);
     }
 
-    public WebUser getWebUser(int id) {
-        WebUser user = new WebUser();
-        user = (WebUser) get(WebUser.class, id);
-        return user;
-    }
-
     public Long getNumChoActiveUser(Integer choId) {
         String q = "select count(*) from WebUser where status = true and chorganisation.id = " + choId.toString();
         return getCount(q);
@@ -284,11 +278,12 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return users;
     }
 
-    public WebUser getUsers(int id) {
-
-        return (WebUser) get(WebUser.class, id);
+    public WebUser getWebUser(int id) {
+        WebUser user = new WebUser();
+        user = (WebUser) get(WebUser.class, id);
+        return user;
     }
-
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveUser(WebUser object) {
         object.setEmail(object.getEmail().toLowerCase());

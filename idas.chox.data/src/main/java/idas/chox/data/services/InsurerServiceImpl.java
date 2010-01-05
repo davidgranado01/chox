@@ -54,7 +54,7 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public Insurer updateInsurer(Insurer object) {
+    public Insurer saveInsurer(Insurer object) {
 
 
         save(object);

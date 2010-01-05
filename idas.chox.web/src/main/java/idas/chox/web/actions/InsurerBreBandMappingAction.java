@@ -2,9 +2,7 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.model.Chorganisation;
-import idas.chox.core.services.BreBandOrganisationService;
-import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.ChorganisationService;
+import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.BreBandChorganisationViewData;
 import idas.chox.web.viewdata.ChorganisationViewData;
 import java.util.ArrayList;
@@ -13,15 +11,27 @@ import java.util.List;
 
 public class InsurerBreBandMappingAction extends BaseAction {
 
-    protected int insurerId = -1;
+    private int insurerId = -1;
     private int breBandId = -1;
     private int chorganisationId = -1;
     private int breBandChorganisationId = -1;
-    protected String jsonRecords;
-    private BreBandService breBandService;
-    private ChorganisationService chorganisationService;
-    private BreBandOrganisationService breBandOrganisationService;
+    private String jsonRecords;
+    private AdminInsurerService adminInsurerService;
 
+    public String doRenderActionPage() {
+        return SUCCESS;
+    }
+
+    public String getJsonData() {
+        return this.jsonRecords;
+    }
+
+    public void setJsonData(Object object, Integer recordSize) {
+        JSONArray jObject = JSONArray.fromObject(object);
+        this.jsonRecords = "{totalCount:" + recordSize + ",results:" + jObject.toString() + "}";
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="GET SET">
     public int getBreBandChorganisationId() {
         return breBandChorganisationId;
     }
@@ -29,7 +39,7 @@ public class InsurerBreBandMappingAction extends BaseAction {
     public void setBreBandChorganisationId(int breBandChorganisationId) {
         this.breBandChorganisationId = breBandChorganisationId;
     }
-    
+
     public int getInsurerId() {
         return insurerId;
     }
@@ -46,10 +56,6 @@ public class InsurerBreBandMappingAction extends BaseAction {
         this.chorganisationId = chorganisationId;
     }
 
-    public String doRenderActionPage() {
-        return SUCCESS;
-    }
-
     public int getBreBandId() {
         return breBandId;
     }
@@ -57,40 +63,30 @@ public class InsurerBreBandMappingAction extends BaseAction {
     public void setBreBandId(int breBandId) {
         this.breBandId = breBandId;
     }
-
-    public String getJsonData() {
-        return this.jsonRecords;
-    }
-
-    public void setJsonData(Object object, Integer recordSize) {
-        JSONArray jObject = JSONArray.fromObject(object);
-        this.jsonRecords = "{totalCount:" + recordSize + ",results:" + jObject.toString() + "}";
-    }
-
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="ACTIONS">
     public String getChorganisationsByInsurerIdWithoutBreBand() {
 
-        try {
+        //try {
 
-            List<ChorganisationViewData> credithireorganisation = new ArrayList<ChorganisationViewData>();
+        List<ChorganisationViewData> credithireorganisation = new ArrayList<ChorganisationViewData>();
 
-            if (this.insurerId > 0) {
+        if (this.insurerId > 0) {
 
-                List<Chorganisation> chorganisations = chorganisationService.getChorganisationsByInsurerId(this.insurerId);
+            List<Chorganisation> chorganisations = adminInsurerService.getChorganisationsByInsurerIdWithoutBreBand(this.insurerId);
 
-                for (Chorganisation object : chorganisations) {
-                    if (!breBandOrganisationService.isActiveChorganisationWithBand(object.getId(), insurerId)) {
-                        credithireorganisation.add(new ChorganisationViewData(object));
-                    }
-                }
-                
-                setJsonData(credithireorganisation, credithireorganisation.size());
-
+            for (Chorganisation object : chorganisations) {
+                credithireorganisation.add(new ChorganisationViewData(object));
             }
 
-        } catch (Exception ex) {
-            handleException(this, ex);
-            return ERROR;
+            setJsonData(credithireorganisation, credithireorganisation.size());
+
         }
+
+        //} catch (Exception ex) {
+        //  handleException(this, ex);
+        //return ERROR;
+        //}
 
         return SUCCESS;
     }
@@ -101,9 +97,37 @@ public class InsurerBreBandMappingAction extends BaseAction {
 
             List<BreBandChorganisationViewData> insurerBreBand;
             List<BreBandOrganisation> brebandorganisations = new ArrayList<BreBandOrganisation>();
-            brebandorganisations = breBandOrganisationService.getBreBandChorganisationsByBreBandId(this.breBandId);
+            brebandorganisations = adminInsurerService.getBreBandChorganisationsByBreBandId(this.breBandId);
             insurerBreBand = getChoViewDataList(brebandorganisations);
             setJsonData(insurerBreBand, insurerBreBand.size());
+
+        } catch (Exception ex) {
+            handleException(this, ex);
+            return ERROR;
+        }
+
+        return SUCCESS;
+    }
+
+    public String addBreBandChorganisation() {
+
+        try {
+            adminInsurerService.addBreBandChorganisation(this.breBandId, this.chorganisationId);
+        } catch (Exception ex) {
+            handleException(this, ex);
+            return ERROR;
+        }
+
+        return SUCCESS;
+    }
+
+    public String deleteBreBandChorganisation() {
+
+        try {
+
+            if (this.breBandChorganisationId > 0) {
+                adminInsurerService.deleteBreBandChorganisation(this.breBandChorganisationId);
+            }
 
         } catch (Exception ex) {
             handleException(this, ex);
@@ -120,57 +144,10 @@ public class InsurerBreBandMappingAction extends BaseAction {
         }
         return breBandChorganisationViewDatas;
     }
-
-    public String addBreBandChorganisation() {
-
-        try {
-
-            BreBandOrganisation breBandOrganisation = new BreBandOrganisation();
-            breBandOrganisation.setBreBand(breBandService.getBreBand(this.breBandId));
-            breBandOrganisation.setChorganisation(chorganisationService.getChorganisation(this.chorganisationId));
-            breBandOrganisationService.saveBreBandOrganisation(breBandOrganisation);
-
-        } catch (Exception ex) {
-            handleException(this, ex);
-            return ERROR;
-        }
-
-        return SUCCESS;
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="SERVICES">
+    public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
+        this.adminInsurerService = adminInsurerService;
     }
-
-    public String deleteBreBandChorganisation() {
-
-        try {
-            
-            if(this.breBandChorganisationId>0){
-                
-                BreBandOrganisation breBandOrganisation = breBandOrganisationService.getBreBandOrganisation(this.breBandChorganisationId);
-                breBandOrganisationService.deleteBreBandOrganisation(breBandOrganisation);
-                
-            }
-            
-        } catch (Exception ex) {
-            handleException(this, ex);
-            return ERROR;
-        }
-
-        return SUCCESS;
-    }
-
-    @Override
-    public String execute() {
-        return SUCCESS;
-    }
-
-    public void setBreBandService(BreBandService breBandService) {
-        this.breBandService = breBandService;
-    }
-    
-    public void setBreBandOrganisationService(BreBandOrganisationService breBandOrganisationService) {
-        this.breBandOrganisationService = breBandOrganisationService;
-    }
-
-    public void setChorganisationService(ChorganisationService chorganisationService) {
-        this.chorganisationService = chorganisationService;
-    }
+    // </editor-fold>
 }

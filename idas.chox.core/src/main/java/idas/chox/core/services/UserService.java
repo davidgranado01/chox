@@ -40,8 +40,6 @@ public interface UserService {
     public List<WebUser> getClaimHanldersByInsurer(int insurerId, boolean workgroupEnable);
 
     public List<WebUser> getUsers(int organisationId, int organisationTypeId, int userRoleId);
-
-    public WebUser getUsers(int userId);
-
+    
     public void saveUser(WebUser user);
 }

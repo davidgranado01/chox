@@ -71,7 +71,7 @@
             width: 715
         });
 
-        if(!automaticRoutingEditSelectionDlg)
+        if(!automaticRoutingEditSelectionDlg || automaticRoutingEditSelectionDlg==null)
         {
             automaticRoutingEditSelectionDlg =  new Ext.Window({
                 applyTo:'autoRoutingSelectionDlgHolder',
@@ -92,13 +92,11 @@
                             var op = {
                                 success: doAutoRoutingPageRefresh,
                                 timeout: 3000,
-                                error: doAutoRoutingPageRefresh
+                                error: ui.onSubmitError
                             };
             
-                            $("form#editAutoRoutingDetail").ajaxSubmit();
-                            automaticRoutingEditSelectionDlg = null;
-                            doAutoRoutingPageRefresh();
-                           
+                            $("form#editAutoRoutingDetail").ajaxSubmit(op);
+                            
                         }
                     },{
                         text: 'Close', handler: function(){
@@ -142,6 +140,9 @@
     
     function doAutoRoutingPageRefresh(){
 
+        automaticRoutingEditSelectionDlg.hide();
+        automaticRoutingEditSelectionDlg = null;
+        
         var tabIndex = 0;
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
@@ -215,6 +216,7 @@
         <div class="form-container" style="height:300px; padding-bottom:30px">
             <form id="editAutoRoutingDetail" name="editAutoRoutingDetail" class="XXentity-form" action="<%= request.getContextPath()%>/prv/p/editAutomaticRoutingDetail.action" method="post">
                 <input id="automaticRoutingId" name="automaticRoutingId" type="hidden"/>
+                <div class="chox-form-item" style="height:10px;"></div>
                 <div class="chox-form-item">
                     <label class="chox-form-pop">Workgroup</label>
                     <label id="editWorkgroupName"></label>

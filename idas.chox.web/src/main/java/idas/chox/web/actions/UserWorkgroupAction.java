@@ -2,9 +2,8 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.WebUserWorkgroup;
-import idas.chox.core.services.UserWorkgroupService;
 import idas.chox.service.ActionResponse;
-import idas.chox.service.admin.AdminUserWorkgroupService;
+import idas.chox.service.admin.AdminUserService;
 import idas.chox.web.viewdata.UserWorkgroupViewData;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +16,7 @@ public class UserWorkgroupAction extends BaseAction {
     private int organisationTypeId;
     private int userWorkgroupId;
     private int workgroupId;
-    private UserWorkgroupService userWorkgroupService;
-    private AdminUserWorkgroupService adminUserWorkgroupService;
+    private AdminUserService adminUserService;
 
     public String doRenderActionPage() {
         return SUCCESS;
@@ -70,6 +68,7 @@ public class UserWorkgroupAction extends BaseAction {
         this.webUserId = webUserId;
     }
 // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
     @Override
     public String execute() {
@@ -78,7 +77,7 @@ public class UserWorkgroupAction extends BaseAction {
 
     public String getUserWorkgroups() {
 
-        List<WebUserWorkgroup> userworkgroupData = userWorkgroupService.getUserWorkgroupsByUser(webUserId);
+        List<WebUserWorkgroup> userworkgroupData = adminUserService.getUserWorkgroupsByUserId(webUserId);
 
         userworkgroups = new ArrayList<UserWorkgroupViewData>();
 
@@ -95,7 +94,7 @@ public class UserWorkgroupAction extends BaseAction {
 
         try {
 
-            items = adminUserWorkgroupService.getWorkgroups(this.webUserId);
+            items = adminUserService.getWorkgroups(this.webUserId);
 
         } catch (Exception ex) {
             handleException(this, ex);
@@ -108,7 +107,7 @@ public class UserWorkgroupAction extends BaseAction {
 
         try {
 
-            ActionResponse response = adminUserWorkgroupService.checkUserWorkgroupAllowToDelete(this.userWorkgroupId);
+            ActionResponse response = adminUserService.checkUserWorkgroupAllowToDelete(this.userWorkgroupId);
             setActionResponse(response);
 
         } catch (Exception ex) {
@@ -123,7 +122,7 @@ public class UserWorkgroupAction extends BaseAction {
 
         try {
 
-            ActionResponse response = adminUserWorkgroupService.removeWebUserWorkgroupMapping(this.userWorkgroupId);
+            ActionResponse response = adminUserService.removeWebUserWorkgroupMapping(this.userWorkgroupId);
             setActionResponse(response);
 
         } catch (Exception ex) {
@@ -139,7 +138,7 @@ public class UserWorkgroupAction extends BaseAction {
 
         try {
 
-            ActionResponse response = adminUserWorkgroupService.addNewWebUserWorkgroupMapping(this.workgroupId, this.webUserId);
+            ActionResponse response = adminUserService.addNewWebUserWorkgroupMapping(this.workgroupId, this.webUserId);
             setActionResponse(response);
 
         } catch (Exception ex) {
@@ -151,13 +150,10 @@ public class UserWorkgroupAction extends BaseAction {
 
     }
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
-    public void setAdminUserWorkgroupService(AdminUserWorkgroupService adminUserWorkgroupService) {
-        this.adminUserWorkgroupService = adminUserWorkgroupService;
-    }
-
-    public void setUserWorkgroupService(UserWorkgroupService userWorkgroupService) {
-        this.userWorkgroupService = userWorkgroupService;
+    public void setAdminUserService(AdminUserService adminUserService) {
+        this.adminUserService = adminUserService;
     }
     // </editor-fold>
 }

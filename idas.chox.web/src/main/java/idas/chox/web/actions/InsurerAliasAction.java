@@ -7,19 +7,17 @@ import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.InsurerAlias;
-import idas.chox.core.services.InsurerAliasService;
-import idas.chox.core.services.InsurerService;
 import idas.chox.service.ActionResponse;
+import idas.chox.service.admin.AdminInsurerService;
 
 public class InsurerAliasAction extends BaseAction implements ModelDriven<InsurerAlias>, Preparable {
 
-    protected int insurerId = -1;
-    protected int insurerAliasId = -1;
-    protected String insurerAliasName;
+    private int insurerId = -1;
+    private int insurerAliasId = -1;
+    private String insurerAliasName;
     private InsurerAlias model;
-    protected List<InsurerAliasViewData> insurerAliases;
-    protected InsurerAliasService insurerAliasService;
-    protected InsurerService insurerService;
+    private List<InsurerAliasViewData> insurerAliases;
+    private AdminInsurerService adminInsurerService;
 
     public InsurerAlias getModel() {
         return model;
@@ -40,10 +38,10 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
 
     public void prepare() throws Exception {
 
-        if (Integer.valueOf(insurerAliasId) <= 0) {
+        if (Integer.valueOf(this.insurerAliasId) <= 0) {
             model = new InsurerAlias();
         } else {
-            model = insurerAliasService.getInsurerAlias(insurerAliasId);
+            model = adminInsurerService.getInsurerAlias(this.insurerAliasId);
         }
     }
 
@@ -82,12 +80,11 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
 
-    @Override
-    public String execute() {
+    public String getInsurerAlias() {
 
         try {
 
-            List<InsurerAlias> insurerAliasData = this.insurerAliasService.getInsurerAliasesByInsurer(insurerId);
+            List<InsurerAlias> insurerAliasData = adminInsurerService.getInsurerAliases(this.insurerId);
             insurerAliases = new ArrayList<InsurerAliasViewData>();
 
             for (InsurerAlias h : insurerAliasData) {
@@ -106,20 +103,9 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
 
         try {
 
-            if (!insurerAliasService.isInsurerAliasExist(insurerId, insurerAliasName)) {
-
-                model = new InsurerAlias();
-                model.setAliasName(insurerAliasName);
-                model.setInsurer(insurerService.getInsurer(insurerId));
-                insurerAliasService.saveInsurerAlias(model);
-
-                getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Alias '" + insurerAliasName + "' has been created");
-
-            } else {
-
-                getActionResponse().AddError("Alias '" + insurerAliasName + "' already exists");
-
-            }
+            ActionResponse response;
+            response = adminInsurerService.addNewInsurerAlias(this.insurerId, this.insurerAliasName);
+            setActionResponse(response);
 
         } catch (Exception ex) {
             handleException(this, ex);
@@ -133,8 +119,9 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
 
         try {
 
-            insurerAliasService.deleteInsurerAlias(model);
-            getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Alias '" + model.getAliasName() + "' has been removed");
+            ActionResponse response;
+            response = adminInsurerService.removeInsurerAlias(model);
+            setActionResponse(response);
 
         } catch (Exception ex) {
             handleException(this, ex);
@@ -146,12 +133,8 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
 
-    public void setInsurerAliasService(InsurerAliasService insurerAliasService) {
-        this.insurerAliasService = insurerAliasService;
-    }
-
-    public void setInsurerService(InsurerService insurerService) {
-        this.insurerService = insurerService;
+    public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
+        this.adminInsurerService = adminInsurerService;
     }
     // </editor-fold>
 }

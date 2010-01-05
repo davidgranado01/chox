@@ -62,7 +62,6 @@
         });
         ui.ajaxForm(userPasswordform);
 
-
         getUserDetailTabIndex();
         
         // GENERATE TAB

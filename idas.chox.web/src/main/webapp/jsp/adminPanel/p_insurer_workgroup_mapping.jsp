@@ -28,7 +28,7 @@
 
         workgroup_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getInsurerWorkgroup.action',method:'POST'}),
+            ({url: '<%= request.getContextPath()%>/prv/p/getInsurerWorkgroups.action',method:'POST'}),
             reader:workgroup_gridviewJsonReader      
         });
 

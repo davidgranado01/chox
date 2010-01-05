@@ -2,9 +2,8 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.WebUserUserRole;
-import idas.chox.core.services.WebUserUserRoleService;
 import idas.chox.service.ActionResponse;
-import idas.chox.service.admin.AdminUserRoleService;
+import idas.chox.service.admin.AdminUserService;
 import idas.chox.web.viewdata.UserroleViewData;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +17,7 @@ public class UserroleAction extends BaseAction {
     private int webUserUserRoleId;
     private int webUserRoleId;
     private String webUserRoleCode;
-    private WebUserUserRoleService webUserUserRoleService;
-    private AdminUserRoleService adminUserRoleService;
+    private AdminUserService adminUserService;
 
     public String doRenderActionPage() {
         return SUCCESS;
@@ -72,7 +70,6 @@ public class UserroleAction extends BaseAction {
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
-
     @Override
     public String execute() {
         return SUCCESS;
@@ -84,7 +81,7 @@ public class UserroleAction extends BaseAction {
 
             userroles = new ArrayList<UserroleViewData>();
 
-            List<WebUserUserRole> userroleData = this.webUserUserRoleService.getMappedUserRole(webUserId);
+            List<WebUserUserRole> userroleData = adminUserService.getMappedUserRole(webUserId);
 
             for (WebUserUserRole h : userroleData) {
                 if (!h.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_CHO) && !h.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_INS) && !h.getWebUserRole().getName().equalsIgnoreCase(WebUserRole.ROLE_CHOX)) {
@@ -101,7 +98,7 @@ public class UserroleAction extends BaseAction {
     }
 
     public List getAvailableUserroles() {
-        return adminUserRoleService.getAvailableUserroles(organisationTypeId, webUserId);
+        return adminUserService.getAvailableUserroles(organisationTypeId, webUserId);
     }
 
     public String addNewWebUserRoleMapping() {
@@ -110,7 +107,7 @@ public class UserroleAction extends BaseAction {
 
             try {
 
-                ActionResponse response = adminUserRoleService.addNewWebUserRoleMapping(webUserId, webUserRoleId);
+                ActionResponse response = adminUserService.addNewWebUserRoleMapping(webUserId, webUserRoleId);
                 setActionResponse(response);
 
             } catch (Exception ex) {
@@ -127,7 +124,7 @@ public class UserroleAction extends BaseAction {
         if (this.webUserUserRoleId > 0) {
 
             try {
-                ActionResponse response = adminUserRoleService.deleteWebUserRoleMapping(this.webUserUserRoleId);
+                ActionResponse response = adminUserService.deleteWebUserRoleMapping(this.webUserUserRoleId);
                 setActionResponse(response);
 
             } catch (Exception ex) {
@@ -145,7 +142,7 @@ public class UserroleAction extends BaseAction {
 
         try {
 
-            ActionResponse response = adminUserRoleService.ValidateRoleToBeDeleted(this.webUserId, this.webUserRoleCode);
+            ActionResponse response = adminUserService.ValidateRoleToBeDeleted(this.webUserId, this.webUserRoleCode);
             setActionResponse(response);
 
         } catch (Exception ex) {
@@ -158,13 +155,8 @@ public class UserroleAction extends BaseAction {
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
-
-    public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService) {
-        this.webUserUserRoleService = webUserUserRoleService;
-    }
-
-    public void setAdminUserRoleService(AdminUserRoleService adminUserRoleService) {
-        this.adminUserRoleService = adminUserRoleService;
+    public void setAdminUserService(AdminUserService adminUserService) {
+        this.adminUserService = adminUserService;
     }
     // </editor-fold>
 }
