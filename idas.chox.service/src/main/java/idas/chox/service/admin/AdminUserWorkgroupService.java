@@ -52,7 +52,7 @@ public class AdminUserWorkgroupService extends DataService {
         List items = new ArrayList<IdLookupItem>();
 
         WebUser webUser = userService.getWebUser(webUserId);
-        List<Workgroup> availableWorkgroups = workgroupService.getAvailableWorkgroupsByInsurer(webUser.getInsurer().getId(), webUserId);
+        List<Workgroup> availableWorkgroups = workgroupService.getAvailableUserWorkgroupsByInsurer(webUser.getInsurer().getId(), webUserId);
 
         for (Workgroup s : availableWorkgroups) {
             items.add(new IdLookupItem(s.getId(), s.getName()));

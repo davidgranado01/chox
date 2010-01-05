@@ -17,36 +17,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class InsurerServiceImpl extends SecureDataService implements InsurerService {
 
     public boolean isInsurerNameExist(String s) {
-
-        boolean isExist = false;
-
         if (getInsurerByName(s) != null) {
-            isExist = true;
+            return true;
         }
-
-        return isExist;
-
+        return false;
     }
 
     public Insurer getInsurerByName(String s) {
-
-        Insurer insurer = new Insurer();
-
         DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
         criteria.add(Restrictions.eq("name", s));
-        insurer = (Insurer) getByCriteria(criteria);
-
-
-        return insurer;
+        return (Insurer) getByCriteria(criteria);
     }
 
     public Insurer getInsurerByNodeName(Element thisElement, String nodeName) {
         Insurer insurer = new Insurer();
-
         if (XmlHelper.isNotNull(XmlHelper.getNodeValue(thisElement, nodeName))) {
             insurer = getInsurerByName(XmlHelper.getNodeValue(thisElement, nodeName));
         }
-
         return insurer;
     }
 

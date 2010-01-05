@@ -125,7 +125,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     public ClaimResult doAutomaticClaimRoutingEnable(ClaimResult claimResult) {
 
         int insurerId = claimResult.getClaim().getThirdParty().getInsurer().getId();
-        List<AutomaticRouting> automaticRoutingMapping = automaticRoutingService.getAutomaticRoutings(insurerId);
+        List<AutomaticRouting> automaticRoutingMapping = automaticRoutingService.getAutomaticRoutings(insurerId, -1);
 
         if (automaticRoutingMapping.size() > 0) {
 

@@ -10,9 +10,49 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class AutomaticRoutingServiceImpl extends SecureDataService implements AutomaticRoutingService {
 
-    public List<AutomaticRouting> getAutomaticRoutings(int insurerId) {
+    public List<AutomaticRouting> getAutomaticRoutings(int insurerId, int workgroupId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(AutomaticRouting.class);
+
+        if (insurerId > 0) {
+            criteria.add(Restrictions.eq("insurer.id", insurerId));
+        }
+        if (workgroupId > 0) {
+            criteria.add(Restrictions.eq("workgroup.id", workgroupId));
+        }
+        return findByCriteria(criteria);
+    }
+
+    public boolean isAutomaticRoutingExist(int insurerId, int workgroupId) {
+        List<AutomaticRouting> automaticRoutings = getAutomaticRoutings(insurerId, workgroupId);
+        if(automaticRoutings!=null){
+            if(automaticRoutings.size()>0){
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    public AutomaticRouting getAutomaticRouting(int insurerId, int workgroupId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(AutomaticRouting.class);
         criteria.add(Restrictions.eq("insurer.id", insurerId));
-        return findByCriteria(criteria);
+        criteria.add(Restrictions.eq("workgroup.id", workgroupId));
+        return (AutomaticRouting) getByCriteria(criteria);
+    }
+
+    public AutomaticRouting getAutomaticRouting(int automaticRoutingId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(AutomaticRouting.class);
+        criteria.add(Restrictions.eq("id", automaticRoutingId));
+        return (AutomaticRouting) getByCriteria(criteria);
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void saveAutomaticRouting(AutomaticRouting automaticRouting) {
+        save(automaticRouting);
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void deleteAutomaticRouting(AutomaticRouting automaticRouting) {
+        delete(automaticRouting);
     }
 }

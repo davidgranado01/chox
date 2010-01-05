@@ -73,6 +73,9 @@
     <bean id="businessRulesEngService" class="idas.chox.service.bre.BusinessRulesEngServiceImpl" singleton="false">
         <property name="claimService" ref="claimService" />
     </bean>
+    <bean id="automaticRoutingService" class="idas.chox.data.services.AutomaticRoutingServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="uploadClaimXMLService" class="idas.chox.service.xml.UploadClaimXMLServiceImpl" singleton="false">
         <property name="vehicleClassService" ref="vehicleClassService" />
         <property name="claimService" ref="claimService" />

@@ -61,25 +61,7 @@
             }
         });
         ui.ajaxForm($("form#editVehicleClassCeilingDetail"), onVehicleClassPageRefresh);
-        
-    });
 
-    function doVehicleClassCeilingPageRefresh(){
-
-        var tabIndex = 0;
-        if(<s:property value="isChoxAdmin"/>){
-            tabIndex = 6;
-        }
-
-        var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-        var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-        ajax.loadHtml(url,param,function(data){
-            $(target).html(data);
-        });
-    }
-
-    Ext.onReady(function(){
 
         if(!vehicleCeilingEditSelectionDlg)
         {
@@ -100,8 +82,8 @@
                         text:'Ok', handler: function(){
  
                             $("form#editVehicleClassCeilingDetail").ajaxSubmit();
-                            onVehicleClassPageRefresh();
                             vehicleCeilingEditSelectionDlg.hide();
+                            onVehicleClassPageRefresh();
                         }
                     },{
                         text: 'Close', handler: function(){
@@ -156,6 +138,23 @@
        
     });
 
+    /*
+    function doVehicleClassCeilingPageRefresh(){
+
+        var tabIndex = 0;
+        if(<s:property value="isChoxAdmin"/>){
+            tabIndex = 6;
+        }
+
+        var target = "#admin_param_panel";
+        var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+        var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
+        ajax.loadHtml(url,param,function(data){
+            $(target).html(data);
+        });
+    }
+     */
+   
     function onVehicleClassPageRefresh(){
         showVehicleClassDropDown();
         vehicleClassCeiling_loadGridViewList();
@@ -209,7 +208,7 @@
 </script>
 <div class="sub-admin-tab-css">
     <div class="status-info">
-        {Alias}
+        {Vehicle Class Ceiling}
     </div>
 
     <div id="VehicleClassCeilingorganisationGird">

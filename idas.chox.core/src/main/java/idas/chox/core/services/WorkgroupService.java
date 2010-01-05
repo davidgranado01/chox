@@ -20,7 +20,9 @@ public interface WorkgroupService {
 
     public void defaultWorkgroup(Insurer insurer);
 
-    public List<Workgroup> getAvailableWorkgroupsByInsurer(int InsurerId, int webUserId);
+    public List<Workgroup> getAvailableUserWorkgroupsByInsurer(int InsurerId, int webUserId);
+
+    public List<Workgroup> getAvailableAutoRoutingWorkgroupsByInsurer(int insurerId);
 
     // TO BE REVIEWED
     public boolean isWorkgroupDeletable(int workgroupId);

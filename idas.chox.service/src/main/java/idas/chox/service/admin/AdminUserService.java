@@ -58,20 +58,14 @@ public class AdminUserService extends DataService {
 
     public ActionResponse updateUser(WebUser webUser) {
 
-        System.out.println(">>>>>>>>>> 0001");
         this.actionResponse = new ActionResponse();
 
         if (!this.userService.isUserNameExist(webUser.getUserName(), webUser.getId())) {
-
-            System.out.println(">>>>>>>>>> 0002");
-
             this.userService.saveUser(webUser);
-
         } else {
             this.getActionResponse().AddError("User Name is already exist!");
         }
 
-        System.out.println(">>>>>>>>>> 0003");
 
         return this.actionResponse;
     }

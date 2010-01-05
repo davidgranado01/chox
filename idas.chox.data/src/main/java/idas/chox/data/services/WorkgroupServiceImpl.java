@@ -1,8 +1,10 @@
 package idas.chox.data.services;
 
+import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUserWorkgroup;
 import idas.chox.core.model.Workgroup;
+import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UserWorkgroupService;
 import idas.chox.core.services.WorkgroupService;
@@ -18,10 +20,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class WorkgroupServiceImpl extends SecureDataService implements WorkgroupService {
 
     protected UserWorkgroupService userWorkgroupService;
+    protected AutomaticRoutingService automaticRoutingService;
     protected ClaimService claimService;
 
     public void setUserWorkgroupService(UserWorkgroupService userWorkgroupService) {
         this.userWorkgroupService = userWorkgroupService;
+    }
+
+    public void setAutomaticRoutingService(AutomaticRoutingService automaticRoutingService) {
+        this.automaticRoutingService = automaticRoutingService;
     }
 
     public void setClaimService(ClaimService claimService) {
@@ -101,7 +108,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         saveWorkgroup(object);
     }
 
-    public List<Workgroup> getAvailableWorkgroupsByInsurer(int insurerId, int webUserId) {
+    public List<Workgroup> getAvailableUserWorkgroupsByInsurer(int insurerId, int webUserId) {
 
         // GET ALL WORKGROUPS BY INSURER
         DetachedCriteria workgroupCirteria = DetachedCriteria.forClass(Workgroup.class);
@@ -120,11 +127,32 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         
     }
 
+    public List<Workgroup> getAvailableAutoRoutingWorkgroupsByInsurer(int insurerId) {
+
+        // GET ALL WORKGROUPS BY INSURER
+        DetachedCriteria workgroupCirteria = DetachedCriteria.forClass(Workgroup.class);
+        workgroupCirteria.add(Restrictions.eq("insurer.id", insurerId));
+
+        // GET ALL WORKGROUPS ASSIGNED TO WEB USER
+        DetachedCriteria autoroutingworkgroupCirteria = DetachedCriteria.forClass(AutomaticRouting.class);
+        autoroutingworkgroupCirteria.add(Restrictions.eq("insurer.id", insurerId));
+        autoroutingworkgroupCirteria.setProjection(Property.forName("workgroup.id"));
+
+        // FILTERED BY ASSIGNED WORKGROUPS
+        workgroupCirteria.add(Property.forName("id").notIn(autoroutingworkgroupCirteria));
+
+        // RETURN SEARCH RESULT
+        return findByCriteria(workgroupCirteria);
+
+    }
+    
     public boolean isWorkgroupDeletable(int workgroupId) {
 
         boolean isExist = false;
 
-        if (!this.userWorkgroupService.isUserWorkgroupExist(workgroupId, -1) && !this.claimService.isObjectExist(workgroupId)) {
+        if (!this.userWorkgroupService.isUserWorkgroupExist(workgroupId, -1) 
+                && !this.claimService.isObjectExist(workgroupId)
+                && !automaticRoutingService.isAutomaticRoutingExist(-1, workgroupId)) {
             isExist = true;
         }
 

@@ -142,12 +142,9 @@
     function alias_triggerStatusRemoveRecord(gridView){
 
         if(confirm("Are you sure you want to remove this alias?")){
-
             var insurerAliasId = gridView.get("id");
-
             var url = "<%= request.getContextPath()%>/prv/p/removeInsurerAlias.action";
             var param = {"insurerAliasId":insurerAliasId};
-
             ajax.loadHtml(url, param, onInsurerAliasMappingSubmitResult);
         }
 

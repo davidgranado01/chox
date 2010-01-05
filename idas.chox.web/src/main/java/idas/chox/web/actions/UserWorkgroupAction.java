@@ -90,7 +90,7 @@ public class UserWorkgroupAction extends BaseAction {
     }
 
     public List getAvailableWorkgroups() {
-
+        
         List items = new ArrayList<IdLookupItem>();
 
         try {

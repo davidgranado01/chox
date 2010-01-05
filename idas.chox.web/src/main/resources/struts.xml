@@ -863,7 +863,23 @@
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <!-- END INSURER VEHICLE CLASS CEILING -->
-
+        <!-- START INSURER AUTOMATIC ROUTING -->
+        <action name="getInsurerAutomaticRoutingPage" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_insurer_automatic_routing.jsp</result>
+        </action>
+        <action name="getInsurerAutomaticRouting" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="getInsurerAutomaticRouting">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="addNewAutomaticRoutingDetail" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="addNewAutomaticRoutingDetail">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="editAutomaticRoutingDetail" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="editAutomaticRoutingDetail">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="deleteAutomaticRoutingDetail" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="deleteAutomaticRoutingDetail">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>        
+        <!-- END INSURER AUTOMATIC ROUTING  -->
     </package>
     
 </struts>

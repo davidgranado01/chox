@@ -70,11 +70,12 @@
             items:[
                 {contentEl:'insurerDetailPanelTab', title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerAliasPanelTab', activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="id" />, scripts:true}},
-                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroup', tabTip:'Workgroup Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="id" />, scripts:true}},
-                {contentEl:'insurerCreditHirePanelTab', title:'CHO Mapping', tabTip:'Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerChorganisationMappingPage.action?insurerId="+<s:property value="id" />, scripts:true}},
-                {contentEl:'insurerBrePanelTab', title:'BRE', tabTip:'BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="id" />, scripts:true}},
+                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroup', tabTip:'Insurer Workgroup', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="id" />, scripts:true}},
+                {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerChorganisationMappingPage.action?insurerId="+<s:property value="id" />, scripts:true}},
+                {contentEl:'insurerBrePanelTab', title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="id" />, scripts:true}},
                 {contentEl:'insurerBreMappingPanelTab', title:'BRE Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="id" />, scripts:true}},
-                {contentEl:'insurerVehicleClassCeilingTab', title:'V. Class Ceilings', tabTip:'Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="id" />, scripts:true}}
+                {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="id" />, scripts:true}},
+                {contentEl:'insurerAutoRoutingTab', title:'Automatic Rounting', tabTip:'Insurer Automatic Routing', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="id" />, scripts:true}}
             ]
         });
 
@@ -92,7 +93,7 @@
         adminTabIndex = 0;
         if(adminTabs){ adminTabIndex = adminTabs.items.indexOf(adminTabs.getActiveTab()); }
     }
-    
+
     function doInsurerCancelBack(){
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
@@ -115,9 +116,7 @@
     }
 
     function doWorkgroupCheck(){
-
         var claimWorkgroupEnable = false;
-
         if($('form#formUpdateInsurerDetail input[name="workgroupEnable"]:checked').val()){
             claimWorkgroupEnable = true;
             $("#AutomaticClaimRoutingHolder").slideDown();
@@ -125,19 +124,14 @@
             $("#AutomaticClaimRoutingHolder").slideUp();
             $('form#formUpdateInsurerDetail input[name="autoRoutingEnable"]').attr('checked', false);
         }
-
         return claimWorkgroupEnable;
-
     }
 
     function doOwnershipCheck(){
-
         var claimOwnershipEnable = false;
-
         if($('form#formUpdateInsurerDetail input[name="claimOwnershipEnable"]:checked').val()){
             claimOwnershipEnable = true;
         }
-
         return claimOwnershipEnable;
     }
 
@@ -276,5 +270,6 @@
     <div id="insurerBrePanelTab" class="x-hide-display"></div>
     <div id="insurerBreMappingPanelTab" class="x-hide-display"></div>
     <div id="insurerVehicleClassCeilingTab" class="x-hide-display"></div>
+    <div id="insurerAutoRoutingTab" class="x-hide-display"></div>
 
 </div>

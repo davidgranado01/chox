@@ -69,5 +69,8 @@
     </bean>
     <bean id="userWorkgroupService" class="idas.chox.data.services.UserWorkgroupServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>  
+    </bean>
+    <bean id="automaticRoutingService" class="idas.chox.data.services.AutomaticRoutingServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 </beans>

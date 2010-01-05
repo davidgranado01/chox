@@ -1,0 +1,229 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="/struts-tags" prefix="s" %>
+
+<script type="text/javascript">
+
+    var routing_gridviewJsonReader;
+    var routing_gridviewDataStore;
+    var routing_gridviewGrid;
+    var routing_gridviewData;
+
+    var automaticRoutingEditSelectionDlg;
+
+    $(function(){
+
+        var form = $("form#formAutomaticRoutingDetail");
+        form.validate(
+        {
+            errorLabelContainer: "#CDAutomaticRoutingMessageBox",
+            rules: {
+                workgroupId:{required:true},
+                expression:{required:true}
+            },
+            messages: {
+                workgroupId:{required:"You must supply a value for 'Workgroup'"},
+                expression:{required:"You must supply a value for 'Regular Expression'"}
+            }
+        });
+
+        ui.ajaxForm(form, doAutoRoutingPageRefresh);
+
+        routing_gridviewJsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                {name:'id'},
+                {name:'expression'},
+                {name:'insurerName'},
+                {name:'insurerId'},
+                {name:'workgroupName'},
+                {name:'workgroupId'},
+                {name:'createdBy'},
+                {name:'createdDate'}
+            ]
+        });
+
+        routing_gridviewData = new Ext.data.Store({
+            proxy: new Ext.data.HttpProxy
+            ({url: '<%= request.getContextPath()%>/prv/p/getInsurerAutomaticRouting.action',method:'POST'}),
+            reader:routing_gridviewJsonReader
+        });
+
+        routing_gridviewGrid = new Ext.grid.GridPanel({
+            listeners:  {cellclick:routing_recordOnclick },
+            store: routing_gridviewData,
+            renderTo:'automaticRouting_gridviewGrid',
+            enableHdMenu:false,
+            layout:'fit',
+            viewConfig:{forceFit:true},
+            columns: [
+                {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
+                {header: "Workgroup", width: 100, dataIndex: 'workgroupName', sortable: true, resizable: true},
+                {header: "Regular Expression", width: 180, dataIndex: 'expression', sortable: true, resizable: true, renderer:function(value,p,r){
+                        return "<a href='#' class='high-light-item'>" + value + "</a>"}},
+                {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){
+                        return "<a href='#' class='high-light-item'>Remove</a>"}},
+                {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
+                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
+            ],
+            height:260,
+            width: 715
+        });
+
+        if(!automaticRoutingEditSelectionDlg)
+        {
+            automaticRoutingEditSelectionDlg =  new Ext.Window({
+                applyTo:'autoRoutingSelectionDlgHolder',
+                width:400,
+                height:200,
+                layout:'fit',
+                modal:true,
+                closeAction:'hide',
+                plain: false,
+                title: 'Edit Automatic Routing Detail',
+                resizable : false,
+                items: new Ext.Panel({
+                    applyTo: 'autoRoutingSelectionPanel'
+                }),
+                buttons: [{
+                        text:'Ok', handler: function(){
+
+                            var op = {
+                                success: doAutoRoutingPageRefresh,
+                                timeout: 3000,
+                                error: doAutoRoutingPageRefresh
+                            };
+            
+                            $("form#editAutoRoutingDetail").ajaxSubmit();
+                            automaticRoutingEditSelectionDlg = null;
+                            doAutoRoutingPageRefresh();
+                           
+                        }
+                    },{
+                        text: 'Close', handler: function(){
+                            automaticRoutingEditSelectionDlg.hide();
+                        }
+                    }]
+            });
+
+        }
+        
+        routing_loadGridViewList();
+
+    });
+
+    function routing_loadGridViewList(){
+        routing_gridviewData.load({ params : { insurerId:<s:property value="insurerId" /> } });
+    }
+
+    function routing_recordOnclick(grid, rowIndex, columnIndex, e){
+        
+        var gridView = routing_gridviewGrid.getStore().getAt(rowIndex);
+        
+        if(columnIndex==3){
+            if(confirm("Are you sure you want to remove this routing?")){
+                var automaticRoutingId = gridView.get("id");
+                var url = "<%= request.getContextPath()%>/prv/p/deleteAutomaticRoutingDetail.action";
+                var param = {"automaticRoutingId":automaticRoutingId};
+                ajax.loadHtml(url, param, doAutoRoutingPageRefresh);
+            }
+        }else if(columnIndex==2){
+            showEditAutomaticRouting(gridView);
+        }
+    }
+
+    function showEditAutomaticRouting(gridView){
+        automaticRoutingEditSelectionDlg.show();
+        $("form#editAutoRoutingDetail input[name$='automaticRoutingId']").val(gridView.get("id"));
+        $("form#editAutoRoutingDetail label#editWorkgroupName").html(gridView.get("workgroupName"));
+        $("form#editAutoRoutingDetail input[name$='expression']").val(gridView.get("expression"));
+    }
+    
+    function doAutoRoutingPageRefresh(){
+
+        var tabIndex = 0;
+        var target = "#admin_param_panel";
+        var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
+        var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
+
+        if(<s:property value="isChoxAdmin"/>){
+            tabIndex = 7;
+            url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+            var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
+        }
+
+        ajax.loadHtml(url,param,function(data){
+            $(target).html(data);
+        });
+    
+    }
+
+</script>
+
+<div class="sub-admin-tab-css">
+
+    <div class="status-info">
+        {Automatic Routing}
+    </div>
+
+    <div class="grid-view-header">
+        <table width="100%">
+            <tr>
+                <td>
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Automatic Routing</div>
+                        <div class="form-container">
+                            <form id="formAutomaticRoutingDetail" name="formAutomaticRoutingDetail" action="<%= request.getContextPath()%>/prv/p/addNewAutomaticRoutingDetail.action" class="XXentity-form" method="POST">
+                                <input id="insurerId" name="insurerId" type="hidden" value="<s:property value="insurerId"/>"/>
+                                <div class="chox-form-item">
+                                    <label class="chox-form-std-label">Workgroup</label>
+                                    <s:select
+                                        id="workgroupId"
+                                        name="workgroupId"
+                                        list="availableWorkgroups"
+                                        listKey="id"
+                                        listValue="name"
+                                        headerKey=""
+                                        headerValue="--- ALL ---"
+                                        emptyOption="false">
+                                    </s:select>
+                                </div>
+                                <div class="chox-form-item">
+                                    <label class="chox-form-std-label">Regular Expression</label>
+                                    <input id="expression" name="expression" value="<s:property value="expression" />"/>
+                                </div>
+                                <div class="chox-form-button">
+                                    <input type="submit" value="Add New Vehicle Class"/>
+                                </div>
+                                <div class="chox-form-submit-result"></div>
+                                <div id="CDAutomaticRoutingMessageBox" class="action-error-msg"></div>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="automaticRouting_gridviewGrid"/>
+
+</div>
+
+<div id="autoRoutingSelectionDlgHolder" class="x-hidden">
+    <div id="autoRoutingSelectionPanel">
+        <div class="form-container" style="height:300px; padding-bottom:30px">
+            <form id="editAutoRoutingDetail" name="editAutoRoutingDetail" class="XXentity-form" action="<%= request.getContextPath()%>/prv/p/editAutomaticRoutingDetail.action" method="post">
+                <input id="automaticRoutingId" name="automaticRoutingId" type="hidden"/>
+                <div class="chox-form-item">
+                    <label class="chox-form-pop">Workgroup</label>
+                    <label id="editWorkgroupName"></label>
+                </div>
+                <div class="chox-form-item">
+                    <label class="chox-form-pop">Regular Expression</label>
+                    <input id="expression" name="expression"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
