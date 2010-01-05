@@ -14,7 +14,6 @@ import idas.chox.core.services.BusinessRulesEngService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerService;
-import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -92,60 +91,53 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         return reponse;
     }
 
-    /**** XML UPLOAD **********************************************************************************************************/
-    public ClaimResult execute(ClaimResult claimResult) {
-
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) && claimResult.isValid() && claimResult.isDataValid()) {
-            process(claimResult);
-        }
-
-        return claimResult;
-    }
-
-    private void process(ClaimResult claimResult) {
+    @Override
+    public void process(ClaimResult claimResult) {
 
         BreBand choBand = choBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId());
 
-        // System.out.println("getInsurer:"+claimResult.getClaim().getInsurer().getId());
-        // System.out.println("getChorganisation:"+claimResult.getClaim().getChorganisation().getId());
-        // System.out.println("choBand:"+choBand.getId());
-
         if (choBand.getId() != null) {
 
-            VehicleClassCeiling vehicleClassCeiling = insurerService.getVechileClassCeilingForClaim(claimResult.getClaim());
+            Claim claim = claimResult.getClaim();
+
+            VehicleClassCeiling vehicleClassCeiling = insurerService.getVechileClassCeilingForClaim(claim);
             choBand.setVehicleClassCeiling(vehicleClassCeiling);
-            claimResult.getClaim().setBreBand(choBand);
+            claim.setBreBand(choBand);
 
             Boolean isEngReportExist = false;
-            if (claimResult.getClaim().getEngineerReport() != null) {
+            if (claim.getEngineerReport() != null) {
                 isEngReportExist = true;
             }
 
-            VehicleClass cust_VehicleClass = claimResult.getClaim().getCustomer().getVehicleClass();
-            VehicleClass thirdVehicleClass = claimResult.getClaim().getThirdParty().getVehicleClass();
-            VehicleClass vehicle_HireClass = claimResult.getClaim().getVehicleHire().getVehicleClass();
+            VehicleClass cust_VehicleClass = claim.getCustomer().getVehicleClass();
+            VehicleClass thirdVehicleClass = claim.getThirdParty().getVehicleClass();
+            VehicleClass vehicle_HireClass = claim.getVehicleHire().getVehicleClass();
 
-            Claim breClaim = constructBreValidateObject(claimResult.getClaim());
+            Claim breClaim = constructBreValidateObject(claim);
             RulesEngineResponse validationResult = validate(breClaim);
 
-            String oldStatus = claimResult.getClaim().getStatus();
+            String oldStatus = claim.getStatus();
             String newClaimStatus = validationResult.getStatus().toString();
 
-            claimResult.getClaim().setPreviousStatus(oldStatus);
-            claimResult.getClaim().setStatus(newClaimStatus);
+            claim.setPreviousStatus(oldStatus);
+            claim.setStatus(newClaimStatus);
 
             if (validationResult.getResults().size() > 0) {
-                claimResult.setHistory(processBreErrorMessage(validationResult.getResults(), claimResult));
+                List<History> histories =  processBreErrorMessage(validationResult.getResults(), claimResult);
+                for(History history : histories)
+                {
+                    claim.addHistory(history);
+                }
             }
 
             /** END BRE VALIDATION **/
             if (!isEngReportExist) {
-                claimResult.getClaim().setEngineerReport(null);
+                claim.setEngineerReport(null);
             }
 
-            claimResult.getClaim().getCustomer().setVehicleClass(cust_VehicleClass);
-            claimResult.getClaim().getThirdParty().setVehicleClass(thirdVehicleClass);
-            claimResult.getClaim().getVehicleHire().setVehicleClass(vehicle_HireClass);
+            claim.getCustomer().setVehicleClass(cust_VehicleClass);
+            claim.getThirdParty().setVehicleClass(thirdVehicleClass);
+            claim.getVehicleHire().setVehicleClass(vehicle_HireClass);
 
         } else {
 
@@ -155,6 +147,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         }
     }
 
+    @Override
     public RulesEngineResponse processResubmitInvoice(Claim breClaim) {
 
         BreBand choBand = choBandService.getBreBand(breClaim.getChorganisation().getId(), breClaim.getInsurer().getId());
@@ -215,28 +208,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         return histories;
 
     }
-
-    private void doPrintResult(ClaimResult claimResult) {
-
-        System.out.println("-------");
-        System.out.println(sectionName + "| getChorganisation :" + claimResult.getClaim().getClaimNumber());
-        System.out.println(sectionName + "| getChorganisation :" + claimResult.getClaim().getChorganisation());
-        System.out.println(sectionName + "| getBreBand :" + claimResult.getClaim().getBreBand());
-        System.out.println(sectionName + "| getCustomer :" + claimResult.getClaim().getCustomer());
-        // System.out.println(sectionName + "| getEngineerReport :"+claimResult.getClaim().getEngineerReport().getAddress1());
-        // System.out.println(sectionName + "| getHireMonitoringDetail :"+claimResult.getClaim().getHireMonitoringDetail().getNameOfIme());
-        // System.out.println(sectionName + "| getIncident :"+claimResult.getClaim().getIncident().getLocation());
-        System.out.println(sectionName + "| getInsurer :" + claimResult.getClaim().getInsurer());
-        System.out.println(sectionName + "| getInvoice :" + claimResult.getClaim().getInvoice().getClaimInvoiceNo());
-        System.out.println(sectionName + "| getThirdParty :" + claimResult.getClaim().getThirdParty().getFirstName());
-        System.out.println(sectionName + "| getVehicleHire :" + claimResult.getClaim().getVehicleHire().getIsTotalLoss());
-
-
-    }
-
-    /**
-     * @param rulesEngine the rulesEngine to set
-     */
+   
     public void setRulesEngine(RulesEngine rulesEngine) {
         this.rulesEngine = rulesEngine;
     }

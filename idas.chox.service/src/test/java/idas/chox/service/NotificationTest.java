@@ -17,8 +17,8 @@ import idas.chox.service.notifications.EcdAnomalousNotification;
 import idas.chox.service.notifications.EcdUpdatedNotification;
 import idas.chox.service.notifications.HireUpdatedNotification;
 import idas.chox.service.notifications.RepairBookedInOnFridayNotification;
+import idas.chox.service.xml.readers.BordereauReader;
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import junit.framework.Assert;
@@ -32,7 +32,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-Notification-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext-Notification-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-Workflow-test.xml"})
 public class NotificationTest {
 
     @Autowired
@@ -45,6 +45,8 @@ public class NotificationTest {
     UploadClaimXMLService uploadClaimXMLService;
     @Autowired
     ClaimService claimService;
+    @Autowired
+    BordereauReader bordereauReader;
 
     @Test
     public void canClaimAnomalousCheckerGetInjected() {
@@ -54,73 +56,52 @@ public class NotificationTest {
 
     @Test
     @Transactional
-    public void testCanTriggerHireUpdatedNotification() throws IOException {
+    public void testCanTriggerHireUpdatedNotification() throws Exception {
 
-        String fileName = "andy.20090825.1test.xml";
         String path = "andy.20090825.1test.xml";
-        File file = new ClassPathResource(path).getFile();
-        Assert.assertNotNull(file);
 
-        BordereauResult bordereauResult = uploadClaimXMLService.processBordereau(file, fileName);
+        BordereauResult bordereauResult = loadBordereauResult(path);
         List<ClaimResult> claimResults = bordereauResult.getClaimResult();
-        Assert.assertNotNull(claimResults);
-
-        Assert.assertTrue(claimResults.size() > 0);
-
-        Assert.assertTrue(bordereauResult.isValid());
-        claimService.saveObjectForXMLUploader(claimResults.get(0));
         Claim c = claimResults.get(0).getClaim();
+        Assert.assertNotNull(claimResults);
+        Assert.assertTrue(claimResults.size() > 0);
+        Assert.assertTrue(bordereauResult.isValid());
         c.AddNotification(new HireUpdatedNotification());
-        claimService.updateClaim(c);
-
-        Claim savedClaim = claimService.getClaim(c.getId());
-        Assert.assertTrue(savedClaim.getIsIsAnomalies());
-
+        Assert.assertTrue(c.getIsIsAnomalies());
     }
 
     @Test
     @Transactional
-    public void testCanTriggerEcdUpdatedNotification() throws IOException {
+    public void testCanTriggerEcdUpdatedNotification() throws Exception {
 
-        String fileName = "andy.20090825.1test.xml";
         String path = "andy.20090825.1test.xml";
-        File file = new ClassPathResource(path).getFile();
-        Assert.assertNotNull(file);
+        BordereauResult bordereauResult = loadBordereauResult(path);
 
-        BordereauResult bordereauResult = uploadClaimXMLService.processBordereau(file, fileName);
         List<ClaimResult> claimResults = bordereauResult.getClaimResult();
         Assert.assertNotNull(claimResults);
 
         Assert.assertTrue(claimResults.size() > 0);
 
         Assert.assertTrue(bordereauResult.isValid());
-        claimService.saveObjectForXMLUploader(claimResults.get(0));
         Claim c = claimResults.get(0).getClaim();
-        c.AddNotification(new EcdUpdatedNotification());
-        claimService.updateClaim(c);
-
-        Claim savedClaim = claimService.getClaim(c.getId());
-        Assert.assertTrue(savedClaim.getIsIsAnomalies());
+        c.AddNotification(new EcdUpdatedNotification());     
+        Assert.assertTrue(c.getIsIsAnomalies());
 
     }
 
     @Test
     @Transactional
-    public void testCanDetectAnomalous() throws IOException {
+    public void testCanDetectAnomalous() throws Exception {
 
-        String fileName = "andy.20090825.1test.xml";
         String path = "andy.20090825.1test.xml";
-        File file = new ClassPathResource(path).getFile();
-        Assert.assertNotNull(file);
-
-        BordereauResult bordereauResult = uploadClaimXMLService.processBordereau(file, fileName);
+        BordereauResult bordereauResult = loadBordereauResult(path);
         List<ClaimResult> claimResults = bordereauResult.getClaimResult();
         Assert.assertNotNull(claimResults);
 
         Assert.assertTrue(claimResults.size() > 0);
 
         Assert.assertTrue(bordereauResult.isValid());
-        claimService.saveObjectForXMLUploader(claimResults.get(0));
+
         Claim c = claimResults.get(0).getClaim();
 
         //make sure the testing claim have correct policy contact date
@@ -180,6 +161,12 @@ public class NotificationTest {
         savedClaim.getNotifications().get(0).getType().equalsIgnoreCase(EcdAnomalousNotification.class.getSimpleName());
         savedClaim.getNotifications().get(1).getType().equalsIgnoreCase(RepairBookedInOnFridayNotification.class.getSimpleName());
 
+    }
+
+    private BordereauResult loadBordereauResult(String path) throws Exception {
+        File file = new ClassPathResource(path).getFile();
+        BordereauResult bordereauResult = bordereauReader.execute(file);
+        return bordereauResult;
     }
 }
 

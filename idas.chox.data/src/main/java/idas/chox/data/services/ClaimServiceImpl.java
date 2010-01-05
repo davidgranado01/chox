@@ -490,29 +490,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         return claim;
     }
-
-    public void saveObjectForXMLUploader(final ClaimResult claimResult) {
-
-        Claim c = claimResult.getClaim();
-        c.setClaimNumber(c.getClaimNumber().trim());
-        c.setCustomer(claimResult.getClaim().getCustomer());
-        c.setThirdParty(claimResult.getClaim().getThirdParty());
-        c.setInsurer(claimResult.getClaim().getThirdParty().getInsurer());
-        c.setChorganisation(claimResult.getClaim().getChorganisation());
-        c.setIncident(claimResult.getClaim().getIncident());
-        c.setInvoice(claimResult.getClaim().getInvoice());
-        c.setEngineerReport(claimResult.getClaim().getEngineerReport());
-        c.setVehicleHire(claimResult.getClaim().getVehicleHire());
-
-        if (claimResult.getHistory() != null && claimResult.getHistory().size() > 0) {
-            for (History h : claimResult.getHistory()) {
-                c.addHistory(h);
-            }
-        }
-
-        save(c);
-    }
-
+  
     public Boolean isObjectExist(int WorkgroupId) {
 
         boolean isExist = false;
@@ -660,4 +638,5 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return isExist;
 
     }
+
 }

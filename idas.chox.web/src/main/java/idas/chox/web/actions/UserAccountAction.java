@@ -32,7 +32,7 @@ public class UserAccountAction extends BaseAction {
         try {
             webUser = this.getAuthenticatedUser();
 
-            webUser.setLastModifiedDate(DateHelper.getCurrentTimeStamp());
+            webUser.setLastModifiedDate(DateHelper.getCurrentDateTime());
             webUser.setLastModifiedBy(this.getAuthenticatedUser());
 
             PasswordEncoder passwordEncoder = new Md5PasswordEncoder();

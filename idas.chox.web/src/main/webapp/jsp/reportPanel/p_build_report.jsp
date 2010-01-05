@@ -4,10 +4,12 @@
 
     function renderParameterPanel(report)
     {
-        var sLocaltion = "#param_panel";
-        var sAction = "loadParameterPanel.action";
-        var sparameters = "reportName=" + report;
-        doSectionLoad(sLocaltion, sAction, sparameters);
+        var target = "#param_panel";
+        var url = "<%= request.getContextPath()%>/prv/p/loadParameterPanel.action";
+        var param = {"reportName":report};
+        ajax.loadHtml(url,param,function(data){
+            $(target).html(data);
+        });
     }
 
 </script>

@@ -21,7 +21,7 @@ public class WorkgroupViewData {
         this.insurerName = object.getInsurer().getName();
         this.name = object.getName();
         this.createdBy = object.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.GridViewDateFormat.format(object.getCreatedDate());
+        this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
         this.status = object.isStatus();
 
         this.statusDesc = "Yes";

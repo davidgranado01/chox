@@ -29,6 +29,7 @@ public class Claim extends Entity implements Serializable {
     private WebUser claimOwner;
     private BreBand choband;
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc=" Composite Objects ">
     private Insurer insurer;
     private Chorganisation chorganisation;
@@ -41,6 +42,7 @@ public class Claim extends Entity implements Serializable {
     private HireMonitoringDetail hireMonitoringDetail;
     private Workgroup workgroup;
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc=" Composite Collections ">
     private List<HireMonitoringEcd> hireMonitoringEcds;
     private List<Notification> notifications;
@@ -188,7 +190,7 @@ public class Claim extends Entity implements Serializable {
 
     public void setGtaNoticeDate(Date gtaNoticeDate) {
         this.gtaNoticeDate = gtaNoticeDate;
-    }    
+    }
 
     public BigDecimal getIndemnityAmount() {
         return indemnityAmount;
@@ -297,8 +299,7 @@ public class Claim extends Entity implements Serializable {
 
     // <editor-fold defaultstate="collapsed" desc=" HireMonitoringEcd ">
     public List<HireMonitoringEcd> getHireMonitoringEcds() {
-        if(hireMonitoringEcds == null)
-        {
+        if (hireMonitoringEcds == null) {
             hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
         }
         return hireMonitoringEcds;

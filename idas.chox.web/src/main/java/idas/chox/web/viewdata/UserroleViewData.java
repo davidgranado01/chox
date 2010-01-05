@@ -27,7 +27,7 @@ public class UserroleViewData {
         this.webUserroleRole = object.getWebUserRole().getName();
         this.webUserroleName = object.getWebUserRole().getDescription();
         this.createdBy = object.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.GridViewDateFormat.format(object.getCreatedDate());
+        this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
 
     }
 

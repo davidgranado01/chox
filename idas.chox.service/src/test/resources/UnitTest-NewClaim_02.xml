@@ -95,7 +95,7 @@
             <customer>
                 <insurer>
                     <name><![CDATA[MORE THAN]]></name>
-                    <policy-number><![CDATA[000000001]]></policy-number>
+                    <policy-number><![CDATA[0000000001]]></policy-number>
                     <claim-reference><![CDATA[CL001]]></claim-reference>
                     <comprehensive><![CDATA[y]]></comprehensive>
                 </insurer>
@@ -114,7 +114,7 @@
             <third-party>
                 <insurer>
                     <name><![CDATA[MORE THAN]]></name>
-                    <policy-number><![CDATA[PL0000001]]></policy-number>
+                    <policy-number><![CDATA[0000000001]]></policy-number>
                     <claim-reference><![CDATA[200912345678]]></claim-reference>
                 </insurer>
                 <vehicle>

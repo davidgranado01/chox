@@ -1,26 +1,22 @@
 package idas.chox.core.util;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DateHelper {
 
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     public static SimpleDateFormat LocalDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     public static SimpleDateFormat DBDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public static SimpleDateFormat DBDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static SimpleDateFormat TimeFormat = new SimpleDateFormat("kk:mm");
-    public static SimpleDateFormat GridViewDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    public static SimpleDateFormat LocalDateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-    public static java.sql.Timestamp getCurrentTimeStamp() {
+    public static Date getCurrentDateTime() {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat csdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return Timestamp.valueOf(csdf.format(cal.getTime()));
+        return cal.getTime();
     }
 
     public static int getYear(Date date) {
@@ -103,60 +99,35 @@ public class DateHelper {
         return a;
     }
 
-    /*
-    public static Date getFirstDateOfTheMonth(Date date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        Integer dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        cal.add(Calendar.DATE, -dayOfMonth);
-        return cal.getTime();
-    }
-    
-    public static Date getFirstDateOfTheWeek(Date date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        Integer dayOfMonth = cal.get(Calendar.DAY_OF_WEEK);
-        cal.add(Calendar.DATE, -dayOfMonth);
-        return cal.getTime();
-    }
-
-    public static Date getMinDate() {
-        Date a = new Date();
-        try {
-            DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd");
-            a = dfm.parse("1900-01-01");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return a;
-
-    }
-
-    public static Date getMaxDate() {
-        Date a = new Date();
-        try {
-            DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd");
-            a = dfm.parse("2999-12-31");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return a;
-
-    }
-    */
-    
     //format: dd/MM/yyyy
     public static Date Parse(String source) {
-        
-        if((source.trim()).length()>0 && source!=null && !source.equalsIgnoreCase("")){
-            
+        return Parse(source, LocalDateFormat);
+    }
+
+    public static Date ParseDateTime(String source) {
+         return Parse(source, LocalDateTimeFormat);
+    }
+
+    public static Date ParseDBDateTime(String source) {
+        return Parse(source, DBDateTimeFormat);
+    }
+
+    public static Date Parse(String source, String format) {
+
+        return Parse(source, new SimpleDateFormat(format));
+    }
+
+    public static Date Parse(String source, SimpleDateFormat dateFormat) {
+
+        if ((source.trim()).length() > 0 && source != null && !source.equalsIgnoreCase("")) {
+
             try {
-                    return LocalDateFormat.parse(source);
+                return dateFormat.parse(source);
             } catch (ParseException ex) {
                 ex.printStackTrace();
                 return null;
             }
-            
+
         }
 
         return null;
@@ -190,8 +161,4 @@ public class DateHelper {
         date.setTime(0);
         return date;
     }
-
-
-
-    
 }

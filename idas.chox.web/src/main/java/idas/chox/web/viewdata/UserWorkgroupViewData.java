@@ -25,7 +25,7 @@ public class UserWorkgroupViewData {
         this.workgroupId = object.getWorkgroup().getId();
         this.name = object.getWorkgroup().getName();
         this.createdBy = object.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.GridViewDateFormat.format(object.getCreatedDate());
+        this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
 
     }
 

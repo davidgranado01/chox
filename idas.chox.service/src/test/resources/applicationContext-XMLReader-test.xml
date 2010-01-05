@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="autodetect">
+    <bean id="dataValidationParameter" class="idas.chox.service.xml.validations.DataValidationParameter">
+         <property name="validateFile" value="/excelTemplate/DataValidationTemplate.xml"/>
+    </bean>
+    <bean id="bordereauRederContext" class="idas.chox.service.xml.BordereauRederContext">
+        <property name="claimService" ref="claimService"/>
+        <property name="chorganisationService" ref="chorganisationService"/>
+        <property name="breBandService" ref="breBandService"/>
+        <property name="vehicleClassService" ref="vehicleClassService"/>
+        <property name="insurerAliasService" ref="insurerAliasService"/>
+        <property name="insurerChorganisationService" ref="insurerChorganisationService"/>
+        <property name="dataValidationParameter" ref="dataValidationParameter"/>
+        <!--<property name="businessRuleEngService" ref="businessRuleEngService"/>-->
+    </bean>
+    <bean id="bordereauReader" class="idas.chox.service.xml.readers.BordereauReader">
+        <property name="subEntityReaders">
+            <list>
+                <bean class="idas.chox.service.xml.readers.ClaimHeaderReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.CustomerReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.ClaimCustomerReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.ClaimThirdPartyReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.ClaimIncidentReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.IncidentWitnessReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.IncidentInjuriesReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.ClaimEngineeringReportReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.ClaimHireMonitoringDetailReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.ClaimVehicleHireReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.InvoiceReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.InvoiceVehiclesReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.InvoiceSupplierReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.InvoiceRepairReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.InvoiceStorageRecoveryReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.InvoiceEngineeringFeeReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.InvoiceExtraReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+            </list>
+        </property>
+        <property name="businessRulesEngService" ref="businessRulesEngService"/>
+    </bean>
+</beans>

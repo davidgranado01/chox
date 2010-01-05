@@ -7,6 +7,8 @@ public interface AutomaticRoutingService {
 
     public List<AutomaticRouting> getAutomaticRoutings(int insurerId, int workgroupId);
 
+    public List<AutomaticRouting> getAutomaticRoutings(int insurerId);
+
     public boolean isAutomaticRoutingExist(int insurerId, int workgroupId);
 
     public AutomaticRouting getAutomaticRouting(int insurerId, int workgroupId);

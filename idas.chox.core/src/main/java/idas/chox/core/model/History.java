@@ -86,7 +86,7 @@ public class History extends Entity implements Serializable {
         his.setIsPublic(true);
         his.setIsSystem(false);
         his.setNarrative(strNarrative);
-        his.setProcessDate(DateHelper.getCurrentTimeStamp());
+        his.setProcessDate(DateHelper.getCurrentDateTime());
         his.setRuleId("H01");
         his.setType("INFO");
         return his;
@@ -103,7 +103,7 @@ public class History extends Entity implements Serializable {
 
         History history = new History();
 
-        history.setProcessDate(DateHelper.getCurrentTimeStamp());
+        history.setProcessDate(DateHelper.getCurrentDateTime());
         history.setIsPublic(rv.getIsVisibleToCHO());
         history.setNarrative(rv.toString());
         history.setType(sType);

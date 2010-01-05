@@ -95,7 +95,7 @@ INSERT INTO vehicle_class (id,price,name,created_by,created_date,last_modified_b
 INSERT INTO vehicle_class (id,price,name,created_by,created_date,last_modified_by,last_modified_date) VALUES (138,0.00,'UNATTACHED',999,{ts '2008-11-22 18:02:37'},999,{ts '2008-11-22 18:02:37'});
 
 -- insurer
-INSERT INTO insurer (id,name,created_by,created_date,last_modified_by,last_modified_date,admin_handling_charge,status,vat_no,company_no,address1,address2,address3,address4,address5,postcode,phone,is_workgroup_enable,is_auto_routing_enable,is_claim_ownership_enable,is_claim_locked) VALUES (3,'RSA',999,{ts '2008-11-19 15:41:10'},999,{ts '2009-09-01 17:01:21'},0.00,true,'N/A','N/A','N/A','N/A','','N/A','N/A','N/A','',true,false,false,true);
+INSERT INTO insurer (id,name,created_by,created_date,last_modified_by,last_modified_date,admin_handling_charge,status,vat_no,company_no,address1,address2,address3,address4,address5,postcode,phone,is_workgroup_enable,is_auto_routing_enable,is_claim_ownership_enable,is_claim_locked) VALUES (3,'RSA',999,{ts '2008-11-19 15:41:10'},999,{ts '2009-09-01 17:01:21'},0.00,true,'N/A','N/A','N/A','N/A','','N/A','N/A','N/A','',true,true,true,true);
 INSERT INTO insurer (id,name,created_by,created_date,last_modified_by,last_modified_date,admin_handling_charge,status,vat_no,company_no,address1,address2,address3,address4,address5,postcode,phone,is_workgroup_enable,is_auto_routing_enable,is_claim_ownership_enable,is_claim_locked) VALUES (5,'Diamond',999,{ts '2008-11-20 00:22:30'},999,{ts '2009-09-01 16:50:15'},0.00,true,'21324','234234','N/A','N/A','','sdfsdf','sdfsd','N/A','22',false,false,false,true);
 INSERT INTO insurer (id,name,created_by,created_date,last_modified_by,last_modified_date,admin_handling_charge,status,vat_no,company_no,address1,address2,address3,address4,address5,postcode,phone,is_workgroup_enable,is_auto_routing_enable,is_claim_ownership_enable,is_claim_locked) VALUES (6,'RBS',999,{ts '2008-11-20 00:22:37'},999,{ts '2009-08-19 18:31:47'},0.00,true,'3','3','N/A','N/A','','ee','ee','N/A','3',false,false,false,true);
 INSERT INTO insurer (id,name,created_by,created_date,last_modified_by,last_modified_date,admin_handling_charge,status,vat_no,company_no,address1,address2,address3,address4,address5,postcode,phone,is_workgroup_enable,is_auto_routing_enable,is_claim_ownership_enable,is_claim_locked) VALUES (7,'Norwich Union',999,{ts '2008-11-20 00:23:05'},999,{ts '2008-11-20 00:23:05'},0.00,true,'N/A','N/A','N/A','N/A',null,null,null,'N/A',null,false,false,false,true);
@@ -129,6 +129,12 @@ INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_mo
 INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'More Than Insurance',999,{ts '2008-12-12 17:59:00'},999,{ts '2008-12-12 17:59:00'},25);
 INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'More Th>n Insurance',999,{ts '2008-12-12 17:59:00'},999,{ts '2008-12-12 17:59:00'},26);
 INSERT INTO insurer_alias (insurer_id,alias_name,created_by,created_date,last_modified_by,last_modified_date,id) VALUES (3,'more th>n insurance',999,{ts '2008-12-12 17:59:00'},999,{ts '2008-12-12 17:59:00'},27);
+
+INSERT INTO workgroup (id,name,insurer_id,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'MORE TH>N',3,true,999,{ts '2009-11-27 13:07:31'},999,{ts '2009-11-27 13:07:31'});
+INSERT INTO workgroup (id,name,insurer_id,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'Non RSA',3,true,999,{ts '2009-11-27 13:07:31'},999,{ts '2009-11-27 13:07:31'});
+
+INSERT INTO automatic_routing (id,insurer_id,workgroup_id,expression,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,3,1,'^(([0]{1})+\d{9})$',999,{ts '2009-11-27 13:07:31'},999,{ts '2009-11-27 13:07:31'});
+
 
 -- chorganisation
 INSERT INTO chorganisation (id,name,address1,address2,address3,address4,address5,postcode,vat_no,company_no,is_delegated_authority,created_by,created_date,last_modified_by,last_modified_date,status,phone) VALUES (1006,'Drive Assist','Address1','Address2','Address3',null,null,'Postcode','VATNO','COMPNO',true,999,{ts '2008-11-19 17:12:13'},999,{ts '2008-11-19 17:12:13'},true,null);
@@ -223,6 +229,7 @@ INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_
 INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by) VALUES (12,'Undisclosed','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999);
 INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by) VALUES (14,'Quantum','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999);
 INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by) VALUES (15,'Invoice Already Paid','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999);
+
 
 /*
 CREATE TABLE claim_summary

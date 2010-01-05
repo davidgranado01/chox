@@ -1100,7 +1100,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             System.out.println(">>>>>>>03");
 
-            invoice.setPenaltyChargeAppliedDate(DateHelper.getCurrentTimeStamp());
+            invoice.setPenaltyChargeAppliedDate(DateHelper.getCurrentDateTime());
             service.updateClaim(claim);
 
             System.out.println(">>>>>>>04");

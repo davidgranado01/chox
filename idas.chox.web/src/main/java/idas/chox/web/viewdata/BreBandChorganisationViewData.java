@@ -33,7 +33,7 @@ public class BreBandChorganisationViewData {
          */
 
         this.createdBy = object.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.GridViewDateFormat.format(object.getCreatedDate());
+        this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
 
         this.chorganisationStatus = object.getChorganisation().isStatus();
 

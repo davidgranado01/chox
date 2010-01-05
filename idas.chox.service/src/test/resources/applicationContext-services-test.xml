@@ -26,7 +26,7 @@
     </bean>    
     <bean id="insurerService" class="idas.chox.data.services.InsurerServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>  
+    </bean>
     <bean id="attachmentTypeService" class="idas.chox.data.services.AttachmentTypeServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
@@ -70,23 +70,32 @@
     <bean id="userWorkgroupService" class="idas.chox.data.services.UserWorkgroupServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="businessRulesEngService" class="idas.chox.service.bre.BusinessRulesEngServiceImpl" singleton="false">
-        <property name="claimService" ref="claimService" />
-    </bean>
     <bean id="automaticRoutingService" class="idas.chox.data.services.AutomaticRoutingServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="uploadClaimXMLService" class="idas.chox.service.xml.UploadClaimXMLServiceImpl" singleton="false">
-        <property name="vehicleClassService" ref="vehicleClassService" />
+    <bean id="businessRulesEngService" class="idas.chox.service.bre.BusinessRulesEngServiceImpl" singleton="false">
         <property name="claimService" ref="claimService" />
-        <property name="insurerAliasService" ref="insurerAliasService" />
-        <property name="chorganisationService" ref="chorganisationService" />
         <property name="breBandService" ref="breBandService" />
+        <property name="insurerService" ref="insurerService" />
+    </bean>
+    <bean id="bordereauFileValidation" class="idas.chox.service.xml.validations.BordereauFileValidation">
+        <property name="allowTypes">
+            <list>
+                <value>xml</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="bordereauSchemaValidation" class="idas.chox.service.xml.validations.BordereauSchemaValidation">
+        <property name="schemaFile" value="/excelTemplate/xml-schema.xsd"/>
+    </bean>
+    <bean id="uploadClaimXMLService" class="idas.chox.service.xml.UploadClaimXMLServiceImpl" singleton="false">
         <property name="auditTrailService" ref="auditTrailService" />
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="bordereauService" ref="bordereauService"/>
-        <property name="businessRulesEngService" ref="businessRulesEngService"/>
+        <property name="bordereauSchemaValidation" ref="bordereauSchemaValidation"/>
+        <property name="bordereauFileValidation" ref="bordereauFileValidation"/>
+        <property name="activityFactory" ref="activityFactory"/>
     </bean>
     <bean id="adminUserService" class="idas.chox.service.admin.AdminUserService" singleton="false">
         <property name="insurerService" ref="insurerService" />

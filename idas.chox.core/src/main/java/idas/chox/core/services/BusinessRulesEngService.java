@@ -6,7 +6,7 @@ import idas.chox.core.model.Claim;
 
 public interface BusinessRulesEngService {
 
-    ClaimResult execute(ClaimResult claimResult);
+    void process(ClaimResult claimResult);
 
     RulesEngineResponse processResubmitInvoice(Claim claim);
 }

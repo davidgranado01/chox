@@ -25,33 +25,7 @@ public class AcknowledgeClaim extends BaseActivity {
     private boolean isInvoiceReviewRequired;
     private String engineerClaimReviewNotes;
     private int reasonOfRejectionId;
-    // </editor-fold>    
-
-    @Override
-    protected void doProcess(Claim claim) {
-
-        //update claim object with inout parameters
-        claim.setClaimNumber(claimNumber);
-        claim.setIndemnityAmount(indemnityAmount);
-        claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
-        claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
-        claim.setIsQuantumDispute(isQuantumDispute);
-        claim.setReasonOfRejection(getReasonOfRejection());
-        claim.setIsFnolReviewed(false);
-        if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.New(1, engineerClaimReviewNotes));
-        }
-        //update claim status
-        claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
-    }
-
-    protected ReasonOfRejection getReasonOfRejection() {
-        ReasonOfRejection reasonOfRejection = null;
-        if (reasonOfRejectionId > 0) {
-            reasonOfRejection = (ReasonOfRejection) this.processContext.getDataService().get(ReasonOfRejection.class, reasonOfRejectionId);
-        }
-        return reasonOfRejection;
-    }
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
     public void setIndemnityAmount(BigDecimal indemnityAmount) {
@@ -59,7 +33,11 @@ public class AcknowledgeClaim extends BaseActivity {
     }
 
     public void setClaimNumber(String claimNumber) {
-        this.claimNumber = claimNumber;
+        if(claimNumber != null && !claimNumber.isEmpty())
+        {
+           claimNumber.trim();
+        }
+         this.claimNumber = claimNumber;
     }
 
     public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
@@ -81,6 +59,29 @@ public class AcknowledgeClaim extends BaseActivity {
     public void setReasonOfRejectionId(int reasonOfRejectionId) {
         this.reasonOfRejectionId = reasonOfRejectionId;
     }
+    // </editor-fold>
+
+    @Override
+    protected void prepare(Claim claim) {
+        //update claim object with inout parameters
+        claim.setClaimNumber(claimNumber);
+        claim.setIndemnityAmount(indemnityAmount);
+        claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
+        claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
+        claim.setIsQuantumDispute(isQuantumDispute);
+        claim.setReasonOfRejection(getReasonOfRejection());
+        claim.setIsFnolReviewed(false);
+    }
+
+    @Override
+    protected void doProcess(Claim claim) {
+
+        if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
+            claim.addComment(Comment.New(1, engineerClaimReviewNotes));
+        }
+        //update claim status
+        claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
+    }
 
     @Override
     protected String getCurrentStatus() {
@@ -91,5 +92,12 @@ public class AcknowledgeClaim extends BaseActivity {
     protected String getNextStatus() {
         return ClaimStatus.AWAITING_CAR_HIRE_INFO;
     }
-    // </editor-fold>
+
+    protected ReasonOfRejection getReasonOfRejection() {
+        ReasonOfRejection reasonOfRejection = null;
+        if (reasonOfRejectionId > 0) {
+            reasonOfRejection = (ReasonOfRejection) this.getDataService().get(ReasonOfRejection.class, reasonOfRejectionId);
+        }
+        return reasonOfRejection;
+    }
 }

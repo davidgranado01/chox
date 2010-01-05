@@ -1,0 +1,88 @@
+package idas.chox.service.xml.readers;
+
+import idas.chox.core.model.Solicitor;
+import idas.chox.core.util.XMLUtils;
+import idas.chox.core.xmlValidation.ClaimParseStatus;
+import idas.chox.core.xmlValidation.ClaimResult;
+import idas.chox.service.xml.util.NodeHelper;
+import idas.chox.core.util.XmlHelper;
+import idas.chox.service.xml.validations.DataValidationParameter;
+import java.util.ArrayList;
+import org.w3c.dom.*;
+
+public class InjurySolicitorReader {
+
+    protected static String sectionName = "Injury Solicitor";
+    private DataValidationParameter dataValidationParameter;
+    private Element parentElement;
+
+    public void execute(ClaimResult claimResult, Element parentElement, DataValidationParameter dataValidationParameter) throws Exception {
+        this.dataValidationParameter = dataValidationParameter;
+        this.parentElement = parentElement;
+
+        if (validate(claimResult)) {
+            process(claimResult);
+        }
+    }
+
+    protected boolean validate(ClaimResult claimResult) throws Exception {
+
+        Element element = XMLUtils.getElement(parentElement, "solicitor");
+
+        boolean isAllowToReadData = false;
+
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
+
+            isAllowToReadData = true;
+            claimResult.setCheckDataValid(true);
+
+            claimResult = NodeHelper.nodeValidate(sectionName, "name", element, claimResult, dataValidationParameter);
+            claimResult = NodeHelper.nodeValidate(sectionName, "address1", element, claimResult, dataValidationParameter);
+            claimResult = NodeHelper.nodeValidate(sectionName, "address2", element, claimResult, dataValidationParameter);
+            claimResult = NodeHelper.nodeValidate(sectionName, "address3", element, claimResult, dataValidationParameter);
+            claimResult = NodeHelper.nodeValidate(sectionName, "address4", element, claimResult, dataValidationParameter);
+            claimResult = NodeHelper.nodeValidate(sectionName, "address5", element, claimResult, dataValidationParameter);
+            claimResult = NodeHelper.nodeValidate(sectionName, "postcode", element, claimResult, dataValidationParameter);
+            claimResult = NodeHelper.nodeValidate(sectionName, "telephone", element, claimResult, dataValidationParameter);
+            claimResult = NodeHelper.nodeValidate(sectionName, "email", element, claimResult, dataValidationParameter);
+
+            isAllowToReadData = claimResult.isDataValid();
+
+        }
+
+        return isAllowToReadData;
+    }
+
+    protected void process(ClaimResult claimResult) throws Exception {
+
+        Element element = XMLUtils.getElement(parentElement, "solicitor");
+
+        ArrayList<Solicitor> solicitors = new ArrayList<Solicitor>();
+        if (claimResult.getSolicitors() != null) {
+            solicitors = claimResult.getSolicitors();
+        }
+
+        if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "name")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "address1")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "address2")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "address3")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "address4")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "address5")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "postcode")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "telephone")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "email"))) {
+
+            Solicitor solicitor = new Solicitor();
+
+            solicitor.setAddress1(XmlHelper.getNodeValue(element, "address1"));
+            solicitor.setAddress2(XmlHelper.getNodeValue(element, "address2"));
+            solicitor.setAddress3(XmlHelper.getNodeValue(element, "address3"));
+            solicitor.setAddress4(XmlHelper.getNodeValue(element, "address4"));
+            solicitor.setAddress5(XmlHelper.getNodeValue(element, "address5"));
+            solicitor.setEmail(XmlHelper.getEmailAddressFromNode(element, "email"));
+            solicitor.setName(XmlHelper.getNodeValue(element, "name"));
+            solicitor.setPostcode(XmlHelper.getNodeValue(element, "postcode"));
+            solicitor.setTelephone(XmlHelper.getNodeValue(element, "telephone"));
+
+            solicitors.add(solicitor);
+
+        }
+
+        if (solicitors.size() > 0) {
+            claimResult.setSolicitors(solicitors);
+        }
+
+    }
+}

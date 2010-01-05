@@ -9,20 +9,13 @@ import org.w3c.dom.*;
 
 public class DataValidationParameter {
 
-    protected String XMLDataValidateFile= "DataValidationTemplate.xml";
-    protected Document XMLDataValidateDocument;
-    protected Element mainRoot;
+    private String validateFile;
     
-    public DataValidationParameter() throws IOException{
-        
-        // String xmlValidationTemplate = "c:/Greenfinch/Projects/CHOX/idaschox/trunk/CHOX_WEB/web/excelTemplate/"+XMLDataValidateFile;
-        // String xmlValidationTemplate = "c:/Project Workplace/Greefinch/Sherwood/choxidas/trunk/CHOX_WEB/web/excelTemplate/"+XMLDataValidateFile;
-        String path = "/excelTemplate/DataValidationTemplate.xml";
-        File file = new ClassPathResource(path).getFile();
-        //String xmlValidationTemplate = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + XMLDataValidateFile);
-        this.XMLDataValidateDocument = DocumentHelper.getDocumentFromFile(file);
-        this.mainRoot = XMLDataValidateDocument.getDocumentElement();
-        
+    private Element getDataValidationRootElement()throws IOException{
+
+        File file = new ClassPathResource(validateFile).getFile();
+        Document doc = DocumentHelper.getDocumentFromFile(file);
+        return doc.getDocumentElement();
     }
     
     public NodeRuleModel getValidationElementByField(String nodeName){
@@ -30,8 +23,9 @@ public class DataValidationParameter {
         NodeRuleModel ruleModel = new NodeRuleModel();
         
         try{
-            
-            Node fieldNode = this.mainRoot.getElementsByTagName(nodeName).item(0);
+
+            Element rootElement = getDataValidationRootElement();
+            Node fieldNode = rootElement.getElementsByTagName(nodeName).item(0);
             ruleModel.setNodeName(nodeName);
             ruleModel.setDataType(fieldNode.getChildNodes().item(3).getTextContent());
             ruleModel.setDataMandatory(fieldNode.getChildNodes().item(5).getTextContent());
@@ -43,5 +37,12 @@ public class DataValidationParameter {
         }
         
         return ruleModel;
+    }
+
+    /**
+     * @param validateFile the validateFile to set
+     */
+    public void setValidateFile(String validateFile) {
+        this.validateFile = validateFile;
     }
 }

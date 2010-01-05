@@ -1,0 +1,50 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package idas.chox.service.xml.readers;
+
+import idas.chox.core.xmlValidation.ClaimResult;
+import idas.chox.service.xml.BordereauRederContext;
+import idas.chox.service.xml.validations.DataValidationParameter;
+import javax.xml.xpath.XPathExpressionException;
+import org.w3c.dom.*;
+
+/**
+ *
+ * @author emmanuel
+ */
+public abstract class BaseEntityReader implements Reader {
+
+    private BordereauRederContext bordereauRederContext;
+    private DataValidationParameter dataValidationParameter;
+
+    @Override
+    public void execute(ClaimResult claimResult) throws DOMException, XPathExpressionException, Exception {
+
+        if (validate(claimResult)) {
+            process(claimResult);
+        }
+    }
+
+    protected abstract boolean validate(ClaimResult claimResult) throws Exception;
+
+    protected abstract void process(ClaimResult claimResult) throws Exception;
+
+    protected DataValidationParameter getDataValidationParameter() {
+        if (dataValidationParameter == null) {
+            dataValidationParameter = getBordereauRederContext().getDataValidationParameter();
+        }
+        return dataValidationParameter;
+    }
+
+    @Override
+    public void setBordereauRederContext(BordereauRederContext bordereauRederContext) {
+        this.bordereauRederContext = bordereauRederContext;
+    }
+
+    @Override
+    public BordereauRederContext getBordereauRederContext() {
+        return bordereauRederContext;
+    }
+}

@@ -16,7 +16,7 @@ public class AuditTrailViewData {
     public AuditTrailViewData(AuditTrail auditTrail) {
 
         this.id = auditTrail.getId();
-        this.modifiedDate = DateHelper.GridViewDateFormat.format(auditTrail.getUpdateDate());
+        this.modifiedDate = DateHelper.LocalDateTimeFormat.format(auditTrail.getUpdateDate());
 
         String orgName = "";
         WebUser user = auditTrail.getCreatedBy();

@@ -2,7 +2,10 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-autowire="byName">
     <bean id="workflowContext" class="idas.chox.service.workflow.ClaimProcessWorkflowContext">
-        <property name="dataService" ref="dataService"></property>
+        <property name="dataService" ref="dataService" />
+        <property name="businessRulesEngService" ref="businessRulesEngService" />
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+        <property name="automaticRoutingService" ref="automaticRoutingService"/>
     </bean>
     <bean id="activityFactory" class="idas.chox.core.workflow.ActivityFactory">
         <property name="activities">

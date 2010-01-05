@@ -24,6 +24,8 @@ public class WorkFlowContextTest {
         Assert.assertNotNull(activityFactory);
         Assert.assertNotNull(activityFactory.getWorkflowContext());
         Assert.assertNotNull(activityFactory.getWorkflowContext().getDataService());
+        Assert.assertNotNull(activityFactory.getWorkflowContext().getSecurityInfoProvider());
+        Assert.assertNotNull(activityFactory.getWorkflowContext().getBusinessRulesEngService());
         Assert.assertNotNull(activityFactory.getActivity("newClaim"));
         Assert.assertNotNull(activityFactory.getActivity("assignOwner"));
         Assert.assertNotNull(activityFactory.getActivity("assignWorkGroup"));

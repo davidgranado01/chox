@@ -45,5 +45,13 @@ public class WitnessServiceImpl extends SecureDataService implements WitnessServ
             }
         }
     }
+
+    public void saveObjectForXMLUploader(ClaimResult claimResult) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Witness getObject(int id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
 

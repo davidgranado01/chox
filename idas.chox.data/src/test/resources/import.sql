@@ -161,6 +161,11 @@ INSERT INTO workgroup (id,name,insurer_id,status,created_by,created_date,last_mo
 INSERT INTO workgroup (id,name,insurer_id,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (31,'RSA2',3,true,999,{ts '2009-09-01 14:15:02'},999,{ts '2009-09-01 14:15:02'});
 INSERT INTO workgroup (id,name,insurer_id,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (32,'RSA3',3,true,999,{ts '2009-09-01 14:15:05'},999,{ts '2009-09-01 14:15:05'});
 
+INSERT INTO workgroup (id,name,insurer_id,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'MORE THN',3,true,999,{ts '2009-11-27 13:07:31'},999,{ts '2009-11-27 13:07:31'});
+INSERT INTO workgroup (id,name,insurer_id,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'Non RSA',3,true,999,{ts '2009-11-27 13:07:31'},999,{ts '2009-11-27 13:07:31'});
+
+INSERT INTO automatic_routing (id,insurer_id,workgroup_id,expression,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,3,1,'^(([0]{1})+\d{9})$',999,{ts '2009-11-27 13:07:31'},999,{ts '2009-11-27 13:07:31'});
+
 -- web_user
 INSERT INTO web_user (id,user_name,email,first_name,last_name,password,created_by,created_date,last_modified_by,last_modified_date,chorganisation_id,insurer_id,status,is_expired) VALUES (2,'op@cho.com','op@cho.com','Operative','CHO','ff31cc74f746f81759bfedb89ed4f69e',999,{ts '2008-11-18 12:53:20'},999,{ts '2009-08-18 16:13:14'},1006,null,true,false);
 INSERT INTO web_user (id,user_name,email,first_name,last_name,password,created_by,created_date,last_modified_by,last_modified_date,chorganisation_id,insurer_id,status,is_expired) VALUES (3,'ch@ins.com','ch@ins.com','Claims','Handler','ff31cc74f746f81759bfedb89ed4f69e',999,{ts '2008-11-18 12:54:25'},999,{ts '2009-08-09 16:31:02'},null,3,true,false);

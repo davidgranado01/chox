@@ -4,6 +4,7 @@ import java.util.Calendar;
 import org.w3c.dom.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 
 
 public class XmlHelper {
@@ -79,19 +80,19 @@ public class XmlHelper {
 
     }
 
-    public static Timestamp getTimeStampFromNode(Element thisElement, String thisNodeName) {
+    public static Date getDateFromNode(Element thisElement, String thisNodeName) {
         String thisNodeValue = XMLUtils.getElementValue(thisElement, thisNodeName);
 
-        Timestamp returnTimeStamp = null;
+        Date date = null;
 
         if (thisNodeValue != null && !thisNodeValue.equalsIgnoreCase("")) {
-            returnTimeStamp = parseDate(thisNodeValue);
+            date = parseDate(thisNodeValue);
         }
 
-        return returnTimeStamp;
+        return date;
     }
 
-    public static Timestamp parseDate(String t) {
+    public static Date parseDate(String t) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.MILLISECOND, 0);
         c.set(Calendar.YEAR, Integer.parseInt(t.substring(0, 4)));
@@ -100,6 +101,6 @@ public class XmlHelper {
         c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(t.substring(11, 13)));
         c.set(Calendar.MINUTE, Integer.parseInt(t.substring(14, 16)));
         c.set(Calendar.SECOND, Integer.parseInt(t.substring(17)));
-        return new Timestamp(c.getTimeInMillis());
+        return c.getTime();
     }
 }

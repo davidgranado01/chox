@@ -123,6 +123,7 @@ public class BaseAction extends ActionSupport {
     protected void handleException(Object source,Exception ex) {
         logger.error(ex.getMessage());
         getActionResponse().AddError(ex.getMessage());
+        ex.printStackTrace();
     }
 
     /**

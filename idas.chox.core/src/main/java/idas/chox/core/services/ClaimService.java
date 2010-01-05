@@ -40,8 +40,6 @@ public interface ClaimService {
 
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
 
-    public void saveObjectForXMLUploader(final ClaimResult claimResult);
-
     public Boolean isObjectExist(int WorkgroupId);
 
     public boolean isUserHasOpenClaim(int UserId);

@@ -10,11 +10,12 @@ import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.xmlValidation.BordereauParseStatus;
 import idas.chox.core.xmlValidation.BordereauResult;
-import idas.chox.service.security.PermissionedUser;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -22,7 +23,7 @@ import java.util.ListIterator;
  */
 public class ProcessClaimsAction extends BaseAction {
 
-    private File file;
+    private File upload;
     private String filename;
     private UploadClaimXMLService service;
     private List<XMLParseResult> result;
@@ -63,8 +64,8 @@ public class ProcessClaimsAction extends BaseAction {
         this.bordereauResult = bordereauResult;
     }
 
-    public void setUpload(File file) {
-        this.file = file;
+    public void setUpload(File upload) {
+        this.upload = upload;
     }
 
     public void setUploadClaimXMLService(UploadClaimXMLService service) {
@@ -84,10 +85,10 @@ public class ProcessClaimsAction extends BaseAction {
         return fileName.substring(pos);
     }
 
-    @Override
+    @Override    
     public String execute() {
 
-        if (this.file == null || this.filename == null) {
+        if (this.upload == null || this.filename == null) {
             return ERROR;
         }
 
@@ -100,11 +101,11 @@ public class ProcessClaimsAction extends BaseAction {
 
         if (extention.matches("\\.xml")) {
 
-            bordereauResult = this.service.processClaimXMLFile(this.file, this.filename.toLowerCase());
+            bordereauResult = this.service.processClaimXMLFile(this.upload, this.filename.toLowerCase());
 
             // SET CREATED BY USER AND CREATED DATE
             this.bordereauResult.setCreatedBy( this.getAuthenticatedUser());
-            this.bordereauResult.setCreatedDate(DateHelper.getCurrentTimeStamp());
+            this.bordereauResult.setCreatedDate(DateHelper.getCurrentDateTime());
 
             // SET STATUS
             if (this.bordereauResult.getBordereauStatus().equals(BordereauParseStatus.allRejected)) {

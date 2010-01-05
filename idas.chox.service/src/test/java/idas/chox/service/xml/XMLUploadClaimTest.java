@@ -2,6 +2,7 @@ package idas.chox.service.xml;
 
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.VehicleClass;
@@ -10,10 +11,10 @@ import idas.chox.core.services.BordereauService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.VehicleClassService;
+import idas.chox.core.util.DateHelper;
 import idas.chox.core.xmlValidation.BordereauResult;
 import idas.chox.core.xmlValidation.ClaimResult;
 import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -24,11 +25,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-Workflow-test.xml"})
 public class XMLUploadClaimTest {
 
     @Autowired
-    private UploadClaimXMLService service;
+    private UploadClaimXMLService uploadClaimXMLService;
     @Autowired
     private BordereauService bordereauService;
     @Autowired
@@ -36,55 +37,15 @@ public class XMLUploadClaimTest {
     @Autowired
     private VehicleClassService vehicleClassService;
 
-    /*
-    @Test
-    public void testFile_1_Error() {
-    
-    String fileName = "UnitTest-NewClaim_01.xml";
-    try
-    {
-
-    // 1. DELETE OBJECT
-    bordereauService.deleteObject(fileName);
-
-    // 2. PROCESS THE XML
-    File testFile = new File(testFilePath + fileName);
-    BordereauResult parseResult = service.processClaimXMLFile(testFile, fileName);
-
-    // 3. CHECK XML RESULT
-    Assert.assertEquals(true, parseResult.isValid());
-    Assert.assertEquals(0, parseResult.getMessage().size());
-    Assert.assertEquals(1, parseResult.getClaimResult().size());
-
-    // 4. CHECK XML CLAIM RESULT
-    ClaimResult claimResult = parseResult.getClaimResult().get(0);
-    Assert.assertEquals(false, claimResult.isValid());
-    Assert.assertEquals(false, claimResult.isDataValid());
-    Assert.assertEquals(4, claimResult.getMessage().size());
-    Assert.assertEquals("Invalid or incorrect character in 'Managing repair' for 'Claim Header'.".toLowerCase(), claimResult.getMessage().get(0).toLowerCase());
-    Assert.assertEquals("Invalid or incorrect character in 'Customer's Vehicle Registration' for 'Customer Detail'.".toLowerCase(), claimResult.getMessage().get(1).toLowerCase());
-    Assert.assertEquals("No 'Third Party's Driver First Name' information supplied for 'Third Party Details'. Please re-submit with this information.".toLowerCase(), claimResult.getMessage().get(2).toLowerCase());
-    Assert.assertEquals("Invalid or incorrect character in 'Number Days Hire' for 'Vehicle Hire Details'.".toLowerCase(), claimResult.getMessage().get(3).toLowerCase());
-
-    // 5. CHECK BORDEREAU RESULT
-    Bordereau bordereau = null;
-    bordereau = bordereauService.getObject(fileName);
-    Assert.assertEquals(fileName, bordereau.getFileName());
-    Assert.assertEquals("allRejected", bordereau.getStatus());
-
-    }catch(Exception ex){
-    }
-    }
-     */
     @Test
     @Transactional
-    public void testFile_2_Successful() throws IOException {
+    public void testFile_2_Successful() throws Exception {
 
         String fileName = "UnitTest-NewClaim_02.xml";
 
         // 2. PROCESS THE XML
         File testFile = new ClassPathResource(fileName).getFile();
-        BordereauResult parseResult = service.processClaimXMLFile(testFile, fileName);
+        BordereauResult parseResult = uploadClaimXMLService.processClaimXMLFile(testFile, fileName);
 
         // 3. CHECK XML RESULT
         Assert.assertEquals(true, parseResult.isValid());
@@ -111,27 +72,15 @@ public class XMLUploadClaimTest {
         checkCustomer(claim.getCustomer());
         checkEngineeringReport(claim.getEngineerReport());
         checkVehicleHire(claim.getVehicleHire());
-
-        /*
-        protected Insurer insurer;
-        protected Chorganisation chorganisation;
-        protected Incident incident;
-        protected Invoice invoice;
-        protected ThirdParty thirdParty;
-        protected VehicleHire vehicleHire;
-        protected EngineerReport engineerReport;
-        protected HireMonitoringDetail hireMonitoringDetail;
-         */
-
     }
 
     private void checkClaimObject(Claim claim) {
 
         Assert.assertEquals(true, claim.getManagingRepair());
-        Assert.assertEquals("2008-01-01 00:00:00.0", claim.getPolicyHolderContactDate().toString());
+        Assert.assertEquals(DateHelper.ParseDBDateTime("2008-01-01 00:00:00"), claim.getPolicyHolderContactDate());
         Assert.assertEquals("UnitTestNewClaim002", claim.getChoReference());
-        Assert.assertEquals("ClaimUnacknowledgedUnrouted", claim.getStatus());
-        Assert.assertEquals("2008-01-04 12:00:00.0", claim.getCreditAgreementDate().toString());
+        Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim.getStatus());
+        Assert.assertEquals(DateHelper.ParseDBDateTime("2008-01-04 12:00:00"), claim.getCreditAgreementDate());
         //Assert.assertEquals(Date.valueOf(DateHelper.getCurrentTimeStamp(), claim.getGtaNoticeDate());
         Assert.assertEquals("200912345678", claim.getClaimNumber());
         Assert.assertEquals(new BigDecimal("0.00"), claim.getIndemnityAmount());
@@ -141,6 +90,7 @@ public class XMLUploadClaimTest {
         Assert.assertEquals(false, claim.getIsIsAnomalies());
         Assert.assertEquals(false, claim.isIsFnolReviewed());
         Assert.assertEquals(null, claim.getReasonOfRejection());
+        Assert.assertEquals(claim.getThirdParty().getInsurer(), claim.getInsurer());
 
     }
 
@@ -168,8 +118,8 @@ public class XMLUploadClaimTest {
         Assert.assertEquals("T456YHU", vehicleHire.getVehicleModel());
         Assert.assertEquals("Repairs Complete", vehicleHire.getCollectionReason());
         // Assert.assertEquals(Integer.valueOf(9), vehicleHire.getDays());
-        Assert.assertEquals("2008-01-06 00:00:00.0", vehicleHire.getRentalStart().toString());
-        Assert.assertEquals("2008-01-07 00:00:00.0", vehicleHire.getRentalEnd().toString());
+        Assert.assertEquals(DateHelper.ParseDBDateTime("2008-01-06 00:00:00"), vehicleHire.getRentalStart());
+        Assert.assertEquals(DateHelper.ParseDBDateTime("2008-01-07 00:00:00"), vehicleHire.getRentalEnd());
         VehicleClass VehicleClass = vehicleClassService.getVehicleClassByName("F3");
         Assert.assertEquals(VehicleClass.getId(), vehicleHire.getVehicleClass().getId());
     }
@@ -197,7 +147,7 @@ public class XMLUploadClaimTest {
         VehicleClass VehicleClass = vehicleClassService.getVehicleClassByName("F3");
         Assert.assertEquals(VehicleClass.getId(), customer.getVehicleClass().getId());
         Assert.assertEquals("MORE THAN", customer.getInsurerName());
-        Assert.assertEquals("000000001", customer.getPolicyNumber());
+        Assert.assertEquals("0000000001", customer.getPolicyNumber());
         Assert.assertEquals("CL001", customer.getClaimReference());
         Assert.assertEquals(true, customer.isComprehensive());
         Assert.assertEquals("X567XER", customer.getVehicleRegistration());
@@ -207,7 +157,7 @@ public class XMLUploadClaimTest {
         Assert.assertEquals("Dented passenger front wing and door passenger, driverside front corner dented", customer.getDamage());
         Assert.assertEquals(true, customer.getIsUsable());
         Assert.assertEquals(false, customer.isIsActive());
-        Assert.assertEquals("2008-01-08 00:00:00.0", customer.getInitialECD().toString());
+        Assert.assertEquals(DateHelper.ParseDBDateTime("2008-01-08 00:00:00"), customer.getInitialECD());
         Assert.assertEquals(new Boolean(false), customer.getIsTotalLoss());
     }
 }

@@ -28,7 +28,7 @@ public class HistoryHelper {
 
         History history = new History();
 
-        history.setProcessDate(DateHelper.getCurrentTimeStamp());
+        history.setProcessDate(DateHelper.getCurrentDateTime());
         history.setClaim(claim);
         history.setIsPublic(rv.getIsVisibleToCHO());
         history.setNarrative(rv.toString());

@@ -47,7 +47,6 @@ public class ClaimResult{
     public void setWitnesses(ArrayList<Witness> witnesses) {
         this.witnesses = witnesses;
     }
-
     
     public boolean isCheckDataValid() {
         return checkDataValid;
@@ -95,14 +94,6 @@ public class ClaimResult{
 
     public void setClaimParseStatus(ClaimParseStatus claimParseStatus) {
         this.claimParseStatus = claimParseStatus;
-    }
-
-    public List<History> getHistory() {
-        return history;
-    }
-
-    public void setHistory(List<History> history) {
-        this.history = history;
     }
 
     public boolean isValid() {

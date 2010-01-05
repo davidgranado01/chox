@@ -9,8 +9,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.util.DateHelper;
-import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -35,7 +34,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
             thisAuditTrail.setClaim(thisClaim);
             thisAuditTrail.setNewStatus(newStatus);
             thisAuditTrail.setOriginalStatus(oldStatus);
-            thisAuditTrail.setUpdateDate(DateHelper.getCurrentTimeStamp());
+            thisAuditTrail.setUpdateDate(DateHelper.getCurrentDateTime());
             thisAuditTrail.setUser(getCurrentUser());
             save(thisAuditTrail);
             bFlag = true;
@@ -56,9 +55,8 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
             thisAuditTrail.setNewStatus(newStatus);
             thisAuditTrail.setOriginalStatus(oldStatus);
 
-            Timestamp currentDate = DateHelper.getCurrentTimeStamp();
-            int sec = DateHelper.getCurrentTimeStamp().getSeconds();
-            currentDate.setSeconds(sec + secInteval);
+            Date currentDate = DateHelper.getCurrentDateTime();
+            currentDate.setTime(currentDate.getTime() + secInteval);
 
             thisAuditTrail.setUpdateDate(currentDate);
             thisAuditTrail.setUser(getCurrentUser());
@@ -80,7 +78,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
             thisAuditTrail.setClaim(thisClaim);
             thisAuditTrail.setNewStatus(newStatus);
             thisAuditTrail.setOriginalStatus(thisClaim.getStatus());
-            thisAuditTrail.setUpdateDate(DateHelper.getCurrentTimeStamp());
+            thisAuditTrail.setUpdateDate(DateHelper.getCurrentDateTime());
             thisAuditTrail.setUser(getCurrentUser());
 
             if (claimReasonOfRejection != null) {
@@ -105,9 +103,8 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
         if (!thisClaim.getStatus().trim().equalsIgnoreCase(newStatus.trim())) {
 
-            Timestamp currentDate = DateHelper.getCurrentTimeStamp();
-            int sec = DateHelper.getCurrentTimeStamp().getSeconds();
-            currentDate.setSeconds(sec + secInteval);
+            Date currentDate = DateHelper.getCurrentDateTime();
+            currentDate.setTime(currentDate.getTime() + secInteval);
 
             AuditTrail thisAuditTrail = new AuditTrail();
             thisAuditTrail.setClaim(thisClaim);

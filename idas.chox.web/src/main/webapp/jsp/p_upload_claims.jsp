@@ -50,7 +50,7 @@
             <table>
                 <tr>
                     <td>
-                        <s:file id="fileUploader" name ="upload" label ="Claim XML File" size="55" cssStyle="height: 20px;"/>
+                        <s:file id="upload" name ="upload" label ="Claim XML File" size="55" cssStyle="height: 20px;"/>
                     </td>
                 </tr>
                 <tr>

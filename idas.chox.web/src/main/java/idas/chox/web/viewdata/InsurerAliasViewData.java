@@ -23,7 +23,7 @@ public class InsurerAliasViewData {
         this.insurerName = object.getInsurer().getName();
         this.name = object.getAliasName();
         this.createdBy = object.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.GridViewDateFormat.format(object.getCreatedDate());
+        this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
     }
 
     public String getCreatedBy() {

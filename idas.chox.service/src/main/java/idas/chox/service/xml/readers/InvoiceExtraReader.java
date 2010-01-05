@@ -1,0 +1,150 @@
+package idas.chox.service.xml.readers;
+
+import idas.chox.core.model.Invoice;
+import idas.chox.core.util.XMLUtils;
+import idas.chox.core.xmlValidation.ClaimParseStatus;
+import idas.chox.core.xmlValidation.ClaimResult;
+import idas.chox.service.xml.util.NodeHelper;
+import idas.chox.core.util.XmlHelper;
+import java.math.BigDecimal;
+import java.util.List;
+import org.w3c.dom.*;
+
+public class InvoiceExtraReader extends BaseEntityReader {
+
+    protected static String sectionName = "Invoice Extra";
+
+    @Override
+    protected boolean validate(ClaimResult claimResult) throws Exception {
+
+        Element rootElement = claimResult.getElement();
+        Element invoiceElement = XMLUtils.getElement(rootElement, "invoice");
+        Element element = XMLUtils.getElement(invoiceElement, "extras");
+        List<Element> elements = XMLUtils.getElements(element.getOwnerDocument(), element, "extra");
+
+        boolean isAllowToReadData = false;
+        boolean isAdminFeeExist = false;
+
+        if ((claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) && ((XMLUtils.getElement(element, "extra").getTextContent()).trim().length() > 0)) {
+
+            isAllowToReadData = true;
+
+            for (Element ee : elements) {
+
+                String strExtraName = XmlHelper.getNodeValue(ee, "name");
+                String strExtraFee = strExtraName + " Fee";
+                String strExtraQty = strExtraName + " Quantity";
+
+                claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "name", element, claimResult, getDataValidationParameter(), strExtraName);
+                claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "quantity", element, claimResult, getDataValidationParameter(), strExtraQty);
+                claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "item-cost", element, claimResult, getDataValidationParameter(), strExtraFee);
+
+                if (strExtraName.equalsIgnoreCase("Admin")) {
+                    isAdminFeeExist = true;
+                }
+
+            }
+
+            if (!claimResult.isCheckDataValid()) {
+                isAllowToReadData = false;
+                claimResult.setValid(false);
+                claimResult.setDataValid(false);
+            }
+        }
+
+        /** CHECK INVOICE ADMIN FEE **/
+        if (!isAdminFeeExist && claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
+            claimResult.getMessage().add("No Admin Fee information supplied for 'Invoice'. Please re-submit with this information.");
+            claimResult.setCheckDataValid(false);
+            claimResult.setDataValid(false);
+            claimResult.setValid(false);
+        }
+
+        return isAllowToReadData;
+    }
+
+    @Override
+    protected void process(ClaimResult claimResult) throws Exception {
+
+        Invoice invoice = claimResult.getClaim().getInvoice();
+
+        Element rootElement = claimResult.getElement();
+        Element invoiceElement = XMLUtils.getElement(rootElement, "invoice");
+        Element extrasElement = XMLUtils.getElement(invoiceElement, "extras");
+        List<Element> elements = XMLUtils.getElements(extrasElement.getOwnerDocument(), extrasElement, "extra");
+
+        for (Element ee : elements) {
+
+            String sExtra = XmlHelper.getNodeValue(ee, "name");
+            Integer iQuantity = XmlHelper.getIntegerFromNode(ee, "quantity");
+            BigDecimal dIntemCost = XmlHelper.getBigDecimalFromNode(ee, "item-cost");
+            setExtraItem(invoice, sExtra, iQuantity, dIntemCost);
+
+        }
+    }
+
+    private void setExtraItem(Invoice invoice, String nodeName, Integer iQuantity, BigDecimal dIntemCost) {
+
+        if (nodeName.equalsIgnoreCase("CDW")) {
+            invoice.setCdwFee(dIntemCost);
+            invoice.setCdwQty(iQuantity);
+        } else if (nodeName.equalsIgnoreCase("Admin")) {
+            invoice.setAdminFee(dIntemCost);
+            invoice.setAdminQty(iQuantity);
+        } else if (nodeName.equalsIgnoreCase("Automatic")) {
+            invoice.setAutomaticFee(dIntemCost);
+            invoice.setAutomaticQty(iQuantity);
+        } else if (nodeName.equalsIgnoreCase("Baby Seat")) {
+            invoice.setBabySeatFee(dIntemCost);
+            invoice.setBabySeatQty(iQuantity);
+        } else if (nodeName.equalsIgnoreCase("Delivery Collection")) {
+            invoice.setDeliveryCollectionFee(dIntemCost);
+            invoice.setDeliveryCollectionQty(iQuantity);
+        } else if (nodeName.equalsIgnoreCase("Dual Control")) {
+            invoice.setDualControlFee(dIntemCost);
+            invoice.setDualControlQty(iQuantity);
+        } else if (nodeName.equalsIgnoreCase("Estate")) {
+            invoice.setEstateFee(dIntemCost);
+            invoice.setEstateQty(iQuantity);
+        } else if (nodeName.equalsIgnoreCase("Non-standard Risk Insurance Premium")) {
+            invoice.setNonStandardInsurancePremiumFee(dIntemCost);
+            invoice.setNonStandardInsurancePremiumQty(iQuantity);
+        } else if (nodeName.equalsIgnoreCase("Roof Rack")) {
+            invoice.setRoofRackFee(dIntemCost);
+            invoice.setRoofRackQty(iQuantity);
+        } else if (nodeName.equalsIgnoreCase("Sat Nav")) {
+            invoice.setSatNavFee(dIntemCost);
+            invoice.setSatNavQty(iQuantity);
+        } else if (nodeName.equalsIgnoreCase("Tow Bars")) {
+            invoice.setTowBarsFee(dIntemCost);
+            invoice.setTowBarsQty(iQuantity);
+        }
+
+    }
+
+    private void preInitialize(ClaimResult claimResult) {
+        Invoice invoice = claimResult.getClaim().getInvoice();
+        invoice.setCdwFee(new BigDecimal("0.00"));
+        invoice.setCdwQty(0);
+        invoice.setAdminFee(new BigDecimal("0.00"));
+        invoice.setAdminQty(0);
+        invoice.setAutomaticFee(new BigDecimal("0.00"));
+        invoice.setAutomaticQty(0);
+        invoice.setBabySeatFee(new BigDecimal("0.00"));
+        invoice.setBabySeatQty(0);
+        invoice.setDeliveryCollectionFee(new BigDecimal("0.00"));
+        invoice.setDeliveryCollectionQty(0);
+        invoice.setDualControlFee(new BigDecimal("0.00"));
+        invoice.setDualControlQty(0);
+        invoice.setEstateFee(new BigDecimal("0.00"));
+        invoice.setEstateQty(0);
+        invoice.setNonStandardInsurancePremiumFee(new BigDecimal("0.00"));
+        invoice.setNonStandardInsurancePremiumQty(0);
+        invoice.setRoofRackFee(new BigDecimal("0.00"));
+        invoice.setRoofRackQty(0);
+        invoice.setSatNavFee(new BigDecimal("0.00"));
+        invoice.setSatNavQty(0);
+        invoice.setTowBarsFee(new BigDecimal("0.00"));
+        invoice.setTowBarsQty(0);
+    }
+}

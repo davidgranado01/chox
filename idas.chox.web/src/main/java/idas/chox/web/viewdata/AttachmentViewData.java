@@ -28,7 +28,7 @@ public class AttachmentViewData {
         this.category = attachment.getCategory();
         this.remarks = attachment.getRemarks();
 
-        this.modifiedDate = DateHelper.GridViewDateFormat.format(attachment.getLastModifiedDate());
+        this.modifiedDate = DateHelper.LocalDateTimeFormat.format(attachment.getLastModifiedDate());
 
         WebUser user = attachment.getLastModifiedBy();
         if (user != null) {

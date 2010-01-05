@@ -32,7 +32,7 @@ public class UserViewData {
         this.email = object.getEmail();
         this.name = object.getDisplayName();
         this.createdBy = object.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.GridViewDateFormat.format(object.getCreatedDate());
+        this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
         this.status = object.getStatus();
         this.isExpired = object.getIsExpired() ? "Yes" : "No";
 
