@@ -21,7 +21,7 @@ public class BatchUpdateAction extends BaseAction {
     private String actionResult;
     private List<Integer> selectedClaimIdList;
     private int workgroup;
-    private Integer workgroupId; // CLAIM OWNERSHIP
+    private Integer workgroupId;
     private Integer claimOwnerId;
     private WorkgroupService workgroupService;
     private CommentService commentService;
@@ -36,10 +36,10 @@ public class BatchUpdateAction extends BaseAction {
 
         String oldStatus = ClaimStatus.INVOICE_PAYMENT_LOGGED;
         String newStatus = ClaimStatus.INVOICE_PAYMENT_RECEIVED;
-        
+
         for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
-            updateClaimStatus(claim, oldStatus, newStatus,0);
+            updateClaimStatus(claim, oldStatus, newStatus, 0);
         }
         return SUCCESS;
     }
@@ -47,33 +47,33 @@ public class BatchUpdateAction extends BaseAction {
     public String doClaimRoutedAction() {
 
         String oldStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED;
-        
+
         Workgroup workgroupDBA = new Workgroup();
         workgroupDBA = workgroupService.getObject(this.workgroupId);
 
-        for (Integer id : selectedClaimIdList)  {
+        for (Integer id : selectedClaimIdList) {
 
             Claim claim = claimService.getClaim(id);
             claim.setWorkgroup(workgroupDBA);
             updateClaimStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
 
-            if(claim.getInsurer().isClaimOwnershipEnable()){
+            if (claim.getInsurer().isClaimOwnershipEnable()) {
                 updateClaimStatus(claim, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, 1);
             }
-            
+
         }
-        
+
         return SUCCESS;
     }
 
     public String doClaimOwnershipAction() {
 
-        
+
         String oldStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED;
 
         // WORKGROUP
         Workgroup workgroupDBA = new Workgroup();
-        if(this.workgroupId!=null && this.workgroupId>0){
+        if (this.workgroupId != null && this.workgroupId > 0) {
             workgroupDBA = workgroupService.getObject(this.workgroupId);
         }
 
@@ -82,17 +82,17 @@ public class BatchUpdateAction extends BaseAction {
         claimOwnerDBA = userService.getObject(this.claimOwnerId);
 
         // UPDATE CLAIMS(s)
-        for (Integer id : selectedClaimIdList)  {
+        for (Integer id : selectedClaimIdList) {
 
             Claim claim = claimService.getClaim(id);
 
-            if(this.workgroupId!=null && this.workgroupId>0){
+            if (this.workgroupId != null && this.workgroupId > 0) {
                 claim.setWorkgroup(workgroupDBA);
             }
-            
+
             claim.setClaimOwner(claimOwnerDBA);
             updateClaimStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
-            
+
         }
 
         return SUCCESS;
@@ -100,13 +100,9 @@ public class BatchUpdateAction extends BaseAction {
 
     public String doClaimOwnershipUpdateAction() {
 
-
-            System.out.println(">>> workgroupId : "+this.workgroupId);
-            System.out.println(">>> claimOwnerId : "+this.claimOwnerId);
-            
         // WORKGROUP
         Workgroup workgroupDBA = new Workgroup();
-        if(this.workgroupId!=null && this.workgroupId>0){
+        if (this.workgroupId != null && this.workgroupId > 0) {
             workgroupDBA = workgroupService.getObject(this.workgroupId);
         }
 
@@ -114,22 +110,24 @@ public class BatchUpdateAction extends BaseAction {
         WebUser claimOwnerDBA = userService.getObject(this.claimOwnerId);
 
         // UPDATE CLAIMS(s)
-        for (Integer id : selectedClaimIdList)  {
+        for (Integer id : selectedClaimIdList) {
 
             Claim claim = claimService.getClaim(id);
 
-            System.out.println("01 claim : "+claim.getId());
-            
-            String noteMsg = "Claim owner changed from '" + claim.getClaimOwner().getDisplayName() + "' to '" + claimOwnerDBA.getDisplayName()+"'";
+            String oldClaimOwnerName = "-";
+            if (claim.getClaimOwner() != null) {
+                oldClaimOwnerName = claim.getClaimOwner().getDisplayName();
+            }
 
-            if(this.workgroupId!=null && this.workgroupId>0){
+            String noteMsg = "Claim owner changed from '" + oldClaimOwnerName + "' to '" + claimOwnerDBA.getDisplayName() + "'";
+
+            if (this.workgroupId != null && this.workgroupId > 0) {
                 claim.setWorkgroup(workgroupDBA);
             }
 
             claim.setClaimOwner(claimOwnerDBA);
             claimService.updateClaim(claim);
 
-            System.out.println("02 claim : "+claim.getId());
 
             // SAVE NEW NOTE
             int noteVisibilityType = 0;
@@ -137,7 +135,6 @@ public class BatchUpdateAction extends BaseAction {
 
         }
 
-        System.out.println("**************");
         return SUCCESS;
     }
 
@@ -156,33 +153,32 @@ public class BatchUpdateAction extends BaseAction {
             }
         }
     }
-    
+
     public String clearBREApprovedInvoicesForPayment() {
 
         String oldStatus = ClaimStatus.INVOICE_APPROVED_BY_BRE;
         String newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
-        
+
         for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
-            updateClaimStatus(claim,oldStatus,newStatus, 0);
+            updateClaimStatus(claim, oldStatus, newStatus, 0);
         }
         return SUCCESS;
     }
-    
+
     public String logInvoicePayments() {
 
         String oldStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
         String newStatus = ClaimStatus.INVOICE_PAYMENT_LOGGED;
-       
+
         for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
-            updateClaimStatus(claim,oldStatus,newStatus, 0);
+            updateClaimStatus(claim, oldStatus, newStatus, 0);
         }
         return SUCCESS;
     }
-    
-    private void updateClaimStatus(Claim claim,String oldStatus,String newStatus, Integer secInterval)
-    {
+
+    private void updateClaimStatus(Claim claim, String oldStatus, String newStatus, Integer secInterval) {
         if (claim.getStatus().equalsIgnoreCase(oldStatus)) {
             try {
                 auditTrailService.logAuditLog(newStatus, claim, null, null, secInterval);
@@ -200,18 +196,17 @@ public class BatchUpdateAction extends BaseAction {
 
     public void setSelectedClaimIds(String ids) {
         String[] list = ids.split(",");
-        
+
         selectedClaimIdList = new ArrayList<Integer>();
-        
-        for(String s : list)
-        {
+
+        for (String s : list) {
             Integer id = Integer.parseInt(s.trim());
             selectedClaimIdList.add(id);
         }
-        
+
     }
 
-    public void setWorkgroup(int id){
+    public void setWorkgroup(int id) {
         this.workgroup = id;
     }
 
@@ -238,7 +233,7 @@ public class BatchUpdateAction extends BaseAction {
     public void setWorkgroupService(WorkgroupService workgroupService) {
         this.workgroupService = workgroupService;
     }
-    
+
     public String getActionResult() {
         return actionResult;
     }
@@ -254,6 +249,4 @@ public class BatchUpdateAction extends BaseAction {
     public void setCommentService(CommentService commentService) {
         this.commentService = commentService;
     }
-
-    
 }

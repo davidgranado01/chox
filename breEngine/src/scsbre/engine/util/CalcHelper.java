@@ -6,40 +6,39 @@ import java.util.Date;
 public class CalcHelper {
 
     public static boolean EqualTo(BigDecimal a, BigDecimal b) {
-        
+
         boolean bFlag = false;
-        
+
         double cx = Math.ceil(a.doubleValue());
         double cy = Math.ceil(b.doubleValue());
-        
+
         double fx = Math.floor(a.doubleValue());
         double fy = Math.floor(b.doubleValue());
-        
-        if((cx==cy) || (fx==fy)){
+
+        if ((cx == cy) || (fx == fy)) {
             bFlag = true;
         }
-        
+
         return bFlag;
-        
+
     }
-    
+
     public static boolean LessThanOrEqualTo(BigDecimal a, BigDecimal b) {
-        
+
         boolean bFlag = false;
-        
+
         double cx = Math.ceil(a.doubleValue());
         double cy = Math.ceil(b.doubleValue());
-        
+
         double fx = Math.floor(a.doubleValue());
         double fy = Math.floor(b.doubleValue());
-        
-        if((cx<=cy) || (fx<=fy)){
+
+        if ((cx <= cy) || (fx <= fy)) {
             bFlag = true;
         }
-        
-        return bFlag;        
+
+        return bFlag;
     }
-    
     private static final long MILISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 
     public static int getDaysBetweenDates(Date startDate, Date endDate) {
@@ -50,8 +49,5 @@ public class CalcHelper {
         return Math.abs(days); //add an extra day to factor "part thereof" rule
     }
     
-    // Mantis Id 0000255
-    // Updated by Carlson @ 20081211
-    // public static final BigDecimal VAT_RATE = new BigDecimal(.175);
-    public static final BigDecimal VAT_RATE = new BigDecimal(.15);
+    public static final BigDecimal VAT_RATE = new BigDecimal(.175);
 }

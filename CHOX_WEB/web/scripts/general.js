@@ -46,17 +46,17 @@ function openHelpFile(url, helpFileRoleType){
     switch(helpFileRoleType)
     {
         case 1: // NORMAL INSURER ROLE
-          fileName = '/download/iDAS_CHOX_IUG_3.1.pdf';
-          break;
+            fileName = '/download/iDAS_CHOX_IUG_3.1.pdf';
+            break;
         case 2: // INSURER MANAGER ROLE
-          fileName = '/download/iDAS_CHOX_IUG_AMD_3.1.pdf';
-          break;
+            fileName = '/download/iDAS_CHOX_IUG_AMD_3.1.pdf';
+            break;
         case 3: // NORMAL CREDIT HIRE ROLE
-          fileName = '/download/iDAS_CHOX_CHO_UG_3.1.pdf';
-          break;
+            fileName = '/download/iDAS_CHOX_CHO_UG_3.1.pdf';
+            break;
         case 4: // CREDIT HIRE MANAGER ROLE
-          fileName = '/download/iDAS_CHOX_CHO_UG_ADM_3.1.pdf';
-          break;
+            fileName = '/download/iDAS_CHOX_CHO_UG_ADM_3.1.pdf';
+            break;
     }
 
     if(fileName.length>0){
@@ -106,7 +106,7 @@ function onOpenAbout(){
         
     var msg = "<span class='aboutProductName'>Product Name: iDAS CHOX</span><br/><br/>";
     msg = msg + "<span class='acountCopyright'>Copyright Message: ©2009 Sherwood Compliance Services Ltd</span><br/><br/>";
-    msg = msg + "<span class='acountVersionNumber'>V2.8.2.36.2 - 20091228</span><br/><br/>";
+    msg = msg + "<span class='acountVersionNumber'>V2.8.2.36.3 - 20100104</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
 
     $.blockUI({
@@ -213,23 +213,23 @@ function propmtErrors(errors){
     });
 }
 
-    function getDate(sdate){
+function getDate(sdate){
 
-        var date;
+    var date;
 
-        if(sdate!=null && sdate!=""){
+    if(sdate!=null && sdate!=""){
 
-            var sDay = sdate.substring(0,2);
-            var sMonth = sdate.substring(3,5);
-            var sYear = sdate.substring(6,10);
+        var sDay = sdate.substring(0,2);
+        var sMonth = sdate.substring(3,5);
+        var sYear = sdate.substring(6,10);
 
-            var sDate = sMonth+"/"+sDay+"/"+sYear;
-            date = new Date(sDate);
-        }
-
-        return date;
+        var sDate = sMonth+"/"+sDay+"/"+sYear;
+        date = new Date(sDate);
     }
 
-    function doExportExcel(){
-        window.location= "doExportExcel.action";
-    }
+    return date;
+}
+
+function doExportExcel(){
+    window.location= "doExportExcel.action";
+}
