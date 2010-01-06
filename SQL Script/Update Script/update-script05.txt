@@ -1,0 +1,35 @@
+-- REMOVE DATCH UPDATE FOR CLAIM OWNER FROM CHOX ADMIN
+delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'action.claimOwnership%') and role='ROLE_CHOX_ADMIN';
+
+--------------------------------------
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'action.updateClaimWorkgroupAndOwner');
+insert into accessibility_item values ('ALL', 0, (select id from accessibility where name ='action.updateClaimWorkgroupAndOwner'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_MNG', 1, (select id from accessibility where name ='action.updateClaimWorkgroupAndOwner'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='action.updateClaimWorkgroupAndOwner'), (select max(id)+1 from accessibility_item));
+
+--------------------------------------
+insert into accessibility_editable (id, accessibility_id, is_workgroup_check, is_ownership_check) values ((select max(id)+1 from accessibility_editable), (select id from accessibility where name like 'action.registeredclaimbyfnol.ClaimReferredToFNOL'), true, false);
+
+--------------------------------------
+update web_user_role set description='Insurer FNOL Handler' where name='ROLE_INS_FNOL';
+
+--------------------------------------
+delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'extraAction.updateClaimOwner.ClaimReferredToFNOL');
+delete from accessibility_editable where accessibility_id in (select id from accessibility where name like 'extraAction.updateClaimOwner.ClaimReferredToFNOL');
+delete from accessibility where name like 'extraAction.updateClaimOwner.ClaimReferredToFNOL';
+
+--------------------------------------
+
+ALTER TABLE insurer ADD COLUMN is_claim_locked boolean;
+ALTER TABLE insurer ALTER COLUMN is_claim_locked SET STORAGE PLAIN;
+update insurer set is_claim_locked = false;
+
+--------------------------------------
+
+delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'extraAction.updateClaimOwner.%') and role='ROLE_CHOX_ADMIN';
+
+
+--------------------------------------
+
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'extraAction.updateClaimOwner.ClaimReferredToFNOL');
+insert into accessibility_item values ('ROLE_INS_COM', 1, (select id from accessibility where name ='extraAction.updateClaimOwner.ClaimReferredToFNOL'), (select max(id)+1 from accessibility_item));

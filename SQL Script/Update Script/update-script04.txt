@@ -1,0 +1,38 @@
+
+-- CLAIM SUMMARY TABLE ------------------------------------------------------------------------------------------
+ 
+ALTER TABLE claim_summary ALTER COLUMN status SET NOT NULL;
+CREATE INDEX claim_summary_idx ON claim_summary USING btree (process_date, insurer_id, chorganisation_id, status);
+
+-- ADD SEQUQNCE
+CREATE SEQUENCE claim_summary_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE claim_summary_id_seq OWNER TO postgres;
+ALTER TABLE claim_summary ADD COLUMN id integer NOT NULL DEFAULT nextval('claim_summary_id_seq'::regclass);
+
+ALTER TABLE claim_summary ADD CONSTRAINT claim_summary_pkey PRIMARY KEY (id);
+ALTER TABLE claim_summary DROP CONSTRAINT claim_summary_key;
+
+-- CLAIM SUMMARY PROCESS TABLE ------------------------------------------------------------------------------------------
+
+ALTER TABLE claim_summary_process DROP CONSTRAINT claim_summary_process_pkey;
+
+CREATE SEQUENCE claim_summary_process_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE claim_summary_process_id_seq OWNER TO postgres;
+
+ALTER TABLE claim_summary_process ADD COLUMN id integer;
+ALTER TABLE claim_summary_process ALTER COLUMN id SET STORAGE PLAIN;
+ALTER TABLE claim_summary_process ALTER COLUMN id SET DEFAULT nextval('claim_summary_process_id_seq'::regclass);
+insert into claim_summary_process select process_date, created_by, created_date from claim_summary_process;
+delete from claim_summary_process where id is null;
+ALTER TABLE claim_summary_process ALTER COLUMN id SET NOT NULL;
+ALTER TABLE claim_summary_process ADD CONSTRAINT claim_summary_process_pkey PRIMARY KEY (id);

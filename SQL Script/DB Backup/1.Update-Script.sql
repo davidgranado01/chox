@@ -1,0 +1,1 @@
+delete from accessibility_item where accessibility_id in (select id from accessibility where name ='report.AverageSettlementAmountReport') and role in ('ROLE_INS_COM', 'ROLE_INS_MNG', 'ROLE_INS_SCR');
