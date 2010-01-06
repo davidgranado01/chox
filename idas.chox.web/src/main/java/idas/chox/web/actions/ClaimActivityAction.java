@@ -9,7 +9,7 @@ import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.workflow.Activity;
-import idas.chox.core.workflow.ActivityFactory;
+import idas.chox.service.workflow.ActivityFactory;
 
 /**
  *

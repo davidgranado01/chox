@@ -4,7 +4,6 @@
  */
 package idas.chox.service.workflow;
 
-import idas.chox.core.workflow.ActivityFactory;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class WorkFlowContextTest {
         Assert.assertNotNull(activityFactory.getWorkflowContext().getBusinessRulesEngService());
         Assert.assertNotNull(activityFactory.getActivity("newClaim"));
         Assert.assertNotNull(activityFactory.getActivity("assignOwner"));
-        Assert.assertNotNull(activityFactory.getActivity("assignWorkGroup"));
+        Assert.assertNotNull(activityFactory.getActivity("assignWorkgroup"));
         Assert.assertNotNull(activityFactory.getActivity("acknowledgeClaim"));
     }
 }

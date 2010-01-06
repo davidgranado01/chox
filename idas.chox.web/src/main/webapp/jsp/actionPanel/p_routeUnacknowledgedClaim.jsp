@@ -15,7 +15,7 @@
     }
 </script>
 
-<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/route.action" method="post" id="route" name="route">
+<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="route" name="route">
     
     <fieldset class="x-fieldset"><legend>Claim Routing - Action Required</legend>  
         <div>
@@ -24,6 +24,7 @@
                 Please select the 'Workgroup' in order to route the claim to the relevant handling team.
             </div>            
             <s:hidden name="id" />
+            <s:hidden name="name" value="assignWorkgroup" />
             <div class="status-control-set">                     
                 <div class="status-info-submit">
                     <table>

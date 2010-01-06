@@ -114,7 +114,7 @@
 
 </script>
 
-<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/ownershipAssignment.action" method="post" id="formOwnershipAssignmentAction" name="formOwnershipAssignmentAction">
+<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formOwnershipAssignmentAction" name="formOwnershipAssignmentAction">
     <fieldset class="x-fieldset">
         <legend>Claim Ownership - Action Required</legend>
         <div>
@@ -151,7 +151,7 @@
                         </tr>
                         <tr>
                             <td colspan="2" class="choice" nowrap>
-                                <input type="submit" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit('assigned_routed');"/>
+                                <input type="submit" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit('assignWorkgroup');"/>
                                 <input type="button" value="Refer to FNOL" onclick="javascript:return doAssignOwnershipToFnolSubmit('referFNOL');" />
                             </td>
                         </tr>

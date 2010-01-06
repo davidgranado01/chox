@@ -7,7 +7,7 @@ import idas.chox.core.services.BordereauService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.workflow.Activity;
-import idas.chox.core.workflow.ActivityFactory;
+import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.core.xmlValidation.BordereauParseStatus;
 import idas.chox.core.xmlValidation.BordereauResult;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
@@ -103,8 +103,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                             //CALL WORKFLOW LOGIC
                             try {
                                 if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
-                                    Activity activity = activityFactory.getActivity("newClaim");
-                                    activity.process(claimResult.getClaim());
+                                    Activity activity =  activityFactory.getActivity("newClaim");
+                                    activity.processInBatch(claimResult.getClaim());
                                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
                                 }
                                 totalProcessed++;
@@ -114,6 +114,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                                 claimResult.setValid(false);
                                 claimResult.getMessage().add(ex.getMessage());
                             }
+                        }
+                        else
+                        {
+                             getHibernateTemplate().evict(claimResult.getClaim());
                         }
                     }
                     if (totalProcessed >= totalRecord) {
@@ -145,15 +149,15 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return bordereauResult;
     }
 
-    @Transactional
-    private ClaimResult saveXMLRecord(ClaimResult claimResult) {
-
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
-            auditTrailService.logAuditLog(claimResult.getClaim().getStatus(), claimResult.getClaim().getPreviousStatus(), claimResult.getClaim());
-
-        }
-        return claimResult;
-    }
+//    @Transactional
+//    private ClaimResult saveXMLRecord(ClaimResult claimResult) {
+//
+//        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
+//            auditTrailService.logAuditLog(claimResult.getClaim().getStatus(), claimResult.getClaim().getPreviousStatus(), claimResult.getClaim());
+//
+//        }
+//        return claimResult;
+//    }
 
     private Bordereau doBordereau(File file, String fileName, Object status, String BordereauParseStatusDescription) throws FileNotFoundException, IOException {
 

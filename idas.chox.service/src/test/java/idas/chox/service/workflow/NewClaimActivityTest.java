@@ -7,7 +7,6 @@ package idas.chox.service.workflow;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.workflow.Activity;
-import idas.chox.core.workflow.ActivityFactory;
 import idas.chox.core.xmlValidation.BordereauResult;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.readers.BordereauReader;
@@ -49,8 +48,10 @@ public class NewClaimActivityTest {
 
     @Test
     @Transactional
-    public void testNewClaimWithDoAutoRouting() throws Exception {
-
+    public void testNewClaim1() throws Exception {
+        //Workgroup Feature  : true
+        //Ownership Feauture : true
+        //Auto Routing       : true
         BordereauResult bordereauResult = loadBordereauResult();
 
         for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
@@ -62,9 +63,84 @@ public class NewClaimActivityTest {
         }
     }
 
+    @Test
+    @Transactional
+    public void testNewClaim1d() throws Exception {
+        //Workgroup Feature  : true
+        //Ownership Feauture : true
+        //Auto Routing       : false
+        BordereauResult bordereauResult = loadBordereauResult();
+
+        for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
+            Claim claim = claimResult.getClaim();
+            claim.getInsurer().setAutoRoutingEnable(false);
+            Activity activity = activityFactory.getActivity("newClaim");
+            activity.process(claim);
+            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, claim.getStatus());
+            Assert.assertNull(claim.getWorkgroup());
+        }
+    }
+
+    @Test
+    @Transactional
+    public void testNewClaim3() throws Exception {
+        //Workgroup Feature  : false
+        //Ownership Feauture : true
+        //Auto Routing       : true
+        BordereauResult bordereauResult = loadBordereauResult();
+
+        for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
+            Claim claim = claimResult.getClaim();
+            claim.getInsurer().setWorkgroupEnable(false);
+            Activity activity = activityFactory.getActivity("newClaim");
+            activity.process(claim);
+            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim.getStatus());
+            Assert.assertNull(claim.getWorkgroup());
+        }
+    }
+
+    @Test
+    @Transactional
+    public void testNewClaim4() throws Exception {
+        //Workgroup Feature  : true
+        //Ownership Feauture : false
+        //Auto Routing       : true
+        BordereauResult bordereauResult = loadBordereauResult();
+
+        for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
+            Claim claim = claimResult.getClaim();
+            claim.getInsurer().setClaimOwnershipEnable(false);
+            Activity activity = activityFactory.getActivity("newClaim");
+            activity.process(claim);
+            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim.getStatus());
+            Assert.assertNotNull(claim.getWorkgroup());
+        }
+    }
+
+    @Test
+    @Transactional
+    public void testNewClaim5() throws Exception {
+        //Workgroup Feature  : false
+        //Ownership Feauture : false
+        //Auto Routing       : true
+        BordereauResult bordereauResult = loadBordereauResult();
+
+        for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
+            Claim claim = claimResult.getClaim();
+            claim.getInsurer().setWorkgroupEnable(false);
+            claim.getInsurer().setClaimOwnershipEnable(false);
+            Activity activity = activityFactory.getActivity("newClaim");
+            activity.process(claim);
+            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim.getStatus());
+            Assert.assertNull(claim.getWorkgroup());
+        }
+    }
+
     private BordereauResult loadBordereauResult() throws Exception {
+        //This xml clontains one claim
+        //This claim have insurer RSA which is Workgroup Feature : true, Ownership Feauture : true, Auto Routing : true by default
         File file = new ClassPathResource("UnitTest-NewClaim_02.xml").getFile();
-        BordereauResult bordereauResult = bordereauReader.execute(file);     
+        BordereauResult bordereauResult = bordereauReader.execute(file);
         return bordereauResult;
     }
 }

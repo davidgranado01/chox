@@ -2,40 +2,53 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Workgroup;
+import java.util.List;
 
 /**
  *
  * @author emmanuel
  */
-public class AssignWorkGroup extends BaseActivity {
+public class AssignWorkgroup extends BaseActivity {
+
+    private int workgroupId;
+    private Workgroup workgroup;
 
     @Override
-    protected void validate(Claim claim) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    protected void validate(Claim claim) throws Exception {
+        super.validate(claim);
+
+        if (workgroupId <= 0) {
+            throw new Exception("Invalid workgroup id.");
+        } else {
+            workgroup = (Workgroup) this.getWorkflowContext().getDataService().get(Workgroup.class, workgroupId);
+            if (workgroup == null) {
+                throw new Exception("An attempt to assign work group failed due to invalid work group provided.");
+
+            }
+        }
     }
 
     @Override
-    protected void doProcess(Claim claim) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    protected void beforeProcess(Claim claim) throws Exception {
+        claim.setWorkgroup(workgroup);
     }
 
     @Override
-    protected void onProcessCompleted(Claim claim) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    protected void doProcess(Claim claim) throws Exception {
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+    }
+
+    public void setWorkgroupId(int workgroupId) {
+        this.workgroupId = workgroupId;
     }
 
     @Override
-    protected String getCurrentStatus() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    protected void setupExpectingStatuses(List<String> expectingStatuses) {
+        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
     }
-
-    @Override
-    protected String getNextStatus() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
 }

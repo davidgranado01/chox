@@ -9,6 +9,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.ReasonOfRejection;
 import java.math.BigDecimal;
+import java.util.List;
 import org.hibernate.util.StringHelper;
 
 /**
@@ -62,7 +63,7 @@ public class AcknowledgeClaim extends BaseActivity {
     // </editor-fold>
 
     @Override
-    protected void prepare(Claim claim) {
+    protected void beforeProcess(Claim claim) {
         //update claim object with inout parameters
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
@@ -83,21 +84,16 @@ public class AcknowledgeClaim extends BaseActivity {
         claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
     }
 
-    @Override
-    protected String getCurrentStatus() {
-        return ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
-    }
-
-    @Override
-    protected String getNextStatus() {
-        return ClaimStatus.AWAITING_CAR_HIRE_INFO;
-    }
-
     protected ReasonOfRejection getReasonOfRejection() {
         ReasonOfRejection reasonOfRejection = null;
         if (reasonOfRejectionId > 0) {
             reasonOfRejection = (ReasonOfRejection) this.getDataService().get(ReasonOfRejection.class, reasonOfRejectionId);
         }
         return reasonOfRejection;
+    }
+
+    @Override
+    protected void setupExpectingStatuses(List<String> expectingStatuses) {
+        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
     }
 }
