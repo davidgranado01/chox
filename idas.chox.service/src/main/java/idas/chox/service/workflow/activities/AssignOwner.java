@@ -49,6 +49,7 @@ public class AssignOwner extends BaseActivity {
         claim.setClaimOwner(claimOwner);
         claim.setWorkgroup(workgroup);
         claim.setIsFnolReviewed(false);
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
     }
 
     @Override

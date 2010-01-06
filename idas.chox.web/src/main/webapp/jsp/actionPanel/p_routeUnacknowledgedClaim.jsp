@@ -32,7 +32,7 @@
                             <td>
                                 <div class="no-format">
                                     <label>Workgroup</label>
-                                    <s:select name="workgroup.id" id="workgroupId"
+                                    <s:select name="workgroupId" id="workgroupId"
                                     list="workgroups" headerKey="-1"
                                     listKey="id" listValue="name" 
                                     headerValue="-- Please Select --"></s:select>

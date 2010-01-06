@@ -14,7 +14,6 @@
     var selectedWorkgroupId = -1;
     var claimOwnerId = -1;
     var isWorkgroupEnable = false;
-    var editMode = -1;
     
     $(document).ready(function(){
 
@@ -99,7 +98,7 @@
 
     function doAssignOwnershipSubmit(a){
 
-        registeAction(a);
+        actionPanel.registerAction(a);
 
         $("form#formOwnershipAssignmentAction #claimOwnerId").rules("add", {
             min:1
@@ -119,7 +118,8 @@
         <legend>Claim Ownership - Action Required</legend>
         <div>
 
-            <s:hidden id="claimId" name="id" />
+            <s:hidden id="id" name="id" />
+            <s:hidden id="name" name="name" />
             <input type="hidden" id="claimWorkgroupId" name="claimWorkgroupId" value="<s:property value="workgroup.id"/>">
             <input type="hidden" id="claimClaimOwnerId" name="claimClaimOwnerId" value="<s:property value="claimOwner.id"/>">
             <input type="hidden" id="claimWorkgroupEnable" name="claimWorkgroupEnable" value="<s:property value="insurer.workgroupEnable"/>">
@@ -151,7 +151,7 @@
                         </tr>
                         <tr>
                             <td colspan="2" class="choice" nowrap>
-                                <input type="submit" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit('assignWorkgroup');"/>
+                                <input type="submit" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit('assignOwner');"/>
                                 <input type="button" value="Refer to FNOL" onclick="javascript:return doAssignOwnershipToFnolSubmit('referFNOL');" />
                             </td>
                         </tr>
