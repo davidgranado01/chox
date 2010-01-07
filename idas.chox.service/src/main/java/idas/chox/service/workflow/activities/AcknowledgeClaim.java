@@ -34,11 +34,10 @@ public class AcknowledgeClaim extends BaseActivity {
     }
 
     public void setClaimNumber(String claimNumber) {
-        if(claimNumber != null && !claimNumber.isEmpty())
-        {
-           claimNumber.trim();
+        if (claimNumber != null && !claimNumber.isEmpty()) {
+            claimNumber.trim();
         }
-         this.claimNumber = claimNumber;
+        this.claimNumber = claimNumber;
     }
 
     public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {

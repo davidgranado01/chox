@@ -15,7 +15,6 @@ public interface InsurerChorganisationService {
 
     public List<InsurerChorganisation> getInsurerChorganisations(Integer insurerId, Integer chorganisationId);
 
-    // TODO : REVIEW
     public boolean triggerStatus(InsurerChorganisation object);
 
     public boolean isInactiveObjectExist(int insurerId, int chorganisationId);

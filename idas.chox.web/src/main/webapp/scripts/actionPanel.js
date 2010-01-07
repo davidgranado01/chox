@@ -1,7 +1,3 @@
-    function registeAction(val)
-    {
-        $("#actionName").val(val);
-    }
 
     // NOT IN USE - TO BE REMOVED
     function isClaimNumberInvalid(){
@@ -12,7 +8,6 @@
         if(isSpecialCharacterExist(sClaimNumber)){
             $("#isClaimNumberValidFlag").val("0");
         }
-
     }
 
     function isFormClaimNumberInvalid(formName){

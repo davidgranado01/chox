@@ -9,7 +9,7 @@
     
     function doRejectClaim(){
         
-        registeAction('reject');
+        actionPanel.registeAction('reject');
         
         if(doFormValidation().form()){
             
@@ -26,16 +26,8 @@
         return true;
     }
     
-    function isRejected(){
-        var sActionName = $("#actionName").val();
-        if(sActionName=="reject"){
-            return true;
-        }
-        return false;
-    }
-    
     function doFormValidation(){
-        var validateFlag = $("#approveEscalatedInvoice").validate(
+        var validateFlag = $("#approveBREPassedClaim").validate(
         {
             errorLabelContainer: "#ActionPanelMessageBox",                
             rules: {
@@ -54,8 +46,11 @@
     
     function doSubmit(a){
         
-        registeAction(a);
-        // $("#reasonOfRejectionId").val("");
+        actionPanel.registeAction(a);
+
+        //$("#reasonOfRejectionId").val("");
+        
+        isClaimNumberInvalid();
         if(!doFormValidation().form()){
             return false;
         }
@@ -65,23 +60,22 @@
     
 </script>
 
-<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/approveEscalatedInvoice.action" method="post"
-      id="approveEscalatedInvoice" name="approveEscalatedInvoice">
+<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/approveBREPassedClaim.action"
+      method="post" id="approveBREPassedClaim" name="approveBREPassedClaim">
     <fieldset class="x-fieldset">
-        <legend>Escalated Invoice - Action Required</legend>
+        <legend>BRE Approved Claim - Action Required</legend>
         <s:hidden name="id" />
         <s:hidden id="actionName" name="actionName" />
         <!--
         <s:hidden id="reasonOfRejectionIdHolder" name="invoice.reasonOfRejectionId"/>
         !-->
         <div>
-            <div class="status-info">
-                Please review the 'History' tab for details on why the claim has been rejected. 
-                Please decide on whether to progress the claim for payment or reject the claim. 
-                Please enter any relevant details/comments on the 'Notes' tab regarding the decision made.
+            <div class="status-info">             
+                This claim and it's related invoice have been cleared by the CHOX approval system. Please review the invoice and claim information supplied, and choose whether to clear the invoice for payment, reject the invoice or refer the invoice to an Engineer.
             </div>
             <div class="status-control-set">
-                <table>
+
+                <table width="100%">
                     <tr>
                         <td width="30%" nowrap>
                             <label>Reason for Rejection</label>
@@ -100,15 +94,15 @@
                     <tr>
                         <td colspan="4">
                             <div class="no-format">
-                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>                               
+                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
                             </div>
                         </td>
                     </tr>
-                    <tr>                         
-                        <td colspan="4" class="choice"> 
+                    <tr>
+                        <td colspan="4" class="choice">
                             <input type="submit" value="Reject Invoice"  onclick="return doRejectClaim();" />
                             <input type="submit" value="Clear For Payment" onclick="return doSubmit('accept');"  />
-                            <input type="submit" value="Refer To Claims Handler" onclick="return doSubmit('referCH');"  />  
+                            <input type="submit" value="Refer To Engineer" onclick="return doSubmit('InvReferEng');"  />
                         </td>
                     </tr>
                 </table>

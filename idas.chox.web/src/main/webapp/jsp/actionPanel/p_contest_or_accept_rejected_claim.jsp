@@ -23,8 +23,8 @@
                     </tr>
                     <tr> 
                         <td>
-                            <input type="submit" value="Contest This Claim"  onclick="registeAction('reject');" />
-                            <input type="submit" value="Accept Rejection Decision" onclick="registeAction('accept')"  />   
+                            <input type="submit" value="Contest This Claim"  onclick="javascript: actionPanel.registeAction('reject');" />
+                            <input type="submit" value="Accept Rejection Decision" onclick="javascript: actionPanel.registeAction('accept')"  />
                         </td>
                     </tr>
                 </table>

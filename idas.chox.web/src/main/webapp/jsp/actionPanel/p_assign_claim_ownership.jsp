@@ -90,7 +90,7 @@
     }
 
     function doAssignOwnershipToFnolSubmit(a){
-        registeAction(a);
+        actionPanel.registeAction(a);
         $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
         $("form#formOwnershipAssignmentAction #claimOwnerId").val("");
         $("#formOwnershipAssignmentAction").submit();

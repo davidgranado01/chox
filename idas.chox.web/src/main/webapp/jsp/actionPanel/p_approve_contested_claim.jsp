@@ -11,7 +11,7 @@
     function doRejectClaim(){
         
         isFormClaimNumberInvalid("formApproveContestedAcknowledgeAction");
-        registeAction('reject');
+        actionPanel.registeAction('reject');
         
         if(doFormValidation().form()){
             
@@ -117,7 +117,7 @@
     
     function doSubmit(a){
         
-        registeAction(a);
+        actionPanel.registeAction(a);
         isFormClaimNumberInvalid("formApproveContestedAcknowledgeAction");
         
         // $("#reasonOfRejectionId").val("");

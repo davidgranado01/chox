@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script type="text/javascript">
+<script language="JavaScript">
 
     var isChoxAdmin = false
     var insurerId = -1;
@@ -229,9 +229,8 @@
             </tr>
         </s:if>
         <s:else>
-            <tr>
-                <td><input type="hidden" name="reviewRequiredDateFrom" id="reviewRequiredDateFrom" /></td>
-                <td><input type="hidden" name="reviewRequiredDateTo" id="reviewRequiredDateTo" /></td>
+            <input type="hidden" name="reviewRequiredDateFrom" id="reviewRequiredDateFrom" />
+            <input type="hidden" name="reviewRequiredDateTo" id="reviewRequiredDateTo" />
             </tr>
         </s:else>
 

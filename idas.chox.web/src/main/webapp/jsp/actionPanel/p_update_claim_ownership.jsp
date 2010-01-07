@@ -85,7 +85,7 @@
 
     function doUpdateOwnershipSubmit(a){
 
-        registeAction(a);
+        actionPanel.registeAction(a);
 
         if(doUpdateOwnershipFormValidation().form()){
             return true;

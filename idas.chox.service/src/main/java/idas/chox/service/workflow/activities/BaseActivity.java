@@ -29,8 +29,7 @@ public abstract class BaseActivity implements Activity {
     protected String currentStatus;
     protected List<String> expectingStatuses;
 
-    public BaseActivity()
-    {
+    public BaseActivity() {
         expectingStatuses = new ArrayList<String>();
         setupExpectingStatuses(expectingStatuses);
     }
@@ -82,10 +81,9 @@ public abstract class BaseActivity implements Activity {
 
     protected void validate(Claim claim) throws Exception {
 
-            if(!expectingStatuses.contains(claim.getStatus()))
-            {
-                throw new InvalidClaimStatusException(claim);
-            }
+        if (!expectingStatuses.contains(claim.getStatus())) {
+            throw new InvalidClaimStatusException(claim);
+        }
     }
 
     protected void afterProcess(Claim claim) throws Exception {

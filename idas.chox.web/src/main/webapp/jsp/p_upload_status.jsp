@@ -1,9 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<div class="UploadStatusContainer">
+<div class="upload-status-container">
     <s:if test="results.size()==0">
-        <div class="UploadStatusMessage">
+        <div class="upload-status-message">
             <div class="status-info">
                 Couldn't find any claims in the input file! Please try again.
             </div>
@@ -12,7 +12,7 @@
     <s:else>
 
 
-        <div class="UploadStatusMessage">
+        <div class="upload-status-message">
 
             <div class="status-info">
                 Please carefully review the infomation provided below, as it contains important information regarding the claims you have uploaded.
@@ -25,31 +25,29 @@
                 <s:a href="%{goBackToInbox}" >Proceed to CHOX Inbox</s:a>
                 <br /> <br />
                 <s:a href="%{reUpload}" >Re-Upload XML file</s:a>
-
-
             </div>
 
         </div>
 
-        <div class="bordereauResultHolder">
+        <div class="bordereau-result-holder">
 
-            <table class="BordereauResultTable" cellpadding="0" cellspacing="0" border="0">
+            <table class="bordereau-result-table" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td width="15%" class="titleLabel">Created Date</td><td width="35%"><s:property value="bordereauResult.CreatedDate" /></td>
-                    <td width="15%" class="titleLabel">Created By</td><td width="35%"><s:property value="bordereauResult.CreatedBy.DisplayName" /></td>
+                    <td width="15%" class="title-label">Created Date</td><td width="35%"><s:property value="bordereauResult.CreatedDate" /></td>
+                    <td width="15%" class="title-label">Created By</td><td width="35%"><s:property value="bordereauResult.CreatedBy.DisplayName" /></td>
                 </tr>
                 <tr>
-                    <td width="15%" class="titleLabel">Status</td><td width="35%"><s:property value="bordereauStatus" /></td>
-                    <td width="15%" class="titleLabel">Total Claims</td><td width="35%"><s:property value="totalClaim" /></td>
+                    <td width="15%" class="title-label">Status</td><td width="35%"><s:property value="bordereauStatus" /></td>
+                    <td width="15%" class="title-label">Total Claims</td><td width="35%"><s:property value="totalClaim" /></td>
                 </tr>
                 <tr>
-                    <td width="15%" class="titleLabel">Description</td>
+                    <td width="15%" class="title-label">Description</td>
                     <td colspan="3"><s:property value="bordereauStatusDesc" /></td>
                 </tr>
                 <tr>
-                    <td width="15%" class="titleLabel">Messages</td>
+                    <td width="15%" class="title-label">Messages</td>
                     <td colspan="3">
-                        <ul class="bordereauErrorMessage">
+                        <ul class="bordereau-error-message">
                             <s:iterator id="bordereauMsg" value="bordereauResult.Message" status="stat">
                                 <li><s:property value="#bordereauMsg" /></li>
                             </s:iterator>
@@ -59,9 +57,9 @@
             </table>
 
         </div>
-        <div class="bordereauResultHolder">
+        <div class="bordereau-result-holder">
 
-            <table class="UploadStatusTable" cellpadding="0" cellspacing="0" border="0">
+            <table class="upload-status-table" cellpadding="0" cellspacing="0" border="0">
 
                 <tr>
                     <th width="30px"></th>
@@ -116,10 +114,8 @@
                             </td>
                         </tr>
                     </s:if>
-
                 </s:iterator>
             </table>
         </div>
-
     </s:else>
 </div>

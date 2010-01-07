@@ -45,7 +45,7 @@
     
     function doSubmitClaimNumber(a){
 
-        registeAction(a);
+        actionPanel.registeAction(a);
         isUpdateInsurerClaimNumberInvalid();
 
         if(doFormValidationClaimNumber().form()){

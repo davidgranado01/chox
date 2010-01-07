@@ -61,11 +61,10 @@
                 }
             }
         });
-
     });
 
     function isClaimNumberMandatory(){
-        var sActionName = $("#actionName").val();
+        var sActionName = actionPanel.getRegisteredAction();
         if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
             return false;
         }
@@ -73,12 +72,12 @@
     }
 
     function isRejected(){
-        var sActionName = $("#actionName").val();
+        var sActionName = actionPanel.getRegisteredAction();
         return sActionName == "reject";
     }
 
     function liabilityMinNumber(){
-        var sActionName = $("#actionName").val();
+        var sActionName = actionPanel.getRegisteredAction();
         var iMinliability = 0.01;
         if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
             iMinliability = 0;
@@ -86,9 +85,8 @@
         return iMinliability;
     }
 
-
     function liabilityMinNumberMsg(){
-        var sActionName = $("#actionName").val();
+        var sActionName = actionPanel.getRegisteredAction();
         var iMinliabilityMsg = "'Percentage Liability Accepted' must be more than 0";
         if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
             iMinliabilityMsg = "'Percentage Liability Accepted' must be more than or equal to 0";

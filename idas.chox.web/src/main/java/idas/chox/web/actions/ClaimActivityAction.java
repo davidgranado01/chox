@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -11,10 +7,6 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
 
-/**
- *
- * @author emmanuel
- */
 public class ClaimActivityAction extends BaseAction implements ModelDriven<Activity>, Preparable {
 
     private ActivityFactory activityFactory;
@@ -37,10 +29,9 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     public String execute() {
         if (activity != null) {
 
-            try{
-                activity.process(claim);                
-            }
-            catch(Exception ex){
+            try {
+                activity.process(claim);
+            } catch (Exception ex) {
                 handleException(this, ex);
                 return ERROR;
             }

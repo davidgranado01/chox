@@ -18,6 +18,11 @@ var actionPanel = function(){
         $("#name").val(name);
     }
 
+    function getRegisteredAction(name)
+    {
+        return $("#name").val();
+    }
+    
     function handleExtraActionChange(){
         var selectedAction = $("#extraAction").val();
         $(".extraActionClass").slideUp();

@@ -6,7 +6,7 @@
     function doRejectClaim(){
         
         isFormClaimNumberInvalid("formPendingAcknowledgeAction");
-        registeAction('reject');
+        actionPanel.registeAction('reject');
         
         if(doFormValidation().form()){
             if(confirm('Are you sure you want to reject this claim?')){
@@ -119,7 +119,7 @@
     
     function doSubmit(a){
 
-        registeAction(a);
+        actionPanel.registeAction(a);
         isFormClaimNumberInvalid("formPendingAcknowledgeAction");
                     
         $("#reasonOfRejectionId").val("");

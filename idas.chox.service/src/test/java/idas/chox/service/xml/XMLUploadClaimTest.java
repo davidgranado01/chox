@@ -50,7 +50,7 @@ public class XMLUploadClaimTest {
         // 3. CHECK XML RESULT
         Assert.assertEquals(true, parseResult.isValid());
         Assert.assertEquals(0, parseResult.getMessage().size());
-        Assert.assertEquals(1, parseResult.getClaimResult().size());
+        Assert.assertEquals(4, parseResult.getClaimResult().size());
 
         // 4. CHECK XML CLAIM RESULT
         ClaimResult claimResult = parseResult.getClaimResult().get(0);
@@ -78,7 +78,7 @@ public class XMLUploadClaimTest {
 
         Assert.assertEquals(true, claim.getManagingRepair());
         Assert.assertEquals(DateHelper.ParseDBDateTime("2008-01-01 00:00:00"), claim.getPolicyHolderContactDate());
-        Assert.assertEquals("UnitTestNewClaim002", claim.getChoReference());
+        Assert.assertEquals("UT-CLAIM001", claim.getChoReference());
         Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim.getStatus());
         Assert.assertEquals(DateHelper.ParseDBDateTime("2008-01-04 12:00:00"), claim.getCreditAgreementDate());
         //Assert.assertEquals(Date.valueOf(DateHelper.getCurrentTimeStamp(), claim.getGtaNoticeDate());

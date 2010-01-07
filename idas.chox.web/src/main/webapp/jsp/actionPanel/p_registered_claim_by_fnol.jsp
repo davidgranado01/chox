@@ -9,7 +9,7 @@
     
     function doRejectClaim(){
         
-        registeAction('rejectFNOL');
+        actionPanel.registeAction('rejectFNOL');
         
         if(doRegisterFNOFormValidation().form()){
             if(!confirm('Are you sure you want to reject this claim?')){
@@ -89,7 +89,7 @@
                         </tr>
                         <tr>
                             <td colspan="2" class="choice" nowrap>            
-                                <input type="submit" value="Return Claim" onclick="registeAction('registerFNOL')"  />
+                                <input type="submit" value="Return Claim" onclick="javascript: actionPanel.registeAction('registerFNOL')"  />
                             </td>
                         </tr>
                     </table>

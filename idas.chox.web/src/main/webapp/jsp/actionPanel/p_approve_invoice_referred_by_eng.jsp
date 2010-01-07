@@ -9,20 +9,20 @@
     
     function doRejectClaim(){
         
-        registeAction('reject');
+        actionPanel.registeAction('reject');
         
         if(doFormValidation().form()){
             
             if(!confirm('Are you sure you want to reject this claim?')){
                 return false;
             }
-        
-            //$("#reasonOfRejectionIdHolder").val($("#InvoiceReasonOfRejectionId").val());
+            
+           //  $("#reasonOfRejectionIdHolder").val($("#InvoiceReasonOfRejectionId").val());
         
         }else{
             return false;
         }
-        
+         
         return true;
     }
     
@@ -35,7 +35,7 @@
     }
     
     function doFormValidation(){
-        var validateFlag = $("#approveContestedInvoice").validate(
+        var validateFlag = $("#approveInvoiceRefferedByEngineer").validate(
         {
             errorLabelContainer: "#ActionPanelMessageBox",                
             rules: {
@@ -49,36 +49,41 @@
             
         });
         
+        
+        
         return validateFlag;
     }
     
     function doSubmit(a){
-        registeAction(a);
+        
+        actionPanel.registeAction(a);
         //$("#InvoiceReasonOfRejectionId").val("");
         if(!doFormValidation().form()){
             return false;
         }
+                
         return true;
         
     } 
     
 </script>
 
-<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/approveContestedInvoice.action" method="post"
-      id="approveContestedInvoice" name="approveContestedInvoice">
+<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/approveInvoiceRefferedByEngineer.action"
+    method="post" id="approveInvoiceRefferedByEngineer" name="approveInvoiceRefferedByEngineer">
     <fieldset class="x-fieldset">
-        <legend>Contested Invoice - Action Required</legend>
+        <legend>Invoices Referred By Engineer - Action Required</legend>
         <s:hidden name="id" />
         <s:hidden id="actionName" name="actionName" />
         <!--
         <s:hidden id="reasonOfRejectionIdHolder" name="invoice.reasonOfRejectionId"/>
         !-->
         <div>
-            <div class="status-info">
-                Please review the 'History' tab for details on why the claim has been rejected and review the details/comments on the 'Notes' tab regarding the previous decision to reject. Please decide on whether to progress the claim for payment, refer the claim to an Engineer or reject the claim. Please provide appropriate notes on the 'Notes' tab regarding the decision made.
+            <div class="status-info">             
+             This claim and its related invoice have been referred by an Engineer. Please review the invoice and claim information supplied along with the reason for referral, and choose whether to clear the invoice for payment, reject the invoice or refer the invoice to an Engineer.
             </div>
             <div class="status-control-set">
-                <table>
+
+<table width="100%">
     <tr>
         <td width="30%" nowrap>
             <label>Reason for Rejection</label>
@@ -93,22 +98,22 @@
             emptyOption="false"></s:select>
         </td>
         <td></td><td></td>
-    </tr>                        
-                    <tr>
-                        <td colspan="4">
-                            <div class="no-format">
-                                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>                         
-                        <td colspan="4" class="choice"> 
-                            <input type="submit" value="Reject Invoice"  onclick="return doRejectClaim();" />
-                            <input type="submit" value="Clear For Payment" onclick="return doSubmit('accept');"  />  
-                            <input type="submit" value="Refer To Engineer" onclick="return doSubmit('InvReferEng');"  />  
-                        </td>
-                    </tr>
-                </table>
+    </tr>                      
+    <tr>
+        <td colspan="4">
+            <div class="no-format">
+                <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>  
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4" class="choice">                     
+            <input type="submit" value="Reject Invoice"  onclick="return doRejectClaim();" />
+            <input type="submit" value="Clear For Payment" onclick="return doSubmit('accept');"  />
+            <input type="submit" value="Refer To Engineer" onclick="return doSubmit('InvReferEng');"  /> 
+        </td>
+    </tr>
+</table>
             </div>
             <div class="action-error-msg" id="ActionPanelMessageBox"></div>
         </div> 

@@ -9,7 +9,7 @@
     
     function doRejectClaim(){
         
-        registeAction('reject');
+        actionPanel.registeAction('reject');
         
         if(doFormValidation().form()){
             
@@ -53,7 +53,7 @@
     }
     
     function doSubmit(a){
-        registeAction(a);
+        actionPanel.registeAction(a);
         // $("#InvoiceReasonOfRejectionId").val("");
         if(!doFormValidation().form()){
             return false;

@@ -24,10 +24,10 @@
             <img alt="Logo" src="<%= request.getContextPath()%>/images/logo_login.jpg" alt=""/>
         </div>
 
-        <div class="modal_container">
-            <div class="app_title"><img alt="Logo" src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" alt=""/></div>
+        <div class="modal-container">
+            <div class="app-title"><img alt="Logo" src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" alt=""/></div>
 
-            <div class="inner">
+            <div class="login-inner">
                 <div class="content" id="loginPanel">
                     <form action="<%=request.getContextPath()%>/j_spring_security_check" method="POST" >
                         <div class="login_form">
@@ -45,9 +45,9 @@
                                 <p>
                                     <input type="submit" value="Sign In" /><a href="requestForgetPassword.action" class="forget-password-link">Forget Password</a>
                                 </p>
-                                <p><s:if test="#parameters.size()>0">
-                                        <span id="login-error">Incorrect Username and/or Password </span>
-                                </s:if></p>
+                                    <s:if test="#parameters.size()>0">
+                                        <p><span id="login-error">Incorrect Username and/or Password </span></p>
+                                    </s:if>
                             </div>
 
                         </div>

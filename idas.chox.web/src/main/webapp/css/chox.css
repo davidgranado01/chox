@@ -1145,3 +1145,121 @@ div#chox-admin-holder{
 }
 
 /******* ADMIN - END ************/
+
+/******* XML UPLOAD STATUS - START ************/
+.upload-status-message
+{
+    margin: 12px;
+}
+
+div.upload-status-container
+{
+    overflow:auto;
+    border:solid 1px black;
+    background:#dfe8f6
+}
+
+div.upload-status-container h2
+{
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 13px;
+    color:#15428b;
+    font-weight:bold;
+    margin:6px;
+    text-align:center;
+}
+
+.upload-status-table
+{
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #999999;
+    width: 100%;
+    border-collapse:collapse;
+    background:#fff;
+}
+
+div.bordereau-result-holder{
+    margin: 12px;
+}
+
+table.bordereau-result-table
+{
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #999999;
+    width: 100%;
+    border-collapse:collapse;
+    background:#fff;
+}
+
+ul.bordereau-error-message{
+    margin:0;
+    list-style-type:disc;
+    padding:0 0 10px 14px;
+}
+
+.bordereau-result-table td.title-label
+{
+    font-size: 12px;
+    font-weight:bold;
+    padding:2px 4px 6px 8px;
+    vertical-align:top;
+}
+
+
+
+table.upload-status-table th
+{
+    font-size: 12px;
+    color:#15428b;
+    font-weight:bold;
+    border-style: solid;
+    border-width: 1px;
+    border-color:#999;
+    padding: 2px;
+}
+
+table.upload-status-table td
+{
+    border-style: solid;
+    border-width: 1px;
+    border-color:#999;
+    padding: 2px;
+}
+
+.upload-status-table tr.ErrorRow
+{
+    color: red;
+}
+
+.upload-status-table tr.InvoiceApproved
+{
+    color: green;
+}
+
+.upload-status-table tr.AwaitingPaymentPack
+{
+    color: orange;
+}
+
+.upload-status-table tr.InvoiceDataCalculationIncorrect
+{
+    color: red;
+}
+
+.upload-status-table tr.InvoiceApprovedByBRE
+{
+    color: green;
+}
+
+.upload-status-table tr.InvoiceEscalated
+{
+    color: orange;
+}
+
+/******* XML UPLOAD STATUS - END ************/
