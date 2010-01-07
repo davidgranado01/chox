@@ -1,7 +1,7 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">
-
+<script type="text/javascript">
 
     $(document).ready(function(){
         doFormValidation();
@@ -18,18 +18,18 @@
 
                 //var sClaimNumber = $("#claimNumber").val();
                 var sClaimNumber = $("form#formUpdateByEngAcknowledgeAction input[name$='claimNumber']").val();
-                    if(sClaimNumber.length > 0)
-                    {
-                        var sClaimId = $("#claimId").val();
-                        var form = $("#formUpdateByEngAcknowledgeAction");
-                        checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
-                    }
-                    else
-                    {
-                        $("#formUpdateByEngAcknowledgeAction").submit();
-                    }
+                if(sClaimNumber.length > 0)
+                {
+                    var sClaimId = $("#claimId").val();
+                    var form = $("#formUpdateByEngAcknowledgeAction");
+                    checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
+                }
+                else
+                {
+                    $("#formUpdateByEngAcknowledgeAction").submit();
                 }
             }
+        }
 
     }
                 
@@ -150,73 +150,73 @@
                 </div>
                 <div class="status-control-set">
                     <table class="status-table">
-<tr>
-    <td width="20%">
-        <label>
-        Indemnity (Decimal)<span class="mandatory">*</span></label>
-    </td><td>
-        <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
-    </td>
-    <td>
-        <label>
-        Invoice Review Required?</label>
-    </td><td>
-        <s:checkbox name="isInvoiceReviewRequired" />
-    </td>
-</tr>
-<tr>
-    <td>
-        <label>Claim Number</label></td><td>
-        <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
-    </td>
-    <td>
-        <label>Quantum Dispute?</label></td><td>
-        <s:checkbox name="isQuantumDispute" />
-    </td>
-</tr>
-<tr valign="top">
-    <td>
-        <label>% Liability Accepted<span class="mandatory">*</span></label>
-    </td>
-    <td colspan="3">
-        <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
-    </td>
-</tr>
-<tr valign="top">
-    <td>
-        <label>Claim Review Notes</label>
-    </td>
-    <td colspan="3">
-        <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
-    </td>
-</tr>
+                        <tr>
+                            <td width="20%">
+                                <label>
+                                    Indemnity (Decimal)<span class="mandatory">*</span></label>
+                            </td><td>
+                                <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
+                            </td>
+                            <td>
+                                <label>
+                                    Invoice Review Required?</label>
+                            </td><td>
+                                <s:checkbox name="isInvoiceReviewRequired" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Claim Number</label></td><td>
+                                <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
+                            </td>
+                            <td>
+                                <label>Quantum Dispute?</label></td><td>
+                                <s:checkbox name="isQuantumDispute" />
+                            </td>
+                        </tr>
+                        <tr valign="top">
+                            <td>
+                                <label>% Liability Accepted<span class="mandatory">*</span></label>
+                            </td>
+                            <td colspan="3">
+                                <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                            </td>
+                        </tr>
+                        <tr valign="top">
+                            <td>
+                                <label>Claim Review Notes</label>
+                            </td>
+                            <td colspan="3">
+                                <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
+                            </td>
+                        </tr>
 
-    <tr valign="top">
-        <td>
-            <label>Reason for Rejection</label>
-        </td>
-        <td colspan="3">    
-        <div id="ReasonOfRejectionDiv">
-            <s:select
-            name="reasonOfRejectionId" 
-            id="reasonOfRejectionId"
-            list="reasonOfClaimRejections"  
-            listKey="id" 
-            listValue="name" 
-            headerKey="" 
-            headerValue="N/A"
-            emptyOption="false"></s:select> 
-        </div>
-        </td>
-    </tr>
+                        <tr valign="top">
+                            <td>
+                                <label>Reason for Rejection</label>
+                            </td>
+                            <td colspan="3">
+                                <div id="ReasonOfRejectionDiv">
+                                    <s:select
+                                        name="reasonOfRejectionId"
+                                        id="reasonOfRejectionId"
+                                        list="reasonOfClaimRejections"
+                                        listKey="id"
+                                        listValue="name"
+                                        headerKey=""
+                                        headerValue="N/A"
+                                        emptyOption="false"></s:select>
+                                </div>
+                            </td>
+                        </tr>
 
-<tr>
-    <td colspan="4">
-        <div class="no-format">
-            <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-        </div>
-    </td>
-</tr>                   
+                        <tr>
+                            <td colspan="4">
+                                <div class="no-format">
+                                    <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                </div>
+                            </td>
+                        </tr>
                         <tr>
                             <td colspan="4" class="choice" nowrap>
                                 <input type="button" value="Reject" onclick="javascript: return doRejectClaim();" />
@@ -226,9 +226,9 @@
                             </td>
                         </tr>
                     </table>
-                    
-                    <div class="errorBox" id="ACKUpdateByEngMessageBox"></div>
-                    
+
+                    <div class="action-error-msg" id="ACKUpdateByEngMessageBox"></div>
+
                 </div>
             </div>
         </div>

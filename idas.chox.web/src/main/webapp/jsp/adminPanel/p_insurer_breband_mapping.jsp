@@ -173,7 +173,7 @@
             <tr>
                 <td>
                     <div class="label-block">
-                        <div id="CDBrebandMappingMessageBox" class="errorBox"/>
+                        <div id="CDBrebandMappingMessageBox" class="action-error-msg"/>
                     </div>
                 </td>
             </tr>

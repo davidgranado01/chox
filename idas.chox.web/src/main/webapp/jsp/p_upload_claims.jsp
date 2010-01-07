@@ -1,5 +1,5 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <head>
     <title>IDAS-CHOX</title >   
@@ -59,7 +59,7 @@
                             <s:submit onclick="javascript:return validateFile();" value="Upload Claims"/>
                         </s:if>
                         <s:else><br/>
-                            <div class="errorBox"><b>A Credit Hire Mapping Relationship Does Not Exist. Please Contact CHOX Admin.</b></div>
+                            <div class="action-error-msg"><b>A Credit Hire Mapping Relationship Does Not Exist. Please Contact CHOX Admin.</b></div>
                         </s:else>
                     </td>
                 </tr>

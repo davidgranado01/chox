@@ -1,13 +1,7 @@
-<%-- 
-    Document   : cho_board
-    Created on : 02-Feb-2009, 16:19:46
-    Author     : Emmanuel
---%>
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<head>
-    <script>
+<script type="text/javascript">
         $(document).ready(function(){  
             
             $("#dashboardInsurerId").change(onSelectChange);  
@@ -41,7 +35,7 @@
         }
 
     </script>  
-</head>
+
 
 <div class="x-panel-bwrap chox-form-container" id="dashboardId"> 
     <fieldset class="x-fieldset">

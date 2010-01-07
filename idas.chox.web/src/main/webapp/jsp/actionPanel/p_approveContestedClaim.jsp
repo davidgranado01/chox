@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
@@ -151,43 +152,43 @@
                                     <tr>
                                         <td>
                                             <label>
-                                        Indemnity (Decimal)<span class="mandatory">*</span></label></td><td>
+                                                Indemnity (Decimal)<span class="mandatory">*</span></label></td><td>
                                             <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
                                         </td>
                                         <td>
                                             <label>
-                                        Invoice Review Required?</label></td><td>
-                                            <s:checkbox name="isInvoiceReviewRequired" />
+                                                Invoice Review Required?</label></td><td>
+                                                <s:checkbox name="isInvoiceReviewRequired" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                        <label>Claim Number</label></td><td>
-                                            
+                                            <label>Claim Number</label></td><td>
+
                                             <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>    
-                                            
+
                                         </td>
                                         <td>
                                             <label>
-                                        Quantum Dispute?</label></td><td>
-                                            <s:checkbox name="isQuantumDispute" />
+                                                Quantum Dispute?</label></td><td>
+                                                <s:checkbox name="isQuantumDispute" />
                                         </td>
                                     </tr>
                                     <tr valign="top">
                                         <td>
                                             <label>
-                                        % Liability Accepted<span class="mandatory">*</span></label></td><td colspan="3">
+                                                % Liability Accepted<span class="mandatory">*</span></label></td><td colspan="3">
                                             <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                                         </td>                                        
-                                        
+
                                     </tr>
                                     <tr valign="top">
                                         <td>
                                             <label>
-                                        Claim Review Notes</label></td><td colspan="3">
+                                                Claim Review Notes</label></td><td colspan="3">
                                             <textarea class="chox-canote" cols="20" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                         </td>                                      
-                                        
+
                                     </tr>  
                                     <tr valign="top">
                                         <td>
@@ -223,7 +224,7 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="errorBox" id="ActionPanelMessageBox"></div>
+                            <div class="action-error-msg" id="ActionPanelMessageBox"></div>
                         </td>
                     </tr>
                 </table>

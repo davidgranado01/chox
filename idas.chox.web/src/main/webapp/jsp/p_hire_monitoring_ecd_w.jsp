@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
@@ -55,17 +56,17 @@
     function getReasonDescription(id){
 
         <s:iterator value="reasonOfDelay">
-                    if(id=="<s:property value="id"/>"){
-                        return "<s:property value="description"/>";
-                    }
-        </s:iterator>
+                if(id=="<s:property value="id"/>"){
+                    return "<s:property value="description"/>";
+                }
+    </s:iterator>
 
-     }
+            }
     
 </script>
 
 <form id="formAddNewHireMonitoringEcd" action="<%=request.getContextPath()%>/prv/p/addNewHireMonitoringEcd.action" name="formAddNewHireMonitoringEcd" class="XXentity-form">
-    
+
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
 
     <fieldset class="x-fieldset">

@@ -1,48 +1,48 @@
-                                        
-<%@ taglib uri="/struts-tags" prefix="s" %> 
-        
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="/struts-tags" prefix="s" %>
+
 <fieldset class="x-fieldset">
     <legend>Injury</legend>
     <div style="display:none" class="form-container">
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Name</label>  
-        <label class="std-data-ro"><s:property value="title" /></label></div>
+                Name</label>
+            <label class="std-data-ro"><s:property value="title" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Address 1</label>
-        <label class="std-data-ro"><s:property value="address1" /></label></div>
+                Address 1</label>
+            <label class="std-data-ro"><s:property value="address1" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Address 2</label>
-        <label class="std-data-ro"><s:property value="address2" /></label></div>
+                Address 2</label>
+            <label class="std-data-ro"><s:property value="address2" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Address 3</label>
-        <label class="std-data-ro"><s:property value="address3" /></label></div>
+                Address 3</label>
+            <label class="std-data-ro"><s:property value="address3" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Address 4</label>
-        <label class="std-data-ro"><s:property value="address4" /></label></div>
+                Address 4</label>
+            <label class="std-data-ro"><s:property value="address4" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Address 5</label>
-        <label class="std-data-ro"><s:property value="address5" /></label></div>
+                Address 5</label>
+            <label class="std-data-ro"><s:property value="address5" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Postcode</label>
-        <label class="std-data-ro"><s:property value="postcode" /></label></div>
+                Postcode</label>
+            <label class="std-data-ro"><s:property value="postcode" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Telephone Day</label>
-        <label class="std-data-ro"><s:property value="telephoneDay" /></label></div>
+                Telephone Day</label>
+            <label class="std-data-ro"><s:property value="telephoneDay" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Telephone Evening</label>
-        <label class="std-data-ro"><s:property value="telephoneEvening" /></label></div>
+                Telephone Evening</label>
+            <label class="std-data-ro"><s:property value="telephoneEvening" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Email</label>
-        <label class="std-data-ro"><s:property value="email" /></label></div>
+                Email</label>
+            <label class="std-data-ro"><s:property value="email" /></label></div>
     </div>
 </fieldset>

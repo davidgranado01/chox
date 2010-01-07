@@ -600,7 +600,7 @@ div.action-message
 .acountCopyright{ color: #000000;font-size:12px; padding:10px;}
 .acountVersionNumber{ color: #000000; font-weight:bold;font-size:12px;}
 
-.line_page_header{
+.line-page-header{
     color:#000000;
     font-family:tahoma,arial,verdana,sans-serif;
     font-size: 22px;  
@@ -610,7 +610,7 @@ div.action-message
     display:block;           
 }
 
-.line_header{
+.line-header{
     color:#000000;
     font-family:tahoma,arial,verdana,sans-serif;
     font-size: 18px;
@@ -618,7 +618,7 @@ div.action-message
     display:block;     
 }
 
-.line_item_css{
+.line-item-css{
     color:#000000;
     font-family:tahoma,arial,verdana,sans-serif;
     font-size: 14px;  

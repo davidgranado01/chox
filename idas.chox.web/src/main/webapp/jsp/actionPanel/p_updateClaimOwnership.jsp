@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
@@ -77,7 +78,7 @@
         var target = "#claimHandlerRoleUserDropDownDiv";
         var url = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
         var param = {"workgroupId" : selectedWorkgroupId,"insurerId":selectedInsurerId};
-         ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml(url,param,function(data){
             $(target).html(data);
         });
     }
@@ -96,7 +97,7 @@
 </script>
 
 <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/updateOwnershipAssignment.action" method="post" id="formOwnershipAction" name="formOwnershipAction">
-        <fieldset class="x-fieldset">
+    <fieldset class="x-fieldset">
         <legend>Update Workgroup/Claim Owner - Action Required</legend>
 
         <div>
@@ -113,36 +114,36 @@
                 <div class="status-control-set">
                     <table class="status-table" width="100%">
 
-                    <!-- MANTIS ID:820 !-->
-                    <s:if test="insurer.workgroupEnable">
-                    <tr>
-                        <td width="200px"><label>Workgroup</label></td>
-                        <td width="100%">
-                            <s:select name="uosWorkgroupId" id="uosWorkgroupId"
-                            list="workgroups" headerKey="" listKey="id" listValue="name"
-                            headerValue="-- Please Select --" onchange="doUpdateOwnershipWorkgroupChange()">
-                            </s:select>
-                        </td>
-                    </tr>
-                    </s:if>
-                    <s:else>
-                        <tr><td colspan="2">
-                        <input type="hidden" id="uosWorkgroupId" name="uosWorkgroupId" value=""/>
-                        </td></tr>
-                    </s:else>
+                        <!-- MANTIS ID:820 !-->
+                        <s:if test="insurer.workgroupEnable">
+                            <tr>
+                                <td width="200px"><label>Workgroup</label></td>
+                                <td width="100%">
+                                    <s:select name="uosWorkgroupId" id="uosWorkgroupId"
+                                              list="workgroups" headerKey="" listKey="id" listValue="name"
+                                              headerValue="-- Please Select --" onchange="doUpdateOwnershipWorkgroupChange()">
+                                    </s:select>
+                                </td>
+                            </tr>
+                        </s:if>
+                        <s:else>
+                            <tr><td colspan="2">
+                                    <input type="hidden" id="uosWorkgroupId" name="uosWorkgroupId" value=""/>
+                                </td></tr>
+                            </s:else>
 
-                    <tr>
-                        <td><label>Claim Owner</label></td>
-                        <td><div id="claimHandlerRoleUserDropDownDiv"></div></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="choice" nowrap>
-                            <input id="assign" type="submit" value="Update" onclick="javascript:return doUpdateOwnershipSubmit('assigned');"/>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td><label>Claim Owner</label></td>
+                            <td><div id="claimHandlerRoleUserDropDownDiv"></div></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="choice" nowrap>
+                                <input id="assign" type="submit" value="Update" onclick="javascript:return doUpdateOwnershipSubmit('assigned');"/>
+                            </td>
+                        </tr>
 
                     </table>
-                    <div class="errorBox" id="OwnershipMessageBox"></div>
+                    <div class="action-error-msg" id="OwnershipMessageBox"></div>
                 </div>
 
             </div>

@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+
 <s:if test="isClaimAnomalous && !isCHO">
     <div class="chox-claim-header x-panel-bwrap chox-form-container">
         <fieldset class="x-fieldset">
@@ -12,7 +13,7 @@
                 </ul>
             </div>
             <s:if test="isClaimNotificationEditable">
-            <input type="button" value="Remove All" onclick='javascript:removeNotification(-1);' />
+                <input type="button" value="Remove All" onclick='javascript:removeNotification(-1);' />
             </s:if>
         </fieldset>
     </div>

@@ -1161,7 +1161,7 @@
                         </fieldset>
                     </form>
                 </s:if>
-                <div class="errorBox" id="CmErrMsgBox" style="color:red;font-weight: bold;font-size: 10px;"></div>
+                <div class="action-error-msg" id="CmErrMsgBox" style="color:red;font-weight: bold;font-size: 10px;"></div>
                 <div class="remark-indicator">Private notes are highlighted in blue</div>
             </div>
 

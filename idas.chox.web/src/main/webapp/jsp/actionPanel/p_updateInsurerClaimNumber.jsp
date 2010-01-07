@@ -1,6 +1,7 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">
+<script type="text/javascript">
     
     $(document).ready(function(){
   
@@ -80,6 +81,6 @@
                 </tr>
             </table>
         </div>
-        <div class="errorBox" id="ACKmUpdateInsurerClaimNumbermessageBox"></div>
+        <div class="action-error-msg" id="ACKmUpdateInsurerClaimNumbermessageBox"></div>
     </fieldset>
 </form>

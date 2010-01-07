@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
@@ -242,7 +243,7 @@
                             </td>
                         </tr>
                     </table>
-                    <div class="errorBox" id="ACKmessageBox"></div>
+                    <div class="action-error-msg" id="ACKmessageBox"></div>
                 </div>
             </div>
         </div>

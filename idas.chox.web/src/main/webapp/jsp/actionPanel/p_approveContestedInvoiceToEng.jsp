@@ -1,7 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
 
 <script type="text/javascript">
     
@@ -75,30 +73,30 @@
         <!--
         <s:hidden id="reasonOfRejectionIdHolder" name="invoice.reasonOfRejectionId"/>
         !-->
-        
+
         <div>
             <div class="status-info">
                 Please review the 'Notes' tab for the reason why the invoice has been referred for further attention. 
-Please decide on whether to progress the claim for payment, refer the claim back or reject the invoice. 
-Please provide appropriate notes on the 'Notes' tab regarding the decision made.
+                Please decide on whether to progress the claim for payment, refer the claim back or reject the invoice.
+                Please provide appropriate notes on the 'Notes' tab regarding the decision made.
             </div>
             <div class="status-control-set">
                 <table>
-    <tr>
-        <td width="30%" nowrap>
-            <label>Reason for Rejection</label>
-        </td>
-        <td>
-            <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
-            list="reasonOfInvoiceRejections"  
-            listKey="id" 
-            listValue="name" 
-            headerKey="" 
-            headerValue="N/A"
-            emptyOption="false"></s:select>
-        </td>
-        <td></td><td></td>
-    </tr>                        
+                    <tr>
+                        <td width="30%" nowrap>
+                            <label>Reason for Rejection</label>
+                        </td>
+                        <td>
+                            <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
+                                      list="reasonOfInvoiceRejections"
+                                      listKey="id"
+                                      listValue="name"
+                                      headerKey=""
+                                      headerValue="N/A"
+                                      emptyOption="false"></s:select>
+                        </td>
+                        <td></td><td></td>
+                    </tr>
                     <tr>
                         <td colspan="4">
                             <div class="no-format">
@@ -115,7 +113,7 @@ Please provide appropriate notes on the 'Notes' tab regarding the decision made.
                     </tr>
                 </table>
             </div>
-            <div class="errorBox" id="ActionPanelMessageBox"></div>
+            <div class="action-error-msg" id="ActionPanelMessageBox"></div>
         </div> 
     </fieldset>
 </form>

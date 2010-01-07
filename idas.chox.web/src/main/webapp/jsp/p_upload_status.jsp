@@ -1,12 +1,4 @@
-<%--
-    Document   : UploadStatus
-    Created on : 09-Nov-2008, 23:40:54
-    Author     : Emmanuel
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <div class="UploadStatusContainer">

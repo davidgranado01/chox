@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <%
@@ -156,7 +157,7 @@
                             </td>
                         </tr>
                     </table>
-                    <div class="errorBox" id="OwnershippAssignmentMessageBox"></div>
+                    <div class="action-error-msg" id="OwnershippAssignmentMessageBox"></div>
                     <div id="ownership-submit-result" class="action-error-msg"><%= statusMsg%></div>
                 </div>
             </div>

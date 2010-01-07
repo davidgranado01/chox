@@ -1,11 +1,5 @@
-<%-- 
-    Document   : p_penaltyCharge
-    Created on : 08-Jan-2009, 14:09:03
-    Author     : Emmanuel
---%>
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-
 
 <script type="text/javascript">
 
@@ -78,7 +72,7 @@
         }       
         totalAmountToPayBeforeNewPenaltyCharge = parseFloat($("#hvTotalAmountToPayBeforeNewPenaltyCharge").val());                  
         totalAmountToPayAfterNewPenaltyCharge = newPenaltyCharge + totalAmountToPayBeforeNewPenaltyCharge;            
-        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + Math.round(totalAmountToPayAfterNewPenaltyCharge*100)/100);
+        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('Â£' + Math.round(totalAmountToPayAfterNewPenaltyCharge*100)/100);
     }
 
 </script>
@@ -101,7 +95,7 @@
     </tr>
     <tr>
         <td><label>Penalty Amount</label></td>
-        <td>£&nbsp;<input type="text" class="chox-ttxt" id="tPenaltyChargeAmount" name="penaltyChargeAmount" value="<s:property value="penaltyChargeAmount" />"/></td>
+        <td>Â£&nbsp;<input type="text" class="chox-ttxt" id="tPenaltyChargeAmount" name="penaltyChargeAmount" value="<s:property value="penaltyChargeAmount" />"/></td>
     </tr>
     <tr>
         <td><label>Total Amount to Pay After Penalty Charge</label></td>

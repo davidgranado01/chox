@@ -1,6 +1,7 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">
+<script type="text/javascript">
 
     function doRejectClaim(){
         
@@ -134,7 +135,7 @@
 </script>
 
 <form action="<%=request.getContextPath()%>/prv/acknowledge.action" method="post" id="formPendingAcknowledgeAction" name="formPendingAcknowledgeAction">
-    
+
     <fieldset class="x-fieldset">
         <legend>Claim Pending - Action Required</legend>
         <div>
@@ -153,24 +154,24 @@
                         <tr>
                             <td width="20%">
                                 <label>
-                                Indemnity (Decimal)<span class="mandatory">*</span></label>
+                                    Indemnity (Decimal)<span class="mandatory">*</span></label>
                             </td><td>
                                 <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
                             </td>
                             <td>
                                 <label>
-                                Invoice Review Required?</label>
+                                    Invoice Review Required?</label>
                             </td><td>
                                 <s:checkbox name="isInvoiceReviewRequired" />
                             </td>
                         </tr>
                         <tr>
                             <td>
-                            <label>Claim Number</label></td><td>
+                                <label>Claim Number</label></td><td>
                                 <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
                             </td>
                             <td>
-                            <label>Quantum Dispute?</label></td><td>
+                                <label>Quantum Dispute?</label></td><td>
                                 <s:checkbox name="isQuantumDispute" />
                             </td>
                         </tr>
@@ -190,29 +191,29 @@
                                 <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                             </td>
                         </tr>
-                        
 
-                            
-                            <tr valign="top">
-                                <td>
-                                    <label>Reason for Rejection</label>
-                                </td>
-                                <td colspan="3">    
-                                    <div id="ReasonOfRejectionDiv">
-                                        <s:select
-                                            name="reasonOfRejectionId" 
-                                            id="reasonOfRejectionId"
-                                            list="reasonOfClaimRejections"  
-                                            listKey="id" 
-                                            listValue="name" 
-                                            headerKey="" 
-                                            headerValue="N/A"
-                                            emptyOption="false"></s:select> 
-                                    </div>
-                                </td>
-                            </tr>
 
-                        
+
+                        <tr valign="top">
+                            <td>
+                                <label>Reason for Rejection</label>
+                            </td>
+                            <td colspan="3">
+                                <div id="ReasonOfRejectionDiv">
+                                    <s:select
+                                        name="reasonOfRejectionId"
+                                        id="reasonOfRejectionId"
+                                        list="reasonOfClaimRejections"
+                                        listKey="id"
+                                        listValue="name"
+                                        headerKey=""
+                                        headerValue="N/A"
+                                        emptyOption="false"></s:select>
+                                </div>
+                            </td>
+                        </tr>
+
+
                         <tr>
                             <td colspan="4">
                                 <div class="no-format">
@@ -228,9 +229,9 @@
                             </td>
                         </tr>
                     </table>
-                    
-                    <div class="errorBox" id="ACKmessageBox"></div>
-                    
+
+                    <div class="action-error-msg" id="ACKmessageBox"></div>
+
                 </div>
             </div>
         </div>

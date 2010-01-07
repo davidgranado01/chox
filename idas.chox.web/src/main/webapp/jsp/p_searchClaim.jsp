@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">  
+<script type="text/javascript">
 
     var isChoxAdmin = false
     var insurerId = -1;

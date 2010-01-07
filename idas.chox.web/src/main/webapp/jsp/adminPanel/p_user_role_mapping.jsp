@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">

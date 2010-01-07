@@ -1,9 +1,3 @@
-<%-- 
-    Document   : JasonData
-    Created on : 10-Nov-2008, 23:27:23
-    Author     : Emmanuel
---%>
-
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="/struts-tags" prefix="s" %>
 <s:property value="ActionResponseString" escape="false" />

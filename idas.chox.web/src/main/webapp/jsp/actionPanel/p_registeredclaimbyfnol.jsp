@@ -1,6 +1,7 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">
+<script type="text/javascript">
 
     $(document).ready(function(){
         doRegisterFNOFormValidation();
@@ -61,10 +62,10 @@
     <fieldset class="x-fieldset">
         <legend>First Notification of Loss - Action Required</legend>
         <div>
-            
+
             <s:hidden name="id" />
             <s:hidden id="actionName" name="actionName" />
-            
+
             <div>
                 <div class="status-info">
                     Please review the claim details using the 'Claim Details' tab, if and when the claim has been registered please enter the assigned Claim Number and click on the 'Return Claim' button to return the claim. If the claim has not been registered, please enter the reason why in the 'FNOL Review Note' field/box before clicking on the 'Return Claim' button.
@@ -88,11 +89,11 @@
                         </tr>
                         <tr>
                             <td colspan="2" class="choice" nowrap>            
-                            <input type="submit" value="Return Claim" onclick="registeAction('registerFNOL')"  />
+                                <input type="submit" value="Return Claim" onclick="registeAction('registerFNOL')"  />
                             </td>
                         </tr>
                     </table>
-                    <div class="errorBox" id="errorMessageBox"></div>
+                    <div class="action-error-msg" id="errorMessageBox"></div>
                 </div>
             </div>
         </div>

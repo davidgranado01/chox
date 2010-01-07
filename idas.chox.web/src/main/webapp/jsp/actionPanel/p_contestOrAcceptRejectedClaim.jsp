@@ -1,7 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
 
 <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/contestOrAcceptRejectedClaim.action" method="post"
       id="contestOrAcceptRejectedClaim" name="contestOrAcceptRejectedClaim">
@@ -31,7 +29,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="errorBox" id="ActionPanelMessageBox"></div>
+            <div class="action-error-msg" id="ActionPanelMessageBox"></div>
         </div> 
     </fieldset>
 </form>

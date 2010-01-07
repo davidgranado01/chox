@@ -1,9 +1,5 @@
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-
-
-
-
 
 <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/reSubmitRejectedClaim.action" method="post" id="route" name="route">
     

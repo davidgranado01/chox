@@ -1,9 +1,3 @@
-<%-- 
-    Document   : UserAccount
-    Created on : 09-Feb-2009, 17:26:27
-    Author     : Emmanuel
---%>
-
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
@@ -106,7 +100,7 @@
 
                 <div id="submitResult" class="chox-form-submit-result"></div>
 
-                <div class="errorBox" id="errorMessageBox"></div>
+                <div class="action-error-msg" id="errorMessageBox"></div>
             </div>
         </form>
     </fieldset>

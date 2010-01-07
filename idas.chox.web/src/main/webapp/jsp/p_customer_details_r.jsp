@@ -1,4 +1,4 @@
-                                        
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <fieldset class="x-fieldset">
@@ -6,124 +6,123 @@
     <div style="display:none" class="form-container">
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Title</label>
+                Title</label>
             <label class="std-data-ro"><s:property value="title" /></label>
         </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            First Name(s)</label>
-        <label class="std-data-ro"><s:property value="firstName" /></label>
+                First Name(s)</label>
+            <label class="std-data-ro"><s:property value="firstName" /></label>
         </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Surname</label>
-        <label class="std-data-ro"><s:property value="lastName" /></label>
+                Surname</label>
+            <label class="std-data-ro"><s:property value="lastName" /></label>
         </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Address 1</label>
-        <label class="std-data-ro"><s:property value="address1" /></label>
+                Address 1</label>
+            <label class="std-data-ro"><s:property value="address1" /></label>
         </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Address 2</label>
-        <label class="std-data-ro"><s:property value="address2" /></label>
+                Address 2</label>
+            <label class="std-data-ro"><s:property value="address2" /></label>
         </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Address 3</label>
-        <label class="std-data-ro"><s:property value="address3" /></label>
+                Address 3</label>
+            <label class="std-data-ro"><s:property value="address3" /></label>
         </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Address 4</label>
+                Address 4</label>
             <label class="std-data-ro"><s:property value="address4" /></label>
-            </div>
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Address 5</label>
+                Address 5</label>
             <label class="std-data-ro"><s:property value="address5" /></label>
-            </div>
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Postcode</label>
+                Postcode</label>
             <label class="std-data-ro"><s:property value="postcode" /></label>
-            </div>
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Telephone Day</label>
+                Telephone Day</label>
             <label class="std-data-ro"><s:property value="telephoneDay" /></label>
-            </div>
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Telephone Evening</label>
+                Telephone Evening</label>
             <label class="std-data-ro"><s:property value="telephoneEvening" /></label>
-            </div>
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Email</label>
+                Email</label>
             <label class="std-data-ro"><s:property value="email" /></label>
-            </div>    
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">Age</label>
             <label class="std-data-ro"><s:property value="age" /></label>
-            </div>
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">Occupation</label>
             <label class="std-data-ro"><s:property value="occupation" /></label>
-            </div>
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">Policy Usage</label>
             <label class="std-data-ro"><s:property value="policyUsage" /></label>
-            </div>
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Insurer</label>
+                Insurer</label>
             <label class="std-data-ro"><s:property value="insurerName" /></label>
-            </div>
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Policy Number</label>
+                Policy Number</label>
             <label class="std-data-ro"><s:property value="policyNumber" /></label>
-            </div>
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Claim Number
             </label>
             <label class="std-data-ro"><s:property value="claimReference" /></label>
-            </div>
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Comprehensive</label>
+                Comprehensive</label>
             <label class="std-data-ro"><s:property value="isComprehensiveDesc" /></label>
-            </div>
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Vehicle Manufacturer</label>
+                Vehicle Manufacturer</label>
             <label class="std-data-ro"><s:property value="vehicleManufacturer" /></label>
-            </div>
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Vehicle Model</label>
+                Vehicle Model</label>
             <label class="std-data-ro"><s:property value="vehicleModel" /></label>
-            </div>            
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Vehicle Class</label>
+                Vehicle Class</label>
             <label class="std-data-ro"><s:property value="vehicleClass.Name" /></label>
-            </div>
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Vehicle Registration Number</label>
+                Vehicle Registration Number</label>
             <label class="std-data-ro"><s:property value="vehicleRegistration" /></label>
-            </div>            
+        </div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-            Vehicle Location</label>
+                Vehicle Location</label>
             <label class="std-data-ro"><s:property value="location" /></label>
-            </div>          
+        </div>
     </div>
 </fieldset>
 
 
-                                        

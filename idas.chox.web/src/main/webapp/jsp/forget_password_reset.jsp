@@ -1,12 +1,5 @@
-<%-- 
-    Document   : newjspp_forget_password_reset
-    Created on : Dec 22, 2009, 9:58:28 AM
-    Author     : Carlson
---%>
-
-<%@page contentType="text/html" pageEncoding="windows-1252"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="/struts-tags" prefix="s" %>
 
 <html>
     <head>

@@ -1,6 +1,7 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">
+<script type="text/javascript">
     
     function doUpdateClaim(){ 
         $("#formUpdatePaymentReceived").submit();        
@@ -19,11 +20,11 @@
         <s:hidden id="actionName" name="actionName" />      
         <legend>Update Payment Logged</legend>
         <div class="status-control-set">
-            
+
             <div class="status-info">             
-             Please click on the 'Payment Received' button below when the payment has been received from the Insurer.
+                Please click on the 'Payment Received' button below when the payment has been received from the Insurer.
             </div>
-            
+
             <table class="status-table">
                 <tr>
                     <td colspan="3">                
@@ -38,6 +39,6 @@
                 </tr>
             </table>
         </div>
-        <div class="errorBox" id="ACKmessageBox"></div>
+        <div class="action-error-msg" id="ACKmessageBox"></div>
     </fieldset>
 </form>

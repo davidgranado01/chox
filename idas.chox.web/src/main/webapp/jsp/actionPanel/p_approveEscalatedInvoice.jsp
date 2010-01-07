@@ -1,7 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
 
 <script type="text/javascript">
     
@@ -84,21 +82,21 @@
             </div>
             <div class="status-control-set">
                 <table>
-    <tr>
-        <td width="30%" nowrap>
-            <label>Reason for Rejection</label>
-        </td>
-        <td>
-            <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
-            list="reasonOfInvoiceRejections"  
-            listKey="id" 
-            listValue="name" 
-            headerKey="" 
-            headerValue="N/A"
-            emptyOption="false"></s:select>
-        </td>
-        <td></td><td></td>
-    </tr>                       
+                    <tr>
+                        <td width="30%" nowrap>
+                            <label>Reason for Rejection</label>
+                        </td>
+                        <td>
+                            <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
+                                      list="reasonOfInvoiceRejections"
+                                      listKey="id"
+                                      listValue="name"
+                                      headerKey=""
+                                      headerValue="N/A"
+                                      emptyOption="false"></s:select>
+                        </td>
+                        <td></td><td></td>
+                    </tr>
                     <tr>
                         <td colspan="4">
                             <div class="no-format">
@@ -115,7 +113,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="errorBox" id="ActionPanelMessageBox"></div>
+            <div class="action-error-msg" id="ActionPanelMessageBox"></div>
         </div> 
     </fieldset>
 </form>

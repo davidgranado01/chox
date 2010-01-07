@@ -1,9 +1,8 @@
-
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-
-
-<script language="JavaScript">
+<script type="text/javascript">
+    
     $(function(){
         var form = $("#formUpdateThirdParty");
         form.validate(
@@ -163,7 +162,7 @@
                 <input type="submit" value="Save Changes" /></div>
 
 
-            <div id="TPmessageBox" class="errorBox"></div>
+            <div id="TPmessageBox" class="action-error-msg"></div>
             <div class="chox-form-submit-result">&nbsp;</div>    
 
         </div>

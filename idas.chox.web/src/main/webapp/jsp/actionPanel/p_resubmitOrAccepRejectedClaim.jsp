@@ -1,15 +1,5 @@
-<%-- 
-    Document   : p_resubmitOrAcceptContestedInvoice
-    Created on : Dec 02, 2008, 11:39:12 AM
-    Author     : Emmanuel
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-
-
 
 <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/resubmitOrAcceptContestedInvoice.action" method="post"
       id="resubmitOrAcceptContestedInvoice" name="resubmitOrAcceptContestedInvoice">

@@ -2,12 +2,12 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <html>
-    
+
     <body>
-        
+
         <div class='main' id='main'>
             <h1>Welcome to CHOX</h1>  
-            
+
             <authz:authorize ifNotGranted="ROLE_USER">
                 <s:url id="login" action="login" namespace="/" />
                 <s:a href="%{login}">Log in</s:a>
@@ -21,6 +21,6 @@
             </authz:authorize>    
 
         </div>        
-        
+
     </body>
 </html>

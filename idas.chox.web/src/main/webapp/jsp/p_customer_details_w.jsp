@@ -1,8 +1,8 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">
+<script type="text/javascript">
         
-
     $(function(){
 
         var form = $("#formUpdateCustomerDetails");
@@ -233,7 +233,7 @@
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
             </div>
-            <div id="CDmessageBox" class="errorBox"></div>
+            <div id="CDmessageBox" class="action-error-msg"></div>
             <div class="chox-form-submit-result"></div>
         </div>
     </fieldset>
