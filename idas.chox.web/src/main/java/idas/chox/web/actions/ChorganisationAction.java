@@ -23,8 +23,10 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     }
 
     public boolean getIsNew() {
-        if (Integer.valueOf(objectId) <= 0) {
-            return true;
+        if (this.objectId != null && !objectId.equalsIgnoreCase("")) {
+            if (Integer.valueOf(objectId) > 0) {
+                return true;
+            }
         }
         return false;
     }
@@ -41,10 +43,11 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
 
         try {
 
-            if (Integer.valueOf(objectId) <= 0) {
-                model = new Chorganisation();
-            } else {
-                model = adminChorganisationService.getChorganisation(objectId);
+            model = new Chorganisation();
+            if (this.objectId != null && !objectId.equalsIgnoreCase("")) {
+                if (Integer.valueOf(objectId) > 0) {
+                    model = adminChorganisationService.getChorganisation(objectId);
+                }
             }
 
         } catch (Exception ex) {
@@ -133,6 +136,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
+
     public void setAdminChorganisationService(AdminChorganisationService adminChorganisationService) {
         this.adminChorganisationService = adminChorganisationService;
     }

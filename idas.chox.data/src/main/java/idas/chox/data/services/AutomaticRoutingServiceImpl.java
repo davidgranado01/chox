@@ -12,7 +12,6 @@ public class AutomaticRoutingServiceImpl extends SecureDataService implements Au
 
     public List<AutomaticRouting> getAutomaticRoutings(int insurerId, int workgroupId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(AutomaticRouting.class);
-
         if (insurerId > 0) {
             criteria.add(Restrictions.eq("insurer.id", insurerId));
         }
@@ -28,14 +27,12 @@ public class AutomaticRoutingServiceImpl extends SecureDataService implements Au
         return findByCriteria(criteria);
     }
 
-    public boolean isAutomaticRoutingExist(int insurerId, int workgroupId) {
-        List<AutomaticRouting> automaticRoutings = getAutomaticRoutings(insurerId, workgroupId);
-        if(automaticRoutings!=null){
-            if(automaticRoutings.size()>0){
-                return true;
-            }
+    public boolean isWorkgroupInUseByAutomaticRouting(int workgroupId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(AutomaticRouting.class);
+        criteria.add(Restrictions.eq("workgroup.id", workgroupId));
+        if((findByCriteria(criteria)).size()>0){
+            return true;
         }
-
         return false;
     }
     

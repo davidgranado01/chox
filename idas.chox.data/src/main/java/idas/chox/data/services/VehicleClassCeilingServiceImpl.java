@@ -41,16 +41,16 @@ public class VehicleClassCeilingServiceImpl extends SecureDataService implements
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void saveVehicleClassCeiling(VehicleClassCeiling object) {
-        save(object);
+    public void saveVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling) {
+        save(vehicleClassCeiling);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void deleteVehicleClassCeiling(VehicleClassCeiling object) {
-        delete(object);
+    public void deleteVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling) {
+        delete(vehicleClassCeiling);
     }
 
-    public VehicleClassCeiling getVehicleClassCeiling(int id) {
-        return (VehicleClassCeiling) get(VehicleClassCeiling.class, id);
+    public VehicleClassCeiling getVehicleClassCeiling(int vehicleClassCeilingId) {
+        return (VehicleClassCeiling) get(VehicleClassCeiling.class, vehicleClassCeilingId);
     }
 }

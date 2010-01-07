@@ -6,13 +6,10 @@ import java.util.Set;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import javax.management.relation.Role;
 
 public class WebUser extends Entity implements Serializable {
 
     // <editor-fold defaultstate="collapsed" desc="PARAMETERS">
-    protected int id;
     protected String userName;
     protected String email;
     protected String firstName;
@@ -21,10 +18,10 @@ public class WebUser extends Entity implements Serializable {
     protected boolean status;
     protected Chorganisation chorganisation;
     protected Insurer insurer;
-    private Boolean isExpired;
+    protected Boolean isExpired;
     protected WebUserRole webUserRole;
     protected Set roles;
-    private Set workgroups;
+    protected Set workgroups;
     protected String organisationName;
     protected boolean claimHandler = false;
     protected Set workgroupRelatedRoles;
@@ -108,7 +105,7 @@ public class WebUser extends Entity implements Serializable {
     }
 
     public Set getWorkgroups() {
-        return workgroups;
+        return this.workgroups;
     }
 
     public void setWorkgroups(Set workgroups) {
@@ -116,6 +113,7 @@ public class WebUser extends Entity implements Serializable {
     }
 
     // </editor-fold>
+    
     public String getUserName() {
         return userName;
     }

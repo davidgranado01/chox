@@ -54,27 +54,16 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public Insurer saveInsurer(Insurer object) {
-
-
-        save(object);
-
-
-        return object;
+    public void saveInsurer(Insurer insurer) {
+        save(insurer);
     }
 
     public VehicleClassCeiling getVechileClassCeilingForClaim(Claim claim) {
         VehicleClassCeiling vehicleClassCeiling = null;
-
-
-
         DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassCeiling.class);
         criteria.add(Restrictions.eq("insurer", claim.getInsurer()));
         criteria.add(Restrictions.eq("vehicleClass", claim.getCustomer().getVehicleClass()));
         vehicleClassCeiling = (VehicleClassCeiling) getByCriteria(criteria);
-
-
-
         return vehicleClassCeiling;
     }
 }

@@ -12,9 +12,9 @@ public interface WorkgroupService {
 
     public void saveWorkgroup(Workgroup workgroup);
 
-    public List<Workgroup> getWorkgroupsByInsurer(int insurerId);
+    public List<Workgroup> getActiveWorkgroupsByInsurer(int insurerId);
 
-    public List<Workgroup> getAllWorkgroupsByInsurer(int insurerId, String strOrder);
+    public List<Workgroup> getWorkgroupsByInsurer(int insurerId);
 
     public boolean isWorkgroupNameExistByInsurer(int insurerId, String workgroupName);
 
@@ -27,7 +27,7 @@ public interface WorkgroupService {
     // TO BE REVIEWED
     public boolean isWorkgroupDeletable(int workgroupId);
 
-    public boolean isInsurerAllowToEnableWorkgroup(Insurer insurer);
+    public boolean isInsurerWithWorkgroup(int insurerId);
 
     public boolean isWorkgroupAllowToInactive(int insurerId, int workgroup);
 }

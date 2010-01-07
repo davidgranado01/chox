@@ -9,9 +9,7 @@ public interface UserWorkgroupService {
 
     public WebUserWorkgroup getUserWorkgroup(int userWorkgroupId);
 
-    public void deleteWebUserWorkgroup(WebUserWorkgroup webUserWorkgroup);
-
-    public void saveWebUserWorkgroup(WebUserWorkgroup webUserWorkgroup);
-
     public boolean isUserWorkgroupExist(Integer workgroupId, Integer webUserId);
+
+    public void saveUserWorkgroup(WebUserWorkgroup userWorkgroup);
 }

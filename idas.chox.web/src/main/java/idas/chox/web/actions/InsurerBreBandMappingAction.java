@@ -73,7 +73,7 @@ public class InsurerBreBandMappingAction extends BaseAction {
 
         if (this.insurerId > 0) {
 
-            List<Chorganisation> chorganisations = adminInsurerService.getChorganisationsByInsurerIdWithoutBreBand(this.insurerId);
+            List<Chorganisation> chorganisations = adminInsurerService.getChorganisationsWithoutBreBandByInsurerId(this.insurerId);
 
             for (Chorganisation object : chorganisations) {
                 credithireorganisation.add(new ChorganisationViewData(object));

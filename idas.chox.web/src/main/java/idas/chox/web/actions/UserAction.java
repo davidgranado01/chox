@@ -235,6 +235,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             handleException(this, ex);
             return ERROR;
         }
+        
         return SUCCESS;
     }
 

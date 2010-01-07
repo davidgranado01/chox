@@ -49,38 +49,19 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         save(workgroup);
     }
 
-    public List<Workgroup> getWorkgroupsByInsurer(int insurerId) {
-
-        List<Workgroup> objects = new ArrayList<Workgroup>();
-
+    public List<Workgroup> getActiveWorkgroupsByInsurer(int insurerId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
-        if (insurerId > 0) {
-            criteria.add(Restrictions.eq("insurer.id", insurerId));
-        }
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.add(Restrictions.eq("status", true));
         criteria.addOrder(Order.asc("name"));
-        objects = findByCriteria(criteria);
-
-        return objects;
+        return findByCriteria(criteria);
     }
 
-    public List<Workgroup> getAllWorkgroupsByInsurer(int insurerId, String strOrder) {
-
-        List<Workgroup> objects = new ArrayList<Workgroup>();
-
+    public List<Workgroup> getWorkgroupsByInsurer(int insurerId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
-
-        if (insurerId > 0) {
-            criteria.add(Restrictions.eq("insurer.id", insurerId));
-        }
-
-        if (strOrder.equalsIgnoreCase("")) {
-            criteria.addOrder(Order.asc(strOrder));
-        }
-
-        objects = findByCriteria(criteria);
-
-        return objects;
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
+        criteria.addOrder(Order.asc("name"));
+        return findByCriteria(criteria);
     }
 
     public boolean isWorkgroupNameExistByInsurer(int insurerId, String workgroupName) {
@@ -124,7 +105,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
 
         // RETURN SEARCH RESULT
         return findByCriteria(workgroupCirteria);
-        
+
     }
 
     public List<Workgroup> getAvailableAutoRoutingWorkgroupsByInsurer(int insurerId) {
@@ -145,14 +126,12 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         return findByCriteria(workgroupCirteria);
 
     }
-    
+
     public boolean isWorkgroupDeletable(int workgroupId) {
 
         boolean isExist = false;
 
-        if (!this.userWorkgroupService.isUserWorkgroupExist(workgroupId, -1) 
-                && !this.claimService.isObjectExist(workgroupId)
-                && !automaticRoutingService.isAutomaticRoutingExist(-1, workgroupId)) {
+        if (!isWorkgroupInUseByUser(workgroupId) && !this.claimService.isObjectExist(workgroupId) && !automaticRoutingService.isWorkgroupInUseByAutomaticRouting(workgroupId)) {
             isExist = true;
         }
 
@@ -160,40 +139,37 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
     }
 
     public boolean isWorkgroupAllowToInactive(int insurerId, int workgroupId) {
-
-        boolean isAllowed = false;
-
-        List<Workgroup> objects = new ArrayList<Workgroup>();
+        
         DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.add(Restrictions.ne("id", workgroupId));
         criteria.add(Restrictions.eq("status", true));
-        objects = findByCriteria(criteria);
 
-        if (objects.size() > 0) {
-            isAllowed = true;
+        if ((findByCriteria(criteria)).size() > 0) {
+            return true;
         }
 
-        return isAllowed;
+        return false;
     }
 
-    public boolean isInsurerAllowToEnableWorkgroup(Insurer insurer) {
-
-        boolean isAllowed = false;
-
-        if (insurer != null) {
-
-            List<Workgroup> objects = new ArrayList<Workgroup>();
-            DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
-            criteria.add(Restrictions.eq("insurer.id", insurer.getId()));
-            criteria.add(Restrictions.eq("status", true));
-            objects = findByCriteria(criteria);
-
-            if (objects.size() > 0) {
-                isAllowed = true;
-            }
+    public boolean isInsurerWithWorkgroup(int insurerId) {
+        List<Workgroup> objects = new ArrayList<Workgroup>();
+        DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
+        criteria.add(Restrictions.eq("status", true));
+        objects = findByCriteria(criteria);
+        if (objects.size() > 0) {
+            return true;
         }
+        return false;
+    }
 
-        return isAllowed;
+    private boolean isWorkgroupInUseByUser(Integer workgroupId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
+        criteria.add(Restrictions.eq("workgroup.id", workgroupId));
+        if (findByCriteria(criteria).size() > 0) {
+            return true;
+        }
+        return false;
     }
 }

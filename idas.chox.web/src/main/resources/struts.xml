@@ -663,10 +663,10 @@
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="doTriggerUserAccountStatus" class="idas.chox.web.actions.UserAction" method="triggerUserAccountStatus">
-            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="doTriggerPasswordExpiredStatus" class="idas.chox.web.actions.UserAction" method="triggerPasswordExpiredStatus">
-            <result name="success">/jsp/p_action_response_json_data.jsp
+            <result>/jsp/p_action_response_json_data.jsp
             </result>
         </action>
        <!--End User Details-->

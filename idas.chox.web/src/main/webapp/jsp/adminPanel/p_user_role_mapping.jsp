@@ -216,30 +216,31 @@
     }
     
 </script>
-
-<div class="status-info">
-    Assign one or more user roles against this user by using the 'Add New Role' button below. The assignment of roles will dictate which work queues the user will see as well the user's access/permission rights.
-</div>    
-<div>
-    <div class="grid-view-header">
-        <table width="100%">
-            <tr>
-                <td>
-                    <s:select
-                        id="userrolesId"
-                        name="userrolesId"
-                        list="availableUserroles"
-                        listKey="id"
-                        listValue="name"
-                        headerKey=""
-                        headerValue="- Please Select -"
-                        emptyOption="false">
-                    </s:select><input type="button" onclick="javascript: doAddNewWebUserRole();" value="Add New Role"/>
-                </td>
-                <td></td>
-            </tr>
-        </table>
+<div class="sub-admin-tab-css">
+    <div class="status-info">
+        Assign one or more user roles against this user by using the 'Add New Role' button below. The assignment of roles will dictate which work queues the user will see as well the user's access/permission rights.
     </div>
-    <div id="CDUserroleMessageBox" class="chox-form-submit-result"></div>
-    <div id="gridviewGrid"></div>
+    <div>
+        <div class="grid-view-header">
+            <table width="100%">
+                <tr>
+                    <td>
+                        <s:select
+                            id="userrolesId"
+                            name="userrolesId"
+                            list="availableUserroles"
+                            listKey="id"
+                            listValue="name"
+                            headerKey=""
+                            headerValue="- Please Select -"
+                            emptyOption="false">
+                        </s:select><input type="button" onclick="javascript: doAddNewWebUserRole();" value="Add New Role"/>
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <div id="CDUserroleMessageBox" class="chox-form-submit-result"></div>
+        <div id="gridviewGrid"></div>
+    </div>
 </div>

@@ -271,30 +271,30 @@
 
         <input name="CurrentUserOrganisationType" id="CurrentUserOrganisationType" type="hidden" value="<s:property value="CurrentUserOrganisationType" />">
         <input name="CurrentUserOrganisationId" id="CurrentUserOrganisationId" type="hidden" value="<s:property value="CurrentUserOrganisationId" />">
-        
-            <div class="admin-gridview-header">
-                <table cellpadding="0" cellspacing="0" border="0">
-                    <tr>
-                        <td id="label">
-                            <div class="label-block">
-                                <p class="std-label">Organisation Type:</p>
-                                <select id="SelectedOrganisationTypeId" onchange="javascript:doOrganisationTypeChange()">
-                                    <option value="1">Sherwood Organisation</option>
-                                    <option value="2">Insurer Organisation</option>
-                                    <option value="3">Credit Hire Organisation</option>
-                                </select>
-                            </div>
-                            <div id="organisationDropDownDiv" class="label-block"></div>
-                            <div id="userroleDropDownDiv" class="label-block"></div>
-                        </td>
-                        <td id="buttons">
-                            <button type="button" onclick="javascript:createNewRecord();" style="white-space: nowrap;">Add New User</button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="chox-form-submit-result">&nbsp;</div>
-            <div id="gridviewGridHolderId"></div>
-            
+
+        <div class="admin-gridview-header">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td id="label">
+                        <div class="label-block">
+                            <p class="std-label">Organisation Type:</p>
+                            <select id="SelectedOrganisationTypeId" onchange="javascript:doOrganisationTypeChange()">
+                                <option value="1">Sherwood Organisation</option>
+                                <option value="2">Insurer Organisation</option>
+                                <option value="3">Credit Hire Organisation</option>
+                            </select>
+                        </div>
+                        <div id="organisationDropDownDiv" class="label-block"></div>
+                        <div id="userroleDropDownDiv" class="label-block"></div>
+                    </td>
+                    <td id="buttons">
+                        <button type="button" onclick="javascript:createNewRecord();" style="white-space: nowrap;">Add New User</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="chox-form-submit-result">&nbsp;</div>
+        <div id="gridviewGridHolderId"></div>
+
     </div>
 </div>

@@ -61,13 +61,13 @@ public class UserWorkgroupAction extends BaseAction {
     }
 
     public int getWebUserId() {
-        return webUserId;
+        return this.webUserId;
     }
 
     public void setWebUserId(int webUserId) {
         this.webUserId = webUserId;
     }
-// </editor-fold>
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
     @Override
@@ -78,7 +78,6 @@ public class UserWorkgroupAction extends BaseAction {
     public String getUserWorkgroups() {
 
         List<WebUserWorkgroup> userworkgroupData = adminUserService.getUserWorkgroupsByUserId(webUserId);
-
         userworkgroups = new ArrayList<UserWorkgroupViewData>();
 
         for (WebUserWorkgroup h : userworkgroupData) {
@@ -89,17 +88,12 @@ public class UserWorkgroupAction extends BaseAction {
     }
 
     public List getAvailableWorkgroups() {
-        
         List items = new ArrayList<IdLookupItem>();
-
         try {
-
             items = adminUserService.getWorkgroups(this.webUserId);
-
         } catch (Exception ex) {
             handleException(this, ex);
         }
-
         return items;
     }
 
@@ -122,7 +116,7 @@ public class UserWorkgroupAction extends BaseAction {
 
         try {
 
-            ActionResponse response = adminUserService.removeWebUserWorkgroupMapping(this.userWorkgroupId);
+            ActionResponse response = adminUserService.removeWebUserWorkgroupMapping(this.workgroupId, this.webUserId);
             setActionResponse(response);
 
         } catch (Exception ex) {
@@ -150,7 +144,7 @@ public class UserWorkgroupAction extends BaseAction {
 
     }
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
     public void setAdminUserService(AdminUserService adminUserService) {
         this.adminUserService = adminUserService;

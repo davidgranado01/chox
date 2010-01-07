@@ -36,7 +36,6 @@
     </bean>
     <bean id="breBandOrganisationService" class="idas.chox.data.services.BreBandOrganisationServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
     <bean id="breBandService" class="idas.chox.data.services.BreBandServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>

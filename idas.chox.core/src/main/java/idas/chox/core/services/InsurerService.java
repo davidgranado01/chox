@@ -18,7 +18,7 @@ public interface InsurerService {
 
     public List<Insurer> getInsurers();
 
-    public Insurer saveInsurer(Insurer insurer);
+    public void saveInsurer(Insurer insurer);
 
     public VehicleClassCeiling getVechileClassCeilingForClaim(Claim claim);
 }

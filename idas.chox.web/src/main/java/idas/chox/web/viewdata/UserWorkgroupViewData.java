@@ -1,16 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.viewdata;
 
 import idas.chox.core.model.WebUserWorkgroup;
 import idas.chox.core.util.DateHelper;
 
-/**
- *
- * @author Carlson
- */
 public class UserWorkgroupViewData {
 
     private int id;
@@ -19,14 +11,12 @@ public class UserWorkgroupViewData {
     private String createdBy;
     private String createdDate;
 
-    public UserWorkgroupViewData(WebUserWorkgroup object) {
-
-        this.id = object.getId();
-        this.workgroupId = object.getWorkgroup().getId();
-        this.name = object.getWorkgroup().getName();
-        this.createdBy = object.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
-
+    public UserWorkgroupViewData(WebUserWorkgroup webUserWorkgroup) {
+        this.id = webUserWorkgroup.getId();
+        this.workgroupId = webUserWorkgroup.getWorkgroup().getId();
+        this.name = webUserWorkgroup.getWorkgroup().getName();
+        this.createdBy = webUserWorkgroup.getCreatedBy().getDisplayName();
+        this.createdDate = DateHelper.LocalDateTimeFormat.format(webUserWorkgroup.getCreatedDate());
     }
 
     public int getWorkgroupId() {

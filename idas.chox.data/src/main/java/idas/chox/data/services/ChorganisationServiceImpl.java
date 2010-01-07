@@ -73,6 +73,51 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         return findByCriteria(insurerChorganisationCirteria);
     }
 
+    public boolean isActiveChorganisationsByInsurerCreditHireWithBreBand(int insurerId, int chorganisationId) {
+
+        // GET ALL ACTIVE CH ORGANISATION FILTER BY INSURER
+        DetachedCriteria insurerChorganisationCirteria = DetachedCriteria.forClass(InsurerChorganisation.class);
+        insurerChorganisationCirteria.add(Restrictions.eq("insurer.id", insurerId));
+        insurerChorganisationCirteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
+        insurerChorganisationCirteria.add(Restrictions.eq("status", true));
+        
+        // GET ALL CH ORGANISATION BY BRE BAND ASSIGNED TO THE INSURER
+        DetachedCriteria breBandOrganisationCirteria = DetachedCriteria.forClass(BreBandOrganisation.class);
+        breBandOrganisationCirteria.createAlias("this.breBand", "bre", CriteriaSpecification.INNER_JOIN);
+        breBandOrganisationCirteria.add(Restrictions.eq("bre.insurer.id", insurerId));
+        breBandOrganisationCirteria.setProjection(Property.forName("chorganisation.id"));
+        
+        // RETURN SEARCH RESULT
+        insurerChorganisationCirteria.add(Property.forName("chorganisation.id").in(breBandOrganisationCirteria));
+        insurerChorganisationCirteria.setProjection(Property.forName("chorganisation"));
+
+        if(findByCriteria(insurerChorganisationCirteria).size()<=0){
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean isCreditHireWithBreBand(int chorganisationId) {
+
+        // GET ALL ACTIVE CH ORGANISATION FILTER BY INSURER
+        DetachedCriteria chorganisationCirteria = DetachedCriteria.forClass(Chorganisation.class);
+        chorganisationCirteria.add(Restrictions.eq("id", chorganisationId));
+
+        // GET ALL CH ORGANISATION BY BRE BAND ASSIGNED TO THE INSURER
+        DetachedCriteria breBandOrganisationCirteria = DetachedCriteria.forClass(BreBandOrganisation.class);
+        breBandOrganisationCirteria.setProjection(Property.forName("chorganisation.id"));
+
+        // RETURN SEARCH RESULT
+        chorganisationCirteria.add(Property.forName("id").in(breBandOrganisationCirteria));
+
+        if(findByCriteria(chorganisationCirteria).size()<=0){
+            return false;
+        }
+
+        return true;
+    }
+    
     public boolean isChorgNameExist(String s) {
 
         boolean isExist = false;

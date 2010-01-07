@@ -14,43 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 public class BreBandOrganisationServiceImpl extends SecureDataService implements BreBandOrganisationService {
-
-    public boolean isActiveChorganisationWithBand(int choOrgid) {
-
-        boolean isExist = false;
-
-        List<BreBandOrganisation> objects = new ArrayList<BreBandOrganisation>();
-        List<BreBandOrganisation> brebandorganisations = getBreBandChorganisationsByChoOrgId(choOrgid);
-        for (BreBandOrganisation obj : brebandorganisations) {
-            objects.add(obj);
-        }
-
-        if (objects.size() > 0) {
-            isExist = true;
-        }
-
-        return isExist;
-    }
-
-    public boolean isActiveChorganisationWithBand(int choOrgid, int insurerId) {
-
-        boolean isExist = false;
-        List<BreBandOrganisation> objects = new ArrayList<BreBandOrganisation>();
-        List<BreBandOrganisation> brebandorganisations = getBreBandChorganisationsByChoOrgId(choOrgid);
-
-        for (BreBandOrganisation obj : brebandorganisations) {
-            if (obj.getBreBand().getInsurer().getId() == insurerId) {
-                objects.add(obj);
-            }
-        }
-
-        if (objects.size() > 0) {
-            isExist = true;
-        }
-
-        return isExist;
-    }
-
+    
     public boolean isBreBandOccupied(int breBandId) {
 
         boolean isExist = false;
@@ -66,10 +30,11 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
     }
 
     public List<BreBandOrganisation> getBreBandChorganisationsByChoOrgId(int choOrgid) {
+        System.out.println(">>>>>>>>>>> 02.1.1:"+choOrgid);
         DetachedCriteria criteria = DetachedCriteria.forClass(BreBandOrganisation.class);
+        System.out.println(">>>>>>>>>>> 02.1.2");
         criteria.add(Restrictions.eq("chorganisation.id", choOrgid));
         return findByCriteria(criteria);
-
     }
 
     public List<BreBandOrganisation> getBreBandChorganisationsByBreBandId(int bandId) {

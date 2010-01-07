@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,12 +23,7 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
 
     public List<BreBand> getInsurerBreBandsByInsurer(int insurerId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(BreBand.class);
-
-        if (insurerId > 0) {
-            criteria.add(Restrictions.eq("insurer.id", insurerId));
-        }
-
-        criteria.addOrder(Order.asc("name"));
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
         return findByCriteria(criteria);
     }
 
@@ -105,7 +99,7 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
     public void deleteBreBand(BreBand breBand) {
         delete(breBand);
     }
-    
+
     public BreBand getBreBand(int orgId, int insurerId) {
 
         BreBand band = new BreBand();

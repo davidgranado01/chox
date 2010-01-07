@@ -552,12 +552,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
-    //TODO: FILTER BY INSURER AS WELL
     public boolean isOpenClaimByWorkgroupExist(int WorkgroupId) {
-
-        boolean isExist = false;
-
-
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
@@ -567,12 +562,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (findByCriteria(criteria).size() > 0) {
-            isExist = true;
+            return true;
         }
 
-
-
-        return isExist;
+        return false;
 
     }
 

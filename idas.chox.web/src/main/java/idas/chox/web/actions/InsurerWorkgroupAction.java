@@ -100,11 +100,9 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
     public String addNewInsurerWorkgroup() {
 
         try {
-
-            ActionResponse response;
-            response = adminInsurerService.addNewInsurerWorkgroup(model, this.insurerId, this.workgroupName);
+            model.setName(this.workgroupName);
+            ActionResponse response = adminInsurerService.addNewInsurerWorkgroup(model, this.insurerId);
             setActionResponse(response);
-
         } catch (Exception ex) {
             handleException(this, ex);
             return ERROR;
@@ -119,8 +117,8 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
 
             try {
 
-                ActionResponse response;
-                response = adminInsurerService.removeInsurerWorkgroup(model, this.insurerId, this.workgroupName);
+                model.setName(this.workgroupName);
+                ActionResponse response = adminInsurerService.removeInsurerWorkgroup(model, this.insurerId);
                 setActionResponse(response);
 
             } catch (Exception ex) {
@@ -138,8 +136,7 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
 
             try {
 
-                ActionResponse response;
-                response = adminInsurerService.triggerInsurerWorkgroupStatus(model, this.insurerId);
+                ActionResponse response = adminInsurerService.triggerInsurerWorkgroupStatus(model, this.insurerId);
                 setActionResponse(response);
 
             } catch (Exception ex) {

@@ -1,13 +1,15 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.services.BreBandOrganisationService;
+import idas.chox.core.services.ChorganisationService;
+
+
 
 public class UploadClaimsAction extends BaseAction {
 
-    private BreBandOrganisationService breBandOrganisationService;
+    private ChorganisationService chorganisationService;
 
-    public void setBreBandOrganisationService(BreBandOrganisationService breBandOrganisationService) {
-        this.breBandOrganisationService = breBandOrganisationService;
+    public void setChorganisationService(ChorganisationService chorganisationService) {
+        this.chorganisationService = chorganisationService;
     }
 
     public UploadClaimsAction() {
@@ -20,7 +22,7 @@ public class UploadClaimsAction extends BaseAction {
 
         if (getIsCHO()) {
             int chorgId = getAuthenticatedUser().getChorganisation().getId();
-            uploadFlag = breBandOrganisationService.isActiveChorganisationWithBand(chorgId);
+            uploadFlag = chorganisationService.isCreditHireWithBreBand(chorgId);
         }
 
         return uploadFlag;

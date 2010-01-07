@@ -19,9 +19,13 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     private AdminInsurerService adminInsurerService;
 
     public boolean getIsNew() {
-        if (Integer.valueOf(objectId) <= 0) {
-            return true;
+
+        if (this.objectId != null && !objectId.equalsIgnoreCase("")) {
+            if (Integer.valueOf(objectId) <= 0) {
+                return true;
+            }
         }
+
         return false;
     }
 
@@ -44,11 +48,15 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
 
     public void prepare() throws Exception {
         try {
-            if (!objectId.equalsIgnoreCase("") && Integer.valueOf(objectId) <= 0) {
-                model = new Insurer();
-            } else {
-                model = adminInsurerService.getInsurer(Integer.valueOf(objectId));
+
+            model = new Insurer();
+
+            if (this.objectId != null && !objectId.equalsIgnoreCase("")) {
+                if (Integer.valueOf(objectId) > 0) {
+                    model = adminInsurerService.getInsurer(Integer.valueOf(objectId));
+                }
             }
+
         } catch (Exception ex) {
             handleException(this, ex);
 
@@ -73,6 +81,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTION">
+
     public String getInsurers() {
 
         try {
@@ -96,11 +105,11 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     public String updateInsurer() throws Exception {
 
         try {
-            
+
             ActionResponse response;
             response = adminInsurerService.updateInsurer(model, getIsNew());
             setActionResponse(response);
-            
+
         } catch (Exception ex) {
             handleException(this, ex);
             return ERROR;
@@ -110,20 +119,20 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     }
 
     public String triggerInsurerStatus() throws Exception {
-        
+
         try {
 
-            if(objectId!=null && !objectId.equalsIgnoreCase("")){
+            if (objectId != null && !objectId.equalsIgnoreCase("")) {
                 adminInsurerService.triggerInsurerStatus(Integer.valueOf(objectId));
             }
-            
+
         } catch (Exception ex) {
             handleException(this, ex);
             return ERROR;
         }
 
         return SUCCESS;
-        
+
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="SERVICES">

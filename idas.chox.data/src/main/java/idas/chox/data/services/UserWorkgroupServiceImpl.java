@@ -25,34 +25,18 @@ public class UserWorkgroupServiceImpl extends SecureDataService implements UserW
         return (WebUserWorkgroup) get(WebUserWorkgroup.class, userWorkgroupId);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void deleteWebUserWorkgroup(WebUserWorkgroup webUserWorkgroup) {
-        delete(webUserWorkgroup);
-    }
-
     public boolean isUserWorkgroupExist(Integer workgroupId, Integer webUserId) {
-
-        boolean isExist = false;
-
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
-
-        if (workgroupId != null && workgroupId > 0) {
-            criteria.add(Restrictions.eq("workgroup.id", workgroupId));
-        }
-
-        if (webUserId != null && webUserId > 0) {
-            criteria.add(Restrictions.eq("user.id", webUserId));
-        }
-
+        criteria.add(Restrictions.eq("workgroup.id", workgroupId));
+        criteria.add(Restrictions.eq("user.id", webUserId));
         if (findByCriteria(criteria).size() > 0) {
-            isExist = true;
+            return true;
         }
-
-        return isExist;
+        return false;
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void saveWebUserWorkgroup(WebUserWorkgroup webUserWorkgroup) {
-        save(webUserWorkgroup);
+    public void saveUserWorkgroup(WebUserWorkgroup userWorkgroup) {
+        save(userWorkgroup);
     }
 }

@@ -85,6 +85,8 @@
         triggerCss("div#CDUserWorkgroupMessageBox", true);
         
         var userWorkgroupId = gridView.get("id");
+        var workgroupId = gridView.get("workgroupId");
+        
         var url = "<%= request.getContextPath()%>/prv/p/isUserWorkgroupAllowToDelete.action";
         var param = {"userWorkgroupId":userWorkgroupId,"webUserId":<s:property value="id" />};
 
@@ -108,13 +110,13 @@
                     else if(response.resultType && response.resultType == 'YesNo'){
 
                         if(confirm(response.result)){
-                            doRemoveWebUserWorkgroup(userWorkgroupId);
+                            doRemoveWebUserWorkgroup(workgroupId);
                         }
 
                     }
                     else
                     {
-                        doRemoveWebUserWorkgroup(userWorkgroupId);
+                        doRemoveWebUserWorkgroup(workgroupId);
                     }
                 }
                 else
@@ -133,9 +135,9 @@
         });
     }
     
-    function doRemoveWebUserWorkgroup(userWorkgroupId){
+    function doRemoveWebUserWorkgroup(workgroupId){
         var url = "<%= request.getContextPath()%>/prv/p/removeUserWorkgroupMapping.action";
-        var param = {"userWorkgroupId":userWorkgroupId};
+        var param = {"workgroupId":workgroupId, "webUserId":<s:property value="id" />};
         ajax.loadHtml(url, param, onUserWorkgroupMappingSubmitResult);
     }
     
@@ -197,32 +199,33 @@
 
     
 </script>
-
-<div class="status-info">
-    Assign one or more workgroups against this user by using the 'Add New Workgroup' button below. The assignment of workgroups will control claim visibility/permissions, only claims that have been assigned to a workgroup that has been assigned to the said user will be seen by the said user.
-</div>
-<div>
+<div class="sub-admin-tab-css">
+    <div class="status-info">
+        Assign one or more workgroups against this user by using the 'Add New Workgroup' button below. The assignment of workgroups will control claim visibility/permissions, only claims that have been assigned to a workgroup that has been assigned to the said user will be seen by the said user.
+    </div>
     <div>
-        <div class="grid-view-header">
-            <table width="100%">
-                <tr>
-                    <td>
-                        <s:select
-                            id="workgroupId"                                 
-                            name="workgroupId" 
-                            list="availableWorkgroups"
-                            listKey="id" 
-                            listValue="name" 
-                            headerKey=""
-                            headerValue="--- ALL ---"
-                            emptyOption="false">
-                        </s:select><input type="button" value="Add New Workgroup" onclick="javascript: doAddNewWorkgroup();"/>
-                    </td>
-                    <td align="right"></td>
-                </tr>
-            </table>
+        <div>
+            <div class="grid-view-header">
+                <table width="100%">
+                    <tr>
+                        <td>
+                            <s:select
+                                id="workgroupId"
+                                name="workgroupId"
+                                list="availableWorkgroups"
+                                listKey="id"
+                                listValue="name"
+                                headerKey=""
+                                headerValue="--- ALL ---"
+                                emptyOption="false">
+                            </s:select><input type="button" value="Add New Workgroup" onclick="javascript: doAddNewWorkgroup();"/>
+                        </td>
+                        <td align="right"></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="CDUserWorkgroupMessageBox" class="chox-form-submit-result"></div>
+            <div id="userworkgroup_gridviewGrid"></div>
         </div>
-        <div id="CDUserWorkgroupMessageBox" class="chox-form-submit-result"></div>
-        <div id="userworkgroup_gridviewGrid"></div>
     </div>
 </div>

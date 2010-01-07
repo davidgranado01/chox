@@ -21,7 +21,4 @@ public interface BreBandOrganisationService {
 
     public List<BreBandOrganisation> getBreBandChorganisationsByChoOrgId(int choOrgid);
 
-    public boolean isActiveChorganisationWithBand(int choOrgid, int insOrgId);
-
-    public boolean isActiveChorganisationWithBand(int choOrgid);
 }

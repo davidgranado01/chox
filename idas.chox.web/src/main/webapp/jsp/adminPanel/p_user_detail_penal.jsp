@@ -301,29 +301,21 @@
     </div>
 
     <div id="userRoleTab" class="x-hide-display">
-        <div class="sub-admin-tab-css">
-            <s:if test="!isNew">
-                <div>
-                    <s:action name="getUserroleMapping" executeResult="true">
-                        <s:param name="webUserId"><s:property value="id" /></s:param>
-                        <s:param name="organisationTypeId"><s:property value="organisationTypeId" /></s:param>
-                    </s:action>
-                </div>
-            </s:if>
-        </div>
+        <s:if test="!isNew">
+            <s:action name="getUserroleMapping" executeResult="true">
+                <s:param name="webUserId"><s:property value="id" /></s:param>
+                <s:param name="organisationTypeId"><s:property value="organisationTypeId" /></s:param>
+            </s:action>
+        </s:if>
     </div>
 
     <div id="userWorkgroupTab" class="x-hide-display">
-        <div class="sub-admin-tab-css">
-            <s:if test="!isNew">
-                <div>
-                    <s:action name="getUserWorkgroupMapping" executeResult="true">
-                        <s:param name="webUserId"><s:property value="id" /></s:param>
-                        <s:param name="organisationTypeId"><s:property value="organisationTypeId" /></s:param>
-                    </s:action>
-                </div>
-            </s:if>
-        </div>
+        <s:if test="!isNew && isWorkgroupEnabled">
+            <s:action name="getUserWorkgroupMapping" executeResult="true">
+                <s:param name="webUserId"><s:property value="id" /></s:param>
+                <s:param name="organisationTypeId"><s:property value="organisationTypeId" /></s:param>
+            </s:action>
+        </s:if>
     </div>
 
 </div>

@@ -14,7 +14,11 @@ public interface ChorganisationService {
     public List<Chorganisation> getAvailableChorganisationsByInsurer(int insurerId);
 
     public List<Chorganisation> getActiveChorganisationsByInsurerWithoutBreBand(int insurerId);
-   
+
+    public boolean isActiveChorganisationsByInsurerCreditHireWithBreBand(int insurerId, int chorganisationId);
+
+    public boolean isCreditHireWithBreBand(int chorganisationId);
+
     public List<Chorganisation> getActiveChorganisation();
 
     public boolean isChorgNameExist(String chorganisationName);
