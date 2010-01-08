@@ -6,7 +6,7 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
-import idas.chox.web.security.ApplicationAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 import java.util.ArrayList;
 import java.util.List;

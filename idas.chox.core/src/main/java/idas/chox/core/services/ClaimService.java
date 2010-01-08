@@ -1,7 +1,6 @@
 package idas.chox.core.services;
 
 import idas.chox.core.search.*;
-import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.core.model.*;
 import java.util.List;
 import java.util.Set;
@@ -9,14 +8,6 @@ import java.util.Set;
 public interface ClaimService {
 
     public Claim getClaim(int id);
-
-    public Long getCountByStatus(String status, boolean isCheckWorkGroup, boolean isCheckOwnership);
-
-    public Long getNonDEPaymentLogCount();
-
-    public Long getPenaltyChargeAppliedCount();
-
-    public Long getHireUpdateWarningCountNumber(boolean isCheckWorkGroup, boolean isCheckOwnership);
 
     public Long getClaimCountByClaimNumber(String claimNumber, int claimId);
 
@@ -29,6 +20,8 @@ public interface ClaimService {
     public Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit);
 
     public Boolean isThirdPartyClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit);
+
+    public Integer countClaims(ClaimSearchCriteria searchCriteria);
 
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria);
 

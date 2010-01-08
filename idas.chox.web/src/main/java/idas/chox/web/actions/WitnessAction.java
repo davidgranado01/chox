@@ -10,7 +10,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.Incident;
 import idas.chox.core.model.Injury;
 import idas.chox.core.model.Witness;
-import idas.chox.web.security.ApplicationAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 import net.sf.json.JSONObject;
 
 /**

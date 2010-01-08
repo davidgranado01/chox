@@ -12,6 +12,9 @@
     <bean id="accessibilityService" class="idas.chox.data.services.AccessibilityServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="applicationAccessibility" class="idas.chox.service.security.ApplicationAccessibility" singleton="true">
+        <property name="accessibilityService" ref="accessibilityService"/>
+    </bean>
     <bean id="insurerAliasService" class="idas.chox.data.services.InsurerAliasServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
@@ -23,7 +26,7 @@
     </bean>
     <bean id="vehicleClassCeilingService" class="idas.chox.data.services.VehicleClassCeilingServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>    
+    </bean>
     <bean id="insurerService" class="idas.chox.data.services.InsurerServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>

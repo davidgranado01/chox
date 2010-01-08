@@ -44,139 +44,23 @@
             reader:rd,
             remoteSort: true
         });
+
         ds.setDefaultSort('created', 'desc');
 
         Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
-        function showClaimByStatus(status, isWorkgroupCheck, isOwnerShipCheck)
+        function executeFilter(filterName)
         {
-
-            ds.baseParams = {
-            
-                supplierReference : '',
-                supplierId : -1,
-                insurerId : -1,
-                invoiceNumber : '',
-                claimNumber : '',
-                thirdPartyVrn : '',
-                claimUploadDateFrom : '',
-                claimUploadDateTo : '',
-                invoiceUploadDateFrom : '',
-                invoiceUploadDateTo :  '',
-                hireDateFrom : '',
-                hireDateTo : '',
-                status : status,
-                workgroupId : -1,
-                isAnomalies : '',
-                ispenaltyChargeApplied : '',
-                reviewRequiredDateFrom:'',
-                reviewRequiredDateTo:'',
-                isWorkgroupCheck:isWorkgroupCheck,
-                isOwnerShipCheck:isOwnerShipCheck,
-                claimOwnerId:-1,
-                customerVrn:'',
-                isOpenClaim:''
-            }
-
+            ds.baseParams = {"filterName" : filterName};
             doDataLoad(0, recordPerPage, true);
-
         }
-    
-        function showClaimByStatusWithSort(status, sort, isWorkgroupCheck, isOwnerShipCheck)
+
+        function refreshFilterPanel()
         {
-            ds.setDefaultSort(sort, 'status');
-            ds.baseParams = {
-                supplierReference : '',
-                supplierId : -1,
-                insurerId : -1,
-                invoiceNumber : '',
-                claimNumber : '',
-                thirdPartyVrn : '',
-                claimUploadDateFrom : '',
-                claimUploadDateTo : '',
-                invoiceUploadDateFrom : '',
-                invoiceUploadDateTo :  '',
-                hireDateFrom : '',
-                hireDateTo : '',
-                status : status,
-                workgroupId : -1,
-                isAnomalies : '',
-                ispenaltyChargeApplied : '',
-                reviewRequiredDateFrom:'',
-                reviewRequiredDateTo:'',
-                isWorkgroupCheck:isWorkgroupCheck,
-                isOwnerShipCheck:isOwnerShipCheck,
-                claimOwnerId:-1,
-                customerVrn:'',
-                isOpenClaim:''
-            }
-
-            doDataLoad(0, recordPerPage, true);
-
-        }
-    
-        function showClaimIsAnomalies(isWorkgroupCheck, isOwnerShipCheck)
-        {
-            ds.baseParams = {
-                supplierReference : '',
-                supplierId : -1,
-                insurerId : -1,
-                invoiceNumber : '',
-                claimNumber : '',
-                thirdPartyVrn : '',
-                claimUploadDateFrom : '',
-                claimUploadDateTo : '',
-                invoiceUploadDateFrom : '',
-                invoiceUploadDateTo :  '',
-                hireDateFrom : '',
-                hireDateTo : '',
-                status : '',
-                workgroupId : -1,
-                isAnomalies : true,
-                ispenaltyChargeApplied : '',
-                reviewRequiredDateFrom:'',
-                reviewRequiredDateTo:'',
-                isWorkgroupCheck:isWorkgroupCheck,
-                isOwnerShipCheck:isOwnerShipCheck,
-                claimOwnerId:-1,
-                customerVrn:'',
-                isOpenClaim:''
-            }
-
-            doDataLoad(0, recordPerPage, true);
-
-        }
-    
-        function showClaimIspenaltyChargeApplied()
-        {
-            ds.baseParams = {
-                supplierReference : '',
-                supplierId : -1,
-                insurerId : -1,
-                invoiceNumber : '',
-                claimNumber : '',
-                thirdPartyVrn : '',
-                claimUploadDateFrom : '',
-                claimUploadDateTo : '',
-                invoiceUploadDateFrom : '',
-                invoiceUploadDateTo :  '',
-                hireDateFrom : '',
-                hireDateTo : '',
-                status : '',
-                workgroupId : -1,
-                isAnomalies : '',
-                ispenaltyChargeApplied : true,
-                reviewRequiredDateFrom:'',
-                reviewRequiredDateTo:'',
-                isWorkgroupCheck:false,
-                isOwnerShipCheck:false,
-                claimOwnerId:-1,
-                customerVrn:'',
-                isOpenClaim:''
-            }
-
-            doDataLoad(0, recordPerPage, true);
-        
+            var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
+            ajax.loadHtml(url,null,function(data){
+                $("#filterPanel").html(data);
+            });
         }
     
         function searchClaim()
@@ -202,6 +86,7 @@
             var isOpenClaim = Ext.query('*[name$=isOpenClaim]')[0].checked;
         
             ds.baseParams = {
+                filterName : '',
                 supplierReference : supplierReference,
                 supplierId : supplierId,
                 insurerId : insurerId,
@@ -215,20 +100,26 @@
                 hireDateFrom : hireDateFrom,
                 hireDateTo : hireDateTo,
                 status : status,
-                isAnomalies : '',
-                ispenaltyChargeApplied : '',
                 workgroupId: workgroupId,
                 reviewRequiredDateFrom : reviewRequiredDateFrom,
                 reviewRequiredDateTo : reviewRequiredDateTo,
-                isWorkgroupCheck:false,
-                isOwnerShipCheck:false,
                 claimOwnerId : claimOwnerId,
                 customerVrn : customerVrn,
                 isOpenClaim : isOpenClaim
             }
+            doDataLoad(0, recordPerPage, true);        
+        }
 
-            doDataLoad(0, recordPerPage, true);
-        
+        function doDataLoad(start, recordPerPage, isSearched){
+            ds.load(
+            {
+                params:
+                    {
+                    start:start,
+                    limit:recordPerPage,
+                    isSearched:isSearched
+                }
+            });
         }
     
         function setupGrid(){
@@ -926,29 +817,21 @@
                 autoheight:true,
                 activeTab: currentTabIndex,
                 items:[
-                    {title:'', id:'emptyTabId', hidden:true, listeners: {activate: handleActivate}},
-        <s:if test="menuAccessibility.isDashBoardMenuAccessibility">
-                        {contentEl:'boardPanelTab', title:'Dashboard', listeners: {activate: handleActivate}},
-        </s:if>
-                        {contentEl:'filterPanelTab', title:'Inbox', listeners: {activate: handleActivate}},
-                        {contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}}
-        <s:if test="menuAccessibility.isReportMenuAccessibility">
+                        {title:'', id:'emptyTabId', hidden:true, listeners: {activate: handleActivate}}
+                        <s:if test="menuAccessibility.isDashBoardMenuAccessibility">
+                        ,{contentEl:'boardPanelTab', title:'Dashboard', listeners: {activate: handleActivate}}
+                        </s:if>
+                        ,{contentEl:'filterPanelTab', title:'Inbox', listeners: {activate: handleActivate}}
+                        ,{contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}}
+                        <s:if test="menuAccessibility.isReportMenuAccessibility">
                         ,{contentEl:'reportPanelTab', title:'Reports', listeners: {activate: handleActivate}}
-        </s:if>
-        <s:if test="menuAccessibility.isAdminMenuAccessibility">
+                        </s:if>
+                        <s:if test="menuAccessibility.isAdminMenuAccessibility">
                         ,{contentEl:'adminPanelTab', title:'Admin', listeners: {activate: handleActivate}}
-        </s:if>
+                        </s:if>
                     ]
                 });
-
                 tabs.remove('emptyTabId', true);
-
-            }
-
-            function random_number(){
-                var min = 10000000;
-                var max = 99999999;
-                return (Math.round((max-min) * Math.random() + min));
             }
              
             function loadDataFromSession()
@@ -983,28 +866,7 @@
             
                 $('.x-grid3-hd-checker').removeClass('x-grid3-hd-checker-on');
         
-            }
-   
-            function refreshFilterPanel()
-            {
-                var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
-                ajax.loadHtml(url,null,function(data){
-                    $("#filterPanel").html(data);
-                });
-            }
-    
-            function doDataLoad(start, recordPerPage, isSearched){
-
-                ds.load(
-                {
-                    params:
-                        {
-                        start:start,
-                        limit:recordPerPage,
-                        isSearched:isSearched
-                    }
-                });
-            }
+            } 
 
             Ext.onReady(function(){
 

@@ -8,7 +8,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
-import idas.chox.web.security.ApplicationAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 import net.sf.json.JSONObject;
 
 public class CommentAction extends BaseModelAction implements ModelDriven<Comment>, Preparable  {

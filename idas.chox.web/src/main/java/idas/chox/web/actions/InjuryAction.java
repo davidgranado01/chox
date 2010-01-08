@@ -9,7 +9,7 @@ import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Incident;
 import idas.chox.core.model.Injury;
-import idas.chox.web.security.ApplicationAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 
 /**
  *

@@ -7,7 +7,7 @@ package idas.chox.web.actions;
 import idas.chox.core.model.Claim;
 import idas.chox.core.services.ClaimService;
 import idas.chox.data.services.BaseDataService;
-import idas.chox.web.security.ApplicationAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 import java.util.Set;
 
 /**

@@ -10,7 +10,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.VehicleClassService;
-import idas.chox.web.security.ApplicationAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 import net.sf.json.JSONObject;
 
 /**

@@ -6,7 +6,7 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.Comment;
 import idas.chox.core.services.CommentService;
-import idas.chox.web.security.ApplicationAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.web.viewdata.CommentViewData;
 import java.util.ArrayList;
 import java.util.List;

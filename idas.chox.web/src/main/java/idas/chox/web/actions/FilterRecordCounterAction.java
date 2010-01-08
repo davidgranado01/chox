@@ -1,47 +1,29 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.services.ClaimService;
-import idas.chox.web.FilterRecordCounter;
-import idas.chox.web.security.ApplicationAccessibility;
-import idas.chox.web.security.FilterAccessibility;
+import idas.chox.core.model.Filter;
+import idas.chox.core.services.FilterService;
+import java.util.List;
 
 public class FilterRecordCounterAction extends BaseAction {
 
-    private ClaimService service;
-    private FilterAccessibility filterAccessibility;
-    private FilterRecordCounter filterRecordCounter;
-    private ApplicationAccessibility applicationAccessibility;
+    private FilterService filterService;
+    private List<Filter> filters;
+
 
     @Override
     public String execute() throws Exception {
 
+        filters = filterService.getAvailableFilters(this.getAuthenticatedUser());
         return SUCCESS;
     }
 
-    public FilterRecordCounter getFilterRecordCounter() {
-
-        if (filterRecordCounter == null) {
-            filterRecordCounter = new FilterRecordCounter(service);
-        }
-        return filterRecordCounter;
+    public void setFilterService(FilterService filterService) {
+        this.filterService = filterService;
     }
 
-    public FilterAccessibility getFilterAccessibility() {
-        if (filterAccessibility == null) {
-            filterAccessibility = getApplicationAccessibility().getFilterAccessibility(getAuthenticatedUser().getRoles());
-        }
-        return filterAccessibility;
+    public List<Filter> getFilters() {
+        return filters;
     }
 
-    public ApplicationAccessibility getApplicationAccessibility() {
-        return applicationAccessibility;
-    }
-
-    public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
-        this.applicationAccessibility = applicationAccessibility;
-    }
-
-    public void setClaimService(ClaimService service) {
-        this.service = service;
-    }
+    
 }

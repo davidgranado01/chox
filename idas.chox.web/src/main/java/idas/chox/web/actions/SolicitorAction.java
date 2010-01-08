@@ -6,7 +6,7 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.Incident;
 import idas.chox.core.model.Solicitor;
-import idas.chox.web.security.ApplicationAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;

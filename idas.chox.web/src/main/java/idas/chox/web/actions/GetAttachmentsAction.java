@@ -2,7 +2,7 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.Attachment;
 import idas.chox.core.services.AttachmentService;
-import idas.chox.web.security.ApplicationAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.web.viewdata.AttachmentViewData;
 import java.util.ArrayList;
 import java.util.List;

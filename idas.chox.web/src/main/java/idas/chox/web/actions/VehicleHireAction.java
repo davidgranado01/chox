@@ -7,7 +7,7 @@ import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.util.DateHelper;
-import idas.chox.web.security.ApplicationAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 import java.util.Date;
 import java.util.List;
 import net.sf.json.JSONObject;

@@ -2,12 +2,10 @@ package idas.chox.data.services;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.History;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.RoleHelper;
-import idas.chox.core.xmlValidation.ClaimResult;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,70 +48,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         save(claim);
     }
 
-    public Long getCountByStatus(String status, boolean isCheckWorkGroup, boolean isCheckOwnership) {
-
-        String q = "select count(*) from Claim where status = '" + status + "'";
-
-        if (isCheckWorkGroup) {
-
-            // WORKGROUP FILTER
-            if (RoleHelper.isUserCheckByWorkgroup(getCurrentUser())) {
-                q += " And workgroup.id in (select workgroup.id from WebUserWorkgroup Where user.id=" + getCurrentUser().getId() + ")";
-            }
-
-        }
-
-        if (isCheckOwnership) {
-
-            if (RoleHelper.isEditableByOwnership(getCurrentUser())) {
-                q += " And claimOwner.id =" + getCurrentUser().getId();
-            }
-
-        }
-
-        return getCount(q);
-    }
-
-    public Long getNonDEPaymentLogCount() {
-        return (long) 0;
-    }
-
-    public Long getPenaltyChargeAppliedCount() {
-        String q = "select count(*) from Claim as c inner join c.invoice as iv where " + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_LOGGED + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_REJECTED_ACCEPTED + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_PAYMENT_RECEIVED + "' AND " + "c.status <> '" + ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT + "' AND " + "c.status <> '" + ClaimStatus.CLAIM_CLOSED + "' " + "AND iv.penaltyAlertQty >= 0" + " AND day(current_date() - iv.createdDate) + 1 > ((iv.penaltyAlertQty + 1) * 30)";
-        return getCount(q);
-    }
-
-    public Long getHireUpdateWarningCountNumber(boolean isCheckWorkGroup, boolean isCheckOwnership) {
-
-        String q = "select count(*) from Claim c where size(c.notifications) > 0 ";
-        q += "And (c.status = 'ClaimReferredToEngineer' ";
-        q += "Or c.status = 'ClaimReferredToFNOL' ";
-        q += "Or c.status = 'ClaimRejectionContested' ";
-        q += "Or c.status = 'ClaimPending' ";
-        q += "Or c.status = 'AwaitingCarHireInfo' ";
-        q += "Or c.status = 'ClaimRejected' ";
-        q += "Or c.status = 'ClaimUpdatedByEngineer' ";
-        q += "Or c.status = 'ClaimUnacknowledgedRouted') ";
-
-        if (isCheckWorkGroup) {
-
-            // WORKGROUP
-            if (RoleHelper.isUserCheckByWorkgroup(getCurrentUser())) {
-                q += " And workgroup.id in (select workgroup.id from WebUserWorkgroup Where user.id=" + getCurrentUser().getId() + ")";
-            }
-        }
-
-        if (isCheckOwnership) {
-
-            if (RoleHelper.isEditableByOwnership(getCurrentUser())) {
-                q += " And claimOwner.id =" + getCurrentUser().getId();
-            }
-
-        }
-
-        return getCount(q);
-    }
-
     public Long getECDCountByClaimId(int claimId) {
         String q = "select count(*) from HireMonitoringEcd where claim.id = '" + claimId + "'";
         return getCount(q);
@@ -143,6 +77,19 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return totalCount;
 
 
+    }
+
+    public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber) {
+
+        Claim claim = new Claim();
+
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
+        claim = (Claim) getByCriteria(criteria);
+
+
+        return claim;
     }
 
     public Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit) {
@@ -192,6 +139,233 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
 
+        Criteria criteria = buildSearchCriteria(searchCriteria);
+
+        Integer totalCount = countClaims(criteria);
+
+        if (!sort.isEmpty() && !dir.isEmpty()) {
+            if (sort.equalsIgnoreCase("supplierReference")) {
+                addSort(criteria, "choReference", dir);
+            } else if (sort.equalsIgnoreCase("vehicleRegistration")) {
+                addSort(criteria, "tp.vehicleRegistration", dir);
+            } else if (sort.equalsIgnoreCase("claimNumber")) {
+                addSort(criteria, "claimNumber", dir);
+            } else if (sort.equalsIgnoreCase("policyNumber")) {
+                addSort(criteria, "tp.policyNumber", dir);
+            } else if (sort.equalsIgnoreCase("invoiceAmount")) {
+                addSort(criteria, "iv.totalToPay", dir);
+            } else if (sort.equalsIgnoreCase("createdDate")) {
+                addSort(criteria, "createdDate", dir);
+            } else if (sort.equalsIgnoreCase("status")) {
+                addSort(criteria, "status", dir);
+            } else if (sort.equalsIgnoreCase("statusModifiedDate")) {
+                addSort(criteria, "statusModifiedDate", dir);
+            } else if (sort.equalsIgnoreCase("workgroup")) {
+                addSort(criteria, "wg.name", dir);
+            } else if (sort.equalsIgnoreCase("cho")) {
+                addSort(criteria, "cho.name", dir);
+            } else if (sort.equalsIgnoreCase("insurer")) {
+                addSort(criteria, "ins.name", dir);
+            } else if (sort.equalsIgnoreCase("reviewDate")) {
+                addSort(criteria, "hmd.nextReviewDate", dir);
+            } else if (sort.equalsIgnoreCase("invoiceAmount")) {
+                addSort(criteria, "iv.invoiceAmount", dir);
+            } else if (sort.equalsIgnoreCase("ownerName")) {
+                addSort(criteria, "co.firstName", dir);
+                addSort(criteria, "co.lastName", dir);
+            } else if (sort.equalsIgnoreCase("createdBy")) {
+                addSort(criteria, "cb.firstName", dir);
+                addSort(criteria, "cb.lastName", dir);
+            } else {
+                addSort(criteria, "lastModifiedDate", dir);
+            }
+        }
+
+        criteria.setFirstResult(start);
+        criteria.setMaxResults(limit);
+
+        criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+        List<HashMap> resultMap = criteria.list();
+
+        List claims = new ArrayList<Claim>();
+
+        for (HashMap m : resultMap) {
+            claims.add(m.get("this"));
+        }
+
+        return new SearchResult(claims, totalCount);
+    }
+
+    public Integer countClaims(ClaimSearchCriteria searchCriteria) {
+        Criteria criteria = buildSearchCriteria(searchCriteria);
+        return countClaims(criteria);
+    }
+
+    public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber) {
+
+        Boolean bFlag = false;
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.setProjection(Projections.rowCount());
+        criteria.add(Restrictions.like("choReference", sClaimReferenceNumber.trim()).ignoreCase());
+        List result = findByCriteria(criteria);
+
+        Integer totalCount = (Integer) result.get(0);
+        bFlag = totalCount > 0;
+
+        return bFlag;
+    }
+
+    public Boolean isObjectExist(int WorkgroupId) {
+
+        boolean isExist = false;
+
+
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+
+        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
+
+        if (findByCriteria(criteria).size() > 0) {
+            isExist = true;
+        }
+
+
+
+        return isExist;
+
+    }
+
+    public boolean isOpenClaimByWorkgroupsByStatusExist(int insurerId, Set WorkgroupIds, String status) {
+
+        boolean isExist = false;
+
+        if (WorkgroupIds.size() > 0) {
+            Iterator itr = WorkgroupIds.iterator();
+            while (itr.hasNext()) {
+
+                int workgroupId = (Integer) itr.next();
+                if (isOpenClaimByWorkgroupIdByStatusExist(insurerId, workgroupId, status)) {
+                    isExist = true;
+                    break;
+                }
+            }
+        }
+
+        return isExist;
+
+    }
+
+    private boolean isOpenClaimByWorkgroupIdByStatusExist(int insurerId, Integer WorkgroupId, String status) {
+
+        boolean isExist = false;
+
+
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
+        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
+        criteria.add(Restrictions.eq("status", status));
+
+        if (findByCriteria(criteria).size() > 0) {
+            isExist = true;
+        }
+
+
+
+        return isExist;
+
+    }
+
+    public boolean isOpenClaimByWorkgroupExist(int WorkgroupId) {
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
+
+        for (String sStatus : ClaimStatus.getClosedStatus()) {
+            criteria.add(Restrictions.ne("status", sStatus));
+        }
+
+        if (findByCriteria(criteria).size() > 0) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set WorkgroupIds, int userId) {
+
+        boolean isExist = false;
+
+        if (WorkgroupIds.size() > 0) {
+            Iterator itr = WorkgroupIds.iterator();
+            while (itr.hasNext()) {
+
+                int workgroupId = (Integer) itr.next();
+                if (isOpenClaimByWorkgroupIdByUserExist(insurerId, workgroupId, userId)) {
+
+                    isExist = true;
+                    break;
+                }
+            }
+        }
+
+        return isExist;
+
+    }
+
+    public boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int WorkgroupId, int UserId) {
+
+        boolean isExist = false;
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
+
+        if (UserId > 0) {
+            criteria.add(Restrictions.eq("claimOwner.id", UserId));
+        }
+
+        for (String sStatus : ClaimStatus.getClosedStatus()) {
+            criteria.add(Restrictions.ne("status", sStatus));
+        }
+
+        if (findByCriteria(criteria).size() > 0) {
+            isExist = true;
+        }
+
+        return isExist;
+
+    }
+
+    public boolean isUserHasOpenClaim(int userId) {
+
+        boolean isExist = false;
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("claimOwner.id", userId));
+
+        for (String sStatus : ClaimStatus.getClosedStatus()) {
+            criteria.add(Restrictions.ne("status", sStatus));
+        }
+
+        if (findByCriteria(criteria).size() > 0) {
+            isExist = true;
+        }
+
+        return isExist;
+
+    }
+
+    private Integer countClaims(Criteria criteria) {
+
+        criteria.setProjection(Projections.rowCount());
+        List totalCountResult = criteria.list();
+        criteria.setProjection(null);
+        return (Integer) totalCountResult.get(0);
+    }
+
+    private Criteria buildSearchCriteria(ClaimSearchCriteria searchCriteria) {
         Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN).createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
 
         if (searchCriteria.getIsWorkgroupCheck()) {
@@ -395,64 +569,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         }
 
-        criteria.setProjection(Projections.rowCount());
-
-        List totalCountResult = criteria.list();
-        Integer totalCount = (Integer) totalCountResult.get(0);
-
-        criteria.setProjection(null);
-
-        if (!sort.isEmpty() && !dir.isEmpty()) {
-            if (sort.equalsIgnoreCase("supplierReference")) {
-                addSort(criteria, "choReference", dir);
-            } else if (sort.equalsIgnoreCase("vehicleRegistration")) {
-                addSort(criteria, "tp.vehicleRegistration", dir);
-            } else if (sort.equalsIgnoreCase("claimNumber")) {
-                addSort(criteria, "claimNumber", dir);
-            } else if (sort.equalsIgnoreCase("policyNumber")) {
-                addSort(criteria, "tp.policyNumber", dir);
-            } else if (sort.equalsIgnoreCase("invoiceAmount")) {
-                addSort(criteria, "iv.totalToPay", dir);
-            } else if (sort.equalsIgnoreCase("createdDate")) {
-                addSort(criteria, "createdDate", dir);
-            } else if (sort.equalsIgnoreCase("status")) {
-                addSort(criteria, "status", dir);
-            } else if (sort.equalsIgnoreCase("statusModifiedDate")) {
-                addSort(criteria, "statusModifiedDate", dir);
-            } else if (sort.equalsIgnoreCase("workgroup")) {
-                addSort(criteria, "wg.name", dir);
-            } else if (sort.equalsIgnoreCase("cho")) {
-                addSort(criteria, "cho.name", dir);
-            } else if (sort.equalsIgnoreCase("insurer")) {
-                addSort(criteria, "ins.name", dir);
-            } else if (sort.equalsIgnoreCase("reviewDate")) {
-                addSort(criteria, "hmd.nextReviewDate", dir);
-            } else if (sort.equalsIgnoreCase("invoiceAmount")) {
-                addSort(criteria, "iv.invoiceAmount", dir);
-            } else if (sort.equalsIgnoreCase("ownerName")) {
-                addSort(criteria, "co.firstName", dir);
-                addSort(criteria, "co.lastName", dir);
-            } else if (sort.equalsIgnoreCase("createdBy")) {
-                addSort(criteria, "cb.firstName", dir);
-                addSort(criteria, "cb.lastName", dir);
-            } else {
-                addSort(criteria, "lastModifiedDate", dir);
-            }
-        }
-
-        criteria.setFirstResult(start);
-        criteria.setMaxResults(limit);
-
-        criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-        List<HashMap> resultMap = criteria.list();
-
-        List claims = new ArrayList<Claim>();
-
-        for (HashMap m : resultMap) {
-            claims.add(m.get("this"));
-        }
-
-        return new SearchResult(claims, totalCount);
+        return criteria;
     }
 
     private void addSort(Criteria criteria, String sort, String dir) {
@@ -461,175 +578,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         } else {
             criteria.addOrder(Order.asc(sort));
         }
-    }
-
-    public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber) {
-
-        Boolean bFlag = false;
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.setProjection(Projections.rowCount());
-        criteria.add(Restrictions.like("choReference", sClaimReferenceNumber.trim()).ignoreCase());
-        List result = findByCriteria(criteria);
-
-        Integer totalCount = (Integer) result.get(0);
-        bFlag = totalCount > 0;
-
-        return bFlag;
-    }
-
-    public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber) {
-
-        Claim claim = new Claim();
-
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
-        claim = (Claim) getByCriteria(criteria);
-
-
-        return claim;
-    }
-  
-    public Boolean isObjectExist(int WorkgroupId) {
-
-        boolean isExist = false;
-
-
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-
-        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
-
-        if (findByCriteria(criteria).size() > 0) {
-            isExist = true;
-        }
-
-
-
-        return isExist;
-
-    }
-
-    public boolean isOpenClaimByWorkgroupsByStatusExist(int insurerId, Set WorkgroupIds, String status) {
-
-        boolean isExist = false;
-
-        if (WorkgroupIds.size() > 0) {
-            Iterator itr = WorkgroupIds.iterator();
-            while (itr.hasNext()) {
-
-                int workgroupId = (Integer) itr.next();
-                if (isOpenClaimByWorkgroupIdByStatusExist(insurerId, workgroupId, status)) {
-                    isExist = true;
-                    break;
-                }
-            }
-        }
-
-        return isExist;
-
-    }
-
-    private boolean isOpenClaimByWorkgroupIdByStatusExist(int insurerId, Integer WorkgroupId, String status) {
-
-        boolean isExist = false;
-
-
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.add(Restrictions.eq("insurer.id", insurerId));
-        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
-        criteria.add(Restrictions.eq("status", status));
-
-        if (findByCriteria(criteria).size() > 0) {
-            isExist = true;
-        }
-
-
-
-        return isExist;
-
-    }
-
-    public boolean isOpenClaimByWorkgroupExist(int WorkgroupId) {
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
-
-        for (String sStatus : ClaimStatus.getClosedStatus()) {
-            criteria.add(Restrictions.ne("status", sStatus));
-        }
-
-        if (findByCriteria(criteria).size() > 0) {
-            return true;
-        }
-
-        return false;
-
-    }
-
-    public boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set WorkgroupIds, int userId) {
-
-        boolean isExist = false;
-
-        if (WorkgroupIds.size() > 0) {
-            Iterator itr = WorkgroupIds.iterator();
-            while (itr.hasNext()) {
-
-                int workgroupId = (Integer) itr.next();
-                if (isOpenClaimByWorkgroupIdByUserExist(insurerId, workgroupId, userId)) {
-
-                    isExist = true;
-                    break;
-                }
-            }
-        }
-
-        return isExist;
-
-    }
-
-    public boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int WorkgroupId, int UserId) {
-
-        boolean isExist = false;
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
-        criteria.add(Restrictions.eq("insurer.id", insurerId));
-
-        if (UserId > 0) {
-            criteria.add(Restrictions.eq("claimOwner.id", UserId));
-        }
-
-        for (String sStatus : ClaimStatus.getClosedStatus()) {
-            criteria.add(Restrictions.ne("status", sStatus));
-        }
-
-        if (findByCriteria(criteria).size() > 0) {
-            isExist = true;
-        }
-
-        return isExist;
-
-    }
-
-    public boolean isUserHasOpenClaim(int userId) {
-
-        boolean isExist = false;
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.add(Restrictions.eq("claimOwner.id", userId));
-
-        for (String sStatus : ClaimStatus.getClosedStatus()) {
-            criteria.add(Restrictions.ne("status", sStatus));
-        }
-
-        if (findByCriteria(criteria).size() > 0) {
-            isExist = true;
-        }
-
-        return isExist;
-
     }
 
 }

@@ -12,7 +12,7 @@
     <bean id="accessibilityService" class="idas.chox.data.services.AccessibilityServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="applicationAccessibility" class="idas.chox.web.security.ApplicationAccessibility" singleton="true">
+    <bean id="applicationAccessibility" class="idas.chox.service.security.ApplicationAccessibility" singleton="true">
         <property name="accessibilityService" ref="accessibilityService"/>
     </bean>
     <bean id="vehicleClassService" class="idas.chox.data.services.VehicleClassServiceImpl" singleton="false">

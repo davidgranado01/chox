@@ -12,7 +12,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.services.AttachmentTypeService;
 import idas.chox.core.util.FileHelper;
 import idas.chox.data.services.BaseDataService;
-import idas.chox.web.security.ApplicationAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.SQLException;

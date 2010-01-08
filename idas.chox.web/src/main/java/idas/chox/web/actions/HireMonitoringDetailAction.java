@@ -11,7 +11,7 @@ import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.services.LookupService;
 import idas.chox.service.notifications.ClaimAnomalousChecker;
 import idas.chox.service.notifications.HireUpdatedNotification;
-import idas.chox.web.security.ApplicationAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 import java.util.List;
 import net.sf.json.JSONObject;
 

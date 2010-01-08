@@ -13,7 +13,7 @@ import idas.chox.core.model.VehicleClass;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.VehicleClassService;
-import idas.chox.web.security.ApplicationAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 import java.util.List;
 import net.sf.json.JSONObject;
 

@@ -3,10 +3,10 @@ package idas.chox.web.actions;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
-import idas.chox.web.security.AdminAccessibility;
-import idas.chox.web.security.ApplicationAccessibility;
-import idas.chox.web.security.MenuAccessibility;
-import idas.chox.web.security.ReportAccessibility;
+import idas.chox.service.security.AdminAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.security.MenuAccessibility;
+import idas.chox.service.security.ReportAccessibility;
 import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 

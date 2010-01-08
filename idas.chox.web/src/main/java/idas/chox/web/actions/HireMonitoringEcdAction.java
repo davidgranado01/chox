@@ -13,7 +13,7 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ReasonOfDelayService;
 import idas.chox.service.notifications.ClaimAnomalousChecker;
 import idas.chox.service.notifications.EcdUpdatedNotification;
-import idas.chox.web.security.ApplicationAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 import java.util.ArrayList;
 import java.util.List;
 

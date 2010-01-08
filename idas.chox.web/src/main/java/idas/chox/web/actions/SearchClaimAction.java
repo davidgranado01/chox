@@ -7,9 +7,11 @@ package idas.chox.web.actions;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.Filter;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.FilterService;
 import idas.chox.core.services.LookupService;
 import idas.chox.web.viewdata.claimGridViewData;
 import java.util.ArrayList;
@@ -17,18 +19,21 @@ import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONArray;
 import org.apache.struts2.interceptor.SessionAware;
+import org.hibernate.util.StringHelper;
 
 public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable, SessionAware {
 
+    private LookupService lookupService;
+    private ClaimService claimService;
+    private FilterService filterService;
     private Map session;
     private List statuses;
     private List insurers;
     private List suppliers;
-    private LookupService lookupService;
-    private ClaimService claimService;
     private List results;
     private int totalCount;
     private String actionResult;
+    private String filterName;
     private ClaimSearchCriteria claimSearchCriteria;
 
     public List getStatuses() {
@@ -83,14 +88,23 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     public String doSearchClaim() throws Exception {
 
-        session.put("searchCriteria", claimSearchCriteria);
         Integer start = claimSearchCriteria.getStart();
         Integer limit = claimSearchCriteria.getLimit();
         String sort = claimSearchCriteria.getSort();
         String dir = claimSearchCriteria.getDir();
-        SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria, start, limit, sort, dir);
-        results = searchResult.getResult();
-        totalCount = searchResult.getTotalCount();
+
+        if (StringHelper.isEmpty(filterName)) {
+            session.put("searchCriteria", claimSearchCriteria);
+            SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria, start, limit, sort, dir);
+            results = searchResult.getResult();
+            totalCount = searchResult.getTotalCount();
+        } else {
+            Filter filter = filterService.getFilter(filterName);
+            SearchResult searchResult =  filter.getResults(start, limit, sort, dir);
+            results = searchResult.getResult();
+            totalCount = searchResult.getTotalCount();
+
+        }
         return SUCCESS;
 
     }
@@ -133,5 +147,17 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     public String getActionResult() {
         return actionResult;
+    }
+
+    public String getFilterName() {
+        return filterName;
+    }
+
+    public void setFilterName(String filterName) {
+        this.filterName = filterName;
+    }
+
+    public void setFilterService(FilterService filterService) {
+        this.filterService = filterService;
     }
 }

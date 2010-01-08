@@ -9,7 +9,7 @@ import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Incident;
 import idas.chox.core.util.DateHelper;
-import idas.chox.web.security.ApplicationAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 import java.util.Date;
 import net.sf.json.JSONObject;
 
