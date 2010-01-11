@@ -37,7 +37,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             }
             return SUCCESS;
         }
-
         return ERROR;
     }
 

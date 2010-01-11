@@ -2,12 +2,12 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-        
-    $(document).ready(function(){
-            
-        $("#formReviewAcknowledgeAction").validate(
+
+    $(function(){
+
+        $("form#formClaimReviewByEngAction").validate(
         {
-            errorLabelContainer: "#ACKReviewmessageBox",
+            errorLabelContainer: "#formClaimReviewByEngActionMessageBox",
             rules: {
                 indemnityAmount:{
                     required:true,
@@ -15,49 +15,41 @@
                 },
                 percentageLiabilityAccepted:{
                     required:true,
-                    number:true
-                },
-                claimNumber:{
-                    required:true
-                } ,
-
-                actionName:{
-                    required:true
+                    number:true,
+                    max: 100.00,
+                    min: 0.01
                 }
             },
             messages: {
                 indemnityAmount: {
                     required:"You must supply a value for 'Indemnity'",
                     number:"You must supply a numeric value for 'Indemnity'"
-                }, 
+                },
                 percentageLiabilityAccepted: {
                     required:"You must supply a value for 'Percentage Liability Accepted'",
-                    number:"You must supply a numeric value for Percentage Liability Accepted"
-                },
-                claimNumber: {
-                    required:"You must supply a value for 'Claim Number'"
-                },
-                actionName:{
-                    required:"You must choose 'Reject this claim' or 'Request Invoice Data"
-                }                 
+                    number:"You must supply a numeric value for 'Percentage Liability Accepted'",
+                    max:"'Percentage Liability Accepted' cannot be more than 100",
+                    min:"'Percentage Liability Accepted' must be more than or equal to 0.01"
+                }
             }
         });
-    }); 
-    
+    });
 
+    function doClaimReviewByEngFormSubmit(action){
+        actionPanel.registerAction(action);
+        if($("#formClaimReviewByEngAction").valid()){
+            $("form#formClaimReviewByEngAction").submit();
+        }
+    }
 
 </script>
 
-
-
-
-<form action="<%=request.getContextPath()%>/prv/reviewByEngineer.action" method="post" id="formReviewAcknowledgeAction"
-      name="formReviewAcknowledgeAction">
+<form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formClaimReviewByEngAction" name="formClaimReviewByEngAction">
     <fieldset class="x-fieldset">
         <legend>Engineer Review - Action Required</legend>
         <div>
-            <s:hidden name="id" />
-            <s:hidden id="actionName" name="actionName" />
+            <s:hidden id="claimId" name="id" />
+            <s:hidden id="name" name="name" />
             <div>
                 <div class="status-info">
                     Please enter your private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.  Click on the 'Submit' button to progress the claim without updating a Claims Handler, use the 'Update Claims Handler' button to notify a Claims Handler of the note/action made.
@@ -68,7 +60,7 @@
                             <td>
                                 <label>
                                     Indemnity (Decimal)<span class="mandatory">*</span></label></td><td>
-                                <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
+                                <input type="text" class="chox-ttxt" id="indemnityAmount" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
                             </td>
                             <td>
                                 <label>
@@ -80,7 +72,8 @@
                             <td>
                                 <label>
                                     Claim Number<span class="mandatory">*</span></label></td><td>
-                                <label class="std-data-ro"><s:property value="claimNumber" /></label>
+                                <input type="text" class="chox-ttxt-readonly" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />" readonly="TRUE"/>
+
                             </td>
                             <td>
                                 <label>
@@ -92,14 +85,14 @@
                             <td>
                                 <label>
                                     % Liability Accepted<span class="mandatory">*</span></label></td><td colspan="3">
-                                <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                                <input type="text" class="chox-ttxt" id="percentageLiabilityAccepted" name="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                             </td>
                         </tr>
                         <tr valign="top">
                             <td>
                                 <label>
                                     Claim Review Notes</label></td><td colspan="3">
-                                <textarea class="chox-canote" cols="20" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
+                                <textarea class="chox-canote" cols="20" rows="5" name="engineerClaimReviewNotes" id="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                             </td>
                         </tr>                        
                         <tr>
@@ -111,13 +104,12 @@
                         </tr>
                         <tr>
                             <td colspan="2" class="choice"> 
-                                <input type="submit" value="Acknowledge" onclick="javascript: actionPanel.registeAction('accept')"  />
-                                <input type="submit" value="Update Claims Handler" onclick="javascript: actionPanel.registeAction('updatedByEng')"  />
+                                <input type="button" value="Acknowledge" onclick="doClaimReviewByEngFormSubmit('acknowledgeClaim')"  />
+                                <input type="button" value="Update Claims Handler" onclick="doClaimReviewByEngFormSubmit('updatedByEng')"  />
                             </td>
                         </tr>
                     </table>
-
-                    <div class="action-error-msg" id="ACKReviewmessageBox"></div>
+                    <div id="formClaimReviewByEngActionMessageBox" class="action-error-msg"></div>
                 </div>
             </div>
         </div>

@@ -5,9 +5,7 @@
 
     $(function(){
 
-        var form = $("#formAcknowledgeAction");
-
-        form.validate(
+        $("form#formAcknowledgeAction").validate(
         {
             errorLabelContainer: "#ACKmessageBox",
             rules: {
@@ -18,23 +16,8 @@
                 percentageLiabilityAccepted:{
                     required:true,
                     number:true,
-                    max: 100.00,
-                    min:liabilityMinNumber
-                },
-                claimNumber:{
-                    required:isClaimNumberMandatory,
-                    textDigitOnly:true
-                } ,
-                actionName:{
-                    required:true
-                },
-                isClaimNumberValidFlag:{
-                    min:1
-                },
-                reasonOfRejectionId:{
-                    required:isRejected
+                    max: 100.00
                 }
-
             },
             messages: {
                 indemnityAmount: {
@@ -44,111 +27,112 @@
                 percentageLiabilityAccepted: {
                     required:"You must supply a value for 'Percentage Liability Accepted'",
                     number:"You must supply a numeric value for 'Percentage Liability Accepted'",
-                    max:"'Percentage Liability Accepted' cannot be more than 100",
-                    min:liabilityMinNumberMsg
-                },
-                claimNumber: {
-                    required:"You must supply a value for 'Claim Number'"
-                },
-                actionName:{
-                    required:"You must choose 'Reject this claim' or 'Request Invoice Data"
-                },
-                isClaimNumberValidFlag:{
-                    min:"Invalid Character used in Claim Number"
-                } ,
-                reasonOfRejectionId:{
-                    required:"You must choose a 'Reason For Rejection'"
+                    max:"'Percentage Liability Accepted' cannot be more than 100"
                 }
             }
         });
+
     });
+   
+    function doAcknowledgeFormSubmit(action){
 
-    function isClaimNumberMandatory(){
-        var sActionName = actionPanel.getRegisteredAction();
-        if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
-            return false;
-        }
-        return true;
-    }
+        actionPanel.registerAction(action);
+        doFormValidationSetup(action);
 
-    function isRejected(){
-        var sActionName = actionPanel.getRegisteredAction();
-        return sActionName == "reject";
-    }
+        if($("#formAcknowledgeAction").valid()){
+            
+            if(action=='rejectClaim' && !confirm('Are you sure you want to reject this claim?')){
+                return;
+            }
 
-    function liabilityMinNumber(){
-        var sActionName = actionPanel.getRegisteredAction();
-        var iMinliability = 0.01;
-        if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
-            iMinliability = 0;
-        }
-        return iMinliability;
-    }
-
-    function liabilityMinNumberMsg(){
-        var sActionName = actionPanel.getRegisteredAction();
-        var iMinliabilityMsg = "'Percentage Liability Accepted' must be more than 0";
-        if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
-            iMinliabilityMsg = "'Percentage Liability Accepted' must be more than or equal to 0";
-        }
-        return iMinliabilityMsg;
-    }
-
-    function doAcknowledgeRejectClaim(){       
-        actionPanel.registeAction('reject');
-        var form = $("#formAcknowledgeAction");
-
-        if(form.valid()){
-            if(confirm('Are you sure you want to reject this claim?')){
-                var sClaimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
-                var sClaimId = $("#claimId").val();
-                var form = $("#formAcknowledgeAction");
-                checkClaimNumberDuplicationAndSubmit(sClaimNumber,sClaimId,form);
+            var claimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
+            var claimId = $("form#formAcknowledgeAction #claimId").val();
+            var form = $("form#formAcknowledgeAction");
+                
+            if(claimNumber && claimNumber.length > 0){
+                checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
+            }else{
+                form.submit();
             }
         }
     }
 
-    function doAcknowledgeSubmit(a){
+    function doFormValidationSetup(action){
 
-        actionPanel.registerAction(a);
+        // REMOVE ADDED VALIDATION
+        $("form#formAcknowledgeAction #claimNumber").rules("remove");
+        $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
+        $("form#formAcknowledgeAction #percentageLiabilityAccepted").rules("remove", "min");
 
-        $("#reasonOfRejectionId").val("");
-        var form = $("#formAcknowledgeAction");
+        // ADD NEW VALIDATION PER SUBMIT TYPE
+        if(action=='rejectClaim'){
 
-        if(form.valid()){
-            var sClaimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
-            var sClaimId = $("#claimId").val();
-            var form = $("#formAcknowledgeAction");
-            checkClaimNumberDuplicationAndSubmit(sClaimNumber, sClaimId, form);
-        }
-    }
-
-    function checkClaimNumberDuplicationAndSubmit(sClaimNumber, sClaimId, form)
-    {
-        if(sClaimNumber && sClaimNumber.length > 0)
-        {
-            var url = "<%=request.getContextPath()%>/prv/p/checkIsClaimNumberDuplicated.action";
-            var param = {
-                claimNumber: sClaimNumber,
-                claimId: sClaimId
-            };
-
-            ajax.loadJson(url,param,function(data){
-                if(data.result && data.result == "yes"){
-                    if(confirm("The claim number you have supplied is already associated with another claim(s). Do you wish to continue?"))
-                    {
-                        form.submit();
-                    }
-                }
-                else form.submit();
+            $("form#formAcknowledgeAction #reasonOfRejectionId").rules("add", {
+                required: true,
+                messages: {required: "You must choose a 'Reason For Rejection'"}
             });
 
+            addValidationRulePercentageLiabilityAccepted(0);
+            
+        }else if(action=='acknowledgeClaim'){
+
+            $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
+            addValidationRuleClaimNumber();
+            addValidationRulePercentageLiabilityAccepted(0.01);
+            
+        }else if(action=='referEng'){
+
+            $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
+            addValidationRuleClaimNumber();
+            addValidationRulePercentageLiabilityAccepted(0.01);
+            
+        }else if(action=='referFNOL'){
+
+            $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
+            addValidationRulePercentageLiabilityAccepted(0);
+
+        }else if(action=='pending'){
+
+            $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
+            addValidationRulePercentageLiabilityAccepted(0);
+            
         }
-        else{
-            form.submit();
-        }
+
+    }
+    
+    function addValidationRuleClaimNumber(){
+        $("form#formAcknowledgeAction #claimNumber").rules("add", {
+            required: true, textDigitOnly: true,
+            messages: {required: "You must supply a value for 'Claim Number'"}
+        });
     }
 
+    function addValidationRulePercentageLiabilityAccepted(minValue){
+        $("form#formAcknowledgeAction #percentageLiabilityAccepted").rules("add", {
+            min: minValue,
+            messages: {min: "'Percentage Liability Accepted' must be more than or equal to "+minValue}
+        });
+    }
+    
+    function checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form)
+    {
+        var url = "<%=request.getContextPath()%>/prv/p/checkIsClaimNumberDuplicated.action";
+        var param = {
+            claimNumber: claimNumber,
+            claimId: claimId
+        };
+            
+        ajax.loadJson(url, param, function(data){
+            if(data.result && data.resultType=='YesNo'){
+                if(confirm(data.result))
+                {
+                    form.submit();
+                }
+            }
+            else form.submit();
+        });
+        
+    }
                     
 </script>
 
@@ -159,7 +143,6 @@
         <div>
             <s:hidden id="claimId" name="id" />
             <s:hidden id="name" name="name" />
-            <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
             <div>
                 <div class="status-info">
                     Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, refer the claim to an FNOL handler, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
@@ -195,7 +178,7 @@
                                 <label>% Liability Accepted<span class="mandatory">*</span></label>
                             </td>
                             <td colspan="3">
-                                <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                                <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                             </td>
                         </tr>
                         <tr valign="top">
@@ -233,15 +216,15 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice" nowrap>
-                                <input type="button" value="Reject" onclick="doAcknowledgeRejectClaim();" />
-                                <input type="button" value="Acknowledge" onclick="doAcknowledgeSubmit('acknowledgeClaim')"  />
-                                <input type="button" value="Refer To Engineer" onclick="doAcknowledgeSubmit('refer');" />
-                                <input type="button" value="Refer to FNOL" onclick="doAcknowledgeSubmit('referFNOL');" />
-                                <input type="button" value="Claim Pending" onclick="doAcknowledgeSubmit('pending');" />
+                                <input type="button" value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
+                                <input type="button" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
+                                <input type="button" value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />
+                                <input type="button" value="Refer to FNOL" onclick="doAcknowledgeFormSubmit('referFNOL');" />
+                                <input type="button" value="Claim Pending" onclick="doAcknowledgeFormSubmit('pending');" />
                             </td>
                         </tr>
                     </table>
-                    <div class="action-error-msg" id="ACKmessageBox"></div>
+                    <div id="ACKmessageBox" class="action-error-msg"></div>
                 </div>
             </div>
         </div>

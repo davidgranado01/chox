@@ -1,14 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script type="text/javascript">
-
-    $(document).ready(function(){
-        $("#claimOwnerId").val(claimOwnerId);
-    });
-
-</script>
-
 <s:select
     id="claimOwnerId"
     name="claimOwnerId"

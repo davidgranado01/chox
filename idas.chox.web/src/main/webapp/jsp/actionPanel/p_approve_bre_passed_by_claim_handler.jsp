@@ -9,15 +9,13 @@
 
     function doRejectClaim(){
 
-        actionPanel.registeAction('reject');
+        actionPanel.registerAction('reject');
 
         if(doFormValidation().form()){
 
             if(!confirm('Are you sure you want to reject this claim?')){
                 return false;
             }
-
-            // $("#reasonOfRejectionIdHolder").val($("#InvoiceReasonOfRejectionId").val());
 
         }else{
             return false;
@@ -45,18 +43,12 @@
     }
 
     function doSubmit(a){
-
-        actionPanel.registeAction(a);
-
-        // $("#InvoiceReasonOfRejectionId").val("");
-
+        actionPanel.registerAction(a);
         isClaimNumberInvalid();
-        // isFormClaimNumberInvalid("approveBREPassedByClaimHandler");
         if(!doFormValidation().form()){
             return false;
         }
         return true;
-
     }
 
 </script>
@@ -68,9 +60,7 @@
         <legend>Invoice Escalated To Claim Handler - Action Required</legend>
         <s:hidden name="id" />
         <s:hidden id="actionName" name="actionName" />
-        <!--
-        <s:hidden id="reasonOfRejectionIdHolder" name="invoice.reasonOfRejectionId"/>
-        !-->
+
         <div>
             <div class="status-info">
                 Please review the 'History' tab for details on why the claim has failed the validation rules. Please decide on whether to progress the claim for payment, refer the claim to an Engineer or reject the claim back to the CHO. Please enter any relevant details/comments on the 'Notes' tab regarding the decision made.

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
@@ -9,10 +5,6 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Workgroup;
 import java.util.List;
 
-/**
- *
- * @author emmanuel
- */
 public class AssignWorkgroup extends BaseActivity {
 
     private int workgroupId;
@@ -27,8 +19,7 @@ public class AssignWorkgroup extends BaseActivity {
         } else {
             workgroup = (Workgroup) this.getWorkflowContext().getDataService().get(Workgroup.class, workgroupId);
             if (workgroup == null) {
-                throw new Exception("An attempt to assign work group failed due to invalid work group provided.");
-
+                throw new Exception("An attempt to assign work group failed due to invalid workgroup provided");
             }
         }
     }

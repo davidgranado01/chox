@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
@@ -10,10 +6,6 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 import java.util.List;
 
-/**
- *
- * @author emmanuel
- */
 public class AssignOwner extends BaseActivity {
 
     private int oasWorkgroupId;

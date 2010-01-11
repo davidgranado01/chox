@@ -17,6 +17,7 @@ import java.util.Date;
  */
 public class VehicleClassCheckNote implements IntelligentNote {
 
+    @Override
     public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
 
         Boolean showing = false;
@@ -26,7 +27,7 @@ public class VehicleClassCheckNote implements IntelligentNote {
         showing |= vclass.getCode().toLowerCase().startsWith("p");
          */
 
-        // EDITED BY CARLSON TO EXLUCED PV Vehicle Class
+        // EDITED TO EXLUCED PV Vehicle Class
         // 1. Customer Vehicle Class field is P1,P2,P3,P4,P5,P6,P7,P8,P9,P10,P11,P12,SP1,SP2,SP3,SP4,SP5,SP6,SP7,SP8,SP9,SP10,SP11,SP12,SP13
 
         VehicleClass vclass = c.getCustomer().getVehicleClass();
@@ -50,7 +51,8 @@ public class VehicleClassCheckNote implements IntelligentNote {
         return showing;
     }
 
+    @Override
     public String getNote() {
-        return "The CHO’s client’s vehicle is of a Prestige/Sports Performance nature and is entering into a short repair period. Review need for replacement vehicle.";
+        return "The CHO's client's vehicle is of a Prestige/Sports Performance nature and is entering into a short repair period. Review need for replacement vehicle.";
     }
 }

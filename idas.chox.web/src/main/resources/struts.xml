@@ -292,7 +292,7 @@
         <action name="getPageIndexOfCurrentSearch" class="idas.chox.web.actions.SearchClaimAction" method="getPageIndexOfCurrentSearch">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <action name="checkIsClaimNumberDuplicated" class="idas.chox.web.actions.AlertAction" method="checkIsClaimNumberDuplicated">
+        <action name="checkIsClaimNumberDuplicated" class="idas.chox.web.actions.AlertAction" method="isClaimNumberDuplicated">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="OrganisationDropDownAction" class="idas.chox.web.actions.OrganisationDropDownAction">
@@ -851,5 +851,4 @@
         </action>
         <!-- END INSURER AUTOMATIC ROUTING  -->
     </package>
-    
 </struts>

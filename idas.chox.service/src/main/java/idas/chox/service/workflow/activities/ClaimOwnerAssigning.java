@@ -11,10 +11,6 @@ import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.service.xml.util.NodeHelper;
 import java.util.List;
 
-/**
- *
- * @author emmanuel
- */
 public class ClaimOwnerAssigning extends BaseActivity {
 
     @Override

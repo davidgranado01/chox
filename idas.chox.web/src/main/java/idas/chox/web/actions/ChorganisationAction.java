@@ -25,10 +25,10 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     public boolean getIsNew() {
         if (this.objectId != null && !objectId.equalsIgnoreCase("")) {
             if (Integer.valueOf(objectId) > 0) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public Chorganisation getModel() {
@@ -62,7 +62,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
     public String getObjectId() {
-        return objectId;
+        return this.objectId;
     }
 
     public void setObjectId(String objectId) {
@@ -99,9 +99,8 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
         try {
 
             if (getIsNew()) {
-
                 if (this.adminChorganisationService.isChorganisationNameExist(model.getName())) {
-                    this.getActionResponse().AddError("Insurer name already exist!");
+                    this.getActionResponse().AddError("Credit hire name already exist!");
                     return SUCCESS;
                 }
             }

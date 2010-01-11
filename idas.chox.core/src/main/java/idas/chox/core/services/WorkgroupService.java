@@ -18,7 +18,7 @@ public interface WorkgroupService {
 
     public boolean isWorkgroupNameExistByInsurer(int insurerId, String workgroupName);
 
-    public void defaultWorkgroup(Insurer insurer);
+    public void createDefaultWorkgroup(Insurer insurer);
 
     public List<Workgroup> getAvailableUserWorkgroupsByInsurer(int InsurerId, int webUserId);
 

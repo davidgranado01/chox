@@ -766,7 +766,7 @@ public class AdminInsurerServiceTest {
         Assert.assertEquals(1, workgroups.size());
 
         for (Workgroup workgroup : workgroups) {
-            ActionResponse response = adminInsurerService.removeInsurerWorkgroup(workgroup, insurer.getId());
+            ActionResponse response = adminInsurerService.removeInsurerWorkgroup(workgroup.getId(), insurer.getId());
             Assert.assertFalse(response.getIsValid());
             validateError("Error", response, "Unable to remove this workgroup. Must maintain at least one active workgroup for this insurer.");
             return;
@@ -791,7 +791,7 @@ public class AdminInsurerServiceTest {
         Assert.assertEquals(2, workgroups.size());
 
         for (Workgroup workgroup : workgroups) {
-            ActionResponse response = adminInsurerService.removeInsurerWorkgroup(workgroup, insurer.getId());
+            ActionResponse response = adminInsurerService.removeInsurerWorkgroup(workgroup.getId(), insurer.getId());
             Assert.assertTrue(response.getIsValid());
             validateError("", response, "Workgroup '" + workgroup.getName() + "' has been removed");
             return;
@@ -821,7 +821,7 @@ public class AdminInsurerServiceTest {
             // ADD AUTOROUTING WHO USING SELECTED WORKGROUP
             adminInsurerService.addNewAutomaticRouting(insurer.getId(), workgroup.getId(), "ABCDEFG");
 
-            ActionResponse response = adminInsurerService.removeInsurerWorkgroup(workgroup, insurer.getId());
+            ActionResponse response = adminInsurerService.removeInsurerWorkgroup(workgroup.getId(), insurer.getId());
             Assert.assertFalse(response.getIsValid());
             validateError("Error", response, "Workgroup '" + workgroup.getName() + "' cannot be removed");
             return;

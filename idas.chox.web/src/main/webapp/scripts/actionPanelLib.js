@@ -1,26 +1,8 @@
 var actionPanel = function(){
-
-    function isContainsSpecialCharacter(source){
-
-        if(source.length>0){
-            var iChars = "!£$%^&*+=-_{[}]#~'@;:/?.>,<"+'"';
-            for (var i = 0; i < source.length; i++) {
-                if (iChars.indexOf(source.charAt(i)) != -1) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
     
     function registerAction(name)
     {
         $("#name").val(name);
-    }
-
-    function getRegisteredAction(name)
-    {
-        return $("#name").val();
     }
     
     function handleExtraActionChange(){
@@ -37,16 +19,14 @@ var actionPanel = function(){
         registerAction : registerAction,
         onExtraActionChange : handleExtraActionChange
     };
-
+    
 }();
 
 $(function(){
-
     $.validator.addMethod("textDigitOnly",
         function(value, element) {
-            return /[a-zA-Z0-9]*/.test(value);
+            return /^[a-zA-Z0-9]*$/.test(value);
         },
-        "Invalid format, this field accept alphabet and numberic only"
+        "Invalid Claim Number Format, accept alphabet and numberic only"
         );
-
 });

@@ -81,7 +81,7 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void defaultWorkgroup(Insurer insurer) {
+    public void createDefaultWorkgroup(Insurer insurer) {
         Workgroup object = new Workgroup();
         object.setInsurer(insurer);
         object.setName(insurer.getName());

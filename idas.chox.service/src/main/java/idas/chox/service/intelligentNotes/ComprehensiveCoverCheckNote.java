@@ -14,16 +14,17 @@ import idas.chox.core.model.IntelligentNote;
  */
 public class ComprehensiveCoverCheckNote implements IntelligentNote {
 
+    @Override
     public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
         Boolean showing = false;
 
         /*
-        Claim Rule: If ‘Comprehensive’ field is N/No/False/F in the Customer Details section of CHOX on the Claim Details tab
+        Claim Rule: If 'Comprehensive' field is N/No/False/F in the Customer Details section of CHOX on the Claim Details tab
         then display the note below on the action panel
         for a claim in status ClaimUnacknowledgedRouted, ClaimPending, ClaimRejectionContested, ClaimUpdatedByEngineer and ClaimReferredToEngineer.
          */
 
-        //1. If ‘Comprehensive’ field is N/No/False/F
+        //1. If ‘Comprehensive' field is N/No/False/F
         showing = !c.getCustomer().isComprehensive();
 
         // AND
@@ -32,7 +33,8 @@ public class ComprehensiveCoverCheckNote implements IntelligentNote {
         return showing;
     }
 
+    @Override
     public String getNote() {
-        return "The CHO’s client does not have comprehensive insurance cover for their vehicle.";
+        return "The CHO's client does not have comprehensive insurance cover for their vehicle.";
     }
 }

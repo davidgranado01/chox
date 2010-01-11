@@ -2,23 +2,30 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    function doValidation(){
+
+    $(function(){
+
+        var form = $("form#routeUnacknowledgedUnroutedClaim");
+        form.validate(
+        {
+            errorLabelContainer: "#RouteUnacknowledgedUnroutedClaimMessageBox",
+            rules: {
+                workgroupId:{min:0}
+            },
+            messages: {
+                workgroupId:{min:"You must supply a value for 'Workgroup'"}
+            }
+        });
         
-        var inp = document.getElementById("workgroupId");
-        if(inp.value=="-1"){
-            $("#ClaimUnacknowledgeMessageBox").css("errorBox");
-            $("#ClaimUnacknowledgeMessageBox").text("Please select a Workgroup");
-            return false;
-        }
-        return true;
-    }
+    });
+
+
 </script>
 
-<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="route" name="route">
-    
+<form id="routeUnacknowledgedUnroutedClaim" name="routeUnacknowledgedUnroutedClaim" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
+
     <fieldset class="x-fieldset"><legend>Claim Routing - Action Required</legend>  
         <div>
-            
             <div class="status-info">
                 Please select the 'Workgroup' in order to route the claim to the relevant handling team.
             </div>            
@@ -32,16 +39,16 @@
                                 <div class="no-format">
                                     <label>Workgroup</label>
                                     <s:select name="workgroupId" id="workgroupId"
-                                    list="workgroups" headerKey="-1"
-                                    listKey="id" listValue="name" 
-                                    headerValue="-- Please Select --"></s:select>
-                                    <input type="submit" value="Assign Workgroup" onclick="return doValidation()"/>
+                                              list="workgroups" headerKey="-1"
+                                              listKey="id" listValue="name"
+                                              headerValue="-- Please Select --"></s:select>
+                                    <input type="submit" value="Assign Workgroup"/>
                                 </div>
                             </td>
                         </tr>
                     </table>
                 </div>
-                <div id="ClaimUnacknowledgeMessageBox" class="submit-error"></div>
+                <div id="RouteUnacknowledgedUnroutedClaimMessageBox" class="action-error-msg"></div>
             </div>
         </div>
     </fieldset>

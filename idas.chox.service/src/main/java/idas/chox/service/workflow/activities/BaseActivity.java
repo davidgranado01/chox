@@ -18,10 +18,6 @@ import java.util.List;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- *
- * @author emmanuel
- */
 public abstract class BaseActivity implements Activity {
 
     protected WorkflowContext processContext;

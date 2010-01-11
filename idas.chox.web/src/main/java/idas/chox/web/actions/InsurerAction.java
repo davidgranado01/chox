@@ -48,9 +48,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
 
     public void prepare() throws Exception {
         try {
-
-            model = new Insurer();
-
+            model = new Insurer();            
             if (this.objectId != null && !objectId.equalsIgnoreCase("")) {
                 if (Integer.valueOf(objectId) > 0) {
                     model = adminInsurerService.getInsurer(Integer.valueOf(objectId));
@@ -87,7 +85,6 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
         try {
 
             List<Insurer> insurerData = adminInsurerService.getInsurers();
-
             insurer = new ArrayList<InsurerViewData>();
 
             for (Insurer h : insurerData) {
@@ -102,12 +99,11 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
         return SUCCESS;
     }
 
-    public String updateInsurer() throws Exception {
+    public String updateInsurer(){
 
         try {
 
-            ActionResponse response;
-            response = adminInsurerService.updateInsurer(model, getIsNew());
+            ActionResponse response = adminInsurerService.updateInsurer(model, getIsNew());
             setActionResponse(response);
 
         } catch (Exception ex) {

@@ -1,17 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.reports.viewdata;
 
 import idas.chox.service.reports.ReportHelper;
 import java.math.BigDecimal;
 import java.util.Map;
 
-/**
- *
- * @author Carlson
- */
 public class OverviewSummaryReportByOrg {
 
     private int orgId;

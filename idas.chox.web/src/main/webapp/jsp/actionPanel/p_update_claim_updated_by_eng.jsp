@@ -3,68 +3,11 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function(){
-        doFormValidation();
-    });
+    $(function(){
 
-    function doRejectClaim(){
-
-        //isClaimNumberInvalid();
-        isFormClaimNumberInvalid("formUpdateByEngAcknowledgeAction");
-        actionPanel.registeAction('reject');
-
-        if(doFormValidation().form()){
-            if(confirm('Are you sure you want to reject this claim?')){
-
-                //var sClaimNumber = $("#claimNumber").val();
-                var sClaimNumber = $("form#formUpdateByEngAcknowledgeAction input[name$='claimNumber']").val();
-                if(sClaimNumber.length > 0)
-                {
-                    var sClaimId = $("#claimId").val();
-                    var form = $("#formUpdateByEngAcknowledgeAction");
-                    checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
-                }
-                else
-                {
-                    $("#formUpdateByEngAcknowledgeAction").submit();
-                }
-            }
-        }
-
-    }
-                
-    function isClaimNumberMandatory(){
-        var sActionName = $("#actionName").val();
-
-        if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
-            return false;
-        }
-        return true;
-    }
-    
-    function liabilityMinNumber(){
-        var sActionName = $("#actionName").val();
-        var iMinliability = 0.01;
-        if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
-            iMinliability = 0;
-        }
-        return iMinliability;
-    }
-                
-    function liabilityMinNumberMsg(){
-        var sActionName = $("#actionName").val();
-        var iMinliabilityMsg = "'Percentage Liability Accepted' must be more than 0";
-        if(sActionName=="reject" || sActionName=="referFNOL" || sActionName=="pending"){
-            iMinliabilityMsg = "'Percentage Liability Accepted' must be more than or equal to 0";
-        }
-        return iMinliabilityMsg;
-    }
-                
-    function doFormValidation(){
-
-        var validateFlag = $("#formUpdateByEngAcknowledgeAction").validate(
+        $("form#formUpdateByEngAcknowledgeAction").validate(
         {
-            errorLabelContainer: "#ACKUpdateByEngMessageBox",
+            errorLabelContainer: "#updateByEngMessageBox",
             rules: {
                 indemnityAmount:{
                     required:true,
@@ -73,22 +16,8 @@
                 percentageLiabilityAccepted:{
                     required:true,
                     number:true,
-                    max: 100.00,
-                    min:liabilityMinNumber
-                },
-                claimNumber:{
-                    required:isClaimNumberMandatory
-                } ,
-                actionName:{
-                    required:true
-                },
-                isClaimNumberValidFlag:{
-                    min:1
-                },
-                reasonOfRejectionId:{
-                    required:isRejected
+                    max: 100.00
                 }
-
             },
             messages: {
                 indemnityAmount: {
@@ -98,52 +27,107 @@
                 percentageLiabilityAccepted: {
                     required:"You must supply a value for 'Percentage Liability Accepted'",
                     number:"You must supply a numeric value for 'Percentage Liability Accepted'",
-                    max:"'Percentage Liability Accepted' cannot be more than 100",
-                    min:liabilityMinNumberMsg
-                },
-                claimNumber: {
-                    required:"You must supply a value for 'Claim Number'"
-                },
-                actionName:{
-                    required:"You must choose 'Reject this claim' or 'Request Invoice Data"
-                },
-                isClaimNumberValidFlag:{
-                    min:"Invalid Character used in Claim Number"
-                } ,
-                reasonOfRejectionId:{
-                    required:"You must choose a 'Reason For Rejection'"
+                    max:"'Percentage Liability Accepted' cannot be more than 100"
                 }
             }
         });
+    });
 
-        return validateFlag;
-    }
-                
-                
-    function doSubmit(a){
+    function doClaimUpdatedByEngFormSubmit(action){
 
-        actionPanel.registeAction(a);
-        isFormClaimNumberInvalid("formUpdateByEngAcknowledgeAction");
+        var formName = "formUpdateByEngAcknowledgeAction";
+        var form = $("form#"+formName+"");
+        actionPanel.registerAction(action);
+        doClaimUpdatedByEngFormValidationSetup(formName, action);
 
-        $("#reasonOfRejectionId").val("");
+        if(form.valid()){
 
-        if(doFormValidation().form()){
-            var sClaimNumber = $("form#formUpdateByEngAcknowledgeAction input[name$='claimNumber']").val();
-            var sClaimId = $("#claimId").val();
-            var form = $("#formUpdateByEngAcknowledgeAction");
-            checkAndConfirmClaimNumberDuplication(sClaimNumber,sClaimId,form);
+            if(action=='rejectClaim' && !confirm('Are you sure you want to reject this claim?')){
+                return;
+            }
+
+            var claimNumber = $("form#"+formName+" input[name$='claimNumber']").val();
+            var claimId = $("form#"+formName+" #claimId").val();
+
+            if(claimNumber && claimNumber.length > 0){
+                checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
+            }else{
+                form.submit();
+            }
         }
     }
 
+    function doClaimUpdatedByEngFormValidationSetup(formName, action){
+
+        // REMOVE ADDED VALIDATION
+        $("form#"+formName+" #claimNumber").rules("remove");
+        $("form#"+formName+" #reasonOfRejectionId").rules("remove");
+        $("form#"+formName+" #percentageLiabilityAccepted").rules("remove", "min");
+
+        // ADD NEW VALIDATION PER SUBMIT TYPE
+        if(action=='rejectClaim'){
+
+            $("form#"+formName+" #reasonOfRejectionId").rules("add", {
+                required: true,
+                messages: {required: "You must choose a 'Reason For Rejection'"}
+            });
+
+            addValidationRulePercentageLiabilityAccepted(formName, 0);
+        }else if(action=='acknowledgeClaim'){
+            $("form#"+formName+" #reasonOfRejectionId").val("");
+            addValidationRuleClaimNumber(formName);
+            addValidationRulePercentageLiabilityAccepted(formName, 0.01);
+        }else if(action=='referEng'){
+            $("form#"+formName+" #reasonOfRejectionId").val("");
+            addValidationRuleClaimNumber(formName);
+            addValidationRulePercentageLiabilityAccepted(formName, 0.01);
+        }else if(action=='pending'){
+            $("form#"+formName+" #reasonOfRejectionId").val("");
+            addValidationRulePercentageLiabilityAccepted(formName, 0);
+        }
+    }
+
+    function addValidationRuleClaimNumber(formName){
+        $("form#"+formName+" #claimNumber").rules("add", {
+            required: true, textDigitOnly: true,
+            messages: {required: "You must supply a value for 'Claim Number'"}
+        });
+    }
+
+    function addValidationRulePercentageLiabilityAccepted(formName, minValue){
+        $("form#"+formName+" #percentageLiabilityAccepted").rules("add", {
+            min: minValue,
+            messages: {min: "'Percentage Liability Accepted' must be more than or equal to "+minValue}
+        });
+    }
+
+    function checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form)
+    {
+        var url = "<%=request.getContextPath()%>/prv/p/checkIsClaimNumberDuplicated.action";
+        var param = {
+            claimNumber: claimNumber,
+            claimId: claimId
+        };
+
+        ajax.loadJson(url, param, function(data){
+            if(data.result && data.resultType=='YesNo'){
+                if(confirm(data.result))
+                {
+                    form.submit();
+                }
+            }
+            else form.submit();
+        });
+
+    }
 </script>
 
-<form action="<%=request.getContextPath()%>/prv/acknowledge.action" method="post" id="formUpdateByEngAcknowledgeAction" name="formUpdateByEngAcknowledgeAction">
+<form id="formUpdateByEngAcknowledgeAction" name="formUpdateByEngAcknowledgeAction" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
     <fieldset class="x-fieldset">
         <legend>Claim Acknowledgement - Action Required</legend>
         <div>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="actionName" name="actionName" />
-            <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
+            <s:hidden id="name" name="name" />
             <div>
                 <div class="status-info">
                     Please review the Engineer's notes, if applicable enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
@@ -155,7 +139,7 @@
                                 <label>
                                     Indemnity (Decimal)<span class="mandatory">*</span></label>
                             </td><td>
-                                <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
+                                <input type="text" class="chox-ttxt" name="indemnityAmount" id="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
                             </td>
                             <td>
                                 <label>
@@ -179,7 +163,7 @@
                                 <label>% Liability Accepted<span class="mandatory">*</span></label>
                             </td>
                             <td colspan="3">
-                                <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                                <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                             </td>
                         </tr>
                         <tr valign="top">
@@ -187,10 +171,9 @@
                                 <label>Claim Review Notes</label>
                             </td>
                             <td colspan="3">
-                                <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
+                                <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes" id="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                             </td>
                         </tr>
-
                         <tr valign="top">
                             <td>
                                 <label>Reason for Rejection</label>
@@ -209,7 +192,6 @@
                                 </div>
                             </td>
                         </tr>
-
                         <tr>
                             <td colspan="4">
                                 <div class="no-format">
@@ -219,16 +201,14 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice" nowrap>
-                                <input type="button" value="Reject" onclick="javascript: return doRejectClaim();" />
-                                <input type="button" value="Acknowledge" onclick="javascript: return doSubmit('accept')"  />   
-                                <input type="button" value="Refer To Engineer" onclick="javascript: return doSubmit('refer');" /> 
-                                <input type="button" value="Claim Pending" onclick="javascript: return doSubmit('pending');" /> 
+                                <input type="button" value="Reject" onclick="javascript: return doClaimUpdatedByEngFormSubmit('rejectClaim');" />
+                                <input type="button" value="Acknowledge" onclick="javascript: return doClaimUpdatedByEngFormSubmit('acknowledgeClaim')"  />
+                                <input type="button" value="Refer To Engineer" onclick="javascript: return doClaimUpdatedByEngFormSubmit('referEng');" />
+                                <input type="button" value="Claim Pending" onclick="javascript: return doClaimUpdatedByEngFormSubmit('pending');" />
                             </td>
                         </tr>
                     </table>
-
-                    <div class="action-error-msg" id="ACKUpdateByEngMessageBox"></div>
-
+                    <div id="updateByEngMessageBox" class="action-error-msg"></div>
                 </div>
             </div>
         </div>

@@ -1,16 +1,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/contestOrAcceptRejectedClaim.action" method="post"
+<form action="<%=request.getContextPath()%>/prv/processClaim.action"
+      method="post"
       id="contestOrAcceptRejectedClaim" name="contestOrAcceptRejectedClaim">
+    <s:hidden id="claimId" name="id" />
+    <s:hidden id="name" name="name" />
     <fieldset class="x-fieldset">
         <legend>Rejected Claim - Action Required</legend>
-        <s:hidden name="id" />
-        <s:hidden id="actionName" name="actionName" />
         <div>
             <div class="status-info">
-               Please review the Insurer's notes against rejection reasoning and decide whether to accept or reject the Insurer's rejection decision.  
-               Please include supporting notes on the decision made using the 'Notes' tab.
+                Please review the Insurer's notes against rejection reasoning and decide whether to accept or reject the Insurer's rejection decision.
+                Please include supporting notes on the decision made using the 'Notes' tab.
             </div>
             <div class="status-control-set">
                 <table>
@@ -23,8 +24,8 @@
                     </tr>
                     <tr> 
                         <td>
-                            <input type="submit" value="Contest This Claim"  onclick="javascript: actionPanel.registeAction('reject');" />
-                            <input type="submit" value="Accept Rejection Decision" onclick="javascript: actionPanel.registeAction('accept')"  />
+                            <input type="submit" value="Contest This Claim"  onclick="javascript: actionPanel.registerAction('contestRejectedClaim');" />
+                            <input type="submit" value="Accept Rejection Decision" onclick="javascript: actionPanel.registerAction('acceptRejectedClaim')"  />
                         </td>
                     </tr>
                 </table>

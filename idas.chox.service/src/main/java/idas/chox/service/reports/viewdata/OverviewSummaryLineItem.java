@@ -1,16 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.service.reports.viewdata;
 
 import java.util.List;
 
-/**
- *
- * @author Carlson
- */
 public class OverviewSummaryLineItem {
     
     private int lineId;

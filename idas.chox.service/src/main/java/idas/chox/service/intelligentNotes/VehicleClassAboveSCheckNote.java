@@ -7,6 +7,7 @@ import idas.chox.core.model.VehicleClass;
 
 public class VehicleClassAboveSCheckNote implements IntelligentNote {
 
+    @Override
     public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
 
         Boolean showing = false;
@@ -17,7 +18,8 @@ public class VehicleClassAboveSCheckNote implements IntelligentNote {
         return showing;
     }
 
+    @Override
     public String getNote() {
-        return "The vehicle class of the CHO’s client’s vehicle is above an S class.";
+        return "The vehicle class of the CHO's client's vehicle is above an S class.";
     }
 }

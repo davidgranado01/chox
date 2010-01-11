@@ -9,24 +9,26 @@
     var isWorkgroupEnabled = true;
 
     $(function(){
+
+        new Ext.ToolTip({ target: 'help-userName', html: 'User name xx xx xx xx xx xx xx xx xx xx xx xx'});
         
         // CHECK PROCESS MODE
         isNew = isTrue($("#isNew").val());
         isWorkgroupEnabled = isTrue($("#isWorkgroupEnabled").val())
 
-        // ADD REGULAR EXPRESSION FOR FORM VALIDATION
         $.validator.addMethod("regex", function(value, element, regexp) {
             var check = false;
             var re = new RegExp(regexp);
             return this.optional(element) || re.test(value);
         }, "Please check your input.");
-
+    
         // USER DETAIL FORM VALIDATION
         var form = $("form#formUpdateUserDetail");
         form.validate(
         {
             errorLabelContainer: "#CDmessageBox",
             rules: {
+                userName:{required:true, regex: "^[a-zA-Z0-9]*$"},
                 email:{required:true, email: true},
                 firstName:{required:true},
                 lastName:{required:true},
@@ -36,6 +38,7 @@
                 confirmNewPassword:{equalTo: "#password"}
             },
             messages: {
+                userName:{required:"You must supply a value for 'User Name'", regex: "Incorrect User Name Format"},
                 email:{required:"You must supply a value for 'Email'", email: "Incorrect email format"},
                 firstName:{required:"You must supply a value for 'First Name'"},
                 lastName:{required:"You must supply a value for 'Last Name'"},
@@ -105,16 +108,25 @@
     }
 
     function doSubmitUserSucceed(responseText, statusText){
+        
         var response = eval('(' + responseText.trim() + ')');
+        
         if(response && response.isValid)
         {
             if(response.resultType && response.resultType == 'New'){
+
+                alert("New user has been created");
+                
                 var newObjectId = parseInt(response.result);
                 var target = "#admin_param_panel";
                 var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
                 var param = {"objectId":newObjectId,"organisationTypeId":SelectedOrganisationTypeId};
-                ajax.loadHtml(url,param,function(data){$(target).html(data);});
-            }
+                
+                ajax.loadHtml(url,param,function(data){
+                    $(target).html(data);
+                });
+                
+            }   
         }
     }
 
@@ -221,7 +233,7 @@
 
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">User Name<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDUserName" name="userName" value="<s:property value="userName" />"/>
+                        <input type="text" class="chox-ttxt" id="CCDUserName" name="userName" value="<s:property value="userName" />"/><img id="help-userName" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
                     </div>
 
                     <div class="chox-form-item">

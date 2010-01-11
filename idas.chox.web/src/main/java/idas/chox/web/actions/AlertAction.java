@@ -5,6 +5,7 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.services.ClaimService;
+import idas.chox.service.ActionResponse;
 import java.util.List;
 
 public class AlertAction extends BaseAction {
@@ -20,12 +21,14 @@ public class AlertAction extends BaseAction {
         return SUCCESS;
     }
 
-    public String checkIsClaimNumberDuplicated() {
-        Boolean isDuplicated = false;
+    public String isClaimNumberDuplicated() {
+
         if (!claimNumber.isEmpty()) {
-            isDuplicated = claimService.getClaimCountByClaimNumber(claimNumber, claimId) > 0;
+            if(claimService.getClaimCountByClaimNumber(claimNumber, claimId) > 0){
+                this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "The claim number you have supplied is already associated with another claim(s). Do you wish to continue?");
+            }
         }
-        this.getActionResponse().AssignYesNoResult(isDuplicated);
+
         return SUCCESS;
     }
 

@@ -16,16 +16,17 @@ import idas.chox.core.model.IntelligentNote;
  */
 public class CHOManagingRepairCheckNote implements IntelligentNote {
 
+    @Override
     public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
         Boolean showing = false;
 
         /*
-        Claim Rule: If the ‘Managing Repair’ field has an Y/Yes then display note below
+        Claim Rule: If the ‘Managing Repair' field has an Y/Yes then display note below
         on the action panel for a claim in status ClaimUnacknowledgedRouted, ClaimPending,
         ClaimRejectionContested, ClaimUpdatedByEngineer and ClaimReferredToEngineer for Insurer roles only.
          */
 
-        //1. If the ‘Managing Repair’ field has an Y/Yes
+        //1. If the ‘Managing Repair' field has an Y/Yes
         showing |= c.getManagingRepair();
 
         //2.  Insurer roles only
@@ -34,6 +35,7 @@ public class CHOManagingRepairCheckNote implements IntelligentNote {
         return showing;
     }
 
+    @Override
     public String getNote() {
         return "The CHO is managing the repair.";
     }

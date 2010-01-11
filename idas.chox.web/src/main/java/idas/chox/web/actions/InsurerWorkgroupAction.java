@@ -117,8 +117,7 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
 
             try {
 
-                model.setName(this.workgroupName);
-                ActionResponse response = adminInsurerService.removeInsurerWorkgroup(model, this.insurerId);
+                ActionResponse response = adminInsurerService.removeInsurerWorkgroup(this.workgroupId, this.insurerId);
                 setActionResponse(response);
 
             } catch (Exception ex) {

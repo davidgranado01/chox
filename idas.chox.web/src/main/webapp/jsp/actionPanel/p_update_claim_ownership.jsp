@@ -85,7 +85,7 @@
 
     function doUpdateOwnershipSubmit(a){
 
-        actionPanel.registeAction(a);
+        actionPanel.registerAction(a);
 
         if(doUpdateOwnershipFormValidation().form()){
             return true;
@@ -114,7 +114,7 @@
                 <div class="status-control-set">
                     <table class="status-table" width="100%">
 
-                        <!-- MANTIS ID:820 !-->
+ 
                         <s:if test="insurer.workgroupEnable">
                             <tr>
                                 <td width="200px"><label>Workgroup</label></td>

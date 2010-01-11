@@ -69,13 +69,13 @@
             activeTab: adminTabIndex,
             items:[
                 {contentEl:'insurerDetailPanelTab', title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
-                {contentEl:'insurerAliasPanelTab', activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="id" />, scripts:true}},
-                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroup', tabTip:'Insurer Workgroup', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="id" />, scripts:true}},
-                {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerChorganisationMappingPage.action?insurerId="+<s:property value="id" />, scripts:true}},
-                {contentEl:'insurerBrePanelTab', title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="id" />, scripts:true}},
-                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="id" />, scripts:true}},
-                {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="id" />, scripts:true}},
-                {contentEl:'insurerAutoRoutingTab', title:'Automatic Rounting', tabTip:'Insurer Automatic Routing', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="id" />, scripts:true}}
+                {contentEl:'insurerAliasPanelTab', activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="objectId" />, scripts:true}},
+                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroup', tabTip:'Insurer Workgroup', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="objectId" />, scripts:true}},
+                {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerChorganisationMappingPage.action?insurerId="+<s:property value="objectId" />, scripts:true}},
+                {contentEl:'insurerBrePanelTab', title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="objectId" />, scripts:true}},
+                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />, scripts:true}},
+                {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />, scripts:true}},
+                {contentEl:'insurerAutoRoutingTab', title:'Automatic Rounting', tabTip:'Insurer Automatic Routing', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />, scripts:true}}
             ]
         });
 
@@ -142,15 +142,20 @@
     function doSubmitInsurerSucceed(responseText, statusText){
         
         var response = eval('(' + responseText.trim() + ')');
-        
         if(response && response.isValid)
         {
             if(response.resultType && response.resultType == 'New'){
+
+                alert("New Insurer has been created");
+                
                 var newObjectId = parseInt(response.result);
                 var target = "#admin_param_panel";
                 var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
                 var param = {"objectId":newObjectId};
-                ajax.loadHtml(url,param,function(data){$(target).html(data);});
+
+                ajax.loadHtml(url,param, function(data){
+                    $(target).html(data);
+                });
             }
         }
     }
@@ -271,5 +276,4 @@
     <div id="insurerBreMappingPanelTab" class="x-hide-display"></div>
     <div id="insurerVehicleClassCeilingTab" class="x-hide-display"></div>
     <div id="insurerAutoRoutingTab" class="x-hide-display"></div>
-
 </div>

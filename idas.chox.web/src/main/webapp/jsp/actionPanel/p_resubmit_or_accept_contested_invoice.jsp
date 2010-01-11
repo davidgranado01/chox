@@ -45,8 +45,8 @@
                     </tr>
                     <tr>                         
                         <td>
-                            <input type="submit" value="Reject Decision and Resubmit"  onclick="javascript: actionPanel.registeAction('reject');" />
-                            <input type="submit" value="Accept Rejection Decision" onclick="javascript: actionPanel.registeAction('accept')"  />
+                            <input type="submit" value="Reject Decision and Resubmit"  onclick="javascript: actionPanel.registerAction('reject');" />
+                            <input type="submit" value="Accept Rejection Decision" onclick="javascript: actionPanel.registerAction('accept')"  />
                         </td>
                     </tr>
                 </table>

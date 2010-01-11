@@ -11,7 +11,7 @@
     
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"></property>
-        <property name="url" value="jdbc:postgresql://84.203.123.12:5432/chox_dev"></property>
+        <property name="url" value="jdbc:postgresql://localhost:5432/chox_dev_ref"></property>
         <property name="username" value="postgres"></property>
         <property name="password" value="GreenF1nCH"></property>
         <property name="initialSize" value="5"/>

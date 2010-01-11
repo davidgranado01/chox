@@ -1,167 +1,138 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<%
-            String statusMsg = request.getParameter("statusMsg");
-            if (statusMsg == null) {
-                statusMsg = "";
-            }
-%>
-
 <script type="text/javascript">
 
-    var insurerId = <s:property value="insurer.id"/>;
-    var claimStatus =  "<s:property value='status'/>";
     var selectedWorkgroupId = -1;
     var claimOwnerId = -1;
     var isWorkgroupEnable = false;
-    
-    $(document).ready(function(){
 
-        // GET CLAIM INFORMATION
+    $(function(){
+
+        // PREPARE RECORDS
         if($("#claimClaimOwnerId").val()!=null && $("#claimClaimOwnerId").val()!=""){
             claimOwnerId = $("#claimClaimOwnerId").val();
         }
- 
+
         if($("#claimWorkgroupEnable").val()!=null && $("#claimWorkgroupEnable").val()!=""){
             isWorkgroupEnable = $("#claimWorkgroupEnable").val();
-        }        
-        
-        // PAGE SETUP - WORKGROUP ID
+        }
+
         if(isWorkgroupEnable){
             if($("#claimWorkgroupId").val()!=null && $("#claimWorkgroupId").val()!=""){
                 selectedWorkgroupId = $("#claimWorkgroupId").val();
-            }            
+                $("#oasWorkgroupId").val(selectedWorkgroupId);
+            }
         }
 
-        doOwnershipAssignmentShowClaimHandler(selectedWorkgroupId, insurerId);
-        doAssignOwnershipFormValidation();
-
-    });
-    
-    function isWorkgroupFieldValid(){
-        var bFlag = false;
-
-        if(isWorkgroupEnable && $("#oasWorkgroupId").val()<=0){
-            bFlag = true;
-        }
-
-        return bFlag;
-    }
-
-    function doAssignOwnershipFormValidation(){
-
-        var validateFlag = $("#formOwnershipAssignmentAction").validate(
+        // DECLARE FORM VALIDATION
+        var form = $("form#formOwnershipAssignmentAction");
+        
+        form.validate(
         {
             errorLabelContainer: "#OwnershippAssignmentMessageBox",
             rules: {
-                oasWorkgroupId:{required:isWorkgroupFieldValid},
+                oasWorkgroupId:{min:1},
                 claimOwnerId:{min:1}
             },
             messages: {
-                oasWorkgroupId: {required:"You must supply a value for 'Workgroup'"},
+                oasWorkgroupId: {min:"You must supply a value for 'Workgroup'"},
                 claimOwnerId: {min:"You must supply a value for 'Claim Owner'"}
             }
         });
 
-        return validateFlag;
-    }
+        // RENDER CLAIM HANDLER DROP DOWN
+        doRenderClaimHandlerDropDown(selectedWorkgroupId);
 
+    });
+    
     function doOwnershipAssignmentWorkgroupChange(){
         
         if($("#oasWorkgroupId").val()!=null){
             selectedWorkgroupId = $("#oasWorkgroupId").val();
         }
         claimOwnerId = -1;
-        doOwnershipAssignmentShowClaimHandler(selectedWorkgroupId, insurerId);
+        doRenderClaimHandlerDropDown(selectedWorkgroupId);
     
     }
 
-    function doOwnershipAssignmentShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
-        // Mantis Issue: 0000913
+    function doRenderClaimHandlerDropDown(selectedWorkgroupId){
+        
         if(selectedWorkgroupId>0){
+            
             var target = "#ownershipAssignmentClaimHandlerRoleUserDropDownDiv";
             var url = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
-            var param = {"workgroupId":selectedWorkgroupId ,"insurerId":selectedInsurerId};
-            ajax.loadHtml(url,param,function(data){
+            var param = {"workgroupId":selectedWorkgroupId ,"insurerId":<s:property value="insurer.id"/>};
+            ajax.loadHtml(url, param, function(data){
                 $(target).html(data);
+                $("form#formOwnershipAssignmentAction #claimOwnerId").val(claimOwnerId);
             });
+
         }
     }
 
-    function doAssignOwnershipToFnolSubmit(a){
-        actionPanel.registeAction(a);
+    function doAssignOwnershipToFnolSubmit(){
+        actionPanel.registerAction("referFNOL");
         $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
-        $("form#formOwnershipAssignmentAction #claimOwnerId").val("");
-        $("#formOwnershipAssignmentAction").submit();
-        return true;
     }
 
-    function doAssignOwnershipSubmit(a){
-
-        actionPanel.registerAction(a);
-
+    function doAssignOwnershipSubmit(){
+        actionPanel.registerAction("assignOwner");
         $("form#formOwnershipAssignmentAction #claimOwnerId").rules("add", {
             min:1
         })
-
-        if(doAssignOwnershipFormValidation().form()){
-            return true;
-        }
-
-        return true;
     }
 
 </script>
 
-<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formOwnershipAssignmentAction" name="formOwnershipAssignmentAction">
-    <fieldset class="x-fieldset">
-        <legend>Claim Ownership - Action Required</legend>
-        <div>
-
-            <s:hidden id="id" name="id" />
-            <s:hidden id="name" name="name" />
-            <input type="hidden" id="claimWorkgroupId" name="claimWorkgroupId" value="<s:property value="workgroup.id"/>">
-            <input type="hidden" id="claimClaimOwnerId" name="claimClaimOwnerId" value="<s:property value="claimOwner.id"/>">
-            <input type="hidden" id="claimWorkgroupEnable" name="claimWorkgroupEnable" value="<s:property value="insurer.workgroupEnable"/>">
-            <s:hidden id="actionName" name="actionName" />
-
+<form id="formOwnershipAssignmentAction" name="formOwnershipAssignmentAction" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST" onsubmit="return true;">
+    <div class="form-container">
+        <fieldset class="x-fieldset">
+            <legend>Claim Ownership - Action Required</legend>
             <div>
-                <div class="status-info">
-                    Please assign the claim owner for this claim and click on the 'Assign Owner' button. If the claim needs registering by FNOL, please use the 'Refer To FNOL' button. If this claim has been assigned to the incorrect Workgroup, please use the 'More Actions' drop down above, clicking on 'Re-assign Workgroup' to re-assign the claim's Workgroup.
-                </div>
-                <div class="status-control-set">
-                    <table class="status-table" width="100%" border="0" cellpadding="0" cellspacing="0">
-                        <s:if test="insurer.workgroupEnable">
+
+                <s:hidden id="id" name="id" />
+                <s:hidden id="name" name="name" />
+
+                <input type="hidden" id="claimWorkgroupId" name="claimWorkgroupId" value="<s:property value="workgroup.id"/>">
+                <input type="hidden" id="claimClaimOwnerId" name="claimClaimOwnerId" value="<s:property value="claimOwner.id"/>">
+                <input type="hidden" id="claimWorkgroupEnable" name="claimWorkgroupEnable" value="<s:property value="insurer.workgroupEnable"/>">
+
+                <div>
+                    <div class="status-info">
+                        Please assign the claim owner for this claim and click on the 'Assign Owner' button. If the claim needs registering by FNOL, please use the 'Refer To FNOL' button. If this claim has been assigned to the incorrect Workgroup, please use the 'More Actions' drop down above, clicking on 'Re-assign Workgroup' to re-assign the claim's Workgroup.
+                    </div>
+                    <div class="status-control-set">
+                        <table class="status-table" width="100%" border="0" cellpadding="0" cellspacing="0">
+
+                            <s:if test="insurer.workgroupEnable">
+                                <tr>
+                                    <td><label>Workgroup</label></td>
+                                    <td>
+                                        <s:select name="oasWorkgroupId" id="oasWorkgroupId"
+                                                  list="workgroups" headerKey="-1" listKey="id" listValue="name"
+                                                  headerValue="- Please Select -" onchange="doOwnershipAssignmentWorkgroupChange()">
+                                        </s:select>
+                                    </td>
+                                </tr>
+                            </s:if>
+
                             <tr>
-                                <td><label width="200px">Workgroup</label></td>
-                                <td>
-                                    <s:select name="oasWorkgroupId" id="oasWorkgroupId"
-                                              list="workgroups" headerKey="" listKey="id" listValue="name"
-                                              headerValue="-- Please Select --" onchange="doOwnershipAssignmentWorkgroupChange()">
-                                    </s:select>
+                                <td><label>Claim Owner</label></td>
+                                <td><div id="ownershipAssignmentClaimHandlerRoleUserDropDownDiv"></div></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="choice" nowrap>
+                                    <input type="submit" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit();"/>
+                                    <input type="submit" value="Refer to FNOL" onclick="javascript:return doAssignOwnershipToFnolSubmit();" />
                                 </td>
                             </tr>
-                        </s:if>
-                        <s:else>
-                            <input type="hidden" id="oasWorkgroupId" name="oasWorkgroupId" value=""/>
-                        </s:else>
-                        <tr>
-                            <td><label>Claim Owner</label></td>
-                            <td><div id="ownershipAssignmentClaimHandlerRoleUserDropDownDiv"></div></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="choice" nowrap>
-                                <input type="submit" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit('assignOwner');"/>
-                                <input type="button" value="Refer to FNOL" onclick="javascript:return doAssignOwnershipToFnolSubmit('referFNOL');" />
-                            </td>
-                        </tr>
-                    </table>
-                    <div class="action-error-msg" id="OwnershippAssignmentMessageBox"></div>
-                    <div id="ownership-submit-result" class="action-error-msg"><%= statusMsg%></div>
+                        </table>
+                        <div class="chox-form-submit-result"></div>
+                        <div class="action-error-msg" id="OwnershippAssignmentMessageBox"></div>
+                    </div>
                 </div>
             </div>
-
-        </div>
-    </fieldset>
+        </fieldset>
+    </div>
 </form>

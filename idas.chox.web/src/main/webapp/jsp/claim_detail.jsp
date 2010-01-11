@@ -527,6 +527,9 @@
         }
     }
 
+function doMoreActionOnchange(){
+    actionPanel.handleExtraActionChange();
+}
 </script>
 
 <div style="width:960px">
@@ -600,7 +603,7 @@
                         headerKey=""
                         headerValue="More Actions"
                         emptyOption="false"
-                        onchange="javascript:handleExtraActionChange();">
+                        onchange="doMoreActionOnchange();">
                     </s:select>
                 </s:if>
             </div>
@@ -612,6 +615,7 @@
 <s:if test="!IsCHO">
 
     <div id="updateInsurerClaimNumber" class="extraActionClass" style="display: none;">
+        <!--
         <table width="100%">
             <tr><td>
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -620,9 +624,11 @@
                     </div>
                 </td></tr>
         </table>
+        !-->
     </div>
 
     <div id="updateClaimOwner" class="extraActionClass" style="display: none;">
+        <!--
         <table width="100%">
             <tr><td>
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -631,9 +637,11 @@
                     </div>
                 </td></tr>
         </table>
+        !-->
     </div>
 
     <div id="escalateUnassignedClaim" class="extraActionClass" style="display: none;">
+        <!--
         <table width="100%">
             <tr><td>
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -642,6 +650,7 @@
                     </div>
                 </td></tr>
         </table>
+        !-->
     </div>
 
 </s:if>
@@ -707,7 +716,6 @@
 <div class="chox-claim-header x-panel-bwrap chox-form-container" id="generalActionPanel" style="display: none;">
     <s:action name="getActionPanel" namespace="/prv/p" executeResult="true" />
     <div class="action-message"><s:property value="actionResult" /></div>
-    <div class="action-message"><s:property value="actionResult2" /></div>
 </div>
 
 <s:if test="isShowPenaltyChargeAlert">

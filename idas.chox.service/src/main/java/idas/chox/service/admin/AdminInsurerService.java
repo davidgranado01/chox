@@ -47,7 +47,7 @@ public class AdminInsurerService extends DataService {
     public void setActionResponse(ActionResponse actionResponse) {
         this.actionResponse = actionResponse;
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="INSURER">
     public void triggerInsurerStatus(int insurerId) {
 
@@ -76,23 +76,25 @@ public class AdminInsurerService extends DataService {
         } else {
             if (insurer.isWorkgroupEnable() && !workgroupService.isInsurerWithWorkgroup(insurer.getId())) {
                 this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Please make sure there is atleast one active workgroup exist in order to enable workgroup function");
-                isAllowUpdate = false;
             }
         }
 
         if (isAllowUpdate) {
 
+            insurerService.saveInsurer(insurer);
+
             if (isNew) {
                 if (insurer.isWorkgroupEnable()) {
-                    workgroupService.defaultWorkgroup(insurer);
+                    workgroupService.createDefaultWorkgroup(insurer);
                 }
                 insurerAliasService.createDefaultRecord(insurer);
                 breBandService.createDefaultRecord(insurer);
-                this.insurerService.saveInsurer(insurer);
+
+                this.actionResponse.AssignNewIdResult(insurer.getId());
             }
 
         }
-        
+
         return this.actionResponse;
     }
 
@@ -138,9 +140,8 @@ public class AdminInsurerService extends DataService {
         getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Alias '" + insurerAlias.getAliasName() + "' has been removed");
         return this.actionResponse;
     }
+    // </editor-fold>
 
-// </editor-fold>
-    
     // <editor-fold defaultstate="collapsed" desc="INSURER AUTOMATIC ROUTING">
     public AutomaticRouting getInsurerAutomaticRouting(int automaticRoutingId) {
         return automaticRoutingService.getAutomaticRouting(automaticRoutingId);
@@ -149,7 +150,7 @@ public class AdminInsurerService extends DataService {
     public List<AutomaticRouting> getInsurerAutomaticRoutings(int insurerId) {
         return automaticRoutingService.getAutomaticRoutings(insurerId, -1);
     }
-    
+
     public List getAvailableWorkgroups(int insurerId) {
 
         List items = new ArrayList<IdLookupItem>();
@@ -197,7 +198,7 @@ public class AdminInsurerService extends DataService {
         return this.actionResponse;
     }
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="INSURER BRE BAND">
     public List<BreBand> getInsurerBreBands(int insurerId) {
         return breBandService.getInsurerBreBandsByInsurer(insurerId);
@@ -217,7 +218,7 @@ public class AdminInsurerService extends DataService {
 
         return this.actionResponse;
     }
-    
+
     public ActionResponse updateInsurerBreBand(BreBand breBand, int insurerId, boolean isNew) {
         this.actionResponse = new ActionResponse();
 
@@ -239,7 +240,6 @@ public class AdminInsurerService extends DataService {
     }
     // </editor-fold>
 
-    // TODO
     // <editor-fold defaultstate="collapsed" desc="INSURER BRE BAND MAPPING">
     public List<BreBandOrganisation> getBreBandChorganisationsByBreBandId(int breBandId) {
         return breBandOrganisationService.getBreBandChorganisationsByBreBandId(breBandId);
@@ -264,11 +264,9 @@ public class AdminInsurerService extends DataService {
         breBandOrganisationService.deleteBreBandOrganisation(breBandOrganisation);
         return this.actionResponse;
     }
-    
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="INSURER VEHICLE CLASS CEILING">
-
     public List<VehicleClassCeiling> getVehicleClassCeilingByInsurer(int insurerId) {
         return vehicleClassCeilingService.getSelectedVehicleClassCeilingByInsurer(insurerId);
     }
@@ -329,7 +327,7 @@ public class AdminInsurerService extends DataService {
 
         this.actionResponse = new ActionResponse();
         InsurerChorganisation insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(insurerChorganisationId);
-        
+
         if (chorganisationService.isActiveChorganisationsByInsurerCreditHireWithBreBand(insurerChorganisation.getInsurer().getId(), insurerChorganisation.getChorganisation().getId())) {
             this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Not allowed to delete Thic Credit Hire From This insuere. Please remove the Bre Band assigned to this Credit Hire First");
         } else {
@@ -340,9 +338,8 @@ public class AdminInsurerService extends DataService {
         return this.actionResponse;
     }
     // </editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="INSURER WORKGROUP">
 
+    // <editor-fold defaultstate="collapsed" desc="INSURER WORKGROUP">
     public Workgroup getWorkgroup(int workgroupId) {
         return workgroupService.getWorkgroup(workgroupId);
     }
@@ -364,20 +361,18 @@ public class AdminInsurerService extends DataService {
         return this.actionResponse;
     }
 
-    public ActionResponse removeInsurerWorkgroup(Workgroup workgroup, int insurerId) {
+    public ActionResponse removeInsurerWorkgroup(int workgroupId, int insurerId) {
 
         this.actionResponse = new ActionResponse();
 
         Insurer insurer = insurerService.getInsurer(insurerId);
+        Workgroup workgroup = workgroupService.getWorkgroup(workgroupId);
 
         // WORKGROUP FEATUERE IS ENABLE
         // EXCEPT THE WORKGROUP ITSELF, DO NOT HAVE ANY ACTIVE WORKGROUP
         if (insurer.isWorkgroupEnable() && !workgroupService.isWorkgroupAllowToInactive(insurerId, workgroup.getId())) {
-
             this.actionResponse.AddError("Unable to remove this workgroup. Must maintain at least one active workgroup for this insurer.");
-
         } else {
-
             if (workgroupService.isWorkgroupDeletable(workgroup.getId())) {
                 workgroupService.deleteWorkgroup(workgroup);
                 this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Workgroup '" + workgroup.getName() + "' has been removed");
@@ -390,9 +385,9 @@ public class AdminInsurerService extends DataService {
 
     public ActionResponse triggerInsurerWorkgroupStatus(Workgroup workgroup, int insurerId) {
         this.actionResponse = new ActionResponse();
-        
+
         Insurer insurer = insurerService.getInsurer(insurerId);
-        
+
         // CHECK WORKGROUPS STATUS IF CHANGE FROM ACTIVE TO INACTIVE
         // WORKGROUP FEATUERE IS ENABLE
         // EXCEPT THE WORKGROUP ITSELF, DO NOT HAVE ANY ACTIVE WORKGROUP
@@ -406,9 +401,8 @@ public class AdminInsurerService extends DataService {
         return this.actionResponse;
     }
     // </editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="SERVICES">
 
+    // <editor-fold defaultstate="collapsed" desc="SERVICES">
     public void setAutomaticRoutingService(AutomaticRoutingService automaticRoutingService) {
         this.automaticRoutingService = automaticRoutingService;
     }
