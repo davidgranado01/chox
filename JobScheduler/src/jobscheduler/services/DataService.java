@@ -19,7 +19,7 @@ public class DataService {
     */
     
     final String databaseServer = "localhost:5432";
-    final String databaseConnection = "dev_chox_sprint8";
+    final String databaseConnection = "dev_chox_ref";
     final String databaseUserName = "chox";
     final String databaseUserPsw= "chox";
     
