@@ -1,3 +1,6 @@
+
+-- By: Emmanuel
+
 ALTER TABLE attachment ADD COLUMN "version" integer;
 ALTER TABLE audit_trail ADD COLUMN "version" integer;
 ALTER TABLE automatic_routing ADD COLUMN "version" integer;
@@ -70,3 +73,7 @@ UPDATE web_user_workgroup SET version=0;
 UPDATE witness SET version=0;
 UPDATE workgroup SET version=0;
 
+-------------------------------------------------------------------------------------------------------------------------
+-- By: Carlson
+
+update accessibility set name='filter.InvoicesReferredToEngineer'  where name like 'filter.ContestedInvoicesReferredToEngineer';

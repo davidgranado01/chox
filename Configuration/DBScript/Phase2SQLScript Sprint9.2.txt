@@ -13,3 +13,4 @@ ALTER TABLE injury ADD COLUMN solicitor_postcode varchar(255);
 ALTER TABLE injury ADD COLUMN solicitor_telephone varchar(255); 
 ALTER TABLE injury ADD COLUMN solicitor_email varchar(255); 
 ALTER TABLE injury ADD COLUMN solicitor_is_appointed boolean NOT NULL DEFAULT false;
+
