@@ -57,7 +57,6 @@ import org.apache.struts2.interceptor.SessionAware;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable, SessionAware {
 
-    private static final String strPrefix = "Claim Review Note: ";
     private static final String statusMsg = "Your action has been recorded";
     private TabAccessibility tabAccessibility;
     private NotificationAccessibility notificationAccessibility;
@@ -78,7 +77,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public static final String REFER_CH = "referCH";
     public static final String INV_REFER_ENG = "InvReferEng";
     public static final String UPDATED_BY_ENG = "updatedByEng";
-    // <editor-fold defaultstate="collapsed" desc="DECLARE DROP DOWN LIST OBJECTS">
     private List vehicleClasses;
     private List reasonOfClaimRejections;
     private List reasonOfInvoiceRejections;
@@ -87,27 +85,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private List statuses;
     private List workgroups;
     private List insurerWorkgroups;
-    private List otherWorkgroups;
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="DECLARE SERVICES OBJECTS">
     private ClaimService service;
     private LookupService lookupService;
     private AuditTrailService auditTrailService;
     private ReasonOfRejectionService reasonOfRejectionService;
     private WorkgroupService workgroupService;
-    private UserService userService;
     private AttachmentTypeService attachmentTypeService;
     private BusinessRulesEngService businessRulesEngService;
     private BreBandService breBandService;
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="DECLARE CLAIM OBJECT PARAMETERS">
     private Claim claim = new Claim();
     private int id = -1;
     private int vehicleClassId = -1;
     private int insurerId = -1;
     private String actionName;
     private List attachmentCategory;
-    private String reasonForRejection;
     private BigDecimal totalAmountToPayBeforeNewPenaltyCharge;
     private BigDecimal totalAmountToPayAfterNewPenaltyCharge;
     private String totalAmountToPayBeforeNewPenaltyChargeFormatted;
@@ -127,7 +118,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private Integer engineerReportId;
     private Integer witnessId;
     private Integer injuryId;
-    private Integer injurySolicitorId;
     private Integer notificationId;
     private int workgroupId = -1;
     private List<String> intelligentNotes;
@@ -137,8 +127,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private int oasWorkgroupId = -1; // OWNERSHIP ASSIGNMENT - WORKGROUP ID
     private int uosWorkgroupId = -1; // UPDATE CLAIM OWNERSHIP - WORKGROUP ID
     private Integer reasonOfRejectionId;
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="MODEL DRIVEN OBJECT">
 
     public void prepare() throws Exception {
         if (id <= 0) {
@@ -161,7 +149,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
     }
 
-    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="CLAIM PANEL ACTION">
     public String updateClaimDetail() {
         this.service.updateClaim(claim);
@@ -171,435 +158,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getPaymentReceivedAction() {
         return "updatePaymentReceived";
-    }
-
-    /*
-    public String route() {
-
-    String result = SUCCESS;
-
-    if (this.getWorkgroups() == null) {
-
-    this.actionResult = "ERROR : You need to provide workgroup to route this claim.";
-
-    } else {
-
-    if (!claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)) {
-
-    this.actionResult = "ERROR : Invalid operation!";
-
-    } else {
-
-    try {
-
-    String newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
-    auditTrailService.logAuditLog(newStatus, claim, null, null);
-    claim.setStatus(newStatus);
-    this.service.updateClaim(claim);
-
-    if (claim.getInsurer().isClaimOwnershipEnable()) {
-
-    newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED;
-    auditTrailService.logAuditLog(newStatus, claim, null, null, 1);
-    claim.setStatus(newStatus);
-    this.service.updateClaim(claim);
-
-    }
-
-    } catch (Exception ex) {
-    result = ERROR;
-    this.actionResult = "ERROR : " + ex.getMessage();
-    }
-    }
-    }
-
-    return result;
-    }
-     */
-    /*
-    public String acknowledge() {
-
-    String result = SUCCESS;
-    String newStatus = "";
-
-    if (this.actionName.equalsIgnoreCase(ACCEPT)) {
-    newStatus = ClaimStatus.AWAITING_CAR_HIRE_INFO;
-    } else if (this.actionName.equalsIgnoreCase(REFER_ENG)) {
-    newStatus = ClaimStatus.CLAIM_REF_TO_ENG;
-    } else if (this.actionName.equalsIgnoreCase(REFER_FNOL)) {
-    newStatus = ClaimStatus.CLAIM_REFERRED_TO_FNOL;
-    } else if (this.actionName.equalsIgnoreCase(PENDING)) {
-    newStatus = ClaimStatus.CLAIM_PENDING;
-    } else {
-    newStatus = ClaimStatus.CLAIM_REJECTED;
-    // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
-
-    if (reasonOfRejectionId > 0) {
-    ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
-    claim.setReasonOfRejection(reasonOfRejection);
-    logNewCommentForRejection(reasonOfRejection, 0);
-    }
-
-    }
-
-    if (!result.equalsIgnoreCase(ERROR)) {
-
-    try {
-    auditTrailService.logAuditLog(newStatus, claim, null, null);
-    claim.setIsFnolReviewed(false);
-    claim.setStatus(newStatus);
-    this.service.updateClaim(claim);
-    } catch (Exception ex) {
-    result = ERROR;
-    this.actionResult = "ERROR : " + ex.getMessage();
-    }
-    }
-
-    return result;
-    }
-     */
-    /*
-    public String ownershipAssignment() {
-
-    String result = SUCCESS;
-    String newStatus = "";
-
-    if (this.actionName.equalsIgnoreCase(ASSIGNED_PROCESS)) {
-
-    if (this.claimOwnerId > 0) {
-
-    newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
-
-    // GET NEW CLAIM OWNER
-    WebUser newClaimOwner = userService.getWebUser(claimOwnerId);
-    claim.setClaimOwner(newClaimOwner);
-    claim.setIsFnolReviewed(false);
-    if (oasWorkgroupId > 0) {
-    claim.setWorkgroup(workgroupService.getWorkgroup(oasWorkgroupId));
-    }
-
-    } else {
-    result = ERROR;
-    }
-
-    } else if (this.actionName.equalsIgnoreCase(REFER_FNOL)) {
-
-    newStatus = ClaimStatus.CLAIM_REFERRED_TO_FNOL;
-
-    } else {
-    result = ERROR;
-    }
-
-    if (!result.equalsIgnoreCase(ERROR)) {
-
-    try {
-    claim.setStatus(newStatus);
-    this.service.updateClaim(claim);
-
-    // LOG AUDIT TRAIL
-    auditTrailService.logAuditLog(newStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim);
-
-    } catch (Exception ex) {
-    result = ERROR;
-    this.actionResult = "ERROR : " + ex.getMessage();
-    }
-    }
-
-    return result;
-    }
-
-    public String ownershipUpdating() {
-
-    String result = SUCCESS;
-    String oldOwnerName = "N/A";
-    String noteMsg = "";
-
-    if (this.claimOwnerId > 0) {
-
-    // GET NEW CLAIM OWNER
-    WebUser newClaimOwner = userService.getWebUser(claimOwnerId);
-
-    // GET OLD CLAIM OWNER
-    if (claim.getClaimOwner() != null) {
-    oldOwnerName = claim.getClaimOwner().getDisplayName();
-    }
-
-    noteMsg = "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getDisplayName() + "'";
-
-    if (!result.equalsIgnoreCase(ERROR)) {
-
-    try {
-
-    if (uosWorkgroupId > 0) {
-    claim.setWorkgroup(workgroupService.getWorkgroup(uosWorkgroupId));
-    }
-
-    claim.setClaimOwner(newClaimOwner);
-    this.service.updateClaim(claim);
-
-    // SAVE NEW NOTE
-    int noteVisibilityType = 0;
-    createNewNote(noteMsg, noteVisibilityType, "");
-
-    } catch (Exception ex) {
-    result = ERROR;
-    this.actionResult = "ERROR : " + ex.getMessage();
-    }
-    }
-    }
-
-    return result;
-    }
-     */
-    /*
-     * There are 2 roles are allow to send the claim to FNOL to register into 3rd party system
-     * 1. COM - During Claim Ownership Assignment
-     * 2. CH - DUring Claim Acknowledge Assignment
-     *
-     * After FNOL register the claim to 3rd party system,
-     * If the claim is COME from COM, then need to back to CLAIM_UNACKNOWLEDGED_UNASSIGNED
-     * Else alway go to CLAIM_UNACKNOWLEDGED_ROUTED
-     */
-
-    /*
-    public String registerFNOL() {
-
-    String result = SUCCESS;
-    String newStatus = "";
-
-    if (this.actionName.equalsIgnoreCase(REGISTER_FNOL)) {
-
-    if (claim.getPreviousStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
-    newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED;
-    } else {
-    newStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED;
-    }
-
-    claim.setIsFnolReviewed(true);
-
-    } else if (this.actionName.equalsIgnoreCase(REJECT_FNOL)) {
-    newStatus = ClaimStatus.CLAIM_REJECTED;
-    }
-
-    createNewNote(reasonForRejection, 1, strPrefix);
-
-    if (!result.equalsIgnoreCase(ERROR)) {
-
-    try {
-
-    auditTrailService.logAuditLog(newStatus, claim, null, null);
-    claim.setStatus(newStatus);
-    this.service.updateClaim(claim);
-
-    } catch (Exception ex) {
-    this.actionResult = "ERROR : " + ex.getMessage();
-    }
-
-    }
-
-    return result;
-    }
-    
-    private void createNewNote(String sComment, int noteVisibilityType, String strPrefix) {
-
-    if (sComment.length() > 0) {
-
-    Comment comment = new Comment();
-    comment.setVisibilityType(noteVisibilityType);
-    comment.setComment(strPrefix + sComment);
-    claim.addComment(comment);
-
-    try {
-    service.updateClaim(claim);
-    } catch (Exception ex) {
-    this.actionResult = "ERROR : " + ex.getMessage();
-    }
-
-    }
-
-    }
-     */
-    /*
-    public String reviewByEngineer() {
-
-    String result = SUCCESS;
-    String newStatus = "";
-
-    if (this.actionName.equalsIgnoreCase(UPDATED_BY_ENG)) {
-    newStatus = ClaimStatus.CLAIM_UPDATE_BY_ENG;
-    } else {
-    newStatus = ClaimStatus.AWAITING_CAR_HIRE_INFO;
-    }
-
-    try {
-
-    auditTrailService.logAuditLog(newStatus, claim, null, null);
-    this.claim.setStatus(newStatus);
-    this.service.updateClaim(claim);
-
-    } catch (Exception ex) {
-
-    this.actionResult = "ERROR : " + ex.getMessage();
-
-    }
-
-    return result;
-    }
-     */
-    /*
-    public String contestOrAcceptRejectedClaim() {
-
-    String result = SUCCESS;
-    String newStatus;
-
-    ReasonOfRejection claimRejectionReason = null;
-
-    if (this.actionName.equalsIgnoreCase(ACCEPT)) {
-
-    newStatus = ClaimStatus.CLAIM_REJECTION_ACCEPTED;
-    claimRejectionReason = claim.getReasonOfRejection();
-
-    } else {
-
-    newStatus = ClaimStatus.CLAIM_REJECTION_CONTESTED;
-
-    }
-
-    try {
-    auditTrailService.logAuditLog(newStatus, claim, claimRejectionReason, null);
-
-    this.claim.setStatus(newStatus);
-    this.service.updateClaim(claim);
-
-    } catch (Exception ex) {
-    result = ERROR;
-    this.actionResult = "ERROR : " + ex.getMessage();
-    }
-
-    return result;
-    }
-     */
-
-    /*
-    public String approveContestedClaim() {
-
-    String result = SUCCESS;
-    String newStatus = "";
-
-    if (this.actionName.equalsIgnoreCase(ACCEPT)) {
-    newStatus = ClaimStatus.AWAITING_CAR_HIRE_INFO;
-    } else if (this.actionName.equalsIgnoreCase(REFER_ENG)) {
-    newStatus = ClaimStatus.CLAIM_REF_TO_ENG;
-    } else if (this.actionName.equalsIgnoreCase(REFER_FNOL)) {
-    newStatus = ClaimStatus.CLAIM_REFERRED_TO_FNOL;
-    } else if (this.actionName.equalsIgnoreCase(PENDING)) {
-    newStatus = ClaimStatus.CLAIM_PENDING;
-    } else {
-
-    newStatus = ClaimStatus.CLAIM_REJECTED;
-
-    // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
-    if (reasonOfRejectionId > 0) {
-    ReasonOfRejection reasonOfRejection = reasonOfRejectionService.getReasonOfRejection(reasonOfRejectionId);
-    claim.setReasonOfRejection(reasonOfRejection);
-    logNewCommentForRejection(reasonOfRejection, 0);
-    }
-    }
-
-    if (!result.equalsIgnoreCase(ERROR)) {
-
-    try {
-
-    // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
-    // createNewNote(claim.getEngineerClaimReviewNotes(), false, strPrefix);
-
-    //createNewNote(claim.getEngineerClaimReviewNotes(), 1, strPrefix);
-
-    auditTrailService.logAuditLog(newStatus, claim, null, null);
-    this.claim.setStatus(newStatus);
-    this.service.updateClaim(claim);
-
-    } catch (Exception ex) {
-
-    result = ERROR;
-    this.actionResult = "ERROR : " + ex.getMessage();
-    }
-    }
-
-    return result;
-
-    }
-     */
-    public String submitHireMonitoringDetail() {
-
-        String result = SUCCESS;
-
-        String validationECDResult = validateHireMonitoringECDDetail();
-        String validationLabourResult = validateHireMonitoringLabourDetail();
-
-        if ((validationLabourResult.length() + validationECDResult.length()) <= 0) {
-
-            String newStatus = ClaimStatus.AWAITING_INVOICE_DATA;
-
-            try {
-
-                auditTrailService.logAuditLog(newStatus, claim, null, null);
-
-                this.claim.setStatus(newStatus);
-                this.service.updateClaim(claim);
-
-            } catch (Exception ex) {
-
-                this.actionResult = "ERROR : " + ex.getMessage();
-
-            }
-
-        } else {
-
-            result = ERROR;
-
-            if (validationECDResult.length() > 0) {
-                this.actionResult = validationECDResult;
-            } else {
-                this.actionResult = validationLabourResult;
-            }
-        }
-
-        return result;
-    }
-
-    public String validateHireMonitoringECDDetail() {
-
-        if (this.claim.getCustomer() == null || this.claim.getCustomer().getInitialECD() == null) {
-            if (this.service.getECDCountByClaimId(this.claim.getId()) == 0) {
-                return "Error : You need to provide an Estimated Completion Date (ECD) to submit this claim. ";
-            }
-        }
-
-        return "";
-    }
-
-    public String validateHireMonitoringLabourDetail() {
-
-        String sNonProvisionReasonDetailErrorMsg = "Error : In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required, if this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.";
-
-        if (claim.getHireMonitoringDetail() == null) {
-            return sNonProvisionReasonDetailErrorMsg;
-
-        } else {
-
-            String sNonProvisionReason = "";
-            if (claim.getHireMonitoringDetail().getNonProvisionReason() != null) {
-                sNonProvisionReason = claim.getHireMonitoringDetail().getNonProvisionReason().trim();
-            }
-
-            if (claim.getHireMonitoringDetail().getLabourCost() == null && claim.getHireMonitoringDetail().getLabourHour() == null && sNonProvisionReason.length() == 0 && !claim.getHireMonitoringDetail().isIsTotalLostCheck()) {
-                return sNonProvisionReasonDetailErrorMsg;
-            }
-
-        }
-
-        return "";
     }
 
     public String reSubmitRejectedClaim() {
@@ -831,32 +389,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
 
-    public String updatePaymentReceived() {
-
-        String result = SUCCESS;
-        String newStatus = "";
-
-
-        try {
-
-            newStatus = ClaimStatus.INVOICE_PAYMENT_RECEIVED;
-
-            auditTrailService.logAuditLog(newStatus, claim, null, null);
-
-
-            this.claim.setStatus(newStatus);
-            this.service.updateClaim(claim);
-
-        } catch (Exception ex) {
-
-            result = ERROR;
-            this.actionResult = "ERROR : " + ex.getMessage();
-
-        }
-
-        return result;
-    }
-
     // 20090422
     // CHECK THE INVOICE    
     public String approveEscalatedInvoice() {
@@ -1010,25 +542,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     }
 
-    public String logInvoicePayment() {
-
-        String newStatus = ClaimStatus.INVOICE_PAYMENT_LOGGED;
-
-        try {
-
-            auditTrailService.logAuditLog(newStatus, claim, null, null);
-
-            this.claim.setStatus(newStatus);
-            this.service.updateClaim(claim);
-
-        } catch (Exception ex) {
-
-            this.actionResult = "ERROR : " + ex.getMessage();
-
-        }
-        return SUCCESS;
-    }
-
     public String getCreatedByDesc() {
 
         String desc = "";
@@ -1071,8 +584,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String result = SUCCESS;
 
-        System.out.println(">>>>>>>01");
-
         try {
 
             Invoice invoice = claim.getInvoice();
@@ -1081,8 +592,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             invoice.setPenaltyCharge(getPenaltyChargeAmount());
             Boolean isPenaltyAlertNotUsed = getIsRemovePenaltyAlert();
 
-            System.out.println(">>>>>>>02");
-
             if (isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) {
                 long dateDiff = DateHelper.daysBetween(invoice.getCreatedDate(), new Date());
                 int newpenaltyAlertQty = (int) (dateDiff / 30);
@@ -1090,12 +599,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 invoice.setPenaltyAlertQty(newpenaltyAlertQty);
             }
 
-            System.out.println(">>>>>>>03");
-
             invoice.setPenaltyChargeAppliedDate(DateHelper.getCurrentDateTime());
             service.updateClaim(claim);
-
-            System.out.println(">>>>>>>04");
 
         } catch (Exception ex) {
 
@@ -1103,8 +608,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             this.actionResult = "ERROR : " + ex.getMessage();
 
         }
-
-        System.out.println(">>>>>>>05:" + result);
 
         return result;
     }
@@ -1216,6 +719,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return bFlag;
     }
 
+    //TODO: TO REMOVE
     public void logNewCommentForRejection(ReasonOfRejection reasonOfRejection, int noteVisibilityType) {
         /*
         if (reasonOfRejection != null) {
@@ -1497,10 +1001,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return statusMsg;
     }
 
-    public void setReasonForRejection(String s) {
-        this.reasonForRejection = s;
-    }
-
     public Integer getReasonOfRejectionId() {
         return reasonOfRejectionId;
     }
@@ -1509,8 +1009,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.reasonOfRejectionId = reasonOfRejectionId;
     }
 
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="GET SUB OBJECT ID">
     public int getClaimOwnerId() {
         return claimOwnerId;
     }
@@ -1631,8 +1129,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.breBandService = breBandService;
     }
 
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="SERVICES">
     public void setClaimService(ClaimService service) {
         this.service = service;
     }
@@ -1643,10 +1139,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setAuditTrailService(AuditTrailService auditTrailService) {
         this.auditTrailService = auditTrailService;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
     public void setWorkgroupService(WorkgroupService workgroupService) {
@@ -1665,8 +1157,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.businessRulesEngService = businessRulesEngService;
     }
 
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="GET DROP DOWN LIST">
     public List getWorkgroups() {
 
         if (workgroups == null) {
@@ -1727,7 +1217,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return reasonOfInvoiceRejections;
     }
-    // </editor-fold>
 
     public String getActionPanel() {
 
