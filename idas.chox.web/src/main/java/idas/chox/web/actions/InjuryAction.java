@@ -4,9 +4,6 @@
  */
 package idas.chox.web.actions;
 
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.Claim;
 import idas.chox.core.model.Incident;
 import idas.chox.core.model.Injury;
 import idas.chox.service.security.ApplicationAccessibility;
@@ -15,54 +12,36 @@ import idas.chox.service.security.ApplicationAccessibility;
  *
  * @author Emmanuel
  */
-public class InjuryAction extends BaseModelAction implements ModelDriven<Injury>, Preparable {
+public class InjuryAction extends ClaimModelAction<Injury> {
 
-    private Injury model;
-
-    public Injury getModel() {
-        return model;
-    }
-
-    public void prepare() throws Exception {
-
-        Claim claim = getClaim();
-
-        if (claim != null) {
-            Incident incident = claim.getIncident();
-
-            if (incident == null) {
-                incident = new Incident();
-                claim.setIncident(incident);
-            }
-
-            model = incident.getInjury();
-
-            if (model == null) {
-                model = new Injury();
-                model.setIncident(incident);
-                incident.setInjury(model);
+    @Override
+    public Injury loadModel() {
+        Incident incident = claim.getIncident();
+        if (incident != null) {
+            Injury injury = incident.getInjury();
+            if (injury != null) {
+                return injury;
             }
         }
+        return new Injury();
     }
-    
+
+    @Override
     public String updateModel() {
-        try {
-            boolean isTransient = model.isTransient();
-            Claim claim = getClaim();
-            this.claimService.updateClaim(claim);
-            if (isTransient) {
-                this.getActionResponse().AssignNewIdResult(model.getId());
-            }
-        } catch (Exception ex) {
-            handleException(this,ex);
-            return ERROR;
+
+        Incident incident = claim.getIncident();
+        if (incident == null) {
+            incident = new Incident();
         }
-        return SUCCESS;
+        incident.setInjury(model);
+        model.setIncident(incident);
+        claim.setIncident(incident);
+
+        return super.updateModel();
     }
 
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_CLAIM_DETAIL;
     }
-
 }

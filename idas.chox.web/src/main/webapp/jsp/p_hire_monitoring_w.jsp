@@ -12,6 +12,11 @@
         var repairCompletionDateDatePicker = ui.dateField('repairCompletionDate','<s:date format="dd/MM/yyyy" name="repairCompletionDate" />','repairCompletionDatePH');
 
         var form = $("form#formUpdateHireMonitoringDetail");
+
+        var fsets =  $('legend',form);
+        fsets.click(function(){ $(this).next().toggle();});
+        fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
+        fsets.mouseout(function(){ $(this).css("cursor","normal");});
         
         form.validate(
         {
@@ -43,7 +48,7 @@
             }
         });
 
-        ui.ajaxForm(form,onHireMonitoringSubmitResponseReceived);
+        ui.ajaxForm(form,onHireMonitoringSubmitResponseReceived,'html');
 
         var repairBookDt = $("#repairBookInDate").val();
         $("#notificationRepairBookInDate").val(repairBookDt);
@@ -74,23 +79,22 @@
         var repairBookDt = $("#repairBookInDate").val();
         $("#notificationRepairBookInDate").val(repairBookDt);            
     }
-
-
-
+    
 </script>
 
 <form id="formUpdateHireMonitoringDetail" name="formUpdateHireMonitoringDetail"
       action="<%=request.getContextPath()%>/prv/p/updateHireMonitorDetail.action" method="POST">
 
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
+    <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <input type="hidden" name="date_compare_field" value=''>
     <s:hidden value="notificationRepairBookInDate" id="notificationRepairBookInDate" name="notificationRepairBookInDate"/>
 
-    <fieldset class="x-fieldset">
+    <fieldset class="x-fieldset partial">
 
         <legend>Hire Monitoring</legend>
 
-        <div style="display:none" class="form-container">
+        <div class="form-container">
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">
@@ -100,7 +104,7 @@
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">
-                    Original ECD</label><label class="std-data-ro"><s:property value="customer.InitialECDDesc" /></label></div>
+                    Original ECD</label><label class="std-data-ro"><s:property value="customer.InitialECDDesc" /></label>&nbsp;</div>
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">Name Of Repairer</label>
@@ -167,8 +171,8 @@
                 <input type="submit" value="Save Changes" /><s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
             </div>
 
-            <div id="HMmessageBox" style="text-align:center" class="action-error-msg"></div>
-            <div class="chox-form-submit-result">&nbsp;</div>   
+            <div id="HMmessageBox" style="text-align:center" class="action-error-msg"><s:property value="actionError" /></div>
+            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
 
         </div>
 

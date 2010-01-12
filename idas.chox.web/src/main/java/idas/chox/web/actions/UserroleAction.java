@@ -90,7 +90,7 @@ public class UserroleAction extends BaseAction {
             }
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -111,7 +111,7 @@ public class UserroleAction extends BaseAction {
                 setActionResponse(response);
 
             } catch (Exception ex) {
-                handleException(this, ex);
+                handleException(ex);
                 return ERROR;
             }
         }
@@ -128,7 +128,7 @@ public class UserroleAction extends BaseAction {
                 setActionResponse(response);
 
             } catch (Exception ex) {
-                handleException(this, ex);
+                handleException(ex);
                 return ERROR;
             }
 
@@ -146,7 +146,7 @@ public class UserroleAction extends BaseAction {
             setActionResponse(response);
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 

@@ -92,7 +92,7 @@ public class UserWorkgroupAction extends BaseAction {
         try {
             items = adminUserService.getWorkgroups(this.webUserId);
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
         }
         return items;
     }
@@ -105,7 +105,7 @@ public class UserWorkgroupAction extends BaseAction {
             setActionResponse(response);
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -120,7 +120,7 @@ public class UserWorkgroupAction extends BaseAction {
             setActionResponse(response);
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -136,7 +136,7 @@ public class UserWorkgroupAction extends BaseAction {
             setActionResponse(response);
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 

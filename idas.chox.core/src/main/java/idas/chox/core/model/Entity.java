@@ -10,9 +10,10 @@ import java.util.Date;
  *
  * @author emmanuel
  */
-public class Entity implements Auditable {
+public class Entity implements Auditable, Versioned {
 
     protected Integer id;
+    protected Integer version;
     protected WebUser createdBy;
     protected Date createdDate;
     protected WebUser lastModifiedBy;
@@ -26,8 +27,15 @@ public class Entity implements Auditable {
         this.id = id;
     }
 
-    public boolean isTransient()
-    {
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public boolean isTransient() {
         return id == null || id <= 0;
     }
 
@@ -69,5 +77,36 @@ public class Entity implements Auditable {
     @Override
     public void setLastModifiedDate(java.util.Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null ||
+                !(o instanceof Entity)) {
+
+            return false;
+        }
+
+        Entity other = (Entity) o;
+
+        // if the id is missing, return false
+        if (id == null) {
+            return false;
+        }
+
+        // equivalence by id
+        return id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        if (id != null) {
+            return id.hashCode();
+        } else {
+            return super.hashCode();
+        }
     }
 }

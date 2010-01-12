@@ -5,7 +5,7 @@ import idas.chox.core.model.*;
 import java.util.List;
 import java.util.Set;
 
-public interface ClaimService {
+public interface ClaimService extends DataService {
 
     public Claim getClaim(int id);
 

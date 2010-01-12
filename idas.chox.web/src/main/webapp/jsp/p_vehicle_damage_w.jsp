@@ -3,7 +3,7 @@
 
 <form id="f6" action="dummyAction">
     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>  
-    <fieldset class="x-fieldset">
+    <fieldset class="x-fieldset partial">
         <legend>Customer Vehicle Damage</legend>
 
         <div style="display:none" class="form-container">

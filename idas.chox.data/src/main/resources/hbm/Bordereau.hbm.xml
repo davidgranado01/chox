@@ -5,6 +5,7 @@
     <id column="id" name="id">
       <generator class="increment"/>
     </id>
+    <version column="version" name="version" unsaved-value="null"/>
     <property column="file" length="1048576" name="fileBuffer" type="binary"/>
     <property column="file_name" name="fileName"/>
     <property column="status" name="status" not-null="true"/>

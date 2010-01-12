@@ -104,7 +104,7 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
             ActionResponse response = adminInsurerService.addNewInsurerWorkgroup(model, this.insurerId);
             setActionResponse(response);
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -121,7 +121,7 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
                 setActionResponse(response);
 
             } catch (Exception ex) {
-                handleException(this, ex);
+                handleException(ex);
                 return ERROR;
             }
         }
@@ -139,7 +139,7 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
                 setActionResponse(response);
 
             } catch (Exception ex) {
-                handleException(this, ex);
+                handleException(ex);
                 return ERROR;
             }
         }

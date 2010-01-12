@@ -18,14 +18,14 @@ import idas.chox.core.services.UserWorkgroupService;
 import idas.chox.core.services.WebUserUserRoleService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.RoleHelper;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.SecureDataService;
 import idas.chox.service.ActionResponse;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.security.providers.encoding.Md5PasswordEncoder;
 import org.springframework.security.providers.encoding.PasswordEncoder;
 
-public class AdminUserService extends DataService {
+public class AdminUserService extends SecureDataService {
 
     private ActionResponse actionResponse;
     private UserService userService;

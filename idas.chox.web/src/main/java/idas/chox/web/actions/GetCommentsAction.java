@@ -16,10 +16,11 @@ import net.sf.json.JSONArray;
  *
  * @author Emmanuel
  */
-public class GetCommentsAction extends BaseModelAction {
+public class GetCommentsAction extends BaseAction {
 
     private CommentService service;
     private List<CommentViewData> comments;
+    private Integer claimId;
 
     public void setCommentService(CommentService service) {
         this.service = service;
@@ -32,7 +33,6 @@ public class GetCommentsAction extends BaseModelAction {
 
     }
 
-    @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_NOTES;
     }
@@ -52,5 +52,9 @@ public class GetCommentsAction extends BaseModelAction {
         }
 
         return SUCCESS;
+    }
+
+    public void setClaimId(Integer claimId) {
+        this.claimId = claimId;
     }
 }

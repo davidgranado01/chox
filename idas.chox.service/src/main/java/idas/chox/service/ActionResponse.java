@@ -68,24 +68,14 @@ public class ActionResponse {
         setResult(result ? "yes" : "no");
     }
 
-    /**
-     * @param errors the errors to set
-     */
     public void setErrors(List<String> errors) {
         this.errors = errors;
     }
 
-
-    /**
-     * @return the resultType
-     */
     public String getResultType() {
         return resultType;
     }
 
-    /**
-     * @param resultType the resultType to set
-     */
     public void setResultType(String resultType) {
         this.resultType = resultType;
     }

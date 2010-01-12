@@ -5,6 +5,7 @@
     <id column="id" name="id">
       <generator class="increment"/>
     </id>
+    <version column="version" name="version" unsaved-value="null"/>
     <property column="managing_repair" name="managingRepair" not-null="true"/>
     <property column="policy_holder_contact_date" name="policyHolderContactDate"/>
     <property column="cho_reference" name="choReference"/>

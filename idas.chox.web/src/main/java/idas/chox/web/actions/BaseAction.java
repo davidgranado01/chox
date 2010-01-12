@@ -8,13 +8,20 @@ import idas.chox.service.ActionResponse;
 import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.StaleObjectStateException;
 
 public class BaseAction extends ActionSupport {
 
-    private SecurityInfoProvider securityInfoProvider;
-    protected static Log logger = LogFactory.getLog("chox");   
+    protected static Log logger = LogFactory.getLog("chox");
     protected ActionResponse actionResponse;
- 
+    private String actionResult;
+    private String actionError;
+    private SecurityInfoProvider securityInfoProvider;
+
+    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
+        this.securityInfoProvider = securityInfoProvider;
+    }
+
     public WebUser getAuthenticatedUser() {
         return securityInfoProvider.getCurrentUser();
     }
@@ -26,13 +33,13 @@ public class BaseAction extends ActionSupport {
     public boolean getIsInsurer() {
         return securityInfoProvider.getIsINS();
     }
-    
+
     public boolean getIsChoxAdmin() {
 
         return securityInfoProvider.getIsCHOXAdmin();
     }
 
-    public int getUserOrganisationType(){
+    public int getUserOrganisationType() {
         int iOrganisationType = 1;
         if (!securityInfoProvider.getIsCHOXAdmin()) {
             if (securityInfoProvider.getIsCHO()) {
@@ -43,7 +50,7 @@ public class BaseAction extends ActionSupport {
         }
         return iOrganisationType;
     }
-    
+
     public int getUserOrganisationId() {
 
         int iOrganisationId = 1;
@@ -75,23 +82,6 @@ public class BaseAction extends ActionSupport {
         return logInUserDesc;
     }
 
-    public ActionResponse getActionResponse() {
-        if (actionResponse == null) {
-            actionResponse = new ActionResponse();
-        }
-        return actionResponse;
-    }
-
-    public void setActionResponse(ActionResponse actionResponse) {
-        this.actionResponse = actionResponse;
-    }
-
-    public String getActionResponseString()
-    {
-       JSONObject jsonObject = JSONObject.fromObject(getActionResponse());
-       return jsonObject.toString();
-    }
-
     public Integer getRoleTypeForHelpFile() {
 
         /*
@@ -120,16 +110,50 @@ public class BaseAction extends ActionSupport {
         return iRoleType;
     }
 
-    protected void handleException(Object source,Exception ex) {
+    public ActionResponse getActionResponse() {
+        if (actionResponse == null) {
+            actionResponse = new ActionResponse();
+        }
+        return actionResponse;
+    }
+
+    public void setActionResponse(ActionResponse actionResponse) {
+        this.actionResponse = actionResponse;
+    }
+
+    public String getActionResponseString() {
+        JSONObject jsonObject = JSONObject.fromObject(getActionResponse());
+        return jsonObject.toString();
+    }
+
+    public String getActionResult() {
+        return actionResult;
+    }
+
+    public void setActionResult(String actionResult) {
+        this.actionResult = actionResult;
+    }
+
+    public String getActionError() {
+        return actionError;
+    }
+
+    public void setActionError(String actionError) {
+        this.actionError = actionError;
+    }
+
+    protected void handleException(Exception ex) {
         logger.error(ex.getMessage());
-        getActionResponse().AddError(ex.getMessage());
+        setActionError(formErrorMessage(ex));
+        getActionResponse().AddError(actionError);
+
         ex.printStackTrace();
     }
 
-    /**
-     * @param securityInfoProvider the securityInfoProvider to set
-     */
-    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
-        this.securityInfoProvider = securityInfoProvider;
+    protected String formErrorMessage(Exception ex) {
+        if (ex instanceof StaleObjectStateException) {
+            return "Record was updated by another transaction/user, please try again.";
+        }
+        return ex.getLocalizedMessage();
     }
 }

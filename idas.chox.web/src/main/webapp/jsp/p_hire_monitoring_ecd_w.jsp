@@ -9,6 +9,11 @@
 
         var form = $("#formAddNewHireMonitoringEcd");
 
+        var fsets =  $('legend',form);
+        fsets.click(function(){ $(this).next().toggle();});
+        fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
+        fsets.mouseout(function(){ $(this).css("cursor","normal");});
+
         form.validate(
         {
             errorLabelContainer: "#ECDMessageBox",                
@@ -55,13 +60,13 @@
     
     function getReasonDescription(id){
 
-        <s:iterator value="reasonOfDelay">
-                if(id=="<s:property value="id"/>"){
-                    return "<s:property value="description"/>";
-                }
+    <s:iterator value="reasonOfDelay">
+            if(id=="<s:property value="id"/>"){
+                return "<s:property value="description"/>";
+            }
     </s:iterator>
 
-            }
+        }
     
 </script>
 
@@ -69,9 +74,9 @@
 
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
 
-    <fieldset class="x-fieldset">
+    <fieldset class="x-fieldset partial">
         <legend>New/Revised ECD</legend>
-        <div style="display:none" class="form-container">
+        <div class="form-container">
 
             <s:if test="isECDFormVisible">
 
@@ -101,7 +106,7 @@
                 </div>
 
                 <div class="chox-form-submit-result">&nbsp;</div>
-                <div id="ECDMessageBox" class="action-error-msg"></div>
+                <div id="ECDMessageBox" class="action-error-msg"><s:property value="actionError" /></div>
 
             </s:if>
             <s:else>

@@ -6,6 +6,12 @@
     $(function(){
 
         var form = $("#formUpdateCustomerDetails");
+
+        var fsets =  $('legend',form);
+        fsets.click(function(){ $(this).next().toggle();});
+        fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
+        fsets.mouseout(function(){ $(this).css("cursor","normal");});
+
         form.validate(
         {
             errorLabelContainer: "#CDmessageBox",
@@ -103,25 +109,20 @@
                 }
             }
         });
-        ui.ajaxForm(form);
+        ui.ajaxForm(form,null,'html');
     });
-        
 
-
-
-
-        
 </script>
 
 <form id="formUpdateCustomerDetails" action="<%=request.getContextPath()%>/prv/p/updateCustomer.action" class="XXentity-form">
-    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>    
-    <fieldset class="x-fieldset">
+    <input name="claimId" type="hidden" value="<s:property value="claimId" />" />
+    <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
+    <fieldset class="x-fieldset partial">
         <legend>Customer Details</legend>
-        <div style="display:none" class="form-container">
+        <div class="form-container">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Title<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttxt" id="CCDTitle" name="title" value="<s:property value="title" />"/>
-
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -233,8 +234,8 @@
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
             </div>
-            <div id="CDmessageBox" class="action-error-msg"></div>
-            <div class="chox-form-submit-result"></div>
+            <div class="action-error-msg"><s:property value="actionError" /></div>
+            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
 </form>

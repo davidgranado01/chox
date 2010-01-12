@@ -37,10 +37,12 @@
    
 
     $(function(){
-        var fsets =  $('legend');
+        $('fieldset.partial legend').next().hide();
+        var fsets =  $('fieldset:not(.partial) legend');
         fsets.click(function(){ $(this).next().toggle();});
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
+
         activityMonitor.pingServer(<s:property value="id"/>);
     });
 
@@ -190,6 +192,7 @@
          ***********************************************************************************/
 
         if(!hireMonitoringDetailsDisabled){
+
 
             ecdJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -372,7 +375,7 @@
             {
                 params:
                     {
-                    claimId : <s:property value="id" />
+                    id : <s:property value="id" />
                 }
             });
 
@@ -459,7 +462,7 @@
 
     <div class="chox-claim-header x-panel-bwrap chox-form-container">
 
-        <fieldset class="x-fieldset">
+        <fieldset class="x-fieldset loaded open-by-default">
             <legend>Claim Summary</legend>
             <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
@@ -638,7 +641,10 @@
 <div class="chox-claim-header x-panel-bwrap chox-form-container" id="generalActionPanel" style="display: none;">
     <s:action name="getActionPanel" namespace="/prv/p" executeResult="true" />
     <div class="action-message"><s:property value="actionResult" /></div>
+    <div class="action-error-msg"><s:property value="actionError" /></div>
 </div>
+
+
 
 <s:if test="isShowPenaltyChargeAlert">
     <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -658,26 +664,29 @@
                     <tr valign="top">
                         <td class="chox-form-left-col">
 
-                            <s:action name="getCustomer" namespace="/prv/p" executeResult="true">
-                                <s:param name="claimId"><s:property value="id" /></s:param>
-                                <s:param name="claimStatus"><s:property value="status" /></s:param>
-                            </s:action>
+                            <div>
+                                <s:action name="getCustomer" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                </s:action>
+                            </div>
 
-                            <s:action name="getInjury" namespace="/prv/p" executeResult="true">
-                                <s:param name="claimId"><s:property value="id" /></s:param>
-                                <s:param name="claimStatus"><s:property value="status" /></s:param>
-                            </s:action>
+                            <div>
+                                <s:action name="getInjury" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                </s:action>
+                            </div>
 
-                            <s:action name="getSolicitor" namespace="/prv/p" executeResult="true">
-                                <s:param name="claimId"><s:property value="id" /></s:param>
-                                <s:param name="claimStatus"><s:property value="status" /></s:param>
-                            </s:action>
+                            <div>
+                                <s:action name="getSolicitor" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                </s:action>
+                            </div>
 
-                            <s:action name="getCustomerVehicleDamage" namespace="/prv/p" executeResult="true">
-                                <s:param name="claimId"><s:property value="id" /></s:param>
-                                <s:param name="claimStatus"><s:property value="status" /></s:param>
-                            </s:action>
-
+                            <div>
+                                <s:action name="getCustomerVehicleDamage" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                </s:action>
+                            </div>
                         </td>
                         <td>
 
@@ -716,20 +725,23 @@
                             </s:if>
 
 
-                            <s:action name="getIncident" namespace="/prv/p" executeResult="true">
-                                <s:param name="claimId"><s:property value="id" /></s:param>
-                                <s:param name="claimStatus"><s:property value="status" /></s:param>
-                            </s:action>
+                            <div>
+                                <s:action name="getIncident" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                </s:action>
+                            </div>
 
-                            <s:action name="getThirdParty" namespace="/prv/p" executeResult="true">
-                                <s:param name="claimId"><s:property value="id" /></s:param>
-                                <s:param name="claimStatus"><s:property value="status" /></s:param>
-                            </s:action>
+                            <div>
+                                <s:action name="getThirdParty" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                </s:action>
+                            </div>
 
-                            <s:action name="getWitness" namespace="/prv/p" executeResult="true">
-                                <s:param name="claimId"><s:property value="id" /></s:param>
-                                <s:param name="claimStatus"><s:property value="status" /></s:param>
-                            </s:action>
+                            <div>
+                                <s:action name="getWitness" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                </s:action>
+                            </div>
 
                         </td>
                     </tr>
@@ -750,13 +762,11 @@
                         <td class="chox-form-left-col">
                             <s:action name="getHireMonitoringDetail" namespace="/prv/p" executeResult="true">
                                 <s:param name="claimId"><s:property value="id" /></s:param>
-                                <s:param name="claimStatus"><s:property value="status" /></s:param>
                             </s:action>
                         </td>
-                        <td>
+                        <td>                            
                             <s:action name="getHireMonitoringEcd" namespace="/prv/p" executeResult="true">
                                 <s:param name="claimId"><s:property value="id" /></s:param>
-                                <s:param name="claimStatus"><s:property value="status" /></s:param>
                                 <s:param name="iECDFormAccessRight"><s:property value="tabAccessibility.hireMonitoringTabAccessibility" /></s:param>
                             </s:action>
                         </td>
@@ -784,28 +794,36 @@
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr valign="top">
                         <td class="chox-form-left-col">
-                            <s:action name="getInvoice" namespace="/prv/p" executeResult="true">
-                                <s:param name="claimId"><s:property value="id" /></s:param>
-                                <s:param name="claimStatus"><s:property value="status" /></s:param>
-                            </s:action>
+                            <div>
+                                <s:action name="getInvoice" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                    <s:param name="claimStatus"><s:property value="status" /></s:param>
+                                </s:action>
+                            </div>
 
-                            <s:action name="getVehicleHire" namespace="/prv/p" executeResult="true">
-                                <s:param name="claimId"><s:property value="id" /></s:param>
-                                <s:param name="claimStatus"><s:property value="status" /></s:param>
-                            </s:action>
+                            <div>
+                                <s:action name="getVehicleHire" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                    <s:param name="claimStatus"><s:property value="status" /></s:param>
+                                </s:action>
+                            </div>
 
                         </td>
                         <td>
 
-                            <s:action name="getExtra" namespace="/prv/p" executeResult="true">
-                                <s:param name="claimId"><s:property value="id" /></s:param>
-                                <s:param name="claimStatus"><s:property value="status" /></s:param>
-                            </s:action>
+                            <div>
+                                <s:action name="getExtra" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                    <s:param name="claimStatus"><s:property value="status" /></s:param>
+                                </s:action>
+                            </div>
 
-                            <s:action name="getEngineerReport" namespace="/prv/p" executeResult="true">
-                                <s:param name="claimId"><s:property value="id" /></s:param>
-                                <s:param name="claimStatus"><s:property value="status" /></s:param>
-                            </s:action>
+                            <div>
+                                <s:action name="getEngineerReport" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                    <s:param name="claimStatus"><s:property value="status" /></s:param>
+                                </s:action>
+                            </div>
 
                         </td>
                     </tr>

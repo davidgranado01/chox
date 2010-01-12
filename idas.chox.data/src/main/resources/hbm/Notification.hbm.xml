@@ -5,6 +5,7 @@
     <id column="id" name="id">
       <generator class="increment"/>
     </id>
+    <version column="version" name="version" unsaved-value="null"/>
     <property column="type" name="type"/>
     <property column="message" name="message"/>
     <property column="created_date" name="createdDate"/>

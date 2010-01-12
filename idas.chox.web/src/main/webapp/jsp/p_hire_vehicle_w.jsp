@@ -36,6 +36,11 @@
 
         var form = $("#formUpdateHireVehicle");
 
+        var fsets =  $('legend',form);
+        fsets.click(function(){ $(this).next().toggle();});
+        fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
+        fsets.mouseout(function(){ $(this).css("cursor","normal");});
+
         form.validate(
         {
             errorLabelContainer: "#HVDmessageBox",
@@ -63,7 +68,7 @@
             }
         });
 
-        ui.ajaxForm(form);
+        ui.ajaxForm(form,null,'html');
         
     }); 
         
@@ -71,9 +76,10 @@
 
 <form id="formUpdateHireVehicle" action="<%=request.getContextPath()%>/prv/p/updateVehicleHire.action" class="XXentity-form">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-    <fieldset class="x-fieldset">
+    <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
+    <fieldset class="x-fieldset partial">
         <legend>Hire Vehicle Details</legend>
-        <div style="display:none" class="form-container">            
+        <div class="form-container">            
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Manufacturer<span class="mandatory">*</span></label>
@@ -119,8 +125,9 @@
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
             </div>
-            <div class="chox-form-submit-result">&nbsp;</div>   
-            <div id="HVDmessageBox" class="action-error-msg"></div>
+
+            <div id="HVDmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
+            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
 </form> 

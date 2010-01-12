@@ -11,7 +11,8 @@ package idas.chox.core.services;
  */
 public interface DataService {
 
-    public void save(final Object object);
-    public void delete(final Object object);
-    public Object get(final Class c, final int id);
+    void save(final Object object);
+    void delete(final Object object);
+    void evict(Object object);
+    Object get(final Class c, final int id);
 }

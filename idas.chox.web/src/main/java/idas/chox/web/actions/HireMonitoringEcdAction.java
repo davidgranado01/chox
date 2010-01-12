@@ -4,8 +4,6 @@
  */
 package idas.chox.web.actions;
 
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.ReasonOfDelay;
@@ -21,9 +19,8 @@ import java.util.List;
  *
  * @author Emmanuel
  */
-public class HireMonitoringEcdAction extends BaseModelAction implements ModelDriven<HireMonitoringEcd>, Preparable {
+public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd> {
 
-    private HireMonitoringEcd model;
     private ReasonOfDelayService reasonOfDelayService;
     private Integer iECDFormAccessRight;
     private List reasonOfDelay;
@@ -32,33 +29,14 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
     private ClaimAnomalousChecker newECDAddedChecker;
     private boolean isUpdateInsurer;
 
-    public Integer getIECDFormAccessRight() {
-        return iECDFormAccessRight;
-    }
-
-    public void setIECDFormAccessRight(Integer iECDFormAccessRight) {
-        this.iECDFormAccessRight = iECDFormAccessRight;
-    }
-
-    public int getReasonOfDelayId() {
-        return reasonOfDelayId;
-    }
-
-    public void setReasonOfDelayId(int reasonOfDelayId) {
-        this.reasonOfDelayId = reasonOfDelayId;
-    }
-
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_HIRE_MONITORING;
     }
 
-    public HireMonitoringEcd getModel() {
-        return model;
-    }
-
-    public void prepare() throws Exception {
-        model = new HireMonitoringEcd();
+    @Override
+    public HireMonitoringEcd loadModel(){
+        return new HireMonitoringEcd();
     }
 
     public String addNewHireMonitoringEcd() {
@@ -70,7 +48,6 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
                 ReasonOfDelay reasonOfDelayObject = reasonOfDelayService.getReasonOfDelay(reasonOfDelayId);
                 model.setReason(reasonOfDelayObject.getName());
 
-                Claim claim = claimService.getClaim(claimId);
                 claim.addHireMonitoringEcd(model);
 
                 List notifications = newECDAddedChecker.getAnomalousNotifications(claim);
@@ -80,12 +57,12 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
                     claim.AddNotification(new EcdUpdatedNotification());
                 }
 
-                claimService.updateClaim(claim);
+                super.updateModel();
 
             }
 
         } catch (Exception ex) {
-            this.getActionResponse().AddError(ex.getMessage());
+            handleException(ex);
         }
 
         return SUCCESS;
@@ -142,24 +119,31 @@ public class HireMonitoringEcdAction extends BaseModelAction implements ModelDri
         this.lookupService = lookupService;
     }
 
-    /**
-     * @param claimAnomalousChecker the claimAnomalousChecker to set
-     */
     public void setNewECDAddedChecker(ClaimAnomalousChecker claimAnomalousChecker) {
         this.newECDAddedChecker = claimAnomalousChecker;
     }
 
-    /**
-     * @return the isUpdateInsurer
-     */
     public boolean isIsUpdateInsurer() {
         return isUpdateInsurer;
     }
 
-    /**
-     * @param isUpdateInsurer the isUpdateInsurer to set
-     */
     public void setIsUpdateInsurer(boolean isUpdateInsurer) {
         this.isUpdateInsurer = isUpdateInsurer;
+    }
+
+    public Integer getIECDFormAccessRight() {
+        return iECDFormAccessRight;
+    }
+
+    public void setIECDFormAccessRight(Integer iECDFormAccessRight) {
+        this.iECDFormAccessRight = iECDFormAccessRight;
+    }
+
+    public int getReasonOfDelayId() {
+        return reasonOfDelayId;
+    }
+
+    public void setReasonOfDelayId(int reasonOfDelayId) {
+        this.reasonOfDelayId = reasonOfDelayId;
     }
 }

@@ -4,40 +4,38 @@
  */
 package idas.chox.web.actions;
 
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.Claim;
+import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.services.InsurerService;
+import idas.chox.core.services.LookupService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.service.security.ApplicationAccessibility;
-import net.sf.json.JSONObject;
+import java.util.List;
 
 /**
  *
  * @author Emmanuel
  */
-public class ThirdPartyAction extends BaseModelAction implements ModelDriven<ThirdParty>, Preparable {
+public class ThirdPartyAction extends ClaimModelAction<ThirdParty> {
 
     private VehicleClassService vehicleClassService;
     private InsurerService insurerService;
-    private ThirdParty model;
+    private LookupService lookupService;
     private int insurerId;
     private int vehicleClassId;
+    private List vehicleClasses;
+    private List insurers;
 
-    public ThirdParty getModel() {
-        return model;
-    }
-
-    public void prepare() throws Exception {
-        Claim claim = getClaim();
-        model = claim.getThirdParty();
-        if (model == null) {
-            model = new ThirdParty();
-            claim.setThirdParty(model);
+    @Override
+    public ThirdParty loadModel() {
+        ThirdParty thirdParty = claim.getThirdParty();
+        if (thirdParty != null) {
+            return thirdParty;
         }
+        return new ThirdParty();
     }
 
+    @Override
     public String updateModel() {
 
         if (vehicleClassId >= 0) {
@@ -47,22 +45,8 @@ public class ThirdPartyAction extends BaseModelAction implements ModelDriven<Thi
         if (insurerId >= 0) {
             model.setInsurer(this.insurerService.getInsurer(insurerId));
         }
-        try {
-            boolean isTransient = model.isTransient();
-            Claim claim = getClaim();
-            this.claimService.updateClaim(claim);
-            if (isTransient) {
-                this.getActionResponse().AssignNewIdResult(model.getId());
-            }
-        } catch (Exception ex) {
-            this.actionResult = "ERROR :" + ex.getMessage();
-        }
-        return SUCCESS;
-    }
-
-    public String getJsonData() {
-        JSONObject jObject = JSONObject.fromObject(this.model);
-        return jObject.toString();
+        claim.setThirdParty(model);
+        return super.updateModel();
     }
 
     @Override
@@ -92,5 +76,32 @@ public class ThirdPartyAction extends BaseModelAction implements ModelDriven<Thi
 
     public void setInsurerService(InsurerService insurerService) {
         this.insurerService = insurerService;
+    }
+
+    public void setLookupService(LookupService lookupService) {
+        this.lookupService = lookupService;
+    }
+
+    public List getVehicleClasses() {
+        if (vehicleClasses == null) {
+            vehicleClasses = lookupService.getVehicleClasses();
+        }
+        return vehicleClasses;
+    }
+
+    public List getInsurers() {
+
+        if (insurers == null) {
+
+            if (this.getAuthenticatedUser().getChorganisation() != null) {
+                Chorganisation currentCho = this.getAuthenticatedUser().getChorganisation();
+                insurers = this.lookupService.getInsurers(currentCho.getId());
+            } else {
+                insurers = this.lookupService.getInsurers();
+            }
+
+        }
+
+        return insurers;
     }
 }

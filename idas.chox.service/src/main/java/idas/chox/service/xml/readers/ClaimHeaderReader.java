@@ -3,6 +3,7 @@ package idas.chox.service.xml.readers;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.ClaimService;
@@ -14,7 +15,6 @@ import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
 import org.w3c.dom.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
 
 public class ClaimHeaderReader extends BaseEntityReader {
@@ -83,6 +83,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
         ClaimService claimService = getBordereauRederContext().getClaimService();
         ChorganisationService chorganisationService = getBordereauRederContext().getChorganisationService();
         BreBandService breBandService = getBordereauRederContext().getBreBandService();
+        SecurityInfoProvider securityInfoProvider = getBordereauRederContext().getSecurityInfoProvider();
+
         if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
 
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
@@ -133,7 +135,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setGtaNoticeDate(gtaNoticeDate);
             claim.setIndemnityAmount(new BigDecimal("0.00"));
             claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
-            claim.setChorganisation(chorganisationService.getCurrentCHOrganisation());
+            claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
         }
 
         claimResult.setClaim(claim);

@@ -42,6 +42,7 @@ import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
+import idas.chox.web.viewdata.AttachmentViewData;
 import idas.chox.web.viewdata.CommentViewData;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 import idas.chox.web.viewdata.HistoryViewData;
@@ -941,7 +942,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getAttachments() {
 
         List<Attachment> attachments = claim.getAttachments();
-        jObject = JSONArray.fromObject(attachments);
+
+        List<AttachmentViewData> viewDatas = new ArrayList<AttachmentViewData>();
+        for (Attachment a : attachments) {
+            viewDatas.add(new AttachmentViewData(a));
+        }
+
+        jObject = JSONArray.fromObject(viewDatas);
         return SUCCESS;
     }
 

@@ -73,7 +73,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             }
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
         }
     }
     
@@ -88,7 +88,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             }
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -104,7 +104,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             setActionResponse(response);
             
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -119,7 +119,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             setActionResponse(response);
             
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
         return SUCCESS;

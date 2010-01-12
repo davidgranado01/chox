@@ -1,11 +1,9 @@
-package idas.chox.test;
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-
+package idas.chox.test;
 
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.model.Chorganisation;
@@ -27,14 +25,13 @@ public class FakeSecurityInfoProvider implements SecurityInfoProvider  {
         currentUser.setId(999);
         currentUser.setFirstName("UnitTest");
         currentUser.setLastName("User");
+        currentUser.setVersion(1);
 
         // SET CHORGANISATION
         Chorganisation chorganisation = new Chorganisation();
         chorganisation.setId(1006);
+        chorganisation.setVersion(1);
         currentUser.setChorganisation(chorganisation);
-
-
-
     }
 
     /**
@@ -93,7 +90,6 @@ public class FakeSecurityInfoProvider implements SecurityInfoProvider  {
         this.currentUser = currentUser;
     }
 
-    @Override
     public boolean isInRoleOf(String role) {
         return true;
     }

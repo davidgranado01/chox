@@ -92,7 +92,7 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
             }
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -108,7 +108,7 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
             setActionResponse(response);
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -124,7 +124,7 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
             setActionResponse(response);
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 

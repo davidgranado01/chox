@@ -102,7 +102,7 @@ public class InsurerBreBandMappingAction extends BaseAction {
             setJsonData(insurerBreBand, insurerBreBand.size());
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -114,7 +114,7 @@ public class InsurerBreBandMappingAction extends BaseAction {
         try {
             adminInsurerService.addBreBandChorganisation(this.breBandId, this.chorganisationId);
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -130,7 +130,7 @@ public class InsurerBreBandMappingAction extends BaseAction {
             }
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 

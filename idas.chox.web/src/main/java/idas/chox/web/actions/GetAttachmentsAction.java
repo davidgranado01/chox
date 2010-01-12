@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 
-public class GetAttachmentsAction extends BaseModelAction {
+public class GetAttachmentsAction extends BaseAction {
 
     private AttachmentService service;
     private List<AttachmentViewData> attachments;
+    private Integer claimId;
 
     public void setAttachmentService(AttachmentService service) {
         this.service = service;
@@ -22,7 +23,6 @@ public class GetAttachmentsAction extends BaseModelAction {
         return "{totalCount:" + this.attachments.size() + ",results:" + jObject.toString() + "}";
     }
 
-    @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_PAYMENT_PACK;
     }
@@ -39,5 +39,9 @@ public class GetAttachmentsAction extends BaseModelAction {
             attachments.add(new AttachmentViewData(a));
         }
         return SUCCESS;
+    }
+
+    public void setClaimId(Integer claimId) {
+        this.claimId = claimId;
     }
 }

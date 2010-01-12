@@ -33,19 +33,22 @@ var ui = function(){
         return false;
     }
 
-    function onSubmitCompleted(responseText, statusText)  {
-
-        response = eval('(' + responseText.trim() + ')');
-
+    function onSubmitCompleted(responseText, statusText,form,responseType)  {
         if(elementToBlock)
         {
             elementToBlock.unblock();
             var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
 
-            if(response)
+            if(responseText && responseType == 'html')
             {
-                if(response.isValid){
-                   if(response.resultType && response.resultType == 'New')
+                $(form).parent().html(responseText);
+          
+            }
+            else if(responseText)
+            {
+                var response = eval('(' + responseText.trim() + ')');
+                if(response && response.isValid){
+                    if(response.resultType && response.resultType == 'New')
                     {
                         var newObjectId =  parseInt(response.result);
                         var hvObjectId = elementToBlock.find("input[name='objectId']");
@@ -125,12 +128,12 @@ var ui = function(){
         return dateField;
     }
 
-    function ajaxForm(form,successCallBack){
+    function ajaxForm(form,successCallBack,responseType){
 
         function onAfterSubmit(responseText, statusText){
-            onSubmitCompleted(responseText, statusText);
+            onSubmitCompleted(responseText, statusText,form,responseType);
             if(successCallBack){
-                successCallBack(responseText, statusText);
+                successCallBack(responseText, statusText,form,responseType);
             }
         }
 

@@ -4,20 +4,15 @@
  */
 package idas.chox.web.actions;
 
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.Claim;
 import idas.chox.core.model.Invoice;
 import idas.chox.service.security.ApplicationAccessibility;
-import net.sf.json.JSONObject;
 
 /**
  *
  * @author Emmanuel
  */
-public class ExtraAction extends BaseModelAction implements ModelDriven<Invoice>, Preparable {
+public class ExtraAction extends ClaimModelAction<Invoice> {
 
-    private Invoice model;
     private Integer cdwQty;
     private Integer automaticQty;
     private Integer satNavQty;
@@ -30,50 +25,35 @@ public class ExtraAction extends BaseModelAction implements ModelDriven<Invoice>
     private Integer deliveryCollectionQty;
     private Integer estateQty;
 
-    public Invoice getModel() {
-        return model;
-    }
+    @Override
+    public Invoice loadModel() {
 
-    public void prepare() throws Exception {
-
-        model = getClaim().getInvoice();
-
-        if (model == null) {
-            model = new Invoice();
+        Invoice invoice = getClaim().getInvoice();
+        if (invoice != null) {
+            return invoice;
         }
+        return new Invoice();
     }
 
+    @Override
     public String updateModel() {
-        try {
-            model.setCdwQty(cdwQty);
-            model.setAutomaticQty(automaticQty);
-            model.setSatNavQty(satNavQty);
-            model.setBabySeatQty(babySeatQty);
-            model.setTowBarsQty(towBarsQty);
-            model.setNonStandardInsurancePremiumQty(nonStandardInsurancePremiumQty);
-            model.setAdminQty(adminQty);
-            model.setRoofRackQty(roofRackQty);
-            model.setDualControlQty(dualControlQty);
-            model.setDeliveryCollectionQty(deliveryCollectionQty);
-            model.setEstateQty(estateQty);
 
-            Claim claim = getClaim();
-            claim.setInvoice(model);
+        model.setCdwQty(cdwQty);
+        model.setAutomaticQty(automaticQty);
+        model.setSatNavQty(satNavQty);
+        model.setBabySeatQty(babySeatQty);
+        model.setTowBarsQty(towBarsQty);
+        model.setNonStandardInsurancePremiumQty(nonStandardInsurancePremiumQty);
+        model.setAdminQty(adminQty);
+        model.setRoofRackQty(roofRackQty);
+        model.setDualControlQty(dualControlQty);
+        model.setDeliveryCollectionQty(deliveryCollectionQty);
+        model.setEstateQty(estateQty);
+        claim.setInvoice(model);
 
-            claimService.updateClaim(claim);
-
-            this.actionResult = "1";
-        } catch (Exception ex) {
-            this.actionResult = "ERROR :" + ex.getMessage();
-        }
-        return SUCCESS;
+        return super.updateModel();
     }
-
-    public String getJsonData() {
-        JSONObject jObject = JSONObject.fromObject(this.model);
-        return jObject.toString();
-    }
-
+  
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_INVOICE_DETAIL;

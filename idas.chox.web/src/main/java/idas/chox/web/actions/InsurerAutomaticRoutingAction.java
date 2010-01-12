@@ -51,7 +51,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
             }
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
         }
 
     }
@@ -105,7 +105,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
             }
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
         return SUCCESS;
@@ -120,7 +120,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
             adminInsurerService.updateAutomaticRouting(automaticRouting);
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -133,7 +133,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
         try {
             items = adminInsurerService.getAvailableWorkgroups(this.insurerId);
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
         }
 
         return items;

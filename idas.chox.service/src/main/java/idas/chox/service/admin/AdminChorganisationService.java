@@ -2,11 +2,11 @@ package idas.chox.service.admin;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.services.ChorganisationService;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.SecureDataService;
 import idas.chox.service.ActionResponse;
 import java.util.List;
 
-public class AdminChorganisationService extends DataService {
+public class AdminChorganisationService extends SecureDataService {
 
     private ActionResponse actionResponse;
     private ChorganisationService chorganisationService;

@@ -51,7 +51,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
             }
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
         }
     }
 
@@ -87,7 +87,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
             setActionResponse(response);
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -112,7 +112,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
             }
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -128,7 +128,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
             }
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
         return SUCCESS;

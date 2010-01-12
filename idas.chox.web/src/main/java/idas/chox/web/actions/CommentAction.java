@@ -1,52 +1,27 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package idas.chox.web.actions;
 
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
 import idas.chox.service.security.ApplicationAccessibility;
-import idas.chox.web.viewdata.CommentViewData;
-import java.util.ArrayList;
-import java.util.List;
-import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
-public class CommentAction extends BaseModelAction implements ModelDriven<Comment>, Preparable {
+public class CommentAction extends ClaimModelAction<Comment> {
 
-    private Comment model;
     private String comment;
-    private JSONArray jObject;
 
     public String createNewComment() {
+        model.setComment(getComment());
+        claim.addComment(model);
 
-        try {
-
-            Claim claim = getClaim();
-            model.setComment(getComment());
-            claim.addComment(model);
-            this.claimService.updateClaim(claim);
-
-        } catch (Exception ex) {
-            handleException(this, ex);
-        }
-
-        return SUCCESS;
+        return super.updateModel();
     }
 
     public String getJsonData() {
+        JSONObject jObject = JSONObject.fromObject(this.model);
         return jObject.toString();
-    }
-
-    public String getComments() {
-        Claim claim = claimService.getClaim(claimId);
-        List<Comment> comments = claim.getComments();
-        List<CommentViewData> viewDatas = new ArrayList<CommentViewData>();
-
-        for (Comment c : comments) {
-            viewDatas.add(new CommentViewData(c));
-        }
-
-        this.jObject = JSONArray.fromObject(viewDatas);
-        return SUCCESS;
     }
 
     @Override
@@ -62,15 +37,8 @@ public class CommentAction extends BaseModelAction implements ModelDriven<Commen
         this.comment = comment;
     }
 
-    public Comment getModel() {
-        return model;
-    }
-
-    public void prepare() throws Exception {
-        model = new Comment();
-    }
-
-    public String doRenderActionPage() {
-        return SUCCESS;
+    @Override
+    public Comment loadModel() {
+        return new Comment();
     }
 }

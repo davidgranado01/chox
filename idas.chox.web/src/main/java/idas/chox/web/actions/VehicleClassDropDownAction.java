@@ -35,7 +35,7 @@ public class VehicleClassDropDownAction extends BaseAction {
             vehicleClasses = vehicleClassCeilingService.getAvailableVehicleClassCeilingByInsurer(this.insurerId);
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
         return SUCCESS;

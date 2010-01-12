@@ -5,6 +5,7 @@
     <id column="id" name="id">
       <generator class="increment"/>
     </id>
+    <version column="version" name="version" unsaved-value="null"/>
     <property column="date_invoiced" name="dateInvoiced" not-null="true"/>
     <property column="hire_net" name="hireNet" not-null="true"/>
     <property column="hire_vat" name="hireVat" not-null="true"/>

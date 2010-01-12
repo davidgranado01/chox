@@ -21,12 +21,12 @@ import idas.chox.core.services.VehicleClassCeilingService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.service.ActionResponse;
-import idas.chox.data.services.DataService;
+import idas.chox.data.services.SecureDataService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminInsurerService extends DataService {
+public class AdminInsurerService extends SecureDataService {
 
     private ActionResponse actionResponse;
     private BreBandService breBandService;

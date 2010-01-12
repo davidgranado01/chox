@@ -5,68 +5,38 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.model.Incident;
-import idas.chox.core.model.Solicitor;
 import idas.chox.service.security.ApplicationAccessibility;
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.Claim;
 import idas.chox.core.model.Injury;
-import net.sf.json.JSONObject;
 
 /**
  *
  * @author Emmanuel
  */
-public class SolicitorAction extends BaseModelAction implements ModelDriven<Solicitor>, Preparable {
+public class SolicitorAction extends ClaimModelAction<Injury> {
 
-    private Solicitor model;
-
-    public Solicitor getModel() {
-        return model;
-    }
-
-    public void prepare() throws Exception {
-        Claim claim = getClaim();
-
-        if (claim != null) {
-            Incident incident = claim.getIncident();
-
-            if (incident == null) {
-                incident = new Incident();
-                claim.setIncident(incident);
-            }
-
+    @Override
+    public Injury loadModel() {
+        Incident incident = claim.getIncident();
+        if (incident != null) {
             Injury injury = incident.getInjury();
-
-            if (injury == null) {
-                injury = new Injury();
-                injury.setIncident(incident);
-                incident.setInjury(injury);
-            }
-
-            model = injury.getSolicitor();
-
-            if (model == null) {
-                model = new Solicitor();
-                injury.setSolicitor(model);
+            if (injury != null) {
+                return injury;
             }
         }
+        return new Injury();
     }
 
+    @Override
     public String updateModel() {
-        try {           
-            Claim claim = getClaim();
-            this.claimService.updateClaim(claim);           
-        } catch (Exception ex) {
-            logger.error(ex);
-            getActionResponse().AddError(ex.getMessage());
+        Incident incident = claim.getIncident();
+        if (incident == null) {
+            incident = new Incident();
         }
-        return SUCCESS;
-    }
+        incident.setInjury(model);
+        model.setIncident(incident);
+        claim.setIncident(incident);
 
-    public String getJsonData() {
-        JSONObject jObject = JSONObject.fromObject(this.model);
-        return jObject.toString();
+        return super.updateModel();
     }
 
     @Override

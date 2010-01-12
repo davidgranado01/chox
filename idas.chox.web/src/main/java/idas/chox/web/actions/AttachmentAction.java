@@ -3,15 +3,12 @@ package idas.chox.web.actions;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileInputStream;
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.common.AttachmentCategory;
 import idas.chox.core.model.Attachment;
 import idas.chox.core.model.AttachmentType;
 import idas.chox.core.model.Claim;
 import idas.chox.core.services.AttachmentTypeService;
 import idas.chox.core.util.FileHelper;
-import idas.chox.data.services.BaseDataService;
 import idas.chox.service.security.ApplicationAccessibility;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -19,10 +16,9 @@ import java.sql.SQLException;
 import java.util.List;
 import net.sf.json.JSONObject;
 
-public class AttachmentAction extends BaseModelAction implements ModelDriven<Attachment>, Preparable {
+public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
-    private Attachment model;
     private AttachmentTypeService attachmentTypeService;
     private File attachmentFile;
     private String remark;
@@ -174,8 +170,7 @@ public class AttachmentAction extends BaseModelAction implements ModelDriven<Att
         return SUCCESS;
     }
 
-    public String detail()
-    {
+    public String detail() {
         return SUCCESS;
     }
 // </editor-fold>
@@ -243,15 +238,13 @@ public class AttachmentAction extends BaseModelAction implements ModelDriven<Att
         return ApplicationAccessibility.TAB_PAYMENT_PACK;
     }
 
-    public Attachment getModel() {
-        return null;
-    }
+    @Override
+    protected Attachment loadModel() {
 
-    public void prepare() throws Exception {
         if (getFileId() > 0) {
-            model = (Attachment) baseDataService.get(Attachment.class, getFileId());
+            return (Attachment) baseDataService.get(Attachment.class, getFileId());
         } else {
-            model = new Attachment();
+            return new Attachment();
         }
     }
 }

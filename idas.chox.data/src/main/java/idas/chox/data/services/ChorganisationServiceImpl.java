@@ -163,9 +163,4 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         return chorganisations;
     }
 
-    public Chorganisation getCurrentCHOrganisation() {
-        Chorganisation chorg = new Chorganisation();
-        chorg.setId(getCurrentUser().getChorganisation().getId());
-        return chorg;
-    }
 }

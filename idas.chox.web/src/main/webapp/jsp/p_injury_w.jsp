@@ -5,9 +5,15 @@
 
     $(function(){
         var form = $("#formUpdateInjury");
+        
+        var fsets =  $('legend',form);
+        fsets.click(function(){ $(this).next().toggle();});
+        fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
+        fsets.mouseout(function(){ $(this).css("cursor","normal");});
+
         form.validate(
         {
-            errorLabelContainer: "#InjuryMessageBox",
+            errorLabelContainer: "#injuryMsgBox",
             rules: {
                 name:{required:true},
                 email:{email:true}
@@ -17,16 +23,17 @@
                 email:{email:"You must supply a valid email address for 'Email'"}
             }
         });
-        ui.ajaxForm(form);
+        ui.ajaxForm(form,null,'html');
 
     });
 </script>
 
 <form id="formUpdateInjury" action="<%=request.getContextPath()%>/prv/p/updateInjury.action" class="XXentity-form" name="formUpdateInjury">
-    <input type="hidden" name="claimId" value='<s:property value="id"/>'
-           <fieldset class="x-fieldset">
+    <input name="claimId" type="hidden" value="<s:property value="claimId" />" />
+    <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
+    <fieldset class="x-fieldset partial">
         <legend>Injury</legend>
-        <div style="display:none" class="form-container">
+        <div class="form-container">
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -72,8 +79,8 @@
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
             </div>
-            <div class="chox-form-submit-result">&nbsp;</div>
-            <div id="InjuryMessageBox" style="text-align:center"></div>  
+            <div id="injuryMsgBox" class="action-error-msg"><s:property value="actionError" /></div>
+            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
 </form>

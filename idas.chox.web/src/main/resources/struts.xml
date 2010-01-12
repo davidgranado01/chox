@@ -35,7 +35,13 @@
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
             </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="parse">true</param>
+                <param name="id">${id}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
         </action>
 
         <action name ="processClaimsAction" class ="idas.chox.web.actions.ProcessClaimsAction">
@@ -98,9 +104,6 @@
         <action name="openClaimDetail" class="idas.chox.web.actions.ClaimAction">
             <result name="success">/jsp/claim_detail.jsp</result>
             <result name="ClaimNotFound">/jsp/claim_not_found.jsp</result>
-        </action>
-        <action name="UpdateClaimDetail" class="idas.chox.web.actions.ClaimAction" method="updateClaimDetail">
-            <result name="success" type="redirect">inbox.action</result>
         </action>
         <action name="route" class="idas.chox.web.actions.ClaimAction" method="route">
             <result name="success" type="redirect-action">
@@ -403,7 +406,14 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateCustomer" class="idas.chox.web.actions.CustomerAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_customer_details_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">getCustomer</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
         </action>
        <!-- End Customer Detail --><!-- Start Injury Detail -->
         <action name="getInjury" class="idas.chox.web.actions.InjuryAction">
@@ -412,7 +422,14 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateInjury" class="idas.chox.web.actions.InjuryAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_injury_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">getInjury</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
         </action>
        <!-- End Injury Detail -->
        <!-- Start Incident Detail -->
@@ -422,7 +439,14 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateIncident" class="idas.chox.web.actions.IncidentAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_incident_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">getIncident</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
         </action>
        <!-- End Incident Detail -->
        <!-- Start Solicitor Detail -->
@@ -432,7 +456,14 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateSolicitor" class="idas.chox.web.actions.SolicitorAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_injury_solicitor_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">getSolicitor</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
         </action>
        <!-- End Solicitor Detail -->
        <!-- Start ThirdPary Detail -->
@@ -442,7 +473,14 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateThirdParty" class="idas.chox.web.actions.ThirdPartyAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_third_party_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">getThirdParty</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
         </action>
        <!-- End ThirdPary Detail -->
        <!-- Start Witness Detail -->
@@ -452,7 +490,14 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateWitness" class="idas.chox.web.actions.WitnessAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_witness_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">getWitness</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
         </action>
        <!-- End Witness Detail -->
        <!-- Start Invoice Detail -->
@@ -462,7 +507,14 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateInvoice" class="idas.chox.web.actions.InvoiceAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_invoice_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">getInvoice</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
         </action>
        <!-- End Invoice Detail -->
        <!-- Start CustomerVehicleDamage Detail -->
@@ -472,7 +524,14 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateCustomerVehicleDamage" class="idas.chox.web.actions.CustomerVehicleDamageAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_customer_vehicle_damage_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">getCustomerVehicleDamage</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
         </action>
        <!-- End CustomerVehicleDamage Detail -->
        <!-- Start Extra Detail -->
@@ -482,7 +541,14 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateExtra" class="idas.chox.web.actions.ExtraAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_extras_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">getExtra</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
         </action>
        <!-- End Extra Detail -->
        <!-- Start HireMonitoringDetail -->
@@ -492,7 +558,14 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateHireMonitorDetail" class="idas.chox.web.actions.HireMonitoringDetailAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_hire_monitoring_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">getHireMonitoringDetail</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
         </action>
        <!-- End HireMonitoringDetail -->
        <!-- Start HireMonitoringEcd -->
@@ -515,7 +588,14 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateEngineerReport" class="idas.chox.web.actions.EngineerReportAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_eng_report_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">getEngineerReport</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
         </action>
        <!-- End EngineerReport Detail -->
        <!-- Start VehicleHire Detail -->
@@ -525,7 +605,14 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateVehicleHire" class="idas.chox.web.actions.VehicleHireAction" method="updateModel">
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_hire_vehicle_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">getVehicleHire</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
         </action>
        <!-- End VehicleHire Detail -->
        <!-- Start History Detail -->

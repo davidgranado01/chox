@@ -113,7 +113,7 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
             }
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -129,7 +129,7 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
             setActionResponse(response);
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -147,7 +147,7 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
             }
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -163,7 +163,7 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
             setActionResponse(response);
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 

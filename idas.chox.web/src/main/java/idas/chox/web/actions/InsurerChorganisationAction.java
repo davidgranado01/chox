@@ -67,7 +67,7 @@ public class InsurerChorganisationAction extends BaseAction {
             setJsonData(insurerChorganisations, insurerChorganisations.size());
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -88,7 +88,7 @@ public class InsurerChorganisationAction extends BaseAction {
             setJsonData(credithireorganisation, credithireorganisation.size());
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -114,7 +114,7 @@ public class InsurerChorganisationAction extends BaseAction {
             }
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -133,7 +133,7 @@ public class InsurerChorganisationAction extends BaseAction {
             }
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 

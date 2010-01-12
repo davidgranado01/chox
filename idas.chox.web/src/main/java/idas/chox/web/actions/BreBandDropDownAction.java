@@ -33,7 +33,7 @@ public class BreBandDropDownAction extends BaseAction {
             this.breBands = services.getInsurerBreBandsByInsurer(this.insurerId);
             
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
         

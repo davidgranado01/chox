@@ -83,6 +83,7 @@ public abstract class BaseActivity implements Activity {
     }
 
     protected void afterProcess(Claim claim) throws Exception {
+
         getDataService().save(claim);
         logTransaction(claim);
 

@@ -6,6 +6,7 @@
     <id column="id" name="id">
       <generator class="increment"/>
     </id>
+    <version column="version" name="version" unsaved-value="null"/>
     <property column="name" name="name"/>
     <property column="description" name="description"/>
     <property column="is_active" name="status"/>

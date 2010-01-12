@@ -4,46 +4,43 @@
  */
 package idas.chox.web.actions;
 
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.Entity;
 import idas.chox.core.services.ClaimService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.security.ApplicationAccessibility;
 import java.util.Set;
+import org.hibernate.StaleObjectStateException;
 
 /**
  *
  * @author Emmanuel
  */
-public abstract class BaseModelAction extends BaseAction {
+public abstract class ClaimModelAction<T extends Entity> extends BaseAction implements ModelDriven<T>, Preparable {
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     public static final String READ_ONLY = "r";
     public static final String EDITABLE = "w";
     public static final String DECLINE = "decline";
     protected int claimId = 0;
-    protected String claimStatus;
-    protected String actionResult;
+    private Integer currentVersion;
     protected ClaimService claimService;
     protected BaseDataService baseDataService;
     protected ApplicationAccessibility applicationAccessibility;
-    private Claim claim;
+    protected Claim claim;
+    protected T model;
     // </editor-fold>
 
     abstract String getTabName();
 
-    public String getCaimStatus() {
-        return claimStatus;
-    }
-
-    public void setClaimStatus(String claimStatus) {
-        this.claimStatus = claimStatus;
-    }
-
     public Claim getClaim() {
-        if (claim == null) {
-            claim = this.claimService.getClaim(claimId);
-        }
         return claim;
+    }
+
+    public String getClaimStatus() {
+        return claim.getStatus();
     }
 
     public int getClaimId() {
@@ -54,16 +51,57 @@ public abstract class BaseModelAction extends BaseAction {
         this.claimId = claimId;
     }
 
+    public void prepare() throws Exception {
+
+        claim = this.claimService.getClaim(claimId);
+
+        if (claim == null) {
+            throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
+        }
+
+        model = loadModel();
+
+        checkVersion(model);
+    }
+
+    protected T loadModel() {
+        return null;
+    }
+
     @Override
     public String execute() {
         Set roles = getAuthenticatedUser().getRoles();
         String tabName = getTabName();
-        claimStatus = getCaimStatus();
+        String claimStatus = claim.getStatus();
         short accessRight = applicationAccessibility.checkTabAccessibility(tabName, roles, claimStatus);
 
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
 
         return result;
+    }
+
+    public String updateModel() {
+
+        try {
+            this.claimService.updateClaim(claim);
+            this.setActionResult("Your changes have been saved.");
+        } catch (Exception ex) {
+            handleException(ex);
+        }
+
+        return SUCCESS;
+    }
+
+    public T getModel() {
+        return model;
+    }
+
+    private void checkVersion(T model) {
+        if (currentVersion != null && !model.getVersion().equals(currentVersion)) {
+            StaleObjectStateException ex = new StaleObjectStateException(model.getClass().getName(), model.getId());
+            this.handleException(ex);
+            throw ex;
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="Services">
@@ -77,6 +115,13 @@ public abstract class BaseModelAction extends BaseAction {
 
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
         this.applicationAccessibility = applicationAccessibility;
+    }
+
+    /**
+     * @param currentModelVersion the currentModelVersion to set
+     */
+    public void setCurrentVersion(Integer currentVersion) {
+        this.currentVersion = currentVersion;
     }
     // </editor-fold>
 }

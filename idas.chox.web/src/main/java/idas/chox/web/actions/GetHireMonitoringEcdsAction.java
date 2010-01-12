@@ -6,6 +6,7 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
+import idas.chox.core.services.ClaimService;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 import java.util.ArrayList;
@@ -16,9 +17,15 @@ import net.sf.json.JSONArray;
  *
  * @author Emmanuel
  */
-public class GetHireMonitoringEcdsAction extends BaseModelAction {
+public class GetHireMonitoringEcdsAction extends BaseAction {
 
     private List<HireMonitoringEcdViewData> hireMonitoringEcds;
+    private Integer claimId;
+    private ClaimService claimService;
+
+    public void setClaimId(Integer claimId) {
+        this.claimId = claimId;
+    }
 
     public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.hireMonitoringEcds);
@@ -27,7 +34,6 @@ public class GetHireMonitoringEcdsAction extends BaseModelAction {
 
     }
 
-    @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_NOTES;
     }
@@ -45,5 +51,12 @@ public class GetHireMonitoringEcdsAction extends BaseModelAction {
         }
 
         return SUCCESS;
+    }
+
+    /**
+     * @param claimService the claimService to set
+     */
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
     }
 }

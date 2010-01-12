@@ -24,7 +24,5 @@ public interface ChorganisationService {
     public boolean isChorgNameExist(String chorganisationName);
 
     public Chorganisation getChorgByName(String chorganisationName);
-
-    public Chorganisation getCurrentCHOrganisation();
 }
 

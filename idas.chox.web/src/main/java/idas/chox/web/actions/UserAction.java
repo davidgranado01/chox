@@ -70,7 +70,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
                 }
             }
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
         }
     }
 
@@ -166,7 +166,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
                 }
             }
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
         return SUCCESS;
@@ -185,7 +185,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
                 }
             }
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
         }
         return isExist;
     }
@@ -217,7 +217,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             setActionResponse(response);
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -232,7 +232,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             setActionResponse(response);
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
         
@@ -247,7 +247,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             setActionResponse(response);
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 
@@ -262,7 +262,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             setActionResponse(response);
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            handleException(ex);
             return ERROR;
         }
 

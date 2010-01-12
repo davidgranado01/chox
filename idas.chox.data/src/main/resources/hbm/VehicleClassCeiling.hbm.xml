@@ -6,6 +6,7 @@
     <id column="id" name="id">
       <generator class="increment"/>
     </id>
+    <version column="version" name="version" unsaved-value="null"/>
     <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
     <many-to-one class="idas.chox.core.model.VehicleClass" column="vehicle_class_id" name="vehicleClass"/>
     <property column="hire_net_ceiling" name="hireNetCeiling" not-null="true"/>

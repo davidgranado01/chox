@@ -6,6 +6,11 @@
     $(function(){
 
         var form = $("form#formEngRptAction");
+
+        var fsets =  $('legend',form);
+        fsets.click(function(){ $(this).next().toggle();});
+        fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
+        fsets.mouseout(function(){ $(this).css("cursor","normal");});
         
         form.validate(
         {
@@ -31,7 +36,7 @@
             } 
         });
 
-        ui.ajaxForm(form);
+        ui.ajaxForm(form,null,'html');
         
     });
     
@@ -39,9 +44,10 @@
 
 <form id="formEngRptAction" action="<%=request.getContextPath()%>/prv/p/updateEngineerReport.action" class="XXentity-form" name="formEngRptAction">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-    <fieldset class="x-fieldset">
+    <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
+    <fieldset class="x-fieldset  partial">
         <legend>Engineer Report</legend>
-        <div style="display:none" class="form-container">           
+        <div class="form-container">           
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Estimated Labour Amount<span class="mandatory">*</span></label>
                 <input type="text" class="chox-tnum" name="labourAmount" value="<s:property value="labourAmount" />"/></div>
@@ -89,7 +95,8 @@
                 <input type="submit" value="Save Changes"/>
             </div>
             <div class="chox-form-submit-result"></div>
-            <div id="EngRptmessageBox" class="action-error-msg"></div>
+            <div id="EngRptmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
+            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
 </form>

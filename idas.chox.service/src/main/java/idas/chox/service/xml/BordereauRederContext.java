@@ -4,6 +4,7 @@
  */
 package idas.chox.service.xml;
 
+import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.BusinessRulesEngService;
 import idas.chox.core.services.ChorganisationService;
@@ -23,6 +24,7 @@ public class BordereauRederContext {
     private InsurerChorganisationService insurerChorganisationService;
     private BusinessRulesEngService businessRuleEngService;
     private DataValidationParameter dataValidationParameter;
+    private SecurityInfoProvider securityInfoProvider;
 
     public ClaimService getClaimService() {
         return claimService;
@@ -86,5 +88,19 @@ public class BordereauRederContext {
 
     public void setDataValidationParameter(DataValidationParameter dataValidationParameter) {
         this.dataValidationParameter = dataValidationParameter;
+    }
+
+    /**
+     * @return the securityInfoProvider
+     */
+    public SecurityInfoProvider getSecurityInfoProvider() {
+        return securityInfoProvider;
+    }
+
+    /**
+     * @param securityInfoProvider the securityInfoProvider to set
+     */
+    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
+        this.securityInfoProvider = securityInfoProvider;
     }
 }

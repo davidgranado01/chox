@@ -8,6 +8,7 @@ import idas.chox.core.services.DataService;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Criteria;
+import org.hibernate.LockMode;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
@@ -103,6 +104,10 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
 
     public void delete(final Object object) {
         getHibernateTemplate().delete(object);
+    }
+
+    public void evict(Object object) {
+        getHibernateTemplate().evict(object);
     }
 
     protected Session getCurrentSession() {
