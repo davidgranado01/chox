@@ -1,6 +1,5 @@
 package idas.chox.web.actions;
 
-
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
 import idas.chox.core.services.AuditTrailService;
@@ -8,14 +7,18 @@ import idas.chox.web.viewdata.AuditTrailViewData;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
+import idas.chox.service.security.ApplicationAccessibility;
 
-public class AuditTrailAction extends BaseAction {
+public class AuditTrailAction extends BaseModelAction {
 
     private List<AuditTrailViewData> auditTrail;
     private AuditTrailService service;
-    private int claimId;
 
-     public String getJsonData() {
+    public String doRenderActionPage() {
+        return SUCCESS;
+    }
+
+    public String getJsonArrayData() {
         JSONArray jObject = JSONArray.fromObject(this.auditTrail);
         return "{totalCount:" + this.auditTrail.size() + ",results:" + jObject.toString() + "}";
     }
@@ -24,29 +27,24 @@ public class AuditTrailAction extends BaseAction {
         return auditTrail;
     }
 
-    public void setClaimId(int claimId) {
-        this.claimId = claimId;
-    }
-    
-    public void setAuditTrailService(AuditTrailService service)
-    {
+    public void setAuditTrailService(AuditTrailService service) {
         this.service = service;
     }
-    
-    @Override
-    public String execute() {
-    
-        Claim claim = new Claim();
-        claim.setId(claimId);
+
+    public String getAuditTrails() {
+
         List<AuditTrail> auditTrailsData = this.service.getAuditTrailByClaim(claimId);
-        
         auditTrail = new ArrayList<AuditTrailViewData>();
         
-        for(AuditTrail h : auditTrailsData)
-        {
+        for (AuditTrail h : auditTrailsData) {
             auditTrail.add(new AuditTrailViewData(h));
         }
-        
+
         return SUCCESS;
-    }    
+    }
+
+    @Override
+    String getTabName() {
+        return ApplicationAccessibility.TAB_AUDIT_TRAIL;
+    }
 }

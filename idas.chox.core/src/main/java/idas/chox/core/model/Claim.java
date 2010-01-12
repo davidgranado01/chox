@@ -356,9 +356,6 @@ public class Claim extends Entity implements Serializable {
 
         attachment.claim = this;
         attachments.add(attachment);
-
-        //add history
-        addHistory(History.New(attachment));
     }
 
     public void deleteAttachment(Attachment attachment) {

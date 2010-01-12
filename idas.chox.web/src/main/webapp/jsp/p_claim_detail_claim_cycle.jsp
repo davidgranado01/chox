@@ -1,0 +1,69 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="/struts-tags" prefix="s" %>
+
+<script type="text/javascript">
+
+    var auditTrailJsonReader;
+    var auditTrailGrid;
+    var auditTrailData;
+    var auditGrid;
+
+    $(function(){
+
+        auditTrailJsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                {name:'modifiedDate'},
+                {name:'modifiedBy'},
+                {name:'status'}
+            ]
+        });
+
+        auditTrailData = new Ext.data.Store({
+            proxy: new Ext.data.HttpProxy
+            ({url: '<%= request.getContextPath()%>/prv/p/getAuditTrails.action',method:'GET'}),
+            reader:auditTrailJsonReader
+        });
+
+        auditGrid = new Ext.grid.GridPanel({
+            listeners:  {cellclick:auditOnClick},
+            store: auditTrailData,
+            renderTo:'auditTrailGrid',
+            enableHdMenu:false,
+            layout:'fit',
+            viewConfig:{forceFit:true},
+            columns: [
+                {header: "Modified Date", width: 130, dataIndex: 'modifiedDate', sortable: true, resizable: true},
+                {header: "Modified By", width: 260, dataIndex: 'modifiedBy', sortable: true, resizable: true},
+                {header: "Status", width: 500, dataIndex: 'status', sortable: true, resizable: true}
+            ],
+            autoWidth:true,
+            height:300
+        });
+
+        auditTrailData.load(
+        {
+            params:{claimId : <s:property value="claimId" />}
+        });
+
+    });
+
+    function auditOnClick(grid, rowIndex){
+        var audit = auditGrid.getStore().getAt(rowIndex);
+
+        var title = "Claim Cycle";
+        var msg = "<b>Modified Date</b>: " + audit.get("modifiedDate")
+            + "<br/><b>Modified By</b>: " + audit.get("modifiedBy")
+            + "<br/><br/><b>Status</b>: " + audit.get("status")
+
+        propmtMsg(title, msg);
+    }
+
+
+</script>
+<div class="claim-detail-tab">
+
+    <div id="auditTrailGrid"></div>
+</div>

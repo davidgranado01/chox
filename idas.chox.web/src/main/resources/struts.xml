@@ -29,7 +29,6 @@
     </package>
     <package name="private-package" namespace="/prv" extends="home-package">
         <default-interceptor-ref name="authenticated" />
-
         <action name ="processClaim" class ="idas.chox.web.actions.ClaimActivityAction">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
@@ -43,7 +42,6 @@
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
-
         <action name ="processClaimsAction" class ="idas.chox.web.actions.ProcessClaimsAction">
             <result name ="success">/jsp/p_upload_status.jsp</result>
             <result name ="error">/jsp/p_upload_claims.jsp</result>
@@ -60,15 +58,6 @@
                 <param name="inputName">excelStream</param>
                 <param name="contentDisposition">attachment;filename="excel_report.xls"</param>
                 <param name="bufferSize">99999</param>
-            </result>
-            <result name="failed">/jsp/excel_generation_failed.jsp</result>
-        </action>
-        <action name="doExportFile" method="export" class="idas.chox.web.actions.AttachmentAction">
-            <result name="success" type="stream">
-                <param name="inputName">fileStream</param>
-                <param name="contentDisposition">${contentDisposition}</param>
-                <param name="bufferSize">99999</param>
-                <param name="contentType">${contentType}</param>
             </result>
             <result name="failed">/jsp/excel_generation_failed.jsp</result>
         </action>
@@ -339,9 +328,7 @@
         <action name="getFilterRecordCounters" class="idas.chox.web.actions.FilterRecordCounterAction">
             <result>/jsp/p_get_filter_record_counters.jsp</result>
         </action>
-        <action name="doDeleteFile" class="idas.chox.web.actions.AttachmentAction" method="delete">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
+
        <!-- ACTION PANEL VALIDATION !-->
         <action name="getActionPanel" class="idas.chox.web.actions.ClaimAction" method="getActionPanel">
             <result name="updateclaimlineofbusiness">/jsp/actionPanel/p_route_unacknowledged_claim.jsp</result>
@@ -614,28 +601,10 @@
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
-       <!-- End VehicleHire Detail -->
-       <!-- Start History Detail -->
-        <action name="getHistories" class="idas.chox.web.actions.ClaimAction" method="getHistories">
-            <result name="success">/jsp/p_jsonArrayData.jsp</result>
-        </action>
-       <!-- End History Detail -->
-       <!-- Start Audit Trail -->
-        <action name="getAuditTrail" class="idas.chox.web.actions.AuditTrailAction">
-            <result name="success">/jsp/p_jsonData.jsp</result>
-        </action>
-       <!-- End Audit Trail -->
-       <!-- Start Comment Detail -->
 
-        <action name="getAttachments" class="idas.chox.web.actions.ClaimAction" method="getAttachments">
-            <result name="success">/jsp/p_jsonArrayData.jsp</result>
-        </action>
-        <action name="createNewComment" class="idas.chox.web.actions.CommentAction" method="createNewComment">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-        <action name="createNewAttachment" class="idas.chox.web.actions.AttachmentAction" method="create">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
+
+
+
        <!-- End Comment Detail -->
        <!-- Start Activity Monitor-->
         <action name="activityMonitoringAction" class="idas.chox.web.actions.ActivityMonitoringAction">
@@ -942,6 +911,44 @@
         <action name="getComments" class="idas.chox.web.actions.CommentAction" method="getComments">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
-        
+        <action name="createNewComment" class="idas.chox.web.actions.CommentAction" method="createNewComment">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+
+        <action name="getAuditTrailPage" class="idas.chox.web.actions.AuditTrailAction" method="doRenderActionPage">
+            <result name="success">/jsp/p_claim_detail_claim_cycle.jsp</result>
+        </action>
+        <action name="getAuditTrails" class="idas.chox.web.actions.AuditTrailAction" method="getAuditTrails">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
+
+        <action name="getHistoryPage" class="idas.chox.web.actions.HistoryAction" method="doRenderActionPage">
+            <result name="success">/jsp/p_claim_detail_history.jsp</result>
+        </action>
+        <action name="getHistories" class="idas.chox.web.actions.HistoryAction" method="getHistory">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
+
+        <action name="getAttachmentPage" class="idas.chox.web.actions.AttachmentAction" method="doRenderActionPage">
+            <result name="success">/jsp/p_claim_detail_attachment.jsp</result>
+        </action>
+        <action name="getAttachments" class="idas.chox.web.actions.AttachmentAction" method="getAttachments">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
+        <action name="doDeleteAttachment" class="idas.chox.web.actions.AttachmentAction" method="deleteAttachment">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="doExportAttachment" class="idas.chox.web.actions.AttachmentAction" method="doExportAttachment">
+            <result name="success" type="stream">
+                <param name="inputName">fileStream</param>
+                <param name="contentDisposition">${contentDisposition}</param>
+                <param name="bufferSize">99999</param>
+                <param name="contentType">${contentType}</param>
+            </result>
+            <result name="failed">/jsp/excel_generation_failed.jsp</result>
+        </action>
+        <action name="createNewAttachment" class="idas.chox.web.actions.AttachmentAction" method="createNewAttachment">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
     </package>
 </struts>

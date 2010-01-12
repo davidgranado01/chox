@@ -71,20 +71,15 @@
 </script>
 
 <form id="formAddNewHireMonitoringEcd" action="<%=request.getContextPath()%>/prv/p/addNewHireMonitoringEcd.action" name="formAddNewHireMonitoringEcd" class="XXentity-form">
-
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-
     <fieldset class="x-fieldset partial">
         <legend>New/Revised ECD</legend>
         <div class="form-container">
-
             <s:if test="isECDFormVisible">
-
                 <div class="chox-form-item">
                     <label class="chox-form-std-label" style="width:150px;">New ECD<span class="mandatory">*</span></label>
                     <span id="ecdDatePH"></span>
                 </div>
-
                 <div class="chox-form-item">
                     <label class="chox-form-std-label" style="width:150px;">Reason for Delay<span class="mandatory">*</span></label>
                     <s:select 
@@ -94,29 +89,23 @@
                         emptyOption="false" onchange="doPopulateNote();" cssClass="hm-reason-drop-down">
                     </s:select>
                 </div>
-
                 <div class="chox-form-item">
                     <label class="chox-form-std-label" style="width:150px;">Supporting Note<span class="mandatory">*</span></label>
                     <textarea class="chox-tta" id="ECDSupportingNote" cols="30" rows="5" name="supportingNote"><s:property value="supportingNote" /></textarea>
                 </div>
-
                 <div class="chox-form-button">
                     <input type="submit" value="Save Changes" />
                     <s:checkbox name="isUpdateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
                 </div>
-
                 <div class="chox-form-submit-result">&nbsp;</div>
                 <div id="ECDMessageBox" class="action-error-msg"><s:property value="actionError" /></div>
-
             </s:if>
             <s:else>
                 <span id="ecdDatePH" style="visibility:hidden;"></span>
                 <input type="hidden" name="reason"/>
                 <input id="ECDSupportingNote" name="supportingNote" type="hidden"/>
             </s:else>
-
             <div id="ecdGridHolder"></div>
-
         </div>
-
-    </fieldset></form>
+    </fieldset>
+</form>

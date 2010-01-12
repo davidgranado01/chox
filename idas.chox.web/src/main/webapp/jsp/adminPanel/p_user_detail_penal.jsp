@@ -260,7 +260,7 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">&nbsp;</label>
-                            <span class="column_remark">N.B. Passwords are case sensitive. Must be at least 6 characters.<br/>
+                            <span class="column-remark">N.B. Passwords are case sensitive. Must be at least 6 characters.<br/>
                                 Must contain at least one lower case letter, one upper case letter, and one number. </span>
                         </div>
                     </s:if>

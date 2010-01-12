@@ -4,26 +4,20 @@ import idas.chox.web.PanelAction;
 import java.util.*;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.common.AttachmentCategory;
 import idas.chox.core.model.AccessibilityEditable;
-import idas.chox.core.model.Attachment;
-import idas.chox.core.model.AttachmentType;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.Comment;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.model.HireMonitoringEcd;
-import idas.chox.core.model.History;
 import idas.chox.core.model.Incident;
 import idas.chox.core.model.Injury;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.Notification;
-import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.WebUser;
@@ -36,16 +30,12 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.AccessibilityHelper;
 import idas.chox.core.util.DateHelper;
-import idas.chox.core.util.FileHelper;
 import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
-import idas.chox.web.viewdata.AttachmentViewData;
-import idas.chox.web.viewdata.CommentViewData;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
-import idas.chox.web.viewdata.HistoryViewData;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -74,7 +64,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private int vehicleClassId = -1;
     private int insurerId = -1;
     private String actionName;
-    private List attachmentCategory;
     private BigDecimal totalAmountToPayBeforeNewPenaltyCharge;
     private BigDecimal totalAmountToPayAfterNewPenaltyCharge;
     private String totalAmountToPayBeforeNewPenaltyChargeFormatted;
@@ -107,7 +96,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private LookupService lookupService;
     private AuditTrailService auditTrailService;
     private WorkgroupService workgroupService;
-    private AttachmentTypeService attachmentTypeService;
     private BreBandService breBandService;
 
     public void prepare() throws Exception {
@@ -142,7 +130,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getPaymentReceivedAction() {
         return "updatePaymentReceived";
     }
-
 
     public String submitHireMonitoringDetail() {
 
@@ -216,7 +203,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return "";
     }
 
-
     public String updateInsurerClaimNumber() {
 
         String result = SUCCESS;
@@ -262,7 +248,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return result;
     }
-
 
     public String getCreatedByDesc() {
 
@@ -575,38 +560,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return statuses;
     }
 
-    public String getAllowFileType() {
-
-        String sAllowFileType = "";
-
-        for (AttachmentType a : attachmentTypeService.getAllAttachmentType()) {
-            sAllowFileType += "." + a.getCode() + ", ";
-        }
-
-        if (sAllowFileType.length() > 2) {
-            sAllowFileType = sAllowFileType.substring(0, sAllowFileType.length() - 2);
-        }
-
-        return sAllowFileType;
-    }
-
-    public List<AttachmentType> getAllowFileTypes() {
-        return attachmentTypeService.getAllAttachmentType();
-    }
-
-    public int getMaxFileSize() {
-        return FileHelper.MAX_FILE_SIZE_ALLOW;
-    }
-
-    public List getAttachmentCategory() {
-        List items = new ArrayList<LookupItem>();
-        for (String s : AttachmentCategory.getAttachmentCategory()) {
-            items.add(new LookupItem(s, s));
-        }
-        attachmentCategory = items;
-        return attachmentCategory;
-    }
-
     public void setSession(Map arg0) {
         this.session = arg0;
     }
@@ -769,7 +722,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             Customer c = claim.getCustomer();
             customerId = c == null ? -1 : c.getId();
         }
-
         return customerId;
     }
 
@@ -939,19 +891,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return extraActionList;
     }
 
-    public String getAttachments() {
-
-        List<Attachment> attachments = claim.getAttachments();
-
-        List<AttachmentViewData> viewDatas = new ArrayList<AttachmentViewData>();
-        for (Attachment a : attachments) {
-            viewDatas.add(new AttachmentViewData(a));
-        }
-
-        jObject = JSONArray.fromObject(viewDatas);
-        return SUCCESS;
-    }
-
     public String getHireMonitoringEcds() {
 
         List<HireMonitoringEcd> hireMonitoringEcds = claim.getHireMonitoringEcds();
@@ -961,21 +900,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (HireMonitoringEcd h : hireMonitoringEcds) {
             viewDatas.add(new HireMonitoringEcdViewData(h, seq));
             seq++;
-        }
-
-        jObject = JSONArray.fromObject(viewDatas);
-
-        return SUCCESS;
-    }
-
-    public String getHistories() {
-
-        List<History> histories = claim.getHistories();
-
-        List<HistoryViewData> viewDatas = new ArrayList<HistoryViewData>();
-
-        for (History h : histories) {
-            viewDatas.add(new HistoryViewData(h));
         }
 
         jObject = JSONArray.fromObject(viewDatas);
@@ -1016,10 +940,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setWorkgroupService(WorkgroupService workgroupService) {
         this.workgroupService = workgroupService;
-    }
-
-    public void setAttachmentTypeService(AttachmentTypeService attachmentTypeService) {
-        this.attachmentTypeService = attachmentTypeService;
     }
     // </editor-fold>
 }

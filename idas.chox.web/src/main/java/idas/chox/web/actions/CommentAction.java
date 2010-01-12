@@ -15,13 +15,29 @@ public class CommentAction extends ClaimModelAction<Comment> {
     public String createNewComment() {
         model.setComment(getComment());
         claim.addComment(model);
-
         return super.updateModel();
     }
 
-    public String getJsonData() {
-        JSONObject jObject = JSONObject.fromObject(this.model);
-        return jObject.toString();
+    public String getJsonArrayData() {
+        if (jObject != null) {
+            return "{totalCount:" + this.jObject.size() + ",results:" + jObject.toString() + "}";
+        }
+        return "";
+    }
+
+    public String getComments() {
+
+        List<CommentViewData> viewDatas = new ArrayList<CommentViewData>();
+        
+        Claim claim = claimService.getClaim(claimId);
+        List<Comment> comments = claim.getComments();
+        
+        for (Comment c : comments) {
+            viewDatas.add(new CommentViewData(c));
+        }
+
+        this.jObject = JSONArray.fromObject(viewDatas);
+        return SUCCESS;
     }
 
     @Override
@@ -41,4 +57,5 @@ public class CommentAction extends ClaimModelAction<Comment> {
     public Comment loadModel() {
         return new Comment();
     }
+
 }

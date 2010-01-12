@@ -50,29 +50,6 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
         return histories;
     }
 
-    public List<History> getHistoryByClaimSortByDate(Claim claim, Boolean isShowAll, Boolean isPublic) {
-
-        List histories = new ArrayList<History>();
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(History.class);
-        criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
-
-        //if (!isShowAll) {
-        criteria.add(Restrictions.eq("type", "ERROR"));
-        //}
-
-        // SHOW TRUE RECORD ONLY IF IT IS NOT PUBLIC
-        if (isPublic) {
-            criteria.add(Restrictions.eq("isPublic", true));
-        }
-
-        criteria.addOrder(Order.asc("createdDate"));
-
-        histories = findByCriteria(criteria);
-
-        return histories;
-    }
-
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void logInvoiceValidationErrorMsg(RulesEngineResponse reponse, Claim claim) {
 

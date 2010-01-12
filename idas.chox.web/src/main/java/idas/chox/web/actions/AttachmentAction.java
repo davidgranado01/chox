@@ -7,30 +7,73 @@ import idas.chox.core.common.AttachmentCategory;
 import idas.chox.core.model.Attachment;
 import idas.chox.core.model.AttachmentType;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.LookupItem;
 import idas.chox.core.services.AttachmentTypeService;
 import idas.chox.core.util.FileHelper;
 import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.web.viewdata.AttachmentViewData;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import net.sf.json.JSONObject;
+import net.sf.json.JSONArray;
 
 public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
+    private int fileId;
+    private JSONArray jObject;
+    private InputStream fileStream;
+    private String contentDisposition;
+    private String contentType;
     private AttachmentTypeService attachmentTypeService;
     private File attachmentFile;
     private String remark;
     private String category;
     private String uploadFileName;
-    private int fileId;
-    private InputStream fileStream;
-    private String contentDisposition;
-    private String contentType;
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="Properties">
+    // <editor-fold defaultstate="collapsed" desc="Implementation of BaseModelAction">
+    @Override
+    String getTabName() {
+        return ApplicationAccessibility.TAB_PAYMENT_PACK;
+    }
+
+    public Attachment getModel() {
+        return null;
+    }
+
+    public void prepare() throws Exception {
+        if (getFileId() > 0) {
+            model = (Attachment) baseDataService.get(Attachment.class, getFileId());
+        } else {
+            model = new Attachment();
+        }
+    }
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="GET SET">
+    public int getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
+    }
+
+    public InputStream getFileStream() {
+        return fileStream;
+    }
+
+    public String getContentDisposition() {
+        return contentDisposition;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
     public void setUploadFileName(String uploadFileName) {
         this.uploadFileName = uploadFileName;
     }
@@ -62,55 +105,113 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     public String getRemark() {
         return remark;
     }
-
-    public List<String> getAttachmentCategory() {
-        return AttachmentCategory.getAttachmentCategory();
+    
+    public String getJsonArrayData() {
+        if (jObject != null) {
+            return "{totalCount:" + this.jObject.size() + ",results:" + jObject.toString() + "}";
+        }
+        return "";
     }
 
-    public int getFileId() {
-        return fileId;
+    public String getAttachments() {
+
+        List<AttachmentViewData> viewDatas = new ArrayList<AttachmentViewData>();
+
+        Claim claim = claimService.getClaim(claimId);
+        List<Attachment> attachments = claim.getAttachments();
+
+        for (Attachment a : attachments) {
+            viewDatas.add(new AttachmentViewData(a));
+        }
+
+        this.jObject = JSONArray.fromObject(viewDatas);
+        return SUCCESS;
+
     }
 
-    public void setFileId(int fileId) {
-        this.fileId = fileId;
+    public String doRenderActionPage() {
+        return SUCCESS;
     }
 
-    public InputStream getFileStream() {
-        return fileStream;
+    public String deleteAttachment() {
+
+        try {
+
+            Claim claim = claimService.getClaim(claimId);
+            claim.deleteAttachment(model);
+            claimService.updateClaim(claim);
+            this.getActionResponse().AssignMessageResult("File has been deleted");
+
+        } catch (Exception ex) {
+            handleException(this, ex);
+            return ERROR;
+        }
+
+        return SUCCESS;
     }
 
-    public void setFileStream(InputStream fileStream) {
-        this.fileStream = fileStream;
+    public String doExportAttachment() {
+
+        if (model == null) {
+            return ERROR;
+        }
+
+        fileStream = new ByteArrayInputStream(model.getFileBuffer());
+        this.contentDisposition = "filename=" + model.getFileName();
+        AttachmentType attachmentType = attachmentTypeService.getAttachmentType(model.getFileType());
+
+        if (attachmentType != null) {
+            this.contentType = attachmentType.getMimeType();
+        } else {
+            this.contentType = "text/html";
+        }
+
+        return SUCCESS;
     }
 
-    public String getContentDisposition() {
-        return contentDisposition;
+    public List<AttachmentType> getAllowFileTypes() {
+        return attachmentTypeService.getAllAttachmentType();
     }
 
-    public void setContentDisposition(String contentDisposition) {
-        this.contentDisposition = contentDisposition;
+    public String getAllowFileTypeHelpNote() {
+
+        String sAllowFileType = "";
+
+        for (AttachmentType a : attachmentTypeService.getAllAttachmentType()) {
+            sAllowFileType += "." + a.getCode() + ", ";
+        }
+
+        if (sAllowFileType.length() > 2) {
+            sAllowFileType = sAllowFileType.substring(0, sAllowFileType.length() - 2);
+        }
+
+        return sAllowFileType;
     }
 
-    public String getContentType() {
-        return contentType;
+    public int getMaxFileSize() {
+        return FileHelper.MAX_FILE_SIZE_ALLOW;
     }
 
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
+    public List getAttachmentCategory() {
+        List attachmentCategory = new ArrayList<LookupItem>();
+        for (String s : AttachmentCategory.getAttachmentCategory()) {
+            attachmentCategory.add(new LookupItem(s, s));
+        }
+        return attachmentCategory;
     }
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="Action Methods">
-    public String create() throws Exception {
+    // <editor-fold defaultstate="collapsed" desc="ACTIONS">
+    public String createNewAttachment() throws Exception {
 
         try {
+
             if (!FileHelper.isFileValid(this.attachmentFile)) {
                 this.getActionResponse().AddError("Unknown File Format");
                 return SUCCESS;
             }
 
             List<String> attTypes = attachmentTypeService.getAttachmentTypeCode();
-
             if (!FileHelper.isFileTypeAllow(this.uploadFileName, attTypes)) {
                 this.getActionResponse().AddError("Invalid File Type");
                 return SUCCESS;
@@ -132,71 +233,33 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             }
 
         } catch (Exception ex) {
-            this.getActionResponse().AddError(ex.getMessage());
-        }
-
-        return SUCCESS;
-    }
-
-    public String export() {
-
-        if (model == null) {
+            handleException(this, ex);
             return ERROR;
         }
 
-        fileStream = new ByteArrayInputStream(model.getFileBuffer());
-        String strContentDisposition = "filename=" + model.getFileName();
-        this.setContentDisposition(strContentDisposition);
-        AttachmentType attachmentType = attachmentTypeService.getAttachmentType(model.getFileType());
-
-        if (attachmentType != null) {
-            this.setContentType(attachmentType.getMimeType());
-        } else {
-            this.setContentType("text/html");
-        }
-
         return SUCCESS;
     }
-
-    public String delete() {
-        try {
-            Claim claim = getClaim();
-            claim.deleteAttachment(model);
-            claimService.updateClaim(claim);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return ERROR;
-        }
-        return SUCCESS;
-    }
-
-    public String detail() {
-        return SUCCESS;
-    }
-// </editor-fold>
 
     private boolean processFile(File file) throws IOException, SQLException {
 
         boolean bFlag = false;
 
         if (file.canRead()) {
-
-            String OldFileName = this.uploadFileName;
-            String fileType = FileHelper.getFileExtension(OldFileName);
-            String newFileName = FileHelper.getNewFileName(OldFileName, false);
+            String oldFileName = this.uploadFileName;
+            String fileType = FileHelper.getFileExtension(oldFileName);
+            String newFileName = FileHelper.getNewFileName(oldFileName, false);
             FileInputStream streamIn = new FileInputStream(file);
             byte fileContent[] = new byte[(int) file.length()];
             streamIn.read(fileContent);
-
-            bFlag = saveAttachement(this.claimId, this.category, newFileName, this.remark, fileType, fileContent);
-
+            saveAttachement(this.claimId, this.category, newFileName, this.remark, fileType, fileContent);
+            bFlag = true;
         }
 
         return bFlag;
 
     }
 
-    private Boolean saveAttachement(
+    private void saveAttachement(
             int claimId,
             String strCategory,
             String strFileName,
@@ -204,39 +267,22 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             String strFileType,
             byte[] obj) throws IOException {
 
-        Boolean bFlag = false;
-
         Claim claim = claimService.getClaim(claimId);
-
         model.setFileName(strFileName);
         model.setRemarks(strRemark);
         model.setCategory(strCategory);
         model.setFileType(strFileType);
         model.setFileBuffer(obj);
-
         claim.addAttachment(model);
-
         claimService.updateClaim(claim);
-
-        return bFlag;
     }
+    // </editor-fold>
 
-    public String getJsonData() {
-        JSONObject jObject = JSONObject.fromObject(this.model);
-        return jObject.toString();
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="Services">
+    // <editor-fold defaultstate="collapsed" desc="SERVICES">
     public void setAttachmentTypeService(AttachmentTypeService attachmentTypeService) {
         this.attachmentTypeService = attachmentTypeService;
     }
     // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Implementation of BaseModelAction">
-    @Override
-    String getTabName() {
-        return ApplicationAccessibility.TAB_PAYMENT_PACK;
-    }
 
     @Override
     protected Attachment loadModel() {
@@ -248,5 +294,3 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         }
     }
 }
-// </editor-fold>
-
