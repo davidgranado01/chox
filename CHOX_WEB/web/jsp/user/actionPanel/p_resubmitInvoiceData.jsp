@@ -26,7 +26,7 @@
                     </tr>
                     <tr>                        
                         <td>
-                           <input type="submit" value="Re-Submit Claim/Invoice" />                    </td>
+                           <input type="submit" value="Re-Submit Claim/Invoice" /></td>
                     </tr>
                 </table>                
             </div>

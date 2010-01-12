@@ -33,7 +33,7 @@ public class FilterRecordCounter {
     }
 
     public long getNewClaimsToBeRoutedCount() {
-       return service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, true, false);
+       return service.getCountByStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, false, false);
     }
 
     public long getClaimsAwaitingClaimsHandlingPaymentCount() {
