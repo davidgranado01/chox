@@ -7,20 +7,20 @@
     <bean id="auditInterceptor" class="chox.data.DBInterceptor" singleton="false">
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
-
+  
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"></property>
-        <property name="url" value="jdbc:postgresql://localhost:5432/chox_dev01"></property>
+        <property name="url" value="jdbc:postgresql://localhost:5432/chox_prod"></property>
         <property name="username" value="postgres"></property>
         <property name="password" value="GreenF1nCH"></property>
         <property name="initialSize" value="5"/>
         <property name="maxActive" value="20"/>
     </bean>
     
-    <!--
+  <!--
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"></property>
-        <property name="url" value="jdbc:postgresql://localhost:5432/chox_test"></property>
+        <property name="url" value="jdbc:postgresql://localhost:5432/chox_prod"></property>
         <property name="username" value="chox"></property>
         <property name="password" value="id4sch0x"></property>
         <property name="initialSize" value="5"/>
