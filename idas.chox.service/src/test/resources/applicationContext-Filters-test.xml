@@ -23,7 +23,7 @@
                 <ref bean="InvoiceReferredToClaimsHandler" />
                 <ref bean="InvoicePaymentLogged" />
                 <ref bean="ClaimUpdatedByEngineer" />
-                <ref bean="ContestedInvoicesReferredToEngineer" />
+                <ref bean="InvoicesReferredToEngineer" />
                 <ref bean="ClaimUnacknowledgedUnassigned" />
                 <ref bean="AwaitingInvoiceData" />
                 <ref bean="HireUpdateAnomalies" />
@@ -52,7 +52,7 @@
 
     <bean id="ContestedInvoicesReferredToCHO" class="idas.chox.service.filters.FilterByStatus">
         <property name="claimService" ref="claimService"/>
-        <property name="name" value="Contested Invoices ReferredTo CHO"/>
+        <property name="name" value="Contested Invoices Referred To CHO"/>
         <property name="key" value="ContestedInvoicesReferredToCHO"/>
         <property name="status" value="ContestedInvoiceReferredToCHO"/>
         <property name="isCheckWorkGroup" value="false"/>
@@ -194,13 +194,13 @@
         <property name="isCheckOwnership" value="true"/>
     </bean>
 
-    <bean id="ContestedInvoicesReferredToEngineer" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="InvoicesReferredToEngineer" class="idas.chox.service.filters.FilterByStatus">
         <property name="claimService" ref="claimService"/>
-        <property name="name" value="Contested Invoices Referred To Engineer"/>
-        <property name="key" value="ContestedInvoicesReferredToEngineer"/>
-        <property name="status" value="ContestedInvoiceReferredToInsurer"/>
-        <property name="isCheckWorkGroup" value="true"/>
-        <property name="isCheckOwnership" value="true"/>
+        <property name="name" value="Invoice Referred By Claim Handler"/>
+        <property name="key" value="InvoicesReferredToEngineer"/>
+        <property name="status" value="InvoiceReferredToEngineer"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
     </bean>
 
     <bean id="ClaimUnacknowledgedUnassigned" class="idas.chox.service.filters.FilterByStatus">

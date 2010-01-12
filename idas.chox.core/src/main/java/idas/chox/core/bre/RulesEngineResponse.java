@@ -59,6 +59,7 @@ public class RulesEngineResponse {
                 status = ClaimStatus.INVOICE_APPROVED_BY_BRE;
             }
         }
+        
         return status;
     }
 }

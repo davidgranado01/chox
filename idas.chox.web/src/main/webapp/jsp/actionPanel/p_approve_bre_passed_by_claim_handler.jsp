@@ -3,64 +3,63 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function(){
-        doFormValidation();
-    });
+    $(function(){
 
-    function doRejectClaim(){
-
-        actionPanel.registerAction('reject');
-
-        if(doFormValidation().form()){
-
-            if(!confirm('Are you sure you want to reject this claim?')){
-                return false;
-            }
-
-        }else{
-            return false;
-        }
-
-        return true;
-    }
-
-    function doFormValidation(){
-        var validateFlag = $("#approveBREPassedByClaimHandler").validate(
+        $("form#invoiceEscalatedToCh").validate(
         {
-            errorLabelContainer: "#ActionPanelMessageBox",
+            errorLabelContainer: "#invoiceEscalatedToChMessageBox",
             rules: {
-                actionName:{required:true},
-                reasonOfRejectionId:{required:isRejected}
+                reasonOfRejectionId:{
+                    required:true
+                }
             },
             messages: {
-                actionName:{required:"You must select action"},
-                reasonOfRejectionId:{required:"You must choose a 'Reason For Rejection'"}
+                reasonOfRejectionId:{
+                    required:"You must select reason of rejection"
+                }
             }
-
         });
 
-        return validateFlag;
-    }
+    });
 
-    function doSubmit(a){
-        actionPanel.registerAction(a);
-        isClaimNumberInvalid();
-        if(!doFormValidation().form()){
-            return false;
+    function doInvoiceEscalatedToChFormSubmit(action){
+
+
+        actionPanel.registerAction(action);
+
+        $("form#invoiceEscalatedToCh #reasonOfRejectionId").rules("remove");
+
+        if(action=="rejectInvoice"){
+
+            $("form#invoiceEscalatedToCh #reasonOfRejectionId").rules("add", {
+                required: true,
+                messages: {required: "You must choose a 'Reason For Rejection'"}
+            });
+
+        }else{
+
+            $("form#invoiceEscalatedToCh #reasonOfRejectionId").val("");
+            
         }
-        return true;
+
+        if($("form#invoiceEscalatedToCh").valid()){
+
+            if(action=='rejectInvoice' && !confirm('Are you sure you want to reject this claim?')){
+                return;
+            }
+
+            $("form#invoiceEscalatedToCh").submit();
+        }
     }
 
 </script>
 
-<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/approveBREPassedByClaimHandler.action"
-      method="post" id="approveBREPassedByClaimHandler" name="approveBREPassedByClaimHandler">
+<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action"
+      method="post" id="invoiceEscalatedToCh" name="invoiceEscalatedToCh">
     <fieldset class="x-fieldset">
-
         <legend>Invoice Escalated To Claim Handler - Action Required</legend>
-        <s:hidden name="id" />
-        <s:hidden id="actionName" name="actionName" />
-
+        <s:hidden id="claimId" name="id" />
+        <s:hidden id="name" name="name"/>
         <div>
             <div class="status-info">
                 Please review the 'History' tab for details on why the claim has failed the validation rules. Please decide on whether to progress the claim for payment, refer the claim to an Engineer or reject the claim back to the CHO. Please enter any relevant details/comments on the 'Notes' tab regarding the decision made.
@@ -92,14 +91,14 @@
                     </tr>
                     <tr>
                         <td colspan="4" class="choice">
-                            <input type="submit" value="Reject Invoice"  onclick="return doRejectClaim();" />
-                            <input type="submit" value="Clear For Payment" onclick="return doSubmit('accept');"  />
-                            <input type="submit" value="Refer To Engineer" onclick="return doSubmit('InvReferEng');"  />
+                            <input type="submit" value="Reject Invoice"  onclick="return doInvoiceEscalatedToChFormSubmit('rejectInvoice');" />
+                            <input type="submit" value="Clear For Payment" onclick="return doInvoiceEscalatedToChFormSubmit('acceptInvoice');"  />
+                            <input type="submit" value="Refer To Engineer" onclick="return doInvoiceEscalatedToChFormSubmit('invoiceReferToEng');"  />
                         </td>
                     </tr>
                 </table>
             </div>
-            <div class="action-error-msg" id="ActionPanelMessageBox"></div>
+            <div class="action-error-msg" id="invoiceEscalatedToChMessageBox"></div>
         </div>
     </fieldset>
 </form>

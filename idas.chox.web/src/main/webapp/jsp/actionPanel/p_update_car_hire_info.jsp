@@ -22,7 +22,7 @@
                     <tr>                        
                         <td><input type="submit" value="Proceed" /></td>
                     </tr>
-                </table>                
+                </table>
             </div>
         </div>
     </fieldset>

@@ -44,7 +44,7 @@ public class UploadStatus {
 
                 uploadStatus = UploadStatus.CLAIM_EXIST;
 
-            } else if (oldClaimStatus.equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)) {
+            } else if (oldClaimStatus.equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
 
                 if (isInvoiceExist) {
 

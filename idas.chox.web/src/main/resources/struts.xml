@@ -349,7 +349,7 @@
             <result name="uploadInvoiceData">/jsp/actionPanel/p_upload_invoice_data.jsp</result>
             <result name="updateinvoicedtailforcalculationincorrect">/jsp/actionPanel/p_resubmit_invoice_data.jsp</result>
             <result name="approveBREPassedClaim">/jsp/actionPanel/p_approve_bre_passed_claim.jsp</result>
-            <result name="approveEscalatedInvoice">/jsp/actionPanel/p_invoice_escalatedjsp</result>
+            <result name="approveEscalatedInvoice">/jsp/actionPanel/p_invoice_escalated.jsp</result>
             <result name="approveContestedInvoice">/jsp/actionPanel/p_approve_contested_invoice.jsp</result>
             <result name="approveContestedInvoiceToEng">/jsp/actionPanel/p_approve_contested_invoice_to_eng.jsp</result>
             <result name="resubmitOrAcceptContestedInvoice">/jsp/actionPanel/p_resubmit_or_accept_contested_invoice.jsp</result>
@@ -539,9 +539,7 @@
         </action>
        <!-- End Audit Trail -->
        <!-- Start Comment Detail -->
-        <action name="getComments" class="idas.chox.web.actions.ClaimAction" method="getComments">
-            <result name="success">/jsp/p_jsonArrayData.jsp</result>
-        </action>
+
         <action name="getAttachments" class="idas.chox.web.actions.ClaimAction" method="getAttachments">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
@@ -850,5 +848,13 @@
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <!-- END INSURER AUTOMATIC ROUTING  -->
+
+        <action name="getClaimDetailCommentPage" class="idas.chox.web.actions.CommentAction" method="doRenderActionPage">
+            <result name="success">/jsp/p_claim_detail_comment.jsp</result>
+        </action>
+        <action name="getComments" class="idas.chox.web.actions.CommentAction" method="getComments">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
+        
     </package>
 </struts>

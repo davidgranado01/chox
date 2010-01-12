@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.workflow;
 
 import idas.chox.core.workflow.*;
@@ -9,10 +5,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 
-/**
- *
- * @author emmanuel
- */
 public class ActivityFactory implements BeanFactoryAware{
 
     private BeanFactory beanFactory;

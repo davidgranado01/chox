@@ -150,15 +150,30 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
     @Override
     public RulesEngineResponse processResubmitInvoice(Claim breClaim) {
 
+        System.out.println("processResubmitInvoice 001");
+
         BreBand choBand = choBandService.getBreBand(breClaim.getChorganisation().getId(), breClaim.getInsurer().getId());
+
+        System.out.println("processResubmitInvoice 002");
+
         VehicleClassCeiling vehicleClassCeiling = insurerService.getVechileClassCeilingForClaim(breClaim);
+
+        System.out.println("processResubmitInvoice 003");
+
         choBand.setVehicleClassCeiling(vehicleClassCeiling);
+
+        System.out.println("processResubmitInvoice 004:"+choBand.getName());
+
         breClaim.setBreBand(choBand);
+
+        System.out.println("processResubmitInvoice 005");
 
         Boolean isEngReportExist = false;
         if (breClaim.getEngineerReport() != null) {
             isEngReportExist = true;
         }
+
+        System.out.println("processResubmitInvoice 006:"+rulesEngine);
 
         // GET CURRENT RECORDS
         VehicleClass cust_VehicleClass = breClaim.getCustomer().getVehicleClass();
@@ -166,27 +181,31 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         VehicleClass vehicle_HireClass = breClaim.getVehicleHire().getVehicleClass();
         String oldStatus = breClaim.getStatus();
 
+        System.out.println("processResubmitInvoice 007:"+breClaim);
+
         breClaim = constructBreValidateObject(breClaim);
         RulesEngineResponse validationResult = validate(breClaim);
         String newClaimStatus = validationResult.getStatus().toString();
 
+        System.out.println("processResubmitInvoice 008");
+
         breClaim.setPreviousStatus(oldStatus);
         breClaim.setStatus(newClaimStatus);
 
-        /*
-        if (validationResult.getResults().size() > 0) {
-        claimResult.setHistory(processBreErrorMessage(validationResult.getResults(), claimResult));
-        }
-         */
+        System.out.println("processResubmitInvoice 009");
 
         /** END BRE VALIDATION */
         if (!isEngReportExist) {
             breClaim.setEngineerReport(null);
         }
 
+        System.out.println("processResubmitInvoice 010");
+
         breClaim.getCustomer().setVehicleClass(cust_VehicleClass);
         breClaim.getThirdParty().setVehicleClass(thirdVehicleClass);
         breClaim.getVehicleHire().setVehicleClass(vehicle_HireClass);
+
+        System.out.println("processResubmitInvoice 011");
 
         return validationResult;
     }

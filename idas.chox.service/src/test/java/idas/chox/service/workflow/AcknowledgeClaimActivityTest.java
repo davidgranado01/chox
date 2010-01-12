@@ -38,6 +38,6 @@ public class AcknowledgeClaimActivityTest {
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         Activity activity = activityFactory.getActivity("acknowledgeClaim");
         activity.process(claim);        
-        Assert.assertEquals(ClaimStatus.AWAITING_CAR_HIRE_INFO,claim.getStatus());
+        Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO,claim.getStatus());
     }
 }

@@ -61,7 +61,7 @@ public class ApplicationAccessibility {
     public static final String FILTER_INVOICE_REF_TO_CH = "InvoiceReferredToClaimsHandler";
     public static final String FILTER_INVOICE_PAYMENT_LOGGED = "InvoicePaymentLogged";
     public static final String FILTER_CLAIM_UPDATED_BY_ENGINEER = "ClaimUpdatedByEngineer";
-    public static final String FILTER_CONTESTED_INVOICE_REF_ENF = "ContestedInvoicesReferredToEngineer";
+    public static final String FILTER_INVOICE_REF_TO_ENG = "InvoicesReferredToEngineer";
     public static final String FILTER_CLAIM_OWNERSHIP = "ClaimUnacknowledgedUnassigned";
     public static final String FILTER_AWAITING_INVOICE_DATA = "AwaitingInvoiceData";
     // </editor-fold>

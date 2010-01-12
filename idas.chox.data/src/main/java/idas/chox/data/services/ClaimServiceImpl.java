@@ -413,7 +413,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             AnomaliesStatus.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
             AnomaliesStatus.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
             AnomaliesStatus.add(ClaimStatus.CLAIM_PENDING);
-            AnomaliesStatus.add(ClaimStatus.AWAITING_CAR_HIRE_INFO);
+            AnomaliesStatus.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
             AnomaliesStatus.add(ClaimStatus.CLAIM_REJECTED);
             AnomaliesStatus.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
             AnomaliesStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);

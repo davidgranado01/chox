@@ -10,8 +10,8 @@ public class ClaimStatus {
     public static final String CLAIM_REJECTED = "ClaimRejected";
     public static final String CLAIM_REJECTION_ACCEPTED = "ClaimRejectionAccepted";
     public static final String CLAIM_REJECTION_CONTESTED = "ClaimRejectionContested";
-    public static final String AWAITING_CAR_HIRE_INFO = "AwaitingCarHireInfo";
-    public static final String AWAITING_INVOICE_DATA = "AwaitingInvoiceData";
+    public static final String CLAIM_AWAITING_CAR_HIRE_INFO = "AwaitingCarHireInfo";
+    public static final String CLAIM_AWAITING_INVOICE_DATA = "AwaitingInvoiceData";
     public static final String INVOICE_DATA_CALCULATION_INCORRECT = "InvoiceDataCalculationIncorrect";
     public static final String INVOICE_APPROVED_BY_BRE = "InvoiceApprovedByBRE";
     public static final String INVOICE_ESCALATED = "InvoiceEscalated";
@@ -33,8 +33,8 @@ public class ClaimStatus {
 
     public static List<String> getStatus() {
         List<String> status = new ArrayList<String>();
-        status.add(AWAITING_CAR_HIRE_INFO);
-        status.add(AWAITING_INVOICE_DATA);
+        status.add(CLAIM_AWAITING_CAR_HIRE_INFO);
+        status.add(CLAIM_AWAITING_INVOICE_DATA);
         status.add(AWAITING_INVOICE_PAYMENT);
         status.add(CLAIM_CLOSED);
         status.add(CLAIM_PENDING);

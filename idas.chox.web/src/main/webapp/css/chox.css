@@ -1263,3 +1263,9 @@ table.upload-status-table td
 }
 
 /******* XML UPLOAD STATUS - END ************/
+
+.claim-detail-tab{
+    background:#dfe8f6;
+    background-color:#dfe8f6;
+    padding:10px 5px 5px 5px;
+}

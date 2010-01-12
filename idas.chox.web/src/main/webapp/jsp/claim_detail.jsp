@@ -14,9 +14,6 @@
     var paymentPackTabAccessibility = <s:property value="tabAccessibility.paymentPackTabAccessibility" />;
     var auditTrailTabAccessibility = <s:property value="tabAccessibility.auditTrailTabAccessibility" />;
 
-    var hasFormUnderSubmission = false;
-    var elementToBlock;
-
     var claimDetailsDisabled = claimDetailTabAccessibility == 0;
     var hireMonitoringDetailsDisabled = hireMonitoringTabAccessibility  == 0;
     var invoiceDetailsDisabled = invoiceDetailTabAccessibility == 0;
@@ -25,17 +22,12 @@
     var commentsDisabled = notesTabAccessibility == 0;
     var auditTrailDisabled = auditTrailTabAccessibility == 0;
 
-    // COMMENT
-    var commentsJsonReader;
-    var commentsDataStore;
-    var commentsGrid;
 
     // PAYMENT PACK
     var paymentPackJsonReader;
     var paymentPackDataStore;
     var paymentPackGrid;
 
-    // COMMENT
     var auditTrailJsonReader;
     var auditTrailDataStore;
     var auditTrailGrid;
@@ -103,14 +95,22 @@
                     listeners: {activate : doCleanResult}
                 },
                 {
-                    contentEl:'comments',
+                    contentEl:'commentTab',
                     title: 'Notes',
                     disabled: commentsDisabled,
-                    listeners: {activate : loadComments}
+                    listeners: {activate : doCleanTab},
+                    autoLoad: {url:"p/getClaimDetailCommentPage.action?claimId="+<s:property value="id" />, scripts:true}
                 }
             ]
         });
 
+        function doCleanTab(){
+            var tabIndex = 0;
+            if(tabs){
+                tabIndex = tabs.items.indexOf(tabs.getActiveTab());
+            }
+        }
+        
         /***********************************************************************************
          * ATTACHMENT / PAYMENT PACK
          ***********************************************************************************/
@@ -239,66 +239,6 @@
             propmtMsg(title, msg);
         }
 
-        /***********************************************************************************
-         * COMMENT / NOTE
-         ***********************************************************************************/
-
-        if(!commentsDisabled){
-
-            commentsJsonReader = new Ext.data.JsonReader({
-                totalProperty: 'totalCount', root: 'results', fields:[
-                    {name:'id'},
-                    {name:'createdBy'},
-                    {name:'createdDate'},
-                    {name:'comment'},
-                    {name:'visibilityType'}]
-            });
-
-            commentsDataStore = new Ext.data.Store({
-                proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getComments.action',method:'GET'}), reader:commentsJsonReader
-            });
-
-            commentsGrid = new Ext.grid.GridPanel({
-                listeners:  {cellclick:loadComment },
-                store: commentsDataStore, loadMask: true,
-                columns: [
-                    {header: "Created", width: 130, dataIndex: 'createdDate', sortable: false, resizable: true},
-                    {header: "Created By", width: 260, dataIndex: 'createdBy', sortable: false, resizable: true},
-                    {header: "Message", width: 700, dataIndex: 'comment', sortable: false, resizable: true}
-                ],
-                viewConfig:{
-                    getRowClass: function(record, index) {
-    
-
-                        var c = record.get('visibilityType');
-                        if(c>0){
-                            return 'private-comment';
-                        }
-
-                    }
-                },
-                renderTo:'commentsGrid', width:960, autoHeight:true, enableHdMenu:false
-            });
-
-        }
-
-        function loadComment(grid, rowIndex, columnIndex, e){
-                    
-            var comment = commentsGrid.getStore().getAt(rowIndex);
-
-            var title="Notes";
-            var msg = "<b>Created Date</b>: " + comment.get("createdDate");
-            msg += "<br/><b>Created By</b>: " + comment.get("createdBy") + "<br/>";
-            msg += "<br/><b>Message";
-                        
-            if(comment.get("visibilityType")>0){
-                msg += " (Private Note)";
-            }
-            msg += "</b>: <br/>" + comment.get("comment");
-                        
-
-            propmtMsg(title, msg);
-        }
 
         /***********************************************************************************
          * AUDIT TRAIL
@@ -420,23 +360,6 @@
 
     });
 
-    // LOAD COMMENT
-    var commentsLoaded = false;
-
-    function loadComments(){
-        if(!commentsDisabled){
-            if(!commentsLoaded){
-                commentsDataStore.load(
-                {
-                    params:
-                        {
-                        id : <s:property value="id" />
-                    }
-                });
-                commentsLoaded = true;
-            }
-        }
-    }
 
     // LOAD PAYMENT PACK / ATTACHMENT
     var paymentPackLoaded = false;
@@ -527,9 +450,9 @@
         }
     }
 
-function doMoreActionOnchange(){
-    actionPanel.handleExtraActionChange();
-}
+    function doMoreActionOnchange(){
+        actionPanel.handleExtraActionChange();
+    }
 </script>
 
 <div style="width:960px">
@@ -615,7 +538,7 @@ function doMoreActionOnchange(){
 <s:if test="!IsCHO">
 
     <div id="updateInsurerClaimNumber" class="extraActionClass" style="display: none;">
-        <!--
+
         <table width="100%">
             <tr><td>
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -624,11 +547,11 @@ function doMoreActionOnchange(){
                     </div>
                 </td></tr>
         </table>
-        !-->
+
     </div>
 
     <div id="updateClaimOwner" class="extraActionClass" style="display: none;">
-        <!--
+
         <table width="100%">
             <tr><td>
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -637,11 +560,10 @@ function doMoreActionOnchange(){
                     </div>
                 </td></tr>
         </table>
-        !-->
+
     </div>
 
     <div id="escalateUnassignedClaim" class="extraActionClass" style="display: none;">
-        <!--
         <table width="100%">
             <tr><td>
                     <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -650,7 +572,7 @@ function doMoreActionOnchange(){
                     </div>
                 </td></tr>
         </table>
-        !-->
+
     </div>
 
 </s:if>
@@ -842,7 +764,7 @@ function doMoreActionOnchange(){
                 </table>
             </div>
 
-            <!-- template for modal comment-->
+            <!-- template for modal Hire Monitoring-->
             <div style="display:none" id="hireMonitorTemplate">
                 <input type="button" value="Close" id="hireMonitorModalClose"><br/>
                 <div id="hireMonitorMessage"></div>
@@ -867,7 +789,6 @@ function doMoreActionOnchange(){
                                 <s:param name="claimStatus"><s:property value="status" /></s:param>
                             </s:action>
 
-
                             <s:action name="getVehicleHire" namespace="/prv/p" executeResult="true">
                                 <s:param name="claimId"><s:property value="id" /></s:param>
                                 <s:param name="claimStatus"><s:property value="status" /></s:param>
@@ -875,7 +796,6 @@ function doMoreActionOnchange(){
 
                         </td>
                         <td>
-
 
                             <s:action name="getExtra" namespace="/prv/p" executeResult="true">
                                 <s:param name="claimId"><s:property value="id" /></s:param>
@@ -887,13 +807,9 @@ function doMoreActionOnchange(){
                                 <s:param name="claimStatus"><s:property value="status" /></s:param>
                             </s:action>
 
-
-
                         </td>
                     </tr>
                 </table>
-
-
 
             </div>
 
@@ -1096,92 +1012,5 @@ function doMoreActionOnchange(){
         </s:if>
     </div>
 
-    <!-- ************************ COMMENT / NOTE (START) *************** !-->
-    <div id="comments" class="x-hide-display">
-
-        <s:if test="tabAccessibility.notesTabAccessibility != 0">
-
-            <script type="text/javascript">
-
-                $(document).ready(function() {
-
-                    var optionsComment = {
-                        success: showResponse
-                    };
-
-                    $('#fComments').ajaxForm(optionsComment);
-
-                });
-
-                function showResponse(responseText, statusText)  {
-                    commentsLoaded = false;
-
-                    $("#fComments").each(function(){
-                        this.reset();
-                    });
-
-                    loadComments();
-                }
-
-                function commentFormValidation(){
-                    var inp = $("#commentBox").val();
-                    if(inp==null || inp==""){
-                        $("#CmErrMsgBox").show();
-                        $("#CmErrMsgBox").text("Note blank - Please enter text in the Note field and then click on 'Add Note'");
-                        return false;
-                    }else{
-                        $("#CmErrMsgBox").hide();
-                    }
-                    return true;
-                }
-
-            </script>
-
-            <div class="comments  x-panel-bwrap chox-form-container">
-
-                <s:if test="!isClaimClosed">
-                    <form id="fComments" action="<%= request.getContextPath()%>/prv/p/createNewComment.action" method="post">
-                        <input type="hidden" name="claimId" value='<s:property value="id" />'>
-                        <fieldset class="x-fieldset">
-                            <legend>Add a new note</legend>
-                            <div class="chox-form-item">
-                                <s:textarea id="commentBox" cols="70" rows="4" id="commentBox" name="comment" />
-                            </div>
-
-                            <div class="chox-form-item">
-
-                                <s:if test="isInsurer">
-                                    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note (Visible By CHO)</span>
-                                    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only"/> Private Note (Only Visible Internally)</span>
-                                    </s:if>
-                                    <s:elseif test="isCHO">
-                                    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note (Visible By Insurer)</span>
-                                    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only"/> Private Note (Only Visible Internally)</span>
-                                    </s:elseif>
-                                    <s:else>
-                                    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note</span>
-                                    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only"/> Private Note (Only Visible By Insurer)</span>
-                                    <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only"/> Private Note (Only Visible By CHO)</span>
-                                    </s:else>
-                            </div>
-
-                            <input type="submit" id="bAddComment" value="Add Note" onclick="javascript:return commentFormValidation();"/>
-                        </fieldset>
-                    </form>
-                </s:if>
-                <div class="action-error-msg" id="CmErrMsgBox" style="color:red;font-weight: bold;font-size: 10px;"></div>
-                <div class="remark-indicator">Private notes are highlighted in blue</div>
-            </div>
-
-            <div id="commentsGrid"></div>
-
-        </s:if>
-
-    </div>
-
-    <!-- *************************************************************** !-->
-
-    <div class="pop-up-view_div" id="popGeneralTemplate"><input type="button" value="Close" id="popGeneralTemplateClose"><br/><br/><div id="popGeneralTemplateMessage"></div></div>
-
+    <div id="commentTab" class="x-hide-display"></div>
 </div>
-

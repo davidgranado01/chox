@@ -6,28 +6,28 @@
         <property name="availableFilters">
             <list>
                 <ref bean="RejectedClaims" />
+                <ref bean="ClaimsAwaitingHireMonitoringInformation" />
+                <ref bean="AwaitingInvoiceData" />
                 <ref bean="IncorrectInvoiceDataCalculations" />
                 <ref bean="ContestedInvoicesReferredToCHO" />
-                <ref bean="ClaimsAwaitingHireMonitoringInformation" />
+                <ref bean="PenaltyChargesApplied" />
+                <ref bean="InvoicePaymentLogged" />
+                <ref bean="NewClaimsToBerouted" />
+                <ref bean="ClaimUnacknowledgedUnassigned" />
+                <ref bean="ClaimReferredToFNOL" />
                 <ref bean="ClaimsAwaitingAcknowledgement" />
                 <ref bean="ReSubmittedClaimsAwaitingAcknowledgement" />
-                <ref bean="NewClaimsToBerouted" />
-                <ref bean="ApprovedInvoicesAwaitingPayment" />
+                <ref bean="ClaimPending" />
+                <ref bean="ClaimReferredToEngineer" />
+                <ref bean="ClaimUpdatedByEngineer" />
+                <ref bean="HireUpdateAnomalies" />
                 <ref bean="EscalatedInvoices" />
                 <ref bean="InvoiceEscalatedToHandler" />
+                <ref bean="InvoicesReferredToEngineer" />
+                <ref bean="InvoiceReferredToClaimsHandler" />
                 <ref bean="ContestedInvoicesReferredToInsurer" />
                 <ref bean="InvoicesApprovedByBRE" />
-                <ref bean="ClaimReferredToEngineer" />
-                <ref bean="ClaimReferredToFNOL" />
-                <ref bean="ClaimPending" />
-                <ref bean="InvoiceReferredToClaimsHandler" />
-                <ref bean="InvoicePaymentLogged" />
-                <ref bean="ClaimUpdatedByEngineer" />
-                <ref bean="ContestedInvoicesReferredToEngineer" />
-                <ref bean="ClaimUnacknowledgedUnassigned" />
-                <ref bean="AwaitingInvoiceData" />
-                <ref bean="HireUpdateAnomalies" />
-                <ref bean="PenaltyChargesApplied" />
+                <ref bean="ApprovedInvoicesAwaitingPayment" />
             </list>
         </property>
     </bean>
@@ -52,7 +52,7 @@
 
     <bean id="ContestedInvoicesReferredToCHO" class="idas.chox.service.filters.FilterByStatus">
         <property name="claimService" ref="claimService"/>
-        <property name="name" value="Contested Invoices ReferredTo CHO"/>
+        <property name="name" value="Contested Invoices Referred To CHO"/>
         <property name="key" value="ContestedInvoicesReferredToCHO"/>
         <property name="status" value="ContestedInvoiceReferredToCHO"/>
         <property name="isCheckWorkGroup" value="false"/>
@@ -86,6 +86,24 @@
         <property name="isCheckOwnership" value="true"/>
     </bean>
 
+    <bean id="ClaimPending" class="idas.chox.service.filters.FilterByStatus">
+        <property name="claimService" ref="claimService"/>
+        <property name="name" value="Claim Pending"/>
+        <property name="key" value="ClaimPending"/>
+        <property name="status" value="ClaimPending"/>
+        <property name="isCheckWorkGroup" value="true"/>
+        <property name="isCheckOwnership" value="true"/>
+    </bean>
+
+    <bean id="ClaimUpdatedByEngineer" class="idas.chox.service.filters.FilterByStatus">
+        <property name="claimService" ref="claimService"/>
+        <property name="name" value="Claims Updated By Engineer"/>
+        <property name="key" value="ClaimUpdatedByEngineer"/>
+        <property name="status" value="ClaimUpdatedByEngineer"/>
+        <property name="isCheckWorkGroup" value="true"/>
+        <property name="isCheckOwnership" value="true"/>
+    </bean>
+    
     <bean id="NewClaimsToBerouted" class="idas.chox.service.filters.FilterByStatus">
         <property name="claimService" ref="claimService"/>
         <property name="name" value="New Claims To Be Routed"/>
@@ -115,7 +133,7 @@
 
     <bean id="InvoiceEscalatedToHandler" class="idas.chox.service.filters.FilterByStatus">
         <property name="claimService" ref="claimService"/>
-        <property name="name" value="Invoice Escalated To Handler"/>
+        <property name="name" value="Escalated Invoices To Handler "/>
         <property name="key" value="InvoiceEscalatedToHandler"/>
         <property name="status" value="InvoiceEscalatedToHandler"/>
         <property name="isCheckWorkGroup" value="true"/>
@@ -151,25 +169,17 @@
 
     <bean id="ClaimReferredToFNOL" class="idas.chox.service.filters.FilterByStatus">
         <property name="claimService" ref="claimService"/>
-        <property name="name" value="ClaimReferredToFNOL"/>
+        <property name="name" value="Claims To Be Registered"/>
         <property name="key" value="ClaimReferredToFNOL"/>
         <property name="status" value="ClaimReferredToFNOL"/>
         <property name="isCheckWorkGroup" value="true"/>
         <property name="isCheckOwnership" value="false"/>
     </bean>
 
-    <bean id="ClaimPending" class="idas.chox.service.filters.FilterByStatus">
-        <property name="claimService" ref="claimService"/>
-        <property name="name" value="ClaimPending"/>
-        <property name="key" value="ClaimPending"/>
-        <property name="status" value="ClaimPending"/>
-        <property name="isCheckWorkGroup" value="true"/>
-        <property name="isCheckOwnership" value="true"/>
-    </bean>
 
     <bean id="InvoiceReferredToClaimsHandler" class="idas.chox.service.filters.FilterByStatus">
         <property name="claimService" ref="claimService"/>
-        <property name="name" value="Invoice Referred To Claims Handler"/>
+        <property name="name" value="Invoice Referred By Engineer"/>
         <property name="key" value="InvoiceReferredToClaimsHandler"/>
         <property name="status" value="InvoiceReferredToClaimsHandler"/>
         <property name="isCheckWorkGroup" value="true"/>
@@ -178,34 +188,27 @@
 
     <bean id="InvoicePaymentLogged" class="idas.chox.service.filters.FilterByStatus">
         <property name="claimService" ref="claimService"/>
-        <property name="name" value="Invoice Payment Logged"/>
+        <property name="name" value="Payments To Be Received"/>
         <property name="key" value="InvoicePaymentLogged"/>
         <property name="status" value="InvoicePaymentLogged"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
     </bean>
 
-    <bean id="ClaimUpdatedByEngineer" class="idas.chox.service.filters.FilterByStatus">
-        <property name="claimService" ref="claimService"/>
-        <property name="name" value="Claim Updated By Engineer"/>
-        <property name="key" value="ClaimUpdatedByEngineer"/>
-        <property name="status" value="ClaimUpdatedByEngineer"/>
-        <property name="isCheckWorkGroup" value="true"/>
-        <property name="isCheckOwnership" value="true"/>
-    </bean>
 
-    <bean id="ContestedInvoicesReferredToEngineer" class="idas.chox.service.filters.FilterByStatus">
+
+    <bean id="InvoicesReferredToEngineer" class="idas.chox.service.filters.FilterByStatus">
         <property name="claimService" ref="claimService"/>
-        <property name="name" value="Contested Invoices Referred To Engineer"/>
-        <property name="key" value="ContestedInvoicesReferredToEngineer"/>
-        <property name="status" value="ContestedInvoiceReferredToInsurer"/>
-        <property name="isCheckWorkGroup" value="true"/>
-        <property name="isCheckOwnership" value="true"/>
+        <property name="name" value="Invoice Referred By Claim Handler"/>
+        <property name="key" value="InvoicesReferredToEngineer"/>
+        <property name="status" value="InvoiceReferredToEngineer"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
     </bean>
 
     <bean id="ClaimUnacknowledgedUnassigned" class="idas.chox.service.filters.FilterByStatus">
         <property name="claimService" ref="claimService"/>
-        <property name="name" value="Claim Unacknowledged Unassigned"/>
+        <property name="name" value="New Claims to be Assigned"/>
         <property name="key" value="ClaimUnacknowledgedUnassigned"/>
         <property name="status" value="ClaimUnacknowledgedUnassigned"/>
         <property name="isCheckWorkGroup" value="true"/>
@@ -236,5 +239,5 @@
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
     </bean>
-    
+
 </beans>

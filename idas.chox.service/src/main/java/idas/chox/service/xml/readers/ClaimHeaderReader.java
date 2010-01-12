@@ -94,7 +94,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
             } else {
 
-                if (claim.getStatus().equalsIgnoreCase(ClaimStatus.AWAITING_INVOICE_DATA)) {
+                if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
 
                     claimResult.setClaimParseStatus(ClaimParseStatus.newInvoice);
                     BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());

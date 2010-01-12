@@ -60,7 +60,7 @@ public class FilterAccessibility {
         InvoiceReferredToClaimsHandlerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_REF_TO_CH, roles) > 0;
         InvoicePaymentLoggedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_PAYMENT_LOGGED, roles) > 0;
         ClaimUpdatedByEngineerAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_UPDATED_BY_ENGINEER, roles) > 0;
-        contestedInvoiceReferToEngAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CONTESTED_INVOICE_REF_ENF, roles) > 0;
+        contestedInvoiceReferToEngAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_INVOICE_REF_TO_ENG, roles) > 0;
         claimUnacknowledgedUnassignedAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_CLAIM_OWNERSHIP, roles) > 0;
         awaitingInvoiceDataAccessible = accessibility.checkFilterAccessibility(ApplicationAccessibility.FILTER_AWAITING_INVOICE_DATA, roles) > 0;
     }

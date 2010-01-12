@@ -38,10 +38,6 @@ public class ForgetPasswordAction extends BaseAction {
         System.out.println(" >>>>>>>>>>>>> userName:" + this.userName + ":" + getUserName());
         System.out.println(" >>>>>>>>>>>>> email:" + this.email);
 
-
-        //this.userName = "admin@ins.com";
-        //this.email = "admin@ins.com";
-
         // VALIDATE IS VALID MATCH USER NAME OR EMAIL?
         System.out.println(" >>>>>>>>>>>>> webUserService:" + userDetailsService);
         WebUser user = userDetailsService.findByUserName(this.userName);

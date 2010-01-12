@@ -1,26 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script type="text/javascript">
-    
-    function doUpdateClaim(){ 
-        $("#formUpdatePaymentReceived").submit();        
-    }
-
-</script>
-
-<form 
-    onsubmit="return true;" 
-    action="<%=request.getContextPath()%>/prv/updatePaymentReceived.action"
-    method="post" 
-    id="formUpdatePaymentReceived" 
-    name="formUpdatePaymentReceived">
+<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formUpdatePaymentReceived" name="formUpdatePaymentReceived">
     <fieldset class="x-fieldset">
-        <s:hidden id="claimId" name="id" />
-        <s:hidden id="actionName" name="actionName" />      
         <legend>Update Payment Logged</legend>
+        <s:hidden id="claimId" name="id" />
+        <s:hidden id="name" name="name" value="invoicePaymentReceived"/>
         <div class="status-control-set">
-
             <div class="status-info">             
                 Please click on the 'Payment Received' button below when the payment has been received from the Insurer.
             </div>
@@ -33,12 +19,12 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="button" value="Payment Received" onclick="javascript: doUpdateClaim();" /> 
+                        <input type="submit" value="Payment Received"/>
                     </td>
                     <td></td><td></td>
                 </tr>
             </table>
         </div>
-        <div class="action-error-msg" id="ACKmessageBox"></div>
+        <div class="action-error-msg" id="updatePaymentReceivedMessageBox"></div>
     </fieldset>
 </form>

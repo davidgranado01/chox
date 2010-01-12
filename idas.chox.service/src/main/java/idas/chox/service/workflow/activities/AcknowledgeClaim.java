@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
@@ -12,10 +8,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import org.hibernate.util.StringHelper;
 
-/**
- *
- * @author emmanuel
- */
 public class AcknowledgeClaim extends BaseActivity {
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
@@ -79,7 +71,7 @@ public class AcknowledgeClaim extends BaseActivity {
             claim.addComment(Comment.New(1, engineerClaimReviewNotes));
         }
 
-        claim.setStatus(ClaimStatus.AWAITING_CAR_HIRE_INFO);
+        claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
     }
 
     protected ReasonOfRejection getReasonOfRejection() {

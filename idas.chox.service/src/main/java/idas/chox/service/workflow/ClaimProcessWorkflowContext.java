@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.workflow;
 
 import idas.chox.core.security.SecurityInfoProvider;
@@ -47,10 +43,12 @@ public class ClaimProcessWorkflowContext implements WorkflowContext {
         return businessRulesEngService;
     }
 
+    @Override
     public AutomaticRoutingService getAutomaticRoutingService() {
         return automaticRoutingService;
     }
 
+    @Override
     public void setAutomaticRoutingService(AutomaticRoutingService automaticRoutingService) {
         this.automaticRoutingService = automaticRoutingService;
     }

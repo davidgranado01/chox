@@ -30,9 +30,7 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
     }
 
     public List<BreBandOrganisation> getBreBandChorganisationsByChoOrgId(int choOrgid) {
-        System.out.println(">>>>>>>>>>> 02.1.1:"+choOrgid);
         DetachedCriteria criteria = DetachedCriteria.forClass(BreBandOrganisation.class);
-        System.out.println(">>>>>>>>>>> 02.1.2");
         criteria.add(Restrictions.eq("chorganisation.id", choOrgid));
         return findByCriteria(criteria);
     }

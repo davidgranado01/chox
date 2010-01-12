@@ -71,6 +71,10 @@ public class ClaimRejection extends BaseActivity {
             claim.addComment(Comment.New(1, engineerClaimReviewNotes));
         }
 
+        if (getReasonOfRejection() != null) {
+            claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getName()));
+        }
+        
         claim.setStatus(ClaimStatus.CLAIM_REJECTED);
     }
 

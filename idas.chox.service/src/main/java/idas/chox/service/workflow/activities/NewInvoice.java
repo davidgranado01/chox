@@ -21,7 +21,7 @@ public class NewInvoice extends BaseActivity {
 
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.AWAITING_INVOICE_DATA);
+        expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
     }
 
     

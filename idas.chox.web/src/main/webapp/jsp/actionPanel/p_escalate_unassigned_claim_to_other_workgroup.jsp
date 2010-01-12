@@ -32,7 +32,7 @@
 
         return false;
     }
-    
+
 </script>
 
 <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/UpdateClaimWorkgroupAssignment.action" method="post" id="formEscalateClaimAction" name="formEscalateClaimAction">

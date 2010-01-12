@@ -294,8 +294,6 @@ public class AdminUserService extends DataService {
 
         WebUserWorkgroup webUserWorkgroup = userWorkgroupService.getUserWorkgroup(userWorkgroupId);
 
-        System.out.println("checkUserWorkgroupAllowToDelete >>>>>>>>>> " + claimService.isOpenClaimByWorkgroupExist(webUserWorkgroup.getWorkgroup().getId()));
-
         if (claimService.isOpenClaimByWorkgroupExist(webUserWorkgroup.getWorkgroup().getId())) {
 
             if (isLastUserRoleForSelectedWorkgroup(WebUserRole.ROLE_CH, webUserWorkgroup)) {

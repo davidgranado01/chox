@@ -62,16 +62,10 @@ public class RulesEngine {
         return response;
     }
 
-    /**
-     * @return the businessRules
-     */
     public List<IBusinessRule> getBusinessRules() {
         return businessRules;
     }
 
-    /**
-     * @param businessRules the businessRules to set
-     */
     public void setBusinessRules(List<IBusinessRule> businessRules) {
         this.businessRules = businessRules;
     }

@@ -1,18 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author emmanuel
- */
 public class NewClaim extends BaseActivity {
 
     @Override

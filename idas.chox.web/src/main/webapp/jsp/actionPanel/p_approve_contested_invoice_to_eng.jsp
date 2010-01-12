@@ -2,78 +2,60 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    
-    $(document).ready(function(){
-        doFormValidation();
-    });
-    
-    function doRejectClaim(){
-        
-        actionPanel.registerAction('reject');
-        
-        if(doFormValidation().form()){
-            
-            if(!confirm('Are you sure you want to reject this claim?')){
-                return false;
-            }
-        
-            // $("#reasonOfRejectionIdHolder").val($("#InvoiceReasonOfRejectionId").val());
-        
-        }else{
-            return false;
-        }
-        
-        return true;
-    }
-    
-    function isRejected(){
-        var sActionName = $("#actionName").val();
-        if(sActionName=="reject"){
-            return true;
-        }
-        return false;
-    }
-    
-    function doFormValidation(){
-        var validateFlag = $("#approveContestedInvoice").validate(
+
+    $(function(){
+
+        $("form#invoiceReferredByEngForm").validate(
         {
-            errorLabelContainer: "#ActionPanelMessageBox",                
+            errorLabelContainer: "#invoiceReferredByEngMessageBox",
             rules: {
-                actionName:{required:true},
-                reasonOfRejectionId:{required:isRejected}
+                reasonOfRejectionId:{
+                    required:true
+                }
             },
             messages: {
-                actionName:{required:"You must select action"},
-                reasonOfRejectionId:{required:"You must choose a 'Reason For Rejection'"}
+                reasonOfRejectionId:{
+                    required:"You must select reason of rejection"
+                }
             }
-            
         });
-        
-        return validateFlag;
-    }
+
+    });
+
     
-    function doSubmit(a){
-        actionPanel.registerAction(a);
-        // $("#InvoiceReasonOfRejectionId").val("");
-        if(!doFormValidation().form()){
-            return false;
+    function doInvoiceReferredByEngSubmit(action){
+
+
+        actionPanel.registerAction(action);
+
+        $("form#invoiceReferredByEngForm #reasonOfRejectionId").rules("remove");
+        if(action=="rejectInvoice"){
+            $("form#invoiceReferredByEngForm #reasonOfRejectionId").rules("add", {
+                required: true,
+                messages: {required: "You must choose a 'Reason For Rejection'"}
+            });
+        }else{
+            $("form#invoiceReferredByEngForm #reasonOfRejectionId").val("");
         }
-        return true;
-        
-    } 
-    
+
+        if($("#invoiceReferredByEngForm").valid()){
+
+            if(action=='rejectInvoice' && !confirm('Are you sure you want to reject this claim?')){
+                return;
+            }
+
+            $("form#invoiceReferredByEngForm").submit();
+        }
+    }
+
 </script>
 
-<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/ContestedInvoiceByCH.action" method="post"
-      id="approveContestedInvoice" name="approveContestedInvoice">
+<form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="post"
+      id="invoiceReferredByEngForm" name="invoiceReferredByEngForm">
     <fieldset class="x-fieldset">
         <legend>Referred Invoice - Action Required</legend>
-        <s:hidden name="id" />
-        <s:hidden id="actionName" name="actionName" />
-        <!--
-        <s:hidden id="reasonOfRejectionIdHolder" name="invoice.reasonOfRejectionId"/>
-        !-->
-
+        <s:hidden id="claimId" name="id" />
+        <s:hidden id="name" name="name"/>
         <div>
             <div class="status-info">
                 Please review the 'Notes' tab for the reason why the invoice has been referred for further attention. 
@@ -106,14 +88,14 @@
                     </tr>
                     <tr>                         
                         <td colspan="4" class="choice"> 
-                            <input type="submit" value="Reject Invoice"  onclick="return doRejectClaim();" />
-                            <input type="submit" value="Clear For Payment" onclick="return doSubmit('accept');"  />
-                            <input type="submit" value="Refer To Claim Handler" onclick="return doSubmit('referCH');"  />  
+                            <input type="submit" value="Reject Invoice"  onclick="return doInvoiceReferredByEngSubmit('rejectInvoice');" />
+                            <input type="submit" value="Clear For Payment" onclick="return doInvoiceReferredByEngSubmit('acceptInvoice');"  />
+                            <input type="submit" value="Refer To Claim Handler" onclick="return doInvoiceReferredByEngSubmit('invoiceReferToCH');"  />
                         </td>
                     </tr>
                 </table>
             </div>
-            <div class="action-error-msg" id="ActionPanelMessageBox"></div>
+            <div class="action-error-msg" id="invoiceReferredByEngMessageBox"></div>
         </div> 
     </fieldset>
 </form>
