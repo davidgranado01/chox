@@ -40,4 +40,5 @@
     <bean id="acceptRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionAccept"/>
     <bean id="invoiceReferToCH" class="idas.chox.service.workflow.activities.InvoiceReferToCH"/>
     <bean id="resubmitInvoice" class="idas.chox.service.workflow.activities.InvoiceResubmit"/>
+    <bean id="newInvoice" class="idas.chox.service.workflow.activities.NewInvoice"/>
 </beans>

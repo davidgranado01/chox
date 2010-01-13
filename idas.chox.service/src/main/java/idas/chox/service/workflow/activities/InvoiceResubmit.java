@@ -12,8 +12,10 @@ public class InvoiceResubmit extends BaseActivity {
     protected void doProcess(Claim claim) throws Exception {
 
         RulesEngineResponse response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
-        List<History> histories = (History.New(response));
-        claim.getHistories().addAll(histories);
+
+        for (History history : History.New(response)) {
+            claim.addHistory(history);
+        }
 
         if ((response.getStatus()).equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
             throw new Exception("ERROR : Invoice data calculation incorrect");

@@ -79,34 +79,40 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private BordereauResult doProcessBordereauResult(final File file, final String fileName,BordereauResult bordereauResult) {
        
         bordereauFileValidation.validate(file, fileName, bordereauResult);
-
+        
         if (bordereauResult.isValid()) {
-
+            
             Document document = DocumentHelper.getDocumentFromFile(file);
             bordereauSchemaValidation.validate(document, bordereauResult);
+
+            
 
             if (bordereauResult.isValid()) {
 
                 try {
+                    
                     bordereauReader.execute(document, bordereauResult);
 
                     int totalRecord = bordereauResult.getClaimResult().size();
                     int totalProcessed = 0;
+                    
                     // CHECK DUPLICATE CHO REFERENCE PER XML
                     CHOReferenceValidation choReferenceValidation = new CHOReferenceValidation();
 
                     for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
 
                         choReferenceValidation.validate(claimResult);
-
+                        
                         if (claimResult.isValid() && claimResult.isDataValid()) {
                             //CALL WORKFLOW LOGIC
                             try {
+                                
                                 if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
                                     Activity activity =  activityFactory.getActivity("newClaim");
                                     activity.processInBatch(claimResult.getClaim());
                                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
                                     Activity activity =  activityFactory.getActivity("newInvoice");
+                                    activity.processInBatch(claimResult.getClaim());
                                 }
                                 totalProcessed++;
                             }

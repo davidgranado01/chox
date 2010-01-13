@@ -37,10 +37,10 @@ public class RuleEvaluation {
             
             String rtnVal = "";
             if(result == RuleEvaluationResult.RuleFailed){
-                rtnVal+= "BRE Rule Failed – " + relatedRule.getNarrative();
+                rtnVal+= "BRE Rule Failed - " + relatedRule.getNarrative();
             }
             else if(result == RuleEvaluationResult.RuleSkipped){
-                rtnVal+= "BRE Rule Skipped – " + relatedRule.getNarrative();
+                rtnVal+= "BRE Rule Skipped - " + relatedRule.getNarrative();
             }
             else{
                 rtnVal+= "BRE Rule Passed";

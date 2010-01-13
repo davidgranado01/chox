@@ -21,7 +21,6 @@ public class NewClaim extends BaseActivity {
 
     @Override
     protected void validate(Claim claim) throws Exception {
-
         if (!claim.isTransient()) {
             throw new Exception("An process new claim attempt failed due to claim is already exist.");
         }
@@ -29,7 +28,6 @@ public class NewClaim extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
-
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
     }
 
@@ -42,5 +40,4 @@ public class NewClaim extends BaseActivity {
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
         expectingStatuses.add(null);
     }
-
 }

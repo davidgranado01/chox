@@ -58,27 +58,6 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
             claim.getCustomer().setIsVehicleRegistrationExist(true);
         }
 
-        /*
-        if (claim.getThirdParty().getVehicleClass() != null) {
-        if ((claim.getThirdParty().getVehicleClass().getName().toUpperCase()).equalsIgnoreCase("UNATTACHED")) {
-        claim.getThirdParty().setVehicleClass(null);
-        }
-        }
-
-
-        if (claim.getCustomer().getVehicleClass() != null) {
-        if ((claim.getCustomer().getVehicleClass().getName().toUpperCase()).equalsIgnoreCase("UNATTACHED")) {
-        claim.getCustomer().setVehicleClass(null);
-        }
-        }
-
-        
-        if (claim.getVehicleHire().getVehicleClass() != null) {
-        if ((claim.getVehicleHire().getVehicleClass().getName().toUpperCase()).equalsIgnoreCase("UNATTACHED")) {
-        claim.getVehicleHire().setVehicleClass(null);
-        }
-        }
-         */
     }
 
     private RulesEngineResponse validate(Claim claim) {
@@ -130,11 +109,11 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         choBand.setVehicleClassCeiling(vehicleClassCeiling);
         claim.setBreBand(choBand);
 
-
         String oldStatus = claim.getStatus();
 
         constructBreValidateObject(claim);
         RulesEngineResponse validationResult = validate(claim);
+
         String newClaimStatus = validationResult.getStatus().toString();
 
         claim.setPreviousStatus(oldStatus);
@@ -161,10 +140,12 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
     }
 
+    @Override
     public void setRulesEngine(RulesEngine rulesEngine) {
         this.rulesEngine = rulesEngine;
     }
 
+    @Override
     public RulesEngine getRulesEngine() {
         return rulesEngine;
     }

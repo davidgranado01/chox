@@ -66,6 +66,7 @@ public class InvoiceExtraReader extends BaseEntityReader {
     @Override
     protected void process(ClaimResult claimResult) throws Exception {
 
+        preInitialize(claimResult);
         Invoice invoice = claimResult.getClaim().getInvoice();
 
         Element rootElement = claimResult.getElement();
@@ -119,7 +120,6 @@ public class InvoiceExtraReader extends BaseEntityReader {
             invoice.setTowBarsFee(dIntemCost);
             invoice.setTowBarsQty(iQuantity);
         }
-
     }
 
     private void preInitialize(ClaimResult claimResult) {

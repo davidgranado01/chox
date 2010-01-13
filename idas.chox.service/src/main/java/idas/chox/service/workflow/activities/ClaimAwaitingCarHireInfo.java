@@ -3,7 +3,6 @@ package idas.chox.service.workflow.activities;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import java.util.List;
-import org.hibernate.StaleObjectStateException;
 
 public class ClaimAwaitingCarHireInfo extends BaseActivity {
 

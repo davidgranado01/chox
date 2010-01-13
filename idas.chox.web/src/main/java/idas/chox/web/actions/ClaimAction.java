@@ -22,7 +22,6 @@ import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Witness;
-import idas.chox.core.services.AttachmentTypeService;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;

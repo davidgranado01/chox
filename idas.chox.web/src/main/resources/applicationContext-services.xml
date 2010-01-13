@@ -59,6 +59,7 @@
     </bean>
     <bean id="webUserUserRoleService" class="idas.chox.data.services.WebUserUserRoleServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
     <bean id="insurerChorganisationService" class="idas.chox.data.services.InsurerChorganisationServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>

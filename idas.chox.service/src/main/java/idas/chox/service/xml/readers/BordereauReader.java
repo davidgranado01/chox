@@ -46,17 +46,10 @@ public class BordereauReader {
 
             for (ClaimResult claimResult : claimResults) {
                 for (Reader r : subEntityReaders) {
-
                     r.execute(claimResult);
-
-                    if (claimResult.isValid() && claimResult.isDataValid() && claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
-                        businessRulesEngService.process(claimResult);
-                    }
                 }
             }
-        }
-        else
-        {
+        } else {
             throw new Exception("An attempt to read bordereau from XML failed due to the bordereauResult is invalid from previous state.");
         }
     }
