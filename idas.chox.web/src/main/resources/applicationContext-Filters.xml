@@ -234,7 +234,7 @@
 
     <bean id="PenaltyChargesApplied" class="idas.chox.service.filters.PenaltyChargesApplied">
         <property name="claimService" ref="claimService"/>
-        <property name="name" value= "Penalty Charges Applied"/>
+        <property name="name" value= "Penalty Charges To Be Applied"/>
         <property name="key" value= "PenaltyChargesApplied"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>

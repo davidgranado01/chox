@@ -15,7 +15,6 @@ public class PenaltyChargesApplied extends BaseFilter {
 
     @Override
     public ClaimSearchCriteria getClaimSearchCriteria() {
-
         ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
         claimSearchCriteria.setIspenaltyChargeApplied(true);
         claimSearchCriteria.setIsWorkgroupCheck(getIsCheckWorkGroup());

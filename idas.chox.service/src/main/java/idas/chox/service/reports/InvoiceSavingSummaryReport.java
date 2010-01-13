@@ -7,7 +7,6 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.InvoiceSavingSummaryReportObject;
 import idas.chox.service.reports.viewdata.InvoiceSavingSummaryReportViewData;
-import idas.chox.service.security.PermissionedUser;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,22 +25,26 @@ public class InvoiceSavingSummaryReport implements Report {
         reportParameterNames = new ArrayList<String>();
     }
 
+    @Override
     public String getReportTemplateFileName() {
         return "template_InvoiceSavingSummaryReport.xls";
     }
 
+    @Override
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }
 
+    @Override
     public HashMap getReportParameters() {
 
         HashMap reportParameters = new HashMap();
 
         try {
 
-            PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
-            user = currentUser.getUser();
+            user = ((WebUser) externalParameter.get("CurrentUser"));
+            // PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
+            // user = currentUser.getUser();
 
             final Date dataStart = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
             final Date dataEnd = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateEnd"))[0]);
@@ -112,6 +115,7 @@ public class InvoiceSavingSummaryReport implements Report {
         return reportParameters;
     }
 
+    @Override
     public InputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
@@ -121,6 +125,7 @@ public class InvoiceSavingSummaryReport implements Report {
         return new ExcelReportBuilder();
     }
 
+    @Override
     public void setDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }

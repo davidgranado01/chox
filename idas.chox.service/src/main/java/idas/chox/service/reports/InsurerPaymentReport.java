@@ -2,13 +2,13 @@ package idas.chox.service.reports;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.core.util.TextHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.PaymentReport;
 import idas.chox.service.reports.viewdata.PaymentReportObject;
-import idas.chox.service.security.PermissionedUser;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,10 +28,12 @@ public class InsurerPaymentReport implements Report {
         reportParameterNames = new ArrayList<String>();
     }
 
+    @Override
     public String getReportTemplateFileName() {
         return "template_PaymentReport.xls";
     }
 
+    @Override
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }
@@ -41,6 +43,7 @@ public class InsurerPaymentReport implements Report {
         Chorganisation chorg = new Chorganisation();
 
         try {
+
             DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
             criteria.add(Restrictions.eq("id", orgId));
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
@@ -52,13 +55,15 @@ public class InsurerPaymentReport implements Report {
         return chorg;
     }
 
+    @Override
     public HashMap getReportParameters() {
 
         HashMap reportParameters = new HashMap();
 
         try {
 
-            PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
+            WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
+            // PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
 
             String insurerName = "";
             Integer iSupplierId = -1;
@@ -70,9 +75,9 @@ public class InsurerPaymentReport implements Report {
 
             Chorganisation chorg = new Chorganisation();
 
-            if (currentUser.getIsINS()) {
+            if (currentUser.getInsurer()!=null) {
 
-                Insurer ins = currentUser.getUser().getInsurer();
+                Insurer ins = currentUser.getInsurer();
                 iInsurerId = ins.getId();
                 insurerName = ins.getName();
 
@@ -86,23 +91,8 @@ public class InsurerPaymentReport implements Report {
                         chorg = getChorganisation(iSupplierId);
                     }
                 }
-                
-                /*
-                String supplierId = ((String[]) externalParameter.get("supplierId"))[0];
-                if (!supplierId.equalsIgnoreCase("")) {
-                    iSupplierId = Integer.parseInt(supplierId);
-                    chorg = getChorganisation(iSupplierId);
-                }
-                */
 
             }
-
-            /*
-            String workgroupId = ((String[]) externalParameter.get("workgroupId"))[0];
-            if (!workgroupId.equalsIgnoreCase("")) {
-                iWorkgroupId = Integer.parseInt(workgroupId);
-            }
-            */
             
             if((externalParameter.get("workgroupId"))!=null){
                 String workgroupId = ((String[]) externalParameter.get("workgroupId"))[0];
@@ -117,14 +107,14 @@ public class InsurerPaymentReport implements Report {
             sb.append("and insurer_id = :pInsurerId and chorganisation_id = :pChorganisationId ");
 
             // FILTER BY WORKGROUP AND OWNERSHIO ONLY
-            if (RoleHelper.isCheckSelectedRoleExist(currentUser.getUser().getRoles(), WebUserRole.ROLE_CH)) {
+            if (RoleHelper.isCheckSelectedRoleExist(currentUser.getRoles(), WebUserRole.ROLE_CH)) {
 
-                if (RoleHelper.isUserCheckByWorkgroup(currentUser.getUser())) {
-                    sb.append("and invoice.workgroup_id in (select workgroup_id from web_user_workgroup where user_id=" + currentUser.getUser().getId() + ") ");
+                if (RoleHelper.isUserCheckByWorkgroup(currentUser)) {
+                    sb.append("and invoice.workgroup_id in (select workgroup_id from web_user_workgroup where user_id=" + currentUser.getId() + ") ");
                 }
 
-                if (RoleHelper.isUserCheckByOwnership(currentUser.getUser())) {
-                    sb.append("and invoice.owner = " + currentUser.getUser().getId() + " ");
+                if (RoleHelper.isUserCheckByOwnership(currentUser)) {
+                    sb.append("and invoice.owner = " + currentUser.getId() + " ");
                 }
 
             }
@@ -165,6 +155,7 @@ public class InsurerPaymentReport implements Report {
         return reportParameters;
     }
 
+    @Override
     public InputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
@@ -174,6 +165,7 @@ public class InsurerPaymentReport implements Report {
         return new ExcelReportBuilder();
     }
 
+    @Override
     public void setDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }

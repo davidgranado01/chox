@@ -6,12 +6,12 @@ package idas.chox.service.reports;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.WebUser;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.TextHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.InvoiceSummary;
 import idas.chox.service.reports.viewdata.InvoiceSummaryReportObject;
-import idas.chox.service.security.PermissionedUser;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,10 +31,12 @@ public class InvoiceSummaryReport implements Report {
         reportParameterNames = new ArrayList<String>();
     }
 
+    @Override
     public String getReportTemplateFileName() {
         return "template_InvoiceSummaryReport.xls";
     }
 
+    @Override
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }
@@ -71,14 +73,15 @@ public class InvoiceSummaryReport implements Report {
         return ins;
     }
 
-    //TODO: TO REVIEW
+    @Override
     public HashMap getReportParameters() {
 
         HashMap reportParameters = new HashMap();
 
         try {
 
-            PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
+            WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
+            // PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
 
             Date dataStart = null;
             Date dataEnd = null;
@@ -104,11 +107,11 @@ public class InvoiceSummaryReport implements Report {
             String selectedOrgLabel = "";
             String reportColumnHeader = "";
 
-            userOrgName = currentUser.getUser().getOrganisationName();
+            userOrgName = currentUser.getOrganisationName();
 
-            if (currentUser.getIsINS()) {
+            if (currentUser.getInsurer()!=null) {
 
-                Insurer ins = currentUser.getUser().getInsurer();
+                Insurer ins = currentUser.getInsurer();
                 iInsurerId = ins.getId();
                 userOrgId = iInsurerId;
 
@@ -127,7 +130,7 @@ public class InvoiceSummaryReport implements Report {
                 
             } else {
 
-                Chorganisation chorg = currentUser.getUser().getChorganisation();
+                Chorganisation chorg = currentUser.getChorganisation();
                 iSupplierId = chorg.getId();
                 userOrgId = iSupplierId;
 
@@ -148,7 +151,7 @@ public class InvoiceSummaryReport implements Report {
 
             StringBuffer sb = new StringBuffer();
 
-            if (currentUser.getIsINS()) {
+            if (currentUser.getInsurer()!=null) {
                 sb.append("Select chorganisation.id, chorganisation.name, ");
             } else {
                 sb.append("Select insurer.id, insurer.name, ");
@@ -180,7 +183,7 @@ public class InvoiceSummaryReport implements Report {
             sb.append("inner join chorganisation chorganisation on insurer_chorganisation.chorganisation_id = chorganisation.id ");
             sb.append("inner join insurer insurer on insurer_chorganisation.insurer_id = insurer.id ");
 
-            if (currentUser.getIsINS()) {
+            if (currentUser.getInsurer()!=null) {
 
                 sb.append("where insurer_chorganisation.insurer_id = :pUserOrgId ");
 
@@ -244,6 +247,7 @@ public class InvoiceSummaryReport implements Report {
         return reportParameters;
     }
 
+    @Override
     public InputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
@@ -253,6 +257,7 @@ public class InvoiceSummaryReport implements Report {
         return new ExcelReportBuilder();
     }
 
+    @Override
     public void setDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }

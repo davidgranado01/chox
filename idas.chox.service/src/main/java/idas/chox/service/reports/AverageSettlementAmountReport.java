@@ -3,13 +3,13 @@ package idas.chox.service.reports;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.WebUser;
 import idas.chox.core.util.DateHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.AverageSettlementAmountDtlViewData;
 import idas.chox.service.reports.viewdata.AverageSettlementAmountReportObject;
 import idas.chox.service.reports.viewdata.AverageSettlementAmountRowData;
 import idas.chox.service.reports.viewdata.AverageSettlementAmountViewData;
-import idas.chox.service.security.PermissionedUser;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -45,7 +45,8 @@ public class AverageSettlementAmountReport implements Report {
 
         try {
 
-            PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
+            WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
+            // PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
             final Date dataStart = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
             final Date dataEnd = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateEnd"))[0]);
             final String insurerId = ((String[]) externalParameter.get("insurerId"))[0];
@@ -62,7 +63,8 @@ public class AverageSettlementAmountReport implements Report {
                 ins = reportHelper.getInsurer(iInsurerId, this.baseDataService);
 
             } else {
-                ins = currentUser.getUser().getInsurer();
+                
+                ins = currentUser.getInsurer();
                 iInsurerId = ins.getId();
             }
 
@@ -248,6 +250,7 @@ public class AverageSettlementAmountReport implements Report {
         return rows;
     }
 
+    @Override
     public InputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
@@ -257,6 +260,7 @@ public class AverageSettlementAmountReport implements Report {
         return new ExcelReportBuilder();
     }
 
+    @Override
     public void setDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }

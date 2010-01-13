@@ -1,5 +1,6 @@
 package idas.chox.service.reports;
 
+import idas.chox.core.model.WebUser;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.MathHelper;
 import idas.chox.data.services.BaseDataService;
@@ -7,7 +8,6 @@ import idas.chox.service.reports.viewdata.OverviewSummaryLineItem;
 import idas.chox.service.reports.viewdata.OverviewSummaryLineItemDetail;
 import idas.chox.service.reports.viewdata.OverviewSummaryReportByOrg;
 import idas.chox.service.reports.viewdata.OverviewSummaryReportObject;
-import idas.chox.service.security.PermissionedUser;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,11 +21,12 @@ public class OverviewSummaryReport implements Report {
     Map externalParameter;
     List<String> reportParameterNames;
     private BaseDataService baseDataService;
-    private PermissionedUser currentUser;
     private Date dataStart;
     private Date dataEnd;
+    WebUser currentUser;
     private Integer userOrgId = -1;
 
+    @Override
     public HashMap getReportParameters() {
 
         HashMap reportParameters = new HashMap();
@@ -33,15 +34,16 @@ public class OverviewSummaryReport implements Report {
         String userOrgLabel = "";
         String userOrgName = "";
 
-        currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
-        userOrgName = currentUser.getUser().getOrganisationName();
+        // currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
+        currentUser = ((WebUser) externalParameter.get("CurrentUser"));
+        userOrgName = currentUser.getOrganisationName();
 
-        if (currentUser.getIsINS()) {
+        if (currentUser.getInsurer()!=null) {
             userOrgLabel = "Insurer";
-            userOrgId = currentUser.getUser().getInsurer().getId();
+            userOrgId = currentUser.getInsurer().getId();
         } else {
             userOrgLabel = "Credit Hire Organisation";
-            userOrgId = currentUser.getUser().getChorganisation().getId();
+            userOrgId = currentUser.getChorganisation().getId();
         }
 
         try {
@@ -62,7 +64,7 @@ public class OverviewSummaryReport implements Report {
 
             StringBuffer sb = new StringBuffer();
 
-            if (currentUser.getIsINS()) {
+            if (currentUser.getInsurer()!=null) {
                 sb.append("select chorganisation.id as org_id, chorganisation.name as org_name, ");
             } else {
                 sb.append("select insurer.id as org_id, insurer.name as org_name, ");
@@ -86,7 +88,7 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.total_to_pay)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_invoice_val, ");
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.penalty_charge)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_penalty_val ");
 
-            if (currentUser.getIsINS()) {
+            if (currentUser.getInsurer()!=null) {
 
                 sb.append("from insurer_chorganisation insurer_chorganisation, chorganisation chorganisation ");
                 sb.append("where chorganisation.id=insurer_chorganisation.chorganisation_id  ");
@@ -117,7 +119,7 @@ public class OverviewSummaryReport implements Report {
             for (Object o : result) {
                 Map data = (Map) o;
 
-                OverviewSummaryReportByOrg overviewSummaryReportByOrg = OverviewSummaryReportByOrg.getObject(data, currentUser.getIsINS());
+                OverviewSummaryReportByOrg overviewSummaryReportByOrg = OverviewSummaryReportByOrg.getObject(data, (currentUser.getInsurer()!=null));
                 overviewSummaryReportByOrgs.add(overviewSummaryReportByOrg);
 
                 orgName.add(overviewSummaryReportByOrg.getOrgName());
@@ -268,12 +270,12 @@ public class OverviewSummaryReport implements Report {
         sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.total_to_pay)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageInvoiceValueForAllOrg, ");
         sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.penalty_charge)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averagePenaltyValueForAllOrg ");
 
-        if (!currentUser.getIsINS()) {
-            sb.append("from chorganisation chorganisation where chorganisation.id=:pUserOrgId ");
-            sqlStatement1 = "invoice.chorganisation_id=chorganisation.id";
-        } else {
+        if (currentUser.getInsurer()!=null) {
             sb.append("from insurer insurer where insurer.id=:pUserOrgId ");
             sqlStatement1 = "invoice.insurer_id=insurer.id";
+        } else {
+            sb.append("from chorganisation chorganisation where chorganisation.id=:pUserOrgId ");
+            sqlStatement1 = "invoice.chorganisation_id=chorganisation.id";
         }
 
         String query = sb.toString();
@@ -361,6 +363,7 @@ public class OverviewSummaryReport implements Report {
         return lineItemDetails;
     }
 
+    @Override
     public InputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
@@ -370,14 +373,17 @@ public class OverviewSummaryReport implements Report {
         return new ExcelReportBuilder();
     }
 
+    @Override
     public void setDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
 
+    @Override
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }
 
+    @Override
     public String getReportTemplateFileName() {
         return "template_SummaryReport.xls";
     }

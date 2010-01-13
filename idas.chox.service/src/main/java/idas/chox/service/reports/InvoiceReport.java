@@ -7,7 +7,6 @@ import idas.chox.core.util.RoleHelper;
 import idas.chox.core.util.TextHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.PaymentReport;
-import idas.chox.service.security.PermissionedUser;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,8 +43,7 @@ public class InvoiceReport implements Report {
 
         try {
 
-            PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
-            user = currentUser.getUser();
+            user = ((WebUser) externalParameter.get("CurrentUser"));
 
             final Date dataStart = DateHelper.Parse(((String[]) externalParameter.get("DateStart"))[0]);
             final Date dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);

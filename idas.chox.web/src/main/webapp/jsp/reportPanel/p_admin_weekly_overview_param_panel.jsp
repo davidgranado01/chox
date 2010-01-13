@@ -8,21 +8,10 @@
     Ext.onReady(function(){
         ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
         ui.dateField('DateEnd',getTodayDate(),'dateToDiv');
-    }); 
 
-    function openReport()
-    {
-        if(doFormValidation().form()){
-            var queryString = $('#formReportParam').formSerialize();
-            window.location = "exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
-        }
-    }
-
-    function doFormValidation(){
-                
-        var validateFlag = $("#formReportParam").validate(
+        $("#formReportParam").validate(
         {
-            errorLabelContainer: "#acknowledge-message-box",
+            errorLabelContainer: "#formReportParamMessageBox",
             rules: {
                 DateStart:{required:true, date:true},
                 DateEnd:{required:true, date:true}
@@ -30,17 +19,25 @@
             messages: {
                 DateStart: {required:"A value must be supplied for 'Date From'", date:"You must supply a date value 'Date From'"},
                 DateEnd: {required:"A value must be supplied for 'Date To'", date:"You must supply a date value 'Date To'"
-                }         
+                }
             }
         });
-        
-        return validateFlag;
+
+    }); 
+
+    function openReport()
+    {
+        if($("form#formReportParam").valid()){
+            var queryString = $('#formReportParam').formSerialize();
+            window.location = "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?reportName=" + reportName + "&" + queryString;
+        }
     }
+
     
 </script>
 
 <fieldset class="x-fieldset">
-    
+
     <legend>Admin Weekly Overview Report</legend>
 
     <form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
@@ -58,15 +55,15 @@
                         <s:if test="isInsurer">
                             <td nowrap><label>Credit Hire Organisation</label></td>
                             <td>
-                            <s:select
-                                name="supplierId"
-                                id="supplierId"
-                                list="suppliers"
-                                listKey="id"
-                                listValue="name"
-                                headerKey=""
-                                headerValue="--- ALL ---"
-                                emptyOption="false">
+                                <s:select
+                                    name="supplierId"
+                                    id="supplierId"
+                                    list="suppliers"
+                                    listKey="id"
+                                    listValue="name"
+                                    headerKey=""
+                                    headerValue="--- ALL ---"
+                                    emptyOption="false">
                                 </s:select>
                             </td>
                         </s:if>
@@ -74,14 +71,14 @@
                             <td nowrap><label>Insurer</label></td>
                             <td>
                                 <s:select
-                                name="insurerId"
-                                id="insurerId"
-                                list="insurers"
-                                listKey="id"
-                                listValue="name"
-                                headerKey=""
-                                headerValue="--- ALL ---"
-                                emptyOption="false">
+                                    name="insurerId"
+                                    id="insurerId"
+                                    list="insurers"
+                                    listKey="id"
+                                    listValue="name"
+                                    headerKey=""
+                                    headerValue="--- ALL ---"
+                                    emptyOption="false">
                                 </s:select>
                             </td>
                         </s:if>
@@ -100,10 +97,10 @@
 
             </div>
 
-            <div id="acknowledge-message-box"></div>
+            <div id="formReportParamMessageBox" class="action-error-msg"></div>
 
         </div>
-    
+
     </form>
-    
+
 </fieldset>

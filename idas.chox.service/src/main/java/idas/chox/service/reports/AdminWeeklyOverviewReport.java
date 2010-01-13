@@ -2,12 +2,12 @@ package idas.chox.service.reports;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.WebUser;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.TextHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.WeekSummary;
 import idas.chox.service.reports.viewdata.WeekSummaryReportObject;
-import idas.chox.service.security.PermissionedUser;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +24,7 @@ public class AdminWeeklyOverviewReport implements Report {
     List<String> reportParameterNames;
     private BaseDataService baseDataService;
 
+    @Override
     public InputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
@@ -59,7 +60,8 @@ public class AdminWeeklyOverviewReport implements Report {
 
         try {
             
-            PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));            
+            WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
+
             Integer selectedSupplierId = -1;
             Integer selectedInsurerId = -1;
             Date startDate = null;
@@ -87,11 +89,11 @@ public class AdminWeeklyOverviewReport implements Report {
             String selectedOrgLabel = "";
             String reportHeaderTitle = "";
 
-            if(!currentUser.getIsCHOXAdmin()){
+            if(!currentUser.isCHOXAdmin()){
                 
-                if (currentUser.getIsINS()) {
+                if (currentUser.getInsurer()!=null) {
 
-                    Insurer ins = currentUser.getUser().getInsurer();
+                    Insurer ins = currentUser.getInsurer();
                     selectedInsurerId = ins.getId();
                     userOrgName = ins.getName();
 
@@ -105,7 +107,7 @@ public class AdminWeeklyOverviewReport implements Report {
 
                 } else {
 
-                    Chorganisation chorg = currentUser.getUser().getChorganisation();
+                    Chorganisation chorg = currentUser.getChorganisation();
                     selectedSupplierId = chorg.getId();
                     userOrgName = chorg.getName();
 
@@ -151,8 +153,9 @@ public class AdminWeeklyOverviewReport implements Report {
                 Date startOfTheWeek = c.getTime();
                 c.add(Calendar.DATE, 6);
                 Date endOfTheWeek = c.getTime();
-                
-                String query = getReportQuery(currentUser.getIsINS());
+
+                boolean isIns = (currentUser.getInsurer()!=null);
+                String query = getReportQuery(isIns);
 
                 HashMap queryParameters = new HashMap();
                 queryParameters.put("pSelectedStartDate", startOfTheWeek);
@@ -227,9 +230,7 @@ public class AdminWeeklyOverviewReport implements Report {
             sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND insurer_id=insurer.id AND new_status='InvoicePaymentLogged' and date(update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate) as invoicePaidByInsurer, ");
             sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) <= :pSelectedEndDate group by claim_id) b WHERE (a.chorganisation_id = :pChorganisationId or :pChorganisationId < 0) AND a.insurer_id=insurer.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) <= :pSelectedEndDate AND a.new_status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as claimsToBeInvoiced ");
             sb.append("from insurer insurer where insurer.id = :pInsId ");
-
         }else{
-
             sb.append("select ");
             sb.append("((select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) < :pSelectedStartDate group by claim_id) b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) < :pSelectedStartDate AND a.new_status not in ('ClaimClosed','InvoicePaymentLogged','PaymentReceived','ClaimRejectionAccepted'))) as claimsBFwd, ");
             sb.append("(select case when count(distinct claim_id) is null then 0 else count(distinct claim_id) end as no_count from rpt_claim_audit_trail where (insurer_id = :pInsId or :pInsId < 0) AND chorganisation_id=chorganisation.id and date(update_date) between :pSelectedStartDate and :pSelectedEndDate and new_status='ClaimUnacknowledgedUnrouted' and original_status!='ClaimClosed') as claimsNotification, ");
@@ -250,7 +251,6 @@ public class AdminWeeklyOverviewReport implements Report {
             sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail where (insurer_id = :pInsId or :pInsId < 0) AND chorganisation_id=chorganisation.id AND new_status='InvoicePaymentLogged' and date(update_date) BETWEEN :pSelectedStartDate and :pSelectedEndDate) as invoicePaidByInsurer, ");
             sb.append("(select case when count(distinct id) is null then 0 else count(distinct id) end as no_count from rpt_claim_audit_trail a, (select claim_id, max(update_date) as max_update_date from rpt_claim_audit_trail where date(update_date) <= :pSelectedEndDate group by claim_id) b WHERE (a.insurer_id = :pInsId or :pInsId < 0) AND a.chorganisation_id=chorganisation.id AND a.claim_id=b.claim_id AND a.update_date=b.max_update_date AND date(a.update_date) <= :pSelectedEndDate AND a.new_status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as claimsToBeInvoiced ");
             sb.append("from chorganisation chorganisation where chorganisation.id = :pChorganisationId ");
-            
         }
 
         return sb.toString();

@@ -111,7 +111,6 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     }
 
     protected Session getCurrentSession() {
-
         return getSession();
     }
 }

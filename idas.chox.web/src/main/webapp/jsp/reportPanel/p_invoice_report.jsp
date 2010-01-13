@@ -6,32 +6,23 @@
     var reportName = 'InvoiceReport-Excel';
 
     $(document).ready(function(){
-        new Ext.ToolTip({ target: 'help-supplier-reference-input', html: 'Supplier Reference Number input format: ABC123, ABC124, ABC125'});
 
-        var sLocaltion = "div#rptInvoiceWorkgroupSelectionHolder";
-        var sAction = "GetWorkgroupOnlyDropDownActionByInsurer.action";
-        var sparameters = "";
-        doSectionLoad(sLocaltion, sAction, sparameters);
-    });
-    
-    function openInvoiceReport()
-    {
-        if(doInvoiceReportFormValidation().form()){
-            var queryString = $('#formInvoiceReportParam').formSerialize();
-            window.location= "exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
-        }
-    }
-
-    Ext.onReady(function(){
         ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
         ui.dateField('DateEnd',getTodayDate(),'dateToDiv');
-    });
 
-    function doInvoiceReportFormValidation(){
+        new Ext.ToolTip({ target: 'help-supplier-reference-input', html: 'Supplier Reference Number input format: ABC123, ABC124, ABC125'});
 
-        var validateFlag = $("#formInvoiceReportParam").validate(
+        var target = "div#rptInvoiceWorkgroupSelectionHolder";
+        var url = "<%=request.getContextPath()%>/prv/p/GetWorkgroupOnlyDropDownActionByInsurer.action";
+        var param = {};
+
+        ajax.loadHtml(url,param,function(data){
+            $(target).html(data);
+        });
+
+        $("form#formInvoiceReportParam").validate(
         {
-            errorLabelContainer: "#acknowledge-message-box",
+            errorLabelContainer: "#formInvoiceReportParamMessageBox",
             rules: {
                 supplierId:{
                     required:true
@@ -60,65 +51,72 @@
             }
         });
 
-        return validateFlag;
+    });
+    
+    function openInvoiceReport()
+    {
+        if($("form#formInvoiceReportParam").valid()){
+            var queryString = $('form#formInvoiceReportParam').formSerialize();
+            window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
+        }
     }
 
 </script>
 <fieldset class="x-fieldset">
 
     <legend>CHO Invoice Report</legend>
-<form id="formInvoiceReportParam" class="XXentity-form" name="formInvoiceReportParam" action="POST">
+    <form id="formInvoiceReportParam" name="formInvoiceReportParam" class="XXentity-form" action="POST">
 
 
-    <div class="x-panel-bwrap chox-form-container">
-        <div class="form-container">
+        <div class="x-panel-bwrap chox-form-container">
+            <div class="form-container">
 
-            <div class="instruction-message">This report allows a user to produce an invoice for a particular claim or set of claims. Invoices are produced per Credit Hire Organisation and are based on specific Supplier Reference Number(s) and/or specifying a date range based on the invoice upload date.</div>
+                <div class="instruction-message">This report allows a user to produce an invoice for a particular claim or set of claims. Invoices are produced per Credit Hire Organisation and are based on specific Supplier Reference Number(s) and/or specifying a date range based on the invoice upload date.</div>
 
-            <table class="report-form">
-            
-                <s:if test="!isCHO && !isCH">
-                <tr>
-                    <td nowrap><label>Workgroup</label></td>
-                    <td><div id="rptInvoiceWorkgroupSelectionHolder"></div></td>
-                </tr>
-                </s:if>
-                <s:else>
-                    <input type="hidden" id="workgroupId" name="workgroupId" value="-1"/>
-                </s:else>
-                <s:if test="!isCHO">
-                <tr>
-                    <td nowrap><label>Credit Hire Organisation</label></td>
-                    <td>
-                    <s:select name="supplierId" id="supplierId" list="suppliers"
-                    listKey="id" listValue="name" headerKey="" headerValue="- Please Select -" emptyOption="false">
-                    </s:select>
-                    </td>
-                </tr>
-                </s:if>
-                
-                <tr>
-                    <td nowrap width="30%"><label>Invoice Uploaded From</label></td><td><div id="dateFromDiv" /></td>
-                </tr>
-                <tr>
-                    <td nowrap><label>Invoice Uploaded To</label></td><td><div id="dateToDiv"/></td>
-                </tr>
-                <tr>
-                   <td nowrap><label>Supplier Reference(s)</label></td><td><textarea cols="20" rows="5" id="supplierReferences" name="supplierReferences"></textarea><img id="help-supplier-reference-input" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/></td>
-                </tr>
+                <table class="report-form">
 
-            </table>
+                    <s:if test="!isCHO && !isCH">
+                        <tr>
+                            <td nowrap><label>Workgroup</label></td>
+                            <td><div id="rptInvoiceWorkgroupSelectionHolder"></div></td>
+                        </tr>
+                    </s:if>
+                    <s:else>
+                        <input type="hidden" id="workgroupId" name="workgroupId" value="-1"/>
+                    </s:else>
+                    <s:if test="!isCHO">
+                        <tr>
+                            <td nowrap><label>Credit Hire Organisation</label></td>
+                            <td>
+                                <s:select name="supplierId" id="supplierId" list="suppliers"
+                                          listKey="id" listValue="name" headerKey="" headerValue="- Please Select -" emptyOption="false">
+                                </s:select>
+                            </td>
+                        </tr>
+                    </s:if>
 
-            <div class="chox-report-button">
-                <button type="button" onclick="javascript:openInvoiceReport();">Generate Report</button>
+                    <tr>
+                        <td nowrap width="30%"><label>Invoice Uploaded From</label></td><td><div id="dateFromDiv" /></td>
+                    </tr>
+                    <tr>
+                        <td nowrap><label>Invoice Uploaded To</label></td><td><div id="dateToDiv"/></td>
+                    </tr>
+                    <tr>
+                        <td nowrap><label>Supplier Reference(s)</label></td><td><textarea cols="20" rows="5" id="supplierReferences" name="supplierReferences"></textarea><img id="help-supplier-reference-input" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/></td>
+                    </tr>
+
+                </table>
+
+                <div class="chox-report-button">
+                    <button type="button" onclick="javascript:openInvoiceReport();">Generate Report</button>
+                </div>
+
             </div>
-                
-        </div>
-                
-        <div id="acknowledge-message-box"></div>
+
+            <div id="formInvoiceReportParamMessageBox" class="action-error-msg"></div>
 
         </div>
-        
-        </form>
-                
+
+    </form>
+
 </fieldset>

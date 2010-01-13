@@ -430,7 +430,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
-            criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.created_date) + 1 >(iv1_.panalty_alert_qty+1)*30"));
+            criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.created_date) + 1 >(iv1_.penalty_alert_qty+1)*30"));
         }
 
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {

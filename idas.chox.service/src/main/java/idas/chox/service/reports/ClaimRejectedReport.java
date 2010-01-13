@@ -6,6 +6,7 @@ package idas.chox.service.reports;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.WebUser;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.MathHelper;
 import idas.chox.data.services.BaseDataService;
@@ -13,7 +14,6 @@ import idas.chox.service.reports.viewdata.ClaimRejectedReportObject;
 import idas.chox.service.reports.viewdata.ClaimRejection;
 import idas.chox.service.reports.viewdata.ClaimRejectionLineItem;
 import idas.chox.service.reports.viewdata.ClaimRejectionLineItemDetail;
-import idas.chox.service.security.PermissionedUser;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,19 +31,23 @@ public class ClaimRejectedReport implements Report {
         reportParameterNames = new ArrayList<String>();
     }
 
+    @Override
     public String getReportTemplateFileName() {
         return "template_ClaimRejectedReport.xls";
     }
 
+    @Override
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }
 
+    @Override
     public HashMap getReportParameters() {
 
         HashMap reportParameters = new HashMap();
 
-        PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
+        WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
+        // PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
 
         try {
 
@@ -60,11 +64,7 @@ public class ClaimRejectedReport implements Report {
                 dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
             }
 
-            /*
-            Date dataStart = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
-            Date dataEnd = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateEnd"))[0]);
-            */
-            boolean isInsReport = currentUser.getIsINS();
+            boolean isInsReport = (currentUser.getInsurer()!=null);
 
             String sOrganisationLabel = "";
             String sOrganisationName = "";
@@ -76,7 +76,7 @@ public class ClaimRejectedReport implements Report {
 
             if (isInsReport) {
 
-                Insurer ins = currentUser.getUser().getInsurer();
+                Insurer ins = currentUser.getInsurer();
                 iOrgId = ins.getId();
                 sOrganisationLabel = "Insurer";
                 sOrganisationName = ins.getName();
@@ -84,7 +84,7 @@ public class ClaimRejectedReport implements Report {
             } else {
                 isInsReport = false;
 
-                Chorganisation cho = currentUser.getUser().getChorganisation();
+                Chorganisation cho = currentUser.getChorganisation();
                 iOrgId = cho.getId();
                 sOrganisationLabel = "Credit Hire";
                 sOrganisationName = cho.getName();
@@ -309,6 +309,7 @@ public class ClaimRejectedReport implements Report {
 
     }
 
+    @Override
     public InputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
@@ -318,6 +319,7 @@ public class ClaimRejectedReport implements Report {
         return new ExcelReportBuilder();
     }
 
+    @Override
     public void setDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
