@@ -1,7 +1,7 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.model.AuditTrail;
-import idas.chox.core.model.Claim;
+// import idas.chox.core.model.Claim;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.web.viewdata.AuditTrailViewData;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 import net.sf.json.JSONArray;
 import idas.chox.service.security.ApplicationAccessibility;
 
-public class AuditTrailAction extends BaseModelAction {
+public class AuditTrailAction extends ClaimModelAction<AuditTrail>{
 
     private List<AuditTrailViewData> auditTrail;
     private AuditTrailService service;
@@ -46,5 +46,17 @@ public class AuditTrailAction extends BaseModelAction {
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_AUDIT_TRAIL;
+    }
+    
+    @Override
+    protected AuditTrail loadModel() {
+        /*
+        if (claim.getA == null) {
+            return new AuditTrail();
+        } else {
+            return claim.getCustomer();
+        }
+        */
+        return new AuditTrail();
     }
 }

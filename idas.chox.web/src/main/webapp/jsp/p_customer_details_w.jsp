@@ -234,7 +234,7 @@
             <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
             </div>
-            <div class="action-error-msg"><s:property value="actionError" /></div>
+            <div id="CDmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>

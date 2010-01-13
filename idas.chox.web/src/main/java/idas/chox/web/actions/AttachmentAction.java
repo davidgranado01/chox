@@ -40,6 +40,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         return ApplicationAccessibility.TAB_PAYMENT_PACK;
     }
 
+    /*
     public Attachment getModel() {
         return null;
     }
@@ -51,6 +52,8 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             model = new Attachment();
         }
     }
+    */
+    
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="GET SET">
@@ -117,7 +120,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
         List<AttachmentViewData> viewDatas = new ArrayList<AttachmentViewData>();
 
-        Claim claim = claimService.getClaim(claimId);
+        // Claim claim = claimService.getClaim(claimId);
         List<Attachment> attachments = claim.getAttachments();
 
         for (Attachment a : attachments) {
@@ -137,13 +140,13 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
         try {
 
-            Claim claim = claimService.getClaim(claimId);
+            // Claim claim = claimService.getClaim(claimId);
             claim.deleteAttachment(model);
             claimService.updateClaim(claim);
             this.getActionResponse().AssignMessageResult("File has been deleted");
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            // handleException(this, ex);
             return ERROR;
         }
 
@@ -233,7 +236,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             }
 
         } catch (Exception ex) {
-            handleException(this, ex);
+            // handleException(this, ex);
             return ERROR;
         }
 
@@ -267,7 +270,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             String strFileType,
             byte[] obj) throws IOException {
 
-        Claim claim = claimService.getClaim(claimId);
+        //Claim claim = claimService.getClaim(claimId);
         model.setFileName(strFileName);
         model.setRemarks(strRemark);
         model.setCategory(strCategory);

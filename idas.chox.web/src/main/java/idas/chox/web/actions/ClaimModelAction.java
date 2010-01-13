@@ -64,9 +64,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         checkVersion(model);
     }
 
-    protected T loadModel() {
-        return null;
-    }
+    protected abstract T loadModel();
 
     @Override
     public String execute() {

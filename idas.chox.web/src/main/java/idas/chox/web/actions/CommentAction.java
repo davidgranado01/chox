@@ -1,16 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
 
+// import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
 import idas.chox.service.security.ApplicationAccessibility;
-import net.sf.json.JSONObject;
+import idas.chox.web.viewdata.CommentViewData;
+import java.util.ArrayList;
+import java.util.List;
+import net.sf.json.JSONArray;
 
 public class CommentAction extends ClaimModelAction<Comment> {
 
     private String comment;
+    private JSONArray jObject;
 
     public String createNewComment() {
         model.setComment(getComment());
@@ -25,11 +26,15 @@ public class CommentAction extends ClaimModelAction<Comment> {
         return "";
     }
 
+    public String doRenderActionPage(){
+        return SUCCESS;
+    }
+
     public String getComments() {
 
         List<CommentViewData> viewDatas = new ArrayList<CommentViewData>();
         
-        Claim claim = claimService.getClaim(claimId);
+        //Claim claim = claimService.getClaim(claimId);
         List<Comment> comments = claim.getComments();
         
         for (Comment c : comments) {
