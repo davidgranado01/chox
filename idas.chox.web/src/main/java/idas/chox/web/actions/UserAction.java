@@ -76,6 +76,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
     public List getInsurers() {
+        System.out.println("aaaaa");
         List insurers = this.lookupService.getInsurers();
         return insurers;
     }
@@ -149,8 +150,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
-
-    public String getUsers() {
+    public String getGridViewUser() {
         
         try {
             

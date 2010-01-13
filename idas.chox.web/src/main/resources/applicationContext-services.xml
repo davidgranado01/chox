@@ -59,7 +59,6 @@
     </bean>
     <bean id="webUserUserRoleService" class="idas.chox.data.services.WebUserUserRoleServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
     <bean id="insurerChorganisationService" class="idas.chox.data.services.InsurerChorganisationServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -109,9 +108,13 @@
         <property name="userService" ref="userService" />
         <property name="workgroupService" ref="workgroupService" />
         <property name="userWorkgroupService" ref="userWorkgroupService" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
     <bean id="adminChorganisationService" class="idas.chox.service.admin.AdminChorganisationService" singleton="false">
         <property name="chorganisationService" ref="chorganisationService" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
     <bean id="adminInsurerService" class="idas.chox.service.admin.AdminInsurerService" singleton="false">
         <property name="insurerService" ref="insurerService" />
@@ -123,5 +126,7 @@
         <property name="insurerChorganisationService" ref="insurerChorganisationService" />
         <property name="insurerAliasService" ref="insurerAliasService" />
         <property name="vehicleClassCeilingService" ref="vehicleClassCeilingService" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
 </beans>

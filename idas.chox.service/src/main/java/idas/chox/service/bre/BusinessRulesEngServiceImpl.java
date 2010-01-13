@@ -8,7 +8,6 @@ import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.History;
-import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleClassCeiling;
 import idas.chox.core.services.BusinessRulesEngService;
 import idas.chox.core.services.BreBandService;
@@ -166,7 +165,6 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         this.rulesEngine = rulesEngine;
     }
 
-    @Override
     public RulesEngine getRulesEngine() {
         return rulesEngine;
     }

@@ -697,14 +697,9 @@
 
 
 
-
-
-
-
-
        <!-- ********************************* REVIEWED ********************************************** !-->
        <!--Start User Details-->
-        <action name="getUsers" class="idas.chox.web.actions.UserAction" method="getUsers">
+        <action name="getGridViewUser" class="idas.chox.web.actions.UserAction" method="getGridViewUser">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="updateUserDetailPanel" class="idas.chox.web.actions.UserAction" method="doRenderActionPage">

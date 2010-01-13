@@ -182,7 +182,7 @@
 
                         <s:if test="OrganisationTypeId==2">
 
-                            <s:if test="CurrentUserOrganisationId=1">
+                            <s:if test="CurrentUserOrganisationId==1">
 
                                 <div class="chox-form-item">
                                     <label class="chox-form-std-label">Insurer Company<span class="mandatory">*</span></label>
@@ -207,7 +207,7 @@
 
                         <s:if test="OrganisationTypeId==3">
 
-                            <s:if test="CurrentUserOrganisationId=1">
+                            <s:if test="CurrentUserOrganisationId==1">
 
                                 <div class="chox-form-item">
                                     <label class="chox-form-std-label">Credit Hire Company<span class="mandatory">*</span></label>
