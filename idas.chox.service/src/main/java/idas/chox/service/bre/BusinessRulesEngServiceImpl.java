@@ -165,5 +165,10 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
     public void setRulesEngine(RulesEngine rulesEngine) {
         this.rulesEngine = rulesEngine;
     }
+
+    @Override
+    public RulesEngine getRulesEngine() {
+        return rulesEngine;
+    }
 }
 

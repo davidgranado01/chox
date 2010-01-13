@@ -1,0 +1,145 @@
+package idas.chox.bre;
+
+import idas.chox.bre.mock.MockObjects;
+import idas.chox.core.bre.RuleEvaluation;
+import idas.chox.core.bre.RuleEvaluationResult;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.service.bre.rules.HasCorrectHireGrossCalculation;
+import java.io.IOException;
+import java.math.BigDecimal;
+import junit.framework.TestCase;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
+
+    MockObjects testClaim = new MockObjects();
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+    }
+
+    private Claim getTestClaim(){
+
+        Claim claim = new Claim();
+
+        claim.setInsurer(testClaim.getTestInsurer());
+        claim.setChorganisation(testClaim.getTestChorganisation());
+        claim.setBreBand(testClaim.getTestBreBand());
+        claim.setEngineerReport(testClaim.getTestEngineeringReport());
+        claim.setCustomer(testClaim.getTestCustomerVehicleDamage());
+        claim.setInvoice(testClaim.getTestExtras());
+        claim.setVehicleHire(testClaim.getTestHireDetail());
+        claim.setHireMonitoringDetail(testClaim.getTestHireMonitoringDetail());
+        claim.setInvoice(testClaim.getTestInvoice());
+        claim.getCustomer().setVehicleClass(testClaim.getTestVehicleClass());
+
+        // SET INVOICE
+        claim.getInvoice().setHireNet(new BigDecimal("200.00"));
+        claim.getInvoice().setHireVat(new BigDecimal("30.00"));
+        claim.getInvoice().setHireGross(new BigDecimal("230.00"));
+        
+        return claim;
+    }
+
+    @Test
+    public void testSkipped() throws IOException {
+
+        /*
+         * CHO Control Flag is OFF
+         */
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setHasCorrectHireGrossCalculation(false);
+        RuleEvaluation rv = new HasCorrectHireGrossCalculation().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getIsVisibleToCHO());
+
+    }
+
+    @Test
+    public void testPassed_equal() throws IOException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setHasCorrectHireGrossCalculation(true);
+
+        claim.getInvoice().setHireGross(new BigDecimal("230.00"));
+        
+        RuleEvaluation rv = new HasCorrectHireGrossCalculation().applyToClaim(claim);
+
+        /*
+        InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
+        System.out.println("HIRE GROSS: "+claim.getInvoice().getHireGross());
+        System.out.println("ECPEXTED GROSS: "+iCalc.getCalculatedHireGross());
+        boolean success = CalcHelper.EqualTo(claim.getInvoice().getHireGross(), iCalc.getCalculatedHireGross());
+        System.out.println("success: "+success);
+        */
+        
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getIsVisibleToCHO());
+
+    }
+
+    @Test
+    public void testPassed_lessThan() throws IOException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setHasCorrectHireGrossCalculation(true);
+
+        claim.getInvoice().setHireGross(new BigDecimal("229.89"));
+
+        RuleEvaluation rv = new HasCorrectHireGrossCalculation().applyToClaim(claim);
+
+        /*
+        InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
+        System.out.println("HIRE GROSS: "+claim.getInvoice().getHireGross());
+        System.out.println("ECPEXTED GROSS: "+iCalc.getCalculatedHireGross());
+        boolean success = CalcHelper.EqualTo(claim.getInvoice().getHireGross(), iCalc.getCalculatedHireGross());
+        System.out.println("success: "+success);
+        */
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getIsVisibleToCHO());
+
+    }
+
+
+    @Test
+    public void testFailed() throws IOException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setHasCorrectHireGrossCalculation(true);
+
+        claim.getInvoice().setHireGross(new BigDecimal("240.50"));
+
+        RuleEvaluation rv = new HasCorrectHireGrossCalculation().applyToClaim(claim);
+
+        /*
+        InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
+        System.out.println("HIRE GROSS: "+claim.getInvoice().getHireGross());
+        System.out.println("ECPEXTED GROSS: "+iCalc.getCalculatedHireGross());
+        boolean success = CalcHelper.EqualTo(claim.getInvoice().getHireGross(), iCalc.getCalculatedHireGross());
+        System.out.println("success: "+success);
+        */
+
+        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Hire Gross calculation is incorrect."));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getIsVisibleToCHO());
+
+    }
+}

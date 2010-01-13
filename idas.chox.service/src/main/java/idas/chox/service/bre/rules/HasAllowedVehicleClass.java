@@ -24,7 +24,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
             if (claim.getCustomer() != null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())) {
 
                 VehicleClass vehicleClass = claim.getCustomer().getVehicleClass();
-                boolean success = vehicleClass.getPrice().compareTo(vehicleClass.getPrice()) <= 0;
+                boolean success = claim.getVehicleHire().getVehicleClass().getPrice().compareTo(vehicleClass.getPrice()) <= 0;
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
                 if (success) {
                     narrative = "";

@@ -45,7 +45,7 @@ public class CalcHelper {
 
     public static int getDaysBetweenDates(Date startDate, Date endDate) {
         // Mantis Id 0000912
-        long diff = DateHelper.setDateOnly(endDate).getTime() - DateHelper.setDateOnly(startDate).getTime();
+        long diff = endDate.getTime() - startDate.getTime();
         // long diff = endDate.getTime() - startDate.getTime();
         int days = (int) Math.floor(diff / MILISECONDS_PER_DAY);
         return Math.abs(days); //add an extra day to factor "part thereof" rule

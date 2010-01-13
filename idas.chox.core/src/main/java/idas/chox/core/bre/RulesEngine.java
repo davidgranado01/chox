@@ -1,16 +1,13 @@
 package idas.chox.core.bre;
 
 import idas.chox.core.model.Claim;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RulesEngine {
 
     private List<IBusinessRule> businessRules;
 
-    public RulesEngine() {
-        businessRules = new ArrayList<IBusinessRule>();
-
+    public RulesEngine() {       
 //        businessRules.add(new HasAllowedVehicleClass);
 //        businessRules.add(new HasCalculatedCorrectDailyRate);
 //        businessRules.add(new HireNetDoesNotExceedVehicleClassHireNetCeiling);

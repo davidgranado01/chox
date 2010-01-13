@@ -80,6 +80,7 @@
         <property name="claimService" ref="claimService" />
         <property name="breBandService" ref="breBandService" />
         <property name="insurerService" ref="insurerService" />
+        <property name="rulesEngine" ref="rulesEngine" />
     </bean>
     <bean id="bordereauFileValidation" class="idas.chox.service.xml.validations.BordereauFileValidation">
         <property name="allowTypes">
