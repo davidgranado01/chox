@@ -28,7 +28,7 @@ public class FilterServiceTest {
     }
 
     @Test
-    public void testREjectedClaims() throws Exception {
+    public void testRejectedClaims() throws Exception {
         Filter filter = filterService.getFilter("RejectedClaims");
         Assert.assertEquals(Integer.valueOf(0), filter.getCount());
         Assert.assertNotNull(filter.getResults(0, 10, "", ""));
