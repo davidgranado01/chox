@@ -27,6 +27,8 @@
             reader:auditTrailJsonReader
         });
 
+        auditTrailData.setDefaultSort('modifiedDate', 'desc');
+
         auditGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:auditOnClick},
             store: auditTrailData,

@@ -34,11 +34,16 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         if (activity != null) {
 
             try {
+
                 activity.process(claim);
+                
             } catch (Exception ex) {
+                
+
+                
                 handleException(ex);
-                System.out.println(">>>>>>>>>>>"+getActionResponse().getResult());
-                // return ERROR;
+                
+                return ERROR;
             }
             
             return SUCCESS;

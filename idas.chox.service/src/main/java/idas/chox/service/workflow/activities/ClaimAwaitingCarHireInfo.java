@@ -3,6 +3,7 @@ package idas.chox.service.workflow.activities;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import java.util.List;
+import org.hibernate.StaleObjectStateException;
 
 public class ClaimAwaitingCarHireInfo extends BaseActivity {
 
@@ -21,8 +22,6 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
         if (!isHireMonitoringLabourDetailExist(claim)) {
             throw new Exception("Error : In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required, if this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.");
         }
-
-        //TODO: HANDLER EXCEPTION THROW
 
     }
 

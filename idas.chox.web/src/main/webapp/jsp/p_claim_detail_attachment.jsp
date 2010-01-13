@@ -52,6 +52,8 @@
             reader:attachmentJsonReader
         });
 
+        attachmentData.setDefaultSort('modifiedDate', 'desc');
+
         attachmentGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:attachmentOnClick },
             store: attachmentData,
@@ -86,7 +88,7 @@
         var fileId = attachment.get("id");
 
         if(columnIndex!=4){
-            var link = "<%= request.getContextPath()%>/prv/p/doExportAttachment.action?fileId=" + fileId;
+            var link = "<%= request.getContextPath()%>/prv/p/doExportAttachment.action?fileId=" + fileId+"&claimId="+<s:property value="claimId" />;
             window.open(link,"","width=600,height=400,status=yes,menubar=no");
         }else{
             deleteAttachment(fileId);
@@ -130,19 +132,19 @@
             attachmentHtmlDesc += '</tr>';
     </s:iterator>
 
-        attachmentHtmlDesc += "</table>";
+            attachmentHtmlDesc += "</table>";
 
-        new Ext.ToolTip({
-            target: 'attachmentTypeSpan',
-            html: attachmentHtmlDesc,
-            title: 'Attachment Formats',
-            autoHide: false,
-            closable: true,
-            draggable:true
-        });
+            new Ext.ToolTip({
+                target: 'attachmentTypeSpan',
+                html: attachmentHtmlDesc,
+                title: 'Attachment Formats',
+                autoHide: false,
+                closable: true,
+                draggable:true
+            });
 
-        Ext.QuickTips.init();
-    }
+            Ext.QuickTips.init();
+        }
 </script>
 
 <div class="claim-detail-tab">

@@ -5,6 +5,7 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.service.bre.util.VehicleClassHelper;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
@@ -12,8 +13,9 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
 
     String narrative = "";
     String narrativeTemplate = "The Repair Net billed %s exceeds the Repair Net ceiling of %s for vehicle class %s.";
-    DecimalFormat moneyFormat = new DecimalFormat("Â£0.00");
+    DecimalFormat moneyFormat = new DecimalFormat("£0.00");
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -30,10 +32,15 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
 
             if (!success) {
 
+                String cusVehicleClassName = "";
+                if (VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())) {
+                    cusVehicleClassName = claim.getCustomer().getVehicleClass().getCode();
+                }
+
                 narrative = String.format(narrativeTemplate,
                         moneyFormat.format(repairNet.doubleValue()),
                         moneyFormat.format(repairNetCeiling.doubleValue()),
-                        claim.getCustomer().getVehicleClass().getCode());
+                        cusVehicleClassName);
             }
 
         } else {
@@ -47,14 +54,17 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "023";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         return ClaimStatus.INVOICE_ESCALATED;
     }

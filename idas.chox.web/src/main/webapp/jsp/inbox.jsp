@@ -773,7 +773,6 @@
                 viewConfig:{forceFit:true},
                 bbar: pagingBar,
                 tbar:[actionMenu]
-            
             });
 
             ds.on('load',function()

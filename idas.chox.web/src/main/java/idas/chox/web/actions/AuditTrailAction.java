@@ -50,13 +50,6 @@ public class AuditTrailAction extends ClaimModelAction<AuditTrail>{
     
     @Override
     protected AuditTrail loadModel() {
-        /*
-        if (claim.getA == null) {
-            return new AuditTrail();
-        } else {
-            return claim.getCustomer();
-        }
-        */
         return new AuditTrail();
     }
 }

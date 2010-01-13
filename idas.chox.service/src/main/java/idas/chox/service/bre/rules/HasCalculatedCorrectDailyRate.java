@@ -7,12 +7,14 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.service.bre.util.ClaimCalcHelper;
+import idas.chox.service.bre.util.VehicleClassHelper;
 import java.math.BigDecimal;
 
 public class HasCalculatedCorrectDailyRate implements IBusinessRule {
 
     String narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -22,18 +24,12 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
         if (claim.getBreBand().isHasCalculatedCorrectDailyRate()) {
 
             VehicleClass vehicleClass = claim.getCustomer().getVehicleClass();
-            if (vehicleClass != null) {
+            if (VehicleClassHelper.isVehicleClassValid(vehicleClass)) {
 
                 ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
-
-                // Mantis id: 630
-                // Change to read vehicleHire's Vehicle Class
-                // IVehicleClassInfo customerVClass = claim.getVClass();
                 BigDecimal allowedDailyRate = new BigDecimal(0.00);
                 allowedDailyRate = vehicleClass.getPrice().add(claim.getBreBand().getHireRateChargeTolerance());
 
-                // LESS THAN OR EQUAL TO THE TRUE
-                // boolean success = cCalc.getDailyHireRateChargedWithToleranceDeduction().compareTo(customerVClass.getPrice()) <= 0;
                 boolean success = cCalc.getDailyHireRateCharged().compareTo(allowedDailyRate) <= 0;
 
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
@@ -57,18 +53,18 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
         return res;
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "002";
     }
 
+    @Override
     public String getStatusAfterFailure() {
-        // CARLSON @ 20091012
-        // HasCalculatedCorrectDailyRate().applyToClaim(claim)) STATUS = InvoiceEscalatedToHandler;
-        // return ClaimStatus.INVOICE_ESCALATED;
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

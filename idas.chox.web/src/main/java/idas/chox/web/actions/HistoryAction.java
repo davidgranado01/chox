@@ -23,13 +23,24 @@ public class HistoryAction extends ClaimModelAction<History> {
         return "";
     }
 
+    /*
+     * isPublic : true > SHOW ALL RECORDS WITH IS_PUBLIC IS TRUE ONLY
+     * isPublic : false > SHOW ALL RECORDS REGARDLESS THE IS_PUBLIC
+     */
     public String getHistory() {
+
         List<HistoryViewData> histories = new ArrayList<HistoryViewData>();
-        // Claim claim = claimService.getClaim(claimId);
         histories = new ArrayList<HistoryViewData>();
+
         for (History h : claim.getHistories()) {
-            histories.add(new HistoryViewData(h));
+
+            if (h.getType().equalsIgnoreCase("Error") && (h.getIsPublic() || !this.getIsCHO())) {
+                // SHOW ERROR TYPE ONLY
+                // REJECT isPublic is FALSE && Is CHO USER
+                histories.add(new HistoryViewData(h));
+            }
         }
+
         this.jObject = JSONArray.fromObject(histories);
         return SUCCESS;
     }

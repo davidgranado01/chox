@@ -35,6 +35,7 @@
                 <param name="id">${id}</param>
             </result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
             <result name="error" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="parse">true</param>

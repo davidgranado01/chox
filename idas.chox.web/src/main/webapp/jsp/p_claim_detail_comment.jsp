@@ -37,9 +37,12 @@
         });
 
         commentsDataStore = new Ext.data.Store({
-            proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getComments.action',method:'POST'}), reader:commentsJsonReader
+            proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getComments.action',method:'POST'}), 
+            reader:commentsJsonReader
         });
 
+        commentsDataStore.setDefaultSort('createdDate', 'desc');
+        
         commentsGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:commentOnClick},
             store: commentsDataStore,
@@ -63,7 +66,9 @@
             autoWidth:true,
             height:300
         });
-    
+
+        
+
         loadComments();
 
     });
