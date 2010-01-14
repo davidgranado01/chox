@@ -197,7 +197,6 @@ public class RoleHelper {
                 while (itr.hasNext()) {
 
                     WebUserRole webUserrole = (WebUserRole) itr.next();
-
                     if (!webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CH) && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_COM) && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS)) {
                         bFlag = true;
                         break;

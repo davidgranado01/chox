@@ -135,100 +135,101 @@
     }
                     
 </script>
+<div class="chox-claim-header x-panel-bwrap chox-form-container">
+    <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
 
-<form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
-
-    <fieldset class="x-fieldset">
-        <legend>Claim Acknowledgement - Action Required</legend>
-        <div>
-            <s:hidden id="claimId" name="id" />
-            <s:hidden id="name" name="name" />
-            <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
-            <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
+        <fieldset class="x-fieldset">
+            <legend>Claim Acknowledgement - Action Required</legend>
             <div>
-                <div class="status-info">
-                    Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, refer the claim to an FNOL handler, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
-                </div>
-                <div class="status-control-set">
-                    <table class="status-table">
-                        <tr>
-                            <td width="20%">
-                                <label>
-                                    Indemnity (Decimal)<span class="mandatory">*</span></label>
-                            </td><td>
-                                <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
-                            </td>
-                            <td>
-                                <label>
-                                    Invoice Review Required?</label>
-                            </td><td>
-                                <s:checkbox name="isInvoiceReviewRequired" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>Claim Number</label></td><td>
-                                <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
-                            </td>
-                            <td>
-                                <label>Quantum Dispute?</label></td><td>
-                                <s:checkbox name="isQuantumDispute" />
-                            </td>
-                        </tr>
-                        <tr valign="top">
-                            <td>
-                                <label>% Liability Accepted<span class="mandatory">*</span></label>
-                            </td>
-                            <td colspan="3">
-                                <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
-                            </td>
-                        </tr>
-                        <tr valign="top">
-                            <td>
-                                <label>Claim Review Notes</label>
-                            </td>
-                            <td colspan="3">
-                                <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
-                            </td>
-                        </tr>
-                        <tr valign="top">
-                            <td>
-                                <label>Reason for Rejection</label>
-                            </td>
-                            <td colspan="3">
-                                <div id="ReasonOfRejectionDiv">
-                                    <s:select
-                                        name="reasonOfRejectionId"
-                                        id="reasonOfRejectionId"
-                                        list="reasonOfClaimRejections"
-                                        listKey="id"
-                                        listValue="name"
-                                        headerKey=""
-                                        headerValue="N/A"
-                                        emptyOption="false"></s:select>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="4">
-                                <div class="no-format">
-                                    <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="4" class="choice" nowrap>
-                                <input type="button" value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
-                                <input type="button" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
-                                <input type="button" value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />
-                                <input type="button" value="Refer to FNOL" onclick="doAcknowledgeFormSubmit('referFNOL');" />
-                                <input type="button" value="Claim Pending" onclick="doAcknowledgeFormSubmit('pending');" />
-                            </td>
-                        </tr>
-                    </table>
-                    <div id="ACKmessageBox" class="action-error-msg"></div>
+                <s:hidden id="claimId" name="id" />
+                <s:hidden id="name" name="name" />
+                <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
+                <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
+                <div>
+                    <div class="status-info">
+                        Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, refer the claim to an FNOL handler, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
+                    </div>
+                    <div class="status-control-set">
+                        <table class="status-table">
+                            <tr>
+                                <td width="20%">
+                                    <label>
+                                        Indemnity (Decimal)<span class="mandatory">*</span></label>
+                                </td><td>
+                                    <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
+                                </td>
+                                <td>
+                                    <label>
+                                        Invoice Review Required?</label>
+                                </td><td>
+                                    <s:checkbox name="isInvoiceReviewRequired" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Claim Number</label></td><td>
+                                    <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
+                                </td>
+                                <td>
+                                    <label>Quantum Dispute?</label></td><td>
+                                    <s:checkbox name="isQuantumDispute" />
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <td>
+                                    <label>% Liability Accepted<span class="mandatory">*</span></label>
+                                </td>
+                                <td colspan="3">
+                                    <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <td>
+                                    <label>Claim Review Notes</label>
+                                </td>
+                                <td colspan="3">
+                                    <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <td>
+                                    <label>Reason for Rejection</label>
+                                </td>
+                                <td colspan="3">
+                                    <div id="ReasonOfRejectionDiv">
+                                        <s:select
+                                            name="reasonOfRejectionId"
+                                            id="reasonOfRejectionId"
+                                            list="reasonOfClaimRejections"
+                                            listKey="id"
+                                            listValue="name"
+                                            headerKey=""
+                                            headerValue="N/A"
+                                            emptyOption="false"></s:select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <div class="no-format">
+                                        <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="choice" nowrap>
+                                    <input type="button" value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
+                                    <input type="button" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
+                                    <input type="button" value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />
+                                    <input type="button" value="Refer to FNOL" onclick="doAcknowledgeFormSubmit('referFNOL');" />
+                                    <input type="button" value="Claim Pending" onclick="doAcknowledgeFormSubmit('pending');" />
+                                </td>
+                            </tr>
+                        </table>
+                        <div id="ACKmessageBox" class="action-error-msg"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </fieldset>
-</form>
+        </fieldset>
+    </form>
+</div>

@@ -163,7 +163,7 @@
                               list="nonProvisionReasons"
                               headerKey="" listKey="text"
                               listValue="value"
-                              headerValue="--- Please Select ---"
+                              headerValue="-- Please Select --"
                               emptyOption="false" cssStyle="width:250px"></s:select>
             </div>
 

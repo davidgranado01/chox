@@ -63,7 +63,7 @@
                     }
                 }
             },
-            autoWidth:true,
+            width:950,
             height:300
         });
 

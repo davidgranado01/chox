@@ -8,6 +8,7 @@ import idas.chox.core.model.AccessibilityEditable;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Comment;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.HireMonitoringDetail;
@@ -22,10 +23,12 @@ import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Witness;
+import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.LookupService;
+import idas.chox.core.services.UserService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.AccessibilityHelper;
 import idas.chox.core.util.DateHelper;
@@ -62,7 +65,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private int id = -1;
     private int vehicleClassId = -1;
     private int insurerId = -1;
-    private String actionName;
     private BigDecimal totalAmountToPayBeforeNewPenaltyCharge;
     private BigDecimal totalAmountToPayAfterNewPenaltyCharge;
     private String totalAmountToPayBeforeNewPenaltyChargeFormatted;
@@ -72,7 +74,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private long invoiceIntroducedDays;
     private ApplicationAccessibility applicationAccessibility;
     private PanelAccessibility panelAccessibility;
-    private String extraActionName;
     private Integer hireMonitoringDetailId;
     private Integer incidentId;
     private Integer thirdPartyId;
@@ -96,9 +97,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private AuditTrailService auditTrailService;
     private WorkgroupService workgroupService;
     private BreBandService breBandService;
+    private UserService userService;
 
     public void prepare() throws Exception {
-
         if (id <= 0) {
             claim = new Claim();
         } else {
@@ -202,7 +203,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return "";
     }
 
-    public String updateInsurerClaimNumber() {
+    public String updateClaimNumber() {
 
         String result = SUCCESS;
 
@@ -215,27 +216,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             result = ERROR;
             this.actionResult = "ERROR : " + ex.getMessage();
 
-        }
-
-        return result;
-    }
-
-    public String UpdateClaimWorkgroupAssignment() {
-
-        String result = SUCCESS;
-
-        try {
-
-            if (escalateWorkgroupId > 0) {
-
-                claim.setWorkgroup(workgroupService.getWorkgroup(escalateWorkgroupId));
-                claim.setClaimOwner(null);
-                this.service.updateClaim(claim);
-            }
-
-        } catch (Exception ex) {
-            result = ERROR;
-            this.actionResult = "ERROR : " + ex.getMessage();
         }
 
         return result;
@@ -423,12 +403,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="STRUCT RENDER PAGE">
+    // <editor-fold defaultstate="collapsed" desc="MORE ACTION - DROP DOWN">
     public String getUpdateInsurerClaimNumber() {
         return SUCCESS;
     }
 
-    public String getUpdateClaimOwnership() {
+    public String getUpdateClaimWorkgroupAndOwner() {
         return SUCCESS;
     }
 
@@ -436,11 +416,56 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
-    public String getExtraActionName() {
-        return extraActionName;
+    public String updateClaimWorkgroupAndOwner() {
+
+        String oldOwnerName = "N/A";
+
+        if (this.claimOwnerId > 0 && this.uosWorkgroupId > 0) {
+
+            try {
+
+                WebUser newClaimOwner = userService.getWebUser(claimOwnerId);
+
+                // SET COMMENT
+                if (claim.getClaimOwner() != null) {
+                    oldOwnerName = claim.getClaimOwner().getDisplayName();
+                }
+                Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getDisplayName() + "'");
+                comment.setClaim(claim);
+                claim.getComments().add(comment);
+
+                claim.setClaimOwner(newClaimOwner);
+                claim.setWorkgroup(workgroupService.getWorkgroup(uosWorkgroupId));
+                this.service.updateClaim(claim);
+
+            } catch (Exception ex) {
+                handleException(ex);
+                return ERROR;
+            }
+        }
+
+        return SUCCESS;
+    }
+
+    public String escalatedUnassignedClaim() {
+
+        try {
+
+            if (escalateWorkgroupId > 0) {
+                claim.setWorkgroup(workgroupService.getWorkgroup(escalateWorkgroupId));
+                claim.setClaimOwner(null);
+                this.service.updateClaim(claim);
+            }
+
+        } catch (Exception ex) {
+            handleException(ex);
+            return ERROR;
+        }
+
+        return SUCCESS;
     }
     // </editor-fold>
-
+    
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY CONTROL">
     public TabAccessibility getTabAccessibility() {
 
@@ -645,18 +670,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setWorkgroupId(int workgroupId) {
         this.workgroupId = workgroupId;
-    }
-
-    public String getActionResult() {
-        return actionResult;
-    }
-
-    public String getActionName() {
-        return actionName;
-    }
-
-    public void setActionName(String actionName) {
-        this.actionName = actionName;
     }
 
     public Integer getReasonOfRejectionId() {
@@ -939,6 +952,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setWorkgroupService(WorkgroupService workgroupService) {
         this.workgroupService = workgroupService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
     // </editor-fold>
 }

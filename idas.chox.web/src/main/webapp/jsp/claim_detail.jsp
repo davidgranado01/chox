@@ -163,15 +163,15 @@
     }
 
     /***********************************************************************************
-    * UPDATE ANOMALIES
-    ***********************************************************************************/
+     * UPDATE ANOMALIES
+     ***********************************************************************************/
     function updateAnomalies(a){
         document.location = "<%= request.getContextPath()%>/prv/doUpdateAnomalies.action?id="+a;
     }
 
     /***********************************************************************************
-    * CLOSE OR OPEN CLAIM
-    ***********************************************************************************/
+     * CLOSE OR OPEN CLAIM
+     ***********************************************************************************/
     function closeClaimStatus(){
 
         if(!confirm('Are you sure you want to close this claim?')){
@@ -194,24 +194,42 @@
     }
 
     /***********************************************************************************
-    * REMOVE NOTIFICATION
-    ***********************************************************************************/
+     * REMOVE NOTIFICATION
+     ***********************************************************************************/
     function removeNotification(notificationId)
     {
         var url = "<%= request.getContextPath()%>/prv/p/removeNotification.action";
         var param = {"notificationId" : notificationId,"id": <s:property value="id" />};
-
         ajax.loadHtml(url,param,function(data){
             $("div#notificationNotesDiv").html(data);
         });
     }
 
+    /***********************************************************************************
+     * CLAIM DETAIL MORE ACTION PANEL
+     ***********************************************************************************/
+    function moreActionOnchange(){
+
+        var target = "#moreActionPanel";
+        var selectedAction = $("div#claim-detail-extra #extraAction").val();
+        $(target).html("");
+        
+        if(selectedAction!="" && selectedAction!=null){
+            var url = "<%= request.getContextPath()%>/prv/p/"+selectedAction+".action";
+            var param = {"id":<s:property value="id" />};
+            ajax.loadHtml(url,param,function(data){
+                $(target).html(data);
+            });
+
+        }
+        
+    }
 </script>
 
 <div style="width:960px">
 
     <div class="chox-claim-header x-panel-bwrap chox-form-container">
-        
+
         <fieldset class="x-fieldset loaded open-by-default">
             <legend>Claim Summary</legend>
             <table cellpadding="0" cellspacing="0" border="0">
@@ -272,9 +290,9 @@
                         listKey="text"
                         listValue="value"
                         headerKey=""
-                        headerValue="More Actions"
+                        headerValue="-- More Actions --"
                         emptyOption="false"
-                        onchange="doMoreActionOnchange();">
+                        onchange="javascript: moreActionOnchange();">
                     </s:select>
                 </s:if>
             </div>
@@ -282,48 +300,7 @@
     </div>
 </div>
 
-<s:if test="!IsCHO">
-
-    <div id="updateInsurerClaimNumber" class="extraActionClass" style="display: none;">
-        <table width="100%">
-            <tr>
-                <td>
-                    <div class="chox-claim-header x-panel-bwrap chox-form-container">
-                        <s:action name="getUpdateInsurerClaimNumber" namespace="/prv/p" executeResult="true"></s:action>
-                        <div class="action-message"><s:property value="actionResult" /></div>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-    <div id="updateClaimOwner" class="extraActionClass" style="display: none;">
-        <table width="100%">
-            <tr>
-                <td>
-                    <div class="chox-claim-header x-panel-bwrap chox-form-container">
-                        <s:action name="getUpdateClaimOwnership" namespace="/prv/p" executeResult="true"></s:action>
-                        <div class="action-message"><s:property value="actionResult" /></div>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-    <div id="escalateUnassignedClaim" class="extraActionClass" style="display: none;">
-        <table width="100%">
-            <tr>
-                <td>
-                    <div class="chox-claim-header x-panel-bwrap chox-form-container">
-                        <s:action name="getEscalateUnassignedClaim" namespace="/prv/p" executeResult="true"></s:action>
-                        <div class="action-message"><s:property value="actionResult" /></div>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-</s:if>
+<div id="moreActionPanel" class="extra-action-class"></div>
 
 <s:if test="isClaimNumberDuplicated && notificationAccessibility.claimNumberNotificationAccessibility">
     <s:action name="getDuplicatedClaimAlert" namespace="/prv/p" executeResult="true">
@@ -383,13 +360,11 @@
 
 </script>
 
-<div class="chox-claim-header x-panel-bwrap chox-form-container" id="generalActionPanel" style="display: none;">
+<div id="generalActionPanel" style="display: none;">
     <s:action name="getActionPanel" namespace="/prv/p" executeResult="true" />
     <div class="action-message"><s:property value="actionResult" /></div>
     <div class="action-error-msg"><s:property value="actionError" /></div>
 </div>
-
-
 
 <s:if test="isShowPenaltyChargeAlert">
     <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -547,8 +522,11 @@
     </div>
 
     <div id="attachmentTab" class="x-hide-display"></div>
+
     <div id="historyTab" class="x-hide-display"></div>
+
     <div id="auditTrailTab" class="x-hide-display"></div>
+
     <div id="commentTab" class="x-hide-display"></div>
 
 </div>

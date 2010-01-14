@@ -627,7 +627,7 @@
             });
 
             var actionMenu = new Ext.Toolbar.MenuButton({
-                text: 'More actions',
+                text: 'Batch Update',
                 tooltip: {text:'', title:'More actions'},
                 menu : {items: [
                         doClaimRoutedAction,

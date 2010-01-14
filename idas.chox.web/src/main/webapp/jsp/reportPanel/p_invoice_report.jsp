@@ -89,7 +89,7 @@
                             <td nowrap><label>Credit Hire Organisation</label></td>
                             <td>
                                 <s:select name="supplierId" id="supplierId" list="suppliers"
-                                          listKey="id" listValue="name" headerKey="" headerValue="- Please Select -" emptyOption="false">
+                                          listKey="id" listValue="name" headerKey="" headerValue="-- Please Select --" emptyOption="false">
                                 </s:select>
                             </td>
                         </tr>

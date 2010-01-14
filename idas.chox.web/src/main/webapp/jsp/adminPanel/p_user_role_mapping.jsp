@@ -231,7 +231,7 @@
                             listKey="id"
                             listValue="name"
                             headerKey=""
-                            headerValue="- Please Select -"
+                            headerValue="-- Please Select --"
                             emptyOption="false">
                         </s:select><input type="button" onclick="javascript: doAddNewWebUserRole();" value="Add New Role"/>
                     </td>

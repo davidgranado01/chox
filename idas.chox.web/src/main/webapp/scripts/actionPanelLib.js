@@ -7,8 +7,8 @@ var actionPanel = function(){
     
     function handleExtraActionChange(){
         var selectedAction = $("#extraAction").val();
-        $(".extraActionClass").slideUp();
-        $(".extraActionClass").css("display:", "none");
+        $(".extra-action-class").slideUp();
+        $(".extra-action-class").css("display:", "none");
         if(selectedAction!=null && selectedAction!=""){
             $("#"+a).css("display:", "block");
             $("#"+a).slideDown();

@@ -119,14 +119,6 @@
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
-        <action name="updateOwnershipAssignment" class="idas.chox.web.actions.ClaimAction" method="ownershipUpdating">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
         <action name="registerFNOL" class="idas.chox.web.actions.ClaimAction" method="registerFNOL">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
@@ -176,22 +168,6 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="approveBREPassedByClaimHandler" class="idas.chox.web.actions.ClaimAction" method="approveBREPassedByClaimHandler">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="updateInsurerClaimNumber" class="idas.chox.web.actions.ClaimAction" method="updateInsurerClaimNumber">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="UpdateClaimWorkgroupAssignment" class="idas.chox.web.actions.ClaimAction" method="UpdateClaimWorkgroupAssignment">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -262,6 +238,32 @@
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
+        <!-- MORE ACTION UPDATE - DROP DOWN -->
+        <action name="updateClaimWorkgroupAndOwner" class="idas.chox.web.actions.ClaimAction" method="updateClaimWorkgroupAndOwner">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
+            </result>
+            <result name="error">/jsp/claim_detail.jsp</result>
+        </action>
+        <action name="updateClaimNumber" class="idas.chox.web.actions.ClaimAction" method="updateClaimNumber">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
+            </result>
+            <result name="error">/jsp/claim_detail.jsp</result>
+        </action>
+        <action name="escalatedUnassignedClaim" class="idas.chox.web.actions.ClaimAction" method="escalatedUnassignedClaim">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
+            </result>
+            <result name="error">/jsp/claim_detail.jsp</result>
+        </action>
+
        <!-- End Claim Detail -->
        <!--Start Support-->
         <action name="onlineSupport" class="idas.chox.web.actions.OnlineSupportAction">
@@ -355,18 +357,21 @@
             <result name="updateClaimUpdatedByEngineer">/jsp/actionPanel/p_update_claim_updated_by_eng.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
-        <action name="getUpdateInsurerClaimNumber" class="idas.chox.web.actions.ClaimAction" method="getUpdateInsurerClaimNumber">
-            <result name="success">/jsp/actionPanel/p_update_insurer_claim_number.jsp</result>
+        
+        <!-- MORE ACTION !-->
+        <action name="updateInsurerClaimNumber" class="idas.chox.web.actions.ClaimAction" method="getUpdateInsurerClaimNumber">
+            <result name="success">/jsp/actionPanel/p_more_action_update_insurer_claim_number.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
-        <action name="getUpdateClaimOwnership" class="idas.chox.web.actions.ClaimAction" method="getUpdateClaimOwnership">
-            <result name="success">/jsp/actionPanel/p_update_claim_ownership.jsp</result>
+        <action name="updateClaimWorkgroupAndOwner" class="idas.chox.web.actions.ClaimAction" method="getUpdateClaimWorkgroupAndOwner">
+            <result name="success">/jsp/actionPanel/p_more_action_update_claim_workgroup_and_owner.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
-        <action name="getEscalateUnassignedClaim" class="idas.chox.web.actions.ClaimAction" method="getEscalateUnassignedClaim">
-            <result name="success">/jsp/actionPanel/p_escalate_unassigned_claim_to_other_workgroup.jsp</result>
+        <action name="escalateUnassignedClaim" class="idas.chox.web.actions.ClaimAction" method="getEscalateUnassignedClaim">
+            <result name="success">/jsp/actionPanel/p_more_action_escalate_unassigned_claim.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
+        
        <!-- BATCH UPDATE !-->
         <action name="logInvoicePayments" class="idas.chox.web.actions.BatchUpdateAction" method="logInvoicePayments">
             <result>/jsp/p_action_response_json_data.jsp</result>
@@ -386,8 +391,8 @@
         <action name="doInvoicePaymentReceivedAction" class="idas.chox.web.actions.BatchUpdateAction" method="doInvoicePaymentReceivedAction">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-       <!--END BATCH UPDATE-->
-       <!-- Start Customer Detail -->
+       
+       <!-- CLAIM - CUSTOMER DETAIL -->
         <action name="getCustomer" class="idas.chox.web.actions.CustomerAction">
             <result name="r">/jsp/p_customer_details_r.jsp</result>
             <result name="w">/jsp/p_customer_details_w.jsp</result>
@@ -403,7 +408,8 @@
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
-       <!-- End Customer Detail --><!-- Start Injury Detail -->
+
+       <!-- CLAIM - INJURY DETAIL -->
         <action name="getInjury" class="idas.chox.web.actions.InjuryAction">
             <result name="r">/jsp/p_injury_r.jsp</result>
             <result name="w">/jsp/p_injury_w.jsp</result>
@@ -419,8 +425,8 @@
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
-       <!-- End Injury Detail -->
-       <!-- Start Incident Detail -->
+       
+       <!-- CLAIM - INCIDENT DETAIL -->
         <action name="getIncident" class="idas.chox.web.actions.IncidentAction">
             <result name="r">/jsp/p_incident_r.jsp</result>
             <result name="w">/jsp/p_incident_w.jsp</result>
@@ -436,8 +442,8 @@
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
-       <!-- End Incident Detail -->
-       <!-- Start Solicitor Detail -->
+       
+       <!-- CLAIM - SOLICITOR DETAIL -->
         <action name="getSolicitor" class="idas.chox.web.actions.SolicitorAction">
             <result name="r">/jsp/p_injury_solicitor_r.jsp</result>
             <result name="w">/jsp/p_injury_solicitor_w.jsp</result>
@@ -453,8 +459,8 @@
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
-       <!-- End Solicitor Detail -->
-       <!-- Start ThirdPary Detail -->
+
+       <!-- CLAIM - THIRD PARTY DETAIL -->
         <action name="getThirdParty" class="idas.chox.web.actions.ThirdPartyAction">
             <result name="r">/jsp/p_third_party_r.jsp</result>
             <result name="w">/jsp/p_third_party_w.jsp</result>
@@ -828,7 +834,7 @@
         <action name="doRemoveInsurerChorganisation" class="idas.chox.web.actions.InsurerChorganisationAction" method="removeInsurerChorganisation">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-       <!-- END INSURER V.S CHORGANISATION -->
+       
        <!--Start INSURER BRE BAND -->
         <action name="getInsurerBreBandPage" class="idas.chox.web.actions.InsurerBreBandAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_insurer_brebands_panel.jsp</result>
@@ -845,7 +851,7 @@
         <action name="deleteInsurerBreBandDetail" class="idas.chox.web.actions.InsurerBreBandAction" method="deleteInsurerBreBand">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <!-- End INSURER BRE BAND -->
+        
         <!-- START INSURER V.S BRE -->
         <action name="getInsurerBreBandChorganisationMapping" class="idas.chox.web.actions.InsurerBreBandMappingAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_insurer_breband_mapping.jsp</result>
@@ -862,7 +868,7 @@
         <action name="doRemoveBandChorganisationMapping" class="idas.chox.web.actions.InsurerBreBandMappingAction" method="deleteBreBandChorganisation">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <!-- END INSURER V.S BRE -->
+        
         <!-- START INSURER VEHICLE CLASS CEILING -->
         <action name="getInsurerVehicleClassCeilingPage" class="idas.chox.web.actions.InsurerVehicleClassCeiling" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_insurer_vehicle_class_ceiling.jsp</result>
@@ -882,7 +888,7 @@
         <action name="editVehicleClassCeilingDetail" class="idas.chox.web.actions.InsurerVehicleClassCeiling" method="updateVehicleClassCeiling">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <!-- END INSURER VEHICLE CLASS CEILING -->
+        
         <!-- START INSURER AUTOMATIC ROUTING -->
         <action name="getInsurerAutomaticRoutingPage" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_insurer_automatic_routing.jsp</result>

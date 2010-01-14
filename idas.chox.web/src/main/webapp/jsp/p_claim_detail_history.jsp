@@ -38,7 +38,7 @@
                 {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: false, resizable: true},
                 {header: "Message Text", width: 650, dataIndex: 'narrative', sortable: false, resizable: true}
             ],
-            autoWidth:true,
+            width:950,
             height:300
         });
 

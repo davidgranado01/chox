@@ -8,6 +8,6 @@
     listKey="id"
     listValue="name"
     headerKey="-1"
-    headerValue="- Please Select -"
+    headerValue="-- Please Select --"
     emptyOption="false">
 </s:select>

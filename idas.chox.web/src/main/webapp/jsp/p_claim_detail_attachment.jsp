@@ -69,7 +69,7 @@
                 {header: "", width: 60, dataIndex: 'delete', sortable: false, resizable: false, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>" + value + "</a>"}}
             ],
-            autoWidth:true,
+            width:950,
             height:160
         });
         

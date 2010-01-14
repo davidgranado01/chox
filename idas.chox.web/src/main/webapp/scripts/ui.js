@@ -33,7 +33,7 @@ var ui = function(){
         return false;
     }
 
-    function onSubmitCompleted(responseText, statusText,form,responseType)  {
+    function onSubmitCompleted(responseText, statusText, form, responseType)  {
         if(elementToBlock)
         {
             elementToBlock.unblock();
@@ -42,7 +42,6 @@ var ui = function(){
             if(responseText && responseType == 'html')
             {
                 $(form).parent().html(responseText);
-          
             }
             else if(responseText)
             {

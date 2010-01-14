@@ -85,7 +85,7 @@
                     <s:select 
                         name="reasonOfDelayId" id="reasonOfDelayId" list="reasonOfDelay"
                         listKey="id" listValue="name" headerKey=""
-                        headerValue="- Please Select -"
+                        headerValue="-- Please Select --"
                         emptyOption="false" onchange="doPopulateNote();" cssClass="hm-reason-drop-down">
                     </s:select>
                 </div>

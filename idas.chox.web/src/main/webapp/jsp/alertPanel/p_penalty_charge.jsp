@@ -27,35 +27,7 @@
                 }
             }
         });
-
-        //ui.ajaxForm(form);
-
     });
-
-
-    /*
-    function doFormValidation(){
-        
-        var validateFlag = $("#applyPenaltyCharge").validate(
-        {
-            errorLabelContainer: "#ACKmessageBox",                
-            rules: {
-                penaltyChargeAmount:{
-                    required:true,
-                    number:true
-                }
-            },
-            messages: {
-                penaltyChargeAmount:{
-                    required:"You must supply a value for 'Penalty Charge Amount'",
-                    number:"You must supply a numeric value for 'Penalty Charge Amount'"
-                }              
-            }
-        });
-        
-        return validateFlag;
-    }
-    */
    
     function updateTotalToPay(inputValue)
     {       

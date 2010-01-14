@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
+<div class="chox-claim-header x-panel-bwrap chox-form-container">
     <fieldset class="x-fieldset">
         <legend>Awaiting Invoice Data - Action Required</legend>
         <s:hidden name="id" />
@@ -10,6 +11,7 @@
                 <br />
                 <a href='<s:url action="uploadClaims" namespace="/prv"/>'>XML Uploads</a>&nbsp;&nbsp;
             </div>
-            
+
         </div> 
     </fieldset>
+</div>

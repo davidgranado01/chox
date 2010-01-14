@@ -122,95 +122,97 @@
     }
 </script>
 
-<form id="formUpdateByEngAcknowledgeAction" name="formUpdateByEngAcknowledgeAction" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
-    <fieldset class="x-fieldset">
-        <legend>Claim Acknowledgement - Action Required</legend>
-        <div>
-            <s:hidden id="claimId" name="id" />
-            <s:hidden id="name" name="name" />
+<div class="chox-claim-header x-panel-bwrap chox-form-container">
+    <form id="formUpdateByEngAcknowledgeAction" name="formUpdateByEngAcknowledgeAction" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
+        <fieldset class="x-fieldset">
+            <legend>Claim Acknowledgement - Action Required</legend>
             <div>
-                <div class="status-info">
-                    Please review the Engineer's notes, if applicable enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
-                </div>
-                <div class="status-control-set">
-                    <table class="status-table">
-                        <tr>
-                            <td width="20%">
-                                <label>
-                                    Indemnity (Decimal)<span class="mandatory">*</span></label>
-                            </td><td>
-                                <input type="text" class="chox-ttxt" name="indemnityAmount" id="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
-                            </td>
-                            <td>
-                                <label>
-                                    Invoice Review Required?</label>
-                            </td><td>
-                                <s:checkbox name="isInvoiceReviewRequired" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>Claim Number</label></td><td>
-                                <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
-                            </td>
-                            <td>
-                                <label>Quantum Dispute?</label></td><td>
-                                <s:checkbox name="isQuantumDispute" />
-                            </td>
-                        </tr>
-                        <tr valign="top">
-                            <td>
-                                <label>% Liability Accepted<span class="mandatory">*</span></label>
-                            </td>
-                            <td colspan="3">
-                                <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
-                            </td>
-                        </tr>
-                        <tr valign="top">
-                            <td>
-                                <label>Claim Review Notes</label>
-                            </td>
-                            <td colspan="3">
-                                <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes" id="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
-                            </td>
-                        </tr>
-                        <tr valign="top">
-                            <td>
-                                <label>Reason for Rejection</label>
-                            </td>
-                            <td colspan="3">
-                                <div id="ReasonOfRejectionDiv">
-                                    <s:select
-                                        name="reasonOfRejectionId"
-                                        id="reasonOfRejectionId"
-                                        list="reasonOfClaimRejections"
-                                        listKey="id"
-                                        listValue="name"
-                                        headerKey=""
-                                        headerValue="N/A"
-                                        emptyOption="false"></s:select>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="4">
-                                <div class="no-format">
-                                    <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="4" class="choice" nowrap>
-                                <input type="button" value="Reject" onclick="javascript: return doClaimUpdatedByEngFormSubmit('rejectClaim');" />
-                                <input type="button" value="Acknowledge" onclick="javascript: return doClaimUpdatedByEngFormSubmit('acknowledgeClaim')"  />
-                                <input type="button" value="Refer To Engineer" onclick="javascript: return doClaimUpdatedByEngFormSubmit('referEng');" />
-                                <input type="button" value="Claim Pending" onclick="javascript: return doClaimUpdatedByEngFormSubmit('pending');" />
-                            </td>
-                        </tr>
-                    </table>
-                    <div id="updateByEngMessageBox" class="action-error-msg"></div>
+                <s:hidden id="claimId" name="id" />
+                <s:hidden id="name" name="name" />
+                <div>
+                    <div class="status-info">
+                        Please review the Engineer's notes, if applicable enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
+                    </div>
+                    <div class="status-control-set">
+                        <table class="status-table">
+                            <tr>
+                                <td width="20%">
+                                    <label>
+                                        Indemnity (Decimal)<span class="mandatory">*</span></label>
+                                </td><td>
+                                    <input type="text" class="chox-ttxt" name="indemnityAmount" id="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
+                                </td>
+                                <td>
+                                    <label>
+                                        Invoice Review Required?</label>
+                                </td><td>
+                                    <s:checkbox name="isInvoiceReviewRequired" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Claim Number</label></td><td>
+                                    <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
+                                </td>
+                                <td>
+                                    <label>Quantum Dispute?</label></td><td>
+                                    <s:checkbox name="isQuantumDispute" />
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <td>
+                                    <label>% Liability Accepted<span class="mandatory">*</span></label>
+                                </td>
+                                <td colspan="3">
+                                    <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <td>
+                                    <label>Claim Review Notes</label>
+                                </td>
+                                <td colspan="3">
+                                    <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes" id="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <td>
+                                    <label>Reason for Rejection</label>
+                                </td>
+                                <td colspan="3">
+                                    <div id="ReasonOfRejectionDiv">
+                                        <s:select
+                                            name="reasonOfRejectionId"
+                                            id="reasonOfRejectionId"
+                                            list="reasonOfClaimRejections"
+                                            listKey="id"
+                                            listValue="name"
+                                            headerKey=""
+                                            headerValue="N/A"
+                                            emptyOption="false"></s:select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <div class="no-format">
+                                        <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="choice" nowrap>
+                                    <input type="button" value="Reject" onclick="javascript: return doClaimUpdatedByEngFormSubmit('rejectClaim');" />
+                                    <input type="button" value="Acknowledge" onclick="javascript: return doClaimUpdatedByEngFormSubmit('acknowledgeClaim')"  />
+                                    <input type="button" value="Refer To Engineer" onclick="javascript: return doClaimUpdatedByEngFormSubmit('referEng');" />
+                                    <input type="button" value="Claim Pending" onclick="javascript: return doClaimUpdatedByEngFormSubmit('pending');" />
+                                </td>
+                            </tr>
+                        </table>
+                        <div id="updateByEngMessageBox" class="action-error-msg"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </fieldset>
-</form>
+        </fieldset>
+    </form>
+</div>

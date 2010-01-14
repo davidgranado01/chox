@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -89,7 +88,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         } else {
 
             if (RoleHelper.isInsurerUser(user)) {
-
+                
                 if (RoleHelper.isGlobalFilterByWorkgroup(user)) {
                     workgroups = getWorkgroupsByUserId(user.getId(), isActiveOnly);
                 } else {
@@ -154,27 +153,6 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         }
 
         return workgroups;
-    }
-
-    public List getNotMyWorkgroups(WebUser user, boolean isActiveOnly) {
-
-        List allWorkgroupsByIns = getWorkgroupsByInsurerId(user.getInsurer().getId(), isActiveOnly);
-        Set workgroupIds = user.getWorkgroupIds();
-
-        List workgroups = new ArrayList();
-
-        for (Object o : allWorkgroupsByIns) {
-
-            Workgroup wg = (Workgroup) o;
-
-            if (!workgroupIds.contains(wg.getId())) {
-                workgroups.add(wg);
-            }
-
-        }
-
-        return workgroups;
-
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

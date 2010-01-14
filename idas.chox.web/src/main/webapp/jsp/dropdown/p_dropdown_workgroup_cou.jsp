@@ -29,7 +29,7 @@
     listKey="id"
     listValue="name"
     headerKey=""
-    headerValue="- Please Select -"
+    headerValue="-- Please Select --"
     emptyOption="false"
     onchange="doSelectWorkgroupCou()">
 </s:select>
