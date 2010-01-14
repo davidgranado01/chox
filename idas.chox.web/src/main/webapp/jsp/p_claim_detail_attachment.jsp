@@ -40,7 +40,7 @@
                 {name:'fileName'},
                 {name:'category'},
                 {name:'remarks'},
-                {name:'modifiedDate'},
+                {name:'modifiedDate', type: 'string', dateFormat:'timestamp'},
                 {name:'modifiedBy'},
                 {name:'delete'}
             ]

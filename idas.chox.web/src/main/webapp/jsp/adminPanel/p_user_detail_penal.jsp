@@ -98,7 +98,7 @@
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
         var param = {"adminPanelName":"UserMgmt"};
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml(url, param, function(data){
             $(target).html(data);
         });
     }

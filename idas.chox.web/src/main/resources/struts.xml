@@ -43,6 +43,9 @@
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
+        <action name ="processBatchClaims" class ="idas.chox.web.actions.ClaimActivityAction" method="processMultipleClaims">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
         <action name ="processClaimsAction" class ="idas.chox.web.actions.ProcessClaimsAction">
             <result name ="success">/jsp/p_upload_status.jsp</result>
             <result name ="error">/jsp/p_upload_claims.jsp</result>
@@ -377,9 +380,6 @@
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="clearBREApprovedInvoicesForPayment" class="idas.chox.web.actions.BatchUpdateAction" method="clearBREApprovedInvoicesForPayment">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-        </action>
-        <action name="doClaimRoutedAction" class="idas.chox.web.actions.BatchUpdateAction" method="doClaimRoutedAction">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="doClaimOwnershipAction" class="idas.chox.web.actions.BatchUpdateAction" method="doClaimOwnershipAction">

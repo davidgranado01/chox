@@ -358,7 +358,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     private Integer countClaims(Criteria criteria) {
-
         criteria.setProjection(Projections.rowCount());
         List totalCountResult = criteria.list();
         criteria.setProjection(null);
@@ -385,7 +384,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
-            //String sSupplierRef = "%"+searchCriteria.getSupplierReference()+"%";
             String sSupplierRef = searchCriteria.getSupplierReference();
             criteria.add(Restrictions.like("choReference", sSupplierRef).ignoreCase());
         }

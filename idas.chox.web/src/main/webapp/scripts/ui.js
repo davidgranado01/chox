@@ -127,7 +127,7 @@ var ui = function(){
         return dateField;
     }
 
-    function ajaxForm(form,successCallBack,responseType){
+    function ajaxForm(form, successCallBack, responseType){
 
         function onAfterSubmit(responseText, statusText){
             onSubmitCompleted(responseText, statusText,form,responseType);

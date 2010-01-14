@@ -31,7 +31,7 @@
             totalProperty: 'totalCount', root: 'results', fields:[
                 {name:'id'},
                 {name:'createdBy'},
-                {name:'createdDate'},
+                {name:'createdDate', type: 'string', dateFormat:'timestamp'},
                 {name:'comment'},
                 {name:'visibilityType'}]
         });

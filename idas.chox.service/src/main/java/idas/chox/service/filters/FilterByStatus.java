@@ -16,7 +16,6 @@ public class FilterByStatus extends BaseFilter {
 
     @Override
     public ClaimSearchCriteria getClaimSearchCriteria() {
-
         ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
         claimSearchCriteria.setStatus(getStatus());
         claimSearchCriteria.setIsWorkgroupCheck(getIsCheckWorkGroup());

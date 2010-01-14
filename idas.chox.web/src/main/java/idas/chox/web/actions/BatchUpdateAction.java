@@ -11,6 +11,7 @@ import idas.chox.core.services.WorkgroupService;
 import java.util.ArrayList;
 import java.util.List;
 import idas.chox.core.model.Comment;
+import idas.chox.service.workflow.ActivityFactory;
 
 public class BatchUpdateAction extends BaseAction {
 
@@ -19,7 +20,6 @@ public class BatchUpdateAction extends BaseAction {
     private AuditTrailService auditTrailService;
     private String actionResult;
     private List<Integer> selectedClaimIdList;
-    private int workgroup;
     private Integer workgroupId; // CLAIM OWNERSHIP
     private Integer claimOwnerId;
     private WorkgroupService workgroupService;
@@ -39,28 +39,6 @@ public class BatchUpdateAction extends BaseAction {
             Claim claim = claimService.getClaim(id);
             updateClaimStatus(claim, oldStatus, newStatus, 0);
         }
-        return SUCCESS;
-    }
-
-    public String doClaimRoutedAction() {
-
-        String oldStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED;
-
-        Workgroup workgroupDBA = new Workgroup();
-        workgroupDBA = workgroupService.getWorkgroup(this.workgroupId);
-
-        for (Integer id : selectedClaimIdList) {
-
-            Claim claim = claimService.getClaim(id);
-            claim.setWorkgroup(workgroupDBA);
-            updateClaimStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
-
-            if (claim.getInsurer().isClaimOwnershipEnable()) {
-                updateClaimStatus(claim, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, 1);
-            }
-
-        }
-
         return SUCCESS;
     }
 
@@ -100,7 +78,7 @@ public class BatchUpdateAction extends BaseAction {
 
         // WORKGROUP
         Workgroup workgroupDBA = new Workgroup();
-        if(this.workgroupId!=null && this.workgroupId>0){
+        if (this.workgroupId != null && this.workgroupId > 0) {
             workgroupDBA = workgroupService.getWorkgroup(this.workgroupId);
         }
 
@@ -108,18 +86,18 @@ public class BatchUpdateAction extends BaseAction {
         WebUser claimOwnerDBA = userService.getWebUser(this.claimOwnerId);
 
         // UPDATE CLAIMS(s)
-        for (Integer id : selectedClaimIdList)  {
+        for (Integer id : selectedClaimIdList) {
 
             Claim claim = claimService.getClaim(id);
 
             String oldClaimOwnerName = "-";
-            if(claim.getClaimOwner()!=null){
+            if (claim.getClaimOwner() != null) {
                 oldClaimOwnerName = claim.getClaimOwner().getDisplayName();
             }
 
-            String noteMsg = "Claim owner changed from '" + oldClaimOwnerName + "' to '" + claimOwnerDBA.getDisplayName()+"'";
-            
-            if(this.workgroupId!=null && this.workgroupId>0){
+            String noteMsg = "Claim owner changed from '" + oldClaimOwnerName + "' to '" + claimOwnerDBA.getDisplayName() + "'";
+
+            if (this.workgroupId != null && this.workgroupId > 0) {
                 claim.setWorkgroup(workgroupDBA);
             }
 
@@ -188,6 +166,7 @@ public class BatchUpdateAction extends BaseAction {
         }
     }
 
+    @Override
     public void setActionResult(String actionResult) {
         this.actionResult = actionResult;
     }
@@ -202,14 +181,6 @@ public class BatchUpdateAction extends BaseAction {
             selectedClaimIdList.add(id);
         }
 
-    }
-
-    public void setWorkgroup(int id) {
-        this.workgroup = id;
-    }
-
-    public Integer getWorkgroupId() {
-        return workgroupId;
     }
 
     public void setWorkgroupId(Integer workgroupId) {
@@ -243,5 +214,5 @@ public class BatchUpdateAction extends BaseAction {
     public void setClaimOwnerId(Integer claimOwnerId) {
         this.claimOwnerId = claimOwnerId;
     }
-   
+
 }

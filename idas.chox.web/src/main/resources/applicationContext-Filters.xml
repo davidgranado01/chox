@@ -195,8 +195,6 @@
         <property name="isCheckOwnership" value="false"/>
     </bean>
 
-
-
     <bean id="InvoicesReferredToEngineer" class="idas.chox.service.filters.FilterByStatus">
         <property name="claimService" ref="claimService"/>
         <property name="name" value="Invoice Referred By Claim Handler"/>

@@ -3,10 +3,8 @@ package idas.chox.web.actions;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
-import idas.chox.service.security.AdminAccessibility;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.MenuAccessibility;
-import idas.chox.service.security.ReportAccessibility;
 import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 
@@ -15,9 +13,7 @@ public class InboxAction extends BaseAction implements SessionAware {
     private Map session;
     private ClaimService service;
     private ApplicationAccessibility applicationAccessibility;
-    private ReportAccessibility reportAccessibility;
     private MenuAccessibility menuAccessibility;
-    private AdminAccessibility adminAccessibility;
     private AuditTrailService auditTrailService;
     private String actionResult;
 
@@ -29,22 +25,6 @@ public class InboxAction extends BaseAction implements SessionAware {
     public String execute() throws Exception {
 
         return SUCCESS;
-    }
-
-    public ReportAccessibility getReportAccessibility() {
-
-        if (reportAccessibility == null) {
-            reportAccessibility = getApplicationAccessibility().getReportAccessibility(super.getAuthenticatedUser().getRoles());
-        }
-        return reportAccessibility;
-    }
-
-    public AdminAccessibility getAdminAccessibility() {
-
-        if (adminAccessibility == null) {
-            adminAccessibility = getApplicationAccessibility().getAdminAccessibility(super.getAuthenticatedUser().getRoles());
-        }
-        return adminAccessibility;
     }
 
     public MenuAccessibility getMenuAccessibility() {
@@ -80,12 +60,11 @@ public class InboxAction extends BaseAction implements SessionAware {
     }
 
     // TODO: REFACTORING TO SEPERATE BATCH UPDATE FROM GENERAL ACTION
-    public boolean getIsDoUpdateClaimOwnershipAccessibile()
-    {
+    public boolean getIsDoUpdateClaimOwnershipAccessibile() {
         short accessRight = applicationAccessibility.checkActionAccessibility("claimOwnership", super.getAuthenticatedUser().getRoles(), ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         return accessRight > 0;
     }
-    
+
     public void setSession(Map arg0) {
         this.session = arg0;
     }

@@ -15,7 +15,7 @@
             root: 'results',
             fields:
                 [
-                {name:'modifiedDate'},
+                {name:'modifiedDate', type: 'string', dateFormat:'timestamp'},
                 {name:'modifiedBy'},
                 {name:'status'}
             ]

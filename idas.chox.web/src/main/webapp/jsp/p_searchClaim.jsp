@@ -1,20 +1,19 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<script language="JavaScript">
+<script type="text/javascript">
 
     var isChoxAdmin = false
     var insurerId = -1;
     var claimOwnerId = -1;
-    
-    $(document).ready(function(){
+
+    Ext.onReady(function(){
+
+        new Ext.ToolTip({ target: 'help-open-items-icon', html: 'When ticked, claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, ClaimClosed or PaymentReceived will be excluded from the list of search results.'});
+
         doInsurerSearchSelectOnChange();
         doShowClaimHandler(-1, -1);
-        new Ext.ToolTip({ target: 'help-open-items-icon', html: 'When ticked, claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, ClaimClosed or PaymentReceived will be excluded from the list of search results.'});
-    }); 
-    
-    Ext.onReady(function(){                              
-    
+        
         var claimUploadDateFromPicker = new Ext.form.DateField({
             name: 'claimUploadDateFrom',
             width: 120,
@@ -119,7 +118,6 @@
 
     function doInsurerSearchSelectOnChange(){
         setSelectedInsurerId();
-
         var target = "#searchScreenWorkgroupDropDownDiv";
         var url = "<%= request.getContextPath()%>/prv/p/SearchWorkgroupDropDownAction.action";
         var param = {"orgId":insurerId};
@@ -184,141 +182,142 @@
     }
     
 </script>
-<div>
 
-    <table id="searchForm" cellpadding="0" cellspacing="0" class="searchForm" border="0">
+<div id="searchPanel" class="search-panel-holder">
+    
+    <div>
 
-        <tr>
-            <td><label>Supplier Reference</label></td>
-            <td><s:textfield name="supplierReference"/></td>
-            <td><label>Claim Number</label></td>
-            <td><s:textfield name="claimNumber"/></td>
-        </tr>    
-
-        <tr>
-            <td><label>Invoice Number</label></td>
-            <td><s:textfield name="invoiceNumber"/></td>
-            <td><label>Show Open Claims Only <img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" /></label></td><td><s:checkbox name="isOpenClaim" value="true" /></td>
-
-        </tr>
-
-        <tr>
-            <td><label>Supplier VRN</label></td><td><s:textfield name="customerVrn" /></td>
-            <td><label>Insurer VRN</label></td><td><s:textfield name="thirdPartyVrn" /></td>
-        </tr>
-
-        <tr>
-            <td nowrap><label>Claim Upload Date From</label></td><td><div id="claimUploadDateFromDiv" ></div></td>
-            <td nowrap><label>Claim Upload Date To</label></td><td><div id="claimUploadDateToDiv"></div></td>
-        </tr>
-
-        <tr>
-            <td nowrap><label>Invoice Upload Date From</label></td><td><div id="invoiceUploadDateFromDiv" ></div></td>
-            <td nowrap><label>Invoice Upload Date To</label></td><td><div id="invoiceUploadDateToDiv" ></div></td>
-        </tr>                        
-
-        <tr>
-            <td nowrap><label>Hire Date From</label></td><td><div id="hireDateFromDiv" ></div></td>
-            <td nowrap><label>Hire Date To</label></td><td><div id="hireDateToDiv"></div></td>
-        </tr>
-
-        <s:if test="isCHO">
+        <table id="searchForm" cellpadding="0" cellspacing="0" class="searchForm" border="0">
             <tr>
-                <td nowrap><label>Hire Monitoring Review Required Date From</label></td><td><div id="reviewRequiredDateFromDiv" ></div></td>
-                <td nowrap><label>Hire Monitoring Review Required Date To</label></td><td><div id="reviewRequiredDateToDiv" ></div></td>
+                <td><label>Supplier Reference</label></td>
+                <td><s:textfield name="supplierReference"/></td>
+                <td><label>Claim Number</label></td>
+                <td><s:textfield name="claimNumber"/></td>
             </tr>
-        </s:if>
-        <s:else>
-            <input type="hidden" name="reviewRequiredDateFrom" id="reviewRequiredDateFrom" />
-            <input type="hidden" name="reviewRequiredDateTo" id="reviewRequiredDateTo" />
+            <tr>
+                <td><label>Invoice Number</label></td>
+                <td><s:textfield name="invoiceNumber"/></td>
+                <td><label>Show Open Claims Only <img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="" /></label></td><td><s:checkbox name="isOpenClaim" value="true" /></td>
+
             </tr>
-        </s:else>
 
-        <tr>
-            <s:if test="isCHO || isChoxAdmin">
+            <tr>
+                <td><label>Supplier VRN</label></td><td><s:textfield name="customerVrn" /></td>
+                <td><label>Insurer VRN</label></td><td><s:textfield name="thirdPartyVrn" /></td>
+            </tr>
 
-                <td><label>Insurer Name</label></td>
-                <td>
-                    <s:select
-                        name="insurerId"
-                        list="insurers"
-                        listKey="id"
-                        listValue="name"
-                        headerKey="-1"
-                        headerValue="--- ALL ---"
-                        onchange="javascript: doInsurerSearchSelectOnChange();"
-                        emptyOption="false">
-                    </s:select>
-                </td>
+            <tr>
+                <td nowrap><label>Claim Upload Date From</label></td><td><div id="claimUploadDateFromDiv" ></div></td>
+                <td nowrap><label>Claim Upload Date To</label></td><td><div id="claimUploadDateToDiv"></div></td>
+            </tr>
+
+            <tr>
+                <td nowrap><label>Invoice Upload Date From</label></td><td><div id="invoiceUploadDateFromDiv" ></div></td>
+                <td nowrap><label>Invoice Upload Date To</label></td><td><div id="invoiceUploadDateToDiv" ></div></td>
+            </tr>
+
+            <tr>
+                <td nowrap><label>Hire Date From</label></td><td><div id="hireDateFromDiv" ></div></td>
+                <td nowrap><label>Hire Date To</label></td><td><div id="hireDateToDiv"></div></td>
+            </tr>
+
+            <s:if test="isCHO">
+                <tr>
+                    <td nowrap><label>Hire Monitoring Review Required Date From</label></td><td><div id="reviewRequiredDateFromDiv" ></div></td>
+                    <td nowrap><label>Hire Monitoring Review Required Date To</label></td><td><div id="reviewRequiredDateToDiv" ></div></td>
+                </tr>
             </s:if>
-            <s:elseif test="isInsurer">
-                <td><label>Supplier Name</label></td>
-                <td>
+            <s:else>
+                <input type="hidden" name="reviewRequiredDateFrom" id="reviewRequiredDateFrom" />
+                <input type="hidden" name="reviewRequiredDateTo" id="reviewRequiredDateTo" />
+            </s:else>
+
+            <tr>
+                <s:if test="isCHO || isChoxAdmin">
+
+                    <td><label>Insurer Name</label></td>
+                    <td>
+                        <s:select
+                            name="insurerId"
+                            list="insurers"
+                            listKey="id"
+                            listValue="name"
+                            headerKey="-1"
+                            headerValue="--- ALL ---"
+                            onchange="javascript: doInsurerSearchSelectOnChange();"
+                            emptyOption="false">
+                        </s:select>
+                    </td>
+                </s:if>
+                <s:elseif test="isInsurer">
+                    <td><label>Supplier Name</label></td>
+                    <td>
+                        <s:select
+                            name="supplierId"
+                            list="suppliers"
+                            listKey="id"
+                            listValue="name"
+                            headerKey="-1"
+                            headerValue="--- ALL ---"
+                            emptyOption="false">
+                        </s:select>
+                    </td>
+                </s:elseif>
+                <td><label>Status</label></td><td>
                     <s:select
-                        name="supplierId"
-                        list="suppliers"
-                        listKey="id"
-                        listValue="name"
-                        headerKey="-1"
-                        headerValue="--- ALL ---"
-                        emptyOption="false">
+                        name="status"
+                        list="statuses"
+                        headerKey=""
+                        listKey="value"
+                        listValue="text"
+                        headerValue="--- ALL ---" headerKey=""
+                        emptyOption="false"
+                        value="status" onchange="javascript: statusChange();">
                     </s:select>
                 </td>
-            </s:elseif>
-            <td><label>Status</label></td><td>
-                <s:select
-                    name="status"
-                    list="statuses"
-                    headerKey=""
-                    listKey="value"
-                    listValue="text"
-                    headerValue="--- ALL ---" headerKey=""
-                    emptyOption="false"
-                    value="status" onchange="javascript: statusChange();">
-                </s:select>
-            </td>
-        </tr>
-
-        <s:if test="isInsurer">
-            <tr>
-                <td><label>Workgroup</label></td>
-                <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
-                <td><label>Claim Owner</label></td>
-                <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
             </tr>
-        </s:if>
-        <s:else>
-            <tr>
-                <td><label>Insurer's Workgroup</label></td>
-                <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
-                <td><label>Insurer's Claim Owner</label></td>
-                <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
-            </tr>
-        </s:else>
 
-        <tr>
-            <s:if test="isChoxAdmin">
-                <td><label>Supplier Name</label></td>
-                <td>
-                    <s:select
-                        name="supplierId"
-                        list="suppliers"
-                        listKey="id"
-                        listValue="name"
-                        headerKey="-1"
-                        headerValue="--- ALL ---"
-                        emptyOption="false">
-                    </s:select>
-                </td>
-                <td><label></label></td><td></td>
+            <s:if test="isInsurer">
+                <tr>
+                    <td><label>Workgroup</label></td>
+                    <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
+                    <td><label>Claim Owner</label></td>
+                    <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
+                </tr>
             </s:if>
-        </tr>
+            <s:else>
+                <tr>
+                    <td><label>Insurer's Workgroup</label></td>
+                    <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
+                    <td><label>Insurer's Claim Owner</label></td>
+                    <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
+                </tr>
+            </s:else>
 
-    </table>
-    <div class="buttonPanel">
-        <div>
-            <input type="button" onclick="javascript:searchClaim();" value="Search" />
-            <input type="reset" onclick="javascript:clearForm();" value="Reset" />
+            <tr>
+                <s:if test="isChoxAdmin">
+                    <td><label>Supplier Name</label></td>
+                    <td>
+                        <s:select
+                            name="supplierId"
+                            list="suppliers"
+                            listKey="id"
+                            listValue="name"
+                            headerKey="-1"
+                            headerValue="--- ALL ---"
+                            emptyOption="false">
+                        </s:select>
+                    </td>
+                    <td><label></label></td><td></td>
+                </s:if>
+            </tr>
+
+        </table>
+        <div class="buttonPanel">
+            <div>
+                <input type="button" onclick="javascript:searchClaim();" value="Search" />
+                <input type="reset" onclick="javascript:clearForm();" value="Reset" />
+            </div>
         </div>
     </div>
 </div>

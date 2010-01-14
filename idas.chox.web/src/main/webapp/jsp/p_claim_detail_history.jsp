@@ -13,11 +13,9 @@
             totalProperty: 'totalCount',
             root: 'results',
             fields:
-                [
-                {name:'createdBy'},
-                {name:'createdDate'},
-                {name:'narrative'}
-            ]
+                [{name:'createdBy'},
+                {name:'createdDate', type: 'string', dateFormat:'timestamp'},
+                {name:'narrative'}]
         });
 
         historyData = new Ext.data.Store({

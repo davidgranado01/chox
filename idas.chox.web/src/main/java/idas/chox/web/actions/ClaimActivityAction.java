@@ -6,6 +6,8 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.StaleObjectStateException;
 
 public class ClaimActivityAction extends BaseAction implements ModelDriven<Activity>, Preparable {
@@ -17,38 +19,58 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     private String name;
     private int id;
     private Integer currentVersion;
+    private List<Integer> selectedClaimIdList;
 
     public Activity getModel() {
         return activity;
     }
 
     public void prepare() throws Exception {
-        claim = claimService.getClaim(id);
-        checkVersion();
+
+        if(id>0){
+            claim = claimService.getClaim(id);
+            checkVersion();
+        }
+        
         activity = activityFactory.getActivity(name);
+    }
+
+    public String processMultipleClaims() {
+
+        if (activity != null && selectedClaimIdList.size()>0) {
+            
+            try {
+
+                for (Integer selectedClaimId : selectedClaimIdList) {
+
+                    System.out.println(">>> selectedClaimId : "+selectedClaimId);
+
+                    claim = claimService.getClaim(selectedClaimId);
+                    checkVersion();
+                    activity.process(claim);
+                }
+                
+            } catch (Exception ex) {
+                handleException(ex);
+                return ERROR;
+            }
+            return SUCCESS;
+        }
+        
+        return ERROR;
     }
 
     @Override
     public String execute() {
-        
         if (activity != null) {
-
             try {
-
                 activity.process(claim);
-                
             } catch (Exception ex) {
-                
-
-                
                 handleException(ex);
-                
                 return ERROR;
             }
-            
             return SUCCESS;
         }
-        
         return ERROR;
     }
 
@@ -90,5 +112,14 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     public void setCurrentVersion(Integer currentVersion) {
         this.currentVersion = currentVersion;
+    }
+
+    public void setSelectedClaimIds(String ids) {
+        String[] list = ids.split(",");
+        selectedClaimIdList = new ArrayList<Integer>();
+        for (String s : list) {
+            Integer selectedId = Integer.parseInt(s.trim());
+            selectedClaimIdList.add(selectedId);
+        }
     }
 }

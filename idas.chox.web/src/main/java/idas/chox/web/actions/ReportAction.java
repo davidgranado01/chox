@@ -4,11 +4,12 @@ import idas.chox.core.services.LookupService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.Report;
 import idas.chox.service.reports.ReportFactory;
+import idas.chox.service.security.ReportAccessibility;
+import idas.chox.service.security.ApplicationAccessibility;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import org.apache.struts2.interceptor.ParameterAware;
-
 
 public class ReportAction extends BaseAction implements ParameterAware {
 
@@ -20,6 +21,20 @@ public class ReportAction extends BaseAction implements ParameterAware {
     private LookupService lookupService;
     private List insurers;
     private List suppliers;
+    private ReportAccessibility reportAccessibility;
+    private ApplicationAccessibility applicationAccessibility;
+
+    public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
+        this.applicationAccessibility = applicationAccessibility;
+    }
+
+    public ReportAccessibility getReportAccessibility() {
+
+        if (reportAccessibility == null) {
+            reportAccessibility = applicationAccessibility.getReportAccessibility(super.getAuthenticatedUser().getRoles());
+        }
+        return reportAccessibility;
+    }
 
     public String buildReport() {
         return SUCCESS;
@@ -67,6 +82,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
         this.reportStream = reportStream;
     }
 
+    @Override
     public String getActionResult() {
         return this.actionResult;
     }
