@@ -16,11 +16,11 @@
             if(!isChoxAdmin){
                 activityMonitor.refreshViewingStatus();
             }
-
+            
             loadDataFromSession();
             
         });
-            
+
         var currentTabIndex;
         var tabs;
         var recordPerPage = 20;
@@ -220,7 +220,7 @@
                             });
                             
                             var target = "div#claimRoutedSelectionHolder";
-                            var url = "<%=request.getContextPath()%>/prv/p/GetWorkgroupOnlyDropDownActionByInsurer.action";
+                            var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action";
                             ajax.loadHtml(url, null, function(data){
                                 $(target).html(data);
                             });
@@ -539,7 +539,6 @@
                                         generateWorkgroup();
                                     }
                                 });
-
                                 function generateWorkgroup(){
                                     var target = "#couWorkgroupDropDownDiv";
                                     var url = "<%=request.getContextPath()%>/prv/p/UpdateWorkgroupDropDownActionByInsurer.action";
@@ -548,12 +547,9 @@
                                         $(target).html(data);
                                     });
                                 }
-
                             });
                         }
-
                         updateClaimOwnershipSelectionDlg.show(this);
-
                     }
                 }
             });
@@ -578,8 +574,6 @@
 
                 var isApprovePaymentAccessibile = <s:property value="IsApprovePaymentAccessibile"/>;
                 if(isApprovePaymentAccessibile){
-
-
                     if(isSelectedRecordsMatchGivenStatus(selectedRecords, 'AwaitingInvoicePayment'))
                     {
                         approvedInvoicesPaymentAction.enable();
@@ -588,13 +582,9 @@
                     {
                         approvedInvoicesPaymentAction.disable();
                     }
-
                 }else{
-
                     approvedInvoicesPaymentAction.disable();
                 }
-
-            
 
                 var isClearBREApprovedInvoicesForPaymentAccessibile = <s:property value="IsClearBREApprovedInvoicesForPaymentAccessibile"/>;
                 if(isClearBREApprovedInvoicesForPaymentAccessibile){
@@ -607,11 +597,9 @@
                     {
                         clearBREApprovedInvoicesForPaymentAction.disable();
                     }
-                
                 }else{
                     clearBREApprovedInvoicesForPaymentAction.disable();
                 }
-
 
 
                 var isDoInvoicePaymentReceivedAccessibile = <s:property value="IsDoInvoicePaymentReceivedAccessibile"/>;
@@ -629,11 +617,8 @@
                 }
 
 
-
-
                 var isDoClaimRoutedAccessibile = <s:property value="IsDoClaimRoutedAccessibile"/>;
                 if(isDoClaimRoutedAccessibile){
-                
                     if(isSelectedRecordsMatchGivenStatus(selectedRecords,'ClaimUnacknowledgedUnrouted'))
                     {
                         doClaimRoutedAction.enable();
@@ -642,17 +627,13 @@
                     {
                         doClaimRoutedAction.disable();
                     }
-                
                 }else{
                     doClaimRoutedAction.disable();
                 }
 
 
-
-
                 var IsDoClaimOwnershipAccessibile = <s:property value="IsDoClaimOwnershipAccessibile"/>;
                 if(IsDoClaimOwnershipAccessibile){
-
                     if(isSelectedRecordsMatchGivenStatus(selectedRecords,'ClaimUnacknowledgedUnassigned'))
                     {
                         doClaimOwnerAction.enable();
@@ -665,7 +646,6 @@
                 }else{
                     doClaimOwnerAction.disable();
                 }
-
 
 
                 var isDoUpdateClaimOwnershipAccessibile = <s:property value="IsDoUpdateClaimOwnershipAccessibile"/>;
@@ -681,12 +661,7 @@
                     doUpdateClaimOwnerAction.disable();
                 }
 
-
-
-            
             }, this);
-
-
 
 
             var grid = new Ext.grid.GridPanel({
@@ -755,7 +730,7 @@
 
         function setupTabPanels()
         {
-            currentTabIndex = <s:property value="tab" /> + 1;
+            currentTabIndex = (<s:property value="tab" /> + 1);
 
             if(!<s:property value="menuAccessibility.isDashBoardMenuAccessibility"/>){
                 currentTabIndex++;
@@ -804,6 +779,7 @@
         }
     
         function handleActivate(tab){
+            
             $("#gridPanel").hide();
             if(tab.title == 'Inbox' || tab.title == 'Search'){
                 doDataLoad(0, 0, null);
@@ -819,7 +795,8 @@
 
         }
 
-        function getErrorClaims(selectedRecords, isWorkgroupCheck, isOwnershipCheck, allowedStatuses){
+        function getErrorClaims(selectedRecords, isWorkgroupCheck, isOwnershipCheck, allowedStatuses)
+        {
 
             var selectedNotMyClaimsIDs = $.map(selectedRecords, function(n){
 
@@ -862,7 +839,6 @@
                         }
                         errorMsg += "Incorrect Status"
                     }
-
                     return supplierRef + errorMsg + "<br/>";
                 }
 

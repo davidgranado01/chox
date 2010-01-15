@@ -311,8 +311,8 @@
         <action name="UpdateWorkgroupDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction">
             <result>/jsp/dropdown/p_dropdown_update_claim_workgroup.jsp</result>
         </action>
-        <action name="GetWorkgroupOnlyDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction">
-            <result>/jsp/dropdown/p_dropdown_workgroup_only.jsp</result>
+        <action name="WorkgroupDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction">
+            <result>/jsp/dropdown/p_dropdown_workgroup.jsp</result>
         </action>
         <action name="SearchClaimHandlerRoleUserDropDownAction" class="idas.chox.web.actions.ClaimHandlerRoleUserDropDownAction" method="ClaimSearch">
             <result>/jsp/dropdown/p_search_dropdown_claimHandlerUser.jsp</result>

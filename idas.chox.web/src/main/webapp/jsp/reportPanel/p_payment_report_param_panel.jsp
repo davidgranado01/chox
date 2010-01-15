@@ -8,7 +8,7 @@
     Ext.onReady(function(){
 
         var target = "div#rptPaymentWorkgroupSelectionHolder";
-        var url = "<%=request.getContextPath()%>/prv/p/GetWorkgroupOnlyDropDownActionByInsurer.action";
+        var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action";
         var param = {};
 
         ajax.loadHtml(url,param,function(data){

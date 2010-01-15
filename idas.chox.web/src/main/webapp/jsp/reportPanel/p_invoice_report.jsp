@@ -13,7 +13,7 @@
         new Ext.ToolTip({ target: 'help-supplier-reference-input', html: 'Supplier Reference Number input format: ABC123, ABC124, ABC125'});
 
         var target = "div#rptInvoiceWorkgroupSelectionHolder";
-        var url = "<%=request.getContextPath()%>/prv/p/GetWorkgroupOnlyDropDownActionByInsurer.action";
+        var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action";
         var param = {};
 
         ajax.loadHtml(url,param,function(data){
