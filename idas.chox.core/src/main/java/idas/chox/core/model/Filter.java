@@ -4,8 +4,7 @@
  */
 package idas.chox.core.model;
 
-import idas.chox.core.search.SearchResult;
-import idas.chox.core.services.ClaimService;
+import idas.chox.core.search.ClaimSearchCriteria;
 
 /**
  *
@@ -43,11 +42,10 @@ public interface Filter {
     String getName();
 
     Integer getCount();
-    
-    SearchResult getResults(int start, int limit, String sort, String dir);
+
+    void setCount(Integer count);
 
     String getDescription();
 
-    void setClaimService(ClaimService claimService);
-
+    ClaimSearchCriteria getClaimSearchCriteria();
 }

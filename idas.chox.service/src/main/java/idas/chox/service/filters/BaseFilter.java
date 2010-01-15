@@ -6,36 +6,32 @@ package idas.chox.service.filters;
 
 import idas.chox.core.model.Filter;
 import idas.chox.core.search.ClaimSearchCriteria;
-import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ClaimService;
 
 public abstract class BaseFilter implements Filter {
 
     private ClaimService claimService;
+    private Integer count;
 
     protected abstract boolean getIsCheckWorkGroup();
 
     protected abstract boolean getIsCheckOwnership();
 
-    protected abstract ClaimSearchCriteria getClaimSearchCriteria();
+    @Override
+    public abstract ClaimSearchCriteria getClaimSearchCriteria();
 
     @Override
     public Integer getCount() {
-        return claimService.countClaims(getClaimSearchCriteria());
+        return count;
     }
 
     @Override
-    public SearchResult getResults(int start, int limit, String sort, String dir) {
-        return claimService.searchClaims(getClaimSearchCriteria(), start, limit, sort, dir);
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     @Override
     public String getDescription() {
         return String.format("%s (%d)", getName(), getCount().intValue());
-    }
-
-    @Override
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
     }
 }

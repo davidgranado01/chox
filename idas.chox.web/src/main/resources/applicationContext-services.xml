@@ -130,4 +130,36 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
+
+    <bean id="filterService" class="idas.chox.service.filters.FilterServiceImpl">
+        <property name="applicationAccessibility" ref="applicationAccessibility"/>
+        <property name="claimService" ref="claimService"/>
+        <property name="availableFilters">
+            <list>
+                <ref bean="RejectedClaims" />
+                <ref bean="ClaimsAwaitingHireMonitoringInformation" />
+                <ref bean="AwaitingInvoiceData" />
+                <ref bean="IncorrectInvoiceDataCalculations" />
+                <ref bean="ContestedInvoicesReferredToCHO" />
+                <ref bean="PenaltyChargesApplied" />
+                <ref bean="InvoicePaymentLogged" />
+                <ref bean="NewClaimsToBerouted" />
+                <ref bean="ClaimUnacknowledgedUnassigned" />
+                <ref bean="ClaimReferredToFNOL" />
+                <ref bean="ClaimsAwaitingAcknowledgement" />
+                <ref bean="ReSubmittedClaimsAwaitingAcknowledgement" />
+                <ref bean="ClaimPending" />
+                <ref bean="ClaimReferredToEngineer" />
+                <ref bean="ClaimUpdatedByEngineer" />
+                <ref bean="HireUpdateAnomalies" />
+                <ref bean="EscalatedInvoices" />
+                <ref bean="InvoiceEscalatedToHandler" />
+                <ref bean="InvoicesReferredToEngineer" />
+                <ref bean="InvoiceReferredToClaimsHandler" />
+                <ref bean="ContestedInvoicesReferredToInsurer" />
+                <ref bean="InvoicesApprovedByBRE" />
+                <ref bean="ApprovedInvoicesAwaitingPayment" />
+            </list>
+        </property>
+    </bean>
 </beans>

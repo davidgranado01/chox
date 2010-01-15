@@ -14,7 +14,6 @@ public class FilterByStatus extends BaseFilter {
     private boolean isCheckWorkGroup = false;
     private boolean isCheckOwnership = false;
 
-    @Override
     public ClaimSearchCriteria getClaimSearchCriteria() {
         ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
         claimSearchCriteria.setStatus(getStatus());

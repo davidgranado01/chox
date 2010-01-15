@@ -15,7 +15,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
     private List<Filter> availableFilters;
     private BeanFactory beanFactory;   
     private ApplicationAccessibility applicationAccessibility;
-
+    
     @Override
     public List<Filter> getAvailableFilters(WebUser webUser) {
 
@@ -24,7 +24,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
         if (availableFilters != null) {
             if (webUser != null) {
                 for (Filter filter : availableFilters) {
-                    if (applicationAccessibility.checkFilterAccessibility(filter.getKey(), webUser.getRoles()) > 0) {
+                    if (applicationAccessibility.checkFilterAccessibility(filter.getKey(), webUser.getRoles()) > 0) {                        
                         filters.add(filter);
                     }
                 }
@@ -49,7 +49,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
         }
         return filter;
     }
-
+   
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;

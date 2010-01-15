@@ -100,7 +100,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             totalCount = searchResult.getTotalCount();
         } else {
             Filter filter = filterService.getFilter(filterName);
-            SearchResult searchResult =  filter.getResults(start, limit, sort, dir);
+            SearchResult searchResult =  claimService.searchClaims(filter.getClaimSearchCriteria(),start, limit, sort, dir);
             results = searchResult.getResult();
             totalCount = searchResult.getTotalCount();
 
