@@ -305,11 +305,11 @@
         <action name="SearchWorkgroupDropDownAction" class="idas.chox.web.actions.WorkgroupDropDownAction" method="ClaimSearch">
             <result>/jsp/dropdown/p_search_dropdown_workgroup.jsp</result>
         </action>
-        <action name="GetWorkgroupDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction" method="ClaimSearch">
-            <result>/jsp/dropdown/p_dropdown_workgroup.jsp</result>
+        <action name="WorkgroupDropDownActionByUser" class="idas.chox.web.actions.WorkgroupDropDownAction">
+            <result>/jsp/dropdown/p_dropdown_assign_claim_owner_workgroup.jsp</result>
         </action>
-        <action name="GetCouWorkgroupDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction" method="ClaimSearch">
-            <result>/jsp/dropdown/p_dropdown_workgroup_cou.jsp</result>
+        <action name="UpdateWorkgroupDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction">
+            <result>/jsp/dropdown/p_dropdown_update_claim_workgroup.jsp</result>
         </action>
         <action name="GetWorkgroupOnlyDropDownActionByInsurer" class="idas.chox.web.actions.WorkgroupDropDownAction">
             <result>/jsp/dropdown/p_dropdown_workgroup_only.jsp</result>

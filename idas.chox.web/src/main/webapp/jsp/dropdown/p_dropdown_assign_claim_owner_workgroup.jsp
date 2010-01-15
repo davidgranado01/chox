@@ -7,12 +7,12 @@
         var insurerId = <s:property value="orgId"/>;
         var selectedWorkgroupId = -1;
         
-        if($("#workgroupId").val()!=null && $("#workgroupId").val()!=""){
-            selectedWorkgroupId = $("#workgroupId").val();
+        if($("#oasWorkgroupId").val()!=null && $("#oasWorkgroupId").val()!=""){
+            selectedWorkgroupId = $("#oasWorkgroupId").val();
         }
 
-        var target = "#coClaimHandlerRoleUserDropDownDiv";
-        var url = "<%=request.getContextPath()%>/prv/p//ClaimHandlerRoleUserDropDownAction.action";
+        var target = "#claimOwnerClaimHandlerRoleUserDropDownDiv";
+        var url = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
         var param = {"workgroupId":selectedWorkgroupId,"insurerId":insurerId};
 
         ajax.loadHtml(url,param,function(data){
@@ -23,13 +23,13 @@
 </script>
 
 <s:select
-    id="workgroupId"
-    name="workgroupId"
+    id="oasWorkgroupId"
+    name="oasWorkgroupId"
     list="workgroups"
     listKey="id"
     listValue="name"
-    headerKey=""
-    headerValue="--- ALL ---"
+    headerKey="-1"
+    headerValue="-- Please Select --"
     emptyOption="false"
     onchange="doSelectWorkgroup()">
 </s:select>

@@ -79,19 +79,19 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // WORKGROUP LIST
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public List getWorkgroups(WebUser user, boolean isActiveOnly) {
+    public List getWorkgroups(WebUser user, boolean isActiveOnly){
 
         List workgroups = new ArrayList();
 
-        if (RoleHelper.isChoxAdmin(user)) {
+        if(RoleHelper.isChoxAdmin(user)){
             workgroups = getAllWorkgroup(isActiveOnly);
-        } else {
+        }else{
 
-            if (RoleHelper.isInsurerUser(user)) {
-                
-                if (RoleHelper.isGlobalFilterByWorkgroup(user)) {
+            if(RoleHelper.isInsurerUser(user)){
+
+                if(RoleHelper.isGlobalFilterByWorkgroup(user)){
                     workgroups = getWorkgroupsByUserId(user.getId(), isActiveOnly);
-                } else {
+                }else{
                     workgroups = getWorkgroupsByInsurerId(user.getInsurer().getId(), isActiveOnly);
                 }
             }
@@ -136,7 +136,6 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
         criteria.add(Restrictions.eq("user.id", userId));
-
         List result = findByCriteria(criteria, true);
 
         for (Object o : result) {

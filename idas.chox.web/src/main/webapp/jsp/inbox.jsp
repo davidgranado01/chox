@@ -355,35 +355,8 @@
                                 buttons: [{
                                         text:'Ok',
                                         handler:function(){
-                                            /*
-                                            $("form#ownershipClaimForm").validate(
-                                            {
-                                                rules: {
-                                                    workgroupId:{required:isClaimOwnerWorkgroupFieldValid},
-                                                    claimOwnerId:{min:1}
-                                                },
-                                                messages: {
-                                                    workgroupId:{required:"You must select 'Workgroup'"},
-                                                    claimOwnerId:{min:"You must select 'Claim Owner'"}
-                                                }
-                                            });
 
-                                            function isClaimOwnerWorkgroupFieldValid(){
-                                                var bFlag = false;
-                                                var isInsurerWorkgroupEnable = false;
-
-                                                if($("#userInsurerWorkgroupEnable").val()!=null && $("#userInsurerWorkgroupEnable").val()!=""){
-                                                    isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
-                                                }
-
-                                                if(isInsurerWorkgroupEnable && ($("#workgroupId").val()<=0 || $("#workgroupId").val()=="")){
-                                                    bFlag = true;
-                                                }
-
-                                                return bFlag;
-                                            }
-                                    
-                                            if($('form#ownershipClaimForm').valid()){
+                                            if($("form#ownershipClaimForm").valid()){
 
                                                 selectedRecords =  sm2.getSelections();
                                                 var selectedIDs = $.map(selectedRecords, function(n){
@@ -394,18 +367,18 @@
 
                                                 $('form#ownershipClaimForm input[name="selectedClaimIds"]').val(param);
 
+                                                
                                                 var submitOption = {
                                                     clearForm: true,
                                                     success:function(){
                                                         sm2.clearSelections();
                                                         ds.reload();
                                                         refreshFilterPanel();
-                                                        coSelectionDlg.hide();
+                                                        claimOwnerSelectionDlg.hide();
                                                     }};
 
                                                 $("form#ownershipClaimForm").ajaxSubmit(submitOption);
                                             }
-                                             */
                                         }
                                     },{
                                         text: 'Close',
@@ -417,34 +390,55 @@
 
                             claimOwnerSelectionDlg.addListener('beforeshow', function(dialog){
 
-                                var insurerId = $("#userInsurerId").val();
-                                var isInsurerWorkgroupEnable = false;
+                                // SETUP FOR VALIDATION
+                                $("form#ownershipClaimForm").validate(
+                                {
+                                    errorLabelContainer: "#ownershipClaimFormMessageBox",
+                                    rules: {
+                                        oasWorkgroupId:{min:1},
+                                        claimOwnerId:{min:1}
+                                    },
+                                    messages: {
+                                        oasWorkgroupId:{min:"You must select 'Workgroup'"},
+                                        claimOwnerId:{min:"You must select 'Claim Owner'"}
+                                    }
+                                });
 
+                                // LOAD WORKGROUP AND CLAIM OWNER
+                                var isInsurerWorkgroupEnable = false;
                                 if($("#userInsurerWorkgroupEnable").val()!=null && $("#userInsurerWorkgroupEnable").val()!=""){
                                     isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
                                 }
 
-                                if(isInsurerWorkgroupEnable){
-                                    var target = "div#claimOwnerSelectionHolder";
-                                    var url = "<%=request.getContextPath()%>/prv/p/GetWorkgroupDropDownActionByInsurer.action";
-                                    ajax.loadHtml(url, null, function(data){
-                                        $(target).html(data);
-                                    });
-                                }
+                                var insurerId = $("#userInsurerId").val();
 
+                                // GENERATE CLAIM OWNER
                                 var target = "#claimOwnerClaimHandlerRoleUserDropDownDiv";
                                 var url = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
                                 var param = {"workgroupId":-1,"insurerId":insurerId};
+                                
                                 ajax.loadHtml(url,param,function(data){
                                     $(target).html(data);
+                                    if(isInsurerWorkgroupEnable){
+                                        generateWorkgroup();
+                                    }
                                 });
-                                
+
+                                function generateWorkgroup(){
+                                    var target = "#claimOwnerWorkgroupDropDownDiv";
+                                    var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByUser.action";
+                                    var param = {};
+                                    ajax.loadHtml(url, param, function(data){
+                                        $(target).html(data);
+                                    });
+                                }
                             });
                         }
                         claimOwnerSelectionDlg.show(this);
                     }
                 }
             });
+
 
             var updateClaimOwnershipSelectionDlg;
             var doUpdateClaimOwnerAction = new Ext.Action({
@@ -483,34 +477,6 @@
                                         text:'Ok',
                                         handler:function(){
 
-                                            $("form#ClaimOwnershipUpdateForm").validate(
-                                            {
-                                                rules: {
-                                                    workgroupId:{required:isUpdateClaimOwnerWorkgroupFieldValid},
-                                                    claimOwnerId:{min:1}
-                                                },
-                                                messages: {
-                                                    workgroupId:{required:"You must select 'Workgroup'"},
-                                                    claimOwnerId:{min:"You must select 'Claim Owner'"}
-                                                }
-                                            });
-
-                                            function isUpdateClaimOwnerWorkgroupFieldValid(){
-                                                var bFlag = false;
-
-                                                var isInsurerWorkgroupEnable = false;
-
-                                                if($("#userInsurerWorkgroupEnable").val()!=null && $("#userInsurerWorkgroupEnable").val()!=""){
-                                                    isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
-                                                }
-
-                                                if(isInsurerWorkgroupEnable && ($("#workgroupId").val()<=0 || $("#workgroupId").val()=="")){
-                                                    bFlag = true;
-                                                }
-
-                                                return bFlag;
-                                            }
-
                                             if($('form#ClaimOwnershipUpdateForm').valid()){
 
                                                 selectedRecords =  sm2.getSelections();
@@ -542,30 +508,48 @@
                                     }]
                             });
 
-                            updateClaimOwnershipSelectionDlg.addListener('beforeshow',
-                            function(dialog){
+                            updateClaimOwnershipSelectionDlg.addListener('beforeshow', function(dialog){
+
+                                $("form#ClaimOwnershipUpdateForm").validate(
+                                {
+                                    rules: {
+                                        workgroupId:{min:1},
+                                        claimOwnerId:{min:1}
+                                    },
+                                    messages: {
+                                        workgroupId:{min:"You must select 'Workgroup'"},
+                                        claimOwnerId:{min:"You must select 'Claim Owner'"}
+                                    }
+                                });
+
                                 var insurerId = $("#userInsurerId").val();
                                 var isInsurerWorkgroupEnable = false;
 
                                 if($("#userInsurerWorkgroupEnable").val()!=null && $("#userInsurerWorkgroupEnable").val()!=""){
                                     isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
                                 }
+                                
+                                // GENERATE CLAIM OWNER
+                                var target = "#couClaimHandlerRoleUserDropDownDiv";
+                                var url = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
+                                var param = {"workgroupId":-1,"insurerId":insurerId};
+                                ajax.loadHtml(url,param,function(data){
+                                    $(target).html(data);
+                                    if(isInsurerWorkgroupEnable){
+                                        generateWorkgroup();
+                                    }
+                                });
 
-                                if(isInsurerWorkgroupEnable){
-                                    var target = "div#couSelectionHolder";
-                                    var url = "<%=request.getContextPath()%>/prv/p/GetCouWorkgroupDropDownActionByInsurer.action";
+                                function generateWorkgroup(){
+                                    var target = "#couWorkgroupDropDownDiv";
+                                    var url = "<%=request.getContextPath()%>/prv/p/UpdateWorkgroupDropDownActionByInsurer.action";
                                     var param = {};
-                                    ajax.loadHtml(url,param,function(data){
+                                    ajax.loadHtml(url, param, function(data){
                                         $(target).html(data);
                                     });
                                 }
 
-                                var sLocaltion = "#couClaimHandlerRoleUserDropDownDiv";
-                                var sAction = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
-                                var sparameters = "workgroupId=-1&insurerId="+insurerId;
-                                doSectionLoad(sLocaltion, sAction, sparameters);
-                            }
-                        );
+                            });
                         }
 
                         updateClaimOwnershipSelectionDlg.show(this);
@@ -915,6 +899,9 @@
 
 <div id="gridPanel">
 
+    <input id="userInsurerId" name="userInsurerId" value="<s:property value="AuthenticatedUser.insurer.id"/>" type="hidden"/>
+    <input id="userInsurerWorkgroupEnable" name="userInsurerWorkgroupEnable" value="<s:property value="AuthenticatedUser.insurer.workgroupEnable"/>" type="hidden"/>
+
     <div id="gridHolder"></div>
 
     <div class="excel-export">
@@ -944,24 +931,26 @@
 
     <div id="claimOwnerSelectionDlgHolder" class="x-hidden">
         <div id="claimOwnerSelectionPanel">
-            <form id="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/doClaimOwnershipAction.action" class="XXentity-form">
+            <form id="ownershipClaimForm" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action" class="XXentity-form">
                 <input name="selectedClaimIds" type="hidden" />
-                <input id="userInsurerId" name="userInsurerId" value="<s:property value="AuthenticatedUser.insurer.id"/>" type="hidden"/>
-                <input id="userInsurerWorkgroupEnable" name="userInsurerWorkgroupEnable" value="<s:property value="AuthenticatedUser.insurer.workgroupEnable"/>" type="hidden"/>
-                <table class="selectionForm" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <s:hidden id="name" name="name" value="assignOwner"/>
+                <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                         <th colspan="2"><label>Please assign the claim(s) with a Claim Owner.</label></th>
                     </tr>
                     <s:if test="AuthenticatedUser.insurer.workgroupEnable">
                         <tr>
                             <td class="pop-claim-ownership-label"><label>Workgroup</label></td>
-                            <td class="pop-claim-ownership-column"><div id="claimOwnerSelectionHolder"></div></td>
+                            <td class="pop-claim-ownership-column"><div id="claimOwnerWorkgroupDropDownDiv"></div></td>
                         </tr>
                     </s:if>
                     <tr>
                         <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner</label></td>
                         <td class="pop-claim-ownership-column"><div id="claimOwnerClaimHandlerRoleUserDropDownDiv"></div></td>
                     </tr>
+                    <tr>
+                        <td colspan="2"><div id="ownershipClaimFormMessageBox" class="action-error-msg"/></td>
+                    </tr>                    
                 </table>
             </form>
         </div>
@@ -969,18 +958,16 @@
 
     <div id="couSelectionDlgHolder" class="x-hidden">
         <div id="couSelectionPanel">
-            <form id="ClaimOwnershipUpdateForm" action="<%=request.getContextPath()%>/prv/doClaimOwnershipUpdateAction.action" class="XXentity-form">
+            <form id="ClaimOwnershipUpdateForm" action="<%=request.getContextPath()%>/prv/p/doClaimOwnershipUpdateAction.action" class="XXentity-form">
                 <input name="selectedClaimIds" type="hidden" />
-                <input id="userInsurerId" name="userInsurerId" value="<s:property value="AuthenticatedUser.insurer.id"/>" type="hidden"/>
-                <input id="userInsurerWorkgroupEnable" name="userInsurerWorkgroupEnable" value="<s:property value="AuthenticatedUser.insurer.workgroupEnable"/>" type="hidden"/>
-                <table class="selectionForm" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <table class="selection-form" cellspacing="0" cellpadding="0" border="0" width="100%">
                     <tr>
                         <th colspan="2"><label>Please update the claim(s) with a Workgroup and Claim Owner.</label></th>
                     </tr>
                     <s:if test="AuthenticatedUser.insurer.workgroupEnable">
                         <tr>
                             <td class="pop-claim-ownership-label"><label>Workgroup</label></td>
-                            <td class="pop-claim-ownership-column"><div id="couSelectionHolder"></div></td>
+                            <td class="pop-claim-ownership-column"><div id="couWorkgroupDropDownDiv"></div></td>
                         </tr>
                     </s:if>
                     <tr>

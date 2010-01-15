@@ -792,13 +792,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public List getWorkgroups() {
-
         if (workgroups == null) {
             workgroups = lookupService.getWorkgroups(this.getAuthenticatedUser(), true);
         }
-
         return workgroups;
-
     }
 
     public List getInsurerWorkgroups() {

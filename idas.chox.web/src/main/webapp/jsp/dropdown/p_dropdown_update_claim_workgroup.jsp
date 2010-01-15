@@ -28,7 +28,7 @@
     list="workgroups"
     listKey="id"
     listValue="name"
-    headerKey=""
+    headerKey="-1"
     headerValue="-- Please Select --"
     emptyOption="false"
     onchange="doSelectWorkgroupCou()">
