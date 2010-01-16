@@ -7,16 +7,17 @@
 
     <script type="text/javascript">
 
+     
+
         Ext.onReady(function(){
 
             setupTabPanels();
             setupGrid();
 
-            var isChoxAdmin = <s:property value="isChoxAdmin"/>;
-            if(!isChoxAdmin){
-                activityMonitor.refreshViewingStatus();
-            }
-            
+            var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
+            var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
+            activityMonitor.setup(pingServerUrl,checkStatusIUrl);
+        
             loadDataFromSession();
             
         });
@@ -132,6 +133,12 @@
                     start:start,
                     limit:recordPerPage,
                     isSearched:isSearched
+                },
+                callback:function(){
+                    var isChoxAdmin = <s:property value="isChoxAdmin"/>;
+                    if(!isChoxAdmin){
+                        activityMonitor.refreshViewingStatus();
+                    }
                 }
             });
         }

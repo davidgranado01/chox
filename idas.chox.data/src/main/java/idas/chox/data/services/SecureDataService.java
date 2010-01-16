@@ -44,7 +44,6 @@ public class SecureDataService extends BaseDataService {
                 }
             }
         }
-        System.out.println("Global filter initial");
     }
 
     public WebUser getCurrentUser() {

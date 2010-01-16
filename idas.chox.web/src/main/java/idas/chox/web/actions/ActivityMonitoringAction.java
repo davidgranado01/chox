@@ -41,16 +41,19 @@ public class ActivityMonitoringAction extends BaseAction {
     }
 
     public String checkViewingStatus() {
+
         statuses = new ArrayList<ViewingStatus>();
-        String[] claimIdArray = claimIds.split(",");
+        if (claimIds != null) {
+            String[] claimIdArray = claimIds.split(",");
 
-        ClaimViewingMonitor monitor = ClaimViewingMonitor.getInstance();
+            ClaimViewingMonitor monitor = ClaimViewingMonitor.getInstance();
 
-        for (String s : claimIdArray) {
-            if (s != null && s.matches("^\\d+$")) {
-                Integer cId = Integer.parseInt(s);
-                Boolean status = monitor.isClaimViewingBySomeBody(cId, getOrganisationType(), getOrganisationId());
-                statuses.add(new ViewingStatus(cId, status));
+            for (String s : claimIdArray) {
+                if (s != null && s.matches("^\\d+$")) {
+                    Integer cId = Integer.parseInt(s);
+                    Boolean status = monitor.isClaimViewingBySomeBody(cId, getOrganisationType(), getOrganisationId());
+                    statuses.add(new ViewingStatus(cId, status));
+                }
             }
         }
 
@@ -69,10 +72,10 @@ public class ActivityMonitoringAction extends BaseAction {
     public String getJsonData() {
         if (method.equalsIgnoreCase("checkViewingStatus")) {
             JSONArray jObject = JSONArray.fromObject(this.statuses);
-            return "{totalCount:" + this.statuses.size() + ",results:" + jObject.toString() + "}";
+            return "{isValid:true,totalCount:" + this.statuses.size() + ",results:" + jObject.toString() + "}";
         } else {
             JSONArray jObject = JSONArray.fromObject(this.usersViewingThisClaim);
-            return "{totalCount:" + this.usersViewingThisClaim.size() + ",results:" + jObject.toString() + "}";
+            return "{isValid:true,totalCount:" + this.usersViewingThisClaim.size() + ",results:" + jObject.toString() + "}";
         }
     }
 

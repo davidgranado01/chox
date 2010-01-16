@@ -23,6 +23,8 @@
     var auditTrailDisabled = auditTrailTabAccessibility == 0;
     var popupTimeUp = 900000;
 
+   
+
     $(function(){
         $('fieldset.partial legend').next().hide();
         var fsets =  $('fieldset:not(.partial) legend');
@@ -30,7 +32,11 @@
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
 
-        activityMonitor.pingServer(<s:property value="id"/>);
+        var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
+        var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
+        var claimId = <s:property value="id" />;
+        activityMonitor.setup(pingServerUrl,checkStatusIUrl,claimId);
+        activityMonitor.pingServer();
     });
 
 

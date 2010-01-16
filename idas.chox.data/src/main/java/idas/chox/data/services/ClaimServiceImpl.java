@@ -24,7 +24,6 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
@@ -139,8 +138,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
-
-        Assert.notNull(getCurrentSession().getEnabledFilter("Claim_InsurerFilter"));
 
         Criteria criteria = buildSearchCriteria(searchCriteria);
 

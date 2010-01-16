@@ -48,7 +48,7 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
             throw new Exception("Invalid filter name");
         }
         return filter;
-    }
+    } 
    
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {

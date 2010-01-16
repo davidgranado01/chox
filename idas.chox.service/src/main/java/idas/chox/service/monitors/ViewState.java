@@ -10,7 +10,7 @@ package idas.chox.service.monitors;
  */
 public class ViewState {
 
-    public static final long maxAge = 1000 * 5;
+    public static final long maxAge = 1000 * 6;
     Long birth = System.currentTimeMillis();
 
     public ViewState() {

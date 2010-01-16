@@ -30,7 +30,6 @@ public class ClaimViewingMonitor {
             ClaimViewState vs = (ClaimViewState) claims.get(key);
             vs.ping(userId);
         } else {
-            System.out.println("New Key Createed : "  + key);
             ClaimViewState vs = new ClaimViewState(userId);
             claims.putIfAbsent(key, vs);
         }        
@@ -55,7 +54,6 @@ public class ClaimViewingMonitor {
         if (!cvs.isExpired()) {
             return cvs.getUserIds();
         } else {
-            System.out.println("Key Expired");
             claims.remove(key);
             return null;
         }
