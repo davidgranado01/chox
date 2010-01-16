@@ -201,7 +201,7 @@
 
     function userrole_doRefreshPage(){
 
-        var tabIndex = 0;
+        var tabIndex = 2;
         if(<s:property value="isChoxAdmin"/>){
             tabIndex = 2;
         }

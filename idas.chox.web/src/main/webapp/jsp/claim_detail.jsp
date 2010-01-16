@@ -23,8 +23,6 @@
     var auditTrailDisabled = auditTrailTabAccessibility == 0;
     var popupTimeUp = 900000;
 
-   
-
     $(function(){
         $('fieldset.partial legend').next().hide();
         var fsets =  $('fieldset:not(.partial) legend');
@@ -39,12 +37,11 @@
         activityMonitor.pingServer();
     });
 
-
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
     Ext.onReady(function(){
 
-        var tabs = new Ext.TabPanel({
+        new Ext.TabPanel({
             renderTo: 'tabContainer',
             width:960,
             activeTab: 0,
@@ -52,66 +49,20 @@
             plain:true,
             defaults:{autoHeight: true},
             items:[
-                {
-                    contentEl:'claimDetails',
-                    title: 'Claim Details',
-                    disabled: claimDetailsDisabled,
-                    listeners: {activate : doCleanTab}
-                },
-                {
-                    contentEl:'hireMonitoringDetails',
-                    title: 'Hire Monitoring',
-                    disabled: hireMonitoringDetailsDisabled,
-                    listeners: {activate : doCleanTab}
-                },
-                {
-                    contentEl:'invoiceDetails',
-                    title: 'Invoice Details',
-                    disabled: invoiceDetailsDisabled,
-                    listeners: {activate : doCleanTab}
-                },
-                {
-                    contentEl:'attachmentTab',
-                    title: 'Attachments',
-                    disabled: paymentPackDisabled,
-                    listeners: {activate : doCleanTab},
-                    autoLoad: {url:"p/getAttachmentPage.action?claimId="+<s:property value="id" />, scripts:true}
-                },
-                {
-                    contentEl:'historyTab',
-                    title: 'History', disabled: historyDetailsDisabled,
-                    listeners: {activate : doCleanTab},
-                    autoLoad: {url:"p/getHistoryPage.action?claimId="+<s:property value="id" />, scripts:true}
-                },
-                {
-                    contentEl:'auditTrailTab',
-                    title: 'Claim Cycle', disabled: auditTrailDisabled,
-                    listeners: {activate : doCleanTab},
-                    autoLoad: {url:"p/getAuditTrailPage.action?claimId="+<s:property value="id" />, scripts:true}
-                },
-                {
-                    contentEl:'commentTab',
-                    title: 'Notes',
-                    disabled: commentsDisabled,
-                    listeners: {activate : doCleanTab},
-                    autoLoad: {url:"p/getClaimDetailCommentPage.action?claimId="+<s:property value="id" />, scripts:true}
-                }
+                {contentEl:'claimDetails', title: 'Claim Details', disabled: claimDetailsDisabled},
+                {contentEl:'hireMonitoringDetails', title: 'Hire Monitoring', disabled: hireMonitoringDetailsDisabled},
+                {contentEl:'invoiceDetails', title: 'Invoice Details', disabled: invoiceDetailsDisabled},
+                {contentEl:'attachmentTab', title: 'Attachments', disabled: paymentPackDisabled, autoLoad: {url:"p/getAttachmentPage.action?claimId="+<s:property value="id" />, scripts:true}},
+                {contentEl:'historyTab', title: 'History', disabled: historyDetailsDisabled, autoLoad: {url:"p/getHistoryPage.action?claimId="+<s:property value="id" />, scripts:true}},
+                {contentEl:'auditTrailTab', title: 'Claim Cycle', disabled: auditTrailDisabled, autoLoad: {url:"p/getAuditTrailPage.action?claimId="+<s:property value="id" />, scripts:true}},
+                {contentEl:'commentTab', title: 'Notes', disabled: commentsDisabled, autoLoad: {url:"p/getClaimDetailCommentPage.action?claimId="+<s:property value="id" />, scripts:true}}
             ]
         });
-
-        function doCleanTab(){
-            $(".chox-form-submit-result").html("");
-            var tabIndex = 0;
-            if(tabs){
-                tabIndex = tabs.items.indexOf(tabs.getActiveTab());
-            }
-        }
         
         /***********************************************************************************
          * HIRE MONITORING
          ***********************************************************************************/
         if(!hireMonitoringDetailsDisabled){
-
 
             ecdJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',

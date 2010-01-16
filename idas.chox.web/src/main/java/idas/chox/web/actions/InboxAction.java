@@ -18,13 +18,11 @@ public class InboxAction extends BaseAction implements SessionAware {
     private MenuAccessibility menuAccessibility;
     private AuditTrailService auditTrailService;
     private ClaimService claimService;
-    private String actionResult;
     private String batchUpdateAction;
     private List<Integer> selectedClaimIdList;
 
     @Override
     public String execute() throws Exception {
-
         return SUCCESS;
     }
 
@@ -35,11 +33,10 @@ public class InboxAction extends BaseAction implements SessionAware {
         return menuAccessibility;
     }
 
-    /*********** START - BATCH UPDATE ACCESS RIGHT **************/    
+    /*********** START - BATCH UPDATE ACCESS RIGHT **************/
     public String checkBatchUpdateStatus() {
 
         getActionResponse().AssignYesNoResult(Boolean.FALSE);
-        
         List<String> statusAllow = applicationAccessibility.checkBatchUpdateAccessibility(batchUpdateAction, super.getAuthenticatedUser().getRoles());
 
         for (Integer id : selectedClaimIdList) {
@@ -47,13 +44,13 @@ public class InboxAction extends BaseAction implements SessionAware {
             Claim claim = claimService.getClaim(id);
 
             // IS CLAIM STATUS ALLOW TO 
-            if(!statusAllow.contains(claim.getStatus())){
+            if (!statusAllow.contains(claim.getStatus())) {
                 getActionResponse().AssignYesNoResult(Boolean.FALSE);
                 return SUCCESS;
             }
             getActionResponse().AssignYesNoResult(Boolean.TRUE);
         }
-        
+
         return SUCCESS;
     }
 
@@ -90,14 +87,6 @@ public class InboxAction extends BaseAction implements SessionAware {
         this.claimService = claimService;
     }
 
-    public String getActionResult() {
-        return actionResult;
-    }
-
-    public void setActionResult(String actionResult) {
-        this.actionResult = actionResult;
-    }
-
     public String getBatchUpdateAction() {
         return batchUpdateAction;
     }
@@ -115,6 +104,5 @@ public class InboxAction extends BaseAction implements SessionAware {
             Integer id = Integer.parseInt(s.trim());
             selectedClaimIdList.add(id);
         }
-
     }
 }

@@ -75,7 +75,6 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     }
 
     public List findByCriteria(final DetachedCriteria dc, Boolean cacheable) {
-
         Criteria c = dc.getExecutableCriteria(getSession());
         c.setCacheable(true);
         return c.list();

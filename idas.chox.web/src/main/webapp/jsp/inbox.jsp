@@ -7,26 +7,18 @@
 
     <script type="text/javascript">
 
-     
-
         Ext.onReady(function(){
-
             setupTabPanels();
             setupGrid();
-
             var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
             var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
             activityMonitor.setup(pingServerUrl,checkStatusIUrl);
-        
             loadDataFromSession();
-            
         });
 
         var currentTabIndex;
         var tabs;
         var recordPerPage = 20;
-        var isCho = <s:property value="isCHO"/>;
-        var isInsurer = <s:property value="isInsurer"/>;
 
         var rd = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
@@ -135,8 +127,7 @@
                     isSearched:isSearched
                 },
                 callback:function(){
-                    var isChoxAdmin = <s:property value="isChoxAdmin"/>;
-                    if(!isChoxAdmin){
+                    if(!<s:property value="isChoxAdmin"/>){
                         activityMonitor.refreshViewingStatus();
                     }
                 }
@@ -162,7 +153,7 @@
             var claimRoutedSelectionDlg;
             var doClaimRoutedAction = new Ext.Action({
                 text: 'Route Claim(s)',
-                hidden:isCho,
+                hidden:<s:property value="isCHO"/>,
                 handler: function(){
                     if(!claimRoutedSelectionDlg)
                     {
@@ -243,7 +234,7 @@
             var approvedInvoicesPaymentAction = new Ext.Action
             ({
                 text: 'Update Claim(s) To Invoice Payment Logged',
-                hidden:isCho,
+                hidden:<s:property value="isCHO"/>,
                 handler: function(){
 
                     if(confirm('Are you sure you want to perform this action?'))
@@ -275,13 +266,12 @@
             var clearBREApprovedInvoicesForPaymentAction = new Ext.Action
             ({
                 text: 'Approve Claim(s) For Payment',
-                hidden:isCho,
+                hidden:<s:property value="isCHO"/>,
                 handler: function(){
                     if(confirm('Are you sure you want to perform this action?'))
                     {
                         var selectedRecords =  sm2.getSelections();
                         var selectedNotMyClaimsIDs = getErrorClaims(selectedRecords, true, true, null);
-
                         if(selectedNotMyClaimsIDs.length<=0){
 
                             selectedRecords =  sm2.getSelections();
@@ -306,7 +296,7 @@
             var doInvoicePaymentReceivedAction = new Ext.Action
             ({
                 text: 'Update Claim(s) To Payment Received',
-                hidden:isInsurer,
+                hidden:<s:property value="isInsurer"/>,
                 handler: function(){
                     if(confirm('Are you sure you want to perform this action?'))
                     {
@@ -337,7 +327,7 @@
             var claimOwnerSelectionDlg;
             var doClaimOwnerAction = new Ext.Action({
                 text: 'Assign Claim(s) Owner',
-                hidden:isCho,
+                hidden:<s:property value="isCHO"/>,
                 handler: function(){
 
                     var selectedRecords =  sm2.getSelections();
@@ -446,12 +436,11 @@
                 }
             });
 
-
             var updateClaimOwnershipSelectionDlg;
             var doUpdateClaimOwnerAction = new Ext.Action({
 
                 text: 'Update Claim(s) Workgroup And Claim Owner',
-                hidden:isCho,
+                hidden:<s:property value="isCHO"/>,
                 handler: function(){
                 
                     var allowStatuses = ["AwaitingCarHireInfo", "AwaitingInvoiceData", "AwaitingInvoicePayment",
@@ -576,7 +565,7 @@
         
             actionMenu.on('arrowclick', function()
             {
-
+                
                 doInvoicePaymentReceivedAction.disable();
                 approvedInvoicesPaymentAction.disable();
                 clearBREApprovedInvoicesForPaymentAction.disable();
@@ -598,8 +587,8 @@
                     validateBatchUpdateAccessRight(doClaimOwnerAction, "claimOwnership", param);
                     validateBatchUpdateAccessRight(doUpdateClaimOwnerAction, "updateClaimWorkgroupAndOwner", param);
                 }
+                
             }, this);
-
 
             var grid = new Ext.grid.GridPanel({
                 loadMask: true,
@@ -634,12 +623,6 @@
                 bbar: pagingBar,
                 tbar:[actionMenu]
             });
-
-            ds.on('load',function()
-            {
-                $('.x-grid3-hd-checker').removeClass('x-grid3-hd-checker-on');
-            });
-        
             grid.render('gridHolder');
             grid.getSelectionModel().selectFirstRow();
 
@@ -656,41 +639,20 @@
                 }
             });
         }
-        
-        function isSelectedRecordsMatchGivenStatus(selectedRecords, status)
-        {
-            if(selectedRecords.length > 0)
-            {
-                for(i = 0; i < selectedRecords.length; i ++)
-                {
-                    var s = selectedRecords[i].json.status;
-                    if(status != s)
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
 
         function setupTabPanels()
         {
-            currentTabIndex = (<s:property value="tab" /> + 1);
-
+            currentTabIndex = <s:property value="tab" />;
+            var selectedIndex = currentTabIndex;
             if(!<s:property value="menuAccessibility.isDashBoardMenuAccessibility"/>){
-                currentTabIndex++;
+                selectedIndex++;
             }
-            
+
             tabs = new Ext.TabPanel({
                 renderTo: 'tabPanel',
                 autoheight:true,
-                activeTab: currentTabIndex,
+                activeTab: selectedIndex,
                 items:[
-                    {title:'', id:'emptyTabId', hidden:true, listeners: {activate: handleActivate}},
                     {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}},
                     {contentEl:'filterPanelTab', title:'Inbox', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action", scripts:true}},
                     {contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action", scripts:true}},
@@ -698,8 +660,6 @@
                     {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action", scripts:true}}
                 ]
             });
-
-            tabs.remove('emptyTabId', true);
 
             if(!<s:property value="menuAccessibility.isDashBoardMenuAccessibility"/>){
                 tabs.remove('boardPanelTabId', true);
@@ -718,8 +678,9 @@
         function loadDataFromSession()
         {
             var url = "<%=request.getContextPath()%>/prv/p/getPageIndexOfCurrentSearch.action";
-            ajax.loadHtml(url,null,function(data){
-                var start = parseInt(data.trim());
+            ajax.loadHtml(url, null, function(data){
+                var response = eval('(' + data.trim() + ')');
+                var start = parseInt((response.result).trim());
                 if(start >= 0)
                 {
                     doDataLoad(start, recordPerPage, true);
@@ -728,20 +689,16 @@
         }
     
         function handleActivate(tab){
-            
             $("#gridPanel").hide();
             if(tab.title == 'Inbox' || tab.title == 'Search'){
                 doDataLoad(0, 0, null);
                 $("#gridPanel").show();
             }
-
+            
             if(tabs)
             {
                 currentTabIndex = tabs.items.indexOf(tabs.getActiveTab());
             }
-
-            $('.x-grid3-hd-checker').removeClass('x-grid3-hd-checker-on');
-
         }
 
         function getErrorClaims(selectedRecords, isWorkgroupCheck, isOwnershipCheck, allowedStatuses)
@@ -773,7 +730,6 @@
                     }
                 }
                 
-//alert(isWgValid+"|isOwValid"+isOwValid+"|isAllowedStatusesValid"+isAllowedStatusesValid);
                 if(!isWgValid || !isOwValid || !isAllowedStatusesValid){
 
                     var supplierRef = n.json.supplierReference + " - ";
@@ -824,11 +780,11 @@
 <div id="adminPanelTab" class="x-hide-display"></div>
 
 <div id="gridPanel">
-
+    <div id="gridHolder"></div>
     <input id="userInsurerId" name="userInsurerId" value="<s:property value="AuthenticatedUser.insurer.id"/>" type="hidden"/>
     <input id="userInsurerWorkgroupEnable" name="userInsurerWorkgroupEnable" value="<s:property value="AuthenticatedUser.insurer.workgroupEnable"/>" type="hidden"/>
 
-    <div id="gridHolder"></div>
+
 
     <div class="excel-export">
         <form name="thisForm" action=""><a href="javascript:doExportExcel();">Export To Excel</a></form>

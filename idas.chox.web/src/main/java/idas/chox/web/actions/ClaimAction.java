@@ -23,7 +23,6 @@ import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Witness;
-import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
@@ -109,10 +108,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     @Override
     public String execute() throws Exception {
-
+        
         if (tab > 0) {
             session.put("tabIndex", tab);
+        }else{
+            session.put("tabIndex", 0);
         }
+        
         if (claim == null) {
             return "ClaimNotFound";
         } else {
@@ -123,7 +125,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // <editor-fold defaultstate="collapsed" desc="CLAIM PANEL ACTION">
     public String updateClaimDetail() {
         this.service.updateClaim(claim);
-        this.actionResult = "Claim Updated!";
+        actionResult = "Claim Updated!";
         return SUCCESS;
     }
 
@@ -790,7 +792,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return injuryId;
     }
-
+    
     public List getWorkgroups() {
         if (workgroups == null) {
             workgroups = lookupService.getWorkgroups(this.getAuthenticatedUser(), true);

@@ -160,9 +160,10 @@ public class AdminUserService extends SecureDataService {
 
         if (webUser.getOrganisationType().equalsIgnoreCase(OrganisationType.INS)) {
 
-            if (webUserUserRoleService.isClaimHandlerRole(webUserRoleId) && webUser.getInsurer().isWorkgroupEnable() && (userWorkgroupService.getUserWorkgroupsByUser(webUserId).size()) <= 0) {
+            if (webUserUserRoleService.isWorkgroupRelatedRoles(webUserRoleId) && webUser.getInsurer().isWorkgroupEnable() && (userWorkgroupService.getUserWorkgroupsByUser(webUserId).size()) <= 0) {
                 this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Please assign one or more Workgroup(s) to this user");
             }
+            
         }
 
         return this.actionResponse;
@@ -203,7 +204,7 @@ public class AdminUserService extends SecureDataService {
     }
 
     private void doInsurerUserRoleValidation(WebUser webUser, String webUserRoleCode) {
-        if (RoleHelper.isUserCheckByWorkgroup(webUser)) {
+        if (RoleHelper.isWorkgroupValidationEnabledUser(webUser)) {
             if (webUser.getWorkgroups().size() > 0) {
                 // WITH WORKGROUP EXIST
                 if (webUser.getWorkgroupRelatedRoles().size() == 1) {

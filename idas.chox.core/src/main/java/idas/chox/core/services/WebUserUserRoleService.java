@@ -26,5 +26,7 @@ public interface WebUserUserRoleService {
 
     public String getUserroleName(int id);
 
-    public boolean isClaimHandlerRole(int roleId);
+    public boolean isWorkgroupRelatedRoles(int roleId);
+
+    public boolean isClaimOwnerRelatedRoles(int roleId);
 }

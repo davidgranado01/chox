@@ -15,7 +15,7 @@ public class AccessibilityHelper {
 
             // ONLY INSURER USER
             // ONLY INSURER WORKGROUPCONTROL IS TRUE
-            if(RoleHelper.isUserCheckByWorkgroup(user) && accEditable.isWorkgroupCheck()){
+            if(RoleHelper.isWorkgroupValidationEnabledUser(user) && accEditable.isWorkgroupCheck()){
 
                 // SET TO FALSE IF CLAIM's WORKGROUP IN USER'S WORKGROUP(S)
                 if(!AccessibilityHelper.isClaimWorkgroupOwnByUser(user, claim)){
@@ -26,7 +26,7 @@ public class AccessibilityHelper {
 
             // ONLY INSURER USER
             // ONLY INSURER OWNERSHIP IS TRUE
-            if(RoleHelper.isUserCheckByOwnership(user) && accEditable.isOwnershipCheck() && user.getInsurer().isClaimLocked()){
+            if(RoleHelper.isOwnershipValidationEnabledUser(user) && accEditable.isOwnershipCheck() && user.getInsurer().isClaimLocked()){
 
                 if(!AccessibilityHelper.isClaimOwnByUser(user, claim)){
                     bOwnershipFlag = false;
@@ -44,7 +44,7 @@ public class AccessibilityHelper {
 
         // ONLY INSURER USER
         // ONLY INSURER WORKGROUPCONTROL IS TRUE
-        if(RoleHelper.isUserCheckByWorkgroup(user)){
+        if(RoleHelper.isWorkgroupValidationEnabledUser(user)){
 
             // SET TO FALSE IF CLAIM's WORKGROUP IN USER'S WORKGROUP(S)
             if(!isClaimWorkgroupOwnByUser(user, claim)){
@@ -63,7 +63,7 @@ public class AccessibilityHelper {
 
         // ONLY INSURER USER
         // ONLY INSURER OWNERSHIP IS TRUE
-        if(RoleHelper.isUserCheckByOwnership(user) && user.getInsurer().isClaimLocked()){
+        if(RoleHelper.isOwnershipValidationEnabledUser(user) && user.getInsurer().isClaimLocked()){
 
             if(!AccessibilityHelper.isClaimOwnByUser(user, claim)){
                 bOwnershipFlag = false;

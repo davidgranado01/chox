@@ -109,11 +109,11 @@ public class InsurerPaymentReport implements Report {
             // FILTER BY WORKGROUP AND OWNERSHIO ONLY
             if (RoleHelper.isCheckSelectedRoleExist(currentUser.getRoles(), WebUserRole.ROLE_CH)) {
 
-                if (RoleHelper.isUserCheckByWorkgroup(currentUser)) {
+                if (RoleHelper.isWorkgroupValidationEnabledUser(currentUser)) {
                     sb.append("and invoice.workgroup_id in (select workgroup_id from web_user_workgroup where user_id=" + currentUser.getId() + ") ");
                 }
 
-                if (RoleHelper.isUserCheckByOwnership(currentUser)) {
+                if (RoleHelper.isOwnershipValidationEnabledUser(currentUser)) {
                     sb.append("and invoice.owner = " + currentUser.getId() + " ");
                 }
 

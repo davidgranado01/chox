@@ -16,7 +16,7 @@ import org.quartz.SchedulerException;
 
 public class Main {
 
-    public static void main(String[] args) throws SchedulerException {
+    public static void main(String[] args) throws SchedulerException, Exception {
         
         /*
         SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();

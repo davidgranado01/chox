@@ -233,7 +233,8 @@
                 }
                 else if(response.resultType && response.resultType == 'Message')
                 {
-                    outputDiv.append("<p>" + response.result + "</p>");
+                    alert(response.result);
+                    //outputDiv.append("<p>" + response.result + "</p>");
                 }
                 else
                 {

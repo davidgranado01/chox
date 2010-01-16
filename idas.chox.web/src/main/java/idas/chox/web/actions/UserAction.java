@@ -175,6 +175,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     private boolean isSelectedRoleExist(Set roles, int selectedRole) {
         boolean isExist = false;
         try {
+            
             Iterator it = roles.iterator();
 
             while (it.hasNext()) {
@@ -184,6 +185,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
                     break;
                 }
             }
+            
         } catch (Exception ex) {
             handleException(ex);
         }

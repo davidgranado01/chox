@@ -10,7 +10,6 @@ public class NotificationAccessibility {
     private short notificationNotesNotificationAccessibility;
 
     public NotificationAccessibility(ApplicationAccessibility applicationAccessibility, Set roles, String claimStatus) {
-
         claimNumberNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_CLAIM_NUMBER, roles, claimStatus);
         userViewingNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_CLAIM_VIEWING, roles, claimStatus);
         intelligentNotesNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_CLAIM_INTELLIGENT_NOTE, roles, claimStatus);

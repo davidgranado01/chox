@@ -2,7 +2,6 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.services.LookupService;
-import idas.chox.service.security.PermissionedUser;
 import java.util.ArrayList;
 import java.util.List;
 

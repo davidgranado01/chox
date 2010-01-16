@@ -20,6 +20,7 @@ import java.util.Map;
 import net.sf.json.JSONArray;
 import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.util.StringHelper;
+import idas.chox.service.ActionResponse;
 
 public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable, SessionAware {
 
@@ -62,7 +63,9 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public String getJsonData() {
+        
         try {
+            
             List<claimGridViewData> viewData = new ArrayList<claimGridViewData>();
 
             for (Object obj : results) {
@@ -74,6 +77,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             return "{totalCount:" + this.getTotalCount() + ",results:" + jsonArray.toString() + "}";
 
         } catch (Exception ex) {
+            handleException(ex);
             return null;
         }
     }
@@ -111,14 +115,13 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     public String getPageIndexOfCurrentSearch() {
 
-        actionResult = "-1";
+        Integer selectedStartIndex = -1;
         if (session.containsKey("searchCriteria")) {
             if (claimSearchCriteria.getIsSearched()) {
-                Integer start = claimSearchCriteria.getStart();
-                actionResult = start.toString();
+                selectedStartIndex = claimSearchCriteria.getStart();
             }
         }
-
+        getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, selectedStartIndex.toString());
         return SUCCESS;
     }
 

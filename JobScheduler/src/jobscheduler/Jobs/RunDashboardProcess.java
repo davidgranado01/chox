@@ -13,24 +13,25 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-public class RunDashboardProcess implements Job{
+public class RunDashboardProcess implements Job {
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        
+
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
         Integer userId = dataMap.getInt("userId");
         PreparedStatement ps = null;
-        
+
         DataService dataService = new DataService();
-        
-        try{
-            
-            Connection conn = dataService.getConnection();
+
+        try {
+
+            Connection conn;
+            conn = dataService.getConnection();
             Statement s = conn.createStatement();
-            ResultSet rs = s.executeQuery("select sqlrunstatusreport("+userId+")");
+            ResultSet rs = s.executeQuery("select sqlrunstatusreport(" + userId + ")");
             conn.close();
             
-        } catch (SQLException ex) {
+        }catch (Exception ex){
             Logger.getLogger(RunDashboardProcess.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

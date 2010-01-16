@@ -147,17 +147,21 @@
         vehicleCeilingEditSelectionDlg.hide();
         vehicleCeilingEditSelectionDlg = null;
 
-        var tabIndex = 0;
+        var tabIndex = 3;
+        var target = "#admin_param_panel";
+        var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
+        var param = {"adminPanelName":"InsurerPanelMgmt", "tabIndex":tabIndex};
+
         if(<s:property value="isChoxAdmin"/>){
             tabIndex = 6;
+            var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+            var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
         }
 
-        var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-        var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
         });
+        
     }
 
     function onVehicleClassPageRefresh(){

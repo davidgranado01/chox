@@ -184,7 +184,7 @@
     
     function userworkgroup_doRefreshPage(){
 
-        var tabIndex = 0;
+        var tabIndex = 3;
         if(<s:property value="isChoxAdmin"/>){
             tabIndex = 3;
         }

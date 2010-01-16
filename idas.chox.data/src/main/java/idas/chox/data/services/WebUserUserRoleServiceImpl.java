@@ -154,22 +154,25 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return items;
     }
 
-    public boolean isClaimHandlerRole(int roleId) {
-
-        boolean isClaimHandler = false;
-        WebUserRole webUserRole = new WebUserRole();
-
+    public boolean isWorkgroupRelatedRoles(int roleId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("id", roleId));
-
-        criteria.add(Restrictions.disjunction().add(Restrictions.eq("name", WebUserRole.ROLE_CH)).add(Restrictions.eq("name", WebUserRole.ROLE_COM)).add(Restrictions.eq("name", WebUserRole.ROLE_FNOL)));
-
-        webUserRole = (WebUserRole) getByCriteria(criteria);
-
+        criteria.add(Restrictions.eq("workgroupRelated", true));
+        WebUserRole webUserRole = (WebUserRole) getByCriteria(criteria);
         if (webUserRole != null) {
-            isClaimHandler = true;
+            return true;
         }
+        return false;
+    }
 
-        return isClaimHandler;
+    public boolean isClaimOwnerRelatedRoles(int roleId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
+        criteria.add(Restrictions.eq("id", roleId));
+        criteria.add(Restrictions.eq("ownershipRelated", true));
+        WebUserRole webUserRole = (WebUserRole) getByCriteria(criteria);
+        if (webUserRole != null) {
+            return true;
+        }
+        return false;
     }
 }
