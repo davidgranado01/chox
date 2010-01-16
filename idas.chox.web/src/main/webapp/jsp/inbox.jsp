@@ -453,7 +453,7 @@
                 text: 'Update Claim(s) Workgroup And Claim Owner',
                 hidden:isCho,
                 handler: function(){
-
+                
                     var allowStatuses = ["AwaitingCarHireInfo", "AwaitingInvoiceData", "AwaitingInvoicePayment",
                         "ClaimPending", "ClaimReferredToEngineer", "ClaimRejected",
                         "ClaimRejectionContested", "ClaimUnacknowledgedRouted", "ClaimUpdatedByEngineer",
@@ -577,97 +577,27 @@
             actionMenu.on('arrowclick', function()
             {
 
+                doInvoicePaymentReceivedAction.disable();
+                approvedInvoicesPaymentAction.disable();
+                clearBREApprovedInvoicesForPaymentAction.disable();
+                doClaimRoutedAction.disable();
+                doClaimOwnerAction.disable();
+                doUpdateClaimOwnerAction.disable();
+
                 var selectedRecords = sm2.getSelections();
+                var selectedIDs = $.map(selectedRecords, function(n){
+                    return n.json.id;
+                });
 
-                var isApprovePaymentAccessibile = <s:property value="IsApprovePaymentAccessibile"/>;
-                if(isApprovePaymentAccessibile){
-                    if(isSelectedRecordsMatchGivenStatus(selectedRecords, 'AwaitingInvoicePayment'))
-                    {
-                        approvedInvoicesPaymentAction.enable();
-                    }
-                    else
-                    {
-                        approvedInvoicesPaymentAction.disable();
-                    }
-                }else{
-                    approvedInvoicesPaymentAction.disable();
+                if(selectedIDs.length>0){
+                    var param = selectedIDs.join(",");
+                    validateBatchUpdateAccessRight(doInvoicePaymentReceivedAction, "doInvoicePaymentReceived", param);
+                    validateBatchUpdateAccessRight(approvedInvoicesPaymentAction, "logInvoicePayment", param);
+                    validateBatchUpdateAccessRight(clearBREApprovedInvoicesForPaymentAction, "approveBREPassedClaim", param);
+                    validateBatchUpdateAccessRight(doClaimRoutedAction, "routeClaims", param);
+                    validateBatchUpdateAccessRight(doClaimOwnerAction, "claimOwnership", param);
+                    validateBatchUpdateAccessRight(doUpdateClaimOwnerAction, "updateClaimWorkgroupAndOwner", param);
                 }
-
-                var isClearBREApprovedInvoicesForPaymentAccessibile = <s:property value="IsClearBREApprovedInvoicesForPaymentAccessibile"/>;
-                if(isClearBREApprovedInvoicesForPaymentAccessibile){
-                
-                    if(isSelectedRecordsMatchGivenStatus(selectedRecords,'InvoiceApprovedByBRE'))
-                    {
-                        clearBREApprovedInvoicesForPaymentAction.enable();
-                    }
-                    else
-                    {
-                        clearBREApprovedInvoicesForPaymentAction.disable();
-                    }
-                }else{
-                    clearBREApprovedInvoicesForPaymentAction.disable();
-                }
-
-
-                var isDoInvoicePaymentReceivedAccessibile = <s:property value="IsDoInvoicePaymentReceivedAccessibile"/>;
-                if(isDoInvoicePaymentReceivedAccessibile){
-                    if(isSelectedRecordsMatchGivenStatus(selectedRecords, 'InvoicePaymentLogged'))
-                    {
-                        doInvoicePaymentReceivedAction.enable();
-                    }
-                    else
-                    {
-                        doInvoicePaymentReceivedAction.disable();
-                    }
-                }else{
-                    doInvoicePaymentReceivedAction.disable();
-                }
-
-
-                var isDoClaimRoutedAccessibile = <s:property value="IsDoClaimRoutedAccessibile"/>;
-                if(isDoClaimRoutedAccessibile){
-                    if(isSelectedRecordsMatchGivenStatus(selectedRecords,'ClaimUnacknowledgedUnrouted'))
-                    {
-                        doClaimRoutedAction.enable();
-                    }
-                    else
-                    {
-                        doClaimRoutedAction.disable();
-                    }
-                }else{
-                    doClaimRoutedAction.disable();
-                }
-
-
-                var IsDoClaimOwnershipAccessibile = <s:property value="IsDoClaimOwnershipAccessibile"/>;
-                if(IsDoClaimOwnershipAccessibile){
-                    if(isSelectedRecordsMatchGivenStatus(selectedRecords,'ClaimUnacknowledgedUnassigned'))
-                    {
-                        doClaimOwnerAction.enable();
-                    }
-                    else
-                    {
-                        doClaimOwnerAction.disable();
-                    }
-
-                }else{
-                    doClaimOwnerAction.disable();
-                }
-
-
-                var isDoUpdateClaimOwnershipAccessibile = <s:property value="IsDoUpdateClaimOwnershipAccessibile"/>;
-                if(isDoUpdateClaimOwnershipAccessibile){
-
-                    if(isInsurer && selectedRecords.length > 0){
-                        doUpdateClaimOwnerAction.enable();
-                    }else{
-                        doUpdateClaimOwnerAction.disable();
-                    }
-
-                }else{
-                    doUpdateClaimOwnerAction.disable();
-                }
-
             }, this);
 
 
@@ -715,6 +645,18 @@
 
         }
 
+        function validateBatchUpdateAccessRight(batchUpdateDlg, batchActionName, param){
+            var url = '<%= request.getContextPath()%>/prv/p/checkBatchUpdateStatus.action';
+            var param = {"batchUpdateAction":batchActionName, "selectedClaimIds":param};
+            ajax.loadJson(url, param, function(data){
+                if(data.resultType=='YesNo'){
+                    if(data.result=='yes'){
+                        batchUpdateDlg.enable();
+                    }
+                }
+            });
+        }
+        
         function isSelectedRecordsMatchGivenStatus(selectedRecords, status)
         {
             if(selectedRecords.length > 0)
@@ -818,7 +760,7 @@
                 if(isOwnershipCheck && !n.json.isOwnershipEditable){
                     isOwValid = false;
                 }
-
+                
                 if(allowedStatuses!=null){
 
                     isAllowedStatusesValid = false;
@@ -830,7 +772,8 @@
                         }
                     }
                 }
-
+                
+//alert(isWgValid+"|isOwValid"+isOwValid+"|isAllowedStatusesValid"+isAllowedStatusesValid);
                 if(!isWgValid || !isOwValid || !isAllowedStatusesValid){
 
                     var supplierRef = n.json.supplierReference + " - ";

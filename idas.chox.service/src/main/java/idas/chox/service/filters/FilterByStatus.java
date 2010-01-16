@@ -18,7 +18,7 @@ public class FilterByStatus extends BaseFilter {
         ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
         claimSearchCriteria.setStatus(getStatus());
         claimSearchCriteria.setIsWorkgroupCheck(getIsCheckWorkGroup());
-        claimSearchCriteria.setIsWorkgroupCheck(getIsCheckOwnership());
+        claimSearchCriteria.setIsOwnerShipCheck(getIsCheckOwnership());
         return claimSearchCriteria;
     }
 

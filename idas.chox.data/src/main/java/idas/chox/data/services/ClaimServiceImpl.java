@@ -80,15 +80,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber) {
-
         Claim claim = new Claim();
-
-
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
         claim = (Claim) getByCriteria(criteria);
-
-
         return claim;
     }
 
@@ -140,7 +135,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
 
         Criteria criteria = buildSearchCriteria(searchCriteria);
-
         Integer totalCount = countClaims(criteria);
 
         if (!sort.isEmpty() && !dir.isEmpty()) {

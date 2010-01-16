@@ -1,25 +1,26 @@
 package idas.chox.web.actions;
 
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.MenuAccessibility;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 
 public class InboxAction extends BaseAction implements SessionAware {
 
     private Map session;
-    private ClaimService service;
     private ApplicationAccessibility applicationAccessibility;
     private MenuAccessibility menuAccessibility;
     private AuditTrailService auditTrailService;
+    private ClaimService claimService;
     private String actionResult;
-
-    public void setClaimService(ClaimService service) {
-        this.service = service;
-    }
+    private String batchUpdateAction;
+    private List<Integer> selectedClaimIdList;
 
     @Override
     public String execute() throws Exception {
@@ -29,42 +30,34 @@ public class InboxAction extends BaseAction implements SessionAware {
 
     public MenuAccessibility getMenuAccessibility() {
         if (menuAccessibility == null) {
-            menuAccessibility = getApplicationAccessibility().getMenuAccessibility(super.getAuthenticatedUser().getRoles());
+            menuAccessibility = applicationAccessibility.getMenuAccessibility(super.getAuthenticatedUser().getRoles());
         }
         return menuAccessibility;
     }
 
-    public boolean getIsApprovePaymentAccessibile() {
-        short accessRight = applicationAccessibility.checkActionAccessibility("logInvoicePayment", super.getAuthenticatedUser().getRoles(), ClaimStatus.AWAITING_INVOICE_PAYMENT);
-        return accessRight > 0;
+    /*********** START - BATCH UPDATE ACCESS RIGHT **************/    
+    public String checkBatchUpdateStatus() {
+
+        getActionResponse().AssignYesNoResult(Boolean.FALSE);
+        
+        List<String> statusAllow = applicationAccessibility.checkBatchUpdateAccessibility(batchUpdateAction, super.getAuthenticatedUser().getRoles());
+
+        for (Integer id : selectedClaimIdList) {
+
+            Claim claim = claimService.getClaim(id);
+
+            // IS CLAIM STATUS ALLOW TO 
+            if(!statusAllow.contains(claim.getStatus())){
+                getActionResponse().AssignYesNoResult(Boolean.FALSE);
+                return SUCCESS;
+            }
+            getActionResponse().AssignYesNoResult(Boolean.TRUE);
+        }
+        
+        return SUCCESS;
     }
 
-    public boolean getIsClearBREApprovedInvoicesForPaymentAccessibile() {
-        short accessRight = applicationAccessibility.checkActionAccessibility("approveBREPassedClaim", super.getAuthenticatedUser().getRoles(), ClaimStatus.INVOICE_APPROVED_BY_BRE);
-        return accessRight > 0;
-    }
-
-    public boolean getIsDoInvoicePaymentReceivedAccessibile() {
-        short accessRight = applicationAccessibility.checkActionAccessibility("doInvoicePaymentReceived", super.getAuthenticatedUser().getRoles(), ClaimStatus.INVOICE_PAYMENT_LOGGED);
-        return accessRight > 0;
-    }
-
-    public boolean getIsDoClaimRoutedAccessibile() {
-        short accessRight = applicationAccessibility.checkActionAccessibility("routeClaims", super.getAuthenticatedUser().getRoles(), ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
-        return accessRight > 0;
-    }
-
-    public boolean getIsDoClaimOwnershipAccessibile() {
-        short accessRight = applicationAccessibility.checkActionAccessibility("claimOwnership", super.getAuthenticatedUser().getRoles(), ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
-        return accessRight > 0;
-    }
-
-    // TODO: REFACTORING TO SEPERATE BATCH UPDATE FROM GENERAL ACTION
-    public boolean getIsDoUpdateClaimOwnershipAccessibile() {
-        short accessRight = applicationAccessibility.checkActionAccessibility("claimOwnership", super.getAuthenticatedUser().getRoles(), ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
-        return accessRight > 0;
-    }
-
+    /*********** END - BATCH UPDATE ACCESS RIGHT **************/
     public void setSession(Map arg0) {
         this.session = arg0;
     }
@@ -93,11 +86,35 @@ public class InboxAction extends BaseAction implements SessionAware {
         this.auditTrailService = auditTrailService;
     }
 
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+
     public String getActionResult() {
         return actionResult;
     }
 
     public void setActionResult(String actionResult) {
         this.actionResult = actionResult;
+    }
+
+    public String getBatchUpdateAction() {
+        return batchUpdateAction;
+    }
+
+    public void setBatchUpdateAction(String batchUpdateAction) {
+        this.batchUpdateAction = batchUpdateAction;
+    }
+
+    public void setSelectedClaimIds(String ids) {
+        String[] list = ids.split(",");
+
+        selectedClaimIdList = new ArrayList<Integer>();
+
+        for (String s : list) {
+            Integer id = Integer.parseInt(s.trim());
+            selectedClaimIdList.add(id);
+        }
+
     }
 }

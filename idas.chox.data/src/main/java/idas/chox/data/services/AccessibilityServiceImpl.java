@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.data.services;
 
 import idas.chox.core.model.Accessibility;
@@ -12,10 +8,34 @@ import java.util.HashMap;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 public class AccessibilityServiceImpl extends BaseDataService implements AccessibilityService {
+
+    public List<Accessibility> getBatchUpdateAccessibilityMap(String accessibilityKey) {
+        DetachedCriteria c = DetachedCriteria.forClass(Accessibility.class);
+        c.add(Restrictions.like("name", accessibilityKey+".%"));
+        return findByCriteria(c);
+        /*
+        for (Object o : result) {
+
+        HashMap map = new HashMap();
+
+        Accessibility a = (Accessibility) o;
+
+        HashMap roleMap = new HashMap();
+        for (Object item : a.getAccessibilityItem()) {
+
+        AccessibilityItem aItem = (AccessibilityItem) item;
+        roleMap.put(aItem.getRole().trim(), aItem.getAccessRight());
+        }
+
+        map.put(a.getName(), roleMap);
+        maps.add(map);
+        }
+
+        return maps;
+         */
+    }
 
     public HashMap getAccessibilityMap() {
 
@@ -23,6 +43,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
 
         DetachedCriteria c = DetachedCriteria.forClass(Accessibility.class);
         List result = findByCriteria(c);
+
         for (Object o : result) {
             Accessibility a = (Accessibility) o;
 

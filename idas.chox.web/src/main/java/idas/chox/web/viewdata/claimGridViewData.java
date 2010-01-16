@@ -67,28 +67,8 @@ public class claimGridViewData {
             }
         }
 
-        /*
-        String orgName = "";
-        WebUser createdByUser = claim.getCreatedBy();
-        
-        if (createdByUser != null) {
-
-        Chorganisation createdByCho = createdByUser.getChorganisation();
-        Insurer createdByIns = createdByUser.getInsurer();
-
-        if (createdByIns != null) {
-        orgName = String.format("(%1$s)", createdByIns.getName());
-        } else if (createdByIns != null) {
-        orgName = String.format("(%1$s)", createdByCho.getName());
-        }
-
-        this.createdBy = String.format("%1$s %2$s %3$s", createdByUser.getFirstName(), createdByUser.getLastName(), orgName);
-        }
-         */
-
         this.isWorkgroupEditable = AccessibilityHelper.getIsClaimWorkgroupEditable(claim, user);
         this.isOwnershipEditable = AccessibilityHelper.getIsClaimOwnershipEditable(claim, user);
-
 
         if (claim.getClaimOwner() != null) {
             this.ownerName = claim.getClaimOwner().getDisplayName();

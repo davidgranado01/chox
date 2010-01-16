@@ -1,12 +1,16 @@
 package idas.chox.service.security;
 
+import idas.chox.core.model.Accessibility;
 import idas.chox.core.model.AccessibilityEditable;
+import idas.chox.core.model.AccessibilityItem;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.AccessibilityService;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 public class ApplicationAccessibility {
@@ -115,7 +119,7 @@ public class ApplicationAccessibility {
 
     public PanelAccessibility getPanelAccessibility(Set roles) {
         return new PanelAccessibility(this, roles);
-    }   
+    }
 
     public MenuAccessibility getMenuAccessibility(Set roles) {
         return new MenuAccessibility(this, roles);
@@ -143,14 +147,11 @@ public class ApplicationAccessibility {
     }
 
     public Short checkNotificationAccessibility(String notificationName, Set roles, String claimStatus) {
-
         String accessibilityKey = getNotificationAccessibilityKey(notificationName, claimStatus);
-
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             return checkAccebility(roleMap, roles);
         }
-
         return Declined;
     }
 
@@ -164,14 +165,38 @@ public class ApplicationAccessibility {
     }
 
     public Short checkActionAccessibility(String actionName, Set roles, String claimStatus) {
-
         String accessibilityKey = getActionAccessibilityKey(actionName, claimStatus);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             return checkAccebility(roleMap, roles);
         }
-
         return Declined;
+    }
+
+    public List<String> checkBatchUpdateAccessibility(String actionName, Set roles) {
+
+        List<String> statuses = new ArrayList<String>();
+
+        // GET LIST OF ACCESSIBILITY BY ACTION NAME
+        String accessibilityKey = getBatchUpdateAccessibilityKey(actionName);
+        List<Accessibility> accessibilities = this.accessibilityService.getBatchUpdateAccessibilityMap(accessibilityKey);
+
+        for (Accessibility accessibility : accessibilities) {
+
+            HashMap roleMap = new HashMap();
+            for (Object item : accessibility.getAccessibilityItem()) {
+                AccessibilityItem aItem = (AccessibilityItem) item;
+                roleMap.put(aItem.getRole().trim(), aItem.getAccessRight());
+            }
+
+            if(checkAccebility(roleMap, roles)>0){
+                String status = accessibility.getName().substring((accessibility.getName().lastIndexOf(".")+1), (accessibility.getName()).length());
+                statuses.add(status);
+            }
+
+        }
+
+        return statuses;
     }
 
     public Short checkFilterAccessibility(String filterName, Set roles) {
@@ -289,6 +314,10 @@ public class ApplicationAccessibility {
         return String.format("action.%1$s.%2$s", actionName, claimStatus);
     }
 
+    private String getBatchUpdateAccessibilityKey(String actionName) {
+        return String.format("batch.%1$s", actionName);
+    }
+
     private String getExtraActionAccessibilityKey(String actionName, String claimStatus) {
         return String.format("extraAction.%1$s.%2$s", actionName, claimStatus);
     }
@@ -321,7 +350,6 @@ public class ApplicationAccessibility {
         }
 
         //2. return role accessibility if exist
-
         Iterator itr = roles.iterator();
         while (itr.hasNext()) {
             WebUserRole r = (WebUserRole) itr.next();
