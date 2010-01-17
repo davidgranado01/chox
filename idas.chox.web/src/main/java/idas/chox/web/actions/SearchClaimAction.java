@@ -16,18 +16,14 @@ import idas.chox.core.services.LookupService;
 import idas.chox.web.viewdata.claimGridViewData;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import net.sf.json.JSONArray;
-import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.util.StringHelper;
-import idas.chox.service.ActionResponse;
 
-public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable, SessionAware {
+public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable {
 
     private LookupService lookupService;
     private ClaimService claimService;
     private FilterService filterService;
-    private Map session;
     private List statuses;
     private List insurers;
     private List suppliers;
@@ -63,9 +59,9 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public String getJsonData() {
-        
+
         try {
-            
+
             List<claimGridViewData> viewData = new ArrayList<claimGridViewData>();
 
             for (Object obj : results) {
@@ -97,41 +93,35 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         String sort = claimSearchCriteria.getSort();
         String dir = claimSearchCriteria.getDir();
 
-        if (StringHelper.isEmpty(filterName)) {
-            session.put("searchCriteria", claimSearchCriteria);
-            SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria, start, limit, sort, dir);
-            results = searchResult.getResult();
-            totalCount = searchResult.getTotalCount();
-        } else {
+        if (!StringHelper.isEmpty(filterName)) {
+
             Filter filter = filterService.getFilter(filterName);
-            SearchResult searchResult =  claimService.searchClaims(filter.getClaimSearchCriteria(),start, limit, sort, dir);
-            results = searchResult.getResult();
-            totalCount = searchResult.getTotalCount();
-
+            ClaimSearchCriteria filterCriteria = filter.getClaimSearchCriteria();
+            mergeClaimSearchCriteria(filterCriteria);
+            claimSearchCriteria = filterCriteria;
         }
-        return SUCCESS;
 
+        SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria, start, limit, sort, dir);
+        results = searchResult.getResult();
+        totalCount = searchResult.getTotalCount();
+        return SUCCESS;
     }
 
-    public String getPageIndexOfCurrentSearch() {
+    private void mergeClaimSearchCriteria(ClaimSearchCriteria c) {
+        Integer start = claimSearchCriteria.getStart();
+        Integer limit = claimSearchCriteria.getLimit();
+        String sort = claimSearchCriteria.getSort();
+        String dir = claimSearchCriteria.getDir();
 
-        Integer selectedStartIndex = -1;
-        if (session.containsKey("searchCriteria")) {
-            if (claimSearchCriteria.getIsSearched()) {
-                selectedStartIndex = claimSearchCriteria.getStart();
-            }
-        }
-        getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, selectedStartIndex.toString());
-        return SUCCESS;
+        c.setStart(start);
+        c.setLimit(limit);
+        c.setSort(sort);
+        c.setDir(dir);
     }
 
     @Override
     public String execute() throws Exception {
         return SUCCESS;
-    }
-
-    public void setSession(Map session) {
-        this.session = session;
     }
 
     public ClaimSearchCriteria getModel() {
@@ -140,11 +130,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     public void prepare() throws Exception {
         if (claimSearchCriteria == null) {
-            if (session != null && session.containsKey("searchCriteria")) {
-                claimSearchCriteria = (ClaimSearchCriteria) session.get("searchCriteria");
-            } else {
-                claimSearchCriteria = new ClaimSearchCriteria();
-            }
+            claimSearchCriteria = new ClaimSearchCriteria();
         }
     }
 

@@ -7,6 +7,13 @@
 
     <script type="text/javascript">
 
+        var currentTabIndex;
+        var tabs;
+        var recordPerPage = 20;
+
+        Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+        Ext.QuickTips.init();
+
         Ext.onReady(function(){
             setupTabPanels();
             setupGrid();
@@ -15,11 +22,7 @@
             activityMonitor.setup(pingServerUrl,checkStatusIUrl);
             loadDataFromSession();
         });
-
-        var currentTabIndex;
-        var tabs;
-        var recordPerPage = 20;
-
+        
         var rd = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
@@ -48,8 +51,17 @@
         var ds = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
             ({url: '<%= request.getContextPath()%>/prv/p/doSearchClaim.action',method:'POST'}),
+            autoLoad:false,
             reader:rd,
-            remoteSort: true
+            remoteSort: true            
+        });
+        
+        ds.addEvents('beforeload');
+
+        ds.on('beforeload',function(scope,options){
+            Ext.state.Manager.set("grid_start", options.params.start);
+            Ext.state.Manager.set("grid_limit", options.params.limit);
+            Ext.state.Manager.set("grid_baseParams",scope.baseParams);
         });
 
         ds.setDefaultSort('created', 'desc');
@@ -117,14 +129,36 @@
             doDataLoad(0, recordPerPage, true);        
         }
 
-        function doDataLoad(start, recordPerPage, isSearched){
+        function doDataLoad(start, recordPerPage){
+
             ds.load(
             {
                 params:
                     {
                     start:start,
-                    limit:recordPerPage,
-                    isSearched:isSearched
+                    limit:recordPerPage
+                },
+                callback:function(){
+                    if(!<s:property value="isChoxAdmin"/>){
+                        activityMonitor.refreshViewingStatus();
+                    }
+                }
+            });
+        }
+
+        function loadDataFromSession()
+        {
+            var start = Ext.state.Manager.get("grid_start");
+            var recordPerPage = Ext.state.Manager.get("grid_limit");
+            var baseParams =  Ext.state.Manager.get("grid_baseParams");
+           
+            ds.baseParams = baseParams;
+            ds.load(
+            {
+                params:
+                    {
+                    start:start,
+                    limit:recordPerPage
                 },
                 callback:function(){
                     if(!<s:property value="isChoxAdmin"/>){
@@ -135,10 +169,6 @@
         }
     
         function setupGrid(){
-        
-            Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-            Ext.QuickTips.init();
-
             var sm2 = new Ext.grid.CheckboxSelectionModel();
         
             var pagingBar = new Ext.PagingToolbar({
@@ -148,6 +178,7 @@
                 displayMsg: 'Displaying claims {0} - {1} of {2}',
                 emptyMsg: "No claim to display"
             });
+
 
             /**** BATCH UPDATE - ROUTE CLAIM ********************************/
             var claimRoutedSelectionDlg;
@@ -613,6 +644,8 @@
                     {header: "Viewing", width: 80, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
                             return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '" class="std-label-ro">-</label>'}}
                 ],
+                stateId:'chox_claim_grid',
+                stateful:true,
                 sm:sm2,
                 stripeRows: true,
                 layout:'fit',
@@ -625,7 +658,6 @@
             });
             grid.render('gridHolder');
             grid.getSelectionModel().selectFirstRow();
-
         }
 
         function validateBatchUpdateAccessRight(batchUpdateDlg, batchActionName, param){
@@ -674,24 +706,10 @@
             }
 
         }
-
-        function loadDataFromSession()
-        {
-            var url = "<%=request.getContextPath()%>/prv/p/getPageIndexOfCurrentSearch.action";
-            ajax.loadHtml(url, null, function(data){
-                var response = eval('(' + data.trim() + ')');
-                var start = parseInt((response.result).trim());
-                if(start >= 0)
-                {
-                    doDataLoad(start, recordPerPage, true);
-                }
-            });
-        }
-    
+            
         function handleActivate(tab){
             $("#gridPanel").hide();
-            if(tab.title == 'Inbox' || tab.title == 'Search'){
-                doDataLoad(0, 0, null);
+            if(tab.title == 'Inbox' || tab.title == 'Search'){               
                 $("#gridPanel").show();
             }
             
