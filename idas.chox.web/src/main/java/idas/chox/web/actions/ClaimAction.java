@@ -49,7 +49,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private NotificationAccessibility notificationAccessibility;
     private Map session;
     private Integer tab = -1;
-    private String actionResult;
     private JSONArray jObject;
     public static final String EMPTY = "empty";
     private List vehicleClasses;
@@ -125,7 +124,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // <editor-fold defaultstate="collapsed" desc="CLAIM PANEL ACTION">
     public String updateClaimDetail() {
         this.service.updateClaim(claim);
-        actionResult = "Claim Updated!";
+        setActionResult("Claim Updated!");
         return SUCCESS;
     }
 
@@ -153,7 +152,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             } catch (Exception ex) {
 
-                this.actionResult = "ERROR : " + ex.getMessage();
+                setActionResult("ERROR : " + ex.getMessage());
 
             }
 
@@ -162,9 +161,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             result = ERROR;
 
             if (validationECDResult.length() > 0) {
-                this.actionResult = validationECDResult;
+                setActionResult(validationECDResult);
             } else {
-                this.actionResult = validationLabourResult;
+                setActionResult(validationLabourResult);
             }
         }
 
@@ -207,27 +206,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String updateClaimNumber() {
 
-        String result = SUCCESS;
-
         try {
-
             this.service.updateClaim(claim);
-
         } catch (Exception ex) {
-
-            result = ERROR;
-            this.actionResult = "ERROR : " + ex.getMessage();
-
+            setActionResult("ERROR : " + ex.getMessage());
+            return ERROR;
         }
 
-        return result;
-    }
-
-    public String updateClaimOwnership() {
-
-        String result = SUCCESS;
-
-        return result;
+        return SUCCESS;
     }
 
     public String getCreatedByDesc() {
@@ -293,55 +279,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         } catch (Exception ex) {
 
             result = ERROR;
-            this.actionResult = "ERROR : " + ex.getMessage();
+            setActionResult("ERROR : " + ex.getMessage());
 
         }
 
-        return result;
-    }
-
-    public String doUpdateClaimStatus() {
-        String result = SUCCESS;
-
-        try {
-
-            claim = service.getClaim(id);
-            String newStatus = ClaimStatus.CLAIM_CLOSED;
-
-            auditTrailService.logAuditLog(newStatus, claim, null, null);
-
-            this.claim.setStatus(newStatus);
-            this.service.updateClaim(claim);
-
-        } catch (Exception ex) {
-
-            result = ERROR;
-            this.actionResult = "ERROR : " + ex.getMessage();
-
-        }
-        return result;
-    }
-
-    public String doReopenClaimStatus() {
-
-        String result = SUCCESS;
-
-        try {
-
-            claim = service.getClaim(id);
-            String newStatus = claim.getPreviousStatus();
-
-            auditTrailService.logAuditLog(newStatus, claim, null, null);
-
-            this.claim.setStatus(newStatus);
-            this.service.updateClaim(claim);
-
-        } catch (Exception ex) {
-
-            result = ERROR;
-            this.actionResult = "ERROR : " + ex.getMessage();
-
-        }
         return result;
     }
 

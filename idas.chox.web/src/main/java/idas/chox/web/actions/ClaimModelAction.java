@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -14,10 +10,7 @@ import idas.chox.service.security.ApplicationAccessibility;
 import java.util.Set;
 import org.hibernate.StaleObjectStateException;
 
-/**
- *
- * @author Emmanuel
- */
+
 public abstract class ClaimModelAction<T extends Entity> extends BaseAction implements ModelDriven<T>, Preparable {
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">

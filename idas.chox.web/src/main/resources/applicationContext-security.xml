@@ -12,7 +12,7 @@
         <security:intercept-url pattern="/prv/**"         access="ROLE_CHO,ROLE_INS,ROLE_CHOX" />
         <security:intercept-url pattern="/**"              filters="none" />
         <security:logout logout-success-url="/login.action"/>
-    </security:http>    
+    </security:http>
 
     <security:authentication-provider user-service-ref="userDetailsService">
         <security:password-encoder hash="md5"/>

@@ -131,24 +131,32 @@
      ***********************************************************************************/
     function closeClaimStatus(){
 
-        if(!confirm('Are you sure you want to close this claim?')){
-            return false;
-        }else{
-            document.location = '<%= request.getContextPath()%>/prv/doUpdateClaimStatus.action?id=<s:property value="id" />';
+        if(confirm('Are you sure you want to close this claim?')){
+            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
+            var param = {"name":"closeClaim", "id":<s:property value="id" />};
+            ajax.loadHtml(url,param, pageRefresh);
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     function reopenClaimStatus(){
 
-        if(!confirm('Are you sure you want to re-open this claim?')){
-            return false;
-        }else{
-            document.location = '<%= request.getContextPath()%>/prv/doReopenClaimStatus.action?id=<s:property value="id" />';
+        if(confirm('Are you sure you want to re-open this claim?')){
+            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
+            var param = {"name":"reopenClaim", "id":<s:property value="id" />};
+            ajax.loadHtml(url,param, pageRefresh);
+            return true;
         }
-        return true;
+        return false;
     }
+    
+    function pageRefresh(){
+        document.location = "<%= request.getContextPath()%>/prv/openClaimDetail.action?id="+<s:property value="id" />;
+    }
+
+
 
     /***********************************************************************************
      * REMOVE NOTIFICATION

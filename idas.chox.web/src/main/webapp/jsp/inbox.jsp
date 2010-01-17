@@ -596,7 +596,6 @@
         
             actionMenu.on('arrowclick', function()
             {
-                
                 doInvoicePaymentReceivedAction.disable();
                 approvedInvoicesPaymentAction.disable();
                 clearBREApprovedInvoicesForPaymentAction.disable();

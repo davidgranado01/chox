@@ -7,7 +7,7 @@
 
         var form = $("form#formEngRptAction");
 
-        var fsets =  $('legend',form);
+        var fsets =  $('legend', form);
         fsets.click(function(){ $(this).next().toggle();});
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});

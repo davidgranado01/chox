@@ -73,160 +73,11 @@
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
-        <action name="doUpdateClaimStatus" class="idas.chox.web.actions.ClaimAction" method="doUpdateClaimStatus">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="doReopenClaimStatus" class="idas.chox.web.actions.ClaimAction" method="doReopenClaimStatus">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="approveInvoiceRefferedByEngineer" class="idas.chox.web.actions.ClaimAction" method="approveInvoiceRefferedByEngineer">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
         <action name="openClaimDetail" class="idas.chox.web.actions.ClaimAction">
             <result name="success">/jsp/claim_detail.jsp</result>
             <result name="ClaimNotFound">/jsp/claim_not_found.jsp</result>
         </action>
-        <action name="route" class="idas.chox.web.actions.ClaimAction" method="route">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="acknowledge" class="idas.chox.web.actions.ClaimAction" method="acknowledge">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="ownershipAssignment" class="idas.chox.web.actions.ClaimAction" method="ownershipAssignment">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="registerFNOL" class="idas.chox.web.actions.ClaimAction" method="registerFNOL">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="contestOrAcceptRejectedClaim" class="idas.chox.web.actions.ClaimAction" method="contestOrAcceptRejectedClaim">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="approveContestedClaim" class="idas.chox.web.actions.ClaimAction" method="approveContestedClaim">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
         <action name="submitHireMonitoringDetail" class="idas.chox.web.actions.ClaimAction" method="submitHireMonitoringDetail">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="reSubmitRejectedClaim" class="idas.chox.web.actions.ClaimAction" method="reSubmitRejectedClaim">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="approveBREPassedClaim" class="idas.chox.web.actions.ClaimAction" method="approveBREPassedClaim">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="approveBREPassedByClaimHandler" class="idas.chox.web.actions.ClaimAction" method="approveBREPassedByClaimHandler">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="updatePaymentReceived" class="idas.chox.web.actions.ClaimAction" method="updatePaymentReceived">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="approveEscalatedInvoice" class="idas.chox.web.actions.ClaimAction" method="approveEscalatedInvoice">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="approveContestedInvoice" class="idas.chox.web.actions.ClaimAction" method="approveContestedInvoice">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="ContestedInvoiceByCH" class="idas.chox.web.actions.ClaimAction" method="contestedInvoiceByCH">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="resubmitOrAcceptContestedInvoice" class="idas.chox.web.actions.ClaimAction" method="resubmitOrAcceptContestedInvoice">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="logInvoicePayment" class="idas.chox.web.actions.ClaimAction" method="logInvoicePayment">
-            <result name="success" type="redirect-action">
-                <param name="actionName">openClaimDetail</param>
-                <param name="id">${id}</param>
-                <param name="statusMsg">${statusMsg}</param>
-            </result>
-            <result name="error">/jsp/claim_detail.jsp</result>
-        </action>
-        <action name="reviewByEngineer" class="idas.chox.web.actions.ClaimAction" method="reviewByEngineer">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -266,7 +117,6 @@
             </result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
-
        <!-- End Claim Detail -->
        <!--Start Support-->
         <action name="onlineSupport" class="idas.chox.web.actions.OnlineSupportAction">
@@ -700,8 +550,6 @@
             <result name="success">/jsp/adminPanel/p_admin_panel.jsp</result>
         </action>
        <!--End Admin-->
-
-
 
        <!-- ********************************* REVIEWED ********************************************** !-->
        <!--Start User Details-->

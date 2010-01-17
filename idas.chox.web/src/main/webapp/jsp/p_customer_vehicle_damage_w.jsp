@@ -4,6 +4,7 @@
 <script type="text/javascript">
 
     $(function(){
+        
         var form = $("#formUpdateCustomerVehicleDamageForm");
 
         var fsets =  $('legend',form);
@@ -21,7 +22,8 @@
                 damage:{required:"Please supply a valid value for Description"}
             }
         });
-        ui.ajaxForm(form,null,'html');
+        
+        ui.ajaxForm(form, null, 'html');
     });
 
 </script>
