@@ -27,36 +27,36 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     public void prepare() throws Exception {
 
-        if(id>0){
+        if (id > 0) {
             claim = claimService.getClaim(id);
             checkVersion();
         }
-        
+
         activity = activityFactory.getActivity(name);
     }
 
     public String processMultipleClaims() {
 
-        if (activity != null && selectedClaimIdList.size()>0) {
-            
+        if (activity != null && selectedClaimIdList.size() > 0) {
+
             try {
 
                 for (Integer selectedClaimId : selectedClaimIdList) {
 
-                    System.out.println(">>> selectedClaimId : "+selectedClaimId);
+                    System.out.println(">>> selectedClaimId : " + selectedClaimId);
 
                     claim = claimService.getClaim(selectedClaimId);
                     checkVersion();
                     activity.process(claim);
                 }
-                
+
             } catch (Exception ex) {
                 handleException(ex);
                 return ERROR;
             }
             return SUCCESS;
         }
-        
+
         return ERROR;
     }
 
