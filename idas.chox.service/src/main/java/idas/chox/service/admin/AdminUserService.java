@@ -46,15 +46,22 @@ public class AdminUserService extends SecureDataService {
 
     // <editor-fold defaultstate="collapsed" desc="USERS">
     public ActionResponse updateUser(WebUser webUser) {
-
         this.actionResponse = new ActionResponse();
-
         if (!this.userService.isUserNameExist(webUser.getUserName(), webUser.getId())) {
             this.userService.saveUser(webUser);
         } else {
             this.getActionResponse().AddError("User Name is already exist!");
         }
+        return this.actionResponse;
+    }
 
+    public ActionResponse updateUserPassword(int webUserId, String newPassword) {
+        this.actionResponse = new ActionResponse();
+
+        WebUser webUser = userService.getWebUser(webUserId);
+        webUser.setPassword(encodePassword(newPassword));
+        userService.saveUser(webUser);
+        this.actionResponse.AssignMessageResult("Your password has been changed.");
         return this.actionResponse;
     }
 
@@ -77,19 +84,14 @@ public class AdminUserService extends SecureDataService {
             }
 
             webUser.setPassword(encodePassword(webUser.getPassword()));
-
             userService.saveUser(webUser);
-
             webUserUserRoleService.addBaseNewUserRole(webUser.getId(), organisationTypeId);
             this.actionResponse.AssignNewIdResult(webUser.getId());
 
         } else {
-
             this.actionResponse.AddError("User Name is already exist!");
         }
-
         return this.actionResponse;
-
     }
 
     public WebUser getUser(int userId) {
@@ -163,7 +165,7 @@ public class AdminUserService extends SecureDataService {
             if (webUserUserRoleService.isWorkgroupRelatedRoles(webUserRoleId) && webUser.getInsurer().isWorkgroupEnable() && (userWorkgroupService.getUserWorkgroupsByUser(webUserId).size()) <= 0) {
                 this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Please assign one or more Workgroup(s) to this user");
             }
-            
+
         }
 
         return this.actionResponse;
@@ -267,8 +269,8 @@ public class AdminUserService extends SecureDataService {
             }
         }
     }
-
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="USER WORKGROUP">
     public List<WebUserWorkgroup> getUserWorkgroupsByUserId(int webUserId) {
         return userWorkgroupService.getUserWorkgroupsByUser(webUserId);

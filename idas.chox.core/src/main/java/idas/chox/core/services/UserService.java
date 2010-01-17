@@ -15,7 +15,7 @@ public interface UserService {
 
     public WebUser loadUserByUsername(String userName);
 
-    public void persist(WebUser user, String emailId);
+    public void persist(WebUser user);
 
     public WebUser getWebUser(int id);
 

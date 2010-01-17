@@ -63,11 +63,6 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return findByUserName(userName);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void persist(WebUser user, String emailId) {
-        this.save(user);
-    }
-
     public Long getNumChoActiveUser(Integer choId) {
         String q = "select count(*) from WebUser where status = true and chorganisation.id = " + choId.toString();
         return getCount(q);
@@ -78,12 +73,6 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return getCount(q);
     }
 
-    /*
-     * GET SELECTED USER ROLE
-     * GET SELECTED USER WORKGROUPS
-     * IF OTHER USERS WITH SAME ROLE AND
-     * THOSE USERS HAVING SAME WORKGROUPS EXISTS
-     */
     public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, String selectedUserRole) {
 
         boolean isExist = false;
@@ -183,8 +172,13 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void saveUser(WebUser object) {
-        object.setEmail(object.getEmail().toLowerCase());
-        save(object);
+    public void saveUser(WebUser user) {
+        user.setEmail(user.getEmail().toLowerCase());
+        save(user);
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void persist(WebUser user) {
+        save(user);
     }
 }

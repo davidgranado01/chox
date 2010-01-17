@@ -46,25 +46,24 @@ public class OnlineSupportAction extends BaseAction {
 
     public String saveMessage() {
 
-        boolean bFlag = true;
-
         try {
 
-            String defaultEmail = ServletActionContext.getServletContext().getInitParameter("onlineSupportDefaultEmail");
-            String[] recipients = {defaultEmail};
+            String onlineSupportDefaultEmail = ServletActionContext.getServletContext().getInitParameter("onlineSupportDefaultEmail");
+            String smtpHostName = ServletActionContext.getServletContext().getInitParameter("smtpHostName");
+            String smtpPort = ServletActionContext.getServletContext().getInitParameter("smtpPort");
+            String smtpEmailUser = ServletActionContext.getServletContext().getInitParameter("smtpEmailUser");
+            String smtpEmailUserPassword = ServletActionContext.getServletContext().getInitParameter("smtpEmailPassword");
 
-            EmailHelper emailHelper = new EmailHelper();
+            String[] recipients = {onlineSupportDefaultEmail};
+
+            EmailHelper emailHelper = new EmailHelper(smtpHostName, smtpPort, smtpEmailUser, smtpEmailUserPassword);
             String emailMessage = doConstructEmailMessage(iSubject, iSupplierReference, iMessage);
-            bFlag = emailHelper.postMail(iSubject, emailMessage, recipients);
+            emailHelper.postMail(iSubject, emailMessage, recipients);
+            this.getActionResponse().AssignMessageResult("Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.");
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            handleException(ex);
             this.getActionResponse().AddError("Please try again.");
-            bFlag = false;
-        }
-
-        if (bFlag) {
-            this.getActionResponse().AssignMessageResult("Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.");
         }
 
         return SUCCESS;

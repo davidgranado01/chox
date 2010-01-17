@@ -11,6 +11,22 @@
         <param-name>onlineSupportDefaultEmail</param-name>
         <param-value>choxsupport@sherwoodcompliance.co.uk</param-value>
     </context-param>
+    <context-param>
+        <param-name>smtpHostName</param-name>
+        <param-value>smtp.gmail.com</param-value>
+    </context-param>
+    <context-param>
+        <param-name>smtpPort</param-name>
+        <param-value>465</param-value>
+    </context-param>
+    <context-param>
+        <param-name>smtpEmailUser</param-name>
+        <param-value>chox@idaschox.com</param-value>
+    </context-param>
+    <context-param>
+        <param-name>smtpEmailPassword</param-name>
+        <param-value>ch0x_3m4il</param-value>
+    </context-param>
 <!-- Listeners -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

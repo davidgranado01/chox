@@ -21,8 +21,8 @@ public class WebUserService implements UserDetailsService {
         return this.getUserService().findByUserName(userName);
     }
 
-    public void persist(WebUser user, String emailId) {
-        this.getUserService().persist(user, emailId);
+    public void persist(WebUser user) {
+        this.getUserService().persist(user);
     }
 
     @Override

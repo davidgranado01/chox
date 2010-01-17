@@ -534,7 +534,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 d.setSeconds(0);
                 criteria.add(Expression.ge("vh.rentalStart", d)).add(Expression.le("vh.rentalEnd", d));
             }
-
         }
 
         if (searchCriteria.getLastModifiedDateFrom() != null || searchCriteria.getLastModifiedDateTo() != null) {

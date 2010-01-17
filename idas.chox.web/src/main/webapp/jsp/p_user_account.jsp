@@ -1,89 +1,67 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<head>
-    <title>IDAS-CHOX</title>
-    <script type="text/javascript">
-        $(document).ready(function () {
+<script type="text/javascript">
+    $(function(){
 
-            var op = {
-                beforeSubmit:  onBeforeSubmit,  // pre-submit callback
-                success:       onSubmitResponseReceived,  // post-submit callback
-                timeout: 3000,
-                error: onSubmitError
-            };
+        $.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+            var check = false;
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        }, "Please check your input.");
 
-            $.validator.addMethod(
-            "regex",
-            function(value, element, regexp) {
-                var check = false;
-                var re = new RegExp(regexp);
-                return this.optional(element) || re.test(value);
-            },
-            "Please check your input."
-        );
-
-            $("#formChangePassword").validate(
-            {
-                errorLabelContainer: "#errorMessageBox",
-                rules: {
-                    newPassword: {required:true, regex: "^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$"},
-                    confirmNewPassword: {
-                        equalTo: "#newPassword"
-                    }
-                }
-                ,
-                messages: {
-
-                    newPassword: {
-                        required:"You must supply a value for 'New Password'", regex: "Incorrect Password Format"
-                    },
-                    confirmNewPassword: {
-                        equalTo:"Your passwords do not match"
-                    }
-                },
-                submitHandler: function(form) {
-                    $(form).ajaxSubmit(op);
-                }
-
-            });
+        var form = $("form#formChangePassword");
+        form.validate(
+        {
+            errorLabelContainer: "#userChangePasswordMessageBox",
+            rules: {
+                newPassword: {required:true, regex: "^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$"},
+                confirmNewPassword: {equalTo: "#newPassword"}
+            }
+            ,
+            messages: {
+                newPassword: {required:"You must supply a value for 'New Password'", regex: "Incorrect Password Format"},
+                confirmNewPassword: {equalTo:"Your passwords do not match"}
+            }
         });
 
-        function onBeforeSubmit(formData, jqForm, options) {
+        ui.ajaxForm(form);
+        
+    });
+/*
+    function onSubmitResponseReceived(responseText, statusText)  {
+        responseText = responseText.trim();
+            
+    <s:if test="isShowMessage">
+            window.location= "user/inbox.action";
+    </s:if>
+    <s:else>
+            var response = eval('(' + responseText.trim() + ')');
+            if(response.isValid)
+            {
+                $("#submitResult").text(response.result);
+            }
+            else
+            {
+                $("#submitResult").text(formErrors(data.errors));
+            }
+
+    </s:else>
 
         }
 
-        function onSubmitResponseReceived(responseText, statusText)  {
+        function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
             responseText = responseText.trim();
-            
-        <s:if test="isShowMessage">
-                window.location= "user/inbox.action";
-        </s:if>
-        <s:else>
-                var response = eval('(' + responseText.trim() + ')');
-                if(response.isValid)
-                {
-                    $("#submitResult").text(response.result);
-                }
-                else
-                {
-                    $("#submitResult").text(formErrors(data.errors));
-                }
+            $('input[@name=newPassword]').val("");
+            $('input[@name=confirmNewPassword]').val("");
+            $("#errorMessageBox").text(responseText);
+        }
 
-        </s:else>
+*/
+</script>
 
-            }
-
-            function onSubmitError(XMLHttpRequest, textStatus, errorThrown) {
-                responseText = responseText.trim();
-                $('input[@name=newPassword]').val("");
-                $('input[@name=confirmNewPassword]').val("");
-                $("#errorMessageBox").text(responseText);
-            }
-
-
-    </script>
-</head>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <s:if test="isShowMessage">
@@ -110,7 +88,7 @@
 
     <fieldset class="x-fieldset">
         <legend>Change Password</legend>
-        <form onsubmit="return true;" id="formChangePassword" action="user/changePassword.action" class="XXentity-form" method="post">
+        <form onsubmit="return true;" id="formChangePassword" action="<%= request.getContextPath()%>/prv/p/changePassword.action" class="XXentity-form" method="post">
 
             <div class="status-info">
                 N.B. Passwords are case sensitive. Must be at least 6 characters.<br/>
@@ -134,8 +112,7 @@
                     <input type="submit" value="Save"/>
                 </div>
                 <div id="submitResult" class="chox-form-submit-result"></div>
-                <div class="action-error-msg" id="errorMessageBox"></div>
-
+                <div class="action-error-msg" id="userChangePasswordMessageBox"></div>
             </div>
         </form>
     </fieldset>

@@ -75,10 +75,6 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
         return reasonOfDelay;
     }
 
-    /* Edited by: Carlson
-     * Edited Date: 20090708
-     * Description: New Reason Type
-     */
     public List<String> getReasonTypes() {
 
         List<String> reasonTypes = new ArrayList<String>();
@@ -94,11 +90,6 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
 
     }
 
-    /* Edited by: Carlson
-     * Edited Date: 20081216
-     * Source: According to Emm, the NEW ECD only can be added by CHO 
-     * and Where the claim status is either AwaitingInvoiceData OR AwaitingCarHireInfo
-     */
     public Boolean getIsECDFormVisible() {
 
         Boolean bFlag = false;
