@@ -2,19 +2,14 @@ package idas.chox.web.actions;
 
 import idas.chox.core.services.ChorganisationService;
 
-
-
 public class UploadClaimsAction extends BaseAction {
 
     private ChorganisationService chorganisationService;
+    private boolean uploadFlag;
 
     public void setChorganisationService(ChorganisationService chorganisationService) {
         this.chorganisationService = chorganisationService;
     }
-
-    public UploadClaimsAction() {
-    }
-    private boolean uploadFlag;
 
     public boolean isUploadFlag() {
 
@@ -28,6 +23,7 @@ public class UploadClaimsAction extends BaseAction {
         return uploadFlag;
     }
 
+    @Override
     public String execute() throws Exception {
         return SUCCESS;
     }

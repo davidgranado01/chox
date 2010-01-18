@@ -14,8 +14,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -92,7 +90,6 @@ public class ProcessClaimsAction extends BaseAction {
             return ERROR;
         }
 
-        //int pos = this.filename.lastIndexOf(".");
         if ((this.filename.lastIndexOf(".")) <= 0) {
             return ERROR;
         }
@@ -129,20 +126,6 @@ public class ProcessClaimsAction extends BaseAction {
             } else {
                 return SUCCESS;
             }
-
-            /*
-            List<XMLParseResult> parseResult = this.service.processXML(this.file , true);
-            if(parseResult.size()>1){
-            parseResult = doOrderXMLUploadResult(parseResult);
-            }
-
-            if (parseResult == null) {
-            return ERROR;
-            } else {
-            this.result = parseResult;
-            return SUCCESS;
-            }
-             */
 
         } else {
             return ERROR;
@@ -181,4 +164,5 @@ public class ProcessClaimsAction extends BaseAction {
 
         return xmlNewParseResult;
     }
+
 }

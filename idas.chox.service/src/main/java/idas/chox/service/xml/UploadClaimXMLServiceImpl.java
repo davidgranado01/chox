@@ -85,8 +85,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             Document document = DocumentHelper.getDocumentFromFile(file);
             bordereauSchemaValidation.validate(document, bordereauResult);
 
-            
-
             if (bordereauResult.isValid()) {
 
                 try {
