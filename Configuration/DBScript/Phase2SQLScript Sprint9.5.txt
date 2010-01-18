@@ -1,0 +1,2 @@
+insert into accessibility (id, name) values ((select max(id)+1 from accessibility), 'notification.ClaimNumberNotification.ClaimUnacknowledgedUnassigned');
+insert into accessibility_item (id,role,access_right,accessibility_id) values ((select max(id)+1 from accessibility_item), 'ALL',1, (select id from accessibility where name ='notification.ClaimNumberNotification.ClaimUnacknowledgedUnassigned'));
