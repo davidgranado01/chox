@@ -801,8 +801,6 @@
     <input id="userInsurerId" name="userInsurerId" value="<s:property value="AuthenticatedUser.insurer.id"/>" type="hidden"/>
     <input id="userInsurerWorkgroupEnable" name="userInsurerWorkgroupEnable" value="<s:property value="AuthenticatedUser.insurer.workgroupEnable"/>" type="hidden"/>
 
-
-
     <div class="excel-export">
         <form name="thisForm" action=""><a href="javascript:doExportExcel();">Export To Excel</a></form>
     </div>

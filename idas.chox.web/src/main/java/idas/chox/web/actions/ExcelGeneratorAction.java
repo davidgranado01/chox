@@ -51,6 +51,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
             c = (ClaimSearchCriteria) session.get("searchCriteria");
 
             if (c != null) {
+                
                 SearchResult searchResult = claimService.searchClaims(c);
                 List claims = searchResult.getResult();
                 if (claims.size() > 0) {
@@ -58,6 +59,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
                 }
             }
         }
+
         return buf;
     }
 
@@ -154,6 +156,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         return out;
     }
 
+    @Override
     public String execute() throws Exception {
 
         ByteArrayOutputStream buf = doExportExcel();
