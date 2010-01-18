@@ -14,7 +14,6 @@ import idas.chox.web.ExcelInvoice;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -24,6 +23,7 @@ import java.util.Map;
 import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
+import org.springframework.core.io.ClassPathResource;
 
 public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
@@ -68,7 +68,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
     public ByteArrayOutputStream generateXML(List claims) throws IOException {
 
-        InputStream templateIS = new FileInputStream(getReportTemplatePath("claimTemplate.xls"));
+        InputStream templateIS = new ClassPathResource("claimTemplate.xls").getInputStream();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         List histories = new ArrayList<History>();

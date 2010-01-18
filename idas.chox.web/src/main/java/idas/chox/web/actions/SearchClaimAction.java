@@ -16,10 +16,12 @@ import idas.chox.core.services.LookupService;
 import idas.chox.web.viewdata.claimGridViewData;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import net.sf.json.JSONArray;
+import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.util.StringHelper;
 
-public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable {
+public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable, SessionAware {
 
     private LookupService lookupService;
     private ClaimService claimService;
@@ -32,6 +34,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private String actionResult;
     private String filterName;
     private ClaimSearchCriteria claimSearchCriteria;
+    private Map session;
 
     public List getStatuses() {
         if (statuses == null) {
@@ -100,7 +103,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             mergeClaimSearchCriteria(filterCriteria);
             claimSearchCriteria = filterCriteria;
         }
-
+       session.put("searchCriteria",claimSearchCriteria);
         SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria, start, limit, sort, dir);
         results = searchResult.getResult();
         totalCount = searchResult.getTotalCount();
@@ -148,5 +151,9 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     public void setFilterService(FilterService filterService) {
         this.filterService = filterService;
+    }
+
+    public void setSession(Map map) {
+        this.session = map;
     }
 }
