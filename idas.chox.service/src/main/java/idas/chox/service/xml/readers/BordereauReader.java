@@ -8,7 +8,6 @@ import idas.chox.core.services.BusinessRulesEngService;
 import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.BordereauResult;
-import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import java.io.File;
 import java.util.ArrayList;

@@ -10,7 +10,6 @@
     <bean id="activityFactory" class="idas.chox.service.workflow.ActivityFactory">
         <property name="workflowContext" ref="workflowContext"></property>
     </bean>
-
     <bean id="newClaim" class="idas.chox.service.workflow.activities.NewClaim">
         <property name="chainActivity" ref="workgroupRouting" />
     </bean>
@@ -23,4 +22,23 @@
         <property name="chainActivity" ref="claimOwnerAssigning" />
     </bean>
     <bean id="claimOwnerAssigning" class="idas.chox.service.workflow.activities.ClaimOwnerAssigning"/>
+    <bean id="referFNOL" class="idas.chox.service.workflow.activities.ClaimReferToFnol"/>
+    <bean id="registerFNOL" class="idas.chox.service.workflow.activities.ClaimRegisterByFnol"/>
+    <bean id="pending" class="idas.chox.service.workflow.activities.ClaimPending"/>
+    <bean id="referEng" class="idas.chox.service.workflow.activities.ClaimReferToEng"/>
+    <bean id="rejectClaim" class="idas.chox.service.workflow.activities.ClaimRejection"/>
+    <bean id="contestRejectedClaim" class="idas.chox.service.workflow.activities.ClaimRejectionConstest"/>
+    <bean id="acceptRejectedClaim" class="idas.chox.service.workflow.activities.ClaimRejectionAccept"/>
+    <bean id="updatedByEng" class="idas.chox.service.workflow.activities.ClaimReviewByEng"/>
+    <bean id="awaitingCarHireInfo" class="idas.chox.service.workflow.activities.ClaimAwaitingCarHireInfo"/>
+    <bean id="rejectInvoice" class="idas.chox.service.workflow.activities.InvoiceRejection"/>
+    <bean id="acceptInvoice" class="idas.chox.service.workflow.activities.InvoiceAccepted"/>
+    <bean id="invoiceReferToEng" class="idas.chox.service.workflow.activities.InvoiceReferToEng"/>
+    <bean id="invoicePaymentLogged" class="idas.chox.service.workflow.activities.InvoicePaymentLogged"/>
+    <bean id="invoicePaymentReceived" class="idas.chox.service.workflow.activities.InvoicePaymentReceived"/>
+    <bean id="contestRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionConstest"/>
+    <bean id="acceptRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionAccept"/>
+    <bean id="invoiceReferToCH" class="idas.chox.service.workflow.activities.InvoiceReferToCH"/>
+    <bean id="resubmitInvoice" class="idas.chox.service.workflow.activities.InvoiceResubmit"/>
+    <bean id="newInvoice" class="idas.chox.service.workflow.activities.NewInvoice"/>
 </beans>

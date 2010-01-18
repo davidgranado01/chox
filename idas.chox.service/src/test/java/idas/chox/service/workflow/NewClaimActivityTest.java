@@ -139,7 +139,7 @@ public class NewClaimActivityTest {
     private BordereauResult loadBordereauResult() throws Exception {
         //This xml clontains one claim
         //This claim have insurer RSA which is Workgroup Feature : true, Ownership Feauture : true, Auto Routing : true by default
-        File file = new ClassPathResource("UnitTest-NewClaim_02.xml").getFile();
+        File file = new ClassPathResource("UnitTest-NewClaim_Base.xml").getFile();
         BordereauResult bordereauResult = bordereauReader.execute(file);
         return bordereauResult;
     }

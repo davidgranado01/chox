@@ -839,10 +839,10 @@ public class AdminInsurerServiceTest {
     public void testInsurerBreMapping_Selected() {
 
 
-        List<BreBandOrganisation> breBandOrganisations = adminInsurerService.getBreBandChorganisationsByBreBandId(8);
+        List<BreBandOrganisation> breBandOrganisations = adminInsurerService.getBreBandChorganisationsByBreBandId(1);
         Assert.assertEquals(2, breBandOrganisations.size());
 
-        List<Chorganisation> chos = adminInsurerService.getChorganisationsWithoutBreBandByInsurerId(8);
+        List<Chorganisation> chos = adminInsurerService.getChorganisationsWithoutBreBandByInsurerId(3);
         Assert.assertEquals(0, chos.size());
     }
 
@@ -850,7 +850,7 @@ public class AdminInsurerServiceTest {
     @Transactional
     public void testInsurerBreMapping_Delete() {
 
-        int testBreBandId = 8;
+        int testBreBandId = 1;
         int testInsurerId = 3;
 
         List<BreBandOrganisation> breBandOrganisations = adminInsurerService.getBreBandChorganisationsByBreBandId(testBreBandId);

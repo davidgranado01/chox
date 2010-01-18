@@ -7,41 +7,23 @@ import idas.chox.core.model.Customer;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleHire;
-import idas.chox.core.services.BordereauService;
-import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.UploadClaimXMLService;
-import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.xmlValidation.BordereauResult;
 import idas.chox.core.xmlValidation.ClaimResult;
 import java.io.File;
 import java.math.BigDecimal;
-import org.junit.*;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import junit.framework.Assert;
+import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-Workflow-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-BRE-test.xml"})
-public class XMLUploadClaimTest {
-
-    @Autowired
-    private UploadClaimXMLService uploadClaimXMLService;
-    @Autowired
-    private BordereauService bordereauService;
-    @Autowired
-    private ClaimService claimService;
-    @Autowired
-    private VehicleClassService vehicleClassService;
+public class XMLUploadClaimTest extends  BaseXMLUploadClaimTest{
 
     @Test
     @Transactional
     public void testFile_2_Successful() throws Exception {
 
-        String fileName = "UnitTest-NewClaim_02.xml";
+        String fileName = "UnitTest-NewClaim_Base.xml";
 
         // 2. PROCESS THE XML
         File testFile = new ClassPathResource(fileName).getFile();
@@ -50,7 +32,7 @@ public class XMLUploadClaimTest {
         // 3. CHECK XML RESULT
         Assert.assertEquals(true, parseResult.isValid());
         Assert.assertEquals(0, parseResult.getMessage().size());
-        Assert.assertEquals(4, parseResult.getClaimResult().size());
+        Assert.assertEquals(7, parseResult.getClaimResult().size());
 
         // 4. CHECK XML CLAIM RESULT
         ClaimResult claimResult = parseResult.getClaimResult().get(0);
