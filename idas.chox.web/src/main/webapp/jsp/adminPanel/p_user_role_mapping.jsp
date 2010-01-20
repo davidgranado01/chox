@@ -2,17 +2,17 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    
+
     var userrole_gridviewJsonReader;
     var userrole_gridviewDataStore;
     var userrole_gridviewGrid;
     var userrole_gridviewData;
 
     Ext.onReady(function(){
-        
+
         userrole_gridviewJsonReader = new Ext.data.JsonReader({
-            totalProperty: 'totalCount',   
-            root: 'results', 
+            totalProperty: 'totalCount',
+            root: 'results',
             fields:
                 [
                 {name:'id'},
@@ -31,7 +31,7 @@
             ({url: '<%= request.getContextPath()%>/prv/p/getUseroles.action?webUserId='+<s:property value="id" />, method:'POST'}),
             reader:userrole_gridviewJsonReader
         });
-        
+
         userrole_gridviewGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:userrole_recordOnclick },
             store: userrole_gridviewData,
@@ -49,10 +49,10 @@
             height:420,
             width: 715
         });
-  
+
         userrole_loadGridViewList()
 
-    }); 
+    });
 
     function userrole_loadGridViewList(){
         userrole_gridviewData.load({params:{webUserId:<s:property value="id" />}});
@@ -70,7 +70,7 @@
             ajax.loadHtml(url, param, onUserroleMappingSubmitResult);
 
         }else{
-            
+
             triggerCss("div#CDUserroleMessageBox", true);
             $("div#CDUserroleMessageBox").html("please select user role");
         }
@@ -84,71 +84,67 @@
     }
 
     function userrole_triggerStatusRemoveRecord(gridView){
-        
-        var webUserId = <s:property value="id" />;
+
         var webUserUserRoleId = gridView.get("id");
         var webUserrolecode = gridView.get("webUserroleRole");
         var defaultdeleteMsg = "Are you sure you want to remove this role?";
-        
-        // ONLY PERFORM CHECK IF AND ONLY IF USER ARE REMOVING COM OR CH
-        if((webUserrolecode=='ROLE_INS_CH' || webUserrolecode=='ROLE_INS_COM' || webUserrolecode=='ROLE_INS_FNOL')){
 
-            var url = "<%= request.getContextPath()%>/prv/p/isWebUserRoleAllowToDelete.action";
-            var param = {"webUserRoleCode":webUserrolecode,"webUserId":webUserId};
-            
-            ajax.loadHtml(url, param, function(responseText, statusText){
+        var url = "<%= request.getContextPath()%>/prv/p/isWebUserRoleAllowToDelete.action";
+        var param = {"webUserRoleCode":webUserrolecode,"webUserId":<s:property value="id" />};
 
-                var response = eval('(' + responseText.trim() + ')');
-                var outputDiv = $('div#CDUserroleMessageBox');
+        ajax.loadHtml(url, param, function(responseText, statusText){
 
-                triggerCss("div#CDUserroleMessageBox", true);
+            var response = eval('(' + responseText.trim() + ')');
+            var outputDiv = $('div#CDUserroleMessageBox');
 
-                if(response)
-                {
-                    triggerCss("div#CDUserroleMessageBox", false);
+            triggerCss("div#CDUserroleMessageBox", true);
 
-                    if(response.isValid){
+            if(response)
+            {
+                triggerCss("div#CDUserroleMessageBox", false);
 
-                        outputDiv.addClass("chox-form-submit-result");
+                if(response.isValid){
 
-                        if(response.resultType && response.resultType == 'Message')
-                        {
-                            outputDiv.append("<p>" + response.result + "</p>");
-                        }
-                        else if(response.resultType && response.resultType == 'YesNo'){
+                    outputDiv.addClass("chox-form-submit-result");
 
-                            if(confirm(response.result)){
-                                doRemoveWebUserRoleMapping(webUserUserRoleId);
-                            }
+                    if(response.resultType && response.resultType == 'Message')
+                    {
+                        outputDiv.append("<p>" + response.result + "</p>");
+                    }
+                    else if(response.resultType && response.resultType == 'YesNo'){
 
-                        }
-                        else
-                        {
+                        if(confirm(response.result)){
                             doRemoveWebUserRoleMapping(webUserUserRoleId);
                         }
+
                     }
                     else
                     {
-                        triggerCss("div#CDUserroleMessageBox", true);
-                        $.each(response.errors, function() {
-                            outputDiv.append(this.toString());
-                        });
+                        if(confirm(defaultdeleteMsg)){
+                            doRemoveWebUserRoleMapping(webUserUserRoleId);
+                        }
                     }
                 }
                 else
                 {
-                    outputDiv.append("Unknown Error Encountered, please try again.");
-                    outputDiv.addClass("submit-error");
+                    triggerCss("div#CDUserroleMessageBox", true);
+                    $.each(response.errors, function() {
+                        outputDiv.append(this.toString());
+                    });
                 }
-            });
-            
-        }else{
-            
-            if(confirm(defaultdeleteMsg)){        
-                doRemoveWebUserRoleMapping(webUserUserRoleId);
             }
-            
-        }
+            else
+            {
+                outputDiv.append("Unknown Error Encountered, please try again.");
+                outputDiv.addClass("submit-error");
+            }
+        });
+
+
+
+
+
+
     }
 
     function doRemoveWebUserRoleMapping(webUserUserRoleId){
@@ -156,22 +152,22 @@
         var param = {"webUserUserRoleId":webUserUserRoleId,"webUserId":<s:property value="id" />};
         ajax.loadHtml(url, param, onUserroleMappingSubmitResult);
     }
-    
+
     function onUserroleMappingSubmitResult(responseText, statusText){
 
         var response = eval('(' + responseText.trim() + ')');
         var outputDiv = $('div#CDUserroleMessageBox');
 
         triggerCss("div#CDUserroleMessageBox", true);
-        
+
         if(response)
         {
             triggerCss("div#CDUserroleMessageBox", false);
-            
+
             if(response.isValid){
 
                 outputDiv.addClass("chox-form-submit-result");
-                
+
                 if(response.resultType && response.resultType == 'Message')
                 {
                     userrole_doRefreshPage();
@@ -205,7 +201,7 @@
         if(<s:property value="isChoxAdmin"/>){
             tabIndex = 2;
         }
-        
+
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
         var param = {"objectId":<s:property value="id" /> ,"organisationTypeId":<s:property value="organisationTypeId" />,"tabIndex":tabIndex};
@@ -213,7 +209,7 @@
             $(target).html(data);
         });
     }
-    
+
 </script>
 <div class="sub-admin-tab-css">
     <div class="status-info">

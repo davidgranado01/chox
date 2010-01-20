@@ -37,5 +37,5 @@ public class ExcelInvoice {
         this.invoice = invoice;
     }
 
-    
+
 }

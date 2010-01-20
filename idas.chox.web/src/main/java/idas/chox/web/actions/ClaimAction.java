@@ -107,13 +107,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     @Override
     public String execute() throws Exception {
-        
+
         if (tab > 0) {
             session.put("tabIndex", tab);
         }else{
             session.put("tabIndex", 0);
         }
-        
+
         if (claim == null) {
             return "ClaimNotFound";
         } else {
@@ -408,7 +408,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY CONTROL">
     public TabAccessibility getTabAccessibility() {
 
@@ -733,7 +733,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return injuryId;
     }
-    
+
     public List getWorkgroups() {
         if (workgroups == null) {
             workgroups = lookupService.getWorkgroups(this.getAuthenticatedUser(), true);
@@ -809,7 +809,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 }
                 return action;
             }
-
         }
         return EMPTY;
     }

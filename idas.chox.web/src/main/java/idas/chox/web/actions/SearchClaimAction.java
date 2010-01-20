@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -97,13 +93,12 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         String dir = claimSearchCriteria.getDir();
 
         if (!StringHelper.isEmpty(filterName)) {
-
             Filter filter = filterService.getFilter(filterName);
             ClaimSearchCriteria filterCriteria = filter.getClaimSearchCriteria();
             mergeClaimSearchCriteria(filterCriteria);
             claimSearchCriteria = filterCriteria;
         }
-       session.put("searchCriteria",claimSearchCriteria);
+
         SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria, start, limit, sort, dir);
         results = searchResult.getResult();
         totalCount = searchResult.getTotalCount();
@@ -111,6 +106,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     private void mergeClaimSearchCriteria(ClaimSearchCriteria c) {
+
         Integer start = claimSearchCriteria.getStart();
         Integer limit = claimSearchCriteria.getLimit();
         String sort = claimSearchCriteria.getSort();
@@ -137,6 +133,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         }
     }
 
+    @Override
     public String getActionResult() {
         return actionResult;
     }

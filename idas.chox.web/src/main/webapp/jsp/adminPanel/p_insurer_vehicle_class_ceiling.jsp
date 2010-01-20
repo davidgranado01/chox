@@ -7,12 +7,12 @@
     var vehicleClassCeiling_gridviewData;
     var vehicleClassCeiling_gridviewGrid;
     var vehicleCeilingEditSelectionDlg;
-    
+
     $(function(){
 
         // ADD FORM
         var form = $("form#formVehicleClassCeilingDetail");
-        
+
         form.validate(
         {
             errorLabelContainer: "#CDVehicleClassCeilingMessageBox",
@@ -86,7 +86,7 @@
                                 timeout: 3000,
                                 error: ui.onSubmitError
                             };
-                            
+
                             $("form#editVehicleClassCeilingDetail").ajaxSubmit(op);
                         }
                     },{
@@ -139,7 +139,7 @@
         });
 
         onVehicleClassPageRefresh();
-       
+
     });
 
     function doVehicleClassCeilingPageRefresh(){
@@ -161,7 +161,7 @@
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
         });
-        
+
     }
 
     function onVehicleClassPageRefresh(){
@@ -183,17 +183,17 @@
     function vehicleClass_recordOnclickRemoveVehicleClassCeiling(grid, rowIndex, columnIndex, e){
 
         var gridView = vehicleClassCeiling_gridviewGrid.getStore().getAt(rowIndex);
-        
+
         if(columnIndex==3){
             var vehicleClassCeilingId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doRemoveVehicleClassCeilingMapping.action";
             var param = {"vehicleClassCeilingId":vehicleClassCeilingId};
             ajax.loadHtml(url, param, onVehicleClassPageRefresh);
-            
+
         }else if(columnIndex==0){
             showEditVehicleClassCeiling(gridView);
         }
-        
+
     }
 
     function showEditVehicleClassCeiling(gridView){
@@ -203,8 +203,8 @@
         $("form#editVehicleClassCeilingDetail input[name$='hireNetCeiling']").val(gridView.get("hireNetCeiling"));
         $("form#editVehicleClassCeilingDetail input[name$='repairNetCeiling']").val(gridView.get("repairNetCeiling"));
     }
-    
-    function showVehicleClassDropDown() {        
+
+    function showVehicleClassDropDown() {
         var target = "#vehicleClassDropDownDiv";
         var url = "<%= request.getContextPath()%>/prv/p/VehicleClassDropDownAction.action";
         var param = {"insurerId":<s:property value="insurerId" />};
@@ -217,7 +217,7 @@
 </script>
 <div class="sub-admin-tab-css">
     <div class="status-info">
-        {Vehicle Class Ceiling}
+        The maximum ceiling limits for both the Hire Net and Repair Net for the specific vehicle classes is managed here.  If a CHO submits an invoice where the Hire Net or Repair Net value(s) exceed the values held in the below table for the specific vehicle class in question, (non-fault vehicle's vehicle class) then the rule will fail.
     </div>
 
     <div id="VehicleClassCeilingorganisationGird">

@@ -8,23 +8,23 @@
     var breband_mapping_gridviewGrid;
     var breband_mapping_gridviewData;
     var selectBandId = -1;
-    
+
     var breband_gridviewJsonReader;
     var breband_choGridviewJsonReader;
-    
+
     var breband_a_gridviewDataStore;
     var breband_a_gridviewGrid;
     var breband_a_gridviewData;
-    
+
     var breband_s_gridviewDataStore;
     var breband_s_gridviewGrid;
     var breband_s_gridviewData;
-    
+
     Ext.onReady(function(){
-       
+
         breband_choGridviewJsonReader = new Ext.data.JsonReader({
-            totalProperty: 'totalCount',   
-            root: 'results', 
+            totalProperty: 'totalCount',
+            root: 'results',
             fields:
                 [
                 {name:'id'},
@@ -35,10 +35,10 @@
                 {name:'createdDate'}
             ]
         });
-        
+
         breband_gridviewJsonReader = new Ext.data.JsonReader({
-            totalProperty: 'totalCount',   
-            root: 'results', 
+            totalProperty: 'totalCount',
+            root: 'results',
             fields:
                 [
                 {name:'id'},
@@ -64,7 +64,7 @@
             ({url: '<%= request.getContextPath()%>/prv/p/getSelectedInsurerBreBandChorganisation.action',method:'POST'}),
             reader:breband_gridviewJsonReader
         });
-        
+
         breband_a_gridviewGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:breband_recordOnclickAdd },
             store: breband_a_gridviewData,
@@ -97,22 +97,22 @@
             height:420,
             width: 340
         });
-            
+
         onBreBandPageRefresh()
     });
-    
+
     function onBreBandPageRefresh(){
         showBreDropDown();
         brebandMapping_loadGridViewList();
     }
-    
+
     function brebandMapping_loadGridViewList(){
         breband_a_gridviewData.load({params:{insurerId:<s:property value="insurerId" />}});
         breband_s_gridviewData.load({params:{insurerId:<s:property value="insurerId" />,breBandId:$("#breBandId").val()}});
     }
-    
+
     function breband_recordOnclickAdd(grid, rowIndex, columnIndex, e){
-        
+
         if($("#breBandId").val()<=0){
             alert("Please select a BRE Band");
             return;
@@ -128,7 +128,7 @@
     }
 
     function breband_recordOnclickRemove(grid, rowIndex, columnIndex, e){
-        
+
         if(columnIndex==2){
             var gridView = breband_s_gridviewGrid.getStore().getAt(rowIndex);
             var breBandChorganisationId = gridView.get("id");
@@ -136,14 +136,14 @@
             var param = {"breBandChorganisationId":breBandChorganisationId};
             ajax.loadHtml(url, param, brebandMapping_loadGridViewList);
         }
-        
+
     }
-    
-    function doBRESelectOnChange(){  
+
+    function doBRESelectOnChange(){
         brebandMapping_loadGridViewList();
     }
-        
-    function showBreDropDown() {        
+
+    function showBreDropDown() {
         var target = "div#breBandDropDownDiv";
         var url = "<%= request.getContextPath()%>/prv/p/BreBandDropDownAction.action";
         var param = {"insurerId":<s:property value="insurerId" />};
@@ -152,13 +152,13 @@
             $("#breBandId").val(-1);
         });
     }
-    
+
 </script>
 
 <div class="sub-admin-tab-css">
 
     <div class="status-info">
-        {BRE MAPPING}
+        This tab allows you to assign CHOs to their relevant BRE Bands that have been created.  Please note that you can assign more than one CHO to a BRE Band but a CHO can only be assigned to one BRE Band.
     </div>
 
     <div class="grid-view-header">

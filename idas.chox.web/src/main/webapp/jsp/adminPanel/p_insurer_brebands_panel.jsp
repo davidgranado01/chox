@@ -4,14 +4,14 @@
 <div id="insurerBreDetailTab">
 
     <script type="text/javascript">
-    
+
         var breband_gridviewJsonReader;
         var breband_gridviewDataStore;
         var breband_gridviewGrid;
         var breband_gridviewData;
-    
+
         Ext.onReady(function(){
-    
+
             breband_gridviewJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
@@ -32,7 +32,7 @@
                 ({url: '<%= request.getContextPath()%>/prv/p/getInsurerBreBand.action',method:'POST'}),
                 reader:breband_gridviewJsonReader
             });
-    
+
             breband_gridviewGrid = new Ext.grid.GridPanel({
                 listeners:  {cellclick:breband_recordOnclick },
                 store: breband_gridviewData,
@@ -47,13 +47,13 @@
                     {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: true, resizable: true},
                     {header: "Created Date", width: 150, dataIndex: 'createdDate', sortable: true, resizable: true}
                 ],
-           
+
                 height:420,
                 width: 715
             });
 
             breband_gridviewData.load({params:{insurerId:<s:property value="insurerId" />}});
-        
+
         });
 
         function breband_recordOnclick(grid, rowIndex, columnIndex, e){
@@ -77,13 +77,13 @@
                 $(target).html(data);
             });
         }
-    
+
     </script>
 
     <div class="sub-admin-tab-css">
 
         <div class="status-info">
-            {BRE LISTING}
+            The BRE tolerances/variable values are controlled here as well as which rules are turned on/off for the particular BRE Band being created/modified.  BRE Bands can be created specific to each CHO, or CHOs can be grouped into a single BRE Band and therefore share the same tolerances/variables as well as which rules are executed when the CHO submits an invoice.
         </div>
 
         <div class="grid-view-header">

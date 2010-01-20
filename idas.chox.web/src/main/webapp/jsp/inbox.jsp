@@ -22,7 +22,7 @@
             activityMonitor.setup(pingServerUrl,checkStatusIUrl);
             loadDataFromSession();
         });
-        
+
         var rd = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
@@ -47,15 +47,15 @@
                 {name:'ownerName'}
             ]
         });
-    
+
         var ds = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
             ({url: '<%= request.getContextPath()%>/prv/p/doSearchClaim.action',method:'POST'}),
             autoLoad:false,
             reader:rd,
-            remoteSort: true            
+            remoteSort: true
         });
-        
+
         ds.addEvents('beforeload');
 
         ds.on('beforeload',function(scope,options){
@@ -73,7 +73,7 @@
             ds.baseParams = {"filterName" : filterName};
             doDataLoad(0, recordPerPage, true);
         }
-        
+
         function refreshFilterPanel()
         {
             var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
@@ -81,7 +81,7 @@
                 $("div#filterPanel").html(data);
             });
         }
-    
+
         function searchClaim()
         {
             var supplierReference = Ext.query('*[name$=supplierReference]')[0].value;
@@ -103,7 +103,7 @@
             var claimOwnerId = Ext.query('*[name$=searchClaimOwnerId]')[0].value;
             var customerVrn = Ext.query('*[name$=customerVrn]')[0].value;
             var isOpenClaim = Ext.query('*[name$=isOpenClaim]')[0].checked;
-        
+
             ds.baseParams = {
                 filterName : '',
                 supplierReference : supplierReference,
@@ -126,7 +126,7 @@
                 customerVrn : customerVrn,
                 isOpenClaim : isOpenClaim
             }
-            doDataLoad(0, recordPerPage, true);        
+            doDataLoad(0, recordPerPage, true);
         }
 
         function doDataLoad(start, recordPerPage){
@@ -151,7 +151,7 @@
             var start = Ext.state.Manager.get("grid_start");
             var recordPerPage = Ext.state.Manager.get("grid_limit");
             var baseParams =  Ext.state.Manager.get("grid_baseParams");
-           
+
             ds.baseParams = baseParams;
             ds.load(
             {
@@ -167,10 +167,10 @@
                 }
             });
         }
-    
+
         function setupGrid(){
             var sm2 = new Ext.grid.CheckboxSelectionModel();
-        
+
             var pagingBar = new Ext.PagingToolbar({
                 pageSize: recordPerPage,
                 store: ds,
@@ -205,7 +205,7 @@
                                     handler:function(){
 
                                         if($("form#routeClaimForm").valid()){
-                                            
+
                                             var selectedRecords =  sm2.getSelections();
                                             var selectedIDs = $.map(selectedRecords, function(n){
                                                 return n.json.id;
@@ -224,7 +224,7 @@
                                                 }};
 
                                             $("form#routeClaimForm").ajaxSubmit(submitOption);
-                         
+
                                         }
                                     }
                                 },{
@@ -247,7 +247,7 @@
                                     workgroupId:{required:"You must select 'Workgroup'"}
                                 }
                             });
-                            
+
                             var target = "div#claimRoutedSelectionHolder";
                             var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action";
                             ajax.loadHtml(url, null, function(data){
@@ -256,7 +256,7 @@
 
                         });
                     }
-                    
+
                     claimRoutedSelectionDlg.show(this);
                 }
             });
@@ -395,7 +395,7 @@
 
                                                 $('form#ownershipClaimForm input[name="selectedClaimIds"]').val(param);
 
-                                                
+
                                                 var submitOption = {
                                                     clearForm: true,
                                                     success:function(){
@@ -444,7 +444,7 @@
                                 var target = "#claimOwnerClaimHandlerRoleUserDropDownDiv";
                                 var url = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
                                 var param = {"workgroupId":-1,"insurerId":insurerId};
-                                
+
                                 ajax.loadHtml(url,param,function(data){
                                     $(target).html(data);
                                     if(isInsurerWorkgroupEnable){
@@ -473,7 +473,7 @@
                 text: 'Update Claim(s) Workgroup And Claim Owner',
                 hidden:<s:property value="isCHO"/>,
                 handler: function(){
-                
+
                     var allowStatuses = ["AwaitingCarHireInfo", "AwaitingInvoiceData", "AwaitingInvoicePayment",
                         "ClaimPending", "ClaimReferredToEngineer", "ClaimRejected",
                         "ClaimRejectionContested", "ClaimUnacknowledgedRouted", "ClaimUpdatedByEngineer",
@@ -555,7 +555,7 @@
                                 if($("#userInsurerWorkgroupEnable").val()!=null && $("#userInsurerWorkgroupEnable").val()!=""){
                                     isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
                                 }
-                                
+
                                 // GENERATE CLAIM OWNER
                                 var target = "#couClaimHandlerRoleUserDropDownDiv";
                                 var url = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
@@ -580,7 +580,7 @@
                     }
                 }
             });
-            
+
             var actionMenu = new Ext.Toolbar.MenuButton({
                 text: 'Batch Update',
                 tooltip: {text:'', title:'More actions'},
@@ -593,7 +593,7 @@
                         doInvoicePaymentReceivedAction
                     ]}
             });
-        
+
             actionMenu.on('arrowclick', function()
             {
                 doInvoicePaymentReceivedAction.disable();
@@ -617,7 +617,7 @@
                     validateBatchUpdateAccessRight(doClaimOwnerAction, "claimOwnership", param);
                     validateBatchUpdateAccessRight(doUpdateClaimOwnerAction, "updateClaimWorkgroupAndOwner", param);
                 }
-                
+
             }, this);
 
             var grid = new Ext.grid.GridPanel({
@@ -646,7 +646,7 @@
                 stateId:'chox_claim_grid',
                 stateful:true,
                 sm:sm2,
-                stripeRows: true,
+                stripeRows:true,
                 layout:'fit',
                 autoHeight:true,
                 enableHdMenu:false,
@@ -695,7 +695,7 @@
             if(!<s:property value="menuAccessibility.isDashBoardMenuAccessibility"/>){
                 tabs.remove('boardPanelTabId', true);
             }
-            
+
             if(!<s:property value="menuAccessibility.isReportMenuAccessibility"/>){
                 tabs.remove('reportPanelTabId', true);
             }
@@ -705,13 +705,13 @@
             }
 
         }
-            
+
         function handleActivate(tab){
             $("#gridPanel").hide();
-            if(tab.title == 'Inbox' || tab.title == 'Search'){               
+            if(tab.title == 'Inbox' || tab.title == 'Search'){
                 $("#gridPanel").show();
             }
-            
+
             if(tabs)
             {
                 currentTabIndex = tabs.items.indexOf(tabs.getActiveTab());
@@ -734,7 +734,7 @@
                 if(isOwnershipCheck && !n.json.isOwnershipEditable){
                     isOwValid = false;
                 }
-                
+
                 if(allowedStatuses!=null){
 
                     isAllowedStatusesValid = false;
@@ -746,7 +746,7 @@
                         }
                     }
                 }
-                
+
                 if(!isWgValid || !isOwValid || !isAllowedStatusesValid){
 
                     var supplierRef = n.json.supplierReference + " - ";
@@ -847,7 +847,7 @@
                     </tr>
                     <tr>
                         <td colspan="2"><div id="ownershipClaimFormMessageBox" class="action-error-msg"/></td>
-                    </tr>                    
+                    </tr>
                 </table>
             </form>
         </div>

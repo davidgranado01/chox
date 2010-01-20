@@ -1,7 +1,6 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.service.security.ApplicationAccessibility;
@@ -43,7 +42,7 @@ public class InboxAction extends BaseAction implements SessionAware {
 
             Claim claim = claimService.getClaim(id);
 
-            // IS CLAIM STATUS ALLOW TO 
+            // IS CLAIM STATUS ALLOW TO
             if (!statusAllow.contains(claim.getStatus())) {
                 getActionResponse().AssignYesNoResult(Boolean.FALSE);
                 return SUCCESS;

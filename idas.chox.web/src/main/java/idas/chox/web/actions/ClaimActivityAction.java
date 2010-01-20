@@ -43,8 +43,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
                 for (Integer selectedClaimId : selectedClaimIdList) {
 
-                    System.out.println(">>> selectedClaimId : " + selectedClaimId);
-
                     claim = claimService.getClaim(selectedClaimId);
                     checkVersion();
                     activity.process(claim);

@@ -2,17 +2,17 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    
+
     var workgroup_gridviewJsonReader;
     var workgroup_gridviewDataStore;
     var workgroup_gridviewGrid;
     var workgroup_gridviewData;
-    
+
     Ext.onReady(function(){
 
         workgroup_gridviewJsonReader = new Ext.data.JsonReader({
-            totalProperty: 'totalCount',   
-            root: 'results', 
+            totalProperty: 'totalCount',
+            root: 'results',
             fields:
                 [
                 {name:'id'},
@@ -29,7 +29,7 @@
         workgroup_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
             ({url: '<%= request.getContextPath()%>/prv/p/getInsurerWorkgroups.action',method:'POST'}),
-            reader:workgroup_gridviewJsonReader      
+            reader:workgroup_gridviewJsonReader
         });
 
         workgroup_gridviewGrid = new Ext.grid.GridPanel({
@@ -50,10 +50,10 @@
             height:420,
             width: 715
         });
-            
+
         workgroup_loadGridViewList();
 
-    }); 
+    });
 
     function workgroup_loadGridViewList(){
         workgroup_gridviewData.load({ params : { insurerId:<s:property value="insurerId" /> } });
@@ -69,24 +69,24 @@
     }
 
     function workgroup_triggerStatusAddRecord(){
-       
+
         var workgroupName = $("#workgroupName").val();
-        
+
         if(workgroupName!=null && workgroupName!=""){
-            
+
             var url = "<%= request.getContextPath()%>/prv/p/addNewInsurerWorkgroup.action";
             var param = {"insurerId":<s:property value="insurerId" />,"workgroupName":workgroupName};
             ajax.loadHtml(url, param, workgroup_onSubmitResponseReceived);
 
         }else{
-            
+
             triggerCss("div#CDInsurerWorkgroupMessageBox", true);
             $("div#CDInsurerWorkgroupMessageBox").html("Please enter 'Workgroup Name'");
-            
+
         }
-        
+
     }
-   
+
     function workgroup_triggerStatusUpdateRecord(gridView){
 
         var workgroupId = gridView.get("id");
@@ -95,7 +95,7 @@
         ajax.loadHtml(url, param, workgroup_onSubmitResponseReceived);
 
     }
-    
+
     function workgroup_triggerStatusRemoveRecord(gridView){
 
         if(confirm("Are you sure you want to remove this Workgroup?")){
@@ -108,9 +108,9 @@
         }
 
     }
-    
+
     function workgroup_onSubmitResponseReceived(responseText, statusText)  {
-        
+
         var response = eval('(' + responseText.trim() + ')');
         var outputDiv = $('div#CDInsurerWorkgroupMessageBox');
 
@@ -149,7 +149,7 @@
             outputDiv.append("Unknown Error Encountered, please try again.");
             outputDiv.addClass("submit-error");
         }
-        
+
     }
 
     function insurerWorkgroup_doRefreshPage(){
@@ -158,24 +158,24 @@
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
         var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
-        
+
         if(<s:property value="isChoxAdmin"/>){
             tabIndex = 2;
             url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
             var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
         }
-        
+
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
         });
-        
+
     }
-    
+
 </script>
 <div class="sub-admin-tab-css">
 
     <div class="status-info">
-        {Workgroup}
+        The Workgroups that dictate where claims are routed to and therefore which users have access/visibility of the said claims is managed here.  Please note, it is not possible to remove a Workgroup where there is an open claim within the system that is assigned to the said Workgroup.
     </div>
 
     <div class="grid-view-header">
@@ -193,5 +193,3 @@
     <div id="CDInsurerWorkgroupMessageBox" class="chox-form-submit-result"></div>
     <div id="workgroup_gridviewGrid"></div>
 </div>
-
-

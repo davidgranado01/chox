@@ -11,10 +11,10 @@
         fsets.click(function(){ $(this).next().toggle();});
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
-        
+
         form.validate(
         {
-            errorLabelContainer: "#EngRptmessageBox",                
+            errorLabelContainer: "#EngRptmessageBox",
             rules: {
                 labourAmount:{required:true, number:true},
                 totalAmount:{required:true, number:true},
@@ -24,7 +24,7 @@
                 labourAmount: {
                     number:"You must supply a numeric value for 'Estimated Labour Amount'",
                     required:"You must supply a value for 'stimated Labour Amount'"
-                }, 
+                },
                 totalAmount: {
                     required:"You must supply a value for 'Estimated Total Repair Amount'",
                     number:"You must supply a numeric value for 'Estimated Total Repair Amount'"
@@ -33,13 +33,13 @@
                     required:"You must supply a value for 'Estimated Days Under Repair'",
                     digits:"You must supply a integer value for 'Estimated Days Under Repair'"
                 }
-            } 
+            }
         });
 
-        ui.ajaxForm(form,null,'html');
-        
+        ui.ajaxForm(form, null,'html');
+
     });
-    
+
 </script>
 
 <form id="formEngRptAction" action="<%=request.getContextPath()%>/prv/p/updateEngineerReport.action" class="XXentity-form" name="formEngRptAction">
@@ -47,7 +47,7 @@
     <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset  partial">
         <legend>Engineer Report</legend>
-        <div class="form-container">           
+        <div class="form-container">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Estimated Labour Amount<span class="mandatory">*</span></label>
                 <input type="text" class="chox-tnum" name="labourAmount" value="<s:property value="labourAmount" />"/></div>

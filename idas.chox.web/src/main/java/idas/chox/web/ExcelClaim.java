@@ -15,7 +15,7 @@ public class ExcelClaim {
     public Claim getClaim() {
         return claim;
     }
-    
+
 
     public void setClaim(Claim claim) {
         this.claim = claim;
@@ -44,5 +44,5 @@ public class ExcelClaim {
     public void setWitness(Witness witness) {
         this.witness = witness;
     }
-    
+
 }

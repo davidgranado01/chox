@@ -13,7 +13,7 @@
 
         doInsurerSearchSelectOnChange();
         doShowClaimHandler(-1, -1);
-        
+
         var claimUploadDateFromPicker = new Ext.form.DateField({
             name: 'claimUploadDateFrom',
             width: 120,
@@ -22,7 +22,7 @@
             value: '<s:date format="dd/MM/yyyy" name="claimUploadDateFrom" />',
             showWeekNumber: true
         });
-        
+
         var claimUploadDateToPicker = new Ext.form.DateField({
             name: 'claimUploadDateTo',
             width: 120,
@@ -31,7 +31,7 @@
             value: '<s:date format="dd/MM/yyyy" name="claimUploadDateTo" />',
             showWeekNumber: true
         });
-        
+
         var invoiceUploadDateFromPicker = new Ext.form.DateField({
             name: 'invoiceUploadDateFrom',
             width: 120,
@@ -40,7 +40,7 @@
             value: '<s:date format="dd/MM/yyyy" name="invoiceUploadDateFrom" />',
             showWeekNumber: true
         });
-        
+
         var invoiceUploadDateToPicker = new Ext.form.DateField({
             name: 'invoiceUploadDateTo',
             width: 120,
@@ -49,7 +49,7 @@
             value: '<s:date format="dd/MM/yyyy" name="invoiceUploadDateTo" />',
             showWeekNumber: true
         });
-        
+
         var hireDateFromPicker = new Ext.form.DateField({
             name: 'hireDateFrom',
             width: 120,
@@ -58,7 +58,7 @@
             value: '<s:date format="dd/MM/yyyy" name="hireDateFrom" />',
             showWeekNumber: true
         });
-        
+
         var hireDateToPicker = new Ext.form.DateField({
             name: 'hireDateTo',
             width: 120,
@@ -76,7 +76,7 @@
             value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
             showWeekNumber: true
         });
-        
+
         var reviewRequiredDateToPicker = new Ext.form.DateField({
             name: 'reviewRequiredDateTo',
             width: 120,
@@ -100,9 +100,9 @@
             reviewRequiredDateFromPicker.render('reviewRequiredDateFromDiv');
             reviewRequiredDateToPicker.render('reviewRequiredDateToDiv');
         }
-        
-    }); 
-    
+
+    });
+
     function setSelectedInsurerId(){
 
         var isInsurerUser = <s:property value="isInsurer"/>;
@@ -121,7 +121,7 @@
         var target = "#searchScreenWorkgroupDropDownDiv";
         var url = "<%= request.getContextPath()%>/prv/p/SearchWorkgroupDropDownAction.action";
         var param = {"orgId":insurerId};
-        
+
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
         });
@@ -135,10 +135,10 @@
         if($("#workgroup").val()!=null){
             workgroupId = $("#workgroup").val();
         }
-            
+
         doShowClaimHandler(workgroupId, insurerId);
     }
-    
+
     function doShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
 
         var target = "#searchScreenClaimhandlerDownDiv";
@@ -150,7 +150,7 @@
     }
 
     function clearForm(){
-   
+
         $('#searchForm').contents().find(':input').each(function() {
             var type = this.type;
             var tag = this.tagName.toLowerCase();
@@ -176,15 +176,15 @@
         }
 
     }
-    
+
     function onReveiwDateChange(){
         $("#status").val("AwaitingCarHireInfo");
     }
-    
+
 </script>
 
 <div id="searchPanel" class="search-panel-holder">
-    
+
     <div>
 
         <table id="searchForm" cellpadding="0" cellspacing="0" class="searchForm" border="0">
@@ -198,24 +198,19 @@
                 <td><label>Invoice Number</label></td>
                 <td><s:textfield name="invoiceNumber"/></td>
                 <td><label>Show Open Claims Only <img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="" /></label></td><td><s:checkbox name="isOpenClaim" value="true" /></td>
-
             </tr>
-
             <tr>
                 <td><label>Supplier VRN</label></td><td><s:textfield name="customerVrn" /></td>
                 <td><label>Insurer VRN</label></td><td><s:textfield name="thirdPartyVrn" /></td>
             </tr>
-
             <tr>
                 <td nowrap><label>Claim Upload Date From</label></td><td><div id="claimUploadDateFromDiv" ></div></td>
                 <td nowrap><label>Claim Upload Date To</label></td><td><div id="claimUploadDateToDiv"></div></td>
             </tr>
-
             <tr>
                 <td nowrap><label>Invoice Upload Date From</label></td><td><div id="invoiceUploadDateFromDiv" ></div></td>
                 <td nowrap><label>Invoice Upload Date To</label></td><td><div id="invoiceUploadDateToDiv" ></div></td>
             </tr>
-
             <tr>
                 <td nowrap><label>Hire Date From</label></td><td><div id="hireDateFromDiv" ></div></td>
                 <td nowrap><label>Hire Date To</label></td><td><div id="hireDateToDiv"></div></td>
@@ -276,7 +271,6 @@
                     </s:select>
                 </td>
             </tr>
-
             <s:if test="isInsurer">
                 <tr>
                     <td><label>Workgroup</label></td>
