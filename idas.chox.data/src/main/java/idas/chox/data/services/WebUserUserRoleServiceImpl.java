@@ -175,4 +175,26 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         }
         return false;
     }
+
+    public boolean isWorkgroupRelatedRolesByCode(String roleCode) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
+        criteria.add(Restrictions.eq("name", roleCode));
+        criteria.add(Restrictions.eq("workgroupRelated", true));
+        WebUserRole webUserRole = (WebUserRole) getByCriteria(criteria);
+        if (webUserRole != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isClaimOwnerRelatedRolesByCode(String roleCode) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
+        criteria.add(Restrictions.eq("name", roleCode));
+        criteria.add(Restrictions.eq("ownershipRelated", true));
+        WebUserRole webUserRole = (WebUserRole) getByCriteria(criteria);
+        if (webUserRole != null) {
+            return true;
+        }
+        return false;
+    }
 }
