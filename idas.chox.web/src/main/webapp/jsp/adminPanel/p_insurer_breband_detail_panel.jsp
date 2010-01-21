@@ -2,7 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <script type="text/javascript">
-    
+
     Ext.onReady(function(){
 
         new Ext.ToolTip({ target: 'help-averageLabourHoursPerHireDay', html: 'How many hours the garage should work on the car per day'});
@@ -11,9 +11,9 @@
         new Ext.ToolTip({ target: 'help-hireNetCeiling', html: 'Maximum amount allowed to be charged for hire only.'});
         new Ext.ToolTip({ target: 'help-hireRateChargeTolerance', html: 'A figure allowing small deviations to the price charged per day for the hire based on the vehicle class.'});
         new Ext.ToolTip({ target: 'help-maxRepairValue', html: 'Maximum amount allowed to be charged for repair of vehicle.'});
-        
+
         var form = $("form#formUpdateInsurerBreBandDetail");
-        
+
         form.validate(
         {
             errorLabelContainer: "#CDInsurerBreBandmessageBox",
@@ -58,22 +58,22 @@
         });
 
         ui.ajaxForm(form, doNewBreBandSaveResult);
-         
+
         doRefreshCalculation();
 
-            
+
     });
 
     function doRefreshCalculation(){
-            
+
         // C09 - Take Mobile Vehicle To Garage Variable
         var iCCDTakeVehicleToGarageDaysMobile = $("#CCDTakeVehicleToGarageDaysMobile").val();
         $(".chox-ttxt-readonly-TakeVehicleToGarageDaysMobile").val(iCCDTakeVehicleToGarageDaysMobile);
-            
+
         // C10 - Take Non-Mobile Vehicle To Garage Variable (Days)
         var iCCDTakeVehicleToGarageDaysNonMobile = $("#CCDTakeVehicleToGarageDaysNonMobile").val();
         $(".chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile").val(iCCDTakeVehicleToGarageDaysNonMobile);
-            
+
         // C11 - Engineer Inspection Delay Variable (Days)
         var iCCDEngineerInspectionDelayDays = $("#CCDEngineerInspectionDelayDays").val();
         $(".chox-ttxt-readonly-EngineerInspectionDelayVariable").val(iCCDEngineerInspectionDelayDays);
@@ -81,30 +81,30 @@
         // C12 - Collection of Vehicle from garage Variable (Days)
         var iCCDTakeVehicleOutDays = $("#CCDTakeVehicleOutDays").val();
         $(".chox-ttxt-readonly-CollectionofVehiclefromGarageVariable").val(iCCDTakeVehicleOutDays)
-            
+
         doTtlLossAllowableTtlDuration();
         doRepairDurationRuleforMobileVehicleWithoutECD();
         doRepairDurationRuleforNonMobileVehicleWithoutECD();
     }
-    
+
     function doTtlLossAllowableTtlDuration(){
 
         var ttl = 0;
         var iReceiptOfFinalStatementChequeDays = $("#CCDReceiptOfFinalStatementChequeDays").val();
         var iOfferMadeDays = $("#CCDOfferMadeDays").val();
         var iCCDInspectionDelayDays = $("#CCDInspectionDelayDays").val();
-            
+
         ttl = parseFloat(iReceiptOfFinalStatementChequeDays) + parseFloat(iOfferMadeDays) + parseFloat(iCCDInspectionDelayDays);
         $("#iTtlLossAllowableTtlDuration").val(ttl);
-            
+
     }
 
     function doRepairDurationRuleforMobileVehicleWithoutECD(){
-            
+
         var iLabourCostTotalDay = 0;
         var ttl = 0;
         var iWeekendBufferDays = 0
-            
+
         var iCCDTakeVehicleOutDays = $("#CCDTakeVehicleOutDays").val();
         var iCCDEngineerInspectionDelayDays = $("#CCDEngineerInspectionDelayDays").val();
         var iCCDTakeVehicleToGarageDaysMobile = $("#CCDTakeVehicleToGarageDaysMobile").val();
@@ -121,7 +121,7 @@
         $("#iTotalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd").val(ttl);
         $("#iWeekendBufferDays_mwoecd").val(iWeekendBufferDays);
     }
-        
+
     function doRepairDurationRuleforNonMobileVehicleWithoutECD(){
 
         var iLabourCostTotalDay = 0;
@@ -193,17 +193,17 @@
         if(<s:property value="isChoxAdmin"/>){
             tabIndex = 4;
         }
-        
+
         var target = "#insurerBreDetailTab";
         var url = "<%= request.getContextPath()%>/prv/p/getInsurerBreBandPage.action";
         var param = {"insurerId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-        
+
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
         });
-        
+
     }
-    
+
     function doDeleteBreBand(){
         if(confirm("Are you sure you want to delete this BRE Band?")){
             var url = "<%= request.getContextPath()%>/prv/p/deleteInsurerBreBandDetail.action";
@@ -218,13 +218,13 @@
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
         var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
-        
+
         if(<s:property value="isChoxAdmin"/>){
             tabIndex = 4;
             url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
             param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
         }
-        
+
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
         });
@@ -248,15 +248,15 @@
                     ajax.loadHtml(url,param,function(data){
                         $(target).html(data);
                     });
-                    
+
                 }
 
             }
-            
+
         }
 
     }
-    
+
 </script>
 
 <div class="sub-admin-tab-css">
@@ -353,7 +353,7 @@
 
                         <div class="status-info">
                             <b>Repair Duration Calculation:</b><br/>
-                            ECD + Take Mobile Vehicle To Garage Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
+                            ECD + Take Mobile Vehicle To Garage Variable + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Take Mobile Vehicle To Garage Variable (Days)</label>
@@ -373,7 +373,7 @@
 
                         <div class="status-info">
                             <b>ECD Calculation:</b><br/>
-                            Mobile Vehicle ECD Variable + Take Mobile Vehicle To Garage Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
+                            Mobile Vehicle ECD Variable + Take Mobile Vehicle To Garage Variable + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
                             <br/><br/>
                             Where No ECD is provided by the CHO the ECD variable is used, acting as an artificial ECD.
                         </div>
@@ -406,7 +406,7 @@
                         <div class="section-name">Repair Duration Rule for Non-Mobile Vehicle with ECD</div>
                         <div class="status-info">
                             <b>Repair Duration Calculation:</b><br/>
-                            ECD + Take Non-Mobile Vehicle To Garage Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
+                            ECD + Take Non-Mobile Vehicle To Garage Variable + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Engineer Inspection Delay Variable (Days)</label>
@@ -426,7 +426,7 @@
 
                         <div class="status-info">
                             <b>ECD Calculation:</b><br/>
-                            Non-Mobile Vehicle ECD Variable + Take Non-Mobile Vehicle To Garage Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
+                            Non-Mobile Vehicle ECD Variable + Take Non-Mobile Vehicle To Garage Variable + Engineer Inspection Delay Variable + Collection of Vehicle from Garage Variable + Weekend Buffer (Automatically Calculated for Expected Number of Weekends)
                             <br/><br/>
                             Where No ECD is provided by the CHO the ECD variable is used, acting as an artificial ECD.
                         </div>

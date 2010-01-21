@@ -10,8 +10,8 @@
 
     $(function(){
 
-        new Ext.ToolTip({ target: 'help-userName', html: 'User name xx xx xx xx xx xx xx xx xx xx xx xx'});
-        
+        new Ext.ToolTip({ target: 'help-userName', html: 'only allow alphabet, integer, and specific special-characters like ".", "@", "_", and "-". Not allow empty space'});
+
         // CHECK PROCESS MODE
         isNew = isTrue($("#isNew").val());
         isWorkgroupEnabled = isTrue($("#isWorkgroupEnabled").val())
@@ -21,14 +21,14 @@
             var re = new RegExp(regexp);
             return this.optional(element) || re.test(value);
         }, "Please check your input.");
-    
+
         // USER DETAIL FORM VALIDATION
         var form = $("form#formUpdateUserDetail");
         form.validate(
         {
             errorLabelContainer: "#CDmessageBox",
             rules: {
-                userName:{required:true, regex: "^[a-zA-Z0-9]*$"},
+                userName:{required:true, regex: "^[a-zA-Z0-9._@-]*$"},
                 email:{required:true, email: true},
                 firstName:{required:true},
                 lastName:{required:true},
@@ -66,7 +66,7 @@
         ui.ajaxForm(userPasswordform);
 
         getUserDetailTabIndex();
-        
+
         // GENERATE TAB
         userDetailPanelTabs = new Ext.TabPanel({
             renderTo: 'userDetailMainPanel',
@@ -82,7 +82,7 @@
             ]
         });
     });
-    
+
     function getUserDetailTabIndex(){
         if($("#tabIndex").val()!=null && $("#tabIndex").val()!=''){
             userDetailTabIndex = $("#tabIndex").val();
@@ -103,30 +103,30 @@
         });
     }
 
-    function doUserDetailSubmit(){        
+    function doUserDetailSubmit(){
         ui.ajaxForm($("form#formUpdateUserDetail"), doSubmitUserSucceed);
     }
 
     function doSubmitUserSucceed(responseText, statusText){
-        
+
         var response = eval('(' + responseText.trim() + ')');
-        
+
         if(response && response.isValid)
         {
             if(response.resultType && response.resultType == 'New'){
 
                 alert("New user has been created");
-                
+
                 var newObjectId = parseInt(response.result);
                 var target = "#admin_param_panel";
                 var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
                 var param = {"objectId":newObjectId,"organisationTypeId":SelectedOrganisationTypeId};
-                
+
                 ajax.loadHtml(url,param,function(data){
                     $(target).html(data);
                 });
-                
-            }   
+
+            }
         }
     }
 

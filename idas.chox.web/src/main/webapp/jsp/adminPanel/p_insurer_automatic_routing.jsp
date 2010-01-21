@@ -94,9 +94,9 @@
                                 timeout: 3000,
                                 error: ui.onSubmitError
                             };
-            
+
                             $("form#editAutoRoutingDetail").ajaxSubmit(op);
-                            
+
                         }
                     },{
                         text: 'Close', handler: function(){
@@ -106,7 +106,7 @@
             });
 
         }
-        
+
         routing_loadGridViewList();
 
     });
@@ -116,9 +116,9 @@
     }
 
     function routing_recordOnclick(grid, rowIndex, columnIndex, e){
-        
+
         var gridView = routing_gridviewGrid.getStore().getAt(rowIndex);
-        
+
         if(columnIndex==3){
             if(confirm("Are you sure you want to remove this routing?")){
                 var automaticRoutingId = gridView.get("id");
@@ -137,12 +137,12 @@
         $("form#editAutoRoutingDetail label#editWorkgroupName").html(gridView.get("workgroupName"));
         $("form#editAutoRoutingDetail input[name$='expression']").val(gridView.get("expression"));
     }
-    
+
     function doAutoRoutingPageRefresh(){
 
         automaticRoutingEditSelectionDlg.hide();
         automaticRoutingEditSelectionDlg = null;
-        
+
         var tabIndex = 0;
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
@@ -157,7 +157,7 @@
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
         });
-    
+
     }
 
 </script>
@@ -165,7 +165,7 @@
 <div class="sub-admin-tab-css">
 
     <div class="status-info">
-        {Automatic Routing}
+        This tab contains the rules for when a claim is uploaded to automatically assign the claim to a Workgroup and therefore avoid the manual routing of claims where the Insurer uses Workgroups.
     </div>
 
     <div class="grid-view-header">

@@ -2,7 +2,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    
+
     var insChoAvailable_gridviewJsonReader;
     var insChoAvailable_gridviewGrid;
     var insChoAvailable_gridviewData;
@@ -10,12 +10,12 @@
     var insChoSelected_gridviewJsonReader;
     var insChoSelected_gridviewGrid;
     var insChoSelected_gridviewData;
-    
+
     Ext.onReady(function(){
 
         insChoAvailable_gridviewJsonReader = new Ext.data.JsonReader({
-            totalProperty: 'totalCount',   
-            root: 'results', 
+            totalProperty: 'totalCount',
+            root: 'results',
             fields:
                 [
                 {name:'id'},
@@ -26,7 +26,7 @@
                 {name:'createdDate'}
             ]
         });
-        
+
         insChoAvailable_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
             ({url: '<%= request.getContextPath()%>/prv/p/getAvailableInsurerChorganisation.action',method:'POST'}),
@@ -65,13 +65,13 @@
                 {name:'createdDate'}
             ]
         });
-        
+
         insChoSelected_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
             ({url: '<%= request.getContextPath()%>/prv/p/getSelectedInsurerChorganisation.action',method:'POST'}),
             reader:insChoSelected_gridviewJsonReader
         });
-        
+
         insChoSelected_gridviewGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:insCho_recordOnclickRemoveCreditHire},
             store: insChoSelected_gridviewData,
@@ -90,7 +90,7 @@
         });
 
         insCho_loadGridViewList();
-    }); 
+    });
 
     function insCho_loadGridViewList(){
         insChoAvailable_gridviewData.load({params:{insurerId:<s:property value="insurerId" />}});
@@ -98,7 +98,7 @@
     }
 
     function insCho_recordOnclickAddNewCreditHire(grid, rowIndex, columnIndex, e){
-        
+
         var gridView = insChoAvailable_gridviewGrid.getStore().getAt(rowIndex);
         if(columnIndex==1){
             var chorganisationId = gridView.get("id");
@@ -106,15 +106,15 @@
             var param = {"insurerId":<s:property value="insurerId" />,"chorganisationId":chorganisationId};
             ajax.loadHtml(url, param, doInsurerChorganisationPageRefresh);
         }
-        
+
     }
-    
+
     function insCho_recordOnclickRemoveCreditHire(grid, rowIndex, columnIndex, e){
-    
+
         if(columnIndex==2){
-            
+
             if(confirm("Are you sure you want to remove this credit hire organisation?")){
-                
+
                 var gridView = insChoSelected_gridviewGrid.getStore().getAt(rowIndex);
                 var insurerChorganisationId = gridView.get("id");
                 var url = "<%= request.getContextPath()%>/prv/p/doRemoveInsurerChorganisation.action";
@@ -158,7 +158,7 @@
         if(<s:property value="isChoxAdmin"/>){
             tabIndex = 3;
         }
-        
+
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
         var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
@@ -171,7 +171,7 @@
 
 <div class="sub-admin-tab-css">
     <div class="status-info">
-        {Credit Hire Mapping}
+        This tab dictates which CHOs can submit claims into the system against the particular Insurer.
     </div>
 
     <table width="100%">

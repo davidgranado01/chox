@@ -2,17 +2,17 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    
+
     var alias_gridviewJsonReader;
     var alias_gridviewDataStore;
     var alias_gridviewGrid;
     var alias_gridviewData;
-    
+
     Ext.onReady(function(){
-      
+
         alias_gridviewJsonReader = new Ext.data.JsonReader({
-            totalProperty: 'totalCount',   
-            root: 'results', 
+            totalProperty: 'totalCount',
+            root: 'results',
             fields:
                 [
                 {name:'id'},
@@ -27,9 +27,9 @@
         alias_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
             ({url: '<%= request.getContextPath()%>/prv/p/getInsurerAlias.action',method:'POST'}),
-            reader:alias_gridviewJsonReader      
+            reader:alias_gridviewJsonReader
         });
-    
+
         alias_gridviewGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:alias_recordOnclick },
             store: alias_gridviewData,
@@ -51,7 +51,7 @@
 
         alias_loadGridViewList();
 
-    }); 
+    });
 
     function alias_loadGridViewList(){
         alias_gridviewData.load({ params : { insurerId:<s:property value="insurerId" /> } });
@@ -63,19 +63,19 @@
             alias_triggerStatusRemoveRecord(gridView);
         }
     }
-    
+
     function alias_triggerStatusAddRecord(){
-        
+
         var insurerAliasName = $("#insurerAliasName").val();
-       
+
         if(insurerAliasName!=null && insurerAliasName!=""){
-            
+
             var url = "<%= request.getContextPath()%>/prv/p/addNewInsurerAlias.action";
             var param = {"insurerId":<s:property value="insurerId" />,"insurerAliasName":insurerAliasName};
             ajax.loadHtml(url, param, onInsurerAliasMappingSubmitResult);
-            
+
         }else{
-            
+
             triggerCss("div#CDInsurerAliasMessageBox", true);
             $("div#CDInsurerAliasMessageBox").html("please select 'Insurer Alias Name'");
 
@@ -107,7 +107,7 @@
                     alert("Your Changes Have Been Saved");
                     insurerAlias_doRefreshPage();
                 }
-                
+
             }
             else
             {
@@ -130,7 +130,7 @@
         if(<s:property value="isChoxAdmin"/>){
             tabIndex = 1;
         }
-        
+
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
         var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
@@ -138,7 +138,7 @@
             $(target).html(data);
         });
     }
-    
+
     function alias_triggerStatusRemoveRecord(gridView){
 
         if(confirm("Are you sure you want to remove this alias?")){
@@ -155,7 +155,7 @@
 <div class="sub-admin-tab-css">
 
     <div class="status-info">
-        {Alias}
+        This tab contains a list of all the alias’ that identify the particular Insurer as the Third Party Insurer when a CHO is uploading a claim into the system.  The text expression is case sensitive, the Third Party Insurer field on the claim upload looks for a match against the alias’ as held within the below table.
     </div>
 
     <div class="grid-view-header">
