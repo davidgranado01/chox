@@ -173,12 +173,15 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveUser(WebUser user) {
+        user.setUserName(user.getUserName().toLowerCase());
         user.setEmail(user.getEmail().toLowerCase());
         save(user);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void persist(WebUser user) {
+        user.setUserName(user.getUserName().toLowerCase());
+        user.setEmail(user.getEmail().toLowerCase());
         save(user);
     }
 }
