@@ -8,45 +8,27 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jobscheduler.services.DataService;
-import org.quartz.Job;
-import org.quartz.JobDataMap;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.SchedulerException;
 
 public class Main {
 
-    public static void main(String[] args) throws SchedulerException, Exception {
-        
-        /*
-        SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
-        Scheduler sched = schedFact.getScheduler();
-        sched.start();
+    public static void main(String[] args) throws Exception {
 
-        JobDetail jobDetail = new JobDetail("Test Job", null, RunDashboardProcess.class);
-        jobDetail.getJobDataMap().put("userId", 999);
-        
-        Trigger trigger = TriggerUtils.makeHourlyTrigger();
-        trigger.setName("myTrigger");
-        sched.scheduleJob(jobDetail, trigger);
-        */
-        
         PreparedStatement ps = null;
-        
+
         DataService dataService = new DataService();
-        
+
         try{
-            
+
             Connection conn = dataService.getConnection();
             Statement s = conn.createStatement();
             ResultSet rs = s.executeQuery("select sqlrunstatusreport("+999+")");
             conn.close();
-            
+
         } catch (SQLException ex) {
-            
+
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            
-        }        
+
+        }
     }
 
 }

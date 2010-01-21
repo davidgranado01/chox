@@ -14,11 +14,15 @@ public class DataService {
 
         try {
 
+            System.out.println(">>>>>>>>>>>>"+new File(".").getAbsolutePath());
+
             File configFile = new File("database.xml");
             FileInputStream fis = new FileInputStream(configFile);
+
+            // InputStream fis = new ClassPathResource("database.xls").getInputStream();
             Properties prop = new Properties();
             prop.loadFromXML(fis);
-            
+
             String  databaseServer = prop.getProperty("databaseServer");
             String  databaseConnection = prop.getProperty("databaseConnection");
             String  databaseUserName = prop.getProperty("databaseUserName");
@@ -28,13 +32,13 @@ public class DataService {
                 c = DriverManager.getConnection("jdbc:postgresql://" + databaseServer + "/" + databaseConnection, databaseUserName, databaseUserPsw);
             }
 
-            
+
         } catch (SQLException se) {
             System.out.println("Couldn't connect: print out a stack trace and exit.");
             se.printStackTrace();
             System.exit(1);
         }
-      
+
         return c;
     }
 
