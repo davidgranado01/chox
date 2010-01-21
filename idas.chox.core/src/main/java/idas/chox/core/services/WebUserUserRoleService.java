@@ -29,4 +29,8 @@ public interface WebUserUserRoleService {
     public boolean isWorkgroupRelatedRoles(int roleId);
 
     public boolean isClaimOwnerRelatedRoles(int roleId);
+
+    public boolean isWorkgroupRelatedRolesByCode(String roleCode);
+
+    public boolean isClaimOwnerRelatedRolesByCode(String roleCode);
 }
