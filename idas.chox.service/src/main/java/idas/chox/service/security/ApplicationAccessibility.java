@@ -15,10 +15,12 @@ import java.util.Set;
 
 public class ApplicationAccessibility {
 
-    //Access Right
     public static final Short Declined = 0;
     public static final Short ReadOnly = 1;
     public static final Short Editable = 2;
+    private HashMap accessibilityMap;
+    private AccessibilityService accessibilityService;
+
     // <editor-fold defaultstate="collapsed" desc="TAB">
     // ***************************************
     // TAB
@@ -31,6 +33,7 @@ public class ApplicationAccessibility {
     public static final String TAB_NOTES = "Notes";
     public static final String TAB_AUDIT_TRAIL = "AuditTrail";
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="NOTIFICATION">
     // ***************************************
     // NOTIFICATION
@@ -40,6 +43,7 @@ public class ApplicationAccessibility {
     public static final String NOTE_CLAIM_INTELLIGENT_NOTE = "IntelligentNotesNotification";
     public static final String NOTE_CLAIM_NOTES = "NotificationNotesNotification";
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="FILTER">
     // ***************************************
     // FILTER
@@ -69,12 +73,14 @@ public class ApplicationAccessibility {
     public static final String FILTER_CLAIM_OWNERSHIP = "ClaimUnacknowledgedUnassigned";
     public static final String FILTER_AWAITING_INVOICE_DATA = "AwaitingInvoiceData";
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="PANEL">
     // ***************************************
     // PANEL
     // ***************************************
     public static final String PANEL_FNOL_REVIEWED = "FNOLReviewed";
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="MENU">
     // ***************************************
     // MENU
@@ -83,6 +89,7 @@ public class ApplicationAccessibility {
     public static final String MENU_REPORT = "Report";
     public static final String MENU_ADMIN = "Admin";
 // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="REPORT">
     // ***************************************
     // REPORT
@@ -96,6 +103,7 @@ public class ApplicationAccessibility {
     public static final String REPORT_INVOICE_SAVING_SUMMARY = "InvoiceSavingSummaryReport";
     public static final String REPORT_INVOICE_REPORT = "InvoiceReport";
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="ADMIN">
     // ***************************************
     // ADMIN
@@ -105,8 +113,6 @@ public class ApplicationAccessibility {
     public static final String ADMIN_USER_MANAGEMENT = "UserManagement";
     public static final String ADMIN_INSURER_BRE_MANAGEMENT = "InsurerBreManagement";
     // </editor-fold>
-    private HashMap accessibilityMap;
-    private AccessibilityService accessibilityService;
 
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY OBJECT">
     public TabAccessibility getTabAccessibility(WebUser user, Claim claim) {
@@ -132,8 +138,8 @@ public class ApplicationAccessibility {
     public AdminAccessibility getAdminAccessibility(Set roles) {
         return new AdminAccessibility(this, roles);
     }
-
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY CHECK">
     public Short checkTabAccessibility(String tabName, Set roles, String claimStatus) {
 
@@ -189,8 +195,8 @@ public class ApplicationAccessibility {
                 roleMap.put(aItem.getRole().trim(), aItem.getAccessRight());
             }
 
-            if(checkAccebility(roleMap, roles)>0){
-                String status = accessibility.getName().substring((accessibility.getName().lastIndexOf(".")+1), (accessibility.getName()).length());
+            if (checkAccebility(roleMap, roles) > 0) {
+                String status = accessibility.getName().substring((accessibility.getName().lastIndexOf(".") + 1), (accessibility.getName()).length());
                 statuses.add(status);
             }
 
@@ -299,8 +305,8 @@ public class ApplicationAccessibility {
 
         return accessibilityEditable;
     }
-
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY KEY">
     private String getTabAccessibilityKey(String tabName, String claimStatus) {
         return String.format("tab.%1$s.%2$s", tabName, claimStatus);
@@ -339,6 +345,28 @@ public class ApplicationAccessibility {
     }
     // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="GET SET">
+    private HashMap getAccessibilityMap() {
+
+        if (accessibilityMap == null) {
+            accessibilityMap = this.accessibilityService.getAccessibilityMap();
+        }
+        return accessibilityMap;
+    }
+
+    public AccessibilityService getAccessibilityService() {
+        return accessibilityService;
+    }
+
+    public void setAccessibilityService(AccessibilityService accessibilityService) {
+        this.accessibilityService = accessibilityService;
+    }
+
+    private String getAdminAccessibilityKey(String adminName) {
+        return String.format("admin.%1$s", adminName);
+    }
+    // </editor-fold>
+
     private Short checkAccebility(HashMap roleMap, Set roles) {
 
         short right = 0;
@@ -369,26 +397,4 @@ public class ApplicationAccessibility {
 
         return right;
     }
-
-    // <editor-fold defaultstate="collapsed" desc="GET SET">
-    private HashMap getAccessibilityMap() {
-
-        if (accessibilityMap == null) {
-            accessibilityMap = this.accessibilityService.getAccessibilityMap();
-        }
-        return accessibilityMap;
-    }
-
-    public AccessibilityService getAccessibilityService() {
-        return accessibilityService;
-    }
-
-    public void setAccessibilityService(AccessibilityService accessibilityService) {
-        this.accessibilityService = accessibilityService;
-    }
-
-    private String getAdminAccessibilityKey(String adminName) {
-        return String.format("admin.%1$s", adminName);
-    }
-    // </editor-fold>
 }

@@ -76,9 +76,7 @@ public class TabAccessibility {
     private Short doTabAccessibilityFilter(Short iResult, String tabName) {
 
         if (iResult >= 2) {
-
             AccessibilityEditable accEditable = this.applicationAccessibility.checkTabEditableCheck(tabName, this.roles, claim.getStatus());
-
             if (!AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, user)) {
                 iResult = 1;
             }

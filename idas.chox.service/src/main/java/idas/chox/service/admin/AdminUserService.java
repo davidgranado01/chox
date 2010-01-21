@@ -22,6 +22,7 @@ import idas.chox.data.services.SecureDataService;
 import idas.chox.service.ActionResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.springframework.security.providers.encoding.Md5PasswordEncoder;
 import org.springframework.security.providers.encoding.PasswordEncoder;
 
@@ -184,17 +185,20 @@ public class AdminUserService extends SecureDataService {
 
         WebUser webUser = userService.getWebUser(webUserId);
 
-        if (webUser.getInsurer() != null) {
+        if (webUserUserRoleService.isWorkgroupRelatedRolesByCode(webUserRoleCode)) {
 
-            if (webUser.getInsurer().isWorkgroupEnable()) {
+            if (webUser.getInsurer() != null) {
 
-                doInsurerUserRoleValidation(webUser, webUserRoleCode);
+                if (webUser.getInsurer().isWorkgroupEnable()) {
 
-            } else {
+                    doInsurerUserRoleValidation(webUser, webUserRoleCode);
 
-                if (webUser.getInsurer().isClaimOwnershipEnable()) {
-                    if (claimService.isUserHasOpenClaim(webUser.getId())) {
-                        this.actionResponse.AddError("User " + webUser.getDisplayName() + " has open claim(s) assigned to them, it is not possible to remove the assignment of a 'Claim Handler' Role against a user who has open claim(s)");
+                } else {
+
+                    if (webUser.getInsurer().isClaimOwnershipEnable()) {
+                        if (claimService.isUserHasOpenClaim(webUser.getId())) {
+                            this.actionResponse.AddError("User " + webUser.getDisplayName() + " has open claim(s) assigned to them, it is not possible to remove the assignment of a 'Claim Handler' Role against a user who has open claim(s)");
+                        }
                     }
                 }
             }

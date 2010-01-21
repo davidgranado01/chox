@@ -1,19 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.intelligentNotes;
 
 import idas.chox.core.security.SecurityInfoProvider;
-
 import idas.chox.core.model.Claim;
-
 import idas.chox.core.model.IntelligentNote;
 
-/**
- *
- * @author emmanuel
- */
 public class CHOManagingRepairCheckNote implements IntelligentNote {
 
     @Override
@@ -28,9 +18,6 @@ public class CHOManagingRepairCheckNote implements IntelligentNote {
 
         //1. If the ‘Managing Repair' field has an Y/Yes
         showing |= c.getManagingRepair();
-
-        //2.  Insurer roles only
-        // showing &= securityInfoProvider.getIsINS();
 
         return showing;
     }
