@@ -7,6 +7,10 @@ import java.util.Set;
 
 public class RoleHelper {
 
+    public static final int ORGANISATION_CHOX = 1;
+    public static final int ORGANISATION_INS = 2;
+    public static final int ORGANISATION_CHO = 3;
+
     /*****************************************************
      * WORKGROUP
      *****************************************************/
@@ -20,7 +24,7 @@ public class RoleHelper {
     public static boolean isWorkgroupValidationEnabledUser(WebUser user) {
         if (isInsurerUser(user)) {
 
-            if (user.getInsurer().isClaimOwnershipEnable()) {
+            if (user.getInsurer().isWorkgroupEnable()) {
 
                 if (user.getRoles() != null) {
 
@@ -35,9 +39,7 @@ public class RoleHelper {
                     }
 
                 }
-
             }
-
         }
 
         return false;
@@ -115,7 +117,7 @@ public class RoleHelper {
                 }
             }
         }
-        
+
         return false;
     }
 

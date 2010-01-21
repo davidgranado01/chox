@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClaimStatus {
-
     public static final String CLAIM_UNACKNOWLEDGED_UNROUTED = "ClaimUnacknowledgedUnrouted";
     public static final String CLAIM_UNACKNOWLEDGED_ROUTED = "ClaimUnacknowledgedRouted";
     public static final String CLAIM_REJECTED = "ClaimRejected";
