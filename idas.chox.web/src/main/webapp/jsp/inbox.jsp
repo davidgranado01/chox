@@ -5,6 +5,7 @@
     <title>IDAS-CHOX</title>
     <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
 
+
     <script type="text/javascript">
 
         var currentTabIndex;
